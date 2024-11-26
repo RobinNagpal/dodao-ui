@@ -1,14 +1,14 @@
 'use client';
 
 import EditClickableDemoErrorMessage from '@/components/clickableDemos/Create/EditClickableDemoErrorMessage';
-import Stepper from '@/components/clickableDemos/Edit/EditClickableDemoStepper';
+import EditClickableDemoStepper from '@/components/clickableDemos/Edit/EditClickableDemoStepper';
 import { useDeleteClickableDemo } from '@/components/clickableDemos/Edit/useDeleteClickableDemo';
 import { useEditClickableDemo } from '@/components/clickableDemos/Edit/useEditClickableDemo';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
-import { base64ToFile, getFileName } from '@/utils/clickableDemos/clickableDemoUtils';
+import { base64ToFile, getFileName, getScreenshotFromIframe } from '@/utils/clickableDemos/clickableDemoUtils';
 import Block from '@dodao/web-core/components/app/Block';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -99,50 +99,16 @@ export default function EditClickableDemo({ space, demoId, byteCollection, close
     }
   };
 
-  function getScreenshotFromIframe(
-    iframe: HTMLIFrameElement,
-    message: {
-      type: 'capturePageScreenshot' | 'captureElementScreenshot';
-      selector?: string;
-    }
-  ): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      // Function to handle the message event
-      const handleMessage = (event: MessageEvent) => {
-        console.log('Received message:', event.data);
-        if (event.data.type === 'pageScreenshotCaptured' || event.data.type === 'elementScreenshotCaptured') {
-          resolve(event.data.dataURL);
-          window.removeEventListener('message', handleMessage);
-        }
-      };
-      console.log('Sending message:', message);
-
-      window.addEventListener('message', handleMessage, false);
-
-      // Post message to the iframe
-      iframe.contentWindow && iframe.contentWindow.postMessage(message, '*');
-    });
-  }
-
-  function downloadImage(dataUrl: string, filename: string) {
-    const link = document.createElement('a');
-    link.href = dataUrl;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
   useEffect(() => {
     updateClickableDemoFunctions.initialize();
   }, [demoId]);
 
   async function clickSubmit(byteCollection: ByteCollectionSummary) {
-    handleSubmit(byteCollection);
+    await handleSubmit(byteCollection);
   }
 
-  const styles: CSSProperties = {
-    width: '100%',
+  const iframeStyles: CSSProperties = {
+    width: '1024px',
     height: '100%',
     minHeight: '93vh',
     border: 'none',
@@ -206,7 +172,7 @@ export default function EditClickableDemo({ space, demoId, byteCollection, close
               {clickableDemo ? (
                 <Block title="Clickable Demo Steps" slim={true} className="font-semibold">
                   <div className="mt-4">
-                    <Stepper
+                    <EditClickableDemoStepper
                       space={space}
                       clickableDemo={clickableDemo}
                       clickableDemoErrors={clickableDemoErrors}
@@ -252,7 +218,7 @@ export default function EditClickableDemo({ space, demoId, byteCollection, close
       )}
       {generatedImages && clickableDemo.steps?.[0].url && (
         <>
-          <iframe src={clickableDemo.steps?.[0].url} style={styles} id={iframeId} onLoad={iframeLoaded} />
+          <iframe src={clickableDemo.steps?.[0].url} style={iframeStyles} id={iframeId} onLoad={iframeLoaded} />
           <FullPageLoader message={'Generating Screen shot for step ' + currentScreenshotStep} className={'z-50 h-20 block-bg-color'} />
         </>
       )}

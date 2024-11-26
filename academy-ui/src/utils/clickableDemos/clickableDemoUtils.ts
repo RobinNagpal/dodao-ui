@@ -27,3 +27,28 @@ export function getFileName(url: string): string {
   const segments = url.split('/');
   return segments[segments.length - 1] + '_screenshot.png';
 }
+
+export function getScreenshotFromIframe(
+  iframe: HTMLIFrameElement,
+  message: {
+    type: 'capturePageScreenshot' | 'captureElementScreenshot';
+    selector?: string;
+  }
+): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    // Function to handle the message event
+    const handleMessage = (event: MessageEvent) => {
+      console.log('Received message:', event.data);
+      if (event.data.type === 'pageScreenshotCaptured' || event.data.type === 'elementScreenshotCaptured') {
+        resolve(event.data.dataURL);
+        window.removeEventListener('message', handleMessage);
+      }
+    };
+    console.log('Sending message:', message);
+
+    window.addEventListener('message', handleMessage, false);
+
+    // Post message to the iframe
+    iframe.contentWindow && iframe.contentWindow.postMessage(message, '*');
+  });
+}

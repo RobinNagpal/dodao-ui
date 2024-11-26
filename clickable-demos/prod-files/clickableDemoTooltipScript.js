@@ -21,7 +21,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                 document.documentElement.style.setProperty(variable, data.cssValues[variable]);
             }
         }
-        const { tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement, elementXPath } = data;
+        const { tooltipContent: contentText, currentTooltipIndex, tooltipArrayLen, placement, elementXPath, mode } = data;
+        // We don't want to show the tooltip if the mode is elementSelection
+        if (mode === 'elementSelection') {
+            return;
+        }
         const currentDocAndTargetNode = getCurrentContextNodeAndTarget(elementXPath);
         if (!currentDocAndTargetNode.targetNode || !currentDocAndTargetNode.currentContextNode)
             return;
@@ -107,66 +111,125 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         document.body.appendChild(upDownButtons);
         document.body.appendChild(selectButton);
         document.body.appendChild(clearSelectionButton);
-        document.addEventListener('mouseover', (event) => {
+        function documentClickHandler(event) {
+            if (hoverEnabled)
+                containingIframe = null;
+            handleClickOnPageElement(event);
+        }
+        function documentMouseoverHandler(event) {
             if (hoverEnabled)
                 containingIframe = null;
             handleMouseOver(event);
-        });
-        document.addEventListener('click', (event) => {
-            if (hoverEnabled)
-                containingIframe = null;
-            handleClick(event);
-        });
-        addEventListenersToIframe();
-        function addEventListenersToIframe() {
-            // Get all iframes in the document
+        }
+        document.addEventListener('mouseover', documentMouseoverHandler);
+        document.addEventListener('click', documentClickHandler);
+        function handleIframeClick(event) {
+            var _a, _b, _c;
+            event.stopPropagation();
+            const clickedFrame = (_c = (_b = (_a = event.currentTarget) === null || _a === void 0 ? void 0 : _a.ownerDocument) === null || _b === void 0 ? void 0 : _b.defaultView) === null || _c === void 0 ? void 0 : _c.frameElement;
+            if (clickedFrame) {
+                containingIframe = clickedFrame;
+                handleClickOnPageElement(event);
+            }
+        }
+        function handleIframeMouseOver(event) {
+            var _a, _b, _c;
+            event.stopPropagation();
+            // containingIframe = event.currentTarget.ownerDocument.defaultView.frameElement;
+            const mouseoverFrame = (_c = (_b = (_a = event.currentTarget) === null || _a === void 0 ? void 0 : _a.ownerDocument) === null || _b === void 0 ? void 0 : _b.defaultView) === null || _c === void 0 ? void 0 : _c.frameElement;
+            if (mouseoverFrame) {
+                containingIframe = mouseoverFrame;
+                handleMouseOver(event);
+            }
+        }
+        // Function to add event listeners to an iframe
+        function addEventListenersToIframe(iframe) {
+            var _a;
+            try {
+                const iframeDoc = iframe.contentDocument || ((_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document);
+                if (iframeDoc) {
+                    iframeDoc.addEventListener('click', handleIframeClick);
+                    iframeDoc.addEventListener('mouseover', handleIframeMouseOver);
+                }
+                else {
+                    console.error('Unable to access iframe content. It might be cross-origin.');
+                }
+            }
+            catch (error) {
+                console.error('Error accessing or attaching event listeners to iframe content:', error);
+            }
+        }
+        // Function to remove event listeners from an iframe
+        function removeEventListenersFromIframe(iframe) {
+            var _a;
+            try {
+                const iframeDoc = iframe.contentDocument || ((_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document);
+                if (iframeDoc) {
+                    iframeDoc.removeEventListener('click', handleIframeClick);
+                    iframeDoc.removeEventListener('mouseover', handleIframeMouseOver);
+                }
+            }
+            catch (error) {
+                console.error('Error accessing or detaching event listeners from iframe content:', error);
+            }
+        }
+        // Adding event listeners to all iframes
+        function addEventListenersToAllIframes() {
             const iframes = document.querySelectorAll('iframe');
             iframes.forEach((iframe) => {
-                // Ensure the iframe is of type HTMLIFrameElement
                 if (iframe instanceof HTMLIFrameElement) {
-                    // Function to attach event listeners to the iframe content
-                    const attachEventListeners = () => {
-                        var _a;
-                        try {
-                            const iframeDoc = iframe.contentDocument || ((_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document);
-                            if (iframeDoc) {
-                                iframeDoc.addEventListener('click', (event) => {
-                                    event.stopPropagation();
-                                    containingIframe = iframe;
-                                    handleClick(event);
-                                });
-                                iframeDoc.addEventListener('mouseover', (event) => {
-                                    event.stopPropagation();
-                                    containingIframe = iframe;
-                                    handleMouseOver(event);
-                                });
-                            }
-                            else {
-                                console.error('Unable to access iframe content. It might be cross-origin.');
-                            }
-                        }
-                        catch (error) {
-                            console.error('Error accessing or attaching event listeners to iframe content:', error);
-                        }
-                    };
-                    attachEventListeners();
+                    addEventListenersToIframe(iframe);
                 }
             });
         }
-        function createUpDownButtons() {
-            const container = document.createElement('div');
-            container.classList.add('dodao-up-down-buttons');
-            const minusButton = document.createElement('button');
-            minusButton.textContent = '-';
-            minusButton.title = 'Click to move to parent of element';
-            minusButton.addEventListener('click', () => navigateSelection('up'));
-            container.appendChild(minusButton);
-            const plusButton = document.createElement('button');
-            plusButton.textContent = '+';
-            plusButton.title = 'Click to move down to first child of element';
-            plusButton.addEventListener('click', () => navigateSelection('down'));
-            container.appendChild(plusButton);
-            return container;
+        // Removing event listeners from all iframes
+        function removeEventListenersFromAllIframes() {
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach((iframe) => {
+                if (iframe instanceof HTMLIFrameElement) {
+                    removeEventListenersFromIframe(iframe);
+                }
+            });
+        }
+        addEventListenersToAllIframes();
+        function handleSelectButtonClicked() {
+            var _a;
+            if (selectedElement && finalXPath) {
+                console.log('Selected element:', selectedElement);
+                console.log('Final XPath:', finalXPath);
+                console.log('Sending message to parent window:', { type: 'elementSelected', xpath: finalXPath });
+                (_a = event.source) === null || _a === void 0 ? void 0 : _a.postMessage({ type: 'elementSelected', xpath: finalXPath }, { targetOrigin: '*' } // Use options object instead of just `event.origin`
+                );
+            }
+        }
+        function handleClearButtonClicked() {
+            selectedElement = null;
+            finalXPath = null;
+            containingIframe = null;
+            hoverEnabled = true;
+            const overlay = document.getElementById('dimming-overlay');
+            if (overlay)
+                overlay.remove();
+            document.body.style.cursor = 'default';
+            document.addEventListener('mouseover', documentMouseoverHandler);
+            document.addEventListener('click', documentClickHandler);
+            disableButtonActions();
+        }
+        function handleUpButtonClicked() {
+            if (finalXPath)
+                navigateSelection('up');
+        }
+        function handleDownButtonClicked() {
+            if (finalXPath)
+                navigateSelection('down');
+        }
+        function buttonMouseoverHandler(event) {
+            if (finalXPath)
+                event.target.style.opacity = '0.7';
+        }
+        function buttonMouseoutHandler(event) {
+            if (finalXPath)
+                event.target.style.opacity = '1';
         }
         function navigateSelection(direction) {
             if (!selectedElement)
@@ -183,59 +246,114 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             createOrUpdateOverlay(selectedElement, containingIframe);
             finalXPath = getXPath(selectedElement, containingIframe);
         }
+        function createUpDownButtons() {
+            const existingContainer = document.getElementById('dodao-up-down-buttons');
+            if (existingContainer)
+                return existingContainer;
+            const container = document.createElement('div');
+            container.id = 'dodao-up-down-buttons';
+            container.classList.add('dodao-up-down-buttons');
+            const existingButtons = document.getElementById('dodao-up-button');
+            if (!existingButtons) {
+                const minusButton = document.createElement('button');
+                minusButton.textContent = '-';
+                minusButton.title = 'Click to move to parent of element';
+                minusButton.id = 'dodao-up-button';
+                minusButton.style.opacity = '0.3';
+                minusButton.style.cursor = 'not-allowed';
+                minusButton.disabled = true;
+                container.appendChild(minusButton);
+            }
+            const existingPlusButton = document.getElementById('dodao-down-button');
+            if (!existingPlusButton) {
+                const plusButton = document.createElement('button');
+                plusButton.textContent = '+';
+                plusButton.title = 'Click to move down to first child of element';
+                plusButton.id = 'dodao-down-button';
+                plusButton.style.opacity = '0.3';
+                plusButton.style.cursor = 'not-allowed';
+                plusButton.disabled = true;
+                container.appendChild(plusButton);
+            }
+            return container;
+        }
         function createSelectButton() {
+            const selectButton = document.getElementById('dodao-select-element-button');
+            if (selectButton)
+                return selectButton;
             const button = document.createElement('button');
             button.textContent = 'Select';
             button.classList.add('dodao-select-element-button');
+            button.id = 'dodao-select-element-button';
             button.disabled = true;
-            button.style.opacity = '0.5';
-            button.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
-                var _a;
-                if (selectedElement && finalXPath) {
-                    const dataUrl = yield captureScreenshotWithOverlay(selectedElement, containingIframe);
-                    (_a = event.source) === null || _a === void 0 ? void 0 : _a.postMessage({ xpath: finalXPath, elementImgUrl: dataUrl }, { targetOrigin: event.origin } // Use options object instead of just `event.origin`
-                    );
-                }
-            }));
-            button.addEventListener('mouseover', () => {
-                if (!button.disabled)
-                    button.style.opacity = '0.7';
-            });
-            button.addEventListener('mouseout', () => {
-                if (!button.disabled)
-                    button.style.opacity = '1';
-            });
+            button.style.opacity = '0.3';
+            button.style.cursor = 'not-allowed';
             return button;
         }
         function createClearSelectionButton() {
+            const clearButton = document.getElementById('dodao-clear-selection-button');
+            if (clearButton)
+                return clearButton;
             const button = document.createElement('button');
             button.textContent = 'Clear Selection';
             button.classList.add('dodao-clear-selection-button');
+            button.id = 'dodao-clear-selection-button';
             button.disabled = selectedElement === null;
-            button.style.opacity = '0.5';
-            button.addEventListener('mouseover', () => {
-                if (!button.disabled)
-                    button.style.opacity = '0.7';
-            });
-            button.addEventListener('mouseout', () => {
-                if (!button.disabled)
-                    button.style.opacity = '1';
-            });
-            button.addEventListener('click', () => {
-                selectedElement = null;
-                finalXPath = null;
-                containingIframe = null;
-                hoverEnabled = true;
-                const overlay = document.getElementById('dimming-overlay');
-                if (overlay)
-                    overlay.remove();
-                selectButton.disabled = true;
-                selectButton.style.opacity = '0.5';
-                document.body.style.cursor = 'default';
-                button.disabled = true;
-                button.style.opacity = '0.5';
-            });
+            button.style.opacity = '0.3';
+            button.style.cursor = 'not-allowed';
             return button;
+        }
+        function enableButtonActions() {
+            const selectButton = document.getElementById('dodao-select-element-button');
+            selectButton.style.cursor = 'pointer';
+            selectButton.disabled = false;
+            selectButton.style.opacity = '1';
+            selectButton.addEventListener('mouseover', buttonMouseoverHandler);
+            selectButton.addEventListener('mouseout', buttonMouseoutHandler);
+            selectButton.addEventListener('click', handleSelectButtonClicked);
+            const clearButton = document.getElementById('dodao-clear-selection-button');
+            clearButton.style.cursor = 'pointer';
+            clearButton.disabled = false;
+            clearButton.style.opacity = '1';
+            clearButton.addEventListener('mouseover', buttonMouseoverHandler);
+            clearButton.addEventListener('mouseout', buttonMouseoutHandler);
+            clearButton.addEventListener('click', handleClearButtonClicked);
+            const upButton = document.getElementById('dodao-up-button');
+            upButton.style.cursor = 'pointer';
+            upButton.disabled = false;
+            upButton.style.opacity = '1';
+            upButton.addEventListener('mouseover', buttonMouseoverHandler);
+            upButton.addEventListener('mouseout', buttonMouseoutHandler);
+            upButton.addEventListener('click', handleUpButtonClicked);
+            const downButton = document.getElementById('dodao-down-button');
+            downButton.style.cursor = 'pointer';
+            downButton.disabled = false;
+            downButton.style.opacity = '1';
+            downButton.addEventListener('mouseover', buttonMouseoverHandler);
+            downButton.addEventListener('mouseout', buttonMouseoutHandler);
+            downButton.addEventListener('click', handleDownButtonClicked);
+        }
+        function disableButtonActions() {
+            const selectButton = document.getElementById('dodao-select-element-button');
+            selectButton.style.cursor = 'not-allowed';
+            selectButton.disabled = true;
+            selectButton.style.opacity = '0.3';
+            selectButton.removeEventListener('click', handleSelectButtonClicked);
+            const clearButton = document.getElementById('dodao-clear-selection-button');
+            clearButton.style.cursor = 'not-allowed';
+            clearButton.disabled = true;
+            clearButton.style.opacity = '0.3';
+            clearButton.removeEventListener('click', handleClearButtonClicked);
+            const upButton = document.getElementById('dodao-up-button');
+            upButton.style.cursor = 'not-allowed';
+            upButton.disabled = true;
+            upButton.style.opacity = '0.3';
+            upButton.removeEventListener('click', handleUpButtonClicked);
+            const downButton = document.getElementById('dodao-down-button');
+            downButton.style.cursor = 'not-allowed';
+            downButton.disabled = true;
+            downButton.style.opacity = '0.3';
+            downButton.removeEventListener('click', handleDownButtonClicked);
         }
         function handleMouseOver(e) {
             e.preventDefault();
@@ -249,28 +367,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                 }, 180);
             }
         }
-        function handleClick(e) {
+        function handleClickOnPageElement(e) {
             e.preventDefault();
             const clickedElement = e.target;
+            console.log('clickedElement', clickedElement);
             if (clickedElement === selectButton || clickedElement === clearSelectionButton)
                 return;
             if (Array.from(upDownButtons.children).includes(clickedElement))
                 return;
             hoverEnabled = false;
             selectedElement = clickedElement;
-            selectButton.disabled = false;
-            selectButton.style.opacity = '1';
-            clearSelectionButton.disabled = false;
-            clearSelectionButton.style.opacity = '1';
             createOrUpdateOverlay(selectedElement, containingIframe);
             finalXPath = getXPath(selectedElement, containingIframe);
+            removeEventListenersFromAllIframes();
+            document.removeEventListener('mouseover', documentMouseoverHandler);
+            document.removeEventListener('click', documentClickHandler);
+            enableButtonActions();
         }
     }
     //************** Event handler **************//
     function handleDoDAOParentWindowEvent(event) {
-        var _a, _b;
+        var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             const data = event.data;
+            const allowedMessageTypes = ['elementSelector', 'showTooltip', 'capturePageScreenshot', 'captureElementScreenshot'];
+            if (!allowedMessageTypes.includes(data.type))
+                return;
             console.log('Received message from parent window:', data);
             if (data.type === 'elementSelector') {
                 elementSelector(event);
@@ -286,12 +408,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             if (data.type === 'captureElementScreenshot') {
                 const { selector } = data;
                 const currentDocAndTargetNode = getCurrentContextNodeAndTarget(selector);
-                if (!currentDocAndTargetNode.targetNode || !currentDocAndTargetNode.currentContextNode)
+                if (!currentDocAndTargetNode.targetNode) {
+                    console.error('Element not found using selector:', selector);
+                    (_b = event.source) === null || _b === void 0 ? void 0 : _b.postMessage({ type: 'elementScreenshotErrored' }, { targetOrigin: '*' });
                     return;
+                }
                 const { currentContextNode, targetNode } = currentDocAndTargetNode;
-                const target = targetNode;
-                const dataURL = yield captureScreenshotWithOverlay(target, selector.includes('iframe') ? currentContextNode.documentElement : null);
-                (_b = event.source) === null || _b === void 0 ? void 0 : _b.postMessage({ type: 'elementScreenshotCaptured', dataURL }, { targetOrigin: '*' });
+                console.log('currentContextNode', currentContextNode);
+                console.log('targetNode', targetNode);
+                const dataURL = yield captureScreenshotWithOverlay(targetNode, selector.includes('iframe') ? currentContextNode.documentElement : null);
+                (_c = event.source) === null || _c === void 0 ? void 0 : _c.postMessage({ type: 'elementScreenshotCaptured', dataURL }, { targetOrigin: '*' });
             }
         });
     }

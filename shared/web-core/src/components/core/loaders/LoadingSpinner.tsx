@@ -52,23 +52,6 @@ const LoadingSpan = styled.span<{ big: boolean }>`
   `}
 `;
 
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const Svg = styled.svg<{ fillWhite: boolean }>`
-  animation: ${rotate} 0.5s linear infinite;
-  path {
-    fill: var(--link-color);
-    ${(props) => props.fillWhite && 'fill: white;'}
-  }
-`;
-
 export default function LoadingSpinner({ fillWhite = false, big = false, overlay = false }: UiLoadingProps) {
   return (
     <LoadingSpan className={overlay ? 'overlay' : ''} big={big}>
