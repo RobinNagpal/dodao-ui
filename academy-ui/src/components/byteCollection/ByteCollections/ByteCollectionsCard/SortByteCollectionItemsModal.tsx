@@ -54,7 +54,7 @@ const filterArchivedItems = (items: ByteCollectionItem[]) => {
   });
 };
 
-function SortableGridItem({ item }: { item: ByteCollectionItem }) {
+function SortableGridItem({ item, index }: { item: ByteCollectionItem; index: number }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: getItemIdAndType(item).itemId });
 
   const style = {
@@ -68,10 +68,13 @@ function SortableGridItem({ item }: { item: ByteCollectionItem }) {
       style={style}
       {...attributes}
       {...listeners}
-      className={`${styles.sortItem} cursor-grab active:cursor-grabbing bg-white p-4 rounded shadow`}
+      className={`${styles.sortItem} cursor-grab active:cursor-grabbing p-4 rounded shadow flex justify-between`}
     >
-      <h3 className="text-sm font-medium">{getItemName(item)}</h3>
-      <p className="text-xs text-gray-500">{item.type === ByteCollectionItemType.Byte ? 'Tidbit' : item.type}</p>
+      <div className="text-left">
+        <h3 className="text-sm font-medium">{getItemName(item)}</h3>
+        <p className="text-xs text-gray-500">{item.type === ByteCollectionItemType.Byte ? 'Tidbit' : item.type}</p>
+      </div>
+      <div>{index}</div>
     </div>
   );
 }
@@ -139,9 +142,9 @@ export default function SortByteCollectionItemsModal(props: SortByteCollectionIt
               <div className="mt-8">
                 <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                   <SortableContext items={items.map((item) => getItemIdAndType(item).itemId)} strategy={rectSortingStrategy}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                      {items.map((item) => (
-                        <SortableGridItem key={getItemIdAndType(item).itemId} item={item} />
+                    <div className="grid grid-cols-1">
+                      {items.map((item, index) => (
+                        <SortableGridItem key={getItemIdAndType(item).itemId} item={item} index={index} />
                       ))}
                     </div>
                   </SortableContext>
