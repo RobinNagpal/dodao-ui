@@ -1,7 +1,6 @@
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import Input from '@dodao/web-core/components/core/input/Input';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { SortByteCollectionsRequest } from '@/types/request/ByteCollectionRequests';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -19,7 +18,7 @@ interface SortByteCollectionsModalProps {
   onClose: () => void;
 }
 
-function SortableRow({ collection, index }: { collection: ByteCollectionSummary; index: number }) {
+function SortableGridItem({ collection, index }: { collection: ByteCollectionSummary; index: number }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: collection.id });
 
   const style = {
@@ -28,18 +27,26 @@ function SortableRow({ collection, index }: { collection: ByteCollectionSummary;
   };
 
   return (
-    <tr ref={setNodeRef} style={style} {...attributes} {...listeners} className={`${styles.sortItem} cursor-grab active:cursor-grabbing`}>
-      <td className="whitespace-nowrap py-4 pl-2 pr-3 text-sm font-medium sm:pl-2">{collection.name}</td>
-      <td className="whitespace-nowrap px-3 py-4 text-sm text-center">{collection.archive ? 'Yes' : 'No'}</td>
-      <td className="whitespace-nowrap px-3 py-4 text-sm text-center">{index + 1}</td>
-    </tr>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={`${styles.sortItem} cursor-grab active:cursor-grabbing p-4 rounded shadow flex justify-between`}
+    >
+      <div className="text-left">
+        <h3 className="text-sm font-medium">{collection.name}</h3>
+        <p className="text-xs text-gray-500">{collection.archive ? 'Archived' : 'Active'}</p>
+      </div>
+      <div>{index + 1}</div>
+    </div>
   );
 }
 
 export default function SortByteCollectionsModal(props: SortByteCollectionsModalProps) {
   const { space, byteCollections, onClose } = props;
 
-  const [collections, setCollections] = useState<ByteCollectionSummary[]>(byteCollections.filter((byteCollection) => !byteCollection.archive));
+  const [collections, setCollections] = useState<ByteCollectionSummary[]>(byteCollections);
   const redirectPath = space.type === SpaceTypes.AcademySite ? '/byteCollections' : '/';
 
   const { loading, postData } = usePostData(
@@ -79,46 +86,27 @@ export default function SortByteCollectionsModal(props: SortByteCollectionsModal
   }
 
   return (
-    <FullScreenModal open={true} onClose={props.onClose} title={`Sort Tidbit Collections`}>
+    <FullScreenModal open={true} onClose={props.onClose} title="Sort Tidbit Collections">
       <PageWrapper>
-        <div className="flex justify-center align-center">
-          <div className="max-w-4xl">
-            <div className="px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <div className="flex justify-center items-center">
+          <div className="max-w-2xl w-full">
+            <div className="px-4 sm:px-6 lg:px-8">
               <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
                   <h1 className="text-base font-semibold">Sort Tidbit Collections</h1>
                   <p className="mt-2 text-sm">Drag and drop to reorder collections. Lower-order collections appear first in the list.</p>
                 </div>
               </div>
-              <div className="mt-8 flow-root">
-                <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div className="inline-block min-w-full align-middle sm:px-6 lg:px-8">
-                    <table className="min-w-full divide-y divide-gray-300">
-                      <thead>
-                        <tr>
-                          <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:pl-3">
-                            Tidbit Collection Name
-                          </th>
-                          <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold">
-                            Archived
-                          </th>
-                          <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold ">
-                            Order
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="text-left">
-                        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                          <SortableContext items={collections.map((collection) => collection.id)} strategy={verticalListSortingStrategy}>
-                            {collections.map((collection, index) => (
-                              <SortableRow key={collection.id} collection={collection} index={index} />
-                            ))}
-                          </SortableContext>
-                        </DndContext>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+              <div className="mt-8">
+                <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                  <SortableContext items={collections.map((collection) => collection.id)} strategy={verticalListSortingStrategy}>
+                    <div className="grid grid-cols-1 gap-2">
+                      {collections.map((collection, index) => (
+                        <SortableGridItem key={collection.id} collection={collection} index={index} />
+                      ))}
+                    </div>
+                  </SortableContext>
+                </DndContext>
               </div>
             </div>
             <div className="w-full flex justify-center my-6">
