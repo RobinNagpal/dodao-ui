@@ -322,45 +322,39 @@ function FeaturesMobile() {
   let [activeIndex, setActiveIndex] = useState(0);
   let slideContainerRef = useRef<HTMLDivElement>(null);
   let slideRefs = useRef<Array<HTMLDivElement>>([]);
+  const isInViewport = useRef(true);
 
   useEffect(() => {
-    let observer = new window.IntersectionObserver(
+    const observer = new window.IntersectionObserver(
       (entries) => {
-        for (let entry of entries) {
-          if (entry.isIntersecting && entry.target instanceof HTMLDivElement) {
-            setActiveIndex(slideRefs.current.indexOf(entry.target));
-            break;
-          }
-        }
+        isInViewport.current = entries.some((entry) => entry.isIntersecting);
       },
       {
-        root: slideContainerRef.current,
-        threshold: 0.6,
+        root: null,
+        threshold: 0.1,
       }
     );
 
-    for (let slide of slideRefs.current) {
-      if (slide) {
-        observer.observe(slide);
-      }
+    if (slideContainerRef.current) {
+      observer.observe(slideContainerRef.current);
     }
 
-    return () => {
-      observer.disconnect();
-    };
-  }, [slideContainerRef, slideRefs]);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % features.length;
-        slideRefs.current[nextIndex]?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'nearest',
+      if (isInViewport.current) {
+        setActiveIndex((prevIndex) => {
+          const nextIndex = (prevIndex + 1) % features.length;
+          slideRefs.current[nextIndex]?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'nearest',
+          });
+          return nextIndex;
         });
-        return nextIndex;
-      });
+      }
     }, 3000);
 
     return () => clearInterval(interval);
