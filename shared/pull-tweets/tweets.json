@@ -1,0 +1,4664 @@
+{
+  "handle": "anemoycapital",
+  "tweets": [
+    {
+      "id": 1801575385932456219,
+      "id_str": "1801575385932456219",
+      "url": "https://x.com/anemoycapital/status/1801575385932456219",
+      "date": "2024-06-14T11:20:18+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "We're excited to announce that we have acquired @NBRHD_Capital, and it's founder, Anil Sood, will join Anemoy as co-founder.\n\nThis move brings us closer to our mission to build financial markets for the onchain era.\n\nRead more ↓\nhttps://t.co/oSQhuu0rbV",
+      "replyCount": 0,
+      "retweetCount": 2,
+      "likeCount": 13,
+      "quoteCount": 1,
+      "bookmarkedCount": 1,
+      "conversationId": 1801575385932456219,
+      "conversationIdStr": "1801575385932456219",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1724549647455186945,
+          "id_str": "1724549647455186945",
+          "username": "NBRHD_Capital",
+          "displayname": "Neighbourhood Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://www.anemoy.io/blog/anemoy-acquires-nbrhd-capital",
+          "text": "anemoy.io/blog/anemoy-ac…",
+          "tcourl": "https://t.co/oSQhuu0rbV"
+        }
+      ],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 6795,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1857823577128439990,
+      "id_str": "1857823577128439990",
+      "url": "https://x.com/anemoycapital/status/1857823577128439990",
+      "date": "2024-11-16T16:30:32+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "RT @PolkadotInsider: Anemoy Liquidity Network (ALN), backed by @centrifuge and @anemoycapital has arrived!\n\n🤝 ALN is redefining tokenized real-world assets with 24/7 liquidity, multi-partner risk management, and institutional-grade reliability.\n\n💧 Bringing TradFi principles to DeFi, ALN ensures smooth, uninterrupted access to liquidity for investors anytime, anywhere.\n\n#Polkadot #DOT #Centrifuge #CFG",
+      "replyCount": 0,
+      "retweetCount": 4,
+      "likeCount": 0,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1857823577128439990,
+      "conversationIdStr": "1857823577128439990",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1532020492320010241,
+          "id_str": "1532020492320010241",
+          "username": "PolkadotInsider",
+          "displayname": "Polkadot Insider",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 973,
+      "retweetedTweet": {
+        "id": 1857680017880395871,
+        "id_str": "1857680017880395871",
+        "url": "https://x.com/PolkadotInsider/status/1857680017880395871",
+        "date": "2024-11-16T07:00:04+00:00",
+        "user": {
+          "id": 1532020492320010241,
+          "id_str": "1532020492320010241",
+          "url": "https://x.com/PolkadotInsider",
+          "username": "PolkadotInsider",
+          "displayname": "Polkadot Insider",
+          "rawDescription": "The leader in @Polkadot news, information, and analytics. For Business: https://t.co/X55pw0RuIs",
+          "created": "2022-06-01T15:25:35+00:00",
+          "followersCount": 34835,
+          "friendsCount": 605,
+          "statusesCount": 9621,
+          "favouritesCount": 9339,
+          "listedCount": 166,
+          "mediaCount": 4306,
+          "location": "Polkadot",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1620099205263130624/VbA1hPgI_normal.jpg",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1532020492320010241/1688053910",
+          "protected": null,
+          "verified": false,
+          "blue": true,
+          "blueType": null,
+          "descriptionLinks": [
+            {
+              "url": "http://t.me/ducky_insider",
+              "text": "t.me/ducky_insider",
+              "tcourl": "https://t.co/X55pw0RuIs"
+            },
+            {
+              "url": "https://link3.to/polkadot_insider",
+              "text": "link3.to/polkadot_insid…",
+              "tcourl": "https://t.co/vvllxpd4DK"
+            }
+          ],
+          "pinnedIds": [
+            1857136420961587302
+          ],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "Anemoy Liquidity Network (ALN), backed by @centrifuge and @anemoycapital has arrived!\n\n🤝 ALN is redefining tokenized real-world assets with 24/7 liquidity, multi-partner risk management, and institutional-grade reliability.\n\n💧 Bringing TradFi principles to DeFi, ALN ensures smooth, uninterrupted access to liquidity for investors anytime, anywhere.\n\n#Polkadot #DOT #Centrifuge #CFG",
+        "replyCount": 1,
+        "retweetCount": 4,
+        "likeCount": 19,
+        "quoteCount": 1,
+        "bookmarkedCount": 2,
+        "conversationId": 1857680017880395871,
+        "conversationIdStr": "1857680017880395871",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [
+          {
+            "id": 985863970480275456,
+            "id_str": "985863970480275456",
+            "username": "centrifuge",
+            "displayname": "Centrifuge",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1684556638840135686,
+            "id_str": "1684556638840135686",
+            "username": "anemoycapital",
+            "displayname": "Anemoy Capital",
+            "_type": "snscrape.modules.twitter.UserRef"
+          }
+        ],
+        "links": [],
+        "media": {
+          "photos": [
+            {
+              "url": "https://pbs.twimg.com/media/GcfOH4EbEAAxTol.jpg"
+            }
+          ],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 973,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": null,
+        "inReplyToTweetIdStr": null,
+        "inReplyToUser": null,
+        "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+        "sourceUrl": "https://typefully.com/",
+        "sourceLabel": "Typefully",
+        "card": null,
+        "possibly_sensitive": false,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1857680017880395871,
+      "id_str": "1857680017880395871",
+      "url": "https://x.com/PolkadotInsider/status/1857680017880395871",
+      "date": "2024-11-16T07:00:04+00:00",
+      "user": {
+        "id": 1532020492320010241,
+        "id_str": "1532020492320010241",
+        "url": "https://x.com/PolkadotInsider",
+        "username": "PolkadotInsider",
+        "displayname": "Polkadot Insider",
+        "rawDescription": "The leader in @Polkadot news, information, and analytics. For Business: https://t.co/X55pw0RuIs",
+        "created": "2022-06-01T15:25:35+00:00",
+        "followersCount": 34835,
+        "friendsCount": 605,
+        "statusesCount": 9621,
+        "favouritesCount": 9339,
+        "listedCount": 166,
+        "mediaCount": 4306,
+        "location": "Polkadot",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1620099205263130624/VbA1hPgI_normal.jpg",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1532020492320010241/1688053910",
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "http://t.me/ducky_insider",
+            "text": "t.me/ducky_insider",
+            "tcourl": "https://t.co/X55pw0RuIs"
+          },
+          {
+            "url": "https://link3.to/polkadot_insider",
+            "text": "link3.to/polkadot_insid…",
+            "tcourl": "https://t.co/vvllxpd4DK"
+          }
+        ],
+        "pinnedIds": [
+          1857136420961587302
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "Anemoy Liquidity Network (ALN), backed by @centrifuge and @anemoycapital has arrived!\n\n🤝 ALN is redefining tokenized real-world assets with 24/7 liquidity, multi-partner risk management, and institutional-grade reliability.\n\n💧 Bringing TradFi principles to DeFi, ALN ensures smooth, uninterrupted access to liquidity for investors anytime, anywhere.\n\n#Polkadot #DOT #Centrifuge #CFG",
+      "replyCount": 1,
+      "retweetCount": 4,
+      "likeCount": 19,
+      "quoteCount": 1,
+      "bookmarkedCount": 2,
+      "conversationId": 1857680017880395871,
+      "conversationIdStr": "1857680017880395871",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GcfOH4EbEAAxTol.jpg"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 973,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+      "sourceUrl": "https://typefully.com/",
+      "sourceLabel": "Typefully",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1856686431902859601,
+      "id_str": "1856686431902859601",
+      "url": "https://x.com/anemoycapital/status/1856686431902859601",
+      "date": "2024-11-13T13:11:55+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "We received ratings from both crypto &amp; institutional agencies for our Liquid Treasury Fund, managed by @JHIAdvisors.\n\nThe results:\n@Moodys: Aa\n@particula_io: A+\n\nRead more\nhttps://t.co/GICELa242H",
+      "replyCount": 0,
+      "retweetCount": 2,
+      "likeCount": 4,
+      "quoteCount": 1,
+      "bookmarkedCount": 1,
+      "conversationId": 1856686431902859601,
+      "conversationIdStr": "1856686431902859601",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 16630600,
+          "id_str": "16630600",
+          "username": "JHIAdvisors",
+          "displayname": "Janus Henderson Investors",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 123663235,
+          "id_str": "123663235",
+          "username": "Moodys",
+          "displayname": "Moody's",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1575553247204573190,
+          "id_str": "1575553247204573190",
+          "username": "particula_io",
+          "displayname": "Particula",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://centrifuge.mirror.xyz/6rlZ9ZD9OPRuFwVj5cRvguaqAEelyUMEnlgOyvphKOo",
+          "text": "centrifuge.mirror.xyz/6rlZ9ZD9OPRuFw…",
+          "tcourl": "https://t.co/GICELa242H"
+        }
+      ],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 176,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+      "sourceUrl": "https://typefully.com/",
+      "sourceLabel": "Typefully",
+      "card": {
+        "title": "Anemoy’s Liquid Treasury Fund Managed by Janus Henderson Becomes First Tokenized Fund Rated by...",
+        "description": "Anemoy announced ratings from Moody’s and Particula for their tokenized Liquid Treasury Fund managed by Janus Henderson.",
+        "vanityUrl": "centrifuge.mirror.xyz",
+        "url": "https://t.co/GICELa242H",
+        "photo": {
+          "url": "https://pbs.twimg.com/card_img/1856647930087895040/JGA8z2nl?format=jpg&name=orig"
+        },
+        "video": null,
+        "_type": "summary"
+      },
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1856095097282277823,
+      "id_str": "1856095097282277823",
+      "url": "https://x.com/anemoycapital/status/1856095097282277823",
+      "date": "2024-11-11T22:02:10+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "Introducing the Anemoy Liquidity Network: a first-of-its-kind real-world asset liquidity network with $125M in instant redemptions.\n\nIn partnership with @Arbelosxyz, @KeyrockTrading and others, we're innovating institutional asset management.\n\nCo-Founder Anil Sood elaborates: “We ensure liquidity is available when investors need it”—24/7/365.\n\nRead more below. https://t.co/JjdsKBpXg7",
+      "replyCount": 2,
+      "retweetCount": 7,
+      "likeCount": 29,
+      "quoteCount": 0,
+      "bookmarkedCount": 1,
+      "conversationId": 1856095097282277823,
+      "conversationIdStr": "1856095097282277823",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1618056710760894464,
+          "id_str": "1618056710760894464",
+          "username": "Arbelosxyz",
+          "displayname": "Arbelos Markets",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 899918173268561920,
+          "id_str": "899918173268561920",
+          "username": "KeyrockTrading",
+          "displayname": "Keyrock 🔑🪨",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://centrifuge.mirror.xyz/qriGR1S4JpKmC0zY7aB1LnvcVOic9GKMbPSqFaPYI5c",
+          "text": "centrifuge.mirror.xyz/qriGR1S4JpKmC0…",
+          "tcourl": "https://t.co/JjdsKBpXg7"
+        }
+      ],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 2442,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+      "sourceUrl": "https://typefully.com/",
+      "sourceLabel": "Typefully",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1854257510003491126,
+      "id_str": "1854257510003491126",
+      "url": "https://x.com/anemoycapital/status/1854257510003491126",
+      "date": "2024-11-06T20:20:15+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "\"As permissionless as possible, as permissioned as necessary.\"\n\n@mr_optimax shares his take on Anemoy, the multi-manager for tokenized assets. https://t.co/ewou6hS0Kd",
+      "replyCount": 1,
+      "retweetCount": 2,
+      "likeCount": 12,
+      "quoteCount": 0,
+      "bookmarkedCount": 2,
+      "conversationId": 1854257510003491126,
+      "conversationIdStr": "1854257510003491126",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 99565301,
+          "id_str": "99565301",
+          "username": "mr_optimax",
+          "displayname": "Martin Quensel",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [
+          {
+            "thumbnailUrl": "https://pbs.twimg.com/amplify_video_thumb/1854257438574448640/img/vMXaPvb_hYc5GTGo.jpg",
+            "variants": [
+              {
+                "contentType": "video/mp4",
+                "bitrate": 288000,
+                "url": "https://video.twimg.com/amplify_video/1854257438574448640/vid/avc1/480x270/JAot4ZoJ7MBUFzZA.mp4?tag=14"
+              },
+              {
+                "contentType": "video/mp4",
+                "bitrate": 832000,
+                "url": "https://video.twimg.com/amplify_video/1854257438574448640/vid/avc1/640x360/N0OzVlfq_6KkzAkb.mp4?tag=14"
+              },
+              {
+                "contentType": "video/mp4",
+                "bitrate": 2176000,
+                "url": "https://video.twimg.com/amplify_video/1854257438574448640/vid/avc1/1280x720/reYf8O7InBysTXca.mp4?tag=14"
+              }
+            ],
+            "duration": 276781,
+            "views": null
+          }
+        ],
+        "animated": []
+      },
+      "viewCount": 522,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+      "sourceUrl": "https://typefully.com/",
+      "sourceLabel": "Typefully",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1853536360529092954,
+      "id_str": "1853536360529092954",
+      "url": "https://x.com/anemoycapital/status/1853536360529092954",
+      "date": "2024-11-04T20:34:40+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "RT @centrifuge: \"Blockchain readiness and tokenization are key pillars underpinning Janus Henderson's innovation strategy and the decision to partner with @Anemoycapital and Centrifuge in this way reflects the firm's commitment to digital assets and our desire to embrace disruptive financial technologies.\" – Ali Dibadj, CEO, @JHIAdvisors\n\nTokenization took center stage in Janus Henderson's Q3 2024 Earnings Call. The institutions are here, partnering with DeFi to shape the future of finance in real time.\n\nFull transcript: https://t.co/pUGi1Wpx9W",
+      "replyCount": 0,
+      "retweetCount": 12,
+      "likeCount": 0,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1853536360529092954,
+      "conversationIdStr": "1853536360529092954",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 5962,
+      "retweetedTweet": {
+        "id": 1853536263594447077,
+        "id_str": "1853536263594447077",
+        "url": "https://x.com/centrifuge/status/1853536263594447077",
+        "date": "2024-11-04T20:34:16+00:00",
+        "user": {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "url": "https://x.com/centrifuge",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "rawDescription": "The platform for tokenized real-world assets • https://t.co/AFvstaf49G • https://t.co/ORlrCZ8LDC\n\nTerms: https://t.co/gMMWmjIfsf",
+          "created": "2018-04-16T12:54:21+00:00",
+          "followersCount": 77108,
+          "friendsCount": 309,
+          "statusesCount": 3692,
+          "favouritesCount": 3942,
+          "listedCount": 1259,
+          "mediaCount": 666,
+          "location": "",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1805961529642135553/pFPCBsM8_normal.jpg",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/985863970480275456/1715100788",
+          "protected": null,
+          "verified": false,
+          "blue": true,
+          "blueType": null,
+          "descriptionLinks": [
+            {
+              "url": "https://fixing.finance/",
+              "text": "fixing.finance",
+              "tcourl": "https://t.co/AFvstaf49G"
+            },
+            {
+              "url": "https://www.rwasummit.io/",
+              "text": "rwasummit.io",
+              "tcourl": "https://t.co/ORlrCZ8LDC"
+            },
+            {
+              "url": "https://centrifuge.io/terms",
+              "text": "centrifuge.io/terms",
+              "tcourl": "https://t.co/gMMWmjIfsf"
+            },
+            {
+              "url": "http://centrifuge.io",
+              "text": "centrifuge.io",
+              "tcourl": "https://t.co/ZSPK5xjHNI"
+            }
+          ],
+          "pinnedIds": [
+            1834612879603200161
+          ],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "\"Blockchain readiness and tokenization are key pillars underpinning Janus Henderson's innovation strategy and the decision to partner with @Anemoycapital and Centrifuge in this way reflects the firm's commitment to digital assets and our desire to embrace disruptive financial technologies.\" – Ali Dibadj, CEO, @JHIAdvisors\n\nTokenization took center stage in Janus Henderson's Q3 2024 Earnings Call. The institutions are here, partnering with DeFi to shape the future of finance in real time.\n\nFull transcript: https://t.co/pUGi1Wpx9W",
+        "replyCount": 25,
+        "retweetCount": 12,
+        "likeCount": 108,
+        "quoteCount": 2,
+        "bookmarkedCount": 1,
+        "conversationId": 1853536263594447077,
+        "conversationIdStr": "1853536263594447077",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [
+          {
+            "id": 1684556638840135686,
+            "id_str": "1684556638840135686",
+            "username": "anemoycapital",
+            "displayname": "Anemoy Capital",
+            "_type": "snscrape.modules.twitter.UserRef"
+          }
+        ],
+        "links": [
+          {
+            "url": "https://ir.janushenderson.com/financials/quarterly-results/default.aspx",
+            "text": "ir.janushenderson.com/financials/qua…",
+            "tcourl": "https://t.co/pUGi1Wpx9W"
+          }
+        ],
+        "media": {
+          "photos": [],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 5962,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": null,
+        "inReplyToTweetIdStr": null,
+        "inReplyToUser": null,
+        "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+        "sourceUrl": "https://mobile.twitter.com",
+        "sourceLabel": "Twitter Web App",
+        "card": null,
+        "possibly_sensitive": null,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1853536263594447077,
+      "id_str": "1853536263594447077",
+      "url": "https://x.com/centrifuge/status/1853536263594447077",
+      "date": "2024-11-04T20:34:16+00:00",
+      "user": {
+        "id": 985863970480275456,
+        "id_str": "985863970480275456",
+        "url": "https://x.com/centrifuge",
+        "username": "centrifuge",
+        "displayname": "Centrifuge",
+        "rawDescription": "The platform for tokenized real-world assets • https://t.co/AFvstaf49G • https://t.co/ORlrCZ8LDC\n\nTerms: https://t.co/gMMWmjIfsf",
+        "created": "2018-04-16T12:54:21+00:00",
+        "followersCount": 77108,
+        "friendsCount": 309,
+        "statusesCount": 3692,
+        "favouritesCount": 3942,
+        "listedCount": 1259,
+        "mediaCount": 666,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1805961529642135553/pFPCBsM8_normal.jpg",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/985863970480275456/1715100788",
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://fixing.finance/",
+            "text": "fixing.finance",
+            "tcourl": "https://t.co/AFvstaf49G"
+          },
+          {
+            "url": "https://www.rwasummit.io/",
+            "text": "rwasummit.io",
+            "tcourl": "https://t.co/ORlrCZ8LDC"
+          },
+          {
+            "url": "https://centrifuge.io/terms",
+            "text": "centrifuge.io/terms",
+            "tcourl": "https://t.co/gMMWmjIfsf"
+          },
+          {
+            "url": "http://centrifuge.io",
+            "text": "centrifuge.io",
+            "tcourl": "https://t.co/ZSPK5xjHNI"
+          }
+        ],
+        "pinnedIds": [
+          1834612879603200161
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "\"Blockchain readiness and tokenization are key pillars underpinning Janus Henderson's innovation strategy and the decision to partner with @Anemoycapital and Centrifuge in this way reflects the firm's commitment to digital assets and our desire to embrace disruptive financial technologies.\" – Ali Dibadj, CEO, @JHIAdvisors\n\nTokenization took center stage in Janus Henderson's Q3 2024 Earnings Call. The institutions are here, partnering with DeFi to shape the future of finance in real time.\n\nFull transcript: https://t.co/pUGi1Wpx9W",
+      "replyCount": 25,
+      "retweetCount": 12,
+      "likeCount": 108,
+      "quoteCount": 2,
+      "bookmarkedCount": 1,
+      "conversationId": 1853536263594447077,
+      "conversationIdStr": "1853536263594447077",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://ir.janushenderson.com/financials/quarterly-results/default.aspx",
+          "text": "ir.janushenderson.com/financials/qua…",
+          "tcourl": "https://t.co/pUGi1Wpx9W"
+        }
+      ],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 5962,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1851737618486321169,
+      "id_str": "1851737618486321169",
+      "url": "https://x.com/anemoycapital/status/1851737618486321169",
+      "date": "2024-10-30T21:27:06+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "\"Institutions are not just participating in DeFi—they are transforming the landscape...This convergence is more than a market trend; it’s a paradigm shift in how capital is sourced, allocated, and managed.\"\n\nhttps://t.co/xW1WE0XK3c\n\nRead Co-founder @anemoyanil's insights in @DefiantNews on how the once-separate worlds of TradFi and DeFi are teaming up to build a more resilient and interconnected financial system for the future.",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 4,
+      "quoteCount": 2,
+      "bookmarkedCount": 0,
+      "conversationId": 1851737618486321169,
+      "conversationIdStr": "1851737618486321169",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1799835716857315329,
+          "id_str": "1799835716857315329",
+          "username": "anemoyanil",
+          "displayname": "@AnemoyAnil",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://thedefiant.io/news/research-and-opinion/the-tokenization-convergence-a-clearer-view-of-the-future-comes-together",
+          "text": "thedefiant.io/news/research-…",
+          "tcourl": "https://t.co/fjSVDaCLzj"
+        },
+        {
+          "url": "https://thedefiant.io/news/research-and-opinion/the-tokenization-convergence-a-clearer-view-of-the-future-comes-together",
+          "text": "thedefiant.io/news/research-…",
+          "tcourl": "https://t.co/xW1WE0XK3c"
+        }
+      ],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 5418,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": {
+        "title": "The Tokenization Convergence: A Clearer View of the Future Comes Together",
+        "description": "Tokenization is fundamentally reshaping the trajectory of the financial industry.",
+        "vanityUrl": "thedefiant.io",
+        "url": "https://t.co/fjSVDaCLzj",
+        "photo": {
+          "url": "https://pbs.twimg.com/card_img/1856811835091025920/N_StkNXv?format=png&name=orig"
+        },
+        "video": null,
+        "_type": "summary"
+      },
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1847704080451314164,
+      "id_str": "1847704080451314164",
+      "url": "https://x.com/anemoycapital/status/1847704080451314164",
+      "date": "2024-10-19T18:19:16+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "Anemoy is proud to partner with @centrifuge for the flagship @rwasummit in New York next week! Catch @mr_optimax on stage presenting what's next for Anemoy.",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 3,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1847704080451314164,
+      "conversationIdStr": "1847704080451314164",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1755310005819985920,
+          "id_str": "1755310005819985920",
+          "username": "rwasummit",
+          "displayname": "Real-World Asset Summit",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 99565301,
+          "id_str": "99565301",
+          "username": "mr_optimax",
+          "displayname": "Martin Quensel",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 252,
+      "retweetedTweet": null,
+      "quotedTweet": {
+        "id": 1847654056858472877,
+        "id_str": "1847654056858472877",
+        "url": "https://x.com/rwasummit/status/1847654056858472877",
+        "date": "2024-10-19T15:00:29+00:00",
+        "user": {
+          "id": 1755310005819985920,
+          "id_str": "1755310005819985920",
+          "url": "https://x.com/rwasummit",
+          "username": "rwasummit",
+          "displayname": "Real-World Asset Summit",
+          "rawDescription": "Shaping the future of tokenization 🌎\n\nBrought to you by @Centrifuge.\n\nStay tuned for 2025 event calendar.",
+          "created": "2024-02-07T19:18:30+00:00",
+          "followersCount": 2062,
+          "friendsCount": 27,
+          "statusesCount": 381,
+          "favouritesCount": 302,
+          "listedCount": 26,
+          "mediaCount": 170,
+          "location": "",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1851376634081005568/YGByj4sR_normal.png",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1755310005819985920/1730237834",
+          "protected": null,
+          "verified": false,
+          "blue": true,
+          "blueType": null,
+          "descriptionLinks": [
+            {
+              "url": "https://www.rwasummit.io",
+              "text": "rwasummit.io",
+              "tcourl": "https://t.co/Kirrh3Z9pe"
+            }
+          ],
+          "pinnedIds": [
+            1848704486019146154
+          ],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "Check out the Spotlight sessions, where rising stars unveil their latest projects and bold visions:\n\n@SkyTradeNetwork by @droneevtol\n\n@NashPointFi by @puniaviision\n\n@fabricaland by @fedepo\n\n@anemoycapital by @mr_optimax\n\n@chaos_labs by @omeragoldberg https://t.co/kwPoBLlzyd",
+        "replyCount": 0,
+        "retweetCount": 8,
+        "likeCount": 16,
+        "quoteCount": 1,
+        "bookmarkedCount": 1,
+        "conversationId": 1847653967586873547,
+        "conversationIdStr": "1847653967586873547",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [
+          {
+            "id": 1774897157180366848,
+            "id_str": "1774897157180366848",
+            "username": "SkyTradeNetwork",
+            "displayname": "SkyTrade",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1605939200863395840,
+            "id_str": "1605939200863395840",
+            "username": "droneevtol",
+            "displayname": "Jonathan Dockrell - Where is my flying car?",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1453806442583150593,
+            "id_str": "1453806442583150593",
+            "username": "NashPointFi",
+            "displayname": "NashPoint",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 835066734646218752,
+            "id_str": "835066734646218752",
+            "username": "puniaviision",
+            "displayname": "Punia - d/acc",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1135992688547749888,
+            "id_str": "1135992688547749888",
+            "username": "fabricaland",
+            "displayname": "Fabrica",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 5382382,
+            "id_str": "5382382",
+            "username": "fedepo",
+            "displayname": "Fede Pomi",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1684556638840135686,
+            "id_str": "1684556638840135686",
+            "username": "anemoycapital",
+            "displayname": "Anemoy Capital",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 99565301,
+            "id_str": "99565301",
+            "username": "mr_optimax",
+            "displayname": "Martin Quensel",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1452902430690136064,
+            "id_str": "1452902430690136064",
+            "username": "chaos_labs",
+            "displayname": "Chaos Labs",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 763026986600194052,
+            "id_str": "763026986600194052",
+            "username": "omeragoldberg",
+            "displayname": "Omer Goldberg",
+            "_type": "snscrape.modules.twitter.UserRef"
+          }
+        ],
+        "links": [],
+        "media": {
+          "photos": [
+            {
+              "url": "https://pbs.twimg.com/media/GaQvkUjagAA8aOI.jpg"
+            }
+          ],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 1307,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": 1847654033026351600,
+        "inReplyToTweetIdStr": "1847654033026351600",
+        "inReplyToUser": {
+          "id": 1755310005819985920,
+          "id_str": "1755310005819985920",
+          "username": "rwasummit",
+          "displayname": "Real-World Asset Summit",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+        "sourceUrl": "https://typefully.com/",
+        "sourceLabel": "Typefully",
+        "card": null,
+        "possibly_sensitive": false,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1847654056858472877,
+      "id_str": "1847654056858472877",
+      "url": "https://x.com/rwasummit/status/1847654056858472877",
+      "date": "2024-10-19T15:00:29+00:00",
+      "user": {
+        "id": 1755310005819985920,
+        "id_str": "1755310005819985920",
+        "url": "https://x.com/rwasummit",
+        "username": "rwasummit",
+        "displayname": "Real-World Asset Summit",
+        "rawDescription": "Shaping the future of tokenization 🌎\n\nBrought to you by @Centrifuge.\n\nStay tuned for 2025 event calendar.",
+        "created": "2024-02-07T19:18:30+00:00",
+        "followersCount": 2062,
+        "friendsCount": 27,
+        "statusesCount": 381,
+        "favouritesCount": 302,
+        "listedCount": 26,
+        "mediaCount": 170,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1851376634081005568/YGByj4sR_normal.png",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1755310005819985920/1730237834",
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://www.rwasummit.io",
+            "text": "rwasummit.io",
+            "tcourl": "https://t.co/Kirrh3Z9pe"
+          }
+        ],
+        "pinnedIds": [
+          1848704486019146154
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "Check out the Spotlight sessions, where rising stars unveil their latest projects and bold visions:\n\n@SkyTradeNetwork by @droneevtol\n\n@NashPointFi by @puniaviision\n\n@fabricaland by @fedepo\n\n@anemoycapital by @mr_optimax\n\n@chaos_labs by @omeragoldberg https://t.co/kwPoBLlzyd",
+      "replyCount": 0,
+      "retweetCount": 8,
+      "likeCount": 16,
+      "quoteCount": 1,
+      "bookmarkedCount": 1,
+      "conversationId": 1847653967586873547,
+      "conversationIdStr": "1847653967586873547",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1774897157180366848,
+          "id_str": "1774897157180366848",
+          "username": "SkyTradeNetwork",
+          "displayname": "SkyTrade",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1605939200863395840,
+          "id_str": "1605939200863395840",
+          "username": "droneevtol",
+          "displayname": "Jonathan Dockrell - Where is my flying car?",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1453806442583150593,
+          "id_str": "1453806442583150593",
+          "username": "NashPointFi",
+          "displayname": "NashPoint",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 835066734646218752,
+          "id_str": "835066734646218752",
+          "username": "puniaviision",
+          "displayname": "Punia - d/acc",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1135992688547749888,
+          "id_str": "1135992688547749888",
+          "username": "fabricaland",
+          "displayname": "Fabrica",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 5382382,
+          "id_str": "5382382",
+          "username": "fedepo",
+          "displayname": "Fede Pomi",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 99565301,
+          "id_str": "99565301",
+          "username": "mr_optimax",
+          "displayname": "Martin Quensel",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1452902430690136064,
+          "id_str": "1452902430690136064",
+          "username": "chaos_labs",
+          "displayname": "Chaos Labs",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 763026986600194052,
+          "id_str": "763026986600194052",
+          "username": "omeragoldberg",
+          "displayname": "Omer Goldberg",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GaQvkUjagAA8aOI.jpg"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 1307,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": 1847654033026351600,
+      "inReplyToTweetIdStr": "1847654033026351600",
+      "inReplyToUser": {
+        "id": 1755310005819985920,
+        "id_str": "1755310005819985920",
+        "username": "rwasummit",
+        "displayname": "Real-World Asset Summit",
+        "_type": "snscrape.modules.twitter.UserRef"
+      },
+      "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+      "sourceUrl": "https://typefully.com/",
+      "sourceLabel": "Typefully",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1844873616355381451,
+      "id_str": "1844873616355381451",
+      "url": "https://x.com/anemoycapital/status/1844873616355381451",
+      "date": "2024-10-11T22:52:00+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "RT @centrifuge: Say hello to the first RWA lending market on @base using the @MorphoLabs Protocol.\n\n@SteakhouseFi and @Re7Capital will curate the Morpho Vaults which include collateral from @centrifuge, @MidasRWA, and @Hashnote_Labs.\n\nThis is the first institutional grade lending market integrated with @Coinbase Verifications, allowing investors to streamline their onboarding process seamlessly through a single click.\n\nCollateralize and borrow against:\n• @anemoycapital's Liquid Treasury Fund (LTF)\n• @MidasRWA's Short-Term US Treasuries (mTBILL)\n• @Hashnote_Labs' US Yield Coin (USYC)\n\n\"We think it's ideal to collectively gather lender liquidity alongside other issuers in Morpho Vaults to drive as much size and efficiency as possible.\" - @lucasvo, Co-founder of Centrifuge.\n\nThis launch represents lots of firsts in the DeFi space:\n• First multi-issuer RWA market\n• First RWA market on Base\n• First application of Coinbase Verifications for this use case\n\nLearn more about how this new market is shaping the future of institutional DeFi and RWAs: https://t.co/MYfSL78FC6",
+      "replyCount": 0,
+      "retweetCount": 91,
+      "likeCount": 0,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1844873616355381451,
+      "conversationIdStr": "1844873616355381451",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1628067904083181570,
+          "id_str": "1628067904083181570",
+          "username": "base",
+          "displayname": "Base",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1420789685811650560,
+          "id_str": "1420789685811650560",
+          "username": "MorphoLabs",
+          "displayname": "Morpho Labs 🦋",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1562324374010867713,
+          "id_str": "1562324374010867713",
+          "username": "SteakhouseFi",
+          "displayname": "Steakhouse Financial",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1449112375622258689,
+          "id_str": "1449112375622258689",
+          "username": "Re7Capital",
+          "displayname": "Re7 Labs",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 80380,
+      "retweetedTweet": {
+        "id": 1828764817739641100,
+        "id_str": "1828764817739641100",
+        "url": "https://x.com/centrifuge/status/1828764817739641100",
+        "date": "2024-08-28T12:01:24+00:00",
+        "user": {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "url": "https://x.com/centrifuge",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "rawDescription": "The platform for tokenized real-world assets • https://t.co/AFvstaf49G • https://t.co/ORlrCZ8LDC\n\nTerms: https://t.co/gMMWmjIfsf",
+          "created": "2018-04-16T12:54:21+00:00",
+          "followersCount": 77108,
+          "friendsCount": 309,
+          "statusesCount": 3692,
+          "favouritesCount": 3942,
+          "listedCount": 1259,
+          "mediaCount": 666,
+          "location": "",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1805961529642135553/pFPCBsM8_normal.jpg",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/985863970480275456/1715100788",
+          "protected": null,
+          "verified": false,
+          "blue": true,
+          "blueType": null,
+          "descriptionLinks": [
+            {
+              "url": "https://fixing.finance/",
+              "text": "fixing.finance",
+              "tcourl": "https://t.co/AFvstaf49G"
+            },
+            {
+              "url": "https://www.rwasummit.io/",
+              "text": "rwasummit.io",
+              "tcourl": "https://t.co/ORlrCZ8LDC"
+            },
+            {
+              "url": "https://centrifuge.io/terms",
+              "text": "centrifuge.io/terms",
+              "tcourl": "https://t.co/gMMWmjIfsf"
+            },
+            {
+              "url": "http://centrifuge.io",
+              "text": "centrifuge.io",
+              "tcourl": "https://t.co/ZSPK5xjHNI"
+            }
+          ],
+          "pinnedIds": [
+            1834612879603200161
+          ],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "Say hello to the first RWA lending market on @base using the @MorphoLabs Protocol.\n\n@SteakhouseFi and @Re7Capital will curate the Morpho Vaults which include collateral from @centrifuge, @MidasRWA, and @Hashnote_Labs.\n\nThis is the first institutional grade lending market integrated with @Coinbase Verifications, allowing investors to streamline their onboarding process seamlessly through a single click.\n\nCollateralize and borrow against:\n• @anemoycapital's Liquid Treasury Fund (LTF)\n• @MidasRWA's Short-Term US Treasuries (mTBILL)\n• @Hashnote_Labs' US Yield Coin (USYC)\n\n\"We think it's ideal to collectively gather lender liquidity alongside other issuers in Morpho Vaults to drive as much size and efficiency as possible.\" - @lucasvo, Co-founder of Centrifuge.\n\nThis launch represents lots of firsts in the DeFi space:\n• First multi-issuer RWA market\n• First RWA market on Base\n• First application of Coinbase Verifications for this use case\n\nLearn more about how this new market is shaping the future of institutional DeFi and RWAs: https://t.co/MYfSL78FC6",
+        "replyCount": 26,
+        "retweetCount": 91,
+        "likeCount": 407,
+        "quoteCount": 28,
+        "bookmarkedCount": 69,
+        "conversationId": 1828764817739641100,
+        "conversationIdStr": "1828764817739641100",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [
+          {
+            "id": 1628067904083181570,
+            "id_str": "1628067904083181570",
+            "username": "base",
+            "displayname": "Base",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1420789685811650560,
+            "id_str": "1420789685811650560",
+            "username": "MorphoLabs",
+            "displayname": "Morpho Labs 🦋",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1562324374010867713,
+            "id_str": "1562324374010867713",
+            "username": "SteakhouseFi",
+            "displayname": "Steakhouse Financial",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1449112375622258689,
+            "id_str": "1449112375622258689",
+            "username": "Re7Capital",
+            "displayname": "Re7 Labs",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 985863970480275456,
+            "id_str": "985863970480275456",
+            "username": "centrifuge",
+            "displayname": "Centrifuge",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1747708968565178368,
+            "id_str": "1747708968565178368",
+            "username": "MidasRWA",
+            "displayname": "Midas",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1716562289170829312,
+            "id_str": "1716562289170829312",
+            "username": "Hashnote_Labs",
+            "displayname": "Hashnote",
+            "_type": "snscrape.modules.twitter.UserRef"
+          }
+        ],
+        "links": [
+          {
+            "url": "https://centrifuge.mirror.xyz/qwO0Oiyk-723t4QoYGrKd3CNT5DRrCmbcYEpzZxPsMw",
+            "text": "centrifuge.mirror.xyz/qwO0Oiyk-723t4…",
+            "tcourl": "https://t.co/MYfSL78FC6"
+          }
+        ],
+        "media": {
+          "photos": [
+            {
+              "url": "https://pbs.twimg.com/media/GWET53bb0AA6wPA.jpg"
+            }
+          ],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 80380,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": null,
+        "inReplyToTweetIdStr": null,
+        "inReplyToUser": null,
+        "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+        "sourceUrl": "https://typefully.com/",
+        "sourceLabel": "Typefully",
+        "card": null,
+        "possibly_sensitive": false,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1828764817739641100,
+      "id_str": "1828764817739641100",
+      "url": "https://x.com/centrifuge/status/1828764817739641100",
+      "date": "2024-08-28T12:01:24+00:00",
+      "user": {
+        "id": 985863970480275456,
+        "id_str": "985863970480275456",
+        "url": "https://x.com/centrifuge",
+        "username": "centrifuge",
+        "displayname": "Centrifuge",
+        "rawDescription": "The platform for tokenized real-world assets • https://t.co/AFvstaf49G • https://t.co/ORlrCZ8LDC\n\nTerms: https://t.co/gMMWmjIfsf",
+        "created": "2018-04-16T12:54:21+00:00",
+        "followersCount": 77108,
+        "friendsCount": 309,
+        "statusesCount": 3692,
+        "favouritesCount": 3942,
+        "listedCount": 1259,
+        "mediaCount": 666,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1805961529642135553/pFPCBsM8_normal.jpg",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/985863970480275456/1715100788",
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://fixing.finance/",
+            "text": "fixing.finance",
+            "tcourl": "https://t.co/AFvstaf49G"
+          },
+          {
+            "url": "https://www.rwasummit.io/",
+            "text": "rwasummit.io",
+            "tcourl": "https://t.co/ORlrCZ8LDC"
+          },
+          {
+            "url": "https://centrifuge.io/terms",
+            "text": "centrifuge.io/terms",
+            "tcourl": "https://t.co/gMMWmjIfsf"
+          },
+          {
+            "url": "http://centrifuge.io",
+            "text": "centrifuge.io",
+            "tcourl": "https://t.co/ZSPK5xjHNI"
+          }
+        ],
+        "pinnedIds": [
+          1834612879603200161
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "Say hello to the first RWA lending market on @base using the @MorphoLabs Protocol.\n\n@SteakhouseFi and @Re7Capital will curate the Morpho Vaults which include collateral from @centrifuge, @MidasRWA, and @Hashnote_Labs.\n\nThis is the first institutional grade lending market integrated with @Coinbase Verifications, allowing investors to streamline their onboarding process seamlessly through a single click.\n\nCollateralize and borrow against:\n• @anemoycapital's Liquid Treasury Fund (LTF)\n• @MidasRWA's Short-Term US Treasuries (mTBILL)\n• @Hashnote_Labs' US Yield Coin (USYC)\n\n\"We think it's ideal to collectively gather lender liquidity alongside other issuers in Morpho Vaults to drive as much size and efficiency as possible.\" - @lucasvo, Co-founder of Centrifuge.\n\nThis launch represents lots of firsts in the DeFi space:\n• First multi-issuer RWA market\n• First RWA market on Base\n• First application of Coinbase Verifications for this use case\n\nLearn more about how this new market is shaping the future of institutional DeFi and RWAs: https://t.co/MYfSL78FC6",
+      "replyCount": 26,
+      "retweetCount": 91,
+      "likeCount": 407,
+      "quoteCount": 28,
+      "bookmarkedCount": 69,
+      "conversationId": 1828764817739641100,
+      "conversationIdStr": "1828764817739641100",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1628067904083181570,
+          "id_str": "1628067904083181570",
+          "username": "base",
+          "displayname": "Base",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1420789685811650560,
+          "id_str": "1420789685811650560",
+          "username": "MorphoLabs",
+          "displayname": "Morpho Labs 🦋",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1562324374010867713,
+          "id_str": "1562324374010867713",
+          "username": "SteakhouseFi",
+          "displayname": "Steakhouse Financial",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1449112375622258689,
+          "id_str": "1449112375622258689",
+          "username": "Re7Capital",
+          "displayname": "Re7 Labs",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1747708968565178368,
+          "id_str": "1747708968565178368",
+          "username": "MidasRWA",
+          "displayname": "Midas",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1716562289170829312,
+          "id_str": "1716562289170829312",
+          "username": "Hashnote_Labs",
+          "displayname": "Hashnote",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://centrifuge.mirror.xyz/qwO0Oiyk-723t4QoYGrKd3CNT5DRrCmbcYEpzZxPsMw",
+          "text": "centrifuge.mirror.xyz/qwO0Oiyk-723t4…",
+          "tcourl": "https://t.co/MYfSL78FC6"
+        }
+      ],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GWET53bb0AA6wPA.jpg"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 80380,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+      "sourceUrl": "https://typefully.com/",
+      "sourceLabel": "Typefully",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1844873192508448987,
+      "id_str": "1844873192508448987",
+      "url": "https://x.com/anemoycapital/status/1844873192508448987",
+      "date": "2024-10-11T22:50:19+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "RT @TheBlock__: Web3 asset manager Anemoy taps oracle provider Chronicle for real-time data of its onchain Treasuries fund https://t.co/OnTGtxBS9Y",
+      "replyCount": 0,
+      "retweetCount": 4,
+      "likeCount": 0,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1844873192508448987,
+      "conversationIdStr": "1844873192508448987",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 963767159536209921,
+          "id_str": "963767159536209921",
+          "username": "TheBlock__",
+          "displayname": "The Block (Meet Us at Emergence)",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 7032,
+      "retweetedTweet": {
+        "id": 1838666442641682484,
+        "id_str": "1838666442641682484",
+        "url": "https://x.com/TheBlock__/status/1838666442641682484",
+        "date": "2024-09-24T19:46:55+00:00",
+        "user": {
+          "id": 963767159536209921,
+          "id_str": "963767159536209921",
+          "url": "https://x.com/TheBlock__",
+          "username": "TheBlock__",
+          "displayname": "The Block (Meet Us at Emergence)",
+          "rawDescription": "The first and final word in digital assets | Buy tickets for Emergence today: https://t.co/i0MDcH3CPJ  | 📧https://t.co/Mm7DQJyF2i",
+          "created": "2018-02-14T13:29:31+00:00",
+          "followersCount": 453697,
+          "friendsCount": 212,
+          "statusesCount": 41293,
+          "favouritesCount": 4643,
+          "listedCount": 5775,
+          "mediaCount": 797,
+          "location": "New York, NY",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1853444814399811584/6KD7zHt3_normal.jpg",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/963767159536209921/1730204161",
+          "protected": null,
+          "verified": false,
+          "blue": false,
+          "blueType": "Business",
+          "descriptionLinks": [
+            {
+              "url": "https://emergence.xyz/tickets",
+              "text": "emergence.xyz/tickets",
+              "tcourl": "https://t.co/i0MDcH3CPJ"
+            },
+            {
+              "url": "http://theblock.co/newsletters",
+              "text": "theblock.co/newsletters",
+              "tcourl": "https://t.co/Mm7DQJyF2i"
+            },
+            {
+              "url": "https://www.theblock.co/",
+              "text": "theblock.co",
+              "tcourl": "https://t.co/JeBotOVpOE"
+            }
+          ],
+          "pinnedIds": [],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "Web3 asset manager Anemoy taps oracle provider Chronicle for real-time data of its onchain Treasuries fund https://t.co/OnTGtxBS9Y",
+        "replyCount": 1,
+        "retweetCount": 4,
+        "likeCount": 19,
+        "quoteCount": 2,
+        "bookmarkedCount": 0,
+        "conversationId": 1838666442641682484,
+        "conversationIdStr": "1838666442641682484",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [],
+        "links": [
+          {
+            "url": "https://www.theblock.co/post/318003/web3-asset-manager-anemoy-taps-oracle-provider-chronicle-for-real-time-data-of-its-onchain-treasuries-fund?utm_source=twitter&utm_medium=social",
+            "text": "theblock.co/post/318003/we…",
+            "tcourl": "https://t.co/OnTGtxBS9Y"
+          }
+        ],
+        "media": {
+          "photos": [],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 7032,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": null,
+        "inReplyToTweetIdStr": null,
+        "inReplyToUser": null,
+        "source": "<a href=\"https://www.theblock.pro/\" rel=\"nofollow\">TheBlock__</a>",
+        "sourceUrl": "https://www.theblock.pro/",
+        "sourceLabel": "TheBlock__",
+        "card": {
+          "title": "Web3 asset manager Anemoy taps oracle provider Chronicle for real-time data of its onchain Treasu...",
+          "description": "Moody’s recently named assigned Anemoy's Liquid Treasury Fund the highest ever tokenized Treasuries rating.",
+          "vanityUrl": "theblock.co",
+          "url": "https://t.co/OnTGtxBS9Y",
+          "photo": {
+            "url": "https://pbs.twimg.com/card_img/1855382630629298177/H5AosHao?format=jpg&name=orig"
+          },
+          "video": null,
+          "_type": "summary"
+        },
+        "possibly_sensitive": false,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": {
+        "title": "Web3 asset manager Anemoy taps oracle provider Chronicle for real-time data of its onchain Treasu...",
+        "description": "Moody’s recently named assigned Anemoy's Liquid Treasury Fund the highest ever tokenized Treasuries rating.",
+        "vanityUrl": "theblock.co",
+        "url": "https://t.co/OnTGtxBS9Y",
+        "photo": {
+          "url": "https://pbs.twimg.com/card_img/1855382630629298177/H5AosHao?format=jpg&name=orig"
+        },
+        "video": null,
+        "_type": "summary"
+      },
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1838666442641682484,
+      "id_str": "1838666442641682484",
+      "url": "https://x.com/TheBlock__/status/1838666442641682484",
+      "date": "2024-09-24T19:46:55+00:00",
+      "user": {
+        "id": 963767159536209921,
+        "id_str": "963767159536209921",
+        "url": "https://x.com/TheBlock__",
+        "username": "TheBlock__",
+        "displayname": "The Block (Meet Us at Emergence)",
+        "rawDescription": "The first and final word in digital assets | Buy tickets for Emergence today: https://t.co/i0MDcH3CPJ  | 📧https://t.co/Mm7DQJyF2i",
+        "created": "2018-02-14T13:29:31+00:00",
+        "followersCount": 453697,
+        "friendsCount": 212,
+        "statusesCount": 41293,
+        "favouritesCount": 4643,
+        "listedCount": 5775,
+        "mediaCount": 797,
+        "location": "New York, NY",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1853444814399811584/6KD7zHt3_normal.jpg",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/963767159536209921/1730204161",
+        "protected": null,
+        "verified": false,
+        "blue": false,
+        "blueType": "Business",
+        "descriptionLinks": [
+          {
+            "url": "https://emergence.xyz/tickets",
+            "text": "emergence.xyz/tickets",
+            "tcourl": "https://t.co/i0MDcH3CPJ"
+          },
+          {
+            "url": "http://theblock.co/newsletters",
+            "text": "theblock.co/newsletters",
+            "tcourl": "https://t.co/Mm7DQJyF2i"
+          },
+          {
+            "url": "https://www.theblock.co/",
+            "text": "theblock.co",
+            "tcourl": "https://t.co/JeBotOVpOE"
+          }
+        ],
+        "pinnedIds": [],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "Web3 asset manager Anemoy taps oracle provider Chronicle for real-time data of its onchain Treasuries fund https://t.co/OnTGtxBS9Y",
+      "replyCount": 1,
+      "retweetCount": 4,
+      "likeCount": 19,
+      "quoteCount": 2,
+      "bookmarkedCount": 0,
+      "conversationId": 1838666442641682484,
+      "conversationIdStr": "1838666442641682484",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [],
+      "links": [
+        {
+          "url": "https://www.theblock.co/post/318003/web3-asset-manager-anemoy-taps-oracle-provider-chronicle-for-real-time-data-of-its-onchain-treasuries-fund?utm_source=twitter&utm_medium=social",
+          "text": "theblock.co/post/318003/we…",
+          "tcourl": "https://t.co/OnTGtxBS9Y"
+        }
+      ],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 7032,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://www.theblock.pro/\" rel=\"nofollow\">TheBlock__</a>",
+      "sourceUrl": "https://www.theblock.pro/",
+      "sourceLabel": "TheBlock__",
+      "card": {
+        "title": "Web3 asset manager Anemoy taps oracle provider Chronicle for real-time data of its onchain Treasu...",
+        "description": "Moody’s recently named assigned Anemoy's Liquid Treasury Fund the highest ever tokenized Treasuries rating.",
+        "vanityUrl": "theblock.co",
+        "url": "https://t.co/OnTGtxBS9Y",
+        "photo": {
+          "url": "https://pbs.twimg.com/card_img/1855382630629298177/H5AosHao?format=jpg&name=orig"
+        },
+        "video": null,
+        "_type": "summary"
+      },
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1844872770917892527,
+      "id_str": "1844872770917892527",
+      "url": "https://x.com/anemoycapital/status/1844872770917892527",
+      "date": "2024-10-11T22:48:39+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "RT @particula_io: 1/\nNew Rating Report Alert 🚨\n\nParticula assigns an A+ rating* to the issuance of the Liquid Treasury Fund 1 ($LTF) token by @anemoycapital  as of September 9, 2024. In a rapidly evolving market for tokenized assets, transparency and consistent risk assessment are essential for informed decision-making. 📊",
+      "replyCount": 0,
+      "retweetCount": 1,
+      "likeCount": 0,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1844872770917892527,
+      "conversationIdStr": "1844872770917892527",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1575553247204573190,
+          "id_str": "1575553247204573190",
+          "username": "particula_io",
+          "displayname": "Particula",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 311,
+      "retweetedTweet": {
+        "id": 1843253965460475920,
+        "id_str": "1843253965460475920",
+        "url": "https://x.com/particula_io/status/1843253965460475920",
+        "date": "2024-10-07T11:36:06+00:00",
+        "user": {
+          "id": 1575553247204573190,
+          "id_str": "1575553247204573190",
+          "url": "https://x.com/particula_io",
+          "username": "particula_io",
+          "displayname": "Particula",
+          "rawDescription": "The Next Generation of Ratings for the Next Generation of Assets.",
+          "created": "2022-09-29T18:29:32+00:00",
+          "followersCount": 691,
+          "friendsCount": 90,
+          "statusesCount": 1075,
+          "favouritesCount": 537,
+          "listedCount": 9,
+          "mediaCount": 464,
+          "location": "Munich",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1805978472407244800/Sg0sDlZ8_normal.jpg",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1575553247204573190/1719413619",
+          "protected": null,
+          "verified": false,
+          "blue": true,
+          "blueType": null,
+          "descriptionLinks": [
+            {
+              "url": "https://linktr.ee/particula_io",
+              "text": "linktr.ee/particula_io",
+              "tcourl": "https://t.co/lc1eBIVtyM"
+            }
+          ],
+          "pinnedIds": [
+            1856648296527233037
+          ],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "1/\nNew Rating Report Alert 🚨\n\nParticula assigns an A+ rating* to the issuance of the Liquid Treasury Fund 1 ($LTF) token by @anemoycapital  as of September 9, 2024. In a rapidly evolving market for tokenized assets, transparency and consistent risk assessment are essential for informed decision-making. 📊",
+        "replyCount": 2,
+        "retweetCount": 1,
+        "likeCount": 1,
+        "quoteCount": 0,
+        "bookmarkedCount": 1,
+        "conversationId": 1843253965460475920,
+        "conversationIdStr": "1843253965460475920",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [
+          {
+            "id": 1684556638840135686,
+            "id_str": "1684556638840135686",
+            "username": "anemoycapital",
+            "displayname": "Anemoy Capital",
+            "_type": "snscrape.modules.twitter.UserRef"
+          }
+        ],
+        "links": [],
+        "media": {
+          "photos": [
+            {
+              "url": "https://pbs.twimg.com/media/GZSNaa8WkAAXLOO.png"
+            }
+          ],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 311,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": null,
+        "inReplyToTweetIdStr": null,
+        "inReplyToUser": null,
+        "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+        "sourceUrl": "https://mobile.twitter.com",
+        "sourceLabel": "Twitter Web App",
+        "card": null,
+        "possibly_sensitive": false,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1843253965460475920,
+      "id_str": "1843253965460475920",
+      "url": "https://x.com/particula_io/status/1843253965460475920",
+      "date": "2024-10-07T11:36:06+00:00",
+      "user": {
+        "id": 1575553247204573190,
+        "id_str": "1575553247204573190",
+        "url": "https://x.com/particula_io",
+        "username": "particula_io",
+        "displayname": "Particula",
+        "rawDescription": "The Next Generation of Ratings for the Next Generation of Assets.",
+        "created": "2022-09-29T18:29:32+00:00",
+        "followersCount": 691,
+        "friendsCount": 90,
+        "statusesCount": 1075,
+        "favouritesCount": 537,
+        "listedCount": 9,
+        "mediaCount": 464,
+        "location": "Munich",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1805978472407244800/Sg0sDlZ8_normal.jpg",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1575553247204573190/1719413619",
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://linktr.ee/particula_io",
+            "text": "linktr.ee/particula_io",
+            "tcourl": "https://t.co/lc1eBIVtyM"
+          }
+        ],
+        "pinnedIds": [
+          1856648296527233037
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "1/\nNew Rating Report Alert 🚨\n\nParticula assigns an A+ rating* to the issuance of the Liquid Treasury Fund 1 ($LTF) token by @anemoycapital  as of September 9, 2024. In a rapidly evolving market for tokenized assets, transparency and consistent risk assessment are essential for informed decision-making. 📊",
+      "replyCount": 2,
+      "retweetCount": 1,
+      "likeCount": 1,
+      "quoteCount": 0,
+      "bookmarkedCount": 1,
+      "conversationId": 1843253965460475920,
+      "conversationIdStr": "1843253965460475920",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GZSNaa8WkAAXLOO.png"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 311,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1844872707936223243,
+      "id_str": "1844872707936223243",
+      "url": "https://x.com/anemoycapital/status/1844872707936223243",
+      "date": "2024-10-11T22:48:24+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "RT @particula_io: 🪙 RWA Tokenization News: @GnosisDAO to Surpass $3 Million Invested to Tokenized Treasury Bills\n\nThrough @centrifuge Prime, GnosisDAO invested in tokenized U.S. Treasury bills through the @anemoycapital Liquid Treasury Fund (LTF). This investment is part of GnosisDAO's $10 million pledge to diversify its treasury with real-world assets.",
+      "replyCount": 0,
+      "retweetCount": 1,
+      "likeCount": 0,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1844872707936223243,
+      "conversationIdStr": "1844872707936223243",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1575553247204573190,
+          "id_str": "1575553247204573190",
+          "username": "particula_io",
+          "displayname": "Particula",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 3448833448,
+          "id_str": "3448833448",
+          "username": "GnosisDAO",
+          "displayname": "Gnosis",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 131,
+      "retweetedTweet": {
+        "id": 1843339929272635877,
+        "id_str": "1843339929272635877",
+        "url": "https://x.com/particula_io/status/1843339929272635877",
+        "date": "2024-10-07T17:17:41+00:00",
+        "user": {
+          "id": 1575553247204573190,
+          "id_str": "1575553247204573190",
+          "url": "https://x.com/particula_io",
+          "username": "particula_io",
+          "displayname": "Particula",
+          "rawDescription": "The Next Generation of Ratings for the Next Generation of Assets.",
+          "created": "2022-09-29T18:29:32+00:00",
+          "followersCount": 691,
+          "friendsCount": 90,
+          "statusesCount": 1075,
+          "favouritesCount": 537,
+          "listedCount": 9,
+          "mediaCount": 464,
+          "location": "Munich",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1805978472407244800/Sg0sDlZ8_normal.jpg",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1575553247204573190/1719413619",
+          "protected": null,
+          "verified": false,
+          "blue": true,
+          "blueType": null,
+          "descriptionLinks": [
+            {
+              "url": "https://linktr.ee/particula_io",
+              "text": "linktr.ee/particula_io",
+              "tcourl": "https://t.co/lc1eBIVtyM"
+            }
+          ],
+          "pinnedIds": [
+            1856648296527233037
+          ],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "🪙 RWA Tokenization News: @GnosisDAO to Surpass $3 Million Invested to Tokenized Treasury Bills\n\nThrough @centrifuge Prime, GnosisDAO invested in tokenized U.S. Treasury bills through the @anemoycapital Liquid Treasury Fund (LTF). This investment is part of GnosisDAO's $10 million pledge to diversify its treasury with real-world assets.",
+        "replyCount": 0,
+        "retweetCount": 1,
+        "likeCount": 3,
+        "quoteCount": 0,
+        "bookmarkedCount": 1,
+        "conversationId": 1843339929272635877,
+        "conversationIdStr": "1843339929272635877",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [
+          {
+            "id": 3448833448,
+            "id_str": "3448833448",
+            "username": "GnosisDAO",
+            "displayname": "Gnosis",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 985863970480275456,
+            "id_str": "985863970480275456",
+            "username": "centrifuge",
+            "displayname": "Centrifuge",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1684556638840135686,
+            "id_str": "1684556638840135686",
+            "username": "anemoycapital",
+            "displayname": "Anemoy Capital",
+            "_type": "snscrape.modules.twitter.UserRef"
+          }
+        ],
+        "links": [],
+        "media": {
+          "photos": [
+            {
+              "url": "https://pbs.twimg.com/media/GZTbsFBWMAE4GS1.jpg"
+            }
+          ],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 131,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": null,
+        "inReplyToTweetIdStr": null,
+        "inReplyToUser": null,
+        "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+        "sourceUrl": "https://mobile.twitter.com",
+        "sourceLabel": "Twitter Web App",
+        "card": null,
+        "possibly_sensitive": false,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1843339929272635877,
+      "id_str": "1843339929272635877",
+      "url": "https://x.com/particula_io/status/1843339929272635877",
+      "date": "2024-10-07T17:17:41+00:00",
+      "user": {
+        "id": 1575553247204573190,
+        "id_str": "1575553247204573190",
+        "url": "https://x.com/particula_io",
+        "username": "particula_io",
+        "displayname": "Particula",
+        "rawDescription": "The Next Generation of Ratings for the Next Generation of Assets.",
+        "created": "2022-09-29T18:29:32+00:00",
+        "followersCount": 691,
+        "friendsCount": 90,
+        "statusesCount": 1075,
+        "favouritesCount": 537,
+        "listedCount": 9,
+        "mediaCount": 464,
+        "location": "Munich",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1805978472407244800/Sg0sDlZ8_normal.jpg",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1575553247204573190/1719413619",
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://linktr.ee/particula_io",
+            "text": "linktr.ee/particula_io",
+            "tcourl": "https://t.co/lc1eBIVtyM"
+          }
+        ],
+        "pinnedIds": [
+          1856648296527233037
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "🪙 RWA Tokenization News: @GnosisDAO to Surpass $3 Million Invested to Tokenized Treasury Bills\n\nThrough @centrifuge Prime, GnosisDAO invested in tokenized U.S. Treasury bills through the @anemoycapital Liquid Treasury Fund (LTF). This investment is part of GnosisDAO's $10 million pledge to diversify its treasury with real-world assets.",
+      "replyCount": 0,
+      "retweetCount": 1,
+      "likeCount": 3,
+      "quoteCount": 0,
+      "bookmarkedCount": 1,
+      "conversationId": 1843339929272635877,
+      "conversationIdStr": "1843339929272635877",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 3448833448,
+          "id_str": "3448833448",
+          "username": "GnosisDAO",
+          "displayname": "Gnosis",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GZTbsFBWMAE4GS1.jpg"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 131,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1844872239675756557,
+      "id_str": "1844872239675756557",
+      "url": "https://x.com/anemoycapital/status/1844872239675756557",
+      "date": "2024-10-11T22:46:32+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "RT @centrifuge: We're thrilled to support Janus Henderson as they take over the management of @anemoycapital's Liquid Treasury Fund.\n\n“I think this is as disruptive, probably more disruptive, than ETFs. There is a significant probability that decentralised blockchain technology does to ETFs what ETFs have done to mutual funds,” said Nick Cherney, head of innovation at Janus Henderson.\n\nAnemoy is a web3 native asset manager powered by Centrifuge. Anemoy was established with a clear mission: to advance Centrifuge's efforts in developing RWA products tailored specifically for bridging the TradFi and DeFi worlds. This is an incredible step in realizing that mission. Congrats @AnemoyAnil and @mr_optimax.\n\nLearn more in the @FinancialTimes report below:\nhttps://t.co/PQQCUTKoZe",
+      "replyCount": 0,
+      "retweetCount": 23,
+      "likeCount": 0,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1844872239675756557,
+      "conversationIdStr": "1844872239675756557",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 3740,
+      "retweetedTweet": {
+        "id": 1834610397913251907,
+        "id_str": "1834610397913251907",
+        "url": "https://x.com/centrifuge/status/1834610397913251907",
+        "date": "2024-09-13T15:09:38+00:00",
+        "user": {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "url": "https://x.com/centrifuge",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "rawDescription": "The platform for tokenized real-world assets • https://t.co/AFvstaf49G • https://t.co/ORlrCZ8LDC\n\nTerms: https://t.co/gMMWmjIfsf",
+          "created": "2018-04-16T12:54:21+00:00",
+          "followersCount": 77108,
+          "friendsCount": 309,
+          "statusesCount": 3692,
+          "favouritesCount": 3942,
+          "listedCount": 1259,
+          "mediaCount": 666,
+          "location": "",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1805961529642135553/pFPCBsM8_normal.jpg",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/985863970480275456/1715100788",
+          "protected": null,
+          "verified": false,
+          "blue": true,
+          "blueType": null,
+          "descriptionLinks": [
+            {
+              "url": "https://fixing.finance/",
+              "text": "fixing.finance",
+              "tcourl": "https://t.co/AFvstaf49G"
+            },
+            {
+              "url": "https://www.rwasummit.io/",
+              "text": "rwasummit.io",
+              "tcourl": "https://t.co/ORlrCZ8LDC"
+            },
+            {
+              "url": "https://centrifuge.io/terms",
+              "text": "centrifuge.io/terms",
+              "tcourl": "https://t.co/gMMWmjIfsf"
+            },
+            {
+              "url": "http://centrifuge.io",
+              "text": "centrifuge.io",
+              "tcourl": "https://t.co/ZSPK5xjHNI"
+            }
+          ],
+          "pinnedIds": [
+            1834612879603200161
+          ],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "We're thrilled to support Janus Henderson as they take over the management of @anemoycapital's Liquid Treasury Fund.\n\n“I think this is as disruptive, probably more disruptive, than ETFs. There is a significant probability that decentralised blockchain technology does to ETFs what ETFs have done to mutual funds,” said Nick Cherney, head of innovation at Janus Henderson.\n\nAnemoy is a web3 native asset manager powered by Centrifuge. Anemoy was established with a clear mission: to advance Centrifuge's efforts in developing RWA products tailored specifically for bridging the TradFi and DeFi worlds. This is an incredible step in realizing that mission. Congrats @AnemoyAnil and @mr_optimax.\n\nLearn more in the @FinancialTimes report below:\nhttps://t.co/PQQCUTKoZe",
+        "replyCount": 3,
+        "retweetCount": 23,
+        "likeCount": 102,
+        "quoteCount": 1,
+        "bookmarkedCount": 1,
+        "conversationId": 1834610397913251907,
+        "conversationIdStr": "1834610397913251907",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [
+          {
+            "id": 1684556638840135686,
+            "id_str": "1684556638840135686",
+            "username": "anemoycapital",
+            "displayname": "Anemoy Capital",
+            "_type": "snscrape.modules.twitter.UserRef"
+          }
+        ],
+        "links": [
+          {
+            "url": "https://www.ft.com/content/648f2249-5783-4e98-8412-4056f56ad1b0",
+            "text": "ft.com/content/648f22…",
+            "tcourl": "https://t.co/PQQCUTKoZe"
+          }
+        ],
+        "media": {
+          "photos": [
+            {
+              "url": "https://pbs.twimg.com/media/GXXLoaCbkAEKF3h.jpg"
+            }
+          ],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 3740,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": null,
+        "inReplyToTweetIdStr": null,
+        "inReplyToUser": null,
+        "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+        "sourceUrl": "https://mobile.twitter.com",
+        "sourceLabel": "Twitter Web App",
+        "card": null,
+        "possibly_sensitive": false,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1834610397913251907,
+      "id_str": "1834610397913251907",
+      "url": "https://x.com/centrifuge/status/1834610397913251907",
+      "date": "2024-09-13T15:09:38+00:00",
+      "user": {
+        "id": 985863970480275456,
+        "id_str": "985863970480275456",
+        "url": "https://x.com/centrifuge",
+        "username": "centrifuge",
+        "displayname": "Centrifuge",
+        "rawDescription": "The platform for tokenized real-world assets • https://t.co/AFvstaf49G • https://t.co/ORlrCZ8LDC\n\nTerms: https://t.co/gMMWmjIfsf",
+        "created": "2018-04-16T12:54:21+00:00",
+        "followersCount": 77108,
+        "friendsCount": 309,
+        "statusesCount": 3692,
+        "favouritesCount": 3942,
+        "listedCount": 1259,
+        "mediaCount": 666,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1805961529642135553/pFPCBsM8_normal.jpg",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/985863970480275456/1715100788",
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://fixing.finance/",
+            "text": "fixing.finance",
+            "tcourl": "https://t.co/AFvstaf49G"
+          },
+          {
+            "url": "https://www.rwasummit.io/",
+            "text": "rwasummit.io",
+            "tcourl": "https://t.co/ORlrCZ8LDC"
+          },
+          {
+            "url": "https://centrifuge.io/terms",
+            "text": "centrifuge.io/terms",
+            "tcourl": "https://t.co/gMMWmjIfsf"
+          },
+          {
+            "url": "http://centrifuge.io",
+            "text": "centrifuge.io",
+            "tcourl": "https://t.co/ZSPK5xjHNI"
+          }
+        ],
+        "pinnedIds": [
+          1834612879603200161
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "We're thrilled to support Janus Henderson as they take over the management of @anemoycapital's Liquid Treasury Fund.\n\n“I think this is as disruptive, probably more disruptive, than ETFs. There is a significant probability that decentralised blockchain technology does to ETFs what ETFs have done to mutual funds,” said Nick Cherney, head of innovation at Janus Henderson.\n\nAnemoy is a web3 native asset manager powered by Centrifuge. Anemoy was established with a clear mission: to advance Centrifuge's efforts in developing RWA products tailored specifically for bridging the TradFi and DeFi worlds. This is an incredible step in realizing that mission. Congrats @AnemoyAnil and @mr_optimax.\n\nLearn more in the @FinancialTimes report below:\nhttps://t.co/PQQCUTKoZe",
+      "replyCount": 3,
+      "retweetCount": 23,
+      "likeCount": 102,
+      "quoteCount": 1,
+      "bookmarkedCount": 1,
+      "conversationId": 1834610397913251907,
+      "conversationIdStr": "1834610397913251907",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://www.ft.com/content/648f2249-5783-4e98-8412-4056f56ad1b0",
+          "text": "ft.com/content/648f22…",
+          "tcourl": "https://t.co/PQQCUTKoZe"
+        }
+      ],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GXXLoaCbkAEKF3h.jpg"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 3740,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1844871836900917334,
+      "id_str": "1844871836900917334",
+      "url": "https://x.com/anemoycapital/status/1844871836900917334",
+      "date": "2024-10-11T22:44:56+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "RT @DefiantNews: 🌐 @centrifuge has tapped @ChronicleLabs for real-world asset oracle services.\n\nChronicle now provides real-time data tracking the @anemoycapital Liquid Treasury Fund's on and off-chain assets 👀\n\nRead More: https://t.co/1Hbqf0VnFu https://t.co/m6FUOTbXPK",
+      "replyCount": 0,
+      "retweetCount": 8,
+      "likeCount": 0,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1844871836900917334,
+      "conversationIdStr": "1844871836900917334",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1237544865216507906,
+          "id_str": "1237544865216507906",
+          "username": "DefiantNews",
+          "displayname": "The Defiant",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 870635114,
+          "id_str": "870635114",
+          "username": "ChronicleLabs",
+          "displayname": "Chronicle Protocol 📖",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 6152,
+      "retweetedTweet": {
+        "id": 1838549410957213717,
+        "id_str": "1838549410957213717",
+        "url": "https://x.com/DefiantNews/status/1838549410957213717",
+        "date": "2024-09-24T12:01:52+00:00",
+        "user": {
+          "id": 1237544865216507906,
+          "id_str": "1237544865216507906",
+          "url": "https://x.com/DefiantNews",
+          "username": "DefiantNews",
+          "displayname": "The Defiant",
+          "rawDescription": "Unbiased & independent DeFi coverage trusted by 400K+ investors worldwide. \n\nSubscribe to our free DeFi Daily newsletter. 5 min read. No Shilling. No Bias.",
+          "created": "2020-03-11T01:04:40+00:00",
+          "followersCount": 112082,
+          "friendsCount": 654,
+          "statusesCount": 14714,
+          "favouritesCount": 9771,
+          "listedCount": 2687,
+          "mediaCount": 5539,
+          "location": "",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1702688899326160896/WomGTNnX_normal.jpg",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1237544865216507906/1694787645",
+          "protected": null,
+          "verified": false,
+          "blue": true,
+          "blueType": null,
+          "descriptionLinks": [
+            {
+              "url": "https://thedefiant.io/go-premium",
+              "text": "thedefiant.io/go-premium",
+              "tcourl": "https://t.co/CJfh1ig4Yt"
+            }
+          ],
+          "pinnedIds": [],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "🌐 @centrifuge has tapped @ChronicleLabs for real-world asset oracle services.\n\nChronicle now provides real-time data tracking the @anemoycapital Liquid Treasury Fund's on and off-chain assets 👀\n\nRead More: https://t.co/1Hbqf0VnFu https://t.co/m6FUOTbXPK",
+        "replyCount": 0,
+        "retweetCount": 8,
+        "likeCount": 33,
+        "quoteCount": 1,
+        "bookmarkedCount": 2,
+        "conversationId": 1838549410957213717,
+        "conversationIdStr": "1838549410957213717",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [
+          {
+            "id": 985863970480275456,
+            "id_str": "985863970480275456",
+            "username": "centrifuge",
+            "displayname": "Centrifuge",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 870635114,
+            "id_str": "870635114",
+            "username": "ChronicleLabs",
+            "displayname": "Chronicle Protocol 📖",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1684556638840135686,
+            "id_str": "1684556638840135686",
+            "username": "anemoycapital",
+            "displayname": "Anemoy Capital",
+            "_type": "snscrape.modules.twitter.UserRef"
+          }
+        ],
+        "links": [
+          {
+            "url": "https://thedefiant.io/anemoy-taps-chronicle-for-rwa-oracle-on-centrifuge",
+            "text": "thedefiant.io/anemoy-taps-ch…",
+            "tcourl": "https://t.co/1Hbqf0VnFu"
+          }
+        ],
+        "media": {
+          "photos": [
+            {
+              "url": "https://pbs.twimg.com/media/GYPW8TvboAAE2Oq.jpg"
+            }
+          ],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 6152,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": null,
+        "inReplyToTweetIdStr": null,
+        "inReplyToUser": null,
+        "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+        "sourceUrl": "https://typefully.com/",
+        "sourceLabel": "Typefully",
+        "card": null,
+        "possibly_sensitive": false,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1838549410957213717,
+      "id_str": "1838549410957213717",
+      "url": "https://x.com/DefiantNews/status/1838549410957213717",
+      "date": "2024-09-24T12:01:52+00:00",
+      "user": {
+        "id": 1237544865216507906,
+        "id_str": "1237544865216507906",
+        "url": "https://x.com/DefiantNews",
+        "username": "DefiantNews",
+        "displayname": "The Defiant",
+        "rawDescription": "Unbiased & independent DeFi coverage trusted by 400K+ investors worldwide. \n\nSubscribe to our free DeFi Daily newsletter. 5 min read. No Shilling. No Bias.",
+        "created": "2020-03-11T01:04:40+00:00",
+        "followersCount": 112082,
+        "friendsCount": 654,
+        "statusesCount": 14714,
+        "favouritesCount": 9771,
+        "listedCount": 2687,
+        "mediaCount": 5539,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1702688899326160896/WomGTNnX_normal.jpg",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1237544865216507906/1694787645",
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://thedefiant.io/go-premium",
+            "text": "thedefiant.io/go-premium",
+            "tcourl": "https://t.co/CJfh1ig4Yt"
+          }
+        ],
+        "pinnedIds": [],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "🌐 @centrifuge has tapped @ChronicleLabs for real-world asset oracle services.\n\nChronicle now provides real-time data tracking the @anemoycapital Liquid Treasury Fund's on and off-chain assets 👀\n\nRead More: https://t.co/1Hbqf0VnFu https://t.co/m6FUOTbXPK",
+      "replyCount": 0,
+      "retweetCount": 8,
+      "likeCount": 33,
+      "quoteCount": 1,
+      "bookmarkedCount": 2,
+      "conversationId": 1838549410957213717,
+      "conversationIdStr": "1838549410957213717",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 870635114,
+          "id_str": "870635114",
+          "username": "ChronicleLabs",
+          "displayname": "Chronicle Protocol 📖",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://thedefiant.io/anemoy-taps-chronicle-for-rwa-oracle-on-centrifuge",
+          "text": "thedefiant.io/anemoy-taps-ch…",
+          "tcourl": "https://t.co/1Hbqf0VnFu"
+        }
+      ],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GYPW8TvboAAE2Oq.jpg"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 6152,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+      "sourceUrl": "https://typefully.com/",
+      "sourceLabel": "Typefully",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1844871385962906043,
+      "id_str": "1844871385962906043",
+      "url": "https://x.com/anemoycapital/status/1844871385962906043",
+      "date": "2024-10-11T22:43:09+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "Catch us at the @rwasummit flagship event in New York  this month!",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 4,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1844871385962906043,
+      "conversationIdStr": "1844871385962906043",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1755310005819985920,
+          "id_str": "1755310005819985920",
+          "username": "rwasummit",
+          "displayname": "Real-World Asset Summit",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 124,
+      "retweetedTweet": null,
+      "quotedTweet": {
+        "id": 1844866538030993750,
+        "id_str": "1844866538030993750",
+        "url": "https://x.com/rwasummit/status/1844866538030993750",
+        "date": "2024-10-11T22:23:53+00:00",
+        "user": {
+          "id": 1755310005819985920,
+          "id_str": "1755310005819985920",
+          "url": "https://x.com/rwasummit",
+          "username": "rwasummit",
+          "displayname": "Real-World Asset Summit",
+          "rawDescription": "Shaping the future of tokenization 🌎\n\nBrought to you by @Centrifuge.\n\nStay tuned for 2025 event calendar.",
+          "created": "2024-02-07T19:18:30+00:00",
+          "followersCount": 2062,
+          "friendsCount": 27,
+          "statusesCount": 381,
+          "favouritesCount": 302,
+          "listedCount": 26,
+          "mediaCount": 170,
+          "location": "",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1851376634081005568/YGByj4sR_normal.png",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1755310005819985920/1730237834",
+          "protected": null,
+          "verified": false,
+          "blue": true,
+          "blueType": null,
+          "descriptionLinks": [
+            {
+              "url": "https://www.rwasummit.io",
+              "text": "rwasummit.io",
+              "tcourl": "https://t.co/Kirrh3Z9pe"
+            }
+          ],
+          "pinnedIds": [
+            1848704486019146154
+          ],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "And.... we're live! \n\nCheck out the full agenda: https://t.co/bWHWnVW4kA\n\nWhat we heard from you: \n- focused, deep dive sessions on key topics\n- more diversity of content formats \n- more networking\n\nWhat @centrifuge is excited to deliver: \n- no \"why RWAs\" all how/ what/ when\n- panels, firesides, debates, 5-minute spotlights, interactive workshops, a fishbowl and more \n- beautifully curated networking lounge by @superstatefunds and epic rooftop reception by @galaxyhq \n- MC'd by the RWA Summit OG himself @MikeBucella \n\nIn true RWA Summit nature, guest list is capped at 250 and all applicants are reviewed and approved based on relevance and contribution to the RWA space. Our #1 event KPI remains quality per capita. \n\nA few tickets left... apply today https://t.co/w4naNzWY0z",
+        "replyCount": 4,
+        "retweetCount": 7,
+        "likeCount": 38,
+        "quoteCount": 3,
+        "bookmarkedCount": 0,
+        "conversationId": 1844866538030993750,
+        "conversationIdStr": "1844866538030993750",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [
+          {
+            "id": 985863970480275456,
+            "id_str": "985863970480275456",
+            "username": "centrifuge",
+            "displayname": "Centrifuge",
+            "_type": "snscrape.modules.twitter.UserRef"
+          }
+        ],
+        "links": [
+          {
+            "url": "http://rwasummit.io/new-york-2024/agenda",
+            "text": "rwasummit.io/new-york-2024/…",
+            "tcourl": "https://t.co/uvpwfvqH4A"
+          },
+          {
+            "url": "http://rwasummit.io/new-york-2024/agenda",
+            "text": "rwasummit.io/new-york-2024/…",
+            "tcourl": "https://t.co/bWHWnVW4kA"
+          },
+          {
+            "url": "https://www.rwasummit.io/new-york-2024/apply",
+            "text": "rwasummit.io/new-york-2024/…",
+            "tcourl": "https://t.co/w4naNzWY0z"
+          }
+        ],
+        "media": {
+          "photos": [
+            {
+              "url": "https://pbs.twimg.com/media/GZpEzLRWMBEADyc.jpg"
+            }
+          ],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 4300,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": null,
+        "inReplyToTweetIdStr": null,
+        "inReplyToUser": null,
+        "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+        "sourceUrl": "https://mobile.twitter.com",
+        "sourceLabel": "Twitter Web App",
+        "card": null,
+        "possibly_sensitive": false,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1844866538030993750,
+      "id_str": "1844866538030993750",
+      "url": "https://x.com/rwasummit/status/1844866538030993750",
+      "date": "2024-10-11T22:23:53+00:00",
+      "user": {
+        "id": 1755310005819985920,
+        "id_str": "1755310005819985920",
+        "url": "https://x.com/rwasummit",
+        "username": "rwasummit",
+        "displayname": "Real-World Asset Summit",
+        "rawDescription": "Shaping the future of tokenization 🌎\n\nBrought to you by @Centrifuge.\n\nStay tuned for 2025 event calendar.",
+        "created": "2024-02-07T19:18:30+00:00",
+        "followersCount": 2062,
+        "friendsCount": 27,
+        "statusesCount": 381,
+        "favouritesCount": 302,
+        "listedCount": 26,
+        "mediaCount": 170,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1851376634081005568/YGByj4sR_normal.png",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1755310005819985920/1730237834",
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://www.rwasummit.io",
+            "text": "rwasummit.io",
+            "tcourl": "https://t.co/Kirrh3Z9pe"
+          }
+        ],
+        "pinnedIds": [
+          1848704486019146154
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "And.... we're live! \n\nCheck out the full agenda: https://t.co/bWHWnVW4kA\n\nWhat we heard from you: \n- focused, deep dive sessions on key topics\n- more diversity of content formats \n- more networking\n\nWhat @centrifuge is excited to deliver: \n- no \"why RWAs\" all how/ what/ when\n- panels, firesides, debates, 5-minute spotlights, interactive workshops, a fishbowl and more \n- beautifully curated networking lounge by @superstatefunds and epic rooftop reception by @galaxyhq \n- MC'd by the RWA Summit OG himself @MikeBucella \n\nIn true RWA Summit nature, guest list is capped at 250 and all applicants are reviewed and approved based on relevance and contribution to the RWA space. Our #1 event KPI remains quality per capita. \n\nA few tickets left... apply today https://t.co/w4naNzWY0z",
+      "replyCount": 4,
+      "retweetCount": 7,
+      "likeCount": 38,
+      "quoteCount": 3,
+      "bookmarkedCount": 0,
+      "conversationId": 1844866538030993750,
+      "conversationIdStr": "1844866538030993750",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [
+        {
+          "url": "http://rwasummit.io/new-york-2024/agenda",
+          "text": "rwasummit.io/new-york-2024/…",
+          "tcourl": "https://t.co/uvpwfvqH4A"
+        },
+        {
+          "url": "http://rwasummit.io/new-york-2024/agenda",
+          "text": "rwasummit.io/new-york-2024/…",
+          "tcourl": "https://t.co/bWHWnVW4kA"
+        },
+        {
+          "url": "https://www.rwasummit.io/new-york-2024/apply",
+          "text": "rwasummit.io/new-york-2024/…",
+          "tcourl": "https://t.co/w4naNzWY0z"
+        }
+      ],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GZpEzLRWMBEADyc.jpg"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 4300,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1841452629433655592,
+      "id_str": "1841452629433655592",
+      "url": "https://x.com/anemoycapital/status/1841452629433655592",
+      "date": "2024-10-02T12:18:14+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "Our Founder @mr_optimax is speaking today at the @AIMA_org Alternative Credit Council Global Summit.\n\nHe's speaking on a panel about tokenization and private credit today at 4:25 pm BST. https://t.co/hn5DFEuPPu",
+      "replyCount": 0,
+      "retweetCount": 1,
+      "likeCount": 10,
+      "quoteCount": 1,
+      "bookmarkedCount": 0,
+      "conversationId": 1841452629433655592,
+      "conversationIdStr": "1841452629433655592",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 99565301,
+          "id_str": "99565301",
+          "username": "mr_optimax",
+          "displayname": "Martin Quensel",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 388932692,
+          "id_str": "388932692",
+          "username": "AIMA_org",
+          "displayname": "AIMA",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GY4naATbgAAHmcy.png"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 254,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+      "sourceUrl": "https://typefully.com/",
+      "sourceLabel": "Typefully",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1836589292954477019,
+      "id_str": "1836589292954477019",
+      "url": "https://x.com/anemoycapital/status/1836589292954477019",
+      "date": "2024-09-19T02:13:04+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "RT @particula_io: Particula on stage at the capitalx conference organized by @DigiFTTech \n\nWe discussed the primary drivers and challenges regarding mass adoption of tokenized assets. 📈\n\nWith us on the panel: @SteakhouseFi , @DigiFTTech , @joinrepublic, @anemoycapital, @centrifuge \n\nThank you for having us! 🎉\n\n#capitalx #Token2049singapore  #Tokenization",
+      "replyCount": 0,
+      "retweetCount": 2,
+      "likeCount": 0,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1836589292954477019,
+      "conversationIdStr": "1836589292954477019",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1575553247204573190,
+          "id_str": "1575553247204573190",
+          "username": "particula_io",
+          "displayname": "Particula",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1530023534176903168,
+          "id_str": "1530023534176903168",
+          "username": "DigiFTTech",
+          "displayname": "DigiFT",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 704,
+      "retweetedTweet": {
+        "id": 1836300681826963530,
+        "id_str": "1836300681826963530",
+        "url": "https://x.com/particula_io/status/1836300681826963530",
+        "date": "2024-09-18T07:06:14+00:00",
+        "user": {
+          "id": 1575553247204573190,
+          "id_str": "1575553247204573190",
+          "url": "https://x.com/particula_io",
+          "username": "particula_io",
+          "displayname": "Particula",
+          "rawDescription": "The Next Generation of Ratings for the Next Generation of Assets.",
+          "created": "2022-09-29T18:29:32+00:00",
+          "followersCount": 691,
+          "friendsCount": 90,
+          "statusesCount": 1075,
+          "favouritesCount": 537,
+          "listedCount": 9,
+          "mediaCount": 464,
+          "location": "Munich",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1805978472407244800/Sg0sDlZ8_normal.jpg",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1575553247204573190/1719413619",
+          "protected": null,
+          "verified": false,
+          "blue": true,
+          "blueType": null,
+          "descriptionLinks": [
+            {
+              "url": "https://linktr.ee/particula_io",
+              "text": "linktr.ee/particula_io",
+              "tcourl": "https://t.co/lc1eBIVtyM"
+            }
+          ],
+          "pinnedIds": [
+            1856648296527233037
+          ],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "Particula on stage at the capitalx conference organized by @DigiFTTech \n\nWe discussed the primary drivers and challenges regarding mass adoption of tokenized assets. 📈\n\nWith us on the panel: @SteakhouseFi , @DigiFTTech , @joinrepublic, @anemoycapital, @centrifuge \n\nThank you for having us! 🎉\n\n#capitalx #Token2049singapore  #Tokenization",
+        "replyCount": 0,
+        "retweetCount": 2,
+        "likeCount": 12,
+        "quoteCount": 0,
+        "bookmarkedCount": 0,
+        "conversationId": 1836300681826963530,
+        "conversationIdStr": "1836300681826963530",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [
+          {
+            "id": 1530023534176903168,
+            "id_str": "1530023534176903168",
+            "username": "DigiFTTech",
+            "displayname": "DigiFT",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1562324374010867713,
+            "id_str": "1562324374010867713",
+            "username": "SteakhouseFi",
+            "displayname": "Steakhouse Financial",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1530023534176903168,
+            "id_str": "1530023534176903168",
+            "username": "DigiFTTech",
+            "displayname": "DigiFT",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 728347697246142464,
+            "id_str": "728347697246142464",
+            "username": "joinrepublic",
+            "displayname": "Republic",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 1684556638840135686,
+            "id_str": "1684556638840135686",
+            "username": "anemoycapital",
+            "displayname": "Anemoy Capital",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 985863970480275456,
+            "id_str": "985863970480275456",
+            "username": "centrifuge",
+            "displayname": "Centrifuge",
+            "_type": "snscrape.modules.twitter.UserRef"
+          }
+        ],
+        "links": [],
+        "media": {
+          "photos": [
+            {
+              "url": "https://pbs.twimg.com/media/GXvZaHTaEAAGeBq.jpg"
+            }
+          ],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 704,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": null,
+        "inReplyToTweetIdStr": null,
+        "inReplyToUser": null,
+        "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+        "sourceUrl": "https://mobile.twitter.com",
+        "sourceLabel": "Twitter Web App",
+        "card": null,
+        "possibly_sensitive": false,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1836300681826963530,
+      "id_str": "1836300681826963530",
+      "url": "https://x.com/particula_io/status/1836300681826963530",
+      "date": "2024-09-18T07:06:14+00:00",
+      "user": {
+        "id": 1575553247204573190,
+        "id_str": "1575553247204573190",
+        "url": "https://x.com/particula_io",
+        "username": "particula_io",
+        "displayname": "Particula",
+        "rawDescription": "The Next Generation of Ratings for the Next Generation of Assets.",
+        "created": "2022-09-29T18:29:32+00:00",
+        "followersCount": 691,
+        "friendsCount": 90,
+        "statusesCount": 1075,
+        "favouritesCount": 537,
+        "listedCount": 9,
+        "mediaCount": 464,
+        "location": "Munich",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1805978472407244800/Sg0sDlZ8_normal.jpg",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/1575553247204573190/1719413619",
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://linktr.ee/particula_io",
+            "text": "linktr.ee/particula_io",
+            "tcourl": "https://t.co/lc1eBIVtyM"
+          }
+        ],
+        "pinnedIds": [
+          1856648296527233037
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "Particula on stage at the capitalx conference organized by @DigiFTTech \n\nWe discussed the primary drivers and challenges regarding mass adoption of tokenized assets. 📈\n\nWith us on the panel: @SteakhouseFi , @DigiFTTech , @joinrepublic, @anemoycapital, @centrifuge \n\nThank you for having us! 🎉\n\n#capitalx #Token2049singapore  #Tokenization",
+      "replyCount": 0,
+      "retweetCount": 2,
+      "likeCount": 12,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1836300681826963530,
+      "conversationIdStr": "1836300681826963530",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1530023534176903168,
+          "id_str": "1530023534176903168",
+          "username": "DigiFTTech",
+          "displayname": "DigiFT",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1562324374010867713,
+          "id_str": "1562324374010867713",
+          "username": "SteakhouseFi",
+          "displayname": "Steakhouse Financial",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1530023534176903168,
+          "id_str": "1530023534176903168",
+          "username": "DigiFTTech",
+          "displayname": "DigiFT",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 728347697246142464,
+          "id_str": "728347697246142464",
+          "username": "joinrepublic",
+          "displayname": "Republic",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GXvZaHTaEAAGeBq.jpg"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 704,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1836380660845420815,
+      "id_str": "1836380660845420815",
+      "url": "https://x.com/anemoycapital/status/1836380660845420815",
+      "date": "2024-09-18T12:24:02+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "RT @ArchaxEx: Archax has partnered with @anemoycapital &amp; @centrifuge to list the Anemoy Janus Hendersen Liquid Treasury Fund, managed by Janus Henderson Investors, giving you direct access to tokenized US Treasury bills. \n\nRead more about the partnership here: https://t.co/iD01koRI9A https://t.co/kD3Kg7mJBO",
+      "replyCount": 0,
+      "retweetCount": 18,
+      "likeCount": 0,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1836380660845420815,
+      "conversationIdStr": "1836380660845420815",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 988421494387691520,
+          "id_str": "988421494387691520",
+          "username": "ArchaxEx",
+          "displayname": "Archax",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 4901,
+      "retweetedTweet": {
+        "id": 1836041601933529189,
+        "id_str": "1836041601933529189",
+        "url": "https://x.com/ArchaxEx/status/1836041601933529189",
+        "date": "2024-09-17T13:56:44+00:00",
+        "user": {
+          "id": 988421494387691520,
+          "id_str": "988421494387691520",
+          "url": "https://x.com/ArchaxEx",
+          "username": "ArchaxEx",
+          "displayname": "Archax",
+          "rawDescription": "The UK’s first regulated RWA exchange, custodian and broker and registered crypto exchange.",
+          "created": "2018-04-23T14:17:03+00:00",
+          "followersCount": 9409,
+          "friendsCount": 87,
+          "statusesCount": 584,
+          "favouritesCount": 220,
+          "listedCount": 81,
+          "mediaCount": 232,
+          "location": "London, England",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1138480247203094529/byHgbGSH_normal.png",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/988421494387691520/1698676963",
+          "protected": null,
+          "verified": false,
+          "blue": true,
+          "blueType": null,
+          "descriptionLinks": [
+            {
+              "url": "http://www.archax.com",
+              "text": "archax.com",
+              "tcourl": "https://t.co/dMnBE42RNM"
+            }
+          ],
+          "pinnedIds": [
+            1816007671222304770
+          ],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "Archax has partnered with @anemoycapital &amp; @centrifuge to list the Anemoy Janus Hendersen Liquid Treasury Fund, managed by Janus Henderson Investors, giving you direct access to tokenized US Treasury bills. \n\nRead more about the partnership here: https://t.co/iD01koRI9A https://t.co/kD3Kg7mJBO",
+        "replyCount": 2,
+        "retweetCount": 18,
+        "likeCount": 59,
+        "quoteCount": 2,
+        "bookmarkedCount": 0,
+        "conversationId": 1836041601933529189,
+        "conversationIdStr": "1836041601933529189",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [
+          {
+            "id": 1684556638840135686,
+            "id_str": "1684556638840135686",
+            "username": "anemoycapital",
+            "displayname": "Anemoy Capital",
+            "_type": "snscrape.modules.twitter.UserRef"
+          },
+          {
+            "id": 985863970480275456,
+            "id_str": "985863970480275456",
+            "username": "centrifuge",
+            "displayname": "Centrifuge",
+            "_type": "snscrape.modules.twitter.UserRef"
+          }
+        ],
+        "links": [
+          {
+            "url": "https://archax.com/insights/centrifuge-partners-with-archax-to-list-the-anemoy-janus-henderson-liquid-treasury-fund",
+            "text": "archax.com/insights/centr…",
+            "tcourl": "https://t.co/iD01koRI9A"
+          }
+        ],
+        "media": {
+          "photos": [
+            {
+              "url": "https://pbs.twimg.com/media/GXruGtzXcAA2Pvu.jpg"
+            }
+          ],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 4901,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": null,
+        "inReplyToTweetIdStr": null,
+        "inReplyToUser": null,
+        "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+        "sourceUrl": "http://twitter.com/download/iphone",
+        "sourceLabel": "Twitter for iPhone",
+        "card": null,
+        "possibly_sensitive": false,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1836041601933529189,
+      "id_str": "1836041601933529189",
+      "url": "https://x.com/ArchaxEx/status/1836041601933529189",
+      "date": "2024-09-17T13:56:44+00:00",
+      "user": {
+        "id": 988421494387691520,
+        "id_str": "988421494387691520",
+        "url": "https://x.com/ArchaxEx",
+        "username": "ArchaxEx",
+        "displayname": "Archax",
+        "rawDescription": "The UK’s first regulated RWA exchange, custodian and broker and registered crypto exchange.",
+        "created": "2018-04-23T14:17:03+00:00",
+        "followersCount": 9409,
+        "friendsCount": 87,
+        "statusesCount": 584,
+        "favouritesCount": 220,
+        "listedCount": 81,
+        "mediaCount": 232,
+        "location": "London, England",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1138480247203094529/byHgbGSH_normal.png",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/988421494387691520/1698676963",
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "http://www.archax.com",
+            "text": "archax.com",
+            "tcourl": "https://t.co/dMnBE42RNM"
+          }
+        ],
+        "pinnedIds": [
+          1816007671222304770
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "Archax has partnered with @anemoycapital &amp; @centrifuge to list the Anemoy Janus Hendersen Liquid Treasury Fund, managed by Janus Henderson Investors, giving you direct access to tokenized US Treasury bills. \n\nRead more about the partnership here: https://t.co/iD01koRI9A https://t.co/kD3Kg7mJBO",
+      "replyCount": 2,
+      "retweetCount": 18,
+      "likeCount": 59,
+      "quoteCount": 2,
+      "bookmarkedCount": 0,
+      "conversationId": 1836041601933529189,
+      "conversationIdStr": "1836041601933529189",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://archax.com/insights/centrifuge-partners-with-archax-to-list-the-anemoy-janus-henderson-liquid-treasury-fund",
+          "text": "archax.com/insights/centr…",
+          "tcourl": "https://t.co/iD01koRI9A"
+        }
+      ],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GXruGtzXcAA2Pvu.jpg"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 4901,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+      "sourceUrl": "http://twitter.com/download/iphone",
+      "sourceLabel": "Twitter for iPhone",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1834578113847832783,
+      "id_str": "1834578113847832783",
+      "url": "https://x.com/anemoycapital/status/1834578113847832783",
+      "date": "2024-09-13T13:01:21+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "We're excited to share that we're partnering with @JHIAdvisors to serve as a sub-advisor to the Liquid Treasury Fund (LTF).\n\nThe LTF is a fully onchain, tokenized fund, providing investors with direct access to short-term US Treasury bills.\n\nBy leveraging @centrifuge's technology to tokenize US Treasury bills, this partnership aims to bring high-quality financial products to more than $170 billion in idle capital onchain.\n\nLearn more ↓\nhttps://t.co/MOR3vodkNV",
+      "replyCount": 2,
+      "retweetCount": 13,
+      "likeCount": 43,
+      "quoteCount": 1,
+      "bookmarkedCount": 3,
+      "conversationId": 1834578113847832783,
+      "conversationIdStr": "1834578113847832783",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 16630600,
+          "id_str": "16630600",
+          "username": "JHIAdvisors",
+          "displayname": "Janus Henderson Investors",
+          "_type": "snscrape.modules.twitter.UserRef"
+        },
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://www.anemoy.io/news/janus-henderson-to-partner-with-anemoy-and-centrifuge",
+          "text": "anemoy.io/news/janus-hen…",
+          "tcourl": "https://t.co/MOR3vodkNV"
+        }
+      ],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GXW7EiJbgAEUnbZ.jpg"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 3274,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+      "sourceUrl": "https://typefully.com/",
+      "sourceLabel": "Typefully",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1833516151948636226,
+      "id_str": "1833516151948636226",
+      "url": "https://x.com/anemoycapital/status/1833516151948636226",
+      "date": "2024-09-10T14:41:30+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "RT @centrifuge: Exciting news: Centrifuge is a top entity for tokenized Treasuries.\n\nWe're expanding from our work in private credit, primarily driven by @anemoycapital's growing Liquid Treasury Fund, making them a top 10 issuer. https://t.co/RzVV5g2jzr",
+      "replyCount": 0,
+      "retweetCount": 34,
+      "likeCount": 0,
+      "quoteCount": 0,
+      "bookmarkedCount": 0,
+      "conversationId": 1833516151948636226,
+      "conversationIdStr": "1833516151948636226",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 29119,
+      "retweetedTweet": {
+        "id": 1833515785203159170,
+        "id_str": "1833515785203159170",
+        "url": "https://x.com/centrifuge/status/1833515785203159170",
+        "date": "2024-09-10T14:40:02+00:00",
+        "user": {
+          "id": 985863970480275456,
+          "id_str": "985863970480275456",
+          "url": "https://x.com/centrifuge",
+          "username": "centrifuge",
+          "displayname": "Centrifuge",
+          "rawDescription": "The platform for tokenized real-world assets • https://t.co/AFvstaf49G • https://t.co/ORlrCZ8LDC\n\nTerms: https://t.co/gMMWmjIfsf",
+          "created": "2018-04-16T12:54:21+00:00",
+          "followersCount": 77108,
+          "friendsCount": 309,
+          "statusesCount": 3692,
+          "favouritesCount": 3942,
+          "listedCount": 1259,
+          "mediaCount": 666,
+          "location": "",
+          "profileImageUrl": "https://pbs.twimg.com/profile_images/1805961529642135553/pFPCBsM8_normal.jpg",
+          "profileBannerUrl": "https://pbs.twimg.com/profile_banners/985863970480275456/1715100788",
+          "protected": null,
+          "verified": false,
+          "blue": true,
+          "blueType": null,
+          "descriptionLinks": [
+            {
+              "url": "https://fixing.finance/",
+              "text": "fixing.finance",
+              "tcourl": "https://t.co/AFvstaf49G"
+            },
+            {
+              "url": "https://www.rwasummit.io/",
+              "text": "rwasummit.io",
+              "tcourl": "https://t.co/ORlrCZ8LDC"
+            },
+            {
+              "url": "https://centrifuge.io/terms",
+              "text": "centrifuge.io/terms",
+              "tcourl": "https://t.co/gMMWmjIfsf"
+            },
+            {
+              "url": "http://centrifuge.io",
+              "text": "centrifuge.io",
+              "tcourl": "https://t.co/ZSPK5xjHNI"
+            }
+          ],
+          "pinnedIds": [
+            1834612879603200161
+          ],
+          "_type": "snscrape.modules.twitter.User"
+        },
+        "lang": "en",
+        "rawContent": "Exciting news: Centrifuge is a top entity for tokenized Treasuries.\n\nWe're expanding from our work in private credit, primarily driven by @anemoycapital's growing Liquid Treasury Fund, making them a top 10 issuer. https://t.co/RzVV5g2jzr",
+        "replyCount": 6,
+        "retweetCount": 34,
+        "likeCount": 180,
+        "quoteCount": 3,
+        "bookmarkedCount": 6,
+        "conversationId": 1833515785203159170,
+        "conversationIdStr": "1833515785203159170",
+        "hashtags": [],
+        "cashtags": [],
+        "mentionedUsers": [
+          {
+            "id": 1684556638840135686,
+            "id_str": "1684556638840135686",
+            "username": "anemoycapital",
+            "displayname": "Anemoy Capital",
+            "_type": "snscrape.modules.twitter.UserRef"
+          }
+        ],
+        "links": [],
+        "media": {
+          "photos": [
+            {
+              "url": "https://pbs.twimg.com/media/GXH044facAAolsg.jpg"
+            }
+          ],
+          "videos": [],
+          "animated": []
+        },
+        "viewCount": 29119,
+        "retweetedTweet": null,
+        "quotedTweet": null,
+        "place": null,
+        "coordinates": null,
+        "inReplyToTweetId": null,
+        "inReplyToTweetIdStr": null,
+        "inReplyToUser": null,
+        "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+        "sourceUrl": "https://typefully.com/",
+        "sourceLabel": "Typefully",
+        "card": null,
+        "possibly_sensitive": false,
+        "_type": "snscrape.modules.twitter.Tweet"
+      },
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+      "sourceUrl": "https://mobile.twitter.com",
+      "sourceLabel": "Twitter Web App",
+      "card": null,
+      "possibly_sensitive": null,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1833515785203159170,
+      "id_str": "1833515785203159170",
+      "url": "https://x.com/centrifuge/status/1833515785203159170",
+      "date": "2024-09-10T14:40:02+00:00",
+      "user": {
+        "id": 985863970480275456,
+        "id_str": "985863970480275456",
+        "url": "https://x.com/centrifuge",
+        "username": "centrifuge",
+        "displayname": "Centrifuge",
+        "rawDescription": "The platform for tokenized real-world assets • https://t.co/AFvstaf49G • https://t.co/ORlrCZ8LDC\n\nTerms: https://t.co/gMMWmjIfsf",
+        "created": "2018-04-16T12:54:21+00:00",
+        "followersCount": 77108,
+        "friendsCount": 309,
+        "statusesCount": 3692,
+        "favouritesCount": 3942,
+        "listedCount": 1259,
+        "mediaCount": 666,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1805961529642135553/pFPCBsM8_normal.jpg",
+        "profileBannerUrl": "https://pbs.twimg.com/profile_banners/985863970480275456/1715100788",
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://fixing.finance/",
+            "text": "fixing.finance",
+            "tcourl": "https://t.co/AFvstaf49G"
+          },
+          {
+            "url": "https://www.rwasummit.io/",
+            "text": "rwasummit.io",
+            "tcourl": "https://t.co/ORlrCZ8LDC"
+          },
+          {
+            "url": "https://centrifuge.io/terms",
+            "text": "centrifuge.io/terms",
+            "tcourl": "https://t.co/gMMWmjIfsf"
+          },
+          {
+            "url": "http://centrifuge.io",
+            "text": "centrifuge.io",
+            "tcourl": "https://t.co/ZSPK5xjHNI"
+          }
+        ],
+        "pinnedIds": [
+          1834612879603200161
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "Exciting news: Centrifuge is a top entity for tokenized Treasuries.\n\nWe're expanding from our work in private credit, primarily driven by @anemoycapital's growing Liquid Treasury Fund, making them a top 10 issuer. https://t.co/RzVV5g2jzr",
+      "replyCount": 6,
+      "retweetCount": 34,
+      "likeCount": 180,
+      "quoteCount": 3,
+      "bookmarkedCount": 6,
+      "conversationId": 1833515785203159170,
+      "conversationIdStr": "1833515785203159170",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [
+        {
+          "id": 1684556638840135686,
+          "id_str": "1684556638840135686",
+          "username": "anemoycapital",
+          "displayname": "Anemoy Capital",
+          "_type": "snscrape.modules.twitter.UserRef"
+        }
+      ],
+      "links": [],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GXH044facAAolsg.jpg"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 29119,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+      "sourceUrl": "https://typefully.com/",
+      "sourceLabel": "Typefully",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    },
+    {
+      "id": 1831745979697303804,
+      "id_str": "1831745979697303804",
+      "url": "https://x.com/anemoycapital/status/1831745979697303804",
+      "date": "2024-09-05T17:27:28+00:00",
+      "user": {
+        "id": 1684556638840135686,
+        "id_str": "1684556638840135686",
+        "url": "https://x.com/anemoycapital",
+        "username": "anemoycapital",
+        "displayname": "Anemoy Capital",
+        "rawDescription": "Anemoy is a web3 native asset manager providing investors with exposure to a broad spectrum of superior assets.",
+        "created": "2023-07-27T13:29:45+00:00",
+        "followersCount": 377,
+        "friendsCount": 21,
+        "statusesCount": 46,
+        "favouritesCount": 50,
+        "listedCount": 5,
+        "mediaCount": 7,
+        "location": "",
+        "profileImageUrl": "https://pbs.twimg.com/profile_images/1684558565300658176/9NZB_ZFT_normal.png",
+        "profileBannerUrl": null,
+        "protected": null,
+        "verified": false,
+        "blue": true,
+        "blueType": null,
+        "descriptionLinks": [
+          {
+            "url": "https://anemoy.io",
+            "text": "anemoy.io",
+            "tcourl": "https://t.co/WNVzZqMqGL"
+          }
+        ],
+        "pinnedIds": [
+          1801575385932456219
+        ],
+        "_type": "snscrape.modules.twitter.User"
+      },
+      "lang": "en",
+      "rawContent": "We've recently launched the DeFi Yield Fund (DYF), further closing the gap between TradFi and DeFi.\n\nThe DYF is a tokenized fund offering diversified exposure to DeFi yields.\n\nHighlights:\n• Market-neutral strategy for consistent returns\n• Regulated by BVI Financial Services Commission\n• Tokenized shares on multiple networks (Ethereum, Centrifuge Chain, L2s)\n• Strong investor protections and on-chain transparency\n• Diversified portfolio starting with @Re7Capital and Dialectic funds\n\nThe DYF's historical performance would have generated:\n• 39.4% in 2021\n• 5.2% in 2022\n• 12.8% in 2023\n• 15.2% YTD 2024\n\nThis follows the success of our Liquid Treasury Fund, which has attracted investments from major web3 projects like @fraxfinance, @GnosisDAO, and @Celo.\n\nLearn more about the DYF in this recent article by @DefiantNews ↓\n\n🔗 https://t.co/1ZV9D9V856",
+      "replyCount": 0,
+      "retweetCount": 5,
+      "likeCount": 15,
+      "quoteCount": 1,
+      "bookmarkedCount": 1,
+      "conversationId": 1831745979697303804,
+      "conversationIdStr": "1831745979697303804",
+      "hashtags": [],
+      "cashtags": [],
+      "mentionedUsers": [],
+      "links": [
+        {
+          "url": "https://thedefiant.io/news/defi/web3-and-tradfi-collide-through-anemoy-s-defi-yield-fund",
+          "text": "thedefiant.io/news/defi/web3…",
+          "tcourl": "https://t.co/1ZV9D9V856"
+        }
+      ],
+      "media": {
+        "photos": [
+          {
+            "url": "https://pbs.twimg.com/media/GWurQeIa8AUZ6rv.jpg"
+          }
+        ],
+        "videos": [],
+        "animated": []
+      },
+      "viewCount": 2482,
+      "retweetedTweet": null,
+      "quotedTweet": null,
+      "place": null,
+      "coordinates": null,
+      "inReplyToTweetId": null,
+      "inReplyToTweetIdStr": null,
+      "inReplyToUser": null,
+      "source": "<a href=\"https://typefully.com/\" rel=\"nofollow\">Typefully</a>",
+      "sourceUrl": "https://typefully.com/",
+      "sourceLabel": "Typefully",
+      "card": null,
+      "possibly_sensitive": false,
+      "_type": "snscrape.modules.twitter.Tweet"
+    }
+  ]
+}

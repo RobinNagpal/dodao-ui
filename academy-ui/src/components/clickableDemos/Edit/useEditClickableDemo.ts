@@ -1,14 +1,19 @@
-import { ClickableDemoStepInput, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
+import { ClickableDemoStepInput, CreateSignedUrlInput, UpsertClickableDemoInput } from '@/graphql/generated/generated-types';
 import { useI18 } from '@/hooks/useI18';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { ClickableDemoDto, TooltipPlacement } from '@/types/clickableDemos/ClickableDemoDto';
+import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
+import { SingedUrlResponse } from '@/types/response/SignedUrl';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { TidbitCollectionTags } from '@/utils/api/fetchTags';
 import { emptyClickableDemo } from '@/utils/clickableDemos/EmptyClickableDemo';
 import { ClickableDemoErrors, ClickableDemoStepError } from '@dodao/web-core/types/errors/clickableDemoErrors';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
+import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
+import axios from 'axios';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -26,6 +31,7 @@ export type UpdateClickableDemoFunctions = {
   updateStep: (step: ClickableDemoStepInput) => void;
   removeStep: (stepUuid: string) => void;
   moveStepUp: (stepUuid: string) => void;
+  uploadToS3AndReturnScreenshotUrl: (file: File, stepNumber: number, imageType: 'page-screenshot' | 'element-screenshot') => Promise<string>;
 };
 
 export function useEditClickableDemo(space: SpaceWithIntegrationsDto, demoId: string | null) {
@@ -41,11 +47,25 @@ export function useEditClickableDemo(space: SpaceWithIntegrationsDto, demoId: st
 
   const input = getClickableDemoInput();
 
-  const { postData, loading } = usePostData<ClickableDemoDto, any>(
+  const { postData, loading } = usePostData<
+    ClickableDemoDto,
+    {
+      spaceId: string;
+      input: UpsertClickableDemoInput;
+      byteCollectionId: string;
+    }
+  >(
     {
       successMessage: 'Clickable Demo saved successfully!',
       errorMessage: 'Something went wrong while saving the Clickable Demo',
       redirectPath: `/clickable-demos/view/${input.id}`,
+    },
+    {}
+  );
+
+  const { postData: createS3SignedUtl } = usePostData<SingedUrlResponse, CreateSignedUrlRequest>(
+    {
+      errorMessage: 'Failed to get signed URL',
     },
     {}
   );
@@ -89,7 +109,7 @@ export function useEditClickableDemo(space: SpaceWithIntegrationsDto, demoId: st
   function moveStepUp(stepUuid: string) {
     const steps = [...clickableDemo.steps];
     const index = steps.findIndex((step) => step.id === stepUuid);
-    if (index >= 0 && index < steps.length - 1) {
+    if (index > 0) {
       // Swap elements to move the step up
       const temp = steps[index];
       steps[index] = steps[index - 1];
@@ -223,6 +243,26 @@ export function useEditClickableDemo(space: SpaceWithIntegrationsDto, demoId: st
     }));
   }
 
+  async function uploadToS3AndReturnScreenshotUrl(file: File, stepNumber: number, imageType: 'page-screenshot' | 'element-screenshot') {
+    const objectId = `${clickableDemo.id}_step_${stepNumber}/${imageType}`;
+
+    const input: CreateSignedUrlInput = {
+      imageType: 'ClickableDemos/Element_Image',
+      contentType: 'image/png',
+      objectId,
+      name: file.name.replace(' ', '_').toLowerCase(),
+    };
+
+    const response = await createS3SignedUtl(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId: space.id, input });
+
+    const signedUrl = response?.url!;
+    await axios.put(signedUrl, file, {
+      headers: { 'Content-Type': 'image/png' },
+    });
+    const screenshotUrl = getUploadedImageUrlFromSingedUrl(signedUrl);
+    return screenshotUrl;
+  }
+
   const updateClickableDemoFunctions: UpdateClickableDemoFunctions = {
     initialize,
     addStep,
@@ -232,6 +272,7 @@ export function useEditClickableDemo(space: SpaceWithIntegrationsDto, demoId: st
     updateClickableDemoErrorField,
     updateClickableDemoField,
     updateStep,
+    uploadToS3AndReturnScreenshotUrl,
   };
 
   // Return the necessary values and functions

@@ -83,7 +83,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
   };
 
   return (
-    <FullPageModal open={showSelectHtmlCaptureModal} onClose={onClose} title={'Select HTML Capture'}>
+    <FullPageModal open={showSelectHtmlCaptureModal} onClose={onClose} title={'Select Screen Capture'}>
       {loading ? (
         <div className="text-center min-h-[40vh] flex justify-center items-center">
           <LoadingIcon />
@@ -126,8 +126,8 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
               ))}
             </Grid4Cols>
           ) : (
-            <div className="text-center mt-16 pb-8">
-              <p>Install the extension to capture HTML</p>
+            <div className="text-center my-20">
+              <p>Install and use the extension to capture screens.</p>
             </div>
           )}
 
@@ -143,7 +143,7 @@ export default function SelectHtmlCaptureModal(props: SelectHtmlCaptureModalProp
             }}
             disabled={!selectedHtmlCaptureId}
           >
-            Select HTML Capture
+            Select Capture
           </Button>
         </div>
       )}

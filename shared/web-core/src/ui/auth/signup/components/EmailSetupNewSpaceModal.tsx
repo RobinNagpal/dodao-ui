@@ -4,32 +4,32 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import { useState } from 'react';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { getEmailProviderUrl } from '@dodao/web-core/utils/api/getEmailProviderUrl';
+import { Contexts } from '@dodao/web-core/utils/constants/constants';
 
 export interface EmailSetupNewSpaceModalProps {
   open: boolean;
   onClose: () => void;
   space: WebCoreSpace;
+  showSemiTransparentBg?: boolean;
 }
 
-function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceModalProps) {
+function EmailSetupNewSpaceModal({ open, onClose, space, showSemiTransparentBg }: EmailSetupNewSpaceModalProps) {
   const [email, setEmail] = useState('');
   const [emailSent, setEmailSent] = useState(false);
   const [upserting, setUpserting] = useState(false);
-  const { showNotification } = useNotificationContext();
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       setUpserting(true);
-      const response = await fetch('/api/auth/custom-email/send-verification', {
+      const response = await fetch('/api/auth/custom-email/login-signup-by-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, spaceId: space.id, provider: 'email', context: 'setupNewSpace' }),
+        body: JSON.stringify({ email, spaceId: space.id, provider: 'email', context: Contexts.setupNewSpace }),
       });
       setUpserting(false);
       if (!response.ok) {
@@ -52,17 +52,16 @@ function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceMod
     }, 300);
   };
 
+  const emailUrl = email ? getEmailProviderUrl(email) : null;
+
   const handleLinkClick = () => {
-    const url = getEmailProviderUrl(email);
-    if (url) {
-      window.open(url, '_blank');
-    } else {
-      alert('Email provider not recognized. Please open your email manually.');
+    if (emailUrl) {
+      window.open(emailUrl, '_blank');
     }
   };
 
   return (
-    <SingleSectionModal open={open} onClose={onModalClose} title={'Setup New Space with Email'}>
+    <SingleSectionModal open={open} onClose={onModalClose} title={'Setup New Space with Email'} showSemiTransparentBg={showSemiTransparentBg}>
       <div className="text-left py-4">
         {!emailSent ? (
           <form onSubmit={handleEmailSubmit}>
@@ -85,7 +84,7 @@ function EmailSetupNewSpaceModal({ open, onClose, space }: EmailSetupNewSpaceMod
           <div className="text-center">
             <p>
               A verification link has been sent to{' '}
-              <span onClick={handleLinkClick} className="underline link-color cursor-pointer">
+              <span onClick={emailUrl ? handleLinkClick : undefined} className={`${emailUrl ? 'link-color underline cursor-pointer' : ''}`}>
                 your email
               </span>
               . Click on the link provided in the email to log in.

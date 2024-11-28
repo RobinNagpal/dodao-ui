@@ -32,7 +32,7 @@ export default function SpaceCollectionsCard({ space }: SpaceCollectionCardProps
     const tokenParam = new URLSearchParams({
       token: tokenResponse!.token,
     });
-    router.push(`${spaceSubdomainUrl}/auth/email/verify?${tokenParam}&context=${Contexts.verifyToken}`);
+    router.push(`${spaceSubdomainUrl}/auth/email/verify?${tokenParam}&context=${Contexts.loginAndRedirectToHome}`);
   };
 
   return (

@@ -10,6 +10,9 @@ import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenMo
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import Bars3BottomLeftIcon from '@heroicons/react/24/solid/Bars3BottomLeftIcon';
+import CursorArrowRipple from '@heroicons/react/24/solid/CursorArrowRippleIcon';
+import VideoCameraIcon from '@heroicons/react/24/solid/VideoCameraIcon';
 
 export default function CreateContentModalContents({
   hideModal,
@@ -37,12 +40,15 @@ export default function CreateContentModalContents({
       <div className="pt-4 flex flex-col justify-center items-center w-full h-max">
         <div className="p-4 mb-[100%] sm:mb-0">
           <Button variant="outlined" primary className="p-2 w-2/3 mb-2" onClick={() => setShowCreateTidbitModal(true)}>
+            <Bars3BottomLeftIcon className="h-5 w-5 mr-2" aria-hidden="true" />
             Create Tidbit
           </Button>
           <Button variant="outlined" primary className="p-2 w-2/3 mb-2" onClick={() => setShowCreateVideoModal(true)}>
+            <VideoCameraIcon className="h-5 w-5 mr-2" aria-hidden="true" />
             Create Short Video
           </Button>
           <Button variant="outlined" primary className="p-2 w-2/3" onClick={() => setShowCreateDemoModal(true)}>
+            <CursorArrowRipple className="h-5 w-5 mr-2" aria-hidden="true" />
             Create Clickable Demo
           </Button>
         </div>
@@ -64,7 +70,7 @@ export default function CreateContentModalContents({
       {showCreateDemoModal && (
         <FullScreenModal open={true} onClose={onClose} title={'Create Clickable Demo'}>
           <div className="text-left">
-            <EditClickableDemo demoId={null} byteCollection={byteCollection} />
+            <EditClickableDemo demoId={null} byteCollection={byteCollection} space={space} />
           </div>
         </FullScreenModal>
       )}

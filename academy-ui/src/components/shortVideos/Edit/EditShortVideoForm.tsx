@@ -1,6 +1,4 @@
-import MarkdownEditor from '@/components/app/Markdown/MarkdownEditor';
-import UploadInput from '@/components/app/UploadInput';
-import { ImageType, ShortVideo, ShortVideoInput } from '@/graphql/generated/generated-types';
+import { ImageType, ShortVideo, ShortVideoInput, CreateSignedUrlInput } from '@/graphql/generated/generated-types';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
@@ -14,6 +12,14 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { useI18 } from '@/hooks/useI18';
+import EditableImage from '@dodao/web-core/components/core/image/EditableImage';
+import EditableVideo from '@dodao/web-core/components/core/image/EditableVideo';
+import UploadImageFromDeviceModal from '@/components/app/Image/UploadImageFromDeviceModal';
+import axios from 'axios';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
+import { SingedUrlResponse } from '@/types/response/SignedUrl';
+import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
 
 export interface EditShortVideoModalProps {
   shortVideoToEdit?: ShortVideo;
@@ -54,6 +60,9 @@ export default function EditShortVideoModal({
   const router = useRouter();
   const [shortVideoUpserting, setShortVideoUpserting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectImageUploadModal, setSelectImageUploadModal] = useState(false);
+  const [uploadFileLoading, setUploadFileLoading] = useState(false);
+
   const threeDotItems: EllipsisDropdownItem[] = [{ label: 'Delete', key: 'delete' }];
   const { $t } = useI18();
 
@@ -75,6 +84,12 @@ export default function EditShortVideoModal({
   }
 
   const { showNotification } = useNotificationContext();
+  const { postData } = usePostData<SingedUrlResponse, CreateSignedUrlRequest>(
+    {
+      errorMessage: 'Failed to get signed URL',
+    },
+    {}
+  );
   const upsertShortVideo = async () => {
     const errors: Record<keyof ShortVideoInput, any> = {
       id: null,
@@ -123,75 +138,99 @@ export default function EditShortVideoModal({
     }
   };
 
+  async function uploadToS3AndReturnImgUrl(file: File) {
+    setUploadFileLoading(true);
+    const input: CreateSignedUrlInput = {
+      imageType: ImageType.ShortVideo,
+      contentType: file.type,
+      objectId: (shortVideo.id || 'new-short-video' + '-short-video').replace(/[^a-z0-9]/gi, '_'),
+      name: file.name.replace(' ', '_').toLowerCase(),
+    };
+
+    const response = await postData(`${getBaseUrl()}/api/s3-signed-urls`, { spaceId, input });
+    const signedUrl = response?.url!;
+    await axios.put(signedUrl, file, {
+      headers: { 'Content-Type': file.type },
+    });
+
+    const imageUrl = getUploadedImageUrlFromSingedUrl(signedUrl);
+    updateShortVideoField('videoUrl', imageUrl?.toString() || '');
+
+    setUploadFileLoading(false);
+  }
+
   return (
     <PageWrapper>
       <SingleCardLayout>
-        <div className="text-color pb-10">
-          <div className="py-2 my-2">
-            <div className="float-right">
-              {shortVideoToEdit && (
-                <PrivateEllipsisDropdown
-                  items={threeDotItems}
-                  onSelect={(key) => {
-                    if (key === 'delete') {
-                      setShowDeleteModal(true);
-                    }
-                  }}
-                  className="ml-4"
-                />
-              )}
+        <PageWrapper>
+          <div className="text-color">
+            <div className="py-2 my-2">
+              <div className="float-right">
+                {shortVideoToEdit && (
+                  <PrivateEllipsisDropdown
+                    items={threeDotItems}
+                    onSelect={(key) => {
+                      if (key === 'delete') {
+                        setShowDeleteModal(true);
+                      }
+                    }}
+                    className="ml-4"
+                  />
+                )}
+              </div>
+            </div>
+            <div className="mb-2">
+              <Input
+                modelValue={shortVideo.title}
+                maxLength={32}
+                onUpdate={(v) => updateShortVideoField('title', v?.toString() || '')}
+                label="Title*"
+                required
+                placeholder="only 32 characters"
+                error={shortVideoErrors['title']}
+              />
+            </div>
+            <div className="mb-2">
+              <Input
+                modelValue={shortVideo.description}
+                maxLength={64}
+                label="Description*"
+                placeholder="only 64 characters"
+                onUpdate={(v) => updateShortVideoField('description', v?.toString() || '')}
+                error={shortVideoErrors['description']}
+              />
+            </div>
+
+            <div className="w-full my-2 flex flex-wrap sm:flex-nowrap justify-around gap-5">
+              <EditableImage
+                imageUrl={shortVideo.thumbnail}
+                onRemove={() => updateShortVideoField('thumbnail', '')}
+                onUpload={() => setSelectImageUploadModal(true)}
+                height="200px"
+                label="Select Thumbnail"
+                afterUploadLabel="Thumbnail Selected"
+                error={shortVideoErrors['thumbnail']}
+              />
+
+              <EditableVideo
+                videoUrl={shortVideo.videoUrl}
+                onRemove={() => updateShortVideoField('videoUrl', '')}
+                height="200px"
+                label="Select Video"
+                afterUploadLabel="Video Selected"
+                onUpload={uploadToS3AndReturnImgUrl}
+                loading={uploadFileLoading}
+                error={shortVideoErrors['videoUrl']}
+              />
+            </div>
+
+            <div className="mt-10 flex justify-center items-center">
+              <Button onClick={() => upsertShortVideo()} loading={shortVideoUpserting} variant="contained" primary>
+                Save
+              </Button>
             </div>
           </div>
-          <div className="mb-2">
-            <Input
-              modelValue={shortVideo.title}
-              maxLength={32}
-              onUpdate={(v) => updateShortVideoField('title', v?.toString() || '')}
-              label="Title*"
-              required
-              placeholder="only 32 characters"
-              error={shortVideoErrors['title']}
-            />
-          </div>
-          <div className="mb-2">
-            <Input
-              modelValue={shortVideo.description}
-              maxLength={64}
-              label="Description*"
-              placeholder="only 64 characters"
-              onUpdate={(v) => updateShortVideoField('description', v?.toString() || '')}
-              error={shortVideoErrors['description']}
-            />
-          </div>
-
-          <UploadInput
-            error={shortVideoErrors['thumbnail']}
-            imageType={ImageType.ShortVideo}
-            spaceId={spaceId}
-            modelValue={shortVideo.thumbnail}
-            objectId={shortVideo.id || 'new-short-video' + '-thumbnail'}
-            onInput={(value) => updateShortVideoField('thumbnail', value?.toString() || '')}
-            label={'Thumbnail*'}
-            placeholder="e.g. https://example.com/thumbnail.png"
-          />
-          <UploadInput
-            error={shortVideoErrors['videoUrl']}
-            imageType={ImageType.ShortVideo}
-            spaceId={spaceId}
-            modelValue={shortVideo.videoUrl}
-            objectId={shortVideo.id || 'new-short-video' + '-short-video'}
-            onInput={(value) => updateShortVideoField('videoUrl', value?.toString() || '')}
-            allowedFileTypes={['video/mp4', 'video/x-m4v', 'video/*']}
-            label={'Video*'}
-            placeholder="e.g. https://example.com/video.mp4"
-          />
-
-          <div className="mt-6 flex justify-center items-center">
-            <Button onClick={() => upsertShortVideo()} loading={shortVideoUpserting} variant="contained" primary>
-              Save
-            </Button>
-          </div>
-        </div>
+        </PageWrapper>
       </SingleCardLayout>
       {showDeleteModal && (
         <DeleteConfirmationModal
@@ -206,6 +245,20 @@ export default function EditShortVideoModal({
             setShowDeleteModal(false);
             setTimeout(() => closeEditShortModal?.(), 3000);
           }}
+        />
+      )}
+      {selectImageUploadModal && (
+        <UploadImageFromDeviceModal
+          open={selectImageUploadModal}
+          onClose={() => setSelectImageUploadModal(false)}
+          imageType={ImageType.ShortVideo}
+          objectId={shortVideo.id || 'new-short-video' + '-short-video'}
+          spaceId={spaceId}
+          imageUploaded={(imageUrl) => {
+            updateShortVideoField('thumbnail', imageUrl?.toString() || '');
+            setSelectImageUploadModal(false);
+          }}
+          modelValue={shortVideo.thumbnail || undefined}
         />
       )}
     </PageWrapper>

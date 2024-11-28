@@ -1,5 +1,4 @@
 import ByteCollectionsCard from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ByteCollectionsCard';
-import { ThemeColors } from '@/graphql/generated/generated-types';
 import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import { SpaceWithIntegrationsDto, ThemeColorsDto } from '@/types/space/SpaceDto';
 import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
@@ -17,12 +16,13 @@ export interface UpdateThemeModalProps {
   byteCollection: ByteCollectionSummary;
 }
 
-export type ThemeColorsKeys = 'bgColor' | 'blockBg' | 'borderColor' | 'headingColor' | 'linkColor' | 'primaryColor' | 'textColor';
+export type ThemeColorsKeys = 'bgColor' | 'blockBg' | 'borderColor' | 'headingColor' | 'linkColor' | 'primaryColor' | 'textColor' | 'primaryTextColor';
 
 export const ColorLabels: Record<ThemeColorsKeys, string> = {
   primaryColor: 'Primary Color',
   bgColor: 'Background Color',
   textColor: 'Text Color',
+  primaryTextColor: 'Primary Text Color',
   linkColor: 'Link Color',
   headingColor: 'Heading Color',
   borderColor: 'Border Color',
@@ -30,9 +30,9 @@ export const ColorLabels: Record<ThemeColorsKeys, string> = {
 };
 
 export default function UpdateThemeModal({ space, open, onClose, byteCollection }: UpdateThemeModalProps) {
-  const [themeColors, setThemeColors] = useState<ThemeColors>(space?.themeColors || GlobalThemeColors);
+  const [themeColors, setThemeColors] = useState<ThemeColorsDto>(space?.themeColors || GlobalThemeColors);
 
-  const { updateData: putData } = useUpdateData<SpaceWithIntegrationsDto, { spaceId: string; themeColors: ThemeColorsDto }>(
+  const { updateData: putData } = useUpdateData<SpaceWithIntegrationsDto, ThemeColorsDto>(
     {},
     {
       successMessage: 'Theme Updated',
@@ -43,17 +43,16 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
 
   async function upsertThemeColors() {
     await putData(`${getBaseUrl()}/api/${space.id}/actions/spaces/update-theme-colors`, {
-      spaceId: space.id,
-      themeColors: {
-        bgColor: themeColors.bgColor,
-        textColor: themeColors.textColor,
-        blockBg: themeColors.blockBg,
-        borderColor: themeColors.borderColor,
-        primaryColor: themeColors.primaryColor,
-        headingColor: themeColors.headingColor,
-        linkColor: themeColors.linkColor,
-      },
+      bgColor: themeColors.bgColor,
+      textColor: themeColors.textColor,
+      blockBg: themeColors.blockBg,
+      borderColor: themeColors.borderColor,
+      primaryColor: themeColors.primaryColor,
+      headingColor: themeColors.headingColor,
+      linkColor: themeColors.linkColor,
+      primaryTextColor: themeColors.primaryTextColor,
     });
+
     // reload the page to reflect the changes
     window.location.reload();
   }
@@ -75,6 +74,7 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
 
   const themeStyles = {
     '--primary-color': themeColors.primaryColor,
+    '--primary-text-color': themeColors.primaryTextColor,
     '--bg-color': themeColors.bgColor,
     '--text-color': themeColors.textColor,
     '--link-color': themeColors.linkColor,
@@ -113,7 +113,7 @@ export default function UpdateThemeModal({ space, open, onClose, byteCollection 
                 })}
               </div>
               <div className="flex justify-center items-center w-full md:mt-0 md:w-1/2 p-2 md:p-4">
-                <ByteCollectionsCard isEditingAllowed={false} byteCollection={byteCollection} viewByteBaseUrl={'/'} space={space} />
+                <ByteCollectionsCard isEditingAllowed={false} byteCollection={byteCollection} viewByteBaseUrl={'/'} space={space} showItemTypeBadge={true} />
               </div>
             </div>
           </div>

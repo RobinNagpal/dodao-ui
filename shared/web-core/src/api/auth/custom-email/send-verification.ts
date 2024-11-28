@@ -53,9 +53,9 @@ const emailBody = (link: string) => `
             margin: 30px 0;
         }
 
-        .button {
+        a.button {
             font-size: 16px;
-            color: #ffffff;
+            color: #ffffff !important;
             background-color: #007bff;
             padding: 12px 20px;
             text-decoration: none;

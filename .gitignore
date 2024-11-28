@@ -44,10 +44,20 @@ data
 # Sentry Config File
 academy-ui/.sentryclirc
 .envrc
-dodao-lambdas/node_modules
-dodao-lambdas/.env
-dodao-lambdas/yarn-error.log
-dodao-lambdas/.serverless
+dodao-lambdas/unzipper-service/node_modules
+dodao-lambdas/unzipper-service/.env
+dodao-lambdas/unzipper-service/yarn-error.log
+dodao-lambdas/unzipper-service/.serverless
+dodao-lambdas/pull-tweets/.env
+dodao-lambdas/pull-tweets/accounts.db
+dodao-lambdas/pull-tweets/*.iml
+dodao-lambdas/pull-tweets/node_modules
+dodao-lambdas/pull-tweets/.serverless
+dodao-lambdas/pull-tweets/.chalice
 
 
 clickable-demos/node_modules
+venv/
+out/
+shared/pull-tweets/accounts.db
+shared/pull-tweets/.env

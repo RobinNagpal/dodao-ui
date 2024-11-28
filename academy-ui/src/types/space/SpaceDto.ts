@@ -68,6 +68,7 @@ export interface ThemeColorsDto {
   headingColor: string;
   linkColor: string;
   primaryColor: string;
+  primaryTextColor: string; // Sometimes the body text can be white but the primary text color is black or vice versa
   textColor: string;
 }
 export interface SpaceWithIntegrationsDto extends Space {

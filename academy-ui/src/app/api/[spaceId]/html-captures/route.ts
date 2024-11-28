@@ -6,9 +6,9 @@ import { CreateClickableDemoHtmlCaptureRequest } from '@/types/request/Clickable
 import { NextRequest, NextResponse } from 'next/server';
 import { createNewEntityId } from '@dodao/web-core/utils/space/createNewEntityId';
 
-async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
   const args: CreateClickableDemoHtmlCaptureRequest = await req.json();
-  const { spaceId } = params;
+  const { spaceId } = await params;
   const apiKey = req.headers.get('X-API-KEY');
 
   if (apiKey) {

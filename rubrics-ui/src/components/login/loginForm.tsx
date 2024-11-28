@@ -20,7 +20,7 @@ export default function Login({ space }: LoginProps) {
   const onSubmit = async () => {
     try {
       setUpserting(true);
-      const response = await fetch('/api/auth/custom-email/send-verification', {
+      const response = await fetch('/api/auth/custom-email/login-signup-by-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

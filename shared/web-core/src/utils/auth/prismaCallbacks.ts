@@ -131,7 +131,7 @@ export function getPrismaCallbacks(adapters: {
         ...session,
         ...userInfo,
         userId: userInfo.id,
-        isAdminOfSpace: isUserAdminOfSpace(userInfo.username, userInfo.spaceId),
+        isAdminOfSpace: await isUserAdminOfSpace(userInfo.username, userInfo.spaceId),
         isSuperAdminOfDoDAO: isDoDAOSuperAdmin(userInfo.username),
         dodaoAccessToken: jwt.sign(doDaoJwtTokenPayload, process.env.DODAO_AUTH_SECRET!),
       };

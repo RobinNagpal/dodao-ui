@@ -1,0 +1,39 @@
+service: pull-tweets
+
+provider:
+  name: aws
+  runtime: python3.11
+  architecture: arm64
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:PutObject
+        - s3:ListBucket
+        - s3:PutObjectAcl
+      Resource:
+        - arn:aws:s3:::dodao-dev-public-assets/*
+        - arn:aws:s3:::dodao-dev-public-assets
+        - arn:aws:s3:::dodao-prod-public-assets/*
+        - arn:aws:s3:::dodao-prod-public-assets
+
+custom:
+  pythonRequirements:
+    usePoetry: true
+    requirePoetryLockFile: true
+    dockerizePip: true
+#    dockerImage: amazon/aws-lambda-python:3.11.2023.10.24.15
+    useStaticCache: false
+    slim: true
+
+
+functions:
+  pull-tweets:
+    handler: app.handler
+    url: true
+    events:
+      - httpApi: '*'
+
+plugins:
+  - serverless-python-requirements
