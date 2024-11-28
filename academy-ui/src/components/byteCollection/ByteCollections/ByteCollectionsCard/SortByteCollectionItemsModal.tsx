@@ -74,7 +74,7 @@ function SortableGridItem({ item, index }: { item: ByteCollectionItem; index: nu
         <h3 className="text-sm font-medium">{getItemName(item)}</h3>
         <p className="text-xs text-gray-500">{item.type === ByteCollectionItemType.Byte ? 'Tidbit' : item.type}</p>
       </div>
-      <div>{index}</div>
+      <div>{index + 1}</div>
     </div>
   );
 }
@@ -131,7 +131,7 @@ export default function SortByteCollectionItemsModal(props: SortByteCollectionIt
     <FullScreenModal open={true} onClose={props.onClose} title={`Sort Items in - ${byteCollection.name}`}>
       <PageWrapper>
         <div className="flex justify-center items-center">
-          <div className="max-w-4xl w-full">
+          <div className="max-w-2xl w-full">
             <div className="px-4 sm:px-6 lg:px-8">
               <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
@@ -142,7 +142,7 @@ export default function SortByteCollectionItemsModal(props: SortByteCollectionIt
               <div className="mt-8">
                 <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                   <SortableContext items={items.map((item) => getItemIdAndType(item).itemId)} strategy={rectSortingStrategy}>
-                    <div className="grid grid-cols-1">
+                    <div className="grid grid-cols-1 gap-2">
                       {items.map((item, index) => (
                         <SortableGridItem key={getItemIdAndType(item).itemId} item={item} index={index} />
                       ))}
