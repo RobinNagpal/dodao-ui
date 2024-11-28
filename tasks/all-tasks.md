@@ -6,28 +6,26 @@ Must have features
 
 ### Clickable Demos
 - [ ] View modal - only looks fine above 1024px, down that its all a mess so we can detect the screen size and show a message like view the demo on a large screen
-- [ ] Change icon for simulation. Show some other button - Robin - Next PR
-- [ ] Edit modal - in stepper - up arrow is not working 
+- [ ] Styling is not applied in injected iframes
+- [ ] Tooltip is showing up twice
 
-
-### Post signup - Help text
-- [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo. 
-
+### Tidbits
+- [ ] On small height screens and when the tidbit has many steps, the last few steps look very odd
 
 # 2nd Priority
+
+### Post signup - Help text
+- [ ] Add couple of clickable demos. One for creating tidbit, and other for creating a clickable demo.
+
 
 ### Others
 - [ ] Remove the hardcoded messages of notifications and errors. Make use of `default.json` file for all the messages 
 - [ ] Add more preview items in Theme Settings modal to see the color changes
-- [ ] We didnt have email login option for alchemix, but now with footer login, we are allowing email login
 
 ### Clickable Demos
 - [ ] View modal - we can show a "Try it" button when clickable demo gets completed which takes user to some link relevant to the demo
 - [ ] Edit modal - errors at the bottom (before save button) are in reverse order
-
-### Login issue for admins
-- [ ] Making it easy for the admin to login. Right now we are not showing any login button. May be we show in the footer? or somewhere else where its not too visible?
-  
+ 
 ### Tidbits
 - [ ] Edit modal - in stepper - image uploader - if gif is uploaded, edit and trash icon doesnt appear 
 - [ ] Edit modal - in stepper - icon to duplicate a step 
@@ -73,26 +71,35 @@ Optional features
 - [ ] AI Agent to collect data from the web for a company
 
 ---------
-# Hassaan
+# All projects
 
 ### DoDAO site
+- [ ] Linking and mentioning ChainedAssets more on DoDAO.io site.
 - [ ] Improve the styling of the pages
 - [ ] Make sure each page has the right meta tags and has SEO optimized
-- [ ] Check how the page looks on google search. Make sure if someone serches for DoDAO the link for DoDAO looks good.
+- [ ] Check how the page looks on google search. Make sure if someone searches for DoDAO the link for DoDAO looks good.
 - [ ] Finds ways of improving DoDAO's + Tidbits SEO on. Create a simple word doc with the recommendations.
      - Micro Learning
      - User Education
      - Clickable Demos
      - Guided Demos
 
+### Tweets App
+- [ ] Add a feature to schedule tweets
 
 ### Tidbits Hub Site
-- [ ] Update gif
-- [ ] Add a separate section and gif of clickable demos. This quite and important feature.
+
+### Seatbelt Updates
 
 ### Decentralized Solutions and Reviews Website
 - [ ] Create content for the website
 
 ### Chained Assets
 - [ ] Ecosystem page for Service providers
+
+### Crowdfunding
+- [ ] Rating of crowdfunding projects
+
 ---------
+
+
