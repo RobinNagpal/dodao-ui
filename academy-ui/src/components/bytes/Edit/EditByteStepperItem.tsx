@@ -495,6 +495,7 @@ For background of the image, use the color ${backgroundColor} and for the primar
         <DeleteConfirmationModal
           title={`Delete Step - ${step.name}`}
           deleteButtonText="Delete Step"
+          confirmationText="Delete Me"
           open={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
           onDelete={() => {
