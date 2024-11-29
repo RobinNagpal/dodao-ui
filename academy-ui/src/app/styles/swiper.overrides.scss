@@ -27,11 +27,12 @@
   }
 
   .swiper-pagination {
+    position: fixed; /* Keeps pagination block fixed */
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     overflow-y: auto;
-    max-height: calc(100vh - 200px);
+    max-height: calc(100vh - 150px);
     @media (min-width: $screen-lg) {
       max-width: calc(15%);
       width: 15%;
