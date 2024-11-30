@@ -11,6 +11,7 @@ Must have features
 
 ### Tidbits
 - [ ] On small height screens and when the tidbit has many steps, the last few steps look very odd
+- [ ] Edit modal - in stepper - delete modal says "Archive me" - change it to "Delete me"
 
 # 2nd Priority
 

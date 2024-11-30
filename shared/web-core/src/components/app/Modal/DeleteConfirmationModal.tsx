@@ -10,18 +10,27 @@ export interface DeleteCourseSubmissionModalProps {
   onDelete: () => void;
   deleting?: boolean;
   deleteButtonText?: string;
+  confirmationText?: string;
 }
 
-export default function DeleteConfirmationModal({ open, onClose, deleting, onDelete, title, deleteButtonText }: DeleteCourseSubmissionModalProps) {
+export default function DeleteConfirmationModal({
+  open,
+  onClose,
+  deleting,
+  onDelete,
+  title,
+  deleteButtonText = title,
+  confirmationText = 'Archive Me',
+}: DeleteCourseSubmissionModalProps) {
   const [deleteMeText, setDeleteMeText] = useState('');
   return (
     <SingleSectionModal open={open} onClose={onClose} title={title}>
       <div className="p-4">
         <Input modelValue={deleteMeText} maxLength={32} onUpdate={(e) => setDeleteMeText(e?.toString() || '')} className="mb-4">
-          {`Type "Archive Me" *`}
+          {`Type "${confirmationText}" *`}
         </Input>
-        <Button disabled={deleteMeText !== 'Archive Me' || deleting} onClick={onDelete} loading={deleting} variant="contained" primary>
-          {deleteButtonText || title}
+        <Button disabled={deleteMeText !== confirmationText || deleting} onClick={onDelete} loading={deleting} variant="contained" primary>
+          {deleteButtonText}
         </Button>
       </div>
     </SingleSectionModal>
