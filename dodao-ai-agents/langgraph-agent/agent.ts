@@ -10,7 +10,6 @@ import { createReactAgent } from "@langchain/langgraph/prebuilt";
 
 (async () => {
   // Define the tools for the agent to use
-  console.log("OPENAI_API_KEY:", process.env.OPENAI_API_KEY);
   const agentTools = [new TavilySearchResults({ maxResults: 3 })];
   const agentModel = new ChatOpenAI({ temperature: 0 });
 
