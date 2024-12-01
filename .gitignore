@@ -41,6 +41,10 @@ academy-ui/next-env.d.ts
 academy-ui/.env
 data
 
+# ai agent
+dodao-ai-agents/langgraph-agent/node_modules
+dodao-ai-agents/langgraph-agent/.env
+
 # Sentry Config File
 academy-ui/.sentryclirc
 .envrc
