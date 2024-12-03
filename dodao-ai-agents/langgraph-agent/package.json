@@ -10,12 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@huggingface/inference": "^2.8.1",
     "@langchain/community": "^0.3.16",
     "@langchain/core": "^0.3.19",
     "@langchain/langgraph": "^0.2.23",
     "@langchain/openai": "^0.3.14",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.6",
+    "langchain": "^0.3.6",
     "technicalindicators": "^3.1.0",
-    "yahoo-finance": "^0.3.8"
+    "yahoo-finance": "^0.3.8",
+    "yahoo-finance2": "^2.13.2"
   }
 }

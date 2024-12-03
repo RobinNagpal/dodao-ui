@@ -4,7 +4,7 @@ dotenv.config();
 import { ChatOpenAI } from "@langchain/openai";
 import { z } from "zod";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
-import yahooFinance from "yahoo-finance";
+import yahooFinance from "yahoo-finance2";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { Tool } from "@langchain/core/tools";
 import { StateGraph, MessagesAnnotation } from "@langchain/langgraph";
@@ -65,11 +65,10 @@ class GetStockPrices extends Tool {
       const fromDate = new Date();
       fromDate.setDate(toDate.getDate() - 24 * 7 * 3); // 24 weeks * 3
 
-      const data = await yahooFinance.historical({
-        symbol: ticker,
-        from: formatDate(fromDate),
-        to: formatDate(toDate),
-        period: "w",
+      const data = await yahooFinance.historical(ticker, {
+        period1: formatDate(fromDate),
+        period2: formatDate(toDate),
+        interval: "1wk",
       });
 
       data.sort(
@@ -107,6 +106,8 @@ class GetStockPrices extends Tool {
         Stochastic_Oscillator: stochValues,
       };
 
+      console.log(`[GetStockPrices] Retrieved data:`, indicators);
+
       return JSON.stringify({
         stock_price: data.slice(-12),
         indicators: indicators,
@@ -130,16 +131,27 @@ class GetFinancialMetrics extends Tool {
     console.log(`[GetFinancialMetrics] Called with ticker: ${ticker}`);
 
     try {
-      const data = await yahooFinance.quote({
-        symbol: ticker,
-        modules: ["summaryDetail", "financialData", "defaultKeyStatistics"],
+      const data = await yahooFinance.quoteSummary(ticker, {
+        modules: ["financialData", "defaultKeyStatistics", "summaryDetail"],
+      });
+
+      const peRatio = data.summaryDetail?.forwardPE;
+      const priceToBook = data.defaultKeyStatistics?.priceToBook;
+      const debtToEquity = data.financialData?.debtToEquity;
+      const profitMargins = data.financialData?.profitMargins;
+
+      console.log(`[GetFinancialMetrics] Retrieved data:`, {
+        peRatio,
+        priceToBook,
+        debtToEquity,
+        profitMargins,
       });
 
       return JSON.stringify({
-        pe_ratio: data.summaryDetail?.forwardPE,
-        price_to_book: data.defaultKeyStatistics?.priceToBook,
-        debt_to_equity: data.financialData?.debtToEquity,
-        profit_margins: data.financialData?.profitMargins,
+        pe_ratio: peRatio,
+        price_to_book: priceToBook,
+        debt_to_equity: debtToEquity,
+        profit_margins: profitMargins,
       });
     } catch (e) {
       return `Error fetching ratios: ${e}`;
