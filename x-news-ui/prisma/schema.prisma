@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TweetCollection {
+  id          String                          @id @db.VarChar(64)
+  name        String                          @db.VarChar(255)
+  description String                          @db.VarChar(256)
+  createdAt   DateTime                        @default(now()) @map("created_at")
+  updatedAt   DateTime                        @updatedAt @map("updated_at")
+  archive     Boolean?                        @default(false)
+  handles     TweetCollectionHandleMappings[]
+  tweets      Tweet[]
+}
+
+model TwitterHandle {
+  id          String                          @id @db.VarChar(64)
+  handle      String                          @db.VarChar(255)
+  name        String                          @db.VarChar(255)
+  createdAt   DateTime                        @default(now()) @map("created_at")
+  updatedAt   DateTime                        @updatedAt @map("updated_at")
+  archive     Boolean?                        @default(false)
+  collections TweetCollectionHandleMappings[]
+  tweets      Tweet[]
+}
+
+model TweetCollectionHandleMappings {
+  id              Int      @id @default(autoincrement())
+  twitterHandleId String   @map("twitter_handle_id") @db.VarChar(64)
+  collectionId    String   @map("collection_id") @db.VarChar(64)
+  addedAt         DateTime @default(now())
+  archive         Boolean? @default(false)
+
+  tweetCollection TweetCollection @relation(fields: [collectionId], references: [id], map: "fk_tweet_collection")
+  twitterHandle   TwitterHandle   @relation(fields: [twitterHandleId], references: [id], map: "fk_tweet_handle")
+
+  @@unique([collectionId, twitterHandleId])
+  @@map("tweet_collection_handles_mappings")
+}
+
+model Tweet {
+  id              String   @id @db.VarChar(64)
+  twitterHandleId String   @map("twitter_handle_id") @db.VarChar(64)
+  collectionId    String   @map("collection_id") @db.VarChar(64)
+  content         String
+  hashtags        String[]
+  date            DateTime
+  lang            String   @db.VarChar(10)
+  userId          String   @map("user_id") @db.VarChar(255)
+  userDisplayName String   @map("user_display_name") @db.VarChar(255)
+  userUsername    String   @map("user_username") @db.VarChar(255)
+  url             String   @db.VarChar(1024)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  archive         Boolean? @default(false)
+
+  twitterHandle TwitterHandle   @relation(fields: [twitterHandleId], references: [id], map: "fk_twitter_handle_tweet")
+  collection    TweetCollection @relation(fields: [collectionId], references: [id], map: "fk_tweet_collection_tweet")
+}

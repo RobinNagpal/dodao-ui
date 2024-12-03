@@ -1,0 +1,31 @@
+{
+  "name": "x-news-ui",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "prisma generate && next dev",
+    "build": "prisma generate && next build",
+    "start": "prisma generate && next start",
+    "lint": "next lint",
+    "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
+    "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
+    "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'"
+  },
+  "dependencies": {
+    "@prisma/client": "4.13.0",
+    "next": "15.0.3",
+    "postcss": "8.4.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tailwindcss": "3.3.2",
+    "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "18.16.3",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "eslint": "8.39.0",
+    "eslint-config-next": "13.3.4",
+    "prisma": "^4.13.0"
+  }
+}
