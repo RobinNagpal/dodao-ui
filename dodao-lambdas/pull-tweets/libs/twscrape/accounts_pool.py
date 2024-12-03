@@ -219,7 +219,7 @@ class AccountsPool:
             "user_agent": UserAgent().safari
         }
 
-        await execute(self._db_file, qs)
+        await execute(self._db_file, qs, params)
         await self.login_all(usernames)
 
     async def relogin_failed(self):

@@ -1,5 +1,5 @@
 # About the Lambda
-The lambda uses the `twscrape` package to scrape Twitter tweets based on the given handle in the endpoint `/tweets/<handle>`. The lambda is deployed using the Zappa framework on AWS Lambda.
+The lambda uses the `twscrape` package to scrape Twitter tweets based on the given handle in the endpoint `/tweets/<handle>`. The lambda is deployed using the Zappa framework on AWS Lambda. The `twscrape` library is modified to work with the AWS Lambda environment. So it has been installed as a local package in the `/libs/twscrape` directory and being used from there in the lambda script.
 
 # Project setup
 Zappa is being used to deploy the lambda. To set up a zappa project, follow the steps below:
@@ -86,21 +86,3 @@ Two types of changes were made to the `twscrape` codebase:
 1. To resolve the error `sqlite3.OperationalError: no such column: true`, added a function `log_and_sanitize_query()` to `db.py` and `accounts_pool.py` which replaces the `true` and `false` values in the query with `1` and `0` respectively.
 2. To resolve the error `sqlite3.OperationalError: no such function: json_set`, replaced all the occurrences of `json_*()` functions with raw python logic in the `accounts_pool.py` file.
 
-# How you create the package in future (the commands and process)
-
-Changes made to the `twscrape` codebase may get overwritten when packages are installed again. To prevent this, the `package` folder is created and used in the lambda.
-
-To create the package:
-```bash
-cp -r venv/Lib/site-packages/twscrape ./package/
-```
-
-Install the required packages into the `package` by running the following command:
-```bash
-pip install -r requirements.txt -t ./package
-```
-
-Whenever changes are made to the `twscrape` codebase, delete the old `package` folder and create a new `package` using the same command:
-```bash
-cp -r venv/Lib/site-packages/twscrape ./package/
-```
