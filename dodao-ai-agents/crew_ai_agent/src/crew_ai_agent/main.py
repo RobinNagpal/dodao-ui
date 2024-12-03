@@ -2,7 +2,7 @@
 import sys
 import warnings
 
-from ai_development.crew import AiDevelopment
+from crew_ai_agent.crew import CrewAiAgent
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
@@ -18,7 +18,7 @@ def run():
     inputs = {
         'topic': 'AI LLMs'
     }
-    AiDevelopment().crew().kickoff(inputs=inputs)
+    CrewAiAgent().crew().kickoff(inputs=inputs)
 
 
 def train():
@@ -29,7 +29,7 @@ def train():
         "topic": "AI LLMs"
     }
     try:
-        AiDevelopment().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
+        CrewAiAgent().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
 
     except Exception as e:
         raise Exception(f"An error occurred while training the crew: {e}")
@@ -39,7 +39,7 @@ def replay():
     Replay the crew execution from a specific task.
     """
     try:
-        AiDevelopment().crew().replay(task_id=sys.argv[1])
+        CrewAiAgent().crew().replay(task_id=sys.argv[1])
 
     except Exception as e:
         raise Exception(f"An error occurred while replaying the crew: {e}")
@@ -52,7 +52,7 @@ def test():
         "topic": "AI LLMs"
     }
     try:
-        AiDevelopment().crew().test(n_iterations=int(sys.argv[1]), openai_model_name=sys.argv[2], inputs=inputs)
+        CrewAiAgent().crew().test(n_iterations=int(sys.argv[1]), openai_model_name=sys.argv[2], inputs=inputs)
 
     except Exception as e:
         raise Exception(f"An error occurred while replaying the crew: {e}")
