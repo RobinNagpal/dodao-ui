@@ -1,11 +1,13 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task, before_kickoff, after_kickoff
+from crewai_tools import SerperDevTool
+from crewai_tools import ScrapeWebsiteTool
 
+
+scrape_tool=ScrapeWebsiteTool()
 # Uncomment the following line to use an example of a custom tool
-# from crew_ai_agent.tools.custom_tool import MyCustomTool
 
 # Check our tools documentations for more information on how to use them
-# from crewai_tools import SerperDevTool
 
 @CrewBase
 class CrewAiAgent():
@@ -16,8 +18,6 @@ class CrewAiAgent():
 
 	@before_kickoff # Optional hook to be executed before the crew starts
 	def pull_data_example(self, inputs):
-		# Example of pulling data from an external API, dynamically changing the inputs
-		inputs['extra_data'] = "This is extra data"
 		return inputs
 
 	@after_kickoff # Optional hook to be executed after the crew has finished
@@ -26,33 +26,22 @@ class CrewAiAgent():
 		print(f"Results: {output}")
 		return output
 
-	@agent
-	def researcher(self) -> Agent:
-		return Agent(
-			config=self.agents_config['researcher'],
-			# tools=[MyCustomTool()], # Example of custom tool, loaded on the beginning of file
-			verbose=True
-		)
 
 	@agent
-	def reporting_analyst(self) -> Agent:
+	def scraper(self) -> Agent:
 		return Agent(
-			config=self.agents_config['reporting_analyst'],
-			verbose=True
+			config=self.agents_config['scraper'],
+			tools=[scrape_tool],
+			verbose=True,
+			output_file="data.txt"
 		)
 
 	@task
-	def research_task(self) -> Task:
-		return Task(
-			config=self.tasks_config['research_task'],
-		)
+	def scrape_task(self) -> Task:
+		task_config = self.tasks_config['scrape_task']	
+		return Task(config=task_config)
+		
 
-	@task
-	def reporting_task(self) -> Task:
-		return Task(
-			config=self.tasks_config['reporting_task'],
-			output_file='report.md'
-		)
 
 	@crew
 	def crew(self) -> Crew:
