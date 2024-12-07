@@ -68,6 +68,8 @@ function IconButton({
         return <RobotIconSolid />;
       case IconTypes.PlusIcon:
         return <PlusIcon width={width} height={height} />;
+      case IconTypes.Refresh:
+        return <ArrowPathIcon width={width} height={height} />;
       default:
         return null;
     }
