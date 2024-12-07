@@ -104,7 +104,7 @@ async def scrape_tweets(handle, limit):
 @app.route("/tweets/<handle>", methods=["GET"])
 def scrape(handle):
     """API endpoint to scrape tweets for a given handle."""
-    limit = request.args.get("limit", default=5, type=int)
+    limit = request.args.get("limit", default=20, type=int)
     try:
         result = asyncio.run(scrape_tweets(handle, limit))
         return jsonify(result)
