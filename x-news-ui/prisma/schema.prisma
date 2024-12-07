@@ -14,44 +14,20 @@ datasource db {
 }
 
 model TweetCollection {
-  id          String                          @id @db.VarChar(64)
-  name        String                          @db.VarChar(255)
-  description String                          @db.VarChar(256)
-  createdAt   DateTime                        @default(now()) @map("created_at")
-  updatedAt   DateTime                        @updatedAt @map("updated_at")
-  archive     Boolean?                        @default(false)
-  handles     TweetCollectionHandleMappings[]
+  id          String   @id @db.VarChar(64)
+  name        String   @db.VarChar(255)
+  description String   @db.VarChar(256)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  archive     Boolean? @default(false)
+  handles     String[]
   tweets      Tweet[]
-}
 
-model TwitterHandle {
-  id          String                          @id @db.VarChar(64)
-  handle      String                          @db.VarChar(255)
-  name        String                          @db.VarChar(255)
-  createdAt   DateTime                        @default(now()) @map("created_at")
-  updatedAt   DateTime                        @updatedAt @map("updated_at")
-  archive     Boolean?                        @default(false)
-  collections TweetCollectionHandleMappings[]
-  tweets      Tweet[]
-}
-
-model TweetCollectionHandleMappings {
-  id              Int      @id @default(autoincrement())
-  twitterHandleId String   @map("twitter_handle_id") @db.VarChar(64)
-  collectionId    String   @map("collection_id") @db.VarChar(64)
-  addedAt         DateTime @default(now())
-  archive         Boolean? @default(false)
-
-  tweetCollection TweetCollection @relation(fields: [collectionId], references: [id], map: "fk_tweet_collection")
-  twitterHandle   TwitterHandle   @relation(fields: [twitterHandleId], references: [id], map: "fk_tweet_handle")
-
-  @@unique([collectionId, twitterHandleId])
-  @@map("tweet_collection_handles_mappings")
+  @@map("tweet_collections")
 }
 
 model Tweet {
   id              String   @id @db.VarChar(64)
-  twitterHandleId String   @map("twitter_handle_id") @db.VarChar(64)
   collectionId    String   @map("collection_id") @db.VarChar(64)
   content         String
   hashtags        String[]
@@ -60,11 +36,13 @@ model Tweet {
   userId          String   @map("user_id") @db.VarChar(255)
   userDisplayName String   @map("user_display_name") @db.VarChar(255)
   userUsername    String   @map("user_username") @db.VarChar(255)
+  userAvatar      String   @map("user_avatar") @db.VarChar(1024)
   url             String   @db.VarChar(1024)
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
   archive         Boolean? @default(false)
 
-  twitterHandle TwitterHandle   @relation(fields: [twitterHandleId], references: [id], map: "fk_twitter_handle_tweet")
-  collection    TweetCollection @relation(fields: [collectionId], references: [id], map: "fk_tweet_collection_tweet")
+  collection TweetCollection @relation(fields: [collectionId], references: [id], map: "fk_tweet_collection_tweet")
+
+  @@map("tweets")
 }

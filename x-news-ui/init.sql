@@ -43,37 +43,16 @@ CREATE TABLE public.tweet_collections (
     id character varying(64) NOT NULL,
     name VARCHAR(255) NOT NULL,
     description character varying(256) NOT NULL,
+    handles TEXT[] NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     archive BOOLEAN DEFAULT FALSE
 );
 ALTER TABLE public.tweet_collections OWNER TO admin;
 
--- Create the TwitterHandle table
-CREATE TABLE public.twitter_handles (
-    id character varying(64) NOT NULL,
-    handle VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    archive BOOLEAN DEFAULT FALSE
-);
-ALTER TABLE public.twitter_handles OWNER TO admin;
-
--- Create the mapping table for TweetCollection and TwitterHandle
-CREATE TABLE public.tweet_collection_handles_mappings (
-    id SERIAL PRIMARY KEY,
-    tweet_collection_id character varying(64) NOT NULL,
-    twitter_handle_id character varying(64) NOT NULL,
-    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    archive boolean DEFAULT false
-);
-ALTER TABLE public.tweet_collection_handles_mappings OWNER TO admin;
-
 -- Create the Tweets table
 CREATE TABLE public.tweets (
     id character varying(64) NOT NULL,
-    twitter_handle_id character varying(64) NOT NULL,
     collection_id character varying(64) NOT NULL,
     content TEXT NOT NULL,
     hashtags TEXT[],
@@ -82,6 +61,7 @@ CREATE TABLE public.tweets (
     user_id VARCHAR(255) NOT NULL,
     user_display_name VARCHAR(255) NOT NULL,
     user_username VARCHAR(255) NOT NULL,
+    user_avatar VARCHAR(1024) NOT NULL,
     url VARCHAR(1024) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -91,26 +71,18 @@ ALTER TABLE public.tweets OWNER TO admin;
 
 -- Indexes for optimization
 CREATE INDEX idx_tweets_collection_id ON public.tweets (collection_id);
-CREATE INDEX idx_tweets_twitter_handle_id ON public.tweets (twitter_handle_id);
 
 -- Constraints for TweetCollection
 ALTER TABLE ONLY public.tweet_collections ADD CONSTRAINT pk_tweet_collections PRIMARY KEY (id);
-
--- Constraints for TwitterHandle
-ALTER TABLE ONLY public.twitter_handles ADD CONSTRAINT pk_twitter_handles PRIMARY KEY (id);
-
--- Constraints for TweetCollectionHandles
-ALTER TABLE ONLY public.tweet_collection_handles_mappings 
-ADD CONSTRAINT fk_tweet_collection FOREIGN KEY (tweet_collection_id) REFERENCES public.tweet_collections (id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-ALTER TABLE ONLY public.tweet_collection_handles_mappings 
-ADD CONSTRAINT fk_twitter_handle FOREIGN KEY (twitter_handle_id) REFERENCES public.twitter_handles (id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 -- Constraints for Tweets
 ALTER TABLE ONLY public.tweets ADD CONSTRAINT pk_tweets PRIMARY KEY (id);
 
 ALTER TABLE ONLY public.tweets 
-ADD CONSTRAINT fk_twitter_handle_tweet FOREIGN KEY (twitter_handle_id) REFERENCES public.twitter_handles (id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-ALTER TABLE ONLY public.tweets 
 ADD CONSTRAINT fk_tweet_collection_tweet FOREIGN KEY (collection_id) REFERENCES public.tweet_collections (id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+-- Insert dummy data for tweet_collections
+INSERT INTO public.tweet_collections (id, name, description, handles, created_at, updated_at, archive)
+VALUES 
+    ('1', 'My tweets', 'A collection of tweets from my personal', ARRAY['dawoodbilla', 'dawoodmeow'], NOW(), NOW(), FALSE),
+    ('2', 'Space Exploration', 'Tweets about space missions and discoveries.', ARRAY['elonmusk', 'nasa'], NOW(), NOW(), FALSE)
