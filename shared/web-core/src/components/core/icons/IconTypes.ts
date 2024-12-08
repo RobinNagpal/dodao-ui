@@ -8,4 +8,5 @@ export enum IconTypes {
   ArrowDownTrayIcon = 'ArrowDownTrayIcon',
   Reload = 'Reload',
   PlusIcon = 'PlusIcon',
+  Refresh = 'ArrowPathIcon',
 }

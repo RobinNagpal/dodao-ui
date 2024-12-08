@@ -1,0 +1,29 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: dodao
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: tweet-collection-updater
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  timeout: 29
+  httpApi:
+    cors: true
+    
+functions:
+  updateAllCollections:
+    handler: handler.updateAllCollections
+    events:
+      - schedule: rate(24 hours)
+      - httpApi:
+          path: /refresh/tweet-collections
+          method: get
+  refreshSingleCollection:
+    handler: handler.refreshSingleCollection
+    events:
+      - httpApi:
+          path: /refresh/tweet-collections/{id}
+          method: get
+
+
+
