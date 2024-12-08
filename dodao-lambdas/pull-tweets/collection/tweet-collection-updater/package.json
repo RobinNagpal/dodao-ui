@@ -1,0 +1,8 @@
+{
+    "name": "tweet-collection-updater",
+    "version": "1.0.0",
+    "dependencies": {
+        "axios": "^1.7.9",
+        "pg": "^8.13.1"
+    }
+}

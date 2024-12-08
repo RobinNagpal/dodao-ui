@@ -1,0 +1,17 @@
+{
+    "production": {
+        "app_function": "script.app",
+        "aws_region": "us-east-1",
+        "profile_name": "default",
+        "project_name": "twscrape",
+        "runtime": "python3.10",
+        "s3_bucket": "zappa-gbnjm5sjp",
+        "remote_env": "s3://my-credential-bucket/credential.json",
+        "environment_variables": {
+            "ENVIRONMENT":"production",
+            "TWS_DB_PATH": "accounts.db",
+            "S3_BUCKET_NAME": "my-credential-bucket",
+            "S3_ACCOUNTS_DB_KEY": "accounts.db"
+        }
+    }
+}

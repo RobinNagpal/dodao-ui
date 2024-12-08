@@ -1,0 +1,88 @@
+.markdown-editor-overrides {
+  .w-md-editor-toolbar {
+    background-color: var(--bg-color);
+    border-color: var(--block-bg);
+    li {
+      button {
+        height: 24px;
+        svg {
+          color: var(--text-color);
+          width: 16px;
+          height: 16px;
+        }
+      }
+      height: 24px;
+    }
+  }
+
+  .w-md-editor-show-edit {
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    box-shadow: none;
+    border: 1px solid var(--border-color);
+  }
+
+  .w-md-editor {
+    color: var(--text-color);
+    border-color: var(--border-color);
+  }
+  .wmde-markdown-color {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    width: 100%;
+    --color-prettylights-syntax-comment: var(--text-color);
+    --color-prettylights-syntax-constant: var(--text-color);
+    --color-prettylights-syntax-entity: var(--text-color);
+    --color-prettylights-syntax-storage-modifier-import: var(--text-color);
+    --color-prettylights-syntax-entity-tag: var(--text-color);
+    --color-prettylights-syntax-keyword: var(--text-color);
+    --color-prettylights-syntax-string: var(--text-color);
+    --color-prettylights-syntax-variable: var(--text-color);
+    --color-prettylights-syntax-brackethighlighter-unmatched: var(--text-color);
+    --color-prettylights-syntax-invalid-illegal-text: var(--text-color);
+    --color-prettylights-syntax-invalid-illegal-bg: var(--text-color);
+    --color-prettylights-syntax-carriage-return-text: var(--text-color);
+    --color-prettylights-syntax-carriage-return-bg: var(--text-color);
+    --color-prettylights-syntax-string-regexp: var(--text-color);
+    --color-prettylights-syntax-markup-list: var(--text-color);
+    --color-prettylights-syntax-markup-heading: var(--text-color);
+    --color-prettylights-syntax-markup-italic: var(--text-color);
+    --color-prettylights-syntax-markup-bold: var(--text-color);
+    --color-prettylights-syntax-markup-deleted-text: var(--text-color);
+    --color-prettylights-syntax-markup-deleted-bg: var(--text-color);
+    --color-prettylights-syntax-markup-inserted-text: var(--text-color);
+    --color-prettylights-syntax-markup-inserted-bg: var(--text-color);
+    --color-prettylights-syntax-markup-changed-text: var(--text-color);
+    --color-prettylights-syntax-markup-changed-bg: var(--text-color);
+    --color-prettylights-syntax-markup-ignored-text: var(--text-color);
+    --color-prettylights-syntax-markup-ignored-bg: var(--text-color);
+    --color-prettylights-syntax-meta-diff-range: var(--text-color);
+    --color-prettylights-syntax-brackethighlighter-angle: var(--text-color);
+    --color-prettylights-syntax-sublimelinter-gutter-mark: var(--text-color);
+    --color-prettylights-syntax-constant-other-reference-link: var(--text-color);
+    --color-fg-default: var(--text-color);
+    --color-fg-muted: var(--text-color);
+    --color-fg-subtle: var(--text-color);
+    --color-canvas-default: var(--text-color);
+    --color-canvas-subtle: var(--text-color);
+    --color-border-default: var(--text-color);
+    --color-border-muted: var(--text-color);
+    --color-neutral-muted: var(--text-color);
+    --color-accent-fg: var(--text-color);
+    --color-accent-emphasis: var(--text-color);
+    --color-attention-subtle: var(--text-color);
+    --color-danger-fg: var(--text-color);
+  }
+  .w-md-editor-text-input {
+    color: var(--text-color);
+  }
+  textarea {
+    background-color: transparent;
+    color: var(--text-color);
+  }
+  .language-markdown {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+
+}
