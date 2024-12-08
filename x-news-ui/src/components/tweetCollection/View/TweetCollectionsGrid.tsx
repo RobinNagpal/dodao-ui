@@ -1,4 +1,5 @@
 "use client";
+
 import AddTweetCollection from "@/components/tweetCollection/TweetCollections/AddTweetCollection";
 import TweetCollectionsCard from "@/components/tweetCollection/TweetCollections/TweetCollectionsCard/TweetCollectionsCard";
 import NoTweetCollections from "@/components/tweetCollection/View/NoTweetCollections";
@@ -17,10 +18,10 @@ export default function TweetCollectionsGrid({
   const searchParams = useSearchParams();
   const archived = searchParams.get("archive");
   const isArchived = archived === "true";
-  const istheAdmin = isAdmin();
+  const isUserAdmin = isAdmin();
 
   const tweetCollectionsList =
-    isArchived && istheAdmin
+    isArchived && isUserAdmin
       ? tweetCollections
       : tweetCollections?.filter((tweetCollection) => !tweetCollection.archive);
 
@@ -31,7 +32,7 @@ export default function TweetCollectionsGrid({
 
   return (
     <>
-      {istheAdmin && (
+      {isUserAdmin && (
         <div className="flex justify-end mb-2 items-center gap-x-8">
           <ToggleWithIcon
             label={"See Archived"}
@@ -48,13 +49,13 @@ export default function TweetCollectionsGrid({
             <TweetCollectionsCard
               key={i}
               tweetCollection={tweetCollection}
-              isAdmin={istheAdmin}
+              isAdmin={isUserAdmin}
               showArchived={isArchived}
             />
           ))}
         </div>
       )}
-      {istheAdmin && <AddTweetCollection />}
+      {isUserAdmin && <AddTweetCollection />}
     </>
   );
 }
