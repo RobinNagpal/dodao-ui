@@ -29,7 +29,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         const currentDocAndTargetNode = getCurrentContextNodeAndTarget(elementXPath);
         if (!currentDocAndTargetNode.targetNode || !currentDocAndTargetNode.currentContextNode)
             return;
-        const { currentContextNode, targetNode } = currentDocAndTargetNode;
+        const { currentContextNode, targetNode, isCurrentContextAndIframe } = currentDocAndTargetNode;
+        if (isCurrentContextAndIframe) {
+            if (data.cssValues) {
+                for (const variable in data.cssValues) {
+                    currentContextNode.documentElement.style.setProperty(variable, data.cssValues[variable]);
+                }
+            }
+        }
         const target = targetNode;
         target.classList.add('dodao-target-element');
         // Check if the tooltip already exists and destroy it if it does
@@ -77,6 +84,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         });
         const tooltipWrapper = currentContextNode.createElement('div');
         tooltipWrapper.appendChild(tooltipContent);
+        console.log('creating tooltip according to configuration:', {
+            elementXPath,
+            currentContextNode,
+            targetNode,
+            isCurrentContextAndIframe,
+        });
         window.tippy(target, {
             allowHTML: true,
             placement: placement,
@@ -414,10 +427,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         var _a;
         console.log('event.data.elementXPath', elementXPath);
         document.addEventListener('click', (e) => e.preventDefault());
-        let currentContextNode = document;
         // Determine if the XPath is intended for an iframe by checking the prefix
         const isIframeXPath = elementXPath.startsWith('/html[1]/body[1]');
-        let targetNode = null;
         if (isIframeXPath) {
             // Search in all iframes
             const iframes = document.querySelectorAll('iframe');
@@ -425,10 +436,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                 const iframeDoc = iframe.contentDocument || ((_a = iframe.contentWindow) === null || _a === void 0 ? void 0 : _a.document);
                 if (iframeDoc) {
                     try {
+                        console.log('Evaluating XPath in iframe:', iframeDoc);
                         const xpathResult = iframeDoc.evaluate(elementXPath, iframeDoc, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
                         if (xpathResult) {
-                            targetNode = xpathResult;
-                            currentContextNode = iframeDoc;
+                            const targetNode = xpathResult;
                             const head = iframeDoc.head || iframeDoc.getElementsByTagName('head')[0];
                             const materialStyle = iframeDoc.createElement('link');
                             materialStyle.rel = 'stylesheet';
@@ -446,7 +457,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                             link.rel = 'stylesheet';
                             link.href = '/clickable-demos-prod-files/clickableDemoTooltipStyles.css';
                             iframeDoc.head.appendChild(link);
-                            break;
+                            return { currentContextNode: iframeDoc, targetNode, isCurrentContextAndIframe: true };
                         }
                     }
                     catch (error) {
@@ -454,50 +465,37 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
                     }
                 }
             }
-            if (!targetNode) {
-                console.log('Element not found in any iframe.');
-            }
         }
         else {
             const xpathResult = document.evaluate(elementXPath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
             if (xpathResult) {
                 console.log('Element found in the main document:', xpathResult);
-                targetNode = xpathResult;
-            }
-            else {
-                console.log('Element not found in the main document.');
+                const targetNode = xpathResult;
+                return { currentContextNode: document, targetNode, isCurrentContextAndIframe: false };
             }
         }
+        console.log('Element not found using XPath.');
+        // Fallback 1: select element near the middle of the screen
+        console.log('Attempting to select a fallback element near the middle of the screen.');
+        const viewportWidth = document.documentElement.clientWidth;
+        const viewportHeight = document.documentElement.clientHeight;
+        const centerX = viewportWidth / 2;
+        const centerY = viewportHeight / 2;
+        const targetNode = document.elementFromPoint(centerX, centerY);
         if (targetNode) {
-            return { currentContextNode, targetNode };
+            console.log('Fallback element selected:', targetNode);
+            return { currentContextNode: document, targetNode, isCurrentContextAndIframe: false };
         }
         else {
-            console.log('Element not found using XPath.');
-            // Fallback 1: select element near the middle of the screen
-            console.log('Attempting to select a fallback element near the middle of the screen.');
-            const viewportWidth = currentContextNode.documentElement.clientWidth;
-            const viewportHeight = currentContextNode.documentElement.clientHeight;
-            const centerX = viewportWidth / 2;
-            const centerY = viewportHeight / 2;
-            targetNode = currentContextNode.elementFromPoint(centerX, centerY);
+            console.log('Fallback failed: Could not find an element at the center of the screen.');
+            // Fallback 2: use document.body or document.documentElement
+            const targetNode = document.body || document.documentElement;
             if (targetNode) {
-                console.log('Fallback element selected:', targetNode);
-                return { currentContextNode, targetNode };
-            }
-            else {
-                console.log('Fallback failed: Could not find an element at the center of the screen.');
-                // Fallback 2: use document.body or document.documentElement
-                targetNode = currentContextNode.body || currentContextNode.documentElement;
-                if (targetNode) {
-                    console.log('Defaulting to document body as the target element:', targetNode);
-                    return { currentContextNode, targetNode };
-                }
-                else {
-                    console.log('No suitable default element found. Exiting function.');
-                    return null;
-                }
+                console.log('Defaulting to document body as the target element:', targetNode);
+                return { currentContextNode: document, targetNode, isCurrentContextAndIframe: false };
             }
         }
+        return null;
     }
     function createTooltipButton(text, className, onClick) {
         const button = document.createElement('button');

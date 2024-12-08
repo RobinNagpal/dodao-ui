@@ -13,6 +13,15 @@ interface ClickableDemoModalProps {
   onClose: () => void;
 }
 
+interface TooltipData {
+  cssValues: Record<string, string>; // Object with CSS variable names as keys and their values as string
+  elementXPath: string; // XPath selector of the element
+  tooltipContent: string; // Content of the tooltip
+  tooltipArrayLen: number; // Total number of steps in the demo
+  currentTooltipIndex: number; // Index of the current tooltip
+  placement: string; // Placement of the tooltip relative to the element
+}
+
 function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: ClickableDemoModalProps) {
   const { showNotification } = useNotificationContext();
 
@@ -131,7 +140,7 @@ function ClickableDemoModal({ clickableDemoWithSteps, space, onClose }: Clickabl
         {!iframeLoaded && selectedStepNumber === 0 && <FullPageLoader />}
         {loadedSteps.map((index) => {
           const step = clickableDemoWithSteps.steps[index];
-          const data = {
+          const data: TooltipData = {
             cssValues, // your collected CSS variables
             elementXPath: step.selector,
             tooltipContent: step.tooltipInfo,
