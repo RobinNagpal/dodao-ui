@@ -1,0 +1,12 @@
+| Name               | Associated Company | Role                                          | LinkedIn Profile  |
+|--------------------|-------------------|-----------------------------------------------|--------------------|
+| Isaac Hayes III     | Fanbase           | Chief Executive Officer                       | [LinkedIn Profile](#)     |
+| Ramiro Canovas      | Fanbase           | Chief Technology Officer / Chief Operating Officer | [LinkedIn Profile](#)     |
+| Silvana Ullmann     | Fanbase           | Interim CFO                                   | [LinkedIn Profile](#)     |
+| Julian Bravo        | Fanbase           | Product Operation Coordinator                  | [LinkedIn Profile](#)     |
+| Dre Davis           | Fanbase           | Director/Creator Artist Relations             | [LinkedIn Profile](#)     |
+| Santiago Nogues     | Fanbase           | UX/UI Director                                | [LinkedIn Profile](#)     |
+| Bill Campbell       | Fanbase           | Music, Growth, and Flickz Development Advisor | [LinkedIn Profile](#)     |
+| GW Wright           | Fanbase           | Director Sports/Athletics                     | [LinkedIn Profile](#)     |
+
+(Note: Replace "[LinkedIn Profile](#)" with actual LinkedIn URLs when available.)

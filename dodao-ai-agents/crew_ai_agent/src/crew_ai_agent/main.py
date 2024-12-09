@@ -17,7 +17,7 @@ def run():
     """
     inputs = {
         # 'topic': 'AI LLMs',
-        'urls':["https://www.startengine.com/offering/fanbase","https://www.startengine.com/offering/fanbase"]
+        'urls':["https://www.startengine.com/offering/fanbase"]
     }
     CrewAiAgent().crew().kickoff(inputs=inputs)
 
@@ -28,7 +28,7 @@ def train():
     """
     inputs = {
         # "topic": "AI LLMs",
-          'urls':["https://www.startengine.com/offering/fanbase","https://www.startengine.com/offering/fanbase"]
+          'urls':["https://www.startengine.com/offering/fanbase"]
     }
     try:
         CrewAiAgent().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
@@ -52,7 +52,7 @@ def test():
     """
     inputs = {
         # "topic": "AI LLMs",
-          'urls':["https://www.startengine.com/offering/fanbase","https://www.startengine.com/offering/fanbase"]
+          'urls':["https://www.startengine.com/offering/fanbase"]
     }
     try:
         CrewAiAgent().crew().test(n_iterations=int(sys.argv[1]), openai_model_name=sys.argv[2], inputs=inputs)

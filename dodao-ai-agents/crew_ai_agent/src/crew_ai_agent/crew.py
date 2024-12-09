@@ -4,8 +4,8 @@ from crewai_tools import SerperDevTool
 from crewai_tools import SeleniumScrapingTool
 from crew_ai_agent.tools.scraping_tool import ScrapeWithSeleniumTool
 
-scrape_tool=ScrapeWithSeleniumTool()
-# scraper = ScrapeWithSeleniumTool()
+# scrape_tool=ScrapeWithSeleniumTool()
+scrape_tool = ScrapeWithSeleniumTool()
 # output_file = scraper.run({"urls": ["https://example.com", "https://another.com"]})
 # print(f"Scraped data saved to: {output_file}")
 # Uncomment the following line to use an example of a custom tool
@@ -29,21 +29,23 @@ class CrewAiAgent():
 		print(f"Results: {output}")
 		return output
 
-
 	@agent
 	def scraper(self) -> Agent:
 		return Agent(
 			config=self.agents_config['scraper'],
 			tools=[scrape_tool],
 			verbose=True,
-			output_file="data.txt"
 		)
 
 	@task
 	def scrape_task(self) -> Task:
 		task_config = self.tasks_config['scrape_task']	
-		return Task(config=task_config)
-		
+		return Task(
+			config=task_config,
+			tools=[scrape_tool],
+			output_file="teams.txt",
+			# Context=["scrape_task"]
+		)
 
 
 	@crew
