@@ -9,7 +9,7 @@
     "x-news-ui",
     "clickable-demos",
     "shared/web-core",
-    "dodao-lambdas/pull-tweets/collection/tweet-collection-updater"
+    "dodao-lambdas/x-news-updater/tweet-collection-updater"
   ],
   "resolutions": {
     "@types/react": "18.3.12",
