@@ -1,30 +1,26 @@
-import { formatAxiosError } from "@/app/api/helpers/adapters/formatAxiosError";
-import axios from "axios";
+import { formatAxiosError } from '@dodao/web-core/api/helpers/adapters/formatAxiosError';
+import axios from 'axios';
 
-export async function logEventInDiscord(
-  spaceId: string | null,
-  message: string,
-  params: Record<string, any> = {}
-) {
-  if (message === "invalid request request") {
+export async function logEventInDiscord(spaceId: string | null, message: string, params: Record<string, any> = {}) {
+  if (message === 'invalid request request') {
     return;
   }
   const embeds = [
     {
-      title: "Request Info",
+      title: 'Request Info',
       fields: [
         {
-          name: "SpaceId",
-          value: spaceId || "----",
+          name: 'SpaceId',
+          value: spaceId || '----',
           inline: true,
         },
         {
-          name: "Message",
-          value: (message || "----").substr(0, 1000),
+          name: 'Message',
+          value: (message || '----').substr(0, 1000),
           inline: false,
         },
         {
-          name: "Params",
+          name: 'Params',
           value: JSON.stringify(params || {}).substr(0, 1000),
           inline: false,
         },

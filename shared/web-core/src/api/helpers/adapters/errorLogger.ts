@@ -1,8 +1,8 @@
-import { formatAxiosError } from "@/app/api/helpers/adapters/formatAxiosError";
-import axios from "axios";
-import { NextRequest } from "next/server";
+import { formatAxiosError } from '@dodao/web-core/api/helpers/adapters/formatAxiosError';
+import axios from 'axios';
+import { NextRequest } from 'next/server';
 
-const staticPageGenerationError = "rendered statically ";
+const staticPageGenerationError = 'rendered statically ';
 
 export async function logError(
   message: string,
@@ -27,34 +27,31 @@ export async function logError(
   await postErrorOnDiscord(e, spaceId, blockchain, message, params);
 }
 
-export async function logErrorRequest(
-  e: Error | string | null,
-  req: NextRequest
-) {
+export async function logErrorRequest(e: Error | string | null, req: NextRequest) {
   if (!e || shouldIgnoreError(e)) {
     return;
   }
 
-  let jsonBody = "";
+  let jsonBody = '';
   try {
     jsonBody = JSON.stringify(await req.json());
   } catch (e) {}
   const embeds = [
     {
-      title: "Request Info",
+      title: 'Request Info',
       fields: [
         {
-          name: "Url",
-          value: req.url || "----",
+          name: 'Url',
+          value: req.url || '----',
           inline: true,
         },
         {
-          name: "Message",
+          name: 'Message',
           value: (await req.text()).substring(0, 1000),
           inline: false,
         },
         {
-          name: "JSON",
+          name: 'JSON',
           value: jsonBody.substring(0, 1000),
           inline: false,
         },
@@ -73,44 +70,35 @@ export async function logErrorRequest(
 }
 
 function shouldIgnoreError(e: Error | string) {
-  if (typeof e === "string" && e.includes(staticPageGenerationError)) {
+  if (typeof e === 'string' && e.includes(staticPageGenerationError)) {
     return true;
   }
 
   const error = e as Error;
 
-  if (
-    error?.message?.includes(staticPageGenerationError) ||
-    error?.stack?.includes(staticPageGenerationError)
-  ) {
+  if (error?.message?.includes(staticPageGenerationError) || error?.stack?.includes(staticPageGenerationError)) {
     return true;
   }
   return false;
 }
 
-async function postErrorOnDiscord(
-  e: Error | null,
-  spaceId: string | null,
-  blockchain: string | null,
-  message: string,
-  params: Record<string, any> = {}
-) {
+async function postErrorOnDiscord(e: Error | null, spaceId: string | null, blockchain: string | null, message: string, params: Record<string, any> = {}) {
   const embeds = [
     {
-      title: "Request Info",
+      title: 'Request Info',
       fields: [
         {
-          name: "SpaceId",
-          value: spaceId || "----",
+          name: 'SpaceId',
+          value: spaceId || '----',
           inline: true,
         },
         {
-          name: "Message",
-          value: (message || "----").substr(0, 1000),
+          name: 'Message',
+          value: (message || '----').substr(0, 1000),
           inline: false,
         },
         {
-          name: "Params",
+          name: 'Params',
           value: JSON.stringify(params || {}).substr(0, 1000),
           inline: false,
         },
@@ -119,11 +107,11 @@ async function postErrorOnDiscord(
   ];
   if (e) {
     embeds.push({
-      title: "Error",
+      title: 'Error',
       fields: [
         {
-          name: "Stack",
-          value: (e.stack || "----").substr(0, 1000),
+          name: 'Stack',
+          value: (e.stack || '----').substr(0, 1000),
           inline: false,
         },
       ],
