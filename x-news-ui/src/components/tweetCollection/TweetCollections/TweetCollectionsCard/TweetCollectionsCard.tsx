@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import AddNewItemButton from "@/components/tweetCollection/TweetCollections/TweetCollectionsCard/AddNewItemButton";
-import TweetCollectionCardAdminDropdown from "@/components/tweetCollection/TweetCollections/TweetCollectionsCard/TweetCollectionCardAdminDropdown";
+import AddNewItemButton from '@/components/tweetCollection/TweetCollections/TweetCollectionsCard/AddNewItemButton';
+import TweetCollectionCardAdminDropdown from '@/components/tweetCollection/TweetCollections/TweetCollectionsCard/TweetCollectionCardAdminDropdown';
 import {
   TweetCollectionSummary,
   TweetCollectionDto,
-} from "@/types/tweetCollections/tweetCollection";
-import { DeleteTweetItemRequest } from "@/types/request/TweetRequests";
-import DeleteConfirmationModal from "@dodao/web-core/components/app/Modal/DeleteConfirmationModal";
-import PrimaryColorBadge from "@dodao/web-core/components/core/badge/PrimaryColorBadge";
-import FullScreenModal from "@dodao/web-core/components/core/modals/FullScreenModal";
-import BadgeWithRemove from "@dodao/web-core/components/core/badge/BadgeWithRemove";
-import { useNotificationContext } from "@dodao/web-core/ui/contexts/NotificationContext";
-import getBaseUrl from "@dodao/web-core/utils/api/getBaseURL";
-import { useUpdateData } from "@dodao/web-core/ui/hooks/fetch/useUpdateData";
-import UnarchiveConfirmationModal from "@dodao/web-core/components/app/Modal/UnarchiveConfirmationModal";
-import React from "react";
-import styles from "./TweetCollectionsCard.module.scss";
-import { CreateTweetCollectionRequest } from "@/types/request/TweetCollectionRequests";
-import Tweet from "@/components/tweet/Tweet";
-import { TweetDto } from "@/types/tweets/tweet";
-import RefreshButton from "./TweetCollectionsCardRefreshButton";
+} from '@/types/tweetCollections/tweetCollection';
+import { DeleteTweetItemRequest } from '@/types/request/TweetRequests';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import PrimaryColorBadge from '@dodao/web-core/components/core/badge/PrimaryColorBadge';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { useUpdateData } from '@dodao/web-core/ui/hooks/fetch/useUpdateData';
+import UnarchiveConfirmationModal from '@dodao/web-core/components/app/Modal/UnarchiveConfirmationModal';
+import React from 'react';
+import styles from './TweetCollectionsCard.module.scss';
+import { CreateTweetCollectionRequest } from '@/types/request/TweetCollectionRequests';
+import Tweet from '@/components/tweet/Tweet';
+import { TweetDto } from '@/types/tweets/tweet';
+import RefreshButton from './TweetCollectionsCardRefreshButton';
+import { getAdminKey } from '@/utils/auth/getAdminKey';
+import BadgeWithRemove from '@dodao/web-core/components/core/badge/BadgeWithRemove';
 
 interface TweetCollectionCardProps {
   tweetCollection: TweetCollectionSummary;
@@ -67,28 +67,36 @@ export default function TweetCollectionsCard({
 
   const { showNotification } = useNotificationContext();
 
-  const redirectPath = "/";
+  const redirectPath = '/';
 
   const { updateData: archiveItem, loading: archiveItemLoading } =
     useUpdateData<TweetDto, DeleteTweetItemRequest>(
-      {},
       {
-        successMessage: "Tweet Archived Successfully",
-        errorMessage: "Failed to archive the tweet. Please try again.",
+        headers: {
+          'admin-key': getAdminKey(),
+        },
+      },
+      {
+        successMessage: 'Tweet Archived Successfully',
+        errorMessage: 'Failed to archive the tweet. Please try again.',
         redirectPath: `${redirectPath}?updated=${Date.now()}`,
       },
-      "PUT"
+      'PUT'
     );
 
   const { updateData: unArchiveItem, loading: unArchiveItemLoading } =
     useUpdateData<TweetDto, DeleteTweetItemRequest>(
-      {},
       {
-        successMessage: "Tweet Unarchived Successfully",
-        errorMessage: "Failed to unarchive the tweet. Please try again.",
+        headers: {
+          'admin-key': getAdminKey(),
+        },
+      },
+      {
+        successMessage: 'Tweet Unarchived Successfully',
+        errorMessage: 'Failed to unarchive the tweet. Please try again.',
         redirectPath: `${redirectPath}?updated=${Date.now()}`,
       },
-      "PUT"
+      'PUT'
     );
 
   const {
@@ -97,11 +105,11 @@ export default function TweetCollectionsCard({
   } = useUpdateData<TweetCollectionDto, CreateTweetCollectionRequest>(
     {},
     {
-      successMessage: "Tweet Collection Unarchived Successfully",
-      errorMessage: "Failed to archive the Tweet Collection. Please try again.",
+      successMessage: 'Tweet Collection Unarchived Successfully',
+      errorMessage: 'Failed to archive the Tweet Collection. Please try again.',
       redirectPath: `${redirectPath}?updated=${Date.now()}`,
     },
-    "PUT"
+    'PUT'
   );
 
   const onUnarchive = async () => {
@@ -116,7 +124,7 @@ export default function TweetCollectionsCard({
     );
   };
 
-  const threeDotItems = [{ label: "Archive", key: "archive" }];
+  const threeDotItems = [{ label: 'Archive', key: 'archive' }];
 
   const nonArchivedTweets = tweetCollection.tweets?.filter(
     (item) => !item.archive
@@ -236,8 +244,8 @@ export default function TweetCollectionsCard({
               !deleteItemModalState.itemName
             ) {
               showNotification({
-                message: "Some Error occurred",
-                type: "error",
+                message: 'Some Error occurred',
+                type: 'error',
               });
               closeItemDeleteModal();
               return;
@@ -267,8 +275,8 @@ export default function TweetCollectionsCard({
               !unarchiveItemModalState.itemName
             ) {
               showNotification({
-                message: "Some Error occurred",
-                type: "error",
+                message: 'Some Error occurred',
+                type: 'error',
               });
               closeItemUnarchiveModal();
               return;
@@ -297,7 +305,7 @@ export default function TweetCollectionsCard({
             setShowUnarchiveModal(false);
           }}
           unarchiving={unArchiveTweetCollectionLoading}
-          unarchiveButtonText={"Unarchive"}
+          unarchiveButtonText={'Unarchive'}
         />
       )}
     </div>
