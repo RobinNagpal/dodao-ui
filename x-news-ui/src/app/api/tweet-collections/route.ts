@@ -1,12 +1,11 @@
-import { withErrorHandlingV1 } from "@/app/api/helpers/middlewares/withErrorHandling";
-import { prisma } from "@/prisma";
-import { TweetCollectionSummary } from "@/types/tweetCollections/tweetCollection";
-import { NextRequest, NextResponse } from "next/server";
-import { randomString } from "@dodao/web-core/api/auth/custom-email/send-verification";
+import { withErrorHandlingV1 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { prisma } from '@/prisma';
+import { TweetCollectionSummary } from '@/types/tweetCollections/tweetCollection';
+import { NextRequest, NextResponse } from 'next/server';
+import { randomString } from '@dodao/web-core/api/auth/custom-email/send-verification';
+import { validateAdminKey } from '@/utils/auth/validateAdminKey';
 
-async function getHandler(
-  req: NextRequest
-): Promise<NextResponse<TweetCollectionSummary[]>> {
+async function getHandler(req: NextRequest): Promise<NextResponse<TweetCollectionSummary[]>> {
   const tweetCollections = await prisma.tweetCollection.findMany({
     include: {
       tweets: true,
@@ -17,6 +16,9 @@ async function getHandler(
 }
 
 async function postHandler(req: NextRequest): Promise<NextResponse> {
+  const validationError = validateAdminKey(req);
+  if (validationError) return validationError;
+
   try {
     const body = await req.json();
 
@@ -33,13 +35,10 @@ async function postHandler(req: NextRequest): Promise<NextResponse> {
       },
     });
 
-    return NextResponse.json(newCollection, { status: 201 });
+    return NextResponse.json({ newCollection }, { status: 201 });
   } catch (error) {
-    console.error("Error creating tweet collection:", error);
-    return NextResponse.json(
-      { error: "Failed to create tweet collection." },
-      { status: 500 }
-    );
+    console.error('Error creating tweet collection:', error);
+    return NextResponse.json({ error: 'Failed to create tweet collection.' }, { status: 500 });
   }
 }
 
