@@ -7,6 +7,7 @@ import { useUpdateData } from "@dodao/web-core/ui/hooks/fetch/useUpdateData";
 import { usePostData } from "@dodao/web-core/ui/hooks/fetch/usePostData";
 import getBaseUrl from "@dodao/web-core/utils/api/getBaseURL";
 import { useEffect, useState } from "react";
+import { getAdminKey } from "@/utils/auth/getAdminKey";
 
 export type EditTweetCollection = Omit<TweetCollectionSummary, "id"> & {
   id?: string;
@@ -38,7 +39,11 @@ export function useEditTweetCollection({
     TweetCollectionDto,
     CreateTweetCollectionRequest
   >(
-    {},
+    {
+      headers: {
+        'admin-key': getAdminKey(),
+      },
+    },
     {
       successMessage: "Tweet collection updated successfully",
       errorMessage: "Failed to create updated collection",
@@ -56,7 +61,11 @@ export function useEditTweetCollection({
       successMessage: "Tweet collection created successfully",
       errorMessage: "Failed to create tweet collection",
     },
-    {}
+    {
+      headers: {
+        'admin-key': getAdminKey(),
+      },
+    }
   );
   const [loading, setLoading] = useState<boolean>(false);
   const [isPrestine, setIsPrestine] = useState<boolean>(true);

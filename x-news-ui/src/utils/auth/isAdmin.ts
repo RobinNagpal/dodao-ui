@@ -1,4 +1,3 @@
 export function isAdmin(): boolean {
-  const adminKey = localStorage ? localStorage.getItem("adminKey") : null;
-  return !!adminKey;
+  return !!localStorage.getItem("ADMIN_KEY");
 }
