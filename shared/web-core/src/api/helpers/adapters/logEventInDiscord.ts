@@ -1,4 +1,4 @@
-import { formatAxiosError } from '@/app/api/helpers/adapters/formatAxiosError';
+import { formatAxiosError } from '@dodao/web-core/api/helpers/adapters/formatAxiosError';
 import axios from 'axios';
 
 export async function logEventInDiscord(spaceId: string | null, message: string, params: Record<string, any> = {}) {
