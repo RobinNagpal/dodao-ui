@@ -2,10 +2,7 @@
 
 import AddNewItemButton from '@/components/tweetCollection/TweetCollections/TweetCollectionsCard/AddNewItemButton';
 import TweetCollectionCardAdminDropdown from '@/components/tweetCollection/TweetCollections/TweetCollectionsCard/TweetCollectionCardAdminDropdown';
-import {
-  TweetCollectionSummary,
-  TweetCollectionDto,
-} from '@/types/tweetCollections/tweetCollection';
+import { TweetCollectionSummary, TweetCollectionDto } from '@/types/tweetCollections/tweetCollection';
 import { DeleteTweetItemRequest } from '@/types/request/TweetRequests';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import PrimaryColorBadge from '@dodao/web-core/components/core/badge/PrimaryColorBadge';
