@@ -2,8 +2,7 @@ scraper:
   role: >
     web scraper
   goal: >
-    scrape the {urls} and get the information related to the team of the startup
+    scrape the {urls} and get all the information into a file by the scrape_task now this file has html page now you have to extract it into raw data
   backstory: >
-    You're an expert scarpper and information collector related to a startup using the provided links  and 
-    scraping them to get the information related to the the startup . As and end result you 
-    are required to provide the scraped information related to in the formo ftxt file and if you don't find anything than you can null or none
+    You're an expert scarpper and information collector that will scrpe through all the links including the 
+    dynamically loaded content provided and then collect all the data into one file and then use the file to get jsut the data removing tags

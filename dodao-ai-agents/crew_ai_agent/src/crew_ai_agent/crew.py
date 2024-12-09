@@ -1,10 +1,13 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task, before_kickoff, after_kickoff
 from crewai_tools import SerperDevTool
-from crewai_tools import ScrapeWebsiteTool
+from crewai_tools import SeleniumScrapingTool
+from crew_ai_agent.tools.scraping_tool import ScrapeWithSeleniumTool
 
-
-scrape_tool=ScrapeWebsiteTool()
+scrape_tool=ScrapeWithSeleniumTool()
+# scraper = ScrapeWithSeleniumTool()
+# output_file = scraper.run({"urls": ["https://example.com", "https://another.com"]})
+# print(f"Scraped data saved to: {output_file}")
 # Uncomment the following line to use an example of a custom tool
 
 # Check our tools documentations for more information on how to use them

@@ -1,11 +1,11 @@
 
 scrape_task:
   description: >
-    Scrape through all the links provided to get the information about starup
+    Scrape through all the links and capture all the information on the page whether dynamic or static
 
     Here are the Links: {urls}
   expected_output: >
-    All the information related to team
+    a file containg all the information in the text form in raw form
   agent: scraper
 
 
