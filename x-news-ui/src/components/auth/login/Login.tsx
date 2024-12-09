@@ -39,26 +39,12 @@ export default function Loginpage() {
     <PageWrapper>
       <div className="w-1/2 mx-auto">
         {isAdmin() ? (
-          <div className="font-semibold text-lg text-center">
-            You are already logged in as admin.
-          </div>
+          <div className="font-semibold text-lg text-center">You are already logged in as admin.</div>
         ) : (
           <form onSubmit={handleKeySubmit}>
-            <Input
-              id="key"
-              modelValue={key}
-              onUpdate={(e) => (e ? setKey(e.toString()) : setKey(''))}
-              required
-              label={'Admin Key'}
-            />
+            <Input id="key" modelValue={key} onUpdate={(e) => (e ? setKey(e.toString()) : setKey(''))} required label={'Admin Key'} />
             <div className="w-full flex justify-center">
-              <Button
-                type="submit"
-                primary
-                variant={'contained'}
-                className="mt-4"
-                loading={upserting}
-              >
+              <Button type="submit" primary variant={'contained'} className="mt-4" loading={upserting}>
                 Login
               </Button>
             </div>

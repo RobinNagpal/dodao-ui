@@ -1,9 +1,6 @@
 import TweetCollectionEditModal from '@/components/tweetCollection/TweetCollections/TweetCollectionEditModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import {
-  TweetCollectionDto,
-  TweetCollectionSummary,
-} from '@/types/tweetCollections/tweetCollection';
+import { TweetCollectionDto, TweetCollectionSummary } from '@/types/tweetCollections/tweetCollection';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import UnarchiveConfirmationModal from '@dodao/web-core/components/app/Modal/UnarchiveConfirmationModal';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -16,22 +13,14 @@ interface TweetCollectionCardAdminDropdownProps {
   tweetCollection: TweetCollectionSummary;
   archive?: boolean;
 }
-export default function TweetCollectionCardAdminDropdown({
-  tweetCollection,
-  archive,
-}: TweetCollectionCardAdminDropdownProps) {
+export default function TweetCollectionCardAdminDropdown({ tweetCollection, archive }: TweetCollectionCardAdminDropdownProps) {
   const [showDeleteModal, setShowDeleteModal] = React.useState<boolean>(false);
-  const [showUnarchiveModal, setShowUnarchiveModal] =
-    React.useState<boolean>(false);
-  const [showEditCollectionModal, setShowEditCollectionModal] =
-    React.useState<boolean>(false);
+  const [showUnarchiveModal, setShowUnarchiveModal] = React.useState<boolean>(false);
+  const [showEditCollectionModal, setShowEditCollectionModal] = React.useState<boolean>(false);
 
   const redirectPath = '/';
 
-  const {
-    updateData: unarchiveTweetCollection,
-    loading: unarchiveTweetCollectionLoading,
-  } = useUpdateData<TweetCollectionDto, CreateTweetCollectionRequest>(
+  const { updateData: unarchiveTweetCollection, loading: unarchiveTweetCollectionLoading } = useUpdateData<TweetCollectionDto, CreateTweetCollectionRequest>(
     {
       headers: {
         'admin-key': getAdminKey(),
@@ -39,17 +28,13 @@ export default function TweetCollectionCardAdminDropdown({
     },
     {
       successMessage: 'Tweet Collection Unarchived Successfully',
-      errorMessage:
-        'Failed to unarchive the Tweet Collection. Please try again.',
+      errorMessage: 'Failed to unarchive the Tweet Collection. Please try again.',
       redirectPath: `${redirectPath}?updated=${Date.now()}`,
     },
     'PUT'
   );
 
-  const {
-    updateData: archiveTweetCollection,
-    loading: archiveTweetCollectionLoading,
-  } = useUpdateData<TweetCollectionDto, CreateTweetCollectionRequest>(
+  const { updateData: archiveTweetCollection, loading: archiveTweetCollectionLoading } = useUpdateData<TweetCollectionDto, CreateTweetCollectionRequest>(
     {
       headers: {
         'admin-key': getAdminKey(),
@@ -74,27 +59,21 @@ export default function TweetCollectionCardAdminDropdown({
   };
 
   const onArchive = async () => {
-    await archiveTweetCollection(
-      `${getBaseUrl()}/api/tweet-collections/${tweetCollection?.id}`,
-      {
-        name: tweetCollection.name,
-        description: tweetCollection.description,
-        handles: tweetCollection.handles,
-        archive: true,
-      }
-    );
+    await archiveTweetCollection(`${getBaseUrl()}/api/tweet-collections/${tweetCollection?.id}`, {
+      name: tweetCollection.name,
+      description: tweetCollection.description,
+      handles: tweetCollection.handles,
+      archive: true,
+    });
   };
 
   const onUnarchive = async () => {
-    await unarchiveTweetCollection(
-      `${getBaseUrl()}/api/tweet-collections/${tweetCollection?.id}`,
-      {
-        name: tweetCollection.name,
-        description: tweetCollection.description,
-        handles: tweetCollection.handles,
-        archive: false,
-      }
-    );
+    await unarchiveTweetCollection(`${getBaseUrl()}/api/tweet-collections/${tweetCollection?.id}`, {
+      name: tweetCollection.name,
+      description: tweetCollection.description,
+      handles: tweetCollection.handles,
+      archive: false,
+    });
   };
 
   return (
@@ -141,12 +120,7 @@ export default function TweetCollectionCardAdminDropdown({
         />
       )}
 
-      {showEditCollectionModal && (
-        <TweetCollectionEditModal
-          tweetCollection={tweetCollection}
-          onClose={() => setShowEditCollectionModal(false)}
-        />
-      )}
+      {showEditCollectionModal && <TweetCollectionEditModal tweetCollection={tweetCollection} onClose={() => setShowEditCollectionModal(false)} />}
     </>
   );
 }

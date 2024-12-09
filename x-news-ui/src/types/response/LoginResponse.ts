@@ -1,3 +1,3 @@
 export interface LoginResponse {
-    key: string;
+  key: string;
 }

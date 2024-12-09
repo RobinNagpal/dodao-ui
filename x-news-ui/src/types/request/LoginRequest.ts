@@ -1,4 +1,3 @@
 export interface LoginRequest {
-    key: string;
-  }
-  
+  key: string;
+}

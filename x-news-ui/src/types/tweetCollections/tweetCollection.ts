@@ -1,4 +1,4 @@
-import { TweetSummary } from "../tweets/tweet";
+import { TweetSummary } from '../tweets/tweet';
 
 export interface TweetCollectionSummary {
   id: string;
