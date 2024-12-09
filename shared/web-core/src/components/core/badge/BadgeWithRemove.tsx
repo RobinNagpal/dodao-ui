@@ -3,12 +3,15 @@ export interface BadgeWithRemoveProps {
   label: string;
   onRemove: (id: string) => void;
   isAdmin?: boolean;
+  onClick?: () => void;
 }
 
-export default function BadgeWithRemove({ id, label, onRemove, isAdmin = true }: BadgeWithRemoveProps) {
+export default function BadgeWithRemove({ id, label, onRemove, isAdmin = true, onClick }: BadgeWithRemoveProps) {
   return (
     <span className="mr-2 inline-flex items-center gap-x-0.5 rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-      {label}
+      <span onClick={onClick} className={`${onClick ? 'cursor-pointer' : ''}`}>
+        {label}
+      </span>
       {isAdmin && (
         <button type="button" className="group relative -mr-1 h-3.5 w-3.5 rounded-sm hover:bg-gray-500/20" onClick={() => onRemove(id)}>
           <span className="sr-only">Remove</span>

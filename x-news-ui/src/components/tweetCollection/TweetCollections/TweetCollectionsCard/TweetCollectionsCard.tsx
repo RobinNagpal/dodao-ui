@@ -16,8 +16,8 @@ import { CreateTweetCollectionRequest } from '@/types/request/TweetCollectionReq
 import Tweet from '@/components/tweet/Tweet';
 import { TweetDto } from '@/types/tweets/tweet';
 import RefreshButton from './TweetCollectionsCardRefreshButton';
+import Badges from './TweetCollectionsCardBadges';
 import { getAdminKey } from '@/utils/auth/getAdminKey';
-import BadgeWithRemove from '@dodao/web-core/components/core/badge/BadgeWithRemove';
 
 interface TweetCollectionCardProps {
   tweetCollection: TweetCollectionSummary;
@@ -163,13 +163,7 @@ export default function TweetCollectionsCard({ tweetCollection, isAdmin, showArc
         <div className={styles.headingColor}>{tweetCollection.name}</div>
         <div className="my-3 text-sm">{tweetCollection.description}</div>
       </div>
-      <div>
-        {tweetCollection.handles.map((handle, index) => (
-          <a key={index} href={`https://x.com/${handle}`} target="_blank" rel="noopener noreferrer">
-            <BadgeWithRemove id={handle} label={handle} onRemove={() => {}} isAdmin={isAdmin} />
-          </a>
-        ))}
-      </div>
+      <Badges tweetCollection={tweetCollection} isAdmin={!!isAdmin} />
       <div className="flow-root p-2">
         <ul role="list" className="-mb-8">
           {tweetCollectionItems?.map((tweet, tweetIndex) => (
