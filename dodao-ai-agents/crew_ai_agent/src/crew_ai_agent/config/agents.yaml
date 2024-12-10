@@ -3,10 +3,18 @@ scraper:
     Team Information Scarper
   goal: >
     scrape the {urls} and Analyze the raw HTML content provided by the tool and extract details about team members. 
-    For each team member, identify their name, company, and role and linkedin(link must be in the anchor tag) . Output this information in a structured 
-    table format.
+    For each team member, identify their name, company,details, and role.Output this information in a structured table format.
   backstory: >
     You are a highly skilled data extraction specialist tasked with processing raw HTML content. 
     Your primary objective is to extract and organize information about startup team members. 
-    The extracted data should include the name, associated company,role and LinkedIn Profile((link must be in the anchor tag)) of each team member, 
+    The extracted data should include the name, associated company,details and role
     formatted neatly in a table for easy interpretation.
+
+searcher:
+  role: >
+    Linkedin Profile Searcher
+  goal: >
+    For each member present in the output of the scraping agent get the name and company and search it on linked in to get the profile
+    links and just the links which are direct links to profile
+  backstory: >
+    You are an expert seacrcher and filterer who filters out the profile links of the people based on company and role

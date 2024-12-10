@@ -1,12 +1,37 @@
-| Name               | Associated Company | Role                                          | LinkedIn Profile  |
-|--------------------|-------------------|-----------------------------------------------|--------------------|
-| Isaac Hayes III     | Fanbase           | Chief Executive Officer                       | [LinkedIn Profile](#)     |
-| Ramiro Canovas      | Fanbase           | Chief Technology Officer / Chief Operating Officer | [LinkedIn Profile](#)     |
-| Silvana Ullmann     | Fanbase           | Interim CFO                                   | [LinkedIn Profile](#)     |
-| Julian Bravo        | Fanbase           | Product Operation Coordinator                  | [LinkedIn Profile](#)     |
-| Dre Davis           | Fanbase           | Director/Creator Artist Relations             | [LinkedIn Profile](#)     |
-| Santiago Nogues     | Fanbase           | UX/UI Director                                | [LinkedIn Profile](#)     |
-| Bill Campbell       | Fanbase           | Music, Growth, and Flickz Development Advisor | [LinkedIn Profile](#)     |
-| GW Wright           | Fanbase           | Director Sports/Athletics                     | [LinkedIn Profile](#)     |
+| Name             | Role                                 | Associated Company   | Details                                               |
+|------------------|--------------------------------------|----------------------|-------------------------------------------------------|
+| Isaac Hayes III   | CEO                                 | Fanbase              | Lead the vision and direction of the company.        |
+| Ramiro Canovas    | CTO                                 | Fanbase              | Overseeing technology development and infrastructure. |
+| Julian Bravo      | Product Operation Coordinator       | Fanbase              | Manages the operational aspects of product development.|
+| Dre Davis         | Director / Creator Artist Relations | Fanbase              | Facilitates relationships between creators and the platform. |
+| Santiago Nogues   | UX/UI Director                      | Fanbase              | Ensures optimal user experience and interface design. |
+| Bill Campbell     | Advisor for Music, Growth, and Flickz Development | Fanbase | Provides insights on growth strategies and music integration. |
+| GW Wright         | Director of Sports / Athletics      | Fanbase              | Focuses on the integration of sports and athletics into the platform. |
 
-(Note: Replace "[LinkedIn Profile](#)" with actual LinkedIn URLs when available.)
+### Key Information Summary:
+1. **Investment Overview**:
+   - Price Per Share: $6.65
+   - Funding Goal: $399 - $17M
+   - Valuation: $160.03M
+   - Minimum Investment: $399
+   - Maximum Investment: $3,500,001.40
+
+2. **Investment Bonuses**:
+   - Loyalty Bonus: 5% additional shares for prior investors.
+   - Volume Perks: Rewards based on investment amounts for exclusive features.
+   - StartEngine Owners' Bonus: 10% extra shares for eligible StartEngine shareholders.
+
+3. **Key Features and Updates**:
+   - Alternative to TikTok with new creator-focused features.
+   - Emphasis on creator empowerment and community engagement.
+   - Continuous platform improvements based on user feedback.
+
+4. **Recent Events and Communication**:
+   - Ongoing updates on growth metrics and user engagement strategies.
+   - Highlighted the importance of investing in a creator-centric platform.
+
+5. **Investment Risks**:
+   - Speculative nature of crowdfunding investments.
+   - Acknowledgment of potential loss and illiquidity.
+
+This structured overview provides a clear depiction of the team members' roles and associated companies while summarizing key investment details and platform features offered by Fanbase.
