@@ -42,8 +42,9 @@ academy-ui/.env
 data
 
 # ai agent
-dodao-ai-agents/langgraph-agent/node_modules
-dodao-ai-agents/langgraph-agent/.env
+dodao-ai-agents/ai-agent-langgraph/.env
+dodao-ai-agents/ai-agent-langgraph/__pycache__
+dodao-ai-agents/langgraph-poetry/langgraph_poetry/.env
 
 # Sentry Config File
 academy-ui/.sentryclirc
