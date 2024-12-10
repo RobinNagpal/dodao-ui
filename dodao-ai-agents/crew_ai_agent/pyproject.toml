@@ -1,25 +1,21 @@
-[project]
+[tool.poetry]
 name = "crew_ai_agent"
 version = "0.1.0"
 description = "crew-ai-agent using CrewAI"
-authors = [{ name = "Your Name", email = "you@example.com" }]
-requires-python = ">=3.10,<=3.13"
-dependencies = [
-    "crewai[tools]>=0.83.0,<1.0.0",  # CrewAI core and tools
-    "webdriver-manager>=4.0.0",      # Automatic WebDriver management
-    "selenium>=4.9.1",               # Browser automation for scraping
-    "requests>=2.28.0",              # HTTP requests (fallback or additional scraping)
-    "beautifulsoup4>=4.11.1",        # HTML parsing (optional, for static content)
-    "lxml>=4.9.0"                    # Faster HTML parsing with BeautifulSoup (optional)
-]
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+readme = "README.md"  # Add this if you have a README file
 
-[project.scripts]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<=3.13"
+crewai = { version = ">=0.83.0,<1.0.0", extras = ["tools"] }
+webdriver-manager = ">=4.0.0"
+selenium = ">=4.9.1"
+
+[tool.poetry.scripts]
 crew_ai_agent = "crew_ai_agent.main:run"
-run_crew = "crew_ai_agent.main:run"
-train = "crew_ai_agent.main:train"
-replay = "crew_ai_agent.main:replay"
-test = "crew_ai_agent.main:test"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
