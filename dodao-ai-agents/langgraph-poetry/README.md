@@ -15,7 +15,7 @@
 Create a `.env` file in the `dodao-ai-agents\langgraph-poetry\langgraph_poetry` directory with the following content:
 ```
 OPENAI_API_KEY=your_api_key_here
-SCRAPINGHANT_API_KEY=your_api_key_here
+SCRAPINGANT_API_KEY=your_api_key_here
 ```
 
 Replace `your_api_key_here` with your actual API key.
