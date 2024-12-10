@@ -58,6 +58,9 @@ dodao-lambdas/pull-tweets/node_modules
 dodao-lambdas/pull-tweets/.serverless
 dodao-lambdas/pull-tweets/.chalice
 
+dodao-ai-agents/crew_ai_agent/.venv
+dodao-ai-agents/crew_ai_agent/.env
+dodao-ai-agents/crew_ai_agent/src/crew_ai_agent/__pycache__/
 
 clickable-demos/node_modules
 venv/
