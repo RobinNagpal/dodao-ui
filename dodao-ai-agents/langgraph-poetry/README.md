@@ -11,20 +11,14 @@
 
 ## Installation Guide
 
-### Step 1: Install Dependencies Using Poetry
-Ensure you have `Poetry` installed. Then, install the dependencies:
-```bash
-poetry install
-```
-
-### Step 2: Set Up Environment Variables
-Create a `.env` file in the `langgraph_poetry` directory with the following content:
+### Step 1: Set Up Environment Variables
+Create a `.env` file in the `dodao-ai-agents\langgraph-poetry\langgraph_poetry` directory with the following content:
 ```
 OPENAI_API_KEY=your_api_key_here
 SCRAPINGHANT_API_KEY=your_api_key_here
 ```
 
-Replace `your_api_key_here` with your actual ScrapingAnt API key.
+Replace `your_api_key_here` with your actual API key.
 
 ---
 
