@@ -8,7 +8,7 @@ search_tool = SerperDevTool(
     search_url="https://google.serper.dev/search",
     n_results=2,
 )
-print(search_tool.run(search_query="Isaac Hayes Linkedin"))
+
 scrape_tool = ScrapeWithSeleniumTool()
 # output_file = scraper.run({"urls": ["https://example.com", "https://another.com"]})
 # print(f"Scraped data saved to: {output_file}")
@@ -30,7 +30,7 @@ class CrewAiAgent():
 	@after_kickoff # Optional hook to be executed after the crew has finished
 	def log_results(self, output):
 		# Example of logging results, dynamically changing the output
-		print(f"Results: {output}")
+		# print(f"Results: {output}")
 		return output
 
 	@agent
@@ -47,7 +47,7 @@ class CrewAiAgent():
 		print(task_config)
 		return Task(
 			config=task_config,
-			tools=[scrape_tool,search_tool],
+			tools=[scrape_tool],
 			output_file="teams.txt",
 			# Context=["scrape_task"]
 		)
@@ -69,6 +69,25 @@ class CrewAiAgent():
 			config=task_config,
 			tools=[search_tool],
 			Context=["scrape_task"]
+		)
+
+	@agent
+	def linkedin_scraper(self) -> Agent:
+		return Agent(
+			config=self.agents_config['linkedin_scraper'],
+			tools=[scrape_tool],
+			verbose=True,
+		)
+
+	@task
+	def linkedin_scrape_task(self) -> Task:
+		task_config = self.tasks_config['linkedin_scrape_task']	
+		print(task_config)
+		return Task(
+			config=task_config,
+			tools=[scrape_tool],
+			output_file="data.txt",
+			Context=["scrape_task","search_task"]
 		)
 
 
