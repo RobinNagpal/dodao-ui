@@ -67,6 +67,7 @@ class CrewAiAgent():
 		print(task_config)
 		return Task(
 			config=task_config,
+			output_file="profiles.txt",
 			tools=[search_tool],
 			Context=["scrape_task"]
 		)
