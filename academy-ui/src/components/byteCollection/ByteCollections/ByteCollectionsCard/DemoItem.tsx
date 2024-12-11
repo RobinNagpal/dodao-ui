@@ -68,7 +68,13 @@ export default function DemoItem(props: DemoItemProps) {
             </div>
           </Link>
           <div className="flex">
-            {showItemTypeBadge && <PrimaryColorBadge>Clickable Demo</PrimaryColorBadge>}
+            {showItemTypeBadge && (
+              <Link href={demoViewUrl}>
+                <PrimaryColorBadge highlighted={true} className="cursor-pointer">
+                  Clickable Demo
+                </PrimaryColorBadge>
+              </Link>
+            )}
             {demo?.archive && (
               <PrimaryColorBadge onClick={() => openItemUnarchiveModal(demo.demoId, demo.title, ByteCollectionItemType.ClickableDemo)}>
                 Archived

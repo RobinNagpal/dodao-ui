@@ -43,7 +43,13 @@ export default function ShortItem(props: ShortItemProps) {
             </div>
           </Link>
           <div className="flex">
-            {showItemTypeBadge && <PrimaryColorBadge>Short Video</PrimaryColorBadge>}
+            {showItemTypeBadge && (
+              <Link href={shortViewUrl}>
+                <PrimaryColorBadge highlighted={true} className="cursor-pointer">
+                  Short Video
+                </PrimaryColorBadge>
+              </Link>
+            )}
             {short.archive && (
               <PrimaryColorBadge onClick={() => openItemUnarchiveModal(short.shortId, short.title, ByteCollectionItemType.ShortVideo)}>
                 Archived

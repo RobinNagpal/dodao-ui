@@ -79,7 +79,13 @@ export default function ByteItem(props: ByteItemProps) {
           </Link>
 
           <div className="flex">
-            {showItemTypeBadge && <PrimaryColorBadge>Tidbit</PrimaryColorBadge>}
+            {showItemTypeBadge && (
+              <Link href={byteViewUrl}>
+                <PrimaryColorBadge highlighted={true} className="cursor-pointer">
+                  Tidbit
+                </PrimaryColorBadge>
+              </Link>
+            )}
             {byte?.archive && (
               <PrimaryColorBadge onClick={() => openItemUnarchiveModal(byte.byteId, byte.name, ByteCollectionItemType.Byte)}>Archived</PrimaryColorBadge>
             )}
