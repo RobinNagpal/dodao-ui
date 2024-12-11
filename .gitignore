@@ -61,6 +61,7 @@ dodao-lambdas/pull-tweets/.chalice
 dodao-ai-agents/crew_ai_agent/.venv
 dodao-ai-agents/crew_ai_agent/.env
 dodao-ai-agents/crew_ai_agent/src/crew_ai_agent/__pycache__/
+dodao-ai-agents/crew_ai_agent/src/crew_ai_agent/tools/__pycache__/
 
 clickable-demos/node_modules
 venv/

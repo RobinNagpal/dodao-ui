@@ -25,3 +25,12 @@ search_task:
       - Company: The company or organization associated with the team member.
       - All relevant links to that name
   agent: searcher
+
+linkedin_scrape_task:
+  description: >
+    Scrape through all the linkedin profiles from the previous agent and Extract the data of core members of startup focusing on their experience, academic background, certifications
+    , and any other relevant information that highlights the team’s qualifications. Present the data objectively without 
+    interpreting or categorizing any credential as a strength or weakness; simply provide the details as they are.
+  expected_output: >
+    A file containing enough data for each member base on above description of your task
+  agent: linkedin_scraper
