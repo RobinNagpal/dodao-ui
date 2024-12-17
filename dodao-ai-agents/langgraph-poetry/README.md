@@ -94,3 +94,11 @@ The workflow is orchestrated using `StateGraph` from `langgraph`, ensuring smoot
 6. The team’s credentials are evaluated against industry standards.
 7. A structured report is generated and shared with the user.
 
+
+
+# Generic workflow
+- We populate the initial information based on the project scrapped info.
+- Now we represent various fields in the state. Based on which fields are missing, the tools can be invoked.
+- We can have a separate field corresponding to each tool. For example for team member, we can have team_member_linkedin_info.
+- If `team_member_linkedin_info` is empty then for each member in the inital info, we can invoke the tool to get the linkedin profile url.
+- Once we have the linkedin profile url, we can invoke the tool to get the linkedin profile info and populate `processed_team_member_linkedin_info`.

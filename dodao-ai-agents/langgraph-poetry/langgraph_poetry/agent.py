@@ -22,18 +22,55 @@ SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 SCRAPIN_API_KEY = os.getenv("SCRAPIN_API_KEY")
 search = GoogleSerperAPIWrapper()
 
+
+class RawTeamMemberInfo(TypedDict):
+    name: str
+    role: str
+    one_line: str  # Years of experience (optional)
+
+
+class ProcessedTeamMemberInfo(TypedDict):
+    name: str
+    role: str
+    linkedin_url: str
+    academic_background: str
+    academic_quality: str
+    industry_experience: str
+    industry_experience_quality: str
+    experience_relevant_to_startup: str
+
+
+class State(TypedDict):
+    project_scrapped_content: str # Full scraped content of the crowdfunding page
+    parsed_project_info: TypedDict(
+        "InitialInfo",
+        {
+            "team_members": list[RawTeamMemberInfo],
+            "startup_one_line": str,
+            "industry_details": str,
+        }
+    )
+    messages: Annotated[list, add_messages]
+    # phase: str
+    # industry_credentials: str
+    team_members_with_linkedin_urls: list[ProcessedTeamMemberInfo]
+    processed_team_members_info: list[ProcessedTeamMemberInfo]
+
+
+
 @tool("scrape_web")
 def scrape_web(url: str) -> str:
     """Scrape the content of a URL using ScrapingAntLoader."""
     try:
         print("Scraping URL:", url)
-        loader = ScrapingAntLoader([url], api_key=SCRAPINGANT_API_KEY)  
-        documents = loader.load()  
+        loader = ScrapingAntLoader([url], api_key=SCRAPINGANT_API_KEY)
+        documents = loader.load()
         page_content = documents[0].page_content
         print(page_content)
         return page_content
     except Exception as e:
         return f"Failed to scrape URL: {e}"
+
 
 @tool("search_linkedln_url")
 def search_linkedln_url(query: str) -> str:
@@ -51,7 +88,8 @@ def search_linkedln_url(query: str) -> str:
         return "No LinkedIn URL found."
     except Exception as e:
         return f"Search failed: {e}"
-    
+
+
 @tool("extract_team_and_queries")
 def extract_team_and_queries(content: str) -> str:
     """
@@ -76,6 +114,7 @@ def extract_team_and_queries(content: str) -> str:
     response = llm.invoke([HumanMessage(content=prompt)])
     return response.content.strip()
 
+
 @tool("extract_credentials")
 def extract_credentials(content: str) -> str:
     """
@@ -94,7 +133,8 @@ def extract_credentials(content: str) -> str:
 
     response = llm.invoke([HumanMessage(content=prompt)])
     return response.content.strip()
-    
+
+
 @tool("scrape_linkedin_profile")
 def scrape_linkedin_profile(linkedin_urls: List[str]) -> str:
     """
@@ -117,20 +157,18 @@ def scrape_linkedin_profile(linkedin_urls: List[str]) -> str:
             except json.JSONDecodeError:
                 profiles_data.append({"linkedin_url": linkedin_url, "error": "Invalid JSON response"})
         else:
-            profiles_data.append({"linkedin_url": linkedin_url, "error": f"Failed to fetch LinkedIn data: {response.status_code} {response.text}"})
+            profiles_data.append({"linkedin_url": linkedin_url,
+                                  "error": f"Failed to fetch LinkedIn data: {response.status_code} {response.text}"})
     return json.dumps(profiles_data)
 
-tools = [scrape_web, extract_credentials, extract_team_and_queries, scrape_linkedin_profile]
 
-class State(TypedDict):
-    messages: Annotated[list, add_messages]
-    phase: str
-    industry_credentials: str
+tools = [scrape_web, extract_credentials, extract_team_and_queries, scrape_linkedin_profile]
 
 graph_builder = StateGraph(State)
 
 llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
 llm_with_tools = llm.bind_tools(tools)
+
 
 def chatbot(state: State):
     messages = state["messages"]
@@ -141,7 +179,7 @@ def chatbot(state: State):
 
     if len(messages) < 1:
         return {"messages": [llm_with_tools.invoke(messages)]}
-    
+
     last_msg = messages[-1]
 
     if isinstance(last_msg, ToolMessage) and state["phase"] == "START":
@@ -167,7 +205,7 @@ def chatbot(state: State):
             credentials = content
             state["industry_credentials"] = credentials
             print(f"Extracted Industry Credentials: {credentials}")
-            
+
             user_instruction = (
                 "You have the full content of a startup's crowdfunding page. "
                 "Please identify the core team members mentioned on the page. "
@@ -197,9 +235,9 @@ def chatbot(state: State):
                     position = q.get("position", "")
                     query = q.get("query", "")
                     if query:
-                        tool_response = search_linkedln_url.invoke(query) 
+                        tool_response = search_linkedln_url.invoke(query)
                         if "linkedin.com/in/" in tool_response:
-                            linkedin_results.append(tool_response) 
+                            linkedin_results.append(tool_response)
 
                 summary_message = (
                     "Now that we are providing you with the LinkedIn URLs, use the `scrape_linkedin_profile` tool "
@@ -215,11 +253,12 @@ def chatbot(state: State):
                 new_messages = messages + [HumanMessage(content=summary_message)]
                 state["phase"] = "LINKEDIN_PROFILES_RESULTS"
                 print("finding linkedln url 2")
-                return {"messages": [llm_with_tools.invoke(new_messages)], "phase": state["phase"], "industry_credentials": state["industry_credentials"],}
+                return {"messages": [llm_with_tools.invoke(new_messages)], "phase": state["phase"],
+                        "industry_credentials": state["industry_credentials"], }
         except Exception as e:
             print("Error parsing JSON:", e)
             return {"messages": [AIMessage(content="Error parsing the JSON.")]}
-        
+
     if isinstance(last_msg, ToolMessage) and state["phase"] == "LINKEDIN_PROFILES_RESULTS":
         print("evaluting team info 1")
         content = last_msg.content.strip()
@@ -237,7 +276,7 @@ def chatbot(state: State):
                 industry_credentials = state.get("industry_credentials", "")
                 profiles_json = json.dumps(profiles, indent=2)
                 full_instruction = f"{verification_instruction}\n\nIndustry Credentials Needed:\n{industry_credentials}\n\nProfile Data:\n{profiles_json}"
-                
+
                 new_messages = messages + [HumanMessage(content=full_instruction)]
                 state["phase"] = "FINAL_REPORT"
                 print("evaluting team info 2")
@@ -251,8 +290,9 @@ def chatbot(state: State):
         except Exception as e:
             print("Error processing scraped profiles:", e)
             return {"messages": [AIMessage(content="Error processing scraped LinkedIn profiles.")], "phase": "DONE"}
-        
+
     return {"messages": [llm_with_tools.invoke(messages)]}
+
 
 graph_builder.add_node("chatbot", chatbot)
 tool_node = ToolNode(tools=tools)
