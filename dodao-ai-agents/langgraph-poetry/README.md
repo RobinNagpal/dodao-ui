@@ -37,9 +37,9 @@ Replace `your_api_key_here` with your actual API key.
    ```
 
 2. **Run the Script**:
-   Navigate to the `dodao-ai-agents\langgraph-poetry\langgraph_poetry` folder and execute the `scrapper.py` file:
+   Navigate to the `dodao-ai-agents\langgraph-poetry\langgraph_poetry` folder and execute the `agent.py` file:
    ```bash
-   poetry run python scrapper.py
+   poetry run python agent.py
    ```
 
 ---
