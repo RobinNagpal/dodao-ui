@@ -1,61 +1,48 @@
-from crewai.tools import BaseTool
+import os
+from langchain_community.document_loaders import ScrapingAntLoader
 from pydantic import BaseModel, Field
 from typing import Type, List
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
-import time
+from crewai.tools import BaseTool
 
 
-class ScrapeWithSeleniumInput(BaseModel):
-    """Input schema for the Selenium Web Scraper tool."""
+class ScrapeWithScrapingAntInput(BaseModel):
+    """Input schema for the ScrapingAnt Web Scraper tool."""
     urls: List[str] = Field(..., description="List of URLs to scrape.")
+    output_file: str = Field(..., description="Path to save the output text file.")
 
 
-class ScrapeWithSeleniumTool(BaseTool):
-    """Selenium Web Scraper Tool."""
-    name: str = "Selenium Web Scraper"
-    description: str = "Scrapes content from webpages, including handling CAPTCHAs and dynamic JavaScript content."
-    args_schema: Type[BaseModel] = ScrapeWithSeleniumInput
+class ScrapeWithScrapingAntTool(BaseTool):
+    """ScrapingAnt Web Scraper Tool."""
+    name: str = "ScrapingAnt Web Scraper"
+    description: str = "Scrapes content from webpages using ScrapingAnt, handling dynamic JavaScript content."
+    args_schema: Type[BaseModel] = ScrapeWithScrapingAntInput
 
-    def _run(self, urls: List[str]) -> str:
-        # Configure Chrome options for headless mode
-        options = Options()
-        options.add_argument("--disable-blink-features=AutomationControlled")  # Bypass bot detection
-        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.90 Safari/537.36")
-        options.add_argument("--headless")
-        options.add_argument("--disable-gpu")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
+    def _run(self, urls: List[str], output_file: str) -> str:
+        try:
+            # Fetch API key from environment variables
+            api_key = os.getenv("SCRAPINGANT_API_KEY")
+            if not api_key:
+                return "Error: SCRAPINGANT_API_KEY is not set in environment variables."
 
-        # Initialize WebDriver
-        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+            # Initialize the ScrapingAntLoader
+            scrapingant_loader = ScrapingAntLoader(
+                urls=urls,
+                api_key=api_key,
+                continue_on_failure=True
+            )
 
-        # Accumulate all scraped content into a single string
-        combined_content = ""
+            # Load the documents (webpage content)
+            documents = scrapingant_loader.load()
 
-        for url in urls:
-            try:
-                driver.get(url)
+            # Combine the content from all documents
+            combined_content = "\n\n".join([doc.page_content for doc in documents])
 
-                # Allow time for JavaScript challenge to process
-                time.sleep(15)  # Increase time if the challenge persists
-                WebDriverWait(driver, 20).until(
-                    EC.presence_of_all_elements_located((By.TAG_NAME, "body"))
-                )
+            # Write the content to a text file
+            with open(output_file, "w", encoding="utf-8") as file:
+                file.write("Scraped Content\n")
+                file.write("=" * 20 + "\n")
+                file.write(combined_content)
 
-                # Fetch the page source and append to combined content
-                page_content = driver.page_source
-                combined_content += f"URL: {url}\nContent:\n{page_content}\n\n"
-            except Exception as e:
-                combined_content += f"URL: {url}\nError: {str(e)}\n\n"
-
-        # Quit the WebDriver
-        driver.quit()
-
-        # Return the combined HTML content as the output
-        return combined_content
+            return combined_content
+        except Exception as e:
+            return f"An error occurred: {str(e)}"
