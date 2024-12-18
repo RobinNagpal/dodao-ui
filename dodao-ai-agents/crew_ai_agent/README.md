@@ -26,6 +26,8 @@ The project requires certain environment variables to be set. Change `.env.examp
 MODEL=model you wan to use
 OPENAI_API_KEY=your_openai_api_key_here
 SERPER_API_KEY=your_serper_api_key_here
+SCRAPINGANT_API_KEY=your_scraping_ant_api_key_here
+SCRAPIN_API_KEY=your_scrapin_api_key_here
 ```
 
 

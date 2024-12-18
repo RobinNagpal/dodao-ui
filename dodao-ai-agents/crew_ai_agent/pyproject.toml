@@ -10,13 +10,6 @@ readme = "README.md"  # Add this if you have a README file
 [tool.poetry.dependencies]
 python = ">=3.10,<=3.13"
 crewai = { version = ">=0.83.0,<1.0.0", extras = ["tools"] }
-webdriver-manager = ">=4.0.0"
-selenium = ">=4.9.1"
-seleniumbase = "^4.33.9"
-pyautogui = "^0.9.54"
-spider-client = "^0.1.25"
-cloudscraper = "^1.2.71"
-beautifulsoup4 = "^4.12.3"
 scrapingant-client = "^2.1.0"
 langchain = "^0.3.12"
 langchain-community = "^0.3.12"
