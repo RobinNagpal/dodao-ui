@@ -102,3 +102,55 @@ The workflow is orchestrated using `StateGraph` from `langgraph`, ensuring smoot
 - We can have a separate field corresponding to each tool. For example for team member, we can have team_member_linkedin_info.
 - If `team_member_linkedin_info` is empty then for each member in the inital info, we can invoke the tool to get the linkedin profile url.
 - Once we have the linkedin profile url, we can invoke the tool to get the linkedin profile info and populate `processed_team_member_linkedin_info`.
+
+
+# Current Team Analysis workflow
+1) Start -> We have the list of urls (one for now)
+2) Store this in projectUrls field in state. for now it will be an array of length one. 
+3) ProjectInfoScrapper ->  We want to scrape the content from URLs and populate it in the state. 
+   - one liner about the company
+   - team members
+   - industry
+4) LinkedinUrlSearcher - searches linkedin profile urls for each team member and adds it to the memory. query - ${name} ${title} ${company} Linkedin Profile 
+5) LinkedinProfileScrapper - scrape information for each user and populate it in the state
+6) AnalyzeLinkedinProfile - analyze the linkedin profile for each member and create a string table
+   - Name
+   - Title
+   - Academic credentials
+   - Quality of academic credentials
+   - Work Experience
+   - Depth of work experience
+   - Relevant Skills
+7) Report - export report in a markdown file.
+
+
+# State
+
+State
+   - projectUrls: List[str]
+   - projectInfo: Dict[str, Any]
+     - oneLiner: str
+     - industry: str
+     - teamMembers: List[str]
+       - id: str # generate some id to math the team members
+       - name: str
+       - title: str
+       - info: str
+   - teamMemberLinkedinUrls: Dict[str, str]
+     - id: str 
+     - name: str
+     - url: str
+   - rawLinkedinProfiles: Dict[str, Any]
+     - id: str
+     - name: str
+     - profile: json # linkedin scrapped content   
+   - analyzedTeamProfiles: Dict[str, Any]
+     - id: str
+     - name: str
+     - title: str
+     - info: str
+     - academicCredentials: str
+     - qualityOfAcademicCredentials: str
+     - workExperience: str
+     - depthOfWorkExperience: str
+     - relevantSkills: str
