@@ -22,41 +22,10 @@ SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 SCRAPIN_API_KEY = os.getenv("SCRAPIN_API_KEY")
 search = GoogleSerperAPIWrapper()
 
-
-class RawTeamMemberInfo(TypedDict):
-    name: str
-    role: str
-    one_line: str  # Years of experience (optional)
-
-
-class ProcessedTeamMemberInfo(TypedDict):
-    name: str
-    role: str
-    linkedin_url: str
-    academic_background: str
-    academic_quality: str
-    industry_experience: str
-    industry_experience_quality: str
-    experience_relevant_to_startup: str
-
-
 class State(TypedDict):
-    project_scrapped_content: str # Full scraped content of the crowdfunding page
-    parsed_project_info: TypedDict(
-        "InitialInfo",
-        {
-            "team_members": list[RawTeamMemberInfo],
-            "startup_one_line": str,
-            "industry_details": str,
-        }
-    )
     messages: Annotated[list, add_messages]
-    # phase: str
-    # industry_credentials: str
-    team_members_with_linkedin_urls: list[ProcessedTeamMemberInfo]
-    processed_team_members_info: list[ProcessedTeamMemberInfo]
-
-
+    phase: str
+    industry_credentials: str
 
 @tool("scrape_web")
 def scrape_web(url: str) -> str:
@@ -317,3 +286,18 @@ events = app.stream(
 )
 for event in events:
     event["messages"][-1].pretty_print()
+
+# for visualization of graph
+# output_file = "graph_visualization.png"
+
+# try:
+#     # Generate the graph as a PNG file
+#     graph_image = app.get_graph().draw_mermaid_png()
+    
+#     # Save the PNG file to disk
+#     with open(output_file, "wb") as f:
+#         f.write(graph_image)
+    
+#     print(f"Graph visualization saved as '{output_file}'. Open this file to view the graph.")
+# except Exception as e:
+#     print(f"Failed to generate or save the graph: {e}")
