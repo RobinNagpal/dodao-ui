@@ -123,6 +123,7 @@ def extract_project_info_node(state: State):
     try:
         project_info = json.loads(response.content)
         state["projectInfo"] = project_info
+        print(state["projectInfo"])
         prompt = "Project info extracted successfully."
         return {
             "messages": [HumanMessage(content=prompt)],
@@ -167,113 +168,168 @@ def find_linkedin_urls_node(state: State):
             "url": result  # Either a valid URL or ""
         })
 
-    # Update the state
     state["teamMemberLinkedinUrls"] = linkedin_urls
-
-    # Prepare a list of only valid URLs for the next step
-    valid_linkedin_urls = [m["url"] for m in linkedin_urls if m["url"]]
+    print(state["teamMemberLinkedinUrls"])
 
     return {
-        "messages": [HumanMessage(content=f"Scrape LinkedIn profiles for these URLs: {json.dumps(valid_linkedin_urls)}")],
+        "messages": [HumanMessage(content="linkedln urls finded. now we have to scrape linkedin profiles")],
+        "projectUrls": state["projectUrls"],
+        "scraped_content": state["scraped_content"],
+        "projectInfo": state["projectInfo"],
         "teamMemberLinkedinUrls": state["teamMemberLinkedinUrls"]
     }
 
 def scrape_linkedin_profiles_node(state: State):
     """
-    Uses the Scrapin.io API to retrieve LinkedIn profile data from the provided URLs.
-    The last message should contain a JSON array of URLs to scrape.
+    Uses the Scrapin.io API to retrieve LinkedIn profile data based on the URLs
+    available in state['teamMemberLinkedinUrls'].
+
+    If a team member has no LinkedIn URL (empty string), their profile will be empty.
     """
 
-    last_msg = state["messages"][-1]
-    try:
-        linkedin_urls = json.loads(last_msg.content)
+    # Inline function to scrape a single LinkedIn profile
+    def scrape_linkedin_profile(url: str) -> Dict[str, Any]:
+        if not url:
+            # No URL provided, return empty profile
+            return {}
 
-        # Inline function to scrape LinkedIn profiles
-        def scrape_linkedin_profile(linkedin_urls: List[str]) -> List[Dict[str, Any]]:
-            url = "https://api.scrapin.io/enrichment/profile"
-            profiles_data = []
-            for linkedin_url in linkedin_urls:
-                params = {
-                    "apikey": SCRAPIN_API_KEY,
-                    "linkedInUrl": linkedin_url
-                }
-                response = requests.get(url, params=params)
-                if response.status_code == 200:
-                    try:
-                        profile = response.json().get("person", {})
-                        profiles_data.append(profile)
-                    except json.JSONDecodeError:
-                        profiles_data.append({"linkedin_url": linkedin_url, "error": "Invalid JSON response"})
-                else:
-                    profiles_data.append({"linkedin_url": linkedin_url,
-                                          "error": f"Failed to fetch LinkedIn data: {response.status_code} {response.text}"})
-            return profiles_data
-
-        profiles_data = scrape_linkedin_profile(linkedin_urls)
-
-        # Match profiles to teamMemberLinkedinUrls
-        rawProfiles = []
-        for i, prof in enumerate(profiles_data):
-            member_id = state["teamMemberLinkedinUrls"][i]["id"]
-            member_name = state["teamMemberLinkedinUrls"][i]["name"]
-            rawProfiles.append({
-                "id": member_id,
-                "name": member_name,
-                "profile": prof
-            })
-
-        state["rawLinkedinProfiles"] = rawProfiles
-
-        # Next: Evaluate team members
-        evaluation_prompt = (
-            "You have the startup details and the raw LinkedIn profiles of team members.\n"
-            f"Startup details:\n{json.dumps(state['projectInfo'], indent=2)}\n\n"
-            f"Scraped Content:\n{state['scraped_content']}\n\n"
-            f"Raw LinkedIn Profiles:\n{json.dumps(rawProfiles, indent=2)}\n\n"
-            "Evaluate each team member and produce a JSON array `analyzedTeamProfiles`.\n"
-            "For each member, return:\n"
-            "- id, name, title, info (from projectInfo)\n"
-            "- academicCredentials\n"
-            "- qualityOfAcademicCredentials\n"
-            "- workExperience\n"
-            "- depthOfWorkExperience\n"
-            "- relevantSkills\n\n"
-            "Use only the given LinkedIn profile data and scraped content, do not assume.\n"
-            "Return ONLY JSON, no extra text."
-        )
-        return {
-            "messages": [HumanMessage(content=evaluation_prompt)],
+        request_url = "https://api.scrapin.io/enrichment/profile"
+        params = {
+            "apikey": SCRAPIN_API_KEY,
+            "linkedInUrl": url
         }
-    except Exception:
-        return {"messages": [AIMessage(content="Error processing LinkedIn profiles.")]}
+        response = requests.get(request_url, params=params)
+        if response.status_code == 200:
+            try:
+                profile = response.json().get("person", {})
+                return profile
+            except json.JSONDecodeError:
+                return {"linkedin_url": url, "error": "Invalid JSON response"}
+        else:
+            return {"linkedin_url": url,
+                    "error": f"Failed to fetch LinkedIn data: {response.status_code} {response.text}"}
+
+    # Build rawProfiles by scraping each team member's LinkedIn (if available)
+    rawProfiles = []
+    for member in state["teamMemberLinkedinUrls"]:
+        profile_data = scrape_linkedin_profile(member["url"])
+        rawProfiles.append({
+            "id": member["id"],
+            "name": member["name"],
+            "profile": profile_data
+        })
+
+    state["rawLinkedinProfiles"] = rawProfiles
+    print(state["rawLinkedinProfiles"])
+
+    return {
+        "messages": [HumanMessage(content="Linkedin profiles scraped. Now we have to evaluate each team member.")],
+        "projectUrls": state["projectUrls"],
+        "scraped_content": state["scraped_content"],
+        "projectInfo": state["projectInfo"],
+        "teamMemberLinkedinUrls": state["teamMemberLinkedinUrls"],
+        "rawLinkedinProfiles": state["rawLinkedinProfiles"]
+    }
 
 def evaluate_node(state: State):
     """
-    Parses the final analyzedTeamProfiles from LLM and stores it.
+    For each team member in rawLinkedinProfiles, invoke the LLM individually.
+    Collect results into analyzedTeamProfiles.
+    Finally, produce a table as final output.
     """
-    last_msg = state["messages"][-1]
-    try:
-        analyzed_profiles = json.loads(last_msg.content)
-        state["analyzedTeamProfiles"] = analyzed_profiles
-        return {"messages": [AIMessage(content="Final evaluation of the team completed.")]}
-    except Exception:
-        return {"messages": [AIMessage(content="Error parsing analyzed team profiles.")]}
+
+    print("Evaluating each team member individually...")
+
+    analyzed_profiles = []
+    for member_data in state["rawLinkedinProfiles"]:
+        member_id = member_data["id"]
+        member_name = member_data["name"]
+        member_profile = member_data["profile"]
+
+        prompt = (
+            "You have information about a startup and one of its core team members.\n\n"
+            f"Startup details:\n{json.dumps(state['projectInfo'], indent=2)}\n\n"
+            f"Scraped Content:\n{state['scraped_content']}\n\n"
+            f"This team member's LinkedIn profile data:\n{json.dumps(member_profile, indent=2)}\n\n"
+            "Task:\n"
+            "1. Identify what credentials an investor should look for in core team members of a startup in this industry.\n"
+            "2. For this specific team member, extract the following details:\n"
+            "   - id, name, title, info (from projectInfo)\n"
+            "   - academicCredentials: list any educational institutes (if found)\n"
+            "   - qualityOfAcademicCredentials: if institutes are known, briefly assess their prestige/ranking\n"
+            "   - workExperience: focus on previous roles relevant to the startup’s domain\n"
+            "   - depthOfWorkExperience: how comprehensive or advanced this experience is\n"
+            "   - relevantSkills: skills directly useful to this startup and its industry\n\n"
+            "If some details are not present or cannot be found, leave them empty.\n"
+            "Do not add fake data.\n"
+            "Use only the given LinkedIn profile data, scraped content, and startup info.\n"
+            "Return ONLY a raw JSON object with these fields and no extra text. No code fences.\n"
+        )
+
+        response = llm.invoke([HumanMessage(content=prompt)])
+
+        try:
+            analyzed_profile = json.loads(response.content)
+            required_fields = [
+                "id", "name", "title", "info", "academicCredentials",
+                "qualityOfAcademicCredentials", "workExperience",
+                "depthOfWorkExperience", "relevantSkills"
+            ]
+            for field in required_fields:
+                if field not in analyzed_profile:
+                    analyzed_profile[field] = ""
+
+            analyzed_profiles.append(analyzed_profile)
+        except json.JSONDecodeError:
+            # If parsing fails, create a fallback entry or skip
+            analyzed_profiles.append({
+                "id": member_id,
+                "name": member_name,
+                "title": "",
+                "info": "",
+                "academicCredentials": "",
+                "qualityOfAcademicCredentials": "",
+                "workExperience": "",
+                "depthOfWorkExperience": "",
+                "relevantSkills": ""
+            })
+
+    # Store in state
+    state["analyzedTeamProfiles"] = analyzed_profiles
+    print(state["analyzedTeamProfiles"])
+
+    table_prompt = (
+        "You have the following JSON array of analyzed team profiles:\n"
+        f"{json.dumps(analyzed_profiles, indent=2)}\n\n"
+        "Please convert this JSON data into a well-formatted table. "
+        "The columns should be the keys (id, name, title, info, academicCredentials, "
+        "qualityOfAcademicCredentials, workExperience, depthOfWorkExperience, relevantSkills) "
+        "and each row should correspond to one team member.\n"
+        "Do not add extra commentary or text, return ONLY the table."
+    )
+
+    table_response = llm.invoke([HumanMessage(content=table_prompt)])
+
+    return {
+        "messages": [AIMessage(content="Final evaluation of the team completed.\n\n" + table_response.content)],
+        "analyzedTeamProfiles": state["analyzedTeamProfiles"]
+    }
 
 # Add nodes to the graph
 graph_builder.add_node("start", start_node)
 graph_builder.add_node("scrape_page", scrape_node)
 graph_builder.add_node("extract_project_info", extract_project_info_node)
 graph_builder.add_node("find_linkedin_urls", find_linkedin_urls_node)
-# graph_builder.add_node("scrape_linkedin_profiles", scrape_linkedin_profiles_node)
-# graph_builder.add_node("evaluate", evaluate_node)
+graph_builder.add_node("scrape_linkedin_profiles", scrape_linkedin_profiles_node)
+graph_builder.add_node("evaluate", evaluate_node)
 
 # Add edges (control flow)
 graph_builder.add_edge(START, "start")
 graph_builder.add_edge("start", "scrape_page")
 graph_builder.add_edge("scrape_page", "extract_project_info")
 graph_builder.add_edge("extract_project_info", "find_linkedin_urls")
-# graph_builder.add_edge("find_linkedin_urls", "scrape_linkedin_profiles")
-# graph_builder.add_edge("scrape_linkedin_profiles", "evaluate")
+graph_builder.add_edge("find_linkedin_urls", "scrape_linkedin_profiles")
+graph_builder.add_edge("scrape_linkedin_profiles", "evaluate")
 
 app = graph_builder.compile(checkpointer=memory)
 
