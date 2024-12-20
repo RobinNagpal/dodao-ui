@@ -247,23 +247,31 @@ def evaluate_node(state: State):
         member_profile = member_data["profile"]
 
         prompt = (
-            "You have information about a startup and one of its core team members.\n\n"
-            f"Startup details:\n{json.dumps(state['projectInfo'], indent=2)}\n\n"
-            f"Scraped Content:\n{state['scraped_content']}\n\n"
-            f"This team member's LinkedIn profile data:\n{json.dumps(member_profile, indent=2)}\n\n"
-            "Task:\n"
-            "1. Identify what credentials an investor should look for in core team members of a startup in this industry.\n"
-            "2. For this specific team member, extract the following details:\n"
-            "   - id, name, title, info (from projectInfo)\n"
-            "   - academicCredentials: list any educational institutes (if found)\n"
-            "   - qualityOfAcademicCredentials: if institutes are known, briefly assess their prestige/ranking\n"
-            "   - workExperience: focus on previous roles relevant to the startup’s domain\n"
-            "   - depthOfWorkExperience: how comprehensive or advanced this experience is\n"
-            "   - relevantSkills: skills directly useful to this startup and its industry\n\n"
-            "If some details are not present or cannot be found, leave them empty.\n"
-            "Do not add fake data.\n"
-            "Use only the given LinkedIn profile data, scraped content, and startup info.\n"
-            "Return ONLY a raw JSON object with these fields and no extra text. No code fences.\n"
+            "You have information about a startup, its industry, and the LinkedIn profile data (if available) for one of its core team members.\n\n"
+            "The goal is to evaluate how well each team member's credentials align with their role/title and the startup's industry.\n"
+            "If no LinkedIn data is available for this member, use only the provided startup info and team member info.\n\n"
+            "Startup details:\n"
+            f"{json.dumps(state['projectInfo'], indent=2)}\n\n"
+            "Scraped Content:\n"
+            f"{state['scraped_content']}\n\n"
+            "Team Member's LinkedIn Profile Data (may be empty):\n"
+            f"{json.dumps(member_profile, indent=2)}\n\n"
+            "Tasks:\n"
+            "1. Identify the credentials and qualifications an investor would look for in core team members of a startup in this industry.\n"
+            "2. For this specific team member, return the following fields as a JSON object:\n"
+            "   - id (from projectInfo)\n"
+            "   - name (from projectInfo)\n"
+            "   - title (from projectInfo)\n"
+            "   - info (from projectInfo)\n"
+            "   - academicCredentials: list of educational institutes and degrees earned (if any found)\n"
+            "   - qualityOfAcademicCredentials: provide a brief assessment of the institutes' prestige/ranking if known\n"
+            "   - workExperience: summarize previous roles and experiences relevant to the startup’s industry and this member's title\n"
+            "   - depthOfWorkExperience: evaluate how comprehensive or advanced this experience is in relation to the startup's credentials and qualification\n"
+            "   - relevantSkills: list specific skills directly useful for the startup and its industry\n\n"
+            "Important Notes:\n"
+            "- If the LinkedIn profile or scraped content does not provide certain details, leave the corresponding fields empty.\n"
+            "- Do not invent or guess details. Only use the provided data from the startup info, scraped content, and LinkedIn profile.\n"
+            "- Return ONLY a raw JSON object with these fields and no extra text. Do not include code fences or additional formatting.\n"
         )
 
         response = llm.invoke([HumanMessage(content=prompt)])
@@ -309,9 +317,13 @@ def evaluate_node(state: State):
     )
 
     table_response = llm.invoke([HumanMessage(content=table_prompt)])
+    final_table = table_response.content
+
+    with open("final_table.md", "w", encoding="utf-8") as f:
+        f.write(final_table)
 
     return {
-        "messages": [AIMessage(content="Final evaluation of the team completed.\n\n" + table_response.content)],
+        "messages": [AIMessage(content="Final evaluation of the team completed.\n\n" + table_response.content + "\n\nTable saved as final_table.md")],
         "analyzedTeamProfiles": state["analyzedTeamProfiles"]
     }
 
@@ -334,6 +346,6 @@ graph_builder.add_edge("scrape_linkedin_profiles", "evaluate")
 app = graph_builder.compile(checkpointer=memory)
 
 # Example run:
-events = app.stream({"messages": [("user", "https://wefunder.com/fluyo")]}, config, stream_mode="values")
+events = app.stream({"messages": [("user", "https://wefunder.com/arrofinance")]}, config, stream_mode="values")
 for event in events:
     event["messages"][-1].pretty_print()
