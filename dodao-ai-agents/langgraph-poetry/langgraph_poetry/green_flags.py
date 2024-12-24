@@ -199,7 +199,7 @@ def finalize_green_flags_report_node(state: State):
         f"{gf_evaluation}\n\n"
         "Now create a final, detailed report focusing ONLY on the startup's green flags, integrating the identified industry-standard green flags and the evaluation of the startup’s performance against them. "
         "The report should only cover green flags. "
-        "If a particular parameter does not indicate a green flag, remove it from the report Avoid any repetition of information unless necessary. "
+        "If a particular parameter does not indicate a green flag, remove it from the report. Avoid any repetition of information unless necessary. "
         "Return only the textual report."
     )
 
