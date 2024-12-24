@@ -24,7 +24,7 @@ class State(TypedDict):
     greenFlagsEvaluation: str   
     finalGreenFlagsReport: str
 
-llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
+llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
 
 graph_builder = StateGraph(State)
 memory = MemorySaver()
@@ -218,7 +218,6 @@ def finalize_green_flags_report_node(state: State):
         "finalGreenFlagsReport": state["finalGreenFlagsReport"]
     }
 
-# Add nodes to the graph
 graph_builder.add_node("scrape_multiple_urls", scrape_multiple_urls_node)
 graph_builder.add_node("aggregate_scraped_content", aggregate_scraped_content_node)
 graph_builder.add_node("extract_industry_details", extract_industry_details_node)
@@ -227,7 +226,6 @@ graph_builder.add_node("industry_green_flags", industry_green_flags_node)
 graph_builder.add_node("evaluate_green_flags", evaluate_green_flags_node)
 graph_builder.add_node("finalize_green_flags_report", finalize_green_flags_report_node)
 
-# Add edges (control flow)
 graph_builder.add_edge(START, "scrape_multiple_urls")
 graph_builder.add_edge("scrape_multiple_urls", "aggregate_scraped_content")
 graph_builder.add_edge("aggregate_scraped_content", "extract_industry_details")
@@ -238,7 +236,6 @@ graph_builder.add_edge("evaluate_green_flags", "finalize_green_flags_report")
 
 app = graph_builder.compile(checkpointer=memory)
 
-# Example run:
 events = app.stream(
     {
         "messages": [("user", "Scrape and analyze green flags.")],

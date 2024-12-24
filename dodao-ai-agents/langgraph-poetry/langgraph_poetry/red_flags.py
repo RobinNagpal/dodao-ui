@@ -24,8 +24,7 @@ class State(TypedDict):
     redFlagsEvaluation: str   
     finalRedFlagsReport: str
 
-# Initialize the LLM, Graph, Memory
-llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
+llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
 graph_builder = StateGraph(State)
 memory = MemorySaver()
 config = {"configurable": {"thread_id": "1"}}
@@ -92,6 +91,7 @@ def extract_industry_details_node(state: State):
 
     response = llm.invoke([HumanMessage(content=prompt)])
     state["extractedIndustryDetails"] = response.content.strip()
+    print("Industry Details", state["extractedIndustryDetails"])
 
     return {
         "messages": [
@@ -120,6 +120,7 @@ def highlight_startup_red_flags_node(state: State):
 
     response = llm.invoke([HumanMessage(content=prompt)])
     state["startupRedFlags"] = response.content.strip()
+    print("Startup Red Flags", state["startupRedFlags"])
 
     return {
         "messages": [
@@ -144,6 +145,7 @@ def industry_red_flags_node(state: State):
 
     response = llm.invoke([HumanMessage(content=prompt)])
     state["industryRedFlags"] = response.content.strip()
+    print("Industry Red Flags", state["industryRedFlags"])
 
     return {
         "messages": [
@@ -207,7 +209,6 @@ def finalize_red_flags_report_node(state: State):
     response = llm.invoke([HumanMessage(content=prompt)])
     final_report = response.content.strip()
 
-    # Fix: store in "finalRedFlagsReport"
     state["finalRedFlagsReport"] = final_report
 
     with open("final_red_flags_report.md", "w", encoding="utf-8") as f:
@@ -220,7 +221,6 @@ def finalize_red_flags_report_node(state: State):
         "finalRedFlagsReport": state["finalRedFlagsReport"]
     }
 
-# Add nodes to the graph
 graph_builder.add_node("scrape_multiple_urls", scrape_multiple_urls_node)
 graph_builder.add_node("aggregate_scraped_content", aggregate_scraped_content_node)
 graph_builder.add_node("extract_industry_details", extract_industry_details_node)
@@ -229,7 +229,6 @@ graph_builder.add_node("industry_red_flags", industry_red_flags_node)
 graph_builder.add_node("evaluate_red_flags", evaluate_red_flags_node)
 graph_builder.add_node("finalize_red_flags_report", finalize_red_flags_report_node)
 
-# Define edges (control flow)
 graph_builder.add_edge(START, "scrape_multiple_urls")
 graph_builder.add_edge("scrape_multiple_urls", "aggregate_scraped_content")
 graph_builder.add_edge("aggregate_scraped_content", "extract_industry_details")
@@ -238,10 +237,8 @@ graph_builder.add_edge("highlight_startup_red_flags", "industry_red_flags")
 graph_builder.add_edge("industry_red_flags", "evaluate_red_flags")
 graph_builder.add_edge("evaluate_red_flags", "finalize_red_flags_report")
 
-# Compile the graph
 app = graph_builder.compile(checkpointer=memory)
 
-# Example run:
 events = app.stream(
     {
         "messages": [("user", "Scrape and analyze red flags.")],
