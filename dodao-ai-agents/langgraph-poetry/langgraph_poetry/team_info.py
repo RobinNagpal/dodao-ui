@@ -85,7 +85,6 @@ def scrape_node(state: State):
     """
     Scrapes the provided URL using ScrapingAntLoader and stores the scraped content in state.
     """
-    # Retrieve the URL from state
     url_to_scrape = state["projectUrls"][0]
     try:
         print("Scraping URL:", url_to_scrape)
@@ -96,7 +95,6 @@ def scrape_node(state: State):
     except Exception as e:
         return {"messages": [AIMessage(content=f"Failed to scrape URL: {e}")]}
 
-    # Next step: Extract project info
     prompt = (
         "From the scraped content, extract the following project info as JSON:\n\n"
         " - startupName: str (The name of the project or startup being discussed)\n"
@@ -142,30 +140,25 @@ def find_linkedin_urls_node(state: State):
     linkedin_urls = []
     startupName = state["projectInfo"]["startupName"]
 
-    # Helper function to search LinkedIn URL
     def search_linkedln_url(query: str) -> str:
         try:
             print("Searching for:", query)
             results = search.results(query)
             for result in results.get("organic", []):
                 link = result.get("link", "")
-                # Check if the link is a valid LinkedIn profile URL
                 if "linkedin.com/in/" in link:
                     return link
-            # If no valid LinkedIn URL is found, return an empty string
             return ""
         except Exception as e:
-            # If there's an error, return empty string as well
             return ""
 
-    # For each team member, search for LinkedIn URL
     for member in state["projectInfo"]["teamMembers"]:
         query = f"Find the LinkedIn profile url of {member['name']} working as {member['title']} at {startupName}"
         result = search_linkedln_url(query)
         linkedin_urls.append({
             "id": member["id"],
             "name": member["name"],
-            "url": result  # Either a valid URL or ""
+            "url": result  
         })
 
     state["teamMemberLinkedinUrls"] = linkedin_urls
@@ -187,10 +180,8 @@ def scrape_linkedin_profiles_node(state: State):
     If a team member has no LinkedIn URL (empty string), their profile will be empty.
     """
 
-    # Inline function to scrape a single LinkedIn profile
     def scrape_linkedin_profile(url: str) -> Dict[str, Any]:
         if not url:
-            # No URL provided, return empty profile
             return {}
 
         request_url = "https://api.scrapin.io/enrichment/profile"
@@ -209,7 +200,6 @@ def scrape_linkedin_profiles_node(state: State):
             return {"linkedin_url": url,
                     "error": f"Failed to fetch LinkedIn data: {response.status_code} {response.text}"}
 
-    # Build rawProfiles by scraping each team member's LinkedIn (if available)
     rawProfiles = []
     for member in state["teamMemberLinkedinUrls"]:
         profile_data = scrape_linkedin_profile(member["url"])
@@ -246,14 +236,12 @@ def evaluate_node(state: State):
         member_name = member_data["name"]
         member_profile = member_data["profile"]
 
-        # Find the corresponding team member from projectInfo
         team_member_info = {}
         for tm in state["projectInfo"]["teamMembers"]:
             if tm["id"] == member_id:
                 team_member_info = tm
                 break
 
-        # Extract just that member's details
         id_ = team_member_info.get("id", "")
         name_ = team_member_info.get("name", "")
         title_ = team_member_info.get("title", "")
@@ -321,7 +309,6 @@ def evaluate_node(state: State):
 
             analyzed_profiles.append(analyzed_profile)
         except json.JSONDecodeError:
-            # If parsing fails, create a fallback entry or skip
             analyzed_profiles.append({
                 "id": member_id,
                 "name": member_name,
@@ -334,7 +321,6 @@ def evaluate_node(state: State):
                 "relevantWorkExperience": ""
             })
 
-    # Store in state
     state["analyzedTeamProfiles"] = analyzed_profiles
     print(state["analyzedTeamProfiles"])
 
@@ -359,7 +345,6 @@ def evaluate_node(state: State):
         "analyzedTeamProfiles": state["analyzedTeamProfiles"]
     }
 
-# Add nodes to the graph
 graph_builder.add_node("start", start_node)
 graph_builder.add_node("scrape_page", scrape_node)
 graph_builder.add_node("extract_project_info", extract_project_info_node)
@@ -367,7 +352,6 @@ graph_builder.add_node("find_linkedin_urls", find_linkedin_urls_node)
 graph_builder.add_node("scrape_linkedin_profiles", scrape_linkedin_profiles_node)
 graph_builder.add_node("evaluate", evaluate_node)
 
-# Add edges (control flow)
 graph_builder.add_edge(START, "start")
 graph_builder.add_edge("start", "scrape_page")
 graph_builder.add_edge("scrape_page", "extract_project_info")
@@ -377,7 +361,6 @@ graph_builder.add_edge("scrape_linkedin_profiles", "evaluate")
 
 app = graph_builder.compile(checkpointer=memory)
 
-# Example run:
 events = app.stream({"messages": [("user", "https://wefunder.com/neighborhoodsun")]}, config, stream_mode="values")
 for event in events:
     event["messages"][-1].pretty_print()

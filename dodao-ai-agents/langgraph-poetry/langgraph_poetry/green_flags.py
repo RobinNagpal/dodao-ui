@@ -83,11 +83,17 @@ def extract_industry_details_node(state: State):
     combined_text = state.get("combinedScrapedContent", "")
 
     prompt = (
-        "From the text below, extract any details or discussion regarding the startup’s industry. "
-        "We want an overview of the industry, how it is growing, challenges, unique benefits, etc. "
-        "Return a concise summary.\n\n"
-        f"{combined_text}\n\n"
-        "Return only the textual summary of industry details."
+    "From the text below, extract any relevant details or discussion regarding the startup’s industry. "
+    "Focus on the following aspects:\n"
+    "1) An overview of the industry.\n"
+    "2) Which countries or markets this industry is relevant to (if mentioned).\n"
+    "3) Growth trends of this industry in the last 2 years.\n"
+    "4) Projected or anticipated growth for the next 3 years.\n"
+    "5) Potential or common challenges faced by other startups in this industry.\n"
+    "6) Unique benefits or opportunities within this industry.\n"
+    "7) Any additional important points or insights about the industry mentioned in the text.\n\n"
+    f"{combined_text}\n\n"
+    "Return only the textual summary of these industry details, as concise as possible but covering each requested item."
     )
 
     response = llm.invoke([HumanMessage(content=prompt)])
