@@ -57,6 +57,7 @@ def scrape_and_extract_sec_node(state: State):
     # LLM prompt for extracting Form C data
     prompt = (
         "Extract the following financial information for both the most recent fiscal year "
+        "Also extract the years for the most recent fiscal year and prior fiscal year so the user can identify both\n"
         "and the prior fiscal year from the content:\n\n"
         "- Current Number of Employees\n"
         "- Total Assets\n"
@@ -68,7 +69,7 @@ def scrape_and_extract_sec_node(state: State):
         "- Cost of Goods Sold\n"
         "- Taxes Paid\n"
         "- Net Income\n\n"
-        "Also, extract the 'date of the offering statement' mentioned at the end of the page.\n\n"
+        "Also, extract the 'date of the offering statement and most recent fiscal year' mentioned at the end of the page.\n\n"
         "Return a JSON object structured as:\n"
         "{\n"
         "  'offering_statement_date': str,\n"
@@ -81,7 +82,7 @@ def scrape_and_extract_sec_node(state: State):
         "}\n\n"
         f"Content:\n{page_content}"
     )
-
+    state["scraped_content"]={} #resetting the scraped content
     response = llm.invoke([HumanMessage(content=prompt)])
     try:
         response_content = response.content.strip()
@@ -150,8 +151,8 @@ def extract_additional_data_node(state: State):
             continue
 
         prompt = (
-            "From the content provided, extract the following details:\n"
-            "- Financial metrics (e.g., revenue, expenses, net income, etc.)\n"
+            "From the content provided, extract the following details along with their year rle:\n"
+            "- Financial metrics\n"
             "- Any other relevant information for investors\n\n"
             "Return a JSON object with the structure:\n"
             "{\n"
@@ -229,82 +230,122 @@ def create_consolidated_table_node(state: State):
         "messages": [AIMessage(content="Consolidated table created successfully. Table saved as `consolidated_table.md`.")],
         "consolidated_table": state["consolidated_table"]
     }
-def prepare_investor_report_node(state: State):
+def prepare_investor_report_with_analyses_node(state: State):
     """
-    Dynamically generates a comprehensive report, highlighting the key financial information 
-    of the startup based on all the scraped content, consolidated data, and insights  that a
-    potential investor must be aware of before deciding to invest in this startup .
+    Prepares a comprehensive investor report with:
+    - Sector identification.
+    - Generic and sector-specific feedback on financial metrics (as table columns).
+    - Consolidation of sector-specific financial outlook.
+    - Final report combining all insights and analysis.
     """
-    consolidated_financials = state["form_c_data"]["financials"]
-    scraped_content = state["scraped_content"]
+    consolidated_table = state["consolidated_table"]
     additional_data = state["additional_data"]
-    consolidated_table = state.get("consolidated_table", "")
 
-    # Prepare the prompt for GPT
-    prompt = (
-        "You are a financial analyst tasked with creating a detailed and professional investor report for a startup. "
-        "Below is the consolidated financial data and additional relevant metrics scraped from various sources:\n\n"
-        "## Consolidated Financial Table\n"
+    # 1. Identify Sector and Generate Sector-Specific Financial Outlook
+    sector_prompt = (
+        "Based on the startup's financial metrics and scraped content below, identify the primary industry or sector it operates in.\n\n"
+        f"Scraped Content:\n{state['scraped_content']}\n\n"
+        "Return only the sector name."
+    )
+    sector_response = llm.invoke([HumanMessage(content=sector_prompt)])
+    sector = sector_response.content.strip() if sector_response else "Unknown Sector"
+
+    sector_outlook_prompt = (
+        f"Provide a professional analysis of what a typical financial outlook looks like for startups in the '{sector}' industry. "
+        "For this sector, what does a normal financial outlook look for a startup? For example how much spending is needed, when can the startup turn profitable in this sector, what are the major expenses overall."
+    )
+    sector_outlook_response = llm.invoke([HumanMessage(content=sector_outlook_prompt)])
+    sector_outlook = sector_outlook_response.content.strip() if sector_outlook_response else "No sector outlook available."
+
+    # 2. Generate Generic Feedback
+    generic_feedback_prompt = (
+        "Analyze the financial metrics in the table below and provide feedback for each metric. "
+        "Feedback should assess the metric's alignment with general industry norms and highlight potential risks or opportunities.\n\n"
         f"{consolidated_table}\n\n"
-        "## Scraped Content\n"
-        f"{scraped_content}\n\n"
-        "## Additional Relevant Metrics\n"
+        "Return feedback for each metric as a JSON object with keys as metric names and values as feedback. "
+        "Do not include any text or formatting outside the JSON object."
     )
-
-    if additional_data["relevant_metrics"]:
-        for key, value in additional_data["relevant_metrics"].items():
-            prompt += f"- **{key}:** {value}\n"
-    else:
-        prompt += "- No additional relevant metrics were found.\n"
-
-    prompt += "\nPrepare a comprehensive report that highlights the key financial information of the startup that a potential investor must be aware of before deciding to invest in this startup based on:\n"
-    prompt += (
-        "- An **Executive Summary** summarizing the startup's financial health and key takeaways.\n"
-        "- A detailed **Key Financial Metrics and Figures** section based on the consolidated table.\n"
-        "- Any **Missing Data** or gaps in the information.\n"
-        "- **Insights and Considerations** drawn from the financials.\n"
-        "- Any **Risks and Challenges** the startup faces.\n"
-        "- **Projections and Goals** if available.\n"
-        "- A **Conclusion and Recommendations** for potential investors.\n"
-    )
-
-    # Pass the consolidated data and request GPT to write the report
-    response = llm.invoke([HumanMessage(content=prompt)])
+    generic_feedback_response = llm.invoke([HumanMessage(content=generic_feedback_prompt)])
+    response_content = generic_feedback_response.content.strip()
+    if response_content.startswith("```json"):
+        response_content = response_content[7:-3].strip()
     try:
-        report_content = response.content.strip()
-        
-        # Save the report
-        with open("investor_report.md", "w", encoding="utf-8") as f:
-            f.write(report_content)
+        generic_feedback = json.loads(response_content)
+    except json.JSONDecodeError:
+        print("Failed to parse Generic Feedback JSON:", response_content)
+        generic_feedback = {}
 
-        state["investor_report"] = report_content
-        print("Investor Report Generated:\n", report_content)
+    # 3. Generate Sector-Specific Feedback
+    sector_specific_feedback_prompt = (
+        f"The startup operates in the '{sector}' industry. Analyze the financial metrics in the table below and provide sector-specific insights. "
+        "Insights should assess whether the metric is typical, above average, or below average for this sector and explain why.\n\n"
+        f"{consolidated_table}\n\n"
+        "Return sector-specific insights for each metric as a JSON object with keys as metric names and values as insights. "
+        "Do not include any text or formatting outside the JSON object."
+    )
+    sector_specific_feedback_response = llm.invoke([HumanMessage(content=sector_specific_feedback_prompt)])
+    response_content = sector_specific_feedback_response.content.strip()
+    if response_content.startswith("```json"):
+        response_content = response_content[7:-3].strip()
+    try:
+        sector_specific_feedback = json.loads(response_content)
+    except json.JSONDecodeError:
+        print("Failed to parse Sector-Specific Feedback JSON:", response_content)
+        sector_specific_feedback = {}
 
-        return {
-            "messages": [AIMessage(content="Investor report dynamically generated and saved as `investor_report.md`.")],
-            "investor_report": state["investor_report"]
-        }
-    except Exception as e:
-        print(f"Error generating the report: {e}")
-        return {
-            "messages": [AIMessage(content="Failed to generate the investor report dynamically.")],
-            "investor_report": ""
-        }
+    # 4. Enhance Financial Table with Feedback
+    enhanced_table = "| Metric              | Most Recent Fiscal Year | Prior Fiscal Year | Generic Feedback                  | Sector-Specific Insight         |\n"
+    enhanced_table += "|---------------------|--------------------------|-------------------|------------------------------------|----------------------------------|\n"
+    for metric, values in state["form_c_data"]["financials"].items():
+        feedback = generic_feedback.get(metric, f"No feedback provided for {metric}.")
+        sector_insight = sector_specific_feedback.get(metric, f"No sector-specific insight available for {metric}.")
+        most_recent = values.get("most_recent", "N/A")
+        prior = values.get("prior", "N/A")
+        enhanced_table += f"| {metric} | {most_recent} | {prior} | {feedback} | {sector_insight} |\n"
 
+    # Save Enhanced Table
+    with open("enhanced_financial_table.md", "w", encoding="utf-8") as f:
+        f.write(enhanced_table)
+
+    # 5. Combine All Information into Final Report
+    report = f"""
+# Comprehensive Investor Report
+
+## Sector Identification
+**Sector:** {sector}
+
+## Sector-Specific Financial Outlook
+{sector_outlook}
+
+## Financial Metrics with Feedback
+{enhanced_table}
+"""
+    # Save the Final Report
+    with open("final_investor_report_2.md", "w", encoding="utf-8") as f:
+        f.write(report)
+
+    # Update State
+    state["final_report"] = report
+    print("Final Investor Report Generated:\n", report)
+
+    return {
+        "messages": [AIMessage(content="Final comprehensive report generated and saved as `final_investor_report.md`.")],
+        "final_report": state["final_report"]
+    }
 
 # Add nodes to the graph
 graph_builder.add_node("scrape_and_extract_sec", scrape_and_extract_sec_node)
 graph_builder.add_node("scrape_additional_links", scrape_additional_links_node)
 graph_builder.add_node("extract_additional_data", extract_additional_data_node)
 graph_builder.add_node("create_consolidated_table", create_consolidated_table_node)
-graph_builder.add_node("prepare_investor_report", prepare_investor_report_node)
+graph_builder.add_node("prepare_investor_report_with_analyses_node", prepare_investor_report_with_analyses_node)
 
 # Define edges (control flow)
 graph_builder.add_edge(START, "scrape_and_extract_sec")
 graph_builder.add_edge("scrape_and_extract_sec", "scrape_additional_links")
 graph_builder.add_edge("scrape_additional_links", "extract_additional_data")
 graph_builder.add_edge("extract_additional_data", "create_consolidated_table")
-graph_builder.add_edge("create_consolidated_table", "prepare_investor_report")
+graph_builder.add_edge("create_consolidated_table", "prepare_investor_report_with_analyses_node")
 
 app = graph_builder.compile(checkpointer=memory)
 
@@ -314,14 +355,13 @@ events = app.stream(
         "messages": [
             (
                 "user",
-                "https://www.sec.gov/Archives/edgar/data/1953831/000167025424000198/xslC_X01/primary_doc.xml"
+                "https://www.sec.gov/Archives/edgar/data/2042536/000167025424001070/xslC_X01/primary_doc.xml"
             )
         ],
-        "url_to_scrape": "https://www.sec.gov/Archives/edgar/data/1953831/000167025424000198/xslC_X01/primary_doc.xml",
+        "url_to_scrape": "https://www.sec.gov/Archives/edgar/data/2042536/000167025424001070/xslC_X01/primary_doc.xml",
         "additional_links": [
-            "https://wefunder.com/overplay/details",
-            "https://wefunder.com/overplay/",
-            "https://overplay.com/",
+            "https://www.startengine.com/offering/overthrowhospitality",
+            "https://www.overthrowhospitality.com/",
         ],
         "scraped_content": {},
     },
