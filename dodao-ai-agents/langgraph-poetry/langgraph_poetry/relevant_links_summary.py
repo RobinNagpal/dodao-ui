@@ -155,10 +155,8 @@ def summarize_search_results_node(state: State):
         snippet = item["snippet"]
 
         try:
-            # Attempt to load the webpage
             loader = WebBaseLoader(link)
             docs = loader.load()
-            # Summarize
             result = chain.invoke(docs)
             summary = result["output_text"] if isinstance(result, dict) else result
         except Exception as e:
@@ -168,7 +166,6 @@ def summarize_search_results_node(state: State):
             "link": link,
             "summary": summary
         })
-        print(f"[{i+1}/{len(all_results)}] Summarized: {link[:50]}...")
 
     state["googleSearchSummaries"] = summaries
 
@@ -198,8 +195,8 @@ def filter_relevant_links_from_summaries_node(state: State):
         f"We have a startup named '{name}'.\n"
         f"Description: '{details}'\n\n"
         "Below is a JSON array of objects with 'link' and 'summary'. Each summary is a short overview of the webpage's content. "
-        "Select the 3 or 4 that are MOST relevant to learning about this startup specifically—its mission, products, services, "
-        "partnerships, etc. Return ONLY a raw JSON array of the chosen objects in the same shape, i.e. "
+        "Select the 3 or 4 that are MOST relevant to learning more about this specific startup."
+        "Return ONLY a raw JSON array of the chosen objects in the same shape, i.e. "
         "[{\"link\": str, \"summary\": str}, ...].\n\n"
         f"{summaries_json}\n\n"
         "Return ONLY the JSON array, no extra text."
