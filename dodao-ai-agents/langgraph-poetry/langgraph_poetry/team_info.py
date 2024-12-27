@@ -45,7 +45,7 @@ class AnalyzedTeamProfile(TypedDict):
     qualityOfAcademicCredentials: str
     workExperience: str
     depthOfWorkExperience: str
-    relevantSkills: str
+    relevantWorkExperience: str
 
 class ProjectInfo(TypedDict):
     startupName: str
@@ -62,7 +62,7 @@ class State(TypedDict):
     rawLinkedinProfiles: List[RawLinkedinProfile]
     analyzedTeamProfiles: List[AnalyzedTeamProfile]
 
-llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
+llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
 
 graph_builder = StateGraph(State)
 memory = MemorySaver()
@@ -85,7 +85,6 @@ def scrape_node(state: State):
     """
     Scrapes the provided URL using ScrapingAntLoader and stores the scraped content in state.
     """
-    # Retrieve the URL from state
     url_to_scrape = state["projectUrls"][0]
     try:
         print("Scraping URL:", url_to_scrape)
@@ -96,13 +95,12 @@ def scrape_node(state: State):
     except Exception as e:
         return {"messages": [AIMessage(content=f"Failed to scrape URL: {e}")]}
 
-    # Next step: Extract project info
     prompt = (
         "From the scraped content, extract the following project info as JSON:\n\n"
-        " - startupName: str\n"
-        " - oneLiner: str\n"
-        " - industry: str\n"
-        " - teamMembers: list of objects {id: str, name: str, title: str, info: str}\n\n"
+        " - startupName: str (The name of the project or startup being discussed)\n"
+        " - oneLiner: str (A single sentence explaining what the startup does)\n"
+        " - industry: str (A brief overview of the industry, including how it has grown in the last 3-5 years, its expected growth in the next 3-5 years, challenges, and unique benefits for startups in this space)\n"
+        " - teamMembers: list of objects {id: str (Unique ID for each team member, formatted as firstname_lastname), name: str (The name of the team member), title: str (The position of the team member in the startup), info: str (Details or additional information about the team member as mentioned on the startup page)}\n\n"
         "Return ONLY a raw JSON object. Do not include any code fences or additional text. No ```json, no ```.\n"
         f"Scraped Content:\n{state['scraped_content']}"
     )
@@ -142,30 +140,25 @@ def find_linkedin_urls_node(state: State):
     linkedin_urls = []
     startupName = state["projectInfo"]["startupName"]
 
-    # Helper function to search LinkedIn URL
     def search_linkedln_url(query: str) -> str:
         try:
             print("Searching for:", query)
             results = search.results(query)
             for result in results.get("organic", []):
                 link = result.get("link", "")
-                # Check if the link is a valid LinkedIn profile URL
                 if "linkedin.com/in/" in link:
                     return link
-            # If no valid LinkedIn URL is found, return an empty string
             return ""
         except Exception as e:
-            # If there's an error, return empty string as well
             return ""
 
-    # For each team member, search for LinkedIn URL
     for member in state["projectInfo"]["teamMembers"]:
         query = f"Find the LinkedIn profile url of {member['name']} working as {member['title']} at {startupName}"
         result = search_linkedln_url(query)
         linkedin_urls.append({
             "id": member["id"],
             "name": member["name"],
-            "url": result  # Either a valid URL or ""
+            "url": result  
         })
 
     state["teamMemberLinkedinUrls"] = linkedin_urls
@@ -187,10 +180,8 @@ def scrape_linkedin_profiles_node(state: State):
     If a team member has no LinkedIn URL (empty string), their profile will be empty.
     """
 
-    # Inline function to scrape a single LinkedIn profile
     def scrape_linkedin_profile(url: str) -> Dict[str, Any]:
         if not url:
-            # No URL provided, return empty profile
             return {}
 
         request_url = "https://api.scrapin.io/enrichment/profile"
@@ -209,7 +200,6 @@ def scrape_linkedin_profiles_node(state: State):
             return {"linkedin_url": url,
                     "error": f"Failed to fetch LinkedIn data: {response.status_code} {response.text}"}
 
-    # Build rawProfiles by scraping each team member's LinkedIn (if available)
     rawProfiles = []
     for member in state["teamMemberLinkedinUrls"]:
         profile_data = scrape_linkedin_profile(member["url"])
@@ -218,7 +208,7 @@ def scrape_linkedin_profiles_node(state: State):
             "name": member["name"],
             "profile": profile_data
         })
-
+    
     state["rawLinkedinProfiles"] = rawProfiles
     print(state["rawLinkedinProfiles"])
 
@@ -246,31 +236,61 @@ def evaluate_node(state: State):
         member_name = member_data["name"]
         member_profile = member_data["profile"]
 
+        team_member_info = {}
+        for tm in state["projectInfo"]["teamMembers"]:
+            if tm["id"] == member_id:
+                team_member_info = tm
+                break
+
+        id_ = team_member_info.get("id", "")
+        name_ = team_member_info.get("name", "")
+        title_ = team_member_info.get("title", "")
+        info_ = team_member_info.get("info", "")
+
+        filtered_profile = {
+            "firstName": member_profile.get("firstName", ""),
+            "lastName": member_profile.get("lastName", ""),
+            "headline": member_profile.get("headline", ""),
+            "location": member_profile.get("location", ""),
+            "summary": member_profile.get("summary", ""),
+            "positions": member_profile.get("positions", {}),
+            "schools": member_profile.get("schools", {}),
+            "skills": member_profile.get("skills", []),
+            "certifications": member_profile.get("certifications", {})
+        }
+
+        startup_name = state["projectInfo"]["startupName"]
+        one_liner = state["projectInfo"]["oneLiner"]
+        industry = state["projectInfo"]["industry"]
+
         prompt = (
-            "You have information about a startup, its industry, and the LinkedIn profile data (if available) for one of its core team members.\n\n"
-            "The goal is to evaluate how well each team member's credentials align with their role/title and the startup's industry.\n"
-            "If no LinkedIn data is available for this member, use only the provided startup info and team member info.\n\n"
+            "You are a startup investor, and your goal is to identify the team member and put it clearly into two buckets.\n"
+            "1. Very Talented and Exceptional: This team member is exceptional and has credentials and qualifications that an investor would look for in core team members of a startup in this industry.\n"
+            "2. Average or good enough: This team member is good enough but does not stand out as exceptional.\n\n"
+            "I want you to give subjective feedback, but the feedback you write should give clear information about if the particular team member is exceptional or just good enough.\n"
+            "Don't make up any information. Be as specific as possible.\n"
+            "Here is the information of the startup for which you will be evaluating this team member:\n"
             "Startup details:\n"
-            f"{json.dumps(state['projectInfo'], indent=2)}\n\n"
-            "Scraped Content:\n"
-            f"{state['scraped_content']}\n\n"
+            f"Name: {startup_name}\n"
+            f"About Startup - {one_liner}\n"
+            f"About Startup Industry - {industry}\n\n"
+            f"Team Member (from projectInfo):\n"
+            f"id: {id_}\nname: {name_}\ntitle: {title_}\ninfo: {info_}\n\n"
             "Team Member's LinkedIn Profile Data (may be empty):\n"
-            f"{json.dumps(member_profile, indent=2)}\n\n"
-            "Tasks:\n"
-            "1. Identify the credentials and qualifications an investor would look for in core team members of a startup in this industry.\n"
-            "2. For this specific team member, return the following fields as a JSON object:\n"
+            f"{json.dumps(filtered_profile, indent=2)}\n\n"
+            "I want you to give subjective but accurate information on\n"
+            "For this specific team member, return the following fields as a JSON object:\n"
             "   - id (from projectInfo)\n"
             "   - name (from projectInfo)\n"
             "   - title (from projectInfo)\n"
             "   - info (from projectInfo)\n"
-            "   - academicCredentials: list of educational institutes and degrees earned (if any found)\n"
-            "   - qualityOfAcademicCredentials: provide a brief assessment of the institutes' prestige/ranking if known\n"
+            "   - academicCredentials: this should represent the list of educational institutes and degrees earned. If none found, then say, Not mentioned in profile\n"
+            "   - qualityOfAcademicCredentials: give information about the ranking of institutes where the the degree is earned. Is it one of the top institutes? Give information for each of the education credentials\n"
             "   - workExperience: summarize previous roles and experiences relevant to the startup’s industry and this member's title\n"
-            "   - depthOfWorkExperience: evaluate how comprehensive or advanced this experience is in relation to the startup's credentials and qualification\n"
-            "   - relevantSkills: list specific skills directly useful for the startup and its industry\n\n"
+            "   - depthOfWorkExperience: mention and quote some of the exceptional things the member has done. If you don't find anything exceptional, say Nothing exceptional\n"
+            "   - relevantWorkExperience: from the past work experience, mention what are the things the member has done related to the work he is doing at current startup or related to the industry. We want to see if the person has relevant work experience or not. Be very specific when you extract this information and give exact references. If you don't find much information, say Not much information found\n\n"
             "Important Notes:\n"
-            "- If the LinkedIn profile or scraped content does not provide certain details, leave the corresponding fields empty.\n"
-            "- Do not invent or guess details. Only use the provided data from the startup info, scraped content, and LinkedIn profile.\n"
+            "- Do not invent or guess details. Only use the provided data from the startup info and LinkedIn profile.\n"
             "- Return ONLY a raw JSON object with these fields and no extra text. Do not include code fences or additional formatting.\n"
         )
 
@@ -281,7 +301,7 @@ def evaluate_node(state: State):
             required_fields = [
                 "id", "name", "title", "info", "academicCredentials",
                 "qualityOfAcademicCredentials", "workExperience",
-                "depthOfWorkExperience", "relevantSkills"
+                "depthOfWorkExperience", "relevantWorkExperience"
             ]
             for field in required_fields:
                 if field not in analyzed_profile:
@@ -289,7 +309,6 @@ def evaluate_node(state: State):
 
             analyzed_profiles.append(analyzed_profile)
         except json.JSONDecodeError:
-            # If parsing fails, create a fallback entry or skip
             analyzed_profiles.append({
                 "id": member_id,
                 "name": member_name,
@@ -299,10 +318,9 @@ def evaluate_node(state: State):
                 "qualityOfAcademicCredentials": "",
                 "workExperience": "",
                 "depthOfWorkExperience": "",
-                "relevantSkills": ""
+                "relevantWorkExperience": ""
             })
 
-    # Store in state
     state["analyzedTeamProfiles"] = analyzed_profiles
     print(state["analyzedTeamProfiles"])
 
@@ -311,7 +329,7 @@ def evaluate_node(state: State):
         f"{json.dumps(analyzed_profiles, indent=2)}\n\n"
         "Please convert this JSON data into a well-formatted table. "
         "The columns should be the keys (id, name, title, info, academicCredentials, "
-        "qualityOfAcademicCredentials, workExperience, depthOfWorkExperience, relevantSkills) "
+        "qualityOfAcademicCredentials, workExperience, depthOfWorkExperience, relevantWorkExperience) "
         "and each row should correspond to one team member.\n"
         "Do not add extra commentary or text, return ONLY the table."
     )
@@ -327,7 +345,6 @@ def evaluate_node(state: State):
         "analyzedTeamProfiles": state["analyzedTeamProfiles"]
     }
 
-# Add nodes to the graph
 graph_builder.add_node("start", start_node)
 graph_builder.add_node("scrape_page", scrape_node)
 graph_builder.add_node("extract_project_info", extract_project_info_node)
@@ -335,7 +352,6 @@ graph_builder.add_node("find_linkedin_urls", find_linkedin_urls_node)
 graph_builder.add_node("scrape_linkedin_profiles", scrape_linkedin_profiles_node)
 graph_builder.add_node("evaluate", evaluate_node)
 
-# Add edges (control flow)
 graph_builder.add_edge(START, "start")
 graph_builder.add_edge("start", "scrape_page")
 graph_builder.add_edge("scrape_page", "extract_project_info")
@@ -345,7 +361,6 @@ graph_builder.add_edge("scrape_linkedin_profiles", "evaluate")
 
 app = graph_builder.compile(checkpointer=memory)
 
-# Example run:
-events = app.stream({"messages": [("user", "https://wefunder.com/arrofinance")]}, config, stream_mode="values")
+events = app.stream({"messages": [("user", "https://wefunder.com/neighborhoodsun")]}, config, stream_mode="values")
 for event in events:
     event["messages"][-1].pretty_print()

@@ -16,6 +16,7 @@ scrapingant-client = "^2.1.0"
 python-dotenv = "^1.0.1"
 requests = "^2.32.3"
 typing-extensions = "^4.12.2"
+langchain-google-community = "^2.0.3"
 
 
 [build-system]
