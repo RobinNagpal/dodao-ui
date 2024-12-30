@@ -146,18 +146,31 @@ def extract_additional_data_node(state: State):
     all_metrics = {}
     relevant_metrics = {}
 
+    # List of metrics to exclude
+    excluded_metrics = {
+        "Total Assets",
+        "Cash & Cash Equivalents",
+        "Accounts Receivable",
+        "Short-Term Debt",
+        "Long-Term Debt",
+        "Revenue & Sales",
+        "Costs of Goods Sold",
+        "Taxes Paid",
+        "Net Income",
+    }
+
     for link, content in scraped_content.items():
         if "Failed to scrape" in content:
             continue
 
         prompt = (
-            "From the content provided, extract the following details along with their year rle:\n"
+            "From the content provided, extract the following details:\n"
             "- Financial metrics\n"
             "- Any other relevant information for investors\n\n"
             "Return a JSON object with the structure:\n"
             "{\n"
             "  'financials': {\n"
-            "    'Metric Name': {'most_recent': str, 'prior': str},\n"
+            "    'Metric Name': str,\n"
             "    ...\n"
             "  },\n"
             "  'relevant_metrics': {\n"
@@ -170,12 +183,18 @@ def extract_additional_data_node(state: State):
 
         response = llm.invoke([HumanMessage(content=prompt)])
         try:
+            print(response)
             response_content = response.content.strip()
             if response_content.startswith("```json"):
                 response_content = response_content[7:-3].strip()
             extracted_data = json.loads(response_content)
 
-            all_metrics.update(extracted_data.get("financials", {}))
+            # Filter out excluded metrics
+            financials = {
+                k: v for k, v in extracted_data.get("financials", {}).items()
+                if k not in excluded_metrics
+            }
+            all_metrics.update(financials)
             relevant_metrics.update(extracted_data.get("relevant_metrics", {}))
 
         except json.JSONDecodeError as e:
@@ -187,13 +206,16 @@ def extract_additional_data_node(state: State):
     }
 
     # Generate table
-    table = "| Metric              | Most Recent Fiscal Year | Prior Fiscal Year |\n"
-    table += "|---------------------|--------------------------|-------------------|\n"
-    for metric, values in all_metrics.items():
-        table += f"| {metric} | {values.get('most_recent', 'N/A')} | {values.get('prior', 'N/A')} |\n"
+    table = "| Metric              | Value                   |\n"
+    table += "|---------------------|--------------------------|\n"
+    for metric, value in all_metrics.items():
+        table += f"| {metric} | {value} |\n"
 
+    table += "\n### Relevant Metrics\n"
+    table += "| Metric              | Value                   |\n"
+    table += "|---------------------|--------------------------|\n"
     for key, value in relevant_metrics.items():
-        table += f"\n- {key}: {value}"
+        table += f"| {key} | {value} |\n"
 
     with open("additional_data_table.md", "w", encoding="utf-8") as f:
         f.write(table)
@@ -206,44 +228,63 @@ def extract_additional_data_node(state: State):
 
 def create_consolidated_table_node(state: State):
     """
-    Combines SEC filing data with additional data into a comprehensive table.
+    Combines SEC filing data and additional data into comprehensive tables.
+    Maintains years for Form C financial data while simplifying additional data 
+    to only include current values for financials and relevant metrics.
     """
     form_c_data = state["form_c_data"]
     additional_data = state["additional_data"]
 
-    consolidated_financials = form_c_data["financials"]
-    for metric, values in additional_data["financials"].items():
-        if metric not in consolidated_financials:
-            consolidated_financials[metric] = values
+    # Build the table for Form C financial data
+    form_c_table = "| Metric              | Most Recent Fiscal Year | Prior Fiscal Year |\n"
+    form_c_table += "|---------------------|--------------------------|-------------------|\n"
+    for metric, values in form_c_data["financials"].items():
+        form_c_table += f"| {metric} | {values.get('most_recent', 'N/A')} | {values.get('prior', 'N/A')} |\n"
 
-    table = "| Metric              | Most Recent Fiscal Year | Prior Fiscal Year |\n"
-    table += "|---------------------|--------------------------|-------------------|\n"
-    for metric, values in consolidated_financials.items():
-        table += f"| {metric} | {values.get('most_recent', 'N/A')} | {values.get('prior', 'N/A')} |\n"
+    # Build the table for additional data (financials and relevant metrics combined)
+    additional_table = "| Metric              | Value                   |\n"
+    additional_table += "|---------------------|--------------------------|\n"
+    for metric, value in additional_data["financials"].items():
+        additional_table += f"| {metric} | {value} |\n"
+    for key, value in additional_data["relevant_metrics"].items():
+        additional_table += f"| {key} | {value} |\n"
 
-    state["consolidated_table"] = table
+    # Consolidate the tables into a single markdown content
+    consolidated_content = (
+        "### Form C Financial Data\n"
+        + form_c_table
+        + "\n### Additional Data (Financials and Relevant Metrics)\n"
+        + additional_table
+    )
 
+    state["consolidated_table"] = consolidated_content
+
+    # Save the consolidated tables to a markdown file
     with open("consolidated_table.md", "w", encoding="utf-8") as f:
-        f.write(table)
+        f.write(consolidated_content)
 
     return {
         "messages": [AIMessage(content="Consolidated table created successfully. Table saved as `consolidated_table.md`.")],
         "consolidated_table": state["consolidated_table"]
     }
+
+
+
 def prepare_investor_report_with_analyses_node(state: State):
     """
     Prepares a comprehensive investor report with:
     - Sector identification.
-    - Generic and sector-specific feedback on financial metrics (as table columns).
+    - Generic and sector-specific feedback on financial and relevant metrics.
     - Consolidation of sector-specific financial outlook.
     - Final report combining all insights and analysis.
     """
     consolidated_table = state["consolidated_table"]
+    form_c_data = state["form_c_data"]
     additional_data = state["additional_data"]
 
     # 1. Identify Sector and Generate Sector-Specific Financial Outlook
     sector_prompt = (
-        "Based on the startup's financial metrics and scraped content below, identify the primary industry or sector it operates in.\n\n"
+        "Based on the startup's financial and relevant metrics, as well as the scraped content below, identify the primary industry or sector it operates in.\n\n"
         f"Scraped Content:\n{state['scraped_content']}\n\n"
         "Return only the sector name."
     )
@@ -252,14 +293,14 @@ def prepare_investor_report_with_analyses_node(state: State):
 
     sector_outlook_prompt = (
         f"Provide a professional analysis of what a typical financial outlook looks like for startups in the '{sector}' industry. "
-        "For this sector, what does a normal financial outlook look for a startup? For example how much spending is needed, when can the startup turn profitable in this sector, what are the major expenses overall."
+        "For this sector, what does a normal financial outlook look like for a startup? For example, how much spending is needed, when can the startup turn profitable, and what are the major expenses overall."
     )
     sector_outlook_response = llm.invoke([HumanMessage(content=sector_outlook_prompt)])
     sector_outlook = sector_outlook_response.content.strip() if sector_outlook_response else "No sector outlook available."
 
     # 2. Generate Generic Feedback
     generic_feedback_prompt = (
-        "Analyze the financial metrics in the table below and provide feedback for each metric. "
+        "Analyze the financial and relevant metrics in the table below and provide feedback for each metric. "
         "Feedback should assess the metric's alignment with general industry norms and highlight potential risks or opportunities.\n\n"
         f"{consolidated_table}\n\n"
         "Return feedback for each metric as a JSON object with keys as metric names and values as feedback. "
@@ -277,7 +318,7 @@ def prepare_investor_report_with_analyses_node(state: State):
 
     # 3. Generate Sector-Specific Feedback
     sector_specific_feedback_prompt = (
-        f"The startup operates in the '{sector}' industry. Analyze the financial metrics in the table below and provide sector-specific insights. "
+        f"The startup operates in the '{sector}' industry. Analyze the financial and relevant metrics in the table below and provide sector-specific insights. "
         "Insights should assess whether the metric is typical, above average, or below average for this sector and explain why.\n\n"
         f"{consolidated_table}\n\n"
         "Return sector-specific insights for each metric as a JSON object with keys as metric names and values as insights. "
@@ -293,19 +334,34 @@ def prepare_investor_report_with_analyses_node(state: State):
         print("Failed to parse Sector-Specific Feedback JSON:", response_content)
         sector_specific_feedback = {}
 
-    # 4. Enhance Financial Table with Feedback
-    enhanced_table = "| Metric              | Most Recent Fiscal Year | Prior Fiscal Year | Generic Feedback                  | Sector-Specific Insight         |\n"
-    enhanced_table += "|---------------------|--------------------------|-------------------|------------------------------------|----------------------------------|\n"
-    for metric, values in state["form_c_data"]["financials"].items():
+    # 4. Process and Enhance Tables
+    # Form C Financial Data Table
+    form_c_table = "| Metric              | Most Recent Fiscal Year | Prior Fiscal Year | Generic Feedback                  | Sector-Specific Insight         |\n"
+    form_c_table += "|---------------------|--------------------------|-------------------|------------------------------------|----------------------------------|\n"
+    for metric, values in form_c_data["financials"].items():
         feedback = generic_feedback.get(metric, f"No feedback provided for {metric}.")
         sector_insight = sector_specific_feedback.get(metric, f"No sector-specific insight available for {metric}.")
         most_recent = values.get("most_recent", "N/A")
         prior = values.get("prior", "N/A")
-        enhanced_table += f"| {metric} | {most_recent} | {prior} | {feedback} | {sector_insight} |\n"
+        form_c_table += f"| {metric} | {most_recent} | {prior} | {feedback} | {sector_insight} |\n"
 
-    # Save Enhanced Table
-    with open("enhanced_financial_table.md", "w", encoding="utf-8") as f:
-        f.write(enhanced_table)
+    # Additional Data Table (financials and relevant metrics combined)
+    additional_table = "| Metric              | Value                   | Generic Feedback                  | Sector-Specific Insight         |\n"
+    additional_table += "|---------------------|--------------------------|------------------------------------|----------------------------------|\n"
+    for metric, value in additional_data["financials"].items():
+        feedback = generic_feedback.get(metric, "No feedback provided.")
+        sector_insight = sector_specific_feedback.get(metric, "No sector-specific insight available.")
+        additional_table += f"| {metric} | {value} | {feedback} | {sector_insight} |\n"
+    for key, value in additional_data["relevant_metrics"].items():
+        feedback = generic_feedback.get(key, "No feedback provided.")
+        sector_insight = sector_specific_feedback.get(key, "No sector-specific insight available.")
+        additional_table += f"| {key} | {value} | {feedback} | {sector_insight} |\n"
+
+    # Save Enhanced Tables
+    with open("form_c_table.md", "w", encoding="utf-8") as f:
+        f.write(form_c_table)
+    with open("additional_data_table.md", "w", encoding="utf-8") as f:
+        f.write(additional_table)
 
     # 5. Combine All Information into Final Report
     report = f"""
@@ -317,11 +373,14 @@ def prepare_investor_report_with_analyses_node(state: State):
 ## Sector-Specific Financial Outlook
 {sector_outlook}
 
-## Financial Metrics with Feedback
-{enhanced_table}
+## Form C Financial Data with Feedback
+{form_c_table}
+
+## Additional Data (Financials and Relevant Metrics) with Feedback
+{additional_table}
 """
     # Save the Final Report
-    with open("final_investor_report_2.md", "w", encoding="utf-8") as f:
+    with open("final_investor_report.md", "w", encoding="utf-8") as f:
         f.write(report)
 
     # Update State
@@ -332,6 +391,8 @@ def prepare_investor_report_with_analyses_node(state: State):
         "messages": [AIMessage(content="Final comprehensive report generated and saved as `final_investor_report.md`.")],
         "final_report": state["final_report"]
     }
+
+
 
 # Add nodes to the graph
 graph_builder.add_node("scrape_and_extract_sec", scrape_and_extract_sec_node)
@@ -360,8 +421,8 @@ events = app.stream(
         ],
         "url_to_scrape": "https://www.sec.gov/Archives/edgar/data/2042536/000167025424001070/xslC_X01/primary_doc.xml",
         "additional_links": [
-            "https://www.startengine.com/offering/overthrowhospitality",
-            "https://www.overthrowhospitality.com/",
+            "https://wefunder.com/activelyblack",
+            "https://wefunder.com/activelyblack/details",
         ],
         "scraped_content": {},
     },
