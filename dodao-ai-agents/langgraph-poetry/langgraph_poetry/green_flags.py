@@ -242,17 +242,17 @@ graph_builder.add_edge("evaluate_green_flags", "finalize_green_flags_report")
 
 app = graph_builder.compile(checkpointer=memory)
 
-events = app.stream(
-    {
-        "messages": [("user", "Scrape and analyze green flags.")],
-        "projectUrls": [
-            "https://wefunder.com/neighborhoodsun", 
-            "https://neighborhoodsun.solar/"
-        ]
-    },
-    config,
-    stream_mode="values"
-)
+# events = app.stream(
+#     {
+#         "messages": [("user", "Scrape and analyze green flags.")],
+#         "projectUrls": [
+#             "https://wefunder.com/neighborhoodsun", 
+#             "https://neighborhoodsun.solar/"
+#         ]
+#     },
+#     config,
+#     stream_mode="values"
+# )
 
-for event in events:
-    event["messages"][-1].pretty_print()
+# for event in events:
+#     event["messages"][-1].pretty_print()

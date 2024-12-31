@@ -384,12 +384,12 @@ def prepare_investor_report_with_analyses_node(state: State):
         f.write(report)
 
     # Update State
-    state["final_report"] = report
+    state["finalFinancialReport"] = report
     print("Final Investor Report Generated:\n", report)
 
     return {
         "messages": [AIMessage(content="Final comprehensive report generated and saved as `final_investor_report.md`.")],
-        "final_report": state["final_report"]
+        "finalFinancialReport": state["finalFinancialReport"]
     }
 
 
@@ -410,24 +410,24 @@ graph_builder.add_edge("create_consolidated_table", "prepare_investor_report_wit
 
 app = graph_builder.compile(checkpointer=memory)
 
-# Example run
-events = app.stream(
-    {
-        "messages": [
-            (
-                "user",
-                "https://www.sec.gov/Archives/edgar/data/2042536/000167025424001070/xslC_X01/primary_doc.xml"
-            )
-        ],
-        "url_to_scrape": "https://www.sec.gov/Archives/edgar/data/2042536/000167025424001070/xslC_X01/primary_doc.xml",
-        "additional_links": [
-            "https://wefunder.com/activelyblack",
-            "https://wefunder.com/activelyblack/details",
-        ],
-        "scraped_content": {},
-    },
-    config,
-    stream_mode="values"
-)
-for event in events:
-    event["messages"][-1].pretty_print()
+# # Example run
+# events = app.stream(
+#     {
+#         "messages": [
+#             (
+#                 "user",
+#                 "https://www.sec.gov/Archives/edgar/data/1691595/000167025424000661/xslC_X01/primary_doc.xml"
+#             )
+#         ],
+#         "url_to_scrape": "https://www.sec.gov/Archives/edgar/data/1691595/000167025424000661/xslC_X01/primary_doc.xml",
+#         "additional_links": [
+#             "https://wefunder.com/neighborhoodsun",
+#             "https://neighborhoodsun.solar/",
+#         ],
+#         "scraped_content": {},
+#     },
+#     config,
+#     stream_mode="values"
+# )
+# for event in events:
+#     event["messages"][-1].pretty_print()

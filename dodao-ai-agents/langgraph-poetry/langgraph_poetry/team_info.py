@@ -337,7 +337,7 @@ def evaluate_node(state: State):
 
     table_response = llm_mini.invoke([HumanMessage(content=table_prompt)])
     final_table = table_response.content
-
+    state["teamInfo"] = final_table
     with open("final_table.md", "w", encoding="utf-8") as f:
         f.write(final_table)
 
@@ -362,6 +362,6 @@ graph_builder.add_edge("scrape_linkedin_profiles", "evaluate")
 
 app = graph_builder.compile(checkpointer=memory)
 
-events = app.stream({"messages": [("user", "https://wefunder.com/neighborhoodsun")]}, config, stream_mode="values")
-for event in events:
-    event["messages"][-1].pretty_print()
+# events = app.stream({"messages": [("user", "https://wefunder.com/neighborhoodsun")]}, config, stream_mode="values")
+# for event in events:
+#     event["messages"][-1].pretty_print()

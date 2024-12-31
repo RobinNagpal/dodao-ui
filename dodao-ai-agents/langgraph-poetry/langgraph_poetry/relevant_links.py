@@ -241,14 +241,14 @@ graph_builder.add_edge("summarize_search_results", "filter_relevant_links_from_s
 
 app = graph_builder.compile(checkpointer=memory)
 
-events = app.stream(
-    {
-        "messages": [("user", "Find more links about this startup.")],
-        "crowdfunded_url": "https://wefunder.com/neighborhoodsun"
-    },
-    config,
-    stream_mode="values"
-)
+# events = app.stream(
+#     {
+#         "messages": [("user", "Find more links about this startup.")],
+#         "crowdfunded_url": "https://wefunder.com/neighborhoodsun"
+#     },
+#     config,
+#     stream_mode="values"
+# )
 
-for event in events:
-    event["messages"][-1].pretty_print()
+# for event in events:
+#     event["messages"][-1].pretty_print()
