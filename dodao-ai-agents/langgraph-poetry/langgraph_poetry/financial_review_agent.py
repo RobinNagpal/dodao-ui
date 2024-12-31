@@ -34,6 +34,7 @@ class State(TypedDict):
     form_c_data: FormCData
     additional_data: AdditionalData
     consolidated_table: str
+    finalFinancialReport: str
 
 graph_builder = StateGraph(State)
 memory = MemorySaver()
@@ -380,11 +381,11 @@ def prepare_investor_report_with_analyses_node(state: State):
 {additional_table}
 """
     # Save the Final Report
+    state["finalFinancialReport"] = report
     with open("final_investor_report.md", "w", encoding="utf-8") as f:
         f.write(report)
 
     # Update State
-    state["finalFinancialReport"] = report
     print("Final Investor Report Generated:\n", report)
 
     return {

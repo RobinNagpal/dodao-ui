@@ -61,6 +61,7 @@ class State(TypedDict):
     teamMemberLinkedinUrls: List[TeamMemberLinkedinUrl]
     rawLinkedinProfiles: List[RawLinkedinProfile]
     analyzedTeamProfiles: List[AnalyzedTeamProfile]
+    teamInfo: str
 
 llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
 llm_mini = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
@@ -338,12 +339,14 @@ def evaluate_node(state: State):
     table_response = llm_mini.invoke([HumanMessage(content=table_prompt)])
     final_table = table_response.content
     state["teamInfo"] = final_table
+    # print(state["teamInfo"])
     with open("final_table.md", "w", encoding="utf-8") as f:
         f.write(final_table)
 
     return {
         "messages": [AIMessage(content="Final evaluation of the team completed.\n\n" + table_response.content + "\n\nTable saved as final_table.md")],
-        "analyzedTeamProfiles": state["analyzedTeamProfiles"]
+        "analyzedTeamProfiles": state["analyzedTeamProfiles"],
+        "teamInfo": state["teamInfo"]
     }
 
 graph_builder.add_node("start", start_node)
