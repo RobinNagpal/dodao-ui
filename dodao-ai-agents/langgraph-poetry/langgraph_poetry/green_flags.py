@@ -214,8 +214,8 @@ def finalize_green_flags_report_node(state: State):
     state["finalGreenFlagsReport"] = final_report
 
     # Optionally save or print
-    with open("final_green_flags_report.md", "w", encoding="utf-8") as f:
-        f.write(final_report)
+    # with open("final_green_flags_report.md", "w", encoding="utf-8") as f:
+    #     f.write(final_report)
 
     return {
         "messages": [

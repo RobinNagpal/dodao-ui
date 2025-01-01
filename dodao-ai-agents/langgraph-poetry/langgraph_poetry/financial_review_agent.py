@@ -9,6 +9,7 @@ from typing import Annotated, List, Dict
 from dotenv import load_dotenv
 import os
 import json
+import time
 
 load_dotenv()
 
@@ -40,7 +41,7 @@ graph_builder = StateGraph(State)
 memory = MemorySaver()
 config = {"configurable": {"thread_id": "3"}}
 
-import time
+
 
 def scrape_and_extract_sec_node(state: State, max_retries=10, retry_delay=5):
     """
@@ -126,11 +127,8 @@ def scrape_and_extract_sec_node(state: State, max_retries=10, retry_delay=5):
         for metric, values in form_c_data["financials"].items():
             table += f"| {metric} | {values.get('most_recent', 'N/A')} | {values.get('prior', 'N/A')} |\n"
 
-        with open("sec_filing_table.md", "w", encoding="utf-8") as f:
-            f.write(table)
-
         return {
-            "messages": [AIMessage(content="SEC Form C data extracted successfully. Table saved as `sec_filing_table.md`.")],
+            "messages": [AIMessage(content="SEC Form C data extracted successfully.")],
             "form_c_data": state["form_c_data"]
         }
     except json.JSONDecodeError as e:
@@ -244,11 +242,8 @@ def extract_additional_data_node(state: State):
     for key, value in relevant_metrics.items():
         table += f"| {key} | {value} |\n"
 
-    with open("additional_data_table.md", "w", encoding="utf-8") as f:
-        f.write(table)
-
     return {
-        "messages": [AIMessage(content="Additional financial data extracted successfully. Table saved as `additional_data_table.md`.")],
+        "messages": [AIMessage(content="Additional financial data extracted successfully.")],
         "additional_data": state["additional_data"]
     }
 
@@ -286,12 +281,8 @@ def create_consolidated_table_node(state: State):
 
     state["consolidated_table"] = consolidated_content
 
-    # Save the consolidated tables to a markdown file
-    with open("consolidated_table.md", "w", encoding="utf-8") as f:
-        f.write(consolidated_content)
-
     return {
-        "messages": [AIMessage(content="Consolidated table created successfully. Table saved as `consolidated_table.md`.")],
+        "messages": [AIMessage(content="Consolidated table created successfully.")],
         "consolidated_table": state["consolidated_table"]
     }
 
@@ -384,11 +375,6 @@ def prepare_investor_report_with_analyses_node(state: State):
         sector_insight = sector_specific_feedback.get(key, "No sector-specific insight available.")
         additional_table += f"| {key} | {value} | {feedback} | {sector_insight} |\n"
 
-    # Save Enhanced Tables
-    with open("form_c_table.md", "w", encoding="utf-8") as f:
-        f.write(form_c_table)
-    with open("additional_data_table.md", "w", encoding="utf-8") as f:
-        f.write(additional_table)
 
     # 5. Combine All Information into Final Report
     report = f"""
@@ -408,8 +394,8 @@ def prepare_investor_report_with_analyses_node(state: State):
 """
     # Save the Final Report
     state["finalFinancialReport"] = report
-    with open("final_investor_report.md", "w", encoding="utf-8") as f:
-        f.write(report)
+    # with open("final_investor_report.md", "w", encoding="utf-8") as f:
+    #     f.write(report)
 
     # Update State
     print("Final Investor Report Generated:\n", report)

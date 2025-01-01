@@ -1,25 +1,60 @@
 import asyncio
-from general_info import app as general_info_app  # General Info agent's LangGraph app
-from team_info import app as team_info_app  # Team Info agent's LangGraph app
-from red_flags import app as red_flags_app  # Red Flags agent's LangGraph app
-from green_flags import app as green_flags_app  # Green Flags agent's LangGraph app
-from financial_review_agent import app as financial_review_app  # Financial Review agent's LangGraph app
-from relevant_links import app as relevant_links_app  # Relevant Links agent's LangGraph app
+import os
+import json
+from general_info import app as general_info_app
+from team_info import app as team_info_app
+from red_flags import app as red_flags_app
+from green_flags import app as green_flags_app
+from financial_review_agent import app as financial_review_app
+from relevant_links import app as relevant_links_app
 
 
-async def run_agent_and_get_final_output_async(app, input_data, final_key):
+def format_id(project_name):
     """
-    Runs a single LangGraph agent asynchronously and extracts the final output from the state.
+    Generates a deterministic ID by formatting the project name (e.g., replacing spaces with underscores).
+    """
+    return project_name.strip().replace(" ", "_").lower()
+
+
+def get_user_input():
+    """
+    Prompts the user for project details and returns them.
+    """
+    project_name = input("Enter the project name: ").strip()
+    crowdfunding_link = input("Enter the crowdfunding link: ").strip()
+    website_url = input("Enter the official website URL: ").strip()
+    latest_sec_filing_link = input("Enter the latest SEC filing link (if available): ").strip()
+    
+    project_id = format_id(project_name)
+    return {
+        "project_name": project_name,
+        "crowdfunding_link": crowdfunding_link,
+        "website_url": website_url,
+        "latest_sec_filing_link": latest_sec_filing_link,
+        "project_id": project_id,
+    }
+
+
+async def run_agent_and_get_final_output_async(app, input_data, final_key, output_file):
+    """
+    Runs a single LangGraph agent asynchronously, checks for an existing file, and extracts the final output.
 
     Args:
         app: The LangGraph app to run.
         input_data: The input data for the agent.
         final_key: The state key to extract the final output from.
+        output_file: The file to check for existing output and save the result.
 
     Returns:
-        The final output stored in the specified state key.
+        The final output stored in the specified state key or read from the existing file.
     """
-    config = {"configurable": {"thread_id": "1"}}  # Shared configuration
+    # Check if the output file exists
+    if os.path.exists(output_file):
+        print(f"File '{output_file}' already exists. Reading content from the file.")
+        with open(output_file, "r", encoding="utf-8") as f:
+            return f.read()
+
+    config = {"configurable": {"thread_id": "1", "id": input_data.get("id")}}
 
     def fetch_events():
         return list(app.stream(input_data, config, stream_mode="values"))
@@ -29,129 +64,132 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key):
 
     # Process events to find the desired output
     for event in events:
-        final_state = event.get(final_key, None)  # Directly fetch the final output using the key
-        if final_state is not None:
-            return final_state
-
-    raise ValueError(f"Final output key '{final_key}' not found in the agent's events.")
-
-
-def run_agent_and_get_final_output(app, input_data, final_key):
-    """
-    Runs a single LangGraph agent synchronously and extracts the final output from the state.
-
-    Args:
-        app: The LangGraph app to run.
-        input_data: The input data for the agent.
-        final_key: The state key to extract the final output from.
-
-    Returns:
-        The final output stored in the specified state key.
-    """
-    config = {"configurable": {"thread_id": "1"}}  # Shared configuration
-    events = app.stream(input_data, config, stream_mode="values")
-
-    for event in events:
         final_state = event.get(final_key, None)
         if final_state is not None:
+            # Convert the output to a string if necessary
+            if isinstance(final_state, list):
+                final_state = "\n".join(final_state)  # Join list elements into a single string
+            elif not isinstance(final_state, str):
+                final_state = json.dumps(final_state, indent=4)  # Serialize non-string output to JSON
+
+            # Save the output to the file
+            with open(output_file, "w", encoding="utf-8") as f:
+                f.write(final_state)
             return final_state
 
     raise ValueError(f"Final output key '{final_key}' not found in the agent's events.")
 
 
-async def main_controller_async():
+async def main_controller_async(project_details):
     """
-    Runs parallel and sequential tasks separately.
+    Runs parallel tasks, checks for existing files, and saves the unified report in the specified directory.
     """
-    # Input data for all agents
+    # Unpack project details
+    id = project_details["project_id"]
+    crowdfunding_link = project_details["crowdfunding_link"]
+    website_url = project_details["website_url"]
+    latest_sec_filing_link = project_details["latest_sec_filing_link"]
+
+    # Directory for reports
+    reports_dir = f"{id}.reports"
+
+    # Check if directory exists
+    if not os.path.exists(reports_dir):
+        os.makedirs(reports_dir)
+        print(f"Directory '{reports_dir}' created.")
+    else:
+        print(f"Directory '{reports_dir}' already exists.")
+
+    # Input data for all agents with designated output files
     input_data = {
         "general_info": {
+            "id": id,
             "messages": [("user", "Please gather the project's general info.")],
-            "projectUrls": [
-                "https://wefunder.com/neighborhoodsun",
-                "https://neighborhoodsun.solar/",
-            ],
+            "projectUrls": [crowdfunding_link, website_url],
+            "output_file": os.path.join(reports_dir, "general_info.md"),
         },
         "team_info": {
-            "messages": [("user", "https://wefunder.com/neighborhoodsun")],
+            "id": id,
+            "messages": [("user", crowdfunding_link)],
+            "output_file": os.path.join(reports_dir, "team_info.md"),
         },
         "red_flags": {
+            "id": id,
             "messages": [("user", "Scrape and analyze red flags.")],
-            "projectUrls": [
-                "https://wefunder.com/neighborhoodsun",
-                "https://neighborhoodsun.solar/",
-            ],
+            "projectUrls": [crowdfunding_link, website_url],
+            "output_file": os.path.join(reports_dir, "red_flags.md"),
         },
         "green_flags": {
+            "id": id,
             "messages": [("user", "Scrape and analyze green flags.")],
-            "projectUrls": [
-                "https://wefunder.com/neighborhoodsun",
-                "https://neighborhoodsun.solar/",
-            ],
+            "projectUrls": [crowdfunding_link, website_url],
+            "output_file": os.path.join(reports_dir, "green_flags.md"),
         },
         "financial_review": {
+            "id": id,
             "messages": [
                 (
                     "user",
-                    "https://www.sec.gov/Archives/edgar/data/1691595/000167025424000661/xslC_X01/primary_doc.xml",
+                    latest_sec_filing_link,
                 )
             ],
-            "url_to_scrape": "https://www.sec.gov/Archives/edgar/data/1691595/000167025424000661/xslC_X01/primary_doc.xml",
-            "additional_links": [
-                "https://wefunder.com/neighborhoodsun",
-                "https://neighborhoodsun.solar/",
-            ],
+            "url_to_scrape": latest_sec_filing_link,
+            "additional_links": [crowdfunding_link, website_url],
             "scraped_content": {},
+            "output_file": os.path.join(reports_dir, "financial_review.md"),
         },
         "relevant_links": {
+            "id": id,
             "messages": [("user", "Find more links about this startup.")],
-            "crowdfunded_url": "https://wefunder.com/neighborhoodsun",
+            "crowdfunded_url": crowdfunding_link,
+            "output_file": os.path.join(reports_dir, "relevant_links.md"),
         },
     }
-    
+
     # Parallel tasks for non-conflicting agents
     parallel_tasks = [
         run_agent_and_get_final_output_async(
-            general_info_app, input_data["general_info"], "projectGeneralInfo"
+            general_info_app, input_data["general_info"], "projectGeneralInfo", input_data["general_info"]["output_file"]
         ),
         run_agent_and_get_final_output_async(
-            red_flags_app, input_data["red_flags"], "finalRedFlagsReport"
+            team_info_app, input_data["team_info"], "teamInfo", input_data["team_info"]["output_file"]
         ),
         run_agent_and_get_final_output_async(
-            green_flags_app, input_data["green_flags"], "finalGreenFlagsReport"
-        ),
-         run_agent_and_get_final_output_async(
-            relevant_links_app, input_data["relevant_links"], "relevantLinks"
+            financial_review_app, input_data["financial_review"], "finalFinancialReport", input_data["financial_review"]["output_file"]
         ),
         run_agent_and_get_final_output_async(
-            financial_review_app, input_data["financial_review"], "finalFinancialReport"
+            red_flags_app, input_data["red_flags"], "finalRedFlagsReport", input_data["red_flags"]["output_file"]
         ),
         run_agent_and_get_final_output_async(
-            team_info_app, input_data["team_info"], "teamInfo"
-        )
+            green_flags_app, input_data["green_flags"], "finalGreenFlagsReport", input_data["green_flags"]["output_file"]
+        ),
+        run_agent_and_get_final_output_async(
+            relevant_links_app, input_data["relevant_links"], "relevantLinks", input_data["relevant_links"]["output_file"]
+        ),
     ]
 
     # Run parallel tasks
     parallel_results = await asyncio.gather(*parallel_tasks)
 
-
     # Combine results
     results = parallel_results
 
     print("Results:", results)
-    # Generate the unified report
+
     # Filter out empty lists or other unwanted elements
     filtered_results = [item for item in results if item]  # Removes empty lists, empty strings, or None
 
     # Concatenate all results explicitly
     unified_report = "\n\n".join(filtered_results)
 
-    # Save the unified report
-    with open("unified_report.md", "w", encoding="utf-8") as f:
+    # Save the unified report in the created folder
+    report_path = os.path.join(reports_dir, "unified_report.md")
+    with open(report_path, "w", encoding="utf-8") as f:
         f.write(unified_report)
 
-    print("Unified Report Generated:\n", unified_report)
+    print(f"Unified Report Generated at: {report_path}")
 
 
 if __name__ == "__main__":
-    asyncio.run(main_controller_async())
+    project_details = get_user_input()
+    asyncio.run(main_controller_async(project_details))

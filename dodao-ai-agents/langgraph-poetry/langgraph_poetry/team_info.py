@@ -9,6 +9,7 @@ from typing_extensions import TypedDict
 from typing import Annotated, List, Dict, Any
 from dotenv import load_dotenv
 import os
+import time
 import json
 import requests
 
@@ -86,17 +87,35 @@ def start_node(state: State):
 def scrape_node(state: State):
     """
     Scrapes the provided URL using ScrapingAntLoader and stores the scraped content in state.
+    Includes retry logic with a maximum of 10 retries and a 5-second delay between attempts.
     """
     url_to_scrape = state["projectUrls"][0]
-    try:
-        print("Scraping URL:", url_to_scrape)
-        loader = ScrapingAntLoader([url_to_scrape], api_key=SCRAPINGANT_API_KEY)
-        documents = loader.load()
-        page_content = documents[0].page_content
-        state["scraped_content"] = page_content
-    except Exception as e:
-        return {"messages": [AIMessage(content=f"Failed to scrape URL: {e}")]}
+    max_retries = 10
+    retries = 0
+    delay = 5  # Delay in seconds between retries
 
+    while retries < max_retries:
+        try:
+            print(f"Attempt {retries + 1}: Scraping URL: {url_to_scrape}")
+            loader = ScrapingAntLoader([url_to_scrape], api_key=SCRAPINGANT_API_KEY)
+            documents = loader.load()
+            page_content = documents[0].page_content
+
+            # Store the scraped content in the state
+            state["scraped_content"] = page_content
+
+            print("Scraping successful.")
+            break  # Exit the loop if scraping is successful
+        except Exception as e:
+            print(f"Error on attempt {retries + 1}: {e}")
+            retries += 1
+            if retries == max_retries:
+                print("Maximum retries reached. Failing gracefully.")
+                return {"messages": [AIMessage(content=f"Failed to scrape URL after {max_retries} attempts: {e}")]}
+            print(f"Retrying in {delay} seconds...")
+            time.sleep(delay)  # Wait for 5 seconds before retrying
+
+    # Prepare the prompt for extracting data
     prompt = (
         "From the scraped content, extract the following project info as JSON:\n\n"
         " - startupName: str (The name of the project or startup being discussed)\n"
@@ -106,63 +125,36 @@ def scrape_node(state: State):
         "Return ONLY a raw JSON object. Do not include any code fences or additional text. No ```json, no ```.\n"
         f"Scraped Content:\n{state['scraped_content']}"
     )
+
+    # Return the extracted prompt and the scraped data
     return {
         "messages": [HumanMessage(content=prompt)],
         "projectUrls": state["projectUrls"],
-        "scraped_content": state["scraped_content"]
+        "scraped_content": state["scraped_content"],
     }
 
-def extract_project_info_node(state: State, max_retries=10, retry_delay=5):
+def extract_project_info_node(state: State):
     """
-    Parses the JSON returned by the LLM for project info and stores it in state, with retry logic.
-
-    Args:
-        state: The state object containing data and configurations.
-        max_retries: Maximum number of retry attempts (default: 5).
-        retry_delay: Time (in seconds) to wait between retries (default: 5 seconds).
+    Parses the JSON returned by the LLM for project info and stores it in state.
     """
     print("Extracting project info...")
     last_msg = state["messages"][-1]
     prompt_text = last_msg.content
-
-    attempts = 0
-    while attempts < max_retries:
-        try:
-            # Invoke the LLM with the prompt
-            response = llm.invoke([HumanMessage(content=prompt_text)])
-            response_content = response.content.strip()
-
-            # Ensure the response is valid JSON
-            project_info = json.loads(response_content)
-            state["projectInfo"] = project_info
-            print("Project Info Extracted:", state["projectInfo"])
-
-            # Return success message
-            prompt = "Project info extracted successfully."
-            return {
-                "messages": [HumanMessage(content=prompt)],
-                "projectUrls": state["projectUrls"],
-                "scraped_content": state["scraped_content"],
-                "projectInfo": state["projectInfo"]
-            }
-
-        except json.JSONDecodeError as e:
-            print(f"JSON Decode Error on attempt {attempts + 1}: {e}")
-        except Exception as e:
-            print(f"Error extracting project info on attempt {attempts + 1}: {e}")
-
-        # Increment attempts and wait before retrying
-        attempts += 1
-        print(f"Retrying extraction in {retry_delay} seconds...")
-        time.sleep(retry_delay)
-
-    # If all retries fail, return an error message
-    return {
-        "messages": [AIMessage(content="Failed to extract project info after multiple attempts.")],
-        "projectUrls": state["projectUrls"],
-        "scraped_content": state["scraped_content"]
-    }
-
+    response = llm.invoke([HumanMessage(content=prompt_text)])
+    try:
+        project_info = json.loads(response.content)
+        state["projectInfo"] = project_info
+        print(state["projectInfo"])
+        prompt = "Project info extracted successfully."
+        return {
+            "messages": [HumanMessage(content=prompt)],
+            "projectUrls": state["projectUrls"],
+            "scraped_content": state["scraped_content"],
+            "projectInfo": state["projectInfo"]
+        }
+    except Exception:
+        return {"messages": [AIMessage(content="Error parsing project info.")]}
+    
 def find_linkedin_urls_node(state: State):
     """
     Constructs queries from the projectInfo and teamMembers, uses GoogleSerperAPIWrapper to find LinkedIn URLs.
@@ -369,8 +361,8 @@ def evaluate_node(state: State):
     final_table = table_response.content
     state["teamInfo"] = final_table
     # print(state["teamInfo"])
-    with open("final_table.md", "w", encoding="utf-8") as f:
-        f.write(final_table)
+    # with open("final_table.md", "w", encoding="utf-8") as f:
+    #     f.write(final_table)
 
     return {
         "messages": [AIMessage(content="Final evaluation of the team completed.\n\n" + table_response.content + "\n\nTable saved as final_table.md")],
