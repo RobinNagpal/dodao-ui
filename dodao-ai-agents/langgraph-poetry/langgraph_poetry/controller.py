@@ -123,27 +123,20 @@ async def main_controller_async():
          run_agent_and_get_final_output_async(
             relevant_links_app, input_data["relevant_links"], "relevantLinks"
         ),
-    ]
-    
-    # Sequential tasks for conflicting agents
-    sequential_results = []
-    sequential_results.append(
-        run_agent_and_get_final_output(
+        run_agent_and_get_final_output_async(
             financial_review_app, input_data["financial_review"], "finalFinancialReport"
-        )
-    )
-    sequential_results.append(
-        run_agent_and_get_final_output(
+        ),
+        run_agent_and_get_final_output_async(
             team_info_app, input_data["team_info"], "teamInfo"
         )
-    )
+    ]
 
     # Run parallel tasks
     parallel_results = await asyncio.gather(*parallel_tasks)
 
 
     # Combine results
-    results = parallel_results + sequential_results
+    results = parallel_results
 
     print("Results:", results)
     # Generate the unified report

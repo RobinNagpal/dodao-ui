@@ -40,20 +40,46 @@ graph_builder = StateGraph(State)
 memory = MemorySaver()
 config = {"configurable": {"thread_id": "3"}}
 
-def scrape_and_extract_sec_node(state: State):
+import time
+
+def scrape_and_extract_sec_node(state: State, max_retries=10, retry_delay=5):
     """
-    Scrapes the SEC filing page and extracts Form C financial data.
+    Scrapes the SEC filing page and extracts Form C financial data with retry logic.
+    
+    Args:
+        state: The state object containing data and configurations.
+        max_retries: Maximum number of retry attempts (default: 5).
+        retry_delay: Time (in seconds) to wait between retries (default: 5 seconds).
     """
     url_to_scrape = state["url_to_scrape"]
-    try:
-        print(f"Scraping SEC URL: {url_to_scrape}")
-        loader = ScrapingAntLoader([url_to_scrape], api_key=SCRAPINGANT_API_KEY)
-        documents = loader.load()
-        page_content = documents[0].page_content
-        state["scraped_content"] = {url_to_scrape: page_content}
-    except Exception as e:
-        state["scraped_content"] = {}
-        return {"messages": [AIMessage(content=f"Failed to scrape SEC URL: {e}")]}
+    attempts = 0
+
+    while attempts < max_retries:
+        try:
+            print(f"Attempt {attempts + 1}: Scraping SEC URL: {url_to_scrape}")
+            loader = ScrapingAntLoader([url_to_scrape], api_key=SCRAPINGANT_API_KEY)
+            documents = loader.load()
+
+            # Ensure we have valid content
+            if not documents or not documents[0].page_content.strip():
+                raise ValueError("Loaded documents are empty or invalid.")
+
+            # Successfully scraped content
+            page_content = documents[0].page_content
+            state["scraped_content"] = {url_to_scrape: page_content}
+            break  # Exit the loop if successful
+
+        except Exception as e:
+            attempts += 1
+            print(f"Error scraping SEC URL: {e}. Retrying in {retry_delay} seconds...")
+            time.sleep(retry_delay)
+
+            # Clear scraped content state on failure
+            state["scraped_content"] = {}
+
+    # If scraping failed after all retries, return an error
+    if not state["scraped_content"]:
+        return {"messages": [AIMessage(content=f"Failed to scrape SEC URL after {max_retries} attempts.")]}
 
     # LLM prompt for extracting Form C data
     prompt = (
@@ -81,11 +107,11 @@ def scrape_and_extract_sec_node(state: State):
         "    ...\n"
         "  }\n"
         "}\n\n"
-        f"Content:\n{page_content}"
+        f"Content:\n{state['scraped_content'][url_to_scrape]}"
     )
-    state["scraped_content"]={} #resetting the scraped content
-    response = llm.invoke([HumanMessage(content=prompt)])
+
     try:
+        response = llm.invoke([HumanMessage(content=prompt)])
         response_content = response.content.strip()
         if response_content.startswith("```json"):
             response_content = response_content[7:-3].strip()
@@ -366,7 +392,7 @@ def prepare_investor_report_with_analyses_node(state: State):
 
     # 5. Combine All Information into Final Report
     report = f"""
-# Comprehensive Investor Report
+# Financial Review
 
 ## Sector Identification
 **Sector:** {sector}

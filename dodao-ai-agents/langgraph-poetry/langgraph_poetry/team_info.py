@@ -112,27 +112,56 @@ def scrape_node(state: State):
         "scraped_content": state["scraped_content"]
     }
 
-def extract_project_info_node(state: State):
+def extract_project_info_node(state: State, max_retries=10, retry_delay=5):
     """
-    Parses the JSON returned by the LLM for project info and stores it in state.
+    Parses the JSON returned by the LLM for project info and stores it in state, with retry logic.
+
+    Args:
+        state: The state object containing data and configurations.
+        max_retries: Maximum number of retry attempts (default: 5).
+        retry_delay: Time (in seconds) to wait between retries (default: 5 seconds).
     """
     print("Extracting project info...")
     last_msg = state["messages"][-1]
     prompt_text = last_msg.content
-    response = llm.invoke([HumanMessage(content=prompt_text)])
-    try:
-        project_info = json.loads(response.content)
-        state["projectInfo"] = project_info
-        print(state["projectInfo"])
-        prompt = "Project info extracted successfully."
-        return {
-            "messages": [HumanMessage(content=prompt)],
-            "projectUrls": state["projectUrls"],
-            "scraped_content": state["scraped_content"],
-            "projectInfo": state["projectInfo"]
-        }
-    except Exception:
-        return {"messages": [AIMessage(content="Error parsing project info.")]}
+
+    attempts = 0
+    while attempts < max_retries:
+        try:
+            # Invoke the LLM with the prompt
+            response = llm.invoke([HumanMessage(content=prompt_text)])
+            response_content = response.content.strip()
+
+            # Ensure the response is valid JSON
+            project_info = json.loads(response_content)
+            state["projectInfo"] = project_info
+            print("Project Info Extracted:", state["projectInfo"])
+
+            # Return success message
+            prompt = "Project info extracted successfully."
+            return {
+                "messages": [HumanMessage(content=prompt)],
+                "projectUrls": state["projectUrls"],
+                "scraped_content": state["scraped_content"],
+                "projectInfo": state["projectInfo"]
+            }
+
+        except json.JSONDecodeError as e:
+            print(f"JSON Decode Error on attempt {attempts + 1}: {e}")
+        except Exception as e:
+            print(f"Error extracting project info on attempt {attempts + 1}: {e}")
+
+        # Increment attempts and wait before retrying
+        attempts += 1
+        print(f"Retrying extraction in {retry_delay} seconds...")
+        time.sleep(retry_delay)
+
+    # If all retries fail, return an error message
+    return {
+        "messages": [AIMessage(content="Failed to extract project info after multiple attempts.")],
+        "projectUrls": state["projectUrls"],
+        "scraped_content": state["scraped_content"]
+    }
 
 def find_linkedin_urls_node(state: State):
     """
