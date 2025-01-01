@@ -108,7 +108,7 @@ async def main_controller_async():
             "crowdfunded_url": "https://wefunder.com/neighborhoodsun",
         },
     }
-
+    
     # Parallel tasks for non-conflicting agents
     parallel_tasks = [
         run_agent_and_get_final_output_async(
@@ -120,14 +120,11 @@ async def main_controller_async():
         run_agent_and_get_final_output_async(
             green_flags_app, input_data["green_flags"], "finalGreenFlagsReport"
         ),
-        run_agent_and_get_final_output_async(
+         run_agent_and_get_final_output_async(
             relevant_links_app, input_data["relevant_links"], "relevantLinks"
         ),
     ]
-
-    # Run parallel tasks
-    parallel_results = await asyncio.gather(*parallel_tasks)
-
+    
     # Sequential tasks for conflicting agents
     sequential_results = []
     sequential_results.append(
@@ -141,11 +138,20 @@ async def main_controller_async():
         )
     )
 
+    # Run parallel tasks
+    parallel_results = await asyncio.gather(*parallel_tasks)
+
+
     # Combine results
     results = parallel_results + sequential_results
 
+    print("Results:", results)
     # Generate the unified report
-    unified_report = "\n\n".join(results)
+    # Filter out empty lists or other unwanted elements
+    filtered_results = [item for item in results if item]  # Removes empty lists, empty strings, or None
+
+    # Concatenate all results explicitly
+    unified_report = "\n\n".join(filtered_results)
 
     # Save the unified report
     with open("unified_report.md", "w", encoding="utf-8") as f:
