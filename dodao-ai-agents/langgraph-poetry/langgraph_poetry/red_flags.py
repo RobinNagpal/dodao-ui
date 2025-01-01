@@ -217,8 +217,8 @@ def finalize_red_flags_report_node(state: State):
 
     state["finalRedFlagsReport"] = final_report
 
-    with open("final_red_flags_report.md", "w", encoding="utf-8") as f:
-        f.write(final_report)
+    # with open("final_red_flags_report.md", "w", encoding="utf-8") as f:
+    #     f.write(final_report)
 
     return {
         "messages": [

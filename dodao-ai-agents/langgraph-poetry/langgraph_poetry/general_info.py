@@ -90,8 +90,8 @@ def generate_project_info_report_node(state: State):
     response = llm.invoke([HumanMessage(content=prompt)])
     state["projectGeneralInfo"] = response.content.strip()
 
-    with open("project_general_info_report.md", "w", encoding="utf-8") as f:
-        f.write(state["projectGeneralInfo"])
+    # with open("project_general_info_report.md", "w", encoding="utf-8") as f:
+    #     f.write(state["projectGeneralInfo"])
 
     return {
         "messages": [
