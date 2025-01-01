@@ -110,18 +110,18 @@ graph_builder.add_edge("aggregate_scraped_content", "generate_project_info_repor
 
 app = graph_builder.compile(checkpointer=memory)
 
-if __name__ == "__main__":
-    events = app.stream(
-        {
-            "messages": [("user", "Please gather the project's general info.")],
-            "projectUrls": [
-                "https://wefunder.com/neighborhoodsun",
-                "https://neighborhoodsun.solar/"
-            ]
-        },
-        config,
-        stream_mode="values"
-    )
 
-for event in events:
-    event["messages"][-1].pretty_print()
+# events = app.stream(
+#     {
+#         "messages": [("user", "Please gather the project's general info.")],
+#         "projectUrls": [
+#             "https://wefunder.com/neighborhoodsun",
+#             "https://neighborhoodsun.solar/"
+#         ]
+#     },
+#     config,
+#     stream_mode="values"
+# )
+
+# for event in events:
+#     event["messages"][-1].pretty_print()

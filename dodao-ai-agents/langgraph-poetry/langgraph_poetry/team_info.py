@@ -61,8 +61,10 @@ class State(TypedDict):
     teamMemberLinkedinUrls: List[TeamMemberLinkedinUrl]
     rawLinkedinProfiles: List[RawLinkedinProfile]
     analyzedTeamProfiles: List[AnalyzedTeamProfile]
+    teamInfo: str
 
 llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
+llm_mini = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
 
 graph_builder = StateGraph(State)
 memory = MemorySaver()
@@ -110,27 +112,56 @@ def scrape_node(state: State):
         "scraped_content": state["scraped_content"]
     }
 
-def extract_project_info_node(state: State):
+def extract_project_info_node(state: State, max_retries=10, retry_delay=5):
     """
-    Parses the JSON returned by the LLM for project info and stores it in state.
+    Parses the JSON returned by the LLM for project info and stores it in state, with retry logic.
+
+    Args:
+        state: The state object containing data and configurations.
+        max_retries: Maximum number of retry attempts (default: 5).
+        retry_delay: Time (in seconds) to wait between retries (default: 5 seconds).
     """
     print("Extracting project info...")
     last_msg = state["messages"][-1]
     prompt_text = last_msg.content
-    response = llm.invoke([HumanMessage(content=prompt_text)])
-    try:
-        project_info = json.loads(response.content)
-        state["projectInfo"] = project_info
-        print(state["projectInfo"])
-        prompt = "Project info extracted successfully."
-        return {
-            "messages": [HumanMessage(content=prompt)],
-            "projectUrls": state["projectUrls"],
-            "scraped_content": state["scraped_content"],
-            "projectInfo": state["projectInfo"]
-        }
-    except Exception:
-        return {"messages": [AIMessage(content="Error parsing project info.")]}
+
+    attempts = 0
+    while attempts < max_retries:
+        try:
+            # Invoke the LLM with the prompt
+            response = llm.invoke([HumanMessage(content=prompt_text)])
+            response_content = response.content.strip()
+
+            # Ensure the response is valid JSON
+            project_info = json.loads(response_content)
+            state["projectInfo"] = project_info
+            print("Project Info Extracted:", state["projectInfo"])
+
+            # Return success message
+            prompt = "Project info extracted successfully."
+            return {
+                "messages": [HumanMessage(content=prompt)],
+                "projectUrls": state["projectUrls"],
+                "scraped_content": state["scraped_content"],
+                "projectInfo": state["projectInfo"]
+            }
+
+        except json.JSONDecodeError as e:
+            print(f"JSON Decode Error on attempt {attempts + 1}: {e}")
+        except Exception as e:
+            print(f"Error extracting project info on attempt {attempts + 1}: {e}")
+
+        # Increment attempts and wait before retrying
+        attempts += 1
+        print(f"Retrying extraction in {retry_delay} seconds...")
+        time.sleep(retry_delay)
+
+    # If all retries fail, return an error message
+    return {
+        "messages": [AIMessage(content="Failed to extract project info after multiple attempts.")],
+        "projectUrls": state["projectUrls"],
+        "scraped_content": state["scraped_content"]
+    }
 
 def find_linkedin_urls_node(state: State):
     """
@@ -334,15 +365,17 @@ def evaluate_node(state: State):
         "Do not add extra commentary or text, return ONLY the table."
     )
 
-    table_response = llm.invoke([HumanMessage(content=table_prompt)])
+    table_response = llm_mini.invoke([HumanMessage(content=table_prompt)])
     final_table = table_response.content
-
+    state["teamInfo"] = final_table
+    # print(state["teamInfo"])
     with open("final_table.md", "w", encoding="utf-8") as f:
         f.write(final_table)
 
     return {
         "messages": [AIMessage(content="Final evaluation of the team completed.\n\n" + table_response.content + "\n\nTable saved as final_table.md")],
-        "analyzedTeamProfiles": state["analyzedTeamProfiles"]
+        "analyzedTeamProfiles": state["analyzedTeamProfiles"],
+        "teamInfo": state["teamInfo"]
     }
 
 graph_builder.add_node("start", start_node)
@@ -361,6 +394,6 @@ graph_builder.add_edge("scrape_linkedin_profiles", "evaluate")
 
 app = graph_builder.compile(checkpointer=memory)
 
-events = app.stream({"messages": [("user", "https://wefunder.com/neighborhoodsun")]}, config, stream_mode="values")
-for event in events:
-    event["messages"][-1].pretty_print()
+# events = app.stream({"messages": [("user", "https://wefunder.com/neighborhoodsun")]}, config, stream_mode="values")
+# for event in events:
+#     event["messages"][-1].pretty_print()
