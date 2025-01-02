@@ -119,7 +119,7 @@ def scrape_and_extract_sec_node(state: State, max_retries=10, retry_delay=5):
 
         form_c_data = json.loads(response_content)
         state["form_c_data"] = form_c_data
-        print("Extracted Form C Data:", form_c_data)
+        #print("Extracted Form C Data:", form_c_data)
 
         # Generate table
         table = "| Metric              | Most Recent Fiscal Year | Prior Fiscal Year |\n"
@@ -133,7 +133,7 @@ def scrape_and_extract_sec_node(state: State, max_retries=10, retry_delay=5):
         }
     except json.JSONDecodeError as e:
         print(f"JSON Decode Error: {e}")
-        print(f"LLM Response: {response.content}")
+        #print(f"LLM Response: {response.content}")
         return {"messages": [AIMessage(content="Error parsing SEC data.")]}
 
 
@@ -155,7 +155,7 @@ def scrape_additional_links_node(state: State):
             print(f"Error scraping {link}: {e}")
 
     state["scraped_content"] = scraped_content
-    print("Scraped content from all links:", scraped_content)
+    #print("Scraped content from all links:", scraped_content)
 
     return {
         "messages": [AIMessage(content="Additional links scraped successfully.")],
@@ -208,7 +208,7 @@ def extract_additional_data_node(state: State):
 
         response = llm.invoke([HumanMessage(content=prompt)])
         try:
-            print(response)
+            #print(response)
             response_content = response.content.strip()
             if response_content.startswith("```json"):
                 response_content = response_content[7:-3].strip()
@@ -331,7 +331,7 @@ def prepare_investor_report_with_analyses_node(state: State):
     try:
         generic_feedback = json.loads(response_content)
     except json.JSONDecodeError:
-        print("Failed to parse Generic Feedback JSON:", response_content)
+        #print("Failed to parse Generic Feedback JSON:", response_content)
         generic_feedback = {}
 
     # 3. Generate Sector-Specific Feedback
@@ -349,7 +349,7 @@ def prepare_investor_report_with_analyses_node(state: State):
     try:
         sector_specific_feedback = json.loads(response_content)
     except json.JSONDecodeError:
-        print("Failed to parse Sector-Specific Feedback JSON:", response_content)
+        #print("Failed to parse Sector-Specific Feedback JSON:", response_content)
         sector_specific_feedback = {}
 
     # 4. Process and Enhance Tables
@@ -398,7 +398,7 @@ def prepare_investor_report_with_analyses_node(state: State):
     #     f.write(report)
 
     # Update State
-    print("Final Investor Report Generated:\n", report)
+    #print("Final Investor Report Generated:\n", report)
 
     return {
         "messages": [AIMessage(content="Final comprehensive report generated and saved as `final_investor_report.md`.")],
