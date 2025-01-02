@@ -1,6 +1,7 @@
 import asyncio
 import os
 import json
+import argparse
 from general_info import app as general_info_app
 from team_info import app as team_info_app
 from red_flags import app as red_flags_app
@@ -16,16 +17,26 @@ def format_id(project_name):
     return project_name.strip().replace(" ", "_").lower()
 
 
-def get_user_input():
+def parse_arguments():
     """
-    Prompts the user for project details and returns them.
+    Parses command-line arguments and returns project details.
     """
-    project_name = input("Enter the project name: ").strip()
-    crowdfunding_link = input("Enter the crowdfunding link: ").strip()
-    website_url = input("Enter the official website URL: ").strip()
-    latest_sec_filing_link = input("Enter the latest SEC filing link (if available): ").strip()
+    parser = argparse.ArgumentParser(description="Run the project report generator.")
+    parser.add_argument("project_name", help="The name of the project.")
+    parser.add_argument("crowdfunding_link", help="The crowdfunding link for the project.")
+    parser.add_argument("website_url", help="The official website URL of the project.")
+    parser.add_argument("latest_sec_filing_link", help="The latest SEC filing link.")
     
-    project_id = format_id(project_name)
+    args = parser.parse_args()
+
+    # Sanitize inputs to remove unnecessary quotes or whitespace
+    project_name = args.project_name.strip().strip('"')
+    crowdfunding_link = args.crowdfunding_link.strip().strip('"')
+    website_url = args.website_url.strip().strip('"')
+    latest_sec_filing_link = args.latest_sec_filing_link.strip().strip('"')
+
+    project_id = project_name.replace(" ", "_").lower()
+
     return {
         "project_name": project_name,
         "crowdfunding_link": crowdfunding_link,
@@ -33,7 +44,6 @@ def get_user_input():
         "latest_sec_filing_link": latest_sec_filing_link,
         "project_id": project_id,
     }
-
 
 async def run_agent_and_get_final_output_async(app, input_data, final_key, output_file):
     """
@@ -191,5 +201,5 @@ async def main_controller_async(project_details):
 
 
 if __name__ == "__main__":
-    project_details = get_user_input()
+    project_details = parse_arguments()
     asyncio.run(main_controller_async(project_details))

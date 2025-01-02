@@ -18,6 +18,7 @@ requests = "^2.32.3"
 typing-extensions = "^4.12.2"
 langchain-google-community = "^2.0.3"
 asyncio = "^3.4.3"
+flask = "^3.1.0"
 
 
 [build-system]
