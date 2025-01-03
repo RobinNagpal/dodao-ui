@@ -3,56 +3,111 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project Input Form</title>
+    <title>Submit Project</title>
     <style>
       body {
         font-family: Arial, sans-serif;
-        background-color: #f4f4f9;
+        background-color: #f8f9fa;
         margin: 0;
-        padding: 20px;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
-      .container {
-        max-width: 600px;
-        margin: 0 auto;
-        background: white;
-        padding: 20px;
+
+      .form-container {
+        background: #ffffff;
         border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        width: 400px;
       }
+
       h1 {
+        font-size: 1.8em;
+        color: #333333;
         text-align: center;
         margin-bottom: 20px;
-        color: #333;
       }
+
       label {
-        font-weight: bold;
-        margin-top: 10px;
         display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333333;
       }
-      input {
-        width: 100%;
+
+      input[type="text"],
+      input[type="url"],
+      button {
+        width: calc(100% - 20px);
         padding: 10px;
-        margin: 10px 0;
+        margin-bottom: 15px;
         border: 1px solid #ccc;
         border-radius: 4px;
+        box-sizing: border-box;
       }
+
+      input[type="checkbox"] {
+        margin-right: 8px;
+      }
+
       button {
         background-color: #007bff;
         color: white;
-        padding: 10px 15px;
         border: none;
-        border-radius: 4px;
         cursor: pointer;
       }
+
       button:hover {
         background-color: #0056b3;
       }
+
+      .additional-links-section {
+        margin-top: 10px;
+      }
+
+      .additional-links-container input {
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .form-footer {
+        margin-top: 20px;
+      }
     </style>
+    <script>
+      function toggleAdditionalLinks() {
+        const additionalLinksSection = document.getElementById(
+          "additional-links-section"
+        );
+        additionalLinksSection.style.display = document.getElementById(
+          "add-additional-links"
+        ).checked
+          ? "block"
+          : "none";
+      }
+
+      function addAdditionalLinkInput() {
+        const container = document.getElementById("additional-links-container");
+        const input = document.createElement("input");
+        input.type = "url";
+        input.name = "additional_links";
+        input.placeholder = "Enter additional link";
+        input.required = true;
+        container.appendChild(input);
+      }
+    </script>
   </head>
   <body>
-    <div class="container">
-      <h1>Project Input Form</h1>
-      <form action="/submit" method="POST">
+    <div class="form-container">
+      <h1>Submit Project</h1>
+      <form method="POST" action="/submit">
         <label for="project_name">Project Name:</label>
         <input type="text" id="project_name" name="project_name" required />
 
@@ -72,9 +127,36 @@
           type="url"
           id="latest_sec_filing_link"
           name="latest_sec_filing_link"
+          required
         />
 
-        <button type="submit">Submit</button>
+        <label>
+          <input
+            type="checkbox"
+            id="add-additional-links"
+            onclick="toggleAdditionalLinks()"
+          />
+          Add Additional Links
+        </label>
+
+        <div
+          id="additional-links-section"
+          class="additional-links-section hidden"
+        >
+          <div
+            id="additional-links-container"
+            class="additional-links-container"
+          >
+            <!-- Additional links inputs will be added here -->
+          </div>
+          <button type="button" onclick="addAdditionalLinkInput()">
+            + Add Link
+          </button>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit">Submit</button>
+        </div>
       </form>
     </div>
   </body>
