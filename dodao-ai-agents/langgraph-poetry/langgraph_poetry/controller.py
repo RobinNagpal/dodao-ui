@@ -87,6 +87,28 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key, outpu
 
     raise ValueError(f"Final output key '{final_key}' not found in the agent's events.")
 
+async def convert_markdown_to_pdf(markdown_path, pdf_path):
+    """
+    Converts a Markdown file to a PDF file.
+    """
+    with open(markdown_path, "r", encoding="utf-8") as f:
+        markdown_content = f.read()
+
+    # Convert Markdown to HTML
+    html_content = markdown(markdown_content)
+    html_content = html_content.replace("<br>", "<br/>")  # Ensure compatibility
+
+    # Generate PDF
+    doc = SimpleDocTemplate(pdf_path, pagesize=letter)
+    styles = getSampleStyleSheet()
+    body_style = ParagraphStyle("Body", parent=styles["BodyText"], fontSize=10, leading=12)
+
+    elements = [Paragraph(html_content, body_style)]
+    doc.build(elements)
+
+    print(f"PDF Generated: {pdf_path}")
+
+
 
 async def main_controller_async(project_details):
     """
@@ -135,6 +157,7 @@ async def main_controller_async(project_details):
             "messages": [("user", latest_sec_filing_link)],
             "url_to_scrape": latest_sec_filing_link,
             "additional_links": [crowdfunding_link, website_url] + additional_links,
+            "scraped_content": {},
             "output_file": os.path.join(reports_dir, "financial_review.md"),
         },
         "relevant_links": {
@@ -153,7 +176,7 @@ async def main_controller_async(project_details):
             team_info_app, input_data["team_info"], "teamInfo", input_data["team_info"]["output_file"]
         ),
         run_agent_and_get_final_output_async(
-            financial_review_app, input_data["financial_review"], "finalFinancialReport", input_data["financial_review"]["output_file"]
+            financial_review_app, input_data["financial_review"], "finalFinancialReport", os.path.join(reports_dir, "financial_review.md"),
         ),
         run_agent_and_get_final_output_async(
             red_flags_app, input_data["red_flags"], "finalRedFlagsReport", input_data["red_flags"]["output_file"]
@@ -165,35 +188,13 @@ async def main_controller_async(project_details):
             relevant_links_app, input_data["relevant_links"], "relevantLinks", input_data["relevant_links"]["output_file"]
         ),
     ]
-
-    parallel_results = await asyncio.gather(*parallel_tasks)
-    filtered_results = [item for item in parallel_results if item]
-
-    # Markdown content generation
-    markdown_content = f"# Project Report: {project_details['project_name']}\n\n"
-    for section_title, content in zip(input_data.keys(), filtered_results):
-        markdown_content += f"## {section_title.replace('_', ' ').capitalize()}\n\n{content}\n\n"
-
-    # Convert Markdown to HTML
-    html_content = markdown(markdown_content)
-
-    # Replace <br> with <br/> for compatibility
-    html_content = html_content.replace("<br>", "<br/>")
-
-    # Generate PDF
-    pdf_path = os.path.join(reports_dir, f"{id}_report.pdf")
-    doc = SimpleDocTemplate(pdf_path, pagesize=letter)
-
-    styles = getSampleStyleSheet()
-    body_style = ParagraphStyle("Body", parent=styles["BodyText"], fontSize=10, leading=12)
-
-    elements = []
-
-    # Add content to PDF
-    elements.append(Paragraph(html_content, body_style))
-    doc.build(elements)
-
-    print(f"Unified Report PDF Generated at: {pdf_path}")
+ # Convert each Markdown file to PDF
+   # Await all tasks to ensure completion
+    await asyncio.gather(*parallel_tasks)
+    for key, data in input_data.items():
+        md_path = data["output_file"]
+        pdf_path = md_path.replace(".md", ".pdf")
+        await convert_markdown_to_pdf(md_path, pdf_path)
 
 if __name__ == "__main__":
     project_details = parse_arguments()
