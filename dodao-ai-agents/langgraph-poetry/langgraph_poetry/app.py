@@ -20,7 +20,8 @@ def submit():
     project_name = request.form.get("project_name").strip()
     crowdfunding_link = request.form.get("crowdfunding_link").strip()
     website_url = request.form.get("website_url").strip()
-    latest_sec_filing_link = request.form.get("latest_sec_filing_link", "").strip()  # Optional field
+    latest_sec_filing_link = request.form.get("latest_sec_filing_link").strip()
+    additional_links = request.form.getlist("additional_links")  # Collect all additional links as a list
 
     # Wrap each argument in double quotes to handle spaces or special characters
     command = [
@@ -30,6 +31,12 @@ def submit():
         f'"{website_url}"',
         f'"{latest_sec_filing_link}"',
     ]
+
+    # Add `--additional_links` argument if additional links exist
+    if additional_links:
+        links_str = ",".join(additional_links)
+        command.append(f'--additional_links="{links_str}"')
+
     print("Executing command:", " ".join(command))
 
     try:
@@ -47,7 +54,6 @@ def submit():
         # Handle unexpected errors
         print("Exception occurred while running the command:", str(e))
         return f"<h2>Exception Occurred</h2><pre>{str(e)}</pre>"
-
 
 
 if __name__ == "__main__":

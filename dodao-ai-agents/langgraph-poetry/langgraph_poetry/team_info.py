@@ -185,7 +185,7 @@ def find_linkedin_urls_node(state: State):
         })
 
     state["teamMemberLinkedinUrls"] = linkedin_urls
-    print(state["teamMemberLinkedinUrls"])
+    #print(state["teamMemberLinkedinUrls"])
 
     return {
         "messages": [HumanMessage(content="linkedln urls finded. now we have to scrape linkedin profiles")],
@@ -233,7 +233,7 @@ def scrape_linkedin_profiles_node(state: State):
         })
     
     state["rawLinkedinProfiles"] = rawProfiles
-    print(state["rawLinkedinProfiles"])
+    #print(state["rawLinkedinProfiles"])
 
     return {
         "messages": [HumanMessage(content="Linkedin profiles scraped. Now we have to evaluate each team member.")],
@@ -251,7 +251,7 @@ def evaluate_node(state: State):
     Finally, produce a table as final output.
     """
 
-    print("Evaluating each team member individually...")
+    #print("Evaluating each team member individually...")
 
     analyzed_profiles = []
     for member_data in state["rawLinkedinProfiles"]:
@@ -345,7 +345,7 @@ def evaluate_node(state: State):
             })
 
     state["analyzedTeamProfiles"] = analyzed_profiles
-    print(state["analyzedTeamProfiles"])
+    #print(state["analyzedTeamProfiles"])
 
     table_prompt = (
         "You have the following JSON array of analyzed team profiles:\n"
