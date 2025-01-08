@@ -42,7 +42,7 @@ academy-ui/.env
 data
 
 # langgraph ai agent
-dodao-ai-agents/langgraph-poetry/langgraph_poetry/.env
+dodao-ai-agents/langgraph-poetry/cf_analysis_agent/.env
 
 # Sentry Config File
 academy-ui/.sentryclirc
