@@ -1,0 +1,11 @@
+{
+  "dev": {
+    "app_function": "app.app",
+    "aws_region": "us-east-1",
+    "exclude": [".env"],
+    "profile_name": "default",
+    "project_name": "ai-agent-flask",
+    "runtime": "python3.11",
+    "s3_bucket": "ai-agent-flask"
+  }
+}
