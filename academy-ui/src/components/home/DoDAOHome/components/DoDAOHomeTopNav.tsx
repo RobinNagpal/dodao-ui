@@ -11,13 +11,13 @@ import {
   CodeBracketIcon,
   WrenchScrewdriverIcon,
   ChartBarIcon,
-  ShieldExclamationIcon,
   CpuChipIcon,
   PresentationChartLineIcon,
   ComputerDesktopIcon,
   BuildingOfficeIcon,
   GlobeAltIcon,
   UserGroupIcon,
+  LifebuoyIcon,
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
@@ -40,38 +40,11 @@ const products = [
     href: '/home-section/dodao-io/products/decen-reviews',
     icon: FingerPrintIcon,
   },
-];
-
-const services = [
   {
-    name: 'SmartContract Development',
-    description: 'Craft secure and efficient decentralized applications.',
-    href: '/home-section/dodao-io/services/smart-contract',
-    icon: CodeBracketIcon,
-  },
-  {
-    name: 'Blockchain Tooling',
-    description: 'Enhance your development process with cutting-edge tools.',
-    href: '/home-section/dodao-io/services/blockchain-tooling',
-    icon: WrenchScrewdriverIcon,
-  },
-  {
-    name: 'DeFi Analytics',
-    description: 'Gain deep insights with advanced DeFi analytics.',
-    href: '/home-section/dodao-io/services/defi-analytics',
+    name: 'AI Crowdfunding Analyzer',
+    description: 'Leverage AI to evaluate crowdfunding opportunities.',
+    href: '/home-section/dodao-io/products/ai-crowdfunding-agent',
     icon: ChartBarIcon,
-  },
-  {
-    name: 'DeFi Risk Analysis',
-    description: 'Manage and mitigate risks in your DeFi operations.',
-    href: '/home-section/dodao-io/services/risk-analysis',
-    icon: ShieldExclamationIcon,
-  },
-  {
-    name: 'AI/LLM Development & Solutions',
-    description: 'Integrate AI to optimize and innovate your solutions.',
-    href: '/home-section/dodao-io/services/ai-llm-dev',
-    icon: CpuChipIcon,
   },
 ];
 
@@ -111,6 +84,39 @@ const researchAreas = [
   },
 ];
 
+const services = [
+  {
+    name: 'SmartContract Development',
+    description: 'Craft secure and efficient decentralized applications.',
+    href: '/home-section/dodao-io/services/smart-contract',
+    icon: CodeBracketIcon,
+  },
+  {
+    name: 'Custom AI Agent Development',
+    description: 'Create powerful, personalized AI Agent solutions for your business needs.',
+    href: '/home-section/dodao-io/services/custom-ai-agent-dev',
+    icon: CpuChipIcon,
+  },
+  {
+    name: 'Blockchain Tooling',
+    description: 'Enhance your development process with cutting-edge tools.',
+    href: '/home-section/dodao-io/services/blockchain-tooling',
+    icon: WrenchScrewdriverIcon,
+  },
+  {
+    name: 'Maintenance and Support',
+    description: 'Optimize and sustain your AI agents with expert maintenance and support.',
+    href: '/home-section/dodao-io/services/maintenance-support',
+    icon: LifebuoyIcon,
+  },
+  {
+    name: 'DeFi Analytics',
+    description: 'Gain deep insights with advanced DeFi analytics.',
+    href: '/home-section/dodao-io/services/defi-analytics',
+    icon: ChartBarIcon,
+  },
+];
+
 export default function DoDAOHomeTopNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -119,7 +125,7 @@ export default function DoDAOHomeTopNav() {
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
+            <span className="sr-only">DoDAO</span>
             <img
               alt="DoDAO logo"
               src="https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png"
@@ -174,23 +180,25 @@ export default function DoDAOHomeTopNav() {
 
             <PopoverPanel
               transition
-              className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
+              className="absolute left-1/2 z-10 mt-3 flex w-screen max-w-max -translate-x-1/2 px-4 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
             >
-              <div className="p-4">
-                {services.map((item) => (
-                  <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                      <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+              <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5 lg:max-w-3xl">
+                <div className="grid grid-cols-1 gap-x-6 gap-y-1 p-4 lg:grid-cols-2">
+                  {services.map((item) => (
+                    <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50">
+                      <div className="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                        <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+                      </div>
+                      <div>
+                        <a href={item.href} className="font-semibold text-gray-900">
+                          {item.name}
+                          <span className="absolute inset-0" />
+                        </a>
+                        <p className="mt-1 text-gray-600">{item.description}</p>
+                      </div>
                     </div>
-                    <div className="flex-auto">
-                      <a href={item.href} className="block font-semibold text-gray-900">
-                        {item.name}
-                        <span className="absolute inset-0" />
-                      </a>
-                      <p className="mt-1 text-gray-600">{item.description}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </PopoverPanel>
           </Popover>
@@ -258,9 +266,9 @@ export default function DoDAOHomeTopNav() {
         <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
+              <span className="sr-only">DoDAO</span>
               <img
-                alt=""
+                alt="DoDAO logo"
                 src="https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png"
                 className="h-8 w-auto"
               />
@@ -291,6 +299,7 @@ export default function DoDAOHomeTopNav() {
                     ))}
                   </DisclosurePanel>
                 </Disclosure>
+
                 <Disclosure as="div" className="-mx-3">
                   <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                     Services
