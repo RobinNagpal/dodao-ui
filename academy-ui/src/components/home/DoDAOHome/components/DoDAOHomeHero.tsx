@@ -24,7 +24,8 @@ export default function DoDAOHomeHero() {
           <p className="mt-6 text-lg leading-8 text-gray-300">
             DoDAO is a dedicated team of builders creating meaningful, impact-driven products. We’ve collaborated with leading blockchain projects, offering
             expertise in Smart Contract Development, Blockchain Tooling, Education, and Research. Our mission is to empower the blockchain ecosystem with
-            cutting-edge solutions.
+            cutting-edge solutions. Expanding our horizons, we also specialize in AI agent development tailored to meet the customized needs of businesses,
+            ensuring innovative and efficient solutions.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <ContactUsButton />

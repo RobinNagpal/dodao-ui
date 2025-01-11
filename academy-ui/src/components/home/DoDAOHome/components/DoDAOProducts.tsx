@@ -1,5 +1,6 @@
 import AcademyGif from '@/images/DoDAOHomePage/Academy_site.gif';
 import TidbitsHubGif from '@/images/DoDAOHomePage/Tidbitshub_giffy.gif';
+import AiAgent from '@/images/DoDAOHomePage/aiagent.webp';
 import { Container } from './Container';
 import { SectionHeading } from './SectionHeading';
 
@@ -17,9 +18,16 @@ const features = [
     id: 'academy-sites',
     description:
       "Academy Sites offers a streamlined way to learn through various formats that suit everyone's needs. Our nano-courses cover specific topics in 5-10 minutes, with quick quizzes to test understanding. The platform also features safe, interactive simulations and clickable demos that help users learn protocols risk-free. For deeper learning, our full courses blend texts, diagrams, videos, and interactive questions into a comprehensive 30-60 minute session. Additionally, our timelines keep users up-to-date with the latest product developments and releases, ensuring everyone stays informed.",
-
     imageSrc: AcademyGif.src,
     imageAlt: 'Academy Sites',
+  },
+  {
+    name: 'AI Crowdfunding Analyzer',
+    id: 'ai-crowdfunding-analyzer',
+    description:
+      'AI Crowdfunding Analyzer is an AI Agent designed to help investors evaluate startups listed on crowdfunding platforms. It generates detailed reports covering founding members, potential risks, key opportunities, market trends, and financial details. The analyzer highlights red and green flags to simplify decision-making and assess market potential. With this tool, investors can make informed decisions quickly and confidently.',
+    imageSrc: AiAgent.src,
+    imageAlt: 'AI Agent for startups',
   },
 ];
 
