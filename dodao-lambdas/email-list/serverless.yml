@@ -19,7 +19,11 @@ provider:
       Resource:
         - arn:aws:s3:::email-subscription-bucket
         - arn:aws:s3:::email-subscription-bucket/*
-    
+
+package:
+  patterns:
+    - subscribe-page.html
+
 functions:
   manageSubscription:
     handler: handler.manageSubscription
@@ -30,7 +34,6 @@ functions:
       - httpApi:
           path: /email-subscription
           method: POST
-
 
 resources:
   Resources:
