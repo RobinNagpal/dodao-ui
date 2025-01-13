@@ -1,0 +1,44 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: dodao
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: email-list
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  httpApi:
+    cors: true
+  environment:
+    EMAIL_BUCKET_NAME: email-subscription-bucket
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:PutObject
+        - s3:ListBucket 
+      Resource:
+        - arn:aws:s3:::email-subscription-bucket
+        - arn:aws:s3:::email-subscription-bucket/*
+    
+functions:
+  manageSubscription:
+    handler: handler.manageSubscription
+    events:
+      - httpApi:
+          path: /email-subscription
+          method: GET
+      - httpApi:
+          path: /email-subscription
+          method: POST
+
+
+resources:
+  Resources:
+    EmailBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
