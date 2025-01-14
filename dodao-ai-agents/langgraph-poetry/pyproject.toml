@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "langgraph-poetry"
+name = "cf_analysis_agent"
 version = "0.1.0"
 description = ""
 authors = ["Hassaan Qaisar <hassaanqaisar2@gmail.com>"]
