@@ -84,7 +84,22 @@ const researchAreas = [
   },
 ];
 
-const services = [
+const aiAgentServices = [
+  {
+    name: 'Custom AI Agent Development',
+    description: 'Create powerful, personalized AI agent solutions for your business.',
+    href: '/home-section/dodao-io/services/custom-ai-agent-dev',
+    icon: CpuChipIcon,
+  },
+  {
+    name: 'Maintenance and Support',
+    description: 'Optimize and sustain your AI agents with expert maintenance and support.',
+    href: '/home-section/dodao-io/services/maintenance-support',
+    icon: LifebuoyIcon,
+  },
+];
+
+const blockchainServices = [
   {
     name: 'SmartContract Development',
     description: 'Craft secure and efficient decentralized applications.',
@@ -92,22 +107,10 @@ const services = [
     icon: CodeBracketIcon,
   },
   {
-    name: 'Custom AI Agent Development',
-    description: 'Create powerful, personalized AI Agent solutions for your business needs.',
-    href: '/home-section/dodao-io/services/custom-ai-agent-dev',
-    icon: CpuChipIcon,
-  },
-  {
     name: 'Blockchain Tooling',
     description: 'Enhance your development process with cutting-edge tools.',
     href: '/home-section/dodao-io/services/blockchain-tooling',
     icon: WrenchScrewdriverIcon,
-  },
-  {
-    name: 'Maintenance and Support',
-    description: 'Optimize and sustain your AI agents with expert maintenance and support.',
-    href: '/home-section/dodao-io/services/maintenance-support',
-    icon: LifebuoyIcon,
   },
   {
     name: 'DeFi Analytics',
@@ -177,27 +180,48 @@ export default function DoDAOHomeTopNav() {
               Services
               <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
             </PopoverButton>
-
             <PopoverPanel
               transition
-              className="absolute left-1/2 z-10 mt-3 flex w-screen max-w-max -translate-x-1/2 px-4 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
+              className="absolute left-1/2 z-10 mt-3 flex w-screen max-w-max -translate-x-1/2 px-4
+                         data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
             >
-              <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5 lg:max-w-3xl">
-                <div className="grid grid-cols-1 gap-x-6 gap-y-1 p-4 lg:grid-cols-2">
-                  {services.map((item) => (
-                    <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50">
-                      <div className="mt-1 flex size-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                        <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+              <div className="w-screen max-w-3xl flex-auto overflow-hidden rounded-3xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+                <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-2">
+                  <div>
+                    <h3 className="mb-2 text-base font-semibold text-gray-900 text-center">Blockchain Services</h3>
+                    {blockchainServices.map((item) => (
+                      <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-gray-50">
+                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                          <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+                        </div>
+                        <div>
+                          <a href={item.href} className="font-semibold text-gray-900">
+                            {item.name}
+                            <span className="absolute inset-0" />
+                          </a>
+                          <p className="mt-1 text-gray-600">{item.description}</p>
+                        </div>
                       </div>
-                      <div>
-                        <a href={item.href} className="font-semibold text-gray-900">
-                          {item.name}
-                          <span className="absolute inset-0" />
-                        </a>
-                        <p className="mt-1 text-gray-600">{item.description}</p>
+                    ))}
+                  </div>
+
+                  <div>
+                    <h3 className="mb-2 text-base font-semibold text-gray-900 text-center">AI Agent Services</h3>
+                    {aiAgentServices.map((item) => (
+                      <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-gray-50">
+                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                          <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+                        </div>
+                        <div>
+                          <a href={item.href} className="font-semibold text-gray-900">
+                            {item.name}
+                            <span className="absolute inset-0" />
+                          </a>
+                          <p className="mt-1 text-gray-600">{item.description}</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </PopoverPanel>
@@ -207,7 +231,6 @@ export default function DoDAOHomeTopNav() {
               Education
               <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
             </PopoverButton>
-
             <PopoverPanel
               transition
               className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
@@ -299,19 +322,31 @@ export default function DoDAOHomeTopNav() {
                     ))}
                   </DisclosurePanel>
                 </Disclosure>
-
                 <Disclosure as="div" className="-mx-3">
                   <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                     Services
                     <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
-                    {services.map((item) => (
+                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-gray-900">AI Agent Services</div>
+                    {aiAgentServices.map((item) => (
                       <DisclosureButton
                         key={item.name}
                         as="a"
                         href={item.href}
-                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                        className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-gray-900 hover:bg-gray-50"
+                      >
+                        {item.name}
+                      </DisclosureButton>
+                    ))}
+
+                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-gray-900">Blockchain Services</div>
+                    {blockchainServices.map((item) => (
+                      <DisclosureButton
+                        key={item.name}
+                        as="a"
+                        href={item.href}
+                        className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-gray-900 hover:bg-gray-50"
                       >
                         {item.name}
                       </DisclosureButton>
