@@ -1,6 +1,6 @@
 import AcademyGif from '@/images/DoDAOHomePage/Academy_site.gif';
 import TidbitsHubGif from '@/images/DoDAOHomePage/Tidbitshub_giffy.gif';
-import AiAgent from '@/images/DoDAOHomePage/aiagent.webp';
+import AiAgent from '@/images/DoDAOHomePage/aichatbot.jpg';
 import { Container } from './Container';
 import { SectionHeading } from './SectionHeading';
 
