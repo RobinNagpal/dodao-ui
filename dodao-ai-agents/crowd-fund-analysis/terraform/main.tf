@@ -4,10 +4,17 @@ provider "aws" {
 
 resource "aws_lightsail_container_service" "cf_service" {
   name  = "cf-analysis-service"
-  power = "medium" # Options: nano, micro, small, medium, large, xlarge
+  power = "micro" # Options: nano, micro, small, medium, large, xlarge
   scale = 1       # Number of container instances
   tags = {
     Environment = "Production"
+  }
+  is_disabled = false
+
+  private_registry_access {
+    ecr_image_puller_role {
+      is_active = true
+    }
   }
 }
 
@@ -20,7 +27,6 @@ resource "aws_lightsail_container_service_deployment_version" "cf_deployment" {
     command = []
 
     environment = {
-      # FLASK_ENV           = "production"
       OPENAI_API_KEY      = var.openai_api_key
       SCRAPINGANT_API_KEY = var.scrapingant_api_key
       SERPER_API_KEY      = var.serper_api_key
@@ -47,6 +53,27 @@ resource "aws_lightsail_container_service_deployment_version" "cf_deployment" {
       success_codes       = "200-499"
     }
   }
+}
+
+data "aws_iam_policy_document" "default" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_lightsail_container_service.cf_service.private_registry_access[0].ecr_image_puller_role[0].principal_arn]
+    }
+
+    actions = [
+      "ecr:BatchGetImage",
+      "ecr:GetDownloadUrlForLayer",
+    ]
+  }
+}
+
+resource "aws_ecr_repository_policy" "default" {
+  repository = "crowd-fund-analysis"
+  policy     = data.aws_iam_policy_document.default.json
 }
 
 variable "image_tag" {
