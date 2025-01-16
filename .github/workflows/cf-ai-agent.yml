@@ -12,7 +12,7 @@ jobs:
     env:
       NODE_OPTIONS: --max-old-space-size=8182
       AWS_REGION: us-east-1 # Change this to the AWS region where your ECR repository is located
-      ECR_REPOSITORY: cf_analysis_agent # Replace this with your ECR repository name
+      ECR_REPOSITORY: crowd-fund-analysis # Replace this with your ECR repository name
 
     steps:
       - name: Checkout Repository
