@@ -41,37 +41,45 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
 
-#      - name: Log in to Amazon ECR
-#        id: login-ecr
-#        uses: aws-actions/amazon-ecr-login@v1
-#
-#      - name: Configure AWS CLI
+
+      - name: Create .env File
+        working-directory: dodao-ui/dodao-ai-agents/crowd-fund-analysis
+        run: |
+          cat <<EOF > cf_analysis_agent/.env
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGANT_API_KEY=${{ secrets.SCRAPINGANT_API_KEY }}
+          SERPER_API_KEY=${{ secrets.SERPER_API_KEY }}
+          SCRAPIN_API_KEY=${{ secrets.SCRAPIN_API_KEY }}
+          GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }}
+          GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
+          EOF
+
+      - name: Build, tag, and push image to Amazon ECR
+        working-directory: dodao-ui/dodao-ai-agents/crowd-fund-analysis
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: v2-api
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          aws sts get-caller-identity
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+#      - name: Build Docker Image
+#        working-directory: dodao-ui/dodao-ai-agents/crowd-fund-analysis
 #        run: |
-#          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          aws configure set default.region us-east-1
+#          docker build -t cf_analysis_agent:latest .
 #
-#      - name: Create .env File
+#      - name: Tag Docker Image
+#        working-directory: dodao-ui/dodao-ai-agents/crowd-fund-analysis
 #        run: |
-#          cat <<EOF > cf_analysis_agent/.env
-#          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-#          SCRAPINGANT_API_KEY=${{ secrets.SCRAPINGANT_API_KEY }}
-#          SERPER_API_KEY=${{ secrets.SERPER_API_KEY }}
-#          SCRAPIN_API_KEY=${{ secrets.SCRAPIN_API_KEY }}
-#          GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }}
-#          GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
-#          EOF
-
-      - name: Build Docker Image
-        run: |
-          docker build -t cf_analysis_agent:latest .
-
-      - name: Tag Docker Image
-        run: |
-          IMAGE_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/cf_analysis_agent:latest
-          docker tag cf_analysis_agent:latest $IMAGE_URI
-          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
-
-      - name: Push Docker Image to ECR
-        run: |
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/cf_analysis_agent:latest
+#          IMAGE_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/cf_analysis_agent:latest
+#          docker tag cf_analysis_agent:latest $IMAGE_URI
+#          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+#
+#      - name: Push Docker Image to ECR
+#        working-directory: dodao-ui/dodao-ai-agents/crowd-fund-analysis
+#        run: |
+#          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/cf_analysis_agent:latest
