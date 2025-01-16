@@ -9,31 +9,58 @@ jobs:
   build-and-push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: --max-old-space-size=8182
+      AWS_REGION: us-east-1 # Change this to the AWS region where your ECR repository is located
+      ECR_REPOSITORY: cf_analysis_agent # Replace this with your ECR repository name
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-      - name: Log in to Amazon ECR
+      - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Configure AWS CLI
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: v2-api
+          IMAGE_TAG: ${{ github.sha }}
         run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws configure set default.region us-east-1
+          aws sts get-caller-identity
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-      - name: Create .env File
-        run: |
-          cat <<EOF > cf_analysis_agent/.env
-          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-          SCRAPINGANT_API_KEY=${{ secrets.SCRAPINGANT_API_KEY }}
-          SERPER_API_KEY=${{ secrets.SERPER_API_KEY }}
-          SCRAPIN_API_KEY=${{ secrets.SCRAPIN_API_KEY }}
-          GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }}
-          GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
-          EOF
+
+#      - name: Log in to Amazon ECR
+#        id: login-ecr
+#        uses: aws-actions/amazon-ecr-login@v1
+#
+#      - name: Configure AWS CLI
+#        run: |
+#          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws configure set default.region us-east-1
+#
+#      - name: Create .env File
+#        run: |
+#          cat <<EOF > cf_analysis_agent/.env
+#          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+#          SCRAPINGANT_API_KEY=${{ secrets.SCRAPINGANT_API_KEY }}
+#          SERPER_API_KEY=${{ secrets.SERPER_API_KEY }}
+#          SCRAPIN_API_KEY=${{ secrets.SCRAPIN_API_KEY }}
+#          GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }}
+#          GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
+#          EOF
 
       - name: Build Docker Image
         run: |
