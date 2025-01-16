@@ -62,6 +62,7 @@ dodao-ai-agents/crew_ai_agent/.venv
 dodao-ai-agents/crew_ai_agent/.env
 dodao-ai-agents/crew_ai_agent/src/crew_ai_agent/__pycache__/
 dodao-ai-agents/crew_ai_agent/src/crew_ai_agent/tools/__pycache__/
+dodao-ai-agents/crowd-fund-analysis/cf_analysis_agent/.env
 
 clickable-demos/node_modules
 venv/

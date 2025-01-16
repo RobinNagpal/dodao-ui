@@ -17,6 +17,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -28,12 +29,21 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Check if folder has changes
+        id: check-changes
+        run: |
+          if git diff --quiet HEAD^ HEAD -- dodao-ai-agents/crowd-fund-analysis; then
+            echo "No changes in the folder. Skipping build."
+            echo "skip_build=true" >> $GITHUB_ENV
+          else
+            echo "Changes detected. Proceeding with build."
+            echo "skip_build=false" >> $GITHUB_ENV
 
       - name: Create .env File
+        if: env.skip_build == 'false'
         run: |
-          cd dodao-ai-agents/crowd-fund-analysis
-          pwd
-          cat <<EOF > cf_analysis_agent/.env
+          cd dodao-ai-agents/crowd-fund-analysis/cf_analysis_agent
+          cat <<EOF > .env
           OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
           SCRAPINGANT_API_KEY=${{ secrets.SCRAPINGANT_API_KEY }}
           SERPER_API_KEY=${{ secrets.SERPER_API_KEY }}
@@ -42,33 +52,24 @@ jobs:
           GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
           EOF
 
-      - name: Build, tag, and push image to Amazon ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: crowd-fund-analysis
-          IMAGE_TAG: ${{ github.sha }}
+      - name: Build Docker Image
+        if: env.skip_build == 'false'
+        working-directory: dodao-ai-agents/crowd-fund-analysis
         run: |
-          cd dodao-ai-agents/crowd-fund-analysis
-          pwd
-          aws sts get-caller-identity
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          IMAGE_TAG=${{ github.sha }}
+          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
 
-#      - name: Build Docker Image
-#        working-directory: dodao-ai-agents/crowd-fund-analysis
-#        run: |
-#          docker build -t cf_analysis_agent:latest .
-#
-#      - name: Tag Docker Image
-#        working-directory: dodao-ai-agents/crowd-fund-analysis
-#        run: |
-#          IMAGE_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/cf_analysis_agent:latest
-#          docker tag cf_analysis_agent:latest $IMAGE_URI
-#          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
-#
-#      - name: Push Docker Image to ECR
-#        working-directory: dodao-ai-agents/crowd-fund-analysis
-#        run: |
-#          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/cf_analysis_agent:latest
+      - name: Tag Docker Image
+        if: env.skip_build == 'false'
+        working-directory: dodao-ai-agents/crowd-fund-analysis
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          docker tag ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+
+      - name: Push Docker Image
+        if: env.skip_build == 'false'
+        working-directory: dodao-ai-agents/crowd-fund-analysis
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
