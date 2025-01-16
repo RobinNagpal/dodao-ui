@@ -43,8 +43,8 @@ jobs:
 
 
       - name: Create .env File
-        working-directory: dodao-ai-agents/crowd-fund-analysis
         run: |
+          cd dodao-ai-agents/crowd-fund-analysis
           cat <<EOF > cf_analysis_agent/.env
           OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
           SCRAPINGANT_API_KEY=${{ secrets.SCRAPINGANT_API_KEY }}
@@ -55,12 +55,12 @@ jobs:
           EOF
 
       - name: Build, tag, and push image to Amazon ECR
-        working-directory: dodao-ai-agents/crowd-fund-analysis
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: v2-api
           IMAGE_TAG: ${{ github.sha }}
         run: |
+          cd dodao-ai-agents/crowd-fund-analysis
           aws sts get-caller-identity
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
