@@ -35,12 +35,6 @@ const products = [
     icon: AcademicCapIcon,
   },
   {
-    name: 'Decentralized Solution and Reviews',
-    description: 'Ensure transparency and security in customer feedback.',
-    href: '/home-section/dodao-io/products/decen-reviews',
-    icon: FingerPrintIcon,
-  },
-  {
     name: 'AI Crowdfunding Analyzer',
     description: 'Leverage AI to evaluate crowdfunding opportunities.',
     href: '/home-section/dodao-io/products/ai-crowdfunding-agent',

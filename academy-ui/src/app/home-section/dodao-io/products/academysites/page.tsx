@@ -1,6 +1,6 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import AcademySites from './academysites.mdx';
 import { Metadata } from 'next';
+import AcademySitesComponent from './academysites';
 
 export const metadata: Metadata = {
   title: 'Academy Sites - Tailored Learning for Blockchain and DeFi | DoDAO',
@@ -49,9 +49,7 @@ export const metadata: Metadata = {
 function AcademySitesPage() {
   return (
     <PageWrapper>
-      <div className="markdown-body w-full">
-        <AcademySites />
-      </div>
+      <AcademySitesComponent />
     </PageWrapper>
   );
 }

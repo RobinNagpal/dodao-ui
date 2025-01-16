@@ -1,14 +1,12 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import AiCrowdfundedAgent from './ai-crowdfunding-agent.mdx';
+import AiCrowdfundedComponent from './ai-crowdfunding-agent';
 
-function DecentralizedReviewsPage() {
+function AiCrowdfundedPage() {
   return (
     <PageWrapper>
-      <div className="markdown-body w-full">
-        <AiCrowdfundedAgent />
-      </div>
+      <AiCrowdfundedComponent />
     </PageWrapper>
   );
 }
 
-export default DecentralizedReviewsPage;
+export default AiCrowdfundedPage;
