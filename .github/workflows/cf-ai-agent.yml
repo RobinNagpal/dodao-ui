@@ -38,6 +38,7 @@ jobs:
           else
             echo "Changes detected. Proceeding with build."
             echo "skip_build=false" >> $GITHUB_ENV
+          fi
 
       - name: Create .env File
         if: env.skip_build == 'false'
