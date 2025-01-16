@@ -25,4 +25,4 @@ EXPOSE 5000
 ENV FLASK_ENV=development
 
 # Command to run the Flask app
-CMD ["poetry", "run", "python", "cf_analysis_agent/app.py"]
+ENTRYPOINT ["poetry", "run", "python", "cf_analysis_agent/app.py"]
