@@ -43,7 +43,7 @@ jobs:
 
 
       - name: Create .env File
-        working-directory: dodao-ui/dodao-ai-agents/crowd-fund-analysis
+        working-directory: dodao-ai-agents/crowd-fund-analysis
         run: |
           cat <<EOF > cf_analysis_agent/.env
           OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
@@ -55,7 +55,7 @@ jobs:
           EOF
 
       - name: Build, tag, and push image to Amazon ECR
-        working-directory: dodao-ui/dodao-ai-agents/crowd-fund-analysis
+        working-directory: dodao-ai-agents/crowd-fund-analysis
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: v2-api
@@ -68,18 +68,18 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
 #      - name: Build Docker Image
-#        working-directory: dodao-ui/dodao-ai-agents/crowd-fund-analysis
+#        working-directory: dodao-ai-agents/crowd-fund-analysis
 #        run: |
 #          docker build -t cf_analysis_agent:latest .
 #
 #      - name: Tag Docker Image
-#        working-directory: dodao-ui/dodao-ai-agents/crowd-fund-analysis
+#        working-directory: dodao-ai-agents/crowd-fund-analysis
 #        run: |
 #          IMAGE_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/cf_analysis_agent:latest
 #          docker tag cf_analysis_agent:latest $IMAGE_URI
 #          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
 #
 #      - name: Push Docker Image to ECR
-#        working-directory: dodao-ui/dodao-ai-agents/crowd-fund-analysis
+#        working-directory: dodao-ai-agents/crowd-fund-analysis
 #        run: |
 #          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/cf_analysis_agent:latest
