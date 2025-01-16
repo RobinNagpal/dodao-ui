@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "aws_lightsail_container_service" "ai_agent_service" {
   name  = "ai-agent-service"
-  power = "micro"  # Choose size: nano, micro, small, medium, large
+  power = "small"  # Choose size: nano, micro, small, medium, large
   scale = 1       # Number of containers
 }
 
