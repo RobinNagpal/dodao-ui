@@ -45,7 +45,7 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: v2-api
+          ECR_REPOSITORY: crowd-fund-analysis
           IMAGE_TAG: ${{ github.sha }}
         run: |
           cd dodao-ai-agents/crowd-fund-analysis
