@@ -25,23 +25,23 @@ def submit():
 
     # Wrap each argument in double quotes to handle spaces or special characters
     command = [
-        "poetry", "run", "python", "controller.py",
-        f'"{project_name}"',
-        f'"{crowdfunding_link}"',
-        f'"{website_url}"',
-        f'"{latest_sec_filing_link}"',
+        "poetry", "run", "python", "cf_analysis_agent/controller.py",
+        project_name,
+        crowdfunding_link,
+        website_url,
+        latest_sec_filing_link,
     ]
 
     # Add `--additional_links` argument if additional links exist
     if additional_links:
         links_str = ",".join(additional_links)
-        command.append(f'--additional_links="{links_str}"')
+        command.extend(["--additional_links", links_str])  # Pass as separate arguments
 
     print("Executing command:", " ".join(command))
 
     try:
         # Run the command
-        result = subprocess.run(command, capture_output=True, text=True, shell=True)
+        result = subprocess.run(command, capture_output=True, text=True)
 
         # Check the return code
         if result.returncode == 0:
@@ -57,4 +57,4 @@ def submit():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
