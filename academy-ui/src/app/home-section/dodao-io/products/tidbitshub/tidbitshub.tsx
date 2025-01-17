@@ -59,6 +59,21 @@ const features = [
   },
 ];
 
+const incentives = [
+  {
+    name: 'Goal and Objectives',
+    description:
+      'The objective of Tidbits Hub is to address the challenge of long-form content fatigue, which makes it tedious and overwhelming for customers to navigate through extensive material to find specific product features they are interested in. Long documents often complicate the onboarding process, leading to customer disengagement and product abandonment. Tidbits Hub was specifically designed to tackle this issue effectively.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-delivery-light.svg',
+  },
+  {
+    name: 'The Solution',
+    description:
+      'Tidbits Hub provides a tailored platform that consolidates bite-sized content, interactive demos, and short videos into one seamless experience. It will help companies educate customers effectively, allowing them to grasp product knowledge in under 10-15 minutes.This solution is designed to mimic your company’s branding through white-labeled websites hosted on custom domains (e.g., https://tidbits.company.com). By structuring content into intuitive collections, we ensure users can quickly find and absorb key information without navigating complex documentation.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-chat-light.svg',
+  },
+];
+
 function TidbitsHubComponent() {
   return (
     <div>
@@ -126,7 +141,7 @@ function TidbitsHubComponent() {
                     <rect y={72} fill="currentColor" width={640} height={640} className="text-gray-50" />
                     <rect x={118} fill="url(#4f4f415c-a0e9-44c2-9601-6ded5a34a13e)" width={404} height={784} />
                   </svg>
-                  <div className="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md">
+                  <div className="relative mx-auto w-full rounded-lg shadow-lg">
                     <button
                       type="button"
                       className="relative block w-full overflow-hidden rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -138,6 +153,26 @@ function TidbitsHubComponent() {
                 </div>
               </div>
             </main>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-gray-50">
+        <div className="mx-auto max-w-7xl py-24 sm:px-2 sm:py-20 lg:px-4 mt-12">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-10 px-4 lg:max-w-none lg:grid-cols-2">
+            {incentives.map((incentive) => (
+              <div key={incentive.name} className="text-center sm:flex sm:text-left lg:block lg:text-center">
+                <div className="sm:shrink-0">
+                  <div className="flow-root">
+                    <img alt="" src={incentive.imageSrc} className="mx-auto h-24 w-28" />
+                  </div>
+                </div>
+                <div className="mt-3 sm:ml-3 sm:mt-0 lg:ml-0 lg:mt-3">
+                  <h3 className="text-lg font-semibold text-gray-900">{incentive.name}</h3>
+                  <p className="mt-2 text-base text-gray-500">{incentive.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
