@@ -21,6 +21,7 @@ asyncio = "^3.4.3"
 flask = "^3.1.0"
 markdown = "^3.7"
 reportlab = "^4.2.5"
+boto3 = "^1.36.1"
 
 
 [build-system]
