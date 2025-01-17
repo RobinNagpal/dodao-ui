@@ -1,8 +1,10 @@
 import asyncio
 import os
 import argparse
+import webbrowser  # To open the URL in the default browser
 from io import BytesIO
 import boto3
+import json
 from markdown import markdown  # Python-Markdown for converting Markdown to HTML
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph
@@ -23,7 +25,7 @@ s3_client = boto3.client(
     region_name=os.getenv("AWS_DEFAULT_REGION")
 )
 BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
-
+REGION=os.getenv("AWS_DEFAULT_REGION")
 
 def format_id(project_name):
     """
@@ -105,20 +107,22 @@ async def upload_to_s3(content, s3_key, content_type="text/plain"):
         Key=s3_key,
         Body=content,
         ContentType=content_type,
+         ACL="public-read"
     )
     print(f"Uploaded to s3://{BUCKET_NAME}/{s3_key}")
 
 
-async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_key):
+async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_key,):
     """
-    Runs a single LangGraph agent asynchronously, checks for existing file on S3, and uploads the result if necessary.
+    Runs a single LangGraph agent asynchronously, checks for existing file on S3, updates status file, and uploads the result if necessary.
     """
-    # Check if the file already exists on S3
+    project_id=s3_key.split("/")[0]
+    report_name=s3_key.split("/")[1].replace(".md", "")
     if check_file_exists_on_s3(s3_key):
         print(f"File '{s3_key}' already exists on S3. Skipping the agent.")
+        await update_status_file(project_id, report_name, "completed", markdown_link=f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}")
         return
 
-    # Run the agent
     config = {"configurable": {"thread_id": "1", "id": input_data.get("id")}}
 
     def fetch_events():
@@ -134,13 +138,17 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_ke
             elif not isinstance(final_state, str):
                 final_state = json.dumps(final_state, indent=4)
 
-            # Upload result to S3
+            # Upload the result to S3
             await upload_to_s3(final_state, s3_key)
+
+            # Update status file in S3
+            markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}"
+            await update_status_file(project_id, report_name, "completed", markdown_link=markdown_link)
             return final_state
 
     raise ValueError(f"Final output key '{final_key}' not found in the agent's events.")
 
-import webbrowser  # To open the URL in the default browser
+
 
 async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
     """
@@ -162,18 +170,83 @@ async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
         Body=pdf_buffer.getvalue(),
         ContentType="application/pdf",
     )
+    project_id = s3_key.split("/")[0]
+    report_name = s3_key.split("/")[1].replace(".pdf", "")
+    pdf_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}"
+    await update_status_file(project_id, report_name, "completed", pdf_link=pdf_link)
     print(f"Uploaded PDF to s3://{BUCKET_NAME}/{s3_key}")
 
-    # Generate a presigned URL to access the PDF file
-    presigned_url = s3_client.generate_presigned_url(
-        "get_object",
-        Params={"Bucket": BUCKET_NAME, "Key": s3_key},
-        ExpiresIn=3600  # URL valid for 1 hour
+    webbrowser.open(f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}")
+
+async def initialize_status_file(project_id, input_data):
+    """
+    Initializes the `agent_status.json` file in the S3 bucket if it does not already exist.
+    """
+    status_key = f"{project_id}/agent_status.json"
+
+    # Check if the status file already exists
+    if check_file_exists_on_s3(status_key):
+        print(f"Status file '{status_key}' already exists. Skipping initialization.")
+        return
+
+    # Initialize a new status file with pending status and no links
+    status_data = {
+        "status": "pending",
+        "reports": {
+            key: {"status": "pending", "markdownLink": None, "pdfLink": None}
+            for key in input_data.keys()
+        }
+    }
+
+    # Upload the initial status file to S3
+    s3_client.put_object(
+        Bucket=BUCKET_NAME,
+        Key=status_key,
+        Body=json.dumps(status_data, indent=4),
+        ContentType="application/json",
+        ACL="public-read"
     )
+    print(f"Initialized status file: s3://{BUCKET_NAME}/{status_key}")
 
+async def update_status_file(project_id, report_name, status, markdown_link=None, pdf_link=None):
+    """
+    Updates the `agent_status.json` file in the S3 bucket.
+    """
+    status_key = f"{project_id}/agent_status.json"
 
-    # Open the presigned URL in the default web browser
-    webbrowser.open(presigned_url)
+    # Fetch the current status from S3 or create a new one
+    try:
+        response = s3_client.get_object(Bucket=BUCKET_NAME, Key=status_key)
+        status_data = json.loads(response['Body'].read().decode('utf-8'))
+    except s3_client.exceptions.NoSuchKey:
+        # Initialize a new status file if it doesn't exist
+        status_data = {
+            "status": "in_progress",
+            "reports": {}
+        }
+
+    # Update the specific report status
+    if report_name not in status_data["reports"]:
+        status_data["reports"][report_name] = {}
+    status_data["reports"][report_name]["status"] = status
+
+    if markdown_link:
+        status_data["reports"][report_name]["markdownLink"] = markdown_link
+    if pdf_link:
+        status_data["reports"][report_name]["pdfLink"] = pdf_link
+
+    # If all reports are complete, update the overall status
+    if all(report.get("status") == "completed" for report in status_data["reports"].values()):
+        status_data["status"] = "completed"
+
+    # Upload the updated status to S3
+    s3_client.put_object(
+        Bucket=BUCKET_NAME,
+        Key=status_key,
+        Body=json.dumps(status_data, indent=4),
+        ContentType="application/json",
+    )
+    print(f"Updated status file: s3://{BUCKET_NAME}/{status_key}")
 
 
 async def main_controller_async(project_details):
@@ -225,6 +298,10 @@ async def main_controller_async(project_details):
             "output_file": f"{id}.reports/relevant_links.md",
         },
     }
+    
+     # Initialize the status file
+    await initialize_status_file( f"{id}.reports", input_data)
+    
     parallel_tasks = [
         run_agent_and_get_final_output_async(
             general_info_app, input_data["general_info"], "projectGeneralInfo", input_data["general_info"]["output_file"]
