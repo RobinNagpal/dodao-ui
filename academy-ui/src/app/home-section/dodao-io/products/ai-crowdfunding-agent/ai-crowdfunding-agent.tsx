@@ -65,6 +65,21 @@ const features = [
   },
 ];
 
+const incentives = [
+  {
+    name: 'Goal and Objectives',
+    description:
+      'The goal of our AI Crowdfunding Agent is to enhance your ability to evaluate startups listed on crowdfunding platforms by leveraging advanced AI capabilities. These projects often carry higher risks as they are not backed by venture capital, which may suggest potential challenges in market readiness or scalability. Furthermore, limited guidance and a lack of access to detailed information can leave you exposed to the risk of making poor investment decisions. Assessing and acknowledging the scope of improvement, we designed this solution to address the problem effectively.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-delivery-light.svg',
+  },
+  {
+    name: 'The Solution',
+    description:
+      'We revolutionized the evaluation of crowdfunding opportunities by designing AI agents that thoroughly analyze projects and generate detailed, data-driven reports. These agents simplify complex information and provide critical insights into financial metrics, market positioning, and regulatory compliance while offering a clear assessment of the managing team’s expertise and experience. By identifying strengths, risks, and growth opportunities, these AI tools empower even those with no prior evaluation experience to invest confidently. Our solution ensures transparency, minimizes risks, and directs funds toward safer, more promising projects with strong potential for success.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-chat-light.svg',
+  },
+];
+
 function AiCrowdfundedComponent() {
   const [showContactModal, setShowContactModal] = useState(false);
   return (
@@ -145,6 +160,26 @@ function AiCrowdfundedComponent() {
                 </div>
               </div>
             </main>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-gray-50">
+        <div className="mx-auto max-w-7xl py-24 sm:px-2 sm:py-20 lg:px-4 mt-12">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-10 px-4 lg:max-w-none lg:grid-cols-2">
+            {incentives.map((incentive) => (
+              <div key={incentive.name} className="text-center sm:flex sm:text-left lg:block lg:text-center">
+                <div className="sm:shrink-0">
+                  <div className="flow-root">
+                    <img alt="" src={incentive.imageSrc} className="mx-auto h-24 w-28" />
+                  </div>
+                </div>
+                <div className="mt-3 sm:ml-3 sm:mt-0 lg:ml-0 lg:mt-3">
+                  <h3 className="text-lg font-semibold text-gray-900">{incentive.name}</h3>
+                  <p className="mt-2 text-base text-gray-500">{incentive.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

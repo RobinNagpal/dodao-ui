@@ -64,6 +64,21 @@ const features = [
   },
 ];
 
+const incentives = [
+  {
+    name: 'Goal and Objectives',
+    description:
+      'The primary goal of Academy Sites is to make blockchain education accessible, concise, and engaging for users of all skill levels.Traditional learning methods often overwhelm learners with fragmented or overly technical content, making it challenging to grasp the core functionalities of platforms like Arbitrum and Uniswap. Academy sites address this challenge in a very effective way.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-delivery-light.svg',
+  },
+  {
+    name: 'The Solution',
+    description:
+      'Academy Sites provide a structured, interactive, and user-friendly learning environment. By combining detailed guides, bite-sized tidbits, clickable demos, and short videos, the platform caters to diverse learning styles and preferences. These sites align with the branding of their respective platforms, ensuring a consistent user experience, while delivering high-impact educational content that simplifies blockchain technology.',
+    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-chat-light.svg',
+  },
+];
+
 function AcademySitesComponent() {
   const [showContactModal, setShowContactModal] = useState(false);
   return (
@@ -133,7 +148,7 @@ function AcademySitesComponent() {
                     <rect y={72} fill="currentColor" width={640} height={640} className="text-gray-50" />
                     <rect x={118} fill="url(#4f4f415c-a0e9-44c2-9601-6ded5a34a13e)" width={404} height={784} />
                   </svg>
-                  <div className="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md">
+                  <div className="relative mx-auto w-full rounded-lg shadow-lg">
                     <button
                       type="button"
                       className="relative block w-full overflow-hidden rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -145,6 +160,26 @@ function AcademySitesComponent() {
                 </div>
               </div>
             </main>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-gray-50">
+        <div className="mx-auto max-w-7xl py-24 sm:px-2 sm:py-20 lg:px-4 mt-12">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-10 px-4 lg:max-w-none lg:grid-cols-2">
+            {incentives.map((incentive) => (
+              <div key={incentive.name} className="text-center sm:flex sm:text-left lg:block lg:text-center">
+                <div className="sm:shrink-0">
+                  <div className="flow-root">
+                    <img alt="" src={incentive.imageSrc} className="mx-auto h-24 w-28" />
+                  </div>
+                </div>
+                <div className="mt-3 sm:ml-3 sm:mt-0 lg:ml-0 lg:mt-3">
+                  <h3 className="text-lg font-semibold text-gray-900">{incentive.name}</h3>
+                  <p className="mt-2 text-base text-gray-500">{incentive.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
