@@ -1,9 +1,17 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.54.1"
+    }
+  }
+}
 provider "aws" {
   region = "us-east-1" # Change to your preferred AWS region
 }
 
 resource "aws_lightsail_container_service" "cf_service" {
-  name  = "cf-analysis-service"
+  name = "cf-analysis-service"
   power = "micro" # Options: nano, micro, small, medium, large, xlarge
   scale = 1       # Number of container instances
   tags = {
@@ -18,12 +26,21 @@ resource "aws_lightsail_container_service" "cf_service" {
   }
 }
 
+# resource "aws_lightsail_static_ip" "cf_static_ip" {
+#   name = "cf-analysis-service-ip"
+# }
+#
+# resource "aws_lightsail_static_ip_attachment" "cf_static_ip_attachment" {
+#   static_ip_name = aws_lightsail_static_ip.cf_static_ip.name
+#   instance_name  = aws_lightsail_container_service.cf_service.name
+# }
+
 resource "aws_lightsail_container_service_deployment_version" "cf_deployment" {
   service_name = aws_lightsail_container_service.cf_service.name
 
   container {
     container_name = "cf-analysis-container"
-    image          = "729763663166.dkr.ecr.us-east-1.amazonaws.com/crowd-fund-analysis:latest" # Replace with your ECR repo URL
+    image = "729763663166.dkr.ecr.us-east-1.amazonaws.com/crowd-fund-analysis:latest" # Replace with your ECR repo URL
     command = []
 
     environment = {
@@ -55,13 +72,32 @@ resource "aws_lightsail_container_service_deployment_version" "cf_deployment" {
   }
 }
 
+# resource "aws_lightsail_domain" "domain_test" {
+#   domain_name = "dodao.io"
+#
+# }
+#
+# resource "aws_lightsail_domain_entry" "domain_entry" {
+#   domain_name = aws_lightsail_domain.domain_test.domain_name
+#   name        = "crowd-fund-analysis"
+#   type        = "CNAME"
+#   target      = aws_lightsail_container_service.cf_service.url
+# }
+#
+# resource "aws_lightsail_certificate" "cf-analysis-cert" {
+#   name        = "cf-analysis-cert"
+#   domain_name = "crowd-fund-analysis.dodao.io"
+# }
+
 data "aws_iam_policy_document" "default" {
   statement {
     effect = "Allow"
 
     principals {
-      type        = "AWS"
-      identifiers = [aws_lightsail_container_service.cf_service.private_registry_access[0].ecr_image_puller_role[0].principal_arn]
+      type = "AWS"
+      identifiers = [
+        aws_lightsail_container_service.cf_service.private_registry_access[0].ecr_image_puller_role[0].principal_arn
+      ]
     }
 
     actions = [
