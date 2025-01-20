@@ -10,6 +10,12 @@ provider "aws" {
   region = "us-east-1" # Change to your preferred AWS region
 }
 
+resource "aws_lightsail_certificate" "ai_insights_certificate" {
+  name                      = "ai-insights-certificate"
+  domain_name               = "ai-insights.dodao.io"
+}
+
+
 resource "aws_lightsail_container_service" "cf_service" {
   name = "cf-analysis-service"
   power = "micro" # Options: nano, micro, small, medium, large, xlarge
@@ -19,6 +25,15 @@ resource "aws_lightsail_container_service" "cf_service" {
   }
   is_disabled = false
 
+  public_domain_names {
+    certificate {
+      certificate_name = aws_lightsail_certificate.ai_insights_certificate.name
+      domain_names = [
+        "ai-insights.dodao.io",
+        # maybe another domain name
+      ]
+    }
+  }
   private_registry_access {
     ecr_image_puller_role {
       is_active = true
