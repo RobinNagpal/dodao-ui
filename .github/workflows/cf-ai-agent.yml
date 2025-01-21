@@ -38,7 +38,10 @@ jobs:
           IMAGE_TAG=${{ github.sha }}
           GIT_COMMIT_HASH=$(git rev-parse HEAD)
           GIT_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          docker build --build-arg GIT_COMMIT_HASH=$GIT_COMMIT_HASH --build-arg GIT_COMMIT_MESSAGE="$GIT_COMMIT_MESSAGE" -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
+          docker build \
+          --build-arg BUILD_GIT_COMMIT_HASH=$GIT_COMMIT_HASH \
+          --build-arg BUILD_GIT_COMMIT_MESSAGE="$GIT_COMMIT_MESSAGE" \
+          -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
 
       - name: Tag Docker Image
         working-directory: dodao-ai-agents/crowd-fund-analysis

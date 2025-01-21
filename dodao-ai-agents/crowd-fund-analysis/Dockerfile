@@ -23,6 +23,19 @@ EXPOSE 5000
 
 # Set environment variables for Flask
 ENV FLASK_ENV=development
+ENV GIT_COMMIT_HASH=unknown
+ENV GIT_COMMIT_MESSAGE="Default commit message"
+
+# Set build-time environment variables
+ARG BUILD_GIT_COMMIT_HASH
+ARG BUILD_GIT_COMMIT_MESSAGE
+
+# Persist commit information into runtime environment
+RUN echo "GIT_COMMIT_HASH=${BUILD_GIT_COMMIT_HASH}" >> /etc/environment \
+    && echo "GIT_COMMIT_MESSAGE='${BUILD_GIT_COMMIT_MESSAGE}'" >> /etc/environment
+
+# Set environment variables for Flask
+ENV FLASK_ENV=development
 
 # Command to run the Flask app
 ENTRYPOINT ["poetry", "run", "python", "cf_analysis_agent/app.py"]
