@@ -5,5 +5,5 @@ pull-image:
 run-image:
 	docker stop cf-analysis-container || true
 	docker rm cf-analysis-container || true
-	docker run -it -p 9500:5000 --name cf-analysis-container 729763663166.dkr.ecr.us-east-1.amazonaws.com/crowd-fund-analysis:latest
+	docker run -it -p 9500:5000 --name cf-analysis-container 729763663166.dkr.ecr.us-east-1.amazonaws.com/crowd-fund-analysis:latest env
 

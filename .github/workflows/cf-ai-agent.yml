@@ -36,12 +36,19 @@ jobs:
         working-directory: dodao-ai-agents/crowd-fund-analysis
         run: |
           IMAGE_TAG=${{ github.sha }}
-          GIT_COMMIT_HASH=$(git rev-parse HEAD)
-          GIT_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          docker build \
-          --build-arg BUILD_GIT_COMMIT_HASH=$GIT_COMMIT_HASH \
-          --build-arg BUILD_GIT_COMMIT_MESSAGE="$GIT_COMMIT_MESSAGE" \
-          -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
+          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
+
+      - name: Create .env File
+        run: |
+          cd dodao-ai-agents/crowd-fund-analysis/cf_analysis_agent
+          cat <<EOF > .env
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGANT_API_KEY=${{ secrets.SCRAPINGANT_API_KEY }}
+          SERPER_API_KEY=${{ secrets.SERPER_API_KEY }}
+          SCRAPIN_API_KEY=${{ secrets.SCRAPIN_API_KEY }}
+          GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }}
+          GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
+          EOF
 
       - name: Tag Docker Image
         working-directory: dodao-ai-agents/crowd-fund-analysis
