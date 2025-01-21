@@ -107,7 +107,6 @@ async def upload_to_s3(content, s3_key, content_type="text/plain"):
         Key=s3_key,
         Body=content,
         ContentType=content_type,
-         ACL="public-read"
     )
     print(f"Uploaded to s3://{BUCKET_NAME}/{s3_key}")
 
@@ -141,6 +140,7 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_ke
             # Upload the result to S3
             await upload_to_s3(final_state, s3_key)
 
+            await convert_markdown_to_pdf_and_upload(final_state, s3_key.replace(".md", ".pdf"))
             # Update status file in S3
             markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}"
             await update_status_file(project_id, report_name, "completed", markdown_link=markdown_link)
@@ -204,7 +204,6 @@ async def initialize_status_file(project_id, input_data):
         Key=status_key,
         Body=json.dumps(status_data, indent=4),
         ContentType="application/json",
-        ACL="public-read"
     )
     print(f"Initialized status file: s3://{BUCKET_NAME}/{status_key}")
 
