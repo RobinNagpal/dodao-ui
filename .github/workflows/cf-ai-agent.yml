@@ -47,18 +47,6 @@ jobs:
           IMAGE_TAG=${{ github.sha }}
           docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG .
 
-      - name: Create .env File
-        run: |
-          cd dodao-ai-agents/crowd-fund-analysis/cf_analysis_agent
-          cat <<EOF > .env
-          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-          SCRAPINGANT_API_KEY=${{ secrets.SCRAPINGANT_API_KEY }}
-          SERPER_API_KEY=${{ secrets.SERPER_API_KEY }}
-          SCRAPIN_API_KEY=${{ secrets.SCRAPIN_API_KEY }}
-          GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }}
-          GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
-          EOF
-
       - name: Tag Docker Image
         working-directory: dodao-ai-agents/crowd-fund-analysis
         run: |
@@ -71,20 +59,31 @@ jobs:
           IMAGE_TAG=${{ github.sha }}
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
-
       - name: Deploy to Lightsail Container Service
         run: |
           aws lightsail create-container-service-deployment \
             --service-name cf-analysis-service \
             --containers '{
-            "cf-analysis-container": {
-              "image": "729763663166.dkr.ecr.us-east-1.amazonaws.com/crowd-fund-analysis:latest",
-              "ports": {
-                "5000": "HTTP"
+              "cf-analysis-container": {
+                "image": "729763663166.dkr.ecr.us-east-1.amazonaws.com/crowd-fund-analysis:latest",
+                "ports": {
+                  "5000": "HTTP"
+                },
+                "environment": {
+                  "OPENAI_API_KEY": "${{ secrets.AI_AGENT_OPENAI_API_KEY }}",
+                  "SCRAPINGANT_API_KEY": "${{ secrets.AI_AGENT_SCRAPINGANT_API_KEY }}",
+                  "SERPER_API_KEY": "${{ secrets.AI_AGENT_SERPER_API_KEY }}",
+                  "SCRAPIN_API_KEY": "${{ secrets.AI_AGENT_SCRAPIN_API_KEY }}",
+                  "GOOGLE_CSE_ID": "${{ secrets.AI_AGENT_GOOGLE_CSE_ID }}",
+                  "GOOGLE_API_KEY": "${{ secrets.AI_AGENT_GOOGLE_API_KEY }}",
+                  "AWS_ACCESS_KEY_ID": "${{ secrets.AI_AGENT_AWS_ACCESS_KEY_ID }}",
+                  "AWS_SECRET_ACCESS_KEY": "${{ secrets.AI_AGENT_AWS_SECRET_ACCESS_KEY }}",
+                  "S3_BUCKET_NAME": "dodao-ai-insights-agent",
+                  "AWS_DEFAULT_REGION": "us-east-1"
+                }
               }
-            }
-          }' \
-          --public-endpoint '{"containerName":"cf-analysis-container","containerPort":5000}'
+            }' \
+            --public-endpoint '{"containerName":"cf-analysis-container","containerPort":5000}'
     
 
       - name: Check Deployment Status
