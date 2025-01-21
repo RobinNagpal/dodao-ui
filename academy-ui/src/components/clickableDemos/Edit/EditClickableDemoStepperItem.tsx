@@ -201,7 +201,7 @@ export default function EditClickableDemoStepperItem({
             onUpload={() => setShowElementSelectorModal(true)}
             height="150px"
             maxWidth="250px"
-            disabled={step.screenImgUrl != ''}
+            disabled={!clickableDemo.steps.find((s) => s.id === step.id)?.screenImgUrl} 
             disabledTooltip="Please select a capture first"
             error={inputError('selector') ? 'Selector is required' : ''}
           />
