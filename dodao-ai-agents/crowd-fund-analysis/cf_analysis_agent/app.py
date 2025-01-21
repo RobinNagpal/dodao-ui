@@ -1,7 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
+from dotenv import load_dotenv
+import os
 import subprocess
 
 app = Flask(__name__)
+load_dotenv()
+BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
+REGION=os.getenv("AWS_DEFAULT_REGION")
 
 @app.route("/")
 def index():
@@ -51,7 +56,10 @@ def status(project_id):
     """
     Render the status monitoring page.
     """
-    return render_template("status.html", project_id=project_id)
+    bucket_url = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com"
+    print(bucket_url)
+    return render_template("status.html", project_id=project_id, bucket_url=bucket_url)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
