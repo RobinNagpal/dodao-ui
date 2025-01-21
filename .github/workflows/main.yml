@@ -24,6 +24,7 @@ jobs:
       academy_ui_changed: ${{ steps.filter.outputs.academy_ui }}
       base_ui_changed: ${{ steps.filter.outputs.base_ui }}
       rubrics_ui_changed: ${{ steps.filter.outputs.rubrics_ui }}
+      insights_ui_changed: ${{ steps.filter.outputs.insights_ui }}
     steps:
       - uses: actions/checkout@v2
       - name: Determine changed paths
@@ -39,6 +40,8 @@ jobs:
               - 'base-ui/**'
             rubrics_ui:
               - 'rubrics-ui/**'
+            insights_ui:
+              - 'insights-ui/**'
 
   academy_ui_job:
     runs-on: ubuntu-latest
@@ -150,3 +153,40 @@ jobs:
 
       - name: Rubrics UI - NEXT Build
         run: cd rubrics-ui && yarn build
+
+  insights_ui_job:
+    runs-on: ubuntu-latest
+    needs: determine-changed-paths
+    if: ${{ needs.determine-changed-paths.outputs.insights_ui_changed == 'true' || needs.determine-changed-paths.outputs.shared_web_core_changed == 'true' }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
+
+      - name: Shared Web Core - Install dependencies
+        run: cd shared/web-core && yarn
+
+      - name: Shared Web Core - TSC
+        run: cd shared/web-core && yarn tsc
+
+      - name: Shared Web Core - Run Prettier
+        run: cd shared/web-core && yarn prettier-check
+
+      - name: Insights UI - Install dependencies
+        run: cd insights-ui && yarn
+
+      - name: Insights UI - Run ESLint
+        run: cd insights-ui && yarn lint
+
+      - name: Insights UI - Run Prettier
+        run: cd insights-ui && yarn prettier-check
+
+      - name: Insights UI - TSC
+        run: cd insights-ui && yarn compile
+
+      - name: Insights UI - NEXT Build
+        run: cd insights-ui && yarn build
