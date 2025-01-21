@@ -175,7 +175,8 @@ async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
     pdf_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}"
     await update_status_file(project_id, report_name, "completed", pdf_link=pdf_link)
     print(f"Uploaded PDF to s3://{BUCKET_NAME}/{s3_key}")
-
+    
+async def open_pdf(s3_key):
     webbrowser.open(f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}")
 
 async def initialize_status_file(project_id, input_data):
@@ -330,14 +331,7 @@ async def main_controller_async(project_details):
         markdown_s3_key = data["output_file"]
         pdf_s3_key = markdown_s3_key.replace(".md", ".pdf")
 
-        # Read Markdown content from S3
-        markdown_content = read_markdown_from_s3(markdown_s3_key)
-        if markdown_content is None:
-            print(f"Skipping PDF generation for {markdown_s3_key} as it does not exist.")
-            continue  # Skip if the Markdown file does not exist in S3
-
-        # Add PDF conversion task
-        pdf_tasks.append(convert_markdown_to_pdf_and_upload(markdown_content, pdf_s3_key))
+        pdf_tasks.append(open_pdf(pdf_s3_key))
 
     # Execute all PDF upload tasks in parallel
     if pdf_tasks:
