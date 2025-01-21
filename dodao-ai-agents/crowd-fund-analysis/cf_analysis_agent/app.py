@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+import os
 import subprocess
 
 app = Flask(__name__)
@@ -52,6 +53,16 @@ def status(project_id):
     Render the status monitoring page.
     """
     return render_template("status.html", project_id=project_id)
+
+@app.route("/commit-info")
+def commit_info():
+    """
+    Display the latest git commit hash and message.
+    """
+    commit_hash = os.getenv('GIT_COMMIT_HASH', 'Unavailable')
+    commit_message = os.getenv('GIT_COMMIT_MESSAGE', 'Unavailable')
+    return render_template("commit_info.html", commit_hash=commit_hash, commit_message=commit_message)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

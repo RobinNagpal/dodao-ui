@@ -71,8 +71,7 @@ shared/pull-tweets/accounts.db
 shared/pull-tweets/.env
 
 dodao-ai-agents/crowd-fund-analysis/terraform/.terraform.lock.hcl
-dodao-ai-agents/crowd-fund-analysis/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/5.83.1/darwin_amd64/LICENSE.txt
 dodao-ai-agents/crowd-fund-analysis/terraform/terraform.tfstate
 dodao-ai-agents/crowd-fund-analysis/terraform/terraform.tfstate.backup
 dodao-ai-agents/crowd-fund-analysis/terraform/terraform.tfvars
-dodao-ai-agents/crowd-fund-analysis/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/5.83.1/darwin_amd64/terraform-provider-aws_v5.83.1_x5
+dodao-ai-agents/crowd-fund-analysis/terraform/.terraform/providers/
