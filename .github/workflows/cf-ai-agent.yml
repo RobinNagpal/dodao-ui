@@ -32,6 +32,15 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Get Git Commit Info
+        working-directory: dodao-ai-agents/crowd-fund-analysis
+        run: |
+          echo "Writing Git commit info to file..."
+          GIT_COMMIT_HASH=$(git rev-parse HEAD)
+          GIT_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          echo "COMMIT_HASH=${GIT_COMMIT_HASH}" > cf_analysis_agent/commit_info.txt
+          echo "COMMIT_MESSAGE=${GIT_COMMIT_MESSAGE}" >> cf_analysis_agent/commit_info.txt
+
       - name: Build Docker Image
         working-directory: dodao-ai-agents/crowd-fund-analysis
         run: |

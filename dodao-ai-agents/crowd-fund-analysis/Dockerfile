@@ -18,6 +18,9 @@ RUN poetry config virtualenvs.create false \
 && poetry install
 
 
+# Copy commit info file
+COPY cf_analysis_agent/commit_info.txt /app/cf_analysis_agent/
+
 # Expose Flask's default port
 EXPOSE 5000
 
