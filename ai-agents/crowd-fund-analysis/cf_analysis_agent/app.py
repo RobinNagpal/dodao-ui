@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+import os
 from dotenv import load_dotenv
 import os
 import subprocess
@@ -59,6 +60,23 @@ def status(project_id):
     bucket_url = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com"
     print(bucket_url)
     return render_template("status.html", project_id=project_id, bucket_url=bucket_url)
+
+
+@app.route("/commit-info")
+def commit_info():
+    """
+    Display the latest git commit hash and message.
+    """
+    commit_file_path = os.path.join(os.path.dirname(__file__), "commit_info.txt")
+    if os.path.exists(commit_file_path):
+        with open(commit_file_path, "r") as file:
+            lines = file.readlines()
+        commit_hash = lines[0].strip().split("=")[1] if len(lines) > 0 else "Unavailable"
+        commit_message = lines[1].strip().split("=")[1] if len(lines) > 1 else "Unavailable"
+    else:
+        commit_hash = "Unavailable"
+        commit_message = "Unavailable"
+    return render_template("commit_info.html", commit_hash=commit_hash, commit_message=commit_message)
 
 
 if __name__ == "__main__":

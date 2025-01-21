@@ -7,6 +7,7 @@
     "base-ui",
     "rubrics-ui",
     "x-news-ui",
+    "insights-ui",
     "clickable-demos",
     "shared/web-core",
     "dodao-lambdas/tweet-collection-updater"

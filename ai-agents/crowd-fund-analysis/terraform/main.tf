@@ -11,8 +11,8 @@ provider "aws" {
 }
 
 resource "aws_lightsail_certificate" "ai_insights_certificate" {
-  name                      = "ai-insights-certificate"
-  domain_name               = "ai-insights.dodao.io"
+  name        = "ai-insights-certificate"
+  domain_name = "ai-insights.dodao.io"
 }
 
 
@@ -41,15 +41,6 @@ resource "aws_lightsail_container_service" "cf_service" {
   }
 }
 
-# resource "aws_lightsail_static_ip" "cf_static_ip" {
-#   name = "cf-analysis-service-ip"
-# }
-#
-# resource "aws_lightsail_static_ip_attachment" "cf_static_ip_attachment" {
-#   static_ip_name = aws_lightsail_static_ip.cf_static_ip.name
-#   instance_name  = aws_lightsail_container_service.cf_service.name
-# }
-
 resource "aws_lightsail_container_service_deployment_version" "cf_deployment" {
   service_name = aws_lightsail_container_service.cf_service.name
 
@@ -59,12 +50,16 @@ resource "aws_lightsail_container_service_deployment_version" "cf_deployment" {
     command = []
 
     environment = {
-      OPENAI_API_KEY      = var.openai_api_key
-      SCRAPINGANT_API_KEY = var.scrapingant_api_key
-      SERPER_API_KEY      = var.serper_api_key
-      SCRAPIN_API_KEY     = var.scrapin_api_key
-      GOOGLE_CSE_ID       = var.google_cse_id
-      GOOGLE_API_KEY      = var.google_api_key
+      OPENAI_API_KEY        = var.openai_api_key
+      SCRAPINGANT_API_KEY   = var.scrapingant_api_key
+      SERPER_API_KEY        = var.serper_api_key
+      SCRAPIN_API_KEY       = var.scrapin_api_key
+      GOOGLE_CSE_ID         = var.google_cse_id
+      GOOGLE_API_KEY        = var.google_api_key
+      AWS_ACCESS_KEY_ID     = var.aws_access_key_id
+      AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key
+      AWS_DEFAULT_REGION    = var.aws_default_region
+      S3_BUCKET_NAME        = var.s3_bucket_name
     }
 
     ports = {
@@ -87,22 +82,6 @@ resource "aws_lightsail_container_service_deployment_version" "cf_deployment" {
   }
 }
 
-# resource "aws_lightsail_domain" "domain_test" {
-#   domain_name = "dodao.io"
-#
-# }
-#
-# resource "aws_lightsail_domain_entry" "domain_entry" {
-#   domain_name = aws_lightsail_domain.domain_test.domain_name
-#   name        = "crowd-fund-analysis"
-#   type        = "CNAME"
-#   target      = aws_lightsail_container_service.cf_service.url
-# }
-#
-# resource "aws_lightsail_certificate" "cf-analysis-cert" {
-#   name        = "cf-analysis-cert"
-#   domain_name = "crowd-fund-analysis.dodao.io"
-# }
 
 data "aws_iam_policy_document" "default" {
   statement {
@@ -132,35 +111,16 @@ variable "image_tag" {
   type        = string
 }
 
-variable "openai_api_key" {
-  description = "API key for OpenAI."
-  type        = string
-}
-
-variable "scrapingant_api_key" {
-  description = "API key for ScrapingAnt."
-  type        = string
-}
-
-variable "serper_api_key" {
-  description = "API key for SERPER."
-  type        = string
-}
-
-variable "scrapin_api_key" {
-  description = "API key for SCRAPIN."
-  type        = string
-}
-
-variable "google_cse_id" {
-  description = "Google Custom Search Engine ID."
-  type        = string
-}
-
-variable "google_api_key" {
-  description = "API key for Google."
-  type        = string
-}
+variable "openai_api_key" {}
+variable "scrapingant_api_key" {}
+variable "serper_api_key" {}
+variable "scrapin_api_key" {}
+variable "google_cse_id" {}
+variable "google_api_key" {}
+variable "aws_access_key_id" {}
+variable "aws_secret_access_key" {}
+variable "aws_default_region" {}
+variable "s3_bucket_name" {}
 
 output "public_url" {
   value       = aws_lightsail_container_service.cf_service.url

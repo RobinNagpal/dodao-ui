@@ -42,27 +42,27 @@ academy-ui/.env
 data
 
 # langgraph ai agent
-dodao-ai-agents/langgraph-poetry/cf_analysis_agent/.env
+ai-agents/langgraph-poetry/cf_analysis_agent/.env
 
 # Sentry Config File
 academy-ui/.sentryclirc
 .envrc
-dodao-lambdas/unzipper-service/node_modules
-dodao-lambdas/unzipper-service/.env
-dodao-lambdas/unzipper-service/yarn-error.log
-dodao-lambdas/unzipper-service/.serverless
-dodao-lambdas/pull-tweets/.env
-dodao-lambdas/pull-tweets/accounts.db
-dodao-lambdas/pull-tweets/*.iml
-dodao-lambdas/pull-tweets/node_modules
-dodao-lambdas/pull-tweets/.serverless
-dodao-lambdas/pull-tweets/.chalice
+lambdas/unzipper-service/node_modules
+lambdas/unzipper-service/.env
+lambdas/unzipper-service/yarn-error.log
+lambdas/unzipper-service/.serverless
+lambdas/pull-tweets/.env
+lambdas/pull-tweets/accounts.db
+lambdas/pull-tweets/*.iml
+lambdas/pull-tweets/node_modules
+lambdas/pull-tweets/.serverless
+lambdas/pull-tweets/.chalice
 
-dodao-ai-agents/crew_ai_agent/.venv
-dodao-ai-agents/crew_ai_agent/.env
-dodao-ai-agents/crew_ai_agent/src/crew_ai_agent/__pycache__/
-dodao-ai-agents/crew_ai_agent/src/crew_ai_agent/tools/__pycache__/
-dodao-ai-agents/crowd-fund-analysis/cf_analysis_agent/.env
+ai-agents/crew_ai_agent/.venv
+ai-agents/crew_ai_agent/.env
+ai-agents/crew_ai_agent/src/crew_ai_agent/__pycache__/
+ai-agents/crew_ai_agent/src/crew_ai_agent/tools/__pycache__/
+ai-agents/crowd-fund-analysis/cf_analysis_agent/.env
 
 clickable-demos/node_modules
 venv/
@@ -70,9 +70,8 @@ out/
 shared/pull-tweets/accounts.db
 shared/pull-tweets/.env
 
-dodao-ai-agents/crowd-fund-analysis/terraform/.terraform.lock.hcl
-dodao-ai-agents/crowd-fund-analysis/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/5.83.1/darwin_amd64/LICENSE.txt
-dodao-ai-agents/crowd-fund-analysis/terraform/terraform.tfstate
-dodao-ai-agents/crowd-fund-analysis/terraform/terraform.tfstate.backup
-dodao-ai-agents/crowd-fund-analysis/terraform/terraform.tfvars
-dodao-ai-agents/crowd-fund-analysis/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/5.83.1/darwin_amd64/terraform-provider-aws_v5.83.1_x5
+ai-agents/crowd-fund-analysis/terraform/.terraform.lock.hcl
+ai-agents/crowd-fund-analysis/terraform/terraform.tfstate
+ai-agents/crowd-fund-analysis/terraform/terraform.tfstate.backup
+ai-agents/crowd-fund-analysis/terraform/terraform.tfvars
+ai-agents/crowd-fund-analysis/terraform/.terraform/providers/
