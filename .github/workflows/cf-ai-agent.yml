@@ -76,7 +76,16 @@ jobs:
         run: |
           aws lightsail create-container-service-deployment \
             --service-name cf-analysis-service \
-            --containers '{"cf-analysis-container": {"image": "729763663166.dkr.ecr.us-east-1.amazonaws.com/crowd-fund-analysis:latest"}}'
+            --containers '{
+            "cf-analysis-container": {
+              "image": "729763663166.dkr.ecr.us-east-1.amazonaws.com/crowd-fund-analysis:latest",
+              "ports": {
+                "5000": "HTTP"
+              }
+            }
+          }' \
+          --public-endpoint '{"containerName":"cf-analysis-container","containerPort":5000}'
+    
 
       - name: Check Deployment Status
         id: check-status
