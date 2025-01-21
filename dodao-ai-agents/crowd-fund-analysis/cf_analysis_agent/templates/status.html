@@ -3,8 +3,45 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project Status</title>
+    <title>Status of Reports</title>
     <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .form-container {
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        width: 400px;
+      }
+
+      h1 {
+        font-size: 1.8em;
+        color: #333333;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      h3 {
+        color: #007bff;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+      }
+
+      p {
+        color: #333333;
+        font-size: 1em;
+      }
+
       .loading-icon {
         display: inline-block;
         border: 3px solid #f3f3f3;
@@ -23,12 +60,33 @@
           transform: rotate(360deg);
         }
       }
+
+      .status-item {
+        margin-bottom: 15px;
+        font-size: 1em;
+      }
+
+      .status-item strong {
+        color: #555555;
+      }
+
+      .links a {
+        color: #007bff;
+        text-decoration: none;
+        margin-right: 10px;
+      }
+
+      .links a:hover {
+        text-decoration: underline;
+      }
     </style>
   </head>
   <body>
-    <h1>Project Status</h1>
-    <div id="status-container">
-      <p>Checking status...</p>
+    <div class="form-container">
+      <h1>Current Status</h1>
+      <div id="status-container">
+        <p>Checking status...</p>
+      </div>
     </div>
 
     <script>
@@ -36,12 +94,18 @@
       const statusContainer = document.getElementById("status-container");
       const statusUrl = `https://crowd-fund-analysis.s3.us-east-1.amazonaws.com/${projectId}.reports/agent_status.json`;
 
+      function formatKey(key) {
+        return key
+          .replace(/_/g, " ") // Replace underscores with spaces
+          .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space before capital letters
+          .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
+      }
+
       async function fetchStatus() {
         try {
           const response = await fetch(statusUrl);
           if (!response.ok) throw new Error("Status file not available yet.");
           const data = await response.json();
-
           // Clear the status container
           statusContainer.innerHTML = "";
 
@@ -53,9 +117,10 @@
           // Display each report's status
           for (const [key, report] of Object.entries(data.reports)) {
             const div = document.createElement("div");
-            div.innerHTML = `<strong>${key}:</strong> ${
+            div.className = "status-item";
+            div.innerHTML = `<strong>${formatKey(key)}:</strong> ${
               report.status === "completed"
-                ? `<a href="${report.markdownLink}" target="_blank">Markdown</a> | <a href="${report.pdfLink}" target="_blank">PDF</a>`
+                ? `<span class="links"><a href="${report.markdownLink}" target="_blank">Markdown</a> | <a href="${report.pdfLink}" target="_blank">PDF</a></span>`
                 : '<span class="loading-icon"></span> In Progress...'
             }`;
             statusContainer.appendChild(div);
