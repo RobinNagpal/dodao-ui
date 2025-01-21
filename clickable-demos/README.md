@@ -110,7 +110,25 @@ Follow these steps to add a new HTML capture:
      http://localhost:9090/prod-files
      ```
 
-6. **Insert the Record into the Database**:
+6. **Update URLs in `clickableDemoTooltipScript.js` and `clickableDemoTooltipScript.ts`**:
+   - Open the `clickableDemoTooltipScript.js` file present in the `prod-files` folder
+   - Replace `/clickable-demos-prod-files/` with `/prod-files/` at these four places:
+      ```js
+      materialStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/themes/material.css';
+      shiftTowardsStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/animationsshift-towarcss';
+      tippyData.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/stylesheet/tippy-data.css';
+      link.href = '/clickable-demos-prod-files/clickableDemoTooltipStyles.css';
+      ```
+      like so:
+      ```js
+      materialStyle.href = '/prod-files/dependencies/tippy.js@6/themes/material.css';
+      shiftTowardsStyle.href = '/prod-files/dependencies/tippy.js@6/animationsshift-towarcss';
+      tippyData.href = '/prod-files/dependencies/tippy.js@6/stylesheet/tippy-data.css';
+      link.href = '/prod-files/clickableDemoTooltipStyles.css';
+      ```
+   - Do the above same thing for `clickableDemoTooltipScript.ts` file present in the `src` folder
+
+7. **Insert the Record into the Database**:
    - Use the following SQL command to insert the record into the `clickable_demo_html_cpatures` table:
 
      ```sql
