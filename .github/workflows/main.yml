@@ -7,6 +7,8 @@ on:
     paths-ignore:
       - 'docs/**'
       - 'tasks/**'
+      - 'dodao-ai-agents/**'
+      - 'dodao-lambdas/**'
   pull_request:
     branches:
       - main
