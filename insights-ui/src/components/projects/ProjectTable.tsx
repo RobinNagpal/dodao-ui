@@ -29,25 +29,14 @@ export default function ProjectTable({ projectIds }: ProjectTableProps) {
       (projectId): TableRow => ({
         id: projectId,
         columns: [
-          <div
-            key={projectId}
-            onClick={() => router.push(`/crowd-funding/projects/${projectId}`)}
-            className="cursor-pointer text-blue-600 hover:underline"
-          >
+          <div key={projectId} onClick={() => router.push(`/crowd-funding/projects/${projectId}`)} className="cursor-pointer text-blue-600 hover:underline">
             {projectId}
           </div>,
         ],
-        item: projectId
+        item: projectId,
       })
     );
   }
 
-  return (
-    <Table
-      data={getSpaceTableRows(projectIds)}
-      columnsHeadings={['Project ID']}
-      columnsWidthPercents={[100]}
-      actions={tableActions}
-    />
-  );
+  return <Table data={getSpaceTableRows(projectIds)} columnsHeadings={['Project ID']} columnsWidthPercents={[100]} actions={tableActions} />;
 }

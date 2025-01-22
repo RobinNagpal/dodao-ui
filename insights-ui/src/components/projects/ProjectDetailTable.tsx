@@ -23,7 +23,8 @@ export default function ProjectDetailTable({ reports }: ProjectDetailTableProps)
                 <a href={report.pdfLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                   PDF
                 </a>
-              )} |
+              )}{' '}
+              |
               {report.markdownLink && (
                 <a href={report.markdownLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                   MD
@@ -41,11 +42,7 @@ export default function ProjectDetailTable({ reports }: ProjectDetailTableProps)
 
   return (
     <div className="mt-6">
-      <Table
-        data={getSpaceTableRows(reports)}
-        columnsHeadings={['Report Name', 'Status / Links']}
-        columnsWidthPercents={[50, 50]}
-      />
+      <Table data={getSpaceTableRows(reports)} columnsHeadings={['Report Name', 'Status / Links']} columnsWidthPercents={[50, 50]} />
     </div>
   );
 }
