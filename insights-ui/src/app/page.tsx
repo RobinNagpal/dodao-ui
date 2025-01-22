@@ -4,16 +4,9 @@ import React from 'react';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 
 export default async function Home() {
-  let data = { projectIds: [] };
-  try {
-    const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects`);
-    if (!res.ok) {
-      console.error(`Failed to fetch projects: ${res.statusText}`);
-    }
-    data = await res.json();
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-  }
+  const apiUrl = `${getBaseUrl()}/api/crowd-funding/projects`;
+  const res = await fetch(apiUrl);
+  const data = await res.json();
 
   return (
     <PageWrapper>

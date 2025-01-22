@@ -5,7 +5,7 @@
   "scripts": {
     "compile": "tsc",
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "NEXT_PUBLIC_VERCEL_URL=agentic-insights.dodao.io next build",
     "start": "next start",
     "lint": "next lint",
     "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
