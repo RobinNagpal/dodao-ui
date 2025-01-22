@@ -107,7 +107,7 @@ async def upload_to_s3(content, s3_key, content_type="text/plain"):
         Key=f"crowd-fund-analysis/{s3_key}",
         Body=content,
         ContentType=content_type,
-        acl="public-read",
+        ACL="public-read",
     )
     print(f"Uploaded to s3://{BUCKET_NAME}/{s3_key}")
 
@@ -170,7 +170,7 @@ async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
         Key=f"crowd-fund-analysis/{s3_key}",
         Body=pdf_buffer.getvalue(),
         ContentType="application/pdf",
-        acl="public-read",
+        ACL="public-read",
     )
     project_id = s3_key.split("/")[0]
     report_name = s3_key.split("/")[1].replace(".pdf", "")
@@ -220,7 +220,7 @@ async def initialize_status_file(project_id,project_name, input_data):
         Key=f"crowd-fund-analysis/{status_key}",
         Body=json.dumps(status_data, indent=4),
         ContentType="application/json",
-        acl="public-read",
+        ACL="public-read",
     )
     print(f"Initialized status file: s3://{BUCKET_NAME}/{status_key}")
 
@@ -264,7 +264,7 @@ async def update_status_file(project_id, report_name, status, markdown_link=None
         Key=f"crowd-fund-analysis/{status_key}",
         Body=json.dumps(status_data, indent=4),
         ContentType="application/json",
-        acl="public-read",
+        ACL="public-read",
     )
     print(f"Updated status file: s3://{BUCKET_NAME}/{status_key}")
 
