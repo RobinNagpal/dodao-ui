@@ -4,8 +4,17 @@ import React from 'react';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 
 export default async function Home() {
-  const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects`);
-  const data = await res.json();
+  let data = { projectIds: [] };
+  try {
+    const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects`);
+    if (!res.ok) {
+      console.error(`Failed to fetch projects: ${res.statusText}`);
+    }
+    data = await res.json();
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+  }
+
 
   return (
     <PageWrapper>
@@ -16,7 +25,7 @@ export default async function Home() {
             <p className="mt-2 text-sm">A list of all the topics.</p>
           </div>
         </div>
-        {data && data.projectIds ? (
+        {data.projectIds.length > 0 ? (
           <>
             <ProjectTable projectIds={data.projectIds} />
           </>
