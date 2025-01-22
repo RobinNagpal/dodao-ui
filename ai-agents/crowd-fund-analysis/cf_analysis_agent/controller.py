@@ -90,7 +90,7 @@ def check_file_exists_on_s3(s3_key):
     Checks if a file exists in the S3 bucket.
     """
     try:
-        s3_client.head_object(Bucket=BUCKET_NAME, Key=s3_key)
+        s3_client.head_object(Bucket=BUCKET_NAME, Key=f"crowd-fund-analysis/{s3_key}")
         return True
     except s3_client.exceptions.ClientError as e:
         if e.response["Error"]["Code"] == "404":
@@ -104,9 +104,10 @@ async def upload_to_s3(content, s3_key, content_type="text/plain"):
     """
     s3_client.put_object(
         Bucket=BUCKET_NAME,
-        Key=s3_key,
+        Key=f"crowd-fund-analysis/{s3_key}",
         Body=content,
         ContentType=content_type,
+        acl="public-read",
     )
     print(f"Uploaded to s3://{BUCKET_NAME}/{s3_key}")
 
@@ -142,7 +143,7 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_ke
 
             await convert_markdown_to_pdf_and_upload(final_state, s3_key.replace(".md", ".pdf"))
             # Update status file in S3
-            markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}"
+            markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{s3_key}"
             await update_status_file(project_id, report_name, "completed", markdown_link=markdown_link)
             return final_state
 
@@ -166,24 +167,25 @@ async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
     # Upload PDF to S3
     s3_client.put_object(
         Bucket=BUCKET_NAME,
-        Key=s3_key,
+        Key=f"crowd-fund-analysis/{s3_key}",
         Body=pdf_buffer.getvalue(),
         ContentType="application/pdf",
+        acl="public-read",
     )
     project_id = s3_key.split("/")[0]
     report_name = s3_key.split("/")[1].replace(".pdf", "")
-    pdf_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}"
+    pdf_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{s3_key}"
     await update_status_file(project_id, report_name, "completed", pdf_link=pdf_link)
     print(f"Uploaded PDF to s3://{BUCKET_NAME}/{s3_key}")
     
 async def open_pdf(s3_key):
-    webbrowser.open(f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}")
+    webbrowser.open(f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{s3_key}")
 
-async def initialize_status_file(project_id, input_data):
+async def initialize_status_file(project_id,project_name, input_data):
     """
-    Initializes the `agent_status.json` file in the S3 bucket if it does not already exist.
+    Initializes the `agent-status.json` file in the S3 bucket if it does not already exist.
     """
-    status_key = f"{project_id}/agent_status.json"
+    status_key = f"{project_id}/agent-status.json"
 
     # Check if the status file already exists
     if check_file_exists_on_s3(status_key):
@@ -192,32 +194,48 @@ async def initialize_status_file(project_id, input_data):
 
     # Initialize a new status file with pending status and no links
     status_data = {
+        "id": project_id,
+        "name": project_name,
+        "projectInfoInput":{
+            "crowdFundingUrl": input_data["financial_review"]["additional_links"][0],
+            "SecFillingUrl": input_data["financial_review"]["url_to_scrape"],
+            "additionalUrl": input_data["financial_review"]["additional_links"][2:],
+            "websiteUrl": input_data["financial_review"]["additional_links"][1],
+        },
         "status": "pending",
         "reports": {
             key: {"status": "pending", "markdownLink": None, "pdfLink": None}
             for key in input_data.keys()
-        }
+        },
+        "finalReport":{
+                "status": "in_progress",
+                "markdownLink": None,
+                "pdfLink": None,
+            }
     }
 
     # Upload the initial status file to S3
     s3_client.put_object(
         Bucket=BUCKET_NAME,
-        Key=status_key,
+        Key=f"crowd-fund-analysis/{status_key}",
         Body=json.dumps(status_data, indent=4),
         ContentType="application/json",
+        acl="public-read",
     )
     print(f"Initialized status file: s3://{BUCKET_NAME}/{status_key}")
 
 async def update_status_file(project_id, report_name, status, markdown_link=None, pdf_link=None):
     """
-    Updates the `agent_status.json` file in the S3 bucket.
+    Updates the `agent-status.json` file in the S3 bucket.
     """
-    status_key = f"{project_id}/agent_status.json"
+    status_key = f"{project_id}/agent-status.json"
 
     # Fetch the current status from S3 or create a new one
     try:
-        response = s3_client.get_object(Bucket=BUCKET_NAME, Key=status_key)
+        response = s3_client.get_object(Bucket=BUCKET_NAME, Key=f"crowd-fund-analysis/{status_key}")
+        print(response)
         status_data = json.loads(response['Body'].read().decode('utf-8'))
+        print(status_data)
     except s3_client.exceptions.NoSuchKey:
         # Initialize a new status file if it doesn't exist
         status_data = {
@@ -240,11 +258,13 @@ async def update_status_file(project_id, report_name, status, markdown_link=None
         status_data["status"] = "completed"
 
     # Upload the updated status to S3
+    print(f"Updating status file: s3://{BUCKET_NAME}/{status_key}")
     s3_client.put_object(
         Bucket=BUCKET_NAME,
-        Key=status_key,
+        Key=f"crowd-fund-analysis/{status_key}",
         Body=json.dumps(status_data, indent=4),
         ContentType="application/json",
+        acl="public-read",
     )
     print(f"Updated status file: s3://{BUCKET_NAME}/{status_key}")
 
@@ -254,6 +274,7 @@ async def main_controller_async(project_details):
     Runs parallel tasks, checks for existing files on S3, and generates a PDF report from Markdown.
     """
     id = project_details["project_id"]
+    name = project_details["project_name"]
     crowdfunding_link = project_details["crowdfunding_link"]
     website_url = project_details["website_url"]
     latest_sec_filing_link = project_details["latest_sec_filing_link"]
@@ -264,24 +285,24 @@ async def main_controller_async(project_details):
             "id": id,
             "messages": [("user", "Please gather the project's general info.")],
             "projectUrls": [crowdfunding_link, website_url],
-            "output_file": f"{id}.reports/general_info.md",
+            "output_file": f"{id}/general_info.md",
         },
         "team_info": {
             "id": id,
             "messages": [("user", crowdfunding_link)],
-            "output_file": f"{id}.reports/team_info.md",
+            "output_file": f"{id}/team_info.md",
         },
         "red_flags": {
             "id": id,
             "messages": [("user", "Scrape and analyze red flags.")],
             "projectUrls": [crowdfunding_link, website_url],
-            "output_file": f"{id}.reports/red_flags.md",
+            "output_file": f"{id}/red_flags.md",
         },
         "green_flags": {
             "id": id,
             "messages": [("user", "Scrape and analyze green flags.")],
             "projectUrls": [crowdfunding_link, website_url],
-            "output_file": f"{id}.reports/green_flags.md",
+            "output_file": f"{id}/green_flags.md",
         },
         "financial_review": {
             "id": id,
@@ -289,18 +310,18 @@ async def main_controller_async(project_details):
             "url_to_scrape": latest_sec_filing_link,
             "scraped_content": {},
             "additional_links": [crowdfunding_link, website_url] + additional_links,
-            "output_file": f"{id}.reports/financial_review.md",
+            "output_file": f"{id}/financial_review.md",
         },
         "relevant_links": {
             "id": id,
             "messages": [("user", "Find more links about this startup.")],
             "crowdfunded_url": crowdfunding_link,
-            "output_file": f"{id}.reports/relevant_links.md",
+            "output_file": f"{id}/relevant_links.md",
         },
     }
     
      # Initialize the status file
-    await initialize_status_file( f"{id}.reports", input_data)
+    await initialize_status_file( f"{id}",name, input_data)
     
     parallel_tasks = [
         run_agent_and_get_final_output_async(
@@ -310,7 +331,7 @@ async def main_controller_async(project_details):
             team_info_app, input_data["team_info"], "teamInfo", input_data["team_info"]["output_file"]
         ),
         run_agent_and_get_final_output_async(
-            financial_review_app, input_data["financial_review"], "finalFinancialReport", f"{id}.reports/financial_review.md",
+            financial_review_app, input_data["financial_review"], "finalFinancialReport", f"{id}/financial_review.md",
         ),
         run_agent_and_get_final_output_async(
             red_flags_app, input_data["red_flags"], "finalRedFlagsReport", input_data["red_flags"]["output_file"]
@@ -329,7 +350,7 @@ async def main_controller_async(project_details):
     pdf_tasks = []
     for key, data in input_data.items():
         markdown_s3_key = data["output_file"]
-        pdf_s3_key = markdown_s3_key.replace(".md", ".pdf")
+        pdf_s3_key =markdown_s3_key.replace(".md", ".pdf")
 
         pdf_tasks.append(open_pdf(pdf_s3_key))
 
