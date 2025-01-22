@@ -192,7 +192,7 @@ async def initialize_status_file(project_id,project_name, input_data):
         print(f"Status file '{status_key}' already exists. Skipping initialization.")
         return
 
-    # Initialize a new status file with pending status and no links
+    # Initialize a new status file with in_progress status and no links
     status_data = {
         "id": project_id,
         "name": project_name,
@@ -202,9 +202,9 @@ async def initialize_status_file(project_id,project_name, input_data):
             "additionalUrl": input_data["financial_review"]["additional_links"][2:],
             "websiteUrl": input_data["financial_review"]["additional_links"][1],
         },
-        "status": "pending",
+        "status": "in_progress",
         "reports": {
-            key: {"status": "pending", "markdownLink": None, "pdfLink": None}
+            key: {"status": "in_progress", "markdownLink": None, "pdfLink": None}
             for key in input_data.keys()
         },
         "finalReport":{
