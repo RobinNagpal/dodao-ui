@@ -7,15 +7,15 @@ import boto3
 import json
 from markdown import markdown  # Python-Markdown for converting Markdown to HTML
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, ListFlowable, ListItem
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-
 from general_info import app as general_info_app
 from team_info import app as team_info_app
 from red_flags import app as red_flags_app
 from green_flags import app as green_flags_app
 from financial_review_agent import app as financial_review_app
 from relevant_links import app as relevant_links_app
+from bs4 import BeautifulSoup  # make sure to install via pip install beautifulsoup4
 
 # AWS S3 client using credentials from environment variables
 s3_client = boto3.client(
@@ -149,22 +149,94 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_ke
 
     raise ValueError(f"Final output key '{final_key}' not found in the agent's events.")
 
-
-
 async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
     """
-    Converts Markdown content to PDF, uploads it to S3, and opens it in the browser.
+    Converts Markdown content to PDF, uploads it to S3, and updates the status file.
     """
+    # 1) Convert Markdown -> HTML
     html_content = markdown(markdown_content)
+
+    # 2) Parse the HTML with BeautifulSoup
+    soup = BeautifulSoup(html_content, "html.parser")
+
+    # 3) Prepare a PDF buffer and styles
     pdf_buffer = BytesIO()
     doc = SimpleDocTemplate(pdf_buffer, pagesize=letter)
     styles = getSampleStyleSheet()
-    body_style = ParagraphStyle("Body", parent=styles["BodyText"], fontSize=10, leading=12)
-    elements = [Paragraph(html_content, body_style)]
-    doc.build(elements)
+
+    # You can tweak or add new styles as needed:
+    heading1 = ParagraphStyle(
+        "Heading1",
+        parent=styles["Heading1"],
+        fontName="Helvetica-Bold",
+        fontSize=16,
+        leading=20,
+        spaceAfter=10,
+    )
+    heading2 = ParagraphStyle(
+        "Heading2",
+        parent=styles["Heading2"],
+        fontName="Helvetica-Bold",
+        fontSize=14,
+        leading=18,
+        spaceAfter=8,
+    )
+    normal_paragraph = ParagraphStyle(
+        "Body",
+        parent=styles["BodyText"],
+        fontSize=10,
+        leading=12,
+        spaceAfter=6,
+    )
+
+    # 4) Build a list of flowables (Paragraphs, Lists, etc.) from the HTML
+    flowables = []
+
+    def parse_element(element):
+        """
+        Recursive parser to handle nested tags (e.g., <ul> inside <div>).
+        You can expand this logic to handle more tags if desired.
+        """
+        # If it's a navigable string (plain text between tags), skip it if just whitespace
+        if element.name is None:
+            text = element.strip()
+            if text:
+                flowables.append(Paragraph(text, normal_paragraph))
+            return
+
+        # Handle block-level tags:
+        if element.name in ["h1", "h2", "h3", "h4"]:
+            # Map heading tags to styles
+            style = heading1 if element.name == "h1" else heading2
+            flowables.append(Paragraph(element.get_text(), style))
+            flowables.append(Spacer(1, 6))
+
+        elif element.name == "p":
+            flowables.append(Paragraph(element.get_text(), normal_paragraph))
+            flowables.append(Spacer(1, 6))
+
+        elif element.name in ["ul", "ol"]:
+            list_items = []
+            for li in element.find_all("li", recursive=False):
+                # Each <li> might have nested elements
+                li_content = li.get_text()
+                list_items.append(ListItem(Paragraph(li_content, normal_paragraph)))
+            flowables.append(ListFlowable(list_items, bulletType="bullet" if element.name == "ul" else "1"))
+
+        else:
+            # For any other tag, just parse its children
+            for child in element.children:
+                parse_element(child)
+
+    # 5) Parse top-level children of the HTML (body)
+    for child in soup.children:
+        parse_element(child)
+
+    # 6) Build the PDF
+    doc.build(flowables)
     pdf_buffer.seek(0)
 
-    # Upload PDF to S3
+    # 7) Upload PDF to S3
     s3_client.put_object(
         Bucket=BUCKET_NAME,
         Key=f"crowd-fund-analysis/{s3_key}",
@@ -172,12 +244,15 @@ async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
         ContentType="application/pdf",
         ACL="public-read",
     )
+
+    # 8) Update status file, etc. (same as in your current code)
     project_id = s3_key.split("/")[0]
     report_name = s3_key.split("/")[1].replace(".pdf", "")
     pdf_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{s3_key}"
     await update_status_file(project_id, report_name, "completed", pdf_link=pdf_link)
+
     print(f"Uploaded PDF to s3://{BUCKET_NAME}/{s3_key}")
-    
+
 async def open_pdf(s3_key):
     webbrowser.open(f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{s3_key}")
 
@@ -186,11 +261,6 @@ async def initialize_status_file(project_id,project_name, input_data):
     Initializes the `agent-status.json` file in the S3 bucket if it does not already exist.
     """
     status_key = f"{project_id}/agent-status.json"
-
-    # Check if the status file already exists
-    if check_file_exists_on_s3(status_key):
-        print(f"Status file '{status_key}' already exists. Skipping initialization.")
-        return
 
     # Initialize a new status file with in_progress status and no links
     status_data = {
