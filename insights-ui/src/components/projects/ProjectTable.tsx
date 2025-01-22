@@ -1,39 +1,43 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
 import React from 'react';
-
-const tableActions: TableActions = {
-  items: [
-    {
-      key: 'view',
-      label: 'View',
-    },
-  ],
-  onSelect: async (key: string) => {
-    if (key === 'view') {
-      console.log('View clicked');
-    }
-  },
-};
+import Link from 'next/link';
 
 interface ProjectTableProps {
   projectIds: string[];
 }
 
 export default function ProjectTable({ projectIds }: ProjectTableProps) {
+  const router = useRouter();
+
+  const tableActions: TableActions = {
+    items: [
+      {
+        key: 'view',
+        label: 'View',
+      },
+    ],
+    onSelect: async (key: string, item: string) => {
+      if (key === 'view') {
+        router.push(`/crowd-funding/projects/${item}`);
+      }
+    },
+  };
+
   function getSpaceTableRows(projectIds: string[]): TableRow[] {
-    const projects: TableRow[] = projectIds.map(
+    return projectIds.map(
       (projectId): TableRow => ({
         id: projectId,
-        columns: [<div key={projectId}>{projectId}</div>],
+        columns: [
+          <Link href={`/crowd-funding/projects/${encodeURIComponent(projectId)}`} key={projectId} className="text-blue-600 hover:underline">
+            {projectId}
+          </Link>,
+        ],
         item: projectId,
       })
     );
-    return projects;
   }
-  return (
-    <>
-      <Table data={getSpaceTableRows(projectIds || [])} columnsHeadings={['Id', 'Status']} columnsWidthPercents={[50, 50]} actions={tableActions} />
-    </>
-  );
+
+  return <Table data={getSpaceTableRows(projectIds)} columnsHeadings={['Project ID']} columnsWidthPercents={[100]} actions={tableActions} />;
 }
