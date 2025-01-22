@@ -1,3 +1,5 @@
+'use client';
+
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 import React from 'react';

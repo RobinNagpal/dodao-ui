@@ -1,3 +1,5 @@
+'use client';
+
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import React, { ReactNode } from 'react';
