@@ -1,51 +1,29 @@
-import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
+import ProjectTable from '@/components/projects/ProjectTable';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React from 'react';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 
 export default async function Home() {
-  const res = await fetch(`${getBaseUrl()}/api/projects`);
-
-  const tableActions: TableActions = {
-    items: [
-      {
-        key: 'view',
-        label: 'View',
-      },
-    ],
-    onSelect: async (key: string) => {
-      if (key === 'view') {
-        console.log('View clicked');
-      }
-    },
-  };
-
-  function getSpaceTableRows(projectIds: string[]): TableRow[] {
-    const projects: TableRow[] = projectIds.map(
-      (projectId): TableRow => ({
-        id: projectId,
-        columns: [<div>${projectId}</div>],
-        item: projectId,
-      })
-    );
-    return projects;
-  }
+  const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects`);
+  const data = await res.json();
 
   return (
-    <>
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="sm:flex sm:items-center">
+    <PageWrapper>
+      <div className="mx-auto max-w-lg">
+        <div className="text-center">
           <div className="sm:flex-auto">
-            <h1 className="font-semibold leading-6 text-2xl">Projects</h1>
-            <p className="mt-2 text-sm">A list of all the projects.</p>
+            <h1 className="font-semibold leading-6 text-2xl">Topics</h1>
+            <p className="mt-2 text-sm">A list of all the topics.</p>
           </div>
         </div>
-        <Table
-          data={getSpaceTableRows((await res.json()) || [])}
-          columnsHeadings={['Name', 'Id', 'Type']}
-          columnsWidthPercents={[20, 20, 20]}
-          actions={tableActions}
-        />
+        {data && data.projectIds ? (
+          <>
+            <ProjectTable projectIds={data.projectIds} />
+          </>
+        ) : (
+          <div>No projects to show</div>
+        )}
       </div>
-    </>
+    </PageWrapper>
   );
 }
