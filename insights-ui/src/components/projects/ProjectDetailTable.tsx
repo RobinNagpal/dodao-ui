@@ -20,11 +20,13 @@ export default function ProjectDetailTable({ reports }: ProjectDetailTableProps)
           {report.status === Status.completed ? (
             <div className="flex gap-2">
               {report.pdfLink && (
-                <a href={report.pdfLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  PDF
-                </a>
-              )}{' '}
-              |
+                <>
+                  <a href={report.pdfLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                    PDF
+                  </a>
+                  <span>|</span>
+                </>
+              )}
               {report.markdownLink && (
                 <a href={report.markdownLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                   MD

@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
 import React from 'react';
+import Link from 'next/link';
 
 interface ProjectTableProps {
   projectIds: string[];
@@ -29,9 +30,9 @@ export default function ProjectTable({ projectIds }: ProjectTableProps) {
       (projectId): TableRow => ({
         id: projectId,
         columns: [
-          <div key={projectId} onClick={() => router.push(`/crowd-funding/projects/${projectId}`)} className="cursor-pointer text-blue-600 hover:underline">
+          <Link href={`/crowd-funding/projects/${encodeURIComponent(projectId)}`} key={projectId} className="text-blue-600 hover:underline">
             {projectId}
-          </div>,
+          </Link>,
         ],
         item: projectId,
       })
