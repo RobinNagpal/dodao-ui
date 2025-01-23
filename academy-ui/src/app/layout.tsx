@@ -51,9 +51,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
  
-          gtag('config', '${gtag}', {
-            send_page_view: false
-          });
+          gtag('config', '${gtag}');
         `}
         </Script>
         <StyledComponentsRegistry>
