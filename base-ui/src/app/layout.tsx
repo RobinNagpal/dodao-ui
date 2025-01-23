@@ -22,7 +22,7 @@ interface RootLayoutProps {
 export default async function RootLayout({ children }: RootLayoutProps) {
   const p = new PrismaClient();
   const session = (await getServerSession(authOptions)) as Session | null;
-  const space = await getSpaceServerSide();
+  const space = (await getSpaceServerSide())!;
   const gtag = getGTagId(space);
 
   const themeValue = space?.themeColors || GlobalThemeColors;

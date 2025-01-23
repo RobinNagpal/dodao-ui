@@ -9,7 +9,6 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import { UserIdKey } from '@dodao/web-core/types/auth/User';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { LoginModalProvider } from '@dodao/web-core/ui/contexts/LoginModalContext';
-import { useSpace } from '@/contexts/SpaceContext';
 import Web3ReactProviderWrapper from '@dodao/web-core/ui/contexts/Web3ReactContext';
 import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
 import { useNavigationEvent } from '@dodao/web-core/utils/analytics/useNavigationEvent';
@@ -42,11 +41,8 @@ export function ChildLayout({
 }) {
   const client = useMemo(() => getAuthenticatedApolloClient(session), [session]);
 
-  const { setSpace } = useSpace();
-
   useEffect(() => {
-    if (space) {
-      setSpace(space);
+    if (space && !ReactGA.isInitialized) {
       ReactGA.initialize(getGTagId(space));
     }
   }, [space]);

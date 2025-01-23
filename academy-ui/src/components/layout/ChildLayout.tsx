@@ -1,7 +1,6 @@
 'use client';
 
 import { BasePage } from '@/components/layout/BasePage';
-import { useSpace } from '@/contexts/SpaceContext';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { ApolloProvider } from '@apollo/client';
 import ErrorPage from '@dodao/web-core/components/app/ErrorPage';
@@ -30,11 +29,8 @@ export function ChildLayout({
 }) {
   const client = useMemo(() => getAuthenticatedApolloClient(session), [session]);
 
-  const { setSpace } = useSpace();
-
   useEffect(() => {
-    if (space) {
-      setSpace(space);
+    if (space && !ReactGA.isInitialized) {
       ReactGA.initialize(getGTagId(space));
     }
   }, [space]);
