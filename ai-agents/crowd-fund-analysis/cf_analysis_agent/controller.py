@@ -227,7 +227,7 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_ke
                 await convert_markdown_to_pdf_and_upload(final_state, s3_key.replace(".md", ".pdf"))
 
                 # Update status file to "completed"
-                markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}"
+                markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{s3_key}"
                 await update_status_file(project_id, report_name, "completed", markdown_link=markdown_link)
                 return final_state
 

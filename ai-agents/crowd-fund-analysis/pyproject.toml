@@ -23,6 +23,7 @@ markdown = "^3.7"
 reportlab = "^4.2.5"
 boto3 = "^1.36.1"
 beautifulsoup4 = "^4.12.3"
+flask-cors = "^5.0.0"
 
 
 [build-system]
