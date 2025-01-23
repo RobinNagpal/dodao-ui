@@ -116,7 +116,7 @@ async def upload_to_s3(content, s3_key, content_type="text/plain"):
         Key=f"crowd-fund-analysis/{s3_key}",
         Body=content,
         ContentType=content_type,
-        ACL="public-read",
+        # ACL="public-read",
     )
     print(f"Uploaded to s3://{BUCKET_NAME}/{s3_key}")
 
@@ -270,7 +270,7 @@ async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
         Key=f"crowd-fund-analysis/{s3_key}",
         Body=pdf_buffer.getvalue(),
         ContentType="application/pdf",
-        ACL="public-read",
+        # ACL="public-read",
     )
 
     # 8) Update status file, etc. (same as in your current code)
@@ -311,7 +311,10 @@ async def initialize_status_file(project_id, project_name, input_data, report_ty
 
                 # Set the status to "in_progress"
                 status_data["reports"][report_type]["status"] = "in_progress"
-                print(f"Set status of report '{report_type}' to 'in_progress'.")
+                status_data["reports"][report_type]["markdownLink"] = None
+                status_data["reports"][report_type]["pdfLink"] = None
+                
+                print(f"Set status of report '{report_type}' to 'in_progress'. Also removed markdownLink and pdfLink.")
             else:
                 print(f"Report type '{report_type}' not found in the status file.")
                 return
@@ -347,7 +350,7 @@ async def initialize_status_file(project_id, project_name, input_data, report_ty
         Key=f"crowd-fund-analysis/{status_key}",
         Body=json.dumps(status_data, indent=4),
         ContentType="application/json",
-        ACL="public-read",
+        # ACL="public-read",
     )
     print(f"Updated status file: s3://{BUCKET_NAME}/{status_key}")
 
@@ -402,7 +405,7 @@ async def update_status_file(project_id, report_name, status, error_message=None
         Key=f"crowd-fund-analysis/{status_key}",
         Body=json.dumps(status_data, indent=4),
         ContentType="application/json",
-        ACL="public-read",
+        # ACL="public-read",
     )
     print(f"Updated status file: s3://{BUCKET_NAME}/{status_key}")
 
