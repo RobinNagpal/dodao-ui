@@ -64,8 +64,14 @@ class State(TypedDict):
     analyzedTeamProfiles: List[AnalyzedTeamProfile]
     teamInfo: str
 
-llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
-llm_mini = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
+
+OPENAI_MODEL = os.getenv("OPENAI_MODEL")
+
+if OPENAI_MODEL:
+    llm = ChatOpenAI(model_name=OPENAI_MODEL, temperature=0)
+else:
+    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
+
 
 graph_builder = StateGraph(State)
 memory = MemorySaver()
@@ -357,7 +363,7 @@ def evaluate_node(state: State):
         "Do not add extra commentary or text, return ONLY the table."
     )
 
-    table_response = llm_mini.invoke([HumanMessage(content=table_prompt)])
+    table_response = llm.invoke([HumanMessage(content=table_prompt)])
     final_table = table_response.content
     state["teamInfo"] = final_table
     # print(state["teamInfo"])

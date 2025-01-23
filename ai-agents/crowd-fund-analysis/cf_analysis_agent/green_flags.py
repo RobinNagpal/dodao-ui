@@ -13,6 +13,13 @@ load_dotenv()
 
 SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 
+OPENAI_MODEL = os.getenv("OPENAI_MODEL")
+
+if OPENAI_MODEL:
+    llm = ChatOpenAI(model_name=OPENAI_MODEL, temperature=0)
+else:
+    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
+
 class State(TypedDict):
     messages: Annotated[list, add_messages]
     projectUrls: List[str]        
@@ -23,8 +30,6 @@ class State(TypedDict):
     industryGreenFlags: str     
     greenFlagsEvaluation: str   
     finalGreenFlagsReport: str
-
-llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
 
 graph_builder = StateGraph(State)
 memory = MemorySaver()

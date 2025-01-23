@@ -13,9 +13,16 @@ import time
 
 load_dotenv()
 
+OPENAI_MODEL = os.getenv("OPENAI_MODEL")
+
 SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 
-llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
+OPENAI_MODEL = os.getenv("OPENAI_MODEL")
+
+if OPENAI_MODEL:
+    llm = ChatOpenAI(model_name=OPENAI_MODEL, temperature=0)
+else:
+    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
 
 class FormCData(TypedDict):
     offering_statement_date: str

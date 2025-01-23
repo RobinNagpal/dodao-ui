@@ -66,6 +66,11 @@ def parse_arguments():
         help="Optional: Comma-separated list of additional links related to the project.",
         default="",  # Default to an empty string if not provided
     )
+    parser.add_argument(
+        "--report_type",
+        help="Optional: Specify a single report type to regenerate (e.g., 'general_info').",
+        default=None  # Default to None if not provided
+    )
 
     args = parser.parse_args()
 
@@ -75,6 +80,7 @@ def parse_arguments():
     website_url = args.website_url.strip().strip('"')
     latest_sec_filing_link = args.latest_sec_filing_link.strip().strip('"')
     additional_links = [link.strip() for link in args.additional_links.split(",") if link.strip()]
+    report_type = args.report_type.strip().strip('"') if args.report_type else None
 
     project_id = project_name.replace(" ", "_").lower()
 
@@ -84,9 +90,9 @@ def parse_arguments():
         "website_url": website_url,
         "latest_sec_filing_link": latest_sec_filing_link,
         "additional_links": additional_links,
+        "report_type": report_type,
         "project_id": project_id,
     }
-
 
 def check_file_exists_on_s3(s3_key):
     """
@@ -123,16 +129,6 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_ke
     report_name = s3_key.split("/")[1].replace(".md", "")
 
     try:
-        # Check if the file already exists on S3
-        if check_file_exists_on_s3(s3_key):
-            print(f"File '{s3_key}' already exists on S3. Skipping the agent.")
-            await update_status_file(
-                project_id,
-                report_name,
-                "completed",
-                markdown_link=f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}"
-            )
-            return
 
         # Prepare the configuration for the agent
         config = {"configurable": {"thread_id": "1", "id": input_data.get("id")}}
@@ -288,35 +284,64 @@ async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
 async def open_pdf(s3_key):
     webbrowser.open(f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{s3_key}")
 
-async def initialize_status_file(project_id,project_name, input_data):
+async def initialize_status_file(project_id, project_name, input_data, report_type=None):
     """
-    Initializes the `agent-status.json` file in the S3 bucket if it does not already exist.
+    Initializes the `agent-status.json` file in the S3 bucket.
+    If it exists, updates the status of the specified report type to "in_progress".
+    If no report type is specified, re-initializes the file completely.
     """
     status_key = f"{project_id}/agent-status.json"
+    status_data = None
 
-    # Initialize a new status file with in_progress status and no links
-    status_data = {
-        "id": project_id,
-        "name": project_name,
-        "projectInfoInput":{
-            "crowdFundingUrl": input_data["financial_review"]["additional_links"][0],
-            "SecFillingUrl": input_data["financial_review"]["url_to_scrape"],
-            "additionalUrl": input_data["financial_review"]["additional_links"][2:],
-            "websiteUrl": input_data["financial_review"]["additional_links"][1],
-        },
-        "status": "in_progress",
-        "reports": {
-            key: {"status": "in_progress", "markdownLink": None, "pdfLink": None}
-            for key in input_data.keys()
-        },
-        "finalReport":{
+    # Check if the status file already exists
+    if check_file_exists_on_s3(status_key):
+        print(f"Status file '{status_key}' already exists.")
+
+        # Fetch the current status file
+        response = s3_client.get_object(Bucket=BUCKET_NAME, Key=f"crowd-fund-analysis/{status_key}")
+        status_data = json.loads(response['Body'].read().decode('utf-8'))
+
+        if report_type:
+            # Update the status of the specified report type
+            if report_type in status_data["reports"]:
+                # Remove `errorMessage` if it exists
+                if "errorMessage" in status_data["reports"][report_type]:
+                    del status_data["reports"][report_type]["errorMessage"]
+                    print(f"Removed errorMessage from report '{report_type}'.")
+
+                # Set the status to "in_progress"
+                status_data["reports"][report_type]["status"] = "in_progress"
+                print(f"Set status of report '{report_type}' to 'in_progress'.")
+            else:
+                print(f"Report type '{report_type}' not found in the status file.")
+                return
+        else:
+            print(f"No report type specified. Re-initializing the status file.")
+
+    if not status_data or not report_type:
+        # Initialize or reinitialize the file
+        status_data = {
+            "id": project_id,
+            "name": project_name,
+            "projectInfoInput": {
+                "crowdFundingUrl": input_data["financial_review"]["additional_links"][0],
+                "SecFillingUrl": input_data["financial_review"]["url_to_scrape"],
+                "additionalUrl": input_data["financial_review"]["additional_links"][2:],
+                "websiteUrl": input_data["financial_review"]["additional_links"][1],
+            },
+            "status": "in_progress",
+            "reports": {
+                key: {"status": "in_progress", "markdownLink": None, "pdfLink": None}
+                for key in input_data.keys()
+            },
+            "finalReport": {
                 "status": "in_progress",
                 "markdownLink": None,
                 "pdfLink": None,
             }
-    }
+        }
 
-    # Upload the initial status file to S3
+    # Upload the updated or initialized status file to S3
     s3_client.put_object(
         Bucket=BUCKET_NAME,
         Key=f"crowd-fund-analysis/{status_key}",
@@ -324,7 +349,9 @@ async def initialize_status_file(project_id,project_name, input_data):
         ContentType="application/json",
         ACL="public-read",
     )
-    print(f"Initialized status file: s3://{BUCKET_NAME}/{status_key}")
+    print(f"Updated status file: s3://{BUCKET_NAME}/{status_key}")
+
+
 
 
 async def update_status_file(project_id, report_name, status, error_message=None, markdown_link=None, pdf_link=None):
@@ -390,6 +417,26 @@ async def main_controller_async(project_details):
     website_url = project_details["website_url"]
     latest_sec_filing_link = project_details["latest_sec_filing_link"]
     additional_links = project_details["additional_links"]
+    report_type = project_details["report_type"]
+    
+    app_map = {
+        "general_info": general_info_app,
+        "team_info": team_info_app,
+        "financial_review": financial_review_app,
+        "red_flags": red_flags_app,
+        "green_flags": green_flags_app,
+        "relevant_links": relevant_links_app,
+    }
+
+    final_key_map = {
+        "general_info": "projectGeneralInfo",
+        "team_info": "teamInfo",
+        "financial_review": "finalFinancialReport",
+        "red_flags": "finalRedFlagsReport",
+        "green_flags": "finalGreenFlagsReport",
+        "relevant_links": "relevantLinks",
+    }
+
 
     input_data = {
         "general_info": {
@@ -432,7 +479,20 @@ async def main_controller_async(project_details):
     }
     
      # Initialize the status file
-    await initialize_status_file( f"{id}",name, input_data)
+    await initialize_status_file( f"{id}",name, input_data,project_details["report_type"])
+
+    if report_type:
+        # Run a single agent based on the provided report type
+        if report_type in input_data:
+            await run_agent_and_get_final_output_async(
+                app=app_map[report_type],
+                input_data=input_data[report_type],
+                final_key=final_key_map[report_type],
+                s3_key=input_data[report_type]["output_file"],
+            )
+        else:
+            print(f"Report type '{report_type}' is not valid.")
+        return
     
     parallel_tasks = [
         run_agent_and_get_final_output_async(
