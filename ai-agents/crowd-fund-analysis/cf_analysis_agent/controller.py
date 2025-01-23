@@ -1,14 +1,17 @@
 import asyncio
 import os
 import argparse
+import traceback
 import webbrowser  # To open the URL in the default browser
 from io import BytesIO
+import sys
 import boto3
 import json
 from markdown import markdown  # Python-Markdown for converting Markdown to HTML
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, ListFlowable, ListItem
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+
 from general_info import app as general_info_app
 from team_info import app as team_info_app
 from red_flags import app as red_flags_app
@@ -111,43 +114,72 @@ async def upload_to_s3(content, s3_key, content_type="text/plain"):
     )
     print(f"Uploaded to s3://{BUCKET_NAME}/{s3_key}")
 
-
-async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_key,):
+async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_key):
     """
     Runs a single LangGraph agent asynchronously, checks for existing file on S3, updates status file, and uploads the result if necessary.
     """
-    project_id=s3_key.split("/")[0]
-    report_name=s3_key.split("/")[1].replace(".md", "")
-    if check_file_exists_on_s3(s3_key):
-        print(f"File '{s3_key}' already exists on S3. Skipping the agent.")
-        await update_status_file(project_id, report_name, "completed", markdown_link=f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}")
-        return
+    # Extract project ID and report name from the S3 key
+    project_id = s3_key.split("/")[0]
+    report_name = s3_key.split("/")[1].replace(".md", "")
 
-    config = {"configurable": {"thread_id": "1", "id": input_data.get("id")}}
+    try:
+        # Check if the file already exists on S3
+        if check_file_exists_on_s3(s3_key):
+            print(f"File '{s3_key}' already exists on S3. Skipping the agent.")
+            await update_status_file(
+                project_id,
+                report_name,
+                "completed",
+                markdown_link=f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}"
+            )
+            return
 
-    def fetch_events():
-        return list(app.stream(input_data, config, stream_mode="values"))
+        # Prepare the configuration for the agent
+        config = {"configurable": {"thread_id": "1", "id": input_data.get("id")}}
 
-    events = await asyncio.to_thread(fetch_events)
+        # Fetch events asynchronously
+        def fetch_events():
+            return list(app.stream(input_data, config, stream_mode="values"))
 
-    for event in events:
-        final_state = event.get(final_key, None)
-        if final_state is not None:
-            if isinstance(final_state, list):
-                final_state = "\n".join(final_state)
-            elif not isinstance(final_state, str):
-                final_state = json.dumps(final_state, indent=4)
+        events = await asyncio.to_thread(fetch_events)
 
-            # Upload the result to S3
-            await upload_to_s3(final_state, s3_key)
+        # Process events to find the final output
+        for event in events:
+            final_state = event.get(final_key, None)
+            if final_state is not None:
+                # Handle final state formatting
+                if isinstance(final_state, list):
+                    final_state = "\n".join(final_state)
+                elif not isinstance(final_state, str):
+                    final_state = json.dumps(final_state, indent=4)
 
-            await convert_markdown_to_pdf_and_upload(final_state, s3_key.replace(".md", ".pdf"))
-            # Update status file in S3
-            markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{s3_key}"
-            await update_status_file(project_id, report_name, "completed", markdown_link=markdown_link)
-            return final_state
+                # Upload the result to S3
+                await upload_to_s3(final_state, s3_key)
 
-    raise ValueError(f"Final output key '{final_key}' not found in the agent's events.")
+                # Convert and upload PDF version
+                await convert_markdown_to_pdf_and_upload(final_state, s3_key.replace(".md", ".pdf"))
+
+                # Update status file to "completed"
+                markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{s3_key}"
+                await update_status_file(project_id, report_name, "completed", markdown_link=markdown_link)
+                return final_state
+
+        # If the final key wasn't found in the events, raise an error
+        raise ValueError(f"Final output key '{final_key}' not found in the agent's events.")
+
+    except Exception as e:
+        # Capture full stack trace
+        error_message = ''.join(traceback.format_exception(*sys.exc_info()))
+        print(f"An error occurred:\n{error_message}")
+        await update_status_file(
+            project_id,
+            report_name,
+            "failed",
+            error_message=error_message
+        )
+        return None
+
+
 
 async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
     """
@@ -294,7 +326,8 @@ async def initialize_status_file(project_id,project_name, input_data):
     )
     print(f"Initialized status file: s3://{BUCKET_NAME}/{status_key}")
 
-async def update_status_file(project_id, report_name, status, markdown_link=None, pdf_link=None):
+
+async def update_status_file(project_id, report_name, status, error_message=None, markdown_link=None, pdf_link=None):
     """
     Updates the `agent-status.json` file in the S3 bucket.
     """
@@ -303,9 +336,7 @@ async def update_status_file(project_id, report_name, status, markdown_link=None
     # Fetch the current status from S3 or create a new one
     try:
         response = s3_client.get_object(Bucket=BUCKET_NAME, Key=f"crowd-fund-analysis/{status_key}")
-        print(response)
         status_data = json.loads(response['Body'].read().decode('utf-8'))
-        print(status_data)
     except s3_client.exceptions.NoSuchKey:
         # Initialize a new status file if it doesn't exist
         status_data = {
@@ -316,16 +347,26 @@ async def update_status_file(project_id, report_name, status, markdown_link=None
     # Update the specific report status
     if report_name not in status_data["reports"]:
         status_data["reports"][report_name] = {}
+
     status_data["reports"][report_name]["status"] = status
 
+    # Add optional fields if provided
     if markdown_link:
         status_data["reports"][report_name]["markdownLink"] = markdown_link
     if pdf_link:
         status_data["reports"][report_name]["pdfLink"] = pdf_link
 
-    # If all reports are complete, update the overall status
-    if all(report.get("status") == "completed" for report in status_data["reports"].values()):
+    # Add errorMessage if status is "failed" and errorMessage is not None
+    if status == "failed" and error_message:
+        status_data["reports"][report_name]["errorMessage"] = error_message
+
+    # Determine the overall status
+    if any(report.get("status") == "failed" for report in status_data["reports"].values()):
+        status_data["status"] = "failed"
+    elif all(report.get("status") == "completed" for report in status_data["reports"].values()):
         status_data["status"] = "completed"
+    else:
+        status_data["status"] = "in_progress"
 
     # Upload the updated status to S3
     print(f"Updating status file: s3://{BUCKET_NAME}/{status_key}")
