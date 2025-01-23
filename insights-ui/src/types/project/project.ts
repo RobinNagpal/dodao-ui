@@ -16,6 +16,10 @@ export interface ReportInterface {
   pdfLink: string | null;
 }
 
+export interface ReportWithName extends ReportInterface {
+  name: string;
+}
+
 export interface ProjectDetail {
   id: string;
   name: string;
