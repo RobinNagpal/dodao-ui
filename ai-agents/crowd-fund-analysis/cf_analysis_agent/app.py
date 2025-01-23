@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 import boto3
 import json
+from flask_cors import CORS
 import sys
 import subprocess
 # # Add the parent directory of app.py to the Python path this maybe temporary we can change it later for that we will have to change docker file as well
@@ -11,6 +12,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from controller import prepare_processing_command
 
 app = Flask(__name__)
+CORS(app)  # This will allow all origins by default
 load_dotenv()
 BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 REGION=os.getenv("AWS_DEFAULT_REGION")
