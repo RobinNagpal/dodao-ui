@@ -19,6 +19,14 @@ SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 GOOGLE_CSE_ID = os.getenv("GOOGLE_CSE_ID")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
+OPENAI_MODEL = os.getenv("OPENAI_MODEL")
+
+if OPENAI_MODEL:
+    llm = ChatOpenAI(model_name=OPENAI_MODEL, temperature=0)
+else:
+    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
+
+
 class StartupInfo(TypedDict):
     startupName: str
     startupDetails: str
@@ -40,8 +48,6 @@ class State(TypedDict):
     allGoogleResults: List[SearchResult]
     googleSearchSummaries: List[WebpageSummary]
     relevantLinks: List[str] 
-
-llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
 
 graph_builder = StateGraph(State)
 memory = MemorySaver()
