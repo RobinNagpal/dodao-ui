@@ -1,0 +1,10 @@
+@import 'styles/variables';
+@import 'styles/theme-styles';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}

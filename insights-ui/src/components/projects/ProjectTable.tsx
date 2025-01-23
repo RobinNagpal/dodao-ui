@@ -30,7 +30,7 @@ export default function ProjectTable({ projectIds }: ProjectTableProps) {
       (projectId): TableRow => ({
         id: projectId,
         columns: [
-          <Link href={`/crowd-funding/projects/${encodeURIComponent(projectId)}`} key={projectId} className="text-blue-600 hover:underline">
+          <Link href={`/crowd-funding/projects/${encodeURIComponent(projectId)}`} key={projectId} className="link-color hover:underline">
             {projectId}
           </Link>,
         ],
