@@ -11,16 +11,16 @@ export default async function Home() {
   return (
     <PageWrapper>
       <div className="mx-auto max-w-lg">
-        <div className="text-center">
+        <div className="text-center my-5">
           <div className="sm:flex-auto">
             <h1 className="font-semibold leading-6 text-2xl text-color">Crowd Funding Projects</h1>
-            <p className="mt-2 text-sm text-color">A list of all the projects.</p>
+            <p className="my-2 text-sm text-color">A list of all the projects.</p>
           </div>
         </div>
         {data.projectIds.length > 0 ? (
-          <>
+          <div className="block-bg-color">
             <ProjectTable projectIds={data.projectIds} />
-          </>
+          </div>
         ) : (
           <div className="text-color text-center">No projects to show</div>
         )}

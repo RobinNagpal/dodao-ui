@@ -1,13 +1,39 @@
 'use client';
-import { Status, ReportInterface } from '@/types/project/project';
-import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
-import React from 'react';
+
+import { ReportWithName, Status } from '@/types/project/project';
+import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { regenerateReport } from '@/util/regenerate';
 
 interface ProjectDetailTableProps {
-  reports: { name: string; status: Status; markdownLink: string | null; pdfLink: string | null }[];
+  reports: ReportWithName[];
+  projectId: string;
 }
 
-export default function ProjectDetailTable({ reports }: ProjectDetailTableProps) {
+export default function ProjectDetailTable({ reports, projectId }: ProjectDetailTableProps) {
+  const router = useRouter();
+
+  const tableActions: TableActions = {
+    items: [
+      {
+        key: 'view',
+        label: 'View',
+      },
+      {
+        key: 'regenerate',
+        label: 'Regenerate',
+      },
+    ],
+    onSelect: async (key: string, item: ReportWithName) => {
+      if (key === 'view') {
+        router.push(`/crowd-funding/projects/${projectId}/reports/${item.name}`);
+      } else if (key === 'regenerate') {
+        const { success, message } = await regenerateReport(projectId, item.name);
+        success ? router.refresh() : alert(message);
+      }
+    },
+  };
   function getSpaceTableRows(reports: ProjectDetailTableProps['reports']): TableRow[] {
     return reports.map((report) => ({
       id: report.name,
@@ -28,9 +54,12 @@ export default function ProjectDetailTable({ reports }: ProjectDetailTableProps)
                 </>
               )}
               {report.markdownLink && (
-                <a href={report.markdownLink} target="_blank" rel="noopener noreferrer" className="link-color hover:underline">
-                  MD
-                </a>
+                <Link
+                  href={`/crowd-funding/projects/${encodeURIComponent(projectId)}/reports/${encodeURIComponent(report.name)}`}
+                  className="link-color hover:underline"
+                >
+                  View
+                </Link>
               )}
             </div>
           ) : (
@@ -44,7 +73,7 @@ export default function ProjectDetailTable({ reports }: ProjectDetailTableProps)
 
   return (
     <div className="mt-6">
-      <Table data={getSpaceTableRows(reports)} columnsHeadings={['Report Name', 'Status / Links']} columnsWidthPercents={[50, 50]} />
+      <Table data={getSpaceTableRows(reports)} columnsHeadings={['Report Name', 'Status / Links']} columnsWidthPercents={[50, 50]} actions={tableActions} />
     </div>
   );
 }
