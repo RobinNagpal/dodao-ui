@@ -79,6 +79,11 @@
       .links a:hover {
         text-decoration: underline;
       }
+
+      .error {
+        color: #dc3545;
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
@@ -115,11 +120,25 @@
           for (const [key, report] of Object.entries(data.reports)) {
             const div = document.createElement("div");
             div.className = "status-item";
-            div.innerHTML = `<strong>${formatKey(key)}:</strong> ${
-              report.status === "completed"
-                ? `<span class="links"><a href="${report.markdownLink}" target="_blank">Markdown</a> | <a href="${report.pdfLink}" target="_blank">PDF</a></span>`
-                : '<span class="loading-icon"></span> In Progress...'
-            }`;
+
+            if (report.status === "completed") {
+              div.innerHTML = `<strong>${formatKey(
+                key
+              )}:</strong> <span class="links"><a href="${
+                report.markdownLink
+              }" target="_blank">Markdown</a> | <a href="${
+                report.pdfLink
+              }" target="_blank">PDF</a></span>`;
+            } else if (report.status === "failed") {
+              div.innerHTML = `<strong>${formatKey(
+                key
+              )}:</strong> <span class="error">Failed</span>`;
+            } else {
+              div.innerHTML = `<strong>${formatKey(
+                key
+              )}:</strong> <span class="loading-icon"></span> In Progress...`;
+            }
+
             statusContainer.appendChild(div);
           }
         } catch (error) {
@@ -130,7 +149,7 @@
 
       const statusContainer = document.getElementById("status-container");
 
-      const statusInterval = setInterval(fetchStatus, 2000);
+      const statusInterval = setInterval(fetchStatus, 1000);
       fetchStatus();
     </script>
   </body>
