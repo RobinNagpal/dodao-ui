@@ -6,10 +6,12 @@ export enum Status {
   in_progress = 'in_progress',
   completed = 'completed',
   pending = 'pending',
+  failed = 'failed'
 }
 
 export interface ReportInterface {
   status: Status;
+  errorMessage?: string;
   markdownLink: string | null;
   pdfLink: string | null;
 }
