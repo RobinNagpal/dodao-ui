@@ -30,6 +30,77 @@ s3_client = boto3.client(
 BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 REGION=os.getenv("AWS_DEFAULT_REGION")
 
+def extract_variables_from_s3(project_id):
+    """
+    Extracts variables from the agent-status.json file stored in S3.
+    """
+    import boto3
+    import json
+
+    s3_client = boto3.client('s3', region_name=REGION)
+
+    try:
+        # Define the S3 key for the status file
+        status_key = f"crowd-fund-analysis/{project_id}/agent-status.json"
+
+        # Fetch the agent-status.json file from S3
+        response = s3_client.get_object(Bucket=BUCKET_NAME, Key=status_key)
+        status_data = json.loads(response['Body'].read().decode('utf-8'))
+
+        # Extract required variables
+        project_name = status_data.get("name", "").strip()
+        crowdfunding_link = status_data.get("projectInfoInput", {}).get("crowdFundingUrl", "").strip()
+        website_url = status_data.get("projectInfoInput", {}).get("websiteUrl", "").strip()
+        latest_sec_filing_link = status_data.get("projectInfoInput", {}).get("SecFillingUrl", "").strip()
+        additional_links = status_data.get("projectInfoInput", {}).get("additionalUrl", [])
+
+        # Validate required fields
+        if not all([project_name, crowdfunding_link, website_url, latest_sec_filing_link]):
+            raise ValueError("Missing required data in agent-status.json.")
+
+        # Return extracted variables
+        return {
+            "project_name": project_name,
+            "crowdfunding_link": crowdfunding_link,
+            "website_url": website_url,
+            "latest_sec_filing_link": latest_sec_filing_link,
+            "additional_links": additional_links
+        }
+
+    except s3_client.exceptions.NoSuchKey:
+        raise FileNotFoundError(f"agent-status.json not found for project {project_id}.")
+    except Exception as e:
+        raise RuntimeError(f"An error occurred while extracting variables: {str(e)}")
+
+def prepare_processing_command(project_id, script_path="cf_analysis_agent/controller.py"):
+    """
+    Prepares the command to start processing based on variables extracted from S3.
+    
+    Args:
+        project_id (str): The project ID to extract variables for.
+        script_path (str): Path to the script to be executed. Defaults to "cf_analysis_agent/controller.py".
+    
+    Returns:
+        list: The prepared command as a list of arguments.
+    """
+    # Extract variables from S3
+    variables = extract_variables_from_s3(project_id)
+
+    # Base command
+    command = [
+        "poetry", "run", "python", script_path,
+        variables["project_name"],
+        variables["crowdfunding_link"],
+        variables["website_url"],
+        variables["latest_sec_filing_link"]
+    ]
+
+    # Include additional links if they exist
+    if variables.get("additional_links"):
+        command.extend(["--additional_links", ",".join(variables["additional_links"])])
+
+    return command
+
 def format_id(project_name):
     """
     Generates a deterministic ID by formatting the project name (e.g., replacing spaces with underscores).
@@ -116,7 +187,7 @@ async def upload_to_s3(content, s3_key, content_type="text/plain"):
         Key=f"crowd-fund-analysis/{s3_key}",
         Body=content,
         ContentType=content_type,
-        # ACL="public-read",
+        ACL="public-read",
     )
     print(f"Uploaded to s3://{BUCKET_NAME}/{s3_key}")
 
@@ -270,7 +341,7 @@ async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
         Key=f"crowd-fund-analysis/{s3_key}",
         Body=pdf_buffer.getvalue(),
         ContentType="application/pdf",
-        # ACL="public-read",
+        ACL="public-read",
     )
 
     # 8) Update status file, etc. (same as in your current code)
@@ -350,7 +421,7 @@ async def initialize_status_file(project_id, project_name, input_data, report_ty
         Key=f"crowd-fund-analysis/{status_key}",
         Body=json.dumps(status_data, indent=4),
         ContentType="application/json",
-        # ACL="public-read",
+        ACL="public-read",
     )
     print(f"Updated status file: s3://{BUCKET_NAME}/{status_key}")
 
@@ -405,7 +476,7 @@ async def update_status_file(project_id, report_name, status, error_message=None
         Key=f"crowd-fund-analysis/{status_key}",
         Body=json.dumps(status_data, indent=4),
         ContentType="application/json",
-        # ACL="public-read",
+        ACL="public-read",
     )
     print(f"Updated status file: s3://{BUCKET_NAME}/{status_key}")
 
