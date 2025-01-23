@@ -36,18 +36,37 @@ The file should have information
 ```
 
 
-## UI App
-the very first thing is we display the list of projects and then for each project we show the status of the reports.
-
-
-
-## Tasks
+## Tasks - UI App
 1) Hussain to create couple of dummy `agent-status.json` files which will be added in s3 bucket at path `${bucket}/crowd-fund-analysis/${projectId}/agent-status.json`
    * The dummy data can have each status as `in_progress` for now.
   
 
 1) Hussain to fix the issue related to saving of the agent-status.json file in the s3 bucket.
 2) Hussain to look into saving of each report one by one and can divide some of these paths with Dawood.
- 
-1) Dawood to work on the next app to show the list of projects, then when we click on the project, it should show the status of each of the reports.
-2) UI component can straight away open the `${bucket}/crowd-fund-analysis/${projectId}/agent-status.json` file and show the status of the reports. 
+
+### Report details
+- Triggering of report regeneration from the UI (per report and all reports)
+- Parse md into html
+- Add a new page `/crowd-funding/projects/${projectId}/reports/${report-type}` and render the parsed html 
+- Instead of `MD` show View
+- Instead of `PDF` show Download icon
+- Add some description with each report name like what is the report
+
+### Project details
+- Show name and links
+
+### Styling
+- Add some basic theme
+- in academy-ui in layout we set some styles
+- copy the alchemix ones
+- check font type and font size how they are applied in academy-ui and apply them here
+
+
+## Tasks - Python app
+
+1. Add a route `/api/projects/${projectId}/reports/${report-type}/regenerate` to regenerate the report
+2. Add a route `/api/projects/${projectId}/reports/regenerate` to regenerate all reports
+3. Add a default Open AI model configuration in .env file
+4. Dawood to review the code in details:
+   1. Check the common functions are all present in separate file(s) and should have proper naming
+   2. the retry logic and error handling logic is done in a common way and not repeated for every report

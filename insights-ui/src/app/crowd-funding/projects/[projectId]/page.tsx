@@ -26,14 +26,14 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       <div className="mx-auto max-w-lg">
         {projectDetails ? (
           <>
-            <div className="text-center">
+            <div className="text-center text-color">
               <h1 className="font-semibold leading-6 text-2xl">{projectDetails.name}</h1>
               <div className="my-5">Overall Status: {projectDetails.status}</div>
             </div>
-            {reports.length > 0 ? <ProjectDetailTable reports={reports} /> : <div className="mt-4 text-center">No reports to show</div>}
+            {reports.length > 0 ? <ProjectDetailTable reports={reports} /> : <div className="mt-4 text-center text-color">No reports to show</div>}
           </>
         ) : (
-          <div className="mt-4 text-center">No project details available</div>
+          <div className="mt-4 text-center text-color">No project details available</div>
         )}
       </div>
     </PageWrapper>
