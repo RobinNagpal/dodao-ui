@@ -3,71 +3,23 @@ import os
 from dotenv import load_dotenv
 import boto3
 import json
+import sys
 import subprocess
+# # Add the parent directory of app.py to the Python path this maybe temporary we can change it later for that we will have to change docker file as well
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from controller import prepare_processing_command
 
 app = Flask(__name__)
 load_dotenv()
 BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 REGION=os.getenv("AWS_DEFAULT_REGION")
-
-s3_client = boto3.client(
-    "s3",
-    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-    region_name=os.getenv("AWS_DEFAULT_REGION")
-)
-
-def extract_variables_from_s3(project_id):
-    """
-    Extracts variables from the agent-status.json file stored in S3.
-    """
-    import boto3
-    import json
-
-    s3_client = boto3.client('s3', region_name=REGION)
-
-    try:
-        # Define the S3 key for the status file
-        status_key = f"crowd-fund-analysis/{project_id}/agent-status.json"
-
-        # Fetch the agent-status.json file from S3
-        response = s3_client.get_object(Bucket=BUCKET_NAME, Key=status_key)
-        status_data = json.loads(response['Body'].read().decode('utf-8'))
-
-        # Extract required variables
-        project_name = status_data.get("name", "").strip()
-        crowdfunding_link = status_data.get("projectInfoInput", {}).get("crowdFundingUrl", "").strip()
-        website_url = status_data.get("projectInfoInput", {}).get("websiteUrl", "").strip()
-        latest_sec_filing_link = status_data.get("projectInfoInput", {}).get("SecFillingUrl", "").strip()
-        additional_links = status_data.get("projectInfoInput", {}).get("additionalUrl", [])
-
-        # Validate required fields
-        if not all([project_name, crowdfunding_link, website_url, latest_sec_filing_link]):
-            raise ValueError("Missing required data in agent-status.json.")
-
-        # Return extracted variables
-        return {
-            "project_name": project_name,
-            "crowdfunding_link": crowdfunding_link,
-            "website_url": website_url,
-            "latest_sec_filing_link": latest_sec_filing_link,
-            "additional_links": additional_links
-        }
-
-    except s3_client.exceptions.NoSuchKey:
-        raise FileNotFoundError(f"agent-status.json not found for project {project_id}.")
-    except Exception as e:
-        raise RuntimeError(f"An error occurred while extracting variables: {str(e)}")
-
 @app.route("/")
 def index():
     """
     Renders the home page with the form.
     """
     return render_template("form.html")
-
-
-
 
 @app.route("/submit", methods=["POST"])
 def submit():
@@ -134,21 +86,8 @@ def regenerate_reports(projectId):
     Regenerates reports for a given project using values from agent-status.json in S3.
     """
     try:
-        # Extract variables from S3
-        variables = extract_variables_from_s3(projectId)
-
         # Prepare the command to start processing
-        command = [
-            "poetry", "run", "python", "cf_analysis_agent/controller.py",
-            variables["project_name"],
-            variables["crowdfunding_link"],
-            variables["website_url"],
-            variables["latest_sec_filing_link"]
-        ]
-
-        # Include additional links if they exist
-        if variables["additional_links"]:
-            command.extend(["--additional_links", ",".join(variables["additional_links"])])
+        command = prepare_processing_command(projectId)
 
         # Execute the command
         subprocess.Popen(command)
@@ -174,21 +113,8 @@ def regenerate_specific_report(projectId, report_type):
     Regenerates a specific report for a given project.
     """
     try:
-        # Extract variables from S3
-        variables = extract_variables_from_s3(projectId)
-
         # Prepare the command to start processing
-        command = [
-            "poetry", "run", "python", "cf_analysis_agent/controller.py",
-            variables["project_name"],
-            variables["crowdfunding_link"],
-            variables["website_url"],
-            variables["latest_sec_filing_link"]
-        ]
-
-        # Include additional links if they exist
-        if variables["additional_links"]:
-            command.extend(["--additional_links", ",".join(variables["additional_links"])])
+        command = prepare_processing_command(projectId)
 
         # Add the report_type to the command
         command.extend(["--report_type", report_type])
