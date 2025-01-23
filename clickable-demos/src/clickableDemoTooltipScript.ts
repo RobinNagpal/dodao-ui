@@ -486,10 +486,6 @@
 
   console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
 
-  window.document.addEventListener('DOMContentLoaded', () => {
-    showTooltip();
-  });
-
   //************** Helper functions **************//
   function getCurrentContextNodeAndTarget(elementXPath: string): { currentContextNode: Document; targetNode: Node; isCurrentContextAndIframe: boolean } | null {
     console.log('event.data.elementXPath', elementXPath);
