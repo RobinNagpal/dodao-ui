@@ -5,10 +5,11 @@ import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { SpaceProvider } from '@/contexts/SpaceContext';
-import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
+import { getGTagId, getGTagIdByHost } from '@dodao/web-core/utils/analytics/getGTagId';
 import StyledComponentsRegistry from '@dodao/web-core/utils/StyledComponentsRegistry';
 import { Analytics } from '@vercel/analytics/react';
 import { getServerSession } from 'next-auth';
+import { headers } from 'next/headers';
 import Script from 'next/script';
 import { CSSProperties, ReactNode } from 'react';
 import 'tailwindcss/tailwind.css';
@@ -20,8 +21,11 @@ interface RootLayoutProps {
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   const session = (await getServerSession(authOptions)) as Session | null;
+  const headersList = await headers();
+  const host = headersList.get('host')?.split(':')?.[0];
   const space = (await getSpaceServerSide())!;
-  const gtag = getGTagId(space);
+
+  const gtag = getGTagIdByHost(host);
 
   const themeValue = space?.themeColors || GlobalThemeColors;
 
