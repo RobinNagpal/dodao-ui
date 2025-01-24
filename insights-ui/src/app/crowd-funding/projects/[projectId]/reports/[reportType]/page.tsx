@@ -1,18 +1,32 @@
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import React from 'react';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 export default async function ReportDetailPage({ params }: { params: Promise<{ projectId: string; reportType: string }> }) {
   const { projectId, reportType } = await params;
 
   const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}/reports/${reportType}`);
-
   const data: { reportDetail: string } = await res.json();
+
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: projectId,
+      href: `/crowd-funding/projects/${projectId}`,
+      current: false,
+    },
+    {
+      name: reportType,
+      href: `/crowd-funding/projects/${projectId}/reports/${reportType}`,
+      current: true,
+    },
+  ];
 
   return (
     <PageWrapper>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="mx-auto max-w-4xl text-color">
         <div className="text-center text-color my-5">
           <h1 className="font-semibold leading-6 text-2xl">Project: {projectId}</h1>

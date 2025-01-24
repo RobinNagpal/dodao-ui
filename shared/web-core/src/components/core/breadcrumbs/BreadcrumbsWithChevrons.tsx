@@ -32,7 +32,7 @@ export default function BreadcrumbsWithChevrons({ breadcrumbs }: BreadcrumbsWith
               <ChevronRightIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
               <Link
                 href={breadcrumb.href}
-                className={`ml-4 text-sm font-medium ${breadcrumb.current ? 'cursor-default' : 'cursor-pointer'}`}
+                className={`ml-4 text-sm font-medium ${breadcrumb.current ? 'cursor-default' : 'cursor-pointer link-color'}`}
                 aria-current={breadcrumb.current ? 'page' : undefined}
               >
                 {breadcrumb.name}

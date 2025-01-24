@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import ProjectDetailTable from '@/components/projects/ProjectDetailTable';
 import { ProjectDetail, Status } from '@/types/project/project';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -62,20 +61,18 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
   }, [reports]);
 
   return (
-    <PageWrapper>
-      <div className="mx-auto max-w-lg">
-        <div className="text-center text-color my-5">
-          <h1 className="font-semibold leading-6 text-2xl">{projectDetails.name}</h1>
-          <div className="my-5">Overall Status: {projectDetails.status}</div>
-        </div>
-        {reports.length > 0 ? (
-          <div className="block-bg-color">
-            <ProjectDetailTable reports={reports} projectId={projectId} />
-          </div>
-        ) : (
-          <div className="mt-4 text-center text-color">No reports to show</div>
-        )}
+    <div className="mx-auto max-w-lg">
+      <div className="text-center text-color my-5">
+        <h1 className="font-semibold leading-6 text-2xl">{projectDetails.name}</h1>
+        <div className="my-5">Overall Status: {projectDetails.status}</div>
       </div>
-    </PageWrapper>
+      {reports.length > 0 ? (
+        <div className="block-bg-color">
+          <ProjectDetailTable reports={reports} projectId={projectId} />
+        </div>
+      ) : (
+        <div className="mt-4 text-center text-color">No reports to show</div>
+      )}
+    </div>
   );
 }
