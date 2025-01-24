@@ -1,5 +1,6 @@
 @import 'styles/variables';
 @import 'styles/theme-styles';
+@import 'styles/scrollbar';
 
 @tailwind base;
 @tailwind components;
@@ -7,4 +8,12 @@
 
 body {
   font-family: 'Inter', sans-serif;
+}
+
+.markdown > * {
+  all: revert;
+}
+
+.markdown table {
+  all: unset; /* Exclude tables from 'revert' */
 }
