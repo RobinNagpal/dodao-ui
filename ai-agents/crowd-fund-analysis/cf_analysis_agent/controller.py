@@ -1,6 +1,7 @@
 import asyncio
 import os
 import argparse
+from datetime import datetime
 import traceback
 import webbrowser  # To open the URL in the default browser
 from io import BytesIO
@@ -360,6 +361,8 @@ async def initialize_status_file(project_id, project_name, input_data, report_ty
     Initializes the `agent-status.json` file in the S3 bucket.
     If it exists, updates the status of the specified report type to "in_progress".
     If no report type is specified, re-initializes the file completely.
+    Adds `startTime` and `estimatedTimeInSec` only when the status is set to "in_progress".
+    Removes `endTime` if it exists.
     """
     status_key = f"{project_id}/agent-status.json"
     status_data = None
@@ -380,12 +383,21 @@ async def initialize_status_file(project_id, project_name, input_data, report_ty
                     del status_data["reports"][report_type]["errorMessage"]
                     print(f"Removed errorMessage from report '{report_type}'.")
 
-                # Set the status to "in_progress"
+                # Remove `endTime` if it exists
+                if "endTime" in status_data["reports"][report_type]:
+                    del status_data["reports"][report_type]["endTime"]
+                    print(f"Removed endTime from report '{report_type}'.")
+
+                # Set the status to "in_progress" and initialize timestamps
                 status_data["reports"][report_type]["status"] = "in_progress"
                 status_data["reports"][report_type]["markdownLink"] = None
                 status_data["reports"][report_type]["pdfLink"] = None
-                
-                print(f"Set status of report '{report_type}' to 'in_progress'. Also removed markdownLink and pdfLink.")
+                status_data["reports"][report_type]["startTime"] = datetime.now().isoformat()
+                status_data["reports"][report_type]["estimatedTimeInSec"] = (
+                    240 if report_type in ["team_info", "financial_review"] else 150
+                )
+
+                print(f"Set status of report '{report_type}' to 'in_progress'. Initialized startTime and estimatedTimeInSec.")
             else:
                 print(f"Report type '{report_type}' not found in the status file.")
                 return
@@ -394,6 +406,7 @@ async def initialize_status_file(project_id, project_name, input_data, report_ty
 
     if not status_data or not report_type:
         # Initialize or reinitialize the file
+        current_time = datetime.now().isoformat()
         status_data = {
             "id": project_id,
             "name": project_name,
@@ -405,13 +418,21 @@ async def initialize_status_file(project_id, project_name, input_data, report_ty
             },
             "status": "in_progress",
             "reports": {
-                key: {"status": "in_progress", "markdownLink": None, "pdfLink": None}
+                key: {
+                    "status": "in_progress",
+                    "markdownLink": None,
+                    "pdfLink": None,
+                    "startTime": current_time,
+                    "estimatedTimeInSec": 240 if key in ["team_info", "financial_review"] else 150
+                }
                 for key in input_data.keys()
             },
             "finalReport": {
                 "status": "in_progress",
                 "markdownLink": None,
                 "pdfLink": None,
+                "startTime": current_time,
+                "estimatedTimeInSec": 260  # Example estimate for the final report
             }
         }
 
@@ -423,11 +444,8 @@ async def initialize_status_file(project_id, project_name, input_data, report_ty
         ContentType="application/json",
         ACL="public-read",
     )
-    print(f"Updated status file: s3://{BUCKET_NAME}/{status_key}")
-
-
-
-
+    print(f"Updated status file: s3://{BUCKET_NAME}/{status_key}")  
+          
 async def update_status_file(project_id, report_name, status, error_message=None, markdown_link=None, pdf_link=None):
     """
     Updates the `agent-status.json` file in the S3 bucket.
@@ -456,6 +474,10 @@ async def update_status_file(project_id, report_name, status, error_message=None
         status_data["reports"][report_name]["markdownLink"] = markdown_link
     if pdf_link:
         status_data["reports"][report_name]["pdfLink"] = pdf_link
+
+    # Automatically set endTime for completed or failed statuses
+    if status in ["completed", "failed"]:
+        status_data["reports"][report_name]["endTime"] = datetime.now().isoformat()
 
     # Add errorMessage if status is "failed" and errorMessage is not None
     if status == "failed" and error_message:
