@@ -36,7 +36,7 @@ This will start the server at port 9090 and will serve the local files from ther
 You can create a clickable demo and then add HTML capture using the `populate-sample-captures.sql` script. The html
 captures in this script refer to the local files.
 
-Simply replace `DESIRED-DEMO-ID` with the ID of the demo for which you want to use HTML capture. For example:
+Simply replace `DESIRED-DEMO-ID` with the ID of the clickable demo (get from the database) for which you want to use HTML capture. For example:
 
 ```sql
 insert into public.clickable_demo_html_cpatures
@@ -50,10 +50,27 @@ values (md5(random()::text),
 
 Replace `DESIRED-DEMO-ID` with the specific ID of your demo.
 
-This script refers to sample html files which are in the local folder and which refer to the local files.
+This script refers to sample html files which are in the local folder and which refer to the local files. Run the modified `populate-sample-captures.sql` script in the database query tool.
 
 This way you can modify the local files and test the clickable demos.
 
+- **Update URLs in `clickableDemoTooltipScript.js` and `clickableDemoTooltipScript.ts`**:
+   - Open the `clickableDemoTooltipScript.js` file present in the `prod-files` folder
+   - Replace `/clickable-demos-prod-files/` with `/prod-files/` at these four places:
+      ```js
+      materialStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/themes/material.css';
+      shiftTowardsStyle.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/animationsshift-towarcss';
+      tippyData.href = '/clickable-demos-prod-files/dependencies/tippy.js@6/stylesheet/tippy-data.css';
+      link.href = '/clickable-demos-prod-files/clickableDemoTooltipStyles.css';
+      ```
+      like so:
+      ```js
+      materialStyle.href = '/prod-files/dependencies/tippy.js@6/themes/material.css';
+      shiftTowardsStyle.href = '/prod-files/dependencies/tippy.js@6/animationsshift-towarcss';
+      tippyData.href = '/prod-files/dependencies/tippy.js@6/stylesheet/tippy-data.css';
+      link.href = '/prod-files/clickableDemoTooltipStyles.css';
+      ```
+   - Do the above same thing for `clickableDemoTooltipScript.ts` file present in the `src` folder
 
 # Build
 run `yarn build` and it will generate the files in the `prod-files` directory
@@ -109,7 +126,7 @@ Follow these steps to add a new HTML capture:
      ```
      http://localhost:9090/prod-files
      ```
-
+     
 6. **Insert the Record into the Database**:
    - Use the following SQL command to insert the record into the `clickable_demo_html_cpatures` table:
 
