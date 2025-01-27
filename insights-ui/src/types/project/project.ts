@@ -14,6 +14,9 @@ export interface ReportInterface {
   errorMessage?: string;
   markdownLink: string | null;
   pdfLink: string | null;
+  startTime?: string;
+  estimatedTimeInSec?: number;
+  endTime?: string;
 }
 
 export interface ReportWithName extends ReportInterface {

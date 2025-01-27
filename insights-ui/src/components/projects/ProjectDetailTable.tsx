@@ -5,17 +5,29 @@ import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/t
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { regenerateReport } from '@/util/regenerate';
+import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
 
 interface ProjectDetailTableProps {
   reports: ReportWithName[];
   projectId: string;
+  reload: () => void;
 }
 
-export default function ProjectDetailTable({ reports, projectId }: ProjectDetailTableProps) {
+export default function ProjectDetailTable({ reports, projectId, reload }: ProjectDetailTableProps) {
   const router = useRouter();
 
+  const isRegenerateDisabled = (report: ReportWithName): boolean => {
+    if (!report.startTime || !report.estimatedTimeInSec) return false; // Regenerate enabled if there's no timing data
+
+    const startTime = new Date(`${report.startTime}Z`).getTime();
+    const currentTime = Date.now();
+    const estimatedTime = startTime + report.estimatedTimeInSec * 1000;
+
+    return currentTime - startTime < 90 * 1000 && report.status === Status.in_progress; // Disable if the current time is within the estimated completion time
+  };
+
   const tableActions: TableActions = {
-    items: [
+    items: (report: ReportWithName) => [
       {
         key: 'view',
         label: 'View',
@@ -23,6 +35,7 @@ export default function ProjectDetailTable({ reports, projectId }: ProjectDetail
       {
         key: 'regenerate',
         label: 'Regenerate',
+        disabled: isRegenerateDisabled(report),
       },
     ],
     onSelect: async (key: string, item: ReportWithName) => {
@@ -30,7 +43,13 @@ export default function ProjectDetailTable({ reports, projectId }: ProjectDetail
         router.push(`/crowd-funding/projects/${projectId}/reports/${item.name}`);
       } else if (key === 'regenerate') {
         const { success, message } = await regenerateReport(projectId, item.name);
-        success ? router.refresh() : alert(message);
+        if (success) {
+          setTimeout(() => {
+            reload(); // Trigger reload after 5 seconds
+          }, 5000);
+        } else {
+          alert(message);
+        }
       }
     },
   };
@@ -42,8 +61,13 @@ export default function ProjectDetailTable({ reports, projectId }: ProjectDetail
         <div key={`${report.name}-name`}>{report.name}</div>,
 
         // Status or Links
-        <div key={`${report.name}-status`}>
-          {report.status === Status.completed ? (
+        <div key={`${report.name}-status`} className="flex items-center gap-2">
+          {report.status === Status.in_progress ? (
+            <>
+              <span className="mr-2">{report.status}</span>
+              <LoadingSpinner />
+            </>
+          ) : report.status === Status.completed ? (
             <div className="flex gap-2">
               {report.pdfLink && (
                 <>

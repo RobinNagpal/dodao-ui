@@ -9,6 +9,7 @@ export interface EllipsisDropdownItem {
   label: string;
   key: string;
   active?: boolean;
+  disabled?: boolean;
 }
 
 export interface EllipsisDropdownProps {
@@ -38,8 +39,12 @@ export default function EllipsisDropdown(props: EllipsisDropdownProps) {
           {props.items.map((item, index) => (
             <MenuItem key={index}>
               <a
-                className={`block px-4 py-2 text-sm cursor-pointer ${styles.dropdownItem} ${item.active ? 'active' : ''}`}
-                onClick={(e) => props.onSelect(item.key, e)}
+                className={`block px-4 py-2 text-sm cursor-pointer ${item.disabled ? 'cursor-not-allowed opacity-50' : styles.dropdownItem} ${
+                  item.active ? 'active' : ''
+                }`}
+                onClick={(e) => {
+                  if (!item.disabled) props.onSelect(item.key, e); // Prevent click if disabled
+                }}
               >
                 {item.label}
               </a>
