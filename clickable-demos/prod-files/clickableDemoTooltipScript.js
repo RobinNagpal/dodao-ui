@@ -419,7 +419,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     window.onmessage = handleDoDAOParentWindowEvent;
     window.handleDoDAOParentWindowEvent = handleDoDAOParentWindowEvent;
     console.log('handleDoDAOParentWindowEvent is defined on window', window.handleDoDAOParentWindowEvent);
-
+    window.document.addEventListener('DOMContentLoaded', () => {
+        showTooltip();
+    });
     //************** Helper functions **************//
     function getCurrentContextNodeAndTarget(elementXPath) {
         var _a;
