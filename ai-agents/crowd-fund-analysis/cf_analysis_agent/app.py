@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 import boto3
 import json
+import time
 from flask_cors import CORS
 import sys
 import subprocess
@@ -83,6 +84,8 @@ def commit_info():
     return render_template("commit_info.html", commit_hash=commit_hash, commit_message=commit_message)
 
 @app.route('/api/projects/<projectId>/reports/regenerate', methods=['POST'])
+
+
 def regenerate_reports(projectId):
     """
     Regenerates reports for a given project using values from agent-status.json in S3.
@@ -91,14 +94,30 @@ def regenerate_reports(projectId):
         # Prepare the command to start processing
         command = prepare_processing_command(projectId)
 
-        # Execute the command
-        subprocess.Popen(command)
+        # Start the subprocess
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-        # Return a success response
-        return jsonify({
-            "status": "success",
-            "message": f"Reports for project {projectId} are being regenerated."
-        }), 200
+        # Poll the process to check if it completes
+        while True:
+            retcode = process.poll()
+            if retcode is not None:  # Process completed
+                break
+            time.sleep(1)  # Wait and retry
+
+        # Capture the output
+        stdout, stderr = process.communicate()
+
+        # Check the return code
+        if retcode == 0:
+            return jsonify({
+                "status": "success",
+                "message": f"Reports for project {projectId} have been regenerated successfully."
+            }), 200
+        else:
+            return jsonify({
+                "status": "error",
+                "message": f"Failed to regenerate reports for project {projectId}: {stderr.strip()}"
+            }), 500
 
     except FileNotFoundError as e:
         return jsonify({"status": "error", "message": str(e)}), 404
@@ -121,14 +140,30 @@ def regenerate_specific_report(projectId, report_type):
         # Add the report_type to the command
         command.extend(["--report_type", report_type])
 
-        # Execute the command
-        subprocess.Popen(command)
+        # Start the subprocess
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-        # Return a success response
-        return jsonify({
-            "status": "success",
-            "message": f"Regeneration started for report '{report_type}' in project '{projectId}'."
-        }), 200
+        # Poll the process to check if it completes
+        while True:
+            retcode = process.poll()
+            if retcode is not None:  # Process completed
+                break
+            time.sleep(1)  # Wait and retry
+
+        # Capture the output
+        stdout, stderr = process.communicate()
+
+        # Check the return code
+        if retcode == 0:
+            return jsonify({
+                "status": "success",
+                "message": f"{report_type} report for project {projectId} have been regenerated successfully."
+            }), 200
+        else:
+            return jsonify({
+                "status": "error",
+                "message": f"Failed to regenerate {report_type} for project {projectId}: {stderr.strip()}"
+            }), 500
 
     except Exception as e:
         # Handle any errors
