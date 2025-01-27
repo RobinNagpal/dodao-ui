@@ -5,7 +5,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 
 export default async function Home() {
   const apiUrl = `${getBaseUrl()}/api/crowd-funding/projects`;
-  const res = await fetch(apiUrl);
+  const res = await fetch(apiUrl, { cache: 'no-cache' });
   const data = await res.json();
 
   return (
