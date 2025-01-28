@@ -43,7 +43,7 @@ export default function ProjectDetailTable({ reports, projectId, reload }: Proje
         router.push(`/crowd-funding/projects/${projectId}/reports/${item.name}`);
       } else if (key === 'regenerate') {
         const { success, message } = await regenerateReport(projectId, item.name);
-        success ? reload() : alert(message)
+        success ? reload() : alert(message);
         // if (success) {
         //   setTimeout(() => {
         //     reload(); // Trigger reload after 5 seconds
