@@ -85,13 +85,27 @@ def generate_project_info_report_node(state: State):
     combined_text = state["combinedScrapedContent"]
     
     prompt = (
-        "From the details about the project, extract the important information regarding the project's goals, achievements, "
-        "product environment, and other facts that can be useful in the decision-making process for a potential investor. "
-        "Prepare a comprehensive report that highlights the key aspects of the startup, focusing on the important information "
-        "that will help a potential investor understand the startup fully. Exclude any risks, challenges, or assumptions, "
-        "and rely solely on the provided information about the startup.\n\n"
-        f"STARTUP DETAILS:\n{combined_text}\n\n"
-        "Return only the textual report of these details."
+        f"""
+        Below are the details of the project. We need to show all the important information to the crowd-funding investors.
+        The report should tell what does the startup do and capture the details about each of the headings below. You can skip some headings if they dont apply.
+
+        1. Product/Service 
+        2. Team Competence and Commitment
+        3. Current traction or number of customers, or users
+        4. Go-to-Market Strategy
+        5. Market Opportunity and Total Addressable Market Size and explain how this size was calculated - Use your information, and not the provided data for this point.
+        6. Revenue, Financial Health and Projections
+        7. Business Model
+        8. Marketing and Sales Strategy
+        9. Most important highlights and milestones achieved so far
+        10. Risks and Challenges
+        
+        STARTUP DETAILS:
+        
+        {combined_text}
+  
+        Return only the textual report of these details.
+        """
     )
 
     response = llm.invoke([HumanMessage(content=prompt)])
