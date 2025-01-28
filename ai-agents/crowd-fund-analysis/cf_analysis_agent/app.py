@@ -10,7 +10,7 @@ import subprocess
 # # Add the parent directory of app.py to the Python path this maybe temporary we can change it later for that we will have to change docker file as well
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from controller import prepare_processing_command,initialize_report,initialize_all_reports,initialize_status_file_with_input_data
+from cf_analysis_agent.utils.report_utils import prepare_processing_command,initialize_report,initialize_all_reports,initialize_status_file_with_input_data
 
 app = Flask(__name__)
 CORS(app)  # This will allow all origins by default
