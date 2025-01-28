@@ -10,7 +10,7 @@ import subprocess
 # # Add the parent directory of app.py to the Python path this maybe temporary we can change it later for that we will have to change docker file as well
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from controller import prepare_processing_command
+from controller import prepare_processing_command,initialize_report,initialize_all_reports,initialize_status_file_with_input_data
 
 app = Flask(__name__)
 CORS(app)  # This will allow all origins by default
@@ -39,7 +39,15 @@ def submit():
     # Prepare the project ID
     project_id = project_name.replace(" ", "_").lower()
 
+    project_details={
+        "project_name":project_name,
+        "crowdfunding_link":crowdfunding_link,
+        "website_url":website_url,
+        "latest_sec_filing_link":latest_sec_filing_link,
+        "additional_links":additional_links
+    }
     # Prepare the command to start processing
+    initialize_status_file_with_input_data(project_id=project_id,project_details=project_details)
     command = [
         "poetry", "run", "python", "cf_analysis_agent/controller.py",
         project_name,
@@ -91,34 +99,17 @@ def regenerate_reports(projectId):
     Regenerates reports for a given project using values from agent-status.json in S3.
     """
     try:
-        # Prepare the command to start processing
+        initialize_all_reports(project_id=projectId)
         command = prepare_processing_command(projectId)
 
         # Start the subprocess
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-        # Poll the process to check if it completes
-        while True:
-            retcode = process.poll()
-            if retcode is not None:  # Process completed
-                break
-            time.sleep(1)  # Wait and retry
-
-        # Capture the output
-        stdout, stderr = process.communicate()
-
-        # Check the return code
-        if retcode == 0:
-            return jsonify({
-                "status": "success",
-                "message": f"Reports for project {projectId} have been regenerated successfully."
-            }), 200
-        else:
-            return jsonify({
-                "status": "error",
-                "message": f"Failed to regenerate reports for project {projectId}: {stderr.strip()}"
-            }), 500
-
+        return jsonify({
+                    "status": "success",
+                    "message": f"Regeneration of reports for {projectId} has started  successfully."
+                }), 200
+        
     except FileNotFoundError as e:
         return jsonify({"status": "error", "message": str(e)}), 404
     except ValueError as e:
@@ -135,36 +126,20 @@ def regenerate_specific_report(projectId, report_type):
     """
     try:
         # Prepare the command to start processing
+        initialize_report(project_id=projectId,report_type=report_type)    
         command = prepare_processing_command(projectId)
 
         # Add the report_type to the command
         command.extend(["--report_type", report_type])
 
         # Start the subprocess
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-        # Poll the process to check if it completes
-        while True:
-            retcode = process.poll()
-            if retcode is not None:  # Process completed
-                break
-            time.sleep(1)  # Wait and retry
-
-        # Capture the output
-        stdout, stderr = process.communicate()
-
-        # Check the return code
-        if retcode == 0:
-            return jsonify({
-                "status": "success",
-                "message": f"{report_type} report for project {projectId} have been regenerated successfully."
-            }), 200
-        else:
-            return jsonify({
-                "status": "error",
-                "message": f"Failed to regenerate {report_type} for project {projectId}: {stderr.strip()}"
-            }), 500
-
+        subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        return jsonify({
+                    "status": "success",
+                    "message": f"Regeneration of {report_type} report for {projectId} has started  successfully."
+                }), 200
+        
     except Exception as e:
         # Handle any errors
         return jsonify({
