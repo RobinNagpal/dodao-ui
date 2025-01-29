@@ -13,6 +13,11 @@ interface ProjectDetailTableProps {
   reload: () => void;
 }
 
+const MODEL_OPTIONS = [
+  { key: 'gpt-4o', label: 'gpt-4o' },
+  { key: 'gpt-4o-mini', label: 'gpt-4o-mini' },
+];
+
 export default function ProjectDetailTable({ reports, projectId, reload }: ProjectDetailTableProps) {
   const router = useRouter();
 
@@ -28,21 +33,19 @@ export default function ProjectDetailTable({ reports, projectId, reload }: Proje
 
   const tableActions: TableActions = {
     items: (report: ReportWithName) => [
-      {
-        key: 'view',
-        label: 'View',
-      },
-      {
-        key: 'regenerate',
-        label: 'Regenerate',
+      { key: 'view', label: 'View' },
+      ...MODEL_OPTIONS.map((model) => ({
+        key: `regenerate_${model.key}`,
+        label: `Regenerate with ${model.label}`,
         disabled: isRegenerateDisabled(report),
-      },
+      })),
     ],
     onSelect: async (key: string, item: ReportWithName) => {
       if (key === 'view') {
         router.push(`/crowd-funding/projects/${projectId}/reports/${item.name}`);
-      } else if (key === 'regenerate') {
-        const { success, message } = await regenerateReport(projectId, item.name);
+      } else if (key.startsWith('regenerate_')) {
+        const model = key.replace('regenerate_', '');
+        const { success, message } = await regenerateReport(projectId, model, item.name);
         success ? reload() : alert(message);
       }
     },

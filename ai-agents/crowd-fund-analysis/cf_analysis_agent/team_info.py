@@ -12,6 +12,7 @@ import os
 import time
 import json
 import requests
+from cf_analysis_agent.utils.report_utils import get_llm
 
 load_dotenv()
 
@@ -63,15 +64,6 @@ class State(TypedDict):
     rawLinkedinProfiles: List[RawLinkedinProfile]
     analyzedTeamProfiles: List[AnalyzedTeamProfile]
     teamInfo: str
-
-
-OPENAI_MODEL = os.getenv("OPENAI_MODEL")
-
-if OPENAI_MODEL:
-    llm = ChatOpenAI(model_name=OPENAI_MODEL, temperature=0)
-else:
-    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
-
 
 graph_builder = StateGraph(State)
 memory = MemorySaver()
@@ -139,13 +131,14 @@ def scrape_node(state: State):
         "scraped_content": state["scraped_content"],
     }
 
-def extract_project_info_node(state: State):
+def extract_project_info_node(state: State, config):
     """
     Parses the JSON returned by the LLM for project info and stores it in state.
     """
     print("Extracting project info...")
     last_msg = state["messages"][-1]
     prompt_text = last_msg.content
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt_text)])
     try:
         project_info = json.loads(response.content)
@@ -250,7 +243,7 @@ def scrape_linkedin_profiles_node(state: State):
         "rawLinkedinProfiles": state["rawLinkedinProfiles"]
     }
 
-def evaluate_node(state: State):
+def evaluate_node(state: State, config):
     """
     For each team member in rawLinkedinProfiles, invoke the LLM individually.
     Collect results into analyzedTeamProfiles.
@@ -322,7 +315,7 @@ def evaluate_node(state: State):
             "- Do not invent or guess details. Only use the provided data from the startup info and LinkedIn profile.\n"
             "- Return ONLY a raw JSON object with these fields and no extra text. Do not include code fences or additional formatting.\n"
         )
-
+        llm = get_llm(config)
         response = llm.invoke([HumanMessage(content=prompt)])
 
         try:

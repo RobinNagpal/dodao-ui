@@ -13,6 +13,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, ListFlowable, ListItem
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from bs4 import BeautifulSoup
+from langchain_openai import ChatOpenAI
 
 load_dotenv()
 
@@ -24,6 +25,7 @@ s3_client = boto3.client(
 )
 BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 REGION=os.getenv("AWS_DEFAULT_REGION")
+OPEN_AI_DEFAULT_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4o')
 
 def get_agent_status_file_path(project_id: str) -> str:
     """
@@ -63,12 +65,13 @@ def extract_variables_from_s3(project_id):
         "additional_links": additional_links
     }
 
-def prepare_processing_command(project_id, script_path="cf_analysis_agent/controller.py"):
+def prepare_processing_command(project_id, model, script_path="cf_analysis_agent/controller.py"):
     """
     Prepares the command to start processing based on variables extracted from S3.
     
     Args:
         project_id (str): The project ID to extract variables for.
+        model (str): The selected AI model for report regeneration.
         script_path (str): Path to the script to be executed. Defaults to "cf_analysis_agent/controller.py".
     
     Returns:
@@ -89,6 +92,9 @@ def prepare_processing_command(project_id, script_path="cf_analysis_agent/contro
     # Include additional links if they exist
     if variables.get("additional_links"):
         command.extend(["--additional_links", ",".join(variables["additional_links"])])
+    
+     # Append the selected model as an argument
+    command.extend(["--model", model])
 
     return command
 
@@ -352,9 +358,11 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_ke
     report_name = s3_key.split("/")[1].replace(".md", "")
 
     try:
+        # Extract the model from input_data
+        model = input_data.get("model")
 
         # Prepare the configuration for the agent
-        config = {"configurable": {"thread_id": "1", "id": input_data.get("id")}}
+        config = {"configurable": {"thread_id": "1", "id": input_data.get("id"), "model": model}}
 
         # Fetch events asynchronously
         def fetch_events():
@@ -397,3 +405,19 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_ke
             error_message=error_message
         )
         return None
+    
+# Cache for storing initialized LLMs (prevents re-initialization)
+_llm_cache = {}
+
+def get_llm(config):
+    """
+    Retrieves the LLM model based on the config.
+    Uses caching to prevent redundant model creation.
+    """
+    model = config.get("configurable", {}).get("model", OPEN_AI_DEFAULT_MODEL)
+
+    # Check if the model is already initialized
+    if model not in _llm_cache:
+        _llm_cache[model] = ChatOpenAI(model_name=model, temperature=0)
+
+    return _llm_cache[model]  # Return the cached LLM instance

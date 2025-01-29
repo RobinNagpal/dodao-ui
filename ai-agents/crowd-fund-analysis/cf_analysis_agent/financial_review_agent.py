@@ -10,16 +10,11 @@ from dotenv import load_dotenv
 import os
 import json
 import time
+from cf_analysis_agent.utils.report_utils import get_llm
 
 load_dotenv()
 
-OPENAI_MODEL = os.getenv("OPENAI_MODEL")
 SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
-
-if OPENAI_MODEL:
-    llm = ChatOpenAI(model_name=OPENAI_MODEL, temperature=0)
-else:
-    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
 
 class FormCData(TypedDict):
     offering_statement_date: str
@@ -47,7 +42,7 @@ config = {"configurable": {"thread_id": "3"}}
 
 
 
-def scrape_and_extract_sec_node(state: State, max_retries=10, retry_delay=5):
+def scrape_and_extract_sec_node(state: State, config, max_retries=10, retry_delay=5):
     """
     Scrapes the SEC filing page and extracts Form C financial data with retry logic.
     
@@ -116,6 +111,7 @@ def scrape_and_extract_sec_node(state: State, max_retries=10, retry_delay=5):
     )
 
     try:
+        llm = get_llm(config)
         response = llm.invoke([HumanMessage(content=prompt)])
         response_content = response.content.strip()
         if response_content.startswith("```json"):
@@ -167,7 +163,7 @@ def scrape_additional_links_node(state: State):
     }
 
 
-def extract_additional_data_node(state: State):
+def extract_additional_data_node(state: State, config):
     """
     Extracts financials and other relevant metrics from the scraped additional links.
     """
@@ -209,7 +205,7 @@ def extract_additional_data_node(state: State):
             "}\n\n"
             f"Content:\n{content}"
         )
-
+        llm = get_llm(config)
         response = llm.invoke([HumanMessage(content=prompt)])
         try:
             #print(response)
@@ -292,7 +288,7 @@ def create_consolidated_table_node(state: State):
 
 
 
-def prepare_investor_report_with_analyses_node(state: State):
+def prepare_investor_report_with_analyses_node(state: State, config):
     """
     Prepares a comprehensive investor report with:
     - Sector identification.
@@ -310,6 +306,7 @@ def prepare_investor_report_with_analyses_node(state: State):
         f"Scraped Content:\n{state['scraped_content']}\n\n"
         "Return only the sector name."
     )
+    llm = get_llm(config)
     sector_response = llm.invoke([HumanMessage(content=sector_prompt)])
     sector = sector_response.content.strip() if sector_response else "Unknown Sector"
 

@@ -8,17 +8,11 @@ from typing_extensions import TypedDict
 from typing import Annotated, List, Dict, Any
 from dotenv import load_dotenv
 import os
+from cf_analysis_agent.utils.report_utils import get_llm
 
 load_dotenv()
 
 SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
-
-OPENAI_MODEL = os.getenv("OPENAI_MODEL")
-
-if OPENAI_MODEL:
-    llm = ChatOpenAI(model_name=OPENAI_MODEL, temperature=0)
-else:
-    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
@@ -80,7 +74,7 @@ def aggregate_scraped_content_node(state: State):
         "combinedScrapedContent": state["combinedScrapedContent"]
     }
 
-def extract_industry_details_node(state: State):
+def extract_industry_details_node(state: State, config):
     """
     Examines the combinedScrapedContent and extracts a summary of the startup's industry,
     storing it in state['extractedIndustryDetails'].
@@ -100,7 +94,7 @@ def extract_industry_details_node(state: State):
     f"{combined_text}\n\n"
     "Return only the textual summary of these industry details, as concise as possible but covering each requested item."
     )
-
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     state["extractedIndustryDetails"] = response.content.strip()
     print("Industry Details", state["extractedIndustryDetails"])
@@ -114,7 +108,7 @@ def extract_industry_details_node(state: State):
         "extractedIndustryDetails": state["extractedIndustryDetails"]
     }
 
-def highlight_startup_red_flags_node(state: State):
+def highlight_startup_red_flags_node(state: State, config):
     """
     Uses the LLM to extract the startup's red flags from the combinedScrapedContent.
     Exclude purely team-related or purely financial details, focusing on aspects that
@@ -129,7 +123,7 @@ def highlight_startup_red_flags_node(state: State):
         f"Scraped Content:\n{state['combinedScrapedContent']}\n\n"
         "Return a text describing the startup's red flags, focusing on specific negative or concerning issues."
     )
-
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     state["startupRedFlags"] = response.content.strip()
     print("Startup Red Flags", state["startupRedFlags"])
@@ -141,7 +135,7 @@ def highlight_startup_red_flags_node(state: State):
         "startupRedFlags": state["startupRedFlags"],
     }
 
-def industry_red_flags_node(state: State):
+def industry_red_flags_node(state: State, config):
     """
     Finds the 10 most commonly recognized red flags in the startup's industry,
     based on the extracted industry details.
@@ -154,7 +148,7 @@ def industry_red_flags_node(state: State):
         "Each red flag should briefly explain why it poses a significant risk.\n\n"
         f"Industry Info:\n{industry_info}\n\n"
     )
-
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     state["industryRedFlags"] = response.content.strip()
     print("Industry Red Flags", state["industryRedFlags"])
@@ -166,7 +160,7 @@ def industry_red_flags_node(state: State):
         "industryRedFlags": state["industryRedFlags"]
     }
 
-def evaluate_red_flags_node(state: State):
+def evaluate_red_flags_node(state: State, config):
     """
     Compares the startup's red flags to the 10 industry red flags.
     Only mention red flags that are actually applicable to the startup.
@@ -184,7 +178,7 @@ def evaluate_red_flags_node(state: State):
         "the ones that actually apply. If the startup does not exhibit a specific industry red flag, omit it. "
         "Return a clear explanation of which red flags apply, how severely, and why."
     )
-
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     state["redFlagsEvaluation"] = response.content.strip()
 
@@ -195,7 +189,7 @@ def evaluate_red_flags_node(state: State):
         "redFlagsEvaluation": state["redFlagsEvaluation"]
     }
 
-def finalize_red_flags_report_node(state: State):
+def finalize_red_flags_report_node(state: State, config):
     """
     Produces the final textual report about the startup's red flags, 
     integrating industry standards and the evaluation.
@@ -217,7 +211,7 @@ def finalize_red_flags_report_node(state: State):
         "If a particular parameter does not indicate an actual red flag, remove it from the report. "
         "Avoid repetition unless absolutely necessary. Return only the textual report."
     )
-
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     final_report = response.content.strip()
 
