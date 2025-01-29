@@ -1,4 +1,4 @@
-export async function regenerateReport(projectId: string, reportType?: string): Promise<{ success: boolean; message: string }> {
+export async function regenerateReport(projectId: string, model: string, reportType?: string): Promise<{ success: boolean; message: string }> {
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
   const url: string = reportType ? `reports/${reportType}/regenerate` : `reports/regenerate`;
 
@@ -9,6 +9,7 @@ export async function regenerateReport(projectId: string, reportType?: string): 
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ model }),
     });
 
     if (response.ok) {

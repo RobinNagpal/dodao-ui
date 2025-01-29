@@ -9,25 +9,28 @@ interface ProjectTableProps {
   projectIds: string[];
 }
 
+const MODEL_OPTIONS = [
+  { key: 'gpt-4o', label: 'gpt-4o' },
+  { key: 'gpt-4o-mini', label: 'gpt-4o-mini' },
+];
+
 export default function ProjectTable({ projectIds }: ProjectTableProps) {
   const router = useRouter();
 
   const tableActions: TableActions = {
     items: [
-      {
-        key: 'view',
-        label: 'View',
-      },
-      {
-        key: 'regenerate',
-        label: 'Regenerate',
-      },
+      { key: 'view', label: 'View' },
+      ...MODEL_OPTIONS.map((model) => ({
+        key: `regenerate_${model.key}`,
+        label: `Regenerate with ${model.label}`,
+      })),
     ],
     onSelect: async (key: string, item: string) => {
       if (key === 'view') {
         router.push(`/crowd-funding/projects/${item}`);
-      } else if (key === 'regenerate') {
-        const { success, message } = await regenerateReport(item);
+      } else if (key.startsWith('regenerate_')) {
+        const model = key.replace('regenerate_', '');
+        const { success, message } = await regenerateReport(item, model);
         success ? router.refresh() : alert(message);
       }
     },
