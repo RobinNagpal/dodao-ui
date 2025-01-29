@@ -98,7 +98,7 @@ def regenerate_reports(projectId):
     Regenerates reports for a given project using values from agent-status.json in S3.
     """
     try:
-        data = request.get_json()
+        data = request.get_json(silent=True) or {} # Handle case if no body was sent
         model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
         
         initialize_all_reports(project_id=projectId)
@@ -126,7 +126,7 @@ def regenerate_specific_report(projectId, report_type):
     Regenerates a specific report for a given project.
     """
     try:
-        data = request.get_json()
+        data = request.get_json(silent=True) or {} # Handle case if no body was sent
         model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
         
         # Prepare the command to start processing
