@@ -60,6 +60,8 @@ resource "aws_lightsail_container_service_deployment_version" "cf_deployment" {
       AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key
       AWS_DEFAULT_REGION    = var.aws_default_region
       S3_BUCKET_NAME        = var.s3_bucket_name
+      LINKEDIN_EMAIL        = var.linkedin_email
+      LINKEDIN_PASSWORD     = var.linkedin_password
     }
 
     ports = {
@@ -121,6 +123,8 @@ variable "aws_access_key_id" {}
 variable "aws_secret_access_key" {}
 variable "aws_default_region" {}
 variable "s3_bucket_name" {}
+variable "linkedin_email" {}
+variable "linkedin_password" {}
 
 output "public_url" {
   value       = aws_lightsail_container_service.cf_service.url
