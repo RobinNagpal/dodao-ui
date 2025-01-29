@@ -14,10 +14,7 @@ import time
 load_dotenv()
 
 OPENAI_MODEL = os.getenv("OPENAI_MODEL")
-
 SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
-
-OPENAI_MODEL = os.getenv("OPENAI_MODEL")
 
 if OPENAI_MODEL:
     llm = ChatOpenAI(model_name=OPENAI_MODEL, temperature=0)
