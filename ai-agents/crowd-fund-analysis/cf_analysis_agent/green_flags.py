@@ -8,17 +8,11 @@ from typing_extensions import TypedDict
 from typing import Annotated, List, Dict, Any
 from dotenv import load_dotenv
 import os
+from cf_analysis_agent.utils.report_utils import get_llm
 
 load_dotenv()
 
 SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
-
-OPENAI_MODEL = os.getenv("OPENAI_MODEL")
-
-if OPENAI_MODEL:
-    llm = ChatOpenAI(model_name=OPENAI_MODEL, temperature=0)
-else:
-    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
@@ -80,7 +74,7 @@ def aggregate_scraped_content_node(state: State):
         "combinedScrapedContent": state["combinedScrapedContent"]
     }
 
-def extract_industry_details_node(state: State):
+def extract_industry_details_node(state: State, config):
     """
     Examines the combinedScrapedContent and extracts a summary of the startup's industry,
     storing it in state['extractedIndustryDetails'].
@@ -100,7 +94,7 @@ def extract_industry_details_node(state: State):
     f"{combined_text}\n\n"
     "Return only the textual summary of these industry details, as concise as possible but covering each requested item."
     )
-
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     state["extractedIndustryDetails"] = response.content.strip()
 
@@ -113,7 +107,7 @@ def extract_industry_details_node(state: State):
         "extractedIndustryDetails": state["extractedIndustryDetails"]
     }
 
-def highlight_startup_green_flags_node(state: State):
+def highlight_startup_green_flags_node(state: State, config):
     """
     Uses the LLM to extract green flags from the combinedScrapedContent.
     We exclude any team-related or purely financial details as per requirements.
@@ -127,7 +121,7 @@ def highlight_startup_green_flags_node(state: State):
         f"Scraped Content:\n{state['combinedScrapedContent']}\n\n"
         "Return a clear text describing the startup's green flags."
     )
-    
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     state["startupGreenFlags"] = response.content.strip()
 
@@ -138,7 +132,7 @@ def highlight_startup_green_flags_node(state: State):
         "startupGreenFlags": state["startupGreenFlags"],
     }
 
-def industry_green_flags_node(state: State):
+def industry_green_flags_node(state: State, config):
     """
     Finds the 10 most commonly recognized green flags in the startup's industry.
     We rely on the 'industry' field in projectInfo or from scraped content.
@@ -151,7 +145,7 @@ def industry_green_flags_node(state: State):
         f"Industry Info:\n{industry_info}\n\n"
         "Return a comprehensive list of the most critical indicators of success for startups in this industry.. You may add short explanations for each."
     )
-
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     state["industryGreenFlags"] = response.content.strip()
 
@@ -162,7 +156,7 @@ def industry_green_flags_node(state: State):
         "industryGreenFlags": state["industryGreenFlags"]
     }
 
-def evaluate_green_flags_node(state: State):
+def evaluate_green_flags_node(state: State, config):
     """
     Compares the startup's green flags to the 10 industry green flags, highlighting
     strengths, partial alignments, etc.
@@ -180,7 +174,7 @@ def evaluate_green_flags_node(state: State):
         "Provide a detailed analysis of how the startup aligns with each measure, highlighting "
         "strengths or partial alignments."
     )
-
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     state["greenFlagsEvaluation"] = response.content.strip()
 
@@ -191,7 +185,7 @@ def evaluate_green_flags_node(state: State):
         "greenFlagsEvaluation": state["greenFlagsEvaluation"]
     }
 
-def finalize_green_flags_report_node(state: State):
+def finalize_green_flags_report_node(state: State, config):
     """
     Produces the final textual report integrating the startup's green flags,
     the industry’s standard flags, and the evaluation results.
@@ -213,7 +207,7 @@ def finalize_green_flags_report_node(state: State):
         "If a particular parameter does not indicate a green flag, remove it from the report. Avoid any repetition of information unless necessary. "
         "Return only the textual report."
     )
-
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     final_report = response.content.strip()
     state["finalGreenFlagsReport"] = final_report

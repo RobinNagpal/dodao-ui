@@ -12,20 +12,13 @@ import os
 import json
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import WebBaseLoader
+from cf_analysis_agent.utils.report_utils import get_llm
 
 load_dotenv()
 
 SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 GOOGLE_CSE_ID = os.getenv("GOOGLE_CSE_ID")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-
-OPENAI_MODEL = os.getenv("OPENAI_MODEL")
-
-if OPENAI_MODEL:
-    llm = ChatOpenAI(model_name=OPENAI_MODEL, temperature=0)
-else:
-    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
-
 
 class StartupInfo(TypedDict):
     startupName: str
@@ -77,7 +70,7 @@ def scrape_crowdfunded_page_node(state: State):
         "scraped_content": state["scraped_content"]
     }
 
-def extract_startup_info_node(state: State):
+def extract_startup_info_node(state: State, config):
     """
     1. Call the LLM with the prompt to extract 'startupName', 'startupDetails' from the crowdfunded page content
     2. Store JSON in state["startupInfo"].
@@ -92,7 +85,7 @@ def extract_startup_info_node(state: State):
         f"Scraped Content:\n{page_content}\n\n"
         "Return ONLY raw JSON. Do not include code fences or any extra text."
     )
-
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     try:
         data = json.loads(response.content)
@@ -144,12 +137,13 @@ def google_search_node(state: State):
         "allGoogleResults": state["allGoogleResults"]
     }
 
-def summarize_search_results_node(state: State):
+def summarize_search_results_node(state: State, config):
     """
     For each link in state["allGoogleResults"], scrape the page content
     and create a short summary using load_summarize_chain.
     Then store these in state["googleSearchSummaries"].
     """
+    llm = get_llm(config)
     chain = load_summarize_chain(llm, chain_type="stuff")
 
     all_results = state["allGoogleResults"]
@@ -188,7 +182,7 @@ def summarize_search_results_node(state: State):
         "googleSearchSummaries": state["googleSearchSummaries"]
     }
 
-def filter_relevant_links_from_summaries_node(state: State):
+def filter_relevant_links_from_summaries_node(state: State, config):
     """
     Uses an LLM prompt to pick the 3-4 most relevant links from allGoogleResults,
     in context of the startup's name/description, etc.
@@ -210,7 +204,7 @@ def filter_relevant_links_from_summaries_node(state: State):
         f"{summaries_json}\n\n"
         "Return ONLY the JSON array, no extra text."
     )
-
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     raw_content = response.content.strip()
 

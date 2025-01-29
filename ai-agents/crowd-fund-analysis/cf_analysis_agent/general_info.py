@@ -8,18 +8,11 @@ from typing_extensions import TypedDict
 from typing import Annotated, List
 from dotenv import load_dotenv
 import os
+from cf_analysis_agent.utils.report_utils import get_llm
 
 load_dotenv()
 
 SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
-
-OPENAI_MODEL = os.getenv("OPENAI_MODEL")
-
-if OPENAI_MODEL:
-    llm = ChatOpenAI(model_name=OPENAI_MODEL, temperature=0)
-else:
-    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
-
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
@@ -30,7 +23,6 @@ class State(TypedDict):
 
 graph_builder = StateGraph(State)
 memory = MemorySaver()
-config = {"configurable": {"thread_id": "1"}}
 
 def scrape_multiple_urls_node(state: State):
     """
@@ -76,7 +68,7 @@ def aggregate_scraped_content_node(state: State):
         "combinedScrapedContent": state["combinedScrapedContent"]
     }
 
-def generate_project_info_report_node(state: State):
+def generate_project_info_report_node(state: State, config):
     """
     Uses the LLM to produce a comprehensive, investor-facing report
     of the project's goals, achievements, product environment, etc.
@@ -107,7 +99,7 @@ def generate_project_info_report_node(state: State):
         Return only the textual report of these details.
         """
     )
-
+    llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     state["projectGeneralInfo"] = response.content.strip()
 

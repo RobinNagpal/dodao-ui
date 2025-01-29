@@ -16,6 +16,7 @@ app = Flask(__name__)
 CORS(app)  # This will allow all origins by default
 load_dotenv()
 BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
+OPEN_AI_DEFAULT_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4o')
 REGION=os.getenv("AWS_DEFAULT_REGION")
 @app.route("/")
 def index():
@@ -92,22 +93,23 @@ def commit_info():
     return render_template("commit_info.html", commit_hash=commit_hash, commit_message=commit_message)
 
 @app.route('/api/projects/<projectId>/reports/regenerate', methods=['POST'])
-
-
 def regenerate_reports(projectId):
     """
     Regenerates reports for a given project using values from agent-status.json in S3.
     """
     try:
+        data = request.get_json()
+        model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
+        
         initialize_all_reports(project_id=projectId)
-        command = prepare_processing_command(projectId)
+        command = prepare_processing_command(projectId, model)
 
         # Start the subprocess
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
         return jsonify({
                     "status": "success",
-                    "message": f"Regeneration of reports for {projectId} has started  successfully."
+                    "message": f"Regeneration of reports for {projectId} has started successfully."
                 }), 200
         
     except FileNotFoundError as e:
@@ -118,26 +120,27 @@ def regenerate_reports(projectId):
         return jsonify({"status": "error", "message": f"An error occurred: {str(e)}"}), 500
 
 
-
 @app.route('/api/projects/<projectId>/reports/<report_type>/regenerate', methods=['POST'])
 def regenerate_specific_report(projectId, report_type):
     """
     Regenerates a specific report for a given project.
     """
     try:
+        data = request.get_json()
+        model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
+        
         # Prepare the command to start processing
         initialize_report(project_id=projectId,report_type=report_type)    
-        command = prepare_processing_command(projectId)
+        command = prepare_processing_command(projectId, model)
 
         # Add the report_type to the command
         command.extend(["--report_type", report_type])
 
         # Start the subprocess
-
         subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         return jsonify({
                     "status": "success",
-                    "message": f"Regeneration of {report_type} report for {projectId} has started  successfully."
+                    "message": f"Regeneration of {report_type} report for {projectId} has started successfully."
                 }), 200
         
     except Exception as e:

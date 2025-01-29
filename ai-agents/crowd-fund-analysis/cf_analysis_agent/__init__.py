@@ -64,10 +64,10 @@ app = graph_builder.compile()
 
 user_input = "Scrape this URL: https://wefunder.com/fluyo"
 
-events = app.stream(
-    {"messages": [("user", user_input)]}, stream_mode="values"
-)
-for event in events:
-    event["messages"][-1].pretty_print()
+# events = app.stream(
+#     {"messages": [("user", user_input)]}, stream_mode="values"
+# )
+# for event in events:
+#     event["messages"][-1].pretty_print()
 
 
