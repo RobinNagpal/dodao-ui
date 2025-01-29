@@ -44,13 +44,6 @@ export default function ProjectDetailTable({ reports, projectId, reload }: Proje
       } else if (key === 'regenerate') {
         const { success, message } = await regenerateReport(projectId, item.name);
         success ? reload() : alert(message);
-        // if (success) {
-        //   setTimeout(() => {
-        //     reload(); // Trigger reload after 5 seconds
-        //   }, 5000);
-        // } else {
-        //   alert(message);
-        // }
       }
     },
   };
