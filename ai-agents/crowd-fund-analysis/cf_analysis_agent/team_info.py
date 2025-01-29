@@ -5,6 +5,9 @@ from langchain_community.document_loaders import ScrapingAntLoader
 from langchain_community.utilities import GoogleSerperAPIWrapper
 from langchain_core.messages import HumanMessage, AIMessage
 from langgraph.checkpoint.memory import MemorySaver
+from linkedin_scraper import Person, actions
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from typing_extensions import TypedDict
 from typing import Annotated, List, Dict, Any
 from dotenv import load_dotenv
@@ -19,6 +22,8 @@ load_dotenv()
 SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 SCRAPIN_API_KEY = os.getenv("SCRAPIN_API_KEY")
+LINKEDIN_EMAIL = os.getenv("LINKEDIN_EMAIL")
+LINKEDIN_PASSWORD = os.getenv("LINKEDIN_PASSWORD")
 
 search = GoogleSerperAPIWrapper()
 
@@ -196,32 +201,44 @@ def find_linkedin_urls_node(state: State):
 
 def scrape_linkedin_profiles_node(state: State):
     """
-    Uses the Scrapin.io API to retrieve LinkedIn profile data based on the URLs
+    Uses linkedin_scraper to retrieve LinkedIn profile data based on the URLs
     available in state['teamMemberLinkedinUrls'].
 
     If a team member has no LinkedIn URL (empty string), their profile will be empty.
     """
 
+    # Setup Selenium WebDriver
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")  # Run in headless mode
+    chrome_options.add_argument("--disable-gpu")  # Disable GPU for better compatibility
+    chrome_options.add_argument("--window-size=1920,1080")  # Optional: Set window size
+    chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resources in containerized environments
+    chrome_options.add_argument("--no-sandbox")  # Bypass OS security model (use with caution)
+    
+    driver = webdriver.Chrome( options=chrome_options)
+    actions.login(driver, LINKEDIN_EMAIL, LINKEDIN_PASSWORD)
+    
+
+
     def scrape_linkedin_profile(url: str) -> Dict[str, Any]:
         if not url:
             return {}
+        try:
+            # Scrape the LinkedIn profile using linkedin_scraper
+            # Login to LinkedIn
+            person = Person(url, driver=driver,scrape=False)
+            person.scrape(close_on_complete=False)
 
-        request_url = "https://api.scrapin.io/enrichment/profile"
-        params = {
-            "apikey": SCRAPIN_API_KEY,
-            "linkedInUrl": url
-        }
-        response = requests.get(request_url, params=params)
-        if response.status_code == 200:
-            try:
-                profile = response.json().get("person", {})
-                return profile
-            except json.JSONDecodeError:
-                return {"linkedin_url": url, "error": "Invalid JSON response"}
-        else:
-            return {"linkedin_url": url,
-                    "error": f"Failed to fetch LinkedIn data: {response.status_code} {response.text}"}
+            # Collect profile details
+            return {
+                "name": person.name,
+                "experiences": person.experiences,
+                "educations": person.educations,
+            }
+        except Exception as e:
+            return {}
 
+    # Iterate through the LinkedIn URLs and scrape profiles
     rawProfiles = []
     for member in state["teamMemberLinkedinUrls"]:
         profile_data = scrape_linkedin_profile(member["url"])
@@ -230,7 +247,10 @@ def scrape_linkedin_profiles_node(state: State):
             "name": member["name"],
             "profile": profile_data
         })
-    
+    # Close the driver
+    driver.quit()
+
+    # Add scraped profiles to the state
     state["rawLinkedinProfiles"] = rawProfiles
     #print(state["rawLinkedinProfiles"])
 
@@ -272,13 +292,9 @@ def evaluate_node(state: State, config):
         filtered_profile = {
             "firstName": member_profile.get("firstName", ""),
             "lastName": member_profile.get("lastName", ""),
-            "headline": member_profile.get("headline", ""),
-            "location": member_profile.get("location", ""),
-            "summary": member_profile.get("summary", ""),
-            "positions": member_profile.get("positions", {}),
-            "schools": member_profile.get("schools", {}),
-            "skills": member_profile.get("skills", []),
-            "certifications": member_profile.get("certifications", {})
+            "experiences": member_profile.get("experiences", ""),
+            "educations": member_profile.get("educations", ""),
+            
         }
 
         startup_name = state["projectInfo"]["startupName"]
@@ -299,18 +315,18 @@ def evaluate_node(state: State, config):
             f"Team Member (from projectInfo):\n"
             f"id: {id_}\nname: {name_}\ntitle: {title_}\ninfo: {info_}\n\n"
             "Team Member's LinkedIn Profile Data (may be empty):\n"
-            f"{json.dumps(filtered_profile, indent=2)}\n\n"
+            f"{filtered_profile}\n\n"
             "I want you to give subjective but accurate information on\n"
             "For this specific team member, return the following fields as a JSON object:\n"
             "   - id (from projectInfo)\n"
             "   - name (from projectInfo)\n"
             "   - title (from projectInfo)\n"
             "   - info (from projectInfo)\n"
-            "   - academicCredentials: this should represent the list of educational institutes and degrees earned. If none found, then say, Not mentioned in profile\n"
-            "   - qualityOfAcademicCredentials: give information about the ranking of institutes where the the degree is earned. Is it one of the top institutes? Give information for each of the education credentials\n"
-            "   - workExperience: summarize previous roles and experiences relevant to the startup’s industry and this member's title\n"
-            "   - depthOfWorkExperience: mention and quote some of the exceptional things the member has done. If you don't find anything exceptional, say Nothing exceptional\n"
-            "   - relevantWorkExperience: from the past work experience, mention what are the things the member has done related to the work he is doing at current startup or related to the industry. We want to see if the person has relevant work experience or not. Be very specific when you extract this information and give exact references. If you don't find much information, say Not much information found\n\n"
+            "   - academicCredentials: this should represent the list of educational institutes and degrees earned. If none found, then say, 'Failed to fetch'\n"
+            "   - qualityOfAcademicCredentials: give information about the ranking of institutes where the the degree is earned. Is it one of the top institutes? Give information for each of the education credentials if the academic info is not present than right 'Failed to fetch'\n"
+            "   - workExperience: summarize previous roles and experiences relevant to the startup’s industry and this member's title if not found write 'Failed to Fetch'\n"
+            "   - depthOfWorkExperience: mention and quote some of the exceptional things the member has done.if you don't have info about work experience write 'Failed to fetch' .If you don't find anything exceptional, say Nothing exceptional\n"
+            "   - relevantWorkExperience: if you don't have anything on work expereience just say 'Failed to fetch' from the past work experience, mention what are the things the member has done related to the work he is doing at current startup or related to the industry. We want to see if the person has relevant work experience or not. Be very specific when you extract this information and give exact references. If you don't find much information, say Not much information found\n\n"
             "Important Notes:\n"
             "- Do not invent or guess details. Only use the provided data from the startup info and LinkedIn profile.\n"
             "- Return ONLY a raw JSON object with these fields and no extra text. Do not include code fences or additional formatting.\n"
