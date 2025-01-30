@@ -60,6 +60,30 @@ The file should have information
 - Create a parent graph:
   - first level will have a node that will form the `input_data` needed by the subsequent nodes. E.g. general_info needs projectUrls
   - second level will have all the report nodes
-  - there will be a conditional edge from first level node to second level nodes and it will fan-out the execution based on the invoked path. So either one of the second level nodes will be invoked or all of them.
+  - there will be a conditional edge from first level node to second level nodes and it will fan-out the execution based on the invoked report. So either one of the second level nodes will be invoked or all of them.
+  ```python
+  all_nodes = ["general_info", "financial_review", "team_info"]
+  
+  def route_single_or_all(state: State) -> Sequence[str]:
+    if state["report"] == "all":
+        return all_nodes
+    elif state["report"] in all_nodes:
+        return [state["report"]]
+    else:
+        raise ValueError(f"Invalid route selection: {state['report']}")
+        
+  graph_builder.add_edge(START, "payload_creation")
+  graph_builder.add_conditional_edges(
+      'payload_creation',
+      route_single_or_all,
+      all_nodes,
+  )
+  ```
   - second level nodes will fan-in into a third level node that will cater the report(s)
-  - instead of running each report agent individually in the `run_agent_and_get_final_output_async()`, we will run this parent agent and specify the path either as a specific report node or all
+  ```python
+  for node in all_nodes:
+    graph_builder.add_edge(node, "report_handling")
+    
+  graph_builder.add_edge("report_handling", END)
+  ```
+  - instead of running each report agent individually in the `run_agent_and_get_final_output_async()`, we will run this parent agent and specify the report either as a specific report node or all
