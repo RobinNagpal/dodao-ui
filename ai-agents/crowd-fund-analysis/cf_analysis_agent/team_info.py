@@ -62,8 +62,8 @@ class ProjectInfo(TypedDict):
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
-    project_urls: List[str]        
-    scraped_content: str
+    project_urls: List[str]
+    project_scraped_urls: str
     projectInfo: ProjectInfo
     teamMemberLinkedinUrls: List[TeamMemberLinkedinUrl]
     rawLinkedinProfiles: List[RawLinkedinProfile]
@@ -101,7 +101,7 @@ def scrape_node(state: State):
         " - industry: str (A brief overview of the industry, including how it has grown in the last 3-5 years, its expected growth in the next 3-5 years, challenges, and unique benefits for startups in this space)\n"
         " - teamMembers: list of objects {id: str (Unique ID for each team member, formatted as firstname_lastname), name: str (The name of the team member), title: str (The position of the team member in the startup), info: str (Details or additional information about the team member as mentioned on the startup page)}\n\n"
         "Return ONLY a raw JSON object. Do not include any code fences or additional text. No ```json, no ```.\n"
-        f"Scraped Content:\n{state['scraped_content']}"
+        f"Scraped Content:\n{state['project_scraped_urls']}"
     )
 
     # Return the extracted prompt and the scraped data
@@ -126,9 +126,6 @@ def extract_project_info_node(state: State, config):
         prompt = "Project info extracted successfully."
         return {
             "messages": [HumanMessage(content=prompt)],
-            "project_urls": state["project_urls"],
-            "scraped_content": state["scraped_content"],
-            "projectInfo": state["projectInfo"]
         }
     except Exception:
         return {"messages": [AIMessage(content="Error parsing project info.")]}
@@ -168,9 +165,6 @@ def find_linkedin_urls_node(state: State):
     return {
         "messages": [HumanMessage(content="linkedln urls finded. now we have to scrape linkedin profiles")],
         "project_urls": state["project_urls"],
-        "scraped_content": state["scraped_content"],
-        "projectInfo": state["projectInfo"],
-        "teamMemberLinkedinUrls": state["teamMemberLinkedinUrls"]
     }
 
 def scrape_linkedin_profiles_node(state: State):
@@ -232,7 +226,6 @@ def scrape_linkedin_profiles_node(state: State):
     return {
         "messages": [HumanMessage(content="Linkedin profiles scraped. Now we have to evaluate each team member.")],
         "project_urls": state["project_urls"],
-        "scraped_content": state["scraped_content"],
         "projectInfo": state["projectInfo"],
         "teamMemberLinkedinUrls": state["teamMemberLinkedinUrls"],
         "rawLinkedinProfiles": state["rawLinkedinProfiles"]
