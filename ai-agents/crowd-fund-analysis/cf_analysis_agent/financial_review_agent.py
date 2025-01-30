@@ -1,11 +1,9 @@
 from langgraph.graph import StateGraph, START
 from langgraph.graph.message import add_messages
-from langchain_openai import ChatOpenAI
-from langchain_community.document_loaders import ScrapingAntLoader
 from langchain_core.messages import HumanMessage, AIMessage
 from langgraph.checkpoint.memory import MemorySaver
 from typing_extensions import TypedDict
-from typing import Annotated, List, Dict
+from typing import Annotated, List
 from dotenv import load_dotenv
 import os
 import json
@@ -30,7 +28,7 @@ class AdditionalData(TypedDict):
 class State(TypedDict):
     messages: Annotated[list, add_messages]
     secUrl: str
-    projectUrls: List[str]  # Additional links other than SEC filings
+    project_urls: List[str]  # Additional links other than SEC filings
     scraped_content: List[str]  # Store scraped content for each link
     form_c_data: FormCData
     additional_data: AdditionalData
@@ -390,6 +388,7 @@ def prepare_investor_report_with_analyses_node(state: State, config):
 
 
 # Add nodes to the graph
+graph_builder.add_node("scrape_project_urls", scrape_project_urls)
 graph_builder.add_node("scrape_and_extract_sec", scrape_and_extract_sec_node)
 graph_builder.add_node("scrape_additional_links", scrape_additional_links_node)
 graph_builder.add_node("extract_additional_data", extract_additional_data_node)
@@ -397,7 +396,8 @@ graph_builder.add_node("create_consolidated_table", create_consolidated_table_no
 graph_builder.add_node("prepare_investor_report_with_analyses_node", prepare_investor_report_with_analyses_node)
 
 # Define edges (control flow)
-graph_builder.add_edge(START, "scrape_and_extract_sec")
+graph_builder.add_edge(START, "scrape_project_urls")
+graph_builder.add_edge("scrape_project_urls", "scrape_and_extract_sec")
 graph_builder.add_edge("scrape_and_extract_sec", "scrape_additional_links")
 graph_builder.add_edge("scrape_additional_links", "extract_additional_data")
 graph_builder.add_edge("extract_additional_data", "create_consolidated_table")

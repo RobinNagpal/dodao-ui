@@ -92,7 +92,7 @@ async def main_controller_async(project_details):
         "general_info": {
             "id": id,
             "messages": [("user", f"Please gather the project's general info using {model}.")],
-            "projectUrls": [crowdfunding_link, website_url],
+            "project_urls": [crowdfunding_link, website_url],
             "output_file": f"{id}/general_info.md",
             "model": model
         },
@@ -105,14 +105,14 @@ async def main_controller_async(project_details):
         "red_flags": {
             "id": id,
             "messages": [("user", f"Scrape and analyze red flags using {model}.")],
-            "projectUrls": [crowdfunding_link, website_url],
+            "project_urls": [crowdfunding_link, website_url],
             "output_file": f"{id}/red_flags.md",
             "model": model
         },
         "green_flags": {
             "id": id,
             "messages": [("user", f"Scrape and analyze green flags using {model}.")],
-            "projectUrls": [crowdfunding_link, website_url],
+            "project_urls": [crowdfunding_link, website_url],
             "output_file": f"{id}/green_flags.md",
             "model": model
         },
@@ -121,14 +121,14 @@ async def main_controller_async(project_details):
             "messages": [("user", latest_sec_filing_link)],
             "secUrl": latest_sec_filing_link,
             "scraped_content": [],
-            "projectUrls": [crowdfunding_link, website_url] + additional_links,
+            "project_urls": [crowdfunding_link, website_url] + additional_links,
             "output_file": f"{id}/financial_review.md",
             "model": model
         },
         "relevant_links": {
             "id": id,
             "messages": [("user", f"Find more links about this startup using {model}.")],
-            "projectUrls": [crowdfunding_link],
+            "project_urls": [crowdfunding_link],
             "output_file": f"{id}/relevant_links.md",
             "model": model
         },

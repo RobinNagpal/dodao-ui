@@ -11,9 +11,9 @@ load_dotenv()
 SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 
 
-# Define a protocol that ensures the presence of 'projectUrls'
+# Define a protocol that ensures the presence of 'project_urls'
 class HasProjectUrls(Protocol):
-    projectUrls: list[str]
+    project_urls: list[str]
 
 
 class ScrapeProjectUrlsResponse(TypedDict):
@@ -31,9 +31,9 @@ StateType = TypeVar("StateType", bound=HasProjectUrls)
 StateTypeSec = TypeVar("StateTypeSec", bound=HasSecUrl)
 
 
-# Function that takes a generic state with required 'projectUrls' key
+# Function that takes a generic state with required 'project_urls' key
 def scrape_project_urls(state: StateType) -> ScrapeProjectUrlsResponse:
-    urls = state.get("projectUrls", [])
+    urls = state.get("project_urls", [])
     scraped_content_list = []
 
     for url in urls:

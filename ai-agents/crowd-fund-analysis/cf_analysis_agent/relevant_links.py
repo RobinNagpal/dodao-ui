@@ -1,7 +1,5 @@
 from langgraph.graph import StateGraph, START
 from langgraph.graph.message import add_messages
-from langchain_openai import ChatOpenAI
-from langchain_community.document_loaders import ScrapingAntLoader
 from langchain_core.messages import HumanMessage, AIMessage
 from langgraph.checkpoint.memory import MemorySaver
 from typing_extensions import TypedDict
@@ -36,8 +34,8 @@ class WebpageSummary(TypedDict):
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
-    porjectUrls: List[str]
-    scraped_content: str         
+    project_urls: List[str]
+    project_scraped_urls: str
     startupInfo: StartupInfo    
     allGoogleResults: List[SearchResult]
     googleSearchSummaries: List[WebpageSummary]
@@ -47,20 +45,6 @@ graph_builder = StateGraph(State)
 memory = MemorySaver()
 config = {"configurable": {"thread_id": "1"}}
 
-def scrape_crowdfunded_page_node(state: State):
-    """
-    1. We get the projectUrls from state["projectUrls"].
-    2. Use ScrapingAntLoader to fetch and store content in state["scraped_content"].
-    """
-    scraped_content_list = scrape_project_urls(state)
-    state["scraped_content"] = scraped_content_list[0] if scraped_content_list else ""
-
-    return {
-        "messages": [
-            AIMessage(content="Scraped content from the crowdfunded page.")
-        ],
-        "scraped_content": state["scraped_content"]
-    }
 
 def extract_startup_info_node(state: State, config):
     """
@@ -68,7 +52,7 @@ def extract_startup_info_node(state: State, config):
     2. Store JSON in state["startupInfo"].
     """
 
-    page_content = state["scraped_content"]
+    page_content = state["project_scraped_urls"]
     
     prompt = (
         "From the scraped content, extract the following project info as JSON:\n\n"
@@ -92,7 +76,6 @@ def extract_startup_info_node(state: State, config):
         "messages": [
             AIMessage(content="Startup info extracted and stored in state['startupInfo'].")
         ],
-        "scraped_content": state["scraped_content"],
         "startupInfo": state["startupInfo"]
     }
 
@@ -110,7 +93,7 @@ def google_search_node(state: State):
     print(f"Performing Google search for: {startup_name}")
 
     results = search.results(startup_name, 10)  
-    formatted_results = []
+    formatted_results: List[SearchResult] = []
     for item in results:
         formatted_results.append({
             "title": item.get("title"),
@@ -124,7 +107,6 @@ def google_search_node(state: State):
         "messages": [
             AIMessage(content=f"Google search complete for '{startup_name}'. Stored top 10 results in state['allGoogleResults'].")
         ],
-        "scraped_content": state["scraped_content"],
         "startupInfo": state["startupInfo"],
         "allGoogleResults": state["allGoogleResults"]
     }
@@ -168,7 +150,6 @@ def summarize_search_results_node(state: State, config):
         "messages": [
             AIMessage(content="All Google results have been summarized. Stored in 'googleSearchSummaries'.")
         ],
-        "scraped_content": state["scraped_content"],
         "startupInfo": state["startupInfo"],
         "allGoogleResults": state["allGoogleResults"],
         "googleSearchSummaries": state["googleSearchSummaries"]
@@ -219,14 +200,14 @@ def filter_relevant_links_from_summaries_node(state: State, config):
         "relevantLinks": state["relevantLinks"]
     }
 
-graph_builder.add_node("scrape_crowdfunded_page", scrape_crowdfunded_page_node)
+graph_builder.add_node("scrape_project_urls", scrape_project_urls)
 graph_builder.add_node("extract_startup_info", extract_startup_info_node)
 graph_builder.add_node("google_search_node", google_search_node)
 graph_builder.add_node("summarize_search_results", summarize_search_results_node)
 graph_builder.add_node("filter_relevant_links_from_summaries", filter_relevant_links_from_summaries_node)
 
-graph_builder.add_edge(START, "scrape_crowdfunded_page")
-graph_builder.add_edge("scrape_crowdfunded_page", "extract_startup_info")
+graph_builder.add_edge(START, "scrape_project_urls")
+graph_builder.add_edge("scrape_project_urls", "extract_startup_info")
 graph_builder.add_edge("extract_startup_info", "google_search_node")
 graph_builder.add_edge("google_search_node", "summarize_search_results")
 graph_builder.add_edge("summarize_search_results", "filter_relevant_links_from_summaries")

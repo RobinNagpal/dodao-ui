@@ -62,7 +62,7 @@ class ProjectInfo(TypedDict):
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
-    projectUrls: List[str]        
+    project_urls: List[str]        
     scraped_content: str
     projectInfo: ProjectInfo
     teamMemberLinkedinUrls: List[TeamMemberLinkedinUrl]
@@ -81,10 +81,10 @@ def start_node(state: State):
     print("Starting the process...")
     user_msg = state["messages"][-1]
     url_to_scrape = user_msg.content.strip()
-    state["projectUrls"] = [url_to_scrape]
+    state["project_urls"] = [url_to_scrape]
     return {
         "messages": [HumanMessage(content=f"Scrape the following URL: {url_to_scrape}")],
-        "projectUrls": state["projectUrls"] 
+        "project_urls": state["project_urls"] 
     }
 
 def scrape_node(state: State):
@@ -92,26 +92,6 @@ def scrape_node(state: State):
     Scrapes the provided URL using ScrapingAntLoader and stores the scraped content in state.
     Includes retry logic with a maximum of 10 retries and a 5-second delay between attempts.
     """
-    max_retries = 10
-    retries = 0
-    delay = 5  # Delay in seconds between retries
-
-    while retries < max_retries:
-        try:
-
-            # Store the scraped content in the state
-            state["scraped_content"] = scrape_project_urls(state)
-
-            print("Scraping successful.")
-            break  # Exit the loop if scraping is successful
-        except Exception as e:
-            print(f"Error on attempt {retries + 1}: {e}")
-            retries += 1
-            if retries == max_retries:
-                print("Maximum retries reached. Failing gracefully.")
-                return {"messages": [AIMessage(content=f"Failed to scrape URL after {max_retries} attempts: {e}")]}
-            print(f"Retrying in {delay} seconds...")
-            time.sleep(delay)  # Wait for 5 seconds before retrying
 
     # Prepare the prompt for extracting data
     prompt = (
@@ -127,8 +107,7 @@ def scrape_node(state: State):
     # Return the extracted prompt and the scraped data
     return {
         "messages": [HumanMessage(content=prompt)],
-        "projectUrls": state["projectUrls"],
-        "scraped_content": state["scraped_content"],
+
     }
 
 def extract_project_info_node(state: State, config):
@@ -147,7 +126,7 @@ def extract_project_info_node(state: State, config):
         prompt = "Project info extracted successfully."
         return {
             "messages": [HumanMessage(content=prompt)],
-            "projectUrls": state["projectUrls"],
+            "project_urls": state["project_urls"],
             "scraped_content": state["scraped_content"],
             "projectInfo": state["projectInfo"]
         }
@@ -188,7 +167,7 @@ def find_linkedin_urls_node(state: State):
 
     return {
         "messages": [HumanMessage(content="linkedln urls finded. now we have to scrape linkedin profiles")],
-        "projectUrls": state["projectUrls"],
+        "project_urls": state["project_urls"],
         "scraped_content": state["scraped_content"],
         "projectInfo": state["projectInfo"],
         "teamMemberLinkedinUrls": state["teamMemberLinkedinUrls"]
@@ -252,7 +231,7 @@ def scrape_linkedin_profiles_node(state: State):
 
     return {
         "messages": [HumanMessage(content="Linkedin profiles scraped. Now we have to evaluate each team member.")],
-        "projectUrls": state["projectUrls"],
+        "project_urls": state["project_urls"],
         "scraped_content": state["scraped_content"],
         "projectInfo": state["projectInfo"],
         "teamMemberLinkedinUrls": state["teamMemberLinkedinUrls"],
@@ -381,6 +360,7 @@ def evaluate_node(state: State, config):
         "teamInfo": state["teamInfo"]
     }
 
+graph_builder.add_node("scrape_project_urls", scrape_project_urls)
 graph_builder.add_node("start", start_node)
 graph_builder.add_node("scrape_page", scrape_node)
 graph_builder.add_node("extract_project_info", extract_project_info_node)
@@ -388,7 +368,8 @@ graph_builder.add_node("find_linkedin_urls", find_linkedin_urls_node)
 graph_builder.add_node("scrape_linkedin_profiles", scrape_linkedin_profiles_node)
 graph_builder.add_node("evaluate", evaluate_node)
 
-graph_builder.add_edge(START, "start")
+graph_builder.add_edge(START, "scrape_project_urls")
+graph_builder.add_edge("scrape_project_urls", "start")
 graph_builder.add_edge("start", "scrape_page")
 graph_builder.add_edge("scrape_page", "extract_project_info")
 graph_builder.add_edge("extract_project_info", "find_linkedin_urls")

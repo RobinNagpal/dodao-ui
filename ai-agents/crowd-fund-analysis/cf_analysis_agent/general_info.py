@@ -15,7 +15,7 @@ SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
-    projectUrls: List[str]
+    project_urls: List[str]
     project_scraped_urls: List[str]         
     combinedScrapedContent: str        
     projectGeneralInfo: str           
@@ -29,7 +29,6 @@ def aggregate_scraped_content_node(state: State):
     stored in state["combinedScrapedContent"].
     """
     scraped_list = state.get("project_scraped_urls", [])
-    print(f"Scraped content list: {scraped_list}")
     combined_text = "\n\n".join(scraped_list)
 
     state["combinedScrapedContent"] = combined_text
@@ -86,12 +85,12 @@ def generate_project_info_report_node(state: State, config):
         "projectGeneralInfo": state["projectGeneralInfo"]
     }
 
-graph_builder.add_node("scrape_multiple_urls", scrape_project_urls)
+graph_builder.add_node("scrape_project_urls", scrape_project_urls)
 graph_builder.add_node("aggregate_scraped_content", aggregate_scraped_content_node)
 graph_builder.add_node("generate_project_info_report", generate_project_info_report_node)
 
-graph_builder.add_edge(START, "scrape_multiple_urls")
-graph_builder.add_edge("scrape_multiple_urls", "aggregate_scraped_content")
+graph_builder.add_edge(START, "scrape_project_urls")
+graph_builder.add_edge("scrape_project_urls", "aggregate_scraped_content")
 graph_builder.add_edge("aggregate_scraped_content", "generate_project_info_report")
 
 app = graph_builder.compile(checkpointer=memory)
@@ -100,7 +99,7 @@ app = graph_builder.compile(checkpointer=memory)
 # events = app.stream(
 #     {
 #         "messages": [("user", "Please gather the project's general info.")],
-#         "projectUrls": [
+#         "project_urls": [
 #             "https://wefunder.com/neighborhoodsun",
 #             "https://neighborhoodsun.solar/"
 #         ]
