@@ -1,16 +1,15 @@
 from langgraph.graph import StateGraph, START
 from langgraph.graph.message import add_messages
-from langchain_openai import ChatOpenAI
-from langchain_community.document_loaders import ScrapingAntLoader
 from langchain_core.messages import HumanMessage, AIMessage
 from langgraph.checkpoint.memory import MemorySaver
 from typing_extensions import TypedDict
-from typing import Annotated, List, Dict
+from typing import Annotated, List
 from dotenv import load_dotenv
 import os
 import json
 import time
 from cf_analysis_agent.utils.report_utils import get_llm
+from cf_analysis_agent.utils.project_utils import scrape_project_urls, scrape_sec_url
 
 load_dotenv()
 
@@ -28,9 +27,9 @@ class AdditionalData(TypedDict):
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
-    url_to_scrape: str
-    additional_links: List[str]  # Additional links other than SEC filings
-    scraped_content: Dict[str, str]  # Store scraped content for each link
+    secUrl: str
+    project_urls: List[str]  # Additional links other than SEC filings
+    scraped_content: List[str]  # Store scraped content for each link
     form_c_data: FormCData
     additional_data: AdditionalData
     consolidated_table: str
@@ -51,22 +50,13 @@ def scrape_and_extract_sec_node(state: State, config, max_retries=10, retry_dela
         max_retries: Maximum number of retry attempts (default: 5).
         retry_delay: Time (in seconds) to wait between retries (default: 5 seconds).
     """
-    url_to_scrape = state["url_to_scrape"]
     attempts = 0
 
     while attempts < max_retries:
         try:
-            print(f"Attempt {attempts + 1}: Scraping SEC URL: {url_to_scrape}")
-            loader = ScrapingAntLoader([url_to_scrape], api_key=SCRAPINGANT_API_KEY)
-            documents = loader.load()
-
-            # Ensure we have valid content
-            if not documents or not documents[0].page_content.strip():
-                raise ValueError("Loaded documents are empty or invalid.")
-
+            
             # Successfully scraped content
-            page_content = documents[0].page_content
-            state["scraped_content"] = {url_to_scrape: page_content}
+            state["scraped_content"] = scrape_sec_url(state)
             break  # Exit the loop if successful
 
         except Exception as e:
@@ -75,7 +65,7 @@ def scrape_and_extract_sec_node(state: State, config, max_retries=10, retry_dela
             time.sleep(retry_delay)
 
             # Clear scraped content state on failure
-            state["scraped_content"] = {}
+            state["scraped_content"] = []
 
     # If scraping failed after all retries, return an error
     if not state["scraped_content"]:
@@ -107,7 +97,7 @@ def scrape_and_extract_sec_node(state: State, config, max_retries=10, retry_dela
         "    ...\n"
         "  }\n"
         "}\n\n"
-        f"Content:\n{state['scraped_content'][url_to_scrape]}"
+        f"Content:\n{state['scraped_content'][0]}"
     )
 
     try:
@@ -141,24 +131,13 @@ def scrape_additional_links_node(state: State):
     """
     Scrapes all additional links related to the startup.
     """
-    additional_links = state["additional_links"]
     scraped_content = state["scraped_content"]
+    scraped_content_list = scrape_project_urls(state)
+    state["scraped_content"]= scraped_content+scraped_content_list
 
-    for link in additional_links:
-        try:
-            print(f"Scraping Additional URL: {link}")
-            loader = ScrapingAntLoader([link], api_key=SCRAPINGANT_API_KEY)
-            documents = loader.load()
-            scraped_content[link] = documents[0].page_content
-        except Exception as e:
-            scraped_content[link] = f"Failed to scrape: {e}"
-            print(f"Error scraping {link}: {e}")
-
-    state["scraped_content"] = scraped_content
-    #print("Scraped content from all links:", scraped_content)
 
     return {
-        "messages": [AIMessage(content="Additional links scraped successfully.")],
+        "messages": [AIMessage(content="Project URLs scraped successfully.")],
         "scraped_content": state["scraped_content"]
     }
 
@@ -184,7 +163,7 @@ def extract_additional_data_node(state: State, config):
         "Net Income",
     }
 
-    for link, content in scraped_content.items():
+    for content in scraped_content[1:]:
         if "Failed to scrape" in content:
             continue
 
@@ -223,7 +202,7 @@ def extract_additional_data_node(state: State, config):
             relevant_metrics.update(extracted_data.get("relevant_metrics", {}))
 
         except json.JSONDecodeError as e:
-            print(f"JSON Decode Error: {e} for link: {link}")
+            print(f"JSON Decode Error: {e} for link")
 
     state["additional_data"] = {
         "financials": all_metrics,
@@ -409,6 +388,7 @@ def prepare_investor_report_with_analyses_node(state: State, config):
 
 
 # Add nodes to the graph
+graph_builder.add_node("scrape_project_urls", scrape_project_urls)
 graph_builder.add_node("scrape_and_extract_sec", scrape_and_extract_sec_node)
 graph_builder.add_node("scrape_additional_links", scrape_additional_links_node)
 graph_builder.add_node("extract_additional_data", extract_additional_data_node)
@@ -416,7 +396,8 @@ graph_builder.add_node("create_consolidated_table", create_consolidated_table_no
 graph_builder.add_node("prepare_investor_report_with_analyses_node", prepare_investor_report_with_analyses_node)
 
 # Define edges (control flow)
-graph_builder.add_edge(START, "scrape_and_extract_sec")
+graph_builder.add_edge(START, "scrape_project_urls")
+graph_builder.add_edge("scrape_project_urls", "scrape_and_extract_sec")
 graph_builder.add_edge("scrape_and_extract_sec", "scrape_additional_links")
 graph_builder.add_edge("scrape_additional_links", "extract_additional_data")
 graph_builder.add_edge("extract_additional_data", "create_consolidated_table")

@@ -60,13 +60,13 @@ async def main_controller_async(project_details):
     if report_type:
         # Run a single report
         await parent_graph.invoke({
-            "report": report_type,  
+            "report": report_type,
             **project_details
         })
     else:
         # Run all reports
         await parent_graph.invoke({
-            "report": "all",  
+            "report": "all",
             **project_details
         })
 

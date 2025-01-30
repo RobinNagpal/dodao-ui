@@ -47,7 +47,7 @@ final_key_map = {
 }
 
 # ------------------- PAYLOAD CREATION ------------------- #
-def create_payload(state: State) -> State:
+def create_payload(state: State) -> TypedDict[str, dict]:
     """
     Creates input data required for report nodes.
     Extracts project details like URLs, team details, SEC filings.
@@ -65,7 +65,7 @@ def create_payload(state: State) -> State:
             "id": project_id,
             "messages": [("user", f"Generate {report} report using {model}.")],
             "output_file": f"{project_id}/{report}.md",
-            "projectUrls": [crowdfunding_link, website_url] if report != "financial_review" else [latest_sec_filing_link],
+            "project_urls": [crowdfunding_link, website_url] if report != "financial_review" else [latest_sec_filing_link],
             "model": model,
             "additional_links": additional_links,
         }
@@ -75,7 +75,7 @@ def create_payload(state: State) -> State:
     # Initialize the status file in S3
     initialize_status_file_with_input_data(project_id, state)
 
-    return {**state, "input_data": input_data}
+    return {"input_data": input_data}
 
 # ------------------- REPORT EXECUTION ------------------- #
 async def invoke_report(state: State) -> dict:
