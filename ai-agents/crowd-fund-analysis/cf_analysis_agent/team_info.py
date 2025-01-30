@@ -126,6 +126,7 @@ def extract_project_info_node(state: State, config):
         prompt = "Project info extracted successfully."
         return {
             "messages": [HumanMessage(content=prompt)],
+            "projectInfo": state["projectInfo"]
         }
     except Exception:
         return {"messages": [AIMessage(content="Error parsing project info.")]}
@@ -353,17 +354,17 @@ def evaluate_node(state: State, config):
         "teamInfo": state["teamInfo"]
     }
 
-graph_builder.add_node("scrape_project_urls", scrape_project_urls)
 graph_builder.add_node("start", start_node)
+graph_builder.add_node("scrape_project_urls", scrape_project_urls)
 graph_builder.add_node("scrape_page", scrape_node)
 graph_builder.add_node("extract_project_info", extract_project_info_node)
 graph_builder.add_node("find_linkedin_urls", find_linkedin_urls_node)
 graph_builder.add_node("scrape_linkedin_profiles", scrape_linkedin_profiles_node)
 graph_builder.add_node("evaluate", evaluate_node)
 
-graph_builder.add_edge(START, "scrape_project_urls")
-graph_builder.add_edge("scrape_project_urls", "start")
-graph_builder.add_edge("start", "scrape_page")
+graph_builder.add_edge(START, "start")
+graph_builder.add_edge("start","scrape_project_urls", )
+graph_builder.add_edge("scrape_project_urls", "scrape_page")
 graph_builder.add_edge("scrape_page", "extract_project_info")
 graph_builder.add_edge("extract_project_info", "find_linkedin_urls")
 graph_builder.add_edge("find_linkedin_urls", "scrape_linkedin_profiles")
