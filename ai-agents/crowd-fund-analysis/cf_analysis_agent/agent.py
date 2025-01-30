@@ -47,7 +47,7 @@ final_key_map = {
 }
 
 # ------------------- PAYLOAD CREATION ------------------- #
-def create_payload(state: State) -> TypedDict[str, dict]:
+def create_payload(state: State) -> dict:
     """
     Creates input data required for report nodes.
     Extracts project details like URLs, team details, SEC filings.
@@ -78,7 +78,7 @@ def create_payload(state: State) -> TypedDict[str, dict]:
     return {"input_data": input_data}
 
 # ------------------- REPORT EXECUTION ------------------- #
-async def invoke_report(state: State) -> dict:
+async def invoke_report(state: State):
     """
     Generalized function to invoke any report graph asynchronously.
     """
@@ -98,7 +98,7 @@ async def invoke_report(state: State) -> dict:
     )
 
 # ------------------- REPORT HANDLING (Including PDF Conversion) ------------------- #
-async def handle_reports(state: State) -> dict:
+def handle_reports(state: State) -> dict:
     """
     Aggregates all the reports into a final result.
     """
