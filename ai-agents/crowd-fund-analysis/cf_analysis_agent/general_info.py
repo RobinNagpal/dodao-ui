@@ -1,7 +1,5 @@
 from langgraph.graph import StateGraph, START
 from langgraph.graph.message import add_messages
-from langchain_openai import ChatOpenAI
-from langchain_community.document_loaders import ScrapingAntLoader
 from langchain_core.messages import HumanMessage, AIMessage
 from langgraph.checkpoint.memory import MemorySaver
 from typing_extensions import TypedDict
@@ -24,20 +22,6 @@ class State(TypedDict):
 
 graph_builder = StateGraph(State)
 memory = MemorySaver()
-
-def scrape_multiple_urls_node(state: State):
-    """
-    Scrapes each URL in state["projectUrls"] using ScrapingAntLoader
-    and stores the page content in state["scraped_content"].
-    """
-
-    state["scraped_content"] = scrape_project_urls(state)
-    return {
-        "messages": [
-            AIMessage(content="Finished scraping all URLs. Stored results in state['scraped_content'].")
-        ],
-        "scraped_content": state["scraped_content"]
-    }
 
 def aggregate_scraped_content_node(state: State):
     """
@@ -101,7 +85,7 @@ def generate_project_info_report_node(state: State, config):
         "projectGeneralInfo": state["projectGeneralInfo"]
     }
 
-graph_builder.add_node("scrape_multiple_urls", scrape_multiple_urls_node)
+graph_builder.add_node("scrape_multiple_urls", scrape_project_urls)
 graph_builder.add_node("aggregate_scraped_content", aggregate_scraped_content_node)
 graph_builder.add_node("generate_project_info_report", generate_project_info_report_node)
 
