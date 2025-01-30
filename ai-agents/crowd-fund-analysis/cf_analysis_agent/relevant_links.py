@@ -13,6 +13,7 @@ import json
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import WebBaseLoader
 from cf_analysis_agent.utils.report_utils import get_llm
+from cf_analysis_agent.utils.project_utils import scrape_project_urls
 
 load_dotenv()
 
@@ -35,7 +36,7 @@ class WebpageSummary(TypedDict):
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
-    crowdfunded_url: str
+    porjectUrls: List[str]
     scraped_content: str         
     startupInfo: StartupInfo    
     allGoogleResults: List[SearchResult]
@@ -48,20 +49,11 @@ config = {"configurable": {"thread_id": "1"}}
 
 def scrape_crowdfunded_page_node(state: State):
     """
-    1. We get the crowdfunded_url from state["crowdfunded_url"].
+    1. We get the projectUrls from state["projectUrls"].
     2. Use ScrapingAntLoader to fetch and store content in state["scraped_content"].
     """
-
-    SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
-    url = state["crowdfunded_url"]
-
-    try:
-        loader = ScrapingAntLoader([url], api_key=SCRAPINGANT_API_KEY)
-        docs = loader.load()
-        page_content = docs[0].page_content
-        state["scraped_content"] = page_content
-    except Exception as e:
-        state["scraped_content"] = f"Error scraping {url}: {str(e)}"
+    scraped_content_list = scrape_project_urls(state)
+    state["scraped_content"] = scraped_content_list[0] if scraped_content_list else ""
 
     return {
         "messages": [

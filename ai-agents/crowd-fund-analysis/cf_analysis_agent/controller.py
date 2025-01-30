@@ -119,16 +119,16 @@ async def main_controller_async(project_details):
         "financial_review": {
             "id": id,
             "messages": [("user", latest_sec_filing_link)],
-            "url_to_scrape": latest_sec_filing_link,
-            "scraped_content": {},
-            "additional_links": [crowdfunding_link, website_url] + additional_links,
+            "secUrl": latest_sec_filing_link,
+            "scraped_content": [],
+            "projectUrls": [crowdfunding_link, website_url] + additional_links,
             "output_file": f"{id}/financial_review.md",
             "model": model
         },
         "relevant_links": {
             "id": id,
             "messages": [("user", f"Find more links about this startup using {model}.")],
-            "crowdfunded_url": crowdfunding_link,
+            "projectUrls": [crowdfunding_link],
             "output_file": f"{id}/relevant_links.md",
             "model": model
         },

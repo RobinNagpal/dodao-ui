@@ -16,6 +16,7 @@ import time
 import json
 import requests
 from cf_analysis_agent.utils.report_utils import get_llm
+from cf_analysis_agent.utils.project_utils import scrape_project_urls
 
 load_dotenv()
 
@@ -91,20 +92,15 @@ def scrape_node(state: State):
     Scrapes the provided URL using ScrapingAntLoader and stores the scraped content in state.
     Includes retry logic with a maximum of 10 retries and a 5-second delay between attempts.
     """
-    url_to_scrape = state["projectUrls"][0]
     max_retries = 10
     retries = 0
     delay = 5  # Delay in seconds between retries
 
     while retries < max_retries:
         try:
-            print(f"Attempt {retries + 1}: Scraping URL: {url_to_scrape}")
-            loader = ScrapingAntLoader([url_to_scrape], api_key=SCRAPINGANT_API_KEY)
-            documents = loader.load()
-            page_content = documents[0].page_content
 
             # Store the scraped content in the state
-            state["scraped_content"] = page_content
+            state["scraped_content"] = scrape_project_urls(state)
 
             print("Scraping successful.")
             break  # Exit the loop if scraping is successful
@@ -220,6 +216,7 @@ def scrape_linkedin_profiles_node(state: State):
 
 
     def scrape_linkedin_profile(url: str) -> Dict[str, Any]:
+        
         if not url:
             return {}
         try:

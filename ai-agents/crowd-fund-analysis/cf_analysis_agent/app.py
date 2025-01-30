@@ -105,7 +105,7 @@ def regenerate_reports(projectId):
         command = prepare_processing_command(projectId, model)
 
         # Start the subprocess
-        subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        subprocess.Popen(command)
 
         return jsonify({
                     "status": "success",
@@ -137,7 +137,7 @@ def regenerate_specific_report(projectId, report_type):
         command.extend(["--report_type", report_type])
 
         # Start the subprocess
-        subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        subprocess.Popen(command)
         return jsonify({
                     "status": "success",
                     "message": f"Regeneration of {report_type} report for {projectId} has started successfully."

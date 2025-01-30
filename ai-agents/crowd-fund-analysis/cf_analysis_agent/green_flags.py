@@ -9,6 +9,7 @@ from typing import Annotated, List, Dict, Any
 from dotenv import load_dotenv
 import os
 from cf_analysis_agent.utils.report_utils import get_llm
+from cf_analysis_agent.utils.project_utils import scrape_project_urls
 
 load_dotenv()
 
@@ -34,19 +35,7 @@ def scrape_multiple_urls_node(state: State):
     Scrapes each URL in state["projectUrls"] using ScrapingAntLoader
     and stores the page content in state["scraped_content"] (list).
     """
-    urls = state.get("projectUrls", [])
-    scraped_content_list = []
-    for url in urls:
-        try:
-            print(f"Scraping URL: {url}")
-            loader = ScrapingAntLoader([url], api_key=SCRAPINGANT_API_KEY)
-            documents = loader.load()
-            page_content = documents[0].page_content
-            scraped_content_list.append(page_content)
-        except Exception as e:
-            scraped_content_list.append(f"Error scraping {url}: {e}")
-
-    state["scraped_content"] = scraped_content_list
+    state["scraped_content"] = scrape_project_urls(state)
 
     return {
         "messages": [
