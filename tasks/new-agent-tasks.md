@@ -62,3 +62,4 @@ The file should have information
   - second level will have all the report nodes
   - there will be a conditional edge from first level node to second level nodes and it will fan-out the execution based on the invoked path. So either one of the second level nodes will be invoked or all of them.
   - second level nodes will fan-in into a third level node that will cater the report(s)
+  - instead of running each report agent individually in the `run_agent_and_get_final_output_async()`, we will run this parent agent and specify the path either as a specific report node or all
