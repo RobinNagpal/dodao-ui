@@ -16,7 +16,7 @@ SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 class State(TypedDict):
     messages: Annotated[list, add_messages]
     projectUrls: List[str]
-    scraped_content: List[str]         
+    project_scraped_urls: List[str]         
     combinedScrapedContent: str        
     projectGeneralInfo: str           
 
@@ -28,7 +28,8 @@ def aggregate_scraped_content_node(state: State):
     Combine all scraped content from multiple links into a single text blob,
     stored in state["combinedScrapedContent"].
     """
-    scraped_list = state.get("scraped_content", [])
+    scraped_list = state.get("project_scraped_urls", [])
+    print(f"Scraped content list: {scraped_list}")
     combined_text = "\n\n".join(scraped_list)
 
     state["combinedScrapedContent"] = combined_text
