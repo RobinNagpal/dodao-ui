@@ -9,6 +9,7 @@ from typing import Annotated, List, Dict, Any
 from dotenv import load_dotenv
 import os
 from cf_analysis_agent.utils.report_utils import get_llm
+from cf_analysis_agent.utils.project_utils import scrape_project_urls
 
 load_dotenv()
 
@@ -16,8 +17,8 @@ SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
-    projectUrls: List[str]        
-    scraped_content: List[str]
+    project_urls: List[str]
+    project_scraped_urls: List[str]
     combinedScrapedContent: str
     extractedIndustryDetails: str
     startupGreenFlags: str       
@@ -29,38 +30,12 @@ graph_builder = StateGraph(State)
 memory = MemorySaver()
 config = {"configurable": {"thread_id": "1"}}
 
-def scrape_multiple_urls_node(state: State):
-    """
-    Scrapes each URL in state["projectUrls"] using ScrapingAntLoader
-    and stores the page content in state["scraped_content"] (list).
-    """
-    urls = state.get("projectUrls", [])
-    scraped_content_list = []
-    for url in urls:
-        try:
-            print(f"Scraping URL: {url}")
-            loader = ScrapingAntLoader([url], api_key=SCRAPINGANT_API_KEY)
-            documents = loader.load()
-            page_content = documents[0].page_content
-            scraped_content_list.append(page_content)
-        except Exception as e:
-            scraped_content_list.append(f"Error scraping {url}: {e}")
-
-    state["scraped_content"] = scraped_content_list
-
-    return {
-        "messages": [
-            AIMessage(content="Finished scraping all URLs. Stored results in state['scraped_content'].")
-        ],
-        "scraped_content": state["scraped_content"]
-    }
-
 def aggregate_scraped_content_node(state: State):
     """
     Combine all scraped content from multiple links into a single text blob.
     We'll store the combined text in state["combinedScrapedContent"].
     """
-    scraped_list = state.get("scraped_content", [])
+    scraped_list = state.get("project_scraped_urls", [])
     combined_text = "\n\n".join(scraped_list) 
     
     state["combinedScrapedContent"] = combined_text
@@ -223,7 +198,7 @@ def finalize_green_flags_report_node(state: State, config):
         "finalGreenFlagsReport": state["finalGreenFlagsReport"]
     }
 
-graph_builder.add_node("scrape_multiple_urls", scrape_multiple_urls_node)
+graph_builder.add_node("scrape_project_urls", scrape_project_urls)
 graph_builder.add_node("aggregate_scraped_content", aggregate_scraped_content_node)
 graph_builder.add_node("extract_industry_details", extract_industry_details_node)
 graph_builder.add_node("highlight_green_flags", highlight_startup_green_flags_node)
@@ -231,8 +206,8 @@ graph_builder.add_node("industry_green_flags", industry_green_flags_node)
 graph_builder.add_node("evaluate_green_flags", evaluate_green_flags_node)
 graph_builder.add_node("finalize_green_flags_report", finalize_green_flags_report_node)
 
-graph_builder.add_edge(START, "scrape_multiple_urls")
-graph_builder.add_edge("scrape_multiple_urls", "aggregate_scraped_content")
+graph_builder.add_edge(START, "scrape_project_urls")
+graph_builder.add_edge("scrape_project_urls", "aggregate_scraped_content")
 graph_builder.add_edge("aggregate_scraped_content", "extract_industry_details")
 graph_builder.add_edge("extract_industry_details", "highlight_green_flags")
 graph_builder.add_edge("highlight_green_flags", "industry_green_flags")
@@ -244,7 +219,7 @@ app = graph_builder.compile(checkpointer=memory)
 # events = app.stream(
 #     {
 #         "messages": [("user", "Scrape and analyze green flags.")],
-#         "projectUrls": [
+#         "project_urls": [
 #             "https://wefunder.com/neighborhoodsun", 
 #             "https://neighborhoodsun.solar/"
 #         ]

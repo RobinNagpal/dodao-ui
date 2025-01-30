@@ -1,7 +1,5 @@
 from langgraph.graph import StateGraph, START
 from langgraph.graph.message import add_messages
-from langchain_openai import ChatOpenAI
-from langchain_community.document_loaders import ScrapingAntLoader
 from langchain_core.messages import HumanMessage, AIMessage
 from langgraph.checkpoint.memory import MemorySaver
 from typing_extensions import TypedDict
@@ -9,6 +7,7 @@ from typing import Annotated, List
 from dotenv import load_dotenv
 import os
 from cf_analysis_agent.utils.report_utils import get_llm
+from cf_analysis_agent.utils.project_utils import scrape_project_urls
 
 load_dotenv()
 
@@ -16,51 +15,24 @@ SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
-    projectUrls: List[str]
-    scraped_content: List[str]         
+    project_urls: List[str]
+    project_scraped_urls: List[str]         
     combinedScrapedContent: str        
     projectGeneralInfo: str           
 
 graph_builder = StateGraph(State)
 memory = MemorySaver()
 
-def scrape_multiple_urls_node(state: State):
-    """
-    Scrapes each URL in state["projectUrls"] using ScrapingAntLoader
-    and stores the page content in state["scraped_content"].
-    """
-    urls = state.get("projectUrls", [])
-    scraped_content_list = []
-    
-    for url in urls:
-        try:
-            print(f"Scraping URL: {url}")
-            loader = ScrapingAntLoader([url], api_key=SCRAPINGANT_API_KEY)
-            documents = loader.load()
-            page_content = documents[0].page_content
-            scraped_content_list.append(page_content)
-        except Exception as e:
-            scraped_content_list.append(f"Error scraping {url}: {e}")
-
-    state["scraped_content"] = scraped_content_list
-
-    return {
-        "messages": [
-            AIMessage(content="Finished scraping all URLs. Stored results in state['scraped_content'].")
-        ],
-        "scraped_content": state["scraped_content"]
-    }
-
 def aggregate_scraped_content_node(state: State):
     """
     Combine all scraped content from multiple links into a single text blob,
     stored in state["combinedScrapedContent"].
     """
-    scraped_list = state.get("scraped_content", [])
+    scraped_list = state.get("project_scraped_urls", [])
     combined_text = "\n\n".join(scraped_list)
 
     state["combinedScrapedContent"] = combined_text
-
+    
     return {
         "messages": [
             AIMessage(content="Aggregated all scraped content into `combinedScrapedContent`. Ready to analyze.")
@@ -113,12 +85,12 @@ def generate_project_info_report_node(state: State, config):
         "projectGeneralInfo": state["projectGeneralInfo"]
     }
 
-graph_builder.add_node("scrape_multiple_urls", scrape_multiple_urls_node)
+graph_builder.add_node("scrape_project_urls", scrape_project_urls)
 graph_builder.add_node("aggregate_scraped_content", aggregate_scraped_content_node)
 graph_builder.add_node("generate_project_info_report", generate_project_info_report_node)
 
-graph_builder.add_edge(START, "scrape_multiple_urls")
-graph_builder.add_edge("scrape_multiple_urls", "aggregate_scraped_content")
+graph_builder.add_edge(START, "scrape_project_urls")
+graph_builder.add_edge("scrape_project_urls", "aggregate_scraped_content")
 graph_builder.add_edge("aggregate_scraped_content", "generate_project_info_report")
 
 app = graph_builder.compile(checkpointer=memory)
@@ -127,7 +99,7 @@ app = graph_builder.compile(checkpointer=memory)
 # events = app.stream(
 #     {
 #         "messages": [("user", "Please gather the project's general info.")],
-#         "projectUrls": [
+#         "project_urls": [
 #             "https://wefunder.com/neighborhoodsun",
 #             "https://neighborhoodsun.solar/"
 #         ]

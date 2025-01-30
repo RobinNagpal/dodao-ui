@@ -16,6 +16,7 @@ import time
 import json
 import requests
 from cf_analysis_agent.utils.report_utils import get_llm
+from cf_analysis_agent.utils.project_utils import scrape_project_urls
 
 load_dotenv()
 
@@ -61,8 +62,8 @@ class ProjectInfo(TypedDict):
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
-    projectUrls: List[str]        
-    scraped_content: str
+    project_urls: List[str]
+    project_scraped_urls: str
     projectInfo: ProjectInfo
     teamMemberLinkedinUrls: List[TeamMemberLinkedinUrl]
     rawLinkedinProfiles: List[RawLinkedinProfile]
@@ -80,10 +81,10 @@ def start_node(state: State):
     print("Starting the process...")
     user_msg = state["messages"][-1]
     url_to_scrape = user_msg.content.strip()
-    state["projectUrls"] = [url_to_scrape]
+    state["project_urls"] = [url_to_scrape]
     return {
         "messages": [HumanMessage(content=f"Scrape the following URL: {url_to_scrape}")],
-        "projectUrls": state["projectUrls"] 
+        "project_urls": state["project_urls"] 
     }
 
 def scrape_node(state: State):
@@ -91,31 +92,6 @@ def scrape_node(state: State):
     Scrapes the provided URL using ScrapingAntLoader and stores the scraped content in state.
     Includes retry logic with a maximum of 10 retries and a 5-second delay between attempts.
     """
-    url_to_scrape = state["projectUrls"][0]
-    max_retries = 10
-    retries = 0
-    delay = 5  # Delay in seconds between retries
-
-    while retries < max_retries:
-        try:
-            print(f"Attempt {retries + 1}: Scraping URL: {url_to_scrape}")
-            loader = ScrapingAntLoader([url_to_scrape], api_key=SCRAPINGANT_API_KEY)
-            documents = loader.load()
-            page_content = documents[0].page_content
-
-            # Store the scraped content in the state
-            state["scraped_content"] = page_content
-
-            print("Scraping successful.")
-            break  # Exit the loop if scraping is successful
-        except Exception as e:
-            print(f"Error on attempt {retries + 1}: {e}")
-            retries += 1
-            if retries == max_retries:
-                print("Maximum retries reached. Failing gracefully.")
-                return {"messages": [AIMessage(content=f"Failed to scrape URL after {max_retries} attempts: {e}")]}
-            print(f"Retrying in {delay} seconds...")
-            time.sleep(delay)  # Wait for 5 seconds before retrying
 
     # Prepare the prompt for extracting data
     prompt = (
@@ -125,14 +101,13 @@ def scrape_node(state: State):
         " - industry: str (A brief overview of the industry, including how it has grown in the last 3-5 years, its expected growth in the next 3-5 years, challenges, and unique benefits for startups in this space)\n"
         " - teamMembers: list of objects {id: str (Unique ID for each team member, formatted as firstname_lastname), name: str (The name of the team member), title: str (The position of the team member in the startup), info: str (Details or additional information about the team member as mentioned on the startup page)}\n\n"
         "Return ONLY a raw JSON object. Do not include any code fences or additional text. No ```json, no ```.\n"
-        f"Scraped Content:\n{state['scraped_content']}"
+        f"Scraped Content:\n{state['project_scraped_urls']}"
     )
 
     # Return the extracted prompt and the scraped data
     return {
         "messages": [HumanMessage(content=prompt)],
-        "projectUrls": state["projectUrls"],
-        "scraped_content": state["scraped_content"],
+
     }
 
 def extract_project_info_node(state: State, config):
@@ -151,9 +126,6 @@ def extract_project_info_node(state: State, config):
         prompt = "Project info extracted successfully."
         return {
             "messages": [HumanMessage(content=prompt)],
-            "projectUrls": state["projectUrls"],
-            "scraped_content": state["scraped_content"],
-            "projectInfo": state["projectInfo"]
         }
     except Exception:
         return {"messages": [AIMessage(content="Error parsing project info.")]}
@@ -192,10 +164,7 @@ def find_linkedin_urls_node(state: State):
 
     return {
         "messages": [HumanMessage(content="linkedln urls finded. now we have to scrape linkedin profiles")],
-        "projectUrls": state["projectUrls"],
-        "scraped_content": state["scraped_content"],
-        "projectInfo": state["projectInfo"],
-        "teamMemberLinkedinUrls": state["teamMemberLinkedinUrls"]
+        "project_urls": state["project_urls"],
     }
 
 def scrape_linkedin_profiles_node(state: State):
@@ -220,6 +189,7 @@ def scrape_linkedin_profiles_node(state: State):
 
 
     def scrape_linkedin_profile(url: str) -> Dict[str, Any]:
+        
         if not url:
             return {}
         try:
@@ -255,8 +225,7 @@ def scrape_linkedin_profiles_node(state: State):
 
     return {
         "messages": [HumanMessage(content="Linkedin profiles scraped. Now we have to evaluate each team member.")],
-        "projectUrls": state["projectUrls"],
-        "scraped_content": state["scraped_content"],
+        "project_urls": state["project_urls"],
         "projectInfo": state["projectInfo"],
         "teamMemberLinkedinUrls": state["teamMemberLinkedinUrls"],
         "rawLinkedinProfiles": state["rawLinkedinProfiles"]
@@ -384,6 +353,7 @@ def evaluate_node(state: State, config):
         "teamInfo": state["teamInfo"]
     }
 
+graph_builder.add_node("scrape_project_urls", scrape_project_urls)
 graph_builder.add_node("start", start_node)
 graph_builder.add_node("scrape_page", scrape_node)
 graph_builder.add_node("extract_project_info", extract_project_info_node)
@@ -391,7 +361,8 @@ graph_builder.add_node("find_linkedin_urls", find_linkedin_urls_node)
 graph_builder.add_node("scrape_linkedin_profiles", scrape_linkedin_profiles_node)
 graph_builder.add_node("evaluate", evaluate_node)
 
-graph_builder.add_edge(START, "start")
+graph_builder.add_edge(START, "scrape_project_urls")
+graph_builder.add_edge("scrape_project_urls", "start")
 graph_builder.add_edge("start", "scrape_page")
 graph_builder.add_edge("scrape_page", "extract_project_info")
 graph_builder.add_edge("extract_project_info", "find_linkedin_urls")
