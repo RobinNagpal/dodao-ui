@@ -39,20 +39,8 @@ The file should have information
 
 ## Tasks - UI App
 
-1. Hussain to create couple of dummy `agent-status.json` files which will be added in s3 bucket at path `${bucket}/crowd-fund-analysis/${projectId}/agent-status.json`
-
-   - The dummy data can have each status as `in_progress` for now.
-
-1. Hussain to fix the issue related to saving of the agent-status.json file in the s3 bucket.
-1. Hussain to look into saving of each report one by one and can divide some of these paths with Dawood.
-
 ### Report details
 
-- Triggering of report regeneration from the UI (per report and all reports)
-- Parse md into html
-- Add a new page `/crowd-funding/projects/${projectId}/reports/${report-type}` and render the parsed html
-- Instead of `MD` show View
-- Instead of `PDF` show Download icon
 - Add some description with each report name like what is the report
 
 ### Project details
@@ -68,16 +56,9 @@ The file should have information
 
 ## Tasks - Python app
 
-1. Add a route `/api/projects/${projectId}/reports/${report-type}/regenerate` to regenerate the report
-
-- Added a route in `app.py` along with a function `extract_variables_from_s3(project_id)` which gets the required info using projectId for the project and also the report type form the route itself and than this type is added to the command `poetry run python controller.py [details]` as an arguement. Then in `controller.py` based on report type only that report is generated using an array `app_map and final_key_map` and `run_agent_and_get_final_output_async(app, input_data, final_key, s3_key)`
-- Also changed the status of the agent_status file accordingly at every stage inside `initialize_status_file(project_id, project_name, input_data, report_type=None)`
-
-2. Add a route `/api/projects/${projectId}/reports/regenerate` to regenerate all reports
-
-- Added a route in app.py along with a function `extract_variables_from_s3(project_id)` which gets the required info using projectId for the project and than route same as submit route runs a command `poetry run python controller.py [details]`
-
-3. Add a default Open AI model configuration in .env file
-4. Dawood to review the code in details:
-   1. Check the common functions are all present in separate file(s) and should have proper naming
-   2. the retry logic and error handling logic is done in a common way and not repeated for every report
+- All reports were there and Overall status was `completed` . I triggered regenerate for one of the report but Overall status still stays `completed`. it should go into `in_progress` as well and when the report gets generated only then mark it as `completed`
+- Create a parent graph:
+  - first level will have a node that will form the `input_data` needed by the subsequent nodes. E.g. general_info needs projectUrls
+  - second level will have all the report nodes
+  - there will be a conditional edge from first level node to second level nodes and it will fan-out the execution based on the invoked path. So either one of the second level nodes will be invoked or all of them.
+  - second level nodes will fan-in into a third level node that will cater the report(s)
