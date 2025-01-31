@@ -2,7 +2,7 @@ import asyncio
 import argparse
 from agent import graph as parent_graph
 from cf_analysis_agent.agent_state import AgentState, ProjectInfo
-from cf_analysis_agent.utils.project_utils import scrape_urls
+from cf_analysis_agent.utils.project_utils import scrape_url, scrape_urls
 
 
 def parse_arguments() -> AgentState:
@@ -51,7 +51,8 @@ def parse_arguments() -> AgentState:
         "additional_links": additional_links,
         "project_id": project_id,
     }
-    scraped_urls = scrape_urls(list([crowdfunding_link, website_url]))
+    scraped_urls = scrape_urls(list([crowdfunding_link, website_url]+additional_links))
+    sec_content = scrape_url(latest_sec_filing_link) if report_type == "all" or report_type=="financial_review" else []
     combined_content = "\n\n".join(scraped_urls)
     return {
         "messages": [],
@@ -64,7 +65,8 @@ def parse_arguments() -> AgentState:
         },
         "reports_to_generate": None,
         "processed_project_info": {
-            "combined_scrapped_content": combined_content
+            "combined_scrapped_content": combined_content,
+            "sec_scraped_content": sec_content
         },
         "general_info_report": None
     }

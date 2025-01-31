@@ -6,11 +6,11 @@ from cf_analysis_agent.agent_state import AgentState
 from cf_analysis_agent.utils.report_utils import (
     run_agent_and_get_final_output_async,
 )
-from financial_review_agent import app as financial_review_app
 from general_info import create_general_info_report
 from green_flags import create_green_flags_report
 from red_flags import create_red_flags_report
 from relevant_links import create_relevant_links_report
+from financial_review_agent import create_financial_review_report
 from team_info import app as team_info_app
 
 # ------------------- STATE DEFINITION ------------------- #
@@ -19,7 +19,6 @@ from team_info import app as team_info_app
 # ------------------- REPORT MAPPING ------------------- #
 report_apps = {
     "team_info": team_info_app,
-    "financial_review": financial_review_app,
 }
 report_keys = list(report_apps.keys())
 
@@ -94,10 +93,11 @@ builder.add_node("general_info", create_general_info_report)
 builder.add_node("red_flags",  create_red_flags_report)
 builder.add_node("green_flags",  create_green_flags_report)
 builder.add_node("relevant_links",  create_relevant_links_report)
+builder.add_node("financial_review", create_financial_review_report)
 builder.add_node("create_final_report", create_final_report)
 
 builder.add_edge(START, "initialize_first_step")
-builder.add_conditional_edges("initialize_first_step", route_single_or_all, report_keys + ["general_info", "red_flags", "green_flags", "relevant_links"])
+builder.add_conditional_edges("initialize_first_step", route_single_or_all, report_keys + ["general_info", "red_flags", "green_flags", "relevant_links","financial_review"])
 builder.add_edge(report_keys, "create_final_report")
 builder.add_edge("create_final_report", END)
 
