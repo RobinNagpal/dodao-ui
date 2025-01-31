@@ -43,6 +43,22 @@ class ReportSchema(TypedDict, total=False):
     endTime: NotRequired[str]
     errorMessage: NotRequired[str]
 
+class FinalReportSchema(TypedDict, total=False):
+    """
+    Represents the status and metadata of a single report
+    (e.g., "team_info", "financial_review", etc.).
+    Fields marked as `total=False` are optional
+    (e.g., endTime, errorMessage) and may only appear
+    under certain conditions.
+    """
+    status: str
+    markdownLink: Optional[str]
+    startTime: str
+    estimatedTimeInSec: int
+    endTime: NotRequired[str]
+    errorMessage: NotRequired[str]
+    spiderGraphJsonFileUrl: Optional[str]
+
 
 class ProcessedProjectInfoSchema(TypedDict, total=False):
     """

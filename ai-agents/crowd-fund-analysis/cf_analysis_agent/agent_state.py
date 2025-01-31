@@ -23,6 +23,10 @@ class ProcessedProjectInfo(TypedDict):
     sec_raw_content: str
     last_updated: str
 
+class FinalReport(TypedDict):
+    final_report_contents: str
+    spider_graph_json_file_url: str | None
+
 class AgentState(TypedDict):
     messages: Annotated[list, add_messages]
     project_info: ProjectInfo
@@ -30,3 +34,4 @@ class AgentState(TypedDict):
     reports_to_generate: List[str] | None
     processed_project_info: ProcessedProjectInfo | None
     config: Config
+    final_report: FinalReport | None
