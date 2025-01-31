@@ -18,8 +18,10 @@ class ProjectInfo(TypedDict):
     project_id: str
 
 class ProcessedProjectInfo(TypedDict):
+    urls_used_for_scrapping: list[str]
     combined_scrapped_content: str
     sec_raw_content: str
+    last_updated: str
 
 class AgentState(TypedDict):
     messages: Annotated[list, add_messages]

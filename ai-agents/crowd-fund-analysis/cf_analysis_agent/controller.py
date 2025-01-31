@@ -3,7 +3,7 @@ import argparse
 from agent import graph as parent_graph
 from cf_analysis_agent.agent_state import AgentState, ProjectInfo, ProcessedProjectInfo
 from cf_analysis_agent.utils.project_utils import scrape_url, scrape_urls
-from cf_analysis_agent.utils.report_utils import get_project_info_from_s3
+from cf_analysis_agent.utils.report_utils import get_project_info_from_s3, ensure_processed_project_info
 
 
 def prepare_processing_command(project_id, model, script_path="cf_analysis_agent/controller.py"):
@@ -88,15 +88,8 @@ def parse_arguments() -> AgentState:
         "additional_links": additional_links,
     }
 
-    scraped_urls = scrape_urls(list([crowdfunding_link, website_url]+additional_links))
-    sec_raw_content = scrape_url(latest_sec_filing_link) if report_type == "all" or report_type=="financial_review" else ""
+    processed_project_info = ensure_processed_project_info(project_id)
 
-    combined_content = "\n\n".join(scraped_urls)
-
-    processed_project_info: ProcessedProjectInfo = {
-        "combined_scrapped_content": combined_content,
-        "sec_raw_content": sec_raw_content
-    }
     return {
         "messages": [],
         "project_info": project_info,
