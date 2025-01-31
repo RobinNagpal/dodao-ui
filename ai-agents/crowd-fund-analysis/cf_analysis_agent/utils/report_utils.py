@@ -189,7 +189,7 @@ def update_status_file(
     Updates the `agent-status.json` file in the S3 bucket for a
     specific report's status, endTime, errorMessage, etc.
     """
-    agent_status_file_path = f"crowd-fund-analysis/{project_id}/agent-status.json"
+    agent_status_file_path = get_project_status_file_path(project_id)
 
     # Fetch current status from S3
     try:
@@ -367,7 +367,7 @@ def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
         "lastUpdated": datetime.now().isoformat()
     }
 
-    status_data["processed_project_info"] = new_processed_project_info
+    status_data["processedProjectInfo"] = new_processed_project_info
 
     # ----------------------- 7) Upload updated status file to S3 ----------------
     upload_to_s3(
