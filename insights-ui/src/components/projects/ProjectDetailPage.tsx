@@ -16,7 +16,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
 
   const fetchProjectDetails = async () => {
     try {
-      const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`);
+      const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`, { cache: 'no-cache' });
       const data = await res.json();
       setProjectDetails(data.projectDetails);
       setReloadTrigger(false);

@@ -66,14 +66,6 @@ export default function ProjectDetailTable({ reports, projectId, reload }: Proje
             </>
           ) : report.status === Status.completed ? (
             <div className="flex gap-2">
-              {report.pdfLink && (
-                <>
-                  <a href={report.pdfLink} target="_blank" rel="noopener noreferrer" className="link-color hover:underline">
-                    PDF
-                  </a>
-                  <span>|</span>
-                </>
-              )}
               {report.markdownLink && (
                 <Link
                   href={`/crowd-funding/projects/${encodeURIComponent(projectId)}/reports/${encodeURIComponent(report.name)}`}

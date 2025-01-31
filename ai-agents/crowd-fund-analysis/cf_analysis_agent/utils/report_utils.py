@@ -110,14 +110,14 @@ def get_project_info_from_s3(project_id: str) -> ProjectInfo:
 
     # Fetch the agent-status.json file from S3
     response = s3_client.get_object(Bucket=BUCKET_NAME, Key=f"crowd-fund-analysis/{agent_status_file_path}")
-    status_data: ProjectStatusFileSchema = json.loads(response['Body'].read().decode('utf-8'))
+    project_file_contents: ProjectStatusFileSchema = json.loads(response['Body'].read().decode('utf-8'))
 
     # Extract required variables
-    project_name = status_data.get("name", "").strip()
-    crowdfunding_link = status_data.get("projectInfoInput", {}).get("crowdFundingUrl", "").strip()
-    website_url = status_data.get("projectInfoInput", {}).get("websiteUrl", "").strip()
-    latest_sec_filing_link = status_data.get("projectInfoInput", {}).get("secFilingUrl", "").strip()
-    additional_links: list[str] = status_data.get("projectInfoInput", {}).get("additionalUrl", [])
+    project_name = project_file_contents.get("name", "").strip()
+    crowdfunding_link = project_file_contents.get("projectInfoInput", {}).get("crowdFundingUrl", "").strip()
+    website_url = project_file_contents.get("projectInfoInput", {}).get("websiteUrl", "").strip()
+    latest_sec_filing_link = project_file_contents.get("projectInfoInput", {}).get("secFilingUrl", "").strip()
+    additional_links: list[str] = project_file_contents.get("projectInfoInput", {}).get("additionalUrl", [])
 
     # Validate required fields
     if not all([project_name, crowdfunding_link, website_url, latest_sec_filing_link]):
@@ -166,7 +166,7 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
         }
 
     # Construct the status data
-    status_data: ProjectStatusFileSchema = {
+    project_file_contents: ProjectStatusFileSchema = {
         "id": project_id,
         "name": project_details["project_name"],
         "projectInfoInput": {
@@ -186,7 +186,7 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
     }
 
     # Upload the file to S3
-    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
+    upload_to_s3(json.dumps(project_file_contents, indent=4), agent_status_file_path, content_type="application/json")
     print(f"Initialized status file: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}")
 
 def get_project_file(project_id: str) -> ProjectStatusFileSchema:
@@ -198,12 +198,12 @@ def get_project_file(project_id: str) -> ProjectStatusFileSchema:
     return json.loads(response['Body'].read().decode('utf-8'))
 
 
-def update_project_status_data(project_id: str, status_data: ProjectStatusFileSchema):
+def update_project_file(project_id: str, project_file_contents: ProjectStatusFileSchema):
     """
     Uploads the updated project status data to S3.
     """
     agent_status_file_path = get_project_status_file_path(project_id)
-    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
+    upload_to_s3(json.dumps(project_file_contents, indent=4), agent_status_file_path, content_type="application/json")
     print(f"Updated status file: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}")
 
 
@@ -211,13 +211,14 @@ def update_report_status_in_progress(project_id: str, report_name: str):
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "in_progress".
     """
-    status_data = get_project_file(project_id)
+    project_file_contents = get_project_file(project_id)
 
-    if report_name not in status_data["reports"]:
+    if report_name not in project_file_contents["reports"]:
         raise Exception(f"Report type '{report_name}' not found in the status file.")
 
-    status_data["reports"][report_name] = get_init_data_for_report(report_name)
-    update_project_status_data(project_id, status_data)
+    project_file_contents["reports"][report_name] = get_init_data_for_report(report_name)
+    project_file_contents["reports"][report_name]["status"] = ReportStatus.IN_PROGRESS
+    update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_name}' to 'in_progress'.")
 
 
@@ -225,20 +226,20 @@ def update_report_status_completed(project_id: str, report_name: str, markdown_l
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "completed" and adds the markdown link.
     """
-    status_data = get_project_file(project_id)
+    project_file_contents = get_project_file(project_id)
 
-    if report_name not in status_data["reports"]:
+    if report_name not in project_file_contents["reports"]:
         raise Exception(f"Report type '{report_name}' not found in the status file.")
 
-    status_data["reports"][report_name]["status"] = ReportStatus.COMPLETED
-    status_data["reports"][report_name]["endTime"] = datetime.now().isoformat()
+    project_file_contents["reports"][report_name]["status"] = ReportStatus.COMPLETED
+    project_file_contents["reports"][report_name]["endTime"] = datetime.now().isoformat()
     if markdown_link:
-        status_data["reports"][report_name]["markdownLink"] = markdown_link
+        project_file_contents["reports"][report_name]["markdownLink"] = markdown_link
 
-    report_statuses = [r["status"] for r in status_data["reports"].values()]
-    status_data["status"] = "completed" if all(rs == ReportStatus.COMPLETED for rs in report_statuses) else ReportStatus.IN_PROGRESS
+    report_statuses = [r["status"] for r in project_file_contents["reports"].values()]
+    project_file_contents["status"] = "completed" if all(rs == ReportStatus.COMPLETED for rs in report_statuses) else ReportStatus.IN_PROGRESS
 
-    update_project_status_data(project_id, status_data)
+    update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_name}' to 'completed'.")
 
 
@@ -246,30 +247,30 @@ def update_report_status_failed(project_id: str, report_name: str, error_message
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "failed" and logs the error message.
     """
-    status_data = get_project_file(project_id)
+    project_file_contents = get_project_file(project_id)
 
-    if report_name not in status_data["reports"]:
+    if report_name not in project_file_contents["reports"]:
         raise Exception(f"Report type '{report_name}' not found in the status file.")
 
-    status_data["reports"][report_name]["status"] = ReportStatus.FAILED
-    status_data["reports"][report_name]["endTime"] = datetime.now().isoformat()
-    status_data["reports"][report_name]["errorMessage"] = error_message
-    status_data["status"] = ReportStatus.FAILED
+    project_file_contents["reports"][report_name]["status"] = ReportStatus.FAILED
+    project_file_contents["reports"][report_name]["endTime"] = datetime.now().isoformat()
+    project_file_contents["reports"][report_name]["errorMessage"] = error_message
+    project_file_contents["status"] = ReportStatus.FAILED
 
-    update_project_status_data(project_id, status_data)
+    update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_name}' to 'failed' with error message: {error_message}")
 
 def update_status_to_not_started_for_all_reports(project_id):
     agent_status_file_path = f"{project_id}/agent-status.json"
 
-    status_data = get_project_file(project_id)
+    project_file_contents = get_project_file(project_id)
 
     # Initialize all reports to "in_progress" and set timestamps
-    for report_type in status_data["reports"]:
-        status_data["reports"][report_type] = get_init_data_for_report(report_type)
+    for report_type in project_file_contents["reports"]:
+        project_file_contents["reports"][report_type] = get_init_data_for_report(report_type)
         print(f"Set status of report '{report_type}' to 'not_started'. Initialized startTime and estimatedTimeInSec.")
 
-    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
+    upload_to_s3(json.dumps(project_file_contents, indent=4), agent_status_file_path, content_type="application/json")
     print(f"Updated status file: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}")
 
 def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
@@ -286,14 +287,14 @@ def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
 
     try:
         response = s3_client.get_object(Bucket=BUCKET_NAME, Key=f"crowd-fund-analysis/{agent_status_file_path}")
-        status_data = json.loads(response['Body'].read().decode('utf-8'))
+        project_file_contents = json.loads(response['Body'].read().decode('utf-8'))
     except s3_client.exceptions.NoSuchKey:
         raise FileNotFoundError(
             f"agent-status.json not found in S3 at path: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}"
         )
 
     # ----------------------- 2) Gather the current URLs -------------------------
-    project_info = status_data.get("projectInfoInput", {})
+    project_info = project_file_contents.get("projectInfoInput", {})
     crowd_funding_url = project_info.get("crowdFundingUrl", "").strip()
     website_url = project_info.get("websiteUrl", "").strip()
     sec_filing_url = project_info.get("secFillingUrl", "").strip()
@@ -312,7 +313,7 @@ def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
     current_urls_sorted = sorted(set(current_urls))
 
     # ----------------------- 3) Check existing processed info -------------------
-    processed_project_info = status_data.get("processedProjectInfo", {})
+    processed_project_info = project_file_contents.get("processedProjectInfo", {})
     previous_urls = processed_project_info.get("urlsUsedForScraping") or []
 
     # Also sort for stable comparison
@@ -354,11 +355,11 @@ def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
         "lastUpdated": datetime.now().isoformat()
     }
 
-    status_data["processedProjectInfo"] = new_processed_project_info
+    project_file_contents["processedProjectInfo"] = new_processed_project_info
 
     # ----------------------- 7) Upload updated status file to S3 ----------------
     upload_to_s3(
-        content=json.dumps(status_data, indent=4),
+        content=json.dumps(project_file_contents, indent=4),
         s3_key=f"{project_id}/agent-status.json",
         content_type="application/json"
     )
