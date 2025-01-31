@@ -4,7 +4,6 @@ from datetime import datetime
 from dotenv import load_dotenv
 import webbrowser  # To open the URL in the default browser
 from io import BytesIO
-import boto3
 import traceback
 import sys
 import json
@@ -13,17 +12,20 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, ListFlowable, ListItem
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from bs4 import BeautifulSoup
-from langchain_openai import ChatOpenAI
+
+from cf_analysis_agent.utils.s3_utils import upload_to_s3, s3_client, BUCKET_NAME
+
+ALL_REPORT_TYPES: list[str] = [
+    "general_info",
+    "team_info",
+    "financial_review",
+    "red_flags",
+    "green_flags",
+    "relevant_links",
+]
 
 load_dotenv()
 
-s3_client = boto3.client(
-    "s3",
-    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-    region_name=os.getenv("AWS_DEFAULT_REGION")
-)
-BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 REGION=os.getenv("AWS_DEFAULT_REGION")
 OPEN_AI_DEFAULT_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4o')
 
@@ -98,18 +100,6 @@ def prepare_processing_command(project_id, model, script_path="cf_analysis_agent
 
     return command
 
-def upload_to_s3(content, s3_key, content_type="text/plain"):
-    """
-    Uploads content to S3.
-    """
-    s3_client.put_object(
-        Bucket=BUCKET_NAME,
-        Key=f"crowd-fund-analysis/{s3_key}",
-        Body=content,
-        ContentType=content_type,
-        ACL="public-read",
-    )
-    print(f"Uploaded to s3://{BUCKET_NAME}/{s3_key}")
 
 async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
     """
@@ -232,7 +222,7 @@ def initialize_report(project_id,report_type):
     # Set the status to "in_progress" and initialize timestamps
     status_data["reports"][report_type] = get_init_data_for_report(report_type)
     
-    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path,content_type="application/json")
+    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
     print(f"Set status of report '{report_type}' to 'in_progress'. Initialized startTime and estimatedTimeInSec.")
         
 
@@ -249,19 +239,12 @@ def initialize_all_reports(project_id):
         status_data["reports"][report_type] = get_init_data_for_report(report_type)
         print(f"Set status of report '{report_type}' to 'in_progress'. Initialized startTime and estimatedTimeInSec.")
         
-    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path,content_type="application/json")
+    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
     print(f"Updated status file: s3://{BUCKET_NAME}/{agent_status_file_path}")
     
 def initialize_status_file_with_input_data(project_id,project_details):
     # Initialize or reinitialize the file
-    reports= [
-        "general_info",
-        "team_info",
-        "financial_review",
-        "red_flags",
-        "green_flags",
-        "relevant_links",
-    ]
+    reports= ALL_REPORT_TYPES
     agent_status_file_path = f"{project_id}/agent-status.json"
     status_data = None
     current_time = datetime.now().isoformat()
@@ -295,7 +278,7 @@ def initialize_status_file_with_input_data(project_id,project_details):
     }
 
     # Upload the updated or initialized status file to S3
-    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path,content_type="application/json")
+    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
     print(f"Initialized status file: s3://{BUCKET_NAME}/{agent_status_file_path}")  
 
 async def update_status_file(project_id, report_name, status, error_message=None, markdown_link=None, pdf_link=None):
@@ -346,7 +329,7 @@ async def update_status_file(project_id, report_name, status, error_message=None
     # Upload the updated status to S3
     print(f"Updating status file: s3://{BUCKET_NAME}/{agent_status_file_path}")
 
-    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path,content_type="application/json")
+    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
     print(f"Updated status file: s3://{BUCKET_NAME}/{agent_status_file_path}")
 
 async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_key):
@@ -406,18 +389,4 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_ke
         )
         return None
     
-# Cache for storing initialized LLMs (prevents re-initialization)
-_llm_cache = {}
 
-def get_llm(config):
-    """
-    Retrieves the LLM model based on the config.
-    Uses caching to prevent redundant model creation.
-    """
-    model = config.get("configurable", {}).get("model", OPEN_AI_DEFAULT_MODEL)
-
-    # Check if the model is already initialized
-    if model not in _llm_cache:
-        _llm_cache[model] = ChatOpenAI(model_name=model, temperature=0)
-
-    return _llm_cache[model]  # Return the cached LLM instance

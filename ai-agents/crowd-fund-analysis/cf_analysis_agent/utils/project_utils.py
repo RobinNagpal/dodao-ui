@@ -1,4 +1,4 @@
-from typing import TypedDict, TypeVar, Protocol
+from typing import TypedDict, TypeVar
 from langchain_community.document_loaders import ScrapingAntLoader
 from dotenv import load_dotenv
 import os
@@ -12,7 +12,7 @@ SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 
 
 # Define a protocol that ensures the presence of 'project_urls'
-class HasProjectUrls(Protocol):
+class HasProjectUrls(TypedDict):
     project_urls: list[str]
 
 
@@ -21,7 +21,7 @@ class ScrapeProjectUrlsResponse(TypedDict):
     project_scraped_urls: List[str]
 
 
-class HasSecUrl(Protocol):
+class HasSecUrl(TypedDict):
     secUrl: str
 
 
@@ -51,6 +51,20 @@ def scrape_project_urls(state: StateType) -> ScrapeProjectUrlsResponse:
         ],
         "project_scraped_urls": scraped_content_list
     }
+
+def scrape_urls(urls: list[str]) -> list[str]:
+    scraped_content_list = []
+    for url in urls:
+        try:
+            print(f"Scraping URL: {url}")
+            loader = ScrapingAntLoader([url], api_key=SCRAPINGANT_API_KEY)
+            documents = loader.load()
+            page_content = documents[0].page_content
+            scraped_content_list.append(page_content)
+            return scraped_content_list
+        except Exception as e:
+            scraped_content_list.append(f"Error scraping {url}: {e}")
+
 
 
 def scrape_sec_url(state: StateTypeSec) -> list[str]:

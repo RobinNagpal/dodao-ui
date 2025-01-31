@@ -1,53 +1,48 @@
-from langgraph.graph import StateGraph, START
-from langgraph.graph.message import add_messages
-from langchain_core.messages import HumanMessage, AIMessage
-from langgraph.checkpoint.memory import MemorySaver
-from typing_extensions import TypedDict
-from typing import Annotated, List
-from dotenv import load_dotenv
 import os
-from cf_analysis_agent.utils.report_utils import get_llm
-from cf_analysis_agent.utils.project_utils import scrape_project_urls
+from typing import Annotated, List
+
+from dotenv import load_dotenv
+from langchain_core.messages import HumanMessage
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import StateGraph
+from langgraph.graph.message import add_messages
+from typing_extensions import TypedDict
+
+from cf_analysis_agent.agent_state import AgentState, GeneralInfoReportState
+from cf_analysis_agent.utils.agent_utils import combine_partial_state
+from cf_analysis_agent.utils.llm_utils import get_llm, Config
+from cf_analysis_agent.utils.report_utils import update_status_file
+from cf_analysis_agent.utils.s3_utils import upload_to_s3
 
 load_dotenv()
 
 SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 
+REPORT_NAME = "general_info"
+
+
 class State(TypedDict):
     messages: Annotated[list, add_messages]
+    project_id: str
     project_urls: List[str]
-    project_scraped_urls: List[str]         
-    combinedScrapedContent: str        
-    projectGeneralInfo: str           
+    project_scraped_urls: List[str]
+    combinedScrapedContent: str
+    projectGeneralInfo: str
+    config: Config
+
 
 graph_builder = StateGraph(State)
 memory = MemorySaver()
 
-def aggregate_scraped_content_node(state: State):
-    """
-    Combine all scraped content from multiple links into a single text blob,
-    stored in state["combinedScrapedContent"].
-    """
-    scraped_list = state.get("project_scraped_urls", [])
-    combined_text = "\n\n".join(scraped_list)
 
-    state["combinedScrapedContent"] = combined_text
-    
-    return {
-        "messages": [
-            AIMessage(content="Aggregated all scraped content into `combinedScrapedContent`. Ready to analyze.")
-        ],
-        "combinedScrapedContent": state["combinedScrapedContent"]
-    }
-
-def generate_project_info_report_node(state: State, config):
+def generate_project_info_report_node(state: AgentState):
     """
     Uses the LLM to produce a comprehensive, investor-facing report
     of the project's goals, achievements, product environment, etc.
     We exclude any risks, challenges, or assumptions.
     """
-    combined_text = state["combinedScrapedContent"]
-    
+    combined_text = state.get("processed_project_info").get("combined_scrapped_content")
+
     prompt = (
         f"""
         Below are the details of the project. We need to show all the important information to the crowd-funding investors.
@@ -71,42 +66,26 @@ def generate_project_info_report_node(state: State, config):
         Return only the textual report of these details.
         """
     )
-    llm = get_llm(config)
+    llm = get_llm(state.get("config"))
     response = llm.invoke([HumanMessage(content=prompt)])
-    state["projectGeneralInfo"] = response.content.strip()
-
-    # with open("project_general_info_report.md", "w", encoding="utf-8") as f:
-    #     f.write(state["projectGeneralInfo"])
-
-    return {
-        "messages": [
-            AIMessage(content="Project general info report generated and stored in `state['projectGeneralInfo']`."),
-        ],
-        "projectGeneralInfo": state["projectGeneralInfo"]
-    }
-
-graph_builder.add_node("scrape_project_urls", scrape_project_urls)
-graph_builder.add_node("aggregate_scraped_content", aggregate_scraped_content_node)
-graph_builder.add_node("generate_project_info_report", generate_project_info_report_node)
-
-graph_builder.add_edge(START, "scrape_project_urls")
-graph_builder.add_edge("scrape_project_urls", "aggregate_scraped_content")
-graph_builder.add_edge("aggregate_scraped_content", "generate_project_info_report")
-
-app = graph_builder.compile(checkpointer=memory)
+    return response.content.strip()
 
 
-# events = app.stream(
-#     {
-#         "messages": [("user", "Please gather the project's general info.")],
-#         "project_urls": [
-#             "https://wefunder.com/neighborhoodsun",
-#             "https://neighborhoodsun.solar/"
-#         ]
-#     },
-#     config,
-#     stream_mode="values"
-# )
-
-# for event in events:
-#     event["messages"][-1].pretty_print()
+def create_general_info_report_payload(state: AgentState) -> GeneralInfoReportState:
+    print("Generating general info report")
+    print(state)
+    project_id = state.get("project_info").get("project_id")
+    try:
+        report_content = generate_project_info_report_node(state)
+        upload_to_s3(report_content, f"{project_id}/{REPORT_NAME}.md")
+        return {"general_info_report_content": report_content}
+    except Exception as e:
+        # Capture full stack trace
+        error_message = str(e)
+        print(f"An error occurred:\n{error_message}")
+        update_status_file(
+            project_id,
+            REPORT_NAME,
+            "failed",
+            error_message=error_message
+        )

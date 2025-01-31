@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import os
 import json
 import time
-from cf_analysis_agent.utils.report_utils import get_llm
+from cf_analysis_agent.utils.llm_utils import get_llm
 from cf_analysis_agent.utils.project_utils import scrape_project_urls, scrape_sec_url
 
 load_dotenv()
