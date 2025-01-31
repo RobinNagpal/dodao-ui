@@ -10,7 +10,8 @@ import subprocess
 # # Add the parent directory of app.py to the Python path this maybe temporary we can change it later for that we will have to change docker file as well
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from cf_analysis_agent.utils.report_utils import prepare_processing_command,initialize_report,initialize_all_reports,initialize_status_file_with_input_data
+from cf_analysis_agent.utils.report_utils import initialize_report,set_in_progress_for_all_reports,initialize_project_in_s3
+from cf_analysis_agent.controller import prepare_processing_command
 
 app = Flask(__name__)
 CORS(app)  # This will allow all origins by default
@@ -48,7 +49,7 @@ def submit():
         "additional_links":additional_links
     }
     # Prepare the command to start processing
-    initialize_status_file_with_input_data(project_id=project_id,project_details=project_details)
+    initialize_project_in_s3(project_id=project_id, project_details=project_details)
     command = [
         "poetry", "run", "python", "cf_analysis_agent/controller.py",
         project_name,
@@ -101,7 +102,7 @@ def regenerate_reports(projectId):
         data = request.get_json(silent=True) or {} # Handle case if no body was sent
         model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
         
-        initialize_all_reports(project_id=projectId)
+        set_in_progress_for_all_reports(project_id=projectId)
         command = prepare_processing_command(projectId, model)
 
         # Start the subprocess
