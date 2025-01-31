@@ -79,13 +79,13 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
   }, [reloadTrigger]);
 
   return (
-    <div className="mx-auto max-w-lg">
+    <div className="w-full">
       <div className="text-center text-color my-5">
         <h1 className="font-semibold leading-6 text-2xl">{projectDetails.name}</h1>
         <div className="my-5">Overall Status: {projectDetails.status}</div>
       </div>
       {reports.length > 0 ? (
-        <div className="block-bg-color">
+        <div className="block-bg-color w-full">
           <ProjectDetailTable reports={reports} projectId={projectId} reload={() => setReloadTrigger(true)} />
         </div>
       ) : (

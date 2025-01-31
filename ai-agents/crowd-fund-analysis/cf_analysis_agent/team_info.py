@@ -1,16 +1,18 @@
+import json
+import os
+from typing import List, Dict, Any
+
+from dotenv import load_dotenv
 from langchain_community.utilities import GoogleSerperAPIWrapper
 from langchain_core.messages import HumanMessage
 from linkedin_scraper import Person, actions
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from typing_extensions import TypedDict
-from typing import List, Dict, Any
-from dotenv import load_dotenv
-import os
-import json
+
 from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_status_file
+from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_report_status_failed
 
 load_dotenv()
 
@@ -277,16 +279,15 @@ def create_team_info_report(state: AgentState) -> None:
         combined_text = state.get("processed_project_info").get("combined_scrapped_content")
         startup_info = find_startup_info(state.get("config"), combined_text)
         linkedin_urls = find_linkedin_urls(startup_info)
-        rawProfiles = scrape_linkedin_profiles(linkedin_urls)
-        team_info_report = evaluate_profiles(state.get("config"), rawProfiles, startup_info)
+        raw_profiles = scrape_linkedin_profiles(linkedin_urls)
+        team_info_report = evaluate_profiles(state.get("config"), raw_profiles, startup_info)
         upload_report_to_s3(project_id, REPORT_NAME, team_info_report)
     except Exception as e:
         # Capture full stack trace
         error_message = str(e)
         print(f"An error occurred:\n{error_message}")
-        update_status_file(
+        update_report_status_failed(
             project_id,
             REPORT_NAME,
-            "failed",
             error_message=error_message
         )

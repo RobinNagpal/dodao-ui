@@ -1,7 +1,8 @@
 from langchain_core.messages import HumanMessage
+
 from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_status_file
+from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_report_status_failed
 
 REPORT_NAME = "green_flags"
 
@@ -120,9 +121,8 @@ def create_green_flags_report(state: AgentState) -> None:
         # Capture full stack trace
         error_message = str(e)
         print(f"An error occurred:\n{error_message}")
-        update_status_file(
+        update_report_status_failed(
             project_id,
             REPORT_NAME,
-            "failed",
             error_message=error_message
         )

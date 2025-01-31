@@ -27,7 +27,7 @@ export default async function ReportDetailPage({ params }: { params: Promise<{ p
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <div className="mx-auto max-w-4xl text-color">
+      <div className="mx-auto text-color">
         <div className="text-center text-color my-5">
           <h1 className="font-semibold leading-6 text-2xl">Project: {projectId}</h1>
           <div className="my-5">Report: {reportType}</div>
