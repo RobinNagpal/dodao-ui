@@ -1,8 +1,8 @@
 import asyncio
 import argparse
 from agent import graph as parent_graph
-from cf_analysis_agent.agent_state import AgentState, ProjectInfo
-from cf_analysis_agent.utils.project_utils import scrape_urls
+from cf_analysis_agent.agent_state import AgentState, ProjectInfo, ProcessedProjectInfo
+from cf_analysis_agent.utils.project_utils import scrape_url, scrape_urls
 from cf_analysis_agent.utils.report_utils import get_project_info_from_s3
 
 
@@ -88,8 +88,15 @@ def parse_arguments() -> AgentState:
         "additional_links": additional_links,
     }
 
-    scraped_urls = scrape_urls(list([crowdfunding_link, website_url]))
+    scraped_urls = scrape_urls(list([crowdfunding_link, website_url]+additional_links))
+    sec_raw_content = scrape_url(latest_sec_filing_link) if report_type == "all" or report_type=="financial_review" else ""
+
     combined_content = "\n\n".join(scraped_urls)
+
+    processed_project_info: ProcessedProjectInfo = {
+        "combined_scrapped_content": combined_content,
+        "sec_raw_content": sec_raw_content
+    }
     return {
         "messages": [],
         "project_info": project_info,
@@ -100,9 +107,7 @@ def parse_arguments() -> AgentState:
             }
         },
         "reports_to_generate": None,
-        "processed_project_info": {
-            "combined_scrapped_content": combined_content
-        }
+        "processed_project_info": processed_project_info
     }
 
 

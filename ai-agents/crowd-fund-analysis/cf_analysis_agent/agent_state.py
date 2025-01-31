@@ -19,6 +19,7 @@ class ProjectInfo(TypedDict):
 
 class ProcessedProjectInfo(TypedDict):
     combined_scrapped_content: str
+    sec_raw_content: str
 
 class AgentState(TypedDict):
     messages: Annotated[list, add_messages]
