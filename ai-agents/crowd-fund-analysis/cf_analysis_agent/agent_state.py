@@ -17,10 +17,6 @@ class ProjectInfo(TypedDict):
     additional_links: list
     project_id: str
 
-class GeneralInfoReportState(TypedDict):
-    general_info_report_content: str
-
-
 class ProcessedProjectInfo(TypedDict):
     combined_scrapped_content: str
 
@@ -30,5 +26,4 @@ class AgentState(TypedDict):
     report_input: str
     reports_to_generate: List[str] | None
     processed_project_info: ProcessedProjectInfo | None
-    general_info_report: GeneralInfoReportState | None
     config: Config
