@@ -51,6 +51,7 @@ def submit():
     initialize_project_in_s3(project_id=project_id, project_details=project_details)
     command = [
         "poetry", "run", "python", "cf_analysis_agent/controller.py",
+        project_id,
         project_name,
         crowdfunding_link,
         website_url,
@@ -58,6 +59,9 @@ def submit():
     ]
     if additional_links:
         command.extend(["--additional_links", ",".join(additional_links)])
+
+    # Append the selected model as an argument
+    command.extend(["--model", OPEN_AI_DEFAULT_MODEL])
 
     # Run the command asynchronously
     subprocess.Popen(command)

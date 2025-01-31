@@ -367,7 +367,7 @@ def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
         "lastUpdated": datetime.now().isoformat()
     }
 
-    status_data["processed_project_info"] = new_processed_project_info
+    status_data["processedProjectInfo"] = new_processed_project_info
 
     # ----------------------- 7) Upload updated status file to S3 ----------------
     upload_to_s3(
