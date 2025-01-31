@@ -1,19 +1,11 @@
-from langgraph.graph import StateGraph, START
-from langgraph.graph.message import add_messages
-from langchain_core.messages import HumanMessage, AIMessage
-from langgraph.checkpoint.memory import MemorySaver
+from langchain_core.messages import HumanMessage
 from typing_extensions import TypedDict
-from typing import Annotated, List
-from dotenv import load_dotenv
-import os
 import json
-import time
+from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.project_utils import scrape_project_urls, scrape_sec_url
+from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_status_file
 
-load_dotenv()
-
-SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
+REPORT_NAME = "financial_review"
 
 class FormCData(TypedDict):
     offering_statement_date: str
@@ -25,23 +17,7 @@ class AdditionalData(TypedDict):
     financials: dict
     relevant_metrics: dict
 
-class State(TypedDict):
-    messages: Annotated[list, add_messages]
-    secUrl: str
-    project_urls: List[str]  # Additional links other than SEC filings
-    scraped_content: List[str]  # Store scraped content for each link
-    form_c_data: FormCData
-    additional_data: AdditionalData
-    consolidated_table: str
-    finalFinancialReport: str
-
-graph_builder = StateGraph(State)
-memory = MemorySaver()
-config = {"configurable": {"thread_id": "3"}}
-
-
-
-def scrape_and_extract_sec_node(state: State, config, max_retries=10, retry_delay=5):
+def extract_data_from_sec_node(sec_content: str,config:Config):
     """
     Scrapes the SEC filing page and extracts Form C financial data with retry logic.
     
@@ -50,28 +26,6 @@ def scrape_and_extract_sec_node(state: State, config, max_retries=10, retry_dela
         max_retries: Maximum number of retry attempts (default: 5).
         retry_delay: Time (in seconds) to wait between retries (default: 5 seconds).
     """
-    attempts = 0
-
-    while attempts < max_retries:
-        try:
-            
-            # Successfully scraped content
-            state["scraped_content"] = scrape_sec_url(state)
-            break  # Exit the loop if successful
-
-        except Exception as e:
-            attempts += 1
-            print(f"Error scraping SEC URL: {e}. Retrying in {retry_delay} seconds...")
-            time.sleep(retry_delay)
-
-            # Clear scraped content state on failure
-            state["scraped_content"] = []
-
-    # If scraping failed after all retries, return an error
-    if not state["scraped_content"]:
-        return {"messages": [AIMessage(content=f"Failed to scrape SEC URL after {max_retries} attempts.")]}
-
-    # LLM prompt for extracting Form C data
     prompt = (
         "Extract the following financial information for both the most recent fiscal year "
         "Also extract the years for the most recent fiscal year and prior fiscal year so the user can identify both\n"
@@ -97,56 +51,22 @@ def scrape_and_extract_sec_node(state: State, config, max_retries=10, retry_dela
         "    ...\n"
         "  }\n"
         "}\n\n"
-        f"Content:\n{state['scraped_content'][0]}"
+        f"Content:\n{sec_content}"
     )
 
-    try:
-        llm = get_llm(config)
-        response = llm.invoke([HumanMessage(content=prompt)])
-        response_content = response.content.strip()
-        if response_content.startswith("```json"):
-            response_content = response_content[7:-3].strip()
+    llm = get_llm(config)
+    response = llm.invoke([HumanMessage(content=prompt)])
+    response_content = response.content.strip()
+    if response_content.startswith("```json"):
+        response_content = response_content[7:-3].strip()
 
-        form_c_data = json.loads(response_content)
-        state["form_c_data"] = form_c_data
-        #print("Extracted Form C Data:", form_c_data)
+    form_c_data = json.loads(response_content)
+    return form_c_data
 
-        # Generate table
-        table = "| Metric              | Most Recent Fiscal Year | Prior Fiscal Year |\n"
-        table += "|---------------------|--------------------------|-------------------|\n"
-        for metric, values in form_c_data["financials"].items():
-            table += f"| {metric} | {values.get('most_recent', 'N/A')} | {values.get('prior', 'N/A')} |\n"
-
-        return {
-            "messages": [AIMessage(content="SEC Form C data extracted successfully.")],
-            "form_c_data": state["form_c_data"]
-        }
-    except json.JSONDecodeError as e:
-        print(f"JSON Decode Error: {e}")
-        #print(f"LLM Response: {response.content}")
-        return {"messages": [AIMessage(content="Error parsing SEC data.")]}
-
-
-def scrape_additional_links_node(state: State):
-    """
-    Scrapes all additional links related to the startup.
-    """
-    scraped_content = state["scraped_content"]
-    scraped_content_list = scrape_project_urls(state)
-    state["scraped_content"]= scraped_content+scraped_content_list
-
-
-    return {
-        "messages": [AIMessage(content="Project URLs scraped successfully.")],
-        "scraped_content": state["scraped_content"]
-    }
-
-
-def extract_additional_data_node(state: State, config):
+def extract_additional_data_node(combined_text:str, config:Config):
     """
     Extracts financials and other relevant metrics from the scraped additional links.
     """
-    scraped_content = state["scraped_content"]
     all_metrics = {}
     relevant_metrics = {}
 
@@ -163,78 +83,51 @@ def extract_additional_data_node(state: State, config):
         "Net Income",
     }
 
-    for content in scraped_content[1:]:
-        if "Failed to scrape" in content:
-            continue
 
-        prompt = (
-            "From the content provided, extract the following details:\n"
-            "- Financial metrics\n"
-            "- Any other relevant information for investors\n\n"
-            "Return a JSON object with the structure:\n"
-            "{\n"
-            "  'financials': {\n"
-            "    'Metric Name': str,\n"
-            "    ...\n"
-            "  },\n"
-            "  'relevant_metrics': {\n"
-            "    'Key Info': str,\n"
-            "    ...\n"
-            "  }\n"
-            "}\n\n"
-            f"Content:\n{content}"
-        )
-        llm = get_llm(config)
-        response = llm.invoke([HumanMessage(content=prompt)])
-        try:
-            #print(response)
-            response_content = response.content.strip()
-            if response_content.startswith("```json"):
-                response_content = response_content[7:-3].strip()
-            extracted_data = json.loads(response_content)
+    prompt = (
+        "From the content provided, extract the following details:\n"
+        "- Financial metrics\n"
+        "- Any other relevant information for investors\n\n"
+        "Return a JSON object with the structure:\n"
+        "{\n"
+        "  'financials': {\n"
+        "    'Metric Name': str,\n"
+        "    ...\n"
+        "  },\n"
+        "  'relevant_metrics': {\n"
+        "    'Key Info': str,\n"
+        "    ...\n"
+        "  }\n"
+        "}\n\n"
+        f"Content:\n{combined_text}"
+    )
+    llm = get_llm(config)
+    response = llm.invoke([HumanMessage(content=prompt)])   
+    response_content = response.content.strip()
+    if response_content.startswith("```json"):
+        response_content = response_content[7:-3].strip()
+    extracted_data = json.loads(response_content)
 
-            # Filter out excluded metrics
-            financials = {
-                k: v for k, v in extracted_data.get("financials", {}).items()
-                if k not in excluded_metrics
-            }
-            all_metrics.update(financials)
-            relevant_metrics.update(extracted_data.get("relevant_metrics", {}))
+    # Filter out excluded metrics
+    financials = {
+        k: v for k, v in extracted_data.get("financials", {}).items()
+        if k not in excluded_metrics
+    }
+    all_metrics.update(financials)
+    relevant_metrics.update(extracted_data.get("relevant_metrics", {}))
 
-        except json.JSONDecodeError as e:
-            print(f"JSON Decode Error: {e} for link")
-
-    state["additional_data"] = {
+    additional_data={
         "financials": all_metrics,
         "relevant_metrics": relevant_metrics
     }
+    return additional_data
 
-    # Generate table
-    table = "| Metric              | Value                   |\n"
-    table += "|---------------------|--------------------------|\n"
-    for metric, value in all_metrics.items():
-        table += f"| {metric} | {value} |\n"
-
-    table += "\n### Relevant Metrics\n"
-    table += "| Metric              | Value                   |\n"
-    table += "|---------------------|--------------------------|\n"
-    for key, value in relevant_metrics.items():
-        table += f"| {key} | {value} |\n"
-
-    return {
-        "messages": [AIMessage(content="Additional financial data extracted successfully.")],
-        "additional_data": state["additional_data"]
-    }
-
-
-def create_consolidated_table_node(state: State):
+def create_consolidated_table_node(form_c_data: FormCData, additional_data: AdditionalData):
     """
     Combines SEC filing data and additional data into comprehensive tables.
     Maintains years for Form C financial data while simplifying additional data 
     to only include current values for financials and relevant metrics.
     """
-    form_c_data = state["form_c_data"]
-    additional_data = state["additional_data"]
 
     # Build the table for Form C financial data
     form_c_table = "| Metric              | Most Recent Fiscal Year | Prior Fiscal Year |\n"
@@ -258,16 +151,11 @@ def create_consolidated_table_node(state: State):
         + additional_table
     )
 
-    state["consolidated_table"] = consolidated_content
-
-    return {
-        "messages": [AIMessage(content="Consolidated table created successfully.")],
-        "consolidated_table": state["consolidated_table"]
-    }
+    return consolidated_content
 
 
 
-def prepare_investor_report_with_analyses_node(state: State, config):
+def prepare_investor_report_with_analyses_node(combined_text:str,form_c_data:FormCData,additional_data:AdditionalData,consolidated_table:str, config: Config):
     """
     Prepares a comprehensive investor report with:
     - Sector identification.
@@ -275,14 +163,10 @@ def prepare_investor_report_with_analyses_node(state: State, config):
     - Consolidation of sector-specific financial outlook.
     - Final report combining all insights and analysis.
     """
-    consolidated_table = state["consolidated_table"]
-    form_c_data = state["form_c_data"]
-    additional_data = state["additional_data"]
-
     # 1. Identify Sector and Generate Sector-Specific Financial Outlook
     sector_prompt = (
         "Based on the startup's financial and relevant metrics, as well as the scraped content below, identify the primary industry or sector it operates in.\n\n"
-        f"Scraped Content:\n{state['scraped_content']}\n\n"
+        f"Scraped Content:\n{combined_text}\n\n"
         "Return only the sector name."
     )
     llm = get_llm(config)
@@ -372,57 +256,30 @@ def prepare_investor_report_with_analyses_node(state: State, config):
 ## Additional Data (Financials and Relevant Metrics) with Feedback
 {additional_table}
 """
-    # Save the Final Report
-    state["finalFinancialReport"] = report
-    # with open("final_investor_report.md", "w", encoding="utf-8") as f:
-    #     f.write(report)
+    return report
 
-    # Update State
-    #print("Final Investor Report Generated:\n", report)
-
-    return {
-        "messages": [AIMessage(content="Final comprehensive report generated and saved as `final_investor_report.md`.")],
-        "finalFinancialReport": state["finalFinancialReport"]
-    }
-
-
-
-# Add nodes to the graph
-graph_builder.add_node("scrape_project_urls", scrape_project_urls)
-graph_builder.add_node("scrape_and_extract_sec", scrape_and_extract_sec_node)
-graph_builder.add_node("scrape_additional_links", scrape_additional_links_node)
-graph_builder.add_node("extract_additional_data", extract_additional_data_node)
-graph_builder.add_node("create_consolidated_table", create_consolidated_table_node)
-graph_builder.add_node("prepare_investor_report_with_analyses_node", prepare_investor_report_with_analyses_node)
-
-# Define edges (control flow)
-graph_builder.add_edge(START, "scrape_project_urls")
-graph_builder.add_edge("scrape_project_urls", "scrape_and_extract_sec")
-graph_builder.add_edge("scrape_and_extract_sec", "scrape_additional_links")
-graph_builder.add_edge("scrape_additional_links", "extract_additional_data")
-graph_builder.add_edge("extract_additional_data", "create_consolidated_table")
-graph_builder.add_edge("create_consolidated_table", "prepare_investor_report_with_analyses_node")
-
-app = graph_builder.compile(checkpointer=memory)
-
-# # Example run
-# events = app.stream(
-#     {
-#         "messages": [
-#             (
-#                 "user",
-#                 "https://www.sec.gov/Archives/edgar/data/1691595/000167025424000661/xslC_X01/primary_doc.xml"
-#             )
-#         ],
-#         "url_to_scrape": "https://www.sec.gov/Archives/edgar/data/1691595/000167025424000661/xslC_X01/primary_doc.xml",
-#         "additional_links": [
-#             "https://wefunder.com/neighborhoodsun",
-#             "https://neighborhoodsun.solar/",
-#         ],
-#         "scraped_content": {},
-#     },
-#     config,
-#     stream_mode="values"
-# )
-# for event in events:
-#     event["messages"][-1].pretty_print()
+def create_financial_review_report(state: AgentState) -> None:
+    """
+    Orchestrates the entire green flags analysis process.
+    """
+    project_id = state.get("project_info").get("project_id")
+    print("Generating financial review report")
+    try:
+        combined_text = state.get("processed_project_info").get("combined_scrapped_content")
+        sec_content = state.get("processed_project_info").get("sec_scraped_content")
+        form_c_data = extract_data_from_sec_node(sec_content,state.get("config"))
+        additional_data = extract_additional_data_node(combined_text,state.get("config"))
+        consolidated_table = create_consolidated_table_node(form_c_data,additional_data)
+        final_report = prepare_investor_report_with_analyses_node(combined_text,form_c_data,additional_data,consolidated_table,state.get("config"))
+        upload_report_to_s3(project_id, REPORT_NAME, final_report)
+        
+    except Exception as e:
+        # Capture full stack trace
+        error_message = str(e)
+        print(f"An error occurred:\n{error_message}")
+        update_status_file(
+            project_id,
+            REPORT_NAME,
+            "failed",
+            error_message=error_message
+        )

@@ -65,13 +65,3 @@ def scrape_url(url: str) -> str:
         raise e
 
 
-def scrape_sec_url(state: StateTypeSec) -> list[str]:
-    url = state.get("secUrl", "")
-    try:
-        print(f"Scraping SEC URL: {url}")
-        loader = ScrapingAntLoader([url], api_key=SCRAPINGANT_API_KEY)
-        documents = loader.load()
-        page_content = documents[0].page_content
-        return [page_content]
-    except Exception as e:
-        return [f"Error scraping {url}: {e}"]
