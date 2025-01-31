@@ -1,9 +1,8 @@
-import asyncio
 from typing import Sequence
-from typing_extensions import TypedDict
 from langgraph.graph import END, START, StateGraph
 
-from general_info import app as general_info_app
+from cf_analysis_agent.agent_state import AgentState, ProjectInfo
+from general_info import create_general_info_report_payload
 from team_info import app as team_info_app
 from red_flags import app as red_flags_app
 from green_flags import app as green_flags_app
@@ -12,24 +11,13 @@ from relevant_links import app as relevant_links_app
 from cf_analysis_agent.utils.report_utils import (
     run_agent_and_get_final_output_async,
     initialize_status_file_with_input_data,
-    convert_markdown_to_pdf_and_upload,
 )
 
 # ------------------- STATE DEFINITION ------------------- #
-class State(TypedDict):
-    report: str
-    project_id: str
-    project_name: str
-    crowdfunding_link: str
-    website_url: str
-    latest_sec_filing_link: str
-    additional_links: list
-    model: str
-    input_data: dict
+
 
 # ------------------- REPORT MAPPING ------------------- #
 report_apps = {
-    "general_info": general_info_app,
     "team_info": team_info_app,
     "financial_review": financial_review_app,
     "green_flags": green_flags_app,
@@ -47,38 +35,18 @@ final_key_map = {
 }
 
 # ------------------- PAYLOAD CREATION ------------------- #
-def create_payload(state: State) -> dict:
+def initialize_first_step(agent_state: AgentState) -> None:
     """
     Creates input data required for report nodes.
     Extracts project details like URLs, team details, SEC filings.
     """
-    project_id = state["project_id"]
-    project_name = state["project_name"]
-    crowdfunding_link = state["crowdfunding_link"]
-    website_url = state["website_url"]
-    latest_sec_filing_link = state["latest_sec_filing_link"]
-    additional_links = state["additional_links"]
-    model = state["model"]
+    print("Initializing first step")
+    print(agent_state)
+    print("Initialized first step")
 
-    input_data = {
-        report: {
-            "id": project_id,
-            "messages": [("user", f"Generate {report} report using {model}.")],
-            "output_file": f"{project_id}/{report}.md",
-            "project_urls": [crowdfunding_link, website_url] if report != "financial_review" else [latest_sec_filing_link],
-            "model": model,
-            "additional_links": additional_links,
-        }
-        for report in report_apps.keys()
-    }
-
-    # Initialize the status file in S3
-    initialize_status_file_with_input_data(project_id, state)
-
-    return {"input_data": input_data}
 
 # ------------------- REPORT EXECUTION ------------------- #
-async def invoke_report(state: State):
+async def invoke_report(state: AgentState):
     """
     Generalized function to invoke any report graph asynchronously.
     """
@@ -94,54 +62,51 @@ async def invoke_report(state: State):
         app=report_apps[report_name],
         input_data=input_data,
         final_key=final_key_map[report_name],
-        s3_key=input_data["output_file"],
+        s3_key=report_name,
     )
 
 # ------------------- REPORT HANDLING (Including PDF Conversion) ------------------- #
-def handle_reports(state: State) -> dict:
+def create_final_report(state: AgentState) -> dict:
     """
     Aggregates all the reports into a final result.
     """
     return {"final_report": "Compiled Reports", "reports": state}
 
 # ------------------- ROUTE SELECTION ------------------- #
-def route_single_or_all(state: State) -> Sequence[str]:
+def route_single_or_all(state: AgentState) -> Sequence[str]:
     """
     Routes execution to either a single report node or all nodes.
     """
-    if state["report"] == "all":
+    if state["report_input"] == "general_info":
+        return ["general_info"]
+    if state["report_input"] == "all":
         return list(report_apps.keys())  # Convert dict_keys to list
-    elif state["report"] in report_apps:
-        return [state["report"]]
+    elif state["report_input"] in report_apps:
+        return [state["report_input"]]
     else:
-        raise ValueError(f"Invalid report selection: {state['report']}")
+        raise ValueError(f"Invalid report selection: {state['report_input']}")
 
 # ------------------- BUILDING THE GRAPH ------------------- #
-builder = StateGraph(State)
-
-# First Level (Payload Creation)
-builder.add_node("payload_creation", create_payload)
-builder.add_edge(START, "payload_creation")
-
 # Add report nodes dynamically
+
+
+builder = StateGraph(AgentState)
+
 for report_name in report_apps.keys():
     builder.add_node(report_name, invoke_report)
 
-# Add report handling node
-builder.add_node("report_handling", handle_reports)
 
-# Conditional Routing from Payload Creation to Reports
-builder.add_conditional_edges(
-    "payload_creation",
-    route_single_or_all,
-    list(report_apps.keys()),
-)
+# First Level (Payload Creation)
+builder.add_node("initialize_first_step", initialize_first_step)
+builder.add_node("general_info", create_general_info_report_payload)
+builder.add_node("create_final_report", create_final_report)
 
-# Reports fan-in into report_handling
-for node in report_apps.keys():
-    builder.add_edge(node, "report_handling")
 
-builder.add_edge("report_handling", END)
+
+builder.add_edge(START, "initialize_first_step")
+builder.add_conditional_edges("initialize_first_step", route_single_or_all, list(report_apps.keys()).append("general_info"))
+builder.add_edge(list(report_apps.keys()), "create_final_report")
+builder.add_edge("create_final_report", END)
 
 # Compile Graph
 graph = builder.compile()

@@ -15,7 +15,7 @@ import os
 import time
 import json
 import requests
-from cf_analysis_agent.utils.report_utils import get_llm
+from cf_analysis_agent.utils.llm_utils import get_llm
 from cf_analysis_agent.utils.project_utils import scrape_project_urls
 
 load_dotenv()

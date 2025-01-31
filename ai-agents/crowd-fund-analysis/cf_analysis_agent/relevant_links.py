@@ -10,7 +10,7 @@ import os
 import json
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import WebBaseLoader
-from cf_analysis_agent.utils.report_utils import get_llm
+from cf_analysis_agent.utils.llm_utils import get_llm
 from cf_analysis_agent.utils.project_utils import scrape_project_urls
 
 load_dotenv()

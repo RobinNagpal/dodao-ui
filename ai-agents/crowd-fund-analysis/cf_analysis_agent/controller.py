@@ -1,8 +1,11 @@
 import asyncio
 import argparse
 from agent import graph as parent_graph
+from cf_analysis_agent.agent_state import AgentState, ProjectInfo
+from cf_analysis_agent.utils.project_utils import scrape_urls
 
-def parse_arguments():
+
+def parse_arguments() -> AgentState:
     """
     Parses command-line arguments and returns project details.
     """
@@ -35,42 +38,46 @@ def parse_arguments():
     website_url = args.website_url.strip().strip('"')
     latest_sec_filing_link = args.latest_sec_filing_link.strip().strip('"')
     additional_links = [link.strip() for link in args.additional_links.split(",") if link.strip()]
-    report_type = args.report_type.strip().strip('"') if args.report_type else None
+    report_type = args.report_type.strip().strip('"') if args.report_type else "all"
     model = args.model.strip().strip('"') if args.model else None
 
     project_id = project_name.replace(" ", "_").lower()
 
-    return {
+    project_info: ProjectInfo = {
         "project_name": project_name,
         "crowdfunding_link": crowdfunding_link,
         "website_url": website_url,
         "latest_sec_filing_link": latest_sec_filing_link,
         "additional_links": additional_links,
-        "report_type": report_type,
         "project_id": project_id,
-        "model": model
+    }
+    scraped_urls = scrape_urls(list([crowdfunding_link, website_url]))
+    combined_content = "\n\n".join(scraped_urls)
+    return {
+        "messages": [],
+        "project_info": project_info,
+        "report_input": report_type,
+        "config": {
+            "configurable": {
+                "model": model
+            }
+        },
+        "reports_to_generate": None,
+        "processed_project_info": {
+            "combined_scrapped_content": combined_content
+        },
+        "general_info_report": None
     }
 
-async def main_controller_async(project_details):
+
+
+async def main_controller_async(agent_state: AgentState):
     """
     Replaces manual report execution with parent graph invocation.
     """
-    report_type = project_details["report_type"]
-
-    if report_type:
-        # Run a single report
-        await parent_graph.ainvoke({
-            "report": report_type,
-            **project_details
-        })
-    else:
-        # Run all reports
-        await parent_graph.ainvoke({
-            "report": "all",
-            **project_details
-        })
+    await parent_graph.ainvoke(agent_state)
 
 
 if __name__ == "__main__":
-    project_details = parse_arguments()
-    asyncio.run(main_controller_async(project_details))
+    initialState = parse_arguments()
+    asyncio.run(main_controller_async(initialState))
