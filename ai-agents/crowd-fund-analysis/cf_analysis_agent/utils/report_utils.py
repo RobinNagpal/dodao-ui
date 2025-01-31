@@ -177,98 +177,75 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
     upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
     print(f"Initialized status file: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}")
 
-
-def update_status_file(
-        project_id: str,
-        report_name: str,
-        status: str,
-        error_message: Optional[str] = None,
-        markdown_link: Optional[str] = None
-):
+def get_project_file(project_id: str) -> ProjectStatusFileSchema:
     """
-    Updates the `agent-status.json` file in the S3 bucket for a
-    specific report's status, endTime, errorMessage, etc.
+    Fetches and returns the project status data from S3.
     """
     agent_status_file_path = get_project_status_file_path(project_id)
+    response = s3_client.get_object(Bucket=BUCKET_NAME, Key="crowd-fund-analysis/" + agent_status_file_path)
+    return json.loads(response['Body'].read().decode('utf-8'))
 
-    # Fetch current status from S3
-    try:
-        response = s3_client.get_object(Bucket=BUCKET_NAME, Key=agent_status_file_path)
-        status_data: ProjectStatusFileSchema = json.loads(response['Body'].read().decode('utf-8'))
-    except s3_client.exceptions.NoSuchKey:
-        # If the file doesn't exist, create a minimal structure
-        status_data = {
-            "id": project_id,
-            "name": "",
-            "projectInfoInput": {
-                "crowdFundingUrl": "",
-                "secFilingUrl": "",
-                "additionalUrl": [],
-                "websiteUrl": ""
-            },
-            "status": "in_progress",
-            "reports": {},
-            "finalReport": {
-                "status": "in_progress",
-                "markdownLink": None,
-                "startTime": datetime.now().isoformat(),
-                "estimatedTimeInSec": 200
-            }
-        }
 
-    # Ensure the report entry exists
-    if report_name not in status_data["reports"]:
-        status_data["reports"][report_name] = {
-            "status": "in_progress",
-            "markdownLink": None,
-            "startTime": datetime.now().isoformat(),
-            "estimatedTimeInSec": 150
-        }
-
-    # Update status
-    status_data["reports"][report_name]["status"] = status
-
-    # Optionally add markdown link
-    if markdown_link:
-        status_data["reports"][report_name]["markdownLink"] = markdown_link
-
-    # If completed or failed, add endTime
-    if status in ["completed", "failed"]:
-        status_data["reports"][report_name]["endTime"] = datetime.now().isoformat()
-
-    # If failed and there's an error_message
-    if status == "failed" and error_message:
-        status_data["reports"][report_name]["errorMessage"] = error_message
-
-    # Determine the overall project status
-    report_statuses = [r["status"] for r in status_data["reports"].values()]
-    if any(rs == "failed" for rs in report_statuses):
-        status_data["status"] = "failed"
-    elif all(rs == "completed" for rs in report_statuses):
-        status_data["status"] = "completed"
-    else:
-        status_data["status"] = "in_progress"
-
-    # Upload updated file to S3
+def update_project_status_data(project_id: str, status_data: ProjectStatusFileSchema):
+    """
+    Uploads the updated project status data to S3.
+    """
+    agent_status_file_path = get_project_status_file_path(project_id)
     upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
     print(f"Updated status file: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}")
 
 
+def update_report_status_in_progress(project_id: str, report_name: str):
+    """
+    Updates the `agent-status.json` file in S3 to set a report's status to "in_progress".
+    """
+    status_data = get_project_file(project_id)
+
+    if report_name not in status_data["reports"]:
+        raise Exception(f"Report type '{report_name}' not found in the status file.")
+
+    status_data["reports"][report_name] = get_init_data_for_report(report_name)
+    update_project_status_data(project_id, status_data)
+    print(f"Updated status of report '{report_name}' to 'in_progress'.")
 
 
-def initialize_report(project_id, report_type):
-    agent_status_file_path = f"{project_id}/agent-status.json"
-    response = s3_client.get_object(Bucket=BUCKET_NAME, Key=f"crowd-fund-analysis/{agent_status_file_path}")
-    status_data = json.loads(response['Body'].read().decode('utf-8'))
-    if report_type not in status_data["reports"]:
-        raise Exception(f"Report type '{report_type}' not found in the status file.")
+def update_report_status_completed(project_id: str, report_name: str, markdown_link: Optional[str] = None):
+    """
+    Updates the `agent-status.json` file in S3 to set a report's status to "completed" and adds the markdown link.
+    """
+    status_data = get_project_file(project_id)
 
-    # Set the status to "in_progress" and initialize timestamps
-    status_data["reports"][report_type] = get_init_data_for_report(report_type)
+    if report_name not in status_data["reports"]:
+        raise Exception(f"Report type '{report_name}' not found in the status file.")
 
-    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
-    print(f"Set status of report '{report_type}' to 'in_progress'. Initialized startTime and estimatedTimeInSec.")
+    status_data["reports"][report_name]["status"] = "completed"
+    status_data["reports"][report_name]["endTime"] = datetime.now().isoformat()
+    if markdown_link:
+        status_data["reports"][report_name]["markdownLink"] = markdown_link
 
+    report_statuses = [r["status"] for r in status_data["reports"].values()]
+    status_data["status"] = "completed" if all(rs == "completed" for rs in report_statuses) else "in_progress"
+
+    update_project_status_data(project_id, status_data)
+    print(f"Updated status of report '{report_name}' to 'completed'.")
+
+
+def update_report_status_failed(project_id: str, report_name: str, error_message: str):
+    """
+    Updates the `agent-status.json` file in S3 to set a report's status to "failed" and logs the error message.
+    """
+    status_data = get_project_file(project_id)
+
+    if report_name not in status_data["reports"]:
+        raise Exception(f"Report type '{report_name}' not found in the status file.")
+
+    status_data["reports"][report_name]["status"] = "failed"
+    status_data["reports"][report_name]["endTime"] = datetime.now().isoformat()
+    status_data["reports"][report_name]["errorMessage"] = error_message
+    status_data["status"] = "failed"
+
+    update_project_status_data(project_id, status_data)
+    print(f"Updated status of report '{report_name}' to 'failed' with error message: {error_message}")
 
 def set_in_progress_for_all_reports(project_id):
     agent_status_file_path = f"{project_id}/agent-status.json"
@@ -390,7 +367,7 @@ def upload_report_to_s3(project_id: str, report_name: str, report_content: str):
     upload_to_s3(report_content, report_file_path)
     # Update status file to "completed"
     markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{report_file_path}"
-    update_status_file(project_id, report_name, "completed", markdown_link=markdown_link)
+    update_report_status_completed(project_id, report_name, markdown_link=markdown_link)
 
 
 

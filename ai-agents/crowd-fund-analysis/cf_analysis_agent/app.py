@@ -1,16 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for,jsonify
 import os
-from dotenv import load_dotenv
-import boto3
-import json
-import time
-from flask_cors import CORS
-import sys
 import subprocess
+import sys
+
+from dotenv import load_dotenv
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask_cors import CORS
+
 # # Add the parent directory of app.py to the Python path this maybe temporary we can change it later for that we will have to change docker file as well
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from cf_analysis_agent.utils.report_utils import initialize_report,set_in_progress_for_all_reports,initialize_project_in_s3
+from cf_analysis_agent.utils.report_utils import set_in_progress_for_all_reports, \
+    initialize_project_in_s3, update_report_status_in_progress
 from cf_analysis_agent.controller import prepare_processing_command
 
 app = Flask(__name__)
@@ -134,7 +134,7 @@ def regenerate_specific_report(projectId, report_type):
         model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
         
         # Prepare the command to start processing
-        initialize_report(project_id=projectId,report_type=report_type)    
+        update_report_status_in_progress(project_id=projectId,report_name=report_type)
         command = prepare_processing_command(projectId, model)
 
         # Add the report_type to the command

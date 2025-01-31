@@ -10,7 +10,7 @@ export default async function Home() {
 
   return (
     <PageWrapper>
-      <div className="mx-auto max-w-lg">
+      <div className="mx-auto">
         <div className="text-center my-5">
           <div className="sm:flex-auto">
             <h1 className="font-semibold leading-6 text-2xl text-color">Crowd Funding Projects</h1>
