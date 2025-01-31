@@ -14,6 +14,7 @@ def upload_to_s3(content, s3_key, content_type="text/plain"):
     """
     Uploads content to S3.
     """
+    print(f"Uploading to S3... at s3://{BUCKET_NAME}/{s3_key} with content type {content_type}")
     s3_client.put_object(
         Bucket=BUCKET_NAME,
         Key=f"crowd-fund-analysis/{s3_key}",

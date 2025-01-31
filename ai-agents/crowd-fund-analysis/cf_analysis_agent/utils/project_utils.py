@@ -34,37 +34,35 @@ StateTypeSec = TypeVar("StateTypeSec", bound=HasSecUrl)
 # Function that takes a generic state with required 'project_urls' key
 def scrape_project_urls(state: StateType) -> ScrapeProjectUrlsResponse:
     urls = state.get("project_urls", [])
-    scraped_content_list = []
-
-    for url in urls:
-        try:
-            print(f"Scraping URL: {url}")
-            loader = ScrapingAntLoader([url], api_key=SCRAPINGANT_API_KEY)
-            documents = loader.load()
-            page_content = documents[0].page_content
-            scraped_content_list.append(page_content)
-        except Exception as e:
-            scraped_content_list.append(f"Error scraping {url}: {e}")
+    scraped_urls = scrape_urls(urls)
     return {
         "messages": [
             AIMessage(content="Finished scraping all URLs. Stored results in state['scraped_content'].")
         ],
-        "project_scraped_urls": scraped_content_list
+        "project_scraped_urls": scraped_urls
     }
 
 def scrape_urls(urls: list[str]) -> list[str]:
     scraped_content_list = []
     for url in urls:
         try:
-            print(f"Scraping URL: {url}")
-            loader = ScrapingAntLoader([url], api_key=SCRAPINGANT_API_KEY)
-            documents = loader.load()
-            page_content = documents[0].page_content
-            scraped_content_list.append(page_content)
-            return scraped_content_list
+            scraped_content_list.append(scrape_url(url))
         except Exception as e:
+            print(f"Error scraping {url}: {e}")
             scraped_content_list.append(f"Error scraping {url}: {e}")
+    return scraped_content_list
 
+def scrape_url(url: str) -> str:
+    try:
+        print(f"Scraping URL: {url}")
+        loader = ScrapingAntLoader([url], api_key=SCRAPINGANT_API_KEY)
+        documents = loader.load()
+        page_content = documents[0].page_content
+        print(f"Successfully scraped URL: {url}. Length of content: {len(page_content)}")
+        return page_content
+    except Exception as e:
+        print(f"Error scraping {url}: {e}")
+        raise e
 
 
 def scrape_sec_url(state: StateTypeSec) -> list[str]:

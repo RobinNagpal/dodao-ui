@@ -41,7 +41,7 @@ def initialize_first_step(agent_state: AgentState) -> None:
     Extracts project details like URLs, team details, SEC filings.
     """
     print("Initializing first step")
-    print(agent_state)
+    print(agent_state.get("project_info"))
     print("Initialized first step")
 
 

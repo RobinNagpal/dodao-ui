@@ -281,7 +281,7 @@ def initialize_status_file_with_input_data(project_id,project_details):
     upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
     print(f"Initialized status file: s3://{BUCKET_NAME}/{agent_status_file_path}")  
 
-async def update_status_file(project_id, report_name, status, error_message=None, markdown_link=None, pdf_link=None):
+def update_status_file(project_id, report_name, status, error_message=None, markdown_link=None, pdf_link=None):
     """
     Updates the `agent-status.json` file in the S3 bucket.
     """
@@ -371,7 +371,7 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_ke
 
                 # Update status file to "completed"
                 markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{s3_key}"
-                await update_status_file(project_id, report_name, "completed", markdown_link=markdown_link)
+                update_status_file(project_id, report_name, "completed", markdown_link=markdown_link)
                 return final_state
 
         # If the final key wasn't found in the events, raise an error
@@ -381,7 +381,7 @@ async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_ke
         # Capture full stack trace
         error_message = ''.join(traceback.format_exception(*sys.exc_info()))
         print(f"An error occurred:\n{error_message}")
-        await update_status_file(
+        update_status_file(
             project_id,
             report_name,
             "failed",
