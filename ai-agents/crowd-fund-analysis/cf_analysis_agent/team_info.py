@@ -1,22 +1,16 @@
-from langgraph.graph import StateGraph, START
-from langgraph.graph.message import add_messages
-from langchain_openai import ChatOpenAI
-from langchain_community.document_loaders import ScrapingAntLoader
 from langchain_community.utilities import GoogleSerperAPIWrapper
-from langchain_core.messages import HumanMessage, AIMessage
-from langgraph.checkpoint.memory import MemorySaver
+from langchain_core.messages import HumanMessage
 from linkedin_scraper import Person, actions
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from typing_extensions import TypedDict
-from typing import Annotated, List, Dict, Any
+from typing import List, Dict, Any
 from dotenv import load_dotenv
 import os
-import time
 import json
-import requests
+from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.project_utils import scrape_project_urls
+from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_status_file
 
 load_dotenv()
 
@@ -24,6 +18,8 @@ SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 LINKEDIN_EMAIL = os.getenv("LINKEDIN_EMAIL")
 LINKEDIN_PASSWORD = os.getenv("LINKEDIN_PASSWORD")
+
+REPORT_NAME = "team_info"
 
 search = GoogleSerperAPIWrapper()
 
@@ -54,90 +50,44 @@ class AnalyzedTeamProfile(TypedDict):
     depthOfWorkExperience: str
     relevantWorkExperience: str
 
-class ProjectInfo(TypedDict):
-    startupName: str
-    oneLiner: str
+class StartupInfo(TypedDict):
+    startup_name: str
+    startup_details: str
     industry: str
-    teamMembers: List[TeamMember]
+    team_members: List[TeamMember]
 
-class State(TypedDict):
-    messages: Annotated[list, add_messages]
-    project_urls: List[str]
-    project_scraped_urls: str
-    projectInfo: ProjectInfo
-    teamMemberLinkedinUrls: List[TeamMemberLinkedinUrl]
-    rawLinkedinProfiles: List[RawLinkedinProfile]
-    analyzedTeamProfiles: List[AnalyzedTeamProfile]
-    teamInfo: str
 
-graph_builder = StateGraph(State)
-memory = MemorySaver()
-config = {"configurable": {"thread_id": "1"}}
-
-def start_node(state: State):
-    """
-    Takes the user's URL input and sets up the state for scraping.
-    """
-    print("Starting the process...")
-    user_msg = state["messages"][-1]
-    url_to_scrape = user_msg.content.strip()
-    state["project_urls"] = [url_to_scrape]
-    return {
-        "messages": [HumanMessage(content=f"Scrape the following URL: {url_to_scrape}")],
-        "project_urls": state["project_urls"] 
-    }
-
-def scrape_node(state: State):
-    """
-    Scrapes the provided URL using ScrapingAntLoader and stores the scraped content in state.
-    Includes retry logic with a maximum of 10 retries and a 5-second delay between attempts.
-    """
-
-    # Prepare the prompt for extracting data
+def find_startup_info(config: Config, page_content: str):
     prompt = (
         "From the scraped content, extract the following project info as JSON:\n\n"
-        " - startupName: str (The name of the project or startup being discussed)\n"
-        " - oneLiner: str (A single sentence explaining what the startup does)\n"
+        " - startup_name: str (The name of the project or startup being discussed)\n"
+        " - startup_details: str (A single sentence explaining what the startup does)\n"
         " - industry: str (A brief overview of the industry, including how it has grown in the last 3-5 years, its expected growth in the next 3-5 years, challenges, and unique benefits for startups in this space)\n"
-        " - teamMembers: list of objects {id: str (Unique ID for each team member, formatted as firstname_lastname), name: str (The name of the team member), title: str (The position of the team member in the startup), info: str (Details or additional information about the team member as mentioned on the startup page)}\n\n"
+        " - team_members: list of objects {id: str (Unique ID for each team member, formatted as firstname_lastname), name: str (The name of the team member), title: str (The position of the team member in the startup), info: str (Details or additional information about the team member as mentioned on the startup page)}\n\n"
         "Return ONLY a raw JSON object. Do not include any code fences or additional text. No ```json, no ```.\n"
-        f"Scraped Content:\n{state['project_scraped_urls']}"
+        f"Scraped Content:\n{page_content}"
     )
-
-    # Return the extracted prompt and the scraped data
-    return {
-        "messages": [HumanMessage(content=prompt)],
-
-    }
-
-def extract_project_info_node(state: State, config):
-    """
-    Parses the JSON returned by the LLM for project info and stores it in state.
-    """
-    print("Extracting project info...")
-    last_msg = state["messages"][-1]
-    prompt_text = last_msg.content
-    llm = get_llm(config)
-    response = llm.invoke([HumanMessage(content=prompt_text)])
-    try:
-        project_info = json.loads(response.content)
-        state["projectInfo"] = project_info
-        print(state["projectInfo"])
-        prompt = "Project info extracted successfully."
-        return {
-            "messages": [HumanMessage(content=prompt)],
-            "projectInfo": state["projectInfo"]
-        }
-    except Exception:
-        return {"messages": [AIMessage(content="Error parsing project info.")]}
     
-def find_linkedin_urls_node(state: State):
+    llm = get_llm(config)
+    response = llm.invoke([HumanMessage(content=prompt)])
+    try:
+        return json.loads(response.content)
+    except:
+        return {
+            "startup_name": "",
+            "startup_details": "",
+            "industry": "",
+            "team_members": []        
+            }
+    
+def find_linkedin_urls(startup_info: StartupInfo):
     """
     Constructs queries from the projectInfo and teamMembers, uses GoogleSerperAPIWrapper to find LinkedIn URLs.
     If a valid LinkedIn profile is not found, stores an empty string or None for 'url'.
     """
-    linkedin_urls = []
-    startupName = state["projectInfo"]["startupName"]
+    linkedin_urls: List[TeamMemberLinkedinUrl] = []
+    startupName = startup_info.get('startup_name')
+    team_members = startup_info.get('team_members')
 
     def search_linkedln_url(query: str) -> str:
         try:
@@ -151,7 +101,7 @@ def find_linkedin_urls_node(state: State):
         except Exception as e:
             return ""
 
-    for member in state["projectInfo"]["teamMembers"]:
+    for member in team_members:
         query = f"Find the LinkedIn profile url of {member['name']} working as {member['title']} at {startupName}"
         result = search_linkedln_url(query)
         linkedin_urls.append({
@@ -160,18 +110,12 @@ def find_linkedin_urls_node(state: State):
             "url": result  
         })
 
-    state["teamMemberLinkedinUrls"] = linkedin_urls
-    #print(state["teamMemberLinkedinUrls"])
+    return linkedin_urls
 
-    return {
-        "messages": [HumanMessage(content="linkedln urls finded. now we have to scrape linkedin profiles")],
-        "project_urls": state["project_urls"],
-    }
 
-def scrape_linkedin_profiles_node(state: State):
+def scrape_linkedin_profiles(linkedin_urls: list):
     """
     Uses linkedin_scraper to retrieve LinkedIn profile data based on the URLs
-    available in state['teamMemberLinkedinUrls'].
 
     If a team member has no LinkedIn URL (empty string), their profile will be empty.
     """
@@ -186,11 +130,8 @@ def scrape_linkedin_profiles_node(state: State):
     
     driver = webdriver.Chrome( options=chrome_options)
     actions.login(driver, LINKEDIN_EMAIL, LINKEDIN_PASSWORD)
-    
-
 
     def scrape_linkedin_profile(url: str) -> Dict[str, Any]:
-        
         if not url:
             return {}
         try:
@@ -209,8 +150,8 @@ def scrape_linkedin_profiles_node(state: State):
             return {}
 
     # Iterate through the LinkedIn URLs and scrape profiles
-    rawProfiles = []
-    for member in state["teamMemberLinkedinUrls"]:
+    rawProfiles: List[RawLinkedinProfile] = []
+    for member in linkedin_urls:
         profile_data = scrape_linkedin_profile(member["url"])
         rawProfiles.append({
             "id": member["id"],
@@ -220,35 +161,19 @@ def scrape_linkedin_profiles_node(state: State):
     # Close the driver
     driver.quit()
 
-    # Add scraped profiles to the state
-    state["rawLinkedinProfiles"] = rawProfiles
-    #print(state["rawLinkedinProfiles"])
+    return rawProfiles
 
-    return {
-        "messages": [HumanMessage(content="Linkedin profiles scraped. Now we have to evaluate each team member.")],
-        "project_urls": state["project_urls"],
-        "projectInfo": state["projectInfo"],
-        "teamMemberLinkedinUrls": state["teamMemberLinkedinUrls"],
-        "rawLinkedinProfiles": state["rawLinkedinProfiles"]
-    }
 
-def evaluate_node(state: State, config):
-    """
-    For each team member in rawLinkedinProfiles, invoke the LLM individually.
-    Collect results into analyzedTeamProfiles.
-    Finally, produce a table as final output.
-    """
-
-    #print("Evaluating each team member individually...")
-
+def evaluate_profiles(config: Config, rawProfiles: list, startup_info: StartupInfo):
     analyzed_profiles = []
-    for member_data in state["rawLinkedinProfiles"]:
+    team_members = startup_info.get('team_members')
+    for member_data in rawProfiles:
         member_id = member_data["id"]
         member_name = member_data["name"]
         member_profile = member_data["profile"]
 
         team_member_info = {}
-        for tm in state["projectInfo"]["teamMembers"]:
+        for tm in team_members:
             if tm["id"] == member_id:
                 team_member_info = tm
                 break
@@ -266,9 +191,9 @@ def evaluate_node(state: State, config):
             
         }
 
-        startup_name = state["projectInfo"]["startupName"]
-        one_liner = state["projectInfo"]["oneLiner"]
-        industry = state["projectInfo"]["industry"]
+        startup_name = startup_info.get('startup_name')
+        one_liner = startup_info.get('startup_details')
+        industry = startup_info.get('industry')
 
         prompt = (
             "You are a startup investor, and your goal is to identify the team member and put it clearly into two buckets.\n"
@@ -328,9 +253,6 @@ def evaluate_node(state: State, config):
                 "relevantWorkExperience": ""
             })
 
-    state["analyzedTeamProfiles"] = analyzed_profiles
-    #print(state["analyzedTeamProfiles"])
-
     table_prompt = (
         "You have the following JSON array of analyzed team profiles:\n"
         f"{json.dumps(analyzed_profiles, indent=2)}\n\n"
@@ -342,36 +264,29 @@ def evaluate_node(state: State, config):
     )
 
     table_response = llm.invoke([HumanMessage(content=table_prompt)])
-    final_table = table_response.content
-    state["teamInfo"] = final_table
-    # print(state["teamInfo"])
-    # with open("final_table.md", "w", encoding="utf-8") as f:
-    #     f.write(final_table)
+    return table_response.content
 
-    return {
-        "messages": [AIMessage(content="Final evaluation of the team completed.\n\n" + table_response.content + "\n\nTable saved as final_table.md")],
-        "analyzedTeamProfiles": state["analyzedTeamProfiles"],
-        "teamInfo": state["teamInfo"]
-    }
 
-graph_builder.add_node("start", start_node)
-graph_builder.add_node("scrape_project_urls", scrape_project_urls)
-graph_builder.add_node("scrape_page", scrape_node)
-graph_builder.add_node("extract_project_info", extract_project_info_node)
-graph_builder.add_node("find_linkedin_urls", find_linkedin_urls_node)
-graph_builder.add_node("scrape_linkedin_profiles", scrape_linkedin_profiles_node)
-graph_builder.add_node("evaluate", evaluate_node)
-
-graph_builder.add_edge(START, "start")
-graph_builder.add_edge("start","scrape_project_urls", )
-graph_builder.add_edge("scrape_project_urls", "scrape_page")
-graph_builder.add_edge("scrape_page", "extract_project_info")
-graph_builder.add_edge("extract_project_info", "find_linkedin_urls")
-graph_builder.add_edge("find_linkedin_urls", "scrape_linkedin_profiles")
-graph_builder.add_edge("scrape_linkedin_profiles", "evaluate")
-
-app = graph_builder.compile(checkpointer=memory)
-
-# events = app.stream({"messages": [("user", "https://wefunder.com/neighborhoodsun")]}, config, stream_mode="values")
-# for event in events:
-#     event["messages"][-1].pretty_print()
+def create_team_info_report(state: AgentState) -> None:
+    """
+    Orchestrates the entire team info analysis process.
+    """
+    project_id = state.get("project_info").get("project_id")
+    print("Generating team info")
+    try:
+        combined_text = state.get("processed_project_info").get("combined_scrapped_content")
+        startup_info = find_startup_info(state.get("config"), combined_text)
+        linkedin_urls = find_linkedin_urls(startup_info)
+        rawProfiles = scrape_linkedin_profiles(linkedin_urls)
+        team_info_report = evaluate_profiles(state.get("config"), rawProfiles, startup_info)
+        upload_report_to_s3(project_id, REPORT_NAME, team_info_report)
+    except Exception as e:
+        # Capture full stack trace
+        error_message = str(e)
+        print(f"An error occurred:\n{error_message}")
+        update_status_file(
+            project_id,
+            REPORT_NAME,
+            "failed",
+            error_message=error_message
+        )
