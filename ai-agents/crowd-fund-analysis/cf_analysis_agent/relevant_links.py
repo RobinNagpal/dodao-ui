@@ -1,17 +1,15 @@
-from langgraph.graph import StateGraph, START
-from langgraph.graph.message import add_messages
-from langchain_core.messages import HumanMessage, AIMessage
-from langgraph.checkpoint.memory import MemorySaver
+from langchain_core.messages import HumanMessage
 from typing_extensions import TypedDict
-from typing import Annotated, List, Dict, Any
+from typing import List
 from dotenv import load_dotenv
 from langchain_google_community import GoogleSearchAPIWrapper
 import os
 import json
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import WebBaseLoader
+from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.project_utils import scrape_project_urls
+from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_status_file
 
 load_dotenv()
 
@@ -20,8 +18,8 @@ GOOGLE_CSE_ID = os.getenv("GOOGLE_CSE_ID")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 class StartupInfo(TypedDict):
-    startupName: str
-    startupDetails: str
+    startup_name: str
+    startup_details: str
 
 class SearchResult(TypedDict):
     title: str
@@ -32,63 +30,39 @@ class WebpageSummary(TypedDict):
     link: str
     summary: str
 
-class State(TypedDict):
-    messages: Annotated[list, add_messages]
-    project_urls: List[str]
-    project_scraped_urls: str
-    startupInfo: StartupInfo    
-    allGoogleResults: List[SearchResult]
-    googleSearchSummaries: List[WebpageSummary]
-    relevantLinks: List[str] 
+REPORT_NAME = "relevant_links"
 
-graph_builder = StateGraph(State)
-memory = MemorySaver()
-config = {"configurable": {"thread_id": "1"}}
-
-
-def extract_startup_info_node(state: State, config):
+def find_startup_info(config: Config, page_content: str):
     """
-    1. Call the LLM with the prompt to extract 'startupName', 'startupDetails' from the crowdfunded page content
-    2. Store JSON in state["startupInfo"].
+    Call the LLM with the prompt to extract 'startup_name', 'startupD_details' from the crowdfunded page content
     """
-
-    page_content = state["project_scraped_urls"]
-    
     prompt = (
         "From the scraped content, extract the following project info as JSON:\n\n"
-        " - startupName: str (The name of the project or startup being discussed)\n"
-        " - startupDetails: str (A short description explaining what the startup does)\n"
+        " - startup_name: str (The name of the project or startup being discussed)\n"
+        " - startup_details: str (A short description explaining what the startup does)\n"
         f"Scraped Content:\n{page_content}\n\n"
         "Return ONLY raw JSON. Do not include code fences or any extra text."
     )
     llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     try:
-        data = json.loads(response.content)
-        state["startupInfo"] = data
+        return json.loads(response.content)
     except:
-        state["startupInfo"] = {
-            "startupName": "",
-            "startupDetails": ""        
+        return {
+            "startup_name": "",
+            "startup_details": ""        
             }
 
-    return {
-        "messages": [
-            AIMessage(content="Startup info extracted and stored in state['startupInfo'].")
-        ],
-        "startupInfo": state["startupInfo"]
-    }
-
-def google_search_node(state: State):
+def search_startup_on_google(startup_info: StartupInfo):
     """
     Uses the startup's name as the query to Google Search and fetches up to 10 results.
     Stores them in state["allGoogleResults"].
     """
     search = GoogleSearchAPIWrapper(k=10)
-    startup_name = state["startupInfo"]["startupName"]
-
+    startup_name = startup_info.get('startup_name','')
     if not startup_name:
-        startup_name = "Unknown Startup"
+        print(f'Startup name: {startup_name}')
+        return []
 
     print(f"Performing Google search for: {startup_name}")
 
@@ -101,17 +75,9 @@ def google_search_node(state: State):
             "link": item.get("link")
         })
     
-    state["allGoogleResults"] = formatted_results
+    return formatted_results
 
-    return {
-        "messages": [
-            AIMessage(content=f"Google search complete for '{startup_name}'. Stored top 10 results in state['allGoogleResults'].")
-        ],
-        "startupInfo": state["startupInfo"],
-        "allGoogleResults": state["allGoogleResults"]
-    }
-
-def summarize_search_results_node(state: State, config):
+def summarize_google_search_results(config: Config, all_results: list):
     """
     For each link in state["allGoogleResults"], scrape the page content
     and create a short summary using load_summarize_chain.
@@ -120,8 +86,7 @@ def summarize_search_results_node(state: State, config):
     llm = get_llm(config)
     chain = load_summarize_chain(llm, chain_type="stuff")
 
-    all_results = state["allGoogleResults"]
-    summaries = []
+    summaries: List[WebpageSummary] = []
 
     for i, item in enumerate(all_results):
         link = item["link"]
@@ -144,26 +109,16 @@ def summarize_search_results_node(state: State, config):
         })
         print(f"[{i+1}/{len(all_results)}] Summarized: {link[:50]}...")
 
-    state["googleSearchSummaries"] = summaries
+    return summaries
 
-    return {
-        "messages": [
-            AIMessage(content="All Google results have been summarized. Stored in 'googleSearchSummaries'.")
-        ],
-        "startupInfo": state["startupInfo"],
-        "allGoogleResults": state["allGoogleResults"],
-        "googleSearchSummaries": state["googleSearchSummaries"]
-    }
-
-def filter_relevant_links_from_summaries_node(state: State, config):
+def filter_relevant_links_from_summaries(config: Config, startup_info: StartupInfo, summaries: list):
     """
     Uses an LLM prompt to pick the 3-4 most relevant links from allGoogleResults,
     in context of the startup's name/description, etc.
     """
 
-    name = state["startupInfo"].get("startupName", "")
-    details = state["startupInfo"].get("startupDetails", "")
-    summaries = state["googleSearchSummaries"]
+    name = startup_info.get("startupN_name", "")
+    details = startup_info.get("startupD_details", "")
 
     summaries_json = json.dumps(summaries, indent=2)
 
@@ -189,39 +144,28 @@ def filter_relevant_links_from_summaries_node(state: State, config):
         relevant = []
 
     relevant_links = [item["link"] for item in relevant if "link" in item]
+    return relevant_links
 
-    state["relevantLinks"] = relevant_links
-    print(f"Filtered relevant links: {relevant_links}")
-
-    return {
-        "messages": [
-            AIMessage(content="Filtered the top links via LLM prompt. Stored result in state['relevantLinks'].")
-        ],
-        "relevantLinks": state["relevantLinks"]
-    }
-
-graph_builder.add_node("scrape_project_urls", scrape_project_urls)
-graph_builder.add_node("extract_startup_info", extract_startup_info_node)
-graph_builder.add_node("google_search_node", google_search_node)
-graph_builder.add_node("summarize_search_results", summarize_search_results_node)
-graph_builder.add_node("filter_relevant_links_from_summaries", filter_relevant_links_from_summaries_node)
-
-graph_builder.add_edge(START, "scrape_project_urls")
-graph_builder.add_edge("scrape_project_urls", "extract_startup_info")
-graph_builder.add_edge("extract_startup_info", "google_search_node")
-graph_builder.add_edge("google_search_node", "summarize_search_results")
-graph_builder.add_edge("summarize_search_results", "filter_relevant_links_from_summaries")
-
-app = graph_builder.compile(checkpointer=memory)
-
-# events = app.stream(
-#     {
-#         "messages": [("user", "Find more links about this startup.")],
-#         "crowdfunded_url": "https://wefunder.com/neighborhoodsun"
-#     },
-#     config,
-#     stream_mode="values"
-# )
-
-# for event in events:
-#     event["messages"][-1].pretty_print()
+def create_relevant_links_report(state: AgentState) -> None:
+    """
+    Orchestrates the entire relevant links search process.
+    """
+    project_id = state.get("project_info").get("project_id")
+    print("Generating relevant links")
+    try:
+        combined_text = state.get("processed_project_info").get("combined_scrapped_content")
+        startup_info = find_startup_info(state.get("config"), combined_text)
+        all_google_results = search_startup_on_google(startup_info)
+        summaries = summarize_google_search_results(state.get("config"), all_google_results)
+        relevant_links = filter_relevant_links_from_summaries(state.get("config"), startup_info, summaries)
+        upload_report_to_s3(project_id, REPORT_NAME, "\n".join(relevant_links))
+    except Exception as e:
+        # Capture full stack trace
+        error_message = str(e)
+        print(f"An error occurred:\n{error_message}")
+        update_status_file(
+            project_id,
+            REPORT_NAME,
+            "failed",
+            error_message=error_message
+        )
