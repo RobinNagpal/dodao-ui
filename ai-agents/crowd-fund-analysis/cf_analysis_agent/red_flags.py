@@ -92,8 +92,6 @@ def finalize_red_flags_report(config: Config, startup_rf: str, industry_rf: str,
     Produces the final textual report about the startup's red flags, 
     integrating industry standards and the evaluation.
     """
-
-
     prompt = (
         "You have three pieces of content:\n\n"
         "1) The startup's red flags:\n"
@@ -118,7 +116,6 @@ def create_red_flags_report(state: AgentState) -> None:
     project_id = state.get("project_info").get("project_id")
     print("Generating red flags report")
     try:
-
         combined_text = state.get("processed_project_info").get("combined_scrapped_content")
         industry_details = find_industry_details(state.get("config"), combined_text)
         startup_rfs = find_startup_red_flags(state.get("config"), combined_text)
