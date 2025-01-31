@@ -9,7 +9,7 @@ from flask_cors import CORS
 # # Add the parent directory of app.py to the Python path this maybe temporary we can change it later for that we will have to change docker file as well
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from cf_analysis_agent.utils.report_utils import set_in_progress_for_all_reports, \
+from cf_analysis_agent.utils.report_utils import update_status_to_not_started_for_all_reports, \
     initialize_project_in_s3, update_report_status_in_progress
 from cf_analysis_agent.controller import prepare_processing_command
 
@@ -105,7 +105,7 @@ def regenerate_reports(projectId):
         data = request.get_json(silent=True) or {} # Handle case if no body was sent
         model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
         
-        set_in_progress_for_all_reports(project_id=projectId)
+        update_status_to_not_started_for_all_reports(project_id=projectId)
         command = prepare_processing_command(projectId, model)
 
         # Start the subprocess

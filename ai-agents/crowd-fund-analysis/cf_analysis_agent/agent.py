@@ -1,12 +1,12 @@
 from typing import Sequence
 from langgraph.graph import END, START, StateGraph
 from cf_analysis_agent.agent_state import AgentState
-from general_info import create_general_info_report
-from green_flags import create_green_flags_report
-from red_flags import create_red_flags_report
-from relevant_links import create_relevant_links_report
-from financial_review_agent import create_financial_review_report
-from team_info import create_team_info_report
+from cf_analysis_agent.reports.general_info import create_general_info_report
+from cf_analysis_agent.reports.green_flags import create_green_flags_report
+from cf_analysis_agent.reports.red_flags import create_red_flags_report
+from cf_analysis_agent.reports.relevant_links import create_relevant_links_report
+from cf_analysis_agent.reports.financial_review_agent import create_financial_review_report
+from cf_analysis_agent.reports.team_info import create_team_info_report
 
 
 # ------------------- REPORT MAPPING ------------------- #
@@ -44,11 +44,24 @@ def route_single_or_all(state: AgentState) -> Sequence[str]:
     Routes execution to either a single report node or all nodes.
     """
     if state["report_input"] == "all":
-        return report_keys  # Convert dict_keys to list
+        return "generate_all_reports_serially"  # Convert dict_keys to list
     else:
         return [state["report_input"]]
 
 # ------------------- BUILDING THE GRAPH ------------------- #
+def generate_all_reports_serially(state: AgentState):
+    """
+    Generates all reports serially.
+    """
+    create_general_info_report(state)
+    create_red_flags_report(state)
+    create_green_flags_report(state)
+    create_relevant_links_report(state)
+    create_team_info_report(state)
+    create_financial_review_report(state)
+    create_final_report(state)
+
+
 builder = StateGraph(AgentState)
 
 builder.add_node("initialize_first_step", initialize_first_step)
@@ -59,9 +72,10 @@ builder.add_node("relevant_links",  create_relevant_links_report)
 builder.add_node("team_info",  create_team_info_report)
 builder.add_node("financial_review", create_financial_review_report)
 builder.add_node("create_final_report", create_final_report)
+builder.add_node("generate_all_reports_serially", generate_all_reports_serially)
 
 builder.add_edge(START, "initialize_first_step")
-builder.add_conditional_edges("initialize_first_step", route_single_or_all, report_keys)
+builder.add_conditional_edges("initialize_first_step", route_single_or_all)
 builder.add_edge(report_keys, "create_final_report")
 builder.add_edge("create_final_report", END)
 

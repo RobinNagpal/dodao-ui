@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import datetime
+from enum import Enum
 from typing import List, Dict, Optional, Union
 from dotenv import load_dotenv
 from typing_extensions import TypedDict, NotRequired
@@ -17,6 +18,14 @@ OPEN_AI_DEFAULT_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4')
 # ---------------------------------------------------------
 # 1) TypedDict Definitions
 # ---------------------------------------------------------
+
+class ReportStatus(str, Enum):
+    NOT_STARTED = "not_started"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
+
 class ProjectInfoInputSchema(TypedDict):
     """
     Represents the user-provided project input
@@ -36,27 +45,14 @@ class ReportSchema(TypedDict, total=False):
     (e.g., endTime, errorMessage) and may only appear
     under certain conditions.
     """
-    status: str
+    status: ReportStatus
     markdownLink: Optional[str]
     startTime: str
     estimatedTimeInSec: int
     endTime: NotRequired[str]
     errorMessage: NotRequired[str]
 
-class FinalReportSchema(TypedDict, total=False):
-    """
-    Represents the status and metadata of a single report
-    (e.g., "team_info", "financial_review", etc.).
-    Fields marked as `total=False` are optional
-    (e.g., endTime, errorMessage) and may only appear
-    under certain conditions.
-    """
-    status: str
-    markdownLink: Optional[str]
-    startTime: str
-    estimatedTimeInSec: int
-    endTime: NotRequired[str]
-    errorMessage: NotRequired[str]
+class FinalReportSchema(ReportSchema, total=False):
     spiderGraphJsonFileUrl: Optional[str]
 
 
@@ -79,7 +75,7 @@ class ProjectStatusFileSchema(TypedDict, total=False):
     id: str
     name: str
     projectInfoInput: ProjectInfoInputSchema
-    status: str
+    status: ReportStatus
     reports: Dict[str, ReportSchema]
     finalReport: ReportSchema
     processedProjectInfo: NotRequired[ProcessedProjectInfoSchema]
@@ -144,7 +140,7 @@ def get_init_data_for_report(report_type: str) -> ReportSchema:
     for the given report_type.
     """
     return {
-        "status": "in_progress",
+        "status": ReportStatus.NOT_STARTED,
         "markdownLink": None,
         "startTime": datetime.now().isoformat(),
         "estimatedTimeInSec": 240 if report_type in ["team_info", "financial_review"] else 150
@@ -163,7 +159,7 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
     reports_data = {}
     for r_type in ALL_REPORT_TYPES:
         reports_data[r_type] = {
-            "status": "in_progress",
+            "status": ReportStatus.NOT_STARTED,
             "markdownLink": None,
             "startTime": current_time,
             "estimatedTimeInSec": 240 if r_type in ["team_info", "financial_review"] else 150
@@ -179,10 +175,10 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
             "additionalUrl": project_details["additional_links"],
             "websiteUrl": project_details["website_url"]
         },
-        "status": "in_progress",
+        "status": ReportStatus.IN_PROGRESS,
         "reports": reports_data,
         "finalReport": {
-            "status": "in_progress",
+            "status": ReportStatus.NOT_STARTED,
             "markdownLink": None,
             "startTime": current_time,
             "estimatedTimeInSec": 260
@@ -234,13 +230,13 @@ def update_report_status_completed(project_id: str, report_name: str, markdown_l
     if report_name not in status_data["reports"]:
         raise Exception(f"Report type '{report_name}' not found in the status file.")
 
-    status_data["reports"][report_name]["status"] = "completed"
+    status_data["reports"][report_name]["status"] = ReportStatus.COMPLETED
     status_data["reports"][report_name]["endTime"] = datetime.now().isoformat()
     if markdown_link:
         status_data["reports"][report_name]["markdownLink"] = markdown_link
 
     report_statuses = [r["status"] for r in status_data["reports"].values()]
-    status_data["status"] = "completed" if all(rs == "completed" for rs in report_statuses) else "in_progress"
+    status_data["status"] = "completed" if all(rs == ReportStatus.COMPLETED for rs in report_statuses) else ReportStatus.IN_PROGRESS
 
     update_project_status_data(project_id, status_data)
     print(f"Updated status of report '{report_name}' to 'completed'.")
@@ -255,25 +251,23 @@ def update_report_status_failed(project_id: str, report_name: str, error_message
     if report_name not in status_data["reports"]:
         raise Exception(f"Report type '{report_name}' not found in the status file.")
 
-    status_data["reports"][report_name]["status"] = "failed"
+    status_data["reports"][report_name]["status"] = ReportStatus.FAILED
     status_data["reports"][report_name]["endTime"] = datetime.now().isoformat()
     status_data["reports"][report_name]["errorMessage"] = error_message
-    status_data["status"] = "failed"
+    status_data["status"] = ReportStatus.FAILED
 
     update_project_status_data(project_id, status_data)
     print(f"Updated status of report '{report_name}' to 'failed' with error message: {error_message}")
 
-def set_in_progress_for_all_reports(project_id):
+def update_status_to_not_started_for_all_reports(project_id):
     agent_status_file_path = f"{project_id}/agent-status.json"
 
-    # Fetch the current status file
-    response = s3_client.get_object(Bucket=BUCKET_NAME, Key=f"crowd-fund-analysis/{agent_status_file_path}")
-    status_data = json.loads(response['Body'].read().decode('utf-8'))
+    status_data = get_project_file(project_id)
 
     # Initialize all reports to "in_progress" and set timestamps
     for report_type in status_data["reports"]:
         status_data["reports"][report_type] = get_init_data_for_report(report_type)
-        print(f"Set status of report '{report_type}' to 'in_progress'. Initialized startTime and estimatedTimeInSec.")
+        print(f"Set status of report '{report_type}' to 'not_started'. Initialized startTime and estimatedTimeInSec.")
 
     upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
     print(f"Updated status file: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}")
@@ -378,7 +372,7 @@ def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
     }
 
 
-def upload_report_to_s3(project_id: str, report_name: str, report_content: str):
+def create_report_file_and_upload_to_s3(project_id: str, report_name: str, report_content: str):
     report_file_path = f"{project_id}/{report_name}.md"
     upload_to_s3(report_content, report_file_path)
     # Update status file to "completed"

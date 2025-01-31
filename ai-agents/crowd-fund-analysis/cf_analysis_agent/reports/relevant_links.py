@@ -11,7 +11,8 @@ from typing_extensions import TypedDict
 
 from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_report_status_failed
+from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
+    update_report_status_in_progress
 
 load_dotenv()
 
@@ -156,11 +157,12 @@ def create_relevant_links_report(state: AgentState) -> None:
     print("Generating relevant links")
     try:
         combined_text = state.get("processed_project_info").get("combined_scrapped_content")
+        update_report_status_in_progress(project_id, REPORT_NAME)
         startup_info = find_startup_info(state.get("config"), combined_text)
         all_google_results = search_startup_on_google(startup_info)
         summaries = summarize_google_search_results(state.get("config"), all_google_results)
         relevant_links = filter_relevant_links_from_summaries(state.get("config"), startup_info, summaries)
-        upload_report_to_s3(project_id, REPORT_NAME, "\n".join(relevant_links))
+        create_report_file_and_upload_to_s3(project_id, REPORT_NAME, "\n".join(relevant_links))
     except Exception as e:
         # Capture full stack trace
         error_message = str(e)

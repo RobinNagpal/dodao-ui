@@ -2,7 +2,8 @@ from langchain_core.messages import HumanMessage
 
 from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_report_status_failed
+from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
+    update_report_status_in_progress
 
 # move the scraping part to a common file 
 # show project scraping url status at the top of the report
@@ -118,12 +119,13 @@ def create_red_flags_report(state: AgentState) -> None:
     print("Generating red flags report")
     try:
         combined_text = state.get("processed_project_info").get("combined_scrapped_content")
+        update_report_status_in_progress(project_id, REPORT_NAME)
         industry_details = find_industry_details(state.get("config"), combined_text)
         startup_rfs = find_startup_red_flags(state.get("config"), combined_text)
         industry_rfs = find_industry_red_flags(state.get("config"), industry_details)
         rf_evaluation = evaluate_red_applicable_to_startup(state.get("config"), startup_rfs, industry_rfs)
         final_red_flags_report = finalize_red_flags_report(state.get("config"), startup_rfs, industry_rfs, rf_evaluation)
-        upload_report_to_s3(project_id, REPORT_NAME, final_red_flags_report)
+        create_report_file_and_upload_to_s3(project_id, REPORT_NAME, final_red_flags_report)
     except Exception as e:
         # Capture full stack trace
         error_message = str(e)

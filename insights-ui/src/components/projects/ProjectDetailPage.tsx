@@ -61,13 +61,13 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
   // Polling mechanism for refreshing data
   useEffect(() => {
     const interval = setInterval(() => {
-      const hasInProgressReport = reports.some((report) => report.status === Status.in_progress);
+      const hasInProgressReport = reports.some((report) => report.status === Status.in_progress || report.status === Status.not_started);
 
       if (hasInProgressReport) {
         console.log('Refetching due to in-progress status...');
         fetchProjectDetails();
       }
-    }, 15000); // Poll every 15 seconds
+    }, 10000); // Poll every 15 seconds
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [reports]);

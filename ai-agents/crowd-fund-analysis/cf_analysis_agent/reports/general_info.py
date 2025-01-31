@@ -2,7 +2,8 @@ from langchain_core.messages import HumanMessage
 
 from cf_analysis_agent.agent_state import AgentState
 from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_report_status_failed
+from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
+    update_report_status_in_progress
 
 REPORT_NAME = "general_info"
 
@@ -46,8 +47,9 @@ def create_general_info_report(state: AgentState) -> None:
     print("Generating general info report")
     project_id = state.get("project_info").get("project_id")
     try:
+        update_report_status_in_progress(project_id, REPORT_NAME)
         report_content = generate_project_info_report_node(state)
-        upload_report_to_s3(project_id, REPORT_NAME, report_content)
+        create_report_file_and_upload_to_s3(project_id, REPORT_NAME, report_content)
     except Exception as e:
         # Capture full stack trace
         error_message = str(e)

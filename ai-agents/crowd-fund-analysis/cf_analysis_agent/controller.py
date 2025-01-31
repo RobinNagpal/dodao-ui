@@ -101,7 +101,8 @@ def parse_arguments() -> AgentState:
             }
         },
         "reports_to_generate": None,
-        "processed_project_info": processed_project_info
+        "processed_project_info": processed_project_info,
+        "final_report": None
     }
 
 

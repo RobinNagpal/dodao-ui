@@ -28,7 +28,7 @@ export default function ProjectDetailTable({ reports, projectId, reload }: Proje
     const currentTime = Date.now();
     const estimatedTime = startTime + report.estimatedTimeInSec * 1000;
 
-    return currentTime - startTime < 90 * 1000 && report.status === Status.in_progress; // Disable if the current time is within the estimated completion time
+    return currentTime - startTime < 90 * 1000 && (report.status === Status.in_progress || report.status === Status.not_started); // Disable if the current time is within the estimated completion time
   };
 
   const tableActions: TableActions = {
