@@ -8,17 +8,15 @@ from langgraph.graph import StateGraph
 from langgraph.graph.message import add_messages
 from typing_extensions import TypedDict
 
-from cf_analysis_agent.agent_state import AgentState, GeneralInfoReportState
+from cf_analysis_agent.agent_state import AgentState
 from cf_analysis_agent.utils.llm_utils import get_llm, Config
-from cf_analysis_agent.utils.report_utils import update_status_file, convert_markdown_to_pdf_and_upload
-from cf_analysis_agent.utils.s3_utils import upload_to_s3, BUCKET_NAME
+from cf_analysis_agent.utils.report_utils import update_status_file, upload_report_to_s3
 
 load_dotenv()
 
 SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
 
 REPORT_NAME = "general_info"
-REGION=os.getenv("AWS_DEFAULT_REGION")
 
 
 class State(TypedDict):
@@ -71,19 +69,12 @@ def generate_project_info_report_node(state: AgentState):
     return response.content.strip()
 
 
-def create_general_info_report_payload(state: AgentState) -> GeneralInfoReportState:
+def create_general_info_report(state: AgentState) -> None:
     print("Generating general info report")
     project_id = state.get("project_info").get("project_id")
     try:
         report_content = generate_project_info_report_node(state)
-        report_file_path = f"{project_id}/{REPORT_NAME}.md"
-        upload_to_s3(report_content, report_file_path)
-        # Convert and upload PDF version
-        convert_markdown_to_pdf_and_upload(report_content, report_file_path.replace(".md", ".pdf"))
-        # Update status file to "completed"
-        markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{report_file_path}"
-        update_status_file(project_id, REPORT_NAME, "completed", markdown_link=markdown_link)
-        return {"general_info_report_content": report_content}
+        upload_report_to_s3(project_id, report_content)
     except Exception as e:
         # Capture full stack trace
         error_message = str(e)

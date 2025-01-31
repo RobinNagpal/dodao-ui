@@ -332,6 +332,15 @@ def update_status_file(project_id, report_name, status, error_message=None, mark
     upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
     print(f"Updated status file: s3://{BUCKET_NAME}/{agent_status_file_path}")
 
+def upload_report_to_s3(project_id: str, report_name: str, report_content: str):
+    report_file_path = f"{project_id}/{report_name}.md"
+    upload_to_s3(report_content, report_file_path)
+    # Convert and upload PDF version
+    convert_markdown_to_pdf_and_upload(report_content, report_file_path.replace(".md", ".pdf"))
+    # Update status file to "completed"
+    markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{report_file_path}"
+    update_status_file(project_id, report_name, "completed", markdown_link=markdown_link)
+
 async def run_agent_and_get_final_output_async(app, input_data, final_key, s3_key):
     """
     Runs a single LangGraph agent asynchronously, checks for existing file on S3, updates status file, and uploads the result if necessary.

@@ -8,8 +8,11 @@ from typing_extensions import TypedDict
 from typing import Annotated, List, Dict, Any
 from dotenv import load_dotenv
 import os
+
+from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import get_llm
 from cf_analysis_agent.utils.project_utils import scrape_project_urls
+from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_status_file
 
 load_dotenv()
 
@@ -29,35 +32,17 @@ class State(TypedDict):
     
 graph_builder = StateGraph(State)
 memory = MemorySaver()
-config = {"configurable": {"thread_id": "1"}}
+
 # move the scraping part to a common file 
 # show project scraping url status at the top of the report
 
-def aggregate_scraped_content_node(state: State):
-    """
-    Combine all scraped content from multiple links into a single text blob.
-    We'll store the combined text in state["combinedScrapedContent"].
-    """
-    scraped_list = state.get("project_scraped_urls", [])
-    combined_text = "\n\n".join(scraped_list) 
-    
-    state["combinedScrapedContent"] = combined_text
+REPORT_NAME = "red_flags"
 
-    return {
-        "messages": [
-            AIMessage(
-                content="Aggregated all scraped content into `combinedScrapedContent`. Ready to process further."
-            )
-        ],
-        "combinedScrapedContent": state["combinedScrapedContent"]
-    }
-
-def extract_industry_details_node(state: State, config):
+def find_industry_details(config: Config, combined_text: str):
     """
     Examines the combinedScrapedContent and extracts a summary of the startup's industry,
     storing it in state['extractedIndustryDetails'].
     """
-    combined_text = state.get("combinedScrapedContent", "")
 
     prompt = (
     "From the text below, extract any relevant details or discussion regarding the startup’s industry. "
@@ -74,19 +59,9 @@ def extract_industry_details_node(state: State, config):
     )
     llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
-    state["extractedIndustryDetails"] = response.content.strip()
-    print("Industry Details", state["extractedIndustryDetails"])
+    return response.content.strip()
 
-    return {
-        "messages": [
-            HumanMessage(
-                content="Extracted industry details from combinedScrapedContent. Stored in state['extractedIndustryDetails']."
-            )
-        ],
-        "extractedIndustryDetails": state["extractedIndustryDetails"]
-    }
-
-def highlight_startup_red_flags_node(state: State, config):
+def find_startup_red_flags(config: Config, combined_text: str):
     """
     Uses the LLM to extract the startup's red flags from the combinedScrapedContent.
     Exclude purely team-related or purely financial details, focusing on aspects that
@@ -98,54 +73,37 @@ def highlight_startup_red_flags_node(state: State, config):
         "Include only information that might reduce investor confidence, such as issues with product viability, "
         "market adoption problems, legal risks, poor partnerships, negative customer feedback, unclear market size, "
         "or other significant concerns. Avoid mentioning purely financial or team-related details.\n\n"
-        f"Scraped Content:\n{state['combinedScrapedContent']}\n\n"
+        f"Scraped Content:\n{combined_text}\n\n"
         "Return a text describing the startup's red flags, focusing on specific negative or concerning issues."
     )
     llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
-    state["startupRedFlags"] = response.content.strip()
-    print("Startup Red Flags", state["startupRedFlags"])
+    return response.content.strip()
 
-    return {
-        "messages": [
-            HumanMessage(content="Red flags extracted from the startup’s data. Storing result in state['startupRedFlags'].")
-        ],
-        "startupRedFlags": state["startupRedFlags"],
-    }
 
-def industry_red_flags_node(state: State, config):
+def find_industry_red_flags_node(config: Config, industry_details: str):
     """
     Finds the 10 most commonly recognized red flags in the startup's industry,
     based on the extracted industry details.
     """
-    industry_info = state.get("extractedIndustryDetails", "")
+
 
     prompt = (
         "Given the following industry description, outline the 10 most commonly recognized red flags "
         "for startups in this industry. Provide a clear list of critical indicators of potential failure. "
         "Each red flag should briefly explain why it poses a significant risk.\n\n"
-        f"Industry Info:\n{industry_info}\n\n"
+        f"Industry Info:\n{industry_details}\n\n"
     )
     llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
-    state["industryRedFlags"] = response.content.strip()
-    print("Industry Red Flags", state["industryRedFlags"])
+    return response.content.strip()
 
-    return {
-        "messages": [
-            HumanMessage(content="Industry-level red flags identified and stored in state['industryRedFlags'].")
-        ],
-        "industryRedFlags": state["industryRedFlags"]
-    }
 
-def evaluate_red_flags_node(state: State, config):
+def evaluate_red_applicable_to_startup(config: Config, startup_rf: str, industry_rf: str):
     """
     Compares the startup's red flags to the 10 industry red flags.
     Only mention red flags that are actually applicable to the startup.
     """
-    startup_rf = state["startupRedFlags"]
-    industry_rf = state["industryRedFlags"]
-
     prompt = (
         "Below are two pieces of information:\n\n"
         "1) The startup's identified red flags:\n"
@@ -158,23 +116,15 @@ def evaluate_red_flags_node(state: State, config):
     )
     llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
-    state["redFlagsEvaluation"] = response.content.strip()
+    return response.content.strip()
 
-    return {
-        "messages": [
-            HumanMessage(content="Evaluation of startup’s red flags vs. industry standards complete.")
-        ],
-        "redFlagsEvaluation": state["redFlagsEvaluation"]
-    }
 
-def finalize_red_flags_report_node(state: State, config):
+def finalize_red_flags_report_node(config: Config, startup_rf: str, industry_rf: str, rf_evaluation: str):
     """
     Produces the final textual report about the startup's red flags, 
     integrating industry standards and the evaluation.
     """
-    startup_rf = state["startupRedFlags"]
-    industry_rf = state["industryRedFlags"]
-    rf_evaluation = state["redFlagsEvaluation"]
+
 
     prompt = (
         "You have three pieces of content:\n\n"
@@ -192,48 +142,31 @@ def finalize_red_flags_report_node(state: State, config):
     llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
     final_report = response.content.strip()
+    return final_report
 
-    state["finalRedFlagsReport"] = final_report
+def create_red_flags_report(state: AgentState) -> None:
+    """
+    Orchestrates the entire red flags analysis process.
+    """
+    project_id = state.get("project_info").get("project_id")
+    print("Generating red flags report")
+    try:
 
-    # with open("final_red_flags_report.md", "w", encoding="utf-8") as f:
-    #     f.write(final_report)
+        combined_text = state.get("processed_project_info").get("combined_scrapped_content")
 
-    return {
-        "messages": [
-            AIMessage(content="Final Red Flags report generated and saved to final_red_flags_report.md"),
-        ],
-        "finalRedFlagsReport": state["finalRedFlagsReport"]
-    }
-
-graph_builder.add_node("scrape_project_urls", scrape_project_urls)
-graph_builder.add_node("aggregate_scraped_content", aggregate_scraped_content_node)
-graph_builder.add_node("extract_industry_details", extract_industry_details_node)
-graph_builder.add_node("highlight_startup_red_flags", highlight_startup_red_flags_node)
-graph_builder.add_node("industry_red_flags", industry_red_flags_node)
-graph_builder.add_node("evaluate_red_flags", evaluate_red_flags_node)
-graph_builder.add_node("finalize_red_flags_report", finalize_red_flags_report_node)
-
-graph_builder.add_edge(START, "scrape_project_urls")
-graph_builder.add_edge("scrape_project_urls", "aggregate_scraped_content")
-graph_builder.add_edge("aggregate_scraped_content", "extract_industry_details")
-graph_builder.add_edge("extract_industry_details", "highlight_startup_red_flags")
-graph_builder.add_edge("highlight_startup_red_flags", "industry_red_flags")
-graph_builder.add_edge("industry_red_flags", "evaluate_red_flags")
-graph_builder.add_edge("evaluate_red_flags", "finalize_red_flags_report")
-
-app = graph_builder.compile(checkpointer=memory)
-
-# events = app.stream(
-#     {
-#         "messages": [("user", "Scrape and analyze red flags.")],
-#         "project_urls": [
-#             "https://wefunder.com/neighborhoodsun", 
-#             "https://neighborhoodsun.solar/"
-#         ]
-#     },
-#     config,
-#     stream_mode="values"
-# )
-
-# for event in events:
-#     event["messages"][-1].pretty_print()
+        industry_details = find_industry_details(state.get("config"), combined_text)
+        startup_rfs = find_startup_red_flags(state.get("config"), combined_text)
+        industry_rfs = find_industry_red_flags_node(state.get("config"), industry_details)
+        rf_evaluation = evaluate_red_applicable_to_startup(state.get("config"), startup_rfs, industry_rfs)
+        final_red_flags_report = finalize_red_flags_report_node(state.get("config"), startup_rfs, industry_rfs, rf_evaluation)
+        upload_report_to_s3(project_id, final_red_flags_report)
+    except Exception as e:
+        # Capture full stack trace
+        error_message = str(e)
+        print(f"An error occurred:\n{error_message}")
+        update_status_file(
+            project_id,
+            REPORT_NAME,
+            "failed",
+            error_message=error_message
+        )
