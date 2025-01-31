@@ -8,7 +8,7 @@ from cf_analysis_agent.utils.report_utils import (
 )
 from financial_review_agent import app as financial_review_app
 from general_info import create_general_info_report
-from green_flags import app as green_flags_app
+from green_flags import create_green_flags_report
 from red_flags import create_red_flags_report
 from relevant_links import app as relevant_links_app
 from team_info import app as team_info_app
@@ -20,7 +20,6 @@ from team_info import app as team_info_app
 report_apps = {
     "team_info": team_info_app,
     "financial_review": financial_review_app,
-    "green_flags": green_flags_app,
     "relevant_links": relevant_links_app,
 }
 report_keys = list(report_apps.keys())
@@ -86,25 +85,19 @@ def route_single_or_all(state: AgentState) -> Sequence[str]:
         return [state["report_input"]]
 
 # ------------------- BUILDING THE GRAPH ------------------- #
-# Add report nodes dynamically
-
-
 builder = StateGraph(AgentState)
 
 for report_name in report_apps.keys():
     builder.add_node(report_name, invoke_report)
 
-
-# First Level (Payload Creation)
 builder.add_node("initialize_first_step", initialize_first_step)
 builder.add_node("general_info", create_general_info_report)
 builder.add_node("red_flags",  create_red_flags_report)
+builder.add_node("green_flags",  create_green_flags_report)
 builder.add_node("create_final_report", create_final_report)
 
-
-
 builder.add_edge(START, "initialize_first_step")
-builder.add_conditional_edges("initialize_first_step", route_single_or_all, report_keys + ["general_info", "red_flags"])
+builder.add_conditional_edges("initialize_first_step", route_single_or_all, report_keys + ["general_info", "red_flags", "green_flags"])
 builder.add_edge(report_keys, "create_final_report")
 builder.add_edge("create_final_report", END)
 

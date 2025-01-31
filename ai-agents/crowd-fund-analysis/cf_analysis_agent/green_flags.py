@@ -1,60 +1,15 @@
-from langgraph.graph import StateGraph, START
-from langgraph.graph.message import add_messages
-from langchain_openai import ChatOpenAI
-from langchain_community.document_loaders import ScrapingAntLoader
-from langchain_core.messages import HumanMessage, AIMessage
-from langgraph.checkpoint.memory import MemorySaver
-from typing_extensions import TypedDict
-from typing import Annotated, List, Dict, Any
-from dotenv import load_dotenv
-import os
+from langchain_core.messages import HumanMessage
+from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.project_utils import scrape_project_urls
+from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_status_file
 
-load_dotenv()
+REPORT_NAME = "green_flags"
 
-SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
-
-class State(TypedDict):
-    messages: Annotated[list, add_messages]
-    project_urls: List[str]
-    project_scraped_urls: List[str]
-    combinedScrapedContent: str
-    extractedIndustryDetails: str
-    startupGreenFlags: str       
-    industryGreenFlags: str     
-    greenFlagsEvaluation: str   
-    finalGreenFlagsReport: str
-
-graph_builder = StateGraph(State)
-memory = MemorySaver()
-config = {"configurable": {"thread_id": "1"}}
-
-def aggregate_scraped_content_node(state: State):
-    """
-    Combine all scraped content from multiple links into a single text blob.
-    We'll store the combined text in state["combinedScrapedContent"].
-    """
-    scraped_list = state.get("project_scraped_urls", [])
-    combined_text = "\n\n".join(scraped_list) 
-    
-    state["combinedScrapedContent"] = combined_text
-
-    return {
-        "messages": [
-            AIMessage(
-                content="Aggregated all scraped content into `combinedScrapedContent`. Ready to process further."
-            )
-        ],
-        "combinedScrapedContent": state["combinedScrapedContent"]
-    }
-
-def extract_industry_details_node(state: State, config):
+def find_industry_details(config: Config, combined_text: str):
     """
     Examines the combinedScrapedContent and extracts a summary of the startup's industry,
     storing it in state['extractedIndustryDetails'].
     """
-    combined_text = state.get("combinedScrapedContent", "")
 
     prompt = (
     "From the text below, extract any relevant details or discussion regarding the startup’s industry. "
@@ -71,18 +26,9 @@ def extract_industry_details_node(state: State, config):
     )
     llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
-    state["extractedIndustryDetails"] = response.content.strip()
+    return response.content.strip()
 
-    return {
-        "messages": [
-            HumanMessage(
-                content="Extracted industry details from combinedScrapedContent. Stored in state['extractedIndustryDetails']."
-            )
-        ],
-        "extractedIndustryDetails": state["extractedIndustryDetails"]
-    }
-
-def highlight_startup_green_flags_node(state: State, config):
+def find_startup_green_flags(config: Config, combined_text: str):
     """
     Uses the LLM to extract green flags from the combinedScrapedContent.
     We exclude any team-related or purely financial details as per requirements.
@@ -93,52 +39,33 @@ def highlight_startup_green_flags_node(state: State, config):
         "market opportunity, scalability, partnerships, and strategic positioning. "
         "Avoid forcing any information that does not clearly align with investor confidence, and exclude details "
         "related to the startup's team or purely financial metrics.\n\n"
-        f"Scraped Content:\n{state['combinedScrapedContent']}\n\n"
+        f"Scraped Content:\n{combined_text}\n\n"
         "Return a clear text describing the startup's green flags."
     )
     llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
-    state["startupGreenFlags"] = response.content.strip()
+    return response.content.strip()
 
-    return {
-        "messages": [
-            HumanMessage(content="Green flags extracted from startup’s data. Storing result in state['startupGreenFlags'].")
-        ],
-        "startupGreenFlags": state["startupGreenFlags"],
-    }
-
-def industry_green_flags_node(state: State, config):
+def find_industry_green_flags(config: Config, industry_details: str):
     """
     Finds the 10 most commonly recognized green flags in the startup's industry.
     We rely on the 'industry' field in projectInfo or from scraped content.
     """
-    industry_info = state.get("extractedIndustryDetails", "")
-
     prompt = (
         "Given the following industry description, outline the 10 most commonly recognized green flags for startups in this industry. "
         "Provide a clear list of these critical indicators of success.\n\n"
-        f"Industry Info:\n{industry_info}\n\n"
+        f"Industry Info:\n{industry_details}\n\n"
         "Return a comprehensive list of the most critical indicators of success for startups in this industry.. You may add short explanations for each."
     )
     llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
-    state["industryGreenFlags"] = response.content.strip()
+    return response.content.strip()
 
-    return {
-        "messages": [
-            HumanMessage(content="Industry-level green flags identified and stored in state['industryGreenFlags'].")
-        ],
-        "industryGreenFlags": state["industryGreenFlags"]
-    }
-
-def evaluate_green_flags_node(state: State, config):
+def evaluate_green_applicable_to_startup(config: Config, startup_gf: str, industry_gf: str):
     """
     Compares the startup's green flags to the 10 industry green flags, highlighting
     strengths, partial alignments, etc.
     """
-    startup_gf = state["startupGreenFlags"]
-    industry_gf = state["industryGreenFlags"]
-
     prompt = (
         "Below are two pieces of information:\n\n"
         "1) The startup's identified green flags:\n"
@@ -151,24 +78,13 @@ def evaluate_green_flags_node(state: State, config):
     )
     llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
-    state["greenFlagsEvaluation"] = response.content.strip()
+    return response.content.strip()
 
-    return {
-        "messages": [
-            HumanMessage(content="Evaluation of startup’s green flags vs. industry standards complete.")
-        ],
-        "greenFlagsEvaluation": state["greenFlagsEvaluation"]
-    }
-
-def finalize_green_flags_report_node(state: State, config):
+def finalize_green_flags_report(config: Config, startup_gf: str, industry_gf: str, gf_evaluation: str):
     """
     Produces the final textual report integrating the startup's green flags,
     the industry’s standard flags, and the evaluation results.
     """
-    startup_gf = state["startupGreenFlags"]
-    industry_gf = state["industryGreenFlags"]
-    gf_evaluation = state["greenFlagsEvaluation"]
-
     prompt = (
         "You have three pieces of content:\n\n"
         "1) The startup's green flags:\n"
@@ -184,49 +100,29 @@ def finalize_green_flags_report_node(state: State, config):
     )
     llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
-    final_report = response.content.strip()
-    state["finalGreenFlagsReport"] = final_report
+    return response.content.strip()
 
-    # Optionally save or print
-    # with open("final_green_flags_report.md", "w", encoding="utf-8") as f:
-    #     f.write(final_report)
-
-    return {
-        "messages": [
-            AIMessage(content="Final Green Flags report generated and saved to final_green_flags_report.md"),
-        ],
-        "finalGreenFlagsReport": state["finalGreenFlagsReport"]
-    }
-
-graph_builder.add_node("scrape_project_urls", scrape_project_urls)
-graph_builder.add_node("aggregate_scraped_content", aggregate_scraped_content_node)
-graph_builder.add_node("extract_industry_details", extract_industry_details_node)
-graph_builder.add_node("highlight_green_flags", highlight_startup_green_flags_node)
-graph_builder.add_node("industry_green_flags", industry_green_flags_node)
-graph_builder.add_node("evaluate_green_flags", evaluate_green_flags_node)
-graph_builder.add_node("finalize_green_flags_report", finalize_green_flags_report_node)
-
-graph_builder.add_edge(START, "scrape_project_urls")
-graph_builder.add_edge("scrape_project_urls", "aggregate_scraped_content")
-graph_builder.add_edge("aggregate_scraped_content", "extract_industry_details")
-graph_builder.add_edge("extract_industry_details", "highlight_green_flags")
-graph_builder.add_edge("highlight_green_flags", "industry_green_flags")
-graph_builder.add_edge("industry_green_flags", "evaluate_green_flags")
-graph_builder.add_edge("evaluate_green_flags", "finalize_green_flags_report")
-
-app = graph_builder.compile(checkpointer=memory)
-
-# events = app.stream(
-#     {
-#         "messages": [("user", "Scrape and analyze green flags.")],
-#         "project_urls": [
-#             "https://wefunder.com/neighborhoodsun", 
-#             "https://neighborhoodsun.solar/"
-#         ]
-#     },
-#     config,
-#     stream_mode="values"
-# )
-
-# for event in events:
-#     event["messages"][-1].pretty_print()
+def create_green_flags_report(state: AgentState) -> None:
+    """
+    Orchestrates the entire green flags analysis process.
+    """
+    project_id = state.get("project_info").get("project_id")
+    print("Generating green flags report")
+    try:
+        combined_text = state.get("processed_project_info").get("combined_scrapped_content")
+        industry_details = find_industry_details(state.get("config"), combined_text)
+        startup_gfs = find_startup_green_flags(state.get("config"), combined_text)
+        industry_gfs = find_industry_green_flags(state.get("config"), industry_details)
+        gf_evaluation = evaluate_green_applicable_to_startup(state.get("config"), startup_gfs, industry_gfs)
+        final_green_flags_report = finalize_green_flags_report(state.get("config"), startup_gfs, industry_gfs, gf_evaluation)
+        upload_report_to_s3(project_id, REPORT_NAME, final_green_flags_report)
+    except Exception as e:
+        # Capture full stack trace
+        error_message = str(e)
+        print(f"An error occurred:\n{error_message}")
+        update_status_file(
+            project_id,
+            REPORT_NAME,
+            "failed",
+            error_message=error_message
+        )
