@@ -1,37 +1,11 @@
-import os
-from typing import Annotated, List
-
-from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
-from langgraph.checkpoint.memory import MemorySaver
-from langgraph.graph import StateGraph
-from langgraph.graph.message import add_messages
-from typing_extensions import TypedDict
+
 
 from cf_analysis_agent.agent_state import AgentState
-from cf_analysis_agent.utils.llm_utils import get_llm, Config
+from cf_analysis_agent.utils.llm_utils import get_llm
 from cf_analysis_agent.utils.report_utils import update_status_file, upload_report_to_s3
 
-load_dotenv()
-
-SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
-
 REPORT_NAME = "general_info"
-
-
-class State(TypedDict):
-    messages: Annotated[list, add_messages]
-    project_id: str
-    project_urls: List[str]
-    project_scraped_urls: List[str]
-    combinedScrapedContent: str
-    projectGeneralInfo: str
-    config: Config
-
-
-graph_builder = StateGraph(State)
-memory = MemorySaver()
-
 
 def generate_project_info_report_node(state: AgentState):
     """
@@ -74,7 +48,7 @@ def create_general_info_report(state: AgentState) -> None:
     project_id = state.get("project_info").get("project_id")
     try:
         report_content = generate_project_info_report_node(state)
-        upload_report_to_s3(project_id, report_content)
+        upload_report_to_s3(project_id, REPORT_NAME, report_content)
     except Exception as e:
         # Capture full stack trace
         error_message = str(e)

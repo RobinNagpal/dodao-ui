@@ -101,7 +101,7 @@ def prepare_processing_command(project_id, model, script_path="cf_analysis_agent
     return command
 
 
-async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
+def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
     """
     Converts Markdown content to PDF, uploads it to S3, and updates the status file.
     """
@@ -195,7 +195,7 @@ async def convert_markdown_to_pdf_and_upload(markdown_content, s3_key):
     project_id = s3_key.split("/")[0]
     report_name = s3_key.split("/")[1].replace(".pdf", "")
     pdf_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{s3_key}"
-    await update_status_file(project_id, report_name, "completed", pdf_link=pdf_link)
+    update_status_file(project_id, report_name, "completed", pdf_link=pdf_link)
 
     print(f"Uploaded PDF to s3://{BUCKET_NAME}/{s3_key}")
 

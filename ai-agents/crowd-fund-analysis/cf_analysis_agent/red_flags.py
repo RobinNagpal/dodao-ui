@@ -1,37 +1,7 @@
-from langgraph.graph import StateGraph, START
-from langgraph.graph.message import add_messages
-from langchain_openai import ChatOpenAI
-from langchain_community.document_loaders import ScrapingAntLoader
-from langchain_core.messages import HumanMessage, AIMessage
-from langgraph.checkpoint.memory import MemorySaver
-from typing_extensions import TypedDict
-from typing import Annotated, List, Dict, Any
-from dotenv import load_dotenv
-import os
-
+from langchain_core.messages import HumanMessage
 from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.project_utils import scrape_project_urls
 from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_status_file
-
-load_dotenv()
-
-SCRAPINGANT_API_KEY = os.getenv("SCRAPINGANT_API_KEY")
-
-class State(TypedDict):
-    messages: Annotated[list, add_messages]
-    project_urls: List[str]
-    project_scraped_urls: List[str]
-    combinedScrapedContent: str
-    extractedIndustryDetails: str
-    startupRedFlags: str       
-    industryRedFlags: str     
-    redFlagsEvaluation: str   
-    finalRedFlagsReport: str
-    projectUrlScrapingStatus: Dict[str, str]
-    
-graph_builder = StateGraph(State)
-memory = MemorySaver()
 
 # move the scraping part to a common file 
 # show project scraping url status at the top of the report
@@ -81,13 +51,11 @@ def find_startup_red_flags(config: Config, combined_text: str):
     return response.content.strip()
 
 
-def find_industry_red_flags_node(config: Config, industry_details: str):
+def find_industry_red_flags(config: Config, industry_details: str):
     """
     Finds the 10 most commonly recognized red flags in the startup's industry,
     based on the extracted industry details.
     """
-
-
     prompt = (
         "Given the following industry description, outline the 10 most commonly recognized red flags "
         "for startups in this industry. Provide a clear list of critical indicators of potential failure. "
@@ -119,7 +87,7 @@ def evaluate_red_applicable_to_startup(config: Config, startup_rf: str, industry
     return response.content.strip()
 
 
-def finalize_red_flags_report_node(config: Config, startup_rf: str, industry_rf: str, rf_evaluation: str):
+def finalize_red_flags_report(config: Config, startup_rf: str, industry_rf: str, rf_evaluation: str):
     """
     Produces the final textual report about the startup's red flags, 
     integrating industry standards and the evaluation.
@@ -141,8 +109,7 @@ def finalize_red_flags_report_node(config: Config, startup_rf: str, industry_rf:
     )
     llm = get_llm(config)
     response = llm.invoke([HumanMessage(content=prompt)])
-    final_report = response.content.strip()
-    return final_report
+    return response.content.strip()
 
 def create_red_flags_report(state: AgentState) -> None:
     """
@@ -153,13 +120,12 @@ def create_red_flags_report(state: AgentState) -> None:
     try:
 
         combined_text = state.get("processed_project_info").get("combined_scrapped_content")
-
         industry_details = find_industry_details(state.get("config"), combined_text)
         startup_rfs = find_startup_red_flags(state.get("config"), combined_text)
-        industry_rfs = find_industry_red_flags_node(state.get("config"), industry_details)
+        industry_rfs = find_industry_red_flags(state.get("config"), industry_details)
         rf_evaluation = evaluate_red_applicable_to_startup(state.get("config"), startup_rfs, industry_rfs)
-        final_red_flags_report = finalize_red_flags_report_node(state.get("config"), startup_rfs, industry_rfs, rf_evaluation)
-        upload_report_to_s3(project_id, final_red_flags_report)
+        final_red_flags_report = finalize_red_flags_report(state.get("config"), startup_rfs, industry_rfs, rf_evaluation)
+        upload_report_to_s3(project_id, REPORT_NAME, final_red_flags_report)
     except Exception as e:
         # Capture full stack trace
         error_message = str(e)
