@@ -31,7 +31,7 @@ def initialize_first_step(agent_state: AgentState) -> None:
     print(agent_state.get("project_info"))
     print("Initialized first step")
 
-# ------------------- REPORT HANDLING (Including PDF Conversion) ------------------- #
+# ------------------- REPORT HANDLING ------------------- #
 def create_final_report(state: AgentState) -> dict:
     """
     Aggregates all the reports into a final result.

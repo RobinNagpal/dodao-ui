@@ -5,7 +5,6 @@ from datetime import datetime
 from dotenv import load_dotenv
 
 from cf_analysis_agent.agent_state import ProjectInfo
-from cf_analysis_agent.utils.pdf_utils import convert_markdown_to_pdf_and_upload
 from cf_analysis_agent.utils.s3_utils import upload_to_s3, s3_client, BUCKET_NAME
 
 ALL_REPORT_TYPES: list[str] = [
@@ -67,7 +66,6 @@ def get_init_data_for_report(report_type):
     return {
         "status": "in_progress",
         "markdownLink": None,
-        "pdfLink": None,
         "startTime": datetime.now().isoformat(),
         "estimatedTimeInSec": 240 if report_type in ["team_info", "financial_review"] else 150
     }
@@ -122,7 +120,6 @@ def initialize_project_in_s3(project_id, project_details):
             report: {
                 "status": "in_progress",
                 "markdownLink": None,
-                "pdfLink": None,
                 "startTime": current_time,
                 "estimatedTimeInSec": 240 if report in ["team_info", "financial_review"] else 150
             }
@@ -131,7 +128,6 @@ def initialize_project_in_s3(project_id, project_details):
         "finalReport": {
             "status": "in_progress",
             "markdownLink": None,
-            "pdfLink": None,
             "startTime": current_time,
             "estimatedTimeInSec": 260  # Example estimate for the final report
         }
@@ -142,7 +138,7 @@ def initialize_project_in_s3(project_id, project_details):
     print(f"Initialized status file: s3://{BUCKET_NAME}/{agent_status_file_path}")
 
 
-def update_status_file(project_id, report_name, status, error_message=None, markdown_link=None, pdf_link=None):
+def update_status_file(project_id, report_name, status, error_message=None, markdown_link=None):
     """
     Updates the `agent-status.json` file in the S3 bucket.
     """
@@ -168,8 +164,6 @@ def update_status_file(project_id, report_name, status, error_message=None, mark
     # Add optional fields if provided
     if markdown_link:
         status_data["reports"][report_name]["markdownLink"] = markdown_link
-    if pdf_link:
-        status_data["reports"][report_name]["pdfLink"] = pdf_link
 
     # Automatically set endTime for completed or failed statuses
     if status in ["completed", "failed"]:
@@ -197,8 +191,6 @@ def update_status_file(project_id, report_name, status, error_message=None, mark
 def upload_report_to_s3(project_id: str, report_name: str, report_content: str):
     report_file_path = f"{project_id}/{report_name}.md"
     upload_to_s3(report_content, report_file_path)
-    # Convert and upload PDF version
-    convert_markdown_to_pdf_and_upload(report_content, report_file_path.replace(".md", ".pdf"))
     # Update status file to "completed"
     markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{report_file_path}"
     update_status_file(project_id, report_name, "completed", markdown_link=markdown_link)
