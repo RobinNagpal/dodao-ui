@@ -1,7 +1,14 @@
+from enum import Enum
 from typing import Annotated, List
 from langgraph.graph.message import add_messages
 from typing_extensions import TypedDict
 
+
+class ProcessingStatus(str, Enum):
+    NOT_STARTED = "not_started"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+    FAILED = "failed"
 
 class Configurable(TypedDict):
     model: str
@@ -22,6 +29,7 @@ class ProcessedProjectInfo(TypedDict):
     combined_scrapped_content: str
     sec_raw_content: str
     last_updated: str
+    status: ProcessingStatus
 
 class FinalReport(TypedDict):
     final_report_contents: str
@@ -35,3 +43,5 @@ class AgentState(TypedDict):
     processed_project_info: ProcessedProjectInfo | None
     config: Config
     final_report: FinalReport | None
+
+

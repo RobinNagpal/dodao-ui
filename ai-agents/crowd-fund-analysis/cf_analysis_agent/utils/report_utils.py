@@ -1,12 +1,11 @@
 import json
 import os
 from datetime import datetime
-from enum import Enum
-from typing import List, Dict, Optional, Union
+from typing import List, Dict, Optional
 from dotenv import load_dotenv
 from typing_extensions import TypedDict, NotRequired
 
-from cf_analysis_agent.agent_state import ProjectInfo, ProcessedProjectInfo
+from cf_analysis_agent.agent_state import ProjectInfo, ProcessedProjectInfo, ProcessingStatus
 from cf_analysis_agent.utils.project_utils import scrape_url, scrape_urls
 from cf_analysis_agent.utils.s3_utils import s3_client, BUCKET_NAME, upload_to_s3
 
@@ -18,12 +17,6 @@ OPEN_AI_DEFAULT_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4')
 # ---------------------------------------------------------
 # 1) TypedDict Definitions
 # ---------------------------------------------------------
-
-class ReportStatus(str, Enum):
-    NOT_STARTED = "not_started"
-    IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
-    FAILED = "failed"
 
 
 class ProjectInfoInputSchema(TypedDict):
@@ -45,7 +38,7 @@ class ReportSchema(TypedDict, total=False):
     (e.g., endTime, errorMessage) and may only appear
     under certain conditions.
     """
-    status: ReportStatus
+    status: ProcessingStatus
     markdownLink: Optional[str]
     startTime: str
     estimatedTimeInSec: int
@@ -75,7 +68,7 @@ class ProjectStatusFileSchema(TypedDict, total=False):
     id: str
     name: str
     projectInfoInput: ProjectInfoInputSchema
-    status: ReportStatus
+    status: ProcessingStatus
     reports: Dict[str, ReportSchema]
     finalReport: ReportSchema
     processedProjectInfo: NotRequired[ProcessedProjectInfoSchema]
@@ -140,7 +133,7 @@ def get_init_data_for_report(report_type: str) -> ReportSchema:
     for the given report_type.
     """
     return {
-        "status": ReportStatus.NOT_STARTED,
+        "status": ProcessingStatus.NOT_STARTED,
         "markdownLink": None,
         "startTime": datetime.now().isoformat(),
         "estimatedTimeInSec": 240 if report_type in ["team_info", "financial_review"] else 150
@@ -159,7 +152,7 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
     reports_data = {}
     for r_type in ALL_REPORT_TYPES:
         reports_data[r_type] = {
-            "status": ReportStatus.NOT_STARTED,
+            "status": ProcessingStatus.NOT_STARTED,
             "markdownLink": None,
             "startTime": current_time,
             "estimatedTimeInSec": 240 if r_type in ["team_info", "financial_review"] else 150
@@ -175,10 +168,10 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
             "additionalUrl": project_details["additional_links"],
             "websiteUrl": project_details["website_url"]
         },
-        "status": ReportStatus.IN_PROGRESS,
+        "status": ProcessingStatus.IN_PROGRESS,
         "reports": reports_data,
         "finalReport": {
-            "status": ReportStatus.NOT_STARTED,
+            "status": ProcessingStatus.NOT_STARTED,
             "markdownLink": None,
             "startTime": current_time,
             "estimatedTimeInSec": 260
@@ -217,7 +210,7 @@ def update_report_status_in_progress(project_id: str, report_name: str):
         raise Exception(f"Report type '{report_name}' not found in the status file.")
 
     project_file_contents["reports"][report_name] = get_init_data_for_report(report_name)
-    project_file_contents["reports"][report_name]["status"] = ReportStatus.IN_PROGRESS
+    project_file_contents["reports"][report_name]["status"] = ProcessingStatus.IN_PROGRESS
     update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_name}' to 'in_progress'.")
 
@@ -231,13 +224,13 @@ def update_report_status_completed(project_id: str, report_name: str, markdown_l
     if report_name not in project_file_contents["reports"]:
         raise Exception(f"Report type '{report_name}' not found in the status file.")
 
-    project_file_contents["reports"][report_name]["status"] = ReportStatus.COMPLETED
+    project_file_contents["reports"][report_name]["status"] = ProcessingStatus.COMPLETED
     project_file_contents["reports"][report_name]["endTime"] = datetime.now().isoformat()
     if markdown_link:
         project_file_contents["reports"][report_name]["markdownLink"] = markdown_link
 
     report_statuses = [r["status"] for r in project_file_contents["reports"].values()]
-    project_file_contents["status"] = "completed" if all(rs == ReportStatus.COMPLETED for rs in report_statuses) else ReportStatus.IN_PROGRESS
+    project_file_contents["status"] = "completed" if all(rs == ProcessingStatus.COMPLETED for rs in report_statuses) else ProcessingStatus.IN_PROGRESS
 
     update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_name}' to 'completed'.")
@@ -252,10 +245,10 @@ def update_report_status_failed(project_id: str, report_name: str, error_message
     if report_name not in project_file_contents["reports"]:
         raise Exception(f"Report type '{report_name}' not found in the status file.")
 
-    project_file_contents["reports"][report_name]["status"] = ReportStatus.FAILED
+    project_file_contents["reports"][report_name]["status"] = ProcessingStatus.FAILED
     project_file_contents["reports"][report_name]["endTime"] = datetime.now().isoformat()
     project_file_contents["reports"][report_name]["errorMessage"] = error_message
-    project_file_contents["status"] = ReportStatus.FAILED
+    project_file_contents["status"] = ProcessingStatus.FAILED
 
     update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_name}' to 'failed' with error message: {error_message}")
@@ -369,7 +362,8 @@ def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
         "urls_used_for_scrapping": current_urls_sorted,
         "combined_scrapped_content": combined_scrapped_content,
         "sec_raw_content": sec_raw_content,
-        "last_updated": new_processed_project_info["lastUpdated"]
+        "last_updated": new_processed_project_info["lastUpdated"],
+        "status": ProcessingStatus.COMPLETED
     }
 
 

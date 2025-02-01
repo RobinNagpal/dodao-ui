@@ -20,15 +20,7 @@ class AdditionalData(TypedDict):
     financials: dict
     relevant_metrics: dict
 
-def extract_data_from_sec_node(sec_content: str,config:Config):
-    """
-    Scrapes the SEC filing page and extracts Form C financial data with retry logic.
-    
-    Args:
-        state: The state object containing data and configurations.
-        max_retries: Maximum number of retry attempts (default: 5).
-        retry_delay: Time (in seconds) to wait between retries (default: 5 seconds).
-    """
+def extract_data_from_sec_node(sec_content: str, config:Config):
     prompt = (
         "Extract the following financial information for both the most recent fiscal year "
         "Also extract the years for the most recent fiscal year and prior fiscal year so the user can identify both\n"

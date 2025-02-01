@@ -1,7 +1,5 @@
-from langchain_core.messages import HumanMessage
-
 from cf_analysis_agent.agent_state import AgentState, Config
-from cf_analysis_agent.utils.llm_utils import get_llm
+from cf_analysis_agent.utils.llm_utils import structured_llm_response
 from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
     update_report_status_in_progress
 
@@ -29,9 +27,8 @@ def find_industry_details(config: Config, combined_text: str):
     f"{combined_text}\n\n"
     "Return only the textual summary of these industry details, as concise as possible but covering each requested item."
     )
-    llm = get_llm(config)
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return response.content.strip()
+
+    return structured_llm_response(config, "find_industry_details", prompt)
 
 def find_startup_red_flags(config: Config, combined_text: str):
     """
@@ -48,9 +45,7 @@ def find_startup_red_flags(config: Config, combined_text: str):
         f"Scraped Content:\n{combined_text}\n\n"
         "Return a text describing the startup's red flags, focusing on specific negative or concerning issues."
     )
-    llm = get_llm(config)
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return response.content.strip()
+    return structured_llm_response(config, "find_startup_red_flags", prompt)
 
 
 def find_industry_red_flags(config: Config, industry_details: str):
@@ -64,9 +59,7 @@ def find_industry_red_flags(config: Config, industry_details: str):
         "Each red flag should briefly explain why it poses a significant risk.\n\n"
         f"Industry Info:\n{industry_details}\n\n"
     )
-    llm = get_llm(config)
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return response.content.strip()
+    return structured_llm_response(config, "find_industry_red_flags", prompt)
 
 
 def evaluate_red_applicable_to_startup(config: Config, startup_rf: str, industry_rf: str):
@@ -84,9 +77,7 @@ def evaluate_red_applicable_to_startup(config: Config, startup_rf: str, industry
         "the ones that actually apply. If the startup does not exhibit a specific industry red flag, omit it. "
         "Return a clear explanation of which red flags apply, how severely, and why."
     )
-    llm = get_llm(config)
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return response.content.strip()
+    return structured_llm_response(config, "evaluate_red_applicable_to_startup", prompt)
 
 
 def finalize_red_flags_report(config: Config, startup_rf: str, industry_rf: str, rf_evaluation: str):
@@ -107,9 +98,8 @@ def finalize_red_flags_report(config: Config, startup_rf: str, industry_rf: str,
         "If a particular parameter does not indicate an actual red flag, remove it from the report. "
         "Avoid repetition unless absolutely necessary. Return only the textual report."
     )
-    llm = get_llm(config)
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return response.content.strip()
+
+    return structured_llm_response(config, "finalize_red_flags_report", prompt)
 
 def create_red_flags_report(state: AgentState) -> None:
     """

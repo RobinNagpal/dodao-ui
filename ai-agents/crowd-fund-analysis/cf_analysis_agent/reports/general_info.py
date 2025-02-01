@@ -1,7 +1,7 @@
 from langchain_core.messages import HumanMessage
 
 from cf_analysis_agent.agent_state import AgentState
-from cf_analysis_agent.utils.llm_utils import get_llm
+from cf_analysis_agent.utils.llm_utils import get_llm, structured_llm_response
 from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
     update_report_status_in_progress
 
@@ -38,9 +38,7 @@ def generate_project_info_report_node(state: AgentState):
         Return only the textual report of these details.
         """
     )
-    llm = get_llm(state.get("config"))
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return response.content.strip()
+    return structured_llm_response(state.get("config"), "generate_project_info_report", prompt)
 
 
 def create_general_info_report(state: AgentState) -> None:
