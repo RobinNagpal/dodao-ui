@@ -1,10 +1,9 @@
 import os
 import subprocess
 import sys
-
-from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_cors import CORS
+from cf_analysis_agent.utils.env_variables import BUCKET_NAME, OPEN_AI_DEFAULT_MODEL, REGION
 
 # # Add the parent directory of app.py to the Python path this maybe temporary we can change it later for that we will have to change docker file as well
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -15,10 +14,8 @@ from cf_analysis_agent.controller import prepare_processing_command
 
 app = Flask(__name__)
 CORS(app)  # This will allow all origins by default
-load_dotenv()
-BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
-OPEN_AI_DEFAULT_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4o')
-REGION=os.getenv("AWS_DEFAULT_REGION")
+
+
 @app.route("/")
 def index():
     """

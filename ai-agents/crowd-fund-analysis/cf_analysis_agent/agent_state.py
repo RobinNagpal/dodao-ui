@@ -14,7 +14,7 @@ class Configurable(TypedDict):
     model: str
 
 class Config(TypedDict):
-    configurable: dict[str, Configurable]
+    configurable: Configurable
 
 class ProjectInfo(TypedDict):
     project_name: str
@@ -26,7 +26,7 @@ class ProjectInfo(TypedDict):
 
 class ProcessedProjectInfo(TypedDict):
     urls_used_for_scrapping: list[str]
-    combined_scrapped_content: str
+    content_of_scrapped_urls: str
     sec_raw_content: str
     last_updated: str
     status: ProcessingStatus
