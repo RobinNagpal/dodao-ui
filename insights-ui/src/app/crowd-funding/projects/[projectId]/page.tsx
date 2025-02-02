@@ -1,5 +1,5 @@
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { ProjectDetail } from '@/types/project/project';
+import { ProjectDetails } from '@/types/project/project';
 import ProjectDetailPage from '@/components/projects/ProjectDetailPage';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import React from 'react';
@@ -10,7 +10,7 @@ export default async function ProjectDetailPageWrapper({ params }: { params: Pro
   const { projectId } = await params;
 
   const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`);
-  const data: { projectDetails: ProjectDetail } = await res.json();
+  const data: { projectDetails: ProjectDetails } = await res.json();
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {

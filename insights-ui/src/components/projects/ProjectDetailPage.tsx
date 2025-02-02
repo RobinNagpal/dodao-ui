@@ -1,18 +1,24 @@
 'use client';
 
-import React, { useEffect, useState, useMemo } from 'react';
 import ProjectDetailTable from '@/components/projects/ProjectDetailTable';
-import { ProjectDetail, Status } from '@/types/project/project';
+import { ProjectDetails, ProcessingStatus, ReportInterface, ReportWithName } from '@/types/project/project';
+import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import React, { useEffect, useMemo, useState } from 'react';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface ProjectDetailPageProps {
   projectId: string;
-  initialProjectDetails: ProjectDetail;
+  initialProjectDetails: ProjectDetails;
 }
 
 export default function ProjectDetailPage({ projectId, initialProjectDetails }: ProjectDetailPageProps) {
-  const [projectDetails, setProjectDetails] = useState<ProjectDetail>(initialProjectDetails);
+  const [projectDetails, setProjectDetails] = useState<ProjectDetails>(initialProjectDetails);
   const [reloadTrigger, setReloadTrigger] = useState(false);
+  const [openWebsiteContentAccordion, setOpenWebsiteContentAccordion] = useState(false);
+  const [openCrowdFundingContentAccordion, setOpenCrowdFundingContentAccordion] = useState(false);
+  const [openAdditionalUrlsContentAccordion, setOpenAdditionalUrlsContentAccordion] = useState(false);
 
   const fetchProjectDetails = async () => {
     try {
@@ -27,41 +33,12 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
 
   // Combine reports and finalReport into a single array
   // UseMemo for reports calculation
-  const reports = useMemo(() => {
-    if (!projectDetails?.reports) return [];
-
-    const baseReports = Object.entries(projectDetails.reports).map(([name, report]) => ({
-      name,
-      status: report.status,
-      markdownLink: report.markdownLink,
-      pdfLink: report.pdfLink,
-      startTime: report.startTime ?? undefined,
-      estimatedTimeInSec: report.estimatedTimeInSec ?? undefined,
-      endTime: report.endTime ?? undefined,
-    }));
-
-    const finalReport = Object.values(projectDetails.reports).every((report) => report.status === Status.completed)
-      ? [
-          {
-            name: 'final_report',
-            status: projectDetails.finalReport.status,
-            markdownLink: projectDetails.finalReport.markdownLink,
-            pdfLink: projectDetails.finalReport.pdfLink,
-            startTime: projectDetails.finalReport.startTime ?? undefined,
-            estimatedTimeInSec: projectDetails.finalReport.estimatedTimeInSec ?? undefined,
-            endTime: projectDetails.finalReport.endTime ?? undefined,
-          },
-        ]
-      : [];
-
-    console.log('Reports recalculated:', [...baseReports, ...finalReport]);
-    return [...baseReports, ...finalReport];
-  }, [projectDetails]);
+  const reports: ReportWithName[] = Object.entries(projectDetails.reports).map(([name, report]) => ({ ...report, name }));
 
   // Polling mechanism for refreshing data
   useEffect(() => {
     const interval = setInterval(() => {
-      const hasInProgressReport = reports.some((report) => report.status === Status.in_progress || report.status === Status.not_started);
+      const hasInProgressReport = reports.some((report) => report.status === ProcessingStatus.IN_PROGRESS || report.status === ProcessingStatus.NOT_STARTED);
 
       if (hasInProgressReport) {
         console.log('Refetching due to in-progress status...');
@@ -79,11 +56,94 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
   }, [reloadTrigger]);
 
   return (
-    <div className="w-full">
+    <div className="w-full text-color">
       <div className="text-center text-color my-5">
         <h1 className="font-semibold leading-6 text-2xl">{projectDetails.name}</h1>
         <div className="my-5">Overall Status: {projectDetails.status}</div>
       </div>
+      <Accordion
+        key="crowd-funding-content-accordion"
+        isOpen={openCrowdFundingContentAccordion}
+        label="Crowdfunding Content"
+        onClick={(e: React.MouseEvent<HTMLElement>) => {
+          e.preventDefault();
+          setOpenCrowdFundingContentAccordion(!openCrowdFundingContentAccordion);
+          if (!openCrowdFundingContentAccordion) {
+            setOpenWebsiteContentAccordion(false);
+            setOpenAdditionalUrlsContentAccordion(false);
+          }
+        }}
+      >
+        <div className={`w-full text-color ${openCrowdFundingContentAccordion ? 'block-bg-color' : ''}`}>
+          {projectDetails.processedProjectInfo?.contentOfCrowdfundingUrl && (
+            <Markdown
+              className="markdown text-color"
+              remarkPlugins={[remarkGfm]}
+              components={{
+                th: ({ node, ...props }) => <th className="border border-color px-4 py-2" {...props} />,
+                td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
+              }}
+            >
+              {projectDetails.processedProjectInfo?.contentOfCrowdfundingUrl}
+            </Markdown>
+          )}
+        </div>
+      </Accordion>
+      <Accordion
+        label="Website Content"
+        isOpen={openWebsiteContentAccordion}
+        onClick={(e: React.MouseEvent<HTMLElement>) => {
+          e.preventDefault();
+          setOpenWebsiteContentAccordion(!openWebsiteContentAccordion);
+          if (!openWebsiteContentAccordion) {
+            setOpenCrowdFundingContentAccordion(false);
+            setOpenAdditionalUrlsContentAccordion(false);
+          }
+        }}
+      >
+        <div className={`w-full text-color ${openWebsiteContentAccordion ? 'block-bg-color' : ''}`}>
+          {projectDetails.processedProjectInfo?.contentOfWebsiteUrl && (
+            <Markdown
+              className="markdown text-color"
+              remarkPlugins={[remarkGfm]}
+              components={{
+                th: ({ node, ...props }) => <th className="border border-color px-4 py-2" {...props} />,
+                td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
+              }}
+            >
+              {projectDetails.processedProjectInfo?.contentOfWebsiteUrl}
+            </Markdown>
+          )}
+        </div>
+      </Accordion>
+      <Accordion
+        label="Additional URLs"
+        isOpen={openAdditionalUrlsContentAccordion}
+        onClick={(e: React.MouseEvent<HTMLElement>) => {
+          e.preventDefault();
+          setOpenAdditionalUrlsContentAccordion(!openAdditionalUrlsContentAccordion);
+          if (!openAdditionalUrlsContentAccordion) {
+            setOpenCrowdFundingContentAccordion(false);
+            setOpenWebsiteContentAccordion(false);
+          }
+        }}
+      >
+        <div className={`w-full text-color ${openAdditionalUrlsContentAccordion ? 'block-bg-color' : ''}`}>
+          {projectDetails.processedProjectInfo?.contentOfAdditionalUrls && (
+            <Markdown
+              className="markdown text-color"
+              remarkPlugins={[remarkGfm]}
+              components={{
+                th: ({ node, ...props }) => <th className="border border-color px-4 py-2" {...props} />,
+                td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
+              }}
+            >
+              {projectDetails.processedProjectInfo?.contentOfAdditionalUrls}
+            </Markdown>
+          )}
+        </div>
+      </Accordion>
+
       {reports.length > 0 ? (
         <div className="block-bg-color w-full">
           <ProjectDetailTable reports={reports} projectId={projectId} reload={() => setReloadTrigger(true)} />

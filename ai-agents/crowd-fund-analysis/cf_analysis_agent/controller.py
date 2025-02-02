@@ -79,7 +79,7 @@ def parse_arguments() -> AgentState:
     latest_sec_filing_link = args.latest_sec_filing_link.strip().strip('"')
     additional_links = [link.strip() for link in args.additional_links.split(",") if link.strip()]
     report_type = args.report_type.strip().strip('"') if args.report_type else "all"
-    model = args.model.strip().strip('"') if args.model else None
+    model = args.model.strip().strip('"') if args.model else "gpt-4o-mini"
 
     project_info: ProjectInfo = {
         "project_id": project_id,
@@ -92,7 +92,7 @@ def parse_arguments() -> AgentState:
 
     processed_project_info = ensure_processed_project_info(project_id)
 
-    return {
+    state: AgentState = {
         "messages": [],
         "project_info": project_info,
         "report_input": report_type,
@@ -105,6 +105,7 @@ def parse_arguments() -> AgentState:
         "processed_project_info": processed_project_info,
         "final_report": None
     }
+    return state
 
 
 

@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Annotated, List
+from typing import Annotated, List, Optional
 from langgraph.graph.message import add_messages
 from typing_extensions import TypedDict
 
@@ -25,8 +25,8 @@ class ProjectInfo(TypedDict):
     project_id: str
 
 class ProcessedProjectInfo(TypedDict, total=False):
-    additional_urls_used: list[str]
-    content_of_additional_urls: str
+    additional_urls_used: Optional[list[str]]
+    content_of_additional_urls: Optional[str]
     content_of_crowdfunding_url: str
     content_of_website_url: str
     sec_raw_content: str

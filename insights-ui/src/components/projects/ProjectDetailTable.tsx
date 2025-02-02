@@ -1,6 +1,6 @@
 'use client';
 
-import { ReportWithName, Status } from '@/types/project/project';
+import { ReportWithName, ProcessingStatus } from '@/types/project/project';
 import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -28,7 +28,7 @@ export default function ProjectDetailTable({ reports, projectId, reload }: Proje
     const currentTime = Date.now();
     const estimatedTime = startTime + report.estimatedTimeInSec * 1000;
 
-    return currentTime - startTime < 90 * 1000 && (report.status === Status.in_progress || report.status === Status.not_started); // Disable if the current time is within the estimated completion time
+    return currentTime - startTime < 90 * 1000 && (report.status === ProcessingStatus.IN_PROGRESS || report.status === ProcessingStatus.NOT_STARTED); // Disable if the current time is within the estimated completion time
   };
 
   const tableActions: TableActions = {
@@ -59,12 +59,12 @@ export default function ProjectDetailTable({ reports, projectId, reload }: Proje
 
         // Status or Links
         <div key={`${report.name}-status`} className="flex items-center gap-2">
-          {report.status === Status.in_progress ? (
+          {report.status === ProcessingStatus.IN_PROGRESS ? (
             <>
               <span className="mr-2">{report.status}</span>
               <LoadingSpinner />
             </>
-          ) : report.status === Status.completed ? (
+          ) : report.status === ProcessingStatus.COMPLETED ? (
             <div className="flex gap-2">
               {report.markdownLink && (
                 <Link

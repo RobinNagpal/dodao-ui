@@ -102,7 +102,7 @@ def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
 
     print(f"Project Info Needs Processing: {needs_processing}")
     if not needs_processing:
-        print("URLs have not changed and 'processed_project_info' already exists. No re-scraping needed.")
+        print("Project Info is up-to-date. No need to re-scrape project URLs.")
         return convert_s3_processed_info_to_state(project_info_in_s3)
 
     if (urls_changed
