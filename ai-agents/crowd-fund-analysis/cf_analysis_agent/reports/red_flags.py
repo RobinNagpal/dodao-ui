@@ -1,3 +1,5 @@
+import traceback
+
 from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import structured_llm_response
 from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
@@ -118,6 +120,7 @@ def create_red_flags_report(state: AgentState) -> None:
         create_report_file_and_upload_to_s3(project_id, REPORT_NAME, final_red_flags_report)
     except Exception as e:
         # Capture full stack trace
+        print(traceback.format_exc())
         error_message = str(e)
         print(f"An error occurred:\n{error_message}")
         update_report_status_failed(

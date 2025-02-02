@@ -1,3 +1,5 @@
+import traceback
+
 from langchain_core.tools import tool
 from langchain_core.messages import BaseMessage
 from langgraph.graph import StateGraph, START
@@ -26,6 +28,7 @@ def tool(url: str) -> str:
         print(page_content)
         return page_content
     except Exception as e:
+        print(traceback.format_exc())
         return f"Failed to scrape URL: {e}"
     
 tools = [tool]

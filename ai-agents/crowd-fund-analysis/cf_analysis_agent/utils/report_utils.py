@@ -11,6 +11,7 @@ from cf_analysis_agent.utils.s3_utils import s3_client, BUCKET_NAME, upload_to_s
 
 load_dotenv()
 
+
 # ---------------------------------------------------------
 # 1) TypedDict Definitions
 # ---------------------------------------------------------
@@ -23,7 +24,7 @@ class ProjectInfoInputSchema(TypedDict):
     """
     crowdFundingUrl: str
     secFilingUrl: str
-    additionalUrl: List[str]
+    additionalUrls: List[str]
     websiteUrl: str
 
 
@@ -39,21 +40,23 @@ class ReportSchema(TypedDict, total=False):
     markdownLink: Optional[str]
     startTime: str
     estimatedTimeInSec: int
-    endTime: NotRequired[str]
+    endTime: Optional[str]
     errorMessage: NotRequired[str]
 
 
 class FinalReportSchema(ReportSchema, total=False):
-    spiderGraphJsonFileUrl: Optional[str]
+    spiderGraphJsonFileUrl: NotRequired[str]
 
 
-class ProcessedProjectInfoSchema(TypedDict):
+class ProcessedProjectInfoSchema(TypedDict, total=False):
     """
     Stores combined text results after scraping the various
     URLs for this project, plus a timestamp for when it was last updated.
     """
-    urlsUsedForScraping: List[str]
-    contentOfScrappedUrls: str
+    additionalUrlsUsed: List[str]
+    contentOfAdditionalUrls: str
+    contentOfCrowdfundingUrl: str
+    contentOfWebsiteUrl: str
     secRawContent: str
     lastUpdated: str
     status: ProcessingStatus
@@ -69,7 +72,7 @@ class ProjectStatusFileSchema(TypedDict, total=False):
     projectInfoInput: ProjectInfoInputSchema
     status: ProcessingStatus
     reports: Dict[str, ReportSchema]
-    finalReport: ReportSchema
+    finalReport: FinalReportSchema
     processedProjectInfo: ProcessedProjectInfoSchema
 
 
@@ -110,7 +113,7 @@ def get_project_info_from_s3(project_id: str) -> ProjectInfo:
     crowdfunding_link = project_file_contents.get("projectInfoInput", {}).get("crowdFundingUrl", "").strip()
     website_url = project_file_contents.get("projectInfoInput", {}).get("websiteUrl", "").strip()
     latest_sec_filing_link = project_file_contents.get("projectInfoInput", {}).get("secFilingUrl", "").strip()
-    additional_links: list[str] = project_file_contents.get("projectInfoInput", {}).get("additionalUrl", [])
+    additional_links: list[str] = project_file_contents.get("projectInfoInput", {}).get("additionalUrls", [])
 
     # Validate required fields
     if not all([project_name, crowdfunding_link, website_url, latest_sec_filing_link]):
@@ -165,7 +168,7 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
         "projectInfoInput": {
             "crowdFundingUrl": project_details["crowdfunding_link"],
             "secFilingUrl": project_details["latest_sec_filing_link"],
-            "additionalUrl": project_details["additional_links"],
+            "additionalUrls": project_details["additional_links"],
             "websiteUrl": project_details["website_url"]
         },
         "status": ProcessingStatus.IN_PROGRESS,
@@ -180,7 +183,8 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
 
     # Upload the file to S3
     upload_to_s3(json.dumps(project_file_contents, indent=4), agent_status_file_path, content_type="application/json")
-    print(f"Initialized status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
+    print(
+        f"Initialized status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
 
 
 def get_project_file(project_id: str) -> ProjectStatusFileSchema:
@@ -196,9 +200,52 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
     """
     Uploads the updated project status data to S3.
     """
+    # populate agent-status.json file with the updated data and upload it to S3
+
+    reports = project_file_contents["reports"]
+    new_reports: dict[str, ReportSchema] = {}
+    for report_type in reports.keys():
+        report: ReportSchema = reports[report_type]
+        new_report = {
+            "status": report["status"],
+            "markdownLink": report["markdownLink"],
+            "startTime": report["startTime"],
+            "estimatedTimeInSec": report["estimatedTimeInSec"],
+            # check report["endTime"] exists and is not None
+            "endTime": datetime.now().isoformat() if report.get("endTime") else None
+        }
+        new_reports[report_type] = new_report
+
+    new_project_file_contents: ProjectStatusFileSchema = {
+        "id": project_id,
+        "name": project_file_contents["name"],
+        "projectInfoInput": project_file_contents["projectInfoInput"],
+        "status": project_file_contents["status"],
+        "finalReport": {
+            "status": project_file_contents["finalReport"]["status"],
+            "markdownLink": project_file_contents["finalReport"]["markdownLink"],
+            "startTime": project_file_contents["finalReport"]["startTime"],
+            "estimatedTimeInSec": project_file_contents["finalReport"]["estimatedTimeInSec"],
+            # check report["endTime"] exists and if not then set it empty
+            "endTime":  datetime.now().isoformat() if project_file_contents["finalReport"].get("endTime") else None
+        },
+        "processedProjectInfo": {
+            "additionalUrlsUsed": project_file_contents["processedProjectInfo"].get("additionalUrlsUsed"),
+            "contentOfAdditionalUrls": project_file_contents["processedProjectInfo"].get("contentOfAdditionalUrls"),
+            "contentOfCrowdfundingUrl": project_file_contents["processedProjectInfo"].get("contentOfCrowdfundingUrl"),
+            "contentOfWebsiteUrl": project_file_contents["processedProjectInfo"].get("contentOfWebsiteUrl"),
+            "secRawContent": project_file_contents["processedProjectInfo"].get("secRawContent"),
+            "lastUpdated": project_file_contents["processedProjectInfo"].get("lastUpdated"),
+            "status": project_file_contents["processedProjectInfo"].get("status")
+        },
+        "reports": new_reports
+    }
+
     agent_status_file_path = get_project_status_file_path(project_id)
-    upload_to_s3(json.dumps(project_file_contents, indent=4), agent_status_file_path, content_type="application/json")
-    print(f"Updated status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
+    upload_to_s3(json.dumps(new_project_file_contents, indent=4), agent_status_file_path,
+                 content_type="application/json")
+    print(
+        f"Updated status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
 
 
 def update_report_status_in_progress(project_id: str, report_name: str):
@@ -267,7 +314,8 @@ def update_status_to_not_started_for_all_reports(project_id):
         print(f"Set status of report '{report_type}' to 'not_started'. Initialized startTime and estimatedTimeInSec.")
 
     upload_to_s3(json.dumps(project_file_contents, indent=4), agent_status_file_path, content_type="application/json")
-    print(f"Updated status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
+    print(
+        f"Updated status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
 
 
 def create_report_file_and_upload_to_s3(project_id: str, report_name: str, report_content: str):

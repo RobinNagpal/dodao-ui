@@ -1,3 +1,5 @@
+import traceback
+
 from langchain_core.messages import HumanMessage
 
 from cf_analysis_agent.agent_state import AgentState, Config
@@ -121,6 +123,7 @@ def create_green_flags_report(state: AgentState) -> None:
         create_report_file_and_upload_to_s3(project_id, REPORT_NAME, final_green_flags_report)
     except Exception as e:
         # Capture full stack trace
+        print(traceback.format_exc())
         error_message = str(e)
         print(f"An error occurred:\n{error_message}")
         update_report_status_failed(

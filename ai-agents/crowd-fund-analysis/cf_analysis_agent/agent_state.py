@@ -24,9 +24,11 @@ class ProjectInfo(TypedDict):
     additional_links: list
     project_id: str
 
-class ProcessedProjectInfo(TypedDict):
-    urls_used_for_scrapping: list[str]
-    content_of_scrapped_urls: str
+class ProcessedProjectInfo(TypedDict, total=False):
+    additional_urls_used: list[str]
+    content_of_additional_urls: str
+    content_of_crowdfunding_url: str
+    content_of_website_url: str
     sec_raw_content: str
     last_updated: str
     status: ProcessingStatus

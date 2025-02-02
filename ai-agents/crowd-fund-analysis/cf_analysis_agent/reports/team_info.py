@@ -1,5 +1,6 @@
 import json
 import os
+import traceback
 from typing import List, Dict, Any
 
 from dotenv import load_dotenv
@@ -76,6 +77,7 @@ def find_startup_info(config: Config, page_content: str):
     try:
         return json.loads(response.content)
     except:
+        print(traceback.format_exc())
         return {
             "startup_name": "",
             "startup_details": "",
@@ -102,6 +104,7 @@ def find_linkedin_urls(startup_info: StartupInfo):
                     return link
             return ""
         except Exception as e:
+            print(traceback.format_exc())
             return ""
 
     for member in team_members:
@@ -150,6 +153,7 @@ def scrape_linkedin_profiles(linkedin_urls: list):
                 "educations": person.educations,
             }
         except Exception as e:
+            print(traceback.format_exc())
             return {}
 
     # Iterate through the LinkedIn URLs and scrape profiles
@@ -244,6 +248,7 @@ def evaluate_profiles(config: Config, rawProfiles: list, startup_info: StartupIn
 
             analyzed_profiles.append(analyzed_profile)
         except json.JSONDecodeError:
+            print(traceback.format_exc())
             analyzed_profiles.append({
                 "id": member_id,
                 "name": member_name,
@@ -286,6 +291,7 @@ def create_team_info_report(state: AgentState) -> None:
         create_report_file_and_upload_to_s3(project_id, REPORT_NAME, team_info_report)
     except Exception as e:
         # Capture full stack trace
+        print(traceback.format_exc())
         error_message = str(e)
         print(f"An error occurred:\n{error_message}")
         update_report_status_failed(

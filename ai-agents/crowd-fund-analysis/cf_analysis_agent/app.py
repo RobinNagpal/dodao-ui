@@ -1,6 +1,8 @@
 import os
 import subprocess
 import sys
+import traceback
+
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_cors import CORS
 from cf_analysis_agent.utils.env_variables import BUCKET_NAME, OPEN_AI_DEFAULT_MODEL, REGION
@@ -114,10 +116,13 @@ def regenerate_reports(projectId):
                 }), 200
         
     except FileNotFoundError as e:
+        print(traceback.format_exc())
         return jsonify({"status": "error", "message": str(e)}), 404
     except ValueError as e:
+        print(traceback.format_exc())
         return jsonify({"status": "error", "message": str(e)}), 400
     except Exception as e:
+        print(traceback.format_exc())
         return jsonify({"status": "error", "message": f"An error occurred: {str(e)}"}), 500
 
 
@@ -145,6 +150,7 @@ def regenerate_specific_report(projectId, report_type):
                 }), 200
         
     except Exception as e:
+        print(traceback.format_exc())
         # Handle any errors
         return jsonify({
             "status": "error",

@@ -1,4 +1,5 @@
 import json
+import traceback
 
 from langchain_core.messages import HumanMessage
 from typing_extensions import TypedDict
@@ -190,6 +191,7 @@ def prepare_investor_report_with_analyses_node(combined_text:str,form_c_data:For
     try:
         generic_feedback = json.loads(response_content)
     except json.JSONDecodeError:
+        print(traceback.format_exc())
         #print("Failed to parse Generic Feedback JSON:", response_content)
         generic_feedback = {}
 
@@ -208,6 +210,7 @@ def prepare_investor_report_with_analyses_node(combined_text:str,form_c_data:For
     try:
         sector_specific_feedback = json.loads(response_content)
     except json.JSONDecodeError:
+        print(traceback.format_exc())
         #print("Failed to parse Sector-Specific Feedback JSON:", response_content)
         sector_specific_feedback = {}
 
@@ -270,6 +273,7 @@ def create_financial_review_report(state: AgentState) -> None:
         create_report_file_and_upload_to_s3(project_id, REPORT_NAME, final_report)
         
     except Exception as e:
+        print(traceback.format_exc())
         # Capture full stack trace
         error_message = str(e)
         print(f"An error occurred:\n{error_message}")

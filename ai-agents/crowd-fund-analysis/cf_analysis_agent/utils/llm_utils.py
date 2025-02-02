@@ -4,6 +4,7 @@ from langchain_openai import ChatOpenAI
 from cf_analysis_agent.agent_state import Config
 from cf_analysis_agent.structures.report_structures import StructuredLLMResponse
 from cf_analysis_agent.utils.env_variables import OPEN_AI_DEFAULT_MODEL
+from cf_analysis_agent.utils.project_utils import scrape_url
 
 # Cache for storing initialized LLMs (prevents re-initialization)
 _llm_cache: dict[str, ChatOpenAI] = {}
@@ -40,3 +41,16 @@ def structured_llm_response(config: Config, operation_name: str, prompt: str) ->
     structured_llm = get_llm(config).with_structured_output(StructuredLLMResponse)
     response = structured_llm.invoke([HumanMessage(content=prompt)])
     return validate_structured_output(operation_name, response)
+
+
+def scrape_and_clean_content_with_same_details(url: str) -> str:
+    """
+    Clean the content by removing duplicate information.
+    """
+
+    scrapped_content = scrape_url(url)
+    prompt = ("Remove the duplicates from the below content, but don't remove any information. "
+              "Be as detailed as possible. Don't remove any information at all \n\n") + scrapped_content
+    cleaned_up_contents = structured_llm_response(MINI_4_0_CONFIG, "summarize_scraped_content", prompt)
+
+    return cleaned_up_contents
