@@ -19,6 +19,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
   const [openWebsiteContentAccordion, setOpenWebsiteContentAccordion] = useState(false);
   const [openCrowdFundingContentAccordion, setOpenCrowdFundingContentAccordion] = useState(false);
   const [openAdditionalUrlsContentAccordion, setOpenAdditionalUrlsContentAccordion] = useState(false);
+  const [openSecRawContentAccordion, setOpenSecRawContentAccordion] = useState(false);
 
   const fetchProjectDetails = async () => {
     try {
@@ -71,6 +72,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
           if (!openCrowdFundingContentAccordion) {
             setOpenWebsiteContentAccordion(false);
             setOpenAdditionalUrlsContentAccordion(false);
+            setOpenSecRawContentAccordion(false);
           }
         }}
       >
@@ -98,6 +100,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
           if (!openWebsiteContentAccordion) {
             setOpenCrowdFundingContentAccordion(false);
             setOpenAdditionalUrlsContentAccordion(false);
+            setOpenSecRawContentAccordion(false);
           }
         }}
       >
@@ -125,6 +128,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
           if (!openAdditionalUrlsContentAccordion) {
             setOpenCrowdFundingContentAccordion(false);
             setOpenWebsiteContentAccordion(false);
+            setOpenSecRawContentAccordion(false);
           }
         }}
       >
@@ -139,6 +143,34 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
               }}
             >
               {projectDetails.processedProjectInfo?.contentOfAdditionalUrls}
+            </Markdown>
+          )}
+        </div>
+      </Accordion>
+      <Accordion
+        label="SEC Raw Content"
+        isOpen={openSecRawContentAccordion}
+        onClick={(e: React.MouseEvent<HTMLElement>) => {
+          e.preventDefault();
+          setOpenSecRawContentAccordion(!openSecRawContentAccordion);
+          if (!openSecRawContentAccordion) {
+            setOpenCrowdFundingContentAccordion(false);
+            setOpenWebsiteContentAccordion(false);
+            setOpenAdditionalUrlsContentAccordion(false);
+          }
+        }}
+      >
+        <div className={`w-full text-color ${openSecRawContentAccordion ? 'block-bg-color' : ''}`}>
+          {projectDetails.processedProjectInfo?.secRawContent && (
+            <Markdown
+              className="markdown text-color"
+              remarkPlugins={[remarkGfm]}
+              components={{
+                th: ({ node, ...props }) => <th className="border border-color px-4 py-2" {...props} />,
+                td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
+              }}
+            >
+              {projectDetails.processedProjectInfo?.secRawContent}
             </Markdown>
           )}
         </div>

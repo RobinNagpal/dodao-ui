@@ -2,7 +2,7 @@ import traceback
 
 from langchain_core.messages import HumanMessage
 
-from cf_analysis_agent.agent_state import AgentState, Config
+from cf_analysis_agent.agent_state import AgentState, Config, ProcessedProjectInfo
 from cf_analysis_agent.utils.llm_utils import get_llm
 from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
     update_report_status_in_progress
@@ -114,9 +114,14 @@ def create_green_flags_report(state: AgentState) -> None:
     print("Generating green flags report")
     try:
         update_report_status_in_progress(project_id, REPORT_NAME)
-        combined_text = state.get("processed_project_info").get("combined_scrapped_content")
-        industry_details = find_industry_details(state.get("config"), combined_text)
-        startup_gfs = find_startup_green_flags(state.get("config"), combined_text)
+        processes_project_info: ProcessedProjectInfo = state.get("processed_project_info")
+        content_of_additional_urls = processes_project_info.get("content_of_additional_urls")
+        content_of_crowdfunding_url = processes_project_info.get("content_of_crowdfunding_url")
+        content_of_website_url = processes_project_info.get("content_of_website_url")
+
+        main_content = f"{content_of_crowdfunding_url} \n\n {content_of_website_url} \n\n {content_of_additional_urls}"
+        industry_details = find_industry_details(state.get("config"), main_content)
+        startup_gfs = find_startup_green_flags(state.get("config"), main_content)
         industry_gfs = find_industry_green_flags(state.get("config"), industry_details)
         gf_evaluation = evaluate_green_applicable_to_startup(state.get("config"), startup_gfs, industry_gfs)
         final_green_flags_report = finalize_green_flags_report(state.get("config"), startup_gfs, industry_gfs, gf_evaluation)
