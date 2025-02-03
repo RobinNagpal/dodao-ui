@@ -26,11 +26,11 @@ export default async function ReportDetailPage({ params }: { params: Promise<{ p
   ];
 
   const startupEvaluation = {
-    productInnovation: { score: 4 },
-    marketOpportunity: { score: 5 },
-    teamStrength: { score: 4 },
-    financialHealth: { score: 3 },
-    businessModel: { score: 4 },
+    productInnovation: { score: 0 },
+    marketOpportunity: { score: 3 },
+    teamStrength: { score: 1 },
+    financialHealth: { score: 5 },
+    businessModel: { score: 0 },
   };
 
   return (

@@ -30,8 +30,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
         backgroundColor: 'rgba(54, 162, 235, 0.2)', // Light blue fill
         borderColor: 'rgba(54, 162, 235, 1)', // Darker blue border
         borderWidth: 2,
-        pointBackgroundColor: 'rgba(54, 162, 235, 1)', // Dots
-        tension: 0.4,
+        tension: 1,
       },
     ],
   };
@@ -48,11 +47,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
         angleLines: { display: false }, // Hide angle lines for a clean look
         suggestedMin: 0,
         suggestedMax: 5,
-        backgroundColor: (context: any) => {
-          // Alternate strip colors based on the ring index
-          const index = context.index;
-          return index % 2 === 0 ? 'rgba(0, 123, 255, 0.1)' : 'rgba(255, 165, 0, 0.1)'; // Blue and Orange
-        },
+        backgroundColor: 'rgba(0, 123, 255, 0.1)',
         ticks: {
           stepSize: 1,
           backdropColor: 'transparent', // Make tick labels background transparent
