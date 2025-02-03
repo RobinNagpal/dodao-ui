@@ -67,22 +67,21 @@ async function getCourseUrlsForAcademy(space: SpaceWithIntegrationsDto): Promise
 
 async function getDoDAOSiteMapUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [
-    { url: '/', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/products/tidbitshub', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/products/academysites', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/products/ai-crowdfunding-agent', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/services/smart-contract', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/services/blockchain-tooling', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/services/defi-analytics', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/services/custom-ai-agent-dev', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/home-section/dodao-io/services/maintenance-support', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/education/blockchain-bootcamp', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/education/educational-content', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/research/real-world-assets', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/research/decen-sol-reviews', changefreq: 'weekly' },
-    { url: '/home-section/dodao-io/research/credit-union', changefreq: 'weekly' },
-    // New URL added here
-    { url: 'https://publications.dodao.io/dodao-engaging-gen-z-website', changefreq: 'weekly' },
+    { url: '/', changefreq: 'daily', priority: 1.0 },
+    { url: '/home-section/dodao-io/products/tidbitshub', changefreq: 'weekly', priority: 0.8 },
+    { url: '/home-section/dodao-io/products/academysites', changefreq: 'weekly', priority: 0.8 },
+    { url: '/home-section/dodao-io/products/ai-crowdfunding-agent', changefreq: 'weekly', priority: 0.8 },
+    { url: '/home-section/dodao-io/services/smart-contract', changefreq: 'monthly', priority: 0.7 },
+    { url: '/home-section/dodao-io/services/blockchain-tooling', changefreq: 'monthly', priority: 0.7 },
+    { url: '/home-section/dodao-io/services/defi-analytics', changefreq: 'monthly', priority: 0.7 },
+    { url: '/home-section/dodao-io/services/custom-ai-agent-dev', changefreq: 'monthly', priority: 0.7 },
+    { url: '/home-section/dodao-io/services/maintenance-support', changefreq: 'monthly', priority: 0.7 },
+    { url: '/home-section/dodao-io/education/blockchain-bootcamp', changefreq: 'monthly', priority: 0.7 },
+    { url: '/home-section/dodao-io/education/educational-content', changefreq: 'monthly', priority: 0.7 },
+    { url: '/home-section/dodao-io/research/real-world-assets', changefreq: 'monthly', priority: 0.8 },
+    { url: '/home-section/dodao-io/research/decen-sol-reviews', changefreq: 'monthly', priority: 0.6 },
+    { url: '/home-section/dodao-io/research/credit-union', changefreq: 'monthly', priority: 0.6 },
+    { url: 'https://publications.dodao.io/dodao-engaging-gen-z-website', changefreq: 'yearly', priority: 0.5 },
   ];
 
   return urls;
