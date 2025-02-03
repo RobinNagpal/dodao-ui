@@ -9,10 +9,11 @@ from cf_analysis_agent.utils.project_utils import scrape_url
 # Cache for storing initialized LLMs (prevents re-initialization)
 _llm_cache: dict[str, ChatOpenAI] = {}
 
-DEFAULT_LLM_CONFIG: Config = { "configurable": {"model": OPEN_AI_DEFAULT_MODEL }}
+DEFAULT_LLM_CONFIG: Config = {"configurable": {"model": OPEN_AI_DEFAULT_MODEL}}
 
-MINI_4_0_CONFIG: Config = { "configurable": {"model": "gpt-4o-mini" }}
-NORMAL_4_0_CONFIG: Config = { "configurable": {"model": "gpt-4o" }}
+MINI_4_0_CONFIG: Config = {"configurable": {"model": "gpt-4o-mini"}}
+NORMAL_4_0_CONFIG: Config = {"configurable": {"model": "gpt-4o"}}
+
 
 def get_llm(config: Config) -> ChatOpenAI:
     """
@@ -27,14 +28,17 @@ def get_llm(config: Config) -> ChatOpenAI:
 
     return _llm_cache[model]  # Return the cached LLM instance
 
+
 def validate_structured_output(operation_name: str, output: StructuredLLMResponse) -> str:
     """Validate the structured output from the LLM"""
     if output.status == "failed":
         print(f"Failed to generate output for {operation_name}: {output.failureReason}")
         raise Exception(f"Failed to generate output: {output.failureReason}")
 
-    print(f"Operation: {operation_name} completed with confidence: {output.confidence}. Output length {len(output.outputString)} ")
+    print(
+        f"Operation: {operation_name} completed with confidence: {output.confidence}. Output length {len(output.outputString)} ")
     return output.outputString
+
 
 def structured_llm_response(config: Config, operation_name: str, prompt: str) -> str:
     """Get the response from the LLM"""
@@ -50,8 +54,13 @@ def scrape_and_clean_content_with_same_details(url: str) -> str:
     """
 
     scrapped_content = scrape_url(url)
-    prompt = ("Remove the duplicates from the below content, but don't remove any information. "
-              "Be as detailed as possible. Don't remove any information at all \n\n") + scrapped_content
-    cleaned_up_contents = structured_llm_response(MINI_4_0_CONFIG, "summarize_scraped_content", prompt)
+    prompt = f"""Remove the duplicates from the below content, but don't remove any information.
+        Be as detailed as possible. Don't remove any information at all. 
+        Write the content in well structured markdown format and make sure images are not given width more than 300px
+        Be as detailed as possible. Don't remove any information at all. 
+        
+        {scrapped_content}
+    """
+    cleaned_up_contents = structured_llm_response(MINI_4_0_CONFIG, "scrape_and_clean_content_with_same_details", prompt)
 
     return cleaned_up_contents
