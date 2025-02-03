@@ -7,6 +7,7 @@ from cf_analysis_agent.reports.red_flags import create_red_flags_report
 from cf_analysis_agent.reports.relevant_links import create_relevant_links_report
 from cf_analysis_agent.reports.financial_review_agent import create_financial_review_report
 from cf_analysis_agent.reports.team_info import create_team_info_report
+from cf_analysis_agent.reports.final_report import create_final_report_test
 
 
 # ------------------- REPORT MAPPING ------------------- #
@@ -45,6 +46,8 @@ def route_single_or_all(state: AgentState) -> Sequence[str]:
     """
     if state["report_input"] == "all":
         return "generate_all_reports_serially"  # Convert dict_keys to list
+    elif state["report_input"] == 'finalReport':
+        return 'create_final_report_test'
     else:
         return [state["report_input"]]
 
@@ -72,6 +75,7 @@ builder.add_node("relevant_links",  create_relevant_links_report)
 builder.add_node("team_info",  create_team_info_report)
 builder.add_node("financial_review", create_financial_review_report)
 builder.add_node("create_final_report", create_final_report)
+builder.add_node("create_final_report_test", create_final_report_test)
 builder.add_node("generate_all_reports_serially", generate_all_reports_serially)
 
 builder.add_edge(START, "initialize_first_step")
