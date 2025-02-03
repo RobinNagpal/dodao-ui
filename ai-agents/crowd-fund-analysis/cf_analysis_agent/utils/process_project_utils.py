@@ -14,7 +14,7 @@ from cf_analysis_agent.utils.report_utils import get_project_status_file_path, P
 from cf_analysis_agent.utils.s3_utils import s3_client, BUCKET_NAME, upload_to_s3
 
 
-def get_sec_json_content(raw_content: str) -> StructuredFormCResponse:
+def get_sec_structured_response(raw_content: str) -> StructuredFormCResponse:
     """
     Convert the raw SEC content to JSON format.
     """
@@ -271,7 +271,7 @@ def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
 
     if project_info_in_s3.get("secJsonContent") is None or project_info_in_s3.get("secJsonContent") == "":
         print("SEC JSON Content is missing. Generating JSON from SEC Filing.")
-        json_data = get_sec_json_content(project_info_in_s3["secRawContent"])
+        json_data = get_sec_structured_response(project_info_in_s3["secRawContent"])
         print(json_data.model_dump_json(indent=4))
         project_info_in_s3["secJsonContent"] = json_data.model_dump_json(indent=4)
 
