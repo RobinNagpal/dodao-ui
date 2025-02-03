@@ -22,7 +22,7 @@ interface RadarChartProps {
 
 const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
   // Convert data into the required format
-  const chartData: ChartData = {
+  const chartData: ChartData<'radar'> = {
     labels: ['Product Innovation', 'Market Opportunity', 'Team Strength', 'Financial Health', 'Business Model'],
     datasets: [
       {
@@ -37,7 +37,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
     ],
   };
 
-  const options: ChartOptions = {
+  const options: ChartOptions<'radar'> = {
     elements: {
       line: {
         borderWidth: 3,
