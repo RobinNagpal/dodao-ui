@@ -1,13 +1,20 @@
-from typing import Annotated, List
+from enum import Enum
+from typing import Annotated, List, Optional
 from langgraph.graph.message import add_messages
 from typing_extensions import TypedDict
 
+
+class ProcessingStatus(str, Enum):
+    NOT_STARTED = "not_started"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+    FAILED = "failed"
 
 class Configurable(TypedDict):
     model: str
 
 class Config(TypedDict):
-    configurable: dict[str, Configurable]
+    configurable: Configurable
 
 class ProjectInfo(TypedDict):
     project_name: str
@@ -17,11 +24,16 @@ class ProjectInfo(TypedDict):
     additional_links: list
     project_id: str
 
-class ProcessedProjectInfo(TypedDict):
-    urls_used_for_scrapping: list[str]
-    combined_scrapped_content: str
+class ProcessedProjectInfo(TypedDict, total=False):
+    additional_urls_used: Optional[list[str]]
+    content_of_additional_urls: Optional[str]
+    content_of_crowdfunding_url: str
+    content_of_website_url: str
     sec_raw_content: str
+    sec_json_content: str
+    sec_markdown_content: str
     last_updated: str
+    status: ProcessingStatus
 
 class FinalReport(TypedDict):
     final_report_contents: str
@@ -35,3 +47,5 @@ class AgentState(TypedDict):
     processed_project_info: ProcessedProjectInfo | None
     config: Config
     final_report: FinalReport | None
+
+

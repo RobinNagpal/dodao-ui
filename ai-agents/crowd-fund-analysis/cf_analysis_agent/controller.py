@@ -4,7 +4,8 @@ import asyncio
 
 from agent import graph as parent_graph
 from cf_analysis_agent.agent_state import AgentState, ProjectInfo
-from cf_analysis_agent.utils.report_utils import get_project_info_from_s3, ensure_processed_project_info
+from cf_analysis_agent.utils.report_utils import get_project_info_from_s3
+from cf_analysis_agent.utils.process_project_utils import ensure_processed_project_info
 
 
 def prepare_processing_command(project_id, model, script_path="cf_analysis_agent/controller.py"):
@@ -78,7 +79,7 @@ def parse_arguments() -> AgentState:
     latest_sec_filing_link = args.latest_sec_filing_link.strip().strip('"')
     additional_links = [link.strip() for link in args.additional_links.split(",") if link.strip()]
     report_type = args.report_type.strip().strip('"') if args.report_type else "all"
-    model = args.model.strip().strip('"') if args.model else None
+    model = args.model.strip().strip('"') if args.model else "gpt-4o-mini"
 
     project_info: ProjectInfo = {
         "project_id": project_id,
@@ -91,7 +92,7 @@ def parse_arguments() -> AgentState:
 
     processed_project_info = ensure_processed_project_info(project_id)
 
-    return {
+    state: AgentState = {
         "messages": [],
         "project_info": project_info,
         "report_input": report_type,
@@ -101,8 +102,10 @@ def parse_arguments() -> AgentState:
             }
         },
         "reports_to_generate": None,
-        "processed_project_info": processed_project_info
+        "processed_project_info": processed_project_info,
+        "final_report": None
     }
+    return state
 
 
 

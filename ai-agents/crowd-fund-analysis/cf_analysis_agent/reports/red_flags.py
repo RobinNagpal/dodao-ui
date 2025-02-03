@@ -1,8 +1,9 @@
-from langchain_core.messages import HumanMessage
+import traceback
 
-from cf_analysis_agent.agent_state import AgentState, Config
-from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_report_status_failed
+from cf_analysis_agent.agent_state import AgentState, Config, ProcessedProjectInfo
+from cf_analysis_agent.utils.llm_utils import structured_llm_response
+from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
+    update_report_status_in_progress
 
 # move the scraping part to a common file 
 # show project scraping url status at the top of the report
@@ -28,9 +29,8 @@ def find_industry_details(config: Config, combined_text: str):
     f"{combined_text}\n\n"
     "Return only the textual summary of these industry details, as concise as possible but covering each requested item."
     )
-    llm = get_llm(config)
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return response.content.strip()
+
+    return structured_llm_response(config, "find_industry_details", prompt)
 
 def find_startup_red_flags(config: Config, combined_text: str):
     """
@@ -47,9 +47,7 @@ def find_startup_red_flags(config: Config, combined_text: str):
         f"Scraped Content:\n{combined_text}\n\n"
         "Return a text describing the startup's red flags, focusing on specific negative or concerning issues."
     )
-    llm = get_llm(config)
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return response.content.strip()
+    return structured_llm_response(config, "find_startup_red_flags", prompt)
 
 
 def find_industry_red_flags(config: Config, industry_details: str):
@@ -63,9 +61,7 @@ def find_industry_red_flags(config: Config, industry_details: str):
         "Each red flag should briefly explain why it poses a significant risk.\n\n"
         f"Industry Info:\n{industry_details}\n\n"
     )
-    llm = get_llm(config)
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return response.content.strip()
+    return structured_llm_response(config, "find_industry_red_flags", prompt)
 
 
 def evaluate_red_applicable_to_startup(config: Config, startup_rf: str, industry_rf: str):
@@ -83,9 +79,7 @@ def evaluate_red_applicable_to_startup(config: Config, startup_rf: str, industry
         "the ones that actually apply. If the startup does not exhibit a specific industry red flag, omit it. "
         "Return a clear explanation of which red flags apply, how severely, and why."
     )
-    llm = get_llm(config)
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return response.content.strip()
+    return structured_llm_response(config, "evaluate_red_applicable_to_startup", prompt)
 
 
 def finalize_red_flags_report(config: Config, startup_rf: str, industry_rf: str, rf_evaluation: str):
@@ -106,9 +100,8 @@ def finalize_red_flags_report(config: Config, startup_rf: str, industry_rf: str,
         "If a particular parameter does not indicate an actual red flag, remove it from the report. "
         "Avoid repetition unless absolutely necessary. Return only the textual report."
     )
-    llm = get_llm(config)
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return response.content.strip()
+
+    return structured_llm_response(config, "finalize_red_flags_report", prompt)
 
 def create_red_flags_report(state: AgentState) -> None:
     """
@@ -117,15 +110,22 @@ def create_red_flags_report(state: AgentState) -> None:
     project_id = state.get("project_info").get("project_id")
     print("Generating red flags report")
     try:
-        combined_text = state.get("processed_project_info").get("combined_scrapped_content")
-        industry_details = find_industry_details(state.get("config"), combined_text)
-        startup_rfs = find_startup_red_flags(state.get("config"), combined_text)
+        processes_project_info: ProcessedProjectInfo = state.get("processed_project_info")
+        content_of_additional_urls = processes_project_info.get("content_of_additional_urls")
+        content_of_crowdfunding_url = processes_project_info.get("content_of_crowdfunding_url")
+        content_of_website_url = processes_project_info.get("content_of_website_url")
+
+        main_content = f"{content_of_crowdfunding_url} \n\n {content_of_website_url} \n\n {content_of_additional_urls}"
+        update_report_status_in_progress(project_id, REPORT_NAME)
+        industry_details = find_industry_details(state.get("config"), main_content)
+        startup_rfs = find_startup_red_flags(state.get("config"), main_content)
         industry_rfs = find_industry_red_flags(state.get("config"), industry_details)
         rf_evaluation = evaluate_red_applicable_to_startup(state.get("config"), startup_rfs, industry_rfs)
         final_red_flags_report = finalize_red_flags_report(state.get("config"), startup_rfs, industry_rfs, rf_evaluation)
-        upload_report_to_s3(project_id, REPORT_NAME, final_red_flags_report)
+        create_report_file_and_upload_to_s3(project_id, REPORT_NAME, final_red_flags_report)
     except Exception as e:
         # Capture full stack trace
+        print(traceback.format_exc())
         error_message = str(e)
         print(f"An error occurred:\n{error_message}")
         update_report_status_failed(

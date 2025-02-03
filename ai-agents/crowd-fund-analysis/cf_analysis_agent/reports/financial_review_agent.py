@@ -1,11 +1,13 @@
 import json
+import traceback
 
 from langchain_core.messages import HumanMessage
 from typing_extensions import TypedDict
 
 from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_report_status_failed
+from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
+    update_report_status_in_progress
 
 REPORT_NAME = "financial_review"
 
@@ -19,15 +21,7 @@ class AdditionalData(TypedDict):
     financials: dict
     relevant_metrics: dict
 
-def extract_data_from_sec_node(sec_content: str,config:Config):
-    """
-    Scrapes the SEC filing page and extracts Form C financial data with retry logic.
-    
-    Args:
-        state: The state object containing data and configurations.
-        max_retries: Maximum number of retry attempts (default: 5).
-        retry_delay: Time (in seconds) to wait between retries (default: 5 seconds).
-    """
+def extract_data_from_sec_node(sec_content: str, config:Config):
     prompt = (
         "Extract the following financial information for both the most recent fiscal year "
         "Also extract the years for the most recent fiscal year and prior fiscal year so the user can identify both\n"
@@ -197,6 +191,7 @@ def prepare_investor_report_with_analyses_node(combined_text:str,form_c_data:For
     try:
         generic_feedback = json.loads(response_content)
     except json.JSONDecodeError:
+        print(traceback.format_exc())
         #print("Failed to parse Generic Feedback JSON:", response_content)
         generic_feedback = {}
 
@@ -215,6 +210,7 @@ def prepare_investor_report_with_analyses_node(combined_text:str,form_c_data:For
     try:
         sector_specific_feedback = json.loads(response_content)
     except json.JSONDecodeError:
+        print(traceback.format_exc())
         #print("Failed to parse Sector-Specific Feedback JSON:", response_content)
         sector_specific_feedback = {}
 
@@ -267,15 +263,17 @@ def create_financial_review_report(state: AgentState) -> None:
     project_id = state.get("project_info").get("project_id")
     print("Generating financial review report")
     try:
+        update_report_status_in_progress(project_id, REPORT_NAME)
         combined_text = state.get("processed_project_info").get("combined_scrapped_content")
         sec_content = state.get("processed_project_info").get("sec_scraped_content")
         form_c_data = extract_data_from_sec_node(sec_content,state.get("config"))
         additional_data = extract_additional_data_node(combined_text,state.get("config"))
         consolidated_table = create_consolidated_table_node(form_c_data,additional_data)
         final_report = prepare_investor_report_with_analyses_node(combined_text,form_c_data,additional_data,consolidated_table,state.get("config"))
-        upload_report_to_s3(project_id, REPORT_NAME, final_report)
+        create_report_file_and_upload_to_s3(project_id, REPORT_NAME, final_report)
         
     except Exception as e:
+        print(traceback.format_exc())
         # Capture full stack trace
         error_message = str(e)
         print(f"An error occurred:\n{error_message}")

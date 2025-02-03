@@ -1,8 +1,9 @@
-from langchain_core.messages import HumanMessage
+import traceback
 
-from cf_analysis_agent.agent_state import AgentState
-from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_report_status_failed
+from cf_analysis_agent.agent_state import AgentState, ProcessedProjectInfo
+from cf_analysis_agent.utils.llm_utils import structured_llm_response
+from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
+    update_report_status_in_progress
 
 REPORT_NAME = "general_info"
 
@@ -12,7 +13,14 @@ def generate_project_info_report_node(state: AgentState):
     of the project's goals, achievements, product environment, etc.
     We exclude any risks, challenges, or assumptions.
     """
-    combined_text = state.get("processed_project_info").get("combined_scrapped_content")
+    processes_project_info: ProcessedProjectInfo = state.get("processed_project_info")
+    content_of_additional_urls = processes_project_info.get("content_of_additional_urls")
+    content_of_crowdfunding_url = processes_project_info.get("content_of_crowdfunding_url")
+    content_of_website_url = processes_project_info.get("content_of_website_url")
+
+    sec_markdown_content = processes_project_info.get("sec_markdown_content")
+
+    main_content = f"{content_of_crowdfunding_url} \n\n {content_of_website_url} \n\n {content_of_additional_urls} \n\n {sec_markdown_content}"
 
     prompt = (
         f"""
@@ -32,24 +40,24 @@ def generate_project_info_report_node(state: AgentState):
         
         STARTUP DETAILS:
         
-        {combined_text}
+        {main_content}
   
         Return only the textual report of these details.
         """
     )
-    llm = get_llm(state.get("config"))
-    response = llm.invoke([HumanMessage(content=prompt)])
-    return response.content.strip()
+    return structured_llm_response(state.get("config"), "generate_project_info_report", prompt)
 
 
 def create_general_info_report(state: AgentState) -> None:
     print("Generating general info report")
     project_id = state.get("project_info").get("project_id")
     try:
+        update_report_status_in_progress(project_id, REPORT_NAME)
         report_content = generate_project_info_report_node(state)
-        upload_report_to_s3(project_id, REPORT_NAME, report_content)
+        create_report_file_and_upload_to_s3(project_id, REPORT_NAME, report_content)
     except Exception as e:
         # Capture full stack trace
+        print(traceback.format_exc())
         error_message = str(e)
         print(f"An error occurred:\n{error_message}")
         update_report_status_failed(

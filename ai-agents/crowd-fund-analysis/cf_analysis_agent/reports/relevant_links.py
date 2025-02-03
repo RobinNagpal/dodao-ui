@@ -1,5 +1,6 @@
 import json
 import os
+import traceback
 from typing import List
 
 from dotenv import load_dotenv
@@ -11,7 +12,8 @@ from typing_extensions import TypedDict
 
 from cf_analysis_agent.agent_state import AgentState, Config
 from cf_analysis_agent.utils.llm_utils import get_llm
-from cf_analysis_agent.utils.report_utils import upload_report_to_s3, update_report_status_failed
+from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
+    update_report_status_in_progress
 
 load_dotenv()
 
@@ -50,6 +52,7 @@ def find_startup_info(config: Config, page_content: str):
     try:
         return json.loads(response.content)
     except:
+        print(traceback.format_exc())
         return {
             "startup_name": "",
             "startup_details": ""        
@@ -103,6 +106,7 @@ def summarize_google_search_results(config: Config, all_results: list):
             result = chain.invoke(docs)
             summary = result["output_text"] if isinstance(result, dict) else result
         except Exception as e:
+            print(traceback.format_exc())
             summary = f"Error summarizing {link}: {e}"
         
         summaries.append({
@@ -143,6 +147,7 @@ def filter_relevant_links_from_summaries(config: Config, startup_info: StartupIn
         if not isinstance(relevant, list):
             relevant = []
     except:
+        print(traceback.format_exc())
         relevant = []
 
     relevant_links = [item["link"] for item in relevant if "link" in item]
@@ -156,13 +161,15 @@ def create_relevant_links_report(state: AgentState) -> None:
     print("Generating relevant links")
     try:
         combined_text = state.get("processed_project_info").get("combined_scrapped_content")
+        update_report_status_in_progress(project_id, REPORT_NAME)
         startup_info = find_startup_info(state.get("config"), combined_text)
         all_google_results = search_startup_on_google(startup_info)
         summaries = summarize_google_search_results(state.get("config"), all_google_results)
         relevant_links = filter_relevant_links_from_summaries(state.get("config"), startup_info, summaries)
-        upload_report_to_s3(project_id, REPORT_NAME, "\n".join(relevant_links))
+        create_report_file_and_upload_to_s3(project_id, REPORT_NAME, "\n".join(relevant_links))
     except Exception as e:
         # Capture full stack trace
+        print(traceback.format_exc())
         error_message = str(e)
         print(f"An error occurred:\n{error_message}")
         update_report_status_failed(

@@ -1,24 +1,23 @@
 import os
 import subprocess
 import sys
+import traceback
 
-from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_cors import CORS
+from cf_analysis_agent.utils.env_variables import BUCKET_NAME, OPEN_AI_DEFAULT_MODEL, REGION
 
 # # Add the parent directory of app.py to the Python path this maybe temporary we can change it later for that we will have to change docker file as well
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from cf_analysis_agent.utils.report_utils import set_in_progress_for_all_reports, \
+from cf_analysis_agent.utils.report_utils import update_status_to_not_started_for_all_reports, \
     initialize_project_in_s3, update_report_status_in_progress
 from cf_analysis_agent.controller import prepare_processing_command
 
 app = Flask(__name__)
 CORS(app)  # This will allow all origins by default
-load_dotenv()
-BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
-OPEN_AI_DEFAULT_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4o')
-REGION=os.getenv("AWS_DEFAULT_REGION")
+
+
 @app.route("/")
 def index():
     """
@@ -105,7 +104,7 @@ def regenerate_reports(projectId):
         data = request.get_json(silent=True) or {} # Handle case if no body was sent
         model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
         
-        set_in_progress_for_all_reports(project_id=projectId)
+        update_status_to_not_started_for_all_reports(project_id=projectId)
         command = prepare_processing_command(projectId, model)
 
         # Start the subprocess
@@ -117,10 +116,13 @@ def regenerate_reports(projectId):
                 }), 200
         
     except FileNotFoundError as e:
+        print(traceback.format_exc())
         return jsonify({"status": "error", "message": str(e)}), 404
     except ValueError as e:
+        print(traceback.format_exc())
         return jsonify({"status": "error", "message": str(e)}), 400
     except Exception as e:
+        print(traceback.format_exc())
         return jsonify({"status": "error", "message": f"An error occurred: {str(e)}"}), 500
 
 
@@ -148,6 +150,7 @@ def regenerate_specific_report(projectId, report_type):
                 }), 200
         
     except Exception as e:
+        print(traceback.format_exc())
         # Handle any errors
         return jsonify({
             "status": "error",

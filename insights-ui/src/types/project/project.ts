@@ -2,39 +2,92 @@ export interface Projects {
   projectIds: string[];
 }
 
-export enum Status {
-  in_progress = 'in_progress',
-  completed = 'completed',
-  pending = 'pending',
-  failed = 'failed',
-}
-
-export interface ReportInterface {
-  status: Status;
-  errorMessage?: string;
-  markdownLink: string | null;
-  pdfLink: string | null;
-  startTime?: string;
-  estimatedTimeInSec?: number;
-  endTime?: string;
-}
-
 export interface ReportWithName extends ReportInterface {
   name: string;
 }
 
-export interface ProjectDetail {
+export enum ProcessingStatus {
+  NOT_STARTED = 'not_started',
+  IN_PROGRESS = 'in_progress',
+  COMPLETED = 'completed',
+  FAILED = 'failed',
+}
+
+// Enum for Report Types
+export enum ReportType {
+  GENERAL_INFO = 'general_info',
+  TEAM_INFO = 'team_info',
+  FINANCIAL_REVIEW = 'financial_review',
+  RED_FLAGS = 'red_flags',
+  GREEN_FLAGS = 'green_flags',
+  RELEVANT_LINKS = 'relevant_links',
+}
+
+// Example usage
+export const ALL_REPORT_TYPES: ReportType[] = [
+  ReportType.GENERAL_INFO,
+  ReportType.TEAM_INFO,
+  ReportType.FINANCIAL_REVIEW,
+  ReportType.RED_FLAGS,
+  ReportType.GREEN_FLAGS,
+  ReportType.RELEVANT_LINKS,
+];
+
+export interface ProjectInfoInput {
+  /**
+   * Represents the user-provided project input
+   * (URLs, etc.) that we need to track in the agent status.
+   */
+  crowdFundingUrl: string;
+  secFilingUrl: string;
+  additionalUrls: string[];
+  websiteUrl: string;
+}
+
+export interface ReportInterface {
+  /**
+   * Represents the status and metadata of a single report
+   * (e.g., "team_info", "financial_review", etc.).
+   * Fields marked as optional may only appear under certain conditions.
+   */
+  status: ProcessingStatus;
+  markdownLink?: string;
+  startTime: string;
+  estimatedTimeInSec: number;
+  endTime?: string;
+  errorMessage?: string;
+}
+
+export interface FinalReportInterface extends ReportInterface {
+  spiderGraphJsonFileUrl?: string;
+}
+
+export interface ProcessedProjectInfoInterface {
+  /**
+   * Stores combined text results after scraping the various
+   * URLs for this project, plus a timestamp for when it was last updated.
+   */
+  additionalUrlsUsed: string[];
+  contentOfAdditionalUrls: string;
+  contentOfCrowdfundingUrl: string;
+  contentOfWebsiteUrl: string;
+  secRawContent: string;
+  secJsonContent: string;
+  secMarkdownContent: string;
+  lastUpdated: string;
+  status: ProcessingStatus;
+}
+
+export interface ProjectDetails {
+  /**
+   * The top-level structure that gets stored in
+   * `crowd-fund-analysis/<project_id>/agent-status.json`.
+   */
   id: string;
   name: string;
-  projectInfoInput: {
-    SecFillingUrl: string;
-    crowdFundingUrl: string;
-    additionalUrl: string[];
-    websiteUrl: string;
-  };
-  status: Status;
-  reports: {
-    [report_name: string]: ReportInterface;
-  };
-  finalReport: ReportInterface;
+  projectInfoInput: ProjectInfoInput;
+  status: ProcessingStatus;
+  reports: Record<string, ReportInterface>;
+  finalReport?: FinalReportInterface;
+  processedProjectInfo?: ProcessedProjectInfoInterface;
 }

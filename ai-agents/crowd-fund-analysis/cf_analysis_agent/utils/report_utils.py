@@ -1,22 +1,22 @@
 import json
-import os
 from datetime import datetime
-from typing import List, Dict, Optional, Union
+from typing import List, Dict, Optional
+
 from dotenv import load_dotenv
 from typing_extensions import TypedDict, NotRequired
 
-from cf_analysis_agent.agent_state import ProjectInfo, ProcessedProjectInfo
-from cf_analysis_agent.utils.project_utils import scrape_url, scrape_urls
+from cf_analysis_agent.agent_state import ProjectInfo, ProcessingStatus
+from cf_analysis_agent.utils.env_variables import REGION
 from cf_analysis_agent.utils.s3_utils import s3_client, BUCKET_NAME, upload_to_s3
 
 load_dotenv()
 
-REGION = os.getenv("AWS_DEFAULT_REGION")
-OPEN_AI_DEFAULT_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4')
 
 # ---------------------------------------------------------
 # 1) TypedDict Definitions
 # ---------------------------------------------------------
+
+
 class ProjectInfoInputSchema(TypedDict):
     """
     Represents the user-provided project input
@@ -24,7 +24,7 @@ class ProjectInfoInputSchema(TypedDict):
     """
     crowdFundingUrl: str
     secFilingUrl: str
-    additionalUrl: List[str]
+    additionalUrls: List[str]
     websiteUrl: str
 
 
@@ -36,28 +36,16 @@ class ReportSchema(TypedDict, total=False):
     (e.g., endTime, errorMessage) and may only appear
     under certain conditions.
     """
-    status: str
+    status: ProcessingStatus
     markdownLink: Optional[str]
     startTime: str
     estimatedTimeInSec: int
-    endTime: NotRequired[str]
+    endTime: Optional[str]
     errorMessage: NotRequired[str]
 
-class FinalReportSchema(TypedDict, total=False):
-    """
-    Represents the status and metadata of a single report
-    (e.g., "team_info", "financial_review", etc.).
-    Fields marked as `total=False` are optional
-    (e.g., endTime, errorMessage) and may only appear
-    under certain conditions.
-    """
-    status: str
-    markdownLink: Optional[str]
-    startTime: str
-    estimatedTimeInSec: int
-    endTime: NotRequired[str]
-    errorMessage: NotRequired[str]
-    spiderGraphJsonFileUrl: Optional[str]
+
+class FinalReportSchema(ReportSchema, total=False):
+    spiderGraphJsonFileUrl: NotRequired[str]
 
 
 class ProcessedProjectInfoSchema(TypedDict, total=False):
@@ -65,10 +53,15 @@ class ProcessedProjectInfoSchema(TypedDict, total=False):
     Stores combined text results after scraping the various
     URLs for this project, plus a timestamp for when it was last updated.
     """
-    urlsUsedForScraping: List[str]
-    combinedScrappedContent: str
+    additionalUrlsUsed: List[str]
+    contentOfAdditionalUrls: str
+    contentOfCrowdfundingUrl: str
+    contentOfWebsiteUrl: str
     secRawContent: str
+    secJsonContent: str
+    secMarkdownContent: str
     lastUpdated: str
+    status: ProcessingStatus
 
 
 class ProjectStatusFileSchema(TypedDict, total=False):
@@ -79,10 +72,10 @@ class ProjectStatusFileSchema(TypedDict, total=False):
     id: str
     name: str
     projectInfoInput: ProjectInfoInputSchema
-    status: str
+    status: ProcessingStatus
     reports: Dict[str, ReportSchema]
-    finalReport: ReportSchema
-    processedProjectInfo: NotRequired[ProcessedProjectInfoSchema]
+    finalReport: FinalReportSchema
+    processedProjectInfo: ProcessedProjectInfoSchema
 
 
 # ---------------------------------------------------------
@@ -96,6 +89,7 @@ ALL_REPORT_TYPES: list[str] = [
     "green_flags",
     "relevant_links",
 ]
+
 
 def get_project_status_file_path(project_id: str) -> str:
     """
@@ -114,14 +108,14 @@ def get_project_info_from_s3(project_id: str) -> ProjectInfo:
 
     # Fetch the agent-status.json file from S3
     response = s3_client.get_object(Bucket=BUCKET_NAME, Key=f"crowd-fund-analysis/{agent_status_file_path}")
-    status_data: ProjectStatusFileSchema = json.loads(response['Body'].read().decode('utf-8'))
+    project_file_contents: ProjectStatusFileSchema = json.loads(response['Body'].read().decode('utf-8'))
 
     # Extract required variables
-    project_name = status_data.get("name", "").strip()
-    crowdfunding_link = status_data.get("projectInfoInput", {}).get("crowdFundingUrl", "").strip()
-    website_url = status_data.get("projectInfoInput", {}).get("websiteUrl", "").strip()
-    latest_sec_filing_link = status_data.get("projectInfoInput", {}).get("secFilingUrl", "").strip()
-    additional_links: list[str] = status_data.get("projectInfoInput", {}).get("additionalUrl", [])
+    project_name = project_file_contents.get("name", "").strip()
+    crowdfunding_link = project_file_contents.get("projectInfoInput", {}).get("crowdFundingUrl", "").strip()
+    website_url = project_file_contents.get("projectInfoInput", {}).get("websiteUrl", "").strip()
+    latest_sec_filing_link = project_file_contents.get("projectInfoInput", {}).get("secFilingUrl", "").strip()
+    additional_links: list[str] = project_file_contents.get("projectInfoInput", {}).get("additionalUrls", [])
 
     # Validate required fields
     if not all([project_name, crowdfunding_link, website_url, latest_sec_filing_link]):
@@ -144,7 +138,7 @@ def get_init_data_for_report(report_type: str) -> ReportSchema:
     for the given report_type.
     """
     return {
-        "status": "in_progress",
+        "status": ProcessingStatus.NOT_STARTED,
         "markdownLink": None,
         "startTime": datetime.now().isoformat(),
         "estimatedTimeInSec": 240 if report_type in ["team_info", "financial_review"] else 150
@@ -163,26 +157,26 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
     reports_data = {}
     for r_type in ALL_REPORT_TYPES:
         reports_data[r_type] = {
-            "status": "in_progress",
+            "status": ProcessingStatus.NOT_STARTED,
             "markdownLink": None,
             "startTime": current_time,
             "estimatedTimeInSec": 240 if r_type in ["team_info", "financial_review"] else 150
         }
 
     # Construct the status data
-    status_data: ProjectStatusFileSchema = {
+    project_file_contents: ProjectStatusFileSchema = {
         "id": project_id,
         "name": project_details["project_name"],
         "projectInfoInput": {
             "crowdFundingUrl": project_details["crowdfunding_link"],
             "secFilingUrl": project_details["latest_sec_filing_link"],
-            "additionalUrl": project_details["additional_links"],
+            "additionalUrls": project_details["additional_links"],
             "websiteUrl": project_details["website_url"]
         },
-        "status": "in_progress",
+        "status": ProcessingStatus.IN_PROGRESS,
         "reports": reports_data,
         "finalReport": {
-            "status": "in_progress",
+            "status": ProcessingStatus.NOT_STARTED,
             "markdownLink": None,
             "startTime": current_time,
             "estimatedTimeInSec": 260
@@ -190,8 +184,10 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
     }
 
     # Upload the file to S3
-    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
-    print(f"Initialized status file: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}")
+    upload_to_s3(json.dumps(project_file_contents, indent=4), agent_status_file_path, content_type="application/json")
+    print(
+        f"Initialized status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
+
 
 def get_project_file(project_id: str) -> ProjectStatusFileSchema:
     """
@@ -202,26 +198,72 @@ def get_project_file(project_id: str) -> ProjectStatusFileSchema:
     return json.loads(response['Body'].read().decode('utf-8'))
 
 
-def update_project_status_data(project_id: str, status_data: ProjectStatusFileSchema):
+def update_project_file(project_id: str, project_file_contents: ProjectStatusFileSchema):
     """
     Uploads the updated project status data to S3.
     """
+    # populate agent-status.json file with the updated data and upload it to S3
+
+    reports = project_file_contents["reports"]
+    new_reports: dict[str, ReportSchema] = {}
+    for report_type in reports.keys():
+        report: ReportSchema = reports[report_type]
+        new_report = {
+            "status": report["status"],
+            "markdownLink": report["markdownLink"],
+            "startTime": report["startTime"],
+            "estimatedTimeInSec": report["estimatedTimeInSec"],
+            # check report["endTime"] exists and is not None
+            "endTime": datetime.now().isoformat() if report.get("endTime") else None
+        }
+        new_reports[report_type] = new_report
+
+    new_project_file_contents: ProjectStatusFileSchema = {
+        "id": project_id,
+        "name": project_file_contents["name"],
+        "projectInfoInput": project_file_contents["projectInfoInput"],
+        "status": project_file_contents["status"],
+        "finalReport": {
+            "status": project_file_contents["finalReport"]["status"],
+            "markdownLink": project_file_contents["finalReport"]["markdownLink"],
+            "startTime": project_file_contents["finalReport"]["startTime"],
+            "estimatedTimeInSec": project_file_contents["finalReport"]["estimatedTimeInSec"],
+            # check report["endTime"] exists and if not then set it empty
+            "endTime":  datetime.now().isoformat() if project_file_contents["finalReport"].get("endTime") else None
+        },
+        "processedProjectInfo": {
+            "additionalUrlsUsed": project_file_contents["processedProjectInfo"].get("additionalUrlsUsed"),
+            "contentOfAdditionalUrls": project_file_contents["processedProjectInfo"].get("contentOfAdditionalUrls"),
+            "contentOfCrowdfundingUrl": project_file_contents["processedProjectInfo"].get("contentOfCrowdfundingUrl"),
+            "contentOfWebsiteUrl": project_file_contents["processedProjectInfo"].get("contentOfWebsiteUrl"),
+            "secRawContent": project_file_contents["processedProjectInfo"].get("secRawContent"),
+            "secJsonContent": project_file_contents["processedProjectInfo"].get("secJsonContent"),
+            "secMarkdownContent": project_file_contents["processedProjectInfo"].get("secMarkdownContent"),
+            "lastUpdated": project_file_contents["processedProjectInfo"].get("lastUpdated"),
+            "status": project_file_contents["processedProjectInfo"].get("status")
+        },
+        "reports": new_reports
+    }
+
     agent_status_file_path = get_project_status_file_path(project_id)
-    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
-    print(f"Updated status file: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}")
+    upload_to_s3(json.dumps(new_project_file_contents, indent=4), agent_status_file_path,
+                 content_type="application/json")
+    print(
+        f"Updated status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
 
 
 def update_report_status_in_progress(project_id: str, report_name: str):
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "in_progress".
     """
-    status_data = get_project_file(project_id)
+    project_file_contents = get_project_file(project_id)
 
-    if report_name not in status_data["reports"]:
+    if report_name not in project_file_contents["reports"]:
         raise Exception(f"Report type '{report_name}' not found in the status file.")
 
-    status_data["reports"][report_name] = get_init_data_for_report(report_name)
-    update_project_status_data(project_id, status_data)
+    project_file_contents["reports"][report_name] = get_init_data_for_report(report_name)
+    project_file_contents["reports"][report_name]["status"] = ProcessingStatus.IN_PROGRESS
+    update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_name}' to 'in_progress'.")
 
 
@@ -229,20 +271,21 @@ def update_report_status_completed(project_id: str, report_name: str, markdown_l
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "completed" and adds the markdown link.
     """
-    status_data = get_project_file(project_id)
+    project_file_contents = get_project_file(project_id)
 
-    if report_name not in status_data["reports"]:
+    if report_name not in project_file_contents["reports"]:
         raise Exception(f"Report type '{report_name}' not found in the status file.")
 
-    status_data["reports"][report_name]["status"] = "completed"
-    status_data["reports"][report_name]["endTime"] = datetime.now().isoformat()
+    project_file_contents["reports"][report_name]["status"] = ProcessingStatus.COMPLETED
+    project_file_contents["reports"][report_name]["endTime"] = datetime.now().isoformat()
     if markdown_link:
-        status_data["reports"][report_name]["markdownLink"] = markdown_link
+        project_file_contents["reports"][report_name]["markdownLink"] = markdown_link
 
-    report_statuses = [r["status"] for r in status_data["reports"].values()]
-    status_data["status"] = "completed" if all(rs == "completed" for rs in report_statuses) else "in_progress"
+    report_statuses = [r["status"] for r in project_file_contents["reports"].values()]
+    project_file_contents["status"] = "completed" if all(
+        rs == ProcessingStatus.COMPLETED for rs in report_statuses) else ProcessingStatus.IN_PROGRESS
 
-    update_project_status_data(project_id, status_data)
+    update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_name}' to 'completed'.")
 
 
@@ -250,140 +293,38 @@ def update_report_status_failed(project_id: str, report_name: str, error_message
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "failed" and logs the error message.
     """
-    status_data = get_project_file(project_id)
+    project_file_contents = get_project_file(project_id)
 
-    if report_name not in status_data["reports"]:
+    if report_name not in project_file_contents["reports"]:
         raise Exception(f"Report type '{report_name}' not found in the status file.")
 
-    status_data["reports"][report_name]["status"] = "failed"
-    status_data["reports"][report_name]["endTime"] = datetime.now().isoformat()
-    status_data["reports"][report_name]["errorMessage"] = error_message
-    status_data["status"] = "failed"
+    project_file_contents["reports"][report_name]["status"] = ProcessingStatus.FAILED
+    project_file_contents["reports"][report_name]["endTime"] = datetime.now().isoformat()
+    project_file_contents["reports"][report_name]["errorMessage"] = error_message
+    project_file_contents["status"] = ProcessingStatus.FAILED
 
-    update_project_status_data(project_id, status_data)
+    update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_name}' to 'failed' with error message: {error_message}")
 
-def set_in_progress_for_all_reports(project_id):
+
+def update_status_to_not_started_for_all_reports(project_id):
     agent_status_file_path = f"{project_id}/agent-status.json"
 
-    # Fetch the current status file
-    response = s3_client.get_object(Bucket=BUCKET_NAME, Key=f"crowd-fund-analysis/{agent_status_file_path}")
-    status_data = json.loads(response['Body'].read().decode('utf-8'))
+    project_file_contents = get_project_file(project_id)
 
     # Initialize all reports to "in_progress" and set timestamps
-    for report_type in status_data["reports"]:
-        status_data["reports"][report_type] = get_init_data_for_report(report_type)
-        print(f"Set status of report '{report_type}' to 'in_progress'. Initialized startTime and estimatedTimeInSec.")
+    for report_type in project_file_contents["reports"]:
+        project_file_contents["reports"][report_type] = get_init_data_for_report(report_type)
+        print(f"Set status of report '{report_type}' to 'not_started'. Initialized startTime and estimatedTimeInSec.")
 
-    upload_to_s3(json.dumps(status_data, indent=4), agent_status_file_path, content_type="application/json")
-    print(f"Updated status file: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}")
-
-def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
-    """
-    Ensures that 'processed_project_info' is present in agent-status.json in S3.
-    This function checks if the URLs have changed. If they haven't and 'processed_project_info'
-    exists, it does nothing. If they have changed (or don't exist), it scrapes the URLs again,
-    then updates and uploads the new content back to S3.
-
-    Returns the updated 'processed_project_info' from the status file.
-    """
-    # ----------------------- 1) Download agent-status.json -----------------------
-    agent_status_file_path = get_project_status_file_path(project_id)
-
-    try:
-        response = s3_client.get_object(Bucket=BUCKET_NAME, Key=f"crowd-fund-analysis/{agent_status_file_path}")
-        status_data = json.loads(response['Body'].read().decode('utf-8'))
-    except s3_client.exceptions.NoSuchKey:
-        raise FileNotFoundError(
-            f"agent-status.json not found in S3 at path: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}"
-        )
-
-    # ----------------------- 2) Gather the current URLs -------------------------
-    project_info = status_data.get("projectInfoInput", {})
-    crowd_funding_url = project_info.get("crowdFundingUrl", "").strip()
-    website_url = project_info.get("websiteUrl", "").strip()
-    sec_filing_url = project_info.get("secFillingUrl", "").strip()
-    additional_urls = project_info.get("additionalUrl", [])
-
-    # Combine all project-related URLs (except the SEC link, which we'll handle separately if needed)
-    current_urls = []
-    if crowd_funding_url:
-        current_urls.append(crowd_funding_url)
-    if website_url:
-        current_urls.append(website_url)
-    if additional_urls:
-        current_urls.extend(additional_urls)
-
-    # Sort for stable comparison
-    current_urls_sorted = sorted(set(current_urls))
-
-    # ----------------------- 3) Check existing processed info -------------------
-    processed_project_info = status_data.get("processedProjectInfo", {})
-    previous_urls = processed_project_info.get("urlsUsedForScraping") or []
-
-    # Also sort for stable comparison
-    previous_urls_sorted = sorted(set(previous_urls))
-
-    # ----------------------- 4) Determine if we need to re-scrape ---------------
-    urls_changed = (current_urls_sorted != previous_urls_sorted)
-
-    if processed_project_info and not urls_changed:
-        print("URLs have not changed and 'processed_project_info' already exists. No re-scraping needed.")
-        return processed_project_info
-
-    # ----------------------- 5) Scrape the URLs ---------------------------------
-    # We do this if:
-    #    (a) There's no 'processed_project_info' at all, OR
-    #    (b) The URLs changed
-    print("Scraping URLs because they have changed or 'processed_project_info' is missing.")
-    scraped_content_list: List[str] = []
-    if current_urls_sorted:
-        scraped_content_list = scrape_urls(current_urls_sorted)
-
-    # If you want to scrape the SEC link separately (e.g., for a financial review):
-    sec_raw_content = ""
-    if sec_filing_url:
-        try:
-            sec_raw_content = scrape_url(sec_filing_url)
-        except Exception as e:
-            print(f"Failed to scrape SEC Filing URL: {e}")
-            sec_raw_content = f"Error scraping SEC Filing URL: {str(e)}"
-
-    # Combine the general scraped content
-    combined_scrapped_content = "\n\n".join(scraped_content_list)
-
-    # ----------------------- 6) Update agent-status.json with new info ----------
-    new_processed_project_info: ProcessedProjectInfoSchema = {
-        "urlsUsedForScraping": current_urls_sorted,
-        "combinedScrappedContent": combined_scrapped_content,
-        "secRawContent": sec_raw_content,
-        "lastUpdated": datetime.now().isoformat()
-    }
-
-    status_data["processedProjectInfo"] = new_processed_project_info
-
-    # ----------------------- 7) Upload updated status file to S3 ----------------
-    upload_to_s3(
-        content=json.dumps(status_data, indent=4),
-        s3_key=f"{project_id}/agent-status.json",
-        content_type="application/json"
-    )
-    print(f"Updated 'processed_project_info' uploaded to s3://{BUCKET_NAME}/crowd-fund-analysis/{project_id}/agent-status.json")
-
-    return {
-        "urls_used_for_scrapping": current_urls_sorted,
-        "combined_scrapped_content": combined_scrapped_content,
-        "sec_raw_content": sec_raw_content,
-        "last_updated": new_processed_project_info["lastUpdated"]
-    }
+    upload_to_s3(json.dumps(project_file_contents, indent=4), agent_status_file_path, content_type="application/json")
+    print(
+        f"Updated status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
 
 
-def upload_report_to_s3(project_id: str, report_name: str, report_content: str):
+def create_report_file_and_upload_to_s3(project_id: str, report_name: str, report_content: str):
     report_file_path = f"{project_id}/{report_name}.md"
     upload_to_s3(report_content, report_file_path)
     # Update status file to "completed"
     markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{report_file_path}"
     update_report_status_completed(project_id, report_name, markdown_link=markdown_link)
-
-
-

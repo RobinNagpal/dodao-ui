@@ -1,3 +1,4 @@
+import traceback
 from typing import TypedDict, TypeVar
 from langchain_community.document_loaders import ScrapingAntLoader
 from dotenv import load_dotenv
@@ -48,6 +49,7 @@ def scrape_urls(urls: list[str]) -> list[str]:
         try:
             scraped_content_list.append(scrape_url(url))
         except Exception as e:
+            print(traceback.format_exc())
             print(f"Error scraping {url}: {e}")
             scraped_content_list.append(f"Error scraping {url}: {e}")
     return scraped_content_list
@@ -61,6 +63,7 @@ def scrape_url(url: str) -> str:
         print(f"Successfully scraped URL: {url}. Length of content: {len(page_content)}")
         return page_content
     except Exception as e:
+        print(traceback.format_exc())
         print(f"Error scraping {url}: {e}")
         raise e
 
