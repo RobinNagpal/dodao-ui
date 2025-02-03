@@ -32,7 +32,14 @@ export const ALL_REPORT_TYPES: ReportType[] = [
   ReportType.GREEN_FLAGS,
   ReportType.RELEVANT_LINKS,
 ];
-
+export interface ProjectSubmissionData {
+  projectId: string;
+  projectName: string;
+  crowdFundingUrl: string;
+  websiteUrl: string;
+  secFilingUrl: string;
+  additionalUrls: string[];
+}
 export interface ProjectInfoInput {
   /**
    * Represents the user-provided project input
