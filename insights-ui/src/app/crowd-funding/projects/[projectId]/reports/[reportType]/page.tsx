@@ -4,7 +4,6 @@ import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import RadarChart from '@/components/ui/RadarChart';
 
 export default async function ReportDetailPage({ params }: { params: Promise<{ projectId: string; reportType: string }> }) {
   const { projectId, reportType } = await params;
@@ -25,20 +24,9 @@ export default async function ReportDetailPage({ params }: { params: Promise<{ p
     },
   ];
 
-  const startupEvaluation = {
-    productInnovation: { score: 0 },
-    marketOpportunity: { score: 3 },
-    teamStrength: { score: 1 },
-    financialHealth: { score: 5 },
-    businessModel: { score: 0 },
-  };
-
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <div className="max-w-lg">
-        <RadarChart data={startupEvaluation} />
-      </div>
       <div className="mx-auto text-color">
         <div className="text-center text-color my-5">
           <h1 className="font-semibold leading-6 text-2xl">Project: {projectId}</h1>

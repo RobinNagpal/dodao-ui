@@ -1,19 +1,21 @@
 'use client';
 
 import ProjectDetailTable from '@/components/projects/ProjectDetailTable';
-import { ProjectDetails, ProcessingStatus, ReportInterface, ReportWithName } from '@/types/project/project';
+import { ProjectDetails, ProcessingStatus, ReportInterface, ReportWithName, SpiderGraph } from '@/types/project/project';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useEffect, useMemo, useState } from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import RadarChart from '../ui/RadarChart';
 
 interface ProjectDetailPageProps {
   projectId: string;
   initialProjectDetails: ProjectDetails;
+  spiderGraph: SpiderGraph | null;
 }
 
-export default function ProjectDetailPage({ projectId, initialProjectDetails }: ProjectDetailPageProps) {
+export default function ProjectDetailPage({ projectId, initialProjectDetails, spiderGraph }: ProjectDetailPageProps) {
   const [projectDetails, setProjectDetails] = useState<ProjectDetails>(initialProjectDetails);
   const [reloadTrigger, setReloadTrigger] = useState(false);
   const [openWebsiteContentAccordion, setOpenWebsiteContentAccordion] = useState(false);
@@ -58,12 +60,46 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
     }
   }, [reloadTrigger]);
 
+  const startupEvaluation =
+    spiderGraph && Object.keys(spiderGraph).length > 0
+      ? {
+          productInnovation: { score: spiderGraph?.productInnovation?.reduce((acc, item) => acc + item.score, 0) || 0 },
+          marketOpportunity: { score: spiderGraph?.marketOpportunity?.reduce((acc, item) => acc + item.score, 0) || 0 },
+          teamStrength: { score: spiderGraph?.teamStrength?.reduce((acc, item) => acc + item.score, 0) || 0 },
+          financialHealth: { score: spiderGraph?.financialHealth?.reduce((acc, item) => acc + item.score, 0) || 0 },
+          businessModel: { score: spiderGraph?.businessModel?.reduce((acc, item) => acc + item.score, 0) || 0 },
+        }
+      : null;
+
   return (
     <div className="w-full text-color">
       <div className="text-center text-color my-5">
         <h1 className="font-semibold leading-6 text-2xl">{projectDetails.name}</h1>
         <div className="my-5">Overall Status: {projectDetails.status}</div>
       </div>
+
+      {startupEvaluation && (
+        <>
+          <div className="max-w-lg mx-auto">
+            <RadarChart data={startupEvaluation} />
+          </div>
+          {spiderGraph &&
+            Object.entries(spiderGraph).map(([key, values]) => (
+              <div key={key} className="category-section my-5">
+                <h3 className="font-bold text-lg mb-2">{key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}</h3>
+                <ul className="list-disc pl-5">
+                  {values.map((item, index) => (
+                    <li key={index} className="mb-1 flex items-start">
+                      <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
+                      <span>{item.comment}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+        </>
+      )}
+
       <Accordion
         key="crowd-funding-content-accordion"
         isOpen={openCrowdFundingContentAccordion}
