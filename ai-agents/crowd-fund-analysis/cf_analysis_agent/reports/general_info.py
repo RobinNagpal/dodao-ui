@@ -7,7 +7,7 @@ from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_t
 
 REPORT_NAME = "general_info"
 
-def generate_project_info_report_node(state: AgentState):
+def generate_project_info_report(state: AgentState):
     """
     Uses the LLM to produce a comprehensive, investor-facing report
     of the project's goals, achievements, product environment, etc.
@@ -53,7 +53,7 @@ def create_general_info_report(state: AgentState) -> None:
     project_id = state.get("project_info").get("project_id")
     try:
         update_report_status_in_progress(project_id, REPORT_NAME)
-        report_content = generate_project_info_report_node(state)
+        report_content = generate_project_info_report(state)
         create_report_file_and_upload_to_s3(project_id, REPORT_NAME, report_content)
     except Exception as e:
         # Capture full stack trace
