@@ -20,6 +20,8 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
   const [openCrowdFundingContentAccordion, setOpenCrowdFundingContentAccordion] = useState(false);
   const [openAdditionalUrlsContentAccordion, setOpenAdditionalUrlsContentAccordion] = useState(false);
   const [openSecRawContentAccordion, setOpenSecRawContentAccordion] = useState(false);
+  const [openSecJsonContentAccordion, setOpenSecJsonContentAccordion] = useState(false);
+  const [openSecMarkdownContentAccordion, setOpenSecMarkdownContentAccordion] = useState(false);
 
   const fetchProjectDetails = async () => {
     try {
@@ -171,6 +173,58 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
               }}
             >
               {projectDetails.processedProjectInfo?.secRawContent}
+            </Markdown>
+          )}
+        </div>
+      </Accordion>
+      <Accordion
+        label="SEC JSON Content"
+        isOpen={openSecJsonContentAccordion}
+        onClick={(e: React.MouseEvent<HTMLElement>) => {
+          e.preventDefault();
+          setOpenSecJsonContentAccordion(!openSecJsonContentAccordion);
+          if (!openSecJsonContentAccordion) {
+            setOpenSecMarkdownContentAccordion(false);
+          }
+        }}
+      >
+        <div className={`w-full text-color ${openSecJsonContentAccordion ? 'block-bg-color' : ''}`}>
+          {projectDetails.processedProjectInfo?.secJsonContent && (
+            <Markdown
+              className="markdown text-color"
+              remarkPlugins={[remarkGfm]}
+              components={{
+                th: ({ node, ...props }) => <th className="border border-color px-4 py-2" {...props} />,
+                td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
+              }}
+            >
+              {projectDetails.processedProjectInfo?.secJsonContent}
+            </Markdown>
+          )}
+        </div>
+      </Accordion>
+      <Accordion
+        label="SEC Markdown Content"
+        isOpen={openSecMarkdownContentAccordion}
+        onClick={(e: React.MouseEvent<HTMLElement>) => {
+          e.preventDefault();
+          setOpenSecMarkdownContentAccordion(!openSecMarkdownContentAccordion);
+          if (!openSecMarkdownContentAccordion) {
+            setOpenSecJsonContentAccordion(false);
+          }
+        }}
+      >
+        <div className={`w-full text-color ${openSecMarkdownContentAccordion ? 'block-bg-color' : ''}`}>
+          {projectDetails.processedProjectInfo?.secMarkdownContent && (
+            <Markdown
+              className="markdown text-color"
+              remarkPlugins={[remarkGfm]}
+              components={{
+                th: ({ node, ...props }) => <th className="border border-color px-4 py-2" {...props} />,
+                td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
+              }}
+            >
+              {projectDetails.processedProjectInfo?.secMarkdownContent}
             </Markdown>
           )}
         </div>

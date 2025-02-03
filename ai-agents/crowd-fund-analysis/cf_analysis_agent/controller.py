@@ -5,7 +5,7 @@ import asyncio
 from agent import graph as parent_graph
 from cf_analysis_agent.agent_state import AgentState, ProjectInfo
 from cf_analysis_agent.utils.report_utils import get_project_info_from_s3
-from cf_analysis_agent.utils.project_info_utils import ensure_processed_project_info
+from cf_analysis_agent.utils.process_project_utils import ensure_processed_project_info
 
 
 def prepare_processing_command(project_id, model, script_path="cf_analysis_agent/controller.py"):

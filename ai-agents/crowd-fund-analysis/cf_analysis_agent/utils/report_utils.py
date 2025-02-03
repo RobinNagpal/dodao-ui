@@ -58,6 +58,8 @@ class ProcessedProjectInfoSchema(TypedDict, total=False):
     contentOfCrowdfundingUrl: str
     contentOfWebsiteUrl: str
     secRawContent: str
+    secJsonContent: str
+    secMarkdownContent: str
     lastUpdated: str
     status: ProcessingStatus
 
@@ -235,6 +237,8 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
             "contentOfCrowdfundingUrl": project_file_contents["processedProjectInfo"].get("contentOfCrowdfundingUrl"),
             "contentOfWebsiteUrl": project_file_contents["processedProjectInfo"].get("contentOfWebsiteUrl"),
             "secRawContent": project_file_contents["processedProjectInfo"].get("secRawContent"),
+            "secJsonContent": project_file_contents["processedProjectInfo"].get("secJsonContent"),
+            "secMarkdownContent": project_file_contents["processedProjectInfo"].get("secMarkdownContent"),
             "lastUpdated": project_file_contents["processedProjectInfo"].get("lastUpdated"),
             "status": project_file_contents["processedProjectInfo"].get("status")
         },

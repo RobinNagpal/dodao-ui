@@ -72,6 +72,8 @@ export interface ProcessedProjectInfoInterface {
   contentOfCrowdfundingUrl: string;
   contentOfWebsiteUrl: string;
   secRawContent: string;
+  secJsonContent: string;
+  secMarkdownContent: string;
   lastUpdated: string;
   status: ProcessingStatus;
 }

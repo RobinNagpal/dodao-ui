@@ -30,6 +30,8 @@ class ProcessedProjectInfo(TypedDict, total=False):
     content_of_crowdfunding_url: str
     content_of_website_url: str
     sec_raw_content: str
+    sec_json_content: str
+    sec_markdown_content: str
     last_updated: str
     status: ProcessingStatus
 

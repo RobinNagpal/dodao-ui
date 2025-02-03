@@ -2,14 +2,160 @@ import json
 import traceback
 from typing import List
 
+from langchain_core.messages import HumanMessage
+
 from cf_analysis_agent.agent_state import ProcessingStatus, ProcessedProjectInfo
-from cf_analysis_agent.utils.llm_utils import structured_llm_response, DEFAULT_LLM_CONFIG, MINI_4_0_CONFIG, \
-    scrape_and_clean_content_with_same_details
-from cf_analysis_agent.utils.project_utils import scrape_urls, scrape_url
+from cf_analysis_agent.structures.form_c_structures import StructuredFormCResponse
+from cf_analysis_agent.utils.llm_utils import structured_llm_response, MINI_4_0_CONFIG, \
+    scrape_and_clean_content_with_same_details, get_llm, NORMAL_4_0_CONFIG
+from cf_analysis_agent.utils.project_utils import scrape_urls
 from cf_analysis_agent.utils.report_utils import get_project_status_file_path, ProcessedProjectInfoSchema, \
     ProjectStatusFileSchema, ProjectInfoInputSchema
 from cf_analysis_agent.utils.s3_utils import s3_client, BUCKET_NAME, upload_to_s3
 
+
+def get_sec_json_content(raw_content: str) -> StructuredFormCResponse:
+    """
+    Convert the raw SEC content to JSON format.
+    """
+    prompt = """Parse the following Form C document and return it in a structured JSON format based on the provided schema. Ensure that:
+
+    * All fields are extracted correctly.
+    * Numerical values are formatted as numbers, and missing values are set to null.
+    * Lists are properly structured.
+    * The structured output adheres to the schema.
+    
+    {
+      "filing_status": "LIVE",
+      "issuer": {
+        "name": "Qnetic Corporation",
+        "form": "Corporation",
+        "jurisdiction": "DELAWARE",
+        "incorporation_date": "09-20-2022",
+        "physical_address": {
+          "address_1": "276 5th Avenue",
+          "address_2": "Suite 704 - 3137",
+          "city": "New York",
+          "state_country": "NEW YORK",
+          "postal_code": "10001"
+        },
+        "website": "http://www.qnetic.energy",
+        "is_co_issuer": true,
+        "co_issuer": "Qnetic II, a series of Wefunder SPV, LLC"
+      },
+      "co_issuer": {
+        "name": "Qnetic II, a series of Wefunder SPV, LLC",
+        "form": "Limited Liability Company",
+        "jurisdiction": "DELAWARE",
+        "incorporation_date": "10-11-2024",
+        "physical_address": {
+          "address_1": "4104 24TH ST",
+          "address_2": "PMB 8113",
+          "city": "San Francisco",
+          "state_country": "CALIFORNIA",
+          "postal_code": "94114"
+        },
+        "website": "https://wefunder.com/"
+      },
+      "offering": {
+        "intermediary_name": "Wefunder Portal LLC",
+        "intermediary_cik": "0001670254",
+        "commission_file_number": "007-00033",
+        "crd_number": "283503",
+        "compensation": "7.0% of the offering amount upon a successful fundraise...",
+        "intermediary_interest": "No",
+        "security_type": "Other",
+        "security_specification": "Simple Agreement for Future Equity (SAFE)",
+        "target_number_of_securities": 50000,
+        "price_per_security": 1.00000,
+        "price_determination_method": "Pro-rated portion of total principal value...",
+        "target_offering_amount": 50000.00,
+        "max_offering_amount": 618000.00,
+        "oversubscriptions_accepted": true,
+        "oversubscription_allocation": "As determined by the issuer",
+        "deadline": "04-30-2025"
+      },
+      "financials": {
+        "total_assets": {
+          "most_recent": 1374533.00,
+          "prior": 63476.00
+        },
+        "cash_and_equivalents": {
+          "most_recent": 1254186.00,
+          "prior": 60390.00
+        },
+        "accounts_receivable": {
+          "most_recent": 0.00,
+          "prior": 0.00
+        },
+        "short_term_debt": {
+          "most_recent": 248047.00,
+          "prior": 91065.00
+        },
+        "long_term_debt": {
+          "most_recent": 1862592.00,
+          "prior": 137974.00
+        },
+        "revenue": {
+          "most_recent": 0.00,
+          "prior": 0.00
+        },
+        "cost_of_goods_sold": {
+          "most_recent": 0.00,
+          "prior": 0.00
+        },
+        "taxes_paid": {
+          "most_recent": 11634.00,
+          "prior": 10361.00
+        },
+        "net_income": {
+          "most_recent": -807523.00,
+          "prior": -158546.00
+        }
+      },
+      "jurisdictions_offered": [
+        "ALABAMA", "ALASKA", "ARIZONA", "ARKANSAS", "CALIFORNIA", "COLORADO", 
+        "CONNECTICUT", "DELAWARE", "DISTRICT OF COLUMBIA", "FLORIDA", "GEORGIA",
+        "HAWAII", "IDAHO", "ILLINOIS", "INDIANA", "IOWA", "KANSAS", "KENTUCKY",
+        "LOUISIANA", "MAINE", "MARYLAND", "MASSACHUSETTS", "MICHIGAN", "MINNESOTA",
+        "MISSISSIPPI", "MISSOURI", "MONTANA", "NEBRASKA", "NEVADA", "NEW HAMPSHIRE",
+        "NEW JERSEY", "NEW MEXICO", "NEW YORK", "NORTH CAROLINA", "NORTH DAKOTA",
+        "OHIO", "OKLAHOMA", "OREGON", "PENNSYLVANIA", "RHODE ISLAND", "SOUTH CAROLINA",
+        "SOUTH DAKOTA", "TENNESSEE", "TEXAS", "UTAH", "VERMONT", "VIRGINIA",
+        "WASHINGTON", "WEST VIRGINIA", "WISCONSIN", "WYOMING"
+      ],
+      "signatures": [
+        {
+          "name": "Michael Pratt",
+          "title": "Founder, CEO",
+          "date": "10-16-2024"
+        },
+        {
+          "name": "Loic Bastard",
+          "title": "Founder, CTO",
+          "date": "10-16-2024"
+        }
+      ]
+    }
+    
+    
+    SEC Content:
+    """ + raw_content
+    structured_llm = get_llm(NORMAL_4_0_CONFIG).with_structured_output(StructuredFormCResponse)
+    response = structured_llm.invoke([HumanMessage(content=prompt)])
+    return response
+
+def get_markdown_content_from_json(json_content: str) -> str:
+    prompt = f"""Convert the following JSON content into a tables in markdown format. 
+    
+    Ensure that the markdown content is well-structured and easy to read.
+
+    {json_content}
+    """
+    
+    llm = get_llm(NORMAL_4_0_CONFIG)
+    response = llm.invoke([HumanMessage(content=prompt)])
+    return response.content.strip()        
 
 def convert_s3_processed_info_to_state(project_info_in_s3: ProcessedProjectInfoSchema) -> ProcessedProjectInfo:
     processed_info: ProcessedProjectInfo = {
@@ -18,6 +164,8 @@ def convert_s3_processed_info_to_state(project_info_in_s3: ProcessedProjectInfoS
         "content_of_crowdfunding_url": project_info_in_s3.get("contentOfCrowdfundingUrl"),
         "content_of_website_url": project_info_in_s3.get("contentOfWebsiteUrl"),
         "sec_raw_content": project_info_in_s3.get("secRawContent"),
+        "sec_json_content": project_info_in_s3.get("secJsonContent"),
+        "sec_markdown_content": project_info_in_s3.get("secMarkdownContent"),
         "last_updated": project_info_in_s3.get("lastUpdated"),
         "status": project_info_in_s3.get("status"),
     }
@@ -98,7 +246,12 @@ def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
                         or project_info_in_s3.get("contentOfCrowdfundingUrl") is None
                         or project_info_in_s3.get("contentOfCrowdfundingUrl") == ""
                         or project_info_in_s3.get("secRawContent") is None
-                        or project_info_in_s3.get("secRawContent") == "")
+                        or project_info_in_s3.get("secRawContent") == ""
+                        or project_info_in_s3.get("secJsonContent") is None
+                        or project_info_in_s3.get("secJsonContent") == ""
+                        or project_info_in_s3.get("secMarkdownContent") is None
+                        or project_info_in_s3.get("secMarkdownContent") == ""
+                        )
 
     print(f"Project Info Needs Processing: {needs_processing}")
     if not needs_processing:
@@ -115,6 +268,16 @@ def ensure_processed_project_info(project_id: str) -> ProcessedProjectInfo:
     if project_info_in_s3.get("secRawContent") is None or project_info_in_s3.get("secRawContent") == "":
         print("SEC Raw Content is missing. Scraping SEC Filing URL.")
         project_info_in_s3["secRawContent"] = scrape_and_clean_content_with_same_details(sec_filing_url)
+
+    if project_info_in_s3.get("secJsonContent") is None or project_info_in_s3.get("secJsonContent") == "":
+        print("SEC JSON Content is missing. Generating JSON from SEC Filing.")
+        json_data = get_sec_json_content(project_info_in_s3["secRawContent"])
+        print(json_data.model_dump_json(indent=4))
+        project_info_in_s3["secJsonContent"] = json_data.model_dump_json(indent=4)
+
+    if project_info_in_s3.get("secMarkdownContent") is None or project_info_in_s3.get("secMarkdownContent") == "":
+        print("SEC Markdown Content is missing. Scraping SEC Filing URL.")
+        project_info_in_s3["secMarkdownContent"] = get_markdown_content_from_json(project_info_in_s3["secJsonContent"])
 
     if project_info_in_s3.get("contentOfCrowdfundingUrl") is None or project_info_in_s3.get(
             "contentOfCrowdfundingUrl") == "":
