@@ -6,8 +6,8 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import ProjectDetailPage from '@/components/projects/ProjectDetailPage';
 
-export default async function ProjectDetailPageWrapper({ params }: { params: { projectId: string } }) {
-  const { projectId } = params;
+export default async function ProjectDetailPageWrapper({ params }: { params: Promise<{ projectId: string }> }) {
+  const { projectId } = await params;
 
   const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`);
   const data: { projectDetails: ProjectDetails } = await res.json();
