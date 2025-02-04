@@ -149,3 +149,12 @@ export interface ProjectDetails {
   finalReport?: FinalReportInterface;
   processedProjectInfo?: ProcessedProjectInfoInterface;
 }
+
+export interface SpiderScore {
+  comment: string;
+  score: number;
+}
+
+export interface SpiderGraph {
+  [category: string]: SpiderScore[];
+}

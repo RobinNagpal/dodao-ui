@@ -1,19 +1,21 @@
 'use client';
 
 import ProjectDetailTable from '@/components/projects/ProjectDetailTable';
-import { ProcessingStatus, ProjectDetails, ReportWithName } from '@/types/project/project';
+import { ProcessingStatus, ProjectDetails, ReportWithName, SpiderGraph } from '@/types/project/project';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { useState, useMemo, useEffect } from 'react';
+import RadarChart from '../ui/RadarChart';
+import { useState, useEffect } from 'react';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 interface ProjectDetailPageProps {
   projectId: string;
   initialProjectDetails: ProjectDetails;
+  spiderGraph: SpiderGraph | null;
 }
 
-export default function ProjectDetailPage({ projectId, initialProjectDetails }: ProjectDetailPageProps) {
+export default function ProjectDetailPage({ projectId, initialProjectDetails, spiderGraph }: ProjectDetailPageProps) {
   const [projectDetails, setProjectDetails] = useState<ProjectDetails>(initialProjectDetails);
 
   const [reloadTrigger, setReloadTrigger] = useState(false);
@@ -56,12 +58,45 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
     }
   }, [reloadTrigger]);
 
+  const startupEvaluation =
+    spiderGraph && Object.keys(spiderGraph).length > 0
+      ? {
+          productInnovation: { score: spiderGraph?.productInnovation?.reduce((acc, item) => acc + item.score, 0) || 0 },
+          marketOpportunity: { score: spiderGraph?.marketOpportunity?.reduce((acc, item) => acc + item.score, 0) || 0 },
+          teamStrength: { score: spiderGraph?.teamStrength?.reduce((acc, item) => acc + item.score, 0) || 0 },
+          financialHealth: { score: spiderGraph?.financialHealth?.reduce((acc, item) => acc + item.score, 0) || 0 },
+          businessModel: { score: spiderGraph?.businessModel?.reduce((acc, item) => acc + item.score, 0) || 0 },
+        }
+      : null;
+
   return (
     <div className="w-full text-color">
       <div className="text-center text-color my-5">
         <h1 className="font-semibold leading-6 text-2xl">{projectDetails.name}</h1>
         <div className="my-5">Overall Status: {projectDetails.status}</div>
       </div>
+
+      {spiderGraph && (
+        <>
+          <div className="max-w-lg mx-auto">
+            <RadarChart data={spiderGraph} />
+          </div>
+          {spiderGraph &&
+            Object.entries(spiderGraph).map(([key, values]) => (
+              <div key={key} className="category-section my-5">
+                <h3 className="font-bold text-lg mb-2">{key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}</h3>
+                <ul className="list-disc pl-5">
+                  {values.map((item, index) => (
+                    <li key={index} className="mb-1 flex items-start">
+                      <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
+                      <span>{item.comment}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+        </>
+      )}
 
       <Accordion
         label="Crowdfunding Content"
