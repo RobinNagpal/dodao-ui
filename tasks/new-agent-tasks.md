@@ -110,3 +110,16 @@ The file should have information
     }
     ```
   - Upload the `spider_graph.json` to the project folder in s3
+
+- Founder & Team
+- Traction
+- Market Opportunity
+- Valuation
+- Execution and Speed
+- Financial Health
+
+
+- Final report finalize with structured output
+- Re-create all the reports
+- UI/UX looks good for the project detail page
+- Authentication using code

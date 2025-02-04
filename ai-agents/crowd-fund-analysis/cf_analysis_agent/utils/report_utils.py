@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from typing_extensions import TypedDict, NotRequired
 
 from cf_analysis_agent.agent_state import ProjectInfo, ProcessingStatus
+from cf_analysis_agent.structures.startup_metrics import InformationStatus
 from cf_analysis_agent.utils.env_variables import REGION
 from cf_analysis_agent.utils.s3_utils import s3_client, BUCKET_NAME, upload_to_s3
 
@@ -47,8 +48,45 @@ class ReportSchema(TypedDict, total=False):
 class FinalReportSchema(ReportSchema, total=False):
     spiderGraphJsonFileUrl: NotRequired[str]
 
+class ProcessedSecInfoSchema(TypedDict):
+    """
+    Stores the processed SEC filing content in various formats.
+    """
+    secJsonContent: str
+    secMarkdownContent: str
+    secRawContent: str
 
-class ProcessedProjectInfoSchema(TypedDict, total=False):
+class MetricSchema(TypedDict):
+    explanation: str
+    opinion: str
+    informationStatus: InformationStatus
+
+class ProcessesStartupMetricsSchema(TypedDict, total=False):
+    growthRate: MetricSchema
+    organicVsPaidGrowth: MetricSchema
+    virality: MetricSchema
+    networkEffect: MetricSchema
+    customerAcquisitionCost: MetricSchema
+    unitEconomics: MetricSchema
+    retentionRate: MetricSchema
+    magicMoment: MetricSchema
+    netPromoterScore: MetricSchema
+    customerLifetimeValue: MetricSchema
+    paybackPeriod: MetricSchema
+    revenueGrowth: MetricSchema
+    churnRate: MetricSchema
+
+
+class ProcessedIndustryAndForecastsSchema(TypedDict):
+    """
+    Stores the processed industry details and forecast content.
+    """
+    industryDetailsAndForecast: str
+    totalAddressableMarket: str
+    serviceableAddressableMarket: str
+    serviceableObtainableMarket: str
+
+class ProcessedProjectInfoSchema(TypedDict):
     """
     Stores combined text results after scraping the various
     URLs for this project, plus a timestamp for when it was last updated.
@@ -57,9 +95,9 @@ class ProcessedProjectInfoSchema(TypedDict, total=False):
     contentOfAdditionalUrls: str
     contentOfCrowdfundingUrl: str
     contentOfWebsiteUrl: str
-    secRawContent: str
-    secJsonContent: str
-    secMarkdownContent: str
+    industryDetails: ProcessedIndustryAndForecastsSchema
+    secInfo: ProcessedSecInfoSchema
+    startupMetrics: ProcessesStartupMetricsSchema
     lastUpdated: str
     status: ProcessingStatus
 
@@ -218,6 +256,10 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
         }
         new_reports[report_type] = new_report
 
+    sec_info = project_file_contents["processedProjectInfo"].get("secInfo") or {}
+    startup_metrics = project_file_contents["processedProjectInfo"].get("startupMetrics") or {}
+    industry_details = project_file_contents["processedProjectInfo"].get("industryDetails") or {}
+
     new_project_file_contents: ProjectStatusFileSchema = {
         "id": project_id,
         "name": project_file_contents["name"],
@@ -236,9 +278,33 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
             "contentOfAdditionalUrls": project_file_contents["processedProjectInfo"].get("contentOfAdditionalUrls"),
             "contentOfCrowdfundingUrl": project_file_contents["processedProjectInfo"].get("contentOfCrowdfundingUrl"),
             "contentOfWebsiteUrl": project_file_contents["processedProjectInfo"].get("contentOfWebsiteUrl"),
-            "secRawContent": project_file_contents["processedProjectInfo"].get("secRawContent"),
-            "secJsonContent": project_file_contents["processedProjectInfo"].get("secJsonContent"),
-            "secMarkdownContent": project_file_contents["processedProjectInfo"].get("secMarkdownContent"),
+            "secInfo": {
+               "secJsonContent": sec_info.get("secJsonContent"),
+                "secMarkdownContent": sec_info.get("secMarkdownContent"),
+                "secRawContent": sec_info.get("secRawContent")
+            },
+            "startupMetrics": {
+               "growthRate": startup_metrics.get("growthRate"),
+                "organicVsPaidGrowth": startup_metrics.get("organicVsPaidGrowth"),
+                "virality": startup_metrics.get("virality"),
+                "networkEffect": startup_metrics.get("networkEffect"),
+                "customerAcquisitionCost": startup_metrics.get("customerAcquisitionCost"),
+                "unitEconomics": startup_metrics.get("unitEconomics"),
+                "retentionRate": startup_metrics.get("retentionRate"),
+                "magicMoment": startup_metrics.get("magicMoment"),
+                "netPromoterScore": startup_metrics.get("netPromoterScore"),
+                "customerLifetimeValue": startup_metrics.get("customerLifetimeValue"),
+                "paybackPeriod": startup_metrics.get("paybackPeriod"),
+                "revenueGrowth": startup_metrics.get("revenueGrowth"),
+                "churnRate": startup_metrics.get("churnRate"),
+
+            },
+            "industryDetails": {
+                "industryDetailsAndForecast": industry_details.get("industryDetailsAndForecast"),
+                "totalAddressableMarket": industry_details.get("totalAddressableMarket"),
+                "serviceableAddressableMarket": industry_details.get("serviceableAddressableMarket"),
+                "serviceableObtainableMarket": industry_details.get("serviceableObtainableMarket")
+            },
             "lastUpdated": project_file_contents["processedProjectInfo"].get("lastUpdated"),
             "status": project_file_contents["processedProjectInfo"].get("status")
         },
@@ -264,7 +330,12 @@ def update_report_status_in_progress(project_id: str, report_name: str):
         if "finalReport" not in project_file_contents:
             raise Exception(f"Final report section not found in the status file for project '{project_id}'.")
 
-        project_file_contents["finalReport"] = get_init_data_for_report('finalReport')
+        project_file_contents["finalReport"] = {
+            "status": ProcessingStatus.IN_PROGRESS,
+            "startTime": datetime.now().isoformat(),
+            "estimatedTimeInSec": 260
+        }
+
         project_file_contents["finalReport"]["status"] = ProcessingStatus.IN_PROGRESS
 
     else:
@@ -351,7 +422,12 @@ def update_status_to_not_started_for_all_reports(project_id):
         project_file_contents["reports"][report_type] = get_init_data_for_report(report_type)
         print(f"Set status of report '{report_type}' to 'not_started'. Initialized startTime and estimatedTimeInSec.")
     
-    project_file_contents["finalReport"] = get_init_data_for_report('finalReport')
+    project_file_contents["finalReport"] = {
+        "status": ProcessingStatus.NOT_STARTED,
+        "markdownLink": None,
+        "startTime": datetime.now().isoformat(),
+    }
+
     print(f"Set status of report 'finalReport' to 'not_started'. Initialized startTime and estimatedTimeInSec.")
     
     upload_to_s3(json.dumps(project_file_contents, indent=4), agent_status_file_path, content_type="application/json")

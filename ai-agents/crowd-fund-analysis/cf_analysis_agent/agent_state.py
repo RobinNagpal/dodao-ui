@@ -3,12 +3,17 @@ from typing import Annotated, List, Optional
 from langgraph.graph.message import add_messages
 from typing_extensions import TypedDict
 
-
 class ProcessingStatus(str, Enum):
     NOT_STARTED = "not_started"
     IN_PROGRESS = "in_progress"
     COMPLETED = "completed"
     FAILED = "failed"
+
+class InformationStatus(str, Enum):
+    MISSING = "missing"   # No clue at all, and it can't be derived
+    DERIVED = "derived"   # Not mentioned explicitly but can be inferred or extrapolated
+    EXTRACTED = "extracted"  # Explicitly mentioned in the content
+    NOT_APPLICABLE = "not_applicable"  # Not applicable for the given context
 
 class Configurable(TypedDict):
     model: str
@@ -24,14 +29,45 @@ class ProjectInfo(TypedDict):
     additional_links: list
     project_id: str
 
+class ProcessedSecInfo(TypedDict):
+    sec_json_content: str
+    sec_markdown_content: str
+    sec_raw_content: str
+
+class Metric(TypedDict):
+    explanation: str
+    opinion: str
+    information_status: InformationStatus
+
+class StartupMetrics(TypedDict):
+    growth_rate: Metric
+    organic_vs_paid_growth: Metric
+    virality: Metric
+    network_effect: Metric
+    customer_acquisition_cost: Metric
+    unit_economics: Metric
+    retention_rate: Metric
+    magic_moment: Metric
+    net_promoter_score: Metric
+    customer_lifetime_value: Metric
+    payback_period: Metric
+    revenue_growth: Metric
+    churn_rate: Metric
+
+class IndustryDetailsAndForecast(TypedDict):
+    industry_details_and_forecast: str
+    total_addressable_market: str
+    serviceable_addressable_market: str
+    serviceable_obtainable_market: str
+
 class ProcessedProjectInfo(TypedDict, total=False):
     additional_urls_used: Optional[list[str]]
     content_of_additional_urls: Optional[str]
     content_of_crowdfunding_url: str
     content_of_website_url: str
-    sec_raw_content: str
-    sec_json_content: str
-    sec_markdown_content: str
+    processed_sec_info: ProcessedSecInfo
+    industry_details: IndustryDetailsAndForecast
+    startup_metrics: StartupMetrics
     last_updated: str
     status: ProcessingStatus
 

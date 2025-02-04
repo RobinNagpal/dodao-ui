@@ -1,10 +1,10 @@
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ProjectDetails, SpiderGraph } from '@/types/project/project';
-import ProjectDetailPage from '@/components/projects/ProjectDetailPage';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import React from 'react';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import ProjectDetailPage from '@/components/projects/ProjectDetailPage';
 
 export default async function ProjectDetailPageWrapper({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params;
