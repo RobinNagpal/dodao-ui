@@ -117,7 +117,7 @@ export default function EditProjectView(props: { projectId?: string | null; proj
             <Input
               modelValue={link}
               placeholder="Enter additional link"
-              className="text-color"
+              className="text-color mb-5 mr-5"
               onUpdate={(e) => {
                 const updatedLinks = [...project.additionalUrls];
                 updatedLinks[index] = e as string;
@@ -132,7 +132,7 @@ export default function EditProjectView(props: { projectId?: string | null; proj
                 })
               }
               variant="text"
-              className="text-red-500"
+              className="text-red-500 mb-1"
             >
               Remove
             </Button>
