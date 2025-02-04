@@ -169,8 +169,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
         footerFont: { size: 14 },
         padding: 15,
         position: 'myCustomPositioner',
-        // xAlign: 'center',
-        // yAlign: 'top',
+        caretSize: 0,
         callbacks: {
           title: (tooltipItems: TooltipItem<'radar'>[]) => tooltipItems[0].label.replace(/([A-Z])/g, ' $1').replace(/^./, (str: string) => str.toUpperCase()),
           label: () => '', // Skip label
