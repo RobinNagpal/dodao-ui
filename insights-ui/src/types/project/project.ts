@@ -13,23 +13,33 @@ export enum ProcessingStatus {
   FAILED = 'failed',
 }
 
+export enum InformationStatus {
+  MISSING = 'missing', // No clue at all, and it can't be derived
+  DERIVED = 'derived', // Not mentioned explicitly but can be inferred or extrapolated
+  EXTRACTED = 'extracted', // Explicitly mentioned in the content
+  NOT_APPLICABLE = 'not_applicable', // Not applicable for the given context
+}
+
 // Enum for Report Types
 export enum ReportType {
   GENERAL_INFO = 'general_info',
-  TEAM_INFO = 'team_info',
-  FINANCIAL_REVIEW = 'financial_review',
-  RED_FLAGS = 'red_flags',
-  GREEN_FLAGS = 'green_flags',
+  FOUNDER_AND_TEAM = 'founder_and_team',
+  TRACTION = 'traction',
+  MARKET_OPPORTUNITY = 'market_opportunity',
+  VALUATION = 'valuation',
+  EXECUTION_AND_SPEED = 'execution_and_speed',
+  FINANCIAL_HEALTH = 'financial_health',
   RELEVANT_LINKS = 'relevant_links',
 }
 
-// Example usage
 export const ALL_REPORT_TYPES: ReportType[] = [
   ReportType.GENERAL_INFO,
-  ReportType.TEAM_INFO,
-  ReportType.FINANCIAL_REVIEW,
-  ReportType.RED_FLAGS,
-  ReportType.GREEN_FLAGS,
+  ReportType.FOUNDER_AND_TEAM,
+  ReportType.TRACTION,
+  ReportType.MARKET_OPPORTUNITY,
+  ReportType.VALUATION,
+  ReportType.EXECUTION_AND_SPEED,
+  ReportType.FINANCIAL_HEALTH,
   ReportType.RELEVANT_LINKS,
 ];
 export interface ProjectSubmissionData {
@@ -69,6 +79,47 @@ export interface FinalReportInterface extends ReportInterface {
   spiderGraphJsonFileUrl?: string;
 }
 
+export interface ProcessedSecInfoInterface {
+  /**
+   * Stores the processed SEC filing content in various formats.
+   */
+  secJsonContent: string;
+  secMarkdownContent: string;
+  secRawContent: string;
+}
+
+export interface MetricInterface {
+  explanation: string;
+  opinion: string;
+  informationStatus: InformationStatus;
+}
+
+export interface StartupMetricsInterface {
+  growthRate?: MetricInterface;
+  organicVsPaidGrowth?: MetricInterface;
+  virality?: MetricInterface;
+  networkEffect?: MetricInterface;
+  customerAcquisitionCost?: MetricInterface;
+  unitEconomics?: MetricInterface;
+  retentionRate?: MetricInterface;
+  magicMoment?: MetricInterface;
+  netPromoterScore?: MetricInterface;
+  customerLifetimeValue?: MetricInterface;
+  paybackPeriod?: MetricInterface;
+  revenueGrowth?: MetricInterface;
+  churnRate?: MetricInterface;
+}
+
+export interface IndustryDetailsAndForecastInterface {
+  /**
+   * Stores the processed industry details and forecast content.
+   */
+  industryDetailsAndForecast: string;
+  totalAddressableMarket: string;
+  serviceableAddressableMarket: string;
+  serviceableObtainableMarket: string;
+}
+
 export interface ProcessedProjectInfoInterface {
   /**
    * Stores combined text results after scraping the various
@@ -78,9 +129,9 @@ export interface ProcessedProjectInfoInterface {
   contentOfAdditionalUrls: string;
   contentOfCrowdfundingUrl: string;
   contentOfWebsiteUrl: string;
-  secRawContent: string;
-  secJsonContent: string;
-  secMarkdownContent: string;
+  secInfo: ProcessedSecInfoInterface;
+  industryDetails: IndustryDetailsAndForecastInterface;
+  startupMetrics: StartupMetricsInterface;
   lastUpdated: string;
   status: ProcessingStatus;
 }

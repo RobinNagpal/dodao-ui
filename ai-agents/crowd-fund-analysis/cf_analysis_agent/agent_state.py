@@ -1,3 +1,4 @@
+import json
 from enum import Enum
 from typing import Annotated, List, Optional
 from langgraph.graph.message import add_messages
@@ -10,10 +11,21 @@ class ProcessingStatus(str, Enum):
     FAILED = "failed"
 
 class InformationStatus(str, Enum):
-    MISSING = "missing"   # No clue at all, and it can't be derived
+    MISSING = "missing"   # No clue at all, and it can"t be derived
     DERIVED = "derived"   # Not mentioned explicitly but can be inferred or extrapolated
     EXTRACTED = "extracted"  # Explicitly mentioned in the content
     NOT_APPLICABLE = "not_applicable"  # Not applicable for the given context
+    
+class ReportType(str,  Enum):
+    GENERAL_INFO = "general_info",
+    FOUNDER_AND_TEAM = "founder_and_team",
+    TRACTION = "traction",
+    MARKET_OPPORTUNITY = "market_opportunity",
+    VALUATION = "valuation",
+    EXECUTION_AND_SPEED = "execution_and_speed",
+    FINANCIAL_HEALTH = "financial_health",
+    RELEVANT_LINKS = "relevant_links"
+    FINAL = "final"
 
 class Configurable(TypedDict):
     model: str
@@ -65,7 +77,7 @@ class ProcessedProjectInfo(TypedDict, total=False):
     content_of_additional_urls: Optional[str]
     content_of_crowdfunding_url: str
     content_of_website_url: str
-    processed_sec_info: ProcessedSecInfo
+    sec_info: ProcessedSecInfo
     industry_details: IndustryDetailsAndForecast
     startup_metrics: StartupMetrics
     last_updated: str
@@ -85,3 +97,37 @@ class AgentState(TypedDict):
     final_report: FinalReport | None
 
 
+def get_combined_content(state: AgentState) -> str:
+    """
+    Combines all the content from different reports into a single report.
+    """
+    processes_project_info: ProcessedProjectInfo = state.get("processed_project_info")
+    content_of_additional_urls = processes_project_info.get("content_of_additional_urls")
+    content_of_crowdfunding_url = processes_project_info.get("content_of_crowdfunding_url")
+    content_of_website_url = processes_project_info.get("content_of_website_url")
+
+    sec_markdown_content = processes_project_info.get("sec_info").get("sec_markdown_content")
+
+    industry_details_and_forecast = processes_project_info.get("industry_details")
+
+    startup_metrics = processes_project_info.get("startup_metrics")
+
+    combined_content = f"""
+    {content_of_crowdfunding_url}
+    
+    
+    {content_of_website_url}
+    
+    
+    {content_of_additional_urls} 
+    
+    
+    {sec_markdown_content} 
+    
+    
+    {json.dumps(industry_details_and_forecast)} 
+    
+    
+    {json.dumps(startup_metrics)}
+    """
+    return combined_content

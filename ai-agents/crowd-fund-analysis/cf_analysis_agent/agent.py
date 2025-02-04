@@ -1,17 +1,20 @@
 from typing import Sequence
 from langgraph.graph import END, START, StateGraph
-from cf_analysis_agent.agent_state import AgentState
+from cf_analysis_agent.agent_state import AgentState, ReportType
 from cf_analysis_agent.reports.general_info import create_general_info_report
 from cf_analysis_agent.reports.green_flags import create_green_flags_report
 from cf_analysis_agent.reports.red_flags import create_red_flags_report
 from cf_analysis_agent.reports.relevant_links import create_relevant_links_report
 from cf_analysis_agent.reports.financial_review_agent import create_financial_review_report
-from cf_analysis_agent.reports.team_info import create_team_info_report
+from cf_analysis_agent.reports.founder_and_team import create_founder_and_team_report
 from cf_analysis_agent.reports.final_report import create_final_report_test
 
 
 # ------------------- REPORT MAPPING ------------------- #
 report_keys = ["general_info", "red_flags", "green_flags", "relevant_links", "team_info","financial_review"]
+
+class AgentNodes(ReportType):
+    GENERATE_ALL_REPORTS_SERIALLY = "generate_all_reports_serially"
 
 final_key_map = {
     "general_info": "projectGeneralInfo",
@@ -40,7 +43,7 @@ def create_final_report(state: AgentState) -> dict:
     return {"final_report": "Compiled Reports", "reports": state}
 
 # ------------------- ROUTE SELECTION ------------------- #
-def route_single_or_all(state: AgentState) -> Sequence[str]:
+def route_single_or_all(state: AgentState) -> Sequence[ReportType]:
     """
     Routes execution to either a single report node or all nodes.
     """
@@ -60,7 +63,7 @@ def generate_all_reports_serially(state: AgentState):
     create_red_flags_report(state)
     create_green_flags_report(state)
     create_relevant_links_report(state)
-    create_team_info_report(state)
+    create_founder_and_team_report(state)
     create_financial_review_report(state)
     create_final_report(state)
 
@@ -72,11 +75,11 @@ builder.add_node("general_info", create_general_info_report)
 builder.add_node("red_flags",  create_red_flags_report)
 builder.add_node("green_flags",  create_green_flags_report)
 builder.add_node("relevant_links",  create_relevant_links_report)
-builder.add_node("team_info",  create_team_info_report)
+builder.add_node("team_info", create_founder_and_team_report)
 builder.add_node("financial_review", create_financial_review_report)
 builder.add_node("create_final_report", create_final_report)
 builder.add_node("create_final_report_test", create_final_report_test)
-builder.add_node("generate_all_reports_serially", generate_all_reports_serially)
+builder.add_node(AgentNodes.GENERATE_ALL_REPORTS_SERIALLY, generate_all_reports_serially)
 
 builder.add_edge(START, "initialize_first_step")
 builder.add_conditional_edges("initialize_first_step", route_single_or_all)
