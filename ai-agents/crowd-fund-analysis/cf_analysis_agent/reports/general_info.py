@@ -1,11 +1,12 @@
 import traceback
 
-from cf_analysis_agent.agent_state import AgentState, ProcessedProjectInfo
+from cf_analysis_agent.agent_state import AgentState, get_combined_content
 from cf_analysis_agent.utils.llm_utils import structured_llm_response
 from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
     update_report_status_in_progress
 
 REPORT_NAME = "general_info"
+
 
 def generate_project_info_report(state: AgentState):
     """
@@ -13,14 +14,8 @@ def generate_project_info_report(state: AgentState):
     of the project's goals, achievements, product environment, etc.
     We exclude any risks, challenges, or assumptions.
     """
-    processes_project_info: ProcessedProjectInfo = state.get("processed_project_info")
-    content_of_additional_urls = processes_project_info.get("content_of_additional_urls")
-    content_of_crowdfunding_url = processes_project_info.get("content_of_crowdfunding_url")
-    content_of_website_url = processes_project_info.get("content_of_website_url")
+    combined_content = get_combined_content(state)
 
-    sec_markdown_content = processes_project_info.get("sec_markdown_content")
-
-    main_content = f"{content_of_crowdfunding_url} \n\n {content_of_website_url} \n\n {content_of_additional_urls} \n\n {sec_markdown_content}"
 
     prompt = (
         f"""
@@ -40,7 +35,7 @@ def generate_project_info_report(state: AgentState):
         
         STARTUP DETAILS:
         
-        {main_content}
+        {combined_content}
   
         Return only the textual report of these details.
         """
