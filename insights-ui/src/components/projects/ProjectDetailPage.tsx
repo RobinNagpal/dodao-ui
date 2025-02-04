@@ -98,7 +98,6 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, sp
         </>
       )}
 
-
       <Accordion
         label="Crowdfunding Content"
         isOpen={openCrowdFundingContentAccordion}
