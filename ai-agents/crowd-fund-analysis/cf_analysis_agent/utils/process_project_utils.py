@@ -329,7 +329,7 @@ def convert_s3_metrics(metrics_in_s3: MetricSchema) -> Metric:
 
 def convert_s3_processed_info_to_state(project_info_in_s3: ProcessedProjectInfoSchema) -> ProcessedProjectInfo:
     sec_info_in_s3: ProcessedSecInfoSchema = project_info_in_s3.get("secInfo")
-    processed_sec_info: ProcessedSecInfo = {
+    sec_info: ProcessedSecInfo = {
         "sec_json_content": sec_info_in_s3.get("secJsonContent"),
         "sec_markdown_content": sec_info_in_s3.get("secMarkdownContent"),
         "sec_raw_content": sec_info_in_s3.get("secRawContent"),
@@ -367,7 +367,7 @@ def convert_s3_processed_info_to_state(project_info_in_s3: ProcessedProjectInfoS
         "content_of_additional_urls": project_info_in_s3.get("contentOfAdditionalUrls"),
         "content_of_crowdfunding_url": project_info_in_s3.get("contentOfCrowdfundingUrl"),
         "content_of_website_url": project_info_in_s3.get("contentOfWebsiteUrl"),
-        "processed_sec_info": processed_sec_info,
+        "sec_info": sec_info,
         "industry_details": industry_details,
 
         "last_updated": project_info_in_s3.get("lastUpdated"),

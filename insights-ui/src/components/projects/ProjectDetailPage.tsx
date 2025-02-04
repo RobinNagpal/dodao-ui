@@ -100,9 +100,9 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
         isOpen={openSecMarkdownContentAccordion}
         onClick={() => setOpenSecMarkdownContentAccordion(!openSecMarkdownContentAccordion)}
       >
-        {projectDetails.processedProjectInfo?.secMarkdownContent && (
+        {projectDetails.processedProjectInfo?.secInfo?.secMarkdownContent && (
           <Markdown className="markdown text-color" remarkPlugins={[remarkGfm]}>
-            {projectDetails.processedProjectInfo?.secMarkdownContent}
+            {projectDetails.processedProjectInfo?.secInfo?.secMarkdownContent}
           </Markdown>
         )}
       </Accordion>
