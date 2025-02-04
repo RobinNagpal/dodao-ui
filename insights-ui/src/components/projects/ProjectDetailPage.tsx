@@ -162,7 +162,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
         }}
       >
         <div className={`w-full text-color ${openSecMarkdownContentAccordion ? 'block-bg-color' : ''}`}>
-          {projectDetails.processedProjectInfo?.secMarkdownContent && (
+          {projectDetails.processedProjectInfo?.secInfo?.secMarkdownContent && (
             <Markdown
               className="markdown text-color"
               remarkPlugins={[remarkGfm]}
@@ -171,7 +171,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
                 td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
               }}
             >
-              {projectDetails.processedProjectInfo?.secMarkdownContent}
+              {projectDetails.processedProjectInfo?.secInfo?.secMarkdownContent}
             </Markdown>
           )}
         </div>
