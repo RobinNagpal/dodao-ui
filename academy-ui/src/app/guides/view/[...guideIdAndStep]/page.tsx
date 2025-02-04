@@ -4,7 +4,6 @@ import GuideInformation from './GuideInformation';
 import type { Metadata } from 'next';
 import { GuideFragment } from '@/graphql/generated/generated-types';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import axios from 'axios';
 
 type GuideViewProps = {
   params: Promise<{ guideIdAndStep: string[] }>;
@@ -14,7 +13,7 @@ export async function generateMetadata({ params }: GuideViewProps): Promise<Meta
   const guideIdAndStep = (await params).guideIdAndStep;
   console.log('guideIdAndStep', guideIdAndStep);
   const response = await fetch(`${getBaseUrl()}/api/guide/${guideIdAndStep[0]}`);
-  const guide = response.json().guide;
+  const guide = (await response.json()).guide;
   console.log('guide', guide);
   let stepOrder = 0;
   if (Array.isArray(guideIdAndStep)) {
@@ -32,10 +31,9 @@ export async function generateMetadata({ params }: GuideViewProps): Promise<Meta
 
 const GuideView = async ({ params }: GuideViewProps) => {
   const { guideIdAndStep } = await params;
-  const space = (await getSpaceServerSide())!;
 
-  const response = await axios.get(`${getBaseUrl()}/api/guide/${guideIdAndStep[0]}`);
-  const guide: GuideFragment = response.data.guide;
+  const response = await fetch(`${getBaseUrl()}/api/guide/${guideIdAndStep[0]}`);
+  const guide: GuideFragment = (await response.json()).guide;
 
   return (
     <PageWrapper className="pt-12">
