@@ -24,9 +24,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ proj
     Bucket: InsightsConstants.S3_BUCKET_NAME,
     Key: key,
   });
-  console.log('Command:', command);
   const response = await s3Client.send(command);
-  console.log(response);
   // Read the content of the file
   const body = response.Body instanceof Readable ? await streamToString(response.Body) : await new Response(response.Body as ReadableStream).text();
   const projectDetails = JSON.parse(body);
