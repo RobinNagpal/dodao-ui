@@ -1,4 +1,4 @@
-from typing import Optional, Literal
+from typing import Optional, Literal, List
 
 from pydantic import BaseModel, Field
 
@@ -26,3 +26,36 @@ class StartupAndTeamInfoStructure(BaseModel):
     startup_details: str = Field(description="A single sentence explaining what the startup does")
     industry: str = Field(description="A brief overview of the industry, including how it has grown in the last 3-5 years, its expected growth in the next 3-5 years, challenges, and unique benefits for startups in this space")
     team_members: list[TeamMemberStructure] = Field(description="A list of team members with their details")
+
+class EvaluationSubpoint(BaseModel):
+    """Represents an individual evaluation criterion with a score and comment."""
+    comment: str = Field(description="A brief comment explaining the assessment.")
+    score: int = Field(description="The score given for this subpoint, typically 0 or 1.")
+
+
+class EvaluationCategory(BaseModel):
+    """Represents an evaluation category with a summary and detailed scoring."""
+    subpointsSummary: str = Field(description="Summary of what this evaluation category assesses.")
+    subpointsScoring: List[EvaluationSubpoint] = Field(description="List of individual evaluations with comments and scores.")
+
+
+class EvaluationStructure(BaseModel):
+    """Holds evaluation data across multiple categories."""
+    teamStrength: EvaluationCategory
+    traction: EvaluationCategory
+    marketOpportunity: EvaluationCategory
+    valuation: EvaluationCategory
+    executionSpeed: EvaluationCategory
+    financialHealth: EvaluationCategory
+
+
+class Highlights(BaseModel):
+    """Represents key startup highlights including achievements and risks."""
+    achievements: List[str] = Field(description="List of key achievements.")
+    risks: List[str] = Field(description="List of identified risks.")
+
+
+class StartupEvaluationStructure(BaseModel):
+    """Overall structure for evaluating a startup."""
+    highlights: Highlights
+    evaluation: EvaluationStructure

@@ -8,12 +8,21 @@ from cf_analysis_agent.reports.relevant_links import create_relevant_links_repor
 from cf_analysis_agent.reports.financial_review_agent import create_financial_review_report
 from cf_analysis_agent.reports.founder_and_team import create_founder_and_team_report
 from cf_analysis_agent.reports.final_report import create_final_report_test
-
+from enum import Enum
 
 # ------------------- REPORT MAPPING ------------------- #
 report_keys = ["general_info", "red_flags", "green_flags", "relevant_links", "team_info","financial_review"]
 
-class AgentNodes(ReportType):
+class AgentNodes(str, Enum):
+    GENERAL_INFO = "general_info",
+    FOUNDER_AND_TEAM = "founder_and_team",
+    TRACTION = "traction",
+    MARKET_OPPORTUNITY = "market_opportunity",
+    VALUATION = "valuation",
+    EXECUTION_AND_SPEED = "execution_and_speed",
+    FINANCIAL_HEALTH = "financial_health",
+    RELEVANT_LINKS = "relevant_links"
+    FINAL = "final"
     GENERATE_ALL_REPORTS_SERIALLY = "generate_all_reports_serially"
 
 final_key_map = {

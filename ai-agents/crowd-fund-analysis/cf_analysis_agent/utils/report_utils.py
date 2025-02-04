@@ -446,6 +446,8 @@ def fetch_markdown_from_s3(markdown_url: str) -> str:
     """
     Fetches the markdown content from S3 using the provided URL.
     """
+    if not markdown_url:
+        return ""
     # Extract the S3 key from the URL
     s3_key = markdown_url.replace(f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/", "")
 
@@ -472,19 +474,29 @@ def get_combined_reports_from_s3(project_id: str) -> str:
             f"agent-status.json not found in S3 at path: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}"
         )
     
-    # Extract reports (excluding finalReport)
-    reports = status_data.get("reports", {})
+    content_sections = []
+    
+    processed_info = status_data.get("processedProjectInfo", {})
 
-    combined_markdown = ""
+    content_mapping = {
+        "Content of Crowdfunding URL": processed_info.get("contentOfCrowdfundingUrl", ""),
+        "Content of Website URL": processed_info.get("contentOfWebsiteUrl", ""),
+        "SEC Information": processed_info.get("secInfo", {}).get("secMarkdownContent", ""),
+    }
+    
+    # Append extracted content
+    for section_title, content in content_mapping.items():
+        if content:
+            content_sections.append(f"### {section_title}\n\n{content}\n\n---\n")
 
-    # Fetch markdown content for each report and append to the combined markdown
-    for report_name, report_data in reports.items():
-        markdown_link = report_data.get("markdownLink")
-        if markdown_link:
-            report_content = fetch_markdown_from_s3(markdown_link)
-            if report_content:
-                combined_markdown += f"----------- {report_name.replace('_', ' ').title()} -----------\n\n"
-                combined_markdown += report_content + "\n\n---\n\n"
+    # Fetch and append team_info report if available
+    team_info_report = status_data.get("reports", {}).get("team_info", {})
+    team_info_markdown_link = team_info_report.get("markdownLink")
+    
+    if team_info_markdown_link:
+        team_info_content = fetch_markdown_from_s3(team_info_markdown_link)
+        if team_info_content:
+            content_sections.append(f"### Team Information\n\n{team_info_content}\n\n---\n")
 
-    return combined_markdown.strip()  # Remove trailing newlines
+    return "".join(content_sections).strip()  # Remove trailing newlines
 
