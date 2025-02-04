@@ -1,12 +1,12 @@
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ProjectDetails } from '@/types/project/project';
-import ProjectDetailPageWrapper from '@/components/projects/ProjectDetailPageWrapper';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import React from 'react';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import ProjectDetailPage from '@/components/projects/ProjectDetailPage';
 
-export default async function ProjectDetailPage({ params }: { params: { projectId: string } }) {
+export default async function ProjectDetailPageWrapper({ params }: { params: { projectId: string } }) {
   const { projectId } = params;
 
   const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`);
@@ -23,11 +23,7 @@ export default async function ProjectDetailPage({ params }: { params: { projectI
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <ProjectDetailPageWrapper
-        params={{
-          projectId: projectId,
-        }}
-      />
+      <ProjectDetailPage projectId={projectId} initialProjectDetails={data.projectDetails} />
     </PageWrapper>
   );
 }
