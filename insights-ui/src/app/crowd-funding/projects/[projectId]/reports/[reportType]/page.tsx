@@ -6,8 +6,8 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import RadarChart from '@/components/ui/RadarChart';
 
-export default async function ReportDetailPage({ params }: { params: { projectId: string; reportType: string } }) {
-  const { projectId, reportType } = params;
+export default async function ReportDetailPage({ params }: { params: Promise<{ projectId: string; reportType: string }> }) {
+  const { projectId, reportType } = await params;
 
   const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}/reports/${reportType}`);
   const data: { reportDetail: string } = await res.json();
