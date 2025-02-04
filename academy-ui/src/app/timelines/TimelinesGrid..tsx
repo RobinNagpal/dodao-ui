@@ -1,15 +1,15 @@
 'use client';
 
-import withSpace, { SpaceProps } from '@/contexts/withSpace';
-import Block from '@dodao/web-core/components/app/Block';
-import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
-import TimelineSummaryCard from '@/components/timelines/Timelines/TimelineSummaryCard';
 import NoTimeline from '@/components/timelines/Timelines/NoTimelines';
-import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
+import TimelineSummaryCard from '@/components/timelines/Timelines/TimelineSummaryCard';
+import { SpaceProps } from '@/contexts/withSpace';
 import { Timeline } from '@/graphql/generated/generated-types';
+import Block from '@dodao/web-core/components/app/Block';
+import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
+import RowLoading from '@dodao/web-core/components/core/loaders/RowLoading';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 function TimelinesInformation({ space }: SpaceProps) {
   const [data, setData] = useState<{ timelines?: Timeline[] }>();
@@ -45,4 +45,4 @@ function TimelinesInformation({ space }: SpaceProps) {
   );
 }
 
-export default withSpace(TimelinesInformation);
+export default TimelinesInformation;
