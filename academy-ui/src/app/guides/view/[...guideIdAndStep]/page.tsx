@@ -35,7 +35,7 @@ const GuideView = async ({ params }: GuideViewProps) => {
   const response = await fetch(`${getBaseUrl()}/api/guide/${guideIdAndStep[0]}`);
   const guide: GuideFragment = (await response.json()).guide;
   console.log('GuideView - guide', guide);
-  const space = await getSpaceServerSide();
+  const space = (await getSpaceServerSide())!;
   return (
     <PageWrapper className="pt-12">
       <GuideInformation guideIdAndStep={guideIdAndStep} guide={guide} space={space} />
