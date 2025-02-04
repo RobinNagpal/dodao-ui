@@ -65,9 +65,10 @@ export async function generateMetadata(args: CourseViewProps): Promise<Metadata>
 const CourseView = async (props: CourseViewProps) => {
   const params = await props.params;
   const courseInfo = params.courseInfo;
+  const space = (await getSpaceServerSide())!;
   return (
     <PageWrapper>
-      <CourseInformation courseInfo={courseInfo} />
+      <CourseInformation courseInfo={courseInfo} space={space} />
     </PageWrapper>
   );
 };

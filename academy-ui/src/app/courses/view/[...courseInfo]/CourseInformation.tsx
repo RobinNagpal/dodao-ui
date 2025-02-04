@@ -179,4 +179,4 @@ const CourseInformation = ({ courseInfo, space }: CourseInformationProps) => {
   );
 };
 
-export default withSpace(CourseInformation);
+export default CourseInformation;
