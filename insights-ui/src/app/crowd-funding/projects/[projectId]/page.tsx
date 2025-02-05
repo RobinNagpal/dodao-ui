@@ -5,6 +5,7 @@ import React from 'react';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import ProjectDetailPage from '@/components/projects/ProjectDetailPage';
+import NewProjectDetailPage from '@/components/projects/NewProductDeatilPage';
 
 export default async function ProjectDetailPageWrapper({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params;
@@ -25,6 +26,7 @@ export default async function ProjectDetailPageWrapper({ params }: { params: Pro
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <NewProjectDetailPage projectId={projectId} initialProjectDetails={data.projectDetails} spiderGraph={spiderGraph} />
       <ProjectDetailPage projectId={projectId} initialProjectDetails={data.projectDetails} spiderGraph={spiderGraph} />
     </PageWrapper>
   );
