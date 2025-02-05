@@ -1,4 +1,4 @@
-import { CourseDetailsFragment, CourseTopicFragment, GuideFragment, GuideSummaryFragment } from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseFragment, CourseTopicFragment, GuideFragment, GuideSummaryFragment } from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto, SpaceTypes } from '@/types/space/SpaceDto';
 import { getSpaceBasedOnHostHeader } from '@/utils/space/getSpaceServerSide';
 import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
@@ -45,47 +45,53 @@ async function getGuideUrlsForAcademy(host: string, spaceId: string): Promise<Si
   return urls;
 }
 
-async function getTidbitCollectionUrlsForAcademy(host: string, spaceId: string): Promise<SiteMapUrl[]> {
+async function getAllCourseKeys(host: string, spaceId: string) {
   const baseUrl = `http://${host}`;
+  const response = await axios.get(`${baseUrl}/api/courses`, {
+    params: { spaceId },
+  });
 
-  const response = await axios.get<ByteCollectionSummary[]>(`${baseUrl}/api/${spaceId}/byte-collections`);
-  const collections = response.data;
+  return response.data.courses as CourseFragment[];
+}
 
+async function getCourseDetails(host: string, spaceId: string, courseKey: string) {
+  const baseUrl = `http://${host}`;
+  const response = await axios.get(`${baseUrl}/api/courses/${courseKey}`, {
+    params: { spaceId },
+  });
+  return response.data.course as CourseDetailsFragment;
+}
+
+async function getCourseUrlsForAcademy(host: string, space: SpaceWithIntegrationsDto): Promise<SiteMapUrl[]> {
+  const courses = await getAllCourseKeys(host, space.id);
   const urls: SiteMapUrl[] = [];
 
-  for (const collection of collections) {
-    if (collection.bytes) {
-      for (const byte of collection.bytes) {
+  for (const course of courses) {
+    urls.push({
+      url: `/courses/view/${course.key}`,
+      changefreq: 'weekly',
+      priority: 0.8,
+    });
+
+    const detailedCourse = await getCourseDetails(host, space.id, course.key);
+
+    for (const topic of detailedCourse.topics || []) {
+      urls.push({
+        url: `/courses/view/${detailedCourse.key}/${topic.key}`,
+        changefreq: 'weekly',
+        priority: 0.7,
+      });
+
+      for (const explanation of topic.explanations || []) {
         urls.push({
-          url: `/tidbit-collections/view/${collection.id}/${byte.byteId}`,
-          changefreq: 'monthly',
-          priority: 0.7,
+          url: `/courses/view/${detailedCourse.key}/${topic.key}/explanations/${explanation.key}`,
+          changefreq: 'weekly',
+          priority: 0.6,
         });
       }
     }
   }
 
-  return urls;
-}
-
-async function getCourseUrlsForAcademy(space: SpaceWithIntegrationsDto): Promise<SiteMapUrl[]> {
-  const gitCourses: CourseDetailsFragment[] = await getAllCourses(space.id);
-
-  const urls: SiteMapUrl[] = [];
-  (gitCourses || []).forEach((course: CourseDetailsFragment) => {
-    urls.push({ url: `/courses/view/${course.key}`, changefreq: 'weekly' });
-
-    course.topics.forEach((topic: CourseTopicFragment) => {
-      urls.push({ url: `/courses/view/${course.key}/${topic.key}`, changefreq: 'weekly' });
-
-      (topic.explanations || []).forEach((explanation) => {
-        urls.push({
-          url: `/courses/view/${course.key}/${topic.key}/explanation/${explanation.key}`,
-          changefreq: 'weekly',
-        });
-      });
-    });
-  });
   return urls;
 }
 
@@ -138,16 +144,10 @@ async function writeUrlsToStream(space: SpaceWithIntegrationsDto, host: string, 
     smStream.write(guideUrl);
   }
 
-  const tidbitUrls = await getTidbitCollectionUrlsForAcademy(host, space.id);
-  for (const tidbitUrl of tidbitUrls) {
-    smStream.write(tidbitUrl);
+  const courseUrls = await getCourseUrlsForAcademy(host, space);
+  for (const courseUrl of courseUrls) {
+    smStream.write(courseUrl);
   }
-
-  // const courseUrls = await getCourseUrlsForAcademy(space);
-
-  // for (const courseUrl of courseUrls) {
-  //   smStream.write(courseUrl);
-  // }
 }
 
 async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
@@ -156,11 +156,6 @@ async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
 
   const smStream = new SitemapStream({ hostname: 'https://' + host });
 
-  // console.log(space);
-  // console.log('-------------------');
-  // console.log(host);
-
-  // pipe your entries or directly write them.
   if (space.id === PredefinedSpaces.DODAO_HOME) {
     await writeDoDAOSiteMapToStream(space, host, smStream);
   }
@@ -174,8 +169,6 @@ async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
     smStream.write({ url: '/courses', changefreq: 'weekly', priority: 0.9 });
     await writeUrlsToStream(space, host, smStream);
   }
-
-  // await writeUrlsToStream(space!, host, smStream);
 
   smStream.end();
   // cache the response
