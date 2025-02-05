@@ -1,3 +1,5 @@
+'use client';
+
 import FooterLoginButton from '@/components/layout/FooterLoginButton';
 import { SpaceProps } from '@/contexts/withSpace';
 import { SpaceTypes } from '@/types/space/SpaceDto';
