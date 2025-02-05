@@ -1,11 +1,17 @@
-import { CourseDetailsFragment, CourseFragment, CourseTopicFragment, GuideFragment, GuideSummaryFragment } from '@/graphql/generated/generated-types';
+import {
+  CourseDetailsFragment,
+  CourseFragment,
+  CourseTopicFragment,
+  GuideFragment,
+  GuideSummaryFragment,
+  ClickableDemo,
+} from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto, SpaceTypes } from '@/types/space/SpaceDto';
 import { getSpaceBasedOnHostHeader } from '@/utils/space/getSpaceServerSide';
 import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
-import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 
 interface SiteMapUrl {
   url: string;
@@ -25,11 +31,29 @@ async function getAllGuidesWithSteps(host: string, spaceId: string) {
   return response.data.guides as GuideSummaryFragment[];
 }
 
-async function getAllCourses(spaceId: string) {
-  const coursesUrl = process.env.V2_API_SERVER_URL?.replace('/graphql', '') + `/${spaceId}/courses`;
+async function getClickableDemos(host: string, spaceId: string): Promise<ClickableDemo[]> {
+  const baseUrl = `http://${host}`;
 
-  const response = await axios.get(coursesUrl);
-  return response?.data as CourseDetailsFragment[];
+  const response = await axios.get(`${baseUrl}/api/clickable-demos`, {
+    params: { spaceId },
+  });
+
+  return response.data.clickableDemos as ClickableDemo[];
+}
+
+async function getClickableDemoUrls(host: string, spaceId: string): Promise<SiteMapUrl[]> {
+  const demos = await getClickableDemos(host, spaceId);
+  const urls: SiteMapUrl[] = [];
+
+  for (const demo of demos) {
+    urls.push({
+      url: `/clickable-demos/view/${demo.id}`,
+      changefreq: 'weekly',
+      priority: 0.8,
+    });
+  }
+
+  return urls;
 }
 
 async function getGuideUrlsForAcademy(host: string, spaceId: string): Promise<SiteMapUrl[]> {
@@ -39,7 +63,7 @@ async function getGuideUrlsForAcademy(host: string, spaceId: string): Promise<Si
     urls.push({
       url: `/guides/view/${guide.id}/0`,
       changefreq: 'monthly',
-      priority: 0.7,
+      priority: 0.8,
     });
   }
   return urls;
@@ -139,7 +163,6 @@ async function writeTidbitsHubSiteMapToStream(space: SpaceWithIntegrationsDto, h
 
 async function writeUrlsToStream(space: SpaceWithIntegrationsDto, host: string, smStream: SitemapStream) {
   const guideUrls = await getGuideUrlsForAcademy(host, space.id);
-
   for (const guideUrl of guideUrls) {
     smStream.write(guideUrl);
   }
@@ -147,6 +170,11 @@ async function writeUrlsToStream(space: SpaceWithIntegrationsDto, host: string, 
   const courseUrls = await getCourseUrlsForAcademy(host, space);
   for (const courseUrl of courseUrls) {
     smStream.write(courseUrl);
+  }
+
+  const demoUrls = await getClickableDemoUrls(host, space.id);
+  for (const demoUrl of demoUrls) {
+    smStream.write(demoUrl);
   }
 }
 
