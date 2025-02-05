@@ -5,7 +5,7 @@ from typing import List, Dict, Optional
 from dotenv import load_dotenv
 from typing_extensions import TypedDict, NotRequired
 
-from cf_analysis_agent.agent_state import ProjectInfo, ProcessingStatus
+from cf_analysis_agent.agent_state import ProjectInfo, ProcessingStatus, ReportType
 from cf_analysis_agent.structures.startup_metrics import InformationStatus
 from cf_analysis_agent.utils.env_variables import REGION
 from cf_analysis_agent.utils.s3_utils import s3_client, BUCKET_NAME, upload_to_s3
@@ -119,14 +119,7 @@ class ProjectStatusFileSchema(TypedDict, total=False):
 # ---------------------------------------------------------
 # 2) Example usage of these schemas in code
 # ---------------------------------------------------------
-ALL_REPORT_TYPES: list[str] = [
-    "general_info",
-    "team_info",
-    "financial_review",
-    "red_flags",
-    "green_flags",
-    "relevant_links",
-]
+ALL_REPORT_TYPES: list[ReportType] = ReportType.list()
 
 
 def get_project_status_file_path(project_id: str) -> str:
@@ -170,7 +163,7 @@ def get_project_info_from_s3(project_id: str) -> ProjectInfo:
     }
 
 
-def get_init_data_for_report(report_type: str) -> ReportSchema:
+def get_init_data_for_report(report_type: ReportType) -> ReportSchema:
     """
     Returns an initialized ReportSchema dictionary
     for the given report_type.
@@ -179,7 +172,7 @@ def get_init_data_for_report(report_type: str) -> ReportSchema:
         "status": ProcessingStatus.NOT_STARTED,
         "markdownLink": None,
         "startTime": datetime.now().isoformat(),
-        "estimatedTimeInSec": 240 if report_type in ["team_info", "financial_review"] else 150
+        "estimatedTimeInSec": 240 if report_type in [ReportType.FOUNDER_AND_TEAM, ReportType.FINANCIAL_HEALTH] else 150
     }
 
 
@@ -194,13 +187,7 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
     # Initialize all reports
     reports_data = {}
     for r_type in ALL_REPORT_TYPES:
-        reports_data[r_type] = {
-            "status": ProcessingStatus.NOT_STARTED,
-            "markdownLink": None,
-            "startTime": current_time,
-            "estimatedTimeInSec": 240 if r_type in ["team_info", "financial_review"] else 150
-        }
-
+        reports_data[r_type] = get_init_data_for_report(r_type)
     # Construct the status data
     project_file_contents: ProjectStatusFileSchema = {
         "id": project_id,
@@ -244,8 +231,8 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
 
     reports = project_file_contents["reports"]
     new_reports: dict[str, ReportSchema] = {}
-    for report_type in reports.keys():
-        report: ReportSchema = reports[report_type]
+    for report_type in ALL_REPORT_TYPES:
+        report: ReportSchema = reports.get(report_type) or get_init_data_for_report(report_type)
         new_report = {
             "status": report["status"],
             "markdownLink": report["markdownLink"],
@@ -318,98 +305,61 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
         f"Updated status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
 
 
-def update_report_status_in_progress(project_id: str, report_name: str):
+def update_report_status_in_progress(project_id: str, report_type: ReportType):
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "in_progress".
     Handles both individual reports and `finalReport`.
     """
     project_file_contents = get_project_file(project_id)
 
-    # Handle `finalReport` differently
-    if report_name == "finalReport":
-        if "finalReport" not in project_file_contents:
-            raise Exception(f"Final report section not found in the status file for project '{project_id}'.")
-
-        project_file_contents["finalReport"] = {
-            "status": ProcessingStatus.IN_PROGRESS,
-            "startTime": datetime.now().isoformat(),
-            "estimatedTimeInSec": 260
-        }
-
-        project_file_contents["finalReport"]["status"] = ProcessingStatus.IN_PROGRESS
-
-    else:
-        if report_name not in project_file_contents["reports"]:
-            raise Exception(f"Report type '{report_name}' not found in the status file.")
-
-        project_file_contents["reports"][report_name] = get_init_data_for_report(report_name)
-        project_file_contents["reports"][report_name]["status"] = ProcessingStatus.IN_PROGRESS
+    project_file_contents["reports"][report_type] = get_init_data_for_report(report_type)
+    project_file_contents["reports"][report_type]["status"] = ProcessingStatus.IN_PROGRESS
 
     update_project_file(project_id, project_file_contents)
-    print(f"Updated status of report '{report_name}' to 'in_progress'.")
+    print(f"Updated status of report '{report_type}' to 'in_progress'.")
 
 
-def update_report_status_completed(project_id: str, report_name: str, markdown_link: Optional[str] = None):
+def update_report_status_completed(project_id: str, report_type: ReportType, markdown_link: Optional[str] = None):
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "completed" and adds the markdown link.
     Handles both individual reports and `finalReport`.
     """
     project_file_contents = get_project_file(project_id)
 
-    if report_name == "finalReport":
-        if "finalReport" not in project_file_contents:
-            raise Exception(f"Final report section not found in the status file for project '{project_id}'.")
+    report = project_file_contents["reports"].get(report_type) or get_init_data_for_report(report_type)
 
-        project_file_contents["finalReport"]["status"] = ProcessingStatus.COMPLETED
-        project_file_contents["finalReport"]["endTime"] = datetime.now().isoformat()
-        if markdown_link:
-            project_file_contents["finalReport"]["markdownLink"] = markdown_link
+    report["status"] = ProcessingStatus.COMPLETED
+    report["endTime"] = datetime.now().isoformat()
+    if markdown_link:
+        report["markdownLink"] = markdown_link
 
-    else:
-        if report_name not in project_file_contents["reports"]:
-            raise Exception(f"Report type '{report_name}' not found in the status file.")
-
-        project_file_contents["reports"][report_name]["status"] = ProcessingStatus.COMPLETED
-        project_file_contents["reports"][report_name]["endTime"] = datetime.now().isoformat()
-        if markdown_link:
-            project_file_contents["reports"][report_name]["markdownLink"] = markdown_link
-
-        # Check if all other reports are completed
-        report_statuses = [r["status"] for r in project_file_contents["reports"].values()]
-        project_file_contents["status"] = "completed" if all(rs == ProcessingStatus.COMPLETED for rs in report_statuses) else ProcessingStatus.IN_PROGRESS
+    project_file_contents["reports"][report_type] = report
+    # Check if all other reports are completed
+    report_statuses = [r["status"] for r in project_file_contents["reports"].values()]
+    project_file_contents["status"] = ProcessingStatus.COMPLETED if all(rs == ProcessingStatus.COMPLETED for rs in report_statuses) else ProcessingStatus.IN_PROGRESS
 
     update_project_file(project_id, project_file_contents)
-    print(f"Updated status of report '{report_name}' to 'completed'.")
+    print(f"Updated status of report '{report_type}' to 'completed'.")
 
 
-def update_report_status_failed(project_id: str, report_name: str, error_message: str):
+def update_report_status_failed(project_id: str, report_type: ReportType, error_message: str):
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "failed" and logs the error message.
     Handles both individual reports and `finalReport`.
     """
     project_file_contents = get_project_file(project_id)
+    report = project_file_contents["reports"].get(report_type) or get_init_data_for_report(report_type)
 
-    if report_name == "finalReport":
-        if "finalReport" not in project_file_contents:
-            raise Exception(f"Final report section not found in the status file for project '{project_id}'.")
+    report["status"] = ProcessingStatus.FAILED
+    report["endTime"] = datetime.now().isoformat()
+    report["errorMessage"] = error_message
 
-        project_file_contents["finalReport"]["status"] = ProcessingStatus.FAILED
-        project_file_contents["finalReport"]["endTime"] = datetime.now().isoformat()
-        project_file_contents["finalReport"]["errorMessage"] = error_message
-
-    else:
-        if report_name not in project_file_contents["reports"]:
-            raise Exception(f"Report type '{report_name}' not found in the status file.")
-
-        project_file_contents["reports"][report_name]["status"] = ProcessingStatus.FAILED
-        project_file_contents["reports"][report_name]["endTime"] = datetime.now().isoformat()
-        project_file_contents["reports"][report_name]["errorMessage"] = error_message
-
-        # Set overall project status as failed
-        project_file_contents["status"] = ProcessingStatus.FAILED
+    project_file_contents["reports"][report_type] = report
+    # Set overall project status as failed
+    project_file_contents["status"] = ProcessingStatus.FAILED
 
     update_project_file(project_id, project_file_contents)
-    print(f"Updated status of report '{report_name}' to 'failed' with error message: {error_message}")
+    print(f"Updated status of report '{report_type}' to 'failed' with error message: {error_message}")
 
 
 def update_status_to_not_started_for_all_reports(project_id):
@@ -418,15 +368,9 @@ def update_status_to_not_started_for_all_reports(project_id):
     project_file_contents = get_project_file(project_id)
 
     # Initialize all reports to "in_progress" and set timestamps
-    for report_type in project_file_contents["reports"]:
+    for report_type in ALL_REPORT_TYPES:
         project_file_contents["reports"][report_type] = get_init_data_for_report(report_type)
         print(f"Set status of report '{report_type}' to 'not_started'. Initialized startTime and estimatedTimeInSec.")
-    
-    project_file_contents["finalReport"] = {
-        "status": ProcessingStatus.NOT_STARTED,
-        "markdownLink": None,
-        "startTime": datetime.now().isoformat(),
-    }
 
     print(f"Set status of report 'finalReport' to 'not_started'. Initialized startTime and estimatedTimeInSec.")
     
@@ -435,12 +379,12 @@ def update_status_to_not_started_for_all_reports(project_id):
         f"Updated status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
 
 
-def create_report_file_and_upload_to_s3(project_id: str, report_name: str, report_content: str):
-    report_file_path = f"{project_id}/{report_name}.md"
+def create_report_file_and_upload_to_s3(project_id: str, report_type: ReportType, report_content: str):
+    report_file_path = f"{project_id}/{report_type}.md"
     upload_to_s3(report_content, report_file_path)
     # Update status file to "completed"
     markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{report_file_path}"
-    update_report_status_completed(project_id, report_name, markdown_link=markdown_link)
+    update_report_status_completed(project_id, report_type, markdown_link=markdown_link)
 
 def fetch_markdown_from_s3(markdown_url: str) -> str:
     """

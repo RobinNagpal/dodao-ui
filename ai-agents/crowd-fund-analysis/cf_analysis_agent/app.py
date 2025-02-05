@@ -191,7 +191,7 @@ def regenerate_specific_report(projectId, report_type):
         model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
         
         # Prepare the command to start processing
-        update_report_status_in_progress(project_id=projectId,report_name=report_type)
+        update_report_status_in_progress(project_id=projectId, report_type=report_type)
         command = prepare_processing_command(projectId, model)
 
         # Add the report_type to the command

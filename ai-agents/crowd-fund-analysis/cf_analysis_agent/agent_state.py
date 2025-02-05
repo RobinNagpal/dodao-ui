@@ -27,6 +27,10 @@ class ReportType(str,  Enum):
     RELEVANT_LINKS = "relevant_links"
     FINAL = "final"
 
+    @classmethod
+    def list(cls):
+        return list(map(lambda c: c.value, cls))
+
 class Configurable(TypedDict):
     model: str
 
