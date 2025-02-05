@@ -10,6 +10,8 @@ from cf_analysis_agent.reports.founder_and_team import create_founder_and_team_r
 from cf_analysis_agent.reports.final_report import create_final_report_test
 from enum import Enum
 
+from cf_analysis_agent.reports.traction import create_traction_report
+
 # ------------------- REPORT MAPPING ------------------- #
 report_keys = ["general_info", "red_flags", "green_flags", "relevant_links", "team_info","financial_review"]
 
@@ -52,7 +54,7 @@ def create_final_report(state: AgentState) -> dict:
     return {"final_report": "Compiled Reports", "reports": state}
 
 # ------------------- ROUTE SELECTION ------------------- #
-def route_single_or_all(state: AgentState) -> Sequence[ReportType]:
+def route_single_or_all(state: AgentState) -> Sequence[str]:
     """
     Routes execution to either a single report node or all nodes.
     """
@@ -81,6 +83,7 @@ builder = StateGraph(AgentState)
 
 builder.add_node("initialize_first_step", initialize_first_step)
 builder.add_node("general_info", create_general_info_report)
+builder.add_node("traction", create_traction_report)
 builder.add_node("red_flags",  create_red_flags_report)
 builder.add_node("green_flags",  create_green_flags_report)
 builder.add_node("relevant_links",  create_relevant_links_report)

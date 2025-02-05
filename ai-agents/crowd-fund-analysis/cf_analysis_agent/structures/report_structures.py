@@ -13,6 +13,18 @@ class StructuredLLMResponse(BaseModel):
     failureReason: Optional[str] = Field(description="The reason for the failure if the status is failed.")
     confidence: Optional[float] = Field(description="The confidence of the response in the range of 1-10, 10 being very confident and 1 being not confident at all.")
 
+
+
+class StructuredReportResponse(BaseModel):
+    """Return llm response in a structured format"""
+    outputString: str = Field(description="The output string expected as the response to the prompt.")
+    oneLineSummary: str = Field(description="A one-liner summary of the output.")
+    status: Literal['success', 'failure'] = Field(
+        description="If successful in processing the prompt and producing the output."
+                    "Also fail if no proper input was provided.")
+    failureReason: Optional[str] = Field(description="The reason for the failure if the status is failed.")
+    confidence: Optional[float] = Field(description="The confidence of the response in the range of 1-10, 10 being very confident and 1 being not confident at all.")
+
 class TeamMemberStructure(BaseModel):
     """Information about the team members"""
     id: str = Field(description="Unique ID for each team member, formatted as firstname_lastname")

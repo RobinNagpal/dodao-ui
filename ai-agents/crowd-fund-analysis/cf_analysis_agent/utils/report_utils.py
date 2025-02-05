@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from typing_extensions import TypedDict, NotRequired
 
 from cf_analysis_agent.agent_state import ProjectInfo, ProcessingStatus, ReportType
+from cf_analysis_agent.structures.report_structures import StructuredReportResponse
 from cf_analysis_agent.structures.startup_metrics import InformationStatus
 from cf_analysis_agent.utils.env_variables import REGION
 from cf_analysis_agent.utils.s3_utils import s3_client, BUCKET_NAME, upload_to_s3
@@ -43,6 +44,8 @@ class ReportSchema(TypedDict, total=False):
     estimatedTimeInSec: int
     endTime: Optional[str]
     errorMessage: NotRequired[str]
+    summary: NotRequired[str]
+    confidence: NotRequired[float]
 
 
 class FinalReportSchema(ReportSchema, total=False):
@@ -239,7 +242,9 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
             "startTime": report["startTime"],
             "estimatedTimeInSec": report["estimatedTimeInSec"],
             # check report["endTime"] exists and is not None
-            "endTime": datetime.now().isoformat() if report.get("endTime") else None
+            "endTime": datetime.now().isoformat() if report.get("endTime") else None,
+            "summary": report.get("summary"),
+            "confidence": report.get("confidence")
         }
         new_reports[report_type] = new_report
 
@@ -318,8 +323,31 @@ def update_report_status_in_progress(project_id: str, report_type: ReportType):
     update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_type}' to 'in_progress'.")
 
+def update_report_with_structured_output(project_id: str, report_type: ReportType, structured_output: StructuredReportResponse):
+    report_file_path = f"{project_id}/{report_type.value}.md"
+    upload_to_s3(structured_output.outputString, report_file_path)
+    # Update status file to "completed"
+    markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{report_file_path}"
+    project_file_contents = get_project_file(project_id)
 
-def update_report_status_completed(project_id: str, report_type: ReportType, markdown_link: Optional[str] = None):
+    report = project_file_contents["reports"].get(report_type) or get_init_data_for_report(report_type)
+
+    report["status"] = ProcessingStatus.COMPLETED
+    report["endTime"] = datetime.now().isoformat()
+    report["markdownLink"] = markdown_link
+    report["summary"] = structured_output.oneLineSummary
+    report["confidence"] = structured_output.confidence
+
+    project_file_contents["reports"][report_type] = report
+    # Check if all other reports are completed
+    report_statuses = [r["status"] for r in project_file_contents["reports"].values()]
+    project_file_contents["status"] = ProcessingStatus.COMPLETED if all(rs == ProcessingStatus.COMPLETED for rs in report_statuses) else ProcessingStatus.IN_PROGRESS
+
+    update_project_file(project_id, project_file_contents)
+    print(f"Updated status of report '{report_type}' to 'completed'.")
+
+
+def update_report_status_completed(project_id: str, report_type: ReportType, markdown_link: str, summary: str):
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "completed" and adds the markdown link.
     Handles both individual reports and `finalReport`.
@@ -330,8 +358,8 @@ def update_report_status_completed(project_id: str, report_type: ReportType, mar
 
     report["status"] = ProcessingStatus.COMPLETED
     report["endTime"] = datetime.now().isoformat()
-    if markdown_link:
-        report["markdownLink"] = markdown_link
+    report["markdownLink"] = markdown_link
+    report["summary"] = summary
 
     project_file_contents["reports"][report_type] = report
     # Check if all other reports are completed
@@ -379,7 +407,7 @@ def update_status_to_not_started_for_all_reports(project_id):
         f"Updated status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
 
 
-def create_report_file_and_upload_to_s3(project_id: str, report_type: ReportType, report_content: str):
+def create_report_file_and_upload_to_s3(project_id: str, report_type: ReportType, report_content: str, summary: str = ""):
     report_file_path = f"{project_id}/{report_type}.md"
     upload_to_s3(report_content, report_file_path)
     # Update status file to "completed"
