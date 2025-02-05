@@ -12,6 +12,8 @@ import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants'
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 interface SiteMapUrl {
   url: string;
@@ -19,8 +21,8 @@ interface SiteMapUrl {
   priority?: number;
 }
 
-async function getAllGuidesWithSteps(host: string, spaceId: string) {
-  const baseUrl = `http://${host}`;
+async function getAllGuidesWithSteps(spaceId: string) {
+  const baseUrl = getBaseUrl();
 
   const response = await axios.get(`${baseUrl}/api/guide/guides`, {
     params: {
@@ -31,8 +33,8 @@ async function getAllGuidesWithSteps(host: string, spaceId: string) {
   return response.data.guides as GuideSummaryFragment[];
 }
 
-async function getClickableDemos(host: string, spaceId: string): Promise<ClickableDemo[]> {
-  const baseUrl = `http://${host}`;
+async function getClickableDemos(spaceId: string): Promise<ClickableDemo[]> {
+  const baseUrl = getBaseUrl();
 
   const response = await axios.get(`${baseUrl}/api/clickable-demos`, {
     params: { spaceId },
@@ -41,8 +43,8 @@ async function getClickableDemos(host: string, spaceId: string): Promise<Clickab
   return response.data.clickableDemos as ClickableDemo[];
 }
 
-async function getClickableDemoUrls(host: string, spaceId: string): Promise<SiteMapUrl[]> {
-  const demos = await getClickableDemos(host, spaceId);
+async function getClickableDemoUrls(spaceId: string): Promise<SiteMapUrl[]> {
+  const demos = await getClickableDemos(spaceId);
   const urls: SiteMapUrl[] = [];
 
   for (const demo of demos) {
@@ -56,8 +58,8 @@ async function getClickableDemoUrls(host: string, spaceId: string): Promise<Site
   return urls;
 }
 
-async function getGuideUrlsForAcademy(host: string, spaceId: string): Promise<SiteMapUrl[]> {
-  const allGuides: GuideSummaryFragment[] = await getAllGuidesWithSteps(host, spaceId);
+async function getGuideUrlsForAcademy(spaceId: string): Promise<SiteMapUrl[]> {
+  const allGuides: GuideSummaryFragment[] = await getAllGuidesWithSteps(spaceId);
   const urls: SiteMapUrl[] = [];
   for (const guide of allGuides) {
     urls.push({
@@ -69,8 +71,8 @@ async function getGuideUrlsForAcademy(host: string, spaceId: string): Promise<Si
   return urls;
 }
 
-async function getAllCourseKeys(host: string, spaceId: string) {
-  const baseUrl = `http://${host}`;
+async function getAllCourseKeys(spaceId: string) {
+  const baseUrl = getBaseUrl();
   const response = await axios.get(`${baseUrl}/api/courses`, {
     params: { spaceId },
   });
@@ -78,16 +80,16 @@ async function getAllCourseKeys(host: string, spaceId: string) {
   return response.data.courses as CourseFragment[];
 }
 
-async function getCourseDetails(host: string, spaceId: string, courseKey: string) {
-  const baseUrl = `http://${host}`;
+async function getCourseDetails(spaceId: string, courseKey: string) {
+  const baseUrl = getBaseUrl();
   const response = await axios.get(`${baseUrl}/api/courses/${courseKey}`, {
     params: { spaceId },
   });
   return response.data.course as CourseDetailsFragment;
 }
 
-async function getCourseUrlsForAcademy(host: string, space: SpaceWithIntegrationsDto): Promise<SiteMapUrl[]> {
-  const courses = await getAllCourseKeys(host, space.id);
+async function getCourseUrlsForAcademy(spaceId: string): Promise<SiteMapUrl[]> {
+  const courses = await getAllCourseKeys(spaceId);
   const urls: SiteMapUrl[] = [];
 
   for (const course of courses) {
@@ -97,7 +99,7 @@ async function getCourseUrlsForAcademy(host: string, space: SpaceWithIntegration
       priority: 0.8,
     });
 
-    const detailedCourse = await getCourseDetails(host, space.id, course.key);
+    const detailedCourse = await getCourseDetails(spaceId, course.key);
 
     for (const topic of detailedCourse.topics || []) {
       urls.push({
@@ -141,7 +143,7 @@ async function getDoDAOSiteMapUrls(): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-async function writeDoDAOSiteMapToStream(space: SpaceWithIntegrationsDto, host: string, smStream: SitemapStream) {
+async function writeDoDAOSiteMapToStream(smStream: SitemapStream) {
   const dodaoUrls = await getDoDAOSiteMapUrls();
   for (const url of dodaoUrls) {
     smStream.write(url);
@@ -154,27 +156,59 @@ async function getTidbitsHubSiteMapUrls(): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-async function writeTidbitsHubSiteMapToStream(space: SpaceWithIntegrationsDto, host: string, smStream: SitemapStream) {
+async function writeTidbitsHubSiteMapToStream(smStream: SitemapStream) {
   const dodaoUrls = await getTidbitsHubSiteMapUrls();
   for (const url of dodaoUrls) {
     smStream.write(url);
   }
 }
 
+async function getTidbitCollections(spaceId: string) {
+  const baseUrl = getBaseUrl();
+  const response = await axios.get(`${baseUrl}/api/${spaceId}/byte-collections`);
+  return response.data;
+}
+
+async function getTidbitCollectionUrlsForAcademy(spaceId: string): Promise<SiteMapUrl[]> {
+  const collections = await getTidbitCollections(spaceId);
+  const urls: SiteMapUrl[] = [];
+
+  for (const collection of collections) {
+    for (const item of collection.items || []) {
+      switch (item.type) {
+        case ByteCollectionItemType.Byte:
+          urls.push({
+            url: `/tidbit-collections/view/${collection.id}/${item.byte.byteId}`,
+            changefreq: 'weekly',
+            priority: 0.7,
+          });
+          break;
+      }
+    }
+  }
+
+  return urls;
+}
+
 async function writeUrlsToStream(space: SpaceWithIntegrationsDto, host: string, smStream: SitemapStream) {
-  const guideUrls = await getGuideUrlsForAcademy(host, space.id);
+  const guideUrls = await getGuideUrlsForAcademy(space.id);
   for (const guideUrl of guideUrls) {
     smStream.write(guideUrl);
   }
 
-  const courseUrls = await getCourseUrlsForAcademy(host, space);
+  const courseUrls = await getCourseUrlsForAcademy(space.id);
   for (const courseUrl of courseUrls) {
     smStream.write(courseUrl);
   }
 
-  const demoUrls = await getClickableDemoUrls(host, space.id);
+  const demoUrls = await getClickableDemoUrls(space.id);
   for (const demoUrl of demoUrls) {
     smStream.write(demoUrl);
+  }
+
+  const tidbitUrls = await getTidbitCollectionUrlsForAcademy(space.id);
+  for (const tidbitUrl of tidbitUrls) {
+    smStream.write(tidbitUrl);
   }
 }
 
@@ -185,10 +219,10 @@ async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
   const smStream = new SitemapStream({ hostname: 'https://' + host });
 
   if (space.id === PredefinedSpaces.DODAO_HOME) {
-    await writeDoDAOSiteMapToStream(space, host, smStream);
+    await writeDoDAOSiteMapToStream(smStream);
   }
   if (space.id === PredefinedSpaces.TIDBITS_HUB) {
-    await writeTidbitsHubSiteMapToStream(space, host, smStream);
+    await writeTidbitsHubSiteMapToStream(smStream);
   }
   if (space.type === SpaceTypes.AcademySite) {
     smStream.write({ url: '/', changefreq: 'daily', priority: 1.0 }), smStream.write({ url: '/guides', changefreq: 'weekly', priority: 0.9 });
