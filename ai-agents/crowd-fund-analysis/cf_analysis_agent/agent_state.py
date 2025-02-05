@@ -112,9 +112,9 @@ def get_combined_content(state: AgentState) -> str:
 
     sec_markdown_content = processes_project_info.get("sec_info").get("sec_markdown_content")
 
-    industry_details_and_forecast = processes_project_info.get("industry_details")
+    industry_details_and_forecast: IndustryDetailsAndForecast = processes_project_info.get("industry_details")
 
-    startup_metrics = processes_project_info.get("startup_metrics")
+    # startup_metrics = processes_project_info.get("startup_metrics")
 
     combined_content = f"""
     {content_of_crowdfunding_url}
@@ -129,9 +129,6 @@ def get_combined_content(state: AgentState) -> str:
     {sec_markdown_content} 
     
     
-    {json.dumps(industry_details_and_forecast)} 
-    
-    
-    {json.dumps(startup_metrics)}
+    {json.dumps(industry_details_and_forecast.get('industry_details_and_forecast'))} 
     """
     return combined_content

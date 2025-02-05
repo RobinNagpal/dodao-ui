@@ -12,6 +12,7 @@ from cf_analysis_agent.reports.final_report import create_final_report_test
 from enum import Enum
 
 from cf_analysis_agent.reports.traction import create_traction_report
+from cf_analysis_agent.reports.valuation import create_valuation_report
 
 # ------------------- REPORT MAPPING ------------------- #
 report_keys = ["general_info", "red_flags", "green_flags", "relevant_links", "team_info","financial_review"]
@@ -93,6 +94,7 @@ builder.add_node("financial_review", create_financial_review_report)
 builder.add_node("create_final_report", create_final_report)
 builder.add_node("create_final_report_test", create_final_report_test)
 builder.add_node(ReportType.MARKET_OPPORTUNITY.value, create_market_opportunity_report)
+builder.add_node(ReportType.VALUATION.value, create_valuation_report)
 builder.add_node(AgentNodes.GENERATE_ALL_REPORTS_SERIALLY, generate_all_reports_serially)
 
 builder.add_edge(START, "initialize_first_step")

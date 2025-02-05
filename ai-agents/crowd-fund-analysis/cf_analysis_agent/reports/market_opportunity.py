@@ -54,7 +54,7 @@ def generate_market_opportunity_report(state: AgentState) -> StructuredReportRes
     Present your analysis with clear section headings and logical flow. Maintain rigorous skepticism while being fair.
     
     Make sure the output is formatted nicely in markdown and doesn't have many nested points. Use longer sentences and
-    paragraphs instead of second and third elvel bullet points.
+    paragraphs instead of second and third level bullet points.
     """
 
     return structured_report_response(

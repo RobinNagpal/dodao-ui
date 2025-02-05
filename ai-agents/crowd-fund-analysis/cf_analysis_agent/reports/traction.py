@@ -37,6 +37,9 @@ def generate_traction_report(state: AgentState) -> StructuredReportResponse:
     5. The report should be detailed and focus *only* on traction. Do not include information unrelated to traction.
 
     Return your final traction analysis *only*.
+    
+    Make sure the output is formatted nicely in markdown and doesn't have many nested points. Use longer sentences and
+    paragraphs instead of second and third level bullet points.
     """
 
     return structured_report_response(
