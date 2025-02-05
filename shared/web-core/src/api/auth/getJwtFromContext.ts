@@ -15,8 +15,6 @@ export async function getDecodedJwtFromContext(req: NextRequest): Promise<DoDaoJ
   if (clientKeyHeader) {
     const decodedToken = jwt.verify(clientKeyHeader, process.env.DODAO_AUTH_SECRET!);
     return decodedToken as DoDaoJwtTokenPayload;
-  } else {
-    console.error('No dodao-auth-token header found in request ', req.url);
   }
   const token = (await getToken({ req })) as DoDaoJwtTokenPayload | null;
   return token;

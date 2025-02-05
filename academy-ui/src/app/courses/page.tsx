@@ -1,3 +1,4 @@
+import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import MainContainer from '@dodao/web-core/components/main/Container/MainContainer';
 import React from 'react';
@@ -9,11 +10,13 @@ export const metadata: Metadata = {
   description: 'Different courses related to Blockchain',
 };
 
-function Courses() {
+async function Courses() {
+  const space = (await getSpaceServerSide())!;
+
   return (
     <MainContainer>
       <PageWrapper>
-        <CoursesInformation />
+        <CoursesInformation space={space!} />
       </PageWrapper>
     </MainContainer>
   );

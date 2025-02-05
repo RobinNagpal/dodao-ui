@@ -4,7 +4,6 @@ import GuideInformation from './GuideInformation';
 import type { Metadata } from 'next';
 import { GuideFragment } from '@/graphql/generated/generated-types';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import axios from 'axios';
 
 type GuideViewProps = {
   params: Promise<{ guideIdAndStep: string[] }>;
@@ -12,8 +11,8 @@ type GuideViewProps = {
 
 export async function generateMetadata({ params }: GuideViewProps): Promise<Metadata> {
   const guideIdAndStep = (await params).guideIdAndStep;
-  const response = await axios.get(`${getBaseUrl()}/api/guide/${guideIdAndStep[0]}`);
-  const guide = response.data.guide;
+  const response = await fetch(`${getBaseUrl()}/api/guide/${guideIdAndStep[0]}`);
+  const guide = (await response.json()).guide;
   let stepOrder = 0;
   if (Array.isArray(guideIdAndStep)) {
     stepOrder = parseInt(guideIdAndStep[1]);
@@ -30,14 +29,12 @@ export async function generateMetadata({ params }: GuideViewProps): Promise<Meta
 
 const GuideView = async ({ params }: GuideViewProps) => {
   const { guideIdAndStep } = await params;
+  const response = await fetch(`${getBaseUrl()}/api/guide/${guideIdAndStep[0]}`);
+  const guide: GuideFragment = (await response.json()).guide;
   const space = (await getSpaceServerSide())!;
-
-  const response = await axios.get(`${getBaseUrl()}/api/guide/${guideIdAndStep[0]}`);
-  const guide: GuideFragment = response.data.guide;
-
   return (
     <PageWrapper className="pt-12">
-      <GuideInformation guideIdAndStep={guideIdAndStep} guide={guide} />
+      <GuideInformation guideIdAndStep={guideIdAndStep} guide={guide} space={space} />
     </PageWrapper>
   );
 };

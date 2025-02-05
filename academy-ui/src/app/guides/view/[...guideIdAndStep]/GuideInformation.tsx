@@ -1,15 +1,14 @@
 'use client';
 
-import withSpace from '@/contexts/withSpace';
-import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
-import Block from '@dodao/web-core/components/app/Block';
 import DeleteGuideModal from '@/components/app/Modal/Guide/DeleteGuideModal';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import GuideStepper from '@/components/guides/View/GuideStepper';
 import { useViewGuide } from '@/components/guides/View/useViewGuide';
 import { GuideFragment } from '@/graphql/generated/generated-types';
 import SingleCardLayout from '@/layouts/SingleCardLayout';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import Block from '@dodao/web-core/components/app/Block';
+import PageLoading from '@dodao/web-core/components/core/loaders/PageLoading';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
@@ -24,6 +23,7 @@ type GuideInformationProps = {
 };
 
 const GuideInformation = ({ guideIdAndStep, space, guide: guideFragment }: GuideInformationProps) => {
+  console.log('GuideInformation', GuideInformation);
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [deletingGuide, setDeletingGuide] = React.useState(false);
 
@@ -131,4 +131,4 @@ const GuideInformation = ({ guideIdAndStep, space, guide: guideFragment }: Guide
   );
 };
 
-export default withSpace(GuideInformation);
+export default GuideInformation;

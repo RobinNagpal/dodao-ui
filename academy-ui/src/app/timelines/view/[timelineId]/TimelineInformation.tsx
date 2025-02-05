@@ -2,7 +2,6 @@
 
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import TimelineDetails from '@/components/timelines/View/TimelineDetailView';
-import withSpace from '@/contexts/withSpace';
 import { TimelineDetailsFragment } from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Block from '@dodao/web-core/components/app/Block';
@@ -61,4 +60,4 @@ const TimelineInformation = ({ timelineId, space }: { timelineId: string; space:
   );
 };
 
-export default withSpace(TimelineInformation);
+export default TimelineInformation;

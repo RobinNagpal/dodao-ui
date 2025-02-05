@@ -13,10 +13,11 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-function Timeline() {
+async function Timeline() {
+  const space = (await getSpaceServerSide())!;
   return (
     <PageWrapper>
-      <TimelinesInformation />
+      <TimelinesInformation space={space} />
     </PageWrapper>
   );
 }

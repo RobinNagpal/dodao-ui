@@ -69,6 +69,61 @@ def submit():
     return redirect(url_for("status", project_id=project_id))
 
 
+@app.route("/api/submit", methods=["POST"])
+def api_submit():
+    """
+    Handles JSON-based form submission, starts processing, and returns a JSON response.
+    """
+    if not request.is_json:
+        return jsonify({"error": "Invalid request. JSON expected."}), 400
+
+    data = request.get_json()
+    print(data)
+    # Retrieve data safely
+    project_id = data.get("projectId", "").strip()
+    project_name = data.get("projectName", "").strip()
+    crowdfunding_link = data.get("crowdFundingUrl", "").strip()
+    website_url = data.get("websiteUrl", "").strip()
+    latest_sec_filing_link = data.get("secFilingUrl", "").strip()
+    additional_links = data.get("additionalUrls", [])  # JSON sends this as an array
+
+    if not project_id:
+        return jsonify({"error": "Project ID is required"}), 400
+
+    project_details = {
+        "project_id": project_id,
+        "project_name": project_name,
+        "crowdfunding_link": crowdfunding_link,
+        "website_url": website_url,
+        "latest_sec_filing_link": latest_sec_filing_link,
+        "additional_links": additional_links,
+    }
+
+    # Initialize project (store in S3 or DB)
+    initialize_project_in_s3(project_id=project_id, project_details=project_details)
+    
+    # Prepare command to run Python script asynchronously
+    command = [
+        "poetry", "run", "python", "cf_analysis_agent/controller.py",
+        project_id,
+        project_name,
+        crowdfunding_link,
+        website_url,
+        latest_sec_filing_link,
+    ]
+    
+    if additional_links:
+        command.extend(["--additional_links", ",".join(additional_links)])
+
+    # Append the selected model as an argument
+    command.extend(["--model", OPEN_AI_DEFAULT_MODEL])
+
+    # Run the command asynchronously
+    subprocess.Popen(command)
+
+    # Return success response with project ID
+    return jsonify({"status": "success", "project_id": project_id, "message":"Project processing started"}), 200
+
 @app.route("/status/<project_id>")
 def status(project_id):
     """

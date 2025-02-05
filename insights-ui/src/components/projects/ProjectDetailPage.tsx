@@ -1,28 +1,28 @@
 'use client';
 
 import ProjectDetailTable from '@/components/projects/ProjectDetailTable';
-import { ProjectDetails, ProcessingStatus, ReportInterface, ReportWithName } from '@/types/project/project';
+import { ProcessingStatus, ProjectDetails, ReportWithName, SpiderGraph } from '@/types/project/project';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import React, { useEffect, useMemo, useState } from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import RadarChart from '../ui/RadarChart';
+import { useState, useEffect } from 'react';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 interface ProjectDetailPageProps {
   projectId: string;
   initialProjectDetails: ProjectDetails;
+  spiderGraph: SpiderGraph | null;
 }
 
-export default function ProjectDetailPage({ projectId, initialProjectDetails }: ProjectDetailPageProps) {
+export default function ProjectDetailPage({ projectId, initialProjectDetails, spiderGraph }: ProjectDetailPageProps) {
   const [projectDetails, setProjectDetails] = useState<ProjectDetails>(initialProjectDetails);
+
   const [reloadTrigger, setReloadTrigger] = useState(false);
   const [openWebsiteContentAccordion, setOpenWebsiteContentAccordion] = useState(false);
   const [openCrowdFundingContentAccordion, setOpenCrowdFundingContentAccordion] = useState(false);
   const [openAdditionalUrlsContentAccordion, setOpenAdditionalUrlsContentAccordion] = useState(false);
-  const [openSecRawContentAccordion, setOpenSecRawContentAccordion] = useState(false);
-  const [openSecJsonContentAccordion, setOpenSecJsonContentAccordion] = useState(false);
   const [openSecMarkdownContentAccordion, setOpenSecMarkdownContentAccordion] = useState(false);
-
   const fetchProjectDetails = async () => {
     try {
       const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`, { cache: 'no-cache' });
@@ -58,123 +58,88 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails }: 
     }
   }, [reloadTrigger]);
 
+  const startupEvaluation =
+    spiderGraph && Object.keys(spiderGraph).length > 0
+      ? {
+          productInnovation: { score: spiderGraph?.productInnovation?.reduce((acc, item) => acc + item.score, 0) || 0 },
+          marketOpportunity: { score: spiderGraph?.marketOpportunity?.reduce((acc, item) => acc + item.score, 0) || 0 },
+          teamStrength: { score: spiderGraph?.teamStrength?.reduce((acc, item) => acc + item.score, 0) || 0 },
+          financialHealth: { score: spiderGraph?.financialHealth?.reduce((acc, item) => acc + item.score, 0) || 0 },
+          businessModel: { score: spiderGraph?.businessModel?.reduce((acc, item) => acc + item.score, 0) || 0 },
+        }
+      : null;
+
   return (
     <div className="w-full text-color">
       <div className="text-center text-color my-5">
         <h1 className="font-semibold leading-6 text-2xl">{projectDetails.name}</h1>
         <div className="my-5">Overall Status: {projectDetails.status}</div>
       </div>
+
+      {spiderGraph && (
+        <>
+          <div className="max-w-lg mx-auto">
+            <RadarChart data={spiderGraph} />
+          </div>
+          {spiderGraph &&
+            Object.entries(spiderGraph).map(([key, values]) => (
+              <div key={key} className="category-section my-5">
+                <h3 className="font-bold text-lg mb-2">{key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}</h3>
+                <ul className="list-disc pl-5">
+                  {values.map((item, index) => (
+                    <li key={index} className="mb-1 flex items-start">
+                      <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
+                      <span>{item.comment}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+        </>
+      )}
+
       <Accordion
-        key="crowd-funding-content-accordion"
-        isOpen={openCrowdFundingContentAccordion}
         label="Crowdfunding Content"
-        onClick={(e: React.MouseEvent<HTMLElement>) => {
-          e.preventDefault();
-          setOpenCrowdFundingContentAccordion(!openCrowdFundingContentAccordion);
-          if (!openCrowdFundingContentAccordion) {
-            setOpenWebsiteContentAccordion(false);
-            setOpenAdditionalUrlsContentAccordion(false);
-            setOpenSecRawContentAccordion(false);
-          }
-        }}
+        isOpen={openCrowdFundingContentAccordion}
+        onClick={() => setOpenCrowdFundingContentAccordion(!openCrowdFundingContentAccordion)}
       >
-        <div className={`w-full text-color ${openCrowdFundingContentAccordion ? 'block-bg-color' : ''}`}>
-          {projectDetails.processedProjectInfo?.contentOfCrowdfundingUrl && (
-            <Markdown
-              className="markdown text-color"
-              remarkPlugins={[remarkGfm]}
-              components={{
-                th: ({ node, ...props }) => <th className="border border-color px-4 py-2" {...props} />,
-                td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
-              }}
-            >
-              {projectDetails.processedProjectInfo?.contentOfCrowdfundingUrl}
-            </Markdown>
-          )}
-        </div>
+        {projectDetails.processedProjectInfo?.contentOfCrowdfundingUrl && (
+          <Markdown className="markdown text-color" remarkPlugins={[remarkGfm]}>
+            {projectDetails.processedProjectInfo?.contentOfCrowdfundingUrl}
+          </Markdown>
+        )}
       </Accordion>
-      <Accordion
-        label="Website Content"
-        isOpen={openWebsiteContentAccordion}
-        onClick={(e: React.MouseEvent<HTMLElement>) => {
-          e.preventDefault();
-          setOpenWebsiteContentAccordion(!openWebsiteContentAccordion);
-          if (!openWebsiteContentAccordion) {
-            setOpenCrowdFundingContentAccordion(false);
-            setOpenAdditionalUrlsContentAccordion(false);
-            setOpenSecRawContentAccordion(false);
-          }
-        }}
-      >
-        <div className={`w-full text-color ${openWebsiteContentAccordion ? 'block-bg-color' : ''}`}>
-          {projectDetails.processedProjectInfo?.contentOfWebsiteUrl && (
-            <Markdown
-              className="markdown text-color"
-              remarkPlugins={[remarkGfm]}
-              components={{
-                th: ({ node, ...props }) => <th className="border border-color px-4 py-2" {...props} />,
-                td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
-              }}
-            >
-              {projectDetails.processedProjectInfo?.contentOfWebsiteUrl}
-            </Markdown>
-          )}
-        </div>
+
+      <Accordion label="Website Content" isOpen={openWebsiteContentAccordion} onClick={() => setOpenWebsiteContentAccordion(!openWebsiteContentAccordion)}>
+        {projectDetails.processedProjectInfo?.contentOfWebsiteUrl && (
+          <Markdown className="markdown text-color" remarkPlugins={[remarkGfm]}>
+            {projectDetails.processedProjectInfo?.contentOfWebsiteUrl}
+          </Markdown>
+        )}
       </Accordion>
+
       <Accordion
         label="Additional URLs"
         isOpen={openAdditionalUrlsContentAccordion}
-        onClick={(e: React.MouseEvent<HTMLElement>) => {
-          e.preventDefault();
-          setOpenAdditionalUrlsContentAccordion(!openAdditionalUrlsContentAccordion);
-          if (!openAdditionalUrlsContentAccordion) {
-            setOpenCrowdFundingContentAccordion(false);
-            setOpenWebsiteContentAccordion(false);
-            setOpenSecRawContentAccordion(false);
-          }
-        }}
+        onClick={() => setOpenAdditionalUrlsContentAccordion(!openAdditionalUrlsContentAccordion)}
       >
-        <div className={`w-full text-color ${openAdditionalUrlsContentAccordion ? 'block-bg-color' : ''}`}>
-          {projectDetails.processedProjectInfo?.contentOfAdditionalUrls && (
-            <Markdown
-              className="markdown text-color"
-              remarkPlugins={[remarkGfm]}
-              components={{
-                th: ({ node, ...props }) => <th className="border border-color px-4 py-2" {...props} />,
-                td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
-              }}
-            >
-              {projectDetails.processedProjectInfo?.contentOfAdditionalUrls}
-            </Markdown>
-          )}
-        </div>
+        {projectDetails.processedProjectInfo?.contentOfAdditionalUrls && (
+          <Markdown className="markdown text-color" remarkPlugins={[remarkGfm]}>
+            {projectDetails.processedProjectInfo?.contentOfAdditionalUrls}
+          </Markdown>
+        )}
       </Accordion>
 
       <Accordion
         label="SEC Markdown Content"
         isOpen={openSecMarkdownContentAccordion}
-        onClick={(e: React.MouseEvent<HTMLElement>) => {
-          e.preventDefault();
-          setOpenSecMarkdownContentAccordion(!openSecMarkdownContentAccordion);
-          if (!openSecMarkdownContentAccordion) {
-            setOpenSecJsonContentAccordion(false);
-          }
-        }}
+        onClick={() => setOpenSecMarkdownContentAccordion(!openSecMarkdownContentAccordion)}
       >
-        <div className={`w-full text-color ${openSecMarkdownContentAccordion ? 'block-bg-color' : ''}`}>
-          {projectDetails.processedProjectInfo?.secMarkdownContent && (
-            <Markdown
-              className="markdown text-color"
-              remarkPlugins={[remarkGfm]}
-              components={{
-                th: ({ node, ...props }) => <th className="border border-color px-4 py-2" {...props} />,
-                td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
-              }}
-            >
-              {projectDetails.processedProjectInfo?.secMarkdownContent}
-            </Markdown>
-          )}
-        </div>
+        {projectDetails.processedProjectInfo?.secInfo?.secMarkdownContent && (
+          <Markdown className="markdown text-color" remarkPlugins={[remarkGfm]}>
+            {projectDetails.processedProjectInfo?.secInfo?.secMarkdownContent}
+          </Markdown>
+        )}
       </Accordion>
 
       {reports.length > 0 ? (

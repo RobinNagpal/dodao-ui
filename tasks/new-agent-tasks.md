@@ -2,40 +2,6 @@
 
 We will have a react UI app which will show all the information of the reports.
 
-### Reports
-
-- When we start analysis of the project, the very first thing we need to do is `create a file ${bucket}/crowd-fund-analysis/${projectId}/agent-status.json`
-
-The file should have information
-
-```json
-{
-  "id": "projectId",
-  "name": "Project Name",
-  "projectInfoInput": {
-    "secFilingUtl": "https://www.sec.gov/Archives/edgar/data/...",
-    "crowdFundingUrl": "https://www.kickstarter.com/projects/...",
-    "additionalUrl": [
-      "https://www.kickstarter.com/projects/...",
-      "https://www.kickstarter.com/projects/..."
-    ],
-    "websiteUrl": "https://www.kickstarter.com/projects/..."
-  },
-  "status": "in_progress",
-  "reports": {
-    "teamInfo": {
-      "status": "completed",
-      "markdownLink": "https://s3.amazonaws.com/bucket_name/project_id/team_info.md",
-      "pdfLink": "https://s3.amazonaws.com/bucket_name/project_id/team_info.pdf"
-    }
-  },
-  "finalReport": {
-    "status": "completed",
-    "markdownLink": "https://s3.amazonaws.com/bucket_name/project_id/final_report.md",
-    "pdfLink": "https://s3.amazonaws.com/bucket_name/project_id/final_report.pdf"
-  }
-}
-```
 
 ## Tasks - UI App
 
@@ -47,43 +13,38 @@ The file should have information
 
 - Show name and links
 
-### Styling
-
-- Add some basic theme
-- in academy-ui in layout we set some styles
-- copy the alchemix ones
-- check font type and font size how they are applied in academy-ui and apply them here
-
 ## Tasks - Python app
 
 - All reports were there and Overall status was `completed` . I triggered regenerate for one of the report but Overall status still stays `completed`. it should go into `in_progress` as well and when the report gets generated only then mark it as `completed`
-- Create a parent graph:
-  - first level will have a node that will form the `input_data` needed by the subsequent nodes. E.g. general_info needs projectUrls
-  - second level will have all the report nodes
-  - there will be a conditional edge from first level node to second level nodes and it will fan-out the execution based on the invoked report. So either one of the second level nodes will be invoked or all of them.
-  ```python
-  all_nodes = ["general_info", "financial_review", "team_info"]
   
-  def route_single_or_all(state: State) -> Sequence[str]:
-    if state["report"] == "all":
-        return all_nodes
-    elif state["report"] in all_nodes:
-        return [state["report"]]
-    else:
-        raise ValueError(f"Invalid route selection: {state['report']}")
-        
-  graph_builder.add_edge(START, "payload_creation")
-  graph_builder.add_conditional_edges(
-      'payload_creation',
-      route_single_or_all,
-      all_nodes,
-  )
+
+# 4 Major Tasks
+
+## Final report finalize with structured output
+- Use the new prompt with values from `agent-status.json` instead of the individual reports except `team_info`
+- Create a structure (structured output) and use it to deal with the `spider-graph.json` output
+- Have below format to save the scores and comments in the `spider-graph.json`:
+  ```json
+  {
+    "productInnovation": {
+      "commentsSummary": "",
+      "evaluation": [{
+        "comment": "",
+        "score": 0
+      }]
+    }
+  }
   ```
-  - second level nodes will fan-in into a third level node that will cater the report(s)
-  ```python
-  for node in all_nodes:
-    graph_builder.add_edge(node, "report_handling")
-    
-  graph_builder.add_edge("report_handling", END)
-  ```
-  - instead of running each report agent individually in the `run_agent_and_get_final_output_async()`, we will run this parent agent and specify the report either as a specific report node or all
+  
+## Re-create all the reports
+- Revise and optimize the individual report prompts and recreate all the reports
+  
+## UI/UX looks good for the project detail page
+- Dont show Additional Urls accordian if there is no content for it
+- SEC markdown content is not getting rendered correctly (proper table conversion)
+- Remove the reports table, instead have `Show Details` after each category (comments) which directs to the report detail page
+- Show 3-5 rewarding/highlighting points and risks/potential issues about the startup alongside the spider graph
+
+## Authentication using code
+- Add option to login using a predefined code
+- Only authenticated users can see the regenerate and edit options

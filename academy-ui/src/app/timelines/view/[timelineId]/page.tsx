@@ -23,9 +23,10 @@ export async function generateMetadata({ params }: TimelinePageProps): Promise<M
 
 const TimelinePage = async ({ params }: TimelinePageProps) => {
   const timelineKey = (await params).timelineId;
+  const space = (await getSpaceServerSide())!;
   return (
     <PageWrapper>
-      <TimelineInformation timelineId={timelineKey} />
+      <TimelineInformation timelineId={timelineKey} space={space} />
     </PageWrapper>
   );
 };

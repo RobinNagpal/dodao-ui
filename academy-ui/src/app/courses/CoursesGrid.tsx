@@ -2,7 +2,7 @@
 
 import CourseSummaryCard from '@/components/courses/Summary/CourseSummaryCard';
 import NoCourses from '@/components/courses/Summary/NoCourses';
-import withSpace, { SpaceProps } from '@/contexts/withSpace';
+import { SpaceProps } from '@/contexts/withSpace';
 import { CourseFragment } from '@/graphql/generated/generated-types';
 import Block from '@dodao/web-core/components/app/Block';
 import { Grid3Cols } from '@dodao/web-core/components/core/grids/Grid3Cols';
@@ -45,4 +45,4 @@ function CoursesGrid({ space }: SpaceProps) {
   );
 }
 
-export default withSpace(CoursesGrid);
+export default CoursesGrid;

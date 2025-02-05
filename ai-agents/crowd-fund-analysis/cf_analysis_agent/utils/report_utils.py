@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from typing_extensions import TypedDict, NotRequired
 
 from cf_analysis_agent.agent_state import ProjectInfo, ProcessingStatus
+from cf_analysis_agent.structures.startup_metrics import InformationStatus
 from cf_analysis_agent.utils.env_variables import REGION
 from cf_analysis_agent.utils.s3_utils import s3_client, BUCKET_NAME, upload_to_s3
 
@@ -47,8 +48,45 @@ class ReportSchema(TypedDict, total=False):
 class FinalReportSchema(ReportSchema, total=False):
     spiderGraphJsonFileUrl: NotRequired[str]
 
+class ProcessedSecInfoSchema(TypedDict):
+    """
+    Stores the processed SEC filing content in various formats.
+    """
+    secJsonContent: str
+    secMarkdownContent: str
+    secRawContent: str
 
-class ProcessedProjectInfoSchema(TypedDict, total=False):
+class MetricSchema(TypedDict):
+    explanation: str
+    opinion: str
+    informationStatus: InformationStatus
+
+class ProcessesStartupMetricsSchema(TypedDict, total=False):
+    growthRate: MetricSchema
+    organicVsPaidGrowth: MetricSchema
+    virality: MetricSchema
+    networkEffect: MetricSchema
+    customerAcquisitionCost: MetricSchema
+    unitEconomics: MetricSchema
+    retentionRate: MetricSchema
+    magicMoment: MetricSchema
+    netPromoterScore: MetricSchema
+    customerLifetimeValue: MetricSchema
+    paybackPeriod: MetricSchema
+    revenueGrowth: MetricSchema
+    churnRate: MetricSchema
+
+
+class ProcessedIndustryAndForecastsSchema(TypedDict):
+    """
+    Stores the processed industry details and forecast content.
+    """
+    industryDetailsAndForecast: str
+    totalAddressableMarket: str
+    serviceableAddressableMarket: str
+    serviceableObtainableMarket: str
+
+class ProcessedProjectInfoSchema(TypedDict):
     """
     Stores combined text results after scraping the various
     URLs for this project, plus a timestamp for when it was last updated.
@@ -57,9 +95,9 @@ class ProcessedProjectInfoSchema(TypedDict, total=False):
     contentOfAdditionalUrls: str
     contentOfCrowdfundingUrl: str
     contentOfWebsiteUrl: str
-    secRawContent: str
-    secJsonContent: str
-    secMarkdownContent: str
+    industryDetails: ProcessedIndustryAndForecastsSchema
+    secInfo: ProcessedSecInfoSchema
+    startupMetrics: ProcessesStartupMetricsSchema
     lastUpdated: str
     status: ProcessingStatus
 
@@ -218,6 +256,10 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
         }
         new_reports[report_type] = new_report
 
+    sec_info = project_file_contents["processedProjectInfo"].get("secInfo") or {}
+    startup_metrics = project_file_contents["processedProjectInfo"].get("startupMetrics") or {}
+    industry_details = project_file_contents["processedProjectInfo"].get("industryDetails") or {}
+
     new_project_file_contents: ProjectStatusFileSchema = {
         "id": project_id,
         "name": project_file_contents["name"],
@@ -236,9 +278,33 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
             "contentOfAdditionalUrls": project_file_contents["processedProjectInfo"].get("contentOfAdditionalUrls"),
             "contentOfCrowdfundingUrl": project_file_contents["processedProjectInfo"].get("contentOfCrowdfundingUrl"),
             "contentOfWebsiteUrl": project_file_contents["processedProjectInfo"].get("contentOfWebsiteUrl"),
-            "secRawContent": project_file_contents["processedProjectInfo"].get("secRawContent"),
-            "secJsonContent": project_file_contents["processedProjectInfo"].get("secJsonContent"),
-            "secMarkdownContent": project_file_contents["processedProjectInfo"].get("secMarkdownContent"),
+            "secInfo": {
+               "secJsonContent": sec_info.get("secJsonContent"),
+                "secMarkdownContent": sec_info.get("secMarkdownContent"),
+                "secRawContent": sec_info.get("secRawContent")
+            },
+            "startupMetrics": {
+               "growthRate": startup_metrics.get("growthRate"),
+                "organicVsPaidGrowth": startup_metrics.get("organicVsPaidGrowth"),
+                "virality": startup_metrics.get("virality"),
+                "networkEffect": startup_metrics.get("networkEffect"),
+                "customerAcquisitionCost": startup_metrics.get("customerAcquisitionCost"),
+                "unitEconomics": startup_metrics.get("unitEconomics"),
+                "retentionRate": startup_metrics.get("retentionRate"),
+                "magicMoment": startup_metrics.get("magicMoment"),
+                "netPromoterScore": startup_metrics.get("netPromoterScore"),
+                "customerLifetimeValue": startup_metrics.get("customerLifetimeValue"),
+                "paybackPeriod": startup_metrics.get("paybackPeriod"),
+                "revenueGrowth": startup_metrics.get("revenueGrowth"),
+                "churnRate": startup_metrics.get("churnRate"),
+
+            },
+            "industryDetails": {
+                "industryDetailsAndForecast": industry_details.get("industryDetailsAndForecast"),
+                "totalAddressableMarket": industry_details.get("totalAddressableMarket"),
+                "serviceableAddressableMarket": industry_details.get("serviceableAddressableMarket"),
+                "serviceableObtainableMarket": industry_details.get("serviceableObtainableMarket")
+            },
             "lastUpdated": project_file_contents["processedProjectInfo"].get("lastUpdated"),
             "status": project_file_contents["processedProjectInfo"].get("status")
         },
@@ -255,14 +321,30 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
 def update_report_status_in_progress(project_id: str, report_name: str):
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "in_progress".
+    Handles both individual reports and `finalReport`.
     """
     project_file_contents = get_project_file(project_id)
 
-    if report_name not in project_file_contents["reports"]:
-        raise Exception(f"Report type '{report_name}' not found in the status file.")
+    # Handle `finalReport` differently
+    if report_name == "finalReport":
+        if "finalReport" not in project_file_contents:
+            raise Exception(f"Final report section not found in the status file for project '{project_id}'.")
 
-    project_file_contents["reports"][report_name] = get_init_data_for_report(report_name)
-    project_file_contents["reports"][report_name]["status"] = ProcessingStatus.IN_PROGRESS
+        project_file_contents["finalReport"] = {
+            "status": ProcessingStatus.IN_PROGRESS,
+            "startTime": datetime.now().isoformat(),
+            "estimatedTimeInSec": 260
+        }
+
+        project_file_contents["finalReport"]["status"] = ProcessingStatus.IN_PROGRESS
+
+    else:
+        if report_name not in project_file_contents["reports"]:
+            raise Exception(f"Report type '{report_name}' not found in the status file.")
+
+        project_file_contents["reports"][report_name] = get_init_data_for_report(report_name)
+        project_file_contents["reports"][report_name]["status"] = ProcessingStatus.IN_PROGRESS
+
     update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_name}' to 'in_progress'.")
 
@@ -270,20 +352,31 @@ def update_report_status_in_progress(project_id: str, report_name: str):
 def update_report_status_completed(project_id: str, report_name: str, markdown_link: Optional[str] = None):
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "completed" and adds the markdown link.
+    Handles both individual reports and `finalReport`.
     """
     project_file_contents = get_project_file(project_id)
 
-    if report_name not in project_file_contents["reports"]:
-        raise Exception(f"Report type '{report_name}' not found in the status file.")
+    if report_name == "finalReport":
+        if "finalReport" not in project_file_contents:
+            raise Exception(f"Final report section not found in the status file for project '{project_id}'.")
 
-    project_file_contents["reports"][report_name]["status"] = ProcessingStatus.COMPLETED
-    project_file_contents["reports"][report_name]["endTime"] = datetime.now().isoformat()
-    if markdown_link:
-        project_file_contents["reports"][report_name]["markdownLink"] = markdown_link
+        project_file_contents["finalReport"]["status"] = ProcessingStatus.COMPLETED
+        project_file_contents["finalReport"]["endTime"] = datetime.now().isoformat()
+        if markdown_link:
+            project_file_contents["finalReport"]["markdownLink"] = markdown_link
 
-    report_statuses = [r["status"] for r in project_file_contents["reports"].values()]
-    project_file_contents["status"] = "completed" if all(
-        rs == ProcessingStatus.COMPLETED for rs in report_statuses) else ProcessingStatus.IN_PROGRESS
+    else:
+        if report_name not in project_file_contents["reports"]:
+            raise Exception(f"Report type '{report_name}' not found in the status file.")
+
+        project_file_contents["reports"][report_name]["status"] = ProcessingStatus.COMPLETED
+        project_file_contents["reports"][report_name]["endTime"] = datetime.now().isoformat()
+        if markdown_link:
+            project_file_contents["reports"][report_name]["markdownLink"] = markdown_link
+
+        # Check if all other reports are completed
+        report_statuses = [r["status"] for r in project_file_contents["reports"].values()]
+        project_file_contents["status"] = "completed" if all(rs == ProcessingStatus.COMPLETED for rs in report_statuses) else ProcessingStatus.IN_PROGRESS
 
     update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_name}' to 'completed'.")
@@ -292,16 +385,28 @@ def update_report_status_completed(project_id: str, report_name: str, markdown_l
 def update_report_status_failed(project_id: str, report_name: str, error_message: str):
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "failed" and logs the error message.
+    Handles both individual reports and `finalReport`.
     """
     project_file_contents = get_project_file(project_id)
 
-    if report_name not in project_file_contents["reports"]:
-        raise Exception(f"Report type '{report_name}' not found in the status file.")
+    if report_name == "finalReport":
+        if "finalReport" not in project_file_contents:
+            raise Exception(f"Final report section not found in the status file for project '{project_id}'.")
 
-    project_file_contents["reports"][report_name]["status"] = ProcessingStatus.FAILED
-    project_file_contents["reports"][report_name]["endTime"] = datetime.now().isoformat()
-    project_file_contents["reports"][report_name]["errorMessage"] = error_message
-    project_file_contents["status"] = ProcessingStatus.FAILED
+        project_file_contents["finalReport"]["status"] = ProcessingStatus.FAILED
+        project_file_contents["finalReport"]["endTime"] = datetime.now().isoformat()
+        project_file_contents["finalReport"]["errorMessage"] = error_message
+
+    else:
+        if report_name not in project_file_contents["reports"]:
+            raise Exception(f"Report type '{report_name}' not found in the status file.")
+
+        project_file_contents["reports"][report_name]["status"] = ProcessingStatus.FAILED
+        project_file_contents["reports"][report_name]["endTime"] = datetime.now().isoformat()
+        project_file_contents["reports"][report_name]["errorMessage"] = error_message
+
+        # Set overall project status as failed
+        project_file_contents["status"] = ProcessingStatus.FAILED
 
     update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_name}' to 'failed' with error message: {error_message}")
@@ -316,7 +421,15 @@ def update_status_to_not_started_for_all_reports(project_id):
     for report_type in project_file_contents["reports"]:
         project_file_contents["reports"][report_type] = get_init_data_for_report(report_type)
         print(f"Set status of report '{report_type}' to 'not_started'. Initialized startTime and estimatedTimeInSec.")
+    
+    project_file_contents["finalReport"] = {
+        "status": ProcessingStatus.NOT_STARTED,
+        "markdownLink": None,
+        "startTime": datetime.now().isoformat(),
+    }
 
+    print(f"Set status of report 'finalReport' to 'not_started'. Initialized startTime and estimatedTimeInSec.")
+    
     upload_to_s3(json.dumps(project_file_contents, indent=4), agent_status_file_path, content_type="application/json")
     print(
         f"Updated status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
@@ -328,3 +441,50 @@ def create_report_file_and_upload_to_s3(project_id: str, report_name: str, repor
     # Update status file to "completed"
     markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{report_file_path}"
     update_report_status_completed(project_id, report_name, markdown_link=markdown_link)
+
+def fetch_markdown_from_s3(markdown_url: str) -> str:
+    """
+    Fetches the markdown content from S3 using the provided URL.
+    """
+    # Extract the S3 key from the URL
+    s3_key = markdown_url.replace(f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/", "")
+
+    try:
+        response = s3_client.get_object(Bucket=BUCKET_NAME, Key=s3_key)
+        markdown_content = response['Body'].read().decode('utf-8')
+        return markdown_content
+    except s3_client.exceptions.NoSuchKey:
+        print(f"File not found in S3: {s3_key}")
+        return ""
+
+def get_combined_reports_from_s3(project_id: str) -> str:
+    """
+    Fetches all markdown reports (excluding final report) from S3 for a given project
+    and returns a single combined markdown string.
+    """
+    agent_status_file_path = get_project_status_file_path(project_id)
+
+    try:
+        response = s3_client.get_object(Bucket=BUCKET_NAME, Key=f"crowd-fund-analysis/{agent_status_file_path}")
+        status_data = json.loads(response['Body'].read().decode('utf-8'))
+    except s3_client.exceptions.NoSuchKey:
+        raise FileNotFoundError(
+            f"agent-status.json not found in S3 at path: s3://{BUCKET_NAME}/crowd-fund-analysis/{agent_status_file_path}"
+        )
+    
+    # Extract reports (excluding finalReport)
+    reports = status_data.get("reports", {})
+
+    combined_markdown = ""
+
+    # Fetch markdown content for each report and append to the combined markdown
+    for report_name, report_data in reports.items():
+        markdown_link = report_data.get("markdownLink")
+        if markdown_link:
+            report_content = fetch_markdown_from_s3(markdown_link)
+            if report_content:
+                combined_markdown += f"----------- {report_name.replace('_', ' ').title()} -----------\n\n"
+                combined_markdown += report_content + "\n\n---\n\n"
+
+    return combined_markdown.strip()  # Remove trailing newlines
+
