@@ -46,7 +46,7 @@ def generate_traction_report(state: AgentState) -> StructuredReportResponse:
     )
 
 def create_traction_report(state: AgentState) -> None:
-    print("Generating general info report")
+    print("Generating traction report")
     project_id = state.get("project_info").get("project_id")
     try:
         update_report_status_in_progress(project_id, ReportType.TRACTION)

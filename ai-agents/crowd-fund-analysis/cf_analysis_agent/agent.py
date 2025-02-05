@@ -3,6 +3,7 @@ from langgraph.graph import END, START, StateGraph
 from cf_analysis_agent.agent_state import AgentState, ReportType
 from cf_analysis_agent.reports.general_info import create_general_info_report
 from cf_analysis_agent.reports.green_flags import create_green_flags_report
+from cf_analysis_agent.reports.market_opportunity import create_market_opportunity_report
 from cf_analysis_agent.reports.red_flags import create_red_flags_report
 from cf_analysis_agent.reports.relevant_links import create_relevant_links_report
 from cf_analysis_agent.reports.financial_review_agent import create_financial_review_report
@@ -83,7 +84,7 @@ builder = StateGraph(AgentState)
 
 builder.add_node("initialize_first_step", initialize_first_step)
 builder.add_node("general_info", create_general_info_report)
-builder.add_node("traction", create_traction_report)
+builder.add_node(ReportType.TRACTION.value, create_traction_report)
 builder.add_node("red_flags",  create_red_flags_report)
 builder.add_node("green_flags",  create_green_flags_report)
 builder.add_node("relevant_links",  create_relevant_links_report)
@@ -91,6 +92,7 @@ builder.add_node("team_info", create_founder_and_team_report)
 builder.add_node("financial_review", create_financial_review_report)
 builder.add_node("create_final_report", create_final_report)
 builder.add_node("create_final_report_test", create_final_report_test)
+builder.add_node(ReportType.MARKET_OPPORTUNITY.value, create_market_opportunity_report)
 builder.add_node(AgentNodes.GENERATE_ALL_REPORTS_SERIALLY, generate_all_reports_serially)
 
 builder.add_edge(START, "initialize_first_step")
