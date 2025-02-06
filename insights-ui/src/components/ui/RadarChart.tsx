@@ -1,6 +1,7 @@
 'use client';
 
 import { SpiderGraph } from '@/types/project/project';
+import { getReportName } from '@/util/report-utils';
 import {
   Chart as ChartJS,
   Chart,
@@ -78,9 +79,6 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
   const scores = itemKeys.map((category) => data[category].scores.reduce((acc, item) => acc + item.score, 0));
 
   Tooltip.positioners.myCustomPositioner = function (tooltipItems, eventPosition) {
-    // A reference to the tooltip model
-    const tooltip = this;
-
     if (!tooltipItems.length) {
       return eventPosition;
     }
@@ -105,7 +103,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
 
   // Convert data into the required format
   const chartData: ChartData<'radar'> = {
-    labels: itemKeys.map((itemKey) => data[itemKey].name),
+    labels: itemKeys.map((itemKey) => data[itemKey].key),
     datasets: [
       {
         data: scores,
@@ -169,7 +167,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
         position: 'myCustomPositioner',
         caretSize: 0,
         callbacks: {
-          title: (tooltipItems: TooltipItem<'radar'>[]) => tooltipItems[0].label.replace(/([A-Z])/g, ' $1').replace(/^./, (str: string) => str.toUpperCase()),
+          title: (tooltipItems: TooltipItem<'radar'>[]) => tooltipItems.map((item) => getReportName(item.label)),
           label: () => '', // Skip label
           afterBody: (tooltipItems: TooltipItem<'radar'>[]) => {
             const categoryData = data[tooltipItems[0].label]; // Match category

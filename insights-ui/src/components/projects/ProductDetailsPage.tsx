@@ -23,6 +23,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
   const spiderGraph: SpiderGraph = Object.fromEntries(
     reports.map((report): [string, SpiderGraphPie] => {
       const pieData: SpiderGraphPie = {
+        key: report.type,
         name: getReportName(report.type),
         // Sum of all scores in the report
         scores: report.performanceChecklist.map((pc) => ({ score: pc.score, comment: pc.checklistItem })),

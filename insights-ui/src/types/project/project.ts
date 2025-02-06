@@ -179,6 +179,7 @@ export interface SpiderScore {
 }
 
 export interface SpiderGraphPie {
+  key: ReportType;
   name: string;
   scores: SpiderScore[];
 }
