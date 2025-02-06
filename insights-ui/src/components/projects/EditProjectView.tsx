@@ -13,6 +13,7 @@ import { uploadImageToS3 } from '@/util/upload-image';
 
 export default function EditProjectView(props: { projectId?: string | null; projectDetails?: ProjectDetails }) {
   const { projectId, projectDetails } = props;
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [projectUpserting, setProjectUpserting] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -27,9 +28,11 @@ export default function EditProjectView(props: { projectId?: string | null; proj
     additionalUrls: projectDetails?.projectInfoInput.additionalUrls || [],
   });
   const handleImageUpload = async (file: File) => {
+    setLoading(true);
     const url = await uploadImageToS3(file, project.projectId);
     console.log('Image uploaded to:', url);
     setProject((prev) => ({ ...prev, projectImgUrl: url }));
+    setLoading(false);
   };
   useEffect(() => {
     setIsMounted(true);
@@ -91,7 +94,7 @@ export default function EditProjectView(props: { projectId?: string | null; proj
           modelValue={project.projectImgUrl}
           label="Project Image"
           uploadToS3={handleImageUpload}
-          loading={false}
+          loading={loading}
           onInput={(e) => handleUpdateField('projectImgUrl', e as string)}
         ></UploadInput>
 

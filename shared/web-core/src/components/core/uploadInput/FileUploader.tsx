@@ -34,10 +34,6 @@ export default function FileUploader({ loading, children, className, allowedFile
     await uploadFile(file);
   };
 
-  const handleClick = () => {
-    inputRef.current?.click();
-  };
-
   return (
     <div className={className}>
       {loading ? (
@@ -46,7 +42,7 @@ export default function FileUploader({ loading, children, className, allowedFile
         </div>
       ) : (
         <FileSelect>
-          <div onClick={handleClick}>
+          <div>
             <input type="file" ref={inputRef} onChange={handleFileChange} accept={allowedFileTypes.join(', ')} />
             {children}
           </div>
