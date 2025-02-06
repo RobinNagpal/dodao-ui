@@ -1,10 +1,10 @@
 from typing import Sequence
 from langgraph.graph import END, START, StateGraph
 from cf_analysis_agent.agent_state import AgentState, ReportType
+from cf_analysis_agent.reports.execution_and_speed import create_execution_and_speed_report
+from cf_analysis_agent.reports.financial_health import create_financial_health_report
 from cf_analysis_agent.reports.general_info import create_general_info_report
-from cf_analysis_agent.reports.green_flags import create_green_flags_report
 from cf_analysis_agent.reports.market_opportunity import create_market_opportunity_report
-from cf_analysis_agent.reports.red_flags import create_red_flags_report
 from cf_analysis_agent.reports.relevant_links import create_relevant_links_report
 from cf_analysis_agent.reports.financial_review_agent import create_financial_review_report
 from cf_analysis_agent.reports.founder_and_team import create_founder_and_team_report
@@ -29,15 +29,6 @@ class AgentNodes(str, Enum):
     FINAL = "final"
     GENERATE_ALL_REPORTS_SERIALLY = "generate_all_reports_serially"
 
-final_key_map = {
-    "general_info": "projectGeneralInfo",
-    "team_info": "teamInfo",
-    "financial_review": "finalFinancialReport",
-    "red_flags": "finalRedFlagsReport",
-    "green_flags": "finalGreenFlagsReport",
-    "relevant_links": "relevantLinks",
-}
-
 # ------------------- PAYLOAD CREATION ------------------- #
 def initialize_first_step(agent_state: AgentState) -> None:
     """
@@ -60,6 +51,7 @@ def route_single_or_all(state: AgentState) -> Sequence[str]:
     """
     Routes execution to either a single report node or all nodes.
     """
+    print(f"Routing to single or all for: {state["report_input"]}" )
     if state["report_input"] == "all":
         return "generate_all_reports_serially"  # Convert dict_keys to list
     elif state["report_input"] == 'finalReport':
@@ -73,8 +65,6 @@ def generate_all_reports_serially(state: AgentState):
     Generates all reports serially.
     """
     create_general_info_report(state)
-    create_red_flags_report(state)
-    create_green_flags_report(state)
     create_relevant_links_report(state)
     create_founder_and_team_report(state)
     create_financial_review_report(state)
@@ -86,20 +76,20 @@ builder = StateGraph(AgentState)
 builder.add_node("initialize_first_step", initialize_first_step)
 builder.add_node("general_info", create_general_info_report)
 builder.add_node(ReportType.TRACTION.value, create_traction_report)
-builder.add_node("red_flags",  create_red_flags_report)
-builder.add_node("green_flags",  create_green_flags_report)
 builder.add_node("relevant_links",  create_relevant_links_report)
 builder.add_node("team_info", create_founder_and_team_report)
 builder.add_node("financial_review", create_financial_review_report)
 builder.add_node("create_final_report", create_final_report)
 builder.add_node("create_final_report_test", create_final_report_test)
+builder.add_node(ReportType.EXECUTION_AND_SPEED.value, create_execution_and_speed_report)
 builder.add_node(ReportType.MARKET_OPPORTUNITY.value, create_market_opportunity_report)
 builder.add_node(ReportType.VALUATION.value, create_valuation_report)
+builder.add_node(ReportType.FINANCIAL_HEALTH.value, create_financial_health_report)
 builder.add_node(AgentNodes.GENERATE_ALL_REPORTS_SERIALLY, generate_all_reports_serially)
 
 builder.add_edge(START, "initialize_first_step")
 builder.add_conditional_edges("initialize_first_step", route_single_or_all)
-builder.add_edge(report_keys, "create_final_report")
+# builder.add_edge(report_keys, "create_final_report")
 builder.add_edge("create_final_report", END)
 
 # Compile Graph

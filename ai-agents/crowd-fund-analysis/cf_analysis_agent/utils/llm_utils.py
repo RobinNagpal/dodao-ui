@@ -12,6 +12,7 @@ _llm_cache: dict[str, ChatOpenAI] = {}
 DEFAULT_LLM_CONFIG: Config = {"configurable": {"model": OPEN_AI_DEFAULT_MODEL}}
 
 MINI_4_0_CONFIG: Config = {"configurable": {"model": "gpt-4o-mini"}}
+MINI_O_3_CONFIG: Config = {"configurable": {"model": "gpt-o3-mini"}}
 NORMAL_4_0_CONFIG: Config = {"configurable": {"model": "gpt-4o"}}
 
 
