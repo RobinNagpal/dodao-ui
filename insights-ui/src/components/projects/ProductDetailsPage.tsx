@@ -76,18 +76,19 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
                 const report = projectDetails.reports[reportType];
                 return (
                   <div key={reportType} className="relative text-left">
-                    <dt className="font-semibold">
+                    <dt>
                       <div className="absolute left-0 top-0 flex size-10 items-center justify-center heading-color rounded-lg">
                         <span aria-hidden="true" className="size-6">
                           📊
                         </span>
                       </div>
-                      <div className="flex justify-between">
+                      <div className="flex justify-between font-semibold">
                         <div className="ml-6 text-xl">{getReportName(reportType)}</div>
                         <ReportActionsDropdown projectId={projectId} report={{ ...report, type: reportType }} />
                       </div>
+                      <div className="text-sm py-1">{report.summary}</div>
                     </dt>
-                    <dd className="text-color">
+                    <dd className="text-color text-sm">
                       {report.performanceChecklist?.length && (
                         <ul className="list-disc mt-2">
                           {report.performanceChecklist.map((item, index) => (
