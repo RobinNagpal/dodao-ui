@@ -4,6 +4,18 @@
 - Add option to login using a predefined code
 - Only authenticated users can see the regenerate and edit options
 
+### How to do
+
+### UI
+- create a page `/authenticate` that will have a single field to enter code
+- create a function `authenticate` in the `util` folder that will do a POST request to the python backend with the code in the body and if success then store the returned hash key in the local storage in `AUTHENTICATION_KEY`
+- create utility `isAdmin` which will just check for existence of `AUTHENTICATION_KEY` in the local storage
+- render the edit and regenerate options using the `isAdmin` utility
+
+### Python Backend
+- have a field in `.env` like `ADMIN_CODES = Robin-434343, Dawood-233243`
+- create an endpoint `/authenticate` that will validate the code being sent in the request body againt the `ADMIN_CODES` env variable and return a hashed key if successfully validated otherwise return error
+
 ## UI/UX for project details page
 ### Improve UX
 - Write down suggesions on how can we create the project page using https://tailwindui.com. 
