@@ -19,7 +19,7 @@ async function postHandler(req: NextRequest): Promise<NextResponse<{ url: string
   const fileType = req.headers.get('x-file-type');
 
   const bucketName = InsightsConstants.S3_BUCKET_NAME;
-  const key = `${InsightsConstants.CROWDFUND_ANALYSIS_PREFIX}/${fileName}`;
+  const key = `${InsightsConstants.CROWDFUND_ANALYSIS_PREFIX}/images/${fileName}`;
 
   const uploadParams = {
     Bucket: bucketName,

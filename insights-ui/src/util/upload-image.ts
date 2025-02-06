@@ -3,7 +3,7 @@ import { InsightsConstants } from './insights-constants';
 export async function uploadImageToS3(file: File, fileName: string) {
   const fileBuffer = await file.arrayBuffer();
   const bucketName = InsightsConstants.S3_BUCKET_NAME;
-  const key = `${InsightsConstants.CROWDFUND_ANALYSIS_PREFIX}/${fileName}`;
+  const key = `${InsightsConstants.CROWDFUND_ANALYSIS_PREFIX}/images/${fileName}`;
   console.log('File Buffer:', fileBuffer);
   const response = await fetch('/api/upload', {
     method: 'POST',
