@@ -77,10 +77,12 @@ builder.add_node("initialize_first_step", initialize_first_step)
 builder.add_node("general_info", create_general_info_report)
 builder.add_node(ReportType.TRACTION.value, create_traction_report)
 builder.add_node("relevant_links",  create_relevant_links_report)
-builder.add_node("team_info", create_founder_and_team_report)
+
 builder.add_node("financial_review", create_financial_review_report)
 builder.add_node("create_final_report", create_final_report)
 builder.add_node("create_final_report_test", create_final_report_test)
+
+builder.add_node(ReportType.FOUNDER_AND_TEAM.value, create_founder_and_team_report)
 builder.add_node(ReportType.EXECUTION_AND_SPEED.value, create_execution_and_speed_report)
 builder.add_node(ReportType.MARKET_OPPORTUNITY.value, create_market_opportunity_report)
 builder.add_node(ReportType.VALUATION.value, create_valuation_report)

@@ -13,9 +13,10 @@ from typing_extensions import TypedDict
 from cf_analysis_agent.agent_state import AgentState, Config, ReportType
 from cf_analysis_agent.structures.report_structures import StartupAndTeamInfoStructure
 from cf_analysis_agent.utils.env_variables import LINKEDIN_EMAIL, LINKEDIN_PASSWORD
-from cf_analysis_agent.utils.llm_utils import get_llm
+from cf_analysis_agent.utils.llm_utils import get_llm, structured_report_response
+from cf_analysis_agent.utils.prompt_utils import create_prompt_for_checklist
 from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
-    update_report_status_in_progress
+    update_report_status_in_progress, update_report_with_structured_output
 
 load_dotenv()
 
@@ -84,18 +85,17 @@ def find_linkedin_urls(startup_info: StartupAndTeamInfoStructure):
     If a valid LinkedIn profile is not found, stores an empty string or None for 'url'.
     """
     linkedin_urls: List[TeamMemberLinkedinUrl] = []
-    startup_name = startup_info.get('startup_name')
-    team_members = startup_info.get('team_members')
+    startup_name = startup_info.startup_name
+    team_members = startup_info.team_members
 
     for member in team_members:
-        query = f"Find the LinkedIn profile url of {member['name']} working as {member['title']} at {startup_name}"
+        query = f"Find the LinkedIn profile url of {member.name} working as {member.title} at {startup_name}"
         result = search_linkedln_url(query)
         linkedin_urls.append({
-            "id": member["id"],
-            "name": member["name"],
+            "id": member.id,
+            "name": member.name,
             "url": result
         })
-
     return linkedin_urls
 
 
@@ -141,8 +141,8 @@ def scrape_linkedin_profiles(linkedin_urls: list):
     for member in linkedin_urls:
         profile_data = scrape_linkedin_profile(member["url"])
         raw_profiles.append({
-            "id": member["id"],
-            "name": member["name"],
+            "id": member.id,
+            "name": member.name,
             "profile": profile_data
         })
     # Close the driver
@@ -153,7 +153,7 @@ def scrape_linkedin_profiles(linkedin_urls: list):
 
 def evaluate_profiles(config: Config, raw_profiles: list, startup_info: StartupAndTeamInfoStructure):
     analyzed_profiles = []
-    team_members = startup_info.get('team_members')
+    team_members = startup_info.team_members
     for member_data in raw_profiles:
         member_id = member_data["id"]
         member_name = member_data["name"]
@@ -178,9 +178,9 @@ def evaluate_profiles(config: Config, raw_profiles: list, startup_info: StartupA
 
         }
 
-        startup_name = startup_info.get('startup_name')
-        one_liner = startup_info.get('startup_details')
-        industry = startup_info.get('industry')
+        startup_name = startup_info.startup_name
+        one_liner = startup_info.startup_details
+        industry = startup_info.industry
 
         prompt = (
             "You are a startup investor, and your goal is to identify the team member and put it clearly into two buckets.\n"
@@ -241,18 +241,23 @@ def evaluate_profiles(config: Config, raw_profiles: list, startup_info: StartupA
                 "relevantWorkExperience": ""
             })
 
-    table_prompt = """Based on the below JSON array of analyzed team profiles, convert this JSON data into a well-formatted markdown content
+    checklist_prompt = create_prompt_for_checklist("Founder and Team")
+    table_prompt = f"""Based on the below JSON array of analyzed team profiles, convert this JSON data into a well-formatted markdown content
         with a table for each team member. The rows of the table should be fields (id, name, title, info, academicCredentials,
         qualityOfAcademicCredentials, workExperience, depthOfWorkExperience, relevantWorkExperience) and Field Name and Value should 
         be in separate columns.
         
         Create a separate table for each team member. 
         
+        {json.dumps(analyzed_profiles, indent=2)}
         
-         .""" + json.dumps(analyzed_profiles, indent=2)
-    table_response = get_llm(config).invoke([HumanMessage(content=table_prompt)])
-    return table_response.content
-
+        Also {checklist_prompt}
+        ."""
+    return structured_report_response(
+        config,
+        "detailed_execution_speed_report",
+        table_prompt
+    )
 
 def create_founder_and_team_report(state: AgentState) -> None:
     """
@@ -267,7 +272,7 @@ def create_founder_and_team_report(state: AgentState) -> None:
         linkedin_urls = find_linkedin_urls(startup_info)
         raw_profiles = scrape_linkedin_profiles(linkedin_urls)
         team_info_report = evaluate_profiles(state.get("config"), raw_profiles, startup_info)
-        create_report_file_and_upload_to_s3(project_id, ReportType.FOUNDER_AND_TEAM, team_info_report)
+        update_report_with_structured_output(project_id, ReportType.FOUNDER_AND_TEAM, team_info_report)
     except Exception as e:
         # Capture full stack trace
         print(traceback.format_exc())

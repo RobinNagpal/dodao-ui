@@ -14,6 +14,11 @@ class StructuredLLMResponse(BaseModel):
     confidence: Optional[float] = Field(description="The confidence of the response in the range of 1-10, 10 being very confident and 1 being not confident at all.")
 
 
+class ChecklistItem(BaseModel):
+    """Checklist item with a score and comment."""
+    checklistItem: str = Field(description="The item to be checked.")
+    explanation: str = Field(description="A brief explanation of how the item was evaluated.")
+    score: Literal[0, 1] = Field(description="The score given for this item 0 or 1.")
 
 class StructuredReportResponse(BaseModel):
     """Return llm response in a structured format"""
@@ -24,6 +29,7 @@ class StructuredReportResponse(BaseModel):
                     "Also fail if no proper input was provided.")
     failureReason: Optional[str] = Field(description="The reason for the failure if the status is failed.")
     confidence: Optional[float] = Field(description="The confidence of the response in the range of 1-10, 10 being very confident and 1 being not confident at all.")
+    performanceChecklist: List[ChecklistItem] = Field(description="A list of items to be checked with their scores and comments.")
 
 class TeamMemberStructure(BaseModel):
     """Information about the team members"""

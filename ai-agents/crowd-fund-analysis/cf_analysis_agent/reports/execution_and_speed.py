@@ -74,8 +74,7 @@ def generate_execution_and_speed_report(state: AgentState) -> StructuredReportRe
 
     Return complete execution velocity analysis only.
     
-    Make sure the output is formatted nicely in markdown and doesn't have many nested points. Use longer sentences and
-    paragraphs instead of second and third level bullet points. Include timeline comparisons and velocity metrics.
+    
 
     """
 

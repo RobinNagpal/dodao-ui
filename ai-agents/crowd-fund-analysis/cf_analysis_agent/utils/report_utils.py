@@ -30,6 +30,16 @@ class ProjectInfoInputSchema(TypedDict):
     websiteUrl: str
 
 
+class PerformanceChecklistItemSchema(TypedDict):
+    """
+    Represents a single item in the performance checklist
+    for a specific report.
+    """
+    checklistItem: str
+    explanation: str
+    score: int
+
+
 class ReportSchema(TypedDict, total=False):
     """
     Represents the status and metadata of a single report
@@ -46,6 +56,7 @@ class ReportSchema(TypedDict, total=False):
     errorMessage: NotRequired[str]
     summary: NotRequired[str]
     confidence: NotRequired[float]
+    performanceChecklist: List[PerformanceChecklistItemSchema]
 
 
 class FinalReportSchema(ReportSchema, total=False):
@@ -175,7 +186,8 @@ def get_init_data_for_report(report_type: ReportType) -> ReportSchema:
         "status": ProcessingStatus.NOT_STARTED,
         "markdownLink": None,
         "startTime": datetime.now().isoformat(),
-        "estimatedTimeInSec": 240 if report_type in [ReportType.FOUNDER_AND_TEAM, ReportType.FINANCIAL_HEALTH] else 150
+        "estimatedTimeInSec": 240 if report_type in [ReportType.FOUNDER_AND_TEAM, ReportType.FINANCIAL_HEALTH] else 150,
+        "performanceChecklist": []
     }
 
 
@@ -236,6 +248,16 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
     new_reports: dict[str, ReportSchema] = {}
     for report_type in ALL_REPORT_TYPES:
         report: ReportSchema = reports.get(report_type) or get_init_data_for_report(report_type)
+
+        performance_checklist = report.get("performanceChecklist") or []
+        new_performance_checklist = []
+        for item in performance_checklist:
+            new_item = {
+                "checklistItem": item["checklistItem"],
+                "explanation": item["explanation"],
+                "score": item["score"]
+            }
+            new_performance_checklist.append(new_item)
         new_report = {
             "status": report["status"],
             "markdownLink": report["markdownLink"],
@@ -244,7 +266,8 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
             # check report["endTime"] exists and is not None
             "endTime": datetime.now().isoformat() if report.get("endTime") else None,
             "summary": report.get("summary"),
-            "confidence": report.get("confidence")
+            "confidence": report.get("confidence"),
+            "performanceChecklist": new_performance_checklist
         }
         new_reports[report_type] = new_report
 
@@ -330,13 +353,25 @@ def update_report_with_structured_output(project_id: str, report_type: ReportTyp
     markdown_link = f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/crowd-fund-analysis/{report_file_path}"
     project_file_contents = get_project_file(project_id)
 
-    report = project_file_contents["reports"].get(report_type) or get_init_data_for_report(report_type)
+    report: ReportSchema = project_file_contents["reports"].get(report_type) or get_init_data_for_report(report_type)
 
     report["status"] = ProcessingStatus.COMPLETED
     report["endTime"] = datetime.now().isoformat()
     report["markdownLink"] = markdown_link
     report["summary"] = structured_output.oneLineSummary
     report["confidence"] = structured_output.confidence
+    report["performanceChecklist"] = []
+    performance_checklist = structured_output.performanceChecklist or []
+
+    for item in performance_checklist:
+        new_item = {
+            "checklistItem": item.checklistItem,
+            "explanation": item.explanation,
+            "score": item.score
+        }
+        report["performanceChecklist"].append(new_item)
+
+
 
     project_file_contents["reports"][report_type] = report
     # Check if all other reports are completed
