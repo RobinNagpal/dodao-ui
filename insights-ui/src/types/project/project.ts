@@ -32,16 +32,15 @@ export enum ReportType {
   RELEVANT_LINKS = 'relevant_links',
 }
 
-export const ALL_REPORT_TYPES: ReportType[] = [
-  ReportType.GENERAL_INFO,
+export const REPORT_TYPES_TO_DISPLAY: ReportType[] = [
   ReportType.FOUNDER_AND_TEAM,
   ReportType.TRACTION,
   ReportType.MARKET_OPPORTUNITY,
-  ReportType.VALUATION,
   ReportType.EXECUTION_AND_SPEED,
+  ReportType.VALUATION,
   ReportType.FINANCIAL_HEALTH,
-  ReportType.RELEVANT_LINKS,
 ];
+
 export interface ProjectSubmissionData {
   projectId: string;
   projectName: string;
@@ -50,6 +49,7 @@ export interface ProjectSubmissionData {
   secFilingUrl: string;
   additionalUrls: string[];
 }
+
 export interface ProjectInfoInput {
   /**
    * Represents the user-provided project input
@@ -59,6 +59,15 @@ export interface ProjectInfoInput {
   secFilingUrl: string;
   additionalUrls: string[];
   websiteUrl: string;
+}
+
+/**
+ * Represents a single performance checklist item in a report.
+ */
+export interface PerformanceChecklistItem {
+  checklistItem: string;
+  explanation: string;
+  score: number;
 }
 
 export interface ReportInterface {
@@ -73,7 +82,21 @@ export interface ReportInterface {
   estimatedTimeInSec: number;
   endTime?: string;
   errorMessage?: string;
+  /**
+   * A short summary of the report.
+   */
+  summary?: string;
+  /**
+   * A numerical value indicating the confidence in the report’s findings.
+   */
+  confidence?: number;
+  /**
+   * A checklist of performance items related to the report.
+   */
+  performanceChecklist: PerformanceChecklistItem[];
 }
+
+export type ReportInterfaceWithType = ReportInterface & { type: ReportType };
 
 export interface FinalReportInterface extends ReportInterface {
   spiderGraphJsonFileUrl?: string;
@@ -155,6 +178,12 @@ export interface SpiderScore {
   score: number;
 }
 
+export interface SpiderGraphPie {
+  key: ReportType;
+  name: string;
+  scores: SpiderScore[];
+}
+
 export interface SpiderGraph {
-  [category: string]: SpiderScore[];
+  [category: string]: SpiderGraphPie;
 }

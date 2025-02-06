@@ -15,10 +15,11 @@ def generate_market_opportunity_report(state: AgentState) -> StructuredReportRes
 
     prompt = f"""
     You are an expert market analyst evaluating a startup's market opportunity. Analyze this information:
-    {combined_content}
+    
 
     **Task**:
-    1. Conduct a critical analysis of the market opportunity focusing SPECIFICALLY on the startup's target sector:
+    1. Conduct a critical analysis of the market opportunity focusing SPECIFICALLY on the startup's target sector. Dont user
+    the provided numbers. Use you own knowledge and research to provide a realistic assessment of the market opportunity.:
        a) Total Addressable Market (TAM): 
           - Calculate realistic and not optimistic TAM using bottom-up approach
           - Detail assumptions: Geographic limits, customer demographics, pricing constraints
@@ -55,6 +56,9 @@ def generate_market_opportunity_report(state: AgentState) -> StructuredReportRes
     
     Make sure the output is formatted nicely in markdown and doesn't have many nested points. Use longer sentences and
     paragraphs instead of second and third level bullet points.
+    
+    
+    {combined_content}
     """
 
     return structured_report_response(
