@@ -6,7 +6,7 @@ import React from 'react';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import ProjectDebugPage from '@/components/projects/ProjectDebugPage';
-import NewProjectDetailPage from '@/components/projects/NewProductDeatilPage';
+import ProjectDetailPage from '@/components/projects/ProductDetailsPage';
 
 export async function generateMetadata({ params }: { params: Promise<{ projectId: string }> }): Promise<Metadata> {
   const { projectId } = await params;
@@ -75,7 +75,7 @@ export default async function ProjectDetailPageWrapper({ params }: { params: Pro
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      {data.projectDetails && <NewProjectDetailPage projectId={projectId} initialProjectDetails={data.projectDetails} projectDetails={data.projectDetails} />}
+      {data.projectDetails && <ProjectDetailPage projectId={projectId} initialProjectDetails={data.projectDetails} projectDetails={data.projectDetails} />}
     </PageWrapper>
   );
 }
