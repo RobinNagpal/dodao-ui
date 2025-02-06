@@ -5,6 +5,7 @@ import React from 'react';
 import Link from 'next/link';
 import { regenerateReport } from '@/util/regenerate';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import { isAdmin } from '@/util/auth/isAdmin';
 
 interface ProjectTableProps {
   projectIds: string[];
@@ -20,7 +21,6 @@ export default function ProjectTable({ projectIds }: ProjectTableProps) {
 
   const tableActions: TableActions = {
     items: [
-      { key: 'view', label: 'View' },
       { key: 'edit', label: 'Edit' },
       ...MODEL_OPTIONS.map((model) => ({
         key: `regenerate_${model.key}`,
@@ -28,9 +28,7 @@ export default function ProjectTable({ projectIds }: ProjectTableProps) {
       })),
     ],
     onSelect: async (key: string, item: string) => {
-      if (key === 'view') {
-        router.push(`/crowd-funding/projects/${item}`);
-      } else if (key === 'edit') {
+      if (key === 'edit') {
         router.push(`/crowd-funding/projects/${item}/edit`);
       } else if (key.startsWith('regenerate_')) {
         const model = key.replace('regenerate_', '');
@@ -56,7 +54,12 @@ export default function ProjectTable({ projectIds }: ProjectTableProps) {
 
   return (
     <>
-      <Table data={getSpaceTableRows(projectIds)} columnsHeadings={['Project ID']} columnsWidthPercents={[100]} actions={tableActions} />
+      <Table
+        data={getSpaceTableRows(projectIds)}
+        columnsHeadings={['Project ID']}
+        columnsWidthPercents={[100]}
+        actions={isAdmin() ? tableActions : undefined}
+      />
       <Button
         onClick={() => {
           router.push(`/crowd-funding/projects/create`);
