@@ -12,7 +12,7 @@ const s3Client = new S3Client({
   },
 });
 
-export async function postHandler(req: NextRequest): Promise<NextResponse<{ url: string }>> {
+async function postHandler(req: NextRequest): Promise<NextResponse<{ url: string }>> {
   const bodyBuffer = await req.arrayBuffer();
   console.log(`Received file with ${bodyBuffer.byteLength} bytes`);
   const fileName = req.headers.get('x-file-name');
