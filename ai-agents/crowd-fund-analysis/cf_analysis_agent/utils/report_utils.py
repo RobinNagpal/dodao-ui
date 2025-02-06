@@ -123,6 +123,7 @@ class ProjectStatusFileSchema(TypedDict, total=False):
     """
     id: str
     name: str
+    imgUrl:str
     projectInfoInput: ProjectInfoInputSchema
     status: ProcessingStatus
     reports: Dict[str, ReportSchema]
@@ -207,6 +208,7 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
     project_file_contents: ProjectStatusFileSchema = {
         "id": project_id,
         "name": project_details["project_name"],
+        "imgUrl": project_details["project_img_url"],
         "projectInfoInput": {
             "crowdFundingUrl": project_details["crowdfunding_link"],
             "secFilingUrl": project_details["latest_sec_filing_link"],
