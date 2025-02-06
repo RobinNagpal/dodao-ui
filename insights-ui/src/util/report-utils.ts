@@ -1,3 +1,6 @@
 export function getReportName(key: string) {
-  return key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
+  return key
+    .toLowerCase() // Convert the entire key to lowercase
+    .replace(/_/g, ' ') // Replace underscores with spaces
+    .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
 }
