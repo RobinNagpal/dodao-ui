@@ -1,11 +1,11 @@
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { ProjectDetails, SpiderGraph } from '@/types/project/project';
+import { ProjectDetails, REPORT_TYPES_TO_DISPLAY, ReportInterfaceWithType, SpiderGraph } from '@/types/project/project';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { Metadata } from 'next';
 import React from 'react';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import ProjectDetailPage from '@/components/projects/ProjectDetailPage';
+import ProjectDebugPage from '@/components/projects/ProjectDebugPage';
 import NewProjectDetailPage from '@/components/projects/NewProductDeatilPage';
 
 export async function generateMetadata({ params }: { params: Promise<{ projectId: string }> }): Promise<Metadata> {
@@ -75,8 +75,7 @@ export default async function ProjectDetailPageWrapper({ params }: { params: Pro
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <NewProjectDetailPage projectId={projectId} initialProjectDetails={data.projectDetails} spiderGraph={spiderGraph} />
-      <ProjectDetailPage projectId={projectId} initialProjectDetails={data.projectDetails} spiderGraph={spiderGraph} />
+      {data.projectDetails && <NewProjectDetailPage projectId={projectId} initialProjectDetails={data.projectDetails} projectDetails={data.projectDetails} />}
     </PageWrapper>
   );
 }
