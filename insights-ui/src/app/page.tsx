@@ -17,13 +17,7 @@ export default async function Home() {
             <p className="my-2 text-sm text-color">A list of all the projects.</p>
           </div>
         </div>
-        {data.projectIds.length > 0 ? (
-          <div className="block-bg-color">
-            <ProjectTable projectIds={data.projectIds} />
-          </div>
-        ) : (
-          <div className="text-color text-center">No projects to show</div>
-        )}
+        {data.projectIds.length > 0 ? <ProjectTable projectIds={data.projectIds} /> : <div className="text-color text-center">No projects to show</div>}
       </div>
     </PageWrapper>
   );

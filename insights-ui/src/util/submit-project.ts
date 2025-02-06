@@ -23,20 +23,20 @@ export async function submitProject(projectDetails: ProjectSubmissionData): Prom
       const responseData = await response.json();
       return {
         success: true,
-        message: responseData.message || 'Report(s) regenerated successfully.',
+        message: responseData.message || 'Project submitted successfully.',
       };
     }
 
     const errorData = await response.json();
     return {
       success: false,
-      message: errorData.message || 'Unable to regenerate report(s).',
+      message: errorData.message || 'Unable to submit report',
     };
   } catch (error) {
-    console.error('Error during report regeneration:', error);
+    console.error('Error during project submission:', error);
     return {
       success: false,
-      message: 'An error occurred while regenerating the report(s).',
+      message: 'An error occurred while submitting project.',
     };
   }
 }

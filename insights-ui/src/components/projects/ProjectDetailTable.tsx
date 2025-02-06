@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { regenerateReport } from '@/util/regenerate';
 import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
+import { isAdmin } from '@/util/auth/isAdmin';
 
 interface ProjectDetailTableProps {
   reports: ReportWithName[];
@@ -33,7 +34,6 @@ export default function ProjectDetailTable({ reports, projectId, reload }: Proje
 
   const tableActions: TableActions = {
     items: (report: ReportWithName) => [
-      { key: 'view', label: 'View' },
       ...MODEL_OPTIONS.map((model) => ({
         key: `regenerate_${model.key}`,
         label: `Regenerate with ${model.label}`,
@@ -41,9 +41,7 @@ export default function ProjectDetailTable({ reports, projectId, reload }: Proje
       })),
     ],
     onSelect: async (key: string, item: ReportWithName) => {
-      if (key === 'view') {
-        router.push(`/crowd-funding/projects/${projectId}/reports/${item.name}`);
-      } else if (key.startsWith('regenerate_')) {
+      if (key.startsWith('regenerate_')) {
         const model = key.replace('regenerate_', '');
         const { success, message } = await regenerateReport(projectId, model, item.name);
         success ? reload() : alert(message);
@@ -86,7 +84,12 @@ export default function ProjectDetailTable({ reports, projectId, reload }: Proje
 
   return (
     <div className="mt-6">
-      <Table data={getSpaceTableRows(reports)} columnsHeadings={['Report Name', 'Status / Links']} columnsWidthPercents={[50, 50]} actions={tableActions} />
+      <Table
+        data={getSpaceTableRows(reports)}
+        columnsHeadings={['Report Name', 'Status / Links']}
+        columnsWidthPercents={[50, 50]}
+        actions={isAdmin() ? tableActions : undefined}
+      />
     </div>
   );
 }
