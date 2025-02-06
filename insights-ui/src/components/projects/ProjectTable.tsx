@@ -54,22 +54,26 @@ export default function ProjectTable({ projectIds }: ProjectTableProps) {
 
   return (
     <>
-      <Table
-        data={getSpaceTableRows(projectIds)}
-        columnsHeadings={['Project ID']}
-        columnsWidthPercents={[100]}
-        actions={isAdmin() ? tableActions : undefined}
-      />
-      <Button
-        onClick={() => {
-          router.push(`/crowd-funding/projects/create`);
-        }}
-        className="block m-4 "
-        variant="contained"
-        primary
-      >
-        Add New Project
-      </Button>
+      <div className="flex justify-end">
+        <Button
+          onClick={() => {
+            router.push(`/crowd-funding/projects/create`);
+          }}
+          className="m-4"
+          variant="contained"
+          primary
+        >
+          Add New Project
+        </Button>
+      </div>
+      <div className="block-bg-color">
+        <Table
+          data={getSpaceTableRows(projectIds)}
+          columnsHeadings={['Project ID']}
+          columnsWidthPercents={[100]}
+          actions={isAdmin() ? tableActions : undefined}
+        />
+      </div>
     </>
   );
 }
