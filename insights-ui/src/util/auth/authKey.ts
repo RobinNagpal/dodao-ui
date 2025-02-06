@@ -10,4 +10,3 @@ export function setAuthKey(key: string) {
     localStorage.setItem(InsightsConstants.AUTHENTICATION_KEY, key);
   }
 }
-
