@@ -41,7 +41,6 @@ export default function ProjectActionsDropdown({ projectId, postGenerateReport }
           postGenerateReport?.(projectId, { success, message });
         }
       }}
-      className="pr-4"
     />
   );
 }

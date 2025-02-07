@@ -4,7 +4,7 @@ import React from 'react';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import ProjectSummaryCard from '@/components/projects/ProjectSummaryCard';
 import AddProjectButton from '@/components/ui/AddProjectButton';
-import { isAdmin } from '@/util/auth/isAdmin';
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
 
 export default async function Home() {
   const apiUrl = `${getBaseUrl()}/api/crowd-funding/projects`;
@@ -20,7 +20,9 @@ export default async function Home() {
             <p className="my-2 text-sm text-color">A list of all the projects.</p>
           </div>
         </div>
-        {isAdmin() && <AddProjectButton />}
+        <PrivateWrapper>
+          <AddProjectButton />
+        </PrivateWrapper>
         <Grid4Cols>
           {data.projectIds!.length > 0 ? (
             data.projectIds.map((projectId: string) => <ProjectSummaryCard key={projectId} projectId={projectId} />)
