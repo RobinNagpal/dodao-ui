@@ -253,11 +253,9 @@ async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
 
   if (space.id === PredefinedSpaces.DODAO_HOME) {
     await writeDoDAOSiteMapToStream(smStream);
-  }
-  if (space.id === PredefinedSpaces.TIDBITS_HUB) {
+  } else if (space.id === PredefinedSpaces.TIDBITS_HUB) {
     await writeTidbitsHubSiteMapToStream(smStream);
-  }
-  if (space.type === SpaceTypes.AcademySite) {
+  } else if (space.type === SpaceTypes.AcademySite) {
     smStream.write({ url: '/', changefreq: 'daily', priority: 1.0 });
     const features = getFeaturesArray(space.id);
     for (const feature of features) {
@@ -280,9 +278,10 @@ async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
           break;
       }
     }
-  }
-  if (space.type === SpaceTypes.TidbitsSite) {
+  } else if (space.type === SpaceTypes.TidbitsSite) {
     smStream.write({ url: '/', changefreq: 'daily', priority: 1.0 }), await writeTidbitsSiteUrlsToStream(space, smStream);
+  } else {
+    smStream.write({ url: '/', changefreq: 'daily', priority: 1.0 });
   }
 
   smStream.end();

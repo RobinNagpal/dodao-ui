@@ -11,7 +11,7 @@ export function getGTagId(space: { id: string }) {
 export function getGTagIdByHost(host?: string) {
   if (host === 'uniswap.university') {
     return 'G-GHYGJ5DYRF';
-  } else if ('dodao.io') {
+  } else if (host === 'dodao.io') {
     return 'G-4WB58RV063';
   } else {
     return 'G-BJX2V8FE7L';
