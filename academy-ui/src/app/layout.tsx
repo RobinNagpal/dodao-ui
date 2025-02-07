@@ -14,6 +14,8 @@ import Script from 'next/script';
 import { CSSProperties, ReactNode } from 'react';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
+import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
+import { SpaceTypes } from '@/types/space/SpaceDto';
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -26,6 +28,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const space = (await getSpaceServerSide())!;
 
   const gtag = getGTagIdByHost(host);
+
+  const recognizedSpace =
+    space?.id === PredefinedSpaces.DODAO_HOME ||
+    space?.id === PredefinedSpaces.TIDBITS_HUB ||
+    space?.type === SpaceTypes.AcademySite ||
+    space?.type === SpaceTypes.TidbitsSite;
+
+  const shouldLoadGA = recognizedSpace && gtag;
 
   const themeValue = space?.themeColors || GlobalThemeColors;
 
@@ -44,16 +54,20 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="h-full">
       <body className={'max-h-screen'} style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
-        <Script src={`https://www.googletagmanager.com/gtag/js?id=${gtag}`} />
-        <Script id="google-analytics">
-          {`
+        {shouldLoadGA && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${gtag}`} />
+            <Script id="google-analytics">
+              {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
  
           gtag('config', '${gtag}');
         `}
-        </Script>
+            </Script>
+          </>
+        )}
         <StyledComponentsRegistry>
           <SpaceProvider>
             <NotificationProvider>

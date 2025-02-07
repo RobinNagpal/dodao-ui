@@ -125,9 +125,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 async function Home() {
-  const headersList = await headers();
-  const host = headersList.get('host')?.split(':')?.[0];
-
   const space = await getSpaceServerSide();
   const session = (await getServerSession(authOptions)) as Session;
 
@@ -135,7 +132,7 @@ async function Home() {
     return await getTidbitsSiteHomepageContents(space, session);
   }
 
-  if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
+  if (space?.id === PredefinedSpaces.DODAO_HOME) {
     return <DoDAOHome />;
   }
 
