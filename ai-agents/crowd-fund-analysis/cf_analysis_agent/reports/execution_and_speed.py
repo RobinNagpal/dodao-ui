@@ -88,9 +88,8 @@ def generate_execution_and_speed_report(state: AgentState) -> StructuredReportRe
 def create_execution_and_speed_report(state: AgentState) -> None:
     print("Generating execution and speed report")
     project_id = state.get("project_info").get("project_id")
-    triggered_by = state.get("triggered_by")
     try:
-        update_report_status_in_progress(project_id, ReportType.EXECUTION_AND_SPEED, triggered_by)
+        update_report_status_in_progress(project_id, ReportType.EXECUTION_AND_SPEED)
         report_output = generate_execution_and_speed_report(state)
         update_report_with_structured_output(project_id, ReportType.EXECUTION_AND_SPEED, report_output)
     except Exception as e:

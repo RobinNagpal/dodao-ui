@@ -70,9 +70,8 @@ def generate_market_opportunity_report(state: AgentState) -> StructuredReportRes
 def create_market_opportunity_report(state: AgentState) -> None:
     print("Generating market opportunity report")
     project_id = state.get("project_info").get("project_id")
-    triggered_by = state.get("triggered_by")
     try:
-        update_report_status_in_progress(project_id, ReportType.MARKET_OPPORTUNITY, triggered_by)
+        update_report_status_in_progress(project_id, ReportType.MARKET_OPPORTUNITY)
         report_output = generate_market_opportunity_report(state)
         update_report_with_structured_output(project_id, ReportType.MARKET_OPPORTUNITY, report_output)
     except Exception as e:

@@ -125,9 +125,6 @@ def api_submit():
 
     # Append the selected model as an argument
     command.extend(["--model", OPEN_AI_DEFAULT_MODEL])
-    
-    # Append the admin name as an argument
-    command.extend(["--admin", admin_name])
 
     # Run the command asynchronously
     subprocess.Popen(command)
@@ -176,7 +173,7 @@ def regenerate_reports(projectId):
         model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
         
         update_status_to_not_started_for_all_reports(project_id=projectId, triggered_by=admin_name)
-        command = prepare_processing_command(projectId, model, admin_name)
+        command = prepare_processing_command(projectId, model)
 
         # Start the subprocess
         subprocess.Popen(command)
@@ -210,10 +207,10 @@ def regenerate_specific_report(projectId, report_type):
         
         data = request.get_json(silent=True) or {} # Handle case if no body was sent
         model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
-
+        
         # Prepare the command to start processing
         update_report_status_in_progress(project_id=projectId, report_type=report_type, triggered_by=admin_name)
-        command = prepare_processing_command(projectId, model, admin_name)
+        command = prepare_processing_command(projectId, model)
 
         # Add the report_type to the command
         command.extend(["--report_type", report_type])

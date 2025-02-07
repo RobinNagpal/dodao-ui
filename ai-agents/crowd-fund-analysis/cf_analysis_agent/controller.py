@@ -8,7 +8,7 @@ from cf_analysis_agent.utils.report_utils import get_project_info_from_s3
 from cf_analysis_agent.utils.process_project_utils import ensure_processed_project_info
 
 
-def prepare_processing_command(project_id, model, admin):
+def prepare_processing_command(project_id, model):
     """
     Prepares the command to start processing based on variables extracted from S3.
 
@@ -41,9 +41,6 @@ def prepare_processing_command(project_id, model, admin):
 
     # Append the selected model as an argument
     command.extend(["--model", model])
-    
-    # Append the admin name as an argument
-    command.extend(["--admin", admin])
 
     return command
 
@@ -73,11 +70,6 @@ def parse_arguments() -> AgentState:
         help="Optional: Specify the model to use for regeneration (e.g., 'gpt-4o' or 'gpt-4o-mini').",
         default=None  # Default to None if not provided
     )
-    parser.add_argument(
-        "--admin",
-        help="Optional: Specify the admin name to use for regeneration.",
-        default=None  # Default to None if not provided
-    )
 
     args = parser.parse_args()
 
@@ -90,7 +82,6 @@ def parse_arguments() -> AgentState:
     additional_links = [link.strip() for link in args.additional_links.split(",") if link.strip()]
     report_type = args.report_type.strip().strip('"') if args.report_type else "all"
     model = args.model.strip().strip('"') if args.model else "gpt-4o-mini"
-    admin = args.admin.strip().strip('"') if args.model else ""
 
     project_info: ProjectInfo = {
         "project_id": project_id,
@@ -115,7 +106,6 @@ def parse_arguments() -> AgentState:
         "reports_to_generate": None,
         "processed_project_info": processed_project_info,
         "final_report": None,
-        "triggered_by" : admin
     }
     return state
 

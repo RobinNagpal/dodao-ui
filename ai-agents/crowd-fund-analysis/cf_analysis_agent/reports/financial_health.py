@@ -86,9 +86,8 @@ def generate_financial_health_report(state: AgentState) -> StructuredReportRespo
 def create_financial_health_report(state: AgentState) -> None:
     print("Generating financial health report")
     project_id = state.get("project_info").get("project_id")
-    triggered_by = state.get("triggered_by")
     try:
-        update_report_status_in_progress(project_id, ReportType.FINANCIAL_HEALTH, triggered_by)
+        update_report_status_in_progress(project_id, ReportType.FINANCIAL_HEALTH)
         report_output = generate_financial_health_report(state)
         update_report_with_structured_output(project_id, ReportType.FINANCIAL_HEALTH, report_output)
     except Exception as e:

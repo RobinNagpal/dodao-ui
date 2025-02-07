@@ -264,11 +264,10 @@ def create_founder_and_team_report(state: AgentState) -> None:
     Orchestrates the entire team info analysis process.
     """
     project_id = state.get("project_info").get("project_id")
-    triggered_by = state.get("triggered_by")
     print("Generating team info")
     try:
         combined_text = state.get("processed_project_info").get("combined_scrapped_content")
-        update_report_status_in_progress(project_id, ReportType.FOUNDER_AND_TEAM, triggered_by)
+        update_report_status_in_progress(project_id, ReportType.FOUNDER_AND_TEAM)
         startup_info: StartupAndTeamInfoStructure = find_startup_info(state.get("config"), combined_text)
         linkedin_urls = find_linkedin_urls(startup_info)
         raw_profiles = scrape_linkedin_profiles(linkedin_urls)

@@ -349,10 +349,21 @@ def update_report_status_in_progress(project_id: str, report_type: ReportType, t
     Handles both individual reports and `finalReport`.
     """
     project_file_contents = get_project_file(project_id)
+    existing_report_data = project_file_contents["reports"].get(report_type, {})
+    
+    # Get default values (including "lastTriggeredBy" if provided)
+    updated_fields = get_init_data_for_report(report_type, triggered_by)
+    
+    # Only update fields that exist in `updated_fields`
+    for field, value in updated_fields.items():
+        existing_report_data[field] = value
 
-    project_file_contents["reports"][report_type] = get_init_data_for_report(report_type, triggered_by)
-    project_file_contents["reports"][report_type]["status"] = ProcessingStatus.IN_PROGRESS
+    # Ensure status is always updated to IN_PROGRESS
+    existing_report_data["status"] = ProcessingStatus.IN_PROGRESS
 
+    # Save updated report data
+    project_file_contents["reports"][report_type] = existing_report_data
+    
     update_project_file(project_id, project_file_contents)
     print(f"Updated status of report '{report_type}' to 'in_progress'.")
 
