@@ -1,11 +1,4 @@
-import {
-  CourseDetailsFragment,
-  CourseFragment,
-  CourseTopicFragment,
-  GuideFragment,
-  GuideSummaryFragment,
-  ClickableDemo,
-} from '@/graphql/generated/generated-types';
+import { CourseDetailsFragment, CourseFragment, GuideSummaryFragment, ClickableDemo, Timeline } from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto, SpaceTypes } from '@/types/space/SpaceDto';
 import { getSpaceBasedOnHostHeader } from '@/utils/space/getSpaceServerSide';
 import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
@@ -14,6 +7,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { getFeaturesArray } from '@/utils/features';
+import { FeatureName } from '@dodao/web-core/types/features/spaceFeatures';
 
 interface SiteMapUrl {
   url: string;
@@ -58,19 +53,6 @@ async function getClickableDemoUrls(spaceId: string): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-async function getGuideUrlsForAcademy(spaceId: string): Promise<SiteMapUrl[]> {
-  const allGuides: GuideSummaryFragment[] = await getAllGuidesWithSteps(spaceId);
-  const urls: SiteMapUrl[] = [];
-  for (const guide of allGuides) {
-    urls.push({
-      url: `/guides/view/${guide.id}/0`,
-      changefreq: 'monthly',
-      priority: 0.8,
-    });
-  }
-  return urls;
-}
-
 async function getAllCourseKeys(spaceId: string) {
   const baseUrl = getBaseUrl();
   const response = await axios.get(`${baseUrl}/api/courses`, {
@@ -86,39 +68,6 @@ async function getCourseDetails(spaceId: string, courseKey: string) {
     params: { spaceId },
   });
   return response.data.course as CourseDetailsFragment;
-}
-
-async function getCourseUrlsForAcademy(spaceId: string): Promise<SiteMapUrl[]> {
-  const courses = await getAllCourseKeys(spaceId);
-  const urls: SiteMapUrl[] = [];
-
-  for (const course of courses) {
-    urls.push({
-      url: `/courses/view/${course.key}`,
-      changefreq: 'weekly',
-      priority: 0.8,
-    });
-
-    const detailedCourse = await getCourseDetails(spaceId, course.key);
-
-    for (const topic of detailedCourse.topics || []) {
-      urls.push({
-        url: `/courses/view/${detailedCourse.key}/${topic.key}`,
-        changefreq: 'weekly',
-        priority: 0.7,
-      });
-
-      for (const explanation of topic.explanations || []) {
-        urls.push({
-          url: `/courses/view/${detailedCourse.key}/${topic.key}/explanations/${explanation.key}`,
-          changefreq: 'weekly',
-          priority: 0.6,
-        });
-      }
-    }
-  }
-
-  return urls;
 }
 
 async function getDoDAOSiteMapUrls(): Promise<SiteMapUrl[]> {
@@ -190,17 +139,7 @@ async function getTidbitCollectionUrlsForAcademy(spaceId: string): Promise<SiteM
   return urls;
 }
 
-async function writeUrlsToStream(space: SpaceWithIntegrationsDto, host: string, smStream: SitemapStream) {
-  const guideUrls = await getGuideUrlsForAcademy(space.id);
-  for (const guideUrl of guideUrls) {
-    smStream.write(guideUrl);
-  }
-
-  const courseUrls = await getCourseUrlsForAcademy(space.id);
-  for (const courseUrl of courseUrls) {
-    smStream.write(courseUrl);
-  }
-
+async function writeTidbitsSiteUrlsToStream(space: SpaceWithIntegrationsDto, smStream: SitemapStream) {
   const demoUrls = await getClickableDemoUrls(space.id);
   for (const demoUrl of demoUrls) {
     smStream.write(demoUrl);
@@ -209,6 +148,100 @@ async function writeUrlsToStream(space: SpaceWithIntegrationsDto, host: string, 
   const tidbitUrls = await getTidbitCollectionUrlsForAcademy(space.id);
   for (const tidbitUrl of tidbitUrls) {
     smStream.write(tidbitUrl);
+  }
+}
+
+async function writeGuidesUrls(spaceId: string, smStream: SitemapStream) {
+  smStream.write({ url: '/guides', changefreq: 'weekly', priority: 0.9 });
+
+  const allGuides: GuideSummaryFragment[] = await getAllGuidesWithSteps(spaceId);
+  for (const guide of allGuides) {
+    smStream.write({
+      url: `/guides/view/${guide.id}/0`,
+      changefreq: 'monthly',
+      priority: 0.8,
+    });
+  }
+}
+
+async function writeCoursesUrls(spaceId: string, smStream: SitemapStream) {
+  smStream.write({ url: '/courses', changefreq: 'weekly', priority: 0.9 });
+
+  const courses = await getAllCourseKeys(spaceId);
+  for (const course of courses) {
+    smStream.write({
+      url: `/courses/view/${course.key}`,
+      changefreq: 'weekly',
+      priority: 0.8,
+    });
+
+    const detailedCourse = await getCourseDetails(spaceId, course.key);
+    for (const topic of detailedCourse.topics || []) {
+      smStream.write({
+        url: `/courses/view/${detailedCourse.key}/${topic.key}`,
+        changefreq: 'weekly',
+        priority: 0.7,
+      });
+      for (const explanation of topic.explanations || []) {
+        smStream.write({
+          url: `/courses/view/${detailedCourse.key}/${topic.key}/explanations/${explanation.key}`,
+          changefreq: 'weekly',
+          priority: 0.6,
+        });
+      }
+    }
+  }
+}
+
+async function writeTidbitUrls(spaceId: string, smStream: SitemapStream) {
+  smStream.write({ url: '/tidbit-collections', changefreq: 'weekly', priority: 0.9 });
+
+  const collections = await getTidbitCollections(spaceId);
+  for (const collection of collections) {
+    for (const item of collection.items || []) {
+      if (item.type === ByteCollectionItemType.Byte) {
+        smStream.write({
+          url: `/tidbit-collections/view/${collection.id}/${item.byte.byteId}`,
+          changefreq: 'weekly',
+          priority: 0.7,
+        });
+      }
+    }
+  }
+}
+
+async function writeClickableDemoUrls(spaceId: string, smStream: SitemapStream) {
+  smStream.write({ url: '/clickable-demos', changefreq: 'weekly', priority: 0.9 });
+
+  const demos = await getClickableDemos(spaceId);
+  for (const demo of demos) {
+    smStream.write({
+      url: `/clickable-demos/view/${demo.id}`,
+      changefreq: 'weekly',
+      priority: 0.8,
+    });
+  }
+}
+
+async function writeTimelinesUrls(spaceId: string, smStream: SitemapStream) {
+  smStream.write({ url: '/timelines', changefreq: 'weekly', priority: 0.9 });
+
+  const baseUrl = getBaseUrl();
+  const { data } = await axios.get(`${baseUrl}/api/timelines`, {
+    params: { spaceId },
+  });
+
+  const timelines = data?.timelines as Timeline[];
+  if (!timelines?.length) {
+    return;
+  }
+
+  for (const timeline of timelines) {
+    smStream.write({
+      url: `/timelines/view/${timeline.id}`,
+      changefreq: 'weekly',
+      priority: 0.8,
+    });
   }
 }
 
@@ -225,11 +258,31 @@ async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
     await writeTidbitsHubSiteMapToStream(smStream);
   }
   if (space.type === SpaceTypes.AcademySite) {
-    smStream.write({ url: '/', changefreq: 'daily', priority: 1.0 }), smStream.write({ url: '/guides', changefreq: 'weekly', priority: 0.9 });
-    smStream.write({ url: '/tidbit-collections', changefreq: 'weekly', priority: 0.9 });
-    smStream.write({ url: '/clickable-demos', changefreq: 'weekly', priority: 0.9 });
-    smStream.write({ url: '/courses', changefreq: 'weekly', priority: 0.9 });
-    await writeUrlsToStream(space, host, smStream);
+    smStream.write({ url: '/', changefreq: 'daily', priority: 1.0 });
+    const features = getFeaturesArray(space.id);
+    for (const feature of features) {
+      if (!feature.enabled) continue;
+      switch (feature.featureName) {
+        case FeatureName.Guides:
+          await writeGuidesUrls(space.id, smStream);
+          break;
+        case FeatureName.Courses:
+          await writeCoursesUrls(space.id, smStream);
+          break;
+        case FeatureName.ByteCollections:
+          await writeTidbitUrls(space.id, smStream);
+          break;
+        case FeatureName.ClickableDemos:
+          await writeClickableDemoUrls(space.id, smStream);
+          break;
+        case FeatureName.Timelines:
+          await writeTimelinesUrls(space.id, smStream);
+          break;
+      }
+    }
+  }
+  if (space.type === SpaceTypes.TidbitsSite) {
+    smStream.write({ url: '/', changefreq: 'daily', priority: 1.0 }), await writeTidbitsSiteUrlsToStream(space, smStream);
   }
 
   smStream.end();

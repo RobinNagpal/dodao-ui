@@ -51,7 +51,6 @@ def route_single_or_all(state: AgentState) -> Sequence[str]:
     """
     Routes execution to either a single report node or all nodes.
     """
-    print(f"Routing to single or all for: {state["report_input"]}" )
     if state["report_input"] == "all":
         return "generate_all_reports_serially"  # Convert dict_keys to list
     elif state["report_input"] == 'finalReport':

@@ -5,7 +5,8 @@ import traceback
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_cors import CORS
-from cf_analysis_agent.utils.env_variables import BUCKET_NAME, OPEN_AI_DEFAULT_MODEL, REGION
+from cf_analysis_agent.utils.env_variables import BUCKET_NAME, OPEN_AI_DEFAULT_MODEL, REGION, ADMIN_CODES
+from cf_analysis_agent.utils.agent_utils import generate_hashed_key
 
 # # Add the parent directory of app.py to the Python path this maybe temporary we can change it later for that we will have to change docker file as well
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -213,6 +214,30 @@ def regenerate_specific_report(projectId, report_type):
             "status": "error",
             "message": f"An error occurred: {str(e)}"
         }), 500
+        
+@app.route('/api/authenticate', methods=['POST'])
+def authenticate():
+    data = request.get_json()
+    code = data.get("code")
+
+    if not code:
+        return jsonify({
+            "status": "error",
+            "message": "Code is required"
+        }), 400
+
+    if code in ADMIN_CODES:
+        hashed_key = generate_hashed_key(code)
+        return jsonify({
+                    "status": "success",
+                    "message": "Authenticated successfully.",
+                    "key": hashed_key
+                }), 200
+
+    return jsonify({
+            "status": "error",
+            "message": "Invalid code"
+        }), 401
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

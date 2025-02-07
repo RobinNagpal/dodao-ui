@@ -1,26 +1,25 @@
 'use client';
 
-import React from 'react';
+import { SpiderGraph } from '@/types/project/project';
+import { getReportName } from '@/util/report-utils';
 import {
   Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-  ChartOptions,
-  ChartData,
-  TooltipItem,
   Chart,
-  ChartArea,
-  ChartComponent,
-  Plugin,
-  TooltipPositionerFunction,
+  ChartData,
+  ChartOptions,
   ChartType,
+  Filler,
+  Legend,
+  LineElement,
+  Plugin,
+  PointElement,
+  RadialLinearScale,
+  Tooltip,
+  TooltipItem,
+  TooltipPositionerFunction,
 } from 'chart.js';
+import React from 'react';
 import { Radar } from 'react-chartjs-2';
-import { SpiderGraph } from '@/types/project/project';
 
 // Register necessary Chart.js components
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
@@ -76,13 +75,10 @@ declare module 'chart.js' {
 }
 
 const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
-  const labels = Object.keys(data);
-  const scores = labels.map((category) => data[category].reduce((acc, item) => acc + item.score, 0));
+  const itemKeys = Object.keys(data);
+  const scores = itemKeys.map((category) => data[category].scores.reduce((acc, item) => acc + item.score, 0));
 
   Tooltip.positioners.myCustomPositioner = function (tooltipItems, eventPosition) {
-    // A reference to the tooltip model
-    const tooltip = this;
-
     if (!tooltipItems.length) {
       return eventPosition;
     }
@@ -107,7 +103,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
 
   // Convert data into the required format
   const chartData: ChartData<'radar'> = {
-    labels: labels,
+    labels: itemKeys.map((itemKey) => data[itemKey].key),
     datasets: [
       {
         data: scores,
@@ -130,7 +126,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
     onClick: (event, elements) => {
       if (elements.length > 0) {
         const index = elements[0].index; // Get the clicked index
-        const targetLabel = labels[index]; // Get the corresponding label
+        const targetLabel = itemKeys[index]; // Get the corresponding label
         const targetElement = document.getElementById(targetLabel); // Find the section by id
         if (targetElement) {
           targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Smooth scroll to the section
@@ -171,14 +167,14 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
         position: 'myCustomPositioner',
         caretSize: 0,
         callbacks: {
-          title: (tooltipItems: TooltipItem<'radar'>[]) => tooltipItems[0].label.replace(/([A-Z])/g, ' $1').replace(/^./, (str: string) => str.toUpperCase()),
+          title: (tooltipItems: TooltipItem<'radar'>[]) => tooltipItems.map((item) => getReportName(item.label)),
           label: () => '', // Skip label
           afterBody: (tooltipItems: TooltipItem<'radar'>[]) => {
             const categoryData = data[tooltipItems[0].label]; // Match category
             return `${'a sentence over here a sentence over here a sentence over here'}`;
           },
           footer: (tooltipItems: TooltipItem<'radar'>[]) => {
-            const categoryData = data[tooltipItems[0].label];
+            const categoryData = data[tooltipItems[0].label].scores;
             const totalChecks = categoryData.length;
             const totalOnes = categoryData.filter((item) => item.score === 1).length;
             const analysisChecks = categoryData.map((item) => (item.score === 1 ? '✅' : '❌')).join('');
