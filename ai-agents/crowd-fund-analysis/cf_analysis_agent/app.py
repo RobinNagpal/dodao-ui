@@ -219,10 +219,7 @@ def authenticate():
     code = data.get("code")
 
     if not code:
-        return jsonify({
-            "status": "error",
-            "message": "Code is required"
-        }), 400
+        return jsonify({"status": "error", "message": "Code is required"}), 400
 
     if code in ADMIN_CODES:
         hashed_key = generate_hashed_key(code)
@@ -232,10 +229,7 @@ def authenticate():
                     "key": hashed_key
                 }), 200
 
-    return jsonify({
-            "status": "error",
-            "message": "Invalid code"
-        }), 401
+    return jsonify({"status": "error", "message": "Invalid code"}), 401
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
