@@ -1,11 +1,13 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { ChildLayout } from '@/components/layout/ChildLayout';
+import { SpaceProvider } from '@/contexts/SpaceContext';
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { SpaceProvider } from '@/contexts/SpaceContext';
-import { getGTagId, getGTagIdByHost } from '@dodao/web-core/utils/analytics/getGTagId';
+import { getGTagIdByHost } from '@dodao/web-core/utils/analytics/getGTagId';
+import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import StyledComponentsRegistry from '@dodao/web-core/utils/StyledComponentsRegistry';
 import { Analytics } from '@vercel/analytics/react';
 import { getServerSession } from 'next-auth';
@@ -14,8 +16,6 @@ import Script from 'next/script';
 import { CSSProperties, ReactNode } from 'react';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
-import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
-import { SpaceTypes } from '@/types/space/SpaceDto';
 
 interface RootLayoutProps {
   children: ReactNode;

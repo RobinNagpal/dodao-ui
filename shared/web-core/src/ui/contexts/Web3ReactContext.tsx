@@ -1,3 +1,5 @@
+'use client';
+
 import type { CoinbaseWallet } from '@web3-react/coinbase-wallet';
 import { useWeb3React, Web3ReactHooks, Web3ReactProvider } from '@web3-react/core';
 import type { MetaMask } from '@web3-react/metamask';
