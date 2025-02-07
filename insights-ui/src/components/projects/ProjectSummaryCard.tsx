@@ -4,18 +4,12 @@ import { shorten } from '@dodao/web-core/utils/utils';
 import Link from 'next/link';
 import React from 'react';
 import { InsightsConstants } from '@/util/insights-constants';
-import { regenerateReport } from '@/util/regenerate';
-import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import { isAdmin } from '@/util/auth/isAdmin';
-import Elipsis from './Elipsis';
+import ProjectActionsDropdown from './ProjectActionsDropdown';
+import PrivateWrapper from '../auth/PrivateWrapper';
 
 interface ProjectSummaryCardProps {
   projectId: string;
 }
-const MODEL_OPTIONS = [
-  { key: 'gpt-4o', label: 'gpt-4o' },
-  { key: 'gpt-4o-mini', label: 'gpt-4o-mini' },
-];
 
 const ProjectSummaryCard: React.FC<ProjectSummaryCardProps> = ({ projectId }) => {
   function formatProjectName(projectId: string): string {
@@ -29,8 +23,11 @@ const ProjectSummaryCard: React.FC<ProjectSummaryCardProps> = ({ projectId }) =>
     <Card>
       <Link href={`/crowd-funding/projects/${projectId}`} className="card blog-card w-inline-block h-full w-full">
         <div className="relative w-full">
-          {isAdmin() && <Elipsis projectId={projectId} />}
-
+          <PrivateWrapper>
+            <div className="absolute top-2 right-2 py-2 pl-3 pr-4 text-right font-medium sm:pr-0">
+              <ProjectActionsDropdown projectId={projectId} />
+            </div>
+          </PrivateWrapper>
           <Thumbnail
             src={`https://${InsightsConstants.S3_BUCKET_NAME}.s3.us-east-1.amazonaws.com/images/${projectId}`}
             entityId={projectId}
