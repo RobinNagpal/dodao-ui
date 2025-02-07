@@ -21,7 +21,9 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ big_tile = false, max_tile_height
   const imgSrc = url ? getCDNImageUrl(url) : null;
   const address = entityId ? formatBytes32String(entityId.slice(0, 24)) : '';
 
-  let thumbnailClass = `${styles.thumbnailImage} ${big_tile ? styles.bigTile : ''} ${max_tile_height ? styles.dynamicHeight : ''} ${imageClass || ''}`;
+  let thumbnailClass = `${styles.thumbnailImage} ${big_tile ? styles.bigTile : ''} ${max_tile_height ? styles.dynamicHeight : ''} ${
+    imageClass || ''
+  } rounded-t-xl`;
 
   return (
     <div className={`flex justify-center ${big_tile ? 'w-full' : ''} ${className || ''}`}>
