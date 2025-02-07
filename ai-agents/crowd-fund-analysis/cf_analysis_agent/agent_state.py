@@ -100,6 +100,7 @@ class AgentState(TypedDict):
     config: Config
     final_report: FinalReport | None
 
+
 def get_combined_content(state: AgentState) -> str:
     """
     Combines all the content from different reports into a single report.
