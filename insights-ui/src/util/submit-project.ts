@@ -1,4 +1,5 @@
 import { ProjectSubmissionData } from '@/types/project/project';
+import { getAuthKey } from './auth/authKey';
 
 export async function submitProject(projectDetails: ProjectSubmissionData): Promise<{ success: boolean; message: string }> {
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
@@ -8,6 +9,7 @@ export async function submitProject(projectDetails: ProjectSubmissionData): Prom
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-admin-key': getAuthKey(),
       },
       body: JSON.stringify({
         projectId: projectDetails.projectId,
