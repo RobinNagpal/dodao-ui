@@ -8,12 +8,6 @@ variable "aws_region" {
   description = "AWS region to deploy into."
 }
 
-variable "lightsail_service_name" {
-  type    = string
-  default = "langflow-lightsail"
-  description = "Name of your AWS Lightsail Container Service."
-}
-
 variable "postgres_url" {
   type    = string
   default = "postgresql://user:password@host:5432/dbname"

@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    container_name: langflow-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-admin}
+      POSTGRES_DB: ${DB_NAME:-langflow_db}
+    ports:
+      - "5432:5432"  # Map host port 5433 to container port 5432
+    volumes:
+      - ./docker/data:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  langflow:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: langflow-app
+    depends_on:
+      - db
+    ports:
+      - "7860:7860"
+    environment:
+      LANGFLOW_DATABASE_URL: postgresql://${DB_USER:-admin}:${DB_PASSWORD:-admin}@db:5432/${DB_NAME:-langflow_db}
+      LANGFLOW_HOST: 0.0.0.0
+      LANGFLOW_PORT: 7860
+      LANGFLOW_AUTO_LOGIN: "False"
+    volumes:
+      - ./docker/langflow-data:/app/langflow
+    env_file:
+      - ./docker/.env

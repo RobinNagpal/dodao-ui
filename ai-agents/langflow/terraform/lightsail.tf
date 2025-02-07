@@ -9,7 +9,7 @@ resource "aws_lightsail_certificate" "ai_insights_certificate" {
 
 # Create the Lightsail Container Service
 resource "aws_lightsail_container_service" "langflow" {
-  name  = var.lightsail_service_name
+  name  = "langflow-lightsail"
   power = "micro" # can be nano, micro, small, medium, large, xlarge, 2xlarge
   scale = 1
 
