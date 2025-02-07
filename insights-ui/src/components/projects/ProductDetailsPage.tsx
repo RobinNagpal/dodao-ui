@@ -5,6 +5,7 @@ import { getReportName } from '@/util/report-utils';
 import Link from 'next/link';
 import React from 'react';
 import RadarChart from '../ui/RadarChart';
+import PrivateWrapper from '../auth/PrivateWrapper';
 
 interface ProjectDetailPageProps {
   projectId: string;
@@ -38,7 +39,9 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto  lg:text-center">
           <div className="flex justify-end">
-            <ProjectActionsDropdown projectId={projectId} />
+            <PrivateWrapper>
+              <ProjectActionsDropdown projectId={projectId} />
+            </PrivateWrapper>
           </div>
           <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">{initialProjectDetails.name}</p>
           <div className="max-w-lg mx-auto">
@@ -84,7 +87,9 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
                       </div>
                       <div className="flex justify-between font-semibold">
                         <div className="ml-6 text-xl">{getReportName(reportType)}</div>
-                        <ReportActionsDropdown projectId={projectId} report={{ ...report, type: reportType }} />
+                        <PrivateWrapper>
+                          <ReportActionsDropdown projectId={projectId} report={{ ...report, type: reportType }} />
+                        </PrivateWrapper>
                       </div>
                       <div className="text-sm py-1">{report.summary}</div>
                     </dt>
