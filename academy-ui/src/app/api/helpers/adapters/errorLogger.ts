@@ -16,7 +16,7 @@ export async function logError(
   }
 
   console.error(
-    e,
+    e?.message,
     JSON.stringify({
       spaceId,
       blockchain,
