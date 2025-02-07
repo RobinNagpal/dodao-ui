@@ -82,8 +82,9 @@ def generate_valuation_report(state: AgentState) -> StructuredReportResponse:
 def create_valuation_report(state: AgentState) -> None:
     print("Generating valuation report")
     project_id = state.get("project_info").get("project_id")
+    triggered_by = state.get("triggered_by")
     try:
-        update_report_status_in_progress(project_id, ReportType.VALUATION)
+        update_report_status_in_progress(project_id, ReportType.VALUATION, triggered_by)
         report_output = generate_valuation_report(state)
         update_report_with_structured_output(project_id, ReportType.VALUATION, report_output)
     except Exception as e:

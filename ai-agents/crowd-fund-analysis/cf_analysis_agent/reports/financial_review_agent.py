@@ -261,9 +261,10 @@ def create_financial_review_report(state: AgentState) -> None:
     Orchestrates the entire green flags analysis process.
     """
     project_id = state.get("project_info").get("project_id")
+    triggered_by = state.get("triggered_by")
     print("Generating financial review report")
     try:
-        update_report_status_in_progress(project_id, REPORT_NAME)
+        update_report_status_in_progress(project_id, REPORT_NAME, triggered_by)
         combined_text = state.get("processed_project_info").get("combined_scrapped_content")
         sec_content = state.get("processed_project_info").get("sec_scraped_content")
         form_c_data = extract_data_from_sec_node(sec_content,state.get("config"))

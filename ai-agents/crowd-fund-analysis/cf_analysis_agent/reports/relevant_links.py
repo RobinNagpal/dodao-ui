@@ -158,10 +158,11 @@ def create_relevant_links_report(state: AgentState) -> None:
     Orchestrates the entire relevant links search process.
     """
     project_id = state.get("project_info").get("project_id")
+    triggered_by = state.get("triggered_by")
     print("Generating relevant links")
     try:
         combined_text = state.get("processed_project_info").get("combined_scrapped_content")
-        update_report_status_in_progress(project_id, REPORT_NAME)
+        update_report_status_in_progress(project_id, REPORT_NAME, triggered_by)
         startup_info = find_startup_info(state.get("config"), combined_text)
         all_google_results = search_startup_on_google(startup_info)
         summaries = summarize_google_search_results(state.get("config"), all_google_results)

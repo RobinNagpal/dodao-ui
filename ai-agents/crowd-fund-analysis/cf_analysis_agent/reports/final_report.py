@@ -173,8 +173,9 @@ def generate_project_info_report(state: AgentState, combined_reports: str):
 def create_final_report_test(state: AgentState) -> None:
     print("Generating final report")
     project_id = state.get("project_info").get("project_id")
+    triggered_by = state.get("triggered_by")
     try:
-        update_report_status_in_progress(project_id, REPORT_NAME)
+        update_report_status_in_progress(project_id, REPORT_NAME, triggered_by)
         combined_reports = get_combined_reports_from_s3(project_id)
         report_content = generate_project_info_report(state, combined_reports)
         upload_to_s3(

@@ -99,6 +99,7 @@ class AgentState(TypedDict):
     processed_project_info: ProcessedProjectInfo | None
     config: Config
     final_report: FinalReport | None
+    triggered_by: str
 
 
 def get_combined_content(state: AgentState) -> str:

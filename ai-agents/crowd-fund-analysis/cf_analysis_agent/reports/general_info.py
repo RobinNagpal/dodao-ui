@@ -46,8 +46,9 @@ def generate_project_info_report(state: AgentState):
 def create_general_info_report(state: AgentState) -> None:
     print("Generating general info report")
     project_id = state.get("project_info").get("project_id")
+    triggered_by = state.get("triggered_by")
     try:
-        update_report_status_in_progress(project_id, REPORT_NAME)
+        update_report_status_in_progress(project_id, REPORT_NAME, triggered_by)
         report_content = generate_project_info_report(state)
         create_report_file_and_upload_to_s3(project_id, REPORT_NAME, report_content)
     except Exception as e:

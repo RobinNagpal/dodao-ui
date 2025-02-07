@@ -49,6 +49,7 @@ class ReportSchema(TypedDict, total=False):
     under certain conditions.
     """
     status: ProcessingStatus
+    lastTriggeredBy: NotRequired[Optional[str]]
     markdownLink: Optional[str]
     startTime: str
     estimatedTimeInSec: int
@@ -178,21 +179,26 @@ def get_project_info_from_s3(project_id: str) -> ProjectInfo:
     }
 
 
-def get_init_data_for_report(report_type: ReportType) -> ReportSchema:
+def get_init_data_for_report(report_type: ReportType, triggered_by = '') -> ReportSchema:
     """
     Returns an initialized ReportSchema dictionary
     for the given report_type.
     """
-    return {
+    report_data = {
         "status": ProcessingStatus.NOT_STARTED,
         "markdownLink": None,
         "startTime": datetime.now().isoformat(),
         "estimatedTimeInSec": 240 if report_type in [ReportType.FOUNDER_AND_TEAM, ReportType.FINANCIAL_HEALTH] else 150,
         "performanceChecklist": []
     }
+    
+    if triggered_by:
+        report_data["lastTriggeredBy"] = triggered_by
+        
+    return report_data
 
 
-def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
+def initialize_project_in_s3(project_id: str, project_details: ProjectInfo, triggered_by = ''):
     """
     Creates or re-initializes the agent-status.json file for a project,
     setting all reports to 'in_progress' along with basic metadata.
@@ -203,7 +209,7 @@ def initialize_project_in_s3(project_id: str, project_details: ProjectInfo):
     # Initialize all reports
     reports_data = {}
     for r_type in ALL_REPORT_TYPES:
-        reports_data[r_type] = get_init_data_for_report(r_type)
+        reports_data[r_type] = get_init_data_for_report(r_type, triggered_by)
     # Construct the status data
     project_file_contents: ProjectStatusFileSchema = {
         "id": project_id,
@@ -271,6 +277,8 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
             "confidence": report.get("confidence"),
             "performanceChecklist": new_performance_checklist
         }
+        if report.get("lastTriggeredBy"):
+            new_report["lastTriggeredBy"] = report["lastTriggeredBy"]
         new_reports[report_type] = new_report
 
     sec_info = project_file_contents["processedProjectInfo"].get("secInfo") or {}
@@ -335,14 +343,14 @@ def update_project_file(project_id: str, project_file_contents: ProjectStatusFil
         f"Updated status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
 
 
-def update_report_status_in_progress(project_id: str, report_type: ReportType):
+def update_report_status_in_progress(project_id: str, report_type: ReportType, triggered_by = ''):
     """
     Updates the `agent-status.json` file in S3 to set a report's status to "in_progress".
     Handles both individual reports and `finalReport`.
     """
     project_file_contents = get_project_file(project_id)
 
-    project_file_contents["reports"][report_type] = get_init_data_for_report(report_type)
+    project_file_contents["reports"][report_type] = get_init_data_for_report(report_type, triggered_by)
     project_file_contents["reports"][report_type]["status"] = ProcessingStatus.IN_PROGRESS
 
     update_project_file(project_id, project_file_contents)
@@ -427,14 +435,14 @@ def update_report_status_failed(project_id: str, report_type: ReportType, error_
     print(f"Updated status of report '{report_type}' to 'failed' with error message: {error_message}")
 
 
-def update_status_to_not_started_for_all_reports(project_id):
+def update_status_to_not_started_for_all_reports(project_id, triggered_by):
     agent_status_file_path = f"{project_id}/agent-status.json"
 
     project_file_contents = get_project_file(project_id)
 
     # Initialize all reports to "in_progress" and set timestamps
     for report_type in ALL_REPORT_TYPES:
-        project_file_contents["reports"][report_type] = get_init_data_for_report(report_type)
+        project_file_contents["reports"][report_type] = get_init_data_for_report(report_type, triggered_by)
         print(f"Set status of report '{report_type}' to 'not_started'. Initialized startTime and estimatedTimeInSec.")
 
     print(f"Set status of report 'finalReport' to 'not_started'. Initialized startTime and estimatedTimeInSec.")
@@ -444,7 +452,7 @@ def update_status_to_not_started_for_all_reports(project_id):
         f"Updated status file: https://{BUCKET_NAME}.s3.us-east-1.amazonaws.com/crowd-fund-analysis/{agent_status_file_path}")
 
 
-def create_report_file_and_upload_to_s3(project_id: str, report_type: ReportType, report_content: str, summary: str = ""):
+def create_report_file_and_upload_to_s3(project_id: str, report_type: ReportType, report_content: str):
     report_file_path = f"{project_id}/{report_type}.md"
     upload_to_s3(report_content, report_file_path)
     # Update status file to "completed"

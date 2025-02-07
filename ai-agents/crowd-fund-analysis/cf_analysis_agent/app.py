@@ -6,7 +6,7 @@ import traceback
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_cors import CORS
 from cf_analysis_agent.utils.env_variables import BUCKET_NAME, OPEN_AI_DEFAULT_MODEL, REGION, ADMIN_CODES
-from cf_analysis_agent.utils.agent_utils import generate_hashed_key
+from cf_analysis_agent.utils.agent_utils import generate_hashed_key, get_admin_name_from_request
 
 # # Add the parent directory of app.py to the Python path this maybe temporary we can change it later for that we will have to change docker file as well
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -75,6 +75,11 @@ def api_submit():
     """
     Handles JSON-based form submission, starts processing, and returns a JSON response.
     """
+    # Get admin name from request
+    admin_name, error_response = get_admin_name_from_request()
+    if error_response:
+        return error_response  # If there's an error, return it
+        
     if not request.is_json:
         return jsonify({"error": "Invalid request. JSON expected."}), 400
 
@@ -103,7 +108,7 @@ def api_submit():
     }
 
     # Initialize project (store in S3 or DB)
-    initialize_project_in_s3(project_id=project_id, project_details=project_details)
+    initialize_project_in_s3(project_id=project_id, project_details=project_details, triggered_by=admin_name)
     
     # Prepare command to run Python script asynchronously
     command = [
@@ -120,6 +125,9 @@ def api_submit():
 
     # Append the selected model as an argument
     command.extend(["--model", OPEN_AI_DEFAULT_MODEL])
+    
+    # Append the admin name as an argument
+    command.extend(["--admin", admin_name])
 
     # Run the command asynchronously
     subprocess.Popen(command)
@@ -159,11 +167,16 @@ def regenerate_reports(projectId):
     Regenerates reports for a given project using values from agent-status.json in S3.
     """
     try:
+        # Get admin name from request
+        admin_name, error_response = get_admin_name_from_request()
+        if error_response:
+            return error_response  # If there's an error, return it
+        
         data = request.get_json(silent=True) or {} # Handle case if no body was sent
         model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
         
-        update_status_to_not_started_for_all_reports(project_id=projectId)
-        command = prepare_processing_command(projectId, model)
+        update_status_to_not_started_for_all_reports(project_id=projectId, triggered_by=admin_name)
+        command = prepare_processing_command(projectId, model, admin_name)
 
         # Start the subprocess
         subprocess.Popen(command)
@@ -190,12 +203,17 @@ def regenerate_specific_report(projectId, report_type):
     Regenerates a specific report for a given project.
     """
     try:
+        # Get admin name from request
+        admin_name, error_response = get_admin_name_from_request()
+        if error_response:
+            return error_response  # If there's an error, return it
+        
         data = request.get_json(silent=True) or {} # Handle case if no body was sent
         model = data.get("model", OPEN_AI_DEFAULT_MODEL) 
-        
+
         # Prepare the command to start processing
-        update_report_status_in_progress(project_id=projectId, report_type=report_type)
-        command = prepare_processing_command(projectId, model)
+        update_report_status_in_progress(project_id=projectId, report_type=report_type, triggered_by=admin_name)
+        command = prepare_processing_command(projectId, model, admin_name)
 
         # Add the report_type to the command
         command.extend(["--report_type", report_type])
