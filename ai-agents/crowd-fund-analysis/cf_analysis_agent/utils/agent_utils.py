@@ -1,5 +1,4 @@
 import hashlib
-from cf_analysis_agent.utils.env_variables import SECRET_KEY
 from flask import request, jsonify
 from cf_analysis_agent.utils.env_variables import ADMIN_CODES
 
@@ -14,7 +13,7 @@ def combine_partial_state(state: dict, partial: dict) -> dict:
 
 def generate_hashed_key(code):
     """Generate a hashed key using SHA256"""
-    hash_obj = hashlib.sha256(f"{code}{SECRET_KEY}".encode())
+    hash_obj = hashlib.sha256(f"{code}".encode())
     return hash_obj.hexdigest()
 
 def extract_admin_name(code):
