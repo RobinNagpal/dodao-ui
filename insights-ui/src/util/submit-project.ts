@@ -12,6 +12,7 @@ export async function submitProject(projectDetails: ProjectSubmissionData): Prom
       body: JSON.stringify({
         projectId: projectDetails.projectId,
         projectName: projectDetails.projectName,
+        projectImgUrl: projectDetails.projectImgUrl,
         crowdFundingUrl: projectDetails.crowdFundingUrl,
         secFilingUrl: projectDetails.secFilingUrl,
         additionalUrls: projectDetails.additionalUrls,

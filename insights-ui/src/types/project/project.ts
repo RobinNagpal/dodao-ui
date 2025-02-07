@@ -44,6 +44,7 @@ export const REPORT_TYPES_TO_DISPLAY: ReportType[] = [
 export interface ProjectSubmissionData {
   projectId: string;
   projectName: string;
+  projectImgUrl?: string;
   crowdFundingUrl: string;
   websiteUrl: string;
   secFilingUrl: string;
@@ -166,6 +167,7 @@ export interface ProjectDetails {
    */
   id: string;
   name: string;
+  imgUrl?: string;
   projectInfoInput: ProjectInfoInput;
   status: ProcessingStatus;
   reports: Record<string, ReportInterface>;

@@ -8,9 +8,12 @@ import { submitProject } from '@/util/submit-project'; // Importing your functio
 import { ProjectDetails } from '@/types/project/project';
 import { ProjectSubmissionData } from '@/types/project/project';
 import { useRouter } from 'next/navigation';
+import UploadInput from '@dodao/web-core/components/core/uploadInput/UploadInput';
+import { uploadImageToS3 } from '@/util/upload-image';
 
 export default function EditProjectView(props: { projectId?: string | null; projectDetails?: ProjectDetails }) {
   const { projectId, projectDetails } = props;
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [projectUpserting, setProjectUpserting] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -18,12 +21,19 @@ export default function EditProjectView(props: { projectId?: string | null; proj
   const [project, setProject] = useState<ProjectSubmissionData>({
     projectId: projectDetails?.id || 'project_id',
     projectName: projectDetails?.name || 'project name',
+    projectImgUrl: projectDetails?.imgUrl || '',
     crowdFundingUrl: projectDetails?.projectInfoInput.crowdFundingUrl || 'Crowd Funding Url',
     websiteUrl: projectDetails?.projectInfoInput.websiteUrl || 'website url',
     secFilingUrl: projectDetails?.projectInfoInput.secFilingUrl || 'sec filing Url',
     additionalUrls: projectDetails?.projectInfoInput.additionalUrls || [],
   });
-
+  const handleImageUpload = async (file: File) => {
+    setLoading(true);
+    const url = await uploadImageToS3(file, project.projectId);
+    console.log('Image uploaded to:', url);
+    setProject((prev) => ({ ...prev, projectImgUrl: url }));
+    setLoading(false);
+  };
   useEffect(() => {
     setIsMounted(true);
   });
@@ -56,7 +66,7 @@ export default function EditProjectView(props: { projectId?: string | null; proj
   }
   return (
     <Block title="Project Information" className="font-semibold text-color">
-      <div className="mb-8">
+      <div className="mb-8 text-color">
         <Input
           modelValue={project.projectId}
           error={project.projectId == null ? 'Project ID is required' : ''}
@@ -78,6 +88,15 @@ export default function EditProjectView(props: { projectId?: string | null; proj
         >
           Project Name *
         </Input>
+
+        <UploadInput
+          spaceId={''}
+          modelValue={project.projectImgUrl}
+          label="Project Image"
+          uploadToS3={handleImageUpload}
+          loading={loading}
+          onInput={(e) => handleUpdateField('projectImgUrl', e as string)}
+        ></UploadInput>
 
         <Input
           modelValue={project.crowdFundingUrl}

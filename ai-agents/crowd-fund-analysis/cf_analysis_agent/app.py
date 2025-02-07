@@ -83,6 +83,7 @@ def api_submit():
     # Retrieve data safely
     project_id = data.get("projectId", "").strip()
     project_name = data.get("projectName", "").strip()
+    project_img_url = data.get("projectImgUrl", "").strip()
     crowdfunding_link = data.get("crowdFundingUrl", "").strip()
     website_url = data.get("websiteUrl", "").strip()
     latest_sec_filing_link = data.get("secFilingUrl", "").strip()
@@ -94,6 +95,7 @@ def api_submit():
     project_details = {
         "project_id": project_id,
         "project_name": project_name,
+        "project_img_url": project_img_url,
         "crowdfunding_link": crowdfunding_link,
         "website_url": website_url,
         "latest_sec_filing_link": latest_sec_filing_link,
