@@ -8,7 +8,7 @@ from cf_analysis_agent.utils.report_utils import get_project_info_from_s3
 from cf_analysis_agent.utils.process_project_utils import ensure_processed_project_info
 
 
-def prepare_processing_command(project_id, model):
+def prepare_processing_command(project_id, model, script_path="cf_analysis_agent/controller.py"):
     """
     Prepares the command to start processing based on variables extracted from S3.
 
@@ -20,8 +20,6 @@ def prepare_processing_command(project_id, model):
     Returns:
         list: The prepared command as a list of arguments.
     """
-    script_path="cf_analysis_agent/controller.py"
-    
     # Extract variables from S3
     variables: ProjectInfo = get_project_info_from_s3(project_id)
 
@@ -105,7 +103,7 @@ def parse_arguments() -> AgentState:
         },
         "reports_to_generate": None,
         "processed_project_info": processed_project_info,
-        "final_report": None,
+        "final_report": None
     }
     return state
 
