@@ -10,19 +10,17 @@ variable "aws_region" {
 
 variable "postgres_url" {
   type    = string
-  default = "postgresql://user:password@host:5432/dbname"
+  sensitive = true
   description = "URL for your existing Postgres database."
 }
 
 variable "langflow_superuser" {
   type    = string
-  default = "admin"
   description = "Username for Langflow superuser."
 }
 
 variable "langflow_superuser_password" {
   type      = string
-  default   = "securepassword"
   sensitive = true
   description = "Password for Langflow superuser."
 }

@@ -7,3 +7,5 @@ terraform/terraform-provider-*
 docker/.env
 
 .envrc
+postgres-data/*
+langflow-data/*
