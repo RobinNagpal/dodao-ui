@@ -5,3 +5,5 @@ terraform/terraform.tfvars
 terraform/terraform-provider-*
 
 docker/.env
+
+.envrc
