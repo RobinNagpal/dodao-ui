@@ -1,0 +1,11 @@
+terraform/.terraform
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/terraform.tfvars
+terraform/terraform-provider-*
+terraform/.terraform*
+docker/.env
+
+.envrc
+postgres-data/*
+langflow-data/*
