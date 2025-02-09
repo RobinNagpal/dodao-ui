@@ -10,7 +10,7 @@ resource "aws_lightsail_certificate" "langflow_certificate" {
 # Create the Lightsail Container Service
 resource "aws_lightsail_container_service" "langflow" {
   name  = "langflow-lightsail"
-  power = "micro" # can be nano, micro, small, medium, large, xlarge, 2xlarge
+  power = "small" # can be nano, micro, small, medium, large, xlarge, 2xlarge
   scale = 1
 
   tags = {
@@ -50,9 +50,10 @@ resource "aws_lightsail_container_service_deployment_version" "langflow_deployme
       LANGFLOW_SUPERUSER_PASSWORD = var.langflow_superuser_password
       LANGFLOW_SECRET_KEY         = var.langflow_secret_key
       LANGFLOW_DATABASE_URL       = var.postgres_url
+      OPENAI_API_KEY  = var.openai_api_key
 
       # Optional: override host/port if you want to run on 0.0.0.0
-      # LANGFLOW_HOST = "0.0.0.0"
+      LANGFLOW_HOST = "0.0.0.0"
       # LANGFLOW_PORT = "7860"
     }
     ports = {
