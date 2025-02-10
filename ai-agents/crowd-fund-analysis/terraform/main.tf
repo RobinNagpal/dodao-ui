@@ -62,6 +62,7 @@ resource "aws_lightsail_container_service_deployment_version" "cf_deployment" {
       S3_BUCKET_NAME        = var.s3_bucket_name
       LINKEDIN_EMAIL        = var.linkedin_email
       LINKEDIN_PASSWORD     = var.linkedin_password
+      PROXYCURL_API_KEY     = var.proxycurl_api_key
     }
 
     ports = {
@@ -125,6 +126,7 @@ variable "aws_default_region" {}
 variable "s3_bucket_name" {}
 variable "linkedin_email" {}
 variable "linkedin_password" {}
+variable "proxycurl_api_key" {}
 
 output "public_url" {
   value       = aws_lightsail_container_service.cf_service.url

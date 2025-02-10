@@ -14,7 +14,7 @@ _llm_cache: dict[str, BaseChatModel] = {}
 DEFAULT_LLM_CONFIG: Config = {"configurable": {"model": OPEN_AI_DEFAULT_MODEL}}
 
 MINI_4_0_CONFIG: Config = {"configurable": {"model": "gpt-4o-mini"}}
-MINI_O_3_CONFIG: Config = {"configurable": {"model": "gpt-o3-mini"}}
+MINI_O_3_CONFIG: Config = {"configurable": {"model": "o3-mini"}}
 NORMAL_4_0_CONFIG: Config = {"configurable": {"model": "gpt-4o"}}
 DEEP_SEEK_R1_CONFIG: Config = {"configurable": {"model": "deepseek-r1-distill-llama-70b"}}
 
@@ -30,11 +30,11 @@ def get_llm(config: Config) -> BaseChatModel:
     if model in _llm_cache:
         return _llm_cache[model]
     else:
-        if model == "gpt-4o-mini" or model == "gpt-o3-mini" or model == "gpt-4o":
-            _llm_cache[model] = ChatOpenAI(model_name=model, temperature=0, max_tokens=4000)
+        if model == "gpt-4o-mini" or model == "o3-mini" or model == "gpt-4o":
+            _llm_cache[model] = ChatOpenAI(model=model, temperature=0, max_tokens=4000)
             return _llm_cache[model]
         elif model == "deepseek-r1-distill-llama-70b":
-            _llm_cache[model] = ChatGroq(temperature=0, model_name=model, max_tokens=4000)
+            _llm_cache[model] = ChatGroq(temperature=0, model=model, max_tokens=4000)
             return _llm_cache[model]
         else:
             raise Exception(f"Model {model} not supported")

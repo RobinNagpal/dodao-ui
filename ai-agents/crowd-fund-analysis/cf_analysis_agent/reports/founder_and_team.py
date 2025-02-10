@@ -1,37 +1,24 @@
 import json
 import traceback
-from typing import List, Dict, Any
+from typing import List
 
 from dotenv import load_dotenv
 from langchain_community.utilities import GoogleSerperAPIWrapper
 from langchain_core.messages import HumanMessage
-from linkedin_scraper import Person, actions
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from typing_extensions import TypedDict
 
 from cf_analysis_agent.agent_state import AgentState, Config, ReportType
 from cf_analysis_agent.structures.report_structures import StartupAndTeamInfoStructure
-from cf_analysis_agent.utils.env_variables import LINKEDIN_EMAIL, LINKEDIN_PASSWORD
+from cf_analysis_agent.utils.linkedin_utls import scrape_linkedin_with_proxycurl, TeamMemberLinkedinUrl, \
+    RawLinkedinProfile
 from cf_analysis_agent.utils.llm_utils import get_llm, structured_report_response
 from cf_analysis_agent.utils.prompt_utils import create_prompt_for_checklist
-from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
+from cf_analysis_agent.utils.report_utils import update_report_status_failed, \
     update_report_status_in_progress, update_report_with_structured_output
 
 load_dotenv()
 
 search = GoogleSerperAPIWrapper()
-
-class TeamMemberLinkedinUrl(TypedDict):
-    id: str
-    name: str
-    url: str
-
-
-class RawLinkedinProfile(TypedDict):
-    id: str
-    name: str
-    profile: Dict[str, Any]
 
 
 class AnalyzedTeamProfile(TypedDict):
@@ -50,18 +37,71 @@ class AnalyzedTeamProfile(TypedDict):
 
 def find_startup_info(config: Config, page_content: str) -> StartupAndTeamInfoStructure:
     prompt = (
-        "From the scraped content, extract the following project info as JSON:\n\n"
-        " - startup_name: str (The name of the project or startup being discussed)\n"
-        " - startup_details: str (A single sentence explaining what the startup does)\n"
-        " - industry: str (A brief overview of the industry, including how it has grown in the last 3-5 years, its expected growth in the next 3-5 years, challenges, and unique benefits for startups in this space)\n"
-        " - team_members: list of objects {id: str (Unique ID for each team member, formatted as firstname_lastname), name: str (The name of the team member), title: str (The position of the team member in the startup), info: str (Details or additional information about the team member as mentioned on the startup page)}\n\n"
-        "Return ONLY a raw JSON object. Do not include any code fences or additional text."
+        """From the scraped content, extract the following project info as JSON:
+        
+        - startup_name: str (The name of the project or startup being discussed) 
+        - startup_details: str (A single sentence explaining what the startup does)
+        - industry: str (A brief overview of the industry, including how it has grown in the last 3-5 years, its expected growth in the next 3-5 years, challenges, and unique benefits for startups in this space)
+        - team_members: list of objects {id: str (Unique ID for each team member, formatted as firstname_lastname), name: str (The name of the team member), title: str (The position of the team member in the startup), info: str (Details or additional information about the team member as mentioned on the startup page)}
+        
+        Return the extracted information as a JSON object.
+        
+        {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "title": "StartupAndTeamInfoStructure",
+          "description": "Information about the startup, industry, and team",
+          "type": "object",
+          "properties": {
+            "startup_name": {
+              "type": "string",
+              "description": "The name of the project or startup being discussed"
+            },
+            "startup_details": {
+              "type": "string",
+              "description": "A single sentence explaining what the startup does"
+            },
+            "industry": {
+              "type": "string",
+              "description": "A brief overview of the industry, including how it has grown in the last 3-5 years, its expected growth in the next 3-5 years, challenges, and unique benefits for startups in this space"
+            },
+            "team_members": {
+              "type": "array",
+              "description": "A list of team members with their details",
+              "items": {
+                "type": "object",
+                "title": "TeamMemberStructure",
+                "description": "Information about the team members",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique ID for each team member, formatted as firstname_lastname"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the team member"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The position of the team member in the startup"
+                  },
+                  "info": {
+                    "type": "string",
+                    "description": "Details or additional information about the team member as mentioned on the startup page"
+                  }
+                },
+                "required": ["id", "name", "title", "info"]
+              }
+            }
+          },
+          "required": ["startup_name", "startup_details", "industry", "team_members"]
+        }
 
-        f"Startup Info:\n{page_content}"
+        """ + f"Startup Info:  \n{page_content}"
     )
     print("Fetching Team Info")
     structured_llm = get_llm(config).with_structured_output(StartupAndTeamInfoStructure)
     response = structured_llm.invoke([HumanMessage(content=prompt)])
+    print("Team Info Fetched", response.model_dump_json(indent=4))
     return response
 
 
@@ -99,59 +139,9 @@ def find_linkedin_urls(startup_info: StartupAndTeamInfoStructure):
     return linkedin_urls
 
 
-def scrape_linkedin_profiles(linkedin_urls: list):
-    """
-    Uses linkedin_scraper to retrieve LinkedIn profile data based on the URLs
-
-    If a team member has no LinkedIn URL (empty string), their profile will be empty.
-    """
-
-    # Setup Selenium WebDriver
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Run in headless mode
-    chrome_options.add_argument("--disable-gpu")  # Disable GPU for better compatibility
-    chrome_options.add_argument("--window-size=1920,1080")  # Optional: Set window size
-    chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resources in containerized environments
-    chrome_options.add_argument("--no-sandbox")  # Bypass OS security model (use with caution)
-
-    driver = webdriver.Chrome(options=chrome_options)
-    actions.login(driver, LINKEDIN_EMAIL, LINKEDIN_PASSWORD)
-
-    def scrape_linkedin_profile(url: str) -> Dict[str, Any]:
-        if not url:
-            return {}
-        try:
-            # Scrape the LinkedIn profile using linkedin_scraper
-            # Login to LinkedIn
-            person = Person(url, driver=driver, scrape=False)
-            person.scrape(close_on_complete=False)
-
-            # Collect profile details
-            return {
-                "name": person.name,
-                "experiences": person.experiences,
-                "educations": person.educations,
-            }
-        except Exception as e:
-            print(traceback.format_exc())
-            return {}
-
-    # Iterate through the LinkedIn URLs and scrape profiles
-    raw_profiles: List[RawLinkedinProfile] = []
-    for member in linkedin_urls:
-        profile_data = scrape_linkedin_profile(member["url"])
-        raw_profiles.append({
-            "id": member.id,
-            "name": member.name,
-            "profile": profile_data
-        })
-    # Close the driver
-    driver.quit()
-
-    return raw_profiles
 
 
-def evaluate_profiles(config: Config, raw_profiles: list, startup_info: StartupAndTeamInfoStructure):
+def evaluate_profiles(config: Config, raw_profiles: list[RawLinkedinProfile], startup_info: StartupAndTeamInfoStructure):
     analyzed_profiles = []
     team_members = startup_info.team_members
     for member_data in raw_profiles:
@@ -161,14 +151,14 @@ def evaluate_profiles(config: Config, raw_profiles: list, startup_info: StartupA
 
         team_member_info = {}
         for tm in team_members:
-            if tm["id"] == member_id:
+            if tm.id == member_id:
                 team_member_info = tm
                 break
 
-        id_ = team_member_info.get("id", "")
-        name_ = team_member_info.get("name", "")
-        title_ = team_member_info.get("title", "")
-        info_ = team_member_info.get("info", "")
+        id_ = team_member_info.id
+        name_ = team_member_info.name
+        title_ = team_member_info.title
+        info_ = team_member_info.info
 
         filtered_profile = {
             "firstName": member_profile.get("firstName", ""),
@@ -255,7 +245,7 @@ def evaluate_profiles(config: Config, raw_profiles: list, startup_info: StartupA
         ."""
     return structured_report_response(
         config,
-        "detailed_execution_speed_report",
+        "evaluate_profiles",
         table_prompt
     )
 
@@ -270,7 +260,7 @@ def create_founder_and_team_report(state: AgentState) -> None:
         update_report_status_in_progress(project_id, ReportType.FOUNDER_AND_TEAM)
         startup_info: StartupAndTeamInfoStructure = find_startup_info(state.get("config"), combined_text)
         linkedin_urls = find_linkedin_urls(startup_info)
-        raw_profiles = scrape_linkedin_profiles(linkedin_urls)
+        raw_profiles = scrape_linkedin_with_proxycurl(linkedin_urls)
         team_info_report = evaluate_profiles(state.get("config"), raw_profiles, startup_info)
         update_report_with_structured_output(project_id, ReportType.FOUNDER_AND_TEAM, team_info_report)
     except Exception as e:
