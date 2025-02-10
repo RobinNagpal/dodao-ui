@@ -66,6 +66,7 @@ const GuideInformation = ({ guideIdAndStep, space, guide: guideFragment }: Guide
                 </Link>
                 <div className="ml-3">
                   <PrivateEllipsisDropdown
+                    space={space}
                     items={threeDotItems}
                     onSelect={async (key) => {
                       if (key === 'submissions') {

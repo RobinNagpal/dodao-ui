@@ -1,13 +1,14 @@
+import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import { ShortVideo } from '@/types/shortVideos/shortVideo';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import PrimaryColorBadge from '@dodao/web-core/components/core/badge/PrimaryColorBadge';
-import React from 'react';
-import styles from './ByteCollectionsCard.module.scss';
 import Link from 'next/link';
-import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
+import React from 'react';
 import ItemCompletionCheckmark from './ItemCompletionCheckmark';
 
 interface ShortItemProps {
+  space: SpaceWithIntegrationsDto;
   short: ShortVideo;
   eventIdx: number;
   threeDotItems: { label: string; key: string }[];
@@ -58,6 +59,7 @@ export default function ShortItem(props: ShortItemProps) {
             {short.shortId && (
               <div className="z-15">
                 <PrivateEllipsisDropdown
+                  space={props.space}
                   items={modifiedThreeDotItems}
                   onSelect={(key) => {
                     if (key === 'archive') {

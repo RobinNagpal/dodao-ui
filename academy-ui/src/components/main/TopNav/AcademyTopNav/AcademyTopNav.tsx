@@ -1,7 +1,7 @@
 'use client';
 
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
-import { SpaceProps } from '@/contexts/withSpace';
+import { SpaceProps } from '@/types/SpaceProps';
 import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';

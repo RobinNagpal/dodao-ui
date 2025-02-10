@@ -20,7 +20,7 @@ export default function BytesGrid({
       {!!bytes?.length && (
         <Grid4Cols>
           {bytes?.map((byte, i) => (
-            <ByteSummaryCard key={i} byte={byte} baseByteViewUrl={baseByteViewUrl} />
+            <ByteSummaryCard key={i} byte={byte} baseByteViewUrl={baseByteViewUrl} space={space} />
           ))}
         </Grid4Cols>
       )}

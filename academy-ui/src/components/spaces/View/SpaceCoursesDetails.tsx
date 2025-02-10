@@ -110,7 +110,7 @@ export default function SpaceCourseDetails(props: SpaceAuthDetailsProps) {
     <div className="mt-8">
       <div className="flex justify-between">
         <div className="text-xl">Courses</div>
-        <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} />
+        <PrivateEllipsisDropdown space={props.space} items={threeDotItems} onSelect={selectFromThreedotDropdown} />
       </div>
       <Table
         data={getCourseTableRows(coursesResponse?.rawGitCourses)}

@@ -2,7 +2,7 @@
 
 import NoTimeline from '@/components/timelines/Timelines/NoTimelines';
 import TimelineSummaryCard from '@/components/timelines/Timelines/TimelineSummaryCard';
-import { SpaceProps } from '@/contexts/withSpace';
+import { SpaceProps } from '@/types/SpaceProps';
 import { Timeline } from '@/graphql/generated/generated-types';
 import Block from '@dodao/web-core/components/app/Block';
 import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';

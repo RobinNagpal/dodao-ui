@@ -1,5 +1,6 @@
 import ItemCompletionCheckmark from '@/components/byteCollection/ByteCollections/ByteCollectionsCard/ItemCompletionCheckmark';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import PrimaryColorBadge from '@dodao/web-core/components/core/badge/PrimaryColorBadge';
 import PlayCircleIcon from '@heroicons/react/24/outline/PlayCircleIcon';
 import styles from './ByteCollectionsCard.module.scss';
@@ -8,6 +9,7 @@ import { ByteSummary } from '@/types/bytes/Byte';
 import { ByteCollectionItemType } from '@/app/api/helpers/byteCollection/byteCollectionItemType';
 
 interface ByteItemProps {
+  space: SpaceWithIntegrationsDto;
   viewByteBaseUrl: string;
   byte: ByteSummary;
   eventIdx: number;
@@ -91,6 +93,7 @@ export default function ByteItem(props: ByteItemProps) {
             )}
             {byte.byteId && !byte.byteId.startsWith('0001-demo-byte') && (
               <PrivateEllipsisDropdown
+                space={props.space}
                 items={modifiedThreeDotItems}
                 onSelect={(key) => {
                   if (key === 'archive') {

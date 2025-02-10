@@ -81,7 +81,7 @@ export default function SpaceBasicDetails(props: SpaceBasicDetailsProps) {
       <DetailsSection className={`${props.className} shadow`}>
         <div className="flex w-full">
           <DetailsHeader header={'Basic Details'} subheader={'Basic information about your space'} className="grow-1 w-full" />
-          <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
+          <PrivateEllipsisDropdown space={props.space} items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
         </div>
         {getSpaceDetailsFields(props.space).map((field) => (
           <DetailsRow key={field.label} label={field.label} value={field.value} />

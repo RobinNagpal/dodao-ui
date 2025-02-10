@@ -74,6 +74,7 @@ export default function ByteCollectionCardAdminDropdown({ byteCollection, space,
   return (
     <>
       <PrivateEllipsisDropdown
+        space={space}
         items={getThreeDotItems()}
         onSelect={async (key) => {
           if (key === 'edit') {

@@ -290,6 +290,7 @@ export default function ByteCollectionsCard({
               case ByteCollectionItemType.Byte:
                 return (
                   <ByteItem
+                    space={space}
                     viewByteBaseUrl={viewByteBaseUrl}
                     byte={item.byte}
                     eventIdx={eventIdx}
@@ -324,6 +325,7 @@ export default function ByteCollectionsCard({
               case ByteCollectionItemType.ShortVideo:
                 return (
                   <ShortItem
+                    space={space}
                     key={item.short.shortId}
                     short={item.short}
                     eventIdx={eventIdx}
