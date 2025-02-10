@@ -4,3 +4,7 @@ export function getReportName(key: string) {
     .replace(/_/g, ' ') // Replace underscores with spaces
     .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
 }
+
+export function getReportKey(name: string) {
+  return name.toLowerCase().replace(/\s+/g, '_');
+}
