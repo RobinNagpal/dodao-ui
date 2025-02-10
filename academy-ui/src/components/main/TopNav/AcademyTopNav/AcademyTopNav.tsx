@@ -11,7 +11,7 @@ import { MobileProfileMenu } from '@dodao/web-core/components/main/TopNav/Mobile
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { useLoginModalContext } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import { getCDNImageUrl } from '@dodao/web-core/utils/images/getCDNImageUrl';
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import PlusIcon from '@heroicons/react/20/solid/PlusIcon';
 import Bars3Icon from '@heroicons/react/24/outline/Bars3Icon';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
@@ -84,10 +84,10 @@ export default function AcademyTopNav(props: SpaceProps) {
                 <div className="flex">
                   <div className="-ml-2 mr-2 flex items-center md:hidden">
                     {/* Mobile menu button */}
-                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                    <DisclosureButton className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                       <span className="sr-only">Open main menu</span>
                       {open ? <XMarkIcon className="block h-6 w-6" aria-hidden="true" /> : <Bars3Icon className="block h-6 w-6" aria-hidden="true" />}
-                    </Disclosure.Button>
+                    </DisclosureButton>
                   </div>
                   <div className="flex flex-shrink-0 items-center">
                     <Link href="/">
@@ -128,10 +128,10 @@ export default function AcademyTopNav(props: SpaceProps) {
               </div>
             </div>
 
-            <Disclosure.Panel className="md:hidden">
+            <DisclosurePanel className="md:hidden">
               {space && space.type !== SpaceTypes.TidbitsSite && <MobileNavLinks space={space} />}
               {session && space && <MobileProfileMenu session={session as Session} space={space} />}
-            </Disclosure.Panel>
+            </DisclosurePanel>
           </>
         )}
       </Disclosure>
