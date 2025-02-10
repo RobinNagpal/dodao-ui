@@ -1,25 +1,24 @@
-import { ImageType, ShortVideo, ShortVideoInput, CreateSignedUrlInput } from '@/graphql/generated/generated-types';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import Input from '@dodao/web-core/components/core/input/Input';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { v4 } from 'uuid';
-import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
-import { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import SingleCardLayout from '@/layouts/SingleCardLayout';
-import { useI18 } from '@/hooks/useI18';
-import EditableImage from '@dodao/web-core/components/core/image/EditableImage';
-import EditableVideo from '@dodao/web-core/components/core/image/EditableVideo';
 import UploadImageFromDeviceModal from '@/components/app/Image/UploadImageFromDeviceModal';
-import axios from 'axios';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { CreateSignedUrlInput, ImageType, ShortVideo, ShortVideoInput } from '@/graphql/generated/generated-types';
+import { useI18 } from '@/hooks/useI18';
+import SingleCardLayout from '@/layouts/SingleCardLayout';
 import { CreateSignedUrlRequest } from '@/types/request/SignedUrl';
 import { SingedUrlResponse } from '@/types/response/SignedUrl';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import EditableImage from '@dodao/web-core/components/core/image/EditableImage';
+import EditableVideo from '@dodao/web-core/components/core/image/EditableVideo';
+import Input from '@dodao/web-core/components/core/input/Input';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getUploadedImageUrlFromSingedUrl } from '@dodao/web-core/utils/upload/getUploadedImageUrlFromSingedUrl';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { v4 } from 'uuid';
 
 export interface EditShortVideoModalProps {
   shortVideoToEdit?: ShortVideo;
@@ -30,14 +29,7 @@ export interface EditShortVideoModalProps {
   onAfterSave?: () => void;
 }
 
-export default function EditShortVideoModal({
-  shortVideoToEdit,
-  spaceId,
-  saveShortVideoFn,
-  onCancel,
-  onAfterSave,
-  closeEditShortModal,
-}: EditShortVideoModalProps) {
+export default function EditShortVideoModal({ shortVideoToEdit, spaceId, saveShortVideoFn, onAfterSave, closeEditShortModal }: EditShortVideoModalProps) {
   const [shortVideo, setShortVideo] = React.useState<ShortVideoInput>({
     id: shortVideoToEdit?.id || v4(),
     title: shortVideoToEdit?.title || '',
@@ -167,7 +159,7 @@ export default function EditShortVideoModal({
             <div className="py-2 my-2">
               <div className="float-right">
                 {shortVideoToEdit && (
-                  <PrivateEllipsisDropdown
+                  <EllipsisDropdown
                     items={threeDotItems}
                     onSelect={(key) => {
                       if (key === 'delete') {

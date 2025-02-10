@@ -128,6 +128,7 @@ export default function EditClickableDemo({ space, demoId, byteCollection, close
             <div className="px-4 mb-4 md:px-0 float-right">
               {demoId && (
                 <PrivateEllipsisDropdown
+                  space={space}
                   items={threeDotItems}
                   onSelect={(key) => {
                     if (key === 'delete') {

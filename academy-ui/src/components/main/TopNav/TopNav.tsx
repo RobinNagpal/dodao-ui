@@ -1,5 +1,5 @@
 import DoDAOHomeTopNav from '@/components/home/DoDAOHome/components/DoDAOHomeTopNav';
-import { SpaceProps } from '@/contexts/withSpace';
+import { SpaceProps } from '@/types/SpaceProps';
 import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import React from 'react';
 import AcademyTopNav from './AcademyTopNav/AcademyTopNav';

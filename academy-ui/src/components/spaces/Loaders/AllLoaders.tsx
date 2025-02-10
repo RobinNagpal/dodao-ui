@@ -60,7 +60,13 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsDto; spa
   const [editWebsiteScrappingInfo, setEditWebsiteScrappingInfo] = useState<WebsiteScrapingInfoFragment | undefined>(undefined);
 
   const [editArticleIndexingInfo, setEditArticleIndexingInfo] = useState<ArticleIndexingInfoFragment | undefined>(undefined);
-  const [articleIndexingSpaceAndInfoId, setArticleIndexingSpaceAndInfoId] = useState<{ spaceId: string; articleIndexingInfoId: string } | undefined>(undefined);
+  const [articleIndexingSpaceAndInfoId, setArticleIndexingSpaceAndInfoId] = useState<
+    | {
+        spaceId: string;
+        articleIndexingInfoId: string;
+      }
+    | undefined
+  >(undefined);
   const [showAddArticleIndexingInfoModal, setShowAddArticleIndexingInfoModal] = useState(false);
   const [viewCompleteTextModal, setViewCompleteTextModal] = useState<boolean>(false);
 
@@ -205,7 +211,7 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsDto; spa
 
       <div className="mb-32">
         <div className="flex justify-end mt-4">
-          <PrivateEllipsisDropdown items={websiteScrappingThreeDotItems} onSelect={() => setShowAddWebsiteScrappingInfoModal(true)} />
+          <PrivateEllipsisDropdown space={props.space} items={websiteScrappingThreeDotItems} onSelect={() => setShowAddWebsiteScrappingInfoModal(true)} />
         </div>
         <Table
           heading={'Website Scraping Info'}
@@ -237,7 +243,7 @@ export default function AllLoaders(props: { space: SpaceWithIntegrationsDto; spa
 
       <div>
         <div className="flex justify-end mt-4">
-          <PrivateEllipsisDropdown items={websiteScrappingThreeDotItems} onSelect={() => setShowAddArticleIndexingInfoModal(true)} />
+          <PrivateEllipsisDropdown space={props.space} items={websiteScrappingThreeDotItems} onSelect={() => setShowAddArticleIndexingInfoModal(true)} />
         </div>
         <Table
           heading={'Article Indexing Info'}

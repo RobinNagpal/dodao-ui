@@ -65,7 +65,7 @@ export default function SpaceThemeDetails({ space }: SpaceDetailsProps) {
           <h1 className="font-semibold leading-6 text-lg md:text-2xl">Theme Details</h1>
           <p className="mt-2 text-sm md:text-base">You can update your theme</p>
         </div>
-        <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
+        <PrivateEllipsisDropdown space={props.space} items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
       </div>
 
       <div className={'mt-4'}>
