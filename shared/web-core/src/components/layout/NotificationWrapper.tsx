@@ -1,3 +1,5 @@
+'use client';
+
 import Notification from '@dodao/web-core/components/core/notify/Notification';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 

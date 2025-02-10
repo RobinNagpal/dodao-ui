@@ -2,7 +2,6 @@
 
 import { BasePage } from '@/components/layout/BasePage';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
-import { ApolloProvider } from '@apollo/client';
 import ErrorPage from '@dodao/web-core/components/app/ErrorPage';
 import { NotificationWrapper } from '@dodao/web-core/components/layout/NotificationWrapper';
 import { Session } from '@dodao/web-core/types/auth/Session';
@@ -60,12 +59,10 @@ export function ChildLayout({
 
   return (
     <Web3ReactProviderWrapper>
-      <ApolloProvider client={client}>
-        <SessionProvider session={session}>
-          <BasePage space={space!}>{children}</BasePage>
-        </SessionProvider>
-        <NotificationWrapper />
-      </ApolloProvider>
+      <SessionProvider session={session}>
+        <BasePage space={space!}>{children}</BasePage>
+      </SessionProvider>
+      <NotificationWrapper />
     </Web3ReactProviderWrapper>
   );
 }

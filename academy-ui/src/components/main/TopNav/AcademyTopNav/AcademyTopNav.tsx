@@ -1,8 +1,8 @@
 'use client';
 
 import CreateContentModalContents from '@/components/main/TopNav/CreateContentModalContents';
-import { SpaceProps } from '@/types/SpaceProps';
 import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
+import { SpaceProps } from '@/types/SpaceProps';
 import { isAdmin } from '@/utils/auth/isAdmin';
 import ButtonLarge from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
@@ -18,14 +18,13 @@ import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { DesktopNavLinks } from './DesktopNavLinks';
 import { MobileNavLinks } from './MobileNavLinks';
 
-const StyledDiv = styled.div`
-  background-color: var(--bg-color);
-  color: var(--text-color);
-`;
+const divStyle: React.CSSProperties = {
+  backgroundColor: 'var(--bg-color)',
+  color: 'var(--text-color)',
+};
 
 function CreateOrLoginButton(props: {
   session?: Session | undefined | null;
@@ -64,7 +63,7 @@ export default function AcademyTopNav(props: SpaceProps) {
   const { space } = props;
 
   return (
-    <StyledDiv>
+    <div style={divStyle}>
       <FullPageModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
         <CreateContentModalContents space={props.space} hideModal={() => setShowCreateModal(false)} />
       </FullPageModal>
@@ -136,6 +135,6 @@ export default function AcademyTopNav(props: SpaceProps) {
           </>
         )}
       </Disclosure>
-    </StyledDiv>
+    </div>
   );
 }

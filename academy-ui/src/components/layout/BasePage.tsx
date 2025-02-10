@@ -4,16 +4,14 @@ import Footer from '@/components/layout/Footer';
 import TopNav from '@/components/main/TopNav/TopNav';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import LoginModal from '@dodao/web-core/components/auth/LoginModal';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { LoginModalProvider } from '@dodao/web-core/ui/contexts/LoginModalContext';
 import React, { ReactNode } from 'react';
-import styled from 'styled-components';
 
-const StyledMain = styled.main`
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  min-height: calc(100vh - 118px);
-`;
+const mainStyle: React.CSSProperties = {
+  backgroundColor: 'var(--bg-color)',
+  color: 'var(--text-color)',
+  minHeight: 'calc(100vh - 118px)',
+};
 
 function PageTopNav(props: { space: SpaceWithIntegrationsDto }) {
   //Checking if the url contains embedded-tidbit-collections
@@ -22,9 +20,10 @@ function PageTopNav(props: { space: SpaceWithIntegrationsDto }) {
     if (currentUrl.includes('embedded-tidbit-collections')) {
       return null;
     }
+    return <TopNav space={props.space} />;
   }
 
-  return <TopNav space={props.space} />;
+  return null;
 }
 
 function PageFooter(props: { space: SpaceWithIntegrationsDto }) {
@@ -34,19 +33,18 @@ function PageFooter(props: { space: SpaceWithIntegrationsDto }) {
     if (currentUrl.includes('embedded-tidbit-collections')) {
       return null;
     }
+    return <Footer space={props.space} />;
   }
-  return <Footer space={props.space} />;
+  return null;
 }
-export function BasePage(props: { space: SpaceWithIntegrationsDto | null; children: ReactNode }) {
-  if (props.space?.id) {
-    return (
-      <LoginModalProvider>
-        <LoginModal space={props.space} />
-        <PageTopNav space={props.space} />
-        <StyledMain>{props.children}</StyledMain>
-        <PageFooter space={props.space} />
-      </LoginModalProvider>
-    );
-  }
-  return <FullPageLoader />;
+
+export function BasePage(props: { space: SpaceWithIntegrationsDto; children: ReactNode }) {
+  return (
+    <LoginModalProvider>
+      <LoginModal space={props.space} />
+      <PageTopNav space={props.space} />
+      <main style={mainStyle}>{props.children}</main>
+      <PageFooter space={props.space} />
+    </LoginModalProvider>
+  );
 }
