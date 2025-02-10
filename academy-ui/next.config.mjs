@@ -10,6 +10,13 @@ const nextConfig = {
   images: {
     domains: ['api.multiavatar.com', 'tailwindui.com', 'd31h13bdjwgzxs.cloudfront.net'],
   },
+  webpack: (config, {isServer}) => {
+    if (isServer) {
+      config.devtool = 'source-map'
+    }
+    return config
+  },
+  productionBrowserSourceMaps: true,
   env: {
     V2_API_SERVER_URL: process.env.V2_API_SERVER_URL,
     DODAO_SUPERADMINS: process.env.DODAO_SUPERADMINS,
