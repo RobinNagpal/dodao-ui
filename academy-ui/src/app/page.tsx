@@ -1,16 +1,16 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import { SpaceTypes } from '@/types/space/SpaceDto';
-import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
 import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import TidbitsHubHome from '@/components/home/TidbitsHub/TidbitsHubHome';
 import { getTidbitsSiteHomepageContents } from '@/components/home/TidbitsSite/getTidbitsSiteHomepageContents';
+import { SpaceTypes } from '@/types/space/SpaceDto';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
+import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { headers } from 'next/headers';
 import React from 'react';
-import { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers();
@@ -18,18 +18,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const space = await getSpaceServerSide();
 
-  let metadata: Metadata = {
-    title: 'Default Title',
-    description: 'Default description',
-  };
-
   if (space?.type === SpaceTypes.TidbitsSite) {
-    metadata = {
+    return {
       title: `${space?.name} - Tidbits`,
       description: `Learn ${space.name} with the help of Tidbits`,
     };
   } else if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
-    metadata = {
+    return {
       title: 'DoDAO - Empowering Blockchain Innovation',
       description: 'DoDAO offers blockchain development, education, and research services to empower innovation in the blockchain ecosystem.',
       keywords: [
@@ -69,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     };
   } else if (space?.id === PredefinedSpaces.TIDBITS_HUB) {
-    metadata = {
+    return {
       title: 'Tidbits Hub - Simplify Learning with Bite-Sized Content',
       description: 'Tidbits Hub offers an innovative platform with bite-sized content, interactive demos, and short videos to boost customer engagement.',
       keywords: [
@@ -110,18 +105,16 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     };
   } else if (space?.type === SpaceTypes.AcademySite) {
-    metadata = {
+    return {
       title: `${space?.name} Academy Site`,
       description: `Learn at ${space?.name} with the help of guides, tidbits, shortvideos, and courses`,
     };
   } else {
-    metadata = {
+    return {
       title: `${space?.name} Academy Site`,
       description: `Learn at ${space?.name} with the help of guides, tidbits, shortvideos, and courses`,
     };
   }
-
-  return metadata;
 }
 
 async function Home() {
