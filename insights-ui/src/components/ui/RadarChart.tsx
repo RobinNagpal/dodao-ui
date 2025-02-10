@@ -1,17 +1,16 @@
 'use client';
 
 import { SpiderGraph } from '@/types/project/project';
-import { getReportName } from '@/util/report-utils';
+import { AlternateRingBackgroundPlugin, getGraphColor, HighlightPlugin } from '@/util/radar-chart-utils';
+import { getReportKey, getReportName } from '@/util/report-utils';
 import {
   Chart as ChartJS,
-  Chart,
   ChartData,
   ChartOptions,
   ChartType,
   Filler,
   Legend,
   LineElement,
-  Plugin,
   PointElement,
   RadialLinearScale,
   Tooltip,
@@ -23,46 +22,8 @@ import { Radar } from 'react-chartjs-2';
 
 // Register necessary Chart.js components
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
-const AlternateRingBackgroundPlugin: Plugin = {
-  id: 'alternateRingBackground',
-  // Use beforeDatasetsDraw so the filled rings appear behind the data
-  beforeDatasetsDraw: (chart) => {
-    const ctx = chart.ctx;
-    const radialScale = chart.scales.r as RadialLinearScale;
 
-    const centerX = radialScale.xCenter; // Center X of the chart
-    const centerY = radialScale.yCenter; // Center Y of the chart
-
-    const ticks = radialScale.ticks;
-    if (!ticks || ticks.length < 2) return;
-
-    // Define two colors (adjust these to your needs)
-    const color1 = 'rgba(255, 255, 255, 0)'; // transparent (or any color)
-    const color2 = 'rgba(200, 200, 200, 0.2)'; // e.g. light grey
-
-    // Loop through ticks starting at 1. Each ring is drawn between
-    // ticks[i-1] and ticks[i].
-    for (let i = 1; i < ticks.length; i++) {
-      const outerRadius = radialScale.getDistanceFromCenterForValue(ticks[i].value);
-      const innerRadius = radialScale.getDistanceFromCenterForValue(ticks[i - 1].value);
-
-      ctx.save();
-      ctx.beginPath();
-      // Draw outer circle (clockwise)
-      ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
-      // Draw inner circle (counter-clockwise) to "cut out" the center part
-      ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2, true);
-      ctx.closePath();
-
-      // Alternate the fill color based on the ring index.
-      ctx.fillStyle = i % 2 === 1 ? color1 : color2;
-      ctx.fill();
-      ctx.restore();
-    }
-  },
-};
-
-// Register the alternate background plugin
+// Register the alternate circles and spokes plugin
 ChartJS.register(AlternateRingBackgroundPlugin);
 
 interface RadarChartProps {
@@ -76,7 +37,12 @@ declare module 'chart.js' {
 
 const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
   const itemKeys = Object.keys(data);
-  const scores = itemKeys.map((category) => data[category].scores.reduce((acc, item) => acc + item.score, 0));
+  const SCORE_OFFSET = 0.5; // Adds padding ONLY for zero scores
+
+  const scores = itemKeys.map((category) => {
+    const rawScore = data[category].scores.reduce((acc, item) => acc + item.score, 0);
+    return rawScore === 0 ? SCORE_OFFSET : rawScore; // Apply offset ONLY if score is 0
+  });
 
   Tooltip.positioners.myCustomPositioner = function (tooltipItems, eventPosition) {
     if (!tooltipItems.length) {
@@ -95,20 +61,23 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
     const angle = (2 * Math.PI * index) / total - Math.PI / 2;
     // Use the drawing area as the outer radius and add a margin for the tooltip
     const outerRadius = (radialScale as any).drawingArea;
-    const margin = 550; // adjust this value to your liking
+    const margin = 600; // adjust this value to your liking
     const x = centerX + (outerRadius + margin) * Math.cos(angle);
     const y = centerY + (outerRadius + margin) * Math.sin(angle);
     return { x, y };
   };
 
+  // get graph color based on the overall score percentage
+  const graphColor = getGraphColor(data);
+
   // Convert data into the required format
   const chartData: ChartData<'radar'> = {
-    labels: itemKeys.map((itemKey) => data[itemKey].key),
+    labels: itemKeys.map((itemKey) => data[itemKey].name),
     datasets: [
       {
         data: scores,
-        backgroundColor: 'rgba(54, 162, 235, 0.7)', // Light blue fill
-        borderColor: 'rgba(54, 162, 235, 1)', // Darker blue border
+        backgroundColor: graphColor.background,
+        borderColor: graphColor.border,
         borderWidth: 2,
         tension: 0.45,
         pointRadius: 0, // Remove dots (data points)
@@ -123,22 +92,18 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
       },
     },
     responsive: true,
-    onClick: (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index; // Get the clicked index
-        const targetLabel = itemKeys[index]; // Get the corresponding label
-        const targetElement = document.getElementById(targetLabel); // Find the section by id
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Smooth scroll to the section
-        }
-      }
-    },
     scales: {
       r: {
         angleLines: { display: false }, // Hide angle lines for a clean look
         suggestedMin: 0,
         suggestedMax: 5,
-        backgroundColor: 'rgba(0, 123, 255, 0.1)',
+        pointLabels: {
+          font: {
+            size: 14,
+            // weight : 'bold',
+          },
+          color: '#ffffff',
+        },
         ticks: {
           display: false,
           stepSize: 1,
@@ -167,18 +132,26 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
         position: 'myCustomPositioner',
         caretSize: 0,
         callbacks: {
-          title: (tooltipItems: TooltipItem<'radar'>[]) => tooltipItems.map((item) => getReportName(item.label)),
+          title: (tooltipItems: TooltipItem<'radar'>[]) => getReportName(tooltipItems[0].label),
           label: () => '', // Skip label
           afterBody: (tooltipItems: TooltipItem<'radar'>[]) => {
-            const categoryData = data[tooltipItems[0].label]; // Match category
-            return `${'a sentence over here a sentence over here a sentence over here'}`;
+            const categoryKey = getReportKey(tooltipItems[0].label);
+            if (!categoryKey || !data[categoryKey]) {
+              return 'No data available';
+            }
+            const summary = data[categoryKey].summary;
+            return `${summary.replace(/(.{1,50})(\s|$)/g, '$1\n')}`;
           },
           footer: (tooltipItems: TooltipItem<'radar'>[]) => {
-            const categoryData = data[tooltipItems[0].label].scores;
+            const categoryKey = getReportKey(tooltipItems[0].label);
+            if (!categoryKey || !data[categoryKey]) {
+              return 'No data available';
+            }
+            const categoryData = data[categoryKey].scores;
             const totalChecks = categoryData.length;
             const totalOnes = categoryData.filter((item) => item.score === 1).length;
             const analysisChecks = categoryData.map((item) => (item.score === 1 ? '✅' : '❌')).join('');
-            return `\nAnalysis Checks ${totalOnes}/${totalChecks}\n${analysisChecks}`;
+            return `Analysis Checks ${totalOnes}/${totalChecks}\n${analysisChecks}`;
           },
         },
       },
@@ -186,44 +159,6 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
     onHover: (event, chartElements) => {
       const canvas = event.native?.target as HTMLCanvasElement; // Get the canvas element
       canvas.style.cursor = chartElements.length ? 'pointer' : 'default';
-    },
-  };
-
-  const HighlightPlugin: Plugin = {
-    id: 'highlightSlice',
-    afterDatasetsDraw: (chart: Chart<'radar'>) => {
-      const { ctx, scales, tooltip } = chart;
-      const activeElement = tooltip?.dataPoints?.[0]; // Get the hovered data point
-
-      if (tooltip && tooltip.opacity === 0) {
-        return;
-      }
-      // Clear the chart if no tooltip is active
-      if (!activeElement) {
-        return;
-      }
-      const index = activeElement.dataIndex; // Index of the hovered point
-      const radialScale = scales.r as RadialLinearScale;
-
-      const centerX = radialScale.xCenter; // Center X of the chart
-      const centerY = radialScale.yCenter; // Center Y of the chart
-      const outerRadius = (radialScale as any).drawingArea; // Outer radius of the radar chart
-
-      const dataCount = chart.data.labels?.length || 0;
-      const prevAngle = (2 * Math.PI * (index - 0.5)) / dataCount - Math.PI / 2;
-      const nextAngle = (2 * Math.PI * (index + 0.5)) / dataCount - Math.PI / 2;
-
-      // Draw the pizza slice
-
-      ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.arc(centerX, centerY, outerRadius, prevAngle, nextAngle);
-      ctx.lineTo(centerX, centerY);
-      ctx.closePath();
-      ctx.fillStyle = 'rgba(255, 206, 86, 0.3)'; // Highlight color
-      ctx.fill();
-      ctx.restore();
     },
   };
 

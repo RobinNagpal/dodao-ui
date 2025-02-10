@@ -78,6 +78,7 @@ export interface ReportInterface {
    * Fields marked as optional may only appear under certain conditions.
    */
   status: ProcessingStatus;
+  lastTriggeredBy?: string;
   markdownLink?: string;
   startTime: string;
   estimatedTimeInSec: number;
@@ -183,6 +184,7 @@ export interface SpiderScore {
 export interface SpiderGraphPie {
   key: ReportType;
   name: string;
+  summary: string;
   scores: SpiderScore[];
 }
 

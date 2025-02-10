@@ -26,6 +26,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
       const pieData: SpiderGraphPie = {
         key: report.type,
         name: getReportName(report.type),
+        summary: report.summary || '',
         // Sum of all scores in the report
         scores: report.performanceChecklist.map((pc) => ({ score: pc.score, comment: pc.checklistItem })),
       };
@@ -33,7 +34,6 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
     })
   );
 
-  console.log('projectDetails.reports', JSON.stringify(projectDetails.reports, null, 2));
   return (
     <div className="py-24 sm:py-32 text-color">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
