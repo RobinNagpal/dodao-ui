@@ -39,7 +39,7 @@ export default function SpaceAuthDetails(props: SpaceAuthDetailsProps) {
       <DetailsSection className={`${props.className} shadow`}>
         <div className="flex w-full">
           <DetailsHeader header={'Auth Details'} className="grow-1 w-full" />
-          <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
+          <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} space={props.space} className="ml-4 pt-4 grow-0 w-16" />
         </div>
         {getSpaceDetailsFields(props.space).map((field) => (
           <DetailsRow key={field.label} label={field.label} value={field.value} />

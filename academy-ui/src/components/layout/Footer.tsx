@@ -1,7 +1,7 @@
 'use client';
 
 import FooterLoginButton from '@/components/layout/FooterLoginButton';
-import { SpaceProps } from '@/contexts/withSpace';
+import { SpaceProps } from '@/types/SpaceProps';
 import { SpaceTypes } from '@/types/space/SpaceDto';
 import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import Link from 'next/link';

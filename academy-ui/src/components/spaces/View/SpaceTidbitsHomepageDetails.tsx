@@ -39,7 +39,7 @@ export default function SpaceTidbitsHomepageDetails(props: SpaceAuthDetailsProps
       <DetailsSection className={`${props.className} shadow`}>
         <div className="flex w-full">
           <DetailsHeader header={'Tidbits Homepage Details'} className="grow-1 w-full" />
-          <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
+          <PrivateEllipsisDropdown space={props.space} items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
         </div>
         {getSpaceTidbitsHomepageFields(props.space).map((field) => (
           <DetailsRow key={field.label} label={field.label} value={field.value} />

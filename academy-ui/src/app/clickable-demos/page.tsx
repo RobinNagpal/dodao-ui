@@ -23,7 +23,7 @@ export default async function ClickableDemos() {
       {demos.length && (
         <Grid4Cols>
           {demos.map((demo, i) => (
-            <ClickableDemosSummaryCard key={i} clickableDemo={demo} />
+            <ClickableDemosSummaryCard key={i} clickableDemo={demo} space={space} />
           ))}
         </Grid4Cols>
       )}

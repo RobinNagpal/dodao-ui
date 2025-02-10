@@ -1,6 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { ChildLayout } from '@/components/layout/ChildLayout';
-import { SpaceProvider } from '@/contexts/SpaceContext';
 import { SpaceTypes } from '@/types/space/SpaceDto';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
@@ -69,13 +68,11 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           </>
         )}
         <StyledComponentsRegistry>
-          <SpaceProvider>
-            <NotificationProvider>
-              <ChildLayout session={session} space={space} spaceError={!space}>
-                {children}
-              </ChildLayout>
-            </NotificationProvider>
-          </SpaceProvider>
+          <NotificationProvider>
+            <ChildLayout session={session} space={space} spaceError={!space}>
+              {children}
+            </ChildLayout>
+          </NotificationProvider>
         </StyledComponentsRegistry>
         <Analytics />
       </body>

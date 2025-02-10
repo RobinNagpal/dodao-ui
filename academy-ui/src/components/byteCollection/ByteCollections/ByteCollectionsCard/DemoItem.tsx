@@ -83,6 +83,7 @@ export default function DemoItem(props: DemoItemProps) {
             {demo.demoId && (
               <div className="z-15">
                 <PrivateEllipsisDropdown
+                  space={space}
                   items={modifiedThreeDotItems}
                   onSelect={(key) => {
                     if (key === 'archive') {

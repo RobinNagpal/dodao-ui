@@ -40,6 +40,7 @@ const TimelineInformation = ({ timelineId, space }: { timelineId: string; space:
               </Link>
               <div className="ml-3">
                 <PrivateEllipsisDropdown
+                  space={space}
                   items={threeDotItems}
                   onSelect={(key) => {
                     router.push(`/timelines/edit/${timelineId}`);

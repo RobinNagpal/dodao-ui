@@ -1,4 +1,4 @@
-import { SpaceProps } from '@/contexts/withSpace';
+import { SpaceProps } from '@/types/SpaceProps';
 import EmailLoginModal from '@dodao/web-core/ui/auth/login/components/EmailLoginModal';
 import { useState } from 'react';
 

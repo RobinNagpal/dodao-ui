@@ -2,13 +2,15 @@
 
 import { ByteSummaryType } from '@/components/bytes/Summary/ByteSummaryCard';
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
+import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface ByteCardAdminDropdownProps {
+  space: SpaceWithIntegrationsDto;
   byte: ByteSummaryType;
 }
-export default function ByteCardAdminDropdown({ byte }: ByteCardAdminDropdownProps) {
+export default function ByteCardAdminDropdown({ byte, space }: ByteCardAdminDropdownProps) {
   const router = useRouter();
   const baseBytesEditUrl = '/tidbits/edit';
   const getThreeDotItems = (byte: ByteSummaryType) => {
@@ -25,6 +27,7 @@ export default function ByteCardAdminDropdown({ byte }: ByteCardAdminDropdownPro
   return (
     <>
       <PrivateEllipsisDropdown
+        space={space}
         items={getThreeDotItems(byte)}
         onSelect={async (key, e: React.MouseEvent<HTMLAnchorElement>) => {
           e.preventDefault();

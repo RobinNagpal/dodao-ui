@@ -48,6 +48,7 @@ function ShortsThumbnail({ shortVideo, space }: ShortsThumbnailProps) {
       </Link>
       <div className="flex items-start">
         <PrivateEllipsisDropdown
+          space={space!}
           items={threeDotItems}
           className="z-150"
           onSelect={(key) => {

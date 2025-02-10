@@ -36,7 +36,7 @@ export default function SpaceDomaiDetails(props: SpaceAuthDetailsProps) {
       <DetailsSection className={`${props.className} shadow`}>
         <div className="flex w-full">
           <DetailsHeader header={'Auth Details'} className="grow-1 w-full" />
-          <PrivateEllipsisDropdown items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
+          <PrivateEllipsisDropdown space={props.space} items={threeDotItems} onSelect={selectFromThreedotDropdown} className="ml-4 pt-4 grow-0 w-16" />
         </div>
         <DetailsRow label={'Route 53 Record'} value={route53Response?.payload ? JSON.stringify(route53Response?.payload) : 'No Route 53 Record'} />
         <DetailsRow
