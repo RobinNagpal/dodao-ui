@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { Metadata } from 'next';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { ProjectDetails, SpiderGraph } from '@/types/project/project';
 
 export async function generateMetadata({ params }: { params: Promise<{ projectId: string; reportType: string }> }): Promise<Metadata> {
   const { projectId, reportType } = await params;
@@ -63,9 +64,13 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
 export default async function ReportDetailPage({ params }: { params: Promise<{ projectId: string; reportType: string }> }) {
   const { projectId, reportType } = await params;
 
-  const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}/reports/${reportType}`);
-  const data: { reportDetail: string } = await res.json();
+  const reportResponse = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}/reports/${reportType}`);
+  const reportData: { reportDetail: string } = await reportResponse.json();
 
+  const projectResponse = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`);
+  const projectData: { projectDetails: ProjectDetails; spiderGraph: SpiderGraph | {} } = await projectResponse.json();
+
+  const report = projectData.projectDetails.reports[reportType];
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
       name: projectId,
@@ -89,7 +94,17 @@ export default async function ReportDetailPage({ params }: { params: Promise<{ p
         </div>
         <div className="block-bg-color p-8">
           <div className="overflow-x-auto">
-            {data.reportDetail ? (
+            {report.performanceChecklist?.length && (
+              <ul className="list-disc mt-2">
+                {report.performanceChecklist.map((item, index) => (
+                  <li key={index} className="mb-1 flex items-start">
+                    <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
+                    <span>{item.checklistItem}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {reportData.reportDetail ? (
               <>
                 <Markdown
                   className="markdown"
@@ -99,7 +114,7 @@ export default async function ReportDetailPage({ params }: { params: Promise<{ p
                     td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
                   }}
                 >
-                  {data.reportDetail}
+                  {reportData.reportDetail}
                 </Markdown>
               </>
             ) : (
