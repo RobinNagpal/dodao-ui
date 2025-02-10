@@ -3,6 +3,7 @@ import traceback
 from cf_analysis_agent.agent_state import AgentState, get_combined_content, ReportType
 from cf_analysis_agent.structures.report_structures import StructuredReportResponse
 from cf_analysis_agent.utils.llm_utils import structured_report_response
+from cf_analysis_agent.utils.prompt_utils import create_prompt_for_checklist
 from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
     update_report_status_in_progress, update_report_with_structured_output
 
@@ -24,8 +25,6 @@ def generate_valuation_report(state: AgentState) -> StructuredReportResponse:
     When considering the valuation dont just consider the revenue, consider other things also like possible repeat rate, possible total 
     lifetime value, and consider the valuation of the company based on revenue and it can produce in the future and that revenue can be
     sustained in every year.
-    
-    {combined_content}
 
     **Valuation Report Requirements**:
     1. The valuation set by the company for the crowdfunding round.
@@ -69,8 +68,10 @@ def generate_valuation_report(state: AgentState) -> StructuredReportResponse:
 
     Return final valuation analysis only.
     
-    Make sure the output is formatted nicely in markdown and doesn't have many nested points. Use longer sentences and
-    paragraphs instead of second and third level bullet points.
+    
+    
+    Here is the information you have about the startup:
+    {combined_content}
     """
 
     return structured_report_response(

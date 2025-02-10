@@ -1,14 +1,15 @@
 import traceback
 
-from cf_analysis_agent.agent_state import AgentState, get_combined_content
-from cf_analysis_agent.utils.llm_utils import structured_llm_response
-from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
-    update_report_status_in_progress
+from cf_analysis_agent.agent_state import AgentState, get_combined_content, ReportType
+from cf_analysis_agent.structures.report_structures import StructuredReportResponse
+from cf_analysis_agent.utils.llm_utils import structured_report_response
+from cf_analysis_agent.utils.report_utils import update_report_status_failed, \
+    update_report_status_in_progress, update_report_with_structured_output
 
 REPORT_NAME = "general_info"
 
 
-def generate_project_info_report(state: AgentState):
+def generate_project_info_report(state: AgentState) -> StructuredReportResponse:
     """
     Uses the LLM to produce a comprehensive, investor-facing report
     of the project's goals, achievements, product environment, etc.
@@ -40,16 +41,16 @@ def generate_project_info_report(state: AgentState):
         Return only the textual report of these details.
         """
     )
-    return structured_llm_response(state.get("config"), "generate_project_info_report", prompt)
+    return structured_report_response(state.get("config"), "generate_project_info_report", prompt)
 
 
 def create_general_info_report(state: AgentState) -> None:
     print("Generating general info report")
     project_id = state.get("project_info").get("project_id")
     try:
-        update_report_status_in_progress(project_id, REPORT_NAME)
+        update_report_status_in_progress(project_id, ReportType.GENERAL_INFO)
         report_content = generate_project_info_report(state)
-        create_report_file_and_upload_to_s3(project_id, REPORT_NAME, report_content)
+        update_report_with_structured_output(project_id, ReportType.GENERAL_INFO, report_content)
     except Exception as e:
         # Capture full stack trace
         print(traceback.format_exc())
@@ -57,6 +58,6 @@ def create_general_info_report(state: AgentState) -> None:
         print(f"An error occurred:\n{error_message}")
         update_report_status_failed(
             project_id,
-            REPORT_NAME,
+            ReportType.GENERAL_INFO,
             error_message=error_message
         )

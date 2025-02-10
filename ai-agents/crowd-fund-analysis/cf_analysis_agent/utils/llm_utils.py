@@ -1,4 +1,6 @@
+from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import HumanMessage
+from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 
 from cf_analysis_agent.agent_state import Config
@@ -7,16 +9,17 @@ from cf_analysis_agent.utils.env_variables import OPEN_AI_DEFAULT_MODEL
 from cf_analysis_agent.utils.project_utils import scrape_url
 
 # Cache for storing initialized LLMs (prevents re-initialization)
-_llm_cache: dict[str, ChatOpenAI] = {}
+_llm_cache: dict[str, BaseChatModel] = {}
 
 DEFAULT_LLM_CONFIG: Config = {"configurable": {"model": OPEN_AI_DEFAULT_MODEL}}
 
 MINI_4_0_CONFIG: Config = {"configurable": {"model": "gpt-4o-mini"}}
 MINI_O_3_CONFIG: Config = {"configurable": {"model": "gpt-o3-mini"}}
 NORMAL_4_0_CONFIG: Config = {"configurable": {"model": "gpt-4o"}}
+DEEP_SEEK_R1_CONFIG: Config = {"configurable": {"model": "deepseek-r1-distill-llama-70b"}}
 
 
-def get_llm(config: Config) -> ChatOpenAI:
+def get_llm(config: Config) -> BaseChatModel:
     """
     Retrieves the LLM model based on the config.
     Uses caching to prevent redundant model creation.
@@ -24,10 +27,17 @@ def get_llm(config: Config) -> ChatOpenAI:
     model = config.get("configurable", {}).get("model", OPEN_AI_DEFAULT_MODEL)
 
     # Check if the model is already initialized
-    if model not in _llm_cache:
-        _llm_cache[model] = ChatOpenAI(model_name=model, temperature=0)
-
-    return _llm_cache[model]  # Return the cached LLM instance
+    if model in _llm_cache:
+        return _llm_cache[model]
+    else:
+        if model == "gpt-4o-mini" or model == "gpt-o3-mini" or model == "gpt-4o":
+            _llm_cache[model] = ChatOpenAI(model_name=model, temperature=0, max_tokens=4000)
+            return _llm_cache[model]
+        elif model == "deepseek-r1-distill-llama-70b":
+            _llm_cache[model] = ChatGroq(temperature=0, model_name=model, max_tokens=4000)
+            return _llm_cache[model]
+        else:
+            raise Exception(f"Model {model} not supported")
 
 
 def validate_structured_output(operation_name: str, output: StructuredLLMResponse) -> str:
@@ -39,6 +49,7 @@ def validate_structured_output(operation_name: str, output: StructuredLLMRespons
     print(
         f"Operation: {operation_name} completed with confidence: {output.confidence}. Output length {len(output.outputString)} ")
     return output.outputString
+
 
 def validate_report_output(operation_name: str, output: StructuredReportResponse) -> StructuredReportResponse:
     """Validate the structured output from the LLM"""
@@ -55,7 +66,7 @@ def structured_llm_response(config: Config, operation_name: str, prompt: str) ->
     """Get the response from the LLM"""
     print(f'Fetching response from LLM for operation: {operation_name}')
     structured_llm = get_llm(config).with_structured_output(StructuredLLMResponse)
-    response = structured_llm.invoke([HumanMessage(content=prompt)])
+    response: StructuredLLMResponse = structured_llm.invoke([HumanMessage(content=prompt)])
     return validate_structured_output(operation_name, response)
 
 
@@ -63,7 +74,7 @@ def structured_report_response(config: Config, operation_name: str, prompt: str)
     """Get the response from the LLM"""
     print(f'Fetching response from LLM for operation: {operation_name}')
     structured_llm = get_llm(config).with_structured_output(StructuredReportResponse)
-    response = structured_llm.invoke([HumanMessage(content=prompt)])
+    response: StructuredReportResponse = structured_llm.invoke([HumanMessage(content=prompt)])
     return validate_report_output(operation_name, response)
 
 

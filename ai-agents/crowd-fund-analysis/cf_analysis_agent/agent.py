@@ -6,7 +6,6 @@ from cf_analysis_agent.reports.financial_health import create_financial_health_r
 from cf_analysis_agent.reports.general_info import create_general_info_report
 from cf_analysis_agent.reports.market_opportunity import create_market_opportunity_report
 from cf_analysis_agent.reports.relevant_links import create_relevant_links_report
-from cf_analysis_agent.reports.financial_review_agent import create_financial_review_report
 from cf_analysis_agent.reports.founder_and_team import create_founder_and_team_report
 from cf_analysis_agent.reports.final_report import create_final_report_test
 from enum import Enum
@@ -66,7 +65,7 @@ def generate_all_reports_serially(state: AgentState):
     create_general_info_report(state)
     create_relevant_links_report(state)
     create_founder_and_team_report(state)
-    create_financial_review_report(state)
+    create_financial_health_report(state)
     create_final_report(state)
 
 
@@ -77,7 +76,6 @@ builder.add_node("general_info", create_general_info_report)
 builder.add_node(ReportType.TRACTION.value, create_traction_report)
 builder.add_node("relevant_links",  create_relevant_links_report)
 
-builder.add_node("financial_review", create_financial_review_report)
 builder.add_node("create_final_report", create_final_report)
 builder.add_node("create_final_report_test", create_final_report_test)
 
