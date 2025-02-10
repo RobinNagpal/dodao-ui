@@ -67,6 +67,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
     return { x, y };
   };
 
+  // get graph color based on the overall score percentage
   const graphColor = getGraphColor(data);
 
   // Convert data into the required format
