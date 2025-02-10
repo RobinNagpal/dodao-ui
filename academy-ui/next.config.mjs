@@ -16,6 +16,12 @@ const nextConfig = {
     }
     return config
   },
+  experimental: {
+    serverMinification: false,
+    serverSourceMaps: true,
+    allowDevelopmentBuilds: true,
+
+  },
   productionBrowserSourceMaps: true,
   serverSourceMaps: true,
   serverMinification: false,
