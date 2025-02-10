@@ -1,15 +1,14 @@
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  const baseUrl = getBaseUrl();
+  const host = req.headers.get('host') as String;
 
   let robotsText = `
 User-agent: *
 Allow: /
 `;
 
-  robotsText += `Sitemap: ${baseUrl}/sitemap.xml\n`;
+  robotsText += `Sitemap: https://${host}/sitemap.xml\n`;
 
   return new NextResponse(robotsText.trim(), {
     headers: { 'Content-Type': 'text/plain' },
