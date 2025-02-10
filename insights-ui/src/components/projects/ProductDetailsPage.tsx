@@ -1,11 +1,12 @@
 import ProjectActionsDropdown from '@/components/projects/ProjectActionsDropdown';
 import ReportActionsDropdown from '@/components/reports/ReportActionsDropdown';
-import { ProjectDetails, REPORT_TYPES_TO_DISPLAY, ReportInterfaceWithType, SpiderGraph, SpiderGraphPie } from '@/types/project/project';
+import { ProjectDetails, REPORT_TYPES_TO_DISPLAY, ReportInterfaceWithType, ReportType, SpiderGraph, SpiderGraphPie } from '@/types/project/project';
 import { getReportName } from '@/util/report-utils';
 import Link from 'next/link';
 import React from 'react';
 import RadarChart from '../ui/RadarChart';
 import PrivateWrapper from '../auth/PrivateWrapper';
+import ProjectInfoTable from './ProjectInfoTable';
 
 interface ProjectDetailPageProps {
   projectId: string;
@@ -20,6 +21,16 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
       type: r,
     })
   );
+  const reportIcons: { [key in ReportType]: string } = {
+    founder_and_team: '👨‍💼', // People/Team
+    market_opportunity: '📈', // Growth/Market
+    traction: '🚀', // Growth/Success
+    execution_and_speed: '⏱️', // Speed/Execution
+    valuation: '💰', // Finance/Value
+    financial_health: '📊',
+    [ReportType.GENERAL_INFO]: '',
+    [ReportType.RELEVANT_LINKS]: '',
+  };
 
   const spiderGraph: SpiderGraph = Object.fromEntries(
     reports.map((report): [string, SpiderGraphPie] => {
@@ -35,7 +46,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
   );
 
   return (
-    <div className="py-24 sm:py-32 text-color">
+    <div className="text-color">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto  lg:text-center">
           <div className="flex justify-end">
@@ -47,42 +58,17 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
           <div className="max-w-lg mx-auto">
             <RadarChart data={spiderGraph} />
           </div>
-          <div className="mt-6 border-t border-gray-100 text-left">
-            <dl className="divide-y text-color">
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm/6 font-medium ">Crowd Funding Link</dt>
-                <dd className="mt-1 text-sm/6  sm:col-span-2 sm:mt-0">{initialProjectDetails.projectInfoInput.crowdFundingUrl}</dd>
-              </div>
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm/6 font-medium ">Website Link</dt>
-                <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{initialProjectDetails.projectInfoInput.websiteUrl}</dd>
-              </div>
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm/6 font-medium ">SEC Filing Link</dt>
-                <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{initialProjectDetails.projectInfoInput.secFilingUrl}</dd>
-              </div>
-              {initialProjectDetails.projectInfoInput.additionalUrls && (
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium ">Additional Links</dt>
-                  {initialProjectDetails.projectInfoInput.additionalUrls.map((url, index) => (
-                    <dd key={index} className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
-                      {url}
-                    </dd>
-                  ))}
-                </div>
-              )}
-            </dl>
-          </div>
-          <div className="mx-auto mt-16 sm:mt-20 lg:mt-24 text-left">
-            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+          <ProjectInfoTable initialProjectDetails={initialProjectDetails} />
+          <div className="mx-auto mt-12 text-left">
+            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-8 lg:max-w-none lg:grid-cols-2 ">
               {REPORT_TYPES_TO_DISPLAY.map((reportType) => {
                 const report = projectDetails.reports[reportType];
                 return (
                   <div key={reportType} className="relative text-left">
                     <dt>
                       <div className="absolute left-0 top-0 flex size-10 items-center justify-center heading-color rounded-lg">
-                        <span aria-hidden="true" className="size-6">
-                          📊
+                        <span aria-hidden="true" className="size-6 text-blue-200">
+                          {reportIcons[reportType]}
                         </span>
                       </div>
                       <div className="flex justify-between font-semibold">
