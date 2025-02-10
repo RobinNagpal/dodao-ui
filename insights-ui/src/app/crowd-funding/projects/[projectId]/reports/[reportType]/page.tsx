@@ -5,19 +5,26 @@ import remarkGfm from 'remark-gfm';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { Metadata } from 'next';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { ProjectDetails, SpiderGraph } from '@/types/project/project';
+import { ProjectDetails, ReportType, SpiderGraph } from '@/types/project/project';
 
 export async function generateMetadata({ params }: { params: Promise<{ projectId: string; reportType: string }> }): Promise<Metadata> {
   const { projectId, reportType } = await params;
 
+  const projectResponse = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`);
+  const projectData: { projectDetails: ProjectDetails; spiderGraph: SpiderGraph | {} } = await projectResponse.json();
+
+  const report = projectData.projectDetails.reports[reportType];
+
   // Map report types to better human-readable titles
   const reportTitles: Record<string, string> = {
-    general_info: 'General Information',
-    red_flags: 'Red Flags',
-    green_flags: 'Green Flags',
-    team_info: 'Team Information',
-    financial_review: 'Financial Review',
-    relevant_links: 'Relevant Links',
+    [ReportType.GENERAL_INFO]: 'General Information',
+    [ReportType.FOUNDER_AND_TEAM]: 'Founder and Team',
+    [ReportType.TRACTION]: 'Traction',
+    [ReportType.MARKET_OPPORTUNITY]: 'Market Opportunity',
+    [ReportType.VALUATION]: 'Valuation',
+    [ReportType.EXECUTION_AND_SPEED]: 'Execution and Speed',
+    [ReportType.FINANCIAL_HEALTH]: 'Financial Health',
+    [ReportType.RELEVANT_LINKS]: 'Relevant Links',
   };
 
   // Default title if the report type is unknown
@@ -25,17 +32,17 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
 
   return {
     title: `${readableReportType} - ${projectId} | DoDAO`,
-    description: `Explore the ${readableReportType} for the crowdfunding project "${projectId}". Get insights into funding status, risks, and investment potential.`,
+    description: `Explore the ${readableReportType} for the crowdfunding project "${projectId}". ${report.summary || ''}`,
     keywords: [
-      'project report',
-      'blockchain funding',
       'crowdfunding insights',
       'investment analysis',
       'investor reports',
       'analysis',
-      'team assessment',
       'risk analysis',
-      reportType, // Dynamic keyword from report type
+      'investment risks',
+      'funding health',
+      projectId,
+      readableReportType, // Dynamic keyword from report type
     ],
     robots: {
       index: true,
@@ -50,13 +57,6 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
       url: `https://dodao.io/crowd-funding/projects/${projectId}/reports/${reportType}`,
       type: 'article',
       siteName: 'DoDAO',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${readableReportType} - ${projectId} | DoDAO`,
-      description: `Discover the ${readableReportType} for project "${projectId}". Get details on funding, risks, and team evaluation.`,
-      site: '@dodao_io',
-      creator: '@dodao_io',
     },
   };
 }
