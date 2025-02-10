@@ -8,7 +8,6 @@ import {
   GuideSubmissionInput,
   GuideUserInputFragment,
   UserDiscordInfoInput,
-  useSubmitGuideMutation,
 } from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { Session } from '@dodao/web-core/types/auth/Session';
@@ -61,7 +60,6 @@ export function useViewGuide(space: SpaceWithIntegrationsDto, fetchedGuide: Guid
   });
   const [activeStepOrder, setActiveStepOrder] = useState<number>(stepOrder);
 
-  const [submitGuideMutation] = useSubmitGuideMutation();
   const { showNotification } = useNotificationContext();
   function getStepSubmission(stepUuid: string): StepResponse {
     return guideSubmission.stepResponsesMap?.[stepUuid];

@@ -1,5 +1,5 @@
 import { TempGuideSubmission } from '@/components/guides/View/TempGuideSubmission';
-import { GuideFeedback, GuideFragment, GuideRating, useUpsertGuideRatingsMutation } from '@/graphql/generated/generated-types';
+import { GuideFeedback, GuideFragment, GuideRating } from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import { UserIdKey } from '@dodao/web-core/types/auth/User';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -15,7 +15,6 @@ export type GuideRatingsHelper = {
 
 export function useGuideRatings(space: SpaceWithIntegrationsDto, guide: GuideFragment, guideSubmission: TempGuideSubmission): GuideRatingsHelper {
   const [showEndRatingsModal, setShowEndRatingsModal] = useState(false);
-  const [upsertGuideRatingsMutation] = useUpsertGuideRatingsMutation();
   const [shownGuideRatingsModal, setShownGuideRatingsModal] = useState(false);
 
   useEffect(() => {
