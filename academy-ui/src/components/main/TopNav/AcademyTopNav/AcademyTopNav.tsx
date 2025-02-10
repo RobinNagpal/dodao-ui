@@ -63,7 +63,7 @@ export default function AcademyTopNav(props: SpaceProps) {
   const { space } = props;
 
   return (
-    <div style={divStyle}>
+    <div style={divStyle} id="academy-top-nav">
       <FullPageModal open={showCreateModal} onClose={() => setShowCreateModal(false)} title={'Create'} showCloseButton={false}>
         <CreateContentModalContents space={props.space} hideModal={() => setShowCreateModal(false)} />
       </FullPageModal>

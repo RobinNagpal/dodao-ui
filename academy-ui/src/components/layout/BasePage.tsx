@@ -20,10 +20,9 @@ function PageTopNav(props: { space: SpaceWithIntegrationsDto }) {
     if (currentUrl.includes('embedded-tidbit-collections')) {
       return null;
     }
-    return <TopNav space={props.space} />;
   }
 
-  return null;
+  return <TopNav space={props.space} />;
 }
 
 function PageFooter(props: { space: SpaceWithIntegrationsDto }) {
@@ -33,9 +32,8 @@ function PageFooter(props: { space: SpaceWithIntegrationsDto }) {
     if (currentUrl.includes('embedded-tidbit-collections')) {
       return null;
     }
-    return <Footer space={props.space} />;
   }
-  return null;
+  return <Footer space={props.space} />;
 }
 
 export function BasePage(props: { space: SpaceWithIntegrationsDto; children: ReactNode }) {
