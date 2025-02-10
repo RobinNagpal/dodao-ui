@@ -16,21 +16,20 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
 
   return {
     title: `${data.projectDetails.name} - Crowdfunding Project | DoDAO`,
-    description: `Learn more about the crowdfunding project "${data.projectDetails.name}". Explore funding details, project insights, and official links.`,
+    description: `DoDAO Agentic Insights provides detailed analysis and insights for "${data.projectDetails.name}" with graphs, reports and metrics like growth,financial health ,traction, valuation ,Execution and speed.`,
     keywords: [
       'Crowdfunding',
-      'Blockchain',
-      'Funding',
+      'Traction',
+      'Investment',
+      'Market Opportunity',
+      'Execution and Speed',
+      'Team',
+      'Valuation',
       data.projectDetails.name,
       'Wefunder',
       'Kickstarter',
       'Start Engine',
-      'Indiegogo',
       'Insights',
-      'Financial',
-      'Project',
-      'Analysis',
-      'Evaluations',
     ],
     robots: {
       index: true,
@@ -41,17 +40,11 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
     },
     openGraph: {
       title: `${data.projectDetails.name} - Crowdfunding Project | DoDAO`,
-      description: `Explore project details, funding status, and insights for "${data.projectDetails.name}".`,
+      description: `DoDAO Agentic Insights provides detailed analysis and insights for "${data.projectDetails.name}" with graphs, reports and metrics like growth,financial health ,traction, valuation ,Execution and speed.`,
       url: `https://agentic-insights.dodao.io/crowd-funding/projects/${projectId}`,
       type: 'website',
-      siteName: 'DoDAO',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${data.projectDetails.name} - Crowdfunding Project | DoDAO`,
-      description: `Discover more about "${data.projectDetails.name}". Get details, reports, and funding status.`,
-      site: '@dodao_io',
-      creator: '@dodao_io',
+      images: [data.projectDetails.imgUrl || ''],
+      siteName: 'Agentic Insights - DoDao',
     },
   };
 }
