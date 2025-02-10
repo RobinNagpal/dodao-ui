@@ -13,7 +13,7 @@ interface SiteMapUrl {
 async function getAllProjects(): Promise<string[]> {
   const baseUrl = getBaseUrl();
   try {
-    const response = await fetch(`${baseUrl}/crowd-funding/projects`, {
+    const response = await fetch(`${baseUrl}/api/crowd-funding/projects`, {
       method: 'GET',
     });
 
