@@ -9,28 +9,108 @@ import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants'
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
-import { headers } from 'next/headers';
 import React from 'react';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const headersList = await headers();
-  const host = headersList.get('host')?.split(':')?.[0];
-
   const space = await getSpaceServerSide();
 
   if (space?.type === SpaceTypes.TidbitsSite) {
+    if (space?.id === 'alchemix') {
+      return {
+        title: 'Tidbits Hub - Learn Alchemix DeFi Platform',
+        description:
+          'Master Alchemix through bite-sized content and interactive demos. Explore self-repaying loans, alAssets, and DeFi yield strategies with easy-to-understand tidbits.',
+        keywords: [
+          'Alchemix',
+          'Tidbits - Alchemix',
+          'DeFi Education',
+          'Self-Repaying Loans',
+          'Zero Liquidations',
+          'Yield Strategies',
+          'Learn Alchemix',
+          'Learning Platform',
+        ],
+        robots: {
+          index: true,
+          follow: true,
+        },
+        alternates: {
+          canonical: 'https://alchemix.tidbitshub.org/',
+        },
+        openGraph: {
+          title: 'Tidbits Hub - Learn Alchemix DeFi Platform',
+          description:
+            'Explore Alchemix’s self-repaying loans and yield strategies in a user-friendly, bite-sized format. Empower your DeFi journey without liquidations.',
+          url: 'https://alchemix.tidbitshub.org/',
+          type: 'website',
+          images: ['https://d31h13bdjwgzxs.cloudfront.net/academy/alchemix/Space/alchemix/1723555696123_alcx_std_logo.svg'],
+          siteName: 'Alchemix Tidbits',
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: 'Tidbits Hub - Learn Alchemix DeFi Platform',
+          description:
+            'Master Alchemix through bite-sized content and interactive demos. Explore self-repaying loans, alAssets, and DeFi yield strategies with easy-to-understand tidbits.',
+          images: ['https://d31h13bdjwgzxs.cloudfront.net/academy/alchemix/Space/alchemix/1723555696123_alcx_std_logo.svg'],
+          site: '@dodao_io',
+          creator: '@dodao_io',
+        },
+      };
+    }
+    if (space?.id === 'safe-global') {
+      return {
+        title: 'Tidbits Hub – Learn Safe Wallet | Secure Smart Account Management',
+        description:
+          'Explore how Safe, the leading Ethereum multisig wallet, secures your assets with multiple signers and smart modules. Learn with bite-sized tidbits and interactive demos — perfect for individuals or DAOs.',
+        keywords: [
+          'Safe Wallet Learning',
+          'Tidbits Hub - Safe Wallet',
+          'Multisig Wallet',
+          'Smart Accounts',
+          'Safe Wallet Tidbits',
+          'DeFi Education',
+          'Learning Platform',
+          'Gnosis Safe',
+        ],
+        robots: {
+          index: true,
+          follow: true,
+        },
+        alternates: {
+          canonical: 'https://safe-global.tidbitshub.org/',
+        },
+        openGraph: {
+          title: 'Tidbits Hub – Learn Safe (Multisig) Wallet',
+          description:
+            'Explore how Safe, the leading Ethereum multisig wallet, secures your assets with multiple signers and smart modules. Learn with bite-sized tidbits and interactive demos — perfect for individuals or DAOs.',
+          url: 'https://safe-global.tidbitshub.org/',
+          type: 'website',
+          images: ['https://www.blocknative.com/hs-fs/hubfs/Safe_Logos_H-Lockup_White.png'],
+          siteName: 'Alchemix Tidbits',
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: 'Tidbits Hub – Learn Safe (Multisig) Wallet',
+          description:
+            'Use Safe to secure funds for individuals or DAOs. Take advantage of multiple signers, modules, and on-chain transaction simulations — taught through short tidbits and step-by-step demos.',
+          images: ['https://www.blocknative.com/hs-fs/hubfs/Safe_Logos_H-Lockup_White.png'],
+          site: '@dodao_io',
+          creator: '@dodao_io',
+        },
+      };
+    }
     return {
       title: `${space?.name} - Tidbits`,
       description: `Learn ${space.name} with the help of Tidbits`,
     };
-  } else if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
+  } else if (space?.id === PredefinedSpaces.DODAO_HOME) {
     return {
       title: 'DoDAO - Empowering Blockchain Innovation',
       description: 'DoDAO offers blockchain development, education, and research services to empower innovation in the blockchain ecosystem.',
       keywords: [
         'dodao',
         'DoDAO',
-        'DoDAO website',
+        'DoDAO Website',
         'DoDAO Blockchain',
         'Blockchain Development',
         'Smart Contract',
