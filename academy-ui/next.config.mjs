@@ -17,6 +17,8 @@ const nextConfig = {
     return config
   },
   productionBrowserSourceMaps: true,
+  serverSourceMaps: true,
+  serverMinification: false,
   env: {
     V2_API_SERVER_URL: process.env.V2_API_SERVER_URL,
     DODAO_SUPERADMINS: process.env.DODAO_SUPERADMINS,

@@ -1,11 +1,9 @@
 import PrivateEllipsisDropdown from '@/components/core/dropdowns/PrivateEllipsisDropdown';
 import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
-import { useReloadAcademyRepoMutation } from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import DetailsHeader from '@dodao/web-core/components/core/details/DetailsHeader';
 import DetailsRow from '@dodao/web-core/components/core/details/DetailsRow';
 import DetailsSection from '@dodao/web-core/components/core/details/DetailsSection';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import React from 'react';
 
 export interface SpaceBasicDetailsProps {
@@ -53,24 +51,8 @@ export default function SpaceBasicDetails(props: SpaceBasicDetailsProps) {
     { label: 'Reload Repo', key: 'reloadRepo' },
     { label: 'Edit', key: 'edit' },
   ];
-  const { showNotification } = useNotificationContext();
-
-  const [reloadAcademyRepoMutation] = useReloadAcademyRepoMutation();
 
   const selectFromThreedotDropdown = async (e: string) => {
-    if (e === 'reloadRepo') {
-      const response = await reloadAcademyRepoMutation({
-        variables: {
-          spaceId: props.space.id,
-        },
-      });
-      if (response.data?.reloadAcademyRepository) {
-        showNotification({ type: 'success', message: 'Repo reloaded' });
-      } else {
-        showNotification({ type: 'error', message: 'Error reloading repo' });
-      }
-    }
-
     if (e === 'edit') {
       setShowBasicSettingsModal(true);
     }

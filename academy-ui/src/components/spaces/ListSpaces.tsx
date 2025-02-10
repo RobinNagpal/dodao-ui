@@ -2,7 +2,7 @@
 
 import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/UpsertSpaceBasicSettingsModal';
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
-import { SpaceSummaryFragment, useDropPineconeNamespaceMutation } from '@/graphql/generated/generated-types';
+import { SpaceSummaryFragment } from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -32,7 +32,6 @@ function getSpaceTableRows(spaceList?: SpaceWithIntegrationsDto[]): TableRow[] {
 export default function ListSpaces() {
   const { data } = useFetchData<SpaceWithIntegrationsDto[]>(`${getBaseUrl()}/api/spaces`, {}, 'Failed to fetch spaces');
   const [showSpaceAddModal, setShowSpaceAddModal] = useState(false);
-  const [dropPineconeNamespaceMutation] = useDropPineconeNamespaceMutation();
   const router = useRouter();
   const { showNotification } = useNotificationContext();
 
@@ -84,12 +83,6 @@ export default function ListSpaces() {
           open={!!deletePineconeSpace}
           onClose={() => setDeletePineconeSpace(null)}
           onDelete={async () => {
-            await dropPineconeNamespaceMutation({
-              variables: {
-                spaceId: deletePineconeSpace.id,
-              },
-            });
-
             showNotification({
               message: 'PineCone Index Deleted',
               type: 'success',
