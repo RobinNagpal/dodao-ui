@@ -4,117 +4,24 @@ import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import TidbitsHubHome from '@/components/home/TidbitsHub/TidbitsHubHome';
 import { getTidbitsSiteHomepageContents } from '@/components/home/TidbitsSite/getTidbitsSiteHomepageContents';
 import { SpaceTypes } from '@/types/space/SpaceDto';
+import { getMetaTags } from '@/utils/metaTags/metaTagsInfo';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
-import { headers } from 'next/headers';
 import React from 'react';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const headersList = await headers();
-  const host = headersList.get('host')?.split(':')?.[0];
-
   const space = await getSpaceServerSide();
 
-  if (space?.type === SpaceTypes.TidbitsSite) {
-    return {
-      title: `${space?.name} - Tidbits`,
-      description: `Learn ${space.name} with the help of Tidbits`,
-    };
-  } else if (host === 'dodao-localhost.io' || host === 'academy.dodao.io' || host === 'dodao.io') {
-    return {
-      title: 'DoDAO - Empowering Blockchain Innovation',
-      description: 'DoDAO offers blockchain development, education, and research services to empower innovation in the blockchain ecosystem.',
-      keywords: [
-        'dodao',
-        'DoDAO',
-        'DoDAO website',
-        'DoDAO Blockchain',
-        'Blockchain Development',
-        'Smart Contract',
-        'Blockchain Education',
-        'Blockchain Research',
-        'DeFi Solutions',
-        'Real World Assets',
-      ],
-      robots: {
-        index: true,
-        follow: true,
-      },
-      alternates: {
-        canonical: 'https://dodao.io/',
-      },
-      openGraph: {
-        title: 'DoDAO - Empowering Blockchain Innovation',
-        description: 'DoDAO offers blockchain development, education, and research services to empower innovation in the blockchain ecosystem.',
-        url: 'https://dodao.io/',
-        type: 'website',
-        images: ['https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png'],
-        siteName: 'DoDAO',
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: 'DoDAO - Empowering Blockchain Innovation',
-        description: 'DoDAO offers blockchain development, education, and research services to empower innovation in the blockchain ecosystem.',
-        images: ['https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png'],
-        site: '@dodao_io',
-        creator: '@dodao_io',
-      },
-    };
-  } else if (space?.id === PredefinedSpaces.TIDBITS_HUB) {
-    return {
-      title: 'Tidbits Hub - Simplify Learning with Bite-Sized Content',
-      description: 'Tidbits Hub offers an innovative platform with bite-sized content, interactive demos, and short videos to boost customer engagement.',
-      keywords: [
-        'Tidbits Hub',
-        'Bite-Sized Learning',
-        'Short Content',
-        'Interactive Learning',
-        'Customer Engagement',
-        'Education Platform',
-        'DoDAO Products',
-        'Learning Innovation',
-        'Blockchain Education',
-      ],
-      authors: [{ name: 'DoDAO' }],
-      robots: {
-        index: true,
-        follow: true,
-      },
-      alternates: {
-        canonical: 'https://tidbitshub.org/',
-      },
-      openGraph: {
-        title: 'Tidbits Hub - Simplify Learning with Bite-Sized Content',
-        description:
-          'Explore Tidbits Hub by DoDAO, an innovative platform offering concise content, one-minute videos, and interactive quizzes to enhance learning and customer engagement.',
-        url: 'https://tidbitshub.org/',
-        type: 'website',
-        images: ['https://d31h13bdjwgzxs.cloudfront.net/academy/dodao_logo.png'],
-        siteName: 'Tidbits Hub',
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: 'Tidbits Hub - Simplify Learning with Bite-Sized Content',
-        description: 'Discover Tidbits Hub by DoDAO, where learning is made simple and engaging with short tidbits, videos, and interactive quizzes.',
-        images: ['https://d31h13bdjwgzxs.cloudfront.net/academy/dodao_logo.png'],
-        site: '@dodao_io',
-        creator: '@dodao_io',
-      },
-    };
-  } else if (space?.type === SpaceTypes.AcademySite) {
-    return {
-      title: `${space?.name} Academy Site`,
-      description: `Learn at ${space?.name} with the help of guides, tidbits, shortvideos, and courses`,
-    };
-  } else {
-    return {
-      title: `${space?.name} Academy Site`,
-      description: `Learn at ${space?.name} with the help of guides, tidbits, shortvideos, and courses`,
-    };
+  if (space) {
+    return getMetaTags(space);
   }
+  return {
+    title: 'DoDAO - Empowering Blockchain Innovation',
+    description: 'DoDAO offers blockchain development, education, and research services to empower innovation in the blockchain ecosystem.',
+  };
 }
 
 async function Home() {
