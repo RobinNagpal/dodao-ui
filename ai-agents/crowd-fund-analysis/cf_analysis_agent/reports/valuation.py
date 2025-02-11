@@ -3,6 +3,7 @@ import traceback
 from cf_analysis_agent.agent_state import AgentState, get_combined_content, ReportType
 from cf_analysis_agent.structures.report_structures import StructuredReportResponse
 from cf_analysis_agent.utils.llm_utils import structured_report_response
+from cf_analysis_agent.utils.prompt_utils import create_prompt_for_checklist
 from cf_analysis_agent.utils.report_utils import update_report_status_failed, \
     update_report_status_in_progress, update_report_with_structured_output
 
@@ -67,7 +68,7 @@ def generate_valuation_report(state: AgentState) -> StructuredReportResponse:
 
     Return final valuation analysis only.
     
-    
+    {create_prompt_for_checklist('Company Valuation')}
     
     Here is the information you have about the startup:
     {combined_content}

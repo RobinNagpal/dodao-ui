@@ -3,6 +3,7 @@ import traceback
 from cf_analysis_agent.agent_state import AgentState, get_combined_content, ReportType
 from cf_analysis_agent.structures.report_structures import StructuredReportResponse
 from cf_analysis_agent.utils.llm_utils import structured_report_response
+from cf_analysis_agent.utils.prompt_utils import create_prompt_for_checklist
 from cf_analysis_agent.utils.report_utils import create_report_file_and_upload_to_s3, update_report_status_failed, \
     update_report_status_in_progress, update_report_with_structured_output
 
@@ -21,8 +22,6 @@ def generate_execution_and_speed_report(state: AgentState) -> StructuredReportRe
     prompt = f"""
     You are an operations analyst specializing in startup execution velocity assessment. Analyze the company's 
     execution speed and milestone achievement based on their reports and industry benchmarks:
-
-    {combined_content}
 
     **Execution & Speed Report Requirements**:
 
@@ -66,7 +65,6 @@ def generate_execution_and_speed_report(state: AgentState) -> StructuredReportRe
 
     **Format Requirements**:
     - Use markdown formatting with clear section headers
-    - Include timeline visualizations using ASCII charts
     - Present industry comparisons in table format
     - Highlight critical path dependencies in bold
     - Maintain analytical tone with actionable insights
@@ -74,7 +72,11 @@ def generate_execution_and_speed_report(state: AgentState) -> StructuredReportRe
 
     Return complete execution velocity analysis only.
     
+    {create_prompt_for_checklist('Execution and Speed of Team')}
     
+    Here is the information you have about the startup:
+    
+    {combined_content}
 
     """
 

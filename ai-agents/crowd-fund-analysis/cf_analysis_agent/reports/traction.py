@@ -38,9 +38,10 @@ def generate_traction_report(state: AgentState) -> StructuredReportResponse:
 
     Return your final traction analysis *only*.
     
-    
+    {create_prompt_for_checklist('Traction of the startup')}
     
     Here is the information you have about the startup:
+    
     {combined_content}
     """
 
