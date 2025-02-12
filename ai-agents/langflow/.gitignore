@@ -4,6 +4,17 @@ terraform/terraform.tfstate.backup
 terraform/terraform.tfvars
 terraform/terraform-provider-*
 terraform/.terraform*
+
+
+new-terraform/.terraform
+new-terraform/terraform.tfstate
+new-terraform/terraform.tfstate.backup
+new-terraform/terraform.tfvars
+new-terraform/terraform-provider-*
+new-terraform/.terraform*
+
+
+
 docker/.env
 
 .envrc
