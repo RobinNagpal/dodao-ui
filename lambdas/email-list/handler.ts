@@ -5,11 +5,13 @@ import * as path from "path";
 const s3 = new AWS.S3({ region: 'us-east-1' });
 const bucketName = process.env.AWS_BUCKET!;
 const emailPath = process.env.AWS_BUCKET_EMAIL_PATH;
-const emailFileKey = emailPath ? `${emailPath}/email-list.txt` : 'email-list.txt'
+const emailFileKey = emailPath ? `${emailPath}/email-list.json` : 'email-list.json'
 
 type RequestBody = {
   email?: string;
   action?: string;
+  compound?: boolean;
+  market?: boolean;
 };
 
 export const manageSubscription = async (event: any) => {
@@ -25,7 +27,7 @@ export const manageSubscription = async (event: any) => {
   }
 
   console.log("Parsed body:", body);
-  const { email, action } = body;
+  const { email, action, compound, market } = body;
 
   if (method === 'GET') {
     try {
@@ -51,15 +53,15 @@ export const manageSubscription = async (event: any) => {
 
   if (method === 'POST') {
     // Handle subscription logic
-    if (!email || !action) {
-      return { statusCode: 400, body: 'Email and action are required.' };
+    if (!email || !action || compound === undefined || market === undefined) {
+      return { statusCode: 400, body: 'Email, action, compound, and market are required.' };
     }
 
     try {
-      let emails: string[] = [];
+      let emailPreferences: Record<string, { compound: boolean; market: boolean }> = {};
       try {
         const file = await s3.getObject({ Bucket: bucketName, Key: emailFileKey }).promise();
-        emails = file.Body?.toString('utf-8').split('\n').filter(Boolean) || []; // Split by lines and remove empty lines
+        emailPreferences = JSON.parse(file.Body?.toString('utf-8') || "{}");
       } catch (error: any) {
         if (error.code !== 'NoSuchKey') {
           throw error;
@@ -67,22 +69,26 @@ export const manageSubscription = async (event: any) => {
         console.log('No existing email file found, creating a new one.');
       }
 
-      if (action === 'subscribe' && !emails.includes(email)) {
-        emails.push(email); // Add the new email
+      if (action === 'subscribe') {
+        if (emailPreferences[email]) {
+            return { statusCode: 400, body: 'You are already subscribed. Updating preferences...' };
+        }
+        emailPreferences[email] = { compound, market };
       } else if (action === 'unsubscribe') {
-        const index = emails.indexOf(email);
-        if (index !== -1) emails.splice(index, 1); // Remove the email
+          if (!emailPreferences[email]) {
+              return { statusCode: 404, body: 'Email not found. Cannot unsubscribe.' };
+          }
+          delete emailPreferences[email]; // Remove the user completely
       }
 
+
       // Write updated emails back to S3 as line-separated values
-      await s3
-        .putObject({
-          Bucket: bucketName,
-          Key: emailFileKey,
-          Body: emails.join('\n'), // Join emails with line breaks
-          ContentType: 'text/plain',
-        })
-        .promise();
+      await s3.putObject({
+        Bucket: bucketName,
+        Key: emailFileKey,
+        Body: JSON.stringify(emailPreferences, null, 2),
+        ContentType: 'application/json',
+      }).promise();
 
       return {
         statusCode: 200,
