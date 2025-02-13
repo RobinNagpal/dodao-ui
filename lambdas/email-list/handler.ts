@@ -70,10 +70,10 @@ export const manageSubscription = async (event: any) => {
       }
 
       if (action === 'subscribe') {
-        emailPreferences[email] = { compound, market };
         if (emailPreferences[email]) {
-            return { statusCode: 400, body: 'You are already subscribed. Updating preferences...' };
+            return { statusCode: 400, body: 'You are already subscribed.' };
         }
+        emailPreferences[email] = { compound, market };
       } else if (action === 'unsubscribe') {
           if (!emailPreferences[email]) {
               return { statusCode: 404, body: 'Email not found. Cannot unsubscribe.' };
