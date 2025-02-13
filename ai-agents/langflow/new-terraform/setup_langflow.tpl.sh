@@ -21,6 +21,16 @@ echo -e "\n[\$(date)] Starting Langflow setup"
 apt-get update -y
 apt-get install -y python3 python3-pip python3-venv git nginx certbot python3-certbot-nginx
 
+# Clone the dodao-ui repository (if not already present)
+if [ ! -d "/home/ubuntu/dodao-ui" ]; then
+  git clone https://github.com/RobinNagpal/dodao-ui.git /home/ubuntu/dodao-ui
+fi
+
+# Ensure required directories for Langflow flows and components exist
+mkdir -p /home/ubuntu/dodao-ui/ai-agents/langflow-flows/langflow-bundles/flows
+mkdir -p /home/ubuntu/dodao-ui/ai-agents/langflow-flows/langflow-bundles/components
+chown -R ubuntu:ubuntu /home/ubuntu/dodao-ui
+
 # Configure initial Nginx (HTTP only)
 rm -f /etc/nginx/sites-enabled/*
 cat <<NGINX_EOF > /etc/nginx/sites-available/langflow
@@ -73,6 +83,8 @@ Environment="LANGFLOW_SUPERUSER_PASSWORD=${langflow_superuser_password}"
 Environment="LANGFLOW_SECRET_KEY=${langflow_secret_key}"
 Environment="LANGFLOW_DATABASE_URL=${postgres_url}"
 Environment="OPENAI_API_KEY=${openai_api_key}"
+Environment="LANGFLOW_LOAD_FLOWS_PATH=/home/ubuntu/dodao-ui/ai-agents/langflow-flows/langflow-bundles/flows"
+Environment="LANGFLOW_COMPONENTS_PATH=/home/ubuntu/dodao-ui/ai-agents/langflow-flows/langflow-bundles/components"
 ExecStart=/home/ubuntu/langflow-env/bin/langflow run --host 127.0.0.1 --port 7860
 Restart=always
 RestartSec=10

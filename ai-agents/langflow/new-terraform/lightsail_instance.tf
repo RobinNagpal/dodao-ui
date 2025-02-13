@@ -7,7 +7,7 @@ data "template_file" "setup_langflow" {
     langflow_secret_key       = var.langflow_secret_key
     postgres_url              = var.postgres_url
     openai_api_key            = var.openai_api_key
-    langflow_domain           = "langflow-ai.dodao.io"
+    langflow_domain           = "langflow-ui.dodao.io"
   }
 }
 
@@ -60,7 +60,7 @@ data "aws_route53_zone" "primary" {
 # Create an A record for langflow-new.dodao.io pointing to the Lightsail instance's public IP
 resource "aws_route53_record" "langflow_dns" {
   zone_id = data.aws_route53_zone.primary.zone_id
-  name    = "langflow-ai"
+  name    = "langflow-ui"
   type    = "A"
   ttl     = 300
   records = [aws_lightsail_instance.langflow_virtual_server_new.public_ip_address]
