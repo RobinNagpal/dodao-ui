@@ -1,0 +1,10 @@
+{
+  "version": "2.0",
+  "app_name": "scraping-ant",
+  "stages": {
+    "dev": {
+      "manage_apigateway": false,
+      "backend": "lambda"
+    }
+  }
+}
