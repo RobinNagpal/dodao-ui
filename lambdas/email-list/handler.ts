@@ -69,9 +69,10 @@ export const manageSubscription = async (event: any) => {
         console.log('No existing email file found, creating a new one.');
       }
 
+      let alreadyExist = false
       if (action === 'subscribe') {
         if (emailPreferences[email]) {
-            return { statusCode: 400, body: 'You are already subscribed.' };
+            alreadyExist = true
         }
         emailPreferences[email] = { compound, market };
       } else if (action === 'unsubscribe') {
@@ -92,7 +93,7 @@ export const manageSubscription = async (event: any) => {
 
       return {
         statusCode: 200,
-        body: `${action === 'subscribe' ? 'Subscribed' : 'Unsubscribed'} successfully.`,
+        body: `${action === 'subscribe' ? `${alreadyExist ? 'You are already subscribed. Updated preferences':'Subscribed'}` : 'Unsubscribed'} successfully.`,
       };
     } catch (error: any) {
       console.error(error);
