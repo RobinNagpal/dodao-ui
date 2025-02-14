@@ -1,6 +1,7 @@
 import json
 import os
 from scrapingant_client import ScrapingAntClient
+from bs4 import BeautifulSoup  # To extract text from HTML
 from chalice import Chalice
 
 # Chalice app object (even if we don't use API Gateway)
@@ -32,9 +33,13 @@ def lambda_handler(event, context):
         client = ScrapingAntClient(token=api_key)
         result = client.general_request(url)
 
+        # Convert HTML to text using BeautifulSoup
+        soup = BeautifulSoup(result.content, "html.parser")
+        text_content = soup.get_text(separator="\n", strip=True)  # Extract readable text
+
         return {
             "statusCode": 200,
-            "body": json.dumps({"content": result.content}),
+            "body": json.dumps({"content": text_content}),  # Limit response size
             "headers": {"Content-Type": "application/json"}
         }
 
