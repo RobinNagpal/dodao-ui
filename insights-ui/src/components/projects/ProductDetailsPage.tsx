@@ -32,6 +32,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
     [ReportType.RELEVANT_LINKS]: '',
   };
 
+  console.log('reports', reports);
   const spiderGraph: SpiderGraph = Object.fromEntries(
     reports.map((report): [string, SpiderGraphPie] => {
       const pieData: SpiderGraphPie = {
@@ -39,7 +40,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
         name: getReportName(report.type),
         summary: report.summary || '',
         // Sum of all scores in the report
-        scores: report.performanceChecklist.map((pc) => ({ score: pc.score, comment: pc.checklistItem })),
+        scores: report.performanceChecklist?.map((pc) => ({ score: pc.score, comment: pc.checklistItem })) || [],
       };
       return [report.type, pieData];
     })
@@ -74,28 +75,32 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
                       <div className="flex justify-between font-semibold">
                         <div className="ml-6 text-xl">{getReportName(reportType)}</div>
                         <PrivateWrapper>
-                          <ReportActionsDropdown projectId={projectId} report={{ ...report, type: reportType }} />
+                          <ReportActionsDropdown projectId={projectId} report={{ ...report, type: reportType }} reportType={reportType} />
                         </PrivateWrapper>
                       </div>
-                      <div className="text-sm py-1">{report.summary}</div>
+                      {report && <div className="text-sm py-1">{report.summary}</div>}
                     </dt>
-                    <dd className="text-color text-sm">
-                      {report.performanceChecklist?.length && (
-                        <ul className="list-disc mt-2">
-                          {report.performanceChecklist.map((item, index) => (
-                            <li key={index} className="mb-1 flex items-start">
-                              <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
-                              <span>{item.checklistItem}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </dd>
-                    <div>
-                      <Link href={`/crowd-funding/projects/${projectId}/reports/${reportType}`} className="link-color text-sm mt-4">
-                        See Full Report &rarr;
-                      </Link>
-                    </div>
+                    {report && report.performanceChecklist && report.performanceChecklist.length > 0 && (
+                      <>
+                        <dd className="text-color text-sm">
+                          {report.performanceChecklist?.length && (
+                            <ul className="list-disc mt-2">
+                              {report.performanceChecklist.map((item, index) => (
+                                <li key={index} className="mb-1 flex items-start">
+                                  <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
+                                  <span>{item.checklistItem}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </dd>
+                        <div>
+                          <Link href={`/crowd-funding/projects/${projectId}/reports/${reportType}`} className="link-color text-sm mt-4">
+                            See Full Report &rarr;
+                          </Link>
+                        </div>
+                      </>
+                    )}{' '}
                   </div>
                 );
               })}
