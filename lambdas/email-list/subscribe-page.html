@@ -54,10 +54,22 @@
         }
 
         .form {
-            display: flex;
+            margin: 2.5rem auto 0;
             max-width: 24rem;
             gap: 1rem;
-            margin: 2.5rem auto 0;
+        }
+
+        .input-and-button {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .checkboxes {
+            color: white;
+            font-weight: 700;
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
         }
 
         .email-input {
@@ -77,11 +89,12 @@
 
         .lowerText {
             color: #9ca3af;
+            font-size: medium;
         }
 
         .clickHereLink {
             text-decoration: underline;
-            color: white
+            color: #9ca3af;
         }
 
         .email-input:focus {
@@ -131,11 +144,21 @@
                 email.
             </p>
             <form class="form" id="subscription-form">
-                <!-- <label for="email-address" class="sr-only">Email address</label> -->
-                <input id="email" name="email" type="email" autocomplete="email" required class="email-input"
-                    placeholder="Enter your email" />
-                <button type="button" id="subscribe-btn" class="notify-button">Subscribe</button>
-                <button type="button" id="unsubscribe-btn" class="unsubscribe notify-button">Unsubscribe</button>
+                <div class="input-and-button">
+                    <input id="email" name="email" type="email" autocomplete="email" required class="email-input"
+                        placeholder="Enter your email" />
+                    <button type="button" id="subscribe-btn" class="notify-button">Subscribe</button>
+                    <button type="button" id="unsubscribe-btn" class="unsubscribe notify-button">Unsubscribe</button>
+                </div>
+                <div class="checkboxes">
+                    <label>
+                        <input type="checkbox" id="compound-updates" checked> Compound Updates
+                    </label>
+
+                    <label>
+                        <input type="checkbox" id="market-updates" checked> Market Updates
+                    </label>
+                </div>
             </form>
             <p class="lowerText">Want to unsubscribe? <a href="#" class="clickHereLink"
                     onclick="toggleUnsubscribe()">Click here</a></p>
@@ -159,12 +182,14 @@
         const toggleText = document.querySelector('.lowerText');
 
         const sendRequest = async (email, action) => {
+            const compound = document.getElementById('compound-updates').checked;
+            const market = document.getElementById('market-updates').checked;
             const response = await fetch('/email-subscription', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, action }),
+                body: JSON.stringify({ email, action, compound, market }),
             });
             const result = await response.text();
             alert(result);
