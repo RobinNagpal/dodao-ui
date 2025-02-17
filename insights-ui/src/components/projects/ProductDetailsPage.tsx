@@ -56,6 +56,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
             </PrivateWrapper>
           </div>
           <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">{initialProjectDetails.name}</p>
+          <p className="mt-5 whitespace-pre-line">{initialProjectDetails.processedProjectInfo?.startupSummary}</p>
           <div className="max-w-lg mx-auto">
             <RadarChart data={spiderGraph} />
           </div>
