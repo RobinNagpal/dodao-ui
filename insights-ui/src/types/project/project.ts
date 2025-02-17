@@ -135,14 +135,25 @@ export interface StartupMetricsInterface {
   churnRate?: MetricInterface;
 }
 
+export interface MarketDetailInterface {
+  details: string;
+  calculationLogic: string;
+}
+export interface SectorDetailInterface {
+  basicInfo: string;
+  growthRate: string;
+}
+
 export interface IndustryDetailsAndForecastInterface {
   /**
    * Stores the processed industry details and forecast content.
    */
-  industryDetailsAndForecast: string;
-  totalAddressableMarket: string;
-  serviceableAddressableMarket: string;
-  serviceableObtainableMarket: string;
+  sectorDetails: SectorDetailInterface;
+  subSectorDetails: SectorDetailInterface;
+  totalAddressableMarket: MarketDetailInterface;
+  serviceableAddressableMarket: MarketDetailInterface;
+  serviceableObtainableMarket: MarketDetailInterface;
+  profitMargins: MarketDetailInterface;
 }
 
 export interface ProcessedProjectInfoInterface {
@@ -160,6 +171,15 @@ export interface ProcessedProjectInfoInterface {
   lastUpdated: string;
   status: ProcessingStatus;
   startupSummary?: string;
+}
+
+export enum RepopulatableFields {
+  INDUSTRY_DETAILS = 'industryDetails',
+  STARTUP_METRICS = 'startupMetrics',
+  STARTUP_SUMMARY = 'startupSummary',
+  SEC_INFO = 'secInfo',
+  CROWDFUNDING_CONTENT = 'contentOfCrowdfundingUrl',
+  WEBSITE_CONTENT = 'contentOfWebsiteUrl',
 }
 
 export interface ProjectDetails {

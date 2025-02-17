@@ -1,12 +1,13 @@
 'use client';
 
 import ProjectDetailTable from '@/components/projects/ProjectDetailTable';
-import { ProcessingStatus, ProjectDetails, ReportWithName, SpiderGraph } from '@/types/project/project';
+import { ProcessingStatus, ProjectDetails, RepopulatableFields, ReportWithName, SpiderGraph } from '@/types/project/project';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useEffect, useState } from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import RepopulateButton from '../ui/RepopulateButton';
 
 interface ProjectDetailPageProps {
   projectId: string;
@@ -22,6 +23,7 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
   const [openCrowdFundingContentAccordion, setOpenCrowdFundingContentAccordion] = useState(false);
   const [openAdditionalUrlsContentAccordion, setOpenAdditionalUrlsContentAccordion] = useState(false);
   const [openSecMarkdownContentAccordion, setOpenSecMarkdownContentAccordion] = useState(false);
+  const [openIndustryDetailAccordion, setOpenIndustryDetailAccordion] = useState(false);
   const fetchProjectDetails = async () => {
     try {
       const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`, { cache: 'no-cache' });
@@ -64,6 +66,7 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
         <div className="my-5">Overall Status: {projectDetails.status}</div>
       </div>
 
+      <RepopulateButton projectId={projectId} field={RepopulatableFields.CROWDFUNDING_CONTENT} />
       <Accordion
         label="Crowdfunding Content"
         isOpen={openCrowdFundingContentAccordion}
@@ -76,6 +79,7 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
         )}
       </Accordion>
 
+      <RepopulateButton projectId={projectId} field={RepopulatableFields.WEBSITE_CONTENT} />
       <Accordion label="Website Content" isOpen={openWebsiteContentAccordion} onClick={() => setOpenWebsiteContentAccordion(!openWebsiteContentAccordion)}>
         {projectDetails.processedProjectInfo?.contentOfWebsiteUrl && (
           <Markdown className="markdown text-color" remarkPlugins={[remarkGfm]}>
@@ -96,6 +100,7 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
         )}
       </Accordion>
 
+      <RepopulateButton projectId={projectId} field={RepopulatableFields.SEC_INFO} />
       <Accordion
         label="SEC Markdown Content"
         isOpen={openSecMarkdownContentAccordion}
@@ -105,6 +110,13 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
           <Markdown className="markdown text-color" remarkPlugins={[remarkGfm]}>
             {projectDetails.processedProjectInfo?.secInfo?.secMarkdownContent}
           </Markdown>
+        )}
+      </Accordion>
+
+      <RepopulateButton projectId={projectId} field={RepopulatableFields.INDUSTRY_DETAILS} />
+      <Accordion label="Industry Details" isOpen={openIndustryDetailAccordion} onClick={() => setOpenIndustryDetailAccordion(!openIndustryDetailAccordion)}>
+        {projectDetails.processedProjectInfo?.industryDetails && (
+          <pre>{projectDetails.processedProjectInfo?.industryDetails && JSON.stringify(projectDetails.processedProjectInfo.industryDetails, null, 2)}</pre>
         )}
       </Accordion>
 
