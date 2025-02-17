@@ -159,6 +159,7 @@ export interface ProcessedProjectInfoInterface {
   startupMetrics: StartupMetricsInterface;
   lastUpdated: string;
   status: ProcessingStatus;
+  startupSummary?: string;
 }
 
 export interface ProjectDetails {
