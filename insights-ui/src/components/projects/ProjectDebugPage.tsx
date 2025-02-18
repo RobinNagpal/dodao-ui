@@ -116,7 +116,9 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
       <RepopulateButton projectId={projectId} field={RepopulatableFields.INDUSTRY_DETAILS} />
       <Accordion label="Industry Details" isOpen={openIndustryDetailAccordion} onClick={() => setOpenIndustryDetailAccordion(!openIndustryDetailAccordion)}>
         {projectDetails.processedProjectInfo?.industryDetails && (
-          <pre>{projectDetails.processedProjectInfo?.industryDetails && JSON.stringify(projectDetails.processedProjectInfo.industryDetails, null, 2)}</pre>
+          <pre className="whitespace-pre-wrap " style={{ overflowWrap: 'anywhere' }}>
+            {projectDetails.processedProjectInfo?.industryDetails && JSON.stringify(projectDetails.processedProjectInfo.industryDetails, null, 2)}
+          </pre>
         )}
       </Accordion>
 

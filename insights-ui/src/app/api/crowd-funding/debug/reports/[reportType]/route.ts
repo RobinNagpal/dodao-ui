@@ -1,7 +1,9 @@
-import { GetObjectCommand, ListObjectsV2Command, ListObjectsV2CommandInput, S3Client } from '@aws-sdk/client-s3';
-import { NextRequest } from 'next/server';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { ProjectDetails } from '@/types/project/project';
+import { ProjectInfoAndReport } from '@/types/project/report';
 import { InsightsConstants } from '@/util/insights-constants';
+import { GetObjectCommand, ListObjectsV2Command, ListObjectsV2CommandInput, S3Client } from '@aws-sdk/client-s3';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { NextRequest } from 'next/server';
 import { Readable } from 'stream';
 
 const s3Client = new S3Client({ region: process.env.DEFAULT_REGION });
@@ -31,29 +33,25 @@ async function getProjects(): Promise<string[]> {
   );
 }
 
-async function getProjectReport(projectId: string, reportType: string): Promise<any | null> {
+async function getProjectReport(projectId: string, reportType: string): Promise<ProjectInfoAndReport> {
   const key = `${InsightsConstants.CROWDFUND_ANALYSIS_PREFIX}/${projectId}/agent-status.json`;
 
-  try {
-    const command = new GetObjectCommand({
-      Bucket: InsightsConstants.S3_BUCKET_NAME,
-      Key: key,
-    });
-    const response = await s3Client.send(command);
+  const command = new GetObjectCommand({
+    Bucket: InsightsConstants.S3_BUCKET_NAME,
+    Key: key,
+  });
+  const response = await s3Client.send(command);
 
-    const jsonContent = response.Body instanceof Readable ? await streamToString(response.Body) : await new Response(response.Body as ReadableStream).text();
+  const jsonContent = response.Body instanceof Readable ? await streamToString(response.Body) : await new Response(response.Body as ReadableStream).text();
 
-    const projectData = JSON.parse(jsonContent);
-    const reports = projectData.reports || {};
+  const projectData = JSON.parse(jsonContent) as ProjectDetails;
+  const reports = projectData.reports;
 
-    return {
-      projectId,
-      report: reports[reportType] || null, // Only return the requested report type
-    };
-  } catch (error) {
-    console.error(`Error fetching agent-status.json for ${projectId}:`, error);
-    return { projectId, report: null }; // Return null if there's an error
-  }
+  return {
+    projectId,
+    projectInfo: projectData.projectInfoInput,
+    report: reports?.[reportType],
+  };
 }
 
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ reportType: string }> }) {
@@ -62,13 +60,13 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ repo
   const projectIds = await getProjects();
 
   // Fetch reports sequentially to avoid rate limits
-  const projectsWithReports = [];
+  const projectsWithReports: ProjectInfoAndReport[] = [];
   for (const projectId of projectIds) {
     const projectReport = await getProjectReport(projectId, reportType);
     projectsWithReports.push(projectReport);
   }
 
-  return { projects: projectsWithReports };
+  return projectsWithReports;
 }
 
-export const GET = withErrorHandlingV2(getHandler);
+export const GET = withErrorHandlingV2<ProjectInfoAndReport[]>(getHandler);
