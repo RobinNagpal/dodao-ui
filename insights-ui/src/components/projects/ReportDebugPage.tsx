@@ -47,7 +47,7 @@ export default function ReportDebugPage({ reportsData, reportType }: ReportDebug
             {Object.entries(allReportsOfATypeForAllProjects).map(([projectId, report]) => (
               <tr key={projectId}>
                 <td>{projectId}</td>
-                <td>
+                <td className="p-5">
                   {report.performanceChecklist && report.performanceChecklist.length > 0 ? (
                     <>
                       <ul className="list-disc mt-2">
