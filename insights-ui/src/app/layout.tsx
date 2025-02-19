@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Agentic Insights',
-  description: 'Agents progress and reports',
+  title: 'KoalaGains',
+  description: 'Making investments more insightful',
 };
 
 export default function RootLayout({

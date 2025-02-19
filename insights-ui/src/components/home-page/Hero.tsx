@@ -1,5 +1,5 @@
 import { StarRating } from '@/components/home-page/StarRating';
-import coverImage from '@/images/cover.png';
+import coverImage from '@/images/koala.png';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -26,9 +26,8 @@ export function Hero() {
       <div className="mx-auto grid max-w-6xl grid-cols-1 grid-rows-[auto_1fr] gap-y-16 pt-16 md:pt-20 lg:grid-cols-12 lg:gap-y-20 lg:px-3 lg:pt-20 lg:pb-36 xl:py-32">
         {/* Hero Image + Background Pattern */}
         <div className="relative flex items-end lg:col-span-5 lg:row-span-2">
-          <div className="absolute -top-20 right-1/2 -bottom-12 left-0 z-10 rounded-br-6xl bg-indigo-600 text-white/10 md:bottom-8 lg:-inset-y-32 lg:right-full lg:left-[-100vw] lg:-mr-40" />
-          <div className="relative z-10 mx-auto flex w-64 rounded-xl bg-white/5 shadow-xl md:w-80 lg:w-auto">
-            <Image className="w-full" src={coverImage} alt="" priority />
+          <div className="relative z-10 mx-auto flex w-64 rounded-xl shadow-xl md:w-80 lg:w-auto">
+            <Image src={coverImage} alt="" priority />
           </div>
         </div>
 
