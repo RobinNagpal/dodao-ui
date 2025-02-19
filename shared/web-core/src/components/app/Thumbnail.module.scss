@@ -1,0 +1,17 @@
+.thumbnailImage {
+  /* Base styles for the thumbnail image */
+  object-fit: contain;
+  /* Other default styles */
+}
+
+.bigTile {
+  /* Overrides for big thumbnails */
+  object-fit: cover;
+  width: 100%;
+  /* Additional styles specific to big tiles */
+}
+
+.dynamicHeight {
+  /* Styles that accommodate dynamic heights */
+  /* You might want to use min-height or max-height properties here */
+}

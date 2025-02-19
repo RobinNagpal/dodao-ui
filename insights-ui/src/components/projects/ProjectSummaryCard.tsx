@@ -33,10 +33,10 @@ const ProjectSummaryCard: React.FC<ProjectSummaryCardProps> = ({ projectId }) =>
             entityId={projectId}
             title={projectId}
             size="350"
-            className="mb-1 w-full"
+            className="mb-1 w-full object-cover"
             max_tile_height="200px"
             big_tile={true}
-            imageClass="w-full"
+            imageClass="w-full rounded-t-xl"
           />
         </div>
 
