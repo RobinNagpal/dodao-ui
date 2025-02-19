@@ -1,6 +1,5 @@
-import clsx from 'clsx';
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, Inter } from 'next/font/google';
+import { Geist, Geist_Mono } from 'next/font/google';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
 import { CSSProperties } from 'react';
@@ -20,12 +19,6 @@ export const metadata: Metadata = {
   description: 'Agents progress and reports',
 };
 
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-});
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -44,7 +37,7 @@ export default function RootLayout({
   } as CSSProperties;
 
   return (
-    <html lang="en" className={clsx('h-full scroll-smooth bg-white antialiased', inter.variable)}>
+    <html lang="en">
       <head>
         <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,500,700&display=swap" />

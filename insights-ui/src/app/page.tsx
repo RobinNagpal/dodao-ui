@@ -1,4 +1,5 @@
 import AllInOnePlatform from '@/components/home-page/AllInOnePlatform';
+import Contact from '@/components/home-page/Contact';
 import Features from '@/components/home-page/Features';
 import { Footer } from '@/components/home-page/Footer';
 import FromTheBlog from '@/components/home-page/FromTheBlog';
@@ -24,6 +25,7 @@ export default function Home() {
       <AllInOnePlatform />
       <Features />
       <FromTheBlog />
+      <Contact />
       <Footer />
     </div>
   );
