@@ -2,19 +2,19 @@ import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/2
 
 const features = [
   {
-    name: 'Push to deploy.',
-    description:
-      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
+    name: 'Accurate SEC Summaries',
+    description: 'We parse 10-K, 10-Q, 8-K, and more to deliver both quantitative and qualitative insights, giving you crucial detail at every step.',
     icon: CloudArrowUpIcon,
   },
   {
-    name: 'SSL certificates.',
-    description: 'Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.',
+    name: 'Sector-Specific Analysis',
+    description:
+      'Different metrics matter to different industries. KoalaGains highlights key factors—like rent and debt for REITs or product pipelines for tech.',
     icon: LockClosedIcon,
   },
   {
-    name: 'Database backups.',
-    description: 'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. Et magna sit morbi lobortis.',
+    name: 'Smart REIT Evaluations',
+    description: 'Our platform simplifies REIT data, pulling out growth trajectories, rent details, and relevant events so you can see the bigger picture.',
     icon: ServerIcon,
   },
 ];
@@ -26,16 +26,17 @@ export default function Features() {
         <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
           <div className="lg:pr-8 lg:pt-4">
             <div className="lg:max-w-lg">
-              <h2 className="text-base/7 font-semibold text-indigo-400">Deploy faster</h2>
-              <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl">A better workflow</p>
+              <h2 className="text-base/7 font-semibold text-indigo-400">A Better Workflow</h2>
+              <p className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">Powered by Purpose-Built AI</p>
               <p className="mt-6 text-lg/8 text-gray-300">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.
+                KoalaGains leverages custom AI agents that consolidate data into user-friendly reports, timelines, and comparisons. Easily configure these
+                agents for your unique investment style.
               </p>
               <dl className="mt-10 max-w-xl space-y-8 text-base/7 text-gray-300 lg:max-w-none">
                 {features.map((feature) => (
                   <div key={feature.name} className="relative pl-9">
                     <dt className="inline font-semibold text-white">
-                      <feature.icon aria-hidden="true" className="absolute left-1 top-1 size-5 w-5 h-5 text-indigo-500" />
+                      <feature.icon aria-hidden="true" className="absolute left-1 top-1 h-5 w-5 text-indigo-500" />
                       {feature.name}
                     </dt>{' '}
                     <dd className="inline">{feature.description}</dd>
