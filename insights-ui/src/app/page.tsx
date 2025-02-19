@@ -1,36 +1,31 @@
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
-import React from 'react';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import ProjectSummaryCard from '@/components/projects/ProjectSummaryCard';
-import AddProjectButton from '@/components/ui/AddProjectButton';
-import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import AllInOnePlatform from '@/components/home-page/AllInOnePlatform';
+import Features from '@/components/home-page/Features';
+import { Footer } from '@/components/home-page/Footer';
+import { Hero } from '@/components/home-page/Hero';
+import Highlights from '@/components/home-page/Highlights';
+import { CSSProperties } from 'react';
 
-export default async function Home() {
-  const apiUrl = `${getBaseUrl()}/api/crowd-funding/projects`;
-  const res = await fetch(apiUrl, { cache: 'no-cache' });
-  const data = await res.json();
+const style: CSSProperties = {
+  '--primary-color': '#2563eb',
+  '--primary-text-color': '#fff',
+  '--bg-color': '#fff',
+  '--text-color': '#282c6e',
+  '--link-color': '#2563eb',
+  '--heading-color': '#ffffff',
+  '--border-color': '#282c6e',
+  '--block-bg': '#fff',
+  '--swiper-theme-color': '',
+} as CSSProperties;
 
+export default function Home() {
   return (
-    <PageWrapper>
-      <div className="mx-auto">
-        <div className="text-center my-5">
-          <div className="sm:flex-auto">
-            <h1 className="font-semibold leading-6 text-2xl text-color">Crowd Funding Projects</h1>
-            <p className="my-2 text-sm text-color">A list of all the projects.</p>
-          </div>
-        </div>
-        <PrivateWrapper>
-          <AddProjectButton />
-        </PrivateWrapper>
-        <Grid4Cols>
-          {data.projectIds!.length > 0 ? (
-            data.projectIds.map((projectId: string) => <ProjectSummaryCard key={projectId} projectId={projectId} />)
-          ) : (
-            <div className="text-color text-center">No projects to show</div>
-          )}
-        </Grid4Cols>
-      </div>
-    </PageWrapper>
+    <div style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
+      <Hero />
+      <AllInOnePlatform />
+      <Features />
+      <Highlights />
+
+      <Footer />
+    </div>
   );
 }
