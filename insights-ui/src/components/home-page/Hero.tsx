@@ -40,8 +40,8 @@ export function Hero() {
         {/* Main Hero Text and CTA */}
         <div className="pt-16 lg:col-span-7 lg:pt-0 lg:pl-16 xl:pl-20">
           <div className="mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4 lg:px-0">
-            <h1 className="font-display text-5xl font-extrabold text-white sm:text-6xl">Data-Driven Investing with KoalaGains</h1>
-            <p className="mt-4 text-3xl text-gray-400">Powerful AI insights and deep data extraction to unlock new opportunities. All in one place.</p>
+            <h1 className="font-display text-4xl font-extrabold text-white sm:text-6xl">Data-Driven Investing with KoalaGains</h1>
+            <p className="mt-4 text-2xl text-gray-400">Powerful AI insights and deep data extraction to unlock new opportunities. All in one place.</p>
             <div className="mt-8 flex gap-4">
               <Link
                 href="/crowd-funding"
