@@ -1,9 +1,8 @@
-import Image from 'next/image';
-
 import { Button } from '@/components/home-page/Button';
 import { GridPattern } from '@/components/home-page/GridPattern';
 import { StarRating } from '@/components/home-page/StarRating';
 import coverImage from '@/images/cover.png';
+import Image from 'next/image';
 
 function Testimonial() {
   return (

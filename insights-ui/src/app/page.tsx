@@ -1,8 +1,8 @@
 import AllInOnePlatform from '@/components/home-page/AllInOnePlatform';
 import Features from '@/components/home-page/Features';
 import { Footer } from '@/components/home-page/Footer';
+import FromTheBlog from '@/components/home-page/FromTheBlog';
 import { Hero } from '@/components/home-page/Hero';
-import Highlights from '@/components/home-page/Highlights';
 import { CSSProperties } from 'react';
 
 const style: CSSProperties = {
@@ -23,8 +23,7 @@ export default function Home() {
       <Hero />
       <AllInOnePlatform />
       <Features />
-      <Highlights />
-
+      <FromTheBlog />
       <Footer />
     </div>
   );
