@@ -9,16 +9,23 @@ const baseStyles = {
 
 const variantStyles = {
   solid: {
+    // You can keep 'slate' if you want a neutral/gray button
     slate:
-      'bg-slate-900 text-white hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 active:bg-slate-700 active:text-white/80 disabled:opacity-30 disabled:hover:bg-slate-900',
-    blue: 'bg-blue-600 text-white hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:bg-blue-700 active:text-white/80 disabled:opacity-30 disabled:hover:bg-blue-600',
+      'bg-gray-600 text-white hover:bg-gray-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700 active:bg-gray-700 active:text-white/80 disabled:opacity-30 disabled:hover:bg-gray-600',
+    // Updated from 'blue' → 'indigo'
+    indigo:
+      'bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:bg-indigo-700 active:text-white/80 disabled:opacity-30 disabled:hover:bg-indigo-600',
+    // Updated “white” variant to match darker theme
+    // If you don’t need a “white” button in dark mode, remove or restyle as needed
     white:
-      'bg-white text-blue-600 hover:text-blue-700 focus-visible:text-blue-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:bg-blue-50 active:text-blue-900/80 disabled:opacity-40 disabled:hover:text-blue-600',
+      'bg-white text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:bg-indigo-100 active:text-indigo-700/80 disabled:opacity-40 disabled:hover:bg-white',
   },
   outline: {
     slate:
-      'border-slate-200 text-slate-900 hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600 active:border-slate-200 active:bg-slate-50 active:text-slate-900/70 disabled:opacity-40 disabled:hover:border-slate-200 disabled:hover:bg-transparent',
-    blue: 'border-blue-300 text-blue-600 hover:border-blue-400 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:text-blue-600/70 disabled:opacity-40 disabled:hover:border-blue-300 disabled:hover:bg-transparent',
+      'border-gray-600 text-gray-100 hover:border-gray-500 hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500 active:bg-gray-600 active:text-gray-200/80 disabled:opacity-40 disabled:hover:border-gray-600 disabled:hover:bg-transparent',
+    // Updated from 'blue' → 'indigo'
+    indigo:
+      'border-indigo-400 text-indigo-400 hover:border-indigo-300 hover:bg-indigo-500/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 active:text-indigo-300/80 disabled:opacity-40 disabled:hover:border-indigo-400 disabled:hover:bg-transparent',
   },
 };
 
@@ -43,11 +50,7 @@ export function Button({ className, ...props }: ButtonProps) {
   props.variant ??= 'solid';
   props.color ??= 'slate';
 
-  className = clsx(
-    baseStyles[props.variant],
-    props.variant === 'outline' ? variantStyles.outline[props.color] : props.variant === 'solid' ? variantStyles.solid[props.color] : undefined,
-    className
-  );
+  className = clsx(baseStyles[props.variant], props.variant === 'outline' ? variantStyles.outline[props.color] : variantStyles.solid[props.color], className);
 
   return typeof props.href === 'undefined' ? <button className={className} {...props} /> : <Link className={className} {...props} />;
 }
