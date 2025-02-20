@@ -18,16 +18,15 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
   const filePath = path.join(process.cwd(), 'blogs', `${slug}.mdx`);
   const fileContents = fs.readFileSync(filePath, 'utf8');
 
+  // Extract front matter and markdown content separately
+  const { content, data } = matter(fileContents); // ✅ This correctly extracts only the markdown content
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
-      name: slug,
+      name: data.title,
       href: `/blogs/${slug}`,
       current: true,
     },
   ];
-  // Extract front matter and markdown content separately
-  const { content, data } = matter(fileContents); // ✅ This correctly extracts only the markdown content
-
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
