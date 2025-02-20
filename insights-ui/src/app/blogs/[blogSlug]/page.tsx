@@ -1,11 +1,10 @@
-// pages/posts/[slug].tsx
 import fs from 'fs';
 import matter from 'gray-matter';
-import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import path from 'path';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
+import MDXRenderer from '@/components/mdx/MdxRenderer'; // Import Client Component
 
 interface BlogInterface {
   title: string;
@@ -18,10 +17,8 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
   const filePath = path.join(process.cwd(), 'blogs', `${slug}.mdx`);
   const fileContents = fs.readFileSync(filePath, 'utf8');
 
-  // Parse front matter using gray-matter
   const { content, data } = matter(fileContents);
 
-  // Serialize the markdown content to MDX using next-mdx-remote with plugins
   const mdxSource = await serialize(content, {
     mdxOptions: {
       remarkPlugins: [remarkGfm],
@@ -29,13 +26,11 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
     },
   });
 
-  const source = mdxSource;
-  const frontMatter = data as BlogInterface;
   return (
-    <article>
-      <h1>{frontMatter.title}</h1>
-      <img src={frontMatter.image} alt={frontMatter.title} />
-      <MDXRemote {...source} />
+    <article className="prose prose-lg max-w-none">
+      <h1 className="text-3xl font-bold">{data.title}</h1>
+      <img src={data.image} alt={data.title} className="w-full my-4 rounded-md" />
+      <MDXRenderer source={mdxSource} />
     </article>
   );
 }
