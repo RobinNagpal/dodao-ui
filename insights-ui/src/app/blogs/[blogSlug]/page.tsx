@@ -1,10 +1,11 @@
 import fs from 'fs';
 import matter from 'gray-matter';
-import { serialize } from 'next-mdx-remote/serialize';
 import path from 'path';
-import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
-import MDXRenderer from '@/components/mdx/MdxRenderer'; // Import Client Component
+import Markdown from 'react-markdown';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 
 interface BlogInterface {
   title: string;
@@ -17,20 +18,28 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
   const filePath = path.join(process.cwd(), 'blogs', `${slug}.mdx`);
   const fileContents = fs.readFileSync(filePath, 'utf8');
 
-  const { content, data } = matter(fileContents);
-
-  const mdxSource = await serialize(content, {
-    mdxOptions: {
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [rehypeSlug],
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: slug,
+      href: `/blogs/${slug}`,
+      current: true,
     },
-  });
+  ];
+  // Extract front matter and markdown content separately
+  const { content, data } = matter(fileContents); // ✅ This correctly extracts only the markdown content
 
   return (
-    <article className="prose prose-lg max-w-none">
-      <h1 className="text-3xl font-bold">{data.title}</h1>
-      <img src={data.image} alt={data.title} className="w-full my-4 rounded-md" />
-      <MDXRenderer source={mdxSource} />
-    </article>
+    <PageWrapper>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <article className="mx-auto text-color">
+        <h1 className="text-3xl font-bold">{data.title}</h1>
+        <img src={data.image} alt={data.title} className="w-full my-4 rounded-md" />
+
+        {/* Pass only the markdown content, not front matter */}
+        <Markdown className="markdown" remarkPlugins={[remarkGfm]}>
+          {content}
+        </Markdown>
+      </article>
+    </PageWrapper>
   );
 }

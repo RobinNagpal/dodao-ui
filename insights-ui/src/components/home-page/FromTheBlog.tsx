@@ -1,35 +1,52 @@
-const posts = [
-  {
-    id: 1,
-    title: 'Top 3 REITs to Watch This Quarter',
-    href: '#',
-    description: 'Discover how KoalaGains identifies undervalued REITs with potential for stable returns, analyzing rent flows and sector trends.',
-    date: 'Feb 14, 2025',
-    datetime: '2025-02-14',
-    category: { title: 'Real Estate', href: '#' },
-  },
-  {
-    id: 2,
-    title: 'Designing AI Agents for Investor Reports',
-    href: '#',
-    description: 'A look under the hood: How we build specialized AI agents that generate actionable insights for growth, value, and dividend strategies.',
-    date: 'Jan 8, 2025',
-    datetime: '2025-01-08',
-    category: { title: 'Innovation', href: '#' },
-  },
-  {
-    id: 3,
-    title: 'Private Credit and On-Chain Growth ETFs',
-    href: '#',
-    description: 'We explore how on-chain products go beyond T-Bills. Learn about the KoalaGains approach to bridging traditional finance with DeFi.',
-    date: 'Dec 24, 2024',
-    datetime: '2024-12-24',
-    category: { title: 'Blockchain', href: '#' },
-  },
-];
+// app/components/FromTheBlog.tsx
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
 
-export default function FromTheBlog() {
-  // Feel free to adapt the content here to reflect real or hypothetical articles
+interface PostData {
+  id: string;
+  title: string;
+  href: string;
+  description: string;
+  date: string;
+  datetime: string;
+  category: { title: string; href: string };
+  image: string;
+}
+
+// ✅ Helper function to read all MDX files from the blogs directory
+async function getPostsData(): Promise<PostData[]> {
+  const postsDirectory = path.join(process.cwd(), 'blogs');
+  const fileNames = fs.readdirSync(postsDirectory);
+
+  const posts = fileNames.map((fileName) => {
+    const slug = fileName.replace(/\.mdx?$/, '');
+    const filePath = path.join(postsDirectory, fileName);
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    const { data } = matter(fileContents);
+
+    return {
+      id: slug, // using the slug as a unique id
+      title: data.title || 'Untitled Post',
+      href: `/blogs/${slug}`,
+      description: data.description || 'No description available.',
+      date: data.date || 'Unknown Date',
+      datetime: data.datetime || data.date || 'Unknown Date',
+      category: {
+        title: data.category.title || 'General',
+        href: '#',
+      },
+      image: data.image || '/images/default-thumbnail.jpg',
+    };
+  });
+
+  return posts;
+}
+
+// ✅ Async Server Component using Next.js App Router
+export default async function FromTheBlog() {
+  // Fetch posts data from MDX files
+  const posts = await getPostsData();
 
   return (
     <div className="bg-gray-800 py-24 sm:py-32">
