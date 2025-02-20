@@ -1,11 +1,11 @@
-// pages/posts/[slug].tsx
 import fs from 'fs';
 import matter from 'gray-matter';
-import { MDXRemote } from 'next-mdx-remote';
-import { serialize } from 'next-mdx-remote/serialize';
 import path from 'path';
-import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
+import Markdown from 'react-markdown';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 
 interface BlogInterface {
   title: string;
@@ -18,24 +18,27 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
   const filePath = path.join(process.cwd(), 'blogs', `${slug}.mdx`);
   const fileContents = fs.readFileSync(filePath, 'utf8');
 
-  // Parse front matter using gray-matter
-  const { content, data } = matter(fileContents);
-
-  // Serialize the markdown content to MDX using next-mdx-remote with plugins
-  const mdxSource = await serialize(content, {
-    mdxOptions: {
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [rehypeSlug],
+  // Extract front matter and markdown content separately
+  const { content, data } = matter(fileContents); // ✅ This correctly extracts only the markdown content
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: data.title,
+      href: `/blogs/${slug}`,
+      current: true,
     },
-  });
-
-  const source = mdxSource;
-  const frontMatter = data as BlogInterface;
+  ];
   return (
-    <article>
-      <h1>{frontMatter.title}</h1>
-      <img src={frontMatter.image} alt={frontMatter.title} />
-      <MDXRemote {...source} />
-    </article>
+    <PageWrapper>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <article className="mx-auto text-color">
+        <h1 className="text-3xl font-bold">{data.title}</h1>
+        {/* <img src={data.image} alt={data.title} className="w-full my-4 rounded-md" /> */}
+
+        {/* Pass only the markdown content, not front matter */}
+        <Markdown className="markdown" remarkPlugins={[remarkGfm]}>
+          {content}
+        </Markdown>
+      </article>
+    </PageWrapper>
   );
 }

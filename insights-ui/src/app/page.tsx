@@ -5,6 +5,9 @@ import { Footer } from '@/components/home-page/Footer';
 import FromTheBlog from '@/components/home-page/FromTheBlog';
 import { Hero } from '@/components/home-page/Hero';
 import { CSSProperties } from 'react';
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
 
 const style: CSSProperties = {
   '--primary-color': '#4F46E5', // Indigo-600 for primary actions
@@ -18,13 +21,44 @@ const style: CSSProperties = {
   '--swiper-theme-color': '#4F46E5', // Consistent with the primary color for Swiper components
 } as CSSProperties;
 
-export default function Home() {
+async function getPostsData() {
+  const postsDirectory = path.join(process.cwd(), 'blogs');
+  const fileNames = fs.readdirSync(postsDirectory);
+
+  const posts = fileNames.map((fileName) => {
+    const slug = fileName.replace(/\.mdx?$/, '');
+    const filePath = path.join(postsDirectory, fileName);
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    const { data } = matter(fileContents);
+
+    return {
+      id: slug, // using the slug as a unique id
+      title: data.title || 'Untitled Post',
+      href: `/blogs/${slug}`,
+      description: data.description || 'No description available.',
+      date: data.date || 'Unknown Date',
+      datetime: data.datetime || data.date || 'Unknown Date',
+      category: [
+        {
+          title: data.category.title || 'General',
+          href: '#',
+        },
+      ],
+      image: data.image || '/images/default-thumbnail.jpg',
+    };
+  });
+
+  return posts;
+}
+
+export default async function Home() {
+  const posts = await getPostsData();
   return (
     <div style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
       <Hero />
       <AllInOnePlatform />
       <Features />
-      <FromTheBlog />
+      <FromTheBlog posts={posts} />
       <Contact />
       <Footer />
     </div>

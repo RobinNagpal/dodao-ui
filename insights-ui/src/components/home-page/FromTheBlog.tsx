@@ -1,36 +1,15 @@
-const posts = [
-  {
-    id: 1,
-    title: 'Top 3 REITs to Watch This Quarter',
-    href: '#',
-    description: 'Discover how KoalaGains identifies undervalued REITs with potential for stable returns, analyzing rent flows and sector trends.',
-    date: 'Feb 14, 2025',
-    datetime: '2025-02-14',
-    category: { title: 'Real Estate', href: '#' },
-  },
-  {
-    id: 2,
-    title: 'Designing AI Agents for Investor Reports',
-    href: '#',
-    description: 'A look under the hood: How we build specialized AI agents that generate actionable insights for growth, value, and dividend strategies.',
-    date: 'Jan 8, 2025',
-    datetime: '2025-01-08',
-    category: { title: 'Innovation', href: '#' },
-  },
-  {
-    id: 3,
-    title: 'Private Credit and On-Chain Growth ETFs',
-    href: '#',
-    description: 'We explore how on-chain products go beyond T-Bills. Learn about the KoalaGains approach to bridging traditional finance with DeFi.',
-    date: 'Dec 24, 2024',
-    datetime: '2024-12-24',
-    category: { title: 'Blockchain', href: '#' },
-  },
-];
+interface PostData {
+  id: string;
+  title: string;
+  href: string;
+  description: string;
+  date: string;
+  datetime: string;
+  category: { title: string; href: string }[];
+  image: string;
+}
 
-export default function FromTheBlog() {
-  // Feel free to adapt the content here to reflect real or hypothetical articles
-
+export default function FromTheBlog({ posts }: { posts: PostData[] }) {
   return (
     <div className="bg-gray-800 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -48,9 +27,11 @@ export default function FromTheBlog() {
                 <time dateTime={post.datetime} className="text-gray-500">
                   {post.date}
                 </time>
-                <a href={post.category.href} className="relative z-10 rounded-full bg-gray-700 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-600">
-                  {post.category.title}
-                </a>
+                {post.category.map((cat, index) => (
+                  <a key={index} href={cat.href} className="relative z-10 rounded-full bg-gray-700 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-600">
+                    {cat.title}
+                  </a>
+                ))}
               </div>
               <div className="group relative">
                 <h3 className="mt-3 text-lg font-semibold text-white group-hover:text-indigo-400">
