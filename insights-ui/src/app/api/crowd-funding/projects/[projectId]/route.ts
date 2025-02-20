@@ -1,8 +1,8 @@
-import { GetObjectCommand } from '@aws-sdk/client-s3';
-import { S3Client } from '@aws-sdk/client-s3';
-import { NextRequest, NextResponse } from 'next/server';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { ProjectDetails } from '@/types/project/project';
 import { InsightsConstants } from '@/util/insights-constants';
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { NextRequest } from 'next/server';
 import { Readable } from 'stream';
 
 const s3Client = new S3Client({ region: process.env.DEFAULT_REGION });
@@ -15,11 +15,10 @@ async function streamToString(stream: Readable): Promise<string> {
   return Buffer.concat(chunks).toString('utf-8');
 }
 
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ projectId: string }> }): Promise<any> {
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ projectId: string }> }): Promise<{ projectDetails: ProjectDetails }> {
   const { projectId } = await params;
 
   const key = `${InsightsConstants.CROWDFUND_ANALYSIS_PREFIX}/${projectId}/agent-status.json`;
-  const spiderGraphKey = `${InsightsConstants.CROWDFUND_ANALYSIS_PREFIX}/${projectId}/spider-graph.json`;
 
   // Fetch the `agent-status.json` file from S3
   const command = new GetObjectCommand({
@@ -32,26 +31,9 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ proj
   const body = response.Body instanceof Readable ? await streamToString(response.Body) : await new Response(response.Body as ReadableStream).text();
   const projectDetails = JSON.parse(body);
 
-  // Attempt to fetch the `spider-graph.json` file from S3
-  let spiderGraph = {};
-  try {
-    const spiderCommand = new GetObjectCommand({
-      Bucket: InsightsConstants.S3_BUCKET_NAME,
-      Key: spiderGraphKey,
-    });
-    const spiderResponse = await s3Client.send(spiderCommand);
-
-    const spiderBody =
-      spiderResponse.Body instanceof Readable ? await streamToString(spiderResponse.Body) : await new Response(spiderResponse.Body as ReadableStream).text();
-    spiderGraph = JSON.parse(spiderBody);
-  } catch (error) {
-    console.error(`Error fetching spider graph JSON for project: ${projectId}`, error);
-  }
-
   return {
     projectDetails: projectDetails,
-    spiderGraph: spiderGraph,
   };
 }
 
-export const GET = withErrorHandlingV2(getHandler);
+export const GET = withErrorHandlingV2<{ projectDetails: ProjectDetails }>(getHandler);
