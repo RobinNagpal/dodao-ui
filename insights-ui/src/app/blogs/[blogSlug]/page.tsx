@@ -32,7 +32,7 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <article className="mx-auto text-color">
         <h1 className="text-3xl font-bold">{data.title}</h1>
-        <img src={data.image} alt={data.title} className="w-full my-4 rounded-md" />
+        {/* <img src={data.image} alt={data.title} className="w-full my-4 rounded-md" /> */}
 
         {/* Pass only the markdown content, not front matter */}
         <Markdown className="markdown" remarkPlugins={[remarkGfm]}>
