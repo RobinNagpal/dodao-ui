@@ -1,21 +1,21 @@
-import { CloudArrowUpIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid';
+import { ChartBarSquareIcon, CloudArrowUpIcon, HomeIcon, LockClosedIcon, ServerIcon, ShieldCheckIcon } from '@heroicons/react/20/solid';
 
 const features = [
   {
     name: 'Accurate SEC Summaries',
     description: 'We parse 10-K, 10-Q, 8-K, and more to deliver both quantitative and qualitative insights, giving you crucial detail at every step.',
-    icon: CloudArrowUpIcon,
+    icon: ShieldCheckIcon,
   },
   {
     name: 'Sector-Specific Analysis',
     description:
       'Different metrics matter to different industries. KoalaGains highlights key factors—like rent and debt for REITs or product pipelines for tech.',
-    icon: LockClosedIcon,
+    icon: ChartBarSquareIcon,
   },
   {
     name: 'Smart REIT Evaluations',
     description: 'Our platform simplifies REIT data, pulling out growth trajectories, rent details, and relevant events so you can see the bigger picture.',
-    icon: ServerIcon,
+    icon: HomeIcon,
   },
 ];
 
