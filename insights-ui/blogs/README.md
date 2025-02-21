@@ -2,7 +2,7 @@
 - file names  should be lowercase and separated by hyphens for example `my-file-name.md`
 - folder names should be lowercase and separated by hyphens for example `my-folder-name`
 - image names should be lowercase and separated by hyphens for example `my-image-name.png`
-- images should be present in the `images` folder and in a nested folder with `same fodler name` as the name of blog markdown file's name
+- images should be present in the `insights-ui/public/images/blogs` folder and in a nested folder with `same fodler name` as the name of blog markdown file's name
 
 # Adding a new blog
 ## Top Metadata Fields
@@ -15,3 +15,6 @@
 - seoImage: The path to the image that will be used as the SEO image for the blog post. 
 - bannerImage: The path to the image that will be used as the banner image for the blog post.
 
+# Including images in the blog
+- Images should be present in the `insights-ui/public/images/blogs` folder and in a nested folder with `same fodler name` as the name of blog markdown file's name
+- We use markdown syntax to include images in the blog post. For example, to include an image named `my-image.png` in the blog post, you would use the following syntax: `![Alt Text](/images/blogs/my-blog-name/my-image.png)`

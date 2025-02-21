@@ -38,13 +38,7 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
           <div className="mt-10 max-w-2xl text-md">
             <article className="mx-auto text-color">
               {data.bannerImage && (
-                <Image
-                  src={'https://raw.githubusercontent.com/RobinNagpal/dodao-ui/refs/heads/main/insights-ui/blogs' + data.bannerImage}
-                  width={672}
-                  height={448}
-                  alt={data.title}
-                  className="w-full my-4 rounded-md"
-                />
+                <Image src={'/images/blogs' + data.bannerImage} width={672} height={448} alt={data.title} className="w-full my-4 rounded-md" />
               )}
 
               {/* Pass only the markdown content, not front matter */}
