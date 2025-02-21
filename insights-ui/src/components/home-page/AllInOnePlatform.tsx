@@ -1,35 +1,35 @@
-import { ArrowPathIcon, CloudArrowUpIcon, Cog6ToothIcon, FingerPrintIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid';
+import { ChartBarIcon, CircleStackIcon, CurrencyDollarIcon, LightBulbIcon, LockClosedIcon, UserGroupIcon } from '@heroicons/react/20/solid';
 
 const features = [
   {
     name: 'Comprehensive Data Extraction',
     description: 'Our AI tools crawl SEC filings, on-chain data, industry reports, and more—so you always have the full picture.',
-    icon: CloudArrowUpIcon,
+    icon: CircleStackIcon,
   },
   {
     name: 'Multiple Investment Styles',
     description: 'Easily switch between growth, value, dividend, or custom strategies. KoalaGains adapts to your unique investment profile.',
-    icon: ArrowPathIcon,
+    icon: CurrencyDollarIcon,
   },
   {
     name: 'Industry & Sector Insights',
     description: 'Compare top players in any sector—REITs, tech, oil & gas, or emerging industries. See historical events and future projections side by side.',
-    icon: FingerPrintIcon,
+    icon: LightBulbIcon,
   },
   {
     name: 'Deep Qualitative Analysis',
     description: 'Go beyond numbers. Our AI extracts and summarizes key statements, trends, and developments so you don’t miss a beat.',
-    icon: Cog6ToothIcon,
+    icon: ChartBarIcon,
   },
   {
     name: 'Sentiment & Social Listening',
     description: 'Stay in the loop with sentiment trends on Twitter, Instagram, and industry channels—right next to official data.',
-    icon: LockClosedIcon,
+    icon: UserGroupIcon,
   },
   {
     name: 'Secure & User-Friendly',
     description: 'Built with security at the forefront. KoalaGains is simple, yet powerful—perfect for individuals and institutions.',
-    icon: ServerIcon,
+    icon: LockClosedIcon,
   },
 ];
 

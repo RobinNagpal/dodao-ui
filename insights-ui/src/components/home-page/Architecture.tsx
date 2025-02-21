@@ -1,4 +1,12 @@
-import { ArrowPathIcon, CloudArrowUpIcon, Cog6ToothIcon, FingerPrintIcon, LockClosedIcon, ServerIcon } from '@heroicons/react/20/solid';
+import {
+  ArrowPathIcon,
+  BugAntIcon,
+  ChartBarSquareIcon,
+  DocumentChartBarIcon,
+  DocumentCurrencyDollarIcon,
+  LightBulbIcon,
+  WrenchIcon,
+} from '@heroicons/react/20/solid';
 import architectureImage from '@/images/architecture.png';
 import Image from 'next/image';
 
@@ -6,32 +14,32 @@ const features = [
   {
     name: 'Automated Financial Reports .',
     description: 'Generate comprehensive balance sheets, income statements, and cash flow reports with AI-driven automation.',
-    icon: CloudArrowUpIcon,
+    icon: DocumentChartBarIcon,
+  },
+  {
+    name: 'Spider Chart for Financial Metrics',
+    description: 'Visualize key financial parameters in an interactive chart, making complex data easier to interpret.',
+    icon: BugAntIcon,
   },
   {
     name: 'Market & Competitor Analysis.',
     description: 'Compare industry performance, identify growth opportunities, and benchmark against competitors.',
-    icon: LockClosedIcon,
+    icon: ChartBarSquareIcon,
   },
   {
     name: 'Sentiment-Driven Insights.',
     description: ' Extract valuable market sentiment from news, social media (X & Instagram), and industry discussions.',
-    icon: ArrowPathIcon,
+    icon: LightBulbIcon,
   },
   {
     name: 'SEC Filings & Data Extraction.',
     description: 'AI-powered tools process EDGAR filings, extracting both quantitative and qualitative insights for regulatory compliance and decision-making.',
-    icon: FingerPrintIcon,
+    icon: DocumentCurrencyDollarIcon,
   },
   {
     name: 'Custom AI Reports.',
     description: ' Tailor investment-specific reports based on growth strategies, market trends, and business needs.',
-    icon: Cog6ToothIcon,
-  },
-  {
-    name: 'Secure & Scalable Data Processing.',
-    description: 'Ensure data accuracy, integrity, and compliance with automated security protocols and backup solutions.',
-    icon: ServerIcon,
+    icon: WrenchIcon,
   },
 ];
 
