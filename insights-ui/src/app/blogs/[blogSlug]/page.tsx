@@ -1,5 +1,7 @@
+import { BlogInterface } from '@/types/blog';
 import fs from 'fs';
 import matter from 'gray-matter';
+import Image from 'next/image';
 import path from 'path';
 import remarkGfm from 'remark-gfm';
 import Markdown from 'react-markdown';
@@ -7,19 +9,14 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 
-interface BlogInterface {
-  title: string;
-  seoKeywords: string;
-  image: string;
-}
-
 export default async function PostPage({ params }: { params: Promise<{ blogSlug: string }> }) {
   const slug = (await params).blogSlug as string;
   const filePath = path.join(process.cwd(), 'blogs', `${slug}.mdx`);
   const fileContents = fs.readFileSync(filePath, 'utf8');
 
   // Extract front matter and markdown content separately
-  const { content, data } = matter(fileContents); // ✅ This correctly extracts only the markdown content
+  const { content, data: meta } = matter(fileContents); // ✅ This correctly extracts only the markdown content
+  const data = meta as BlogInterface;
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
       name: data.title,
@@ -30,15 +27,28 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <article className="mx-auto text-color">
-        <h1 className="text-3xl font-bold">{data.title}</h1>
-        {/* <img src={data.image} alt={data.title} className="w-full my-4 rounded-md" /> */}
+      <div className="px-6 py-32 lg:px-8 text-color">
+        <div className="mx-auto max-w-3xl text-base/7">
+          <p className="text-base/7 font-semibold">
+            <a href={'category/' + data.category.slug} className="relative z-10 rounded-full px-3 py-1.5 font-medium">
+              {data.category.title}
+            </a>
+          </p>
+          <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty  sm:text-5xl">{data.title}</h1>
+          <div className="mt-10 max-w-2xl text-md">
+            <article className="mx-auto text-color">
+              {data.bannerImage && (
+                <Image src={'/images/blogs' + data.bannerImage} width={672} height={448} alt={data.title} className="w-full my-4 rounded-md" />
+              )}
 
-        {/* Pass only the markdown content, not front matter */}
-        <Markdown className="markdown" remarkPlugins={[remarkGfm]}>
-          {content}
-        </Markdown>
-      </article>
+              {/* Pass only the markdown content, not front matter */}
+              <Markdown className="markdown" remarkPlugins={[remarkGfm]}>
+                {content}
+              </Markdown>
+            </article>
+          </div>
+        </div>
+      </div>
     </PageWrapper>
   );
 }

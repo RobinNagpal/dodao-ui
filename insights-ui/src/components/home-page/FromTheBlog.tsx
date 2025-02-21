@@ -1,15 +1,6 @@
-interface PostData {
-  id: string;
-  title: string;
-  href: string;
-  description: string;
-  date: string;
-  datetime: string;
-  category: { title: string; href: string }[];
-  image: string;
-}
+import { BlogInterfaceWithId } from '@/types/blog';
 
-export default function FromTheBlog({ posts }: { posts: PostData[] }) {
+export default function FromTheBlog({ posts }: { posts: BlogInterfaceWithId[] }) {
   return (
     <div className="bg-gray-800 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -27,20 +18,21 @@ export default function FromTheBlog({ posts }: { posts: PostData[] }) {
                 <time dateTime={post.datetime} className="text-gray-500">
                   {post.date}
                 </time>
-                {post.category.map((cat, index) => (
-                  <a key={index} href={cat.href} className="relative z-10 rounded-full bg-gray-700 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-600">
-                    {cat.title}
-                  </a>
-                ))}
+                <a
+                  href={'category/' + post.category.slug}
+                  className="relative z-10 rounded-full bg-gray-700 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-600"
+                >
+                  {post.category.title}
+                </a>{' '}
               </div>
               <div className="group relative">
                 <h3 className="mt-3 text-lg font-semibold text-white group-hover:text-indigo-400">
-                  <a href={post.href}>
+                  <a href={'/blogs/' + post.id} className="group">
                     <span className="absolute inset-0" />
                     {post.title}
                   </a>
                 </h3>
-                <p className="mt-5 line-clamp-3 text-sm text-gray-400">{post.description}</p>
+                <p className="mt-5 line-clamp-3 text-sm text-gray-400">{post.abstract}</p>
               </div>
             </article>
           ))}
