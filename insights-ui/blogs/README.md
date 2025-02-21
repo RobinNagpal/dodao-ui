@@ -6,9 +6,7 @@
 
 # Adding a new blog
 ## Top Metadata Fields
-- id: A unique identifier for the blog post. It should be a hyphen-separated lowercase string.
 - title: The title of the blog post.
-- slug: The (unique) URL slug for the blog post. It should be a hyphen-separated lowercase string.
 - abstract: A brief description of the blog post which will be shown in the blog card.
 - date: The date of the blog post in the format "Month DD, YYYY". This is used for display purposes only.
 - datetime: The date of the blog post in the format "YYYY-MM-DD". This is used for sorting purposes.

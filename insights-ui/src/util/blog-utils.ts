@@ -1,0 +1,38 @@
+import { BlogInterface, BlogInterfaceWithId } from '@/types/blog';
+import fs from 'fs';
+import matter from 'gray-matter';
+import path from 'path';
+
+export async function getPostsData(): Promise<BlogInterfaceWithId[]> {
+  const postsDirectory = path.join(process.cwd(), 'blogs');
+  const fileNames = fs.readdirSync(postsDirectory);
+
+  // Ingnore README.md file
+
+  const blogFiles = fileNames.filter((fileName) => fileName !== 'README.md' && fileName !== 'images');
+  const posts = blogFiles.map((fileName): BlogInterfaceWithId => {
+    const id = fileName.replace(/\.mdx?$/, '');
+    const filePath = path.join(postsDirectory, fileName);
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    const { data } = matter(fileContents);
+    const postMetadata = data as BlogInterface;
+    console.log('data', JSON.stringify(fileContents));
+
+    return {
+      id: id, // using the slug as a unique id
+      title: postMetadata.title || 'Untitled Post',
+      abstract: postMetadata.abstract || 'No description available.',
+      date: postMetadata.date || 'Unknown Date',
+      datetime: postMetadata.datetime || postMetadata.date || 'Unknown Date',
+      category: {
+        title: postMetadata.category.title || 'General',
+        slug: postMetadata.category.slug || 'general',
+      },
+      seoImage: postMetadata.seoImage,
+      bannerImage: postMetadata.bannerImage,
+      seoKeywords: postMetadata.seoKeywords || [],
+    };
+  });
+
+  return posts;
+}

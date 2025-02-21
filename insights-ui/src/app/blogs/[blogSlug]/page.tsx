@@ -1,3 +1,4 @@
+import { BlogInterface } from '@/types/blog';
 import fs from 'fs';
 import matter from 'gray-matter';
 import path from 'path';
@@ -7,19 +8,14 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 
-interface BlogInterface {
-  title: string;
-  seoKeywords: string;
-  image: string;
-}
-
 export default async function PostPage({ params }: { params: Promise<{ blogSlug: string }> }) {
   const slug = (await params).blogSlug as string;
   const filePath = path.join(process.cwd(), 'blogs', `${slug}.mdx`);
   const fileContents = fs.readFileSync(filePath, 'utf8');
 
   // Extract front matter and markdown content separately
-  const { content, data } = matter(fileContents); // ✅ This correctly extracts only the markdown content
+  const { content, data: meta } = matter(fileContents); // ✅ This correctly extracts only the markdown content
+  const data = meta as BlogInterface;
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
       name: data.title,
