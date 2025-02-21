@@ -31,10 +31,12 @@ async function getPostsData() {
     const fileContents = fs.readFileSync(filePath, 'utf8');
     const { data } = matter(fileContents);
 
+    console.log('data', JSON.stringify(data));
+
     return {
       id: slug, // using the slug as a unique id
       title: data.title || 'Untitled Post',
-      href: `/blogs/${slug}`,
+      slug: `/blogs/${slug}`,
       description: data.description || 'No description available.',
       date: data.date || 'Unknown Date',
       datetime: data.datetime || data.date || 'Unknown Date',
