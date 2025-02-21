@@ -1,4 +1,5 @@
 import AllInOnePlatform from '@/components/home-page/AllInOnePlatform';
+import Architecture from '@/components/home-page/Architecture';
 import Contact from '@/components/home-page/Contact';
 import Features from '@/components/home-page/Features';
 import { Footer } from '@/components/home-page/Footer';
@@ -24,6 +25,7 @@ export default async function Home() {
   return (
     <div style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
       <Hero />
+      <Architecture />
       <AllInOnePlatform />
       <Features />
       <FromTheBlog posts={posts} />
