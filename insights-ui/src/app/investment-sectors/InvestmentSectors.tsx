@@ -19,6 +19,7 @@ interface TreeGraphNode {
   name: string;
   attributes?: { id: string };
   children?: TreeGraphNode[];
+  isExpanded?: boolean;
 }
 
 const convertToTreeRecursive = (node: Node): TreeGraphNode => {
@@ -45,7 +46,10 @@ export default function InvestmentSectors() {
           collapsible
           zoomable
           nodeSize={{ x: 300, y: 200 }}
+          depthFactor={500}
           separation={{ siblings: 1, nonSiblings: 1 }}
+          initialDepth={1}
+          shouldCollapseNeighborNodes={true}
           renderCustomNodeElement={({ nodeDatum, toggleNode }) => (
             <g>
               <rect
@@ -66,7 +70,7 @@ export default function InvestmentSectors() {
                 <div
                   style={{
                     color: 'var(--text-color)',
-                    fontSize: '12px',
+                    fontSize: '15px',
                     lineHeight: '1.2',
                     textAlign: 'center',
                     display: 'flex',
