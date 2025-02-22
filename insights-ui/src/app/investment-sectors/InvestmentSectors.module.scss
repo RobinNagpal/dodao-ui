@@ -1,0 +1,32 @@
+.investmentSectorsContainer {
+  width: 100%;
+  height: 100vh; // Use viewport height instead of min-height
+  overflow: auto;
+  background-color: var(--bg-color);
+
+  svg {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh; // Keep this to ensure SVG expands for large trees
+  }
+
+  path {
+    fill: none;
+    stroke: var(--text-color);
+  }
+}
+
+/* Custom node element styles for the SVG elements */
+.nodeRect {
+  fill: var(--block-bg);
+  stroke: var(--text-color);
+  stroke-width: 2px;
+  rx: 5px;
+  ry: 5px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    filter: brightness(1.2);
+  }
+}
+
