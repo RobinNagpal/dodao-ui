@@ -50,42 +50,47 @@ export default function InvestmentSectors() {
           separation={{ siblings: 1, nonSiblings: 1 }}
           initialDepth={1}
           shouldCollapseNeighborNodes={true}
-          renderCustomNodeElement={({ nodeDatum, toggleNode }) => (
-            <g>
-              <rect
-                width="200"
-                height="60"
-                x="-100"
-                y="-30" // Centered vertically
-                className={styles.nodeRect}
-                onClick={toggleNode}
-              />
-              <foreignObject
-                x="-100"
-                y="-30" // Matching the rect's position
-                width="200"
-                height="60"
-                style={{ overflow: 'visible' }}
-              >
-                <div
-                  style={{
-                    color: 'var(--text-color)',
-                    fontSize: '15px',
-                    lineHeight: '1.2',
-                    textAlign: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '100%',
-                  }}
+          renderCustomNodeElement={({ nodeDatum: data, toggleNode }) => {
+            const nodeDatum = data as TreeGraphNode;
+            return (
+              <g>
+                <rect
+                  width="200"
+                  height="60"
+                  x="-100"
+                  y="-30" // Centered vertically
+                  className={styles.nodeRect}
                   onClick={toggleNode}
+                />
+                <foreignObject
+                  x="-100"
+                  y="-30" // Matching the rect's position
+                  width="200"
+                  height="60"
+                  style={{ overflow: 'visible' }}
                 >
-                  <div>{nodeDatum.name}</div>
-                </div>
-              </foreignObject>
-            </g>
-          )}
+                  <div
+                    style={{
+                      color: 'var(--text-color)',
+                      fontSize: '15px',
+                      lineHeight: '1.2',
+                      textAlign: 'center',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      height: '100%',
+                    }}
+                    onClick={toggleNode}
+                  >
+                    <div>
+                      {nodeDatum.name} {nodeDatum?.children?.length && nodeDatum?.children?.length > 1 ? `(${nodeDatum.children?.length})` : ''}{' '}
+                    </div>
+                  </div>
+                </foreignObject>
+              </g>
+            );
+          }}
         />
       </div>
     </div>
