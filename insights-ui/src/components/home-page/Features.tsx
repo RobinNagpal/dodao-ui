@@ -1,4 +1,6 @@
 import { ChartBarSquareIcon, CloudArrowUpIcon, HomeIcon, LockClosedIcon, ServerIcon, ShieldCheckIcon } from '@heroicons/react/20/solid';
+import Image from 'next/image';
+import financeImage from '@/images/finance.jpg';
 
 const features = [
   {
@@ -13,8 +15,9 @@ const features = [
     icon: ChartBarSquareIcon,
   },
   {
-    name: 'Smart REIT Evaluations',
-    description: 'Our platform simplifies REIT data, pulling out growth trajectories, rent details, and relevant events so you can see the bigger picture.',
+    name: 'Smart Evaluations',
+    description:
+      'Our platform simplifies data of companies, pulling out growth trajectories, rent details in case of REITs, and relevant events so you can see the bigger picture.',
     icon: HomeIcon,
   },
 ];
@@ -45,13 +48,13 @@ export default function Features() {
               </dl>
             </div>
           </div>
-          <img
-            alt="Product screenshot"
-            src="https://tailwindui.com/plus-assets/img/component-images/dark-project-app-screenshot.png"
+          <Image
+            src={financeImage}
+            alt={'finance graph'}
             width={2432}
             height={1442}
             className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-white/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
-          />
+          ></Image>
         </div>
       </div>
     </div>

@@ -10,12 +10,10 @@ function Testimonial() {
         <StarRating />
       </div>
       <blockquote className="mt-2">
-        <p className="font-display text-xl font-medium text-white">
-          “KoalaGains completely transformed the way I research and compare investment opportunities. The AI-driven insights are a game-changer!”
-        </p>
+        <p className="font-display text-xl font-medium text-white">“Agentic AI is a ‘new labor model, new productivity model, and a new economic model”</p>
       </blockquote>
       <figcaption className="mt-2 text-sm text-gray-400">
-        <strong className="font-semibold text-indigo-400 before:content-['—_']">Jordan Lewis</strong>, Portfolio Manager
+        <strong className="font-semibold text-indigo-400 before:content-['—_']">Marc Benioff</strong>, CEO of Salesforce
       </figcaption>
     </figure>
   );
