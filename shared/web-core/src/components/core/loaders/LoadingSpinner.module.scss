@@ -1,0 +1,47 @@
+/* LoadingSpinner.module.scss */
+
+.loadingSpinner {
+  display: inline-block;
+  vertical-align: middle;
+
+  /* Default spinner size */
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* When spinner should be big */
+.big {
+  svg {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* For overlay usage */
+.overlay {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+/* When spinner is inside a primary button */
+.primary {
+  svg path {
+    fill: var(--primary-text-color);
+  }
+}
+
+/* If spinner should have white fill */
+.fillWhite {
+  svg path {
+    fill: white;
+  }
+}

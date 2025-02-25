@@ -1,11 +1,9 @@
 'use client';
 
-// Import required dependencies
 import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
 import React, { FormEvent } from 'react';
 import styles from './Button.module.scss';
 
-// Define the component's props
 export type ButtonProps = {
   primary?: boolean;
   variant?: 'outlined' | 'contained' | 'text';
@@ -20,7 +18,6 @@ export type ButtonProps = {
   className?: string;
 };
 
-// Main component
 const CustomButton = ({
   primary,
   variant = 'outlined',
@@ -39,14 +36,16 @@ const CustomButton = ({
     primary ? styles.primary : '',
     removeBorder ? styles['remove-border'] : '',
     size === 'sm' ? styles.small : '',
-    variant == 'outlined' ? styles.outlined : styles.contained, // 'outlined' or 'contained'
+    variant === 'outlined' ? styles.outlined : styles.contained,
     disabled ? styles.disabled : '',
     className,
-  ].join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <button onClick={() => (disabled ? undefined : onClick?.())} className={classNames} style={style}>
-      {loading && <LoadingSpinner />}
+      {loading && <LoadingSpinner primary={primary} />}
       {children}
     </button>
   );

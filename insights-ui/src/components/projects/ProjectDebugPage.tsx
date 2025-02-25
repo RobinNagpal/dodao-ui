@@ -1,7 +1,15 @@
 'use client';
 
 import ProjectDetailTable from '@/components/projects/ProjectDetailTable';
-import { ProcessingStatus, ProjectDetails, RepopulatableFields, ReportWithName, SpiderGraph } from '@/types/project/project';
+import {
+  ProcessingStatus,
+  ProjectDetails,
+  RepopulatableFields,
+  REPORT_TYPES_TO_DISPLAY,
+  ReportType,
+  ReportWithName,
+  SpiderGraph,
+} from '@/types/project/project';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
@@ -39,7 +47,11 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
 
   // Combine reports and finalReport into a single array
   // UseMemo for reports calculation
-  const reports: ReportWithName[] = Object.entries(projectDetails.reports).map(([name, report]) => ({ ...report, name }));
+  const reports: ReportWithName[] = Object.entries(projectDetails.reports)
+    .filter(([name]) => {
+      return REPORT_TYPES_TO_DISPLAY.includes(name as ReportType);
+    })
+    .map(([name, report]) => ({ ...report, name }));
 
   // Polling mechanism for refreshing data
   useEffect(() => {
@@ -74,7 +86,11 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
         <div className="my-5">Overall Status: {projectDetails.status}</div>
       </div>
 
-      <RepopulateButton projectId={projectId} field={RepopulatableFields.CROWDFUNDING_CONTENT} />
+      <RepopulateButton
+        projectId={projectId}
+        field={RepopulatableFields.CROWDFUNDING_CONTENT}
+        currentFieldValue={projectDetails.processedProjectInfo?.contentOfCrowdfundingUrl}
+      />
       <Accordion
         label="Crowdfunding Content"
         isOpen={openCrowdFundingContentAccordion}
@@ -86,7 +102,11 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
         />
       </Accordion>
 
-      <RepopulateButton projectId={projectId} field={RepopulatableFields.WEBSITE_CONTENT} />
+      <RepopulateButton
+        projectId={projectId}
+        field={RepopulatableFields.WEBSITE_CONTENT}
+        currentFieldValue={projectDetails.processedProjectInfo?.contentOfWebsiteUrl}
+      />
       <Accordion label="Website Content" isOpen={openWebsiteContentAccordion} onClick={() => setOpenWebsiteContentAccordion(!openWebsiteContentAccordion)}>
         <div
           className="markdown-body text-md"
@@ -105,7 +125,11 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
         />
       </Accordion>
 
-      <RepopulateButton projectId={projectId} field={RepopulatableFields.SEC_INFO} />
+      <RepopulateButton
+        projectId={projectId}
+        field={RepopulatableFields.SEC_INFO}
+        currentFieldValue={projectDetails.processedProjectInfo?.secInfo?.secMarkdownContent}
+      />
       <Accordion
         label="SEC Markdown Content"
         isOpen={openSecMarkdownContentAccordion}
@@ -117,7 +141,11 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
         />
       </Accordion>
 
-      <RepopulateButton projectId={projectId} field={RepopulatableFields.INDUSTRY_DETAILS} />
+      <RepopulateButton
+        projectId={projectId}
+        field={RepopulatableFields.INDUSTRY_DETAILS}
+        currentFieldValue={projectDetails.processedProjectInfo?.industryDetails}
+      />
       <Accordion label="Industry Details" isOpen={openIndustryDetailAccordion} onClick={() => setOpenIndustryDetailAccordion(!openIndustryDetailAccordion)}>
         {projectDetails.processedProjectInfo?.industryDetails && (
           <pre className="whitespace-pre-wrap " style={{ overflowWrap: 'anywhere' }}>
