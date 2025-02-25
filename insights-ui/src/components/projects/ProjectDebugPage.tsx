@@ -4,6 +4,8 @@ import ProjectDetailTable from '@/components/projects/ProjectDetailTable';
 import { ProcessingStatus, ProjectDetails, RepopulatableFields, ReportWithName, SpiderGraph } from '@/types/project/project';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
+import { marked } from 'marked';
 import { useEffect, useState } from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -59,6 +61,12 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
     }
   }, [reloadTrigger]);
 
+  const renderer = getMarkedRenderer();
+
+  const getMarkdownContent = (content?: string) => {
+    return content ? marked.parse(content, { renderer }) : 'No Information';
+  };
+
   return (
     <div className="w-full text-color">
       <div className="text-center text-color my-5">
@@ -72,20 +80,18 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
         isOpen={openCrowdFundingContentAccordion}
         onClick={() => setOpenCrowdFundingContentAccordion(!openCrowdFundingContentAccordion)}
       >
-        {projectDetails.processedProjectInfo?.contentOfCrowdfundingUrl && (
-          <Markdown className="markdown text-color" remarkPlugins={[remarkGfm]}>
-            {projectDetails.processedProjectInfo?.contentOfCrowdfundingUrl}
-          </Markdown>
-        )}
+        <div
+          className="markdown-body text-md"
+          dangerouslySetInnerHTML={{ __html: getMarkdownContent(projectDetails.processedProjectInfo?.contentOfCrowdfundingUrl) }}
+        />
       </Accordion>
 
       <RepopulateButton projectId={projectId} field={RepopulatableFields.WEBSITE_CONTENT} />
       <Accordion label="Website Content" isOpen={openWebsiteContentAccordion} onClick={() => setOpenWebsiteContentAccordion(!openWebsiteContentAccordion)}>
-        {projectDetails.processedProjectInfo?.contentOfWebsiteUrl && (
-          <Markdown className="markdown text-color" remarkPlugins={[remarkGfm]}>
-            {projectDetails.processedProjectInfo?.contentOfWebsiteUrl}
-          </Markdown>
-        )}
+        <div
+          className="markdown-body text-md"
+          dangerouslySetInnerHTML={{ __html: getMarkdownContent(projectDetails.processedProjectInfo?.contentOfWebsiteUrl) }}
+        />
       </Accordion>
 
       <Accordion
@@ -93,11 +99,10 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
         isOpen={openAdditionalUrlsContentAccordion}
         onClick={() => setOpenAdditionalUrlsContentAccordion(!openAdditionalUrlsContentAccordion)}
       >
-        {projectDetails.processedProjectInfo?.contentOfAdditionalUrls && (
-          <Markdown className="markdown text-color" remarkPlugins={[remarkGfm]}>
-            {projectDetails.processedProjectInfo?.contentOfAdditionalUrls}
-          </Markdown>
-        )}
+        <div
+          className="markdown-body text-md"
+          dangerouslySetInnerHTML={{ __html: getMarkdownContent(projectDetails.processedProjectInfo?.contentOfAdditionalUrls) }}
+        />
       </Accordion>
 
       <RepopulateButton projectId={projectId} field={RepopulatableFields.SEC_INFO} />
@@ -106,11 +111,10 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
         isOpen={openSecMarkdownContentAccordion}
         onClick={() => setOpenSecMarkdownContentAccordion(!openSecMarkdownContentAccordion)}
       >
-        {projectDetails.processedProjectInfo?.secInfo?.secMarkdownContent && (
-          <Markdown className="markdown text-color" remarkPlugins={[remarkGfm]}>
-            {projectDetails.processedProjectInfo?.secInfo?.secMarkdownContent}
-          </Markdown>
-        )}
+        <div
+          className="markdown-body text-md"
+          dangerouslySetInnerHTML={{ __html: getMarkdownContent(projectDetails.processedProjectInfo?.secInfo?.secMarkdownContent) }}
+        />
       </Accordion>
 
       <RepopulateButton projectId={projectId} field={RepopulatableFields.INDUSTRY_DETAILS} />

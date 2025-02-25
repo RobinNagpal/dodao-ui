@@ -1,5 +1,7 @@
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
+import { marked } from 'marked';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -84,6 +86,10 @@ export default async function ReportDetailPage({ params }: { params: Promise<{ p
     },
   ];
 
+  const renderer = getMarkedRenderer();
+
+  const reportDetailContents = reportData.reportDetail && marked.parse(reportData.reportDetail, { renderer });
+
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -104,19 +110,8 @@ export default async function ReportDetailPage({ params }: { params: Promise<{ p
                 ))}
               </ul>
             )}
-            {reportData.reportDetail ? (
-              <>
-                <Markdown
-                  className="markdown"
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    th: ({ node, ...props }) => <th className="border border-color px-4 py-2" {...props} />,
-                    td: ({ node, ...props }) => <td className="border border-color px-4 py-2" {...props} />,
-                  }}
-                >
-                  {reportData.reportDetail}
-                </Markdown>
-              </>
+            {reportDetailContents ? (
+              <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: reportDetailContents }} />
             ) : (
               <>
                 <div className="text-center">Empty</div>

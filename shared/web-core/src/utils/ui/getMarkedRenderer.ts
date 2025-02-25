@@ -30,5 +30,21 @@ export function getMarkedRenderer(): marked.Renderer {
   renderer.link = function (href: string, title: string, text: string) {
     return '<a target="_blank" href="' + href + '" title="' + title + '">' + text + '</a>';
   };
+
+  // ![Sample Image](path/to/image.jpg "300x200")
+  renderer.image = function (href, title, text) {
+    let size = '';
+    if (title) {
+      // Look for a size pattern like "300x200" in the title.
+      const sizeMatch = title.match(/(\d+)\s*x\s*(\d+)/);
+      if (sizeMatch) {
+        size = ` width="${sizeMatch[1]}" height="${sizeMatch[2]}"`;
+        // Optionally, remove the size text from the title attribute.
+        title = title.replace(sizeMatch[0], '').trim();
+      }
+    }
+    return `<img src="${href}" alt="${text}" title="${title}"${size}>`;
+  };
+
   return renderer;
 }
