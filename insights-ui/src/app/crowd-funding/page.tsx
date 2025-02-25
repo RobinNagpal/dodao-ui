@@ -1,3 +1,5 @@
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Grid4Cols } from '@dodao/web-core/components/core/grids/Grid4Cols';
 import React from 'react';
@@ -11,8 +13,17 @@ export default async function Home() {
   const res = await fetch(apiUrl, { cache: 'no-cache' });
   const data = await res.json();
 
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: 'Crowd Funding Projects',
+      href: `/crowd-funding`,
+      current: false,
+    },
+  ];
+
   return (
     <PageWrapper>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="mx-auto">
         <div className="text-center my-5">
           <div className="sm:flex-auto">
