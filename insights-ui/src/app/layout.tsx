@@ -30,7 +30,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,500,700&display=swap" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} style={{ ...themeColors, backgroundColor: 'var(--bg-color)' }}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased text-color`} style={{ ...themeColors, backgroundColor: 'var(--bg-color)' }}>
         {children}
       </body>
     </html>

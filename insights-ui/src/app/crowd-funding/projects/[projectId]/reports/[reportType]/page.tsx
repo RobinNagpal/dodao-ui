@@ -75,6 +75,11 @@ export default async function ReportDetailPage({ params }: { params: Promise<{ p
   const report = projectData.projectDetails.reports[reportType];
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
+      name: 'Crowd Funding Projects',
+      href: `/crowd-funding`,
+      current: false,
+    },
+    {
       name: projectId,
       href: `/crowd-funding/projects/${projectId}`,
       current: false,

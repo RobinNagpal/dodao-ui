@@ -57,13 +57,16 @@ export default async function ProjectDetailPageWrapper({ params }: { params: Pro
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
+      name: 'Crowd Funding Projects',
+      href: `/crowd-funding`,
+      current: false,
+    },
+    {
       name: projectId,
       href: `/crowd-funding/projects/${projectId}`,
       current: true,
     },
   ];
-
-  const spiderGraph = Object.keys(data.spiderGraph || {}).length ? (data.spiderGraph as SpiderGraph) : null;
 
   return (
     <PageWrapper>
