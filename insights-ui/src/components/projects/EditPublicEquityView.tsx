@@ -49,10 +49,19 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
 
   const handleSaveProject = async () => {
     const publicEquity = {
-      sector: gicsData[selectedSector].name,
-      industryGroup: gicsData[selectedSector].industryGroups[selectedIndustryGroup].name,
-      industry: gicsData[selectedSector].industryGroups[selectedIndustryGroup].industries[selectedIndustry].name,
-      subIndustry: gicsData[selectedSector].industryGroups[selectedIndustryGroup].industries[selectedIndustry].subIndustries[selectedSubIndustry].name,
+      sector: { id: gicsData[selectedSector].id, name: gicsData[selectedSector].name },
+      industryGroup: {
+        id: gicsData[selectedSector].industryGroups[selectedIndustryGroup].id,
+        name: gicsData[selectedSector].industryGroups[selectedIndustryGroup].name,
+      },
+      industry: {
+        id: gicsData[selectedSector].industryGroups[selectedIndustryGroup].industries[selectedIndustry].id,
+        name: gicsData[selectedSector].industryGroups[selectedIndustryGroup].industries[selectedIndustry].name,
+      },
+      subIndustry: {
+        id: gicsData[selectedSector].industryGroups[selectedIndustryGroup].industries[selectedIndustry].subIndustries[selectedSubIndustry].id,
+        name: gicsData[selectedSector].industryGroups[selectedIndustryGroup].industries[selectedIndustry].subIndustries[selectedSubIndustry].name,
+      },
       // Add other necessary publicEquity fields here
     };
     setProjectUpserting(true);
