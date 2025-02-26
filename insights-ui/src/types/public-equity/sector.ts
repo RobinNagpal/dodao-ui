@@ -27,8 +27,20 @@ export interface SectorsData {
 }
 
 export interface PublicEquitySubmissionData {
-  sector: string;
-  industryGroup: string;
-  industry: string;
-  subIndustry: string;
+  sector: {
+    id: number;
+    name: string;
+  };
+  industryGroup: {
+    id: number;
+    name: string;
+  };
+  industry: {
+    id: number;
+    name: string;
+  };
+  subIndustry: {
+    id: number;
+    name: string;
+  };
 }
