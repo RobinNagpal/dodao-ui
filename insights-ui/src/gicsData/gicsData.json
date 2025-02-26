@@ -180,6 +180,40 @@
                 "description": "Manufacturers of all grades of paper. Excludes companies specializing in paper packaging classified in the Paper & Plastic Packaging Products & Materials Sub-Industry."
               }
             }
+          }
+        }
+      }
+    }
+  },
+  "industrials": {
+    "id": 20,
+    "name": "Industrials",
+    "industryGroups": {
+      "capital-goods": {
+        "id": 2010,
+        "name": "Capital Goods",
+        "industries": {
+          "aerospace-&-defense": {
+            "id": 201010,
+            "name": "Aerospace & Defense",
+            "subIndustries": {
+              "aerospace-&-defense": {
+                "id": 20101010,
+                "name": "Aerospace & Defense",
+                "description": "Manufacturers of civil or military aerospace and defense equipment, parts or products. Includes defense electronics and space equipment."
+              }
+            }
+          },
+          "building-products": {
+            "id": 201020,
+            "name": "Building Products",
+            "subIndustries": {
+              "building-products": {
+                "id": 20102010,
+                "name": "Building Products",
+                "description": "Manufacturers of building components and home improvement products and equipment. Excludes lumber and plywood classified under Forest Products and cement and other materials classified in the Construction Materials Sub-Industry."
+              }
+            }
           },
           "construction-&-engineering": {
             "id": 201030,
@@ -387,40 +421,6 @@
                 "id": 20305030,
                 "name": "Marine Ports & Services",
                 "description": "Owners and operators of marine ports and related services."
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "industrials": {
-    "id": 20,
-    "name": "Industrials",
-    "industryGroups": {
-      "capital-goods": {
-        "id": 2010,
-        "name": "Capital Goods",
-        "industries": {
-          "aerospace-&-defense": {
-            "id": 201010,
-            "name": "Aerospace & Defense",
-            "subIndustries": {
-              "aerospace-&-defense": {
-                "id": 20101010,
-                "name": "Aerospace & Defense",
-                "description": "Manufacturers of civil or military aerospace and defense equipment, parts or products. Includes defense electronics and space equipment."
-              }
-            }
-          },
-          "building-products": {
-            "id": 201020,
-            "name": "Building Products",
-            "subIndustries": {
-              "building-products": {
-                "id": 20102010,
-                "name": "Building Products",
-                "description": "Manufacturers of building components and home improvement products and equipment. Excludes lumber and plywood classified under Forest Products and cement and other materials classified in the Construction Materials Sub-Industry."
               }
             }
           }
