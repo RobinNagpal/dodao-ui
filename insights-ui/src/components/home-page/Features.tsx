@@ -1,6 +1,6 @@
-import { ChartBarSquareIcon, CloudArrowUpIcon, HomeIcon, LockClosedIcon, ServerIcon, ShieldCheckIcon } from '@heroicons/react/20/solid';
+import platformImage from '@/images/homepage/platform-img.jpg';
+import { ChartBarSquareIcon, HomeIcon, ShieldCheckIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
-import financeImage from '@/images/finance.jpg';
 
 const features = [
   {
@@ -49,11 +49,11 @@ export default function Features() {
             </div>
           </div>
           <Image
-            src={financeImage}
+            src={platformImage}
             alt={'finance graph'}
             width={2432}
             height={1442}
-            className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-white/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
+            className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-white/10 sm:w-[57rem] md:-ml-4 lg:-ml-0 opacity-60"
           ></Image>
         </div>
       </div>

@@ -37,12 +37,14 @@ export default function AllInOnePlatform() {
   return (
     <div id="features" className="bg-gray-800 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-base/7 font-semibold text-indigo-400">Elevate your investing</h2>
-          <p className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">All-in-One Financial Intelligence</p>
-          <p className="mt-6 text-lg/8 text-gray-300">
-            Access every tool you need to make well-informed investment decisions—without jumping between multiple websites and cumbersome data sources.
-          </p>
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl sm:text-center">
+            <h2 className="text-base/7 font-semibold text-indigo-400">Elevate your investing</h2>
+            <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-white sm:text-5xl sm:text-balance">All-in-One Financial Intelligence</p>
+            <p className="mt-6 text-lg/8 text-gray-300">
+              Access every tool you need to make well-informed investment decisions—without jumping between multiple websites and cumbersome data sources.
+            </p>
+          </div>
         </div>
         <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 text-base/7 text-gray-300 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-16">
           {features.map((feature) => (

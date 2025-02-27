@@ -1,16 +1,17 @@
 import { BlogInterfaceWithId } from '@/types/blog';
 
-export default function FromTheBlog({ posts }: { posts: BlogInterfaceWithId[] }) {
+export default function BlogsGrid({ posts }: { posts: BlogInterfaceWithId[]; length?: number }) {
   return (
-    <div className="bg-gray-800 py-24 sm:py-32">
+    <div className="bg-gray-800 py-16 sm:py-16">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Heading */}
-        <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">From Our Blog</h2>
-          <p className="mt-2 text-lg text-gray-400">Dive deeper into how KoalaGains is changing the investment landscape.</p>
-        </div>
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl sm:text-center">
+            <h2 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">From Our Blog</h2>
 
-        {/* Posts grid */}
+            <p className="mt-2 text-lg text-gray-400">Dive deeper into how KoalaGains is changing the investment landscape.</p>
+          </div>
+        </div>
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-700 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {posts.map((post) => (
             <article key={post.id} className="flex max-w-xl flex-col items-start">
@@ -23,7 +24,7 @@ export default function FromTheBlog({ posts }: { posts: BlogInterfaceWithId[] })
                   className="relative z-10 rounded-full bg-gray-700 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-600"
                 >
                   {post.category.title}
-                </a>{' '}
+                </a>
               </div>
               <div className="group relative">
                 <h3 className="mt-3 text-lg font-semibold text-white group-hover:text-indigo-400">

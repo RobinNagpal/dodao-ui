@@ -3,7 +3,7 @@ import fs from 'fs';
 import matter from 'gray-matter';
 import path from 'path';
 
-export async function getPostsData(): Promise<BlogInterfaceWithId[]> {
+export async function getPostsData(length?: number): Promise<BlogInterfaceWithId[]> {
   const postsDirectory = path.join(process.cwd(), 'blogs');
   const fileNames = fs.readdirSync(postsDirectory);
 
@@ -33,6 +33,13 @@ export async function getPostsData(): Promise<BlogInterfaceWithId[]> {
       seoKeywords: postMetadata.seoKeywords || [],
     };
   });
+
+  // Sorty by datetime which is in YYYY-MM-DD format
+  posts.sort((a, b) => (a.datetime > b.datetime ? -1 : 1));
+
+  if (length) {
+    return posts.slice(0, length);
+  }
 
   return posts;
 }
