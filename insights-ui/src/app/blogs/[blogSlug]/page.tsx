@@ -19,6 +19,11 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
   const data = meta as BlogInterface;
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
+      name: 'Blogs',
+      href: `/blogs`,
+      current: false,
+    },
+    {
       name: data.title,
       href: `/blogs/${slug}`,
       current: true,
