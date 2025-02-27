@@ -32,15 +32,15 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <div className="px-6 py-32 lg:px-8 text-color">
-        <div className="mx-auto max-w-3xl text-base/7">
+      <div className="px-6 pt-16 lg:px-8 text-color">
+        <div className="mx-auto max-w-6xl text-base/7">
           <p className="text-base/7 font-semibold">
-            <a href={'category/' + data.category.slug} className="relative z-10 rounded-full px-3 py-1.5 font-medium">
+            <a href={'category/' + data.category.slug} className="relative z-10 rounded-full py-1.5 font-medium">
               {data.category.title}
             </a>
           </p>
           <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty  sm:text-5xl">{data.title}</h1>
-          <div className="mt-10 max-w-2xl text-md">
+          <div className="mt-10 max-w-6xl text-md">
             <article className="mx-auto text-color">
               {data.bannerImage && (
                 <Image src={'/images/blogs' + data.bannerImage} width={672} height={448} alt={data.title} className="w-full my-4 rounded-md" />
