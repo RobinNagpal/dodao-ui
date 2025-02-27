@@ -1,84 +1,110 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Block from '@dodao/web-core/components/app/Block';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import { useRouter } from 'next/navigation';
-import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import ConfirmationModal from '@dodao/web-core/src/components/app/Modal/ConfirmationModal';
 import { SectorsData } from '@/types/public-equity/sector';
-import { submitEquity } from '@/util/submit-equity';
+
+const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
+const CRITERIA_URL = 'https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/custom-criterias.json';
+const CREATE_CRITERIA_API = `${baseURL}/api/public-equities/US/create-ai-criteria`; // Replace with actual API endpoint
+const REGENERATE_CRITERIA_API = '/api/regenerate-ai-criteria'; // Replace with actual API endpoint
+
+interface IndustryGroupCriteria {
+  sectorId: number;
+  sectorName: string;
+  industryGroupId: number;
+  industryGroupName: string;
+  aiCriteriaFileLocation?: string;
+  customCriteriaFileLocation?: string;
+}
 
 export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
   const { gicsData } = props;
-  const [projectUpserting, setProjectUpserting] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-
-  const sectorKeys = Object.keys(gicsData);
-  const [selectedSector, setSelectedSector] = useState(sectorKeys[0]);
-  const [selectedIndustryGroup, setSelectedIndustryGroup] = useState(() => {
-    const industryGroups = Object.keys(gicsData[selectedSector]?.industryGroups || {});
-    return industryGroups[0] || '';
-  });
-  const [selectedIndustry, setSelectedIndustry] = useState(() => {
-    const industries = Object.keys(gicsData[selectedSector]?.industryGroups[selectedIndustryGroup]?.industries || {});
-    return industries[0] || '';
-  });
-  const [selectedSubIndustry, setSelectedSubIndustry] = useState(() => {
-    const subIndustries = Object.keys(gicsData[selectedSector]?.industryGroups[selectedIndustryGroup]?.industries[selectedIndustry]?.subIndustries || {});
-    return subIndustries[0] || '';
-  });
+  const [criteriaData, setCriteriaData] = useState<IndustryGroupCriteria[]>([]);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [selectedIndustryGroup, setSelectedIndustryGroup] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
+    const fetchCriteria = async () => {
+      try {
+        const response = await axios.get<{ criteria: IndustryGroupCriteria[] }>(CRITERIA_URL);
+        setCriteriaData(response.data.criteria);
+      } catch (err) {
+        setError('Failed to fetch criteria data.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCriteria();
     setIsMounted(true);
   }, []);
 
-  useEffect(() => {
-    const industryGroups = Object.keys(gicsData[selectedSector]?.industryGroups || {});
-    setSelectedIndustryGroup(industryGroups[0] || '');
-  }, [selectedSector]);
-
-  useEffect(() => {
-    const industries = Object.keys(gicsData[selectedSector]?.industryGroups[selectedIndustryGroup]?.industries || {});
-    setSelectedIndustry(industries[0] || '');
-  }, [selectedIndustryGroup, selectedSector]);
-
-  useEffect(() => {
-    const subIndustries = Object.keys(gicsData[selectedSector]?.industryGroups[selectedIndustryGroup]?.industries[selectedIndustry]?.subIndustries || {});
-    setSelectedSubIndustry(subIndustries[0] || '');
-  }, [selectedIndustry, selectedIndustryGroup, selectedSector]);
-
-  const handleSaveProject = async () => {
-    const publicEquity = {
-      sector: { id: gicsData[selectedSector].id, name: gicsData[selectedSector].name },
-      industryGroup: {
-        id: gicsData[selectedSector].industryGroups[selectedIndustryGroup].id,
-        name: gicsData[selectedSector].industryGroups[selectedIndustryGroup].name,
-      },
-      industry: {
-        id: gicsData[selectedSector].industryGroups[selectedIndustryGroup].industries[selectedIndustry].id,
-        name: gicsData[selectedSector].industryGroups[selectedIndustryGroup].industries[selectedIndustry].name,
-      },
-      subIndustry: {
-        id: gicsData[selectedSector].industryGroups[selectedIndustryGroup].industries[selectedIndustry].subIndustries[selectedSubIndustry].id,
-        name: gicsData[selectedSector].industryGroups[selectedIndustryGroup].industries[selectedIndustry].subIndustries[selectedSubIndustry].name,
-      },
-      // Add other necessary publicEquity fields here
-    };
-    setProjectUpserting(true);
-
+  const handleCreateCriteria = async (industryGroupId: number, type: 'ai' | 'custom') => {
+    setUpdating(true);
     try {
-      const response = await submitEquity(publicEquity);
+      let postData: any = { industryGroupId, type };
 
-      if (response.success) {
-        // router.push(`/crowd-funding/projects/${project.projectId}`);
-      } else {
-        alert(`Error: ${response.message}`);
+      if (type === 'ai') {
+        const industryGroup = criteriaData.find((item) => item.industryGroupId === industryGroupId);
+        if (industryGroup) {
+          postData = {
+            industryGroupId: industryGroup.industryGroupId,
+            sectorId: industryGroup.sectorId,
+            sectorName: industryGroup.sectorName,
+            industryGroupName: industryGroup.industryGroupName,
+          };
+        }
       }
-    } catch (error) {
-      console.error('Project submission failed:', error);
-      alert('An error occurred while submitting the project.');
+
+      const response = await axios.post(CREATE_CRITERIA_API, postData);
+      if (response.data.success) {
+        setCriteriaData((prev) =>
+          prev.map((item) =>
+            item.industryGroupId === industryGroupId
+              ? {
+                  ...item,
+                  ...(type === 'ai' ? { aiCriteriaFileLocation: response.data.filePath } : { customCriteriaFileLocation: response.data.filePath }),
+                }
+              : item
+          )
+        );
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (err) {
+      setError('Failed to create criteria.');
     } finally {
-      setProjectUpserting(false);
+      setUpdating(false);
+    }
+  };
+
+  const handleRegenerateAICriteria = async () => {
+    if (!selectedIndustryGroup) return;
+
+    setUpdating(true);
+    setShowConfirmDialog(false);
+    try {
+      const response = await axios.post(REGENERATE_CRITERIA_API, { industryGroupId: selectedIndustryGroup });
+      if (response.data.success) {
+        setCriteriaData((prev) =>
+          prev.map((item) => (item.industryGroupId === selectedIndustryGroup ? { ...item, aiCriteriaFileLocation: response.data.filePath } : item))
+        );
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (err) {
+      setError('Failed to regenerate AI criteria.');
+    } finally {
+      setUpdating(false);
     }
   };
 
@@ -87,45 +113,88 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
   }
 
   return (
-    <Block title="Project Information" className="font-semibold text-color">
-      <StyledSelect
-        label="Sector"
-        selectedItemId={selectedSector}
-        items={sectorKeys.map((key) => ({ id: key, label: gicsData[key].name }))}
-        setSelectedItemId={(value) => setSelectedSector(value!)}
+    <Block title="Industry Groups & Criteria" className="font-semibold text-color">
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="text-red-500">{error}</p>
+      ) : (
+        <table className="w-full border-collapse border border-gray-300 text-left">
+          <thead>
+            <tr>
+              <th className="p-3 border text-left">Industry Group</th>
+              <th className="p-3 border text-left">AI Criteria</th>
+              <th className="p-3 border text-left">Custom Criteria</th>
+            </tr>
+          </thead>
+          <tbody>
+            {criteriaData.map((item) => (
+              <tr key={item.industryGroupId} className="border">
+                <td className="p-3 border text-left">{item.industryGroupName}</td>
+
+                {/* AI Criteria Column */}
+                <td className="p-3 border text-left">
+                  <div className="flex items-center justify-center gap-2">
+                    <IconButton
+                      iconName={IconTypes.PlusIcon}
+                      tooltip="Create AI Criteria"
+                      onClick={() => handleCreateCriteria(item.industryGroupId, 'ai')}
+                      disabled={updating}
+                      variant="text"
+                    />
+                    {item.aiCriteriaFileLocation ? (
+                      <>
+                        <a href={item.aiCriteriaFileLocation} className="text-blue-500 underline">
+                          View AI Criteria
+                        </a>
+                        <IconButton
+                          iconName={IconTypes.Reload}
+                          tooltip="Re-generate AI Criteria"
+                          onClick={() => {
+                            setSelectedIndustryGroup(item.industryGroupId);
+                            setShowConfirmDialog(true);
+                          }}
+                          disabled={updating}
+                          variant="text"
+                        />
+                      </>
+                    ) : null}
+                  </div>
+                </td>
+
+                {/* Custom Criteria Column */}
+                <td className="p-3 border text-left">
+                  <div className="flex items-center justify-center gap-2">
+                    <IconButton
+                      iconName={IconTypes.PlusIcon}
+                      tooltip="Create Custom Criteria"
+                      onClick={() => handleCreateCriteria(item.industryGroupId, 'custom')}
+                      disabled={updating}
+                      variant="text"
+                    />
+                    {item.customCriteriaFileLocation ? (
+                      <a href={item.customCriteriaFileLocation} className="text-blue-500 underline">
+                        View Custom Criteria
+                      </a>
+                    ) : null}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {/* Confirmation Modal for AI Regeneration */}
+      <ConfirmationModal
+        open={showConfirmDialog}
+        onClose={() => setShowConfirmDialog(false)}
+        onConfirm={handleRegenerateAICriteria}
+        confirming={updating}
+        title="Regenerate AI Criteria"
+        confirmationText="Are you sure you want to re-generate the AI criteria for this industry group?"
+        askForTextInput={true} // Requires "Confirm" input before proceeding
       />
-      <StyledSelect
-        label="Industry Group"
-        selectedItemId={selectedIndustryGroup}
-        items={Object.keys(gicsData[selectedSector]?.industryGroups || {}).map((key) => ({
-          id: key,
-          label: gicsData[selectedSector].industryGroups[key].name,
-        }))}
-        setSelectedItemId={(value) => setSelectedIndustryGroup(value!)}
-      />
-      <StyledSelect
-        label="Industry"
-        selectedItemId={selectedIndustry}
-        items={Object.keys(gicsData[selectedSector]?.industryGroups[selectedIndustryGroup]?.industries || {}).map((key) => ({
-          id: key,
-          label: gicsData[selectedSector].industryGroups[selectedIndustryGroup].industries[key].name,
-        }))}
-        setSelectedItemId={(value) => setSelectedIndustry(value!)}
-      />
-      <StyledSelect
-        label="Sub-Industry"
-        selectedItemId={selectedSubIndustry}
-        items={Object.keys(gicsData[selectedSector]?.industryGroups[selectedIndustryGroup]?.industries[selectedIndustry]?.subIndustries || {}).map((key) => ({
-          id: key,
-          label: gicsData[selectedSector].industryGroups[selectedIndustryGroup].industries[selectedIndustry].subIndustries[key].name,
-        }))}
-        setSelectedItemId={(value) => setSelectedSubIndustry(value!)}
-      />
-      <div className="flex justify-center items-center mt-6">
-        <Button onClick={handleSaveProject} loading={projectUpserting} disabled={projectUpserting} className="block" variant="contained" primary>
-          Save
-        </Button>
-      </div>
     </Block>
   );
 }
