@@ -10,8 +10,9 @@ import { SectorsData } from '@/types/public-equity/sector';
 
 const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 const CRITERIA_URL = 'https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/custom-criterias.json';
-const CREATE_CRITERIA_API = `${baseURL}/api/public-equities/US/create-ai-criteria`; // Replace with actual API endpoint
-const REGENERATE_CRITERIA_API = '/api/regenerate-ai-criteria'; // Replace with actual API endpoint
+const CREATE_AI_CRITERIA_API = `${baseURL}/api/public-equities/US/create-ai-criteria`;
+const CREATE_CUSTOM_CRITERIA_API = `${baseURL}/api/public-equities/US/create-custom-criteria`;
+const REGENERATE_AI_CRITERIA_API = `${baseURL}/api/public-equities/US/regenerate-ai-criteria`;
 
 interface IndustryGroupCriteria {
   sectorId: number;
@@ -48,52 +49,71 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
     setIsMounted(true);
   }, []);
 
-  const handleCreateCriteria = async (industryGroupId: number, type: 'ai' | 'custom') => {
+  /** Handles AI Criteria Creation */
+  const handleCreateAICriteria = async (industryGroupId: number) => {
     setUpdating(true);
     try {
-      let postData: any = { industryGroupId, type };
+      const industryGroup = criteriaData.find((item) => item.industryGroupId === industryGroupId);
+      if (!industryGroup) return;
 
-      if (type === 'ai') {
-        const industryGroup = criteriaData.find((item) => item.industryGroupId === industryGroupId);
-        if (industryGroup) {
-          postData = {
-            industryGroupId: industryGroup.industryGroupId,
-            sectorId: industryGroup.sectorId,
-            sectorName: industryGroup.sectorName,
-            industryGroupName: industryGroup.industryGroupName,
-          };
-        }
-      }
+      const response = await axios.post(CREATE_AI_CRITERIA_API, {
+        industryGroupId: industryGroup.industryGroupId,
+        sectorId: industryGroup.sectorId,
+        sectorName: industryGroup.sectorName,
+        industryGroupName: industryGroup.industryGroupName,
+      });
 
-      const response = await axios.post(CREATE_CRITERIA_API, postData);
       if (response.data.success) {
         setCriteriaData((prev) =>
-          prev.map((item) =>
-            item.industryGroupId === industryGroupId
-              ? {
-                  ...item,
-                  ...(type === 'ai' ? { aiCriteriaFileLocation: response.data.filePath } : { customCriteriaFileLocation: response.data.filePath }),
-                }
-              : item
-          )
+          prev.map((item) => (item.industryGroupId === industryGroupId ? { ...item, aiCriteriaFileLocation: response.data.filePath } : item))
         );
       } else {
         throw new Error(response.data.message);
       }
     } catch (err) {
-      setError('Failed to create criteria.');
+      setError('Failed to create AI criteria.');
     } finally {
       setUpdating(false);
     }
   };
 
+  /** Handles Custom Criteria Creation */
+  const handleCreateCustomCriteria = async (industryGroupId: number) => {
+    setUpdating(true);
+    try {
+      const response = await axios.post(CREATE_CUSTOM_CRITERIA_API, { industryGroupId });
+
+      if (response.data.success) {
+        setCriteriaData((prev) =>
+          prev.map((item) => (item.industryGroupId === industryGroupId ? { ...item, customCriteriaFileLocation: response.data.filePath } : item))
+        );
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (err) {
+      setError('Failed to create Custom criteria.');
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  /** Handles AI Criteria Regeneration */
   const handleRegenerateAICriteria = async () => {
     if (!selectedIndustryGroup) return;
+
+    const industryGroup = criteriaData.find((item) => item.industryGroupId === selectedIndustryGroup);
+
+    if (!industryGroup) return;
 
     setUpdating(true);
     setShowConfirmDialog(false);
     try {
-      const response = await axios.post(REGENERATE_CRITERIA_API, { industryGroupId: selectedIndustryGroup });
+      const response = await axios.post(REGENERATE_AI_CRITERIA_API, {
+        industryGroupId: industryGroup.industryGroupId,
+        sectorId: industryGroup.sectorId,
+        sectorName: industryGroup.sectorName,
+        industryGroupName: industryGroup.industryGroupName,
+      });
       if (response.data.success) {
         setCriteriaData((prev) =>
           prev.map((item) => (item.industryGroupId === selectedIndustryGroup ? { ...item, aiCriteriaFileLocation: response.data.filePath } : item))
@@ -134,17 +154,19 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
 
                 {/* AI Criteria Column */}
                 <td className="p-3 border text-left">
-                  <div className="flex items-center justify-center gap-2">
-                    <IconButton
-                      iconName={IconTypes.PlusIcon}
-                      tooltip="Create AI Criteria"
-                      onClick={() => handleCreateCriteria(item.industryGroupId, 'ai')}
-                      disabled={updating}
-                      variant="text"
-                    />
-                    {item.aiCriteriaFileLocation ? (
+                  <div className="flex items-center gap-2">
+                    {!item.aiCriteriaFileLocation ? (
+                      <IconButton
+                        iconName={IconTypes.PlusIcon}
+                        tooltip="Create AI Criteria"
+                        onClick={() => handleCreateAICriteria(item.industryGroupId)}
+                        disabled={updating}
+                        variant="text"
+                        className="link-color pointer-cursor "
+                      />
+                    ) : (
                       <>
-                        <a href={item.aiCriteriaFileLocation} className="text-blue-500 underline">
+                        <a href={item.aiCriteriaFileLocation} className="link-color pointer-cursor ">
                           View AI Criteria
                         </a>
                         <IconButton
@@ -156,27 +178,30 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
                           }}
                           disabled={updating}
                           variant="text"
+                          className="link-color pointer-cursor "
                         />
                       </>
-                    ) : null}
+                    )}
                   </div>
                 </td>
 
                 {/* Custom Criteria Column */}
                 <td className="p-3 border text-left">
-                  <div className="flex items-center justify-center gap-2">
-                    <IconButton
-                      iconName={IconTypes.PlusIcon}
-                      tooltip="Create Custom Criteria"
-                      onClick={() => handleCreateCriteria(item.industryGroupId, 'custom')}
-                      disabled={updating}
-                      variant="text"
-                    />
-                    {item.customCriteriaFileLocation ? (
-                      <a href={item.customCriteriaFileLocation} className="text-blue-500 underline">
+                  <div className="flex items-center gap-2">
+                    {!item.customCriteriaFileLocation ? (
+                      <IconButton
+                        iconName={IconTypes.PlusIcon}
+                        tooltip="Create Custom Criteria"
+                        onClick={() => handleCreateCustomCriteria(item.industryGroupId)}
+                        disabled={updating}
+                        variant="text"
+                        className="link-color pointer-cursor "
+                      />
+                    ) : (
+                      <a href={item.customCriteriaFileLocation} className="link-color pointer-cursor ">
                         View Custom Criteria
                       </a>
-                    ) : null}
+                    )}
                   </div>
                 </td>
               </tr>
@@ -193,7 +218,7 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
         confirming={updating}
         title="Regenerate AI Criteria"
         confirmationText="Are you sure you want to re-generate the AI criteria for this industry group?"
-        askForTextInput={true} // Requires "Confirm" input before proceeding
+        askForTextInput={true}
       />
     </Block>
   );
