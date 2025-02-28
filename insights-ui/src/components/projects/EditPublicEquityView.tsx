@@ -7,6 +7,7 @@ import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import ConfirmationModal from '@dodao/web-core/src/components/app/Modal/ConfirmationModal';
 import { SectorsData } from '@/types/public-equity/sector';
+import { useRouter } from 'next/navigation';
 
 const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 const CRITERIA_URL = 'https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/custom-criterias.json';
@@ -32,7 +33,7 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updating, setUpdating] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     const fetchCriteria = async () => {
       try {
@@ -192,7 +193,7 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
                       <IconButton
                         iconName={IconTypes.PlusIcon}
                         tooltip="Create Custom Criteria"
-                        onClick={() => handleCreateCustomCriteria(item.industryGroupId)}
+                        onClick={() => router.push(`/public-equities/common/${item.industryGroupId}/custom-criteria`)}
                         disabled={updating}
                         variant="text"
                         className="link-color pointer-cursor "
