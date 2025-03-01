@@ -3,7 +3,6 @@ import { getAuthKey } from './auth/authKey';
 
 export async function submitProject(projectDetails: ProjectSubmissionData): Promise<{ success: boolean; message: string }> {
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
-  console.log('Constructed URL:', `${baseURL}/api/submit`);
   try {
     const response = await fetch(`${baseURL}/api/submit`, {
       method: 'POST',

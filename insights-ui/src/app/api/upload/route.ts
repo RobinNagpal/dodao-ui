@@ -14,7 +14,6 @@ const s3Client = new S3Client({
 
 async function postHandler(req: NextRequest): Promise<NextResponse<{ url: string }>> {
   const bodyBuffer = await req.arrayBuffer();
-  console.log(`Received file with ${bodyBuffer.byteLength} bytes`);
   const fileName = req.headers.get('x-file-name');
   const fileType = req.headers.get('x-file-type');
 
@@ -32,7 +31,6 @@ async function postHandler(req: NextRequest): Promise<NextResponse<{ url: string
   await s3Client.send(new PutObjectCommand(uploadParams));
 
   const publicUrl = `https://${bucketName}.s3.${process.env.DEFAULT_REGION}.amazonaws.com/${key}`;
-  console.log(`File uploaded successfully to: ${publicUrl}`);
 
   return NextResponse.json({ url: publicUrl }, { status: 200 });
 }

@@ -30,7 +30,6 @@ export default function EditProjectView(props: { projectId?: string | null; proj
   const handleImageUpload = async (file: File) => {
     setLoading(true);
     const url = await uploadImageToS3(file, project.projectId);
-    console.log('Image uploaded to:', url);
     setProject((prev) => ({ ...prev, projectImgUrl: url }));
     setLoading(false);
   };
@@ -38,7 +37,6 @@ export default function EditProjectView(props: { projectId?: string | null; proj
     setIsMounted(true);
   });
   const handleUpdateField = (field: keyof ProjectSubmissionData, value: string) => {
-    console.log('Updating field:', field, 'with value:', value);
     setProject((prev) => ({ ...prev, [field]: value }));
   };
 

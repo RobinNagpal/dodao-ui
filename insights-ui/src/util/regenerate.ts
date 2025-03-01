@@ -4,7 +4,6 @@ export async function regenerateReport(projectId: string, model: string, reportT
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
   const url: string = reportType ? `reports/${reportType}/regenerate` : `reports/regenerate`;
 
-  console.log('Constructed URL:', `${baseURL}/api/projects/${projectId}/${url}`);
   try {
     const response = await fetch(`${baseURL}/api/projects/${projectId}/${url}`, {
       method: 'POST',

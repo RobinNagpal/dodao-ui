@@ -59,7 +59,6 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
       const hasInProgressReport = reports.some((report) => report.status === ProcessingStatus.IN_PROGRESS || report.status === ProcessingStatus.NOT_STARTED);
 
       if (hasInProgressReport) {
-        console.log('Refetching due to in-progress status...');
         fetchProjectDetails();
       }
     }, 10000); // Poll every 15 seconds

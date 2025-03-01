@@ -3,7 +3,6 @@ import { getAuthKey } from './auth/authKey';
 
 export async function submitEquity(equityDetails: PublicEquitySubmissionData): Promise<{ success: boolean; message: string }> {
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
-  console.log('Constructed URL:', `${baseURL}/api/public-equities/US/submit`);
   try {
     const response = await fetch(`${baseURL}/api/public-equities/US/submit`, {
       method: 'POST',

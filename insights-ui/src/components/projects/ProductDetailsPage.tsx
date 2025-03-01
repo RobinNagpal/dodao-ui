@@ -32,7 +32,6 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
     [ReportType.RELEVANT_LINKS]: '',
   };
 
-  console.log('reports', reports);
   const spiderGraph: SpiderGraph = Object.fromEntries(
     reports.map((report): [string, SpiderGraphPie] => {
       const pieData: SpiderGraphPie = {

@@ -16,7 +16,6 @@ export async function getPostsData(length?: number): Promise<BlogInterfaceWithId
     const fileContents = fs.readFileSync(filePath, 'utf8');
     const { data } = matter(fileContents);
     const postMetadata = data as BlogInterface;
-    console.log('data', JSON.stringify(fileContents));
 
     return {
       id: id, // using the slug as a unique id
