@@ -8,7 +8,7 @@ import gicsData from '@/gicsData/gicsData.json';
 export default async function Page({ params }: { params: Promise<{ projectId: string }> }) {
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
-      name: `New Project`,
+      name: `Industry Group Criterias`,
       href: `/`,
       current: true,
     },
@@ -16,9 +16,7 @@ export default async function Page({ params }: { params: Promise<{ projectId: st
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <SingleCardLayout>
-        <EditPublicEquityView gicsData={gicsData} />
-      </SingleCardLayout>
+      <EditPublicEquityView gicsData={gicsData} />
     </PageWrapper>
   );
 }
