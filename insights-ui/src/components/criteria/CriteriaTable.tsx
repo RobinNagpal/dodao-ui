@@ -150,7 +150,7 @@ const CriteriaTable = () => {
             theme="monokai"
             enableClipboard={false}
             style={{ textAlign: 'left', height: '60vh' }}
-            validationMessage={validationMessages}
+            validationMessage={validationMessages?.join('\n')}
           />
 
           <div className="text-red-500 text-left">
