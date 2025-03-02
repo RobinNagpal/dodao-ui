@@ -1,0 +1,87 @@
+import ViewCriteriaModal from '@/components/criteria/ViewCriteriaModal';
+import { CriteriaLookupItem } from '@/types/criteria/criteria';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import axios from 'axios';
+import { useState } from 'react';
+
+interface UpsertAiCriteriaProps {
+  item: CriteriaLookupItem;
+  onPostUpsertAiCriteria: () => void;
+}
+
+export default function UpsertAiCriteria({ item }: UpsertAiCriteriaProps) {
+  const [updating, setUpdating] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showViewCriteriaModal, setShowViewCriteriaModal] = useState(false);
+  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
+
+  const handleUpsertAICriteria = async () => {
+    setUpdating(true);
+    setShowConfirmModal(false);
+    await axios.post(`${baseURL}/api/public-equities/US/upsert-ai-criteria`, {
+      industryGroupId: item.industryGroupId,
+      sectorId: item.sectorId,
+    });
+
+    setUpdating(false);
+  };
+
+  return (
+    <div className="flex gap-2">
+      {!item.aiCriteriaFileLocation ? (
+        <IconButton
+          iconName={IconTypes.PlusIcon}
+          tooltip="Create AI Criteria"
+          onClick={() => setShowConfirmModal(true)}
+          disabled={updating}
+          loading={updating}
+          variant="text"
+          className="link-color pointer-cursor"
+        />
+      ) : (
+        <>
+          <span
+            onClick={() => {
+              setShowViewCriteriaModal(true);
+            }}
+            className="link-color cursor-pointer mt-2"
+          >
+            View AI Criteria
+          </span>
+          <IconButton
+            iconName={IconTypes.Reload}
+            tooltip="Re-generate AI Criteria"
+            onClick={() => {
+              setShowConfirmModal(true);
+            }}
+            loading={updating}
+            disabled={updating}
+            variant="text"
+            className="link-color pointer-cursor"
+          />
+        </>
+      )}
+      {showViewCriteriaModal && (
+        <ViewCriteriaModal
+          open={showViewCriteriaModal}
+          onClose={() => setShowViewCriteriaModal(false)}
+          title={item.industryGroupName}
+          url={item.aiCriteriaFileLocation!}
+        />
+      )}
+      {showConfirmModal && (
+        <ConfirmationModal
+          open={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          onConfirm={() => handleUpsertAICriteria()}
+          confirming={updating}
+          title="Regenerate AI Criteria"
+          confirmationText="Are you sure you want to re-generate the AI criteria for this industry group?"
+          askForTextInput={true}
+        />
+      )}
+    </div>
+  );
+}
