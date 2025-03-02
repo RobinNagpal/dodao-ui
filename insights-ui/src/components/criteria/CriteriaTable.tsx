@@ -1,8 +1,12 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
-import { Modal, Box, Button, Typography, IconButton } from '@mui/material';
-import { Add, Edit } from '@mui/icons-material';
+import Block from '@dodao/web-core/components/app/Block';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import React, { useRef, useState } from 'react';
 import ReactJson from 'react-json-view';
 
 interface Criterion {
@@ -72,16 +76,15 @@ const CriteriaTable = () => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <Typography variant="h5" gutterBottom>
-        Custom Criteria
-      </Typography>
-      <Button variant="contained" startIcon={<Add />} onClick={() => handleOpen()} sx={{ marginBottom: '10px' }}>
-        Add Criterion
-      </Button>
-
-      {/* Table structure with headers always visible */}
-      <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }}>
+    <PageWrapper>
+      <div className="flex justify-between">
+        <div></div>
+        <div className="text-4xl">Custom Criteria</div>
+        <Button variant="contained" onClick={() => handleOpen()} className="mb-4" primary>
+          Add Criterion
+        </Button>
+      </div>
+      <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }} className="mt-4">
         <thead>
           <tr className="text-color">
             <th style={tableCellStyle}>Key</th>
@@ -105,9 +108,7 @@ const CriteriaTable = () => {
                 <td style={tableCellStyle}>{criterion.name}</td>
                 <td style={tableCellStyle}>{criterion.shortDescription}</td>
                 <td style={tableCellStyle}>
-                  <IconButton onClick={() => handleOpen(criterion)}>
-                    <Edit />
-                  </IconButton>
+                  <IconButton onClick={() => handleOpen(criterion)} iconName={IconTypes.Edit} />
                 </td>
               </tr>
             ))
@@ -116,11 +117,8 @@ const CriteriaTable = () => {
       </table>
 
       {/* Modal for JSON Editing */}
-      <Modal open={open} onClose={handleClose}>
-        <Box sx={modalStyle}>
-          <Typography variant="h6">{isEditing ? 'Edit Criterion' : 'Add Criterion'}</Typography>
-
-          {/* ✅ Updates state without closing the modal */}
+      <FullPageModal open={open} onClose={handleClose} title={isEditing ? 'Edit Criterion' : 'Add Criterion'}>
+        <Block className="text-left">
           <ReactJson
             src={selectedCriterion || {}}
             onEdit={(edit) => setSelectedCriterion(edit.updated_src as Criterion)}
@@ -128,34 +126,22 @@ const CriteriaTable = () => {
             onDelete={(del) => setSelectedCriterion(del.updated_src as Criterion)}
             theme="monokai"
             enableClipboard={false}
+            style={{ textAlign: 'left', height: '60vh' }}
           />
 
-          {/* ✅ Save button - users must click to apply changes */}
-          <Button onClick={handleSave} sx={{ marginTop: '10px', marginRight: '10px' }} variant="contained">
+          <Button onClick={handleSave} className="m-4" variant="contained" primary>
             Save Changes
           </Button>
 
-          <Button onClick={handleClose} sx={{ marginTop: '10px' }} variant="outlined">
+          <Button onClick={handleClose} className="m-4" variant="outlined">
             Close
           </Button>
-        </Box>
-      </Modal>
-    </div>
+        </Block>
+      </FullPageModal>
+    </PageWrapper>
   );
 };
 
 const tableCellStyle = { padding: '10px', border: '1px solid #ddd' };
-
-const modalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '50%',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-  borderRadius: '8px',
-};
 
 export default CriteriaTable;

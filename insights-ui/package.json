@@ -16,10 +16,6 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.4.6",
-    "@mui/material": "^6.4.6",
     "chart.js": "^4.4.7",
     "gray-matter": "^4.0.3",
     "next": "15.0.3",

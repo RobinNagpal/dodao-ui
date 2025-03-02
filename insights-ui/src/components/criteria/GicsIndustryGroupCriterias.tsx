@@ -1,13 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import ViewCriteriaModal from '@/components/criteria/ViewCriteriaModal';
 import Block from '@dodao/web-core/components/app/Block';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
-import ConfirmationModal from '@dodao/web-core/src/components/app/Modal/ConfirmationModal';
-import { SectorsData } from '@/types/public-equity/sector';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 const CRITERIA_URL = 'https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/custom-criterias.json';
@@ -24,15 +25,18 @@ interface IndustryGroupCriteria {
   customCriteriaFileLocation?: string;
 }
 
-export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
-  const { gicsData } = props;
+export default function GicsIndustryGroupCriterias() {
   const [isMounted, setIsMounted] = useState(false);
   const [criteriaData, setCriteriaData] = useState<IndustryGroupCriteria[]>([]);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const [selectedIndustryGroup, setSelectedIndustryGroup] = useState<number | null>(null);
+  const [selectedIndustryGroupId, setSelectedIndustryGroupId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updating, setUpdating] = useState(false);
+
+  const [showViewCriteriaModal, setShowViewCriteriaModal] = useState(false);
+
+  const [selectedIndustryGroup, setSelectedIndustryGroup] = useState<IndustryGroupCriteria>();
   const router = useRouter();
   useEffect(() => {
     const fetchCriteria = async () => {
@@ -49,6 +53,12 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
     fetchCriteria();
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    setSelectedIndustryGroup(criteriaData?.find((item) => item.industryGroupId === selectedIndustryGroupId));
+    console.log('selectedIndustryGroup', selectedIndustryGroup);
+    console.log('showViewCriteriaModal', showViewCriteriaModal);
+  }, [selectedIndustryGroupId]);
 
   /** Handles AI Criteria Creation */
   const handleCreateAICriteria = async (industryGroupId: number) => {
@@ -100,9 +110,9 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
 
   /** Handles AI Criteria Regeneration */
   const handleRegenerateAICriteria = async () => {
-    if (!selectedIndustryGroup) return;
+    if (!selectedIndustryGroupId) return;
 
-    const industryGroup = criteriaData.find((item) => item.industryGroupId === selectedIndustryGroup);
+    const industryGroup = criteriaData.find((item) => item.industryGroupId === selectedIndustryGroupId);
 
     if (!industryGroup) return;
 
@@ -117,7 +127,7 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
       });
       if (response.data.success) {
         setCriteriaData((prev) =>
-          prev.map((item) => (item.industryGroupId === selectedIndustryGroup ? { ...item, aiCriteriaFileLocation: response.data.filePath } : item))
+          prev.map((item) => (item.industryGroupId === selectedIndustryGroupId ? { ...item, aiCriteriaFileLocation: response.data.filePath } : item))
         );
       } else {
         throw new Error(response.data.message);
@@ -133,6 +143,11 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
     return null;
   }
 
+  console.log({
+    showViewCriteriaModal,
+    selectedIndustryGroup,
+  });
+
   return (
     <Block title="Industry Groups & Criteria" className="font-semibold text-color">
       {loading ? (
@@ -143,6 +158,7 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
         <table className="w-full border-collapse border border-gray-300 text-left">
           <thead>
             <tr>
+              <th className="p-3 border text-left">Sector</th>
               <th className="p-3 border text-left">Industry Group</th>
               <th className="p-3 border text-left">AI Criteria</th>
               <th className="p-3 border text-left">Custom Criteria</th>
@@ -151,11 +167,12 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
           <tbody>
             {criteriaData.map((item) => (
               <tr key={item.industryGroupId} className="border">
+                <td className="p-3 border text-left">{item.sectorName}</td>
                 <td className="p-3 border text-left">{item.industryGroupName}</td>
 
                 {/* AI Criteria Column */}
                 <td className="p-3 border text-left">
-                  <div className="flex items-center gap-2">
+                  <div className="flex gap-2">
                     {!item.aiCriteriaFileLocation ? (
                       <IconButton
                         iconName={IconTypes.PlusIcon}
@@ -163,23 +180,29 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
                         onClick={() => handleCreateAICriteria(item.industryGroupId)}
                         disabled={updating}
                         variant="text"
-                        className="link-color pointer-cursor "
+                        className="link-color pointer-cursor"
                       />
                     ) : (
                       <>
-                        <a href={item.aiCriteriaFileLocation} className="link-color pointer-cursor ">
+                        <span
+                          onClick={() => {
+                            setSelectedIndustryGroupId(item.industryGroupId);
+                            setShowViewCriteriaModal(true);
+                          }}
+                          className="link-color cursor-pointer mt-2"
+                        >
                           View AI Criteria
-                        </a>
+                        </span>
                         <IconButton
                           iconName={IconTypes.Reload}
                           tooltip="Re-generate AI Criteria"
                           onClick={() => {
-                            setSelectedIndustryGroup(item.industryGroupId);
+                            setSelectedIndustryGroupId(item.industryGroupId);
                             setShowConfirmDialog(true);
                           }}
                           disabled={updating}
                           variant="text"
-                          className="link-color pointer-cursor "
+                          className="link-color pointer-cursor"
                         />
                       </>
                     )}
@@ -209,6 +232,15 @@ export default function EditPublicEquityView(props: { gicsData: SectorsData }) {
             ))}
           </tbody>
         </table>
+      )}
+
+      {showViewCriteriaModal && selectedIndustryGroup && (
+        <ViewCriteriaModal
+          open={showViewCriteriaModal}
+          onClose={() => setShowViewCriteriaModal(false)}
+          title={selectedIndustryGroup?.industryGroupName}
+          url={selectedIndustryGroup?.aiCriteriaFileLocation!}
+        />
       )}
 
       {/* Confirmation Modal for AI Regeneration */}

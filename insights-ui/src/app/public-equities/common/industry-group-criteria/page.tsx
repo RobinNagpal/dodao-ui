@@ -1,9 +1,7 @@
-import EditPublicEquityView from '@/components/projects/EditPublicEquityView';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import SingleCardLayout from '@/layouts/SingleCardLayout';
-import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import GicsIndustryGroupCriterias from '@/components/criteria/GicsIndustryGroupCriterias';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import gicsData from '@/gicsData/gicsData.json';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 
 export default async function Page({ params }: { params: Promise<{ projectId: string }> }) {
   const breadcrumbs: BreadcrumbsOjbect[] = [
@@ -16,7 +14,7 @@ export default async function Page({ params }: { params: Promise<{ projectId: st
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <EditPublicEquityView gicsData={gicsData} />
+      <GicsIndustryGroupCriterias />
     </PageWrapper>
   );
 }
