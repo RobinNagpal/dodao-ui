@@ -3,16 +3,26 @@
   "title": "IndustryGroupCriteria",
   "type": "object",
   "properties": {
-    "key": { "type": "string" },
-    "name": { "type": "string" },
-    "shortDescription": { "type": "string" },
+    "key": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "shortDescription": {
+      "type": "string"
+    },
     "importantMetrics": {
       "type": "array",
-      "items": { "$ref": "#/definitions/ImportantMetric" }
+      "items": {
+        "$ref": "#/definitions/ImportantMetric"
+      }
     },
     "reports": {
       "type": "array",
-      "items": { "$ref": "#/definitions/Report" }
+      "items": {
+        "$ref": "#/definitions/Report"
+      }
     }
   },
   "required": [
@@ -26,23 +36,45 @@
     "ImportantMetric": {
       "type": "object",
       "properties": {
-        "metric": { "type": "string" },
-        "value": { "type": "number" }
+        "metric": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        }
       },
-      "required": ["metric", "value"]
+      "required": [
+        "metric",
+        "value"
+      ]
     },
     "Report": {
       "type": "object",
       "properties": {
-        "key": { "type": "string" },
-        "name": { "type": "string" },
-        "description": { "type": "string" },
+        "key": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
         "outputType": {
           "type": "string",
-          "enum": ["Text", "BarGraph", "PieChart"]
+          "enum": [
+            "Text",
+            "BarGraph",
+            "PieChart"
+          ]
         }
       },
-      "required": ["key", "name", "description", "outputType"]
+      "required": [
+        "key",
+        "name",
+        "description",
+        "outputType"
+      ]
     }
   }
 }

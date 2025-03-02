@@ -4,27 +4,14 @@ import UpsertAiCriteria from '@/components/criteria/UpsertAiCriteria';
 import { CriteriaLookupList } from '@/types/criteria/criteria';
 import Block from '@dodao/web-core/components/app/Block';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { PlusIcon } from '@heroicons/react/20/solid';
-import axios from 'axios';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 const CRITERIA_URL = 'https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/custom-criterias.json';
 
 export default function CriteriaLookupTable() {
-  const [criteriaData, setCriteriaData] = useState<CriteriaLookupList>();
-
-  const [loading, setLoading] = useState(true);
-
-  const fetchCriteria = async () => {
-    const response = await axios.get<CriteriaLookupList>(CRITERIA_URL);
-    setCriteriaData(response?.data);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchCriteria();
-  }, []);
+  const { data, loading, reFetchData } = useFetchData<CriteriaLookupList>(CRITERIA_URL, {}, 'Failed to fetch spaces');
 
   return (
     <Block title="Industry Groups & Criteria" className="font-semibold text-color">
@@ -41,14 +28,14 @@ export default function CriteriaLookupTable() {
             </tr>
           </thead>
           <tbody>
-            {criteriaData?.criteria.map((item) => (
+            {data?.criteria.map((item) => (
               <tr key={item.industryGroupId} className="border">
                 <td className="p-3 border text-left">{item.sectorName}</td>
                 <td className="p-3 border text-left">{item.industryGroupName}</td>
 
                 {/* AI Criteria Column */}
                 <td className="p-3 border text-left">
-                  <UpsertAiCriteria item={item} onPostUpsertAiCriteria={() => fetchCriteria()} />
+                  <UpsertAiCriteria item={item} onPostUpsertAiCriteria={() => reFetchData()} />
                 </td>
 
                 {/* Custom Criteria Column */}
