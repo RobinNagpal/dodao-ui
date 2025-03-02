@@ -56,7 +56,7 @@ export default function CriteriaLookupTable() {
                   <div className="flex items-center gap-2">
                     {!item.customCriteriaFileLocation ? (
                       <Link href={`/public-equities/common/${item.industryGroupId}/custom-criteria`}>
-                        <PlusIcon width={20} height={20} />
+                        <PlusIcon width={20} height={20} className="ml-2 link-color cursor-pointer" />
                       </Link>
                     ) : (
                       <a href={item.customCriteriaFileLocation} className="link-color pointer-cursor ">

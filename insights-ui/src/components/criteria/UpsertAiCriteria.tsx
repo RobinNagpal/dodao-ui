@@ -38,6 +38,7 @@ export default function UpsertAiCriteria({ item }: UpsertAiCriteriaProps) {
           disabled={updating}
           loading={updating}
           variant="text"
+          removeBorder={true}
           className="link-color pointer-cursor"
         />
       ) : (
@@ -56,6 +57,7 @@ export default function UpsertAiCriteria({ item }: UpsertAiCriteriaProps) {
             onClick={() => {
               setShowConfirmModal(true);
             }}
+            removeBorder={true}
             loading={updating}
             disabled={updating}
             variant="text"

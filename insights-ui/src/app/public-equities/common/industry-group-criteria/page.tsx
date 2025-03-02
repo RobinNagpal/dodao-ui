@@ -5,7 +5,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import dynamic from 'next/dynamic';
 
-export default async function LookupTablePage() {
+export default function LookupTablePage() {
   const CriteriaLookupTableWithNoSSR = dynamic(() => import('./CriteriaLookupTable'), { ssr: false });
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {

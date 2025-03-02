@@ -8,6 +8,8 @@ import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal'
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import React, { useRef, useState } from 'react';
 import ReactJson from 'react-json-view';
+import Ajv, { ErrorObject } from 'ajv';
+import schema from './insdustryGroupCriteriaJsonSchema.json';
 
 interface Criterion {
   key: string;
@@ -18,13 +20,34 @@ interface Criterion {
 }
 
 const CriteriaTable = () => {
+  const ajv = new Ajv({ allErrors: true });
+  const validate = ajv.compile(schema);
+
   const [criteria, setCriteria] = useState<Criterion[]>([]); // Starts empty
   const [open, setOpen] = useState(false);
   const [selectedCriterion, setSelectedCriterion] = useState<Criterion | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [validationMessages, setValidationMessages] = useState<string[]>();
 
   // Store the original key before editing
   const originalKeyRef = useRef<string | null>(null);
+
+  const updateSelectedCriterion = (updated: Criterion) => {
+    const valid = validate(updated);
+    if (!valid) {
+      // Format the errors nicely.
+      const errors: ErrorObject[] = validate.errors || [];
+      const messages = errors.map((err) => `${err.instancePath || 'root'} ${err.message}`);
+
+      console.log(messages);
+      setValidationMessages(messages);
+    } else {
+      console.log('No validation errors');
+      setValidationMessages(undefined);
+    }
+
+    setSelectedCriterion(updated);
+  };
 
   const handleOpen = (criterion: Criterion | null = null) => {
     if (criterion) {
@@ -121,15 +144,21 @@ const CriteriaTable = () => {
         <Block className="text-left">
           <ReactJson
             src={selectedCriterion || {}}
-            onEdit={(edit) => setSelectedCriterion(edit.updated_src as Criterion)}
-            onAdd={(add) => setSelectedCriterion(add.updated_src as Criterion)}
-            onDelete={(del) => setSelectedCriterion(del.updated_src as Criterion)}
+            onEdit={(edit) => updateSelectedCriterion(edit.updated_src as Criterion)}
+            onAdd={(add) => updateSelectedCriterion(add.updated_src as Criterion)}
+            onDelete={(del) => updateSelectedCriterion(del.updated_src as Criterion)}
             theme="monokai"
             enableClipboard={false}
             style={{ textAlign: 'left', height: '60vh' }}
+            validationMessage={validationMessages}
           />
 
-          <Button onClick={handleSave} className="m-4" variant="contained" primary>
+          <div className="text-red-500 text-left">
+            {validationMessages?.map((msg, i) => (
+              <li key={i}>{msg}</li>
+            ))}
+          </div>
+          <Button onClick={handleSave} className="m-4" variant="contained" primary disabled={!!validationMessages}>
             Save Changes
           </Button>
 
