@@ -1,5 +1,6 @@
 'use client';
 
+import { Criterion, IndustryGroupCriteria } from '@/types/criteria/criteria';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
@@ -11,19 +12,17 @@ import ReactJson from 'react-json-view';
 import Ajv, { ErrorObject } from 'ajv';
 import schema from './insdustryGroupCriteriaJsonSchema.json';
 
-interface Criterion {
-  key: string;
-  name: string;
-  shortDescription: string;
-  importantMetrics: string[];
-  reports: string[];
+interface CriteriaTableProps {
+  sectorSlug: string;
+  industryGroupSlug: string;
+  customCriteria?: IndustryGroupCriteria;
 }
 
-const CriteriaTable = () => {
+export default function CriteriaTable({ sectorSlug, industryGroupSlug, customCriteria }: CriteriaTableProps) {
   const ajv = new Ajv({ allErrors: true });
   const validate = ajv.compile(schema);
 
-  const [criteria, setCriteria] = useState<Criterion[]>([]); // Starts empty
+  const [criteria, setCriteria] = useState<Criterion[]>(customCriteria?.criteria || []); // Starts empty
   const [open, setOpen] = useState(false);
   const [selectedCriterion, setSelectedCriterion] = useState<Criterion | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -131,7 +130,7 @@ const CriteriaTable = () => {
                 <td style={tableCellStyle}>{criterion.name}</td>
                 <td style={tableCellStyle}>{criterion.shortDescription}</td>
                 <td style={tableCellStyle}>
-                  <IconButton onClick={() => handleOpen(criterion)} iconName={IconTypes.Edit} />
+                  <IconButton onClick={() => handleOpen(criterion)} iconName={IconTypes.Edit} removeBorder={true} />
                 </td>
               </tr>
             ))
@@ -141,7 +140,7 @@ const CriteriaTable = () => {
 
       {/* Modal for JSON Editing */}
       <FullPageModal open={open} onClose={handleClose} title={isEditing ? 'Edit Criterion' : 'Add Criterion'}>
-        <Block className="text-left">
+        <Block className="text-left scroll-auto min-h-full">
           <ReactJson
             src={selectedCriterion || {}}
             onEdit={(edit) => updateSelectedCriterion(edit.updated_src as Criterion)}
@@ -149,7 +148,7 @@ const CriteriaTable = () => {
             onDelete={(del) => updateSelectedCriterion(del.updated_src as Criterion)}
             theme="monokai"
             enableClipboard={false}
-            style={{ textAlign: 'left', height: '60vh' }}
+            style={{ textAlign: 'left' }}
             validationMessage={validationMessages?.join('\n')}
           />
 
@@ -169,8 +168,6 @@ const CriteriaTable = () => {
       </FullPageModal>
     </PageWrapper>
   );
-};
+}
 
 const tableCellStyle = { padding: '10px', border: '1px solid #ddd' };
-
-export default CriteriaTable;

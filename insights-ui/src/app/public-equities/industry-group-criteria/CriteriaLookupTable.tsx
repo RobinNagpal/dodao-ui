@@ -1,10 +1,11 @@
 'use client';
 
 import UpsertAiCriteria from '@/components/criteria/UpsertAiCriteria';
-import { CriteriaLookupList } from '@/types/criteria/criteria';
+import { CriteriaLookupItem, CriteriaLookupList } from '@/types/criteria/criteria';
 import Block from '@dodao/web-core/components/app/Block';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 
@@ -28,7 +29,7 @@ export default function CriteriaLookupTable() {
             </tr>
           </thead>
           <tbody>
-            {data?.criteria.map((item) => (
+            {data?.criteria.map((item: CriteriaLookupItem) => (
               <tr key={item.industryGroupId} className="border">
                 <td className="p-3 border text-left">{item.sectorName}</td>
                 <td className="p-3 border text-left">{item.industryGroupName}</td>
@@ -41,14 +42,17 @@ export default function CriteriaLookupTable() {
                 {/* Custom Criteria Column */}
                 <td className="p-3 border text-left">
                   <div className="flex items-center gap-2">
-                    {!item.customCriteriaFileLocation ? (
-                      <Link href={`/public-equities/common/${item.industryGroupId}/custom-criteria`}>
+                    {!item.customCriteriaFileUrl ? (
+                      <Link href={`/public-equities/industry-group-criteria/${slugify(item.sectorName)}/${slugify(item.industryGroupName)}/create`}>
                         <PlusIcon width={20} height={20} className="ml-2 link-color cursor-pointer" />
                       </Link>
                     ) : (
-                      <a href={item.customCriteriaFileLocation} className="link-color pointer-cursor ">
+                      <Link
+                        href={`/public-equities/industry-group-criteria/${slugify(item.sectorName)}/${slugify(item.industryGroupName)}/create`}
+                        className="link-color pointer-cursor "
+                      >
                         View Custom Criteria
-                      </a>
+                      </Link>
                     )}
                   </div>
                 </td>

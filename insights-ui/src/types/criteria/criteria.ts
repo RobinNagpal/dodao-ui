@@ -24,7 +24,7 @@ export interface Report {
   outputType: OutputType; // Output type.
 }
 
-export interface Criteria {
+export interface Criterion {
   key: string; // Unique identifier for the criteria.
   name: string; // Descriptive name of the criteria.
   shortDescription: string; // Brief overview of the criteria.
@@ -35,7 +35,7 @@ export interface Criteria {
 export interface IndustryGroupCriteria {
   tickers: string[]; // List of ticker symbols.
   selectedIndustryGroup: IndustryGroup; // Selected industry group information.
-  criteria: Criteria[]; // Collection of evaluation criteria.
+  criteria: Criterion[]; // Collection of evaluation criteria.
 }
 
 export interface CriteriaLookupItem {
