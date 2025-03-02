@@ -30,7 +30,7 @@ export default function UpsertAiCriteria({ item }: UpsertAiCriteriaProps) {
 
   return (
     <div className="flex gap-2">
-      {!item.aiCriteriaFileLocation ? (
+      {!item.aiCriteriaFileUrl ? (
         <IconButton
           iconName={IconTypes.PlusIcon}
           tooltip="Create AI Criteria"
@@ -70,7 +70,7 @@ export default function UpsertAiCriteria({ item }: UpsertAiCriteriaProps) {
           open={showViewCriteriaModal}
           onClose={() => setShowViewCriteriaModal(false)}
           title={item.industryGroupName}
-          url={item.aiCriteriaFileLocation!}
+          url={item.aiCriteriaFileUrl!}
         />
       )}
       {showConfirmModal && (

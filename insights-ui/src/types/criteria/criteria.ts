@@ -43,8 +43,8 @@ export interface CriteriaLookupItem {
   sectorName: string;
   industryGroupId: number;
   industryGroupName: string;
-  aiCriteriaFileLocation?: string | null;
-  customCriteriaFileLocation?: string | null;
+  aiCriteriaFileUrl?: string | null;
+  customCriteriaFileUrl?: string | null;
 }
 
 export interface CriteriaLookupList {
