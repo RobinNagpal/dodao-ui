@@ -1,8 +1,6 @@
-'use client';
-import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid';
-import { useRouter } from 'next/navigation';
-import PageWrapper from '../page/PageWrapper';
 import Link from 'next/link';
+import ChevronRightIcon from '@heroicons/react/20/solid/ChevronRightIcon';
+import HomeIcon from '@heroicons/react/24/solid/HomeIcon';
 
 export interface BreadcrumbsOjbect {
   name: string;
@@ -15,16 +13,14 @@ interface BreadcrumbsWithChevronsProps {
 }
 
 export default function BreadcrumbsWithChevrons({ breadcrumbs }: BreadcrumbsWithChevronsProps) {
-  const router = useRouter();
-
   return breadcrumbs.length === 0 ? null : (
     <nav className="flex" aria-label="Breadcrumb">
       <ol role="list" className="flex items-center space-x-4">
         <li>
-          <div className="cursor-pointer" onClick={() => router.push('/')}>
+          <Link className="cursor-pointer" href={'/'}>
             <HomeIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
             <span className="sr-only">Home</span>
-          </div>
+          </Link>
         </li>
         {breadcrumbs.map((breadcrumb) => (
           <li key={breadcrumb.name}>
