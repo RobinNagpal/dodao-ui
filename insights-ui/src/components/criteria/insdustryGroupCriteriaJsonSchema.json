@@ -43,7 +43,7 @@
           "type": "string"
         }
       },
-      "required": ["name", "key","description","formula"]
+      "required": ["name", "key", "description", "formula"]
     },
     "Report": {
       "type": "object",
