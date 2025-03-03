@@ -30,14 +30,20 @@
     "ImportantMetric": {
       "type": "object",
       "properties": {
-        "metric": {
+        "key": {
           "type": "string"
         },
-        "value": {
-          "type": "number"
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "fromula": {
+          "type": "string"
         }
       },
-      "required": ["metric", "value"]
+      "required": ["name", "key", "description", "formula"]
     },
     "Report": {
       "type": "object",
