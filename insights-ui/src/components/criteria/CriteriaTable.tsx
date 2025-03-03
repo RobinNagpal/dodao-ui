@@ -11,6 +11,7 @@ import React, { useRef, useState } from 'react';
 import ReactJson from 'react-json-view';
 import Ajv, { ErrorObject } from 'ajv';
 import schema from './insdustryGroupCriteriaJsonSchema.json';
+import axios from 'axios';
 
 interface CriteriaTableProps {
   sectorSlug: string;
@@ -21,12 +22,14 @@ interface CriteriaTableProps {
 export default function CriteriaTable({ sectorSlug, industryGroupSlug, customCriteria }: CriteriaTableProps) {
   const ajv = new Ajv({ allErrors: true });
   const validate = ajv.compile(schema);
+  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
   const [criteria, setCriteria] = useState<Criterion[]>(customCriteria?.criteria || []); // Starts empty
   const [open, setOpen] = useState(false);
   const [selectedCriterion, setSelectedCriterion] = useState<Criterion | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [validationMessages, setValidationMessages] = useState<string[]>();
+  const [loading, setLoading] = useState(false);
 
   // Store the original key before editing
   const originalKeyRef = useRef<string | null>(null);
@@ -97,6 +100,25 @@ export default function CriteriaTable({ sectorSlug, industryGroupSlug, customCri
     handleClose();
   };
 
+  const handleUpsertCustomCriteria = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post(`${baseURL}/api/public-equities/US/upsert-custom-criteria`, {
+        industryGroupId: industryGroupSlug,
+        sectorId: sectorSlug,
+        criteria, // Include the criteria in the request body
+      });
+
+      alert('Criteria successfully updated!');
+      console.log('Upsert response:', response.data);
+    } catch (error) {
+      console.error('Error upserting criteria:', error);
+      alert('Failed to update criteria. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <PageWrapper>
       <div className="flex justify-between">
@@ -137,6 +159,12 @@ export default function CriteriaTable({ sectorSlug, industryGroupSlug, customCri
           )}
         </tbody>
       </table>
+      {/* Upsert Button Below Table */}
+      <div className="mt-4 flex justify-center">
+        <Button variant="contained" primary onClick={handleUpsertCustomCriteria} disabled={loading}>
+          {loading ? 'Updating...' : 'Upsert Criteria'}
+        </Button>
+      </div>
 
       {/* Modal for JSON Editing */}
       <FullPageModal open={open} onClose={handleClose} title={isEditing ? 'Edit Criterion' : 'Add Criterion'}>
