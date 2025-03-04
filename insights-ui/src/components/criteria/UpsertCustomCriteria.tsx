@@ -39,40 +39,40 @@ export default function UpsertCustomCriteria({ item, onPostUpsertCustomCriteria 
 
   return (
     <div className="flex items-center gap-2">
-                   
-       {!item.customCriteriaFileUrl ? (
-                      <div className="flex justify-center items-center gap-2">
-                        <Link href={`/public-equities/industry-group-criteria/${slugify(item.sectorName)}/${slugify(item.industryGroupName)}/create`}>
-                          <PlusIcon width={20} height={20} className="ml-2 link-color cursor-pointer" />
-                        </Link>
-                        {
-                          item.aiCriteriaFileUrl && (
-                            <span
-                          onClick={() => {
-                            setShowConfirmModal(true);
-                          }}
-                          className="link-color cursor-pointer mt-2"
-                        >
-                          Copy AI Criteria
-                        </span>
-                          )
-                        }
-                        
-                      </div>
-                    ) : (
-                      <>
-                      <span
-                        onClick={() => {
-                          setShowViewCriteriaModal(true);
-                        }}
-                        className="link-color cursor-pointer mt-2"
-                      >
-                        View Custom Criteria
-                    </span>
-                    <IconButton className="link-color pointer-cursor" onClick={() => router.push(`/public-equities/industry-group-criteria/${slugify(item.sectorName)}/${slugify(item.industryGroupName)}/create`)} iconName={IconTypes.Edit} removeBorder={true} />
-                    
-                      </>
-                    )}
+      {!item.customCriteriaFileUrl ? (
+        <div className="flex justify-center items-center gap-2">
+          <Link href={`/public-equities/industry-group-criteria/${slugify(item.sectorName)}/${slugify(item.industryGroupName)}/create`}>
+            <PlusIcon width={20} height={20} className="ml-2 link-color cursor-pointer" />
+          </Link>
+          {item.aiCriteriaFileUrl && (
+            <span
+              onClick={() => {
+                setShowConfirmModal(true);
+              }}
+              className="link-color cursor-pointer mt-2"
+            >
+              Copy AI Criteria
+            </span>
+          )}
+        </div>
+      ) : (
+        <>
+          <span
+            onClick={() => {
+              setShowViewCriteriaModal(true);
+            }}
+            className="link-color cursor-pointer mt-2"
+          >
+            View Custom Criteria
+          </span>
+          <IconButton
+            className="link-color pointer-cursor"
+            onClick={() => router.push(`/public-equities/industry-group-criteria/${slugify(item.sectorName)}/${slugify(item.industryGroupName)}/create`)}
+            iconName={IconTypes.Edit}
+            removeBorder={true}
+          />
+        </>
+      )}
 
       {showViewCriteriaModal && (
         <ViewCriteriaModal

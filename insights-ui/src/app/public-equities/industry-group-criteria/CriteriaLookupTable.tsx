@@ -10,7 +10,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 const CRITERIA_URL = 'https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/custom-criterias.json';
 
 export default function CriteriaLookupTable() {
-  const { data, loading, reFetchData } = useFetchData<CriteriaLookupList>(CRITERIA_URL, {}, 'Failed to fetch spaces')
+  const { data, loading, reFetchData } = useFetchData<CriteriaLookupList>(CRITERIA_URL, {}, 'Failed to fetch spaces');
 
   return (
     <Block title="Industry Groups & Criteria" className="font-semibold text-color">
