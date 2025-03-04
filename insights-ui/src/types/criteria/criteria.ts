@@ -55,3 +55,8 @@ export interface CreateAiCriteriaRequest {
   sectorId: number;
   industryGroupId: number;
 }
+
+export interface CreateCustomCriteriaRequest {
+  sectorId: number;
+  industryGroupId: number;
+}
