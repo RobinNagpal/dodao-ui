@@ -1,12 +1,7 @@
-'use client';
-
-import ViewTickerReportJsonModal from '@/components/ticker-reports/ViewTickerReportJsonModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Link from 'next/link';
-import { useState } from 'react';
 
 export default function TickersTableDebug() {
-  const [showTickerReportModal, setShowTickerReportModal] = useState(false);
   const reitTickers = ['SEGXF', 'VNORP', 'FVR', 'OHI'];
   return (
     <PageWrapper>
@@ -32,14 +27,6 @@ export default function TickersTableDebug() {
           ))}
         </tbody>
       </table>
-      {showTickerReportModal && (
-        <ViewTickerReportJsonModal
-          open={showTickerReportModal}
-          onClose={() => setShowTickerReportModal(false)}
-          title={'Ticker Report JSON'}
-          url={'https://google.com'}
-        />
-      )}
     </PageWrapper>
   );
 }
