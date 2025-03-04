@@ -29,7 +29,15 @@ export default async function CustomCriteriaPage({ params }: { params: Promise<{
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <CriteriaTable sectorSlug={sectorSlug} industryGroupSlug={industryGroupSlug} customCriteria={customCriteriaData} />
+      {customCriteriaData ? (
+        <CriteriaTable
+          sectorId={customCriteriaData.selectedSector.id}
+          industryGroupId={customCriteriaData.selectedIndustryGroup.id}
+          customCriteria={customCriteriaData}
+        />
+      ) : (
+        <div className="text-center text-lg my-8">Copy over from AI criteria to get started</div>
+      )}
     </PageWrapper>
   );
 }

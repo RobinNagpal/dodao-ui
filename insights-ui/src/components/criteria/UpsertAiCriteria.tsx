@@ -11,7 +11,7 @@ interface UpsertAiCriteriaProps {
   onPostUpsertAiCriteria: () => void;
 }
 
-export default function UpsertAiCriteria({ item }: UpsertAiCriteriaProps) {
+export default function UpsertAiCriteria({ item, onPostUpsertAiCriteria }: UpsertAiCriteriaProps) {
   const [updating, setUpdating] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showViewCriteriaModal, setShowViewCriteriaModal] = useState(false);
@@ -28,6 +28,7 @@ export default function UpsertAiCriteria({ item }: UpsertAiCriteriaProps) {
       sectorId: item.sectorId,
     });
     setUpdating(false);
+    onPostUpsertAiCriteria();
   };
 
   return (

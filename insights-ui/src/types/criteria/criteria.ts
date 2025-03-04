@@ -34,6 +34,7 @@ export interface Criterion {
 
 export interface IndustryGroupCriteria {
   tickers: string[]; // List of ticker symbols.
+  selectedSector: Sector; // Selected sector information.
   selectedIndustryGroup: IndustryGroup; // Selected industry group information.
   criteria: Criterion[]; // Collection of evaluation criteria.
 }
@@ -52,6 +53,11 @@ export interface CriteriaLookupList {
 }
 
 export interface CreateAiCriteriaRequest {
+  sectorId: number;
+  industryGroupId: number;
+}
+
+export interface CreateCustomCriteriaRequest {
   sectorId: number;
   industryGroupId: number;
 }

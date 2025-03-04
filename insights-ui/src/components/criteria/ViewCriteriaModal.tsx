@@ -14,7 +14,7 @@ export default function ViewCriteriaModal({ open, onClose, title, url }: ViewCri
 
   const fetchCriteria = async (url: string) => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, { cache: 'no-cache' });
       const data = await response.json();
       setSelectedCriterion(data);
     } catch (err) {

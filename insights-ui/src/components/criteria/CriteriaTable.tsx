@@ -14,12 +14,12 @@ import schema from './insdustryGroupCriteriaJsonSchema.json';
 import axios from 'axios';
 
 interface CriteriaTableProps {
-  sectorSlug: string;
-  industryGroupSlug: string;
+  sectorId: number;
+  industryGroupId: number;
   customCriteria?: IndustryGroupCriteria;
 }
 
-export default function CriteriaTable({ sectorSlug, industryGroupSlug, customCriteria }: CriteriaTableProps) {
+export default function CriteriaTable({ sectorId, industryGroupId, customCriteria }: CriteriaTableProps) {
   const ajv = new Ajv({ allErrors: true });
   const validate = ajv.compile(schema);
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
@@ -104,8 +104,8 @@ export default function CriteriaTable({ sectorSlug, industryGroupSlug, customCri
     try {
       setLoading(true);
       const response = await axios.post(`${baseURL}/api/public-equities/US/upsert-custom-criteria`, {
-        industryGroupId: industryGroupSlug,
-        sectorId: sectorSlug,
+        industryGroupId: industryGroupId,
+        sectorId: sectorId,
         criteria, // Include the criteria in the request body
       });
 

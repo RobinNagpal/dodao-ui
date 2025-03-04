@@ -1,13 +1,11 @@
 'use client';
 
 import UpsertAiCriteria from '@/components/criteria/UpsertAiCriteria';
+import UpsertCustomCriteria from '@/components/criteria/UpsertCustomCriteria';
 import { CriteriaLookupItem, CriteriaLookupList } from '@/types/criteria/criteria';
 import Block from '@dodao/web-core/components/app/Block';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { PlusIcon } from '@heroicons/react/20/solid';
-import Link from 'next/link';
 
 const CRITERIA_URL = 'https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/custom-criterias.json';
 
@@ -41,20 +39,7 @@ export default function CriteriaLookupTable() {
 
                 {/* Custom Criteria Column */}
                 <td className="p-3 border text-left">
-                  <div className="flex items-center gap-2">
-                    {!item.customCriteriaFileUrl ? (
-                      <Link href={`/public-equities/industry-group-criteria/${slugify(item.sectorName)}/${slugify(item.industryGroupName)}/create`}>
-                        <PlusIcon width={20} height={20} className="ml-2 link-color cursor-pointer" />
-                      </Link>
-                    ) : (
-                      <Link
-                        href={`/public-equities/industry-group-criteria/${slugify(item.sectorName)}/${slugify(item.industryGroupName)}/create`}
-                        className="link-color pointer-cursor "
-                      >
-                        View Custom Criteria
-                      </Link>
-                    )}
-                  </div>
+                  <UpsertCustomCriteria item={item} onPostUpsertCustomCriteria={() => reFetchData()} />
                 </td>
               </tr>
             ))}
