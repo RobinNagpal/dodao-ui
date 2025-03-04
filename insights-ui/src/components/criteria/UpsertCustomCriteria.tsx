@@ -9,7 +9,6 @@ import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
 
 interface UpsertCustomCriteriaProps {
   item: CriteriaLookupItem;
