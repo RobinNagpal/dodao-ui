@@ -1,9 +1,9 @@
 import ViewCriteriaModal from '@/components/criteria/ViewCriteriaModal';
-import { CriteriaLookupItem } from '@/types/criteria/criteria';
+import { CriteriaLookupItem, CreateAiCriteriaRequest } from '@/types/criteria/criteria';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
-import axios from 'axios';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useState } from 'react';
 
 interface UpsertAiCriteriaProps {
@@ -17,14 +17,16 @@ export default function UpsertAiCriteria({ item }: UpsertAiCriteriaProps) {
   const [showViewCriteriaModal, setShowViewCriteriaModal] = useState(false);
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
+  const { data, loading, postData } = usePostData<{ message: string }, CreateAiCriteriaRequest>({
+    errorMessage: 'Failed to create AI criteria',
+  });
   const handleUpsertAICriteria = async () => {
     setUpdating(true);
     setShowConfirmModal(false);
-    await axios.post(`${baseURL}/api/public-equities/US/upsert-ai-criteria`, {
+    await postData(`${baseURL}/api/public-equities/US/upsert-ai-criteria`, {
       industryGroupId: item.industryGroupId,
       sectorId: item.sectorId,
     });
-
     setUpdating(false);
   };
 

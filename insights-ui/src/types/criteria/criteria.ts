@@ -50,3 +50,8 @@ export interface CriteriaLookupItem {
 export interface CriteriaLookupList {
   criteria: CriteriaLookupItem[];
 }
+
+export interface CreateAiCriteriaRequest {
+  sectorId: number;
+  industryGroupId: number;
+}
