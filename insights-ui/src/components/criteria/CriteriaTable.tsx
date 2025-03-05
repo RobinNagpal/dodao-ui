@@ -1,6 +1,6 @@
 'use client';
 
-import { CreateCustomCriteriaRequest, Criterion, IndustryGroupCriteria } from '@/types/criteria/criteria';
+import { CreateCustomCriteriaRequestWithCriteria, Criterion, IndustryGroupCriteria } from '@/types/criteria/criteria';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
@@ -38,7 +38,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
   const originalKeyRef = useRef<string | null>(null);
 
   // ✅ usePostData for Upsert API Call
-  const { postData, loading } = usePostData<{ message: string }, CreateCustomCriteriaRequest>({
+  const { postData, loading } = usePostData<{ message: string }, CreateCustomCriteriaRequestWithCriteria>({
     errorMessage: 'Failed to upsert custom criteria',
   });
 
