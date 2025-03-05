@@ -2,33 +2,21 @@ import { ChartBarIcon, CircleStackIcon, CurrencyDollarIcon, LightBulbIcon, LockC
 
 const features = [
   {
-    name: 'Comprehensive Data Extraction',
-    description: 'Our AI tools crawl SEC filings, on-chain data, industry reports, and more—so you always have the full picture.',
-    icon: CircleStackIcon,
-  },
-  {
-    name: 'Multiple Investment Styles',
-    description: 'Easily switch between growth, value, dividend, or custom strategies. KoalaGains adapts to your unique investment profile.',
-    icon: CurrencyDollarIcon,
-  },
-  {
-    name: 'Industry & Sector Insights',
-    description: 'Compare top players in any sector—REITs, tech, oil & gas, or emerging industries. See historical events and future projections side by side.',
-    icon: LightBulbIcon,
-  },
-  {
-    name: 'Deep Qualitative Analysis',
-    description: 'Go beyond numbers. Our AI extracts and summarizes key statements, trends, and developments so you don’t miss a beat.',
+    name: 'Create personalized investment reports',
+    description:
+      'The platform lets you generate detailed analyses for any company, fully tailored to your investment strategy. Whether you’re focused on dividend income or seeking high-growth opportunities, KoalaGains provides the insights you need to make informed decisions.',
     icon: ChartBarIcon,
   },
   {
-    name: 'Sentiment & Social Listening',
-    description: 'Stay in the loop with sentiment trends on Twitter, Instagram, and industry channels—right next to official data.',
+    name: 'Seamless Data Integration for In-Depth Reporting',
+    description:
+      'Easily integrate your data sources with our platform to build comprehensive, complex reports. Our platform lets you create workflows that combine different data sources, enabling you to generate in-depth, actionable insights tailored to your needs.',
     icon: UserGroupIcon,
   },
   {
-    name: 'Secure & User-Friendly',
-    description: 'Built with security at the forefront. KoalaGains is simple, yet powerful—perfect for individuals and institutions.',
+    name: 'Streamline Investment research with KoalaGain',
+    description:
+      'Instead of going through overwhelming documents and missing key details you can use our platform that extracts the critical information and analyzes it automatically. KoalaGain saves you hours and ensures you never miss essential data when making investment decisions.',
     icon: LockClosedIcon,
   },
 ];
@@ -40,9 +28,9 @@ export default function AllInOnePlatform() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl sm:text-center">
             <h2 className="text-base/7 font-semibold text-indigo-400">Elevate your investing</h2>
-            <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-white sm:text-5xl sm:text-balance">All-in-One Financial Intelligence</p>
+            <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-white sm:text-5xl sm:text-balance">Why use Koalagain?</p>
             <p className="mt-6 text-lg/8 text-gray-300">
-              Access every tool you need to make well-informed investment decisions—without jumping between multiple websites and cumbersome data sources.
+              Access everything you need to make well-informed decisions without jumping between multiple websites and cumbersome data sources.
             </p>
           </div>
         </div>
@@ -53,7 +41,7 @@ export default function AllInOnePlatform() {
                 <feature.icon aria-hidden="true" className="absolute top-1 left-1 h-5 w-5 text-indigo-500" />
                 {feature.name}
               </dt>{' '}
-              <dd className="inline">{feature.description}</dd>
+              <dd className="block mt-1">{feature.description}</dd>
             </div>
           ))}
         </dl>
