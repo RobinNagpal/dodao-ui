@@ -220,7 +220,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
           confirming={loading}
           title="Delete Criterion"
           confirmationText="Are you sure you want to delete this criterion?"
-          askForTextInput={false}
+          askForTextInput={true}
         />
       )}
     </PageWrapper>
