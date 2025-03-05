@@ -4,13 +4,19 @@
   "type": "object",
   "properties": {
     "key": {
-      "type": "string"
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 50
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 100
     },
     "shortDescription": {
-      "type": "string"
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 500
     },
     "importantMetrics": {
       "type": "array",
@@ -31,16 +37,24 @@
       "type": "object",
       "properties": {
         "key": {
-          "type": "string"
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 50
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 100
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 500
         },
-        "fromula": {
-          "type": "string"
+        "formula": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 200
         }
       },
       "required": ["name", "key", "description", "formula"]
@@ -49,13 +63,19 @@
       "type": "object",
       "properties": {
         "key": {
-          "type": "string"
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 50
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 100
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 500
         },
         "outputType": {
           "type": "string",
