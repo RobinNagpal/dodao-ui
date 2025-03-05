@@ -1,12 +1,11 @@
 'use client';
 
+import { CreateSingleReportButton } from '@/app/public-equities/debug/ticker-reports/[ticker]/CreateSingleReportButton';
 import { IndustryGroupCriteria } from '@/types/criteria/criteria';
-import { CreateAllReportsRequest, CreateSingleReportsRequest, TickerReport } from '@/types/public-equity/ticker-report';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useEffect, useState } from 'react';
 
 export default function TickerDetailsPage({ ticker }: { ticker: string }) {
@@ -30,26 +29,6 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
     {},
     'Failed to fetch criteria data'
   );
-  const {
-    data: reponse,
-    postData,
-    loading,
-    error,
-  } = usePostData<{ message: string }, CreateSingleReportsRequest>({
-    errorMessage: 'Failed to create ticker report',
-    successMessage: 'Ticker report created successfully',
-    redirectPath: `/public-equities/debug/ticker-reports/${ticker}`,
-  });
-  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
-
-  const handleCreateSingleCriterionReport = async (criterionKey: string) => {
-    postData(`${baseURL}/api/public-equities/US/upsert-ai-criteria`, {
-      sectorId: 60,
-      industryGroupId: 6010,
-      ticker,
-      criterionKey,
-    });
-  };
 
   return (
     <PageWrapper>
@@ -78,9 +57,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
               <IconButton
                 iconName={IconTypes.PlusIcon}
                 tooltip="Create Ticker Report"
-                onClick={() => setShowConfirmModal(true)}
-                disabled={loading}
-                loading={loading}
+                onClick={() => {}}
                 variant="text"
                 removeBorder={true}
                 className="link-color pointer-cursor"
@@ -95,16 +72,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                 </td>
                 <td className="border-2 px-2">{item.shortDescription}</td>
                 <td className="border-2 px-2">
-                  <IconButton
-                    iconName={IconTypes.Reload}
-                    tooltip="Create Ticker Report"
-                    onClick={() => handleCreateSingleCriterionReport(item.key)}
-                    disabled={loading}
-                    loading={loading}
-                    variant="text"
-                    removeBorder={true}
-                    className="link-color pointer-cursor"
-                  />
+                  <CreateSingleReportButton ticker={ticker} criterion={item} />
                 </td>
               </tr>
             );
