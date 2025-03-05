@@ -14,8 +14,8 @@ export default async function Home() {
     <div style={{ ...themeColors }}>
       <Hero />
       <Architecture />
-      <AllInOnePlatform />
       <Features />
+      <AllInOnePlatform />
       <BlogsGrid posts={posts} />
       <Contact />
       <Footer />
