@@ -7,7 +7,8 @@ import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import React, { useRef, useState } from 'react';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactJson from 'react-json-view';
 import Ajv, { ErrorObject } from 'ajv';
 import schema from './insdustryGroupCriteriaJsonSchema.json';
@@ -24,12 +25,15 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
   const validate = ajv.compile(schema);
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
-  const [criteria, setCriteria] = useState<Criterion[]>(customCriteria?.criteria || []); // Starts empty
+  const [criteria, setCriteria] = useState<Criterion[]>(customCriteria?.criteria || []);
   const [open, setOpen] = useState(false);
   const [selectedCriterion, setSelectedCriterion] = useState<Criterion | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [validationMessages, setValidationMessages] = useState<string[]>();
   const [loading, setLoading] = useState(false);
+  const [pendingUpsert, setPendingUpsert] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [criterionToDelete, setCriterionToDelete] = useState<Criterion | null>(null);
 
   // Store the original key before editing
   const originalKeyRef = useRef<string | null>(null);
@@ -37,24 +41,19 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
   const updateSelectedCriterion = (updated: Criterion) => {
     const valid = validate(updated);
     if (!valid) {
-      // Format the errors nicely.
       const errors: ErrorObject[] = validate.errors || [];
       const messages = errors.map((err) => `${err.instancePath || 'root'} ${err.message}`);
-
-      console.log(messages);
       setValidationMessages(messages);
     } else {
-      console.log('No validation errors');
       setValidationMessages(undefined);
     }
-
     setSelectedCriterion(updated);
   };
 
   const handleOpen = (criterion: Criterion | null = null) => {
     if (criterion) {
-      originalKeyRef.current = criterion.key; // Store original key
-      setSelectedCriterion({ ...criterion }); // Clone for safe editing
+      originalKeyRef.current = criterion.key;
+      setSelectedCriterion({ ...criterion });
       setIsEditing(true);
     } else {
       originalKeyRef.current = null;
@@ -67,7 +66,6 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
       });
       setIsEditing(false);
     }
-
     setOpen(true);
   };
 
@@ -75,20 +73,17 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
     setOpen(false);
   };
 
-  // ✅ Ensure unique key and prevent null keys
   const handleSave = () => {
     if (!selectedCriterion || selectedCriterion.key.trim() === '') {
-      alert('Key cannot be empty!'); // Prevent empty keys
+      alert('Key cannot be empty!');
       return;
     }
 
     setCriteria((prev) => {
       if (isEditing) {
-        // Find the original item using stored key and replace it
         return prev.map((c) => (c.key === originalKeyRef.current ? { ...selectedCriterion } : c));
       }
 
-      // Prevent duplicate keys when adding a new criterion
       if (prev.some((c) => c.key === selectedCriterion.key)) {
         alert('Key must be unique!');
         return prev;
@@ -97,16 +92,43 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
       return [...prev, { ...selectedCriterion }];
     });
 
+    setPendingUpsert(true);
     handleClose();
   };
+
+  // ✅ Open Confirmation Modal before deleting
+  const handleDeleteClick = (criterion: Criterion) => {
+    setCriterionToDelete(criterion);
+    setShowConfirmModal(true);
+  };
+
+  // ✅ Handle Confirm Delete
+  const handleConfirmDelete = () => {
+    if (!criterionToDelete) return;
+
+    setCriteria((prev) => prev.filter((c) => c.key !== criterionToDelete.key));
+
+    setShowConfirmModal(false);
+    setCriterionToDelete(null);
+
+    setPendingUpsert(true);
+  };
+
+  // 🚀 Trigger API call only after criteria is updated
+  useEffect(() => {
+    if (pendingUpsert) {
+      handleUpsertCustomCriteria();
+      setPendingUpsert(false);
+    }
+  }, [criteria, pendingUpsert]);
 
   const handleUpsertCustomCriteria = async () => {
     try {
       setLoading(true);
       const response = await axios.post(`${baseURL}/api/public-equities/US/upsert-custom-criteria`, {
-        industryGroupId: industryGroupId,
-        sectorId: sectorId,
-        criteria, // Include the criteria in the request body
+        industryGroupId,
+        sectorId,
+        criteria,
       });
 
       alert('Criteria successfully updated!');
@@ -139,7 +161,6 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
         </thead>
         <tbody>
           {criteria.length === 0 ? (
-            // Show a full-row message when no criteria exist
             <tr>
               <td colSpan={4} style={{ textAlign: 'center', padding: '10px', fontStyle: 'italic' }}>
                 No criteria added yet.
@@ -151,24 +172,31 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
                 <td style={tableCellStyle}>{criterion.key}</td>
                 <td style={tableCellStyle}>{criterion.name}</td>
                 <td style={tableCellStyle}>{criterion.shortDescription}</td>
-                <td style={tableCellStyle}>
+                <td style={tableCellStyle} className="flex justify-around">
                   <IconButton onClick={() => handleOpen(criterion)} iconName={IconTypes.Edit} removeBorder={true} />
+                  <IconButton onClick={() => handleDeleteClick(criterion)} iconName={IconTypes.Trash} removeBorder={true} />
                 </td>
               </tr>
             ))
           )}
         </tbody>
       </table>
-      {/* Upsert Button Below Table */}
-      <div className="mt-4 flex justify-center">
-        <Button variant="contained" primary onClick={handleUpsertCustomCriteria} disabled={loading}>
-          {loading ? 'Updating...' : 'Upsert Criteria'}
-        </Button>
-      </div>
 
       {/* Modal for JSON Editing */}
       <FullPageModal open={open} onClose={handleClose} title={isEditing ? 'Edit Criterion' : 'Add Criterion'}>
         <Block className="text-left scroll-auto min-h-full">
+          {/* 🚀 Display validation messages inside the modal */}
+          {validationMessages && validationMessages.length > 0 && (
+            <div className="text-red-500 bg-red-100 border border-red-400 p-2 rounded mb-2">
+              <strong>Validation Errors:</strong>
+              <ul className="list-disc ml-4">
+                {validationMessages.map((msg, i) => (
+                  <li key={i}>{msg}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <ReactJson
             src={selectedCriterion || {}}
             onEdit={(edit) => updateSelectedCriterion(edit.updated_src as Criterion)}
@@ -177,14 +205,8 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
             theme="monokai"
             enableClipboard={false}
             style={{ textAlign: 'left' }}
-            validationMessage={validationMessages?.join('\n')}
           />
 
-          <div className="text-red-500 text-left">
-            {validationMessages?.map((msg, i) => (
-              <li key={i}>{msg}</li>
-            ))}
-          </div>
           <Button onClick={handleSave} className="m-4" variant="contained" primary disabled={!!validationMessages}>
             Save Changes
           </Button>
@@ -194,6 +216,19 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
           </Button>
         </Block>
       </FullPageModal>
+
+      {/* Confirmation Modal for Deleting */}
+      {showConfirmModal && (
+        <ConfirmationModal
+          open={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          onConfirm={handleConfirmDelete}
+          confirming={loading}
+          title="Delete Criterion"
+          confirmationText="Are you sure you want to delete this criterion?"
+          askForTextInput={false}
+        />
+      )}
     </PageWrapper>
   );
 }
