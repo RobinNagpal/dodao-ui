@@ -1,6 +1,6 @@
 'use client';
 
-import { Criterion, IndustryGroupCriteria } from '@/types/criteria/criteria';
+import { CreateCustomCriteriaRequest, Criterion, IndustryGroupCriteria } from '@/types/criteria/criteria';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
@@ -12,7 +12,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import ReactJson from 'react-json-view';
 import Ajv, { ErrorObject } from 'ajv';
 import schema from './insdustryGroupCriteriaJsonSchema.json';
-import axios from 'axios';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 interface CriteriaTableProps {
   sectorId: number;
@@ -30,13 +30,17 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
   const [selectedCriterion, setSelectedCriterion] = useState<Criterion | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [validationMessages, setValidationMessages] = useState<string[]>();
-  const [loading, setLoading] = useState(false);
   const [pendingUpsert, setPendingUpsert] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [criterionToDelete, setCriterionToDelete] = useState<Criterion | null>(null);
 
   // Store the original key before editing
   const originalKeyRef = useRef<string | null>(null);
+
+  // ✅ usePostData for Upsert API Call
+  const { postData, loading } = usePostData<{ message: string }, CreateCustomCriteriaRequest>({
+    errorMessage: 'Failed to upsert custom criteria',
+  });
 
   const updateSelectedCriterion = (updated: Criterion) => {
     const valid = validate(updated);
@@ -123,22 +127,13 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
   }, [criteria, pendingUpsert]);
 
   const handleUpsertCustomCriteria = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.post(`${baseURL}/api/public-equities/US/upsert-custom-criteria`, {
-        industryGroupId,
-        sectorId,
-        criteria,
-      });
+    await postData(`${baseURL}/api/public-equities/US/upsert-custom-criteria`, {
+      industryGroupId,
+      sectorId,
+      criteria,
+    });
 
-      alert('Criteria successfully updated!');
-      console.log('Upsert response:', response.data);
-    } catch (error) {
-      console.error('Error upserting criteria:', error);
-      alert('Failed to update criteria. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+    console.log('Criteria successfully updated!');
   };
 
   return (
@@ -210,7 +205,6 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
           <Button onClick={handleSave} className="m-4" variant="contained" primary disabled={!!validationMessages}>
             Save Changes
           </Button>
-
           <Button onClick={handleClose} className="m-4" variant="outlined">
             Close
           </Button>
