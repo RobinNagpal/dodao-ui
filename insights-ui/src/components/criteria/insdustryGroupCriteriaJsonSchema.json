@@ -5,12 +5,12 @@
   "properties": {
     "key": {
       "type": "string",
-      "minLength": 10,
+      "minLength": 3,
       "maxLength": 50
     },
     "name": {
       "type": "string",
-      "minLength": 10,
+      "minLength": 3,
       "maxLength": 100
     },
     "shortDescription": {
@@ -38,12 +38,12 @@
       "properties": {
         "key": {
           "type": "string",
-          "minLength": 10,
+          "minLength": 3,
           "maxLength": 50
         },
         "name": {
           "type": "string",
-          "minLength": 10,
+          "minLength": 3,
           "maxLength": 100
         },
         "description": {
@@ -53,7 +53,7 @@
         },
         "formula": {
           "type": "string",
-          "minLength": 10,
+          "minLength": 3,
           "maxLength": 200
         }
       },
@@ -64,12 +64,12 @@
       "properties": {
         "key": {
           "type": "string",
-          "minLength": 10,
+          "minLength": 3,
           "maxLength": 50
         },
         "name": {
           "type": "string",
-          "minLength": 10,
+          "minLength": 3,
           "maxLength": 100
         },
         "description": {
