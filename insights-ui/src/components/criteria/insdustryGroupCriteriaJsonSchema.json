@@ -79,7 +79,7 @@
         },
         "outputType": {
           "type": "string",
-          "enum": ["Text", "BarGraph", "PieChart"]
+          "enum": ["Text", "BarGraph", "PieChart", "WaterfallChart"]
         }
       },
       "required": ["key", "name", "description", "outputType"]

@@ -101,8 +101,11 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
           <tr>
             <td className="border-2 px-2">Ticker Report Url</td>
             <td className="border-2 px-2">
-              <a href={`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/${ticker}/latest-10q-report.json`} target="_blank">
-                {`/public-equities/US/${ticker}/latest-10q-report.json`}
+              <a
+                href={`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${ticker}/latest-10q-report.json`}
+                target="_blank"
+              >
+                {`/public-equities/US/tickers/${ticker}/latest-10q-report.json`}
               </a>
             </td>
             <td className="border-2 px-2">
@@ -145,6 +148,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
       {reportExists && report && (
         <div>
           <div className="mt-8">
+            <h1 className="mb-8">Matching Attachments</h1>
             {report.criteriaMatchesOfLatest10Q?.criterionMatches?.map((criterion) => {
               return (
                 <Accordion
@@ -206,6 +210,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
             })}
           </div>
           <div className="mt-8">
+            <h1 className="mb-8">Criterion Evaluation</h1>
             {report.evaluationsOfLatest10Q?.map((criterion) => {
               return (
                 <Accordion
@@ -217,7 +222,31 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                   }
                 >
                   <div key={criterion.criterionKey + '_report_criterion_key'} className="mt-8">
-                    <h3>Matching Attachments</h3>
+                    <h2>Performance Checklist</h2>
+                    <div className="block-bg-color p-8">
+                      <div className="overflow-x-auto">
+                        {criterion.performanceChecklist?.length && (
+                          <ul className="list-disc mt-2">
+                            {criterion.performanceChecklist.map((item, index) => (
+                              <li key={index} className="mb-1 flex items-start">
+                                <div className="flex flex-col">
+                                  <div className="mr-2">
+                                    {item.score === 1 ? '✅' : '❌'} {item.checklistItem}
+                                  </div>
+                                  <ol className="pl-8">
+                                    <li>{item.oneLinerExplanation}</li>
+                                    <li>{item.detailedExplanation}</li>
+                                    <li>{item.evaluationLogic}</li>
+                                  </ol>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+
+                    <h2>Reports</h2>
                     {criterion.reports?.map((report) => {
                       return (
                         <div key={report.key + '_report_key'} className="mt-8">
