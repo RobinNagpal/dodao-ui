@@ -223,7 +223,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                 >
                   <div key={criterion.criterionKey + '_report_criterion_key'} className="mt-8">
                     <h2>Performance Checklist</h2>
-                    <div className="block-bg-color p-8">
+                    <div className="block-bg-color m-8">
                       <div className="overflow-x-auto">
                         {criterion.performanceChecklist?.length && (
                           <ul className="list-disc mt-2">
@@ -245,11 +245,33 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                         )}
                       </div>
                     </div>
+                    <div className="block-bg-color m-8">
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse border border-gray-30 p-2">
+                          <thead>
+                            <tr>
+                              <th className="px-4">Key</th>
+                              <th className="px-4">Value</th>
+                            </tr>
+                          </thead>
+                          <tbody className="w-full">
+                            {criterion.importantMetrics?.metrics.map((metric) => {
+                              return (
+                                <tr key={metric.metricKey} className="w-full">
+                                  <td className="px-4">{metric.metricKey}</td>
+                                  <td className="px-4">{metric.value}</td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
 
                     <h2>Reports</h2>
-                    {criterion.reports?.map((report) => {
+                    {criterion.reports?.map((report, index) => {
                       return (
-                        <div key={report.key + '_report_key'} className="mt-8">
+                        <div key={(report.key || index) + '_report_key'} className="mt-2">
                           <h2>{report.key}</h2>
 
                           {reportContentMap[`${criterion.criterionKey}__${report.key}`] ? (
