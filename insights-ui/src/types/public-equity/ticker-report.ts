@@ -22,7 +22,7 @@ export interface ImportantMetrics {
 }
 
 export interface Report {
-  key?: string;
+  key: string;
   name?: string;
   outputType?: string;
   status?: string;

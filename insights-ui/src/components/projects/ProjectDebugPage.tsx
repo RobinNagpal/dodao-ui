@@ -15,8 +15,6 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useEffect, useState } from 'react';
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import RepopulateButton from '../ui/RepopulateButton';
 
 interface ProjectDetailPageProps {
