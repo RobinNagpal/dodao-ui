@@ -86,3 +86,19 @@ export interface CreateSingleReportsRequest {
   industryGroupId: number;
   sectorId: number;
 }
+
+export interface SpiderScore {
+  comment: string;
+  score: number;
+}
+
+export interface SpiderGraphPie {
+  key: string;
+  name: string;
+  summary: string;
+  scores: SpiderScore[];
+}
+
+export interface SpiderGraphForTicker {
+  [category: string]: SpiderGraphPie;
+}

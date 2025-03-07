@@ -1,4 +1,5 @@
 import { SpiderGraph } from '@/types/project/project';
+import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report';
 import {
   Chart as ChartJS,
   Chart,
@@ -85,7 +86,7 @@ interface GraphColor {
   border: string;
 }
 
-export const getGraphColor = (data: SpiderGraph): GraphColor => {
+export const getGraphColor = (data: SpiderGraph | SpiderGraphForTicker): GraphColor => {
   const itemKeys = Object.keys(data);
 
   // Calculate total possible score (total number of entries)

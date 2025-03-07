@@ -1,6 +1,7 @@
 'use client';
 
 import { SpiderGraph } from '@/types/project/project';
+import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report';
 import { AlternateRingBackgroundPlugin, getGraphColor, HighlightPlugin } from '@/util/radar-chart-utils';
 import { getReportKey, getReportName } from '@/util/report-utils';
 import {
@@ -27,7 +28,7 @@ ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, 
 ChartJS.register(AlternateRingBackgroundPlugin);
 
 interface RadarChartProps {
-  data: SpiderGraph;
+  data: SpiderGraph | SpiderGraphForTicker;
 }
 declare module 'chart.js' {
   interface TooltipPositionerMap {
