@@ -26,7 +26,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
       setReport(report);
       report.evaluationsOfLatest10Q?.forEach((criterion) => {
         criterion.reports?.forEach((report: Report) => {
-          const { key: criterionReportKey, outputFileUrl } = report;
+          const { reportKey: criterionReportKey, outputFileUrl } = report;
           if (outputFileUrl) {
             const reportContentResponse = fetch(outputFileUrl);
             reportContentResponse
@@ -271,13 +271,13 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                     <h2>Reports</h2>
                     {criterion.reports?.map((report, index) => {
                       return (
-                        <div key={(report.key || index) + '_report_key'} className="mt-2">
-                          <h2>{report.key}</h2>
+                        <div key={(report.reportKey || index) + '_report_key'} className="mt-2">
+                          <h2>{report.reportKey}</h2>
 
-                          {reportContentMap[`${criterion.criterionKey}__${report.key}`] ? (
+                          {reportContentMap[`${criterion.criterionKey}__${report.reportKey}`] ? (
                             <div
                               className="markdown-body text-md"
-                              dangerouslySetInnerHTML={{ __html: getMarkdownContent(reportContentMap[`${criterion.criterionKey}__${report.key}`]) }}
+                              dangerouslySetInnerHTML={{ __html: getMarkdownContent(reportContentMap[`${criterion.criterionKey}__${report.reportKey}`]) }}
                             />
                           ) : (
                             <div>No content</div>

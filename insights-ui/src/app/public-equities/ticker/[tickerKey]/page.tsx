@@ -1,5 +1,5 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import TickerDetailsPageWrapper from './TicketDetailsPage';
+import TickerDetailsPageWrapper from './TickerDetailsPage';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
