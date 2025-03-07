@@ -96,6 +96,12 @@ export interface SpiderGraphPie {
   scores: SpiderScore[];
 }
 
-export interface SpiderGraphForTicker {
-  [category: string]: SpiderGraphPie;
+export type SpiderGraphForTicker = Record<string, SpiderGraphPie>;
+
+export interface RegenerateSingleCriterionReportsRequest {
+  ticker: string;
+  criterionKey: string;
+}
+export interface RegenerateAllCriteriaReportsRequest {
+  ticker: string;
 }

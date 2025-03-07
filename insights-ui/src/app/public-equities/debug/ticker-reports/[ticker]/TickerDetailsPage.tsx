@@ -1,7 +1,16 @@
 'use client';
 
+import { Button } from '@/components/home-page/Button';
 import { IndustryGroupCriteria } from '@/types/criteria/criteria';
-import { CreateAllReportsRequest, CreateSingleReportsRequest, Report, TickerReport } from '@/types/public-equity/ticker-report';
+import {
+  CreateSingleReportsRequest,
+  CriteriaEvaluation,
+  RegenerateAllCriteriaReportsRequest,
+  RegenerateSingleCriterionReportsRequest,
+  Report,
+  TickerReport,
+} from '@/types/public-equity/ticker-report';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -14,6 +23,8 @@ import { useEffect, useState } from 'react';
 
 export default function TickerDetailsPage({ ticker }: { ticker: string }) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showRegenerateAllConfirmModal, setShowRegenerateAllConfirmModal] = useState(false);
+  const [selectedCriterionForRegeneration, setSelectedCriterionForRegeneration] = useState<CriteriaEvaluation | null>();
   const [reportExists, setReportExists] = useState(false);
   const [report, setReport] = useState<TickerReport>();
   const [selectedCriterionAccodian, setSelectedCriterionAccodian] = useState<string | null>(null);
@@ -67,6 +78,26 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
     successMessage: 'Ticker report created successfully',
     redirectPath: `/public-equities/debug/ticker-reports/${ticker}`,
   });
+  const {
+    data: singleCriterionReportsResponse,
+    postData: regenerateSingleCriterionReports,
+    loading: singleCriterionReportsLoading,
+    error: singleCriterionReportsError,
+  } = usePostData<{ message: string }, RegenerateSingleCriterionReportsRequest>({
+    errorMessage: 'Failed to regenerate criterion reports',
+    successMessage: 'Criterion regeneration started successfully',
+    redirectPath: ``,
+  });
+  const {
+    data: allCriteriaReportsResponse,
+    postData: regenerateAllCriteriaReports,
+    loading: allCriteriaReportsLoading,
+    error: allCriteriaReportsError,
+  } = usePostData<{ message: string }, RegenerateAllCriteriaReportsRequest>({
+    errorMessage: 'Failed to regenerate all criteria reports',
+    successMessage: 'All criteria reports regeneration started successfully',
+    redirectPath: ``,
+  });
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
   const handleCreateSingleCriterionReport = async (criterionKey: string) => {
@@ -76,6 +107,19 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
       ticker,
       criterionKey,
     });
+  };
+
+  const handleRegenerateSingleCriterionReport = async (criterionKey: string) => {
+    regenerateSingleCriterionReports(`${baseURL}/api/public-equities/US/single-criterion-report`, {
+      ticker,
+      criterionKey,
+    });
+  };
+  const handleRegenerateAllCriteriaReport = async () => {
+    regenerateAllCriteriaReports(`${baseURL}/api/public-equities/US/all-criterion-report`, {
+      ticker,
+    });
+    setShowRegenerateAllConfirmModal(false);
   };
 
   const renderer = getMarkedRenderer();
@@ -210,83 +254,118 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
             })}
           </div>
           <div className="mt-8">
-            <h1 className="mb-8">Criterion Evaluation</h1>
+            <div className="my-5 flex justify-end">
+              <Button onClick={() => setShowRegenerateAllConfirmModal(true)}>Regenerate All</Button>
+            </div>
+            <h1 className="mb-2">Criterion Evaluation</h1>
             {report.evaluationsOfLatest10Q?.map((criterion) => {
               return (
-                <Accordion
-                  key={criterion.criterionKey + '_report_criterion_key'}
-                  label={criterion.criterionKey}
-                  isOpen={selectedCriterionAccodian === `reports_${criterion.criterionKey}`}
-                  onClick={() =>
-                    setSelectedCriterionAccodian(selectedCriterionAccodian === `reports_${criterion.criterionKey}` ? null : `reports_${criterion.criterionKey}`)
-                  }
-                >
-                  <div key={criterion.criterionKey + '_report_criterion_key'} className="mt-8">
-                    <h2>Performance Checklist</h2>
-                    <div className="block-bg-color m-8">
-                      <div className="overflow-x-auto">
-                        {criterion.performanceChecklist?.length && (
-                          <ul className="list-disc mt-2">
-                            {criterion.performanceChecklist.map((item, index) => (
-                              <li key={index} className="mb-1 flex items-start">
-                                <div className="flex flex-col">
-                                  <div className="mr-2">
-                                    {item.score === 1 ? '✅' : '❌'} {item.checklistItem}
+                <div key={criterion.criterionKey + '_report_criterion_key'}>
+                  <div className="my-5 flex justify-end">
+                    <Button onClick={() => setSelectedCriterionForRegeneration(criterion)}>Regenerate (3m)</Button>
+                  </div>
+
+                  {selectedCriterionForRegeneration && (
+                    <ConfirmationModal
+                      open={true}
+                      onClose={() => setSelectedCriterionForRegeneration(null)}
+                      onConfirm={() => {
+                        handleRegenerateSingleCriterionReport(selectedCriterionForRegeneration.criterionKey);
+                        setSelectedCriterionForRegeneration(null);
+                      }}
+                      title="Regenerate Criterion Reports"
+                      confirmationText={`Are you sure you want to regenerate reports for ${selectedCriterionForRegeneration.criterionKey}?`}
+                      askForTextInput={true}
+                    />
+                  )}
+                  {showRegenerateAllConfirmModal && (
+                    <ConfirmationModal
+                      open={showRegenerateAllConfirmModal}
+                      onClose={() => setShowRegenerateAllConfirmModal(false)}
+                      onConfirm={() => handleRegenerateAllCriteriaReport()}
+                      title="Regenerate All Criteria Reports"
+                      confirmationText="Are you sure you want to regenerate all reports for this criteria?"
+                      askForTextInput={true}
+                    />
+                  )}
+                  <Accordion
+                    label={criterion.criterionKey}
+                    isOpen={selectedCriterionAccodian === `reports_${criterion.criterionKey}`}
+                    onClick={() =>
+                      setSelectedCriterionAccodian(
+                        selectedCriterionAccodian === `reports_${criterion.criterionKey}` ? null : `reports_${criterion.criterionKey}`
+                      )
+                    }
+                  >
+                    <div key={criterion.criterionKey + '_report_criterion_key'} className="mt-8">
+                      <h2>Performance Checklist</h2>
+                      <div className="block-bg-color m-8">
+                        <div className="overflow-x-auto">
+                          {criterion.performanceChecklist?.length && (
+                            <ul className="list-disc mt-2">
+                              {criterion.performanceChecklist.map((item, index) => (
+                                <li key={index} className="mb-1 flex items-start">
+                                  <div className="flex flex-col">
+                                    <div className="mr-2">
+                                      {item.score === 1 ? '✅' : '❌'} {item.checklistItem}
+                                    </div>
+                                    <ol className="pl-8">
+                                      <li>{item.oneLinerExplanation}</li>
+                                      <li>{item.detailedExplanation}</li>
+                                      <li>{item.evaluationLogic}</li>
+                                    </ol>
                                   </div>
-                                  <ol className="pl-8">
-                                    <li>{item.oneLinerExplanation}</li>
-                                    <li>{item.detailedExplanation}</li>
-                                    <li>{item.evaluationLogic}</li>
-                                  </ol>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    </div>
-                    <div className="block-bg-color m-8">
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse border border-gray-30 p-2">
-                          <thead>
-                            <tr>
-                              <th className="px-4">Key</th>
-                              <th className="px-4">Value</th>
-                            </tr>
-                          </thead>
-                          <tbody className="w-full">
-                            {criterion.importantMetrics?.metrics.map((metric) => {
-                              return (
-                                <tr key={metric.metricKey} className="w-full">
-                                  <td className="px-4">{metric.metricKey}</td>
-                                  <td className="px-4">{metric.value}</td>
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-
-                    <h2>Reports</h2>
-                    {criterion.reports?.map((report, index) => {
-                      return (
-                        <div key={(report.reportKey || index) + '_report_key'} className="mt-2">
-                          <h2>{report.reportKey}</h2>
-
-                          {reportContentMap[`${criterion.criterionKey}__${report.reportKey}`] ? (
-                            <div
-                              className="markdown-body text-md"
-                              dangerouslySetInnerHTML={{ __html: getMarkdownContent(reportContentMap[`${criterion.criterionKey}__${report.reportKey}`]) }}
-                            />
-                          ) : (
-                            <div>No content</div>
+                                </li>
+                              ))}
+                            </ul>
                           )}
                         </div>
-                      );
-                    })}
-                  </div>
-                </Accordion>
+                      </div>
+                      <div className="block-bg-color m-8">
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-left border-collapse border border-gray-30 p-2">
+                            <thead>
+                              <tr>
+                                <th className="px-4">Key</th>
+                                <th className="px-4">Value</th>
+                              </tr>
+                            </thead>
+                            <tbody className="w-full">
+                              {criterion.importantMetrics?.metrics.map((metric) => {
+                                return (
+                                  <tr key={metric.metricKey} className="w-full">
+                                    <td className="px-4">{metric.metricKey}</td>
+                                    <td className="px-4">{metric.value}</td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      <h2>Reports</h2>
+                      {criterion.reports?.map((report, index) => {
+                        return (
+                          <div key={(report.reportKey || index) + '_report_key'} className="mt-2">
+                            <h2 className="font-bold text-xl mt-5">
+                              📄{index + 1}. {report.reportKey}
+                            </h2>
+
+                            {reportContentMap[`${criterion.criterionKey}__${report.reportKey}`] ? (
+                              <div
+                                className="markdown-body text-md"
+                                dangerouslySetInnerHTML={{ __html: getMarkdownContent(reportContentMap[`${criterion.criterionKey}__${report.reportKey}`]) }}
+                              />
+                            ) : (
+                              <div>No content</div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </Accordion>
+                </div>
               );
             })}
           </div>
