@@ -22,7 +22,7 @@ export interface ImportantMetrics {
 }
 
 export interface Report {
-  key: string;
+  reportKey: string;
   name?: string;
   outputType?: string;
   status?: string;
@@ -85,4 +85,12 @@ export interface CreateSingleReportsRequest {
   criterionKey: string;
   industryGroupId: number;
   sectorId: number;
+}
+
+export interface RegenerateSingleCriterionReportsRequest {
+  ticker: string;
+  criterionKey: string;
+}
+export interface RegenerateAllCriteriaReportsRequest {
+  ticker: string;
 }
