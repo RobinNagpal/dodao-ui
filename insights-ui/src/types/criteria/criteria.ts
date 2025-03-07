@@ -15,7 +15,7 @@ export interface ImportantMetric {
   formula: string; // Mathematical formula used to calculate the metric.
 }
 
-export type OutputType = 'Text' | 'BarGraph' | 'PieChart';
+export type OutputType = 'Text' | 'BarGraph' | 'PieChart' | 'WaterfallChart';
 
 export interface Report {
   key: string; // Unique identifier for the report.
