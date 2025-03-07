@@ -22,11 +22,8 @@ export interface ImportantMetrics {
 }
 
 export interface Report {
-  reportKey: string;
-  name?: string;
-  outputType?: string;
+  reportKey?: string;
   status?: string;
-  outputFile?: string | null;
   outputFileUrl?: string | null;
 }
 
@@ -86,6 +83,20 @@ export interface CreateSingleReportsRequest {
   industryGroupId: number;
   sectorId: number;
 }
+
+export interface SpiderScore {
+  comment: string;
+  score: number;
+}
+
+export interface SpiderGraphPie {
+  key: string;
+  name: string;
+  summary: string;
+  scores: SpiderScore[];
+}
+
+export type SpiderGraphForTicker = Record<string, SpiderGraphPie>;
 
 export interface RegenerateSingleCriterionReportsRequest {
   ticker: string;

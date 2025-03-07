@@ -3,7 +3,6 @@
 import { Button } from '@/components/home-page/Button';
 import { IndustryGroupCriteria } from '@/types/criteria/criteria';
 import {
-  CreateAllReportsRequest,
   CreateSingleReportsRequest,
   CriteriaEvaluation,
   RegenerateAllCriteriaReportsRequest,
