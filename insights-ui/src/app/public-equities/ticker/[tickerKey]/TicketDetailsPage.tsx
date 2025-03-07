@@ -36,6 +36,7 @@ export default function TickerDetailsPageWrapper({ tickerKey }: { tickerKey: str
     const response = await fetch(`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${tickerKey}/latest-10q-report.json`);
     if (response.status === 200) {
       const data: TickerReport = await response.json();
+      console.log(data);
       setReports(data.evaluationsOfLatest10Q || []);
       setIndustryGroup(data.selectedIndustryGroup);
       setSector(data.selectedSector);
@@ -71,7 +72,7 @@ export default function TickerDetailsPageWrapper({ tickerKey }: { tickerKey: str
   };
 
   const reportMap = new Map(reports.map((report) => [report.criterionKey, report]));
-
+  console.log(reportMap);
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
     reports.map((report): [string, SpiderGraphPie] => {
       const pieData: SpiderGraphPie = {
@@ -87,13 +88,13 @@ export default function TickerDetailsPageWrapper({ tickerKey }: { tickerKey: str
       return [report.criterionKey, pieData];
     })
   );
-
+  console.log(spiderGraph);
+  console.log(reports);
   return (
     <div className="text-color">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto lg:text-center">
           <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">{tickerKey}</p>
-          <p className="mt-5">{reportExists ? 'Report Available' : 'No Report Found'}</p>
           <div className="max-w-lg mx-auto">
             <RadarChart data={spiderGraph} />
           </div>

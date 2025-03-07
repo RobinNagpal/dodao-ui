@@ -11,22 +11,19 @@ export interface Sector {
 }
 
 export interface Metric {
-  metric: string;
+  metricKey: string;
   value: number;
   calculationExplanation: string;
 }
 
 export interface ImportantMetrics {
   status: string;
-  metrics: Metric[][];
+  metrics: Metric[];
 }
 
 export interface Report {
-  key?: string;
-  name?: string;
-  outputType?: string;
+  reportKey?: string;
   status?: string;
-  outputFile?: string | null;
   outputFileUrl?: string | null;
 }
 
