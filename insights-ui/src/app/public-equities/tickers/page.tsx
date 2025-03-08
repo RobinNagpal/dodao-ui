@@ -1,3 +1,5 @@
+'use client';
+
 import { GicsSector } from '@/types/public-equity/gicsSector';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -6,9 +8,19 @@ import Link from 'next/link';
 import TickerTableActions from './TickerTableActions';
 import gicsData from '@/gicsData/gicsData.json';
 
+async function getTickersResponse(): Promise<Ticker[]> {
+  // Here a better approach could be followed which allows to return server side pages fully rendered
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/tickers`);
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching tickers:', error);
+    return [];
+  }
+}
+
 export default async function AllTickersPage() {
-  const response = await fetch(`${getBaseUrl()}//api/tickers`);
-  const tickers: Ticker[] = (await response.json()) as Ticker[];
+  const tickers: Ticker[] = await getTickersResponse();
   return (
     <PageWrapper>
       <div className="flex justify-between">

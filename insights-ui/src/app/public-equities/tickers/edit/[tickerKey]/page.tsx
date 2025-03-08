@@ -5,7 +5,7 @@ import gicsData from '@/gicsData/gicsData.json';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Ticker } from '@prisma/client';
-import EditTickerView from '../../create/EditTickerView';
+import EditTickerView from '@/components/ticker/EditTickerView';
 
 export default async function Page({ params }: { params: Promise<{ tickerKey: string }> }) {
   const { tickerKey } = await params;

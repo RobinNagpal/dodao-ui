@@ -29,7 +29,7 @@ export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps
   const [tickerForm, setTickerForm] = useState<TickerUpsertRequest>({
     tickerKey: ticker?.tickerKey || '',
     sectorId: ticker?.sectorId || initialSector.id,
-    industryGroupId: ticker?.industryGroupId || initialSector.industryGroups[0].id,
+    industryGroupId: ticker?.industryGroupId || Object.values(initialSector.industryGroups)[0].id,
     reportUrl: ticker?.reportUrl || '',
   });
 

@@ -36,12 +36,12 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
       follow: true,
     },
     alternates: {
-      canonical: `https://agentic-insights.dodao.io/crowd-funding/projects/${projectId}`,
+      canonical: `https://koalagains.com/crowd-funding/projects/${projectId}`,
     },
     openGraph: {
       title: `${data.projectDetails.name} - Crowdfunding Project | DoDAO`,
       description: `DoDAO Agentic Insights provides detailed analysis and insights for "${data.projectDetails.name}" with graphs, reports and metrics like growth,financial health ,traction, valuation ,Execution and speed.`,
-      url: `https://agentic-insights.dodao.io/crowd-funding/projects/${projectId}`,
+      url: `https://koalagains.com/crowd-funding/projects/${projectId}`,
       type: 'website',
       images: [data.projectDetails.imgUrl || ''],
       siteName: 'Agentic Insights - DoDao',
