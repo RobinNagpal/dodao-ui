@@ -1,8 +1,10 @@
+import { GicsSector } from '@/types/public-equity/gicsSector';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Ticker } from '@prisma/client';
 import Link from 'next/link';
 import TickerTableActions from './TickerTableActions';
+import gicsData from '@/gicsData/gicsData.json';
 
 export default async function AllTickersPage() {
   const response = await fetch(`${getBaseUrl()}//api/tickers`);
@@ -19,8 +21,7 @@ export default async function AllTickersPage() {
         <thead>
           <tr>
             <th className="p-3 border text-left">Ticker</th>
-            <th className="p-3 border text-left">Sector</th>
-            <th className="p-3 border text-left">Industry Group</th>
+            <th className="p-3 border text-left">Report Url</th>
             <th className="p-3 border text-left">Actions</th>
           </tr>
         </thead>
@@ -32,16 +33,28 @@ export default async function AllTickersPage() {
               </td>
             </tr>
           ) : (
-            tickers.map((ticker) => (
-              <tr key={ticker.tickerKey} className="border">
-                <td className="p-3 border text-left">{ticker.tickerKey}</td>
-                <td className="p-3 border text-left">{ticker.sectorId}</td>
-                <td className="p-3 border text-left">{ticker.industryGroupId}</td>
-                <td className="p-3 border text-left flex gap-2">
-                  <TickerTableActions ticker={ticker} />
-                </td>
-              </tr>
-            ))
+            tickers.map((ticker) => {
+              const sectors: GicsSector[] = Object.values(gicsData);
+              const sector = sectors.find((sector) => sector.id === ticker.sectorId)!;
+              const industryGroup = Object.values(sector?.industryGroups).find((group) => group.id === ticker.industryGroupId)!;
+              return (
+                <tr key={ticker.tickerKey} className="border">
+                  <td className="p-3 border text-left">
+                    <div> {ticker.tickerKey}</div>
+                    <div> {sector.name}</div>
+                    <div> {industryGroup.name}</div>
+                  </td>
+                  <td className="p-3 border text-left">
+                    <Link href={`/public-equities/tickers/${ticker.tickerKey}`} className="link-color" target={'_blank'}>
+                      {ticker.reportUrl}
+                    </Link>
+                  </td>
+                  <td className="p-3 border text-left flex gap-2">
+                    <TickerTableActions ticker={ticker} />
+                  </td>
+                </tr>
+              );
+            })
           )}
         </tbody>
       </table>
