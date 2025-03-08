@@ -11,12 +11,14 @@ datasource db {
 }
 
 model Ticker {
-  tickerKey   String  @id @unique @map("ticker_key")
-  reportLocation String? @map("report_location")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  sector       String 
-  industryGroup String @map("industry_group")
-  
+  tickerKey       String   @id @unique @map("ticker_key")
+  reportUrl       String?  @map("report_url")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  createdBy       String?  @map("created_by")
+  updatedBy       String?  @map("updated_by")
+  sectorId        Int      @map("sector_id")
+  industryGroupId Int      @map("industry_group_id")
+
   @@map("tickers")
 }

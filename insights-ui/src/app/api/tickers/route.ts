@@ -1,14 +1,14 @@
 import { prisma } from '@/prisma';
-import { AllTickersResponse } from '@/types/public-equity/ticker';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { Ticker } from '@prisma/client';
 
 /**
  * ✅ Handler to GET all tickers from the database
  */
-async function getHandler(): Promise<AllTickersResponse> {
+async function getHandler(): Promise<Ticker[]> {
   const tickers = await prisma.ticker.findMany();
-  return { success: true, tickers };
+  return tickers;
 }
 
 // ✅ Use error handling middleware for API routes
-export const GET = withErrorHandlingV2<AllTickersResponse>(getHandler);
+export const GET = withErrorHandlingV2<Ticker[]>(getHandler);
