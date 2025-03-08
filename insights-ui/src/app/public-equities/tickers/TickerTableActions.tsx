@@ -5,6 +5,7 @@ import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { Ticker } from '@prisma/client';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -42,20 +43,27 @@ export default function TickerTableActions({ ticker }: TickerTableActionsProps) 
   };
 
   return (
-    <div className="flex">
-      <IconButton onClick={() => handleEdit(ticker.tickerKey)} iconName={IconTypes.Edit} removeBorder={true} />
-      <IconButton onClick={() => handleDeleteClick(ticker.tickerKey)} iconName={IconTypes.Trash} removeBorder={true} loading={loading} />
-      {showConfirmModal && (
-        <ConfirmationModal
-          open={showConfirmModal}
-          onClose={() => setShowConfirmModal(false)}
-          onConfirm={handleConfirmDelete}
-          title="Delete Ticker"
-          confirmationText="Are you sure you want to delete this ticker?"
-          confirming={loading}
-          askForTextInput={false}
-        />
-      )}
+    <div>
+      <div className="ml-6">
+        <Link href={`/public-equities/tickers/${ticker.tickerKey}`} className="link-color">
+          View
+        </Link>
+      </div>
+      <div className="flex">
+        <IconButton onClick={() => handleEdit(ticker.tickerKey)} iconName={IconTypes.Edit} removeBorder={true} />
+        <IconButton onClick={() => handleDeleteClick(ticker.tickerKey)} iconName={IconTypes.Trash} removeBorder={true} loading={loading} />
+        {showConfirmModal && (
+          <ConfirmationModal
+            open={showConfirmModal}
+            onClose={() => setShowConfirmModal(false)}
+            onConfirm={handleConfirmDelete}
+            title="Delete Ticker"
+            confirmationText="Are you sure you want to delete this ticker?"
+            confirming={loading}
+            askForTextInput={false}
+          />
+        )}
+      </div>
     </div>
   );
 }
