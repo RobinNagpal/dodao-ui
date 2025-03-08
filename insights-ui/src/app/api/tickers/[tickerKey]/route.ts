@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { CreateTickerRequest } from '@/types/public-equity/ticker';
+import { TickerUpsertRequest } from '@/types/public-equity/ticker';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -15,7 +15,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ tick
 }
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
-  const { sectorId, industryGroupId }: CreateTickerRequest = await req.json();
+  const { sectorId, industryGroupId }: TickerUpsertRequest = await req.json();
   const { tickerKey } = await params;
 
   const newTicker = await prisma.ticker.upsert({

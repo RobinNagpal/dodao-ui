@@ -1,11 +1,13 @@
 -- CreateTable
 CREATE TABLE "tickers" (
     "ticker_key" TEXT NOT NULL,
-    "report_location" TEXT,
+    "report_url" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "sector" TEXT NOT NULL,
-    "industry_group" TEXT NOT NULL,
+    "created_by" TEXT,
+    "updated_by" TEXT,
+    "sector_id" INTEGER NOT NULL,
+    "industry_group_id" INTEGER NOT NULL,
 
     CONSTRAINT "tickers_pkey" PRIMARY KEY ("ticker_key")
 );

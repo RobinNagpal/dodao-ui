@@ -1,13 +1,21 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Ticker } from '@prisma/client';
+import Link from 'next/link';
 import TickerTableActions from './TickerTableActions';
 
-export default async function DebugPage() {
-  const response = await fetch(`/api/tickers`);
+export default async function AllTickersPage() {
+  const response = await fetch(`${getBaseUrl()}//api/tickers`);
   const tickers: Ticker[] = (await response.json()) as Ticker[];
   return (
     <PageWrapper>
-      <table className="w-full border-collapse border border-gray-300 text-left">
+      <div className="flex justify-between">
+        <div></div>
+        <Link href={'/public-equities/tickers/create'} className="link-color underline">
+          Create Ticker
+        </Link>
+      </div>
+      <table className="w-full border-collapse border border-gray-300 text-left mt-6">
         <thead>
           <tr>
             <th className="p-3 border text-left">Ticker</th>

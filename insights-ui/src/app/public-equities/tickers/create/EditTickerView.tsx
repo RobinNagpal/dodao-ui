@@ -1,132 +1,107 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { GicsIndustryGroup, GicsSector, SectorsData } from '@/types/public-equity/gicsSector';
+import { TickerUpsertRequest } from '@/types/public-equity/ticker';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import Input from '@dodao/web-core/components/core/input/Input';
-import { SectorsData } from '@/types/public-equity/sector';
-import axios from 'axios';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
+import { Ticker } from '@prisma/client';
+
+import { useEffect, useState } from 'react';
 
 interface EditTickerViewProps {
   gicsData: SectorsData;
-  tickerKey?: string; // Optional ticker key
+  ticker?: Ticker;
 }
 
-export default function EditTickerView({ gicsData, tickerKey }: EditTickerViewProps) {
-  const sectorKeys = Object.keys(gicsData);
+export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps) {
+  const sectors: GicsSector[] = Object.values(gicsData);
 
-  // ✅ State management
-  const [ticker, setTicker] = useState(tickerKey || ''); // Prefill if tickerKey exists
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [tickerKey, setTickerKey] = useState(ticker?.tickerKey || '');
 
-  const [selectedSector, setSelectedSector] = useState(sectorKeys[0]);
-  const [selectedIndustryGroup, setSelectedIndustryGroup] = useState(() => {
-    const industryGroups = Object.keys(gicsData[selectedSector]?.industryGroups || {});
-    return industryGroups[0] || '';
+  const initialSector = sectors.find((s) => s.id === ticker?.sectorId) || sectors[0];
+  console.log('initialSector', initialSector);
+  console.log('sectors', sectors);
+  const [selectedSector, setSelectedSector] = useState<GicsSector>(initialSector);
+  const [selectedIndustryGroup, setSelectedIndustryGroup] = useState<GicsIndustryGroup>(
+    Object.values(initialSector.industryGroups).find((ig) => ig.id === ticker?.industryGroupId) || Object.values(initialSector.industryGroups)[0]
+  );
+
+  const { postData, loading: createLoading } = usePostData<Ticker, TickerUpsertRequest>({
+    successMessage: 'Ticker saved successfully!',
+    errorMessage: 'Failed to save ticker. Please try again.',
+    redirectPath: `/public-equities/tickers`,
   });
 
-  // ✅ Fetch ticker details if `tickerKey` is provided
+  const { putData, loading: updateLoading } = usePutData<Ticker, TickerUpsertRequest>({
+    successMessage: 'Ticker updated successfully!',
+    errorMessage: 'Failed to update ticker. Please try again.',
+    redirectPath: `/public-equities/tickers`,
+  });
+
   useEffect(() => {
-    if (!tickerKey) return;
-    console.log('Fetching ticker details for:', tickerKey);
-    const fetchTickerDetails = async () => {
-      try {
-        const response = await axios.get(`/api/ticker/${tickerKey}`);
-        const tickerData = response.data.ticker;
-        console.log('Fetched ticker:', tickerData);
-
-        if (tickerData) {
-          setTicker(tickerData.tickerKey);
-          setSelectedSector(sectorKeys.find((key) => gicsData[key].name === tickerData.sector) || sectorKeys[0]);
-          setSelectedIndustryGroup(
-            Object.keys(gicsData[selectedSector]?.industryGroups || {}).find(
-              (key) => gicsData[selectedSector]?.industryGroups[key].name === tickerData.industryGroup
-            ) || ''
-          );
-        }
-      } catch (error) {
-        console.error('Error fetching ticker:', error);
-        alert('Failed to load ticker details.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTickerDetails();
-  }, [gicsData]);
-
-  // ✅ Update industry group when sector changes
-  useEffect(() => {
-    const industryGroups = Object.keys(gicsData[selectedSector]?.industryGroups || {});
-    setSelectedIndustryGroup(industryGroups[0] || '');
+    const industryGroups = Object.values(selectedSector.industryGroups);
+    setSelectedIndustryGroup(industryGroups[0]);
   }, [selectedSector]);
 
   const handleSave = async () => {
-    if (!ticker.trim()) {
-      setError('Ticker is required');
-      return;
-    }
-
-    const tickerData = {
-      sector: gicsData[selectedSector].name,
-      industryGroup: gicsData[selectedSector].industryGroups[selectedIndustryGroup]?.name || '',
-    };
-
-    setError('');
-    setLoading(true);
-
-    try {
-      const response = await axios.post(`/api/ticker/${ticker}`, tickerData);
-      alert('Ticker saved successfully!');
-      console.log('API Response:', response.data);
-    } catch (error) {
-      console.error('Error saving ticker:', error);
-      alert('Failed to save ticker. Please try again.');
-    } finally {
-      setLoading(false);
+    if (ticker) {
+      await putData(`/api/tickers/${tickerKey}`, {
+        tickerKey,
+        sectorId: selectedSector.id,
+        industryGroupId: selectedIndustryGroup.id,
+      });
+    } else {
+      await postData(`/api/tickers`, {
+        tickerKey,
+        sectorId: selectedSector.id,
+        industryGroupId: selectedIndustryGroup.id,
+      });
     }
   };
 
   return (
     <Block title="Edit Ticker" className="font-semibold text-color">
-      {/* ✅ Ticker Input Field (On Top) */}
-      <Input
-        modelValue={ticker}
-        error={error}
-        placeholder="Enter Ticker Key"
-        maxLength={10}
-        className="text-color"
-        onUpdate={(e) => setTicker(e as string)}
-        disabled={!!tickerKey}
-      >
+      <Input modelValue={tickerKey} placeholder="Enter Ticker Key" maxLength={10} className="text-color" onUpdate={(e) => setTickerKey(e as string)}>
         Ticker *
       </Input>
 
-      {/* ✅ Sector Select */}
       <StyledSelect
         label="Sector"
-        selectedItemId={selectedSector}
-        items={sectorKeys.map((key) => ({ id: key, label: gicsData[key].name }))}
-        setSelectedItemId={(value) => setSelectedSector(value!)}
+        selectedItemId={selectedSector.id.toString()}
+        items={sectors.map((sector) => ({ id: sector.id.toString(), label: sector.name }))}
+        setSelectedItemId={(value) => setSelectedSector(sectors.find((s) => s.id === parseInt(value || '0')) || sectors[0])}
       />
 
       {/* ✅ Industry Group Select (Dynamic based on sector) */}
       <StyledSelect
         label="Industry Group"
-        selectedItemId={selectedIndustryGroup}
-        items={Object.keys(gicsData[selectedSector]?.industryGroups || {}).map((key) => ({
-          id: key,
-          label: gicsData[selectedSector].industryGroups[key].name,
+        selectedItemId={selectedIndustryGroup.id.toString()}
+        items={Object.values(selectedSector.industryGroups).map((ig) => ({
+          id: ig.id.toString(),
+          label: ig.name,
         }))}
-        setSelectedItemId={(value) => setSelectedIndustryGroup(value!)}
+        setSelectedItemId={(value) =>
+          setSelectedIndustryGroup(
+            Object.values(selectedSector.industryGroups).find((ig) => ig.id === parseInt(value || '0')) || Object.values(selectedSector.industryGroups)[0]
+          )
+        }
       />
 
       {/* ✅ Save Button */}
       <div className="flex justify-center items-center mt-6">
-        <Button onClick={handleSave} className="block" variant="contained" primary loading={loading} disabled={loading}>
-          {loading ? 'Saving...' : 'Save'}
+        <Button
+          onClick={handleSave}
+          className="block"
+          variant="contained"
+          primary
+          loading={createLoading || updateLoading}
+          disabled={createLoading || updateLoading}
+        >
+          {createLoading || updateLoading ? 'Saving...' : 'Save'}
         </Button>
       </div>
     </Block>

@@ -10,20 +10,20 @@ interface Industry {
   subIndustries: Record<string, SubIndustry>;
 }
 
-interface IndustryGroup {
+export interface GicsIndustryGroup {
   id: number;
   name: string;
   industries: Record<string, Industry>;
 }
 
-interface Sector {
+export interface GicsSector {
   id: number;
   name: string;
-  industryGroups: Record<string, IndustryGroup>;
+  industryGroups: Record<string, GicsIndustryGroup>;
 }
 
 export interface SectorsData {
-  [key: string]: Sector;
+  [key: string]: GicsSector;
 }
 
 export interface PublicEquitySubmissionData {
