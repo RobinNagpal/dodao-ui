@@ -21,7 +21,7 @@ export interface ImportantMetrics {
   metrics: Metric[];
 }
 
-export interface Report {
+export interface CriterionReport {
   reportKey?: string;
   status?: string;
   outputFileUrl?: string | null;
@@ -39,7 +39,7 @@ export interface PerformanceChecklistItem {
 export interface CriteriaEvaluation {
   criterionKey: string;
   importantMetrics?: ImportantMetrics;
-  reports?: Report[];
+  reports?: CriterionReport[];
   performanceChecklist?: PerformanceChecklistItem[];
 }
 

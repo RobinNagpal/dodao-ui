@@ -7,7 +7,7 @@ import {
   CriteriaEvaluation,
   RegenerateAllCriteriaReportsRequest,
   RegenerateSingleCriterionReportsRequest,
-  Report,
+  CriterionReport,
   TickerReport,
 } from '@/types/public-equity/ticker-report';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
@@ -36,7 +36,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
       const report: TickerReport = await response.json();
       setReport(report);
       report.evaluationsOfLatest10Q?.forEach((criterion) => {
-        criterion.reports?.forEach((report: Report) => {
+        criterion.reports?.forEach((report: CriterionReport) => {
           const { reportKey: criterionReportKey, outputFileUrl } = report;
           if (outputFileUrl) {
             const reportContentResponse = fetch(outputFileUrl);

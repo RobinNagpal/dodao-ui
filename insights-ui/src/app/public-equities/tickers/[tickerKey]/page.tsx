@@ -10,10 +10,10 @@ import Link from 'next/link';
 export default async function TickerDetailsPage({ params }: { params: Promise<{ tickerKey: string }> }) {
   const { tickerKey } = await params;
 
-  const criteriaReponse = await fetch(
+  const criteriaResponse = await fetch(
     `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`
   );
-  const industryGroupCriteria: IndustryGroupCriteria = (await criteriaReponse.json()) as IndustryGroupCriteria;
+  const industryGroupCriteria: IndustryGroupCriteria = (await criteriaResponse.json()) as IndustryGroupCriteria;
   const tickerResponse = await fetch(
     `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${tickerKey}/latest-10q-report.json`
   );

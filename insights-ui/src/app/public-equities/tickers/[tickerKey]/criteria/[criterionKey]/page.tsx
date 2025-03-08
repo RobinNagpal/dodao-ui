@@ -1,14 +1,43 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { TickerReport } from '@/types/public-equity/ticker-report';
+import CriterionReportWaterfallChart from '@/components/visualizations/CriterionReportWaterfallChart';
+import { IndustryGroupCriteria } from '@/types/criteria/criteria';
+import { CriterionReport, TickerReport } from '@/types/public-equity/ticker-report';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
+
+interface ReportContentProps {
+  criterionKey: string;
+  criterionReport: CriterionReport;
+  industryGroupCriteria: IndustryGroupCriteria;
+  content: string;
+}
+function ReportContent({ criterionKey, criterionReport, industryGroupCriteria, content }: ReportContentProps) {
+  const renderer = getMarkedRenderer();
+  const getMarkdownContent = (content?: string) => {
+    return content ? marked.parse(content, { renderer }) : 'No Information';
+  };
+
+  const reportDefinition = industryGroupCriteria.criteria
+    .find((item) => item.key === criterionKey)
+    ?.reports.find((item) => item.key === criterionReport.reportKey);
+  if (reportDefinition && reportDefinition.outputType === 'WaterfallChart') {
+    return <CriterionReportWaterfallChart content={content} />;
+  }
+
+  return <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(content) }} />;
+}
 
 export default async function CriterionDetailsPage({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }) {
   const { tickerKey, criterionKey } = await params;
 
   const response = await fetch(`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${tickerKey}/latest-10q-report.json`);
   const tickerReport = (await response.json()) as TickerReport;
+
+  const criteriaResponse = await fetch(
+    `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`
+  );
+  const industryGroupCriteria: IndustryGroupCriteria = (await criteriaResponse.json()) as IndustryGroupCriteria;
 
   if (!tickerReport.evaluationsOfLatest10Q) {
     return <div>No data available</div>;
@@ -96,21 +125,26 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
             {/* Reports Section */}
             <h3 className="text-lg font-semibold mt-6 mb-4">Reports</h3>
             {criterion.reports?.length ? (
-              criterion.reports.map((report, index) => (
-                <div key={(report.reportKey || index) + '_report_key'} className="mt-2">
-                  <h2 className="text-lg font-semibold">
-                    {(report.reportKey && report.reportKey.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())) || `Report ${index + 1}`}
-                  </h2>
-                  {reportContentMap[`${criterion.criterionKey}__${report.reportKey}`] ? (
-                    <div
-                      className="markdown-body text-md"
-                      dangerouslySetInnerHTML={{ __html: getMarkdownContent(reportContentMap[`${criterion.criterionKey}__${report.reportKey}`].toString()) }}
-                    />
-                  ) : (
-                    <div className="text-center">Empty</div>
-                  )}
-                </div>
-              ))
+              criterion.reports.map((report, index) => {
+                const reportContent = reportContentMap[`${criterion.criterionKey}__${report.reportKey}`];
+                return (
+                  <div key={(report.reportKey || index) + '_report_key'} className="mt-2">
+                    <h2 className="text-lg font-semibold">
+                      {(report.reportKey && report.reportKey.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())) || `Report ${index + 1}`}
+                    </h2>
+                    {reportContent ? (
+                      <ReportContent
+                        content={reportContent as string}
+                        criterionKey={criterionKey}
+                        criterionReport={report}
+                        industryGroupCriteria={industryGroupCriteria}
+                      />
+                    ) : (
+                      <div className="text-center">Empty</div>
+                    )}
+                  </div>
+                );
+              })
             ) : (
               <p className="text-sm">No reports available.</p>
             )}
