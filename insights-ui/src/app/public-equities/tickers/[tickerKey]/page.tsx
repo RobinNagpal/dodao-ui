@@ -11,11 +11,13 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   const { tickerKey } = await params;
 
   const criteriaResponse = await fetch(
-    `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`
+    `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`,
+    { cache: 'no-cache' }
   );
   const industryGroupCriteria: IndustryGroupCriteria = (await criteriaResponse.json()) as IndustryGroupCriteria;
   const tickerResponse = await fetch(
-    `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${tickerKey}/latest-10q-report.json`
+    `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${tickerKey}/latest-10q-report.json`,
+    { cache: 'no-cache' }
   );
 
   const tickerReport = (await tickerResponse.json()) as TickerReport;

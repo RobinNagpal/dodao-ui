@@ -31,11 +31,14 @@ function ReportContent({ criterionKey, criterionReport, industryGroupCriteria, c
 export default async function CriterionDetailsPage({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }) {
   const { tickerKey, criterionKey } = await params;
 
-  const response = await fetch(`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${tickerKey}/latest-10q-report.json`);
+  const response = await fetch(`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${tickerKey}/latest-10q-report.json`, {
+    cache: 'no-cache',
+  });
   const tickerReport = (await response.json()) as TickerReport;
 
   const criteriaResponse = await fetch(
-    `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`
+    `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`,
+    { cache: 'no-cache' }
   );
   const industryGroupCriteria: IndustryGroupCriteria = (await criteriaResponse.json()) as IndustryGroupCriteria;
 
@@ -47,7 +50,7 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
     for (const report of criterion.reports || []) {
       if (report.outputFileUrl) {
         try {
-          const response = await fetch(report.outputFileUrl);
+          const response = await fetch(report.outputFileUrl, { cache: 'no-cache' });
           reportContentMap[`${criterion.criterionKey}__${report.reportKey}`] = await response.text();
         } catch (err) {
           console.error(`Failed to fetch report: ${report.outputFileUrl}`);
@@ -57,10 +60,6 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
   }
 
   const criterion = tickerReport.evaluationsOfLatest10Q.find((item) => item.criterionKey === criterionKey)!;
-  const renderer = getMarkedRenderer();
-  const getMarkdownContent = (content?: string) => {
-    return content ? marked.parse(content, { renderer }) : 'No Information';
-  };
 
   // Breadcrumb structure
   const breadcrumbs = [
