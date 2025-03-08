@@ -22,12 +22,12 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
       name: 'Public Equities',
-      href: `/public-equities`,
+      href: `/public-equities/tickers`,
       current: false,
     },
     {
       name: tickerKey,
-      href: `/public-equities/ticker/${tickerKey}}`,
+      href: `/public-equities/tickers/${tickerKey}}`,
       current: true,
     },
   ];
