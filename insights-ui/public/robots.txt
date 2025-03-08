@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://agentic-insights.dodao.io/
+Host: https://koalagains.com
 
 # Sitemaps
-Sitemap: https://agentic-insights.dodao.io/sitemap.xml
+Sitemap: https://koalagains.com/sitemap.xml

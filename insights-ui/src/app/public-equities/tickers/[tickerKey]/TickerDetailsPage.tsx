@@ -136,7 +136,7 @@ export default function TickerDetailsPageWrapper({ tickerKey }: { tickerKey: str
                       )}
                     </dt>
                     <div>
-                      <Link href={`/public-equities/ticker/${tickerKey}/criterion/${criterion.key}`} className="link-color text-sm mt-4">
+                      <Link href={`/public-equities/tickers/${tickerKey}/criteria/${criterion.key}`} className="link-color text-sm mt-4">
                         See Full Report &rarr;
                       </Link>
                     </div>

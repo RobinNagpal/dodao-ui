@@ -1,4 +1,4 @@
-import { PublicEquitySubmissionData } from '@/types/public-equity/sector';
+import { PublicEquitySubmissionData } from '@/types/public-equity/gicsSector';
 import { getAuthKey } from './auth/authKey';
 
 export async function submitEquity(equityDetails: PublicEquitySubmissionData): Promise<{ success: boolean; message: string }> {

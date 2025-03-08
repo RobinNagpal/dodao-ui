@@ -1,28 +1,13 @@
-export interface Ticker {
+export interface TickerUpsertRequest {
   tickerKey: string;
-  createdAt: Date;
-  updatedAt: Date;
-  sector: string;
-  industryGroup: string;
+  sectorId: number;
+  industryGroupId: number;
+  reportUrl?: string;
 }
 
-// ✅ Request type for creating a ticker
-export interface CreateTickerRequest {
+export interface TickerCreateRequest {
   tickerKey: string;
-  sector: string;
-  industryGroup: string;
-}
-
-// ✅ Response type for API
-export interface TickerResponse {
-  success: boolean;
-  message?: string;
-  ticker?: Ticker;
-  error?: string;
-}
-
-export interface AllTickersResponse {
-  success: boolean;
-  tickers?: Ticker[];
-  error?: string;
+  sectorId: number;
+  industryGroupId: number;
+  reportUrl?: string;
 }
