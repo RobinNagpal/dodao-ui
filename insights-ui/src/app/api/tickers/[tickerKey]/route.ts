@@ -14,19 +14,6 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ tick
   return ticker;
 }
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
-  const { sectorId, industryGroupId }: TickerUpsertRequest = await req.json();
-  const { tickerKey } = await params;
-
-  const newTicker = await prisma.ticker.upsert({
-    where: { tickerKey },
-    update: { sectorId, industryGroupId },
-    create: { tickerKey, sectorId, industryGroupId },
-  });
-
-  return newTicker;
-}
-
 async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
   const { tickerKey } = await params;
 
@@ -37,6 +24,19 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ t
   return updated;
 }
 
+async function putHandler(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
+  const { sectorId, industryGroupId, reportUrl }: TickerUpsertRequest = await req.json();
+  const { tickerKey } = await params;
+
+  const newTicker = await prisma.ticker.upsert({
+    where: { tickerKey },
+    update: { sectorId, industryGroupId, reportUrl },
+    create: { tickerKey, sectorId, industryGroupId, reportUrl },
+  });
+
+  return newTicker;
+}
+
 export const GET = withErrorHandlingV2<Ticker>(getHandler);
-export const POST = withErrorHandlingV2<Ticker>(postHandler);
+export const PUT = withErrorHandlingV2<Ticker>(putHandler);
 export const DELETE = withErrorHandlingV2<Ticker>(deleteHandler);

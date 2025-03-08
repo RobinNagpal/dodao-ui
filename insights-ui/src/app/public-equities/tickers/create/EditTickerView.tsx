@@ -1,6 +1,6 @@
 'use client';
 
-import { GicsIndustryGroup, GicsSector, SectorsData } from '@/types/public-equity/gicsSector';
+import { GicsSector, SectorsData } from '@/types/public-equity/gicsSector';
 import { TickerUpsertRequest } from '@/types/public-equity/ticker';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -10,7 +10,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { Ticker } from '@prisma/client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface EditTickerViewProps {
   gicsData: SectorsData;
@@ -25,10 +25,15 @@ export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps
   const initialSector = sectors.find((s) => s.id === ticker?.sectorId) || sectors[0];
   console.log('initialSector', initialSector);
   console.log('sectors', sectors);
+
+  const [tickerForm, setTickerForm] = useState<TickerUpsertRequest>({
+    tickerKey: ticker?.tickerKey || '',
+    sectorId: ticker?.sectorId || initialSector.id,
+    industryGroupId: ticker?.industryGroupId || initialSector.industryGroups[0].id,
+    reportUrl: ticker?.reportUrl || '',
+  });
+
   const [selectedSector, setSelectedSector] = useState<GicsSector>(initialSector);
-  const [selectedIndustryGroup, setSelectedIndustryGroup] = useState<GicsIndustryGroup>(
-    Object.values(initialSector.industryGroups).find((ig) => ig.id === ticker?.industryGroupId) || Object.values(initialSector.industryGroups)[0]
-  );
 
   const { postData, loading: createLoading } = usePostData<Ticker, TickerUpsertRequest>({
     successMessage: 'Ticker saved successfully!',
@@ -42,23 +47,20 @@ export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps
     redirectPath: `/public-equities/tickers`,
   });
 
-  useEffect(() => {
-    const industryGroups = Object.values(selectedSector.industryGroups);
-    setSelectedIndustryGroup(industryGroups[0]);
-  }, [selectedSector]);
-
   const handleSave = async () => {
     if (ticker) {
       await putData(`/api/tickers/${tickerKey}`, {
         tickerKey,
-        sectorId: selectedSector.id,
-        industryGroupId: selectedIndustryGroup.id,
+        sectorId: tickerForm.sectorId,
+        industryGroupId: tickerForm.industryGroupId,
+        reportUrl: tickerForm.reportUrl,
       });
     } else {
       await postData(`/api/tickers`, {
         tickerKey,
-        sectorId: selectedSector.id,
-        industryGroupId: selectedIndustryGroup.id,
+        sectorId: tickerForm.sectorId,
+        industryGroupId: tickerForm.industryGroupId,
+        reportUrl: tickerForm.reportUrl,
       });
     }
   };
@@ -73,23 +75,33 @@ export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps
         label="Sector"
         selectedItemId={selectedSector.id.toString()}
         items={sectors.map((sector) => ({ id: sector.id.toString(), label: sector.name }))}
-        setSelectedItemId={(value) => setSelectedSector(sectors.find((s) => s.id === parseInt(value || '0')) || sectors[0])}
+        setSelectedItemId={(value) => {
+          const selected = sectors.find((s) => s.id === parseInt(value || '0'))!;
+          setSelectedSector(selected);
+          setTickerForm({ ...tickerForm, sectorId: selected.id, industryGroupId: Object.values(selected?.industryGroups)[0].id });
+        }}
       />
 
-      {/* ✅ Industry Group Select (Dynamic based on sector) */}
       <StyledSelect
         label="Industry Group"
-        selectedItemId={selectedIndustryGroup.id.toString()}
+        selectedItemId={tickerForm.industryGroupId.toString()}
         items={Object.values(selectedSector.industryGroups).map((ig) => ({
           id: ig.id.toString(),
           label: ig.name,
         }))}
-        setSelectedItemId={(value) =>
-          setSelectedIndustryGroup(
-            Object.values(selectedSector.industryGroups).find((ig) => ig.id === parseInt(value || '0')) || Object.values(selectedSector.industryGroups)[0]
-          )
-        }
+        setSelectedItemId={(value) => {
+          setTickerForm({ ...tickerForm, industryGroupId: parseInt(value || '0') });
+        }}
       />
+
+      <Input
+        modelValue={tickerForm.reportUrl}
+        placeholder="Enter Report URL"
+        className="text-color"
+        onUpdate={(e) => setTickerForm({ ...tickerForm, reportUrl: e as string })}
+      >
+        Report Url
+      </Input>
 
       {/* ✅ Save Button */}
       <div className="flex justify-center items-center mt-6">

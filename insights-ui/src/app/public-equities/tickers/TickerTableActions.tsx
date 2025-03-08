@@ -18,7 +18,7 @@ export default function TickerTableActions({ ticker }: TickerTableActionsProps) 
   const router = useRouter();
 
   const handleEdit = (ticker: string) => {
-    router.push(`/public-equities/ticker/edit/${ticker}`);
+    router.push(`/public-equities/tickers/edit/${ticker}`);
   };
 
   const handleDeleteClick = (ticker: string) => {
@@ -35,7 +35,7 @@ export default function TickerTableActions({ ticker }: TickerTableActionsProps) 
   const handleConfirmDelete = async () => {
     if (!tickerToDelete) return;
     setShowConfirmModal(false);
-    await deleteData(`/api/ticker/${tickerToDelete}`);
+    await deleteData(`/api/tickers/${tickerToDelete}`);
     alert('Ticker deleted successfully.');
 
     setTickerToDelete(null);
