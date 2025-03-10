@@ -42,7 +42,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         name: getReportName(report.criterionKey),
         summary: report.importantMetrics?.status || '',
         scores:
-          report.performanceChecklistEvaluation?.map((pc: PerformanceChecklistItem) => ({
+          report.performanceChecklistEvaluation?.performanceChecklist?.map((pc: PerformanceChecklistItem) => ({
             score: pc.score,
             comment: `${pc.checklistItem}: ${pc.oneLinerExplanation}`,
           })) || [],
@@ -77,7 +77,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                         <div className="text-sm py-1">{criterion.shortDescription}</div>
                         {report?.performanceChecklistEvaluation && (
                           <ul className="list-disc mt-2">
-                            {report.performanceChecklistEvaluation.map((item, index) => (
+                            {report.performanceChecklistEvaluation?.performanceChecklist?.map((item, index) => (
                               <li key={index} className="mb-1 flex items-start">
                                 <span className="mr-2">{item.score > 0 ? '✅' : '❌'}</span>
                                 <span>{item.checklistItem}</span>

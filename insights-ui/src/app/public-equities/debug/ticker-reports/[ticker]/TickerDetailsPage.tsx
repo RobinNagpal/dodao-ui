@@ -300,9 +300,9 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                       <h2>Performance Checklist</h2>
                       <div className="block-bg-color m-8">
                         <div className="overflow-x-auto">
-                          {criterion.performanceChecklistEvaluation?.length && (
+                          {criterion.performanceChecklistEvaluation?.performanceChecklist?.length && (
                             <ul className="list-disc mt-2">
-                              {criterion.performanceChecklistEvaluation.map((item, index) => (
+                              {criterion.performanceChecklistEvaluation?.performanceChecklist?.map((item, index) => (
                                 <li key={index} className="mb-1 flex items-start">
                                   <div className="flex flex-col">
                                     <div className="mr-2">

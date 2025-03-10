@@ -85,9 +85,9 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
           <div className="overflow-x-auto">
             {/* Performance Checklist Section */}
             <h3 className="text-lg font-semibold mt-6 mb-4">Performance Checklist</h3>
-            {criterion.performanceChecklistEvaluation?.length ? (
+            {criterion.performanceChecklistEvaluation?.performanceChecklist?.length ? (
               <ul className="list-disc mt-2">
-                {criterion.performanceChecklistEvaluation.map((item, index) => (
+                {criterion.performanceChecklistEvaluation.performanceChecklist.map((item, index) => (
                   <li key={index} className="mb-1 flex items-start">
                     <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
                     <span>{item.checklistItem}</span>
