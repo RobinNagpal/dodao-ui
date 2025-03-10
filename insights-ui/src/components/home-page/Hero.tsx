@@ -41,10 +41,10 @@ export function Hero() {
             <p className="mt-4 text-2xl text-gray-400">Powerful AI insights and deep data extraction to unlock new opportunities. All in one place.</p>
             <div className="mt-8 flex gap-4">
               <Link
-                href="/crowd-funding"
+                href="/custom-reports"
                 className="inline-flex items-center rounded-md bg-indigo-600 px-5 py-3 text-sm font-medium text-white hover:bg-indigo-500"
               >
-                Crowdfunding Reports
+                See Our Reports
               </Link>
               <a
                 href="#contact"
