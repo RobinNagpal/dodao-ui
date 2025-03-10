@@ -1,5 +1,6 @@
 import ViewCriteriaModal from '@/components/criteria/ViewCriteriaModal';
-import { CriteriaLookupItem, CreateCustomCriteriaRequest } from '@/types/criteria/criteria';
+import { CriteriaLookupItem } from '@/types/public-equity/criteria-types';
+import { CreateCustomCriteriaRequest } from '@/types/public-equity/ticker-request-response';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';

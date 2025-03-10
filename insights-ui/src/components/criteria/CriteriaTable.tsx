@@ -1,6 +1,7 @@
 'use client';
 
-import { CreateCustomCriteriaRequestWithCriteria, Criterion, IndustryGroupCriteria } from '@/types/criteria/criteria';
+import { IndustryGroupCriteria, IndustryGroupCriterion } from '@/types/public-equity/criteria-types';
+import { CreateCustomCriteriaRequestWithCriteria } from '@/types/public-equity/ticker-request-response';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
@@ -25,14 +26,14 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
   const validate = ajv.compile(schema);
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
-  const [criteria, setCriteria] = useState<Criterion[]>(customCriteria?.criteria || []);
+  const [criteria, setCriteria] = useState<IndustryGroupCriterion[]>(customCriteria?.criteria || []);
   const [open, setOpen] = useState(false);
-  const [selectedCriterion, setSelectedCriterion] = useState<Criterion | null>(null);
+  const [selectedCriterion, setSelectedCriterion] = useState<IndustryGroupCriterion | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [validationMessages, setValidationMessages] = useState<string[]>();
   const [pendingUpsert, setPendingUpsert] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [criterionToDelete, setCriterionToDelete] = useState<Criterion | null>(null);
+  const [criterionToDelete, setCriterionToDelete] = useState<IndustryGroupCriterion | null>(null);
 
   // Store the original key before editing
   const originalKeyRef = useRef<string | null>(null);
@@ -42,7 +43,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
     errorMessage: 'Failed to upsert custom criteria',
   });
 
-  const updateSelectedCriterion = (updated: Criterion) => {
+  const updateSelectedCriterion = (updated: IndustryGroupCriterion) => {
     const valid = validate(updated);
     if (!valid) {
       const errors: ErrorObject[] = validate.errors || [];
@@ -54,7 +55,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
     setSelectedCriterion(updated);
   };
 
-  const handleOpen = (criterion: Criterion | null = null) => {
+  const handleOpen = (criterion: IndustryGroupCriterion | null = null) => {
     if (criterion) {
       originalKeyRef.current = criterion.key;
       setSelectedCriterion({ ...criterion });
@@ -101,7 +102,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
   };
 
   // ✅ Open Confirmation Modal before deleting
-  const handleDeleteClick = (criterion: Criterion) => {
+  const handleDeleteClick = (criterion: IndustryGroupCriterion) => {
     setCriterionToDelete(criterion);
     setShowConfirmModal(true);
   };
@@ -194,9 +195,9 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
 
           <ReactJson
             src={selectedCriterion || {}}
-            onEdit={(edit) => updateSelectedCriterion(edit.updated_src as Criterion)}
-            onAdd={(add) => updateSelectedCriterion(add.updated_src as Criterion)}
-            onDelete={(del) => updateSelectedCriterion(del.updated_src as Criterion)}
+            onEdit={(edit) => updateSelectedCriterion(edit.updated_src as IndustryGroupCriterion)}
+            onAdd={(add) => updateSelectedCriterion(add.updated_src as IndustryGroupCriterion)}
+            onDelete={(del) => updateSelectedCriterion(del.updated_src as IndustryGroupCriterion)}
             theme="monokai"
             enableClipboard={false}
             style={{ textAlign: 'left' }}
