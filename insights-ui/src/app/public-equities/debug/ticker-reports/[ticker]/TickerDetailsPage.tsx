@@ -1,14 +1,14 @@
 'use client';
 
 import { Button } from '@/components/home-page/Button';
-import { IndustryGroupCriteria } from '@/types/public-equity/criteria-types';
+import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import {
   CreateSingleReportsRequest,
-  CriteriaEvaluation,
-  CriterionReportValueItem,
+  CriterionEvaluation,
+  CriterionReportItem,
   RegenerateSingleCriterionReportsRequest,
   TickerReport,
-} from '@/types/public-equity/ticker-report';
+} from '@/types/public-equity/ticker-report-types';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
@@ -23,7 +23,7 @@ import { useEffect, useState } from 'react';
 export default function TickerDetailsPage({ ticker }: { ticker: string }) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showRegenerateAllConfirmModal, setShowRegenerateAllConfirmModal] = useState(false);
-  const [selectedCriterionForRegeneration, setSelectedCriterionForRegeneration] = useState<CriteriaEvaluation | null>();
+  const [selectedCriterionForRegeneration, setSelectedCriterionForRegeneration] = useState<CriterionEvaluation | null>();
   const [reportExists, setReportExists] = useState(false);
   const [report, setReport] = useState<TickerReport>();
   const [selectedCriterionAccodian, setSelectedCriterionAccodian] = useState<string | null>(null);
@@ -35,7 +35,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
       const report: TickerReport = await response.json();
       setReport(report);
       report.evaluationsOfLatest10Q?.forEach((criterion) => {
-        criterion.reports?.forEach((report: CriterionReportValueItem) => {
+        criterion.reports?.forEach((report: CriterionReportItem) => {
           const { reportKey: criterionReportKey, outputFileUrl } = report;
           if (outputFileUrl) {
             const reportContentResponse = fetch(outputFileUrl);
@@ -62,7 +62,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
     checkReportExists();
   }, []);
 
-  const { data: industryGroupCriteria } = useFetchData<IndustryGroupCriteria>(
+  const { data: industryGroupCriteria } = useFetchData<IndustryGroupCriteriaDefinition>(
     `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`,
     {},
     'Failed to fetch criteria data'
@@ -300,9 +300,9 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                       <h2>Performance Checklist</h2>
                       <div className="block-bg-color m-8">
                         <div className="overflow-x-auto">
-                          {criterion.performanceChecklist?.length && (
+                          {criterion.performanceChecklistEvaluation?.performanceChecklist?.length && (
                             <ul className="list-disc mt-2">
-                              {criterion.performanceChecklist.map((item, index) => (
+                              {criterion.performanceChecklistEvaluation?.performanceChecklist?.map((item, index) => (
                                 <li key={index} className="mb-1 flex items-start">
                                   <div className="flex flex-col">
                                     <div className="mr-2">

@@ -67,12 +67,12 @@ export interface MetricValueItem {
   calculationExplanation: string;
 }
 
-export interface ImportantMetricsValue {
+export interface ImportantMetrics {
   status: ProcessingStatus;
   metrics?: MetricValueItem[];
 }
 
-export interface CriterionReportValueItem {
+export interface CriterionReportItem {
   reportKey: string;
   status: ProcessingStatus;
   outputFileUrl?: string;
@@ -87,32 +87,22 @@ export interface PerformanceChecklistItem {
   score: number;
 }
 
-export interface CriteriaEvaluation {
-  criterionKey: string;
-  importantMetrics?: ImportantMetricsValue;
-  reports?: CriterionReportValueItem[];
+export interface PerformanceChecklistEvaluation {
+  status: ProcessingStatus;
   performanceChecklist?: PerformanceChecklistItem[];
 }
 
-export interface SecFilingAttachment {
-  attachmentSequenceNumber: string;
-  attachmentDocumentName: string;
-  attachmentPurpose?: string;
-  attachmentUrl: string;
-  matchedPercentage: number;
-  latest10QContent: string;
-}
-
-export interface CriterionMatch {
+export interface CriterionEvaluation {
   criterionKey: string;
-  matchedAttachments: SecFilingAttachment[];
-  matchedContent: string;
+  importantMetrics?: ImportantMetrics;
+  reports?: CriterionReportItem[];
+  performanceChecklistEvaluation?: PerformanceChecklistEvaluation;
 }
 
 export interface TickerReport {
   ticker: string;
   selectedIndustryGroup: IndustryGroup;
   selectedSector: Sector;
-  evaluationsOfLatest10Q?: CriteriaEvaluation[];
+  evaluationsOfLatest10Q?: CriterionEvaluation[];
   criteriaMatchesOfLatest10Q?: CriterionMatchesOfLatest10Q;
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { SpiderGraph } from '@/types/project/project';
-import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report';
+import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types';
 import { AlternateRingBackgroundPlugin, getGraphColor, HighlightPlugin } from '@/util/radar-chart-utils';
 import { getReportKey, getReportName } from '@/util/report-utils';
 import {

@@ -1,5 +1,5 @@
 // app/api/public-equity/all-criterion-report/route.ts
-import { TickerReport } from '@/types/public-equity/ticker-report';
+import { TickerReport } from '@/types/public-equity/ticker-report-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { getTickerReport, getCriteria } from '@/lib/publicEquity';

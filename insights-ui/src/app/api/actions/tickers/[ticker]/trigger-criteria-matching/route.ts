@@ -1,5 +1,5 @@
 import { getTickerReport, initializeNewTickerReport, saveTickerReport, triggerCriteriaMatching } from '@/lib/publicEquity';
-import { ProcessingStatus, TickerReport } from '@/types/public-equity/ticker-report';
+import { ProcessingStatus, TickerReport } from '@/types/public-equity/ticker-report-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 // app/api/public-equity/single-criterion-report/route.ts

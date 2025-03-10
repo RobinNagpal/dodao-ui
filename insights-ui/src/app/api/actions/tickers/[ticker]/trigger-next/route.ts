@@ -1,5 +1,5 @@
 // app/api/public-equity/next-criterion-report/route.ts
-import { ProcessingStatus } from '@/types/public-equity/ticker-report';
+import { ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { NextCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -29,7 +29,7 @@ const triggerNext = async (req: NextRequest) => {
     };
   }
   const nextCriterion = criteriaList[currentIndex + 1];
-  const payloadShouldTriggerNext = currentIndex + 1 === criteriaList.length - 1 ? false : true;
+  const payloadShouldTriggerNext = currentIndex + 1 !== criteriaList.length - 1;
   const payload = {
     ticker: body.ticker,
     shouldTriggerNext: payloadShouldTriggerNext,

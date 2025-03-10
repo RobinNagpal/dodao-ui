@@ -1,5 +1,5 @@
 import { SpiderGraph } from '@/types/project/project';
-import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report';
+import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types';
 import {
   Chart as ChartJS,
   Chart,

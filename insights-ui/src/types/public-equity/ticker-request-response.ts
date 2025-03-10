@@ -1,5 +1,5 @@
-import { IndustryGroupCriterion } from '@/types/public-equity/criteria-types';
-import { MetricValueItem, PerformanceChecklistItem } from '@/types/public-equity/ticker-report';
+import { CriterionDefinition } from '@/types/public-equity/criteria-types';
+import { MetricValueItem, PerformanceChecklistItem } from '@/types/public-equity/ticker-report-types';
 
 export interface TickerUpsertRequest {
   tickerKey: string;
@@ -24,7 +24,7 @@ export interface CreateCriteriaRequest {
 export interface UpsertCustomCriteriaRequest {
   sectorId: number;
   industryGroupId: number;
-  criteria: IndustryGroupCriterion[];
+  criteria: CriterionDefinition[];
 }
 
 export interface NextCriterionReportRequest {
@@ -59,7 +59,7 @@ export interface CreateAiCriteriaRequest {
 export interface CreateCustomCriteriaRequestWithCriteria {
   sectorId: number;
   industryGroupId: number;
-  criteria: IndustryGroupCriterion[];
+  criteria: CriterionDefinition[];
 }
 
 export interface CreateCustomCriteriaRequest {

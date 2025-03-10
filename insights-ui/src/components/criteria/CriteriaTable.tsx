@@ -1,6 +1,6 @@
 'use client';
 
-import { IndustryGroupCriteria, IndustryGroupCriterion } from '@/types/public-equity/criteria-types';
+import { IndustryGroupCriteriaDefinition, CriterionDefinition } from '@/types/public-equity/criteria-types';
 import { CreateCustomCriteriaRequestWithCriteria } from '@/types/public-equity/ticker-request-response';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -18,7 +18,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 interface CriteriaTableProps {
   sectorId: number;
   industryGroupId: number;
-  customCriteria?: IndustryGroupCriteria;
+  customCriteria?: IndustryGroupCriteriaDefinition;
 }
 
 export default function CriteriaTable({ sectorId, industryGroupId, customCriteria }: CriteriaTableProps) {
@@ -26,14 +26,14 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
   const validate = ajv.compile(schema);
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
-  const [criteria, setCriteria] = useState<IndustryGroupCriterion[]>(customCriteria?.criteria || []);
+  const [criteria, setCriteria] = useState<CriterionDefinition[]>(customCriteria?.criteria || []);
   const [open, setOpen] = useState(false);
-  const [selectedCriterion, setSelectedCriterion] = useState<IndustryGroupCriterion | null>(null);
+  const [selectedCriterion, setSelectedCriterion] = useState<CriterionDefinition | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [validationMessages, setValidationMessages] = useState<string[]>();
   const [pendingUpsert, setPendingUpsert] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [criterionToDelete, setCriterionToDelete] = useState<IndustryGroupCriterion | null>(null);
+  const [criterionToDelete, setCriterionToDelete] = useState<CriterionDefinition | null>(null);
 
   // Store the original key before editing
   const originalKeyRef = useRef<string | null>(null);
@@ -43,7 +43,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
     errorMessage: 'Failed to upsert custom criteria',
   });
 
-  const updateSelectedCriterion = (updated: IndustryGroupCriterion) => {
+  const updateSelectedCriterion = (updated: CriterionDefinition) => {
     const valid = validate(updated);
     if (!valid) {
       const errors: ErrorObject[] = validate.errors || [];
@@ -55,7 +55,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
     setSelectedCriterion(updated);
   };
 
-  const handleOpen = (criterion: IndustryGroupCriterion | null = null) => {
+  const handleOpen = (criterion: CriterionDefinition | null = null) => {
     if (criterion) {
       originalKeyRef.current = criterion.key;
       setSelectedCriterion({ ...criterion });
@@ -102,7 +102,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
   };
 
   // ✅ Open Confirmation Modal before deleting
-  const handleDeleteClick = (criterion: IndustryGroupCriterion) => {
+  const handleDeleteClick = (criterion: CriterionDefinition) => {
     setCriterionToDelete(criterion);
     setShowConfirmModal(true);
   };
@@ -195,9 +195,9 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
 
           <ReactJson
             src={selectedCriterion || {}}
-            onEdit={(edit) => updateSelectedCriterion(edit.updated_src as IndustryGroupCriterion)}
-            onAdd={(add) => updateSelectedCriterion(add.updated_src as IndustryGroupCriterion)}
-            onDelete={(del) => updateSelectedCriterion(del.updated_src as IndustryGroupCriterion)}
+            onEdit={(edit) => updateSelectedCriterion(edit.updated_src as CriterionDefinition)}
+            onAdd={(add) => updateSelectedCriterion(add.updated_src as CriterionDefinition)}
+            onDelete={(del) => updateSelectedCriterion(del.updated_src as CriterionDefinition)}
             theme="monokai"
             enableClipboard={false}
             style={{ textAlign: 'left' }}

@@ -1,15 +1,15 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import CriterionReportWaterfallChart from '@/components/visualizations/CriterionReportWaterfallChart';
-import { IndustryGroupCriteria } from '@/types/public-equity/criteria-types';
-import { CriterionReportValueItem, TickerReport } from '@/types/public-equity/ticker-report';
+import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
+import { CriterionReportItem, TickerReport } from '@/types/public-equity/ticker-report-types';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 
 interface ReportContentProps {
   criterionKey: string;
-  criterionReport: CriterionReportValueItem;
-  industryGroupCriteria: IndustryGroupCriteria;
+  criterionReport: CriterionReportItem;
+  industryGroupCriteria: IndustryGroupCriteriaDefinition;
   content: string;
 }
 function ReportContent({ criterionKey, criterionReport, industryGroupCriteria, content }: ReportContentProps) {
@@ -40,7 +40,7 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
     `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`,
     { cache: 'no-cache' }
   );
-  const industryGroupCriteria: IndustryGroupCriteria = (await criteriaResponse.json()) as IndustryGroupCriteria;
+  const industryGroupCriteria: IndustryGroupCriteriaDefinition = (await criteriaResponse.json()) as IndustryGroupCriteriaDefinition;
 
   if (!tickerReport.evaluationsOfLatest10Q) {
     return <div>No data available</div>;
@@ -85,9 +85,9 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
           <div className="overflow-x-auto">
             {/* Performance Checklist Section */}
             <h3 className="text-lg font-semibold mt-6 mb-4">Performance Checklist</h3>
-            {criterion.performanceChecklist?.length ? (
+            {criterion.performanceChecklistEvaluation?.performanceChecklist?.length ? (
               <ul className="list-disc mt-2">
-                {criterion.performanceChecklist.map((item, index) => (
+                {criterion.performanceChecklistEvaluation.performanceChecklist.map((item, index) => (
                   <li key={index} className="mb-1 flex items-start">
                     <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
                     <span>{item.checklistItem}</span>

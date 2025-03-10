@@ -8,7 +8,7 @@ export interface Sector {
   name: string;
 }
 
-export interface MetricDefinitionItem {
+export interface MetricItemDefinition {
   key: string;
   name: string;
   description: string;
@@ -21,26 +21,26 @@ export enum OutputType {
   PieChart = 'PieChart',
   WaterfallChart = 'WaterfallChart',
 }
-export interface CriterionReportDefinitionItem {
+export interface CriterionReportDefinition {
   key: string;
   name: string;
   description: string;
   outputType: OutputType;
 }
 
-export interface IndustryGroupCriterion {
+export interface CriterionDefinition {
   key: string;
   name: string;
   shortDescription: string;
-  importantMetrics: MetricDefinitionItem[];
-  reports: CriterionReportDefinitionItem[];
+  importantMetrics: MetricItemDefinition[];
+  reports: CriterionReportDefinition[];
 }
 
-export interface IndustryGroupCriteria {
+export interface IndustryGroupCriteriaDefinition {
   tickers: string[];
   selectedSector: Sector;
   selectedIndustryGroup: IndustryGroup;
-  criteria: IndustryGroupCriterion[];
+  criteria: CriterionDefinition[];
 }
 
 export interface CriteriaLookupItem {
