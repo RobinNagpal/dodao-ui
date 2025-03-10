@@ -1,6 +1,7 @@
 // app/api/public-equity/create-single-report/route.ts
 
-import { getTickerFileKey, getTickerReport, uploadToS3 } from '@/lib/publicEquity';
+import { getTickerFileKey } from '@/lib/koalagainsS3Utils';
+import { getTickerReport, saveTickerReport } from '@/lib/publicEquity';
 import { CriterionEvaluation, ImportantMetrics, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SaveCriterionMetricsRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -28,8 +29,8 @@ const saveMetrics = async (req: NextRequest, { params }: { params: Promise<{ tic
     evaluation.importantMetrics = newMetrics;
   }
   tickerReport.evaluationsOfLatest10Q = evaluations;
-  const tickerFileKey = getTickerFileKey(body.ticker);
-  await uploadToS3(JSON.stringify(tickerReport, null, 2), tickerFileKey, 'application/json');
+  await saveTickerReport(tickerKey, tickerReport);
+
   return newMetrics;
 };
 export const POST = withErrorHandlingV2<ImportantMetrics>(saveMetrics);

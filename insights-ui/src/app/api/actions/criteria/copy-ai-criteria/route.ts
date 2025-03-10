@@ -1,15 +1,15 @@
 // app/api/public-equity/copy-ai-criteria/route.ts
+import {
+  getAiCriteria,
+  getCriteriaLookupList,
+  getMatchingCriteriaLookupItem,
+  updateCriteriaLookupListForCustomCriteria,
+  uploadCustomCriteriaToS3,
+} from '@/lib/industryGroupCriteria';
 import { CriteriaLookupItem } from '@/types/public-equity/criteria-types';
 import { CreateCriteriaRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import {
-  getCriteriaLookupList,
-  getMatchingCriteriaLookupItem,
-  getAiCriteria,
-  uploadCustomCriteriaToS3,
-  updateCriteriaLookupListForCustomCriteria,
-} from '@/lib/publicEquity';
 
 const handler = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<CriteriaLookupItem> => {
   const body = (await req.json()) as CreateCriteriaRequest;

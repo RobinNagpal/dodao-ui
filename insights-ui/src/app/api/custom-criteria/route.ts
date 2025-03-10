@@ -1,4 +1,9 @@
-import { getCriteriaLookupList, getMatchingCriteriaLookupItem, updateCriteriaLookupListForCustomCriteria, uploadCustomCriteriaToS3 } from '@/lib/publicEquity';
+import {
+  getCriteriaLookupList,
+  getMatchingCriteriaLookupItem,
+  updateCriteriaLookupListForCustomCriteria,
+  uploadCustomCriteriaToS3,
+} from '@/lib/industryGroupCriteria';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { UpsertCustomCriteriaRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';

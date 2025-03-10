@@ -1,4 +1,5 @@
-import { getCriteria, getTickerReport, saveTickerReport } from '@/lib/publicEquity';
+import { getCriteria } from '@/lib/industryGroupCriteria';
+import { getTickerReport, saveTickerReport } from '@/lib/publicEquity';
 import { CriterionEvaluation, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
