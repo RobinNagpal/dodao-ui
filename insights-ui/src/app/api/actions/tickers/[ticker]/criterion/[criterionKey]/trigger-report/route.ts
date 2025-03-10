@@ -1,5 +1,5 @@
 import { getCriteria, getTickerReport } from '@/lib/publicEquity';
-import { CriteriaEvaluation, CriterionReport, ProcessingStatus } from '@/types/public-equity/ticker-report';
+import { CriteriaEvaluation, ProcessingStatus } from '@/types/public-equity/ticker-report';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 // app/api/public-equity/single-criterion-report/route.ts
@@ -31,7 +31,9 @@ const criterionReport = async (req: NextRequest, { params }: { params: Promise<{
   console.log(jsonResponse);
   return {
     criterionKey,
-    status: ProcessingStatus.InProgress,
+    importantMetrics: {
+      status: ProcessingStatus.InProgress,
+    },
   };
 };
-export const POST = withErrorHandlingV2<CriterionReport>(criterionReport);
+export const POST = withErrorHandlingV2<CriteriaEvaluation>(criterionReport);

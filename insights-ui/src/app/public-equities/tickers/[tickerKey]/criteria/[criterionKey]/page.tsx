@@ -1,14 +1,13 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import CriterionReportWaterfallChart from '@/components/visualizations/CriterionReportWaterfallChart';
-import { IndustryGroupCriteria } from '@/types/criteria/criteria';
-import { CriterionReport, TickerReport } from '@/types/public-equity/ticker-report';
+import { CriterionReportValueItem, IndustryGroupCriteria, TickerReport } from '@/types/public-equity/ticker-report';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 
 interface ReportContentProps {
   criterionKey: string;
-  criterionReport: CriterionReport;
+  criterionReport: CriterionReportValueItem;
   industryGroupCriteria: IndustryGroupCriteria;
   content: string;
 }

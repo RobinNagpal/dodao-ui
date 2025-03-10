@@ -1,7 +1,7 @@
 'use client';
 
 import { GicsSector, SectorsData } from '@/types/public-equity/gicsSector';
-import { TickerUpsertRequest } from '@/types/public-equity/ticker';
+import { TickerUpsertRequest } from '@/types/public-equity/ticker-request-response';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';

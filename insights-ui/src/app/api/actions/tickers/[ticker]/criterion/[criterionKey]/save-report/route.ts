@@ -1,5 +1,6 @@
-import { CriteriaEvaluation, getTickerReport, ReportValueItem, saveCriteriaEvaluation, SaveCriterionReportRequest, saveTickerReport } from '@/lib/publicEquity';
-import { ProcessingStatus } from '@/types/public-equity/ticker-report';
+import { getTickerReport, saveCriteriaEvaluation, saveTickerReport } from '@/lib/publicEquity';
+import { CriteriaEvaluation, ProcessingStatus, CriterionReportValueItem } from '@/types/public-equity/ticker-report';
+import { SaveCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -16,20 +17,20 @@ const savePerformanceChecklistForCriterion = async (
     throw new Error(`Evaluation with key '${criterionKey}' not found.`);
   }
 
-  const reportValue = matchingEvaluation.reports.find((r) => r.key === body.reportKey);
+  const reportValue = matchingEvaluation.reports?.find((r) => r.reportKey === body.reportKey);
   if (!reportValue) {
     throw new Error(`Report with key '${body.reportKey}' not found.`);
   }
 
   const outputFileUrl = await saveCriteriaEvaluation(tickerKey, criterionKey, body.reportKey, body.data);
 
-  const updatedReportValue: ReportValueItem = {
+  const updatedReportValue: CriterionReportValueItem = {
     reportKey: body.reportKey,
     status: ProcessingStatus.Completed,
     outputFileUrl,
   };
 
-  const updatedReports = matchingEvaluation.reports.map((r) => (r.key === body.reportKey ? updatedReportValue : r));
+  const updatedReports = matchingEvaluation.reports?.map((r) => (r.reportKey === body.reportKey ? updatedReportValue : r));
 
   const updatedEvaluation: CriteriaEvaluation = {
     ...matchingEvaluation,

@@ -1,13 +1,12 @@
 'use client';
 
 import { Button } from '@/components/home-page/Button';
-import { IndustryGroupCriteria } from '@/types/criteria/criteria';
 import {
   CreateSingleReportsRequest,
   CriteriaEvaluation,
-  RegenerateAllCriteriaReportsRequest,
+  CriterionReportValueItem,
+  IndustryGroupCriteria,
   RegenerateSingleCriterionReportsRequest,
-  CriterionReport,
   TickerReport,
 } from '@/types/public-equity/ticker-report';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
@@ -36,7 +35,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
       const report: TickerReport = await response.json();
       setReport(report);
       report.evaluationsOfLatest10Q?.forEach((criterion) => {
-        criterion.reports?.forEach((report: CriterionReport) => {
+        criterion.reports?.forEach((report: CriterionReportValueItem) => {
           const { reportKey: criterionReportKey, outputFileUrl } = report;
           if (outputFileUrl) {
             const reportContentResponse = fetch(outputFileUrl);
@@ -93,7 +92,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
     postData: regenerateAllCriteriaReports,
     loading: allCriteriaReportsLoading,
     error: allCriteriaReportsError,
-  } = usePostData<{ message: string }, RegenerateAllCriteriaReportsRequest>({
+  } = usePostData<{ message: string }, {}>({
     errorMessage: 'Failed to regenerate all criteria reports',
     successMessage: 'All criteria reports regeneration started successfully',
     redirectPath: ``,
@@ -331,7 +330,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                               </tr>
                             </thead>
                             <tbody className="w-full">
-                              {criterion.importantMetrics?.metrics.map((metric) => {
+                              {criterion.importantMetrics?.metrics?.map((metric) => {
                                 return (
                                   <tr key={metric.metricKey} className="w-full">
                                     <td className="px-4">{metric.metricKey}</td>

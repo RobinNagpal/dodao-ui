@@ -1,8 +1,8 @@
 // app/api/public-equity/next-criterion-report/route.ts
 import { ProcessingStatus } from '@/types/public-equity/ticker-report';
+import { NextCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { NextCriterionReportRequest } from '@/lib/publicEquity';
 import { getTickerReport, getCriteria } from '@/lib/publicEquity';
 
 const PE_US_REITS_WEBHOOK_URL = process.env.PE_US_REITS_WEBHOOK_URL!;

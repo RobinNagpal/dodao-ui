@@ -1,7 +1,8 @@
 // app/api/public-equity/create-single-report/route.ts
 
-import { CriteriaEvaluation, getTickerFileKey, getTickerReport, ImportantMetricsValue, SaveCriterionMetricsRequest, uploadToS3 } from '@/lib/publicEquity';
-import { ProcessingStatus } from '@/types/public-equity/ticker-report';
+import { getTickerFileKey, getTickerReport, uploadToS3 } from '@/lib/publicEquity';
+import { CriteriaEvaluation, ImportantMetricsValue, ProcessingStatus } from '@/types/public-equity/ticker-report';
+import { SaveCriterionMetricsRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 

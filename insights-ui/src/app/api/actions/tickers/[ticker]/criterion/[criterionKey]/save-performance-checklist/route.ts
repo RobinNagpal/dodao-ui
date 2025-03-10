@@ -1,11 +1,6 @@
-import {
-  CriteriaEvaluation,
-  getTickerFileKey,
-  getTickerReport,
-  savePerformanceChecklist,
-  SavePerformanceChecklistRequest,
-  uploadToS3,
-} from '@/lib/publicEquity';
+import { getTickerFileKey, getTickerReport, savePerformanceChecklist, uploadToS3 } from '@/lib/publicEquity';
+import { CriteriaEvaluation } from '@/types/public-equity/ticker-report';
+import { SavePerformanceChecklistRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 

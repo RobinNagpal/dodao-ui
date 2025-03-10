@@ -1,163 +1,18 @@
 // lib/publicEquity.ts
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
-import { Readable } from 'stream';
+import {
+  CriteriaLookupItem,
+  CriteriaLookupList,
+  IndustryGroupCriteria,
+  OutputType,
+  PerformanceChecklistItem,
+  TickerReport,
+} from '@/types/public-equity/ticker-report';
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import fetch from 'node-fetch'; // or use the native fetch if available in your Node version
+import { Readable } from 'stream';
 
 //#region === TYPES ===
-
-export interface Sector {
-  id: number;
-  name: string;
-}
-
-export interface IndustryGroup {
-  id: number;
-  name: string;
-}
-
-export interface MetricValueItem {
-  metricKey: string;
-  value: string;
-  calculationExplanation: string;
-}
-
-export type ProcessingStatus = 'Completed' | 'Failed' | 'InProgress';
-
-export interface ImportantMetricsValue {
-  status: ProcessingStatus;
-  metrics: MetricValueItem[];
-}
-
-export interface ReportValueItem {
-  reportKey: string;
-  status: ProcessingStatus;
-  outputFileUrl?: string;
-}
-
-export interface PerformanceChecklistItem {
-  checklistItem: string;
-  oneLinerExplanation: string;
-  informationUsed: string;
-  detailedExplanation: string;
-  evaluationLogic: string;
-  score: number;
-}
-
-export interface CriteriaEvaluation {
-  criterionKey: string;
-  importantMetrics?: ImportantMetricsValue;
-  reports?: ReportValueItem[];
-  performanceChecklist?: PerformanceChecklistItem[];
-}
-
-export interface SecFilingAttachment {
-  attachmentSequenceNumber: string;
-  attachmentDocumentName: string;
-  attachmentPurpose?: string;
-  attachmentUrl: string;
-  matchedPercentage: number;
-  latest10QContent: string;
-}
-
-export interface CriterionMatch {
-  criterionKey: string;
-  matchedAttachments: SecFilingAttachment[];
-  matchedContent: string;
-}
-
-export interface CriterionMatchesOfLatest10Q {
-  criterionMatches: CriterionMatch[];
-  status: ProcessingStatus;
-  failureReason?: string;
-}
-
-export interface TickerReport {
-  ticker: string;
-  selectedIndustryGroup: IndustryGroup;
-  selectedSector: Sector;
-  evaluationsOfLatest10Q?: CriteriaEvaluation[];
-  criteriaMatchesOfLatest10Q?: CriterionMatchesOfLatest10Q;
-}
-
-export interface MetricDefinitionItem {
-  key: string;
-  name: string;
-  description: string;
-  formula: string;
-}
-
-export type OutputType = 'Text' | 'BarGraph' | 'PieChart' | 'WaterfallChart';
-
-export interface CriterionReportDefinitionItem {
-  key: string;
-  name: string;
-  description: string;
-  outputType: OutputType;
-}
-
-export interface IndustryGroupCriterion {
-  key: string;
-  name: string;
-  shortDescription: string;
-  importantMetrics: MetricDefinitionItem[];
-  reports: CriterionReportDefinitionItem[];
-}
-
-export interface IndustryGroupCriteria {
-  tickers: string[];
-  selectedSector: Sector;
-  selectedIndustryGroup: IndustryGroup;
-  criteria: IndustryGroupCriterion[];
-}
-
-export interface CriteriaLookupItem {
-  sectorId: number;
-  sectorName: string;
-  industryGroupId: number;
-  industryGroupName: string;
-  aiCriteriaFileUrl?: string;
-  customCriteriaFileUrl?: string;
-}
-
-export interface CriteriaLookupList {
-  criteria: CriteriaLookupItem[];
-}
-
-// Request types for endpoints
-export interface CreateCriteriaRequest {
-  sectorId: number;
-  industryGroupId: number;
-}
-
-export interface UpsertCustomCriteriaRequest {
-  sectorId: number;
-  industryGroupId: number;
-  criteria: IndustryGroupCriterion[];
-}
-
-export interface NextCriterionReportRequest {
-  ticker: string;
-  shouldTriggerNext: boolean;
-  criterionKey: string;
-  overflow?: string;
-}
-
-export interface SavePerformanceChecklistRequest {
-  ticker: string;
-  criterionKey: string;
-  performanceChecklist: PerformanceChecklistItem[] | string;
-}
-
-export interface SaveCriterionMetricsRequest {
-  ticker: string;
-  criterionKey: string;
-  metrics: MetricValueItem[] | string;
-}
-
-export interface SaveCriterionReportRequest {
-  reportKey: string;
-  data: string;
-}
 
 //#endregion
 
@@ -228,21 +83,6 @@ export async function getObjectFromS3Optional(s3Key: string): Promise<string | n
     if (err.name === 'NoSuchKey') return null;
     throw err;
   }
-}
-
-//#endregion
-
-//#region === HELPER FUNCTIONS & BUSINESS LOGIC ===
-
-// Simple slugify implementation (see your TS implementation in dodao-ui)
-export function slugify(s: string): string {
-  return s
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]+/g, '')
-    .replace(/-+/g, '-')
-    .replace(/^-+|-+$/g, '');
 }
 
 export function getCriteriaFileKey(sectorName: string, industryGroupName: string): string {
