@@ -1,5 +1,5 @@
-import { getCriteria, getTickerReport } from '@/lib/publicEquity';
-import { CriteriaEvaluation, ProcessingStatus } from '@/types/public-equity/ticker-report';
+import { getCriteria, getTickerReport, saveTickerReport } from '@/lib/publicEquity';
+import { CriterionEvaluation, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 // app/api/public-equity/single-criterion-report/route.ts
@@ -8,7 +8,10 @@ import { NextRequest } from 'next/server';
 // You should define this environment variable in your project.
 const PE_US_REITS_WEBHOOK_URL = process.env.PE_US_REITS_WEBHOOK_URL!;
 
-const criterionReport = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }): Promise<CriteriaEvaluation> => {
+const criterionReport = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }
+): Promise<CriterionEvaluation> => {
   const { tickerKey, criterionKey } = await params;
   const tickerReport = await getTickerReport(tickerKey);
   const industryGroupCriteria = await getCriteria(tickerReport.selectedSector.name, tickerReport.selectedIndustryGroup.name);
@@ -29,11 +32,25 @@ const criterionReport = async (req: NextRequest, { params }: { params: Promise<{
   });
   const jsonResponse = await response.json();
   console.log(jsonResponse);
-  return {
+  const criterionEvaluation = {
     criterionKey,
     importantMetrics: {
       status: ProcessingStatus.InProgress,
     },
+    performanceChecklistEvaluation: {
+      status: ProcessingStatus.InProgress,
+    },
+    reports: industryGroupCriteria.criteria
+      .flatMap((c) => c.reports)
+      .map((r) => ({
+        reportKey: r.key,
+        status: ProcessingStatus.InProgress,
+      })),
   };
+  await saveTickerReport(tickerKey, {
+    ...tickerReport,
+    evaluationsOfLatest10Q: [...(tickerReport.evaluationsOfLatest10Q || []).map((e) => (e.criterionKey === criterionKey ? criterionEvaluation : e))],
+  });
+  return criterionEvaluation;
 };
-export const POST = withErrorHandlingV2<CriteriaEvaluation>(criterionReport);
+export const POST = withErrorHandlingV2<CriterionEvaluation>(criterionReport);

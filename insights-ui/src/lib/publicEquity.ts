@@ -1,6 +1,6 @@
 // lib/publicEquity.ts
-import { CriteriaLookupItem, CriteriaLookupList, IndustryGroupCriteria, OutputType } from '@/types/public-equity/criteria-types';
-import { PerformanceChecklistItem, TickerReport } from '@/types/public-equity/ticker-report';
+import { CriteriaLookupItem, CriteriaLookupList, IndustryGroupCriteriaDefinition, OutputType } from '@/types/public-equity/criteria-types';
+import { PerformanceChecklistItem, TickerReport } from '@/types/public-equity/ticker-report-types';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import fetch from 'node-fetch'; // or use the native fetch if available in your Node version
@@ -101,7 +101,7 @@ export function getCriterionPerformanceChecklistKey(ticker: string, criterionKey
 
 // --- AI & Criteria Lookup functions ---
 
-export async function getIndustryGroupCriteria(criteriaLookup: CriteriaLookupItem): Promise<IndustryGroupCriteria> {
+export async function getIndustryGroupCriteria(criteriaLookup: CriteriaLookupItem): Promise<IndustryGroupCriteriaDefinition> {
   // In a real implementation you might call an AI service.
   // For now, we simulate by returning a dummy structure.
   return {
@@ -118,10 +118,10 @@ export async function getCriteriaLookupList(): Promise<CriteriaLookupList> {
   return JSON.parse(jsonStr) as CriteriaLookupList;
 }
 
-export async function getAiCriteria(criteriaLookup: CriteriaLookupItem): Promise<IndustryGroupCriteria> {
+export async function getAiCriteria(criteriaLookup: CriteriaLookupItem): Promise<IndustryGroupCriteriaDefinition> {
   const s3Key = `gics/${getS3BasePathForCriteriaLookup(criteriaLookup)}/ai-criteria.json`;
   const jsonStr = await getObjectFromS3(`public-equities/US/${s3Key}`);
-  return JSON.parse(jsonStr) as IndustryGroupCriteria;
+  return JSON.parse(jsonStr) as IndustryGroupCriteriaDefinition;
 }
 
 export function getMatchingCriteriaLookupItem(customCriteriaList: CriteriaLookupList, sectorId: number, industryGroupId: number): CriteriaLookupItem {
@@ -130,17 +130,17 @@ export function getMatchingCriteriaLookupItem(customCriteriaList: CriteriaLookup
   return matching;
 }
 
-export async function generateAiCriteria(criteriaLookup: CriteriaLookupItem): Promise<IndustryGroupCriteria> {
+export async function generateAiCriteria(criteriaLookup: CriteriaLookupItem): Promise<IndustryGroupCriteriaDefinition> {
   return await getIndustryGroupCriteria(criteriaLookup);
 }
 
-export async function uploadAiCriteriaToS3(criteriaLookup: CriteriaLookupItem, finalData: IndustryGroupCriteria): Promise<string> {
+export async function uploadAiCriteriaToS3(criteriaLookup: CriteriaLookupItem, finalData: IndustryGroupCriteriaDefinition): Promise<string> {
   const s3Key = `gics/${getS3BasePathForCriteriaLookup(criteriaLookup)}/ai-criteria.json`;
   const url = await uploadToS3PublicEquities(JSON.stringify(finalData, null, 2), s3Key, 'application/json');
   return url;
 }
 
-export async function uploadCustomCriteriaToS3(criteriaLookup: CriteriaLookupItem, finalData: IndustryGroupCriteria): Promise<string> {
+export async function uploadCustomCriteriaToS3(criteriaLookup: CriteriaLookupItem, finalData: IndustryGroupCriteriaDefinition): Promise<string> {
   const s3Key = `gics/${getS3BasePathForCriteriaLookup(criteriaLookup)}/custom-criteria.json`;
   const url = await uploadToS3PublicEquities(JSON.stringify(finalData, null, 2), s3Key, 'application/json');
   return url;
@@ -194,7 +194,7 @@ export async function getCriteriaReportDefinition(sectorId: number, industryGrou
   }
   const response = await fetch(matching.customCriteriaFileUrl);
   const jsonResponse = await response.json();
-  const industryGroupCriteria = jsonResponse as IndustryGroupCriteria;
+  const industryGroupCriteria = jsonResponse as IndustryGroupCriteriaDefinition;
   const criterion = industryGroupCriteria.criteria.find((c) => c.key === criteriaKey);
   if (!criterion) {
     throw new Error(`Criterion with key ${criteriaKey} not found.`);
@@ -229,10 +229,10 @@ export async function savePerformanceChecklist(ticker: string, criterionKey: str
   return await uploadToS3(checklistJson, fileKey, 'application/json');
 }
 
-export async function getCriteria(sectorName: string, industryGroupName: string): Promise<IndustryGroupCriteria> {
+export async function getCriteria(sectorName: string, industryGroupName: string): Promise<IndustryGroupCriteriaDefinition> {
   const key = getCriteriaFileKey(sectorName, industryGroupName);
   const dataStr = await getObjectFromS3(key);
-  return JSON.parse(dataStr) as IndustryGroupCriteria;
+  return JSON.parse(dataStr) as IndustryGroupCriteriaDefinition;
 }
 
 export async function triggerCriteriaMatching(ticker: string, force: boolean): Promise<string> {

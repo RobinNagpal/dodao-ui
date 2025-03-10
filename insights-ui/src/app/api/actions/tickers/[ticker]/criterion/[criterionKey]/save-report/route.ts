@@ -1,5 +1,5 @@
 import { getTickerReport, saveCriteriaEvaluation, saveTickerReport } from '@/lib/publicEquity';
-import { CriteriaEvaluation, ProcessingStatus, CriterionReportValueItem } from '@/types/public-equity/ticker-report';
+import { CriterionEvaluation, ProcessingStatus, CriterionReportItem } from '@/types/public-equity/ticker-report-types';
 import { SaveCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -7,7 +7,7 @@ import { NextRequest } from 'next/server';
 const savePerformanceChecklistForCriterion = async (
   req: NextRequest,
   { params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }
-): Promise<CriteriaEvaluation> => {
+): Promise<CriterionReportItem> => {
   const { tickerKey, criterionKey } = await params;
   const body = (await req.json()) as SaveCriterionReportRequest;
   const tickerReport = await getTickerReport(tickerKey);
@@ -24,7 +24,7 @@ const savePerformanceChecklistForCriterion = async (
 
   const outputFileUrl = await saveCriteriaEvaluation(tickerKey, criterionKey, body.reportKey, body.data);
 
-  const updatedReportValue: CriterionReportValueItem = {
+  const updatedReportValue: CriterionReportItem = {
     reportKey: body.reportKey,
     status: ProcessingStatus.Completed,
     outputFileUrl,
@@ -32,7 +32,7 @@ const savePerformanceChecklistForCriterion = async (
 
   const updatedReports = matchingEvaluation.reports?.map((r) => (r.reportKey === body.reportKey ? updatedReportValue : r));
 
-  const updatedEvaluation: CriteriaEvaluation = {
+  const updatedEvaluation: CriterionEvaluation = {
     ...matchingEvaluation,
     reports: updatedReports,
   };
@@ -44,7 +44,7 @@ const savePerformanceChecklistForCriterion = async (
 
   await saveTickerReport(tickerKey, updatedTickerReport);
 
-  return updatedEvaluation;
+  return updatedReportValue;
 };
 
-export const POST = withErrorHandlingV2<CriteriaEvaluation>(savePerformanceChecklistForCriterion);
+export const POST = withErrorHandlingV2<CriterionReportItem>(savePerformanceChecklistForCriterion);

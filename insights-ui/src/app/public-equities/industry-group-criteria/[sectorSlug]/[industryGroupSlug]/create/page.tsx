@@ -1,6 +1,6 @@
 import CriteriaTable from '@/components/criteria/CriteriaTable';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { IndustryGroupCriteria } from '@/types/public-equity/criteria-types';
+import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons'; // Adjust the import path as needed
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -24,7 +24,7 @@ export default async function CustomCriteriaPage({ params }: { params: Promise<{
   let customCriteriaData;
   const response = await fetch(customCriteriaUrl);
   if (response.status === 200) {
-    customCriteriaData = (await response.json()) as IndustryGroupCriteria;
+    customCriteriaData = (await response.json()) as IndustryGroupCriteriaDefinition;
   }
 
   return (

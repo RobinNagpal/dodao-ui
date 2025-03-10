@@ -1,7 +1,7 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import RadarChart from '@/components/ui/RadarChart';
-import { IndustryGroupCriteria } from '@/types/public-equity/criteria-types';
-import { CriteriaEvaluation, PerformanceChecklistItem, SpiderGraphForTicker, SpiderGraphPie, TickerReport } from '@/types/public-equity/ticker-report';
+import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
+import { CriterionEvaluation, PerformanceChecklistItem, SpiderGraphForTicker, SpiderGraphPie, TickerReport } from '@/types/public-equity/ticker-report-types';
 import { getReportName } from '@/util/report-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -14,7 +14,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
     `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`,
     { cache: 'no-cache' }
   );
-  const industryGroupCriteria: IndustryGroupCriteria = (await criteriaResponse.json()) as IndustryGroupCriteria;
+  const industryGroupCriteria: IndustryGroupCriteriaDefinition = (await criteriaResponse.json()) as IndustryGroupCriteriaDefinition;
   const tickerResponse = await fetch(
     `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${tickerKey}/latest-10q-report.json`,
     { cache: 'no-cache' }
@@ -33,7 +33,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
       current: true,
     },
   ];
-  const reports: CriteriaEvaluation[] = tickerReport.evaluationsOfLatest10Q || [];
+  const reports: CriterionEvaluation[] = tickerReport.evaluationsOfLatest10Q || [];
   const reportMap = new Map(reports.map((report) => [report.criterionKey, report]));
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
     reports.map((report): [string, SpiderGraphPie] => {
@@ -42,7 +42,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         name: getReportName(report.criterionKey),
         summary: report.importantMetrics?.status || '',
         scores:
-          report.performanceChecklist?.map((pc: PerformanceChecklistItem) => ({
+          report.performanceChecklistEvaluation?.map((pc: PerformanceChecklistItem) => ({
             score: pc.score,
             comment: `${pc.checklistItem}: ${pc.oneLinerExplanation}`,
           })) || [],
@@ -75,9 +75,9 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                           <div className="ml-6 text-xl">{criterion.name}</div>
                         </div>
                         <div className="text-sm py-1">{criterion.shortDescription}</div>
-                        {report?.performanceChecklist && (
+                        {report?.performanceChecklistEvaluation && (
                           <ul className="list-disc mt-2">
-                            {report.performanceChecklist.map((item, index) => (
+                            {report.performanceChecklistEvaluation.map((item, index) => (
                               <li key={index} className="mb-1 flex items-start">
                                 <span className="mr-2">{item.score > 0 ? '✅' : '❌'}</span>
                                 <span>{item.checklistItem}</span>

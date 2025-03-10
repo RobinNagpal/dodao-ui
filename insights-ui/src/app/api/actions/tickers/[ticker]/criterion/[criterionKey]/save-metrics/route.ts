@@ -1,18 +1,18 @@
 // app/api/public-equity/create-single-report/route.ts
 
 import { getTickerFileKey, getTickerReport, uploadToS3 } from '@/lib/publicEquity';
-import { CriteriaEvaluation, ImportantMetricsValue, ProcessingStatus } from '@/types/public-equity/ticker-report';
+import { CriterionEvaluation, ImportantMetrics, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SaveCriterionMetricsRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-const saveMetrics = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }): Promise<CriteriaEvaluation> => {
+const saveMetrics = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }): Promise<ImportantMetrics> => {
   const { tickerKey, criterionKey } = await params;
   const body = (await req.json()) as SaveCriterionMetricsRequest;
   const tickerReport = await getTickerReport(tickerKey);
   const evaluations = tickerReport.evaluationsOfLatest10Q || [];
-  let evaluation: CriteriaEvaluation | undefined = evaluations.find((e) => e.criterionKey === body.criterionKey);
-  const newMetrics: ImportantMetricsValue = {
+  let evaluation: CriterionEvaluation | undefined = evaluations.find((e) => e.criterionKey === body.criterionKey);
+  const newMetrics: ImportantMetrics = {
     status: ProcessingStatus.Completed,
     metrics: typeof body.metrics === 'string' ? JSON.parse(body.metrics) : body.metrics,
   };
@@ -21,7 +21,7 @@ const saveMetrics = async (req: NextRequest, { params }: { params: Promise<{ tic
       criterionKey: criterionKey,
       importantMetrics: newMetrics,
       reports: undefined,
-      performanceChecklist: undefined,
+      performanceChecklistEvaluation: undefined,
     };
     evaluations.push(evaluation);
   } else {
@@ -30,6 +30,6 @@ const saveMetrics = async (req: NextRequest, { params }: { params: Promise<{ tic
   tickerReport.evaluationsOfLatest10Q = evaluations;
   const tickerFileKey = getTickerFileKey(body.ticker);
   await uploadToS3(JSON.stringify(tickerReport, null, 2), tickerFileKey, 'application/json');
-  return evaluation;
+  return newMetrics;
 };
-export const POST = withErrorHandlingV2<CriteriaEvaluation>(saveMetrics);
+export const POST = withErrorHandlingV2<ImportantMetrics>(saveMetrics);
