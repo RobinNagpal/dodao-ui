@@ -5,6 +5,8 @@ import { Ticker } from '@prisma/client';
 import Link from 'next/link';
 import TickerTableActions from './TickerTableActions';
 import gicsData from '@/gicsData/gicsData.json';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 async function getTickersResponse(): Promise<Ticker[]> {
   // Here a better approach could be followed which allows to return server side pages fully rendered
@@ -17,10 +19,24 @@ async function getTickersResponse(): Promise<Ticker[]> {
   }
 }
 
+const breadcrumbs: BreadcrumbsOjbect[] = [
+  {
+    name: 'Custom Reports',
+    href: `/custom-reports`,
+    current: false,
+  },
+  {
+    name: 'Tickers',
+    href: `/public-equities/tickers`,
+    current: true,
+  },
+];
+
 export default async function AllTickersPage() {
   const tickers: Ticker[] = await getTickersResponse();
   return (
     <PageWrapper>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="flex justify-between">
         <div></div>
         <Link href={'/public-equities/tickers/create'} className="link-color underline">
