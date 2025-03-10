@@ -1,4 +1,8 @@
-export type ProcessingStatus = 'Completed' | 'Failed' | 'InProgress';
+export enum ProcessingStatus {
+  Completed = 'Completed',
+  Failed = 'Failed',
+  InProgress = 'InProgress',
+}
 
 export interface IndustryGroup {
   id: number;
@@ -17,13 +21,13 @@ export interface Metric {
 }
 
 export interface ImportantMetrics {
-  status: string;
+  status: ProcessingStatus;
   metrics: Metric[];
 }
 
 export interface CriterionReport {
   reportKey?: string;
-  status?: string;
+  status?: ProcessingStatus;
   outputFileUrl?: string | null;
 }
 
