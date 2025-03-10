@@ -1,4 +1,5 @@
-import { IndustryGroupCriterion, MetricValueItem, PerformanceChecklistItem } from '@/types/public-equity/ticker-report';
+import { IndustryGroupCriterion } from '@/types/public-equity/criteria-types';
+import { MetricValueItem, PerformanceChecklistItem } from '@/types/public-equity/ticker-report';
 
 export interface TickerUpsertRequest {
   tickerKey: string;

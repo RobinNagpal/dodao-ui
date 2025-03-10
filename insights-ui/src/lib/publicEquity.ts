@@ -1,12 +1,6 @@
 // lib/publicEquity.ts
-import {
-  CriteriaLookupItem,
-  CriteriaLookupList,
-  IndustryGroupCriteria,
-  OutputType,
-  PerformanceChecklistItem,
-  TickerReport,
-} from '@/types/public-equity/ticker-report';
+import { CriteriaLookupItem, CriteriaLookupList, IndustryGroupCriteria, OutputType } from '@/types/public-equity/criteria-types';
+import { PerformanceChecklistItem, TickerReport } from '@/types/public-equity/ticker-report';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import fetch from 'node-fetch'; // or use the native fetch if available in your Node version

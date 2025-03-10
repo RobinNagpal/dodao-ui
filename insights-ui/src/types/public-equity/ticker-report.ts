@@ -1,17 +1,9 @@
+import { IndustryGroup, Sector } from '@/types/public-equity/criteria-types';
+
 export enum ProcessingStatus {
   Completed = 'Completed',
   Failed = 'Failed',
   InProgress = 'InProgress',
-}
-
-export interface IndustryGroup {
-  id: number;
-  name: string;
-}
-
-export interface Sector {
-  id: number;
-  name: string;
 }
 
 export interface PerformanceChecklistItem {
@@ -123,48 +115,4 @@ export interface TickerReport {
   selectedSector: Sector;
   evaluationsOfLatest10Q?: CriteriaEvaluation[];
   criteriaMatchesOfLatest10Q?: CriterionMatchesOfLatest10Q;
-}
-
-export interface MetricDefinitionItem {
-  key: string;
-  name: string;
-  description: string;
-  formula: string;
-}
-
-export type OutputType = 'Text' | 'BarGraph' | 'PieChart' | 'WaterfallChart';
-
-export interface CriterionReportDefinitionItem {
-  key: string;
-  name: string;
-  description: string;
-  outputType: OutputType;
-}
-
-export interface IndustryGroupCriterion {
-  key: string;
-  name: string;
-  shortDescription: string;
-  importantMetrics: MetricDefinitionItem[];
-  reports: CriterionReportDefinitionItem[];
-}
-
-export interface IndustryGroupCriteria {
-  tickers: string[];
-  selectedSector: Sector;
-  selectedIndustryGroup: IndustryGroup;
-  criteria: IndustryGroupCriterion[];
-}
-
-export interface CriteriaLookupItem {
-  sectorId: number;
-  sectorName: string;
-  industryGroupId: number;
-  industryGroupName: string;
-  aiCriteriaFileUrl?: string;
-  customCriteriaFileUrl?: string;
-}
-
-export interface CriteriaLookupList {
-  criteria: CriteriaLookupItem[];
 }

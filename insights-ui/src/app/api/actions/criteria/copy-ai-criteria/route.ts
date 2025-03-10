@@ -1,5 +1,5 @@
 // app/api/public-equity/copy-ai-criteria/route.ts
-import { CriteriaLookupItem } from '@/types/public-equity/ticker-report';
+import { CriteriaLookupItem } from '@/types/public-equity/criteria-types';
 import { CreateCriteriaRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';

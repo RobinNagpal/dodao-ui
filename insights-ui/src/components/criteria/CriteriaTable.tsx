@@ -1,6 +1,6 @@
 'use client';
 
-import { IndustryGroupCriterion, IndustryGroupCriteria } from '@/types/public-equity/ticker-report';
+import { IndustryGroupCriteria, IndustryGroupCriterion } from '@/types/public-equity/criteria-types';
 import { CreateCustomCriteriaRequestWithCriteria } from '@/types/public-equity/ticker-request-response';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';

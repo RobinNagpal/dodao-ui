@@ -2,7 +2,7 @@
 
 import UpsertAiCriteria from '@/components/criteria/UpsertAiCriteria';
 import UpsertCustomCriteria from '@/components/criteria/UpsertCustomCriteria';
-import { CriteriaLookupItem, CriteriaLookupList } from '@/types/public-equity/ticker-report';
+import { CriteriaLookupItem, CriteriaLookupList } from '@/types/public-equity/criteria-types';
 import Block from '@dodao/web-core/components/app/Block';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';

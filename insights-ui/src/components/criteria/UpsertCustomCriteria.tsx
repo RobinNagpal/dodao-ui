@@ -1,5 +1,5 @@
 import ViewCriteriaModal from '@/components/criteria/ViewCriteriaModal';
-import { CriteriaLookupItem } from '@/types/public-equity/ticker-report';
+import { CriteriaLookupItem } from '@/types/public-equity/criteria-types';
 import { CreateCustomCriteriaRequest } from '@/types/public-equity/ticker-request-response';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';

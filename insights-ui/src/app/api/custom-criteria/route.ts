@@ -1,5 +1,5 @@
 import { getCriteriaLookupList, getMatchingCriteriaLookupItem, updateCriteriaLookupListForCustomCriteria, uploadCustomCriteriaToS3 } from '@/lib/publicEquity';
-import { IndustryGroupCriteria } from '@/types/public-equity/ticker-report';
+import { IndustryGroupCriteria } from '@/types/public-equity/criteria-types';
 import { UpsertCustomCriteriaRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';

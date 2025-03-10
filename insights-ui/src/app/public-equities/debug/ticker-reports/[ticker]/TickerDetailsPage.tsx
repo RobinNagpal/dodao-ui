@@ -1,11 +1,11 @@
 'use client';
 
 import { Button } from '@/components/home-page/Button';
+import { IndustryGroupCriteria } from '@/types/public-equity/criteria-types';
 import {
   CreateSingleReportsRequest,
   CriteriaEvaluation,
   CriterionReportValueItem,
-  IndustryGroupCriteria,
   RegenerateSingleCriterionReportsRequest,
   TickerReport,
 } from '@/types/public-equity/ticker-report';

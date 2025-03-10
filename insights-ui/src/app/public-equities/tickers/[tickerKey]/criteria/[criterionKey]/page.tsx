@@ -1,6 +1,7 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import CriterionReportWaterfallChart from '@/components/visualizations/CriterionReportWaterfallChart';
-import { CriterionReportValueItem, IndustryGroupCriteria, TickerReport } from '@/types/public-equity/ticker-report';
+import { IndustryGroupCriteria } from '@/types/public-equity/criteria-types';
+import { CriterionReportValueItem, TickerReport } from '@/types/public-equity/ticker-report';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
