@@ -1,4 +1,4 @@
-import { getTickerFileKey, getTickerReport, savePerformanceChecklist, uploadToS3 } from '@/lib/publicEquity';
+import { getTickerReport, savePerformanceChecklist, saveTickerReport } from '@/lib/publicEquity';
 import { CriterionEvaluation, PerformanceChecklistEvaluation, PerformanceChecklistItem, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SavePerformanceChecklistRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -27,8 +27,7 @@ const savePerformanceChecklistForCriterion = async (
   evaluation.performanceChecklistEvaluation = checklist;
 
   tickerReport.evaluationsOfLatest10Q = evaluations;
-  const tickerFileKey = getTickerFileKey(body.ticker);
-  await uploadToS3(JSON.stringify(tickerReport, null, 2), tickerFileKey, 'application/json');
+  await saveTickerReport(tickerKey, tickerReport);
   return checklist;
 };
 
