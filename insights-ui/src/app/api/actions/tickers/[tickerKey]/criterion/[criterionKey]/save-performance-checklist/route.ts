@@ -1,3 +1,4 @@
+import { parseLangflowJSON } from '@/lib/langflow';
 import { getTickerReport, savePerformanceChecklist, saveTickerReport } from '@/lib/publicEquity';
 import { CriterionEvaluation, PerformanceChecklistEvaluation, PerformanceChecklistItem, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SavePerformanceChecklistRequest } from '@/types/public-equity/ticker-request-response';
@@ -13,7 +14,7 @@ const savePerformanceChecklistForCriterion = async (
   const tickerReport = await getTickerReport(tickerKey);
   const evaluations = tickerReport.evaluationsOfLatest10Q || [];
   const performanceChecklist: PerformanceChecklistItem[] =
-    typeof body.performanceChecklist === 'string' ? JSON.parse(body.performanceChecklist) : body.performanceChecklist;
+    typeof body.performanceChecklist === 'string' ? parseLangflowJSON(body.performanceChecklist) : body.performanceChecklist;
   await savePerformanceChecklist(body.ticker, body.criterionKey, performanceChecklist);
   const evaluation: CriterionEvaluation | undefined = evaluations.find((e) => e.criterionKey === criterionKey);
   if (!evaluation) {
