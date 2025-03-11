@@ -3,7 +3,7 @@ import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { Readable } from 'stream';
 
-export const BUCKET_NAME = process.env.S3_BUCKET_NAME!;
+export const BUCKET_NAME = process.env.S3_BUCKET_NAME || 'dodao-ai-insights-agent';
 const REGION = process.env.AWS_DEFAULT_REGION || 'us-east-1';
 
 const s3Client = new S3Client({
