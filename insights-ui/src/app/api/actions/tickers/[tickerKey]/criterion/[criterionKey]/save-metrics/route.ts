@@ -1,5 +1,6 @@
 // app/api/public-equity/create-single-report/route.ts
 
+import { parseLangflowJSON } from '@/lib/langflow';
 import { getTickerReport, saveTickerReport } from '@/lib/publicEquity';
 import { CriterionEvaluation, ImportantMetrics, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SaveCriterionMetricsRequest } from '@/types/public-equity/ticker-request-response';
@@ -14,7 +15,7 @@ const saveMetrics = async (req: NextRequest, { params }: { params: Promise<{ tic
   let evaluation: CriterionEvaluation | undefined = evaluations.find((e) => e.criterionKey === body.criterionKey);
   const newMetrics: ImportantMetrics = {
     status: ProcessingStatus.Completed,
-    metrics: typeof body.metrics === 'string' ? JSON.parse(body.metrics) : body.metrics,
+    metrics: typeof body.metrics === 'string' ? parseLangflowJSON(body.metrics) : body.metrics,
   };
   if (!evaluation) {
     evaluation = {
