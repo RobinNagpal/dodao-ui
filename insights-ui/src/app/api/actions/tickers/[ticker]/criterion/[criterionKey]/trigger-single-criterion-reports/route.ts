@@ -1,7 +1,7 @@
 import { getCriteria } from '@/lib/industryGroupCriteria';
 import { getTickerReport, saveTickerReport } from '@/lib/publicEquity';
 import { CriterionEvaluation, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
-import { CreateSingleCriterionReportsRequest } from '@/types/public-equity/ticker-request-response';
+import { CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 // app/api/public-equity/single-criterion-report/route.ts
@@ -15,7 +15,7 @@ const triggerSingleCriterionReport = async (
   { params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }
 ): Promise<CriterionEvaluation> => {
   const { tickerKey, criterionKey } = await params;
-  const body = (await req.json()) as CreateSingleCriterionReportsRequest;
+  const body = (await req.json()) as CreateSingleCriterionReportRequest;
 
   const tickerReport = await getTickerReport(tickerKey);
   const industryGroupCriteria = await getCriteria(tickerReport.selectedSector.name, tickerReport.selectedIndustryGroup.name);

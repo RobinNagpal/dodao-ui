@@ -1,6 +1,5 @@
 // app/api/public-equity/create-single-report/route.ts
 
-import { getTickerFileKey } from '@/lib/koalagainsS3Utils';
 import { getTickerReport, saveTickerReport } from '@/lib/publicEquity';
 import { CriterionEvaluation, ImportantMetrics, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SaveCriterionMetricsRequest } from '@/types/public-equity/ticker-request-response';
