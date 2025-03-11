@@ -17,11 +17,6 @@ const savePerformanceChecklistForCriterion = async (
     throw new Error(`Evaluation with key '${criterionKey}' not found.`);
   }
 
-  const reportValue = matchingEvaluation.reports?.find((r) => r.reportKey === body.reportKey);
-  if (!reportValue) {
-    throw new Error(`Report with key '${body.reportKey}' not found.`);
-  }
-
   const outputFileUrl = await saveCriteriaEvaluation(tickerKey, criterionKey, body.reportKey, body.data);
 
   const updatedReportValue: CriterionReportItem = {

@@ -25,7 +25,7 @@ const triggerAllCriterionReports = async (
   const payload = {
     ticker: tickerKey,
     shouldTriggerNext: false,
-    reportKey: 'all',
+    reportKey: [...matchingCriterion.reports.map((r) => r.key), 'performanceChecklist', 'importantMetrics'].join(','),
     criterion: JSON.stringify(matchingCriterion),
   };
   const headers = { 'Content-Type': 'application/json' };
