@@ -66,3 +66,10 @@ export interface CreateCustomCriteriaRequest {
   sectorId: number;
   industryGroupId: number;
 }
+
+export interface CreateSingleCriterionReportsRequest {
+  ticker: string;
+  criterionKey: string;
+  reportKey: string;
+  langflowWebhookUrl: string;
+}

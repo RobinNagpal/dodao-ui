@@ -4,6 +4,7 @@ export enum ProcessingStatus {
   Completed = 'Completed',
   Failed = 'Failed',
   InProgress = 'InProgress',
+  NotStarted = 'NotStarted',
 }
 
 export interface PerformanceChecklistItem {
