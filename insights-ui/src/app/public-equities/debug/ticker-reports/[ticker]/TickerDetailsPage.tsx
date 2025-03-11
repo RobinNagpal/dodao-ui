@@ -9,9 +9,11 @@ import {
   RegenerateSingleCriterionReportsRequest,
   TickerReport,
 } from '@/types/public-equity/ticker-report-types';
+import { CreateAllCriterionReportsRequest, CreateCriteriaRequest, CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import Input from '@dodao/web-core/components/core/input/Input';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -23,11 +25,17 @@ import { useEffect, useState } from 'react';
 export default function TickerDetailsPage({ ticker }: { ticker: string }) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showRegenerateAllConfirmModal, setShowRegenerateAllConfirmModal] = useState(false);
-  const [selectedCriterionForRegeneration, setSelectedCriterionForRegeneration] = useState<CriterionEvaluation | null>();
+  const [selectedCriterionForRegeneration, setSelectedCriterionForRegeneration] = useState<CriterionEvaluation | null>(null);
+  // New state for section-specific regeneration confirmation
+  const [selectedSectionForRegeneration, setSelectedSectionForRegeneration] = useState<{ criterionKey: string; section: string; reportKey?: string } | null>(
+    null
+  );
   const [reportExists, setReportExists] = useState(false);
   const [report, setReport] = useState<TickerReport>();
   const [selectedCriterionAccodian, setSelectedCriterionAccodian] = useState<string | null>(null);
   const [reportContentMap, setReportContentMap] = useState<{ [key: string]: string }>({});
+  const [webhookUrl, setWebhookUrl] = useState(localStorage.getItem('webhookUrl') || '');
+
   const checkReportExists = async () => {
     const response = await fetch(`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${ticker}/latest-10q-report.json`);
     if (response.status === 200) {
@@ -58,6 +66,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
       setReportExists(false);
     }
   };
+
   useEffect(() => {
     checkReportExists();
   }, []);
@@ -72,17 +81,27 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
     postData,
     loading,
     error,
-  } = usePostData<{ message: string }, CreateSingleReportsRequest>({
+  } = usePostData<{ message: string }, CreateCriteriaRequest>({
     errorMessage: 'Failed to create ticker report',
     successMessage: 'Ticker report created successfully',
     redirectPath: `/public-equities/debug/ticker-reports/${ticker}`,
+  });
+  const {
+    data: allSingleCriterionReportsResponse,
+    postData: regenerateAllSingleCriterionReports,
+    loading: allSingleCriterionReportsLoading,
+    error: allSingleCriterionReportsError,
+  } = usePostData<{ message: string }, CreateAllCriterionReportsRequest>({
+    errorMessage: 'Failed to regenerate criterion reports',
+    successMessage: 'Criterion regeneration started successfully',
+    redirectPath: ``,
   });
   const {
     data: singleCriterionReportsResponse,
     postData: regenerateSingleCriterionReports,
     loading: singleCriterionReportsLoading,
     error: singleCriterionReportsError,
-  } = usePostData<{ message: string }, RegenerateSingleCriterionReportsRequest>({
+  } = usePostData<{ message: string }, CreateSingleCriterionReportRequest>({
     errorMessage: 'Failed to regenerate criterion reports',
     successMessage: 'Criterion regeneration started successfully',
     redirectPath: ``,
@@ -103,17 +122,23 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
     postData(`${baseURL}/api/public-equities/US/upsert-ai-criteria`, {
       sectorId: 60,
       industryGroupId: 6010,
-      ticker,
-      criterionKey,
     });
   };
 
-  const handleRegenerateSingleCriterionReport = async (criterionKey: string) => {
-    regenerateSingleCriterionReports(`${baseURL}/api/public-equities/US/single-criterion-report`, {
-      ticker,
-      criterionKey,
+  const handleRegenerateAllSingleCriterionReports = async (criterionKey: string) => {
+    regenerateAllSingleCriterionReports(`/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
+      langflowWebhookUrl: webhookUrl,
     });
   };
+
+  // This function handles section-specific regeneration (for checklist, metrics, or individual reports)
+  const handleRegenerateSingleCriterionReports = async (criterionKey: string, reportKey: string) => {
+    regenerateSingleCriterionReports(`/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
+      langflowWebhookUrl: webhookUrl,
+      reportKey: reportKey,
+    });
+  };
+
   const handleRegenerateAllCriteriaReport = async () => {
     regenerateAllCriteriaReports(`${baseURL}/api/public-equities/US/all-criterion-report`, {
       ticker,
@@ -125,8 +150,39 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
   const getMarkdownContent = (content?: string) => {
     return content ? marked.parse(content, { renderer }) : 'No Information';
   };
+
   return (
     <PageWrapper>
+      <Input
+        modelValue={webhookUrl}
+        placeholder="Enter Webhook URL"
+        className="text-color"
+        onUpdate={(e) => {
+          const newWebhookUrl = e as string;
+          setWebhookUrl(newWebhookUrl);
+        }}
+      >
+        Webhook Url
+      </Input>
+      <div className="m-4">
+        <Button
+          className="mr-2"
+          onClick={() => {
+            localStorage.removeItem('webhookUrl');
+            setWebhookUrl('');
+          }}
+        >
+          Clear Webhook URL
+        </Button>
+        <Button
+          onClick={() => {
+            localStorage.setItem('webhookUrl', webhookUrl);
+            console.log('Webhook URL saved:', webhookUrl);
+          }}
+        >
+          Save Webhook URL
+        </Button>
+      </div>
       <table className="border-2 w-full">
         <thead>
           <tr>
@@ -233,7 +289,6 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                                 <td className="border-2 px-2">Matched Content Percentage</td>
                                 <td className="border-2 px-2">{attachment.matchedPercentage}</td>
                               </tr>
-
                               <tr>
                                 <td className="border-2 px-2">Attachment Url</td>
                                 <td className="border-2 px-2">
@@ -263,13 +318,12 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                   <div className="my-5 flex justify-end">
                     <Button onClick={() => setSelectedCriterionForRegeneration(criterion)}>Regenerate (3m)</Button>
                   </div>
-
                   {selectedCriterionForRegeneration && (
                     <ConfirmationModal
                       open={true}
                       onClose={() => setSelectedCriterionForRegeneration(null)}
                       onConfirm={() => {
-                        handleRegenerateSingleCriterionReport(selectedCriterionForRegeneration.criterionKey);
+                        handleRegenerateAllSingleCriterionReports(selectedCriterionForRegeneration.criterionKey);
                         setSelectedCriterionForRegeneration(null);
                       }}
                       title="Regenerate Criterion Reports"
@@ -297,6 +351,12 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                     }
                   >
                     <div key={criterion.criterionKey + '_report_criterion_key'} className="mt-8">
+                      {/* Performance Checklist Section */}
+                      <div className="flex justify-end">
+                        <Button onClick={() => setSelectedSectionForRegeneration({ criterionKey: criterion.criterionKey, section: 'performanceChecklist' })}>
+                          Regenerate Performance Checklist
+                        </Button>
+                      </div>
                       <h2>Performance Checklist</h2>
                       <div className="block-bg-color m-8">
                         <div className="overflow-x-auto">
@@ -320,6 +380,14 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                           )}
                         </div>
                       </div>
+
+                      {/* Important Metrics Section */}
+                      <div className="flex justify-end">
+                        <Button onClick={() => setSelectedSectionForRegeneration({ criterionKey: criterion.criterionKey, section: 'importantMetrics' })}>
+                          Regenerate Important Metrics
+                        </Button>
+                      </div>
+                      <h2>Important Metrics</h2>
                       <div className="block-bg-color m-8">
                         <div className="overflow-x-auto">
                           <table className="w-full text-left border-collapse border border-gray-30 p-2">
@@ -330,27 +398,38 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                               </tr>
                             </thead>
                             <tbody className="w-full">
-                              {criterion.importantMetrics?.metrics?.map((metric) => {
-                                return (
-                                  <tr key={metric.metricKey} className="w-full">
-                                    <td className="px-4">{metric.metricKey}</td>
-                                    <td className="px-4">{metric.value}</td>
-                                  </tr>
-                                );
-                              })}
+                              {criterion.importantMetrics?.metrics?.map((metric) => (
+                                <tr key={metric.metricKey} className="w-full">
+                                  <td className="px-4">{metric.metricKey}</td>
+                                  <td className="px-4">{metric.value}</td>
+                                </tr>
+                              ))}
                             </tbody>
                           </table>
                         </div>
                       </div>
 
+                      {/* Reports Section */}
                       <h2>Reports</h2>
                       {criterion.reports?.map((report, index) => {
                         return (
                           <div key={(report.reportKey || index) + '_report_key'} className="mt-2">
+                            <div className="my-1 flex justify-end">
+                              <Button
+                                onClick={() =>
+                                  setSelectedSectionForRegeneration({
+                                    criterionKey: criterion.criterionKey,
+                                    section: 'report',
+                                    reportKey: report.reportKey,
+                                  })
+                                }
+                              >
+                                Regenerate {report.reportKey} report
+                              </Button>
+                            </div>
                             <h2 className="font-bold text-xl mt-5">
                               📄{index + 1}. {report.reportKey}
                             </h2>
-
                             {reportContentMap[`${criterion.criterionKey}__${report.reportKey}`] ? (
                               <div
                                 className="markdown-body text-md"
@@ -369,6 +448,30 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
             })}
           </div>
         </div>
+      )}
+
+      {/* Confirmation Modal for section-specific regeneration */}
+      {selectedSectionForRegeneration && (
+        <ConfirmationModal
+          open={true}
+          onClose={() => setSelectedSectionForRegeneration(null)}
+          onConfirm={() => {
+            handleRegenerateSingleCriterionReports(
+              selectedSectionForRegeneration.criterionKey,
+              selectedSectionForRegeneration.section === 'report' && selectedSectionForRegeneration.reportKey
+                ? selectedSectionForRegeneration.reportKey
+                : selectedSectionForRegeneration.section
+            );
+            setSelectedSectionForRegeneration(null);
+          }}
+          title="Regenerate Section"
+          confirmationText={`Are you sure you want to regenerate ${
+            selectedSectionForRegeneration.section === 'report' && selectedSectionForRegeneration.reportKey
+              ? `report ${selectedSectionForRegeneration.reportKey}`
+              : selectedSectionForRegeneration.section
+          } for criterion ${selectedSectionForRegeneration.criterionKey}?`}
+          askForTextInput={true}
+        />
       )}
     </PageWrapper>
   );
