@@ -118,8 +118,8 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
   });
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
-  const handleCreateSingleCriterionReport = async (criterionKey: string) => {
-    postData(`${baseURL}/api/public-equities/US/upsert-ai-criteria`, {
+  const handleCreateSingleCriterionReport = async () => {
+    postData(`${baseURL}/api/actions/ai-criteria`, {
       sectorId: 60,
       industryGroupId: 6010,
     });
@@ -231,7 +231,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                   <IconButton
                     iconName={IconTypes.Reload}
                     tooltip="Create Ticker Report"
-                    onClick={() => handleCreateSingleCriterionReport(item.key)}
+                    onClick={() => handleCreateSingleCriterionReport()}
                     disabled={loading}
                     loading={loading}
                     variant="text"
