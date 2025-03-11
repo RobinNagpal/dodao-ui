@@ -1,3 +1,4 @@
+import { initializeNewTickerReport } from '@/lib/publicEquity';
 import { prisma } from '@/prisma';
 import { TickerCreateRequest, TickerUpsertRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -13,8 +14,9 @@ async function getHandler(): Promise<Ticker[]> {
 }
 
 async function postHandler(req: NextRequest): Promise<Ticker> {
-  const { sectorId, industryGroupId, tickerKey, reportUrl }: TickerCreateRequest = await req.json();
+  const { sectorId, industryGroupId, tickerKey }: TickerCreateRequest = await req.json();
 
+  const reportUrl = await initializeNewTickerReport(tickerKey, sectorId, industryGroupId);
   const newTicker = await prisma.ticker.create({
     data: {
       tickerKey,

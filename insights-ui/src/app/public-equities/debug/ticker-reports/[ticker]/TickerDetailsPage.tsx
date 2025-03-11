@@ -27,9 +27,11 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
   const [showRegenerateAllConfirmModal, setShowRegenerateAllConfirmModal] = useState(false);
   const [selectedCriterionForRegeneration, setSelectedCriterionForRegeneration] = useState<CriterionEvaluation | null>(null);
   // New state for section-specific regeneration confirmation
-  const [selectedSectionForRegeneration, setSelectedSectionForRegeneration] = useState<{ criterionKey: string; section: string; reportKey?: string } | null>(
-    null
-  );
+  const [selectedSectionForRegeneration, setSelectedSectionForRegeneration] = useState<{
+    criterionKey: string;
+    section: string;
+    reportKey?: string;
+  } | null>(null);
   const [reportExists, setReportExists] = useState(false);
   const [report, setReport] = useState<TickerReport>();
   const [selectedCriterionAccodian, setSelectedCriterionAccodian] = useState<string | null>(null);
@@ -37,7 +39,9 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
   const [webhookUrl, setWebhookUrl] = useState(localStorage.getItem('webhookUrl') || '');
 
   const checkReportExists = async () => {
-    const response = await fetch(`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${ticker}/latest-10q-report.json`);
+    const response = await fetch(`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${ticker}/latest-10q-report.json`, {
+      cache: 'no-cache',
+    });
     if (response.status === 200) {
       setReportExists(true);
       const report: TickerReport = await response.json();
@@ -183,67 +187,12 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
           Save Webhook URL
         </Button>
       </div>
-      <table className="border-2 w-full">
-        <thead>
-          <tr>
-            <th className="border-2 px-2">Name</th>
-            <th className="border-2 px-2">Value</th>
-            <th className="border-2 px-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border-2 px-2">Ticker</td>
-            <td className="border-2 px-2">{ticker}</td>
-            <td className="border-2 px-2"></td>
-          </tr>
-          <tr>
-            <td className="border-2 px-2">Ticker Report Url</td>
-            <td className="border-2 px-2">
-              <a
-                href={`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${ticker}/latest-10q-report.json`}
-                target="_blank"
-              >
-                {`/public-equities/US/tickers/${ticker}/latest-10q-report.json`}
-              </a>
-            </td>
-            <td className="border-2 px-2">
-              <IconButton
-                iconName={IconTypes.PlusIcon}
-                tooltip="Create Ticker Report"
-                onClick={() => setShowConfirmModal(true)}
-                disabled={loading}
-                loading={loading}
-                variant="text"
-                removeBorder={true}
-                className="link-color pointer-cursor"
-              />
-            </td>
-          </tr>
-          {industryGroupCriteria?.criteria?.map((item) => {
-            return (
-              <tr key={item.key}>
-                <td className="border-2 px-2">
-                  {item.key} - {item.name}
-                </td>
-                <td className="border-2 px-2">{item.shortDescription}</td>
-                <td className="border-2 px-2">
-                  <IconButton
-                    iconName={IconTypes.Reload}
-                    tooltip="Create Ticker Report"
-                    onClick={() => handleCreateSingleCriterionReport()}
-                    disabled={loading}
-                    loading={loading}
-                    variant="text"
-                    removeBorder={true}
-                    className="link-color pointer-cursor"
-                  />
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <h1>S3 File</h1>
+      <div>
+        <a href={`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${ticker}/latest-10q-report.json`} target="_blank">
+          {`/public-equities/US/tickers/${ticker}/latest-10q-report.json`}
+        </a>
+      </div>
       {reportExists && report && (
         <div>
           <div className="mt-8">
@@ -353,7 +302,14 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                     <div key={criterion.criterionKey + '_report_criterion_key'} className="mt-8">
                       {/* Performance Checklist Section */}
                       <div className="flex justify-end">
-                        <Button onClick={() => setSelectedSectionForRegeneration({ criterionKey: criterion.criterionKey, section: 'performanceChecklist' })}>
+                        <Button
+                          onClick={() =>
+                            setSelectedSectionForRegeneration({
+                              criterionKey: criterion.criterionKey,
+                              section: 'performanceChecklist',
+                            })
+                          }
+                        >
                           Regenerate Performance Checklist
                         </Button>
                       </div>
@@ -383,7 +339,14 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
 
                       {/* Important Metrics Section */}
                       <div className="flex justify-end">
-                        <Button onClick={() => setSelectedSectionForRegeneration({ criterionKey: criterion.criterionKey, section: 'importantMetrics' })}>
+                        <Button
+                          onClick={() =>
+                            setSelectedSectionForRegeneration({
+                              criterionKey: criterion.criterionKey,
+                              section: 'importantMetrics',
+                            })
+                          }
+                        >
                           Regenerate Important Metrics
                         </Button>
                       </div>
