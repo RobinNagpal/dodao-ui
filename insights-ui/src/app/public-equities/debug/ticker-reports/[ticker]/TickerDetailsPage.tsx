@@ -21,17 +21,22 @@ import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useEffect, useState } from 'react';
+import { Spinner } from '@dodao/web-core/components/core/icons/Spinner';
 
 export default function TickerDetailsPage({ ticker }: { ticker: string }) {
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  // Modal flags for regeneration confirmation
+  const [showCriterionConfirmModal, setShowCriterionConfirmModal] = useState(false);
+  const [showSectionConfirmModal, setShowSectionConfirmModal] = useState(false);
   const [showRegenerateAllConfirmModal, setShowRegenerateAllConfirmModal] = useState(false);
+
+  // Selected states remain set (they are not cleared when the modal closes)
   const [selectedCriterionForRegeneration, setSelectedCriterionForRegeneration] = useState<CriterionEvaluation | null>(null);
-  // New state for section-specific regeneration confirmation
   const [selectedSectionForRegeneration, setSelectedSectionForRegeneration] = useState<{
     criterionKey: string;
     section: string;
     reportKey?: string;
   } | null>(null);
+
   const [reportExists, setReportExists] = useState(false);
   const [report, setReport] = useState<TickerReport>();
   const [selectedCriterionAccodian, setSelectedCriterionAccodian] = useState<string | null>(null);
@@ -120,8 +125,20 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
     successMessage: 'All criteria reports regeneration started successfully',
     redirectPath: ``,
   });
+  // New hook for regeneration of matching criteria
+  const {
+    data: matchingCriteriaResponse,
+    postData: regenerateMatchingCriteria,
+    loading: matchingCriteriaLoading,
+    error: matchingCriteriaError,
+  } = usePostData<{ message: string }, {}>({
+    errorMessage: 'Failed to regenerate matching criteria',
+    successMessage: 'Matching criteria regeneration started successfully',
+    redirectPath: ``,
+  });
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
+  // Criterion-level creation (if needed)
   const handleCreateSingleCriterionReport = async () => {
     postData(`${baseURL}/api/actions/ai-criteria`, {
       sectorId: 60,
@@ -135,7 +152,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
     });
   };
 
-  // This function handles section-specific regeneration (for checklist, metrics, or individual reports)
+  // Handles section-specific regeneration (for checklist, metrics, or individual reports)
   const handleRegenerateSingleCriterionReports = async (criterionKey: string, reportKey: string) => {
     regenerateSingleCriterionReports(`/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
       langflowWebhookUrl: webhookUrl,
@@ -144,10 +161,12 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
   };
 
   const handleRegenerateAllCriteriaReport = async () => {
-    regenerateAllCriteriaReports(`${baseURL}/api/public-equities/US/all-criterion-report`, {
-      ticker,
-    });
+    regenerateAllCriteriaReports(`${baseURL}/api/public-equities/US/all-criterion-report`, { ticker });
     setShowRegenerateAllConfirmModal(false);
+  };
+
+  const handleRegenerateMatchingCriteria = async () => {
+    regenerateMatchingCriteria(`/api/actions/tickers/${ticker}/trigger-criteria-matching`);
   };
 
   const renderer = getMarkedRenderer();
@@ -171,6 +190,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
       <div className="m-4">
         <Button
           className="mr-2"
+          disabled={false}
           onClick={() => {
             localStorage.removeItem('webhookUrl');
             setWebhookUrl('');
@@ -179,6 +199,7 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
           Clear Webhook URL
         </Button>
         <Button
+          disabled={false}
           onClick={() => {
             localStorage.setItem('webhookUrl', webhookUrl);
             console.log('Webhook URL saved:', webhookUrl);
@@ -195,6 +216,13 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
       </div>
       {reportExists && report && (
         <div>
+          {/* New button for regeneration of matching criteria */}
+          <div className="flex justify-end mb-4">
+            <Button disabled={matchingCriteriaLoading} onClick={handleRegenerateMatchingCriteria}>
+              {matchingCriteriaLoading && <Spinner />}
+              Regenerate Matching Criteria
+            </Button>
+          </div>
           <div className="mt-8">
             <h1 className="mb-8">Matching Attachments</h1>
             {report.criteriaMatchesOfLatest10Q?.criterionMatches?.map((criterion) => {
@@ -258,22 +286,35 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
           </div>
           <div className="mt-8">
             <div className="my-5 flex justify-end">
-              <Button onClick={() => setShowRegenerateAllConfirmModal(true)}>Regenerate All</Button>
+              <Button disabled={allCriteriaReportsLoading} onClick={() => setShowRegenerateAllConfirmModal(true)}>
+                {allCriteriaReportsLoading && <Spinner />}
+                Regenerate All
+              </Button>
             </div>
             <h1 className="mb-2">Criterion Evaluation</h1>
             {report.evaluationsOfLatest10Q?.map((criterion) => {
               return (
                 <div key={criterion.criterionKey + '_report_criterion_key'}>
                   <div className="my-5 flex justify-end">
-                    <Button onClick={() => setSelectedCriterionForRegeneration(criterion)}>Regenerate (3m)</Button>
+                    <Button
+                      disabled={selectedCriterionForRegeneration?.criterionKey === criterion.criterionKey && allSingleCriterionReportsLoading}
+                      onClick={() => {
+                        setSelectedCriterionForRegeneration(criterion);
+                        setShowCriterionConfirmModal(true);
+                      }}
+                    >
+                      {selectedCriterionForRegeneration?.criterionKey === criterion.criterionKey && allSingleCriterionReportsLoading && <Spinner />}
+                      Regenerate (3m)
+                    </Button>
                   </div>
-                  {selectedCriterionForRegeneration && (
+                  {showCriterionConfirmModal && selectedCriterionForRegeneration && (
                     <ConfirmationModal
-                      open={true}
-                      onClose={() => setSelectedCriterionForRegeneration(null)}
-                      onConfirm={() => {
-                        handleRegenerateAllSingleCriterionReports(selectedCriterionForRegeneration.criterionKey);
-                        setSelectedCriterionForRegeneration(null);
+                      open={showCriterionConfirmModal}
+                      onClose={() => setShowCriterionConfirmModal(false)}
+                      onConfirm={async () => {
+                        await handleRegenerateAllSingleCriterionReports(selectedCriterionForRegeneration.criterionKey);
+                        setShowCriterionConfirmModal(false);
+                        // Note: We intentionally do NOT clear selectedCriterionForRegeneration so that the loading spinner remains.
                       }}
                       title="Regenerate Criterion Reports"
                       confirmationText={`Are you sure you want to regenerate reports for ${selectedCriterionForRegeneration.criterionKey}?`}
@@ -303,13 +344,24 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                       {/* Performance Checklist Section */}
                       <div className="flex justify-end">
                         <Button
-                          onClick={() =>
+                          disabled={
+                            selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                            selectedSectionForRegeneration?.section === 'performanceChecklist' &&
+                            singleCriterionReportsLoading
+                          }
+                          onClick={() => {
                             setSelectedSectionForRegeneration({
                               criterionKey: criterion.criterionKey,
                               section: 'performanceChecklist',
-                            })
-                          }
+                            });
+                            setShowSectionConfirmModal(true);
+                          }}
                         >
+                          {selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                          selectedSectionForRegeneration?.section === 'performanceChecklist' &&
+                          singleCriterionReportsLoading ? (
+                            <Spinner />
+                          ) : null}
                           Regenerate Performance Checklist
                         </Button>
                       </div>
@@ -340,13 +392,24 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                       {/* Important Metrics Section */}
                       <div className="flex justify-end">
                         <Button
-                          onClick={() =>
+                          disabled={
+                            selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                            selectedSectionForRegeneration?.section === 'importantMetrics' &&
+                            singleCriterionReportsLoading
+                          }
+                          onClick={() => {
                             setSelectedSectionForRegeneration({
                               criterionKey: criterion.criterionKey,
                               section: 'importantMetrics',
-                            })
-                          }
+                            });
+                            setShowSectionConfirmModal(true);
+                          }}
                         >
+                          {selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                          selectedSectionForRegeneration?.section === 'importantMetrics' &&
+                          singleCriterionReportsLoading ? (
+                            <Spinner />
+                          ) : null}
                           Regenerate Important Metrics
                         </Button>
                       </div>
@@ -379,14 +442,27 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
                           <div key={(report.reportKey || index) + '_report_key'} className="mt-2">
                             <div className="my-1 flex justify-end">
                               <Button
-                                onClick={() =>
+                                disabled={
+                                  selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                                  selectedSectionForRegeneration?.section === 'report' &&
+                                  selectedSectionForRegeneration.reportKey === report.reportKey &&
+                                  singleCriterionReportsLoading
+                                }
+                                onClick={() => {
                                   setSelectedSectionForRegeneration({
                                     criterionKey: criterion.criterionKey,
                                     section: 'report',
                                     reportKey: report.reportKey,
-                                  })
-                                }
+                                  });
+                                  setShowSectionConfirmModal(true);
+                                }}
                               >
+                                {selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                                selectedSectionForRegeneration?.section === 'report' &&
+                                selectedSectionForRegeneration.reportKey === report.reportKey &&
+                                singleCriterionReportsLoading ? (
+                                  <Spinner />
+                                ) : null}
                                 Regenerate {report.reportKey} report
                               </Button>
                             </div>
@@ -414,18 +490,15 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
       )}
 
       {/* Confirmation Modal for section-specific regeneration */}
-      {selectedSectionForRegeneration && (
+      {showSectionConfirmModal && selectedSectionForRegeneration && (
         <ConfirmationModal
-          open={true}
-          onClose={() => setSelectedSectionForRegeneration(null)}
-          onConfirm={() => {
-            handleRegenerateSingleCriterionReports(
-              selectedSectionForRegeneration.criterionKey,
-              selectedSectionForRegeneration.section === 'report' && selectedSectionForRegeneration.reportKey
-                ? selectedSectionForRegeneration.reportKey
-                : selectedSectionForRegeneration.section
-            );
-            setSelectedSectionForRegeneration(null);
+          open={showSectionConfirmModal}
+          onClose={() => setShowSectionConfirmModal(false)}
+          onConfirm={async () => {
+            const { criterionKey, section, reportKey } = selectedSectionForRegeneration;
+            await handleRegenerateSingleCriterionReports(criterionKey, section === 'report' && reportKey ? reportKey : section);
+            setShowSectionConfirmModal(false);
+            // Note: We do not clear selectedSectionForRegeneration so the loading spinner remains.
           }}
           title="Regenerate Section"
           confirmationText={`Are you sure you want to regenerate ${
@@ -433,6 +506,22 @@ export default function TickerDetailsPage({ ticker }: { ticker: string }) {
               ? `report ${selectedSectionForRegeneration.reportKey}`
               : selectedSectionForRegeneration.section
           } for criterion ${selectedSectionForRegeneration.criterionKey}?`}
+          askForTextInput={true}
+        />
+      )}
+
+      {/* Confirmation Modal for criterion-level regeneration */}
+      {showCriterionConfirmModal && selectedCriterionForRegeneration && (
+        <ConfirmationModal
+          open={showCriterionConfirmModal}
+          onClose={() => setShowCriterionConfirmModal(false)}
+          onConfirm={async () => {
+            await handleRegenerateAllSingleCriterionReports(selectedCriterionForRegeneration.criterionKey);
+            setShowCriterionConfirmModal(false);
+            // Note: We do not clear selectedCriterionForRegeneration.
+          }}
+          title="Regenerate Criterion Reports"
+          confirmationText={`Are you sure you want to regenerate reports for ${selectedCriterionForRegeneration.criterionKey}?`}
           askForTextInput={true}
         />
       )}
