@@ -1,12 +1,6 @@
 import { CriterionDefinition } from '@/types/public-equity/criteria-types';
 import { MetricValueItem, PerformanceChecklistItem } from '@/types/public-equity/ticker-report-types';
 
-export interface TickerUpsertRequest {
-  tickerKey: string;
-  sectorId: number;
-  industryGroupId: number;
-}
-
 export interface TickerCreateRequest {
   tickerKey: string;
   sectorId: number;
