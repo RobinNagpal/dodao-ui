@@ -1,4 +1,5 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import CriterionReportPieChart from '@/components/visualizations/CriterionReportPieChart';
 import CriterionReportWaterfallChart from '@/components/visualizations/CriterionReportWaterfallChart';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { CriterionReportItem, TickerReport } from '@/types/public-equity/ticker-report-types';
@@ -23,6 +24,8 @@ function ReportContent({ criterionKey, criterionReport, industryGroupCriteria, c
     ?.reports.find((item) => item.key === criterionReport.reportKey);
   if (reportDefinition && reportDefinition.outputType === 'WaterfallChart') {
     return <CriterionReportWaterfallChart content={content} />;
+  } else if (reportDefinition && reportDefinition.outputType === 'PieChart') {
+    return <CriterionReportPieChart content={content} />;
   }
 
   return <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(content) }} />;
