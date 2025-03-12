@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/home-page/Button';
 import { CriterionEvaluation, CriterionReportItem, TickerReport } from '@/types/public-equity/ticker-report-types';
 import { CreateAllCriterionReportsRequest, CreateCriteriaRequest, CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
@@ -5,19 +7,18 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import { Spinner } from '@dodao/web-core/components/core/icons/Spinner';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useEffect, useState } from 'react';
+import WebhookUrlInput from './WebhookUrlInput';
 
 export interface DebugCriterionEvaluationProps {
   report: TickerReport;
-  webhookUrl: string;
 }
-export default function DebugCriterionEvaluation({ report, webhookUrl }: DebugCriterionEvaluationProps) {
+export default function DebugCriterionEvaluation({ report }: DebugCriterionEvaluationProps) {
   const ticker = report.ticker;
-  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
-  const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
   const [showCriterionConfirmModal, setShowCriterionConfirmModal] = useState(false);
   const [showSectionConfirmModal, setShowSectionConfirmModal] = useState(false);
   const [showRegenerateAllConfirmModal, setShowRegenerateAllConfirmModal] = useState(false);
@@ -63,21 +64,21 @@ export default function DebugCriterionEvaluation({ report, webhookUrl }: DebugCr
   });
 
   const handleRegenerateAllSingleCriterionReports = async (criterionKey: string) => {
-    regenerateAllSingleCriterionReports(`/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
-      langflowWebhookUrl: webhookUrl,
+    regenerateAllSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
+      langflowWebhookUrl: localStorage.getItem(`${criterionKey}_webhookUrl`) || '',
     });
   };
 
   // Handles section-specific regeneration (for checklist, metrics, or individual reports)
   const handleRegenerateSingleCriterionReports = async (criterionKey: string, reportKey: string) => {
-    regenerateSingleCriterionReports(`/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
-      langflowWebhookUrl: webhookUrl,
+    regenerateSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
+      langflowWebhookUrl: localStorage.getItem(`${criterionKey}_webhookUrl`) || '',
       reportKey: reportKey,
     });
   };
 
   const handleRegenerateAllCriteriaReport = async () => {
-    regenerateAllCriteriaReports(`${baseURL}/api/public-equities/US/all-criterion-report`, { ticker });
+    regenerateAllCriteriaReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-all`, { ticker });
     setShowRegenerateAllConfirmModal(false);
   };
 
@@ -116,13 +117,15 @@ export default function DebugCriterionEvaluation({ report, webhookUrl }: DebugCr
   return (
     <div className="mt-8">
       <div className="my-5 flex justify-end">
-        <Button onClick={() => setShowRegenerateAllConfirmModal(true)}>Regenerate All</Button>
+        <Button disabled onClick={() => setShowRegenerateAllConfirmModal(true)}>
+          Regenerate All
+        </Button>
       </div>
-      <h1 className="mb-2">Criterion Evaluation</h1>
+      <h1 className="mb-2 font-bold text-xl">Criterion Evaluation</h1>
       {report.evaluationsOfLatest10Q?.map((criterion) => {
         return (
           <div key={criterion.criterionKey + '_report_criterion_key'}>
-            <div className="my-5 flex justify-end">
+            <div className="my-5 flex justify-end space-x-5 items-center">
               <Button
                 disabled={selectedCriterionForRegeneration?.criterionKey === criterion.criterionKey && allSingleCriterionReportsLoading}
                 onClick={() => {
@@ -133,6 +136,7 @@ export default function DebugCriterionEvaluation({ report, webhookUrl }: DebugCr
                 {selectedCriterionForRegeneration?.criterionKey === criterion.criterionKey && allSingleCriterionReportsLoading && <Spinner />}
                 Regenerate (3m)
               </Button>
+              <WebhookUrlInput criterionKey={criterion.criterionKey} />
             </div>
             {showCriterionConfirmModal && selectedCriterionForRegeneration && (
               <ConfirmationModal

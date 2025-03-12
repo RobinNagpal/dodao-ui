@@ -13,8 +13,6 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
   const [reportExists, setReportExists] = useState(false);
   const [report, setReport] = useState<TickerReport>();
 
-  const [webhookUrl, setWebhookUrl] = useState(localStorage.getItem('webhookUrl') || '');
-
   const checkReportExists = async () => {
     const response = await fetch(`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${ticker}/latest-10q-report.json`, {
       cache: 'no-cache',
@@ -34,36 +32,6 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
 
   return (
     <PageWrapper>
-      <Input
-        modelValue={webhookUrl}
-        placeholder="Enter Webhook URL"
-        className="text-color"
-        onUpdate={(e) => {
-          const newWebhookUrl = e as string;
-          setWebhookUrl(newWebhookUrl);
-        }}
-      >
-        Webhook Url
-      </Input>
-      <div className="m-4">
-        <Button
-          className="mr-2"
-          onClick={() => {
-            localStorage.removeItem('webhookUrl');
-            setWebhookUrl('');
-          }}
-        >
-          Clear Webhook URL
-        </Button>
-        <Button
-          onClick={() => {
-            localStorage.setItem('webhookUrl', webhookUrl);
-            console.log('Webhook URL saved:', webhookUrl);
-          }}
-        >
-          Save Webhook URL
-        </Button>
-      </div>
       <h1>S3 File</h1>
       <div>
         <a href={`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${ticker}/latest-10q-report.json`} target="_blank">
@@ -73,7 +41,7 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
       {reportExists && report && (
         <div>
           <DebugMatchingAttachments report={report} />
-          <DebugCriterionEvaluation report={report} webhookUrl={webhookUrl} />
+          <DebugCriterionEvaluation report={report} />
         </div>
       )}
     </PageWrapper>
