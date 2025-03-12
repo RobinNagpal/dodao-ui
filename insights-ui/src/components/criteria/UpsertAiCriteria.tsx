@@ -16,7 +16,6 @@ export default function UpsertAiCriteria({ item, onPostUpsertAiCriteria }: Upser
   const [updating, setUpdating] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showViewCriteriaModal, setShowViewCriteriaModal] = useState(false);
-  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
   const { data, loading, postData } = usePostData<{ message: string }, CreateAiCriteriaRequest>({
     errorMessage: 'Failed to create AI criteria',
@@ -24,7 +23,7 @@ export default function UpsertAiCriteria({ item, onPostUpsertAiCriteria }: Upser
   const handleUpsertAICriteria = async () => {
     setUpdating(true);
     setShowConfirmModal(false);
-    await postData(`${baseURL}/api/public-equities/US/upsert-ai-criteria`, {
+    await postData(`/api/ai-criteria`, {
       industryGroupId: item.industryGroupId,
       sectorId: item.sectorId,
     });

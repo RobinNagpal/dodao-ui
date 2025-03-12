@@ -24,7 +24,6 @@ interface CriteriaTableProps {
 export default function CriteriaTable({ sectorId, industryGroupId, customCriteria }: CriteriaTableProps) {
   const ajv = new Ajv({ allErrors: true });
   const validate = ajv.compile(schema);
-  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
   const [criteria, setCriteria] = useState<CriterionDefinition[]>(customCriteria?.criteria || []);
   const [open, setOpen] = useState(false);
@@ -128,7 +127,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
   }, [criteria, pendingUpsert]);
 
   const handleUpsertCustomCriteria = async () => {
-    await postData(`${baseURL}/api/public-equities/US/upsert-custom-criteria`, {
+    await postData(`/api/custom-criteria`, {
       industryGroupId,
       sectorId,
       criteria,

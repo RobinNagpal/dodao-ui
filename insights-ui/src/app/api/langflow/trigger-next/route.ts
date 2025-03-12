@@ -34,10 +34,11 @@ const triggerNext = async (req: NextRequest) => {
   const payload = {
     ticker: body.ticker,
     shouldTriggerNext: payloadShouldTriggerNext,
+    reportKey: [...nextCriterion.reports.map((r) => r.key), 'performanceChecklist', 'importantMetrics'].join(','),
     criterion: JSON.stringify(nextCriterion),
   };
   const headers = { 'Content-Type': 'application/json' };
-  const response = await fetch(PE_US_REITS_WEBHOOK_URL, {
+  const response = await fetch(nextCriterion.langflowWebhookUrl || PE_US_REITS_WEBHOOK_URL, {
     method: 'POST',
     headers,
     body: JSON.stringify(payload),

@@ -4,20 +4,16 @@ import { SaveCriterionReportRequest } from '@/types/public-equity/ticker-request
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-const savePerformanceChecklistForCriterion = async (
-  req: NextRequest,
-  { params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }
-): Promise<CriterionReportItem> => {
-  const { tickerKey, criterionKey } = await params;
+const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<CriterionReportItem> => {
   const body = (await req.json()) as SaveCriterionReportRequest;
-  const tickerReport = await getTickerReport(tickerKey);
+  const tickerReport = await getTickerReport(body.ticker);
   const evaluations = tickerReport.evaluationsOfLatest10Q || [];
-  const matchingEvaluation = evaluations.find((e) => e.criterionKey === criterionKey);
+  const matchingEvaluation = evaluations.find((e) => e.criterionKey === body.criterionKey);
   if (!matchingEvaluation) {
-    throw new Error(`Evaluation with key '${criterionKey}' not found.`);
+    throw new Error(`Evaluation with key '${body.criterionKey}' not found.`);
   }
 
-  const outputFileUrl = await saveCriteriaEvaluation(tickerKey, criterionKey, body.reportKey, body.data);
+  const outputFileUrl = await saveCriteriaEvaluation(body.ticker, body.criterionKey, body.reportKey, body.data);
 
   const updatedReportValue: CriterionReportItem = {
     reportKey: body.reportKey,
@@ -34,10 +30,10 @@ const savePerformanceChecklistForCriterion = async (
 
   const updatedTickerReport = {
     ...tickerReport,
-    evaluationsOfLatest10Q: evaluations.map((e) => (e.criterionKey === criterionKey ? updatedEvaluation : e)),
+    evaluationsOfLatest10Q: evaluations.map((e) => (e.criterionKey === body.criterionKey ? updatedEvaluation : e)),
   };
 
-  await saveTickerReport(tickerKey, updatedTickerReport);
+  await saveTickerReport(body.ticker, updatedTickerReport);
 
   return updatedReportValue;
 };

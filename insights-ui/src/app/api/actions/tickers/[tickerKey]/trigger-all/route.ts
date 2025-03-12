@@ -21,7 +21,7 @@ const triggerAllReports = async (req: NextRequest, { params }: { params: Promise
     criterion: JSON.stringify(firstCriterion),
   };
   const headers = { 'Content-Type': 'application/json' };
-  const response = await fetch(PE_US_REITS_WEBHOOK_URL, {
+  const response = await fetch(firstCriterion.langflowWebhookUrl || PE_US_REITS_WEBHOOK_URL, {
     method: 'POST',
     headers,
     body: JSON.stringify(payload),

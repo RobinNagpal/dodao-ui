@@ -39,6 +39,8 @@ export interface SaveCriterionMetricsRequest {
 }
 
 export interface SaveCriterionReportRequest {
+  ticker: string;
+  criterionKey: string;
   reportKey: string;
   data: string;
 }

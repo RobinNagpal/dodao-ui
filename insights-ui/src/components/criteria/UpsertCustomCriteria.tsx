@@ -20,7 +20,6 @@ export default function UpsertCustomCriteria({ item, onPostUpsertCustomCriteria 
   const [updating, setUpdating] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showViewCriteriaModal, setShowViewCriteriaModal] = useState(false);
-  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
   const router = useRouter();
 
   const { data, loading, postData } = usePostData<{ message: string }, CreateCustomCriteriaRequest>({
@@ -29,7 +28,7 @@ export default function UpsertCustomCriteria({ item, onPostUpsertCustomCriteria 
   const handleCopyAICriteria = async () => {
     setUpdating(true);
     setShowConfirmModal(false);
-    await postData(`${baseURL}/api/public-equities/US/copy-ai-criteria`, {
+    await postData(`/api/actions/criteria/copy-ai-criteria`, {
       industryGroupId: item.industryGroupId,
       sectorId: item.sectorId,
     });

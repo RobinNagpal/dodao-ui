@@ -7,10 +7,9 @@ import { SaveCriterionMetricsRequest } from '@/types/public-equity/ticker-reques
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-const saveMetrics = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }): Promise<ImportantMetrics> => {
-  const { tickerKey, criterionKey } = await params;
+const saveMetrics = async (req: NextRequest): Promise<ImportantMetrics> => {
   const body = (await req.json()) as SaveCriterionMetricsRequest;
-  const tickerReport = await getTickerReport(tickerKey);
+  const tickerReport = await getTickerReport(body.ticker);
   const evaluations = tickerReport.evaluationsOfLatest10Q || [];
   let evaluation: CriterionEvaluation | undefined = evaluations.find((e) => e.criterionKey === body.criterionKey);
   const newMetrics: ImportantMetrics = {
@@ -19,7 +18,7 @@ const saveMetrics = async (req: NextRequest, { params }: { params: Promise<{ tic
   };
   if (!evaluation) {
     evaluation = {
-      criterionKey: criterionKey,
+      criterionKey: body.criterionKey,
       importantMetrics: newMetrics,
       reports: undefined,
       performanceChecklistEvaluation: undefined,
@@ -29,7 +28,7 @@ const saveMetrics = async (req: NextRequest, { params }: { params: Promise<{ tic
     evaluation.importantMetrics = newMetrics;
   }
   tickerReport.evaluationsOfLatest10Q = evaluations;
-  await saveTickerReport(tickerKey, tickerReport);
+  await saveTickerReport(body.ticker, tickerReport);
 
   return newMetrics;
 };
