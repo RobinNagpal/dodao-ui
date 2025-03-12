@@ -5,6 +5,7 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
 interface UpsertAiCriteriaProps {
@@ -23,7 +24,7 @@ export default function UpsertAiCriteria({ item, onPostUpsertAiCriteria }: Upser
   const handleUpsertAICriteria = async () => {
     setUpdating(true);
     setShowConfirmModal(false);
-    await postData(`/api/ai-criteria`, {
+    await postData(`${getBaseUrl()}/api/ai-criteria`, {
       industryGroupId: item.industryGroupId,
       sectorId: item.sectorId,
     });

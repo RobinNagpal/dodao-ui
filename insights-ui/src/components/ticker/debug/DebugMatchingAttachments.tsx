@@ -3,6 +3,7 @@ import { TickerReport } from '@/types/public-equity/ticker-report-types';
 import { Spinner } from '@dodao/web-core/components/core/icons/Spinner';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useState } from 'react';
@@ -31,7 +32,7 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
   });
 
   const handleRegenerateMatchingCriteria = async () => {
-    regenerateMatchingCriteria(`/api/actions/tickers/${ticker}/trigger-criteria-matching`);
+    regenerateMatchingCriteria(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-criteria-matching`);
   };
 
   return (
@@ -43,7 +44,7 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
           Regenerate Matching Criteria
         </Button>
       </div>
-      <h1 className="mb-8">Matching Attachments</h1>
+      <h1 className="mb-8 font-bold text-xl">Matching Attachments</h1>
       {report.criteriaMatchesOfLatest10Q?.criterionMatches?.map((criterion) => {
         return (
           <Accordion
