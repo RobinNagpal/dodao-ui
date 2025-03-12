@@ -31,7 +31,7 @@ const triggerSingleCriterionReport = async (
     criterion: JSON.stringify(matchingCriterion),
   };
   const headers = { 'Content-Type': 'application/json' };
-  const response = await fetch(body.langflowWebhookUrl || PE_US_REITS_WEBHOOK_URL, {
+  const response = await fetch(body.langflowWebhookUrl || matchingCriterion.langflowWebhookUrl || PE_US_REITS_WEBHOOK_URL, {
     method: 'POST',
     headers,
     body: JSON.stringify(payload),

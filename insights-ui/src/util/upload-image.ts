@@ -1,10 +1,11 @@
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { InsightsConstants } from './insights-constants';
 
 export async function uploadImageToS3(file: File, fileName: string) {
   const fileBuffer = await file.arrayBuffer();
   const bucketName = InsightsConstants.S3_BUCKET_NAME;
   const key = `images/${fileName}`;
-  const response = await fetch('/api/upload', {
+  const response = await fetch(`${getBaseUrl()}/api/upload`, {
     method: 'POST',
     headers: {
       'x-file-name': fileName, // Pass filename in headers

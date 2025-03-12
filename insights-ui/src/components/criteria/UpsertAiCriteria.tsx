@@ -5,6 +5,7 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
 interface UpsertAiCriteriaProps {
@@ -16,7 +17,6 @@ export default function UpsertAiCriteria({ item, onPostUpsertAiCriteria }: Upser
   const [updating, setUpdating] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showViewCriteriaModal, setShowViewCriteriaModal] = useState(false);
-  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
   const { data, loading, postData } = usePostData<{ message: string }, CreateAiCriteriaRequest>({
     errorMessage: 'Failed to create AI criteria',
@@ -24,7 +24,7 @@ export default function UpsertAiCriteria({ item, onPostUpsertAiCriteria }: Upser
   const handleUpsertAICriteria = async () => {
     setUpdating(true);
     setShowConfirmModal(false);
-    await postData(`${baseURL}/api/public-equities/US/upsert-ai-criteria`, {
+    await postData(`${getBaseUrl()}/api/ai-criteria`, {
       industryGroupId: item.industryGroupId,
       sectorId: item.sectorId,
     });

@@ -8,6 +8,7 @@ import Input from '@dodao/web-core/components/core/input/Input';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Ticker } from '@prisma/client';
 
 import { useState } from 'react';
@@ -48,13 +49,13 @@ export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps
 
   const handleSave = async () => {
     if (ticker) {
-      await putData(`/api/tickers/${tickerKey}`, {
+      await putData(`${getBaseUrl()}/api/tickers/${tickerKey}`, {
         tickerKey,
         sectorId: tickerForm.sectorId,
         industryGroupId: tickerForm.industryGroupId,
       });
     } else {
-      await postData(`/api/tickers`, {
+      await postData(`${getBaseUrl()}/api/tickers`, {
         tickerKey,
         sectorId: tickerForm.sectorId,
         industryGroupId: tickerForm.industryGroupId,

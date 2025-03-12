@@ -5,20 +5,16 @@ import { SavePerformanceChecklistRequest } from '@/types/public-equity/ticker-re
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-const savePerformanceChecklistForCriterion = async (
-  req: NextRequest,
-  { params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }
-): Promise<PerformanceChecklistEvaluation> => {
-  const { tickerKey, criterionKey } = await params;
+const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<PerformanceChecklistEvaluation> => {
   const body = (await req.json()) as SavePerformanceChecklistRequest;
-  const tickerReport = await getTickerReport(tickerKey);
+  const tickerReport = await getTickerReport(body.ticker);
   const evaluations = tickerReport.evaluationsOfLatest10Q || [];
   const performanceChecklist: PerformanceChecklistItem[] =
     typeof body.performanceChecklist === 'string' ? parseLangflowJSON(body.performanceChecklist) : body.performanceChecklist;
   await savePerformanceChecklist(body.ticker, body.criterionKey, performanceChecklist);
-  const evaluation: CriterionEvaluation | undefined = evaluations.find((e) => e.criterionKey === criterionKey);
+  const evaluation: CriterionEvaluation | undefined = evaluations.find((e) => e.criterionKey === body.criterionKey);
   if (!evaluation) {
-    throw new Error(`Evaluation with key '${criterionKey}' not found.`);
+    throw new Error(`Evaluation with key '${body.criterionKey}' not found.`);
   }
 
   const checklist: PerformanceChecklistEvaluation = {
@@ -28,7 +24,7 @@ const savePerformanceChecklistForCriterion = async (
   evaluation.performanceChecklistEvaluation = checklist;
 
   tickerReport.evaluationsOfLatest10Q = evaluations;
-  await saveTickerReport(tickerKey, tickerReport);
+  await saveTickerReport(body.ticker, tickerReport);
   return checklist;
 };
 

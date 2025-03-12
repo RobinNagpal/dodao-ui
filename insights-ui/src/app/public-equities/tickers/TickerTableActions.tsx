@@ -4,6 +4,7 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Ticker } from '@prisma/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -36,7 +37,7 @@ export default function TickerTableActions({ ticker }: TickerTableActionsProps) 
   const handleConfirmDelete = async () => {
     if (!tickerToDelete) return;
     setShowConfirmModal(false);
-    await deleteData(`/api/tickers/${tickerToDelete}`);
+    await deleteData(`${getBaseUrl()}/api/tickers/${tickerToDelete}`);
     alert('Ticker deleted successfully.');
 
     setTickerToDelete(null);
