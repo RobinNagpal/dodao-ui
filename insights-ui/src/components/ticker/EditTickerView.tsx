@@ -1,7 +1,7 @@
 'use client';
 
 import { GicsSector, SectorsData } from '@/types/public-equity/gicsSector';
-import { TickerUpsertRequest } from '@/types/public-equity/ticker-request-response';
+import { TickerCreateRequest } from '@/types/public-equity/ticker-request-response';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
@@ -26,22 +26,21 @@ export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps
   console.log('initialSector', initialSector);
   console.log('sectors', sectors);
 
-  const [tickerForm, setTickerForm] = useState<TickerUpsertRequest>({
+  const [tickerForm, setTickerForm] = useState<TickerCreateRequest>({
     tickerKey: ticker?.tickerKey || '',
     sectorId: ticker?.sectorId || initialSector.id,
     industryGroupId: ticker?.industryGroupId || Object.values(initialSector.industryGroups)[0].id,
-    reportUrl: ticker?.reportUrl || '',
   });
 
   const [selectedSector, setSelectedSector] = useState<GicsSector>(initialSector);
 
-  const { postData, loading: createLoading } = usePostData<Ticker, TickerUpsertRequest>({
+  const { postData, loading: createLoading } = usePostData<Ticker, TickerCreateRequest>({
     successMessage: 'Ticker saved successfully!',
     errorMessage: 'Failed to save ticker. Please try again.',
     redirectPath: `/public-equities/tickers`,
   });
 
-  const { putData, loading: updateLoading } = usePutData<Ticker, TickerUpsertRequest>({
+  const { putData, loading: updateLoading } = usePutData<Ticker, TickerCreateRequest>({
     successMessage: 'Ticker updated successfully!',
     errorMessage: 'Failed to update ticker. Please try again.',
     redirectPath: `/public-equities/tickers`,
@@ -53,14 +52,12 @@ export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps
         tickerKey,
         sectorId: tickerForm.sectorId,
         industryGroupId: tickerForm.industryGroupId,
-        reportUrl: tickerForm.reportUrl,
       });
     } else {
       await postData(`/api/tickers`, {
         tickerKey,
         sectorId: tickerForm.sectorId,
         industryGroupId: tickerForm.industryGroupId,
-        reportUrl: tickerForm.reportUrl,
       });
     }
   };
@@ -93,16 +90,6 @@ export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps
           setTickerForm({ ...tickerForm, industryGroupId: parseInt(value || '0') });
         }}
       />
-
-      <Input
-        modelValue={tickerForm.reportUrl}
-        placeholder="Enter Report URL"
-        className="text-color"
-        onUpdate={(e) => setTickerForm({ ...tickerForm, reportUrl: e as string })}
-      >
-        Report Url
-      </Input>
-
       {/* ✅ Save Button */}
       <div className="flex justify-center items-center mt-6">
         <Button

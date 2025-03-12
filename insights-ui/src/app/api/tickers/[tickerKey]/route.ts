@@ -1,5 +1,4 @@
 import { prisma } from '@/prisma';
-import { TickerUpsertRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
