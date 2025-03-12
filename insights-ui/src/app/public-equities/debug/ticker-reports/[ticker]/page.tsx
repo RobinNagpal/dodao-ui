@@ -1,4 +1,4 @@
-import TickerDetailsPage from '@/app/public-equities/debug/ticker-reports/[ticker]/TickerDetailsPage';
+import TickerDetailsDebugPage from '@/app/public-equities/debug/ticker-reports/[ticker]/TickerDetailsDebugPage';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 
 export default async function Page({ params }: { params: Promise<{ ticker: string }> }) {
@@ -7,7 +7,7 @@ export default async function Page({ params }: { params: Promise<{ ticker: strin
 
   return (
     <PageWrapper>
-      <TickerDetailsPage ticker={ticker} />
+      <TickerDetailsDebugPage ticker={ticker} />
     </PageWrapper>
   );
 }
