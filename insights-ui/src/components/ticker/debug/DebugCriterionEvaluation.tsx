@@ -2,6 +2,7 @@ import { Button } from '@/components/home-page/Button';
 import { CriterionEvaluation, CriterionReportItem, TickerReport } from '@/types/public-equity/ticker-report-types';
 import { CreateAllCriterionReportsRequest, CreateCriteriaRequest, CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { Spinner } from '@dodao/web-core/components/core/icons/Spinner';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
@@ -17,10 +18,11 @@ export default function DebugCriterionEvaluation({ report, webhookUrl }: DebugCr
   const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
 
   const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
-
+  const [showCriterionConfirmModal, setShowCriterionConfirmModal] = useState(false);
+  const [showSectionConfirmModal, setShowSectionConfirmModal] = useState(false);
   const [showRegenerateAllConfirmModal, setShowRegenerateAllConfirmModal] = useState(false);
   const [reportContentMap, setReportContentMap] = useState<{ [key: string]: string }>({});
-
+  const [selectedCriterionAccodian, setSelectedCriterionAccodian] = useState<string | null>(null);
   const [selectedCriterionForRegeneration, setSelectedCriterionForRegeneration] = useState<CriterionEvaluation | null>(null);
   // New state for section-specific regeneration confirmation
   const [selectedSectionForRegeneration, setSelectedSectionForRegeneration] = useState<{
@@ -60,31 +62,13 @@ export default function DebugCriterionEvaluation({ report, webhookUrl }: DebugCr
     redirectPath: ``,
   });
 
-  const {
-    data: reponse,
-    postData,
-    loading,
-    error,
-  } = usePostData<{ message: string }, CreateCriteriaRequest>({
-    errorMessage: 'Failed to create ticker report',
-    successMessage: 'Ticker report created successfully',
-    redirectPath: `/public-equities/debug/ticker-reports/${ticker}`,
-  });
-
-  const handleCreateSingleCriterionReport = async () => {
-    postData(`${baseURL}/api/actions/ai-criteria`, {
-      sectorId: 60,
-      industryGroupId: 6010,
-    });
-  };
-
   const handleRegenerateAllSingleCriterionReports = async (criterionKey: string) => {
     regenerateAllSingleCriterionReports(`/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
       langflowWebhookUrl: webhookUrl,
     });
   };
 
-  // This function handles section-specific regeneration (for checklist, metrics, or individual reports)
+  // Handles section-specific regeneration (for checklist, metrics, or individual reports)
   const handleRegenerateSingleCriterionReports = async (criterionKey: string, reportKey: string) => {
     regenerateSingleCriterionReports(`/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
       langflowWebhookUrl: webhookUrl,
@@ -93,9 +77,7 @@ export default function DebugCriterionEvaluation({ report, webhookUrl }: DebugCr
   };
 
   const handleRegenerateAllCriteriaReport = async () => {
-    regenerateAllCriteriaReports(`${baseURL}/api/public-equities/US/all-criterion-report`, {
-      ticker,
-    });
+    regenerateAllCriteriaReports(`${baseURL}/api/public-equities/US/all-criterion-report`, { ticker });
     setShowRegenerateAllConfirmModal(false);
   };
 
@@ -141,15 +123,25 @@ export default function DebugCriterionEvaluation({ report, webhookUrl }: DebugCr
         return (
           <div key={criterion.criterionKey + '_report_criterion_key'}>
             <div className="my-5 flex justify-end">
-              <Button onClick={() => setSelectedCriterionForRegeneration(criterion)}>Regenerate (3m)</Button>
+              <Button
+                disabled={selectedCriterionForRegeneration?.criterionKey === criterion.criterionKey && allSingleCriterionReportsLoading}
+                onClick={() => {
+                  setSelectedCriterionForRegeneration(criterion);
+                  setShowCriterionConfirmModal(true);
+                }}
+              >
+                {selectedCriterionForRegeneration?.criterionKey === criterion.criterionKey && allSingleCriterionReportsLoading && <Spinner />}
+                Regenerate (3m)
+              </Button>
             </div>
-            {selectedCriterionForRegeneration && (
+            {showCriterionConfirmModal && selectedCriterionForRegeneration && (
               <ConfirmationModal
-                open={true}
-                onClose={() => setSelectedCriterionForRegeneration(null)}
-                onConfirm={() => {
-                  handleRegenerateAllSingleCriterionReports(selectedCriterionForRegeneration.criterionKey);
-                  setSelectedCriterionForRegeneration(null);
+                open={showCriterionConfirmModal}
+                onClose={() => setShowCriterionConfirmModal(false)}
+                onConfirm={async () => {
+                  await handleRegenerateAllSingleCriterionReports(selectedCriterionForRegeneration.criterionKey);
+                  setShowCriterionConfirmModal(false);
+                  // Note: We intentionally do NOT clear selectedCriterionForRegeneration so that the loading spinner remains.
                 }}
                 title="Regenerate Criterion Reports"
                 confirmationText={`Are you sure you want to regenerate reports for ${selectedCriterionForRegeneration.criterionKey}?`}
@@ -168,22 +160,33 @@ export default function DebugCriterionEvaluation({ report, webhookUrl }: DebugCr
             )}
             <Accordion
               label={criterion.criterionKey}
-              isOpen={selectedCriterionAccordian === `reports_${criterion.criterionKey}`}
+              isOpen={selectedCriterionAccodian === `reports_${criterion.criterionKey}`}
               onClick={() =>
-                setSelectedCriterionAccordian(selectedCriterionAccordian === `reports_${criterion.criterionKey}` ? null : `reports_${criterion.criterionKey}`)
+                setSelectedCriterionAccodian(selectedCriterionAccodian === `reports_${criterion.criterionKey}` ? null : `reports_${criterion.criterionKey}`)
               }
             >
               <div key={criterion.criterionKey + '_report_criterion_key'} className="mt-8">
                 {/* Performance Checklist Section */}
                 <div className="flex justify-end">
                   <Button
-                    onClick={() =>
+                    disabled={
+                      selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                      selectedSectionForRegeneration?.section === 'performanceChecklist' &&
+                      singleCriterionReportsLoading
+                    }
+                    onClick={() => {
                       setSelectedSectionForRegeneration({
                         criterionKey: criterion.criterionKey,
                         section: 'performanceChecklist',
-                      })
-                    }
+                      });
+                      setShowSectionConfirmModal(true);
+                    }}
                   >
+                    {selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                    selectedSectionForRegeneration?.section === 'performanceChecklist' &&
+                    singleCriterionReportsLoading ? (
+                      <Spinner />
+                    ) : null}
                     Regenerate Performance Checklist
                   </Button>
                 </div>
@@ -214,13 +217,24 @@ export default function DebugCriterionEvaluation({ report, webhookUrl }: DebugCr
                 {/* Important Metrics Section */}
                 <div className="flex justify-end">
                   <Button
-                    onClick={() =>
+                    disabled={
+                      selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                      selectedSectionForRegeneration?.section === 'importantMetrics' &&
+                      singleCriterionReportsLoading
+                    }
+                    onClick={() => {
                       setSelectedSectionForRegeneration({
                         criterionKey: criterion.criterionKey,
                         section: 'importantMetrics',
-                      })
-                    }
+                      });
+                      setShowSectionConfirmModal(true);
+                    }}
                   >
+                    {selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                    selectedSectionForRegeneration?.section === 'importantMetrics' &&
+                    singleCriterionReportsLoading ? (
+                      <Spinner />
+                    ) : null}
                     Regenerate Important Metrics
                   </Button>
                 </div>
@@ -253,14 +267,27 @@ export default function DebugCriterionEvaluation({ report, webhookUrl }: DebugCr
                     <div key={(report.reportKey || index) + '_report_key'} className="mt-2">
                       <div className="my-1 flex justify-end">
                         <Button
-                          onClick={() =>
+                          disabled={
+                            selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                            selectedSectionForRegeneration?.section === 'report' &&
+                            selectedSectionForRegeneration.reportKey === report.reportKey &&
+                            singleCriterionReportsLoading
+                          }
+                          onClick={() => {
                             setSelectedSectionForRegeneration({
                               criterionKey: criterion.criterionKey,
                               section: 'report',
                               reportKey: report.reportKey,
-                            })
-                          }
+                            });
+                            setShowSectionConfirmModal(true);
+                          }}
                         >
+                          {selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                          selectedSectionForRegeneration?.section === 'report' &&
+                          selectedSectionForRegeneration.reportKey === report.reportKey &&
+                          singleCriterionReportsLoading ? (
+                            <Spinner />
+                          ) : null}
                           Regenerate {report.reportKey} report
                         </Button>
                       </div>
@@ -283,6 +310,26 @@ export default function DebugCriterionEvaluation({ report, webhookUrl }: DebugCr
           </div>
         );
       })}
+      {/* Confirmation Modal for section-specific regeneration */}
+      {showSectionConfirmModal && selectedSectionForRegeneration && (
+        <ConfirmationModal
+          open={showSectionConfirmModal}
+          onClose={() => setShowSectionConfirmModal(false)}
+          onConfirm={async () => {
+            const { criterionKey, section, reportKey } = selectedSectionForRegeneration;
+            await handleRegenerateSingleCriterionReports(criterionKey, section === 'report' && reportKey ? reportKey : section);
+            setShowSectionConfirmModal(false);
+            // Note: We do not clear selectedSectionForRegeneration so the loading spinner remains.
+          }}
+          title="Regenerate Section"
+          confirmationText={`Are you sure you want to regenerate ${
+            selectedSectionForRegeneration.section === 'report' && selectedSectionForRegeneration.reportKey
+              ? `report ${selectedSectionForRegeneration.reportKey}`
+              : selectedSectionForRegeneration.section
+          } for criterion ${selectedSectionForRegeneration.criterionKey}?`}
+          askForTextInput={true}
+        />
+      )}
       {selectedSectionForRegeneration && (
         <ConfirmationModal
           open={true}

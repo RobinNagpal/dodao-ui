@@ -1,4 +1,7 @@
+import { Button } from '@/components/home-page/Button';
 import { TickerReport } from '@/types/public-equity/ticker-report-types';
+import { Spinner } from '@dodao/web-core/components/core/icons/Spinner';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
@@ -9,15 +12,37 @@ export interface DebugMatchingAttachmentsProps {
 }
 
 export default function DebugMatchingAttachments({ report }: DebugMatchingAttachmentsProps) {
-  const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
+  const ticker = report.ticker;
 
+  const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
   const renderer = getMarkedRenderer();
   const getMarkdownContent = (content?: string) => {
     return content ? marked.parse(content, { renderer }) : 'No Information';
   };
 
+  const {
+    postData: regenerateMatchingCriteria,
+    loading: matchingCriteriaLoading,
+    error: matchingCriteriaError,
+  } = usePostData<{ message: string }, {}>({
+    errorMessage: 'Failed to regenerate matching criteria',
+    successMessage: 'Matching criteria regeneration started successfully',
+    redirectPath: ``,
+  });
+
+  const handleRegenerateMatchingCriteria = async () => {
+    regenerateMatchingCriteria(`/api/actions/tickers/${ticker}/trigger-criteria-matching`);
+  };
+
   return (
     <div className="mt-8">
+      {matchingCriteriaError && <div className="text-red-500">{matchingCriteriaError}</div>}
+      <div className="flex justify-end mb-4">
+        <Button disabled={matchingCriteriaLoading} onClick={handleRegenerateMatchingCriteria}>
+          {matchingCriteriaLoading && <Spinner />}
+          Regenerate Matching Criteria
+        </Button>
+      </div>
       <h1 className="mb-8">Matching Attachments</h1>
       {report.criteriaMatchesOfLatest10Q?.criterionMatches?.map((criterion) => {
         return (
