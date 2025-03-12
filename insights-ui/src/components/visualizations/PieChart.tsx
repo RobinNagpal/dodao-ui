@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions, ChartData } from 'chart.js';
 
