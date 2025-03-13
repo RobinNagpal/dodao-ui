@@ -1,5 +1,5 @@
-import { Button } from '@/components/home-page/Button';
 import { TickerReport } from '@/types/public-equity/ticker-report-types';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Spinner } from '@dodao/web-core/components/core/icons/Spinner';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
@@ -39,8 +39,7 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
     <div className="mt-8">
       {matchingCriteriaError && <div className="text-red-500">{matchingCriteriaError}</div>}
       <div className="flex justify-end mb-4">
-        <Button disabled={matchingCriteriaLoading} onClick={handleRegenerateMatchingCriteria}>
-          {matchingCriteriaLoading && <Spinner />}
+        <Button disabled={matchingCriteriaLoading} loading={matchingCriteriaLoading} primary variant={'contained'} onClick={handleRegenerateMatchingCriteria}>
           Regenerate Matching Criteria
         </Button>
       </div>
