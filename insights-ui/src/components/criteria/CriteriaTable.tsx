@@ -66,6 +66,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
         key: '',
         name: '',
         shortDescription: '',
+        matchingInstruction: '',
         importantMetrics: [],
         reports: [],
       });

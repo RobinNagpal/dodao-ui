@@ -18,6 +18,11 @@
       "minLength": 10,
       "maxLength": 500
     },
+    "matchingInstruction": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 500
+    },
     "importantMetrics": {
       "type": "array",
       "items": {
@@ -31,7 +36,7 @@
       }
     }
   },
-  "required": ["key", "name", "shortDescription", "importantMetrics", "reports"],
+  "required": ["key", "name", "shortDescription", "matchingInstruction", "importantMetrics", "reports"],
   "definitions": {
     "ImportantMetric": {
       "type": "object",
