@@ -32,6 +32,7 @@ export interface CriterionDefinition {
   key: string;
   name: string;
   shortDescription: string;
+  matchingInstruction: string;
   langflowWebhookUrl?: string;
   importantMetrics: MetricItemDefinition[];
   reports: CriterionReportDefinition[];
