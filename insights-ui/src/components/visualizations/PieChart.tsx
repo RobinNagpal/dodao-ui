@@ -28,13 +28,11 @@ const generateColors = (numColors: number) => {
 };
 
 export default function PieChart({ labels, values }: PieChartProps) {
-  const sortedData = labels
-    .map((label, index) => ({ label, value: values[index] }))
-    .sort((a, b) => b.value - a.value); // Sorting in descending order
+  const sortedData = labels.map((label, index) => ({ label, value: values[index] })).sort((a, b) => b.value - a.value); // Sorting in descending order
 
   const sortedLabels = sortedData.map((item) => item.label);
   const sortedValues = sortedData.map((item) => item.value);
-  
+
   const { backgroundColors, borderColors } = generateColors(sortedLabels.length);
   const chartData: ChartData<'pie'> = {
     labels: sortedLabels,

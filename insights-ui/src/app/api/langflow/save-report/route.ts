@@ -19,7 +19,7 @@ const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<C
 
     evaluations.push(matchingEvaluation);
   }
-  
+
   const outputFileUrl = await saveCriteriaEvaluation(body.ticker, body.criterionKey, body.reportKey, body.data);
 
   const updatedReportValue: CriterionReportItem = {
@@ -28,17 +28,17 @@ const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<C
     outputFileUrl,
   };
   console.log('updatedReportValue', updatedReportValue);
-   // Ensure reports array is populated correctly
-   const updatedReports = matchingEvaluation.reports ? [...matchingEvaluation.reports] : [];
+  // Ensure reports array is populated correctly
+  const updatedReports = matchingEvaluation.reports ? [...matchingEvaluation.reports] : [];
 
-   const existingReportIndex = updatedReports.findIndex((r) => r.reportKey === body.reportKey);
-   if (existingReportIndex !== -1) {
-     updatedReports[existingReportIndex] = updatedReportValue; // Update existing report
-   } else {
-     updatedReports.push(updatedReportValue); // Add new report
-   }
-   console.log('updatedReports', updatedReports);
-   
+  const existingReportIndex = updatedReports.findIndex((r) => r.reportKey === body.reportKey);
+  if (existingReportIndex !== -1) {
+    updatedReports[existingReportIndex] = updatedReportValue; // Update existing report
+  } else {
+    updatedReports.push(updatedReportValue); // Add new report
+  }
+  console.log('updatedReports', updatedReports);
+
   const updatedEvaluation: CriterionEvaluation = {
     ...matchingEvaluation,
     reports: updatedReports,
