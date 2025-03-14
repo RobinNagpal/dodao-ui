@@ -8,9 +8,16 @@ const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<C
   const body = (await req.json()) as SaveCriterionReportRequest;
   const tickerReport = await getTickerReport(body.ticker);
   const evaluations = tickerReport.evaluationsOfLatest10Q || [];
-  const matchingEvaluation = evaluations.find((e) => e.criterionKey === body.criterionKey);
+  let matchingEvaluation = evaluations.find((e) => e.criterionKey === body.criterionKey);
+  console.log('matchingEvaluation', matchingEvaluation);
+  // If no matching evaluation exists, create one
   if (!matchingEvaluation) {
-    throw new Error(`Evaluation with key '${body.criterionKey}' not found.`);
+    matchingEvaluation = {
+      criterionKey: body.criterionKey,
+      reports: [],
+    } as CriterionEvaluation;
+
+    evaluations.push(matchingEvaluation);
   }
 
   const outputFileUrl = await saveCriteriaEvaluation(body.ticker, body.criterionKey, body.reportKey, body.data);
@@ -20,8 +27,17 @@ const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<C
     status: ProcessingStatus.Completed,
     outputFileUrl,
   };
+  console.log('updatedReportValue', updatedReportValue);
+  // Ensure reports array is populated correctly
+  const updatedReports = matchingEvaluation.reports ? [...matchingEvaluation.reports] : [];
 
-  const updatedReports = matchingEvaluation.reports?.map((r) => (r.reportKey === body.reportKey ? updatedReportValue : r));
+  const existingReportIndex = updatedReports.findIndex((r) => r.reportKey === body.reportKey);
+  if (existingReportIndex !== -1) {
+    updatedReports[existingReportIndex] = updatedReportValue; // Update existing report
+  } else {
+    updatedReports.push(updatedReportValue); // Add new report
+  }
+  console.log('updatedReports', updatedReports);
 
   const updatedEvaluation: CriterionEvaluation = {
     ...matchingEvaluation,
