@@ -22,7 +22,7 @@ export default async function CustomCriteriaPage({ params }: { params: Promise<{
   ];
   const customCriteriaUrl = `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/${sectorSlug}/${industryGroupSlug}/custom-criteria.json`;
   let customCriteriaData;
-  const response = await fetch(customCriteriaUrl);
+  const response = await fetch(customCriteriaUrl, { cache: 'no-cache' });
   if (response.status === 200) {
     customCriteriaData = (await response.json()) as IndustryGroupCriteriaDefinition;
   }

@@ -82,8 +82,8 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
                           <td className="border-2 px-2">{attachment.attachmentPurpose}</td>
                         </tr>
                         <tr>
-                          <td className="border-2 px-2">Matched Content Percentage</td>
-                          <td className="border-2 px-2">{attachment.matchedPercentage}</td>
+                          <td className="border-2 px-2">Relevance(0-100)</td>
+                          <td className="border-2 px-2">{attachment.relevance}</td>
                         </tr>
                         <tr>
                           <td className="border-2 px-2">Attachment Url</td>

@@ -21,8 +21,8 @@ export interface SecFilingAttachment {
   attachmentDocumentName: string;
   attachmentPurpose?: string;
   attachmentUrl: string;
-  matchedPercentage: number;
-  latest10QContent: string;
+  relevance: number;
+  attachmentContent: string;
 }
 
 export interface CriterionMatch {

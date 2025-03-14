@@ -153,6 +153,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
             <th style={tableCellStyle}>Key</th>
             <th style={tableCellStyle}>Name</th>
             <th style={tableCellStyle}>Short Description</th>
+            <th style={tableCellStyle}>Matching Instruction</th>
             <th style={tableCellStyle}>Actions</th>
           </tr>
         </thead>
@@ -169,6 +170,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
                 <td style={tableCellStyle}>{criterion.key}</td>
                 <td style={tableCellStyle}>{criterion.name}</td>
                 <td style={tableCellStyle}>{criterion.shortDescription}</td>
+                <td style={tableCellStyle}>{criterion.matchingInstruction}</td>
                 <td style={tableCellStyle} className="flex justify-around">
                   <IconButton onClick={() => handleOpen(criterion)} iconName={IconTypes.Edit} removeBorder={true} />
                   <IconButton onClick={() => handleDeleteClick(criterion)} iconName={IconTypes.Trash} removeBorder={true} />

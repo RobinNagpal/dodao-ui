@@ -46,11 +46,6 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
           inline: true,
         },
         {
-          name: 'Message',
-          value: (await req.text()).substring(0, 1000),
-          inline: false,
-        },
-        {
           name: 'JSON',
           value: jsonBody.substring(0, 1000),
           inline: false,

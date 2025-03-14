@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Model for the Ticker table (provided)
 model Ticker {
   tickerKey       String   @id @unique @map("ticker_key")
   reportUrl       String?  @map("report_url")
@@ -20,5 +21,39 @@ model Ticker {
   sectorId        Int      @map("sector_id")
   industryGroupId Int      @map("industry_group_id")
 
+  // Relation: one ticker can have many SEC filings.
+  secFilings SecFiling[]
+
   @@map("tickers")
+}
+
+// Model for SEC filings using UUIDs and linking to a ticker via tickerKey.
+model SecFiling {
+  id              String                @id @default(uuid())
+  tickerKey       String                @map("ticker_key")
+  filingDate      DateTime              @map("filing_date")
+  form            String                @map("form")
+  filingUrl       String                @map("filing_url")
+  accessionNumber String                @unique @map("accession_number")
+  periodOfReport  String                @map("period_of_report")
+  attachments     SecFilingAttachment[]
+
+  // Relation to the Ticker model
+  ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
+
+  @@map("sec_filings")
+}
+
+// Model for Filing attachments using UUIDs.
+model SecFilingAttachment {
+  id             String    @id @default(uuid())
+  sequenceNumber String    @map("sequence_number")
+  description    String    @map("description")
+  purpose        String?   @map("purpose")
+  url            String    @map("url")
+  documentType   String    @map("document_type")
+  secFilingId    String    @map("sec_filing_id")
+  secFiling      SecFiling @relation(fields: [secFilingId], references: [id])
+
+  @@map("sec_filing_attachments")
 }
