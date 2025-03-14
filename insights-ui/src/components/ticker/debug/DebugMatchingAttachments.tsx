@@ -1,6 +1,5 @@
-import { TickerReport } from '@/types/public-equity/ticker-report-types';
+import { ProcessingStatus, TickerReport } from '@/types/public-equity/ticker-report-types';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { Spinner } from '@dodao/web-core/components/core/icons/Spinner';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -39,8 +38,14 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
     <div className="mt-8">
       {matchingCriteriaError && <div className="text-red-500">{matchingCriteriaError}</div>}
       <div className="flex justify-end mb-4">
-        <Button disabled={matchingCriteriaLoading} loading={matchingCriteriaLoading} primary variant={'contained'} onClick={handleRegenerateMatchingCriteria}>
-          Regenerate Matching Criteria
+        <Button
+          disabled={matchingCriteriaLoading}
+          loading={matchingCriteriaLoading || report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress}
+          primary
+          variant={'contained'}
+          onClick={handleRegenerateMatchingCriteria}
+        >
+          Regenerate Matching Criteria - Status {report.criteriaMatchesOfLatest10Q?.status}
         </Button>
       </div>
       <h1 className="mb-8 font-bold text-xl">Matching Attachments</h1>

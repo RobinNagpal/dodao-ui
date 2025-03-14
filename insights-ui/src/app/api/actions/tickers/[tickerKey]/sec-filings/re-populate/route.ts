@@ -61,7 +61,13 @@ async function fetchFilingsFromAPI(ticker: string, page: number, pageSize: numbe
 async function fetchAndSaveFilings(tickerKey: string, page: number): Promise<void> {
   console.log(`Fetching and saving filings for ${tickerKey}, page ${page}`);
 
-  const existingCount = await prisma.secFiling.count({ where: { tickerKey } });
+  const existingCount = await prisma.secFiling.count({
+    where: {
+      tickerKey: {
+        equals: tickerKey,
+      },
+    },
+  });
   console.log(`Existing filings count for ${tickerKey}: ${existingCount}`);
   if (page === 0) {
     const { secFilings } = await fetchFilingsFromAPI(tickerKey, 0, 1);
@@ -140,16 +146,19 @@ async function rePopulateSecFilings(req: NextRequest, { params }: { params: Prom
   try {
     await fetchAndSaveFilings(tickerKey, 0);
     const listOfFilings = await prisma.secFiling.findMany({
-      where: { tickerKey },
+      where: {
+        tickerKey: {
+          equals: tickerKey,
+        },
+      },
       orderBy: { filingDate: 'desc' },
-      include: { attachments: true },
     });
     console.log(`Returning ${listOfFilings.length} filings for ${tickerKey}`);
     return listOfFilings;
   } catch (e) {
-    console.error('Error fetching and saving filings:', e);
+    console.error('Error fetching and saving filings:');
     console.log((e as any).stack);
-    throw new Error('Error fetching and saving filings');
+    throw e;
   }
 }
 

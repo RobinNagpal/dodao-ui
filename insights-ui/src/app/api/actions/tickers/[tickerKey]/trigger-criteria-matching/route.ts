@@ -8,7 +8,7 @@ import { NextRequest } from 'next/server';
 const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<TickerReport> => {
   const { tickerKey } = await params;
   const tickerReport = await getTickerReport(tickerKey);
-  await triggerCriteriaMatching(tickerKey, false);
+
   const updatedReport: TickerReport = {
     ...tickerReport,
     criteriaMatchesOfLatest10Q: {
@@ -16,7 +16,7 @@ const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { 
     },
   };
   await saveTickerReport(tickerKey, updatedReport);
-
+  triggerCriteriaMatching(tickerKey, false);
   return updatedReport;
 };
 

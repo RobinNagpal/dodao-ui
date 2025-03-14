@@ -1,14 +1,3 @@
-:root {
-  --primary-color: '#f5c09a',
-  --primary-text-color: '#121212',
-  --bg-color: '#252736',
-  --text-color: '#ffffff',
-  --link-color: '#cb9772',
-  --heading-color: '#ffffff',
-  --border-color: '#d0d7de',
-  --block-bg: '#20212d',
-}
-
 .text-color {
   color: var(--text-color);
 }
@@ -47,4 +36,15 @@
 
 .border-color {
   border-color: var(--border-color);
+}
+
+.divider-bg {
+  background-color: var(--border-color);
+}
+.bg-primary-text {
+  background-color: var(--primary-text-color);
+}
+.ring-border {
+  /* When used in conjunction with Tailwind’s ring-1, this sets the ring color */
+  --tw-ring-color: var(--border-color);
 }
