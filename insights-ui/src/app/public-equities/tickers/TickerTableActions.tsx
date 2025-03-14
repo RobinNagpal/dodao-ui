@@ -45,9 +45,12 @@ export default function TickerTableActions({ ticker }: TickerTableActionsProps) 
 
   return (
     <div>
-      <div className="ml-6">
+      <div className="ml-6 flex justify-between">
         <Link href={`/public-equities/tickers/${ticker.tickerKey}`} className="link-color">
-          View
+          View Reports
+        </Link>
+        <Link href={`/public-equities/tickers/${ticker.tickerKey}/timeline`} className="link-color ml-8">
+          View SEC Filings
         </Link>
       </div>
       <div className="flex">

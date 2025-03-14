@@ -37,6 +37,7 @@ model SecFiling {
   accessionNumber String                @unique @map("accession_number")
   periodOfReport  String                @map("period_of_report")
   attachments     SecFilingAttachment[]
+  shortSummary    String?               @map("short_summary")
 
   // Relation to the Ticker model
   ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
@@ -56,4 +57,20 @@ model SecFilingAttachment {
   secFiling      SecFiling @relation(fields: [secFilingId], references: [id])
 
   @@map("sec_filing_attachments")
+}
+
+enum FormSize {
+  xs
+  s
+  m
+  l
+  xl
+}
+
+model SecForm {
+  formName         String   @id @map("form_name")
+  formDescription  String   @map("form_description")
+  importantItems   Json     @map("important_items")
+  averagePageCount Int      @map("average_page_count")
+  size             FormSize @map("size")
 }
