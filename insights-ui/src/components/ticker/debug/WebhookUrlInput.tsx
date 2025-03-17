@@ -21,7 +21,7 @@ export default function WebhookUrlInput({ criterionKey }: WebhookUrlInputProps) 
   };
 
   return (
-    <div>
+    <div className="w-full">
       <Input modelValue={webhookUrl} placeholder="Enter Webhook URL" className="text-color" onUpdate={(value) => setWebhookUrl(value as string)}>
         Webhook Url
       </Input>

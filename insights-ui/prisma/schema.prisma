@@ -10,7 +10,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Model for the Ticker table (provided)
+// --------------------------
+// Existing Models
+// --------------------------
+
 model Ticker {
   tickerKey       String   @id @unique @map("ticker_key")
   reportUrl       String?  @map("report_url")
@@ -21,13 +24,21 @@ model Ticker {
   sectorId        Int      @map("sector_id")
   industryGroupId Int      @map("industry_group_id")
 
-  // Relation: one ticker can have many SEC filings.
-  secFilings SecFiling[]
+  // Relations
+  secFilings                     SecFiling[]
+  TickerReport                   TickerReport[]
+  CriterionEvaluation            CriterionEvaluation[]
+  ImportantMetrics               ImportantMetrics[]
+  MetricValueItem                MetricValueItem[]
+  CriterionReportItem            CriterionReportItem[]
+  PerformanceChecklistEvaluation PerformanceChecklistEvaluation[]
+  PerformanceChecklistItem       PerformanceChecklistItem[]
+  CriterionMatchesOfLatest10Q    CriterionMatchesOfLatest10Q[]
+  CriterionMatch                 CriterionMatch[]
 
   @@map("tickers")
 }
 
-// Model for SEC filings using UUIDs and linking to a ticker via tickerKey.
 model SecFiling {
   id              String                @id @default(uuid())
   tickerKey       String                @map("ticker_key")
@@ -73,4 +84,187 @@ model SecForm {
   importantItems   Json     @map("important_items")
   averagePageCount Int      @map("average_page_count")
   size             FormSize @map("size")
+}
+
+// --------------------------
+// New Ticker Report Models (All IDs as UUID)
+// --------------------------
+
+enum ProcessingStatus {
+  Completed
+  Failed
+  InProgress
+  NotStarted
+}
+
+model TickerReport {
+  id                      String   @id @default(uuid())
+  tickerKey               String   @map("ticker_key")
+  selectedIndustryGroupId Int      @map("selected_industry_group_id")
+  selectedSectorId        Int      @map("selected_sector_id")
+  createdAt               DateTime @default(now()) @map("created_at")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+  createdBy               String?  @map("created_by")
+  updatedBy               String?  @map("updated_by")
+
+  evaluations                CriterionEvaluation[]
+  criteriaMatchesOfLatest10Q CriterionMatchesOfLatest10Q?
+
+  // Relation to Ticker (using the same ticker_key)
+  ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
+
+  @@map("ticker_reports")
+}
+
+model CriterionEvaluation {
+  id             String @id @default(uuid())
+  tickerKey      String @map("ticker_key")
+  criterionKey   String @map("criterion_key")
+  tickerReportId String @map("ticker_report_id")
+
+  importantMetrics               ImportantMetrics?
+  performanceChecklistEvaluation PerformanceChecklistEvaluation?
+  reports                        CriterionReportItem[]
+
+  tickerReport TickerReport @relation(fields: [tickerReportId], references: [id])
+  ticker       Ticker       @relation(fields: [tickerKey], references: [tickerKey])
+
+  @@map("criterion_evaluations")
+}
+
+model ImportantMetrics {
+  id           String           @id @default(uuid())
+  status       ProcessingStatus
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt @map("updated_at")
+  createdBy    String?          @map("created_by")
+  updatedBy    String?          @map("updated_by")
+  tickerKey    String           @map("ticker_key")
+  criterionKey String           @map("criterion_key")
+
+  // One-to-one relation with CriterionEvaluation
+  criterionEvaluationId String?              @unique @map("criterion_evaluation_id")
+  criterionEvaluation   CriterionEvaluation? @relation(fields: [criterionEvaluationId], references: [id])
+  ticker                Ticker               @relation(fields: [tickerKey], references: [tickerKey])
+
+  metrics MetricValueItem[]
+
+  @@map("important_metrics")
+}
+
+model MetricValueItem {
+  id                     String           @id @default(uuid())
+  metricKey              String           @map("metric_key")
+  value                  String
+  calculationExplanation String           @map("calculation_explanation")
+  tickerKey              String           @map("ticker_key")
+  criterionKey           String           @map("criterion_key")
+  importantMetricsId     String           @map("important_metrics_id")
+  importantMetrics       ImportantMetrics @relation(fields: [importantMetricsId], references: [id])
+  ticker                 Ticker           @relation(fields: [tickerKey], references: [tickerKey])
+
+  @@map("metric_value_items")
+}
+
+model CriterionReportItem {
+  id            String           @id @default(uuid())
+  reportKey     String           @map("report_key")
+  status        ProcessingStatus
+  outputFileUrl String?          @map("output_file_url")
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  createdBy    String?  @map("created_by")
+  updatedBy    String?  @map("updated_by")
+  tickerKey    String   @map("ticker_key")
+  criterionKey String   @map("criterion_key")
+
+  criterionEvaluationId String              @map("criterion_evaluation_id")
+  criterionEvaluation   CriterionEvaluation @relation(fields: [criterionEvaluationId], references: [id])
+  ticker                Ticker              @relation(fields: [tickerKey], references: [tickerKey])
+
+  @@map("criterion_report_items")
+}
+
+model PerformanceChecklistEvaluation {
+  id     String           @id @default(uuid())
+  status ProcessingStatus
+
+  createdAt             DateTime             @default(now()) @map("created_at")
+  updatedAt             DateTime             @updatedAt @map("updated_at")
+  createdBy             String?              @map("created_by")
+  updatedBy             String?              @map("updated_by")
+  tickerKey             String               @map("ticker_key")
+  criterionKey          String               @map("criterion_key")
+  // One-to-one relation with CriterionEvaluation
+  criterionEvaluationId String?              @unique @map("criterion_evaluation_id")
+  criterionEvaluation   CriterionEvaluation? @relation(fields: [criterionEvaluationId], references: [id])
+  ticker                Ticker               @relation(fields: [tickerKey], references: [tickerKey])
+
+  performanceChecklistItems PerformanceChecklistItem[]
+
+  @@map("performance_checklist_evaluations")
+}
+
+model PerformanceChecklistItem {
+  id                  String @id @default(uuid())
+  checklistItem       String @map("checklist_item")
+  oneLinerExplanation String @map("one_liner_explanation")
+  informationUsed     String @map("information_used")
+  detailedExplanation String @map("detailed_explanation")
+  evaluationLogic     String @map("evaluation_logic")
+  score               Float
+  tickerKey           String @map("ticker_key")
+  criterionKey        String @map("criterion_key")
+
+  performanceChecklistEvaluationId String                         @map("performance_checklist_evaluation_id")
+  performanceChecklistEvaluation   PerformanceChecklistEvaluation @relation(fields: [performanceChecklistEvaluationId], references: [id])
+  ticker                           Ticker                         @relation(fields: [tickerKey], references: [tickerKey])
+
+  @@map("performance_checklist_items")
+}
+
+model CriterionMatchesOfLatest10Q {
+  id            String           @id @default(uuid())
+  status        ProcessingStatus
+  failureReason String?          @map("failure_reason")
+  tickerKey     String           @map("ticker_key")
+  criterionKey  String           @map("criterion_key")
+
+  tickerReportId String       @unique @map("ticker_report_id")
+  tickerReport   TickerReport @relation(fields: [tickerReportId], references: [id])
+  ticker         Ticker       @relation(fields: [tickerKey], references: [tickerKey])
+
+  criterionMatches CriterionMatch[]
+
+  @@map("criterion_matches_latest_10q")
+}
+
+model CriterionMatch {
+  id             String @id @default(uuid())
+  criterionKey   String @map("criterion_key")
+  matchedContent String @map("matched_content")
+  tickerKey      String @map("ticker_key")
+
+  criterionMatchesOfLatest10QId String                      @map("criterion_matches_latest_10q_id")
+  criterionMatchesOfLatest10Q   CriterionMatchesOfLatest10Q @relation(fields: [criterionMatchesOfLatest10QId], references: [id])
+  ticker                        Ticker                      @relation(fields: [tickerKey], references: [tickerKey])
+  matchedAttachments            CriterionMatchAttachment[]
+
+  @@map("criterion_matches")
+}
+
+model CriterionMatchAttachment {
+  id               String         @id @default(uuid())
+  sequenceNumber   String         @map("sequence_number")
+  description      String         @map("description")
+  purpose          String?        @map("purpose")
+  url              String         @map("url")
+  documentType     String         @map("document_type")
+  criterionMatchId String         @map("criterion_match_id")
+  tickerKey        String         @map("ticker_key")
+  criterionKey     String         @map("criterion_key")
+  criterionMatch   CriterionMatch @relation(fields: [criterionMatchId], references: [id])
+
+  @@map("criterion_match_attachments")
 }
