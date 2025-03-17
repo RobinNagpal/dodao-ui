@@ -13,7 +13,7 @@ import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import WebhookUrlInput from './WebhookUrlInput';
+import WebhookUrlInput, { getWebhookUrlFromLocalStorage } from './WebhookUrlInput';
 
 export interface DebugCriterionEvaluationProps {
   report: TickerReport;
@@ -68,14 +68,14 @@ export default function DebugCriterionEvaluation({ report, industryGroupCriteria
 
   const handleRegenerateAllSingleCriterionReports = async (criterionKey: string) => {
     regenerateAllSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
-      langflowWebhookUrl: localStorage.getItem(`${criterionKey}_webhookUrl`) || '',
+      langflowWebhookUrl: getWebhookUrlFromLocalStorage(report.selectedSector.id, report.selectedIndustryGroup.id, criterionKey),
     });
   };
 
   // Handles section-specific regeneration (for checklist, metrics, or individual reports)
   const handleRegenerateSingleCriterionReports = async (criterionKey: string, reportKey: string) => {
     regenerateSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
-      langflowWebhookUrl: localStorage.getItem(`${criterionKey}_webhookUrl`) || '',
+      langflowWebhookUrl: getWebhookUrlFromLocalStorage(report.selectedSector.id, report.selectedIndustryGroup.id, criterionKey),
       reportKey: reportKey,
     });
   };
@@ -137,7 +137,11 @@ export default function DebugCriterionEvaluation({ report, industryGroupCriteria
         return (
           <div key={criterionKey + '_report_criterion_key'}>
             <div className="my-5 flex justify-end space-x-5 items-center">
-              <WebhookUrlInput criterionKey={criterionKey} />
+              <WebhookUrlInput
+                criterionDefinition={criterionDefinition}
+                sectorId={report.selectedSector.id}
+                industryGroupId={report.selectedIndustryGroup.id}
+              />
               <Button
                 disabled={selectedCriterionForRegeneration?.criterionKey === criterionKey && allSingleCriterionReportsLoading}
                 onClick={() => {

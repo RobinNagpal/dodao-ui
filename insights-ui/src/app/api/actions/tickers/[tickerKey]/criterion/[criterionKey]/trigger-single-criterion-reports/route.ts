@@ -35,7 +35,7 @@ const triggerSingleCriterionReport = async (
     headers,
     body: JSON.stringify(payload),
   });
-  await response.json();
+
   let updatedCriterionEvaluation: CriterionEvaluation | undefined = tickerReport.evaluationsOfLatest10Q?.find((e) => e.criterionKey === criterionKey);
   if (!updatedCriterionEvaluation) {
     updatedCriterionEvaluation = {
@@ -46,12 +46,13 @@ const triggerSingleCriterionReport = async (
       performanceChecklistEvaluation: {
         status: ProcessingStatus.NotStarted,
       },
-      reports: industryGroupCriteria.criteria
-        .flatMap((c) => c.reports)
-        .map((r) => ({
-          reportKey: r.key,
-          status: ProcessingStatus.NotStarted,
-        })),
+      reports:
+        industryGroupCriteria.criteria
+          .find((c) => c.key === criterionKey)
+          ?.reports.map((r) => ({
+            reportKey: r.key,
+            status: ProcessingStatus.NotStarted,
+          })) || [],
     };
   }
   if (reportKey === 'importantMetrics') {
@@ -73,11 +74,25 @@ const triggerSingleCriterionReport = async (
       });
     }
   }
-
+  let evaluationsOfLatest10Q = [...(tickerReport.evaluationsOfLatest10Q || [])];
+  if (!evaluationsOfLatest10Q || tickerReport.evaluationsOfLatest10Q.length === 0) {
+    evaluationsOfLatest10Q = [updatedCriterionEvaluation];
+  } else {
+    const index = tickerReport.evaluationsOfLatest10Q.findIndex((e) => e.criterionKey === criterionKey);
+    if (index === -1) {
+      evaluationsOfLatest10Q.push(updatedCriterionEvaluation);
+    } else {
+      evaluationsOfLatest10Q[index] = updatedCriterionEvaluation;
+    }
+  }
+  console.log('Saving ticker report with updated evaluationsOfLatest10Q:', JSON.stringify(evaluationsOfLatest10Q, null, 2));
   await saveTickerReport(tickerKey, {
     ...tickerReport,
-    evaluationsOfLatest10Q: [...(tickerReport.evaluationsOfLatest10Q || []).map((e) => (e.criterionKey === criterionKey ? updatedCriterionEvaluation! : e))],
+    evaluationsOfLatest10Q: evaluationsOfLatest10Q,
   });
+
+  const responseJson = await response.json();
+  console.log('Response from langflow:', responseJson);
 
   return updatedCriterionEvaluation;
 };
