@@ -11,6 +11,7 @@ import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import WebhookUrlInput from './WebhookUrlInput';
 
@@ -126,7 +127,10 @@ export default function DebugCriterionEvaluation({ report, industryGroupCriteria
           Regenerate All
         </Button>
       </div>
-      <h1 className="mb-2 font-bold text-xl">Criterion Evaluation</h1>
+      <div className="flex justify-between">
+        <h1 className="mb-2 font-bold text-xl">Criterion Evaluation</h1>
+        <Link href={`/public-equities/industry-group-criteria/real-estate/equity-real-estate-investment-trusts-reits/create`}>View Criteria</Link>
+      </div>
       {industryGroupCriteria.criteria?.map((criterionDefinition) => {
         const criterionKey = criterionDefinition.key;
         const criterion: CriterionEvaluation | undefined = evaluationOfLatest10QMap[criterionKey];

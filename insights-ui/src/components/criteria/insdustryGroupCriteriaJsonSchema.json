@@ -34,6 +34,11 @@
       "items": {
         "$ref": "#/definitions/Report"
       }
+    },
+    "langflowWebhookUrl": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 500
     }
   },
   "required": ["key", "name", "shortDescription", "matchingInstruction", "importantMetrics", "reports"],
