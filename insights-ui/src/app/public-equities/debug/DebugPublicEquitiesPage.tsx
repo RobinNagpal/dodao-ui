@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function DebugPublicEquitiesPage() {
   return (
     <PageWrapper>
-      <div className="flex">
+      <div className="flex justify-between">
         <div>
           <h1 className="text-3xl">Criteria</h1>
           <ul>
