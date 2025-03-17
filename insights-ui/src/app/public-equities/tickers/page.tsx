@@ -7,6 +7,7 @@ import TickerTableActions from './TickerTableActions';
 import gicsData from '@/gicsData/gicsData.json';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
 
 async function getTickersResponse(): Promise<Ticker[]> {
   // Here a better approach could be followed which allows to return server side pages fully rendered
@@ -37,12 +38,14 @@ export default async function AllTickersPage() {
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <div className="flex justify-between">
-        <div></div>
-        <Link href={'/public-equities/tickers/create'} className="link-color underline">
-          Create Ticker
-        </Link>
-      </div>
+      <PrivateWrapper>
+        <div className="flex justify-between">
+          <div></div>
+          <Link href={'/public-equities/tickers/create'} className="link-color underline">
+            Create Ticker
+          </Link>
+        </div>
+      </PrivateWrapper>
       <table className="w-full border-collapse border border-gray-300 text-left mt-6">
         <thead>
           <tr>
