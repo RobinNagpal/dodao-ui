@@ -67,8 +67,8 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
                 return (
                   <div key={reportType} className="relative text-left">
                     <dt>
-                      <div className="absolute left-0 top-0 flex size-10 items-center justify-center heading-color rounded-lg">
-                        <span aria-hidden="true" className="size-6 text-blue-200">
+                      <div className="absolute left-0 top-0 flex items-center justify-center heading-color rounded-lg">
+                        <span aria-hidden="true" className="text-blue-200">
                           {reportIcons[reportType]}
                         </span>
                       </div>

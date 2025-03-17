@@ -1,8 +1,21 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Link from 'next/link';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Ticker } from '@prisma/client';
 
-export default function TickersTableDebug() {
-  const reitTickers = ['SEGXF', 'VNORP', 'FVR', 'OHI'];
+async function getTickersResponse(): Promise<Ticker[]> {
+  // Here a better approach could be followed which allows to return server side pages fully rendered
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/tickers`, { cache: 'no-cache' });
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching tickers:', error);
+    return [];
+  }
+}
+
+export default async function TickersTableDebug() {
+  const tickers: Ticker[] = await getTickersResponse();
   return (
     <PageWrapper>
       <table className="w-full border-collapse border border-gray-300 text-left">
@@ -13,12 +26,12 @@ export default function TickersTableDebug() {
           </tr>
         </thead>
         <tbody>
-          {reitTickers.map((ticker: string) => (
-            <tr key={ticker} className="border">
-              <td className="p-3 border text-left">{ticker}</td>
+          {tickers.map((ticker: Ticker) => (
+            <tr key={ticker.tickerKey} className="border">
+              <td className="p-3 border text-left">{ticker.tickerKey}</td>
               <td className="p-3 border text-left">
                 <div className="flex items-center gap-2">
-                  <Link href={`/public-equities/debug/ticker-reports/${ticker}`} target="_blank" className="link-color pointer-cursor ">
+                  <Link href={`/public-equities/debug/ticker-reports/${ticker.tickerKey}`} target="_blank" className="link-color pointer-cursor ">
                     Debug Page
                   </Link>
                 </div>

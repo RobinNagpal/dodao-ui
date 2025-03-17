@@ -68,8 +68,8 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                   return (
                     <div key={criterion.key} className="relative text-left">
                       <dt>
-                        <div className="absolute left-0 top-0 flex size-10 items-center justify-center heading-color rounded-lg">
-                          <span className="size-6 text-blue-200">📊</span>
+                        <div className="absolute left-0 top-0 flex items-center justify-center heading-color rounded-lg">
+                          <span className=" text-blue-200">📊</span>
                         </div>
                         <div className="flex justify-between font-semibold">
                           <div className="ml-6 text-xl">{criterion.name}</div>
