@@ -48,6 +48,7 @@ model SecFiling {
   accessionNumber String                @unique @map("accession_number")
   periodOfReport  String                @map("period_of_report")
   attachments     SecFilingAttachment[]
+  shortSummary    String?               @map("short_summary")
 
   // Relation to the Ticker model
   ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
@@ -55,6 +56,7 @@ model SecFiling {
   @@map("sec_filings")
 }
 
+// Model for Filing attachments using UUIDs.
 model SecFilingAttachment {
   id             String    @id @default(uuid())
   sequenceNumber String    @map("sequence_number")
