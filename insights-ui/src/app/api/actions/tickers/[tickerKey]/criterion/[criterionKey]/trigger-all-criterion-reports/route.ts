@@ -1,14 +1,10 @@
 import { getCriteria } from '@/lib/industryGroupCriteria';
 import { getTickerReport, saveTickerReport } from '@/lib/publicEquity';
 import { CriterionEvaluation, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
-import { CreateAllCriterionReportsRequest, CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
+import { CreateAllCriterionReportsRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
-// app/api/public-equity/single-criterion-report/route.ts
 import { NextRequest } from 'next/server';
-
-// You should define this environment variable in your project.
-const PE_US_REITS_WEBHOOK_URL = process.env.PE_US_REITS_WEBHOOK_URL!;
 
 const triggerAllCriterionReports = async (
   req: NextRequest,
@@ -16,6 +12,11 @@ const triggerAllCriterionReports = async (
 ): Promise<CriterionEvaluation> => {
   const { tickerKey, criterionKey } = await params;
   const body = (await req.json()) as CreateAllCriterionReportsRequest;
+
+  if (!body.langflowWebhookUrl) {
+    throw new Error('langflowWebhookUrl is required in the request body.');
+  }
+
   const tickerReport = await getTickerReport(tickerKey);
   const industryGroupCriteria = await getCriteria(tickerReport.selectedSector.name, tickerReport.selectedIndustryGroup.name);
   const matchingCriterion = industryGroupCriteria.criteria.find((crit) => crit.key === criterionKey);
@@ -29,7 +30,7 @@ const triggerAllCriterionReports = async (
     criterion: JSON.stringify(matchingCriterion),
   };
   const headers = { 'Content-Type': 'application/json' };
-  const response = await fetch(body.langflowWebhookUrl || matchingCriterion.langflowWebhookUrl || PE_US_REITS_WEBHOOK_URL, {
+  const response = await fetch(body.langflowWebhookUrl, {
     method: 'POST',
     headers,
     body: JSON.stringify(payload),
