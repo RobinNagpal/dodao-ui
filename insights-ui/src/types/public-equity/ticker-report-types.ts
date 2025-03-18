@@ -108,3 +108,12 @@ export interface TickerReport {
   evaluationsOfLatest10Q?: CriterionEvaluation[];
   criteriaMatchesOfLatest10Q?: CriterionMatchesOfLatest10Q;
 }
+
+export interface TickerReportPrisma {
+  id: string;
+  tickerKey: string;
+  selectedIndustryGroupId: number;
+  selectedSectorId: number;
+  evaluations?: CriterionEvaluation[];
+  criteriaMatchesOfLatest10Q?: CriterionMatchesOfLatest10Q;
+}

@@ -1,24 +1,25 @@
 // app/api/public-equity/all-criterion-report/route.ts
-import { TickerReport } from '@/types/public-equity/ticker-report-types';
+import { TickerReportPrisma } from '@/types/public-equity/ticker-report-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 
 const PE_US_REITS_WEBHOOK_URL = process.env.PE_US_REITS_WEBHOOK_URL!;
 
-const triggerAllReports = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }) => {
-  const { tickerKey } = await params;
+async function postHandler(req: NextRequest, { params }: { params: { tickerKey: string } }): Promise<TickerReportPrisma> {
+  const { tickerKey } = params;
 
   const tickerReport = await prisma.tickerReport.findFirst({
     where: { tickerKey },
   });
+
   if (!tickerReport) {
     throw new Error(`No TickerReport found for tickerKey: ${tickerKey}`);
   }
 
   const firstCriterion = await prisma.criterionEvaluation.findFirst({
     where: {
-      tickerKey: tickerReport.tickerKey,
+      tickerKey: tickerKey,
     },
   });
   if (!firstCriterion) {
@@ -32,7 +33,7 @@ const triggerAllReports = async (req: NextRequest, { params }: { params: Promise
   };
   const headers = { 'Content-Type': 'application/json' };
   // getting error on this line
-  const response = await fetch(firstCriterion.langflowWebhookUrl || PE_US_REITS_WEBHOOK_URL, {
+  const response = await fetch(PE_US_REITS_WEBHOOK_URL, {
     method: 'POST',
     headers,
     body: JSON.stringify(payload),
@@ -40,5 +41,6 @@ const triggerAllReports = async (req: NextRequest, { params }: { params: Promise
   const jsonResponse = await response.json();
   console.log(jsonResponse);
   return tickerReport;
-};
-export const POST = withErrorHandlingV2<TickerReport>(triggerAllReports);
+}
+
+export const POST = withErrorHandlingV2<TickerReportPrisma>(postHandler);
