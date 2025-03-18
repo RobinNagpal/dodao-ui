@@ -1,6 +1,5 @@
 // app/api/public-equity/all-criterion-report/route.ts
-import { getGicsNames } from '@/lib/gicsHelper';
-import { getCriteria } from '@/lib/industryGroupCriteria';
+import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
@@ -19,9 +18,7 @@ const triggerAllReports = async (req: NextRequest, { params }: { params: { ticke
     throw new Error(`Ticker report ${tickerKey} not found.`);
   }
 
-  const { sectorName, industryGroupName } = getGicsNames(tickerReport.sectorId, tickerReport.industryGroupId);
-
-  const industryGroupCriteria = await getCriteria(sectorName, industryGroupName);
+  const industryGroupCriteria = await getCriteriaByIds(tickerReport.sectorId, tickerReport.industryGroupId);
   const firstCriterion = industryGroupCriteria.criteria[0];
   if (!firstCriterion) {
     throw new Error('Criteria list is empty.');
