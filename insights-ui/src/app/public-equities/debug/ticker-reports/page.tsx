@@ -4,14 +4,8 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Ticker } from '@prisma/client';
 
 async function getTickersResponse(): Promise<Ticker[]> {
-  // Here a better approach could be followed which allows to return server side pages fully rendered
-  try {
-    const response = await fetch(`${getBaseUrl()}/api/tickers`, { cache: 'no-cache' });
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching tickers:', error);
-    return [];
-  }
+  const response = await fetch(`${getBaseUrl()}/api/tickers`, { cache: 'no-cache' });
+  return await response.json();
 }
 
 export default async function TickersTableDebug() {

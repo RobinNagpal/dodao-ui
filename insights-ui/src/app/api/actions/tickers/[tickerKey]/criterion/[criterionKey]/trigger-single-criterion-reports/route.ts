@@ -75,10 +75,10 @@ const triggerSingleCriterionReport = async (
     }
   }
   let evaluationsOfLatest10Q = [...(tickerReport.evaluationsOfLatest10Q || [])];
-  if (!evaluationsOfLatest10Q || tickerReport.evaluationsOfLatest10Q.length === 0) {
+  if (!evaluationsOfLatest10Q || evaluationsOfLatest10Q.length === 0) {
     evaluationsOfLatest10Q = [updatedCriterionEvaluation];
   } else {
-    const index = tickerReport.evaluationsOfLatest10Q.findIndex((e) => e.criterionKey === criterionKey);
+    const index = evaluationsOfLatest10Q.findIndex((e) => e.criterionKey === criterionKey);
     if (index === -1) {
       evaluationsOfLatest10Q.push(updatedCriterionEvaluation);
     } else {
