@@ -37,6 +37,7 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
     regenerateMatchingCriteria(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-criteria-matching`);
   };
 
+  console.log('DebugMatchingAttachments report', report);
   return (
     <div className="mt-8">
       {matchingCriteriaError && <div className="text-red-500">{matchingCriteriaError}</div>}

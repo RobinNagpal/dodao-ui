@@ -7,7 +7,8 @@ import { CriterionEvaluation, TickerReport } from '@/types/public-equity/ticker-
 import { CreateAllCriterionReportsRequest, CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { Spinner } from '@dodao/web-core/components/core/icons/Spinner';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -156,105 +157,113 @@ export default function DebugCriterionEvaluation({ tickerReport, industryGroupCr
               onClick={() => setSelectedCriterionAccordian(selectedCriterionAccordian === `reports_${criterionKey}` ? null : `reports_${criterionKey}`)}
             >
               <div key={criterionKey + '_report_criterion_key'} className="mt-8">
-                {/* Performance Checklist Section */}
-                <PrivateWrapper>
-                  <div className="flex justify-end">
-                    <Button
-                      disabled={
-                        selectedSectionForRegeneration?.criterionKey === criterionKey &&
-                        selectedSectionForRegeneration?.section === 'performanceChecklist' &&
-                        singleCriterionReportsLoading
-                      }
-                      onClick={() => {
-                        setSelectedSectionForRegeneration({
-                          criterionKey: criterionKey,
-                          section: 'performanceChecklist',
-                        });
-                        setShowSectionConfirmModal(true);
-                      }}
-                    >
-                      {selectedSectionForRegeneration?.criterionKey === criterionKey &&
-                      selectedSectionForRegeneration?.section === 'performanceChecklist' &&
-                      singleCriterionReportsLoading ? (
-                        <Spinner />
-                      ) : null}
-                      Regenerate Performance Checklist
-                    </Button>
+                <div>
+                  <div className="flex">
+                    <h2 className="text-lg font-bold">Performance Checklist</h2>
+                    <PrivateWrapper>
+                      <div className="flex justify-end">
+                        <IconButton
+                          iconName={IconTypes.Reload}
+                          primary
+                          variant={'outlined'}
+                          disabled={
+                            selectedSectionForRegeneration?.criterionKey === criterionKey &&
+                            selectedSectionForRegeneration?.section === 'performanceChecklist' &&
+                            singleCriterionReportsLoading
+                          }
+                          onClick={() => {
+                            setSelectedSectionForRegeneration({
+                              criterionKey: criterionKey,
+                              section: 'performanceChecklist',
+                            });
+                            setShowSectionConfirmModal(true);
+                          }}
+                          loading={
+                            selectedSectionForRegeneration?.criterionKey === criterionKey &&
+                            selectedSectionForRegeneration?.section === 'performanceChecklist' &&
+                            singleCriterionReportsLoading
+                          }
+                          className="ml-2"
+                        />
+                      </div>
+                    </PrivateWrapper>
                   </div>
-                </PrivateWrapper>
-                <h2>Performance Checklist</h2>
-                <div className="block-bg-color m-8">
-                  <div className="overflow-x-auto">
-                    {criterion?.performanceChecklistEvaluation?.performanceChecklist?.length && (
-                      <ul className="list-disc mt-2">
-                        {criterion.performanceChecklistEvaluation?.performanceChecklist?.map((item, index) => (
-                          <li key={index} className="mb-1 flex items-start">
-                            <div className="flex flex-col">
-                              <div className="mr-2">
-                                {item.score === 1 ? '✅' : '❌'} {item.checklistItem}
+                  <div className="block-bg-color m-8">
+                    <div className="overflow-x-auto">
+                      {criterion?.performanceChecklistEvaluation?.performanceChecklist?.length && (
+                        <ul className="list-disc mt-2">
+                          {criterion.performanceChecklistEvaluation?.performanceChecklist?.map((item, index) => (
+                            <li key={index} className="mb-1 flex items-start">
+                              <div className="flex flex-col">
+                                <div className="mr-2">
+                                  {item.score === 1 ? '✅' : '❌'} {item.checklistItem}
+                                </div>
+                                <ol className="pl-8">
+                                  <li>{item.oneLinerExplanation}</li>
+                                  <li>{item.detailedExplanation}</li>
+                                  <li>{item.evaluationLogic}</li>
+                                </ol>
                               </div>
-                              <ol className="pl-8">
-                                <li>{item.oneLinerExplanation}</li>
-                                <li>{item.detailedExplanation}</li>
-                                <li>{item.evaluationLogic}</li>
-                              </ol>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* Important Metrics Section */}
-                <PrivateWrapper>
-                  <div className="flex justify-end">
-                    <Button
-                      disabled={
-                        selectedSectionForRegeneration?.criterionKey === criterionKey &&
-                        selectedSectionForRegeneration?.section === 'importantMetrics' &&
-                        singleCriterionReportsLoading
-                      }
-                      onClick={() => {
-                        setSelectedSectionForRegeneration({
-                          criterionKey: criterionKey,
-                          section: 'importantMetrics',
-                        });
-                        setShowSectionConfirmModal(true);
-                      }}
-                    >
-                      {selectedSectionForRegeneration?.criterionKey === criterionKey &&
-                      selectedSectionForRegeneration?.section === 'importantMetrics' &&
-                      singleCriterionReportsLoading ? (
-                        <Spinner />
-                      ) : null}
-                      Regenerate Important Metrics
-                    </Button>
+                  {/* Important Metrics Section */}
+
+                  <div className="flex">
+                    <h2 className="text-lg font-bold">Important Metrics</h2>
+                    <PrivateWrapper>
+                      <div className="flex justify-end">
+                        <IconButton
+                          iconName={IconTypes.Reload}
+                          primary
+                          variant={'outlined'}
+                          disabled={
+                            selectedSectionForRegeneration?.criterionKey === criterionKey &&
+                            selectedSectionForRegeneration?.section === 'importantMetrics' &&
+                            singleCriterionReportsLoading
+                          }
+                          onClick={() => {
+                            setSelectedSectionForRegeneration({
+                              criterionKey: criterionKey,
+                              section: 'importantMetrics',
+                            });
+                            setShowSectionConfirmModal(true);
+                          }}
+                          loading={
+                            selectedSectionForRegeneration?.criterionKey === criterionKey &&
+                            selectedSectionForRegeneration?.section === 'importantMetrics' &&
+                            singleCriterionReportsLoading
+                          }
+                          className={'ml-2'}
+                        />
+                      </div>
+                    </PrivateWrapper>
                   </div>
-                </PrivateWrapper>
-                <h2>Important Metrics</h2>
-                <div className="block-bg-color m-8">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse border border-gray-30 p-2">
-                      <thead>
-                        <tr>
-                          <th className="px-4">Key</th>
-                          <th className="px-4">Value</th>
-                        </tr>
-                      </thead>
-                      <tbody className="w-full">
-                        {criterion?.importantMetrics?.metrics?.map((metric) => (
-                          <tr key={metric.metricKey} className="w-full">
-                            <td className="px-4">{metric.metricKey}</td>
-                            <td className="px-4">{metric.value}</td>
+                  <div className="block-bg-color m-8">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse border border-gray-30 p-2">
+                        <thead>
+                          <tr>
+                            <th className="px-4">Key</th>
+                            <th className="px-4">Value</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody className="w-full">
+                          {criterion?.importantMetrics?.metrics?.map((metric) => (
+                            <tr key={metric.metricKey} className="w-full">
+                              <td className="px-4">{metric.metricKey}</td>
+                              <td className="px-4">{metric.value}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
-
-                {/* Reports Section */}
                 <h2>Reports</h2>
                 {criterionDefinition?.reports?.map((reportDefinition, index) => {
                   return (

@@ -6,7 +6,7 @@ interface BreadcrumbsProps {
 
 export default function Breadcrumbs({ breadcrumbs }: BreadcrumbsProps) {
   return (
-    <div className="m-5 text-color">
+    <div className="my-5 text-color">
       <BreadcrumbsWithChevrons breadcrumbs={breadcrumbs} />
     </div>
   );

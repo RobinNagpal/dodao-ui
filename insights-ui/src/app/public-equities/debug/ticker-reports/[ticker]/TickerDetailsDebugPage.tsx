@@ -2,8 +2,10 @@
 
 import DebugCriterionEvaluation from '@/components/ticker/debug/DebugCriterionEvaluation';
 import DebugMatchingAttachments from '@/components/ticker/debug/DebugMatchingAttachments';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { TickerReport } from '@/types/public-equity/ticker-report-types';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
@@ -43,8 +45,22 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
     checkReportExists();
   }, []);
 
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: 'Debug Tickers',
+      href: `/public-equities/debug/ticker-reports`,
+      current: false,
+    },
+    {
+      name: 'Debug ' + ticker,
+      href: `/public-equities/debug/ticker-reports/${ticker}`,
+      current: true,
+    },
+  ];
+
   return (
     <PageWrapper>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
       <h1>S3 File</h1>
       <div>
         <a href={`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${ticker}/latest-10q-report.json`} target="_blank">

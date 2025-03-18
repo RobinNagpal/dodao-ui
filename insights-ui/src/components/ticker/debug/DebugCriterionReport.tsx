@@ -11,7 +11,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useEffect, useState } from 'react';
 
-export interface DebugCriterionEvaluationProps {
+export interface DebugCriterionReportProps {
   tickerReport: TickerReport;
   industryGroupCriteria: IndustryGroupCriteriaDefinition;
   criterionDefinition: CriterionDefinition;
@@ -25,7 +25,7 @@ export default function DebugCriterionReport({
   criterionDefinition,
   reportDefinition,
   report,
-}: DebugCriterionEvaluationProps) {
+}: DebugCriterionReportProps) {
   const [reportContent, setReportContent] = useState<string | null>(null);
 
   const getReportContent = async () => {
@@ -66,19 +66,23 @@ export default function DebugCriterionReport({
   return (
     <div className="mt-2">
       {singleCriterionReportsError && <div className="text-red-500">{singleCriterionReportsError}</div>}
-      <PrivateWrapper>
-        <div className="my-1 flex justify-end">
+
+      <h2 className="font-bold text-lg mt-5 flex ">
+        <span className="inline-block align-bottom"> 📄 {reportDefinition.key}</span>{' '}
+        <PrivateWrapper>
           <IconButton
             iconName={IconTypes.Reload}
             disabled={singleCriterionReportsLoading}
             onClick={() => {
               setShowConfirmModal(true);
             }}
+            className={'ml-2'}
+            primary
+            variant={'outlined'}
             loading={singleCriterionReportsLoading || report?.status === ProcessingStatus.InProgress}
           />
-        </div>
-      </PrivateWrapper>
-      <h2 className="font-bold text-xl mt-5">📄 {reportDefinition.key}</h2>
+        </PrivateWrapper>
+      </h2>
       {report && report.outputFileUrl ? (
         <ViewCriterionReportItem
           criterionKey={criterionKey}

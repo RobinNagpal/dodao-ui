@@ -1,53 +1,55 @@
-// Import necessary libraries and components
-import Button from '@dodao/web-core/components/core/buttons/Button';
+'use client';
+
+import React from 'react';
+import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import RobotIconSolid from '@dodao/web-core/components/core/icons/RobotIconSolid';
 import ArrowDownTrayIcon from '@heroicons/react/24/outline/ArrowDownTrayIcon';
 import DocumentPlusIcon from '@heroicons/react/24/solid/DocumentPlusIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
-import styled from 'styled-components';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid';
 import { PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/20/solid';
+import styles from './IconButton.module.scss';
 
-// Define component's props using TypeScript interfaces
-interface IconButtonProps {
+export type IconButtonProps = {
   disabled?: boolean;
   iconName: IconTypes;
   primary?: boolean;
   variant?: 'outlined' | 'contained' | 'text';
   loading?: boolean;
-  type?: string;
+  type?: 'button' | 'submit' | 'reset';
   height?: string;
   width?: string;
   removeBorder?: boolean;
   onClick?: () => void;
   className?: string;
-}
+  tooltip?: string;
+};
 
-// Create the Styled Components
-const StyledUiButton = styled(Button)<{ className?: string }>`
-  border: none;
-
-  svg {
-    color: ${({ className }) => (className?.toLowerCase().includes('color') ? '' : 'var(--text-color)')};
-  }
-`;
-
-// IconButton component
-function IconButton({
+const IconButton: React.FC<IconButtonProps> = ({
   disabled = false,
   iconName,
   primary = false,
   variant = 'outlined',
   loading = false,
-  type,
+  type = 'button',
   height = '20',
   width = '20',
   removeBorder = false,
   onClick,
   className,
   tooltip,
-}: IconButtonProps & { tooltip?: string }) {
+}) => {
+  const classNames = [
+    styles.iconButton,
+    primary ? `${styles.primary} ${styles[variant]}` : styles[variant],
+    removeBorder ? styles.removeBorder : '',
+    disabled ? styles.disabled : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   const renderIcon = () => {
     switch (iconName) {
       case IconTypes.Trash:
@@ -76,20 +78,11 @@ function IconButton({
   };
 
   return (
-    <div title={tooltip} onClick={disabled ? undefined : onClick}>
-      <StyledUiButton
-        disabled={disabled}
-        primary={!!primary}
-        variant={variant}
-        loading={loading}
-        removeBorder={removeBorder}
-        onClick={disabled ? undefined : onClick}
-        className={className}
-      >
-        {renderIcon()}
-      </StyledUiButton>
-    </div>
+    <button type={type} onClick={disabled ? undefined : onClick} className={classNames} title={tooltip} disabled={disabled}>
+      {loading && <LoadingSpinner primary={primary} />}
+      {renderIcon()}
+    </button>
   );
-}
+};
 
 export default IconButton;

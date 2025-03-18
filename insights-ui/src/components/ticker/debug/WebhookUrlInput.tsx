@@ -13,7 +13,7 @@ function getWebhookUrlKey(sectorId: number, industryGroupId: number, criterionKe
   return `${sectorId}_${industryGroupId}_${criterionKey}_webhookUrl`;
 }
 
-export function getWebhookUrlFromLocalStorage(sectorId: number, industryGroupId: number, criterionKey: string): string {
+export function getWebhookUrlFromLocalStorage(sectorId: number, industryGroupId: number, criterionKey: string): string | undefined {
   const webhookUrlKey = getWebhookUrlKey(sectorId, industryGroupId, criterionKey);
   return localStorage.getItem(webhookUrlKey) || '';
 }
@@ -22,7 +22,8 @@ export default function WebhookUrlInput({ criterionDefinition, sectorId, industr
   const webhookUrlKey = getWebhookUrlKey(sectorId, industryGroupId, criterionDefinition.key);
 
   useEffect(() => {
-    if (getWebhookUrlFromLocalStorage(sectorId, industryGroupId, criterionDefinition.key) === null) {
+    if (!getWebhookUrlFromLocalStorage(sectorId, industryGroupId, criterionDefinition.key)?.trim()) {
+      console.log('Setting Webhook URL from criterion definition:', criterionDefinition.langflowWebhookUrl);
       localStorage.setItem(webhookUrlKey, criterionDefinition.langflowWebhookUrl || '');
     }
   }, []);
