@@ -27,6 +27,10 @@ export interface SpiderGraphPie {
   scores: SpiderScore[];
 }
 
+export enum PredefinedReports {
+  performanceChecklist = 'performanceChecklist',
+  importantMetrics = 'importantMetrics',
+}
 export type SpiderGraphForTicker = Record<string, SpiderGraphPie>;
 
 export type MetricValueItem = MetricValueItemPrisma;

@@ -1,6 +1,6 @@
 import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
 import { prisma } from '@/prisma';
-import { CriterionEvaluation, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
+import { CriterionEvaluation, PredefinedReports, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
@@ -35,63 +35,153 @@ const triggerSingleCriterionReport = async (
     headers,
     body: JSON.stringify(payload),
   });
-
-  const updatedCriterionEvaluation = await prisma.criterionEvaluation.upsert({
-    where: {
-      tickerKey_criterionKey: {
-        criterionKey,
-        tickerKey,
-      },
-    },
-    create: {
-      criterionKey,
-      tickerKey,
-      importantMetrics: {
-        create: {
-          criterionKey,
-          tickerKey,
-          status: ProcessingStatus.InProgress,
-        },
-      },
-      performanceChecklistEvaluation: {
-        create: {
-          criterionKey,
-          tickerKey,
-          status: ProcessingStatus.InProgress,
-        },
-      },
-    },
-    update: {
-      importantMetrics: {
-        upsert: {
-          create: {
-            criterionKey,
-            tickerKey,
-            status: ProcessingStatus.InProgress,
-          },
-          update: {
-            status: ProcessingStatus.InProgress,
-          },
-        },
-      },
-      performanceChecklistEvaluation: {
-        upsert: {
-          create: {
-            criterionKey,
-            tickerKey,
-            status: ProcessingStatus.InProgress,
-          },
-          update: {
-            status: ProcessingStatus.InProgress,
-          },
-        },
-      },
-    },
-  });
-
   const responseJson = await response.json();
   console.log('Response from langflow:', responseJson);
 
-  return updatedCriterionEvaluation;
+  if (reportKey === PredefinedReports.performanceChecklist) {
+    const updatedCriterionEvaluation = await prisma.criterionEvaluation.upsert({
+      where: {
+        tickerKey_criterionKey: {
+          criterionKey,
+          tickerKey,
+        },
+      },
+      create: {
+        criterionKey,
+        tickerKey,
+        performanceChecklistEvaluation: {
+          create: {
+            criterionKey,
+            tickerKey,
+            status: ProcessingStatus.InProgress,
+          },
+        },
+      },
+      update: {
+        performanceChecklistEvaluation: {
+          upsert: {
+            create: {
+              criterionKey,
+              tickerKey,
+              status: ProcessingStatus.InProgress,
+            },
+            update: {
+              status: ProcessingStatus.InProgress,
+              performanceChecklistItems: {
+                deleteMany: {
+                  tickerKey,
+                  criterionKey,
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    return updatedCriterionEvaluation;
+  } else if (reportKey === PredefinedReports.importantMetrics) {
+    const updatedCriterionEvaluation = await prisma.criterionEvaluation.upsert({
+      where: {
+        tickerKey_criterionKey: {
+          criterionKey,
+          tickerKey,
+        },
+      },
+      create: {
+        criterionKey,
+        tickerKey,
+        importantMetrics: {
+          create: {
+            criterionKey,
+            tickerKey,
+            status: ProcessingStatus.InProgress,
+          },
+        },
+      },
+      update: {
+        importantMetrics: {
+          upsert: {
+            create: {
+              criterionKey,
+              tickerKey,
+              status: ProcessingStatus.InProgress,
+            },
+            update: {
+              metrics: {
+                deleteMany: {
+                  tickerKey,
+                  criterionKey,
+                },
+              },
+              status: ProcessingStatus.InProgress,
+            },
+          },
+        },
+      },
+    });
+    return updatedCriterionEvaluation;
+  } else {
+    const updatedCriterionEvaluation = await prisma.criterionEvaluation.upsert({
+      where: {
+        tickerKey_criterionKey: {
+          criterionKey,
+          tickerKey,
+        },
+      },
+      create: {
+        criterionKey,
+        tickerKey,
+        reports: {
+          createMany: {
+            data: [
+              {
+                reportKey,
+                status: ProcessingStatus.InProgress,
+                createdBy: 'system',
+                createdAt: new Date(),
+                tickerKey,
+                criterionKey,
+                textData: null,
+                updatedAt: new Date(),
+                updatedBy: 'system',
+              },
+            ],
+          },
+        },
+      },
+      update: {
+        reports: {
+          upsert: {
+            create: {
+              reportKey,
+              status: ProcessingStatus.InProgress,
+              createdBy: 'system',
+              createdAt: new Date(),
+              tickerKey,
+              criterionKey,
+              textData: null,
+              updatedAt: new Date(),
+              updatedBy: 'system',
+            },
+            update: {
+              textData: null,
+              updatedAt: new Date(),
+              updatedBy: 'system',
+              jsonData: undefined,
+              status: ProcessingStatus.InProgress,
+            },
+            where: {
+              tickerKey_criterionKey_reportKey: {
+                reportKey,
+                tickerKey,
+                criterionKey,
+              },
+            },
+          },
+        },
+      },
+    });
+    return updatedCriterionEvaluation;
+  }
 };
 export const POST = withErrorHandlingV2<CriterionEvaluation>(triggerSingleCriterionReport);

@@ -1,57 +1,47 @@
-import { getTickerReport, saveCriteriaEvaluation, saveTickerReport } from '@/lib/publicEquity';
-import { CriterionEvaluation, ProcessingStatus, CriterionReportItem } from '@/types/public-equity/ticker-report-types';
+import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
+import { prisma } from '@/prisma';
+import { OutputType } from '@/types/public-equity/criteria-types';
+import { CriterionReportItem, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SaveCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<CriterionReportItem> => {
+const saveReportForCriterion = async (req: NextRequest): Promise<CriterionReportItem> => {
   const body = (await req.json()) as SaveCriterionReportRequest;
-  const tickerReport = await getTickerReport(body.ticker);
-  const evaluations = tickerReport.evaluationsOfLatest10Q || [];
-  let matchingEvaluation = evaluations.find((e) => e.criterionKey === body.criterionKey);
-  console.log('matchingEvaluation', matchingEvaluation);
-  // If no matching evaluation exists, create one
-  if (!matchingEvaluation) {
-    matchingEvaluation = {
-      criterionKey: body.criterionKey,
-      reports: [],
-    } as CriterionEvaluation;
 
-    evaluations.push(matchingEvaluation);
+  const tickerKey = body.ticker;
+  const criterionKey = body.criterionKey;
+  const reportKey = body.reportKey;
+  const data = body.data;
+  const tickerReport = await prisma.ticker.findUniqueOrThrow({ where: { tickerKey }, include: { evaluationsOfLatest10Q: true } });
+  const industryGroupCriteria = await getCriteriaByIds(tickerReport.sectorId, tickerReport.industryGroupId);
+  const matchingCriterion = industryGroupCriteria.criteria.find((crit) => crit.key === criterionKey);
+  if (!matchingCriterion) {
+    throw new Error(`Criterion with key '${criterionKey}' not found.`);
   }
 
-  const outputFileUrl = await saveCriteriaEvaluation(body.ticker, body.criterionKey, body.reportKey, body.data);
-
-  const updatedReportValue: CriterionReportItem = {
-    reportKey: body.reportKey,
-    status: ProcessingStatus.Completed,
-    outputFileUrl,
-  };
-  console.log('updatedReportValue', updatedReportValue);
-  // Ensure reports array is populated correctly
-  const updatedReports = matchingEvaluation.reports ? [...matchingEvaluation.reports] : [];
-
-  const existingReportIndex = updatedReports.findIndex((r) => r.reportKey === body.reportKey);
-  if (existingReportIndex !== -1) {
-    updatedReports[existingReportIndex] = updatedReportValue; // Update existing report
-  } else {
-    updatedReports.push(updatedReportValue); // Add new report
+  const reportDefinition = matchingCriterion.reports.find((r) => r.key === reportKey);
+  if (!reportDefinition) {
+    throw new Error(`Report with key '${reportKey}' not found.`);
   }
-  console.log('updatedReports', updatedReports);
+  const updatedReportItem = await prisma.criterionReportItem.update({
+    where: {
+      tickerKey_criterionKey_reportKey: {
+        tickerKey,
+        criterionKey,
 
-  const updatedEvaluation: CriterionEvaluation = {
-    ...matchingEvaluation,
-    reports: updatedReports,
-  };
+        reportKey: reportKey,
+      },
+    },
+    data: {
+      textData: reportDefinition.outputType === OutputType.Text ? data : undefined,
+      jsonData: reportDefinition.outputType !== OutputType.Text ? JSON.parse(data) : undefined,
+      status: ProcessingStatus.Completed,
+      updatedAt: new Date(),
+    },
+  });
 
-  const updatedTickerReport = {
-    ...tickerReport,
-    evaluationsOfLatest10Q: evaluations.map((e) => (e.criterionKey === body.criterionKey ? updatedEvaluation : e)),
-  };
-
-  await saveTickerReport(body.ticker, updatedTickerReport);
-
-  return updatedReportValue;
+  return updatedReportItem;
 };
 
-export const POST = withErrorHandlingV2<CriterionReportItem>(savePerformanceChecklistForCriterion);
+export const POST = withErrorHandlingV2<CriterionReportItem>(saveReportForCriterion);

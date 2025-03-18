@@ -3,6 +3,7 @@
 import DebugCriterionEvaluation from '@/components/ticker/debug/DebugCriterionEvaluation';
 import DebugMatchingAttachments from '@/components/ticker/debug/DebugMatchingAttachments';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { getGicsNames } from '@/lib/gicsHelper';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { TickerReport } from '@/types/public-equity/ticker-report-types';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -25,10 +26,10 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
       setReportExists(true);
       const report: TickerReport = await response.json();
       setReport(report);
-
+      const { sectorName, industryGroupName } = getGicsNames(report.sectorId, report.industryGroupId);
       const industryGroupCriteria = await fetch(
-        `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/${slugify(report.selectedSector.name)}/${slugify(
-          report.selectedIndustryGroup.name
+        `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/${slugify(sectorName)}/${slugify(
+          industryGroupName
         )}/custom-criteria.json`,
         { cache: 'no-cache' }
       );

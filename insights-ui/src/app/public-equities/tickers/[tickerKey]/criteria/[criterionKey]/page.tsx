@@ -3,14 +3,14 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { TickerReport } from '@/types/public-equity/ticker-report-types';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { CriterionEvaluation } from '@prisma/client';
 
 export default async function CriterionDetailsPage({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }) {
   const { tickerKey, criterionKey } = await params;
 
-  const response = await fetch(`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${tickerKey}/latest-10q-report.json`, {
-    cache: 'no-cache',
-  });
-  const tickerReport = (await response.json()) as TickerReport;
+  const response = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
+  const tickerReport = (await response.json()) as TickerReport & { evaluationsOfLatest10Q: CriterionEvaluation[] };
 
   const criteriaResponse = await fetch(
     `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`,

@@ -33,35 +33,16 @@ const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<P
   const checklistItems: PerformanceChecklistItem[] =
     typeof performanceChecklistRaw === 'string' ? parseLangflowJSON(performanceChecklistRaw) : performanceChecklistRaw;
 
-  const updatedPerformanceChecklist = await prisma.performanceChecklistEvaluation.upsert({
+  const updatedPerformanceChecklist = await prisma.performanceChecklistEvaluation.update({
     where: {
       tickerKey_criterionKey: {
         tickerKey: body.ticker,
         criterionKey: body.criterionKey,
       },
     },
-    create: {
-      tickerKey: body.ticker,
-      criterionKey: body.criterionKey,
-      status: ProcessingStatus.Completed,
-      criterionEvaluationId: evaluation.id,
-      performanceChecklistItems: {
-        create: checklistItems.map((item) => ({
-          checklistItem: item.checklistItem,
-          oneLinerExplanation: item.oneLinerExplanation,
-          informationUsed: item.informationUsed,
-          detailedExplanation: item.detailedExplanation,
-          evaluationLogic: item.evaluationLogic,
-          score: item.score,
-          tickerKey: body.ticker,
-          criterionKey: body.criterionKey,
-        })),
-      },
-    },
-    update: {
+    data: {
       status: ProcessingStatus.Completed,
       performanceChecklistItems: {
-        deleteMany: {},
         create: checklistItems.map((item) => ({
           checklistItem: item.checklistItem,
           oneLinerExplanation: item.oneLinerExplanation,
