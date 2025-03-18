@@ -90,7 +90,7 @@ const triggerSingleCriterionReport = async (
       create: {
         criterionKey,
         tickerKey,
-        importantMetrics: {
+        importantMetricsEvaluation: {
           create: {
             criterionKey,
             tickerKey,
@@ -99,7 +99,7 @@ const triggerSingleCriterionReport = async (
         },
       },
       update: {
-        importantMetrics: {
+        importantMetricsEvaluation: {
           upsert: {
             create: {
               criterionKey,

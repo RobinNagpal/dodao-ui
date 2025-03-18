@@ -48,7 +48,7 @@ const triggerAllCriterionReports = async (
     create: {
       criterionKey,
       tickerKey,
-      importantMetrics: {
+      importantMetricsEvaluation: {
         create: {
           criterionKey,
           tickerKey,
@@ -85,7 +85,7 @@ const triggerAllCriterionReports = async (
       },
     },
     update: {
-      importantMetrics: {
+      importantMetricsEvaluation: {
         update: {
           status: ProcessingStatus.InProgress,
         },

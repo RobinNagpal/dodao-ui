@@ -20,7 +20,7 @@ const saveMetrics = async (req: NextRequest): Promise<ImportantMetrics> => {
   const metricsRaw = body.metrics;
   const checklistItems: MetricValueItem[] = typeof metricsRaw === 'string' ? parseLangflowJSON(metricsRaw) : metricsRaw;
 
-  const newMetrics = await prisma.importantMetrics.update({
+  const newMetrics = await prisma.importantMetricsEvaluation.update({
     where: {
       tickerKey_criterionKey: {
         tickerKey: body.ticker,

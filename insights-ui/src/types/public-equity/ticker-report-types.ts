@@ -1,7 +1,7 @@
 import {
   CriterionEvaluation as CriterionEvaluationPrisma,
   CriterionReportItem as CriterionReportItemPrisma,
-  ImportantMetrics as ImportantMetricsPrisma,
+  ImportantMetricsEvaluation as ImportantMetricsEvaluationPrisma,
   MetricValueItem as MetricValueItemPrisma,
   PerformanceChecklistEvaluation as PerformanceChecklistEvaluationPrisma,
   PerformanceChecklistItem as PerformanceChecklistItemPrisma,
@@ -35,7 +35,7 @@ export type SpiderGraphForTicker = Record<string, SpiderGraphPie>;
 
 export type MetricValueItem = MetricValueItemPrisma;
 
-export type ImportantMetrics = ImportantMetricsPrisma;
+export type ImportantMetrics = ImportantMetricsEvaluationPrisma;
 
 export type CriterionReportItem = CriterionReportItemPrisma;
 
@@ -46,3 +46,11 @@ export type PerformanceChecklistEvaluation = PerformanceChecklistEvaluationPrism
 export type CriterionEvaluation = CriterionEvaluationPrisma;
 
 export type TickerReport = Ticker;
+
+export type FullyNestedTickerReport = Ticker & {
+  evaluationsOfLatest10Q: Array<
+    CriterionEvaluation & {
+      reports: CriterionReportItem[] & { performanceChecklistEvaluation: PerformanceChecklistEvaluation; importantMetricsEvaluation: ImportantMetrics };
+    }
+  >;
+};

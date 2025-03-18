@@ -26,7 +26,7 @@ model Ticker {
   criteriaMatchesOfLatest10QId String?               @unique @map("criteria_matches_of_latest_10q_id")
   secFilings                   SecFiling[]
 
-  ImportantMetrics               ImportantMetrics[]
+  ImportantMetrics               ImportantMetricsEvaluation[]
   MetricValueItem                MetricValueItem[]
   CriterionReportItem            CriterionReportItem[]
   PerformanceChecklistEvaluation PerformanceChecklistEvaluation[]
@@ -99,7 +99,7 @@ model CriterionEvaluation {
   id                             String                          @id @default(uuid())
   tickerKey                      String                          @map("ticker_key")
   criterionKey                   String                          @map("criterion_key")
-  importantMetrics               ImportantMetrics?
+  importantMetricsEvaluation     ImportantMetricsEvaluation?
   performanceChecklistEvaluation PerformanceChecklistEvaluation?
   reports                        CriterionReportItem[]
   ticker                         Ticker                          @relation(fields: [tickerKey], references: [tickerKey])
@@ -108,7 +108,7 @@ model CriterionEvaluation {
   @@map("criterion_evaluations")
 }
 
-model ImportantMetrics {
+model ImportantMetricsEvaluation {
   id           String           @id @default(uuid())
   status       ProcessingStatus
   createdAt    DateTime         @default(now()) @map("created_at")
@@ -130,15 +130,15 @@ model ImportantMetrics {
 }
 
 model MetricValueItem {
-  id                     String           @id @default(uuid())
-  metricKey              String           @map("metric_key")
+  id                     String                     @id @default(uuid())
+  metricKey              String                     @map("metric_key")
   value                  String
-  calculationExplanation String           @map("calculation_explanation")
-  tickerKey              String           @map("ticker_key")
-  criterionKey           String           @map("criterion_key")
-  importantMetricsId     String           @map("important_metrics_id")
-  importantMetrics       ImportantMetrics @relation(fields: [importantMetricsId], references: [id])
-  ticker                 Ticker           @relation(fields: [tickerKey], references: [tickerKey])
+  calculationExplanation String                     @map("calculation_explanation")
+  tickerKey              String                     @map("ticker_key")
+  criterionKey           String                     @map("criterion_key")
+  importantMetricsId     String                     @map("important_metrics_id")
+  importantMetrics       ImportantMetricsEvaluation @relation(fields: [importantMetricsId], references: [id])
+  ticker                 Ticker                     @relation(fields: [tickerKey], references: [tickerKey])
 
   @@map("metric_value_items")
 }
