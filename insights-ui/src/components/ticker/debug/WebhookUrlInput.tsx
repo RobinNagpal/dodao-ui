@@ -1,27 +1,42 @@
 import { Button } from '@/components/home-page/Button';
+import { CriterionDefinition } from '@/types/public-equity/criteria-types';
 import Input from '@dodao/web-core/components/core/input/Input';
 import React, { useState } from 'react';
 
 interface WebhookUrlInputProps {
-  criterionKey: string;
+  sectorId: number;
+  industryGroupId: number;
+  criterionDefinition: CriterionDefinition;
 }
 
-export default function WebhookUrlInput({ criterionKey }: WebhookUrlInputProps) {
-  // Initialize from localStorage
-  const [webhookUrl, setWebhookUrl] = useState<string>(localStorage.getItem(`${criterionKey}_webhookUrl`) || '');
+function getWebhookUrlKey(sectorId: number, industryGroupId: number, criterionKey: string): string {
+  return `${sectorId}_${industryGroupId}_${criterionKey}_webhookUrl`;
+}
+
+export function getWebhookUrlFromLocalStorage(sectorId: number, industryGroupId: number, criterionKey: string): string {
+  const webhookUrlKey = getWebhookUrlKey(sectorId, industryGroupId, criterionKey);
+  return localStorage.getItem(webhookUrlKey) || '';
+}
+
+export default function WebhookUrlInput({ criterionDefinition, sectorId, industryGroupId }: WebhookUrlInputProps) {
+  const webhookUrlKey = getWebhookUrlKey(sectorId, industryGroupId, criterionDefinition.key);
+
+  const [webhookUrl, setWebhookUrl] = useState<string>(
+    getWebhookUrlFromLocalStorage(sectorId, industryGroupId, criterionDefinition.key) || criterionDefinition.langflowWebhookUrl || ''
+  );
 
   const handleSave = () => {
-    localStorage.setItem(`${criterionKey}_webhookUrl`, webhookUrl);
+    localStorage.setItem(webhookUrlKey, webhookUrl);
     console.log('Webhook URL saved:', webhookUrl);
   };
 
   const handleClear = () => {
-    localStorage.removeItem(`${criterionKey}_webhookUrl`);
+    localStorage.removeItem(webhookUrlKey);
     setWebhookUrl('');
   };
 
   return (
-    <div>
+    <div className="w-full">
       <Input modelValue={webhookUrl} placeholder="Enter Webhook URL" className="text-color" onUpdate={(value) => setWebhookUrl(value as string)}>
         Webhook Url
       </Input>

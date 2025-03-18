@@ -21,9 +21,11 @@ const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<P
     status: ProcessingStatus.Completed,
     performanceChecklist: performanceChecklist,
   };
-  evaluation.performanceChecklistEvaluation = checklist;
-
-  tickerReport.evaluationsOfLatest10Q = evaluations;
+  const updatedEvaluation: CriterionEvaluation = {
+    ...evaluation,
+    performanceChecklistEvaluation: checklist,
+  };
+  tickerReport.evaluationsOfLatest10Q = evaluations.map((e) => (e.criterionKey === body.criterionKey ? updatedEvaluation : e));
   await saveTickerReport(body.ticker, tickerReport);
   return checklist;
 };

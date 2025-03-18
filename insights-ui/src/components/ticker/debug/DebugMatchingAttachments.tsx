@@ -1,4 +1,5 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { ProcessingStatus, TickerReport } from '@/types/public-equity/ticker-report-types';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -10,6 +11,7 @@ import { useState } from 'react';
 
 export interface DebugMatchingAttachmentsProps {
   report: TickerReport;
+  industryGroupCriteria: IndustryGroupCriteriaDefinition;
 }
 
 export default function DebugMatchingAttachments({ report }: DebugMatchingAttachmentsProps) {

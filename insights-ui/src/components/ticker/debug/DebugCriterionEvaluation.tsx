@@ -1,30 +1,33 @@
 'use client';
 
-import { Button } from '@/components/home-page/Button';
+import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { CriterionEvaluation, CriterionReportItem, TickerReport } from '@/types/public-equity/ticker-report-types';
 import { CreateAllCriterionReportsRequest, CreateCriteriaRequest, CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Spinner } from '@dodao/web-core/components/core/icons/Spinner';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import WebhookUrlInput from './WebhookUrlInput';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import WebhookUrlInput, { getWebhookUrlFromLocalStorage } from './WebhookUrlInput';
 
 export interface DebugCriterionEvaluationProps {
   report: TickerReport;
+  industryGroupCriteria: IndustryGroupCriteriaDefinition;
 }
-export default function DebugCriterionEvaluation({ report }: DebugCriterionEvaluationProps) {
+export default function DebugCriterionEvaluation({ report, industryGroupCriteria }: DebugCriterionEvaluationProps) {
   const ticker = report.ticker;
 
   const [showCriterionConfirmModal, setShowCriterionConfirmModal] = useState(false);
   const [showSectionConfirmModal, setShowSectionConfirmModal] = useState(false);
   const [showRegenerateAllConfirmModal, setShowRegenerateAllConfirmModal] = useState(false);
   const [reportContentMap, setReportContentMap] = useState<{ [key: string]: string }>({});
-  const [selectedCriterionAccodian, setSelectedCriterionAccodian] = useState<string | null>(null);
+  const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
   const [selectedCriterionForRegeneration, setSelectedCriterionForRegeneration] = useState<CriterionEvaluation | null>(null);
   // New state for section-specific regeneration confirmation
   const [selectedSectionForRegeneration, setSelectedSectionForRegeneration] = useState<{
@@ -66,14 +69,14 @@ export default function DebugCriterionEvaluation({ report }: DebugCriterionEvalu
 
   const handleRegenerateAllSingleCriterionReports = async (criterionKey: string) => {
     regenerateAllSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
-      langflowWebhookUrl: localStorage.getItem(`${criterionKey}_webhookUrl`) || '',
+      langflowWebhookUrl: getWebhookUrlFromLocalStorage(report.selectedSector.id, report.selectedIndustryGroup.id, criterionKey),
     });
   };
 
   // Handles section-specific regeneration (for checklist, metrics, or individual reports)
   const handleRegenerateSingleCriterionReports = async (criterionKey: string, reportKey: string) => {
     regenerateSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
-      langflowWebhookUrl: localStorage.getItem(`${criterionKey}_webhookUrl`) || '',
+      langflowWebhookUrl: getWebhookUrlFromLocalStorage(report.selectedSector.id, report.selectedIndustryGroup.id, criterionKey),
       reportKey: reportKey,
     });
   };
@@ -115,8 +118,12 @@ export default function DebugCriterionEvaluation({ report }: DebugCriterionEvalu
     fetchCriterionReports();
   }, []);
 
+  const evaluationOfLatest10QMap =
+    (report.evaluationsOfLatest10Q && Object.fromEntries(report.evaluationsOfLatest10Q?.map((criterion) => [criterion.criterionKey, criterion]))) || {};
+
   return (
     <div className="mt-8">
+
       <PrivateWrapper>
         <div className="my-5 flex justify-end">
           <Button disabled onClick={() => setShowRegenerateAllConfirmModal(true)}>
@@ -148,12 +155,12 @@ export default function DebugCriterionEvaluation({ report }: DebugCriterionEvalu
                 open={showCriterionConfirmModal}
                 onClose={() => setShowCriterionConfirmModal(false)}
                 onConfirm={async () => {
-                  await handleRegenerateAllSingleCriterionReports(selectedCriterionForRegeneration.criterionKey);
+                  await handleRegenerateAllSingleCriterionReports(criterionKey);
                   setShowCriterionConfirmModal(false);
                   // Note: We intentionally do NOT clear selectedCriterionForRegeneration so that the loading spinner remains.
                 }}
                 title="Regenerate Criterion Reports"
-                confirmationText={`Are you sure you want to regenerate reports for ${selectedCriterionForRegeneration.criterionKey}?`}
+                confirmationText={`Are you sure you want to regenerate reports for ${criterionKey}?`}
                 askForTextInput={true}
               />
             )}
@@ -168,14 +175,13 @@ export default function DebugCriterionEvaluation({ report }: DebugCriterionEvalu
               />
             )}
             <Accordion
-              label={criterion.criterionKey}
-              isOpen={selectedCriterionAccodian === `reports_${criterion.criterionKey}`}
-              onClick={() =>
-                setSelectedCriterionAccodian(selectedCriterionAccodian === `reports_${criterion.criterionKey}` ? null : `reports_${criterion.criterionKey}`)
-              }
+              label={criterionKey}
+              isOpen={selectedCriterionAccordian === `reports_${criterionKey}`}
+              onClick={() => setSelectedCriterionAccordian(selectedCriterionAccordian === `reports_${criterionKey}` ? null : `reports_${criterionKey}`)}
             >
-              <div key={criterion.criterionKey + '_report_criterion_key'} className="mt-8">
+              <div key={criterionKey + '_report_criterion_key'} className="mt-8">
                 {/* Performance Checklist Section */}
+
                 <PrivateWrapper>
                   <div className="flex justify-end">
                     <Button
@@ -204,7 +210,7 @@ export default function DebugCriterionEvaluation({ report }: DebugCriterionEvalu
                 <h2>Performance Checklist</h2>
                 <div className="block-bg-color m-8">
                   <div className="overflow-x-auto">
-                    {criterion.performanceChecklistEvaluation?.performanceChecklist?.length && (
+                    {criterion?.performanceChecklistEvaluation?.performanceChecklist?.length && (
                       <ul className="list-disc mt-2">
                         {criterion.performanceChecklistEvaluation?.performanceChecklist?.map((item, index) => (
                           <li key={index} className="mb-1 flex items-start">
@@ -262,7 +268,7 @@ export default function DebugCriterionEvaluation({ report }: DebugCriterionEvalu
                         </tr>
                       </thead>
                       <tbody className="w-full">
-                        {criterion.importantMetrics?.metrics?.map((metric) => (
+                        {criterion?.importantMetrics?.metrics?.map((metric) => (
                           <tr key={metric.metricKey} className="w-full">
                             <td className="px-4">{metric.metricKey}</td>
                             <td className="px-4">{metric.value}</td>
@@ -275,7 +281,7 @@ export default function DebugCriterionEvaluation({ report }: DebugCriterionEvalu
 
                 {/* Reports Section */}
                 <h2>Reports</h2>
-                {criterion.reports?.map((report, index) => {
+                {criterion?.reports?.map((report, index) => {
                   return (
                     <div key={(report.reportKey || index) + '_report_key'} className="mt-2">
                       <PrivateWrapper>
@@ -312,7 +318,7 @@ export default function DebugCriterionEvaluation({ report }: DebugCriterionEvalu
                       {reportContentMap[`${criterion.criterionKey}__${report.reportKey}`] ? (
                         <div
                           className="markdown-body text-md"
-                          dangerouslySetInnerHTML={{ __html: getMarkdownContent(reportContentMap[`${criterion.criterionKey}__${report.reportKey}`]) }}
+                          dangerouslySetInnerHTML={{ __html: getMarkdownContent(reportContentMap[`${criterionKey}__${report.reportKey}`]) }}
                         />
                       ) : (
                         <div>No content</div>

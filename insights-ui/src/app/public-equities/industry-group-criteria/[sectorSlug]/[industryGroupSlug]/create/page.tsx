@@ -1,8 +1,7 @@
 import CriteriaTable from '@/components/criteria/CriteriaTable';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-
-import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons'; // Adjust the import path as needed
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 
 export default async function CustomCriteriaPage({ params }: { params: Promise<{ sectorSlug: string; industryGroupSlug: string }> }) {
