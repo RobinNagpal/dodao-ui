@@ -6,12 +6,12 @@ interface CriterionReportWaterfallChartProps {
   content: string;
 }
 export default function CriterionReportWaterfallChart({ content }: CriterionReportWaterfallChartProps) {
-  let data: { label: string; earnings: number }[];
+  let data: { label: string; earnings: number }[] | undefined = undefined;
   let error: string | undefined;
   try {
     data = JSON.parse(content);
   } catch (e) {
-    error = e.message;
+    error = (e as any)?.message;
   }
   if (error) {
     return <div className="text-red-500">{error}</div>;

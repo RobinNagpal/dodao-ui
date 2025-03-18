@@ -23,11 +23,11 @@ export function ViewCriterionReportItem({ criterionKey, criterionReport, industr
     ?.reports.find((item) => item.key === criterionReport.reportKey);
 
   if (!content) {
-    return <div>No Content For report {reportDefinition.key}</div>;
+    return <div>No Content For report {reportDefinition?.key}</div>;
   }
-  if (reportDefinition && reportDefinition.outputType === 'WaterfallChart') {
+  if (reportDefinition && reportDefinition?.outputType === 'WaterfallChart') {
     return <CriterionReportWaterfallChart content={content} />;
-  } else if (reportDefinition && reportDefinition.outputType === 'PieChart') {
+  } else if (reportDefinition && reportDefinition?.outputType === 'PieChart') {
     return <CriterionReportPieChart content={content} />;
   }
 
