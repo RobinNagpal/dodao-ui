@@ -123,7 +123,6 @@ export default function DebugCriterionEvaluation({ report, industryGroupCriteria
 
   return (
     <div className="mt-8">
-
       <PrivateWrapper>
         <div className="my-5 flex justify-end">
           <Button disabled onClick={() => setShowRegenerateAllConfirmModal(true)}>
@@ -131,23 +130,33 @@ export default function DebugCriterionEvaluation({ report, industryGroupCriteria
           </Button>
         </div>
       </PrivateWrapper>
-      <h1 className="mb-2 font-bold text-xl">Criterion Evaluation</h1>
-      {report.evaluationsOfLatest10Q?.map((criterion) => {
+      <div className="flex justify-between">
+        <h1 className="mb-2 font-bold text-xl">Criterion Evaluation</h1>
+        <Link href={`/public-equities/industry-group-criteria/real-estate/equity-real-estate-investment-trusts-reits/create`}>View Criteria</Link>
+      </div>
+      {industryGroupCriteria.criteria?.map((criterionDefinition) => {
+        const criterionKey = criterionDefinition.key;
+        const criterion: CriterionEvaluation | undefined = evaluationOfLatest10QMap[criterionKey];
         return (
-          <div key={criterion.criterionKey + '_report_criterion_key'}>
+          <div key={criterionKey + '_report_criterion_key'}>
             <PrivateWrapper>
               <div className="my-5 flex justify-end space-x-5 items-center">
+                <WebhookUrlInput
+                  criterionDefinition={criterionDefinition}
+                  sectorId={report.selectedSector.id}
+                  industryGroupId={report.selectedIndustryGroup.id}
+                />
                 <Button
-                  disabled={selectedCriterionForRegeneration?.criterionKey === criterion.criterionKey && allSingleCriterionReportsLoading}
+                  disabled={selectedCriterionForRegeneration?.criterionKey === criterionKey && allSingleCriterionReportsLoading}
                   onClick={() => {
                     setSelectedCriterionForRegeneration(criterion);
                     setShowCriterionConfirmModal(true);
                   }}
+                  loading={selectedCriterionForRegeneration?.criterionKey === criterionKey && allSingleCriterionReportsLoading}
+                  className="w-48"
                 >
-                  {selectedCriterionForRegeneration?.criterionKey === criterion.criterionKey && allSingleCriterionReportsLoading && <Spinner />}
                   Regenerate (3m)
                 </Button>
-                <WebhookUrlInput criterionKey={criterion.criterionKey} />
               </div>
             </PrivateWrapper>
             {showCriterionConfirmModal && selectedCriterionForRegeneration && (
@@ -181,24 +190,23 @@ export default function DebugCriterionEvaluation({ report, industryGroupCriteria
             >
               <div key={criterionKey + '_report_criterion_key'} className="mt-8">
                 {/* Performance Checklist Section */}
-
                 <PrivateWrapper>
                   <div className="flex justify-end">
                     <Button
                       disabled={
-                        selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                        selectedSectionForRegeneration?.criterionKey === criterionKey &&
                         selectedSectionForRegeneration?.section === 'performanceChecklist' &&
                         singleCriterionReportsLoading
                       }
                       onClick={() => {
                         setSelectedSectionForRegeneration({
-                          criterionKey: criterion.criterionKey,
+                          criterionKey: criterionKey,
                           section: 'performanceChecklist',
                         });
                         setShowSectionConfirmModal(true);
                       }}
                     >
-                      {selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                      {selectedSectionForRegeneration?.criterionKey === criterionKey &&
                       selectedSectionForRegeneration?.section === 'performanceChecklist' &&
                       singleCriterionReportsLoading ? (
                         <Spinner />
@@ -236,19 +244,19 @@ export default function DebugCriterionEvaluation({ report, industryGroupCriteria
                   <div className="flex justify-end">
                     <Button
                       disabled={
-                        selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                        selectedSectionForRegeneration?.criterionKey === criterionKey &&
                         selectedSectionForRegeneration?.section === 'importantMetrics' &&
                         singleCriterionReportsLoading
                       }
                       onClick={() => {
                         setSelectedSectionForRegeneration({
-                          criterionKey: criterion.criterionKey,
+                          criterionKey: criterionKey,
                           section: 'importantMetrics',
                         });
                         setShowSectionConfirmModal(true);
                       }}
                     >
-                      {selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                      {selectedSectionForRegeneration?.criterionKey === criterionKey &&
                       selectedSectionForRegeneration?.section === 'importantMetrics' &&
                       singleCriterionReportsLoading ? (
                         <Spinner />
@@ -288,21 +296,21 @@ export default function DebugCriterionEvaluation({ report, industryGroupCriteria
                         <div className="my-1 flex justify-end">
                           <Button
                             disabled={
-                              selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                              selectedSectionForRegeneration?.criterionKey === criterionKey &&
                               selectedSectionForRegeneration?.section === 'report' &&
                               selectedSectionForRegeneration.reportKey === report.reportKey &&
                               singleCriterionReportsLoading
                             }
                             onClick={() => {
                               setSelectedSectionForRegeneration({
-                                criterionKey: criterion.criterionKey,
+                                criterionKey: criterionKey,
                                 section: 'report',
                                 reportKey: report.reportKey,
                               });
                               setShowSectionConfirmModal(true);
                             }}
                           >
-                            {selectedSectionForRegeneration?.criterionKey === criterion.criterionKey &&
+                            {selectedSectionForRegeneration?.criterionKey === criterionKey &&
                             selectedSectionForRegeneration?.section === 'report' &&
                             selectedSectionForRegeneration.reportKey === report.reportKey &&
                             singleCriterionReportsLoading ? (
@@ -311,11 +319,11 @@ export default function DebugCriterionEvaluation({ report, industryGroupCriteria
                             Regenerate {report.reportKey} report
                           </Button>
                         </div>
-                        <h2 className="font-bold text-xl mt-5">
-                          📄{index + 1}. {report.reportKey}
-                        </h2>
                       </PrivateWrapper>
-                      {reportContentMap[`${criterion.criterionKey}__${report.reportKey}`] ? (
+                      <h2 className="font-bold text-xl mt-5">
+                        📄{index + 1}. {report.reportKey}
+                      </h2>
+                      {reportContentMap[`${criterionKey}__${report.reportKey}`] ? (
                         <div
                           className="markdown-body text-md"
                           dangerouslySetInnerHTML={{ __html: getMarkdownContent(reportContentMap[`${criterionKey}__${report.reportKey}`]) }}
