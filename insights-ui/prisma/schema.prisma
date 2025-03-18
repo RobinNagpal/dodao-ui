@@ -16,7 +16,6 @@ datasource db {
 
 model Ticker {
   tickerKey       String   @id @unique @map("ticker_key")
-  reportUrl       String?  @map("report_url")
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
   createdBy       String?  @map("created_by")
@@ -26,7 +25,6 @@ model Ticker {
 
   // Relations
   secFilings                     SecFiling[]
-  TickerReport                   TickerReport[]
   CriterionEvaluation            CriterionEvaluation[]
   ImportantMetrics               ImportantMetrics[]
   MetricValueItem                MetricValueItem[]
@@ -97,37 +95,16 @@ enum ProcessingStatus {
   NotStarted
 }
 
-model TickerReport {
-  id                      String   @id @default(uuid())
-  tickerKey               String   @map("ticker_key")
-  selectedIndustryGroupId Int      @map("selected_industry_group_id")
-  selectedSectorId        Int      @map("selected_sector_id")
-  createdAt               DateTime @default(now()) @map("created_at")
-  updatedAt               DateTime @updatedAt @map("updated_at")
-  createdBy               String?  @map("created_by")
-  updatedBy               String?  @map("updated_by")
-
-  evaluations                CriterionEvaluation[]
-  criteriaMatchesOfLatest10Q CriterionMatchesOfLatest10Q?
-
-  // Relation to Ticker (using the same ticker_key)
-  ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
-
-  @@map("ticker_reports")
-}
-
 model CriterionEvaluation {
-  id             String @id @default(uuid())
-  tickerKey      String @map("ticker_key")
-  criterionKey   String @map("criterion_key")
-  tickerReportId String @map("ticker_report_id")
+  id           String @id @default(uuid())
+  tickerKey    String @map("ticker_key")
+  criterionKey String @map("criterion_key")
 
   importantMetrics               ImportantMetrics?
   performanceChecklistEvaluation PerformanceChecklistEvaluation?
   reports                        CriterionReportItem[]
 
-  tickerReport TickerReport @relation(fields: [tickerReportId], references: [id])
-  ticker       Ticker       @relation(fields: [tickerKey], references: [tickerKey])
+  ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
 
   @@map("criterion_evaluations")
 }
@@ -231,9 +208,7 @@ model CriterionMatchesOfLatest10Q {
   tickerKey     String           @map("ticker_key")
   criterionKey  String           @map("criterion_key")
 
-  tickerReportId String       @unique @map("ticker_report_id")
-  tickerReport   TickerReport @relation(fields: [tickerReportId], references: [id])
-  ticker         Ticker       @relation(fields: [tickerKey], references: [tickerKey])
+  ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
 
   criterionMatches CriterionMatch[]
 
