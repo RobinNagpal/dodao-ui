@@ -80,7 +80,12 @@ export default function DebugCriterionReport({
       </PrivateWrapper>
       <h2 className="font-bold text-xl mt-5">📄 {reportDefinition.key}</h2>
       {report && report.outputFileUrl ? (
-        <ViewCriterionReportItem criterionKey={criterionKey} criterionReport={report} industryGroupCriteria={industryGroupCriteria} content={reportContent} />
+        <ViewCriterionReportItem
+          criterionKey={criterionKey}
+          criterionReport={report}
+          industryGroupCriteria={industryGroupCriteria}
+          content={reportContent || undefined}
+        />
       ) : (
         <div>No report exists</div>
       )}
