@@ -1,10 +1,9 @@
-// app/api/public-equity/create-single-report/route.ts
-
 import { prisma } from '@/prisma';
-import { ImportantMetrics, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
+import { ImportantMetrics, MetricValueItem, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SaveCriterionMetricsRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
+import { parseLangflowJSON } from '@/lib/langflow';
 
 const saveMetrics = async (req: NextRequest): Promise<ImportantMetrics> => {
   const body = (await req.json()) as SaveCriterionMetricsRequest;
@@ -18,7 +17,8 @@ const saveMetrics = async (req: NextRequest): Promise<ImportantMetrics> => {
     throw new Error(`Ticker not found for key: ${body.ticker}`);
   }
 
-  const metricsArray = typeof body.metrics === 'string' ? JSON.parse(body.metrics) : body.metrics;
+  const metricsRaw = body.metrics;
+  const checklistItems: MetricValueItem[] = typeof metricsRaw === 'string' ? parseLangflowJSON(metricsRaw) : metricsRaw;
 
   const newMetrics = await prisma.importantMetrics.upsert({
     where: {
@@ -30,9 +30,9 @@ const saveMetrics = async (req: NextRequest): Promise<ImportantMetrics> => {
     create: {
       tickerKey: body.ticker,
       criterionKey: body.criterionKey,
-      status: ProcessingStatus.InProgress,
+      status: ProcessingStatus.Completed,
       metrics: {
-        create: metricsArray.map((m: { metricKey: any; value: any; calculationExplanation: any }) => ({
+        create: checklistItems.map((m: { metricKey: any; value: any; calculationExplanation: any }) => ({
           metricKey: m.metricKey,
           value: m.value,
           calculationExplanation: m.calculationExplanation,
@@ -42,10 +42,10 @@ const saveMetrics = async (req: NextRequest): Promise<ImportantMetrics> => {
       },
     },
     update: {
-      status: ProcessingStatus.InProgress,
+      status: ProcessingStatus.Completed,
       metrics: {
         deleteMany: {},
-        create: metricsArray.map((m: { metricKey: any; value: any; calculationExplanation: any }) => ({
+        create: checklistItems.map((m: { metricKey: any; value: any; calculationExplanation: any }) => ({
           metricKey: m.metricKey,
           value: m.value,
           calculationExplanation: m.calculationExplanation,
