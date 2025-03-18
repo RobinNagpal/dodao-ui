@@ -58,7 +58,7 @@ export default function DebugCriterionReport({
   // Handles section-specific regeneration (for checklist, metrics, or individual reports)
   const handleRegenerateSingleCriterionReports = async (criterionKey: string, reportKey: string) => {
     regenerateSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${tickerReport.ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
-      langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.selectedSector.id, tickerReport.selectedIndustryGroup.id, criterionKey),
+      langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.selectedSector.id, tickerReport.selectedIndustryGroup.id, criterionKey)!,
       reportKey: reportKey,
     });
   };
