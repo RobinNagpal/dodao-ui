@@ -1,7 +1,7 @@
 import { Button } from '@/components/home-page/Button';
 import { CriterionDefinition } from '@/types/public-equity/criteria-types';
 import Input from '@dodao/web-core/components/core/input/Input';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface WebhookUrlInputProps {
   sectorId: number;
@@ -13,13 +13,20 @@ function getWebhookUrlKey(sectorId: number, industryGroupId: number, criterionKe
   return `${sectorId}_${industryGroupId}_${criterionKey}_webhookUrl`;
 }
 
-export function getWebhookUrlFromLocalStorage(sectorId: number, industryGroupId: number, criterionKey: string): string {
+export function getWebhookUrlFromLocalStorage(sectorId: number, industryGroupId: number, criterionKey: string): string | undefined {
   const webhookUrlKey = getWebhookUrlKey(sectorId, industryGroupId, criterionKey);
   return localStorage.getItem(webhookUrlKey) || '';
 }
 
 export default function WebhookUrlInput({ criterionDefinition, sectorId, industryGroupId }: WebhookUrlInputProps) {
   const webhookUrlKey = getWebhookUrlKey(sectorId, industryGroupId, criterionDefinition.key);
+
+  useEffect(() => {
+    if (!getWebhookUrlFromLocalStorage(sectorId, industryGroupId, criterionDefinition.key)?.trim()) {
+      console.log('Setting Webhook URL from criterion definition:', criterionDefinition.langflowWebhookUrl);
+      localStorage.setItem(webhookUrlKey, criterionDefinition.langflowWebhookUrl || '');
+    }
+  }, []);
 
   const [webhookUrl, setWebhookUrl] = useState<string>(
     getWebhookUrlFromLocalStorage(sectorId, industryGroupId, criterionDefinition.key) || criterionDefinition.langflowWebhookUrl || ''

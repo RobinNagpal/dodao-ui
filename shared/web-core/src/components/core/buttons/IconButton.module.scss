@@ -1,0 +1,67 @@
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem; // adjust as needed for icon spacing
+  border: 1px solid transparent;
+  background-color: transparent;
+  color: var(--link-color);
+  border-radius: 0.5rem;
+  outline: none;
+  height: 36px;
+  width: 36px; // square button for icons
+  font-size: calc(15 / 16 * 1rem);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: var(--link-color);
+    border-color: var(--link-color);
+  }
+}
+
+.removeBorder {
+  border: none;
+}
+
+.disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.outlined {
+  border-color: var(--skin-border);
+}
+
+.contained {
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+  border-color: var(--primary-color);
+
+  &:hover {
+    border-color: var(--text-color);
+  }
+}
+
+.primary {
+  // Adjust primary styles for the outlined variant
+  &.outlined {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+
+    &:hover {
+      color: var(--primary-text-color);
+      background-color: var(--primary-color);
+    }
+  }
+  // Adjust primary styles for the contained variant
+  &.contained {
+    color: var(--primary-text-color);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+
+    &:hover {
+      border-color: var(--text-color);
+    }
+  }
+}
