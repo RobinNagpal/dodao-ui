@@ -15,23 +15,22 @@ datasource db {
 // --------------------------
 
 model Ticker {
-  tickerKey       String   @id @unique @map("ticker_key")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
-  createdBy       String?  @map("created_by")
-  updatedBy       String?  @map("updated_by")
-  sectorId        Int      @map("sector_id")
-  industryGroupId Int      @map("industry_group_id")
+  tickerKey                  String                        @id @unique @map("ticker_key")
+  createdAt                  DateTime                      @default(now()) @map("created_at")
+  updatedAt                  DateTime                      @updatedAt @map("updated_at")
+  createdBy                  String?                       @map("created_by")
+  updatedBy                  String?                       @map("updated_by")
+  sectorId                   Int                           @map("sector_id")
+  industryGroupId            Int                           @map("industry_group_id")
+  evaluationsOfLatest10Q     CriterionEvaluation[]
+  criteriaMatchesOfLatest10Q CriterionMatchesOfLatest10Q[]
+  secFilings                 SecFiling[]
 
-  // Relations
-  secFilings                     SecFiling[]
-  CriterionEvaluation            CriterionEvaluation[]
   ImportantMetrics               ImportantMetrics[]
   MetricValueItem                MetricValueItem[]
   CriterionReportItem            CriterionReportItem[]
   PerformanceChecklistEvaluation PerformanceChecklistEvaluation[]
   PerformanceChecklistItem       PerformanceChecklistItem[]
-  CriterionMatchesOfLatest10Q    CriterionMatchesOfLatest10Q[]
   CriterionMatch                 CriterionMatch[]
 
   @@map("tickers")
@@ -202,14 +201,12 @@ model PerformanceChecklistItem {
 }
 
 model CriterionMatchesOfLatest10Q {
-  id            String           @id @default(uuid())
-  status        ProcessingStatus
-  failureReason String?          @map("failure_reason")
-  tickerKey     String           @map("ticker_key")
-  criterionKey  String           @map("criterion_key")
-
-  ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
-
+  id               String           @id @default(uuid())
+  status           ProcessingStatus
+  failureReason    String?          @map("failure_reason")
+  tickerKey        String           @map("ticker_key")
+  criterionKey     String           @map("criterion_key")
+  ticker           Ticker           @relation(fields: [tickerKey], references: [tickerKey])
   criterionMatches CriterionMatch[]
 
   @@map("criterion_matches_latest_10q")

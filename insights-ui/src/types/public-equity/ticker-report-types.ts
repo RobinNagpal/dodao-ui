@@ -1,4 +1,9 @@
-import { IndustryGroup, Sector } from '@/types/public-equity/criteria-types';
+import {
+  CriterionEvaluation as CriterionEvaluationPrisma,
+  CriterionMatchesOfLatest10Q as CriterionMatchesOfLatest10QPrisma,
+  PerformanceChecklistEvaluation as PerformanceChecklistEvaluationPrisma,
+  Ticker,
+} from '@prisma/client';
 
 export enum ProcessingStatus {
   Completed = 'Completed',
@@ -31,11 +36,7 @@ export interface CriterionMatch {
   matchedContent: string;
 }
 
-export interface CriterionMatchesOfLatest10Q {
-  criterionMatches?: CriterionMatch[];
-  status: ProcessingStatus;
-  failureReason?: string;
-}
+export type CriterionMatchesOfLatest10Q = CriterionMatchesOfLatest10QPrisma;
 
 export interface CreateSingleReportsRequest {
   ticker: string;
@@ -89,30 +90,8 @@ export interface PerformanceChecklistItem {
   score: number;
 }
 
-export interface PerformanceChecklistEvaluation {
-  status: ProcessingStatus;
-  performanceChecklist?: PerformanceChecklistItem[];
-}
+export type PerformanceChecklistEvaluation = PerformanceChecklistEvaluationPrisma;
 
-export interface CriterionEvaluation {
-  criterionKey: string;
-  importantMetrics?: ImportantMetrics;
-  reports?: CriterionReportItem[];
-  performanceChecklistEvaluation?: PerformanceChecklistEvaluation;
-}
+export type CriterionEvaluation = CriterionEvaluationPrisma;
 
-export interface TickerReport {
-  ticker: string;
-  selectedIndustryGroup: IndustryGroup;
-  selectedSector: Sector;
-  evaluationsOfLatest10Q?: CriterionEvaluation[];
-  criteriaMatchesOfLatest10Q?: CriterionMatchesOfLatest10Q;
-}
-
-export interface Ticker {
-  tickerKey: string;
-  sectorId: number;
-  industryGroupId: number;
-  evaluationsOfLatest10Q?: CriterionEvaluation[];
-  criteriaMatchesOfLatest10Q?: CriterionMatchesOfLatest10Q;
-}
+export type TickerReport = Ticker;
