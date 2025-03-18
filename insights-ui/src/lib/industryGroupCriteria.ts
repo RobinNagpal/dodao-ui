@@ -1,3 +1,4 @@
+import { getGicsNames } from '@/lib/gicsHelper';
 import { getCriteriaFileKey, getObjectFromS3, uploadToS3PublicEquities } from '@/lib/koalagainsS3Utils';
 import { CriteriaLookupItem, CriteriaLookupList, IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
@@ -87,6 +88,13 @@ export async function getCriteriaReportDefinition(sectorId: number, industryGrou
 }
 
 export async function getCriteria(sectorName: string, industryGroupName: string): Promise<IndustryGroupCriteriaDefinition> {
+  const key = getCriteriaFileKey(sectorName, industryGroupName);
+  const dataStr = await getObjectFromS3(key);
+  return JSON.parse(dataStr) as IndustryGroupCriteriaDefinition;
+}
+
+export async function getCriteriaByIds(sectorId: number, industryGroupId: number): Promise<IndustryGroupCriteriaDefinition> {
+  const { sectorName, industryGroupName } = getGicsNames(sectorId, industryGroupId);
   const key = getCriteriaFileKey(sectorName, industryGroupName);
   const dataStr = await getObjectFromS3(key);
   return JSON.parse(dataStr) as IndustryGroupCriteriaDefinition;

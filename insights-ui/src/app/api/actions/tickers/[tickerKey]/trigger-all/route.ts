@@ -2,8 +2,8 @@
 import { getGicsNames } from '@/lib/gicsHelper';
 import { getCriteria } from '@/lib/industryGroupCriteria';
 import { prisma } from '@/prisma';
-import { Ticker } from '@/types/public-equity/ticker-report-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 const PE_US_REITS_WEBHOOK_URL = process.env.PE_US_REITS_WEBHOOK_URL!;

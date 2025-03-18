@@ -15,16 +15,16 @@ datasource db {
 // --------------------------
 
 model Ticker {
-  tickerKey                  String                        @id @unique @map("ticker_key")
-  createdAt                  DateTime                      @default(now()) @map("created_at")
-  updatedAt                  DateTime                      @updatedAt @map("updated_at")
-  createdBy                  String?                       @map("created_by")
-  updatedBy                  String?                       @map("updated_by")
-  sectorId                   Int                           @map("sector_id")
-  industryGroupId            Int                           @map("industry_group_id")
-  evaluationsOfLatest10Q     CriterionEvaluation[]
-  criteriaMatchesOfLatest10Q CriterionMatchesOfLatest10Q[]
-  secFilings                 SecFiling[]
+  tickerKey                    String                @id @unique @map("ticker_key")
+  createdAt                    DateTime              @default(now()) @map("created_at")
+  updatedAt                    DateTime              @updatedAt @map("updated_at")
+  createdBy                    String?               @map("created_by")
+  updatedBy                    String?               @map("updated_by")
+  sectorId                     Int                   @map("sector_id")
+  industryGroupId              Int                   @map("industry_group_id")
+  evaluationsOfLatest10Q       CriterionEvaluation[]
+  criteriaMatchesOfLatest10QId String?               @unique @map("criteria_matches_of_latest_10q_id")
+  secFilings                   SecFiling[]
 
   ImportantMetrics               ImportantMetrics[]
   MetricValueItem                MetricValueItem[]
@@ -32,6 +32,7 @@ model Ticker {
   PerformanceChecklistEvaluation PerformanceChecklistEvaluation[]
   PerformanceChecklistItem       PerformanceChecklistItem[]
   CriterionMatch                 CriterionMatch[]
+  criteriaMatchesOfLatest10Q     CriteriaMatchesOfLatest10Q?
 
   @@map("tickers")
 }
@@ -95,16 +96,15 @@ enum ProcessingStatus {
 }
 
 model CriterionEvaluation {
-  id           String @id @default(uuid())
-  tickerKey    String @map("ticker_key")
-  criterionKey String @map("criterion_key")
-
+  id                             String                          @id @default(uuid())
+  tickerKey                      String                          @map("ticker_key")
+  criterionKey                   String                          @map("criterion_key")
   importantMetrics               ImportantMetrics?
   performanceChecklistEvaluation PerformanceChecklistEvaluation?
   reports                        CriterionReportItem[]
+  ticker                         Ticker                          @relation(fields: [tickerKey], references: [tickerKey])
 
-  ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
-
+  @@unique([tickerKey, criterionKey])
   @@map("criterion_evaluations")
 }
 
@@ -125,6 +125,7 @@ model ImportantMetrics {
 
   metrics MetricValueItem[]
 
+  @@unique([tickerKey, criterionKey])
   @@map("important_metrics")
 }
 
@@ -143,22 +144,22 @@ model MetricValueItem {
 }
 
 model CriterionReportItem {
-  id            String           @id @default(uuid())
-  reportKey     String           @map("report_key")
-  status        ProcessingStatus
-  outputFileUrl String?          @map("output_file_url")
-
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
-  createdBy    String?  @map("created_by")
-  updatedBy    String?  @map("updated_by")
-  tickerKey    String   @map("ticker_key")
-  criterionKey String   @map("criterion_key")
-
+  id                    String              @id @default(uuid())
+  reportKey             String              @map("report_key")
+  status                ProcessingStatus
+  textData              String?             @map("data")
+  jsonData              Json?               @map("json_data")
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+  createdBy             String?             @map("created_by")
+  updatedBy             String?             @map("updated_by")
+  tickerKey             String              @map("ticker_key")
+  criterionKey          String              @map("criterion_key")
   criterionEvaluationId String              @map("criterion_evaluation_id")
   criterionEvaluation   CriterionEvaluation @relation(fields: [criterionEvaluationId], references: [id])
   ticker                Ticker              @relation(fields: [tickerKey], references: [tickerKey])
 
+  @@unique([tickerKey, criterionKey, reportKey])
   @@map("criterion_report_items")
 }
 
@@ -179,6 +180,7 @@ model PerformanceChecklistEvaluation {
 
   performanceChecklistItems PerformanceChecklistItem[]
 
+  @@unique([tickerKey, criterionKey])
   @@map("performance_checklist_evaluations")
 }
 
@@ -200,16 +202,17 @@ model PerformanceChecklistItem {
   @@map("performance_checklist_items")
 }
 
-model CriterionMatchesOfLatest10Q {
-  id               String           @id @default(uuid())
-  status           ProcessingStatus
-  failureReason    String?          @map("failure_reason")
-  tickerKey        String           @map("ticker_key")
-  criterionKey     String           @map("criterion_key")
+model CriteriaMatchesOfLatest10Q {
+  id            String           @id @default(uuid())
+  status        ProcessingStatus
+  failureReason String?          @map("failure_reason")
+  tickerKey     String           @map("ticker_key")
+
   ticker           Ticker           @relation(fields: [tickerKey], references: [tickerKey])
   criterionMatches CriterionMatch[]
 
-  @@map("criterion_matches_latest_10q")
+  @@unique([tickerKey])
+  @@map("criter_matches_latest_10q")
 }
 
 model CriterionMatch {
@@ -218,11 +221,12 @@ model CriterionMatch {
   matchedContent String @map("matched_content")
   tickerKey      String @map("ticker_key")
 
-  criterionMatchesOfLatest10QId String                      @map("criterion_matches_latest_10q_id")
-  criterionMatchesOfLatest10Q   CriterionMatchesOfLatest10Q @relation(fields: [criterionMatchesOfLatest10QId], references: [id])
-  ticker                        Ticker                      @relation(fields: [tickerKey], references: [tickerKey])
+  criterionMatchesOfLatest10QId String                     @map("criterion_matches_latest_10q_id")
+  criterionMatchesOfLatest10Q   CriteriaMatchesOfLatest10Q @relation(fields: [criterionMatchesOfLatest10QId], references: [id])
+  ticker                        Ticker                     @relation(fields: [tickerKey], references: [tickerKey])
   matchedAttachments            CriterionMatchAttachment[]
 
+  @@unique([tickerKey, criterionKey])
   @@map("criterion_matches")
 }
 

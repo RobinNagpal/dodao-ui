@@ -1,4 +1,5 @@
 import { getTickerReport, saveTickerReport, triggerCriteriaMatching } from '@/lib/publicEquity';
+import { prisma } from '@/prisma';
 import { ProcessingStatus, TickerReport } from '@/types/public-equity/ticker-report-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
@@ -7,17 +8,28 @@ import { NextRequest } from 'next/server';
 
 const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<TickerReport> => {
   const { tickerKey } = await params;
-  const tickerReport = await getTickerReport(tickerKey);
 
-  const updatedReport: TickerReport = {
-    ...tickerReport,
-    criteriaMatchesOfLatest10Q: {
-      status: ProcessingStatus.InProgress,
+  const updatedTicker = await prisma.ticker.update({
+    where: { tickerKey },
+    data: {
+      criteriaMatchesOfLatest10Q: {
+        create: {
+          status: ProcessingStatus.InProgress,
+        },
+        update: {
+          status: ProcessingStatus.InProgress,
+          criterionMatches: {
+            deleteMany: {
+              tickerKey,
+            },
+          },
+        },
+      },
     },
-  };
-  await saveTickerReport(tickerKey, updatedReport);
+  });
+
   triggerCriteriaMatching(tickerKey, false);
-  return updatedReport;
+  return updatedTicker;
 };
 
 export const POST = withErrorHandlingV2<TickerReport>(triggerCriteriaMatchingForTicker);

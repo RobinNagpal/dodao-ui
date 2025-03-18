@@ -1,7 +1,10 @@
 import {
   CriterionEvaluation as CriterionEvaluationPrisma,
-  CriterionMatchesOfLatest10Q as CriterionMatchesOfLatest10QPrisma,
+  CriterionReportItem as CriterionReportItemPrisma,
+  ImportantMetrics as ImportantMetricsPrisma,
+  MetricValueItem as MetricValueItemPrisma,
   PerformanceChecklistEvaluation as PerformanceChecklistEvaluationPrisma,
+  PerformanceChecklistItem as PerformanceChecklistItemPrisma,
   Ticker,
 } from '@prisma/client';
 
@@ -10,39 +13,6 @@ export enum ProcessingStatus {
   Failed = 'Failed',
   InProgress = 'InProgress',
   NotStarted = 'NotStarted',
-}
-
-export interface PerformanceChecklistItem {
-  checklistItem: string;
-  oneLinerExplanation: string;
-  informationUsed: string;
-  detailedExplanation: string;
-  evaluationLogic: string;
-  score: number;
-}
-
-export interface SecFilingAttachment {
-  attachmentSequenceNumber: string;
-  attachmentDocumentName: string;
-  attachmentPurpose?: string;
-  attachmentUrl: string;
-  relevance: number;
-  attachmentContent: string;
-}
-
-export interface CriterionMatch {
-  criterionKey: string;
-  matchedAttachments: SecFilingAttachment[];
-  matchedContent: string;
-}
-
-export type CriterionMatchesOfLatest10Q = CriterionMatchesOfLatest10QPrisma;
-
-export interface CreateSingleReportsRequest {
-  ticker: string;
-  criterionKey: string;
-  industryGroupId: number;
-  sectorId: number;
 }
 
 export interface SpiderScore {
@@ -59,36 +29,13 @@ export interface SpiderGraphPie {
 
 export type SpiderGraphForTicker = Record<string, SpiderGraphPie>;
 
-export interface RegenerateSingleCriterionReportsRequest {
-  ticker: string;
-  criterionKey: string;
-}
+export type MetricValueItem = MetricValueItemPrisma;
 
-export interface MetricValueItem {
-  metricKey: string;
-  value: string;
-  calculationExplanation: string;
-}
+export type ImportantMetrics = ImportantMetricsPrisma;
 
-export interface ImportantMetrics {
-  status: ProcessingStatus;
-  metrics?: MetricValueItem[];
-}
+export type CriterionReportItem = CriterionReportItemPrisma;
 
-export interface CriterionReportItem {
-  reportKey: string;
-  status: ProcessingStatus;
-  outputFileUrl?: string;
-}
-
-export interface PerformanceChecklistItem {
-  checklistItem: string;
-  oneLinerExplanation: string;
-  informationUsed: string;
-  detailedExplanation: string;
-  evaluationLogic: string;
-  score: number;
-}
+export type PerformanceChecklistItem = PerformanceChecklistItemPrisma;
 
 export type PerformanceChecklistEvaluation = PerformanceChecklistEvaluationPrisma;
 
