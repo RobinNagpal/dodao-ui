@@ -1,3 +1,4 @@
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { ProcessingStatus, TickerReport } from '@/types/public-equity/ticker-report-types';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -39,17 +40,19 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
   return (
     <div className="mt-8">
       {matchingCriteriaError && <div className="text-red-500">{matchingCriteriaError}</div>}
-      <div className="flex justify-end mb-4">
-        <Button
-          disabled={matchingCriteriaLoading}
-          loading={matchingCriteriaLoading || report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress}
-          primary
-          variant={'contained'}
-          onClick={handleRegenerateMatchingCriteria}
-        >
-          Regenerate Matching Criteria - Status {report.criteriaMatchesOfLatest10Q?.status}
-        </Button>
-      </div>
+      <PrivateWrapper>
+        <div className="flex justify-end mb-4">
+          <Button
+            disabled={matchingCriteriaLoading}
+            loading={matchingCriteriaLoading || report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress}
+            primary
+            variant={'contained'}
+            onClick={handleRegenerateMatchingCriteria}
+          >
+            Regenerate Matching Criteria - Status {report.criteriaMatchesOfLatest10Q?.status}
+          </Button>
+        </div>
+      </PrivateWrapper>
       <h1 className="mb-8 font-bold text-xl">Matching Attachments</h1>
       {report.criteriaMatchesOfLatest10Q?.criterionMatches?.map((criterion) => {
         return (

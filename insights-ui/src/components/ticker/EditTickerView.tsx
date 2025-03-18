@@ -12,6 +12,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Ticker } from '@prisma/client';
 
 import { useState } from 'react';
+import PrivateWrapper from '../auth/PrivateWrapper';
 
 interface EditTickerViewProps {
   gicsData: SectorsData;
@@ -92,18 +93,20 @@ export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps
         }}
       />
       {/* ✅ Save Button */}
-      <div className="flex justify-center items-center mt-6">
-        <Button
-          onClick={handleSave}
-          className="block"
-          variant="contained"
-          primary
-          loading={createLoading || updateLoading}
-          disabled={createLoading || updateLoading}
-        >
-          {createLoading || updateLoading ? 'Saving...' : 'Save'}
-        </Button>
-      </div>
+      <PrivateWrapper>
+        <div className="flex justify-center items-center mt-6">
+          <Button
+            onClick={handleSave}
+            className="block"
+            variant="contained"
+            primary
+            loading={createLoading || updateLoading}
+            disabled={createLoading || updateLoading}
+          >
+            {createLoading || updateLoading ? 'Saving...' : 'Save'}
+          </Button>
+        </div>
+      </PrivateWrapper>
     </Block>
   );
 }
