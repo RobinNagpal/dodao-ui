@@ -6,7 +6,17 @@ interface CriterionReportWaterfallChartProps {
   content: string;
 }
 export default function CriterionReportWaterfallChart({ content }: CriterionReportWaterfallChartProps) {
-  const data: { label: string; earnings: number }[] = JSON.parse(content);
-
-  return <WaterfallChart width={500} height={500} data={data} xAccessor={(datum) => datum.label} yAccessor={(datum) => datum.earnings} yLabel={'label'} />;
+  let data: { label: string; earnings: number }[];
+  let error: string | undefined;
+  try {
+    data = JSON.parse(content);
+  } catch (e) {
+    error = e.message;
+  }
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
+  return data ? (
+    <WaterfallChart width={500} height={500} data={data} xAccessor={(datum) => datum.label} yAccessor={(datum) => datum.earnings} yLabel={'label'} />
+  ) : null;
 }

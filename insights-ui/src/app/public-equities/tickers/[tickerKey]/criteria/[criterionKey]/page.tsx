@@ -1,35 +1,8 @@
+import { ViewCriterionReportItem } from '@/components/ticker-reports/ViewCriterionReportItem';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import CriterionReportPieChart from '@/components/visualizations/CriterionReportPieChart';
-import CriterionReportWaterfallChart from '@/components/visualizations/CriterionReportWaterfallChart';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-import { CriterionReportItem, TickerReport } from '@/types/public-equity/ticker-report-types';
+import { TickerReport } from '@/types/public-equity/ticker-report-types';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
-
-interface ReportContentProps {
-  criterionKey: string;
-  criterionReport: CriterionReportItem;
-  industryGroupCriteria: IndustryGroupCriteriaDefinition;
-  content: string;
-}
-function ReportContent({ criterionKey, criterionReport, industryGroupCriteria, content }: ReportContentProps) {
-  const renderer = getMarkedRenderer();
-  const getMarkdownContent = (content?: string) => {
-    return content ? marked.parse(content, { renderer }) : 'No Information';
-  };
-
-  const reportDefinition = industryGroupCriteria.criteria
-    .find((item) => item.key === criterionKey)
-    ?.reports.find((item) => item.key === criterionReport.reportKey);
-  if (reportDefinition && reportDefinition.outputType === 'WaterfallChart') {
-    return <CriterionReportWaterfallChart content={content} />;
-  } else if (reportDefinition && reportDefinition.outputType === 'PieChart') {
-    return <CriterionReportPieChart content={content} />;
-  }
-
-  return <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(content) }} />;
-}
 
 export default async function CriterionDetailsPage({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }) {
   const { tickerKey, criterionKey } = await params;
@@ -135,7 +108,7 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
                       {(report.reportKey && report.reportKey.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())) || `Report ${index + 1}`}
                     </h2>
                     {reportContent ? (
-                      <ReportContent
+                      <ViewCriterionReportItem
                         content={reportContent as string}
                         criterionKey={criterionKey}
                         criterionReport={report}

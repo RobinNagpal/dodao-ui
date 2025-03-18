@@ -1,7 +1,7 @@
 import { Button } from '@/components/home-page/Button';
 import { CriterionDefinition } from '@/types/public-equity/criteria-types';
 import Input from '@dodao/web-core/components/core/input/Input';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface WebhookUrlInputProps {
   sectorId: number;
@@ -20,6 +20,12 @@ export function getWebhookUrlFromLocalStorage(sectorId: number, industryGroupId:
 
 export default function WebhookUrlInput({ criterionDefinition, sectorId, industryGroupId }: WebhookUrlInputProps) {
   const webhookUrlKey = getWebhookUrlKey(sectorId, industryGroupId, criterionDefinition.key);
+
+  useEffect(() => {
+    if (getWebhookUrlFromLocalStorage(sectorId, industryGroupId, criterionDefinition.key) === null) {
+      localStorage.setItem(webhookUrlKey, criterionDefinition.langflowWebhookUrl || '');
+    }
+  }, []);
 
   const [webhookUrl, setWebhookUrl] = useState<string>(
     getWebhookUrlFromLocalStorage(sectorId, industryGroupId, criterionDefinition.key) || criterionDefinition.langflowWebhookUrl || ''
