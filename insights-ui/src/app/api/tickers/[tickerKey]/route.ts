@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -7,7 +8,12 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ tick
   const { tickerKey } = await params;
 
   const ticker = await prisma.ticker.findUniqueOrThrow({
-    where: { tickerKey },
+    where: {
+      spaceId_tickerKey: {
+        tickerKey,
+        spaceId: KoalaGainsSpaceId,
+      },
+    },
     include: {
       criteriaMatchesOfLatest10Q: {
         include: {

@@ -1,5 +1,6 @@
 import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
 import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CriterionEvaluation, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { CreateAllCriterionReportsRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -40,7 +41,8 @@ const triggerAllCriterionReports = async (
   console.log(jsonResponse);
   const criterionEvaluation = await prisma.criterionEvaluation.upsert({
     where: {
-      tickerKey_criterionKey: {
+      spaceId_tickerKey_criterionKey: {
+        spaceId: KoalaGainsSpaceId,
         criterionKey,
         tickerKey,
       },
@@ -70,6 +72,7 @@ const triggerAllCriterionReports = async (
               .map(
                 (r): Omit<CriterionReportItem, 'id' | 'criterionEvaluationId' | 'jsonData'> => ({
                   reportKey: r.key,
+                  spaceId: KoalaGainsSpaceId,
                   status: ProcessingStatus.InProgress,
                   createdBy: 'system',
                   createdAt: new Date(),

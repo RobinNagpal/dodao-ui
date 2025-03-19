@@ -1,5 +1,6 @@
 import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
 import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CriterionEvaluation, PredefinedReports, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -41,7 +42,8 @@ const triggerSingleCriterionReport = async (
   if (reportKey === PredefinedReports.performanceChecklist) {
     const updatedCriterionEvaluation = await prisma.criterionEvaluation.upsert({
       where: {
-        tickerKey_criterionKey: {
+        spaceId_tickerKey_criterionKey: {
+          spaceId: KoalaGainsSpaceId,
           criterionKey,
           tickerKey,
         },
@@ -82,7 +84,8 @@ const triggerSingleCriterionReport = async (
   } else if (reportKey === PredefinedReports.importantMetrics) {
     const updatedCriterionEvaluation = await prisma.criterionEvaluation.upsert({
       where: {
-        tickerKey_criterionKey: {
+        spaceId_tickerKey_criterionKey: {
+          spaceId: KoalaGainsSpaceId,
           criterionKey,
           tickerKey,
         },
@@ -123,7 +126,8 @@ const triggerSingleCriterionReport = async (
   } else {
     const updatedCriterionEvaluation = await prisma.criterionEvaluation.upsert({
       where: {
-        tickerKey_criterionKey: {
+        spaceId_tickerKey_criterionKey: {
+          spaceId: KoalaGainsSpaceId,
           criterionKey,
           tickerKey,
         },
@@ -171,7 +175,8 @@ const triggerSingleCriterionReport = async (
               status: ProcessingStatus.InProgress,
             },
             where: {
-              tickerKey_criterionKey_reportKey: {
+              spaceId_tickerKey_criterionKey_reportKey: {
+                spaceId: KoalaGainsSpaceId,
                 reportKey,
                 tickerKey,
                 criterionKey,

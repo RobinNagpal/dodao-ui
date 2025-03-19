@@ -1,5 +1,6 @@
 import { parseLangflowJSON } from '@/lib/langflow';
 import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PerformanceChecklistEvaluation, PerformanceChecklistItem, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SavePerformanceChecklistRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -18,7 +19,8 @@ const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<P
 
   const evaluation = await prisma.criterionEvaluation.findUnique({
     where: {
-      tickerKey_criterionKey: {
+      spaceId_tickerKey_criterionKey: {
+        spaceId: KoalaGainsSpaceId,
         tickerKey: body.ticker,
         criterionKey: body.criterionKey,
       },
@@ -35,7 +37,8 @@ const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<P
 
   const updatedPerformanceChecklist = await prisma.performanceChecklistEvaluation.update({
     where: {
-      tickerKey_criterionKey: {
+      spaceId_tickerKey_criterionKey: {
+        spaceId: KoalaGainsSpaceId,
         tickerKey: body.ticker,
         criterionKey: body.criterionKey,
       },

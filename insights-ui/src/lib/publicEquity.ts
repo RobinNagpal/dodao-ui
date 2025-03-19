@@ -2,6 +2,7 @@
 import { getCriteriaReportDefinition } from '@/lib/industryGroupCriteria';
 import { getCriterionPerformanceChecklistKey, getTickerFileKey, uploadToS3 } from '@/lib/koalagainsS3Utils';
 import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PerformanceChecklistItem, TickerReport } from '@/types/public-equity/ticker-report-types';
 import { CriterionEvaluation } from '@prisma/client';
 import fetch from 'node-fetch'; // or use the native fetch if available in your Node version
@@ -22,7 +23,8 @@ export async function saveCriteriaEvaluation(ticker: string, criterionKey: strin
 
   const criterionEvaluation = await prisma.criterionEvaluation.upsert({
     where: {
-      tickerKey_criterionKey: {
+      spaceId_tickerKey_criterionKey: {
+        spaceId: KoalaGainsSpaceId,
         tickerKey: ticker,
         criterionKey,
       },
@@ -40,7 +42,8 @@ export async function saveCriteriaEvaluation(ticker: string, criterionKey: strin
       reports: {
         upsert: {
           where: {
-            tickerKey_criterionKey_reportKey: {
+            spaceId_tickerKey_criterionKey_reportKey: {
+              spaceId: KoalaGainsSpaceId,
               tickerKey: ticker,
               criterionKey,
               reportKey,
@@ -80,7 +83,10 @@ export async function savePerformanceChecklist(ticker: string, criterionKey: str
 export async function triggerCriteriaMatching(ticker: string, force: boolean): Promise<string> {
   const criteriaMatches = await prisma.criteriaMatchesOfLatest10Q.findUnique({
     where: {
-      tickerKey: ticker,
+      spaceId_tickerKey: {
+        spaceId: KoalaGainsSpaceId,
+        tickerKey: ticker,
+      },
     },
   });
 
@@ -89,7 +95,10 @@ export async function triggerCriteriaMatching(ticker: string, force: boolean): P
   }
   prisma.criteriaMatchesOfLatest10Q.upsert({
     where: {
-      tickerKey: ticker,
+      spaceId_tickerKey: {
+        spaceId: KoalaGainsSpaceId,
+        tickerKey: ticker,
+      },
     },
     create: {
       tickerKey: ticker,

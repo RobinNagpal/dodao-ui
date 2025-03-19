@@ -1,5 +1,6 @@
 import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
 import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { OutputType } from '@/types/public-equity/criteria-types';
 import { CriterionReportItem, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SaveCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
@@ -26,7 +27,8 @@ const saveReportForCriterion = async (req: NextRequest): Promise<CriterionReport
   }
   const updatedReportItem = await prisma.criterionReportItem.update({
     where: {
-      tickerKey_criterionKey_reportKey: {
+      spaceId_tickerKey_criterionKey_reportKey: {
+        spaceId: KoalaGainsSpaceId,
         tickerKey,
         criterionKey,
 

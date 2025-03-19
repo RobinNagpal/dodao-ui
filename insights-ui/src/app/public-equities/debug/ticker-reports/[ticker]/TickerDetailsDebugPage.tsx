@@ -5,7 +5,7 @@ import DebugMatchingAttachments from '@/components/ticker/debug/DebugMatchingAtt
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { getGicsNames } from '@/lib/gicsHelper';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-import { FullNestedTickerReport, TickerReport } from '@/types/public-equity/ticker-report-types';
+import { FullNestedTickerReport } from '@/types/public-equity/ticker-report-types';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';

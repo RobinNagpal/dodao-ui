@@ -1,5 +1,6 @@
 import { parseLangflowJSON } from '@/lib/langflow';
 import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ImportantMetrics, MetricValueItem, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SaveCriterionMetricsRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -22,7 +23,8 @@ const saveMetrics = async (req: NextRequest): Promise<ImportantMetrics> => {
 
   const newMetrics = await prisma.importantMetricsEvaluation.update({
     where: {
-      tickerKey_criterionKey: {
+      spaceId_tickerKey_criterionKey: {
+        spaceId: KoalaGainsSpaceId,
         tickerKey: body.ticker,
         criterionKey: body.criterionKey,
       },
