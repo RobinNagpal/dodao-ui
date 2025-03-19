@@ -68,14 +68,14 @@ export default function DebugCriterionEvaluation({ tickerReport, industryGroupCr
 
   const handleRegenerateAllSingleCriterionReports = async (criterionKey: string) => {
     regenerateAllSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
-      langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.selectedSector.id, tickerReport.selectedIndustryGroup.id, criterionKey),
+      langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.selectedSector.id, tickerReport.selectedIndustryGroup.id, criterionKey)!,
     });
   };
 
   // Handles section-specific regeneration (for checklist, metrics, or individual reports)
   const handleRegenerateSingleCriterionReports = async (criterionKey: string, reportKey: string) => {
     regenerateSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
-      langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.selectedSector.id, tickerReport.selectedIndustryGroup.id, criterionKey),
+      langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.selectedSector.id, tickerReport.selectedIndustryGroup.id, criterionKey)!,
       reportKey: reportKey,
     });
   };
