@@ -5,26 +5,25 @@ import DebugMatchingAttachments from '@/components/ticker/debug/DebugMatchingAtt
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { getGicsNames } from '@/lib/gicsHelper';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-import { TickerReport } from '@/types/public-equity/ticker-report-types';
+import { FullNestedTickerReport, TickerReport } from '@/types/public-equity/ticker-report-types';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useEffect, useState } from 'react';
 
 export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
   // New state for section-specific regeneration confirmation
   const [reportExists, setReportExists] = useState(false);
-  const [report, setReport] = useState<TickerReport>();
+  const [report, setReport] = useState<FullNestedTickerReport>();
   const [industryGroupCriteria, setIndustryGroupCriteria] = useState<IndustryGroupCriteriaDefinition>();
 
   const checkReportExists = async () => {
-    const response = await fetch(`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${ticker}/latest-10q-report.json`, {
-      cache: 'no-cache',
-    });
+    const response = await fetch(`${getBaseUrl()}/tickers/${ticker}`, { cache: 'no-cache' });
     if (response.status === 200) {
       setReportExists(true);
-      const report: TickerReport = await response.json();
+      const report: FullNestedTickerReport = await response.json();
       setReport(report);
       const { sectorName, industryGroupName } = getGicsNames(report.sectorId, report.industryGroupId);
       const industryGroupCriteria = await fetch(

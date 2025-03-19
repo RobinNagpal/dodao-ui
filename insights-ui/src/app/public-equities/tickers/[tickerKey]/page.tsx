@@ -1,7 +1,15 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import RadarChart from '@/components/ui/RadarChart';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-import { CriterionEvaluation, PerformanceChecklistItem, SpiderGraphForTicker, SpiderGraphPie, TickerReport } from '@/types/public-equity/ticker-report-types';
+import {
+  CriterionEvaluation,
+  FullCriterionEvaluation,
+  FullNestedTickerReport,
+  PerformanceChecklistItem,
+  SpiderGraphForTicker,
+  SpiderGraphPie,
+  TickerReport,
+} from '@/types/public-equity/ticker-report-types';
 import { getReportName } from '@/util/report-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -20,7 +28,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
     { cache: 'no-cache' }
   );
 
-  const tickerReport = (await tickerResponse.json()) as TickerReport;
+  const tickerReport = (await tickerResponse.json()) as FullNestedTickerReport;
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
       name: 'Public Equities',
@@ -33,14 +41,14 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
       current: true,
     },
   ];
-  const reports: CriterionEvaluation[] = tickerReport.evaluationsOfLatest10Q || [];
+  const reports: FullCriterionEvaluation[] = tickerReport.evaluationsOfLatest10Q || [];
   const reportMap = new Map(reports.map((report) => [report.criterionKey, report]));
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
     reports.map((report): [string, SpiderGraphPie] => {
       const pieData: SpiderGraphPie = {
         key: report.criterionKey,
         name: getReportName(report.criterionKey),
-        summary: report.importantMetrics?.status || '',
+        summary: report.importantMetricsEvaluation?.status || '',
         scores:
           report.performanceChecklistEvaluation?.performanceChecklist?.map((pc: PerformanceChecklistItem) => ({
             score: pc.score,

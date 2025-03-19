@@ -9,6 +9,15 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ tick
   const ticker = await prisma.ticker.findUniqueOrThrow({
     where: { tickerKey },
     include: {
+      criteriaMatchesOfLatest10Q: {
+        include: {
+          criterionMatches: {
+            include: {
+              matchedAttachments: true,
+            },
+          },
+        },
+      },
       evaluationsOfLatest10Q: {
         include: {
           reports: true,

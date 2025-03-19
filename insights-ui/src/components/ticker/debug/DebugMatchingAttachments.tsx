@@ -1,6 +1,6 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-import { ProcessingStatus, TickerReport } from '@/types/public-equity/ticker-report-types';
+import { FullNestedTickerReport, ProcessingStatus, TickerReport } from '@/types/public-equity/ticker-report-types';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
@@ -10,12 +10,12 @@ import { marked } from 'marked';
 import { useState } from 'react';
 
 export interface DebugMatchingAttachmentsProps {
-  report: TickerReport;
+  report: FullNestedTickerReport;
   industryGroupCriteria: IndustryGroupCriteriaDefinition;
 }
 
 export default function DebugMatchingAttachments({ report }: DebugMatchingAttachmentsProps) {
-  const ticker = report.ticker;
+  const ticker = report.tickerKey;
 
   const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
   const renderer = getMarkedRenderer();
@@ -72,7 +72,7 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
                 <h3>Matching Attachments</h3>
                 {criterion.matchedAttachments.map((attachment) => {
                   return (
-                    <table key={attachment.attachmentSequenceNumber} className="border-2 w-full mt-2">
+                    <table key={attachment.sequenceNumber} className="border-2 w-full mt-2">
                       <thead>
                         <tr>
                           <th className="border-2 px-2 w-32">Name</th>
@@ -82,15 +82,15 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
                       <tbody>
                         <tr>
                           <td className="border-2 px-2">Attachment SequenceNumber</td>
-                          <td className="border-2 px-2">{attachment.attachmentSequenceNumber}</td>
+                          <td className="border-2 px-2">{attachment.sequenceNumber}</td>
                         </tr>
                         <tr>
                           <td className="border-2 px-2">Attachment Name</td>
-                          <td className="border-2 px-2">{attachment.attachmentDocumentName}</td>
+                          <td className="border-2 px-2">{attachment.documentName}</td>
                         </tr>
                         <tr>
                           <td className="border-2 px-2">Attachment Purpose</td>
-                          <td className="border-2 px-2">{attachment.attachmentPurpose}</td>
+                          <td className="border-2 px-2">{attachment.purpose}</td>
                         </tr>
                         <tr>
                           <td className="border-2 px-2">Relevance(0-100)</td>
@@ -99,8 +99,8 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
                         <tr>
                           <td className="border-2 px-2">Attachment Url</td>
                           <td className="border-2 px-2">
-                            <a href={attachment.attachmentUrl} target="_blank">
-                              {attachment.attachmentUrl}
+                            <a href={attachment.url} target="_blank">
+                              {attachment.url}
                             </a>
                           </td>
                         </tr>

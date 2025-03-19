@@ -7,6 +7,7 @@ import {
   PerformanceChecklistItem as PerformanceChecklistItemPrisma,
   Ticker,
 } from '@prisma/client';
+import { CriteriaMatchesOfLatest10Q, CriterionMatch, CriterionMatchAttachment } from '.prisma/client';
 
 export enum ProcessingStatus {
   Completed = 'Completed',
@@ -47,10 +48,22 @@ export type CriterionEvaluation = CriterionEvaluationPrisma;
 
 export type TickerReport = Ticker;
 
-export type FullyNestedTickerReport = Ticker & {
-  evaluationsOfLatest10Q: Array<
-    CriterionEvaluation & {
-      reports: CriterionReportItem[] & { performanceChecklistEvaluation: PerformanceChecklistEvaluation; importantMetricsEvaluation: ImportantMetrics };
-    }
-  >;
-};
+export type FullPerformanceChecklistEvaluation = PerformanceChecklistEvaluation & { performanceChecklist: PerformanceChecklistItem[] };
+export type FullImportantMetricsEvaluation = ImportantMetricsEvaluationPrisma & { metrics: MetricValueItem[] };
+
+export interface FullCriterionMatch extends CriterionMatch {
+  matchedAttachments: CriterionMatchAttachment[];
+}
+export interface FullCriteriaMatchesOfLatest10Q extends CriteriaMatchesOfLatest10Q {
+  criterionMatches: FullCriterionMatch[];
+}
+
+export interface FullCriterionEvaluation extends CriterionEvaluationPrisma {
+  reports: CriterionReportItem[];
+  performanceChecklistEvaluation: FullPerformanceChecklistEvaluation;
+  importantMetricsEvaluation: FullImportantMetricsEvaluation;
+}
+export interface FullNestedTickerReport extends Ticker {
+  criteriaMatchesOfLatest10Q: FullCriteriaMatchesOfLatest10Q;
+  evaluationsOfLatest10Q: Array<FullCriterionEvaluation>;
+}
