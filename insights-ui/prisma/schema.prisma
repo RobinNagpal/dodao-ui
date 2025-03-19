@@ -173,17 +173,16 @@ model CriterionReportItem {
 }
 
 model PerformanceChecklistEvaluation {
-  id     String           @id @default(uuid())
-  status ProcessingStatus
-
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
-  createdBy             String?  @map("created_by")
-  updatedBy             String?  @map("updated_by")
-  tickerKey             String   @map("ticker_key")
-  criterionKey          String   @map("criterion_key")
-  criterionEvaluationId String?  @unique @map("criterion_evaluation_id")
-  spaceId               String   @default("koala_gains") @map("space_id")
+  id                    String           @id @default(uuid())
+  status                ProcessingStatus @map("status")
+  createdAt             DateTime         @default(now()) @map("created_at")
+  updatedAt             DateTime         @updatedAt @map("updated_at")
+  createdBy             String?          @map("created_by")
+  updatedBy             String?          @map("updated_by")
+  tickerKey             String           @map("ticker_key")
+  criterionKey          String           @map("criterion_key")
+  criterionEvaluationId String?          @unique @map("criterion_evaluation_id")
+  spaceId               String           @default("koala_gains") @map("space_id")
 
   criterionEvaluation       CriterionEvaluation?       @relation(fields: [criterionEvaluationId], references: [id])
   ticker                    Ticker                     @relation(fields: [tickerKey], references: [tickerKey])
@@ -214,7 +213,11 @@ model PerformanceChecklistItem {
 
 model CriteriaMatchesOfLatest10Q {
   id            String           @id @default(uuid())
-  status        ProcessingStatus
+  status        ProcessingStatus @map("status")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+  createdBy     String?          @map("created_by")
+  updatedBy     String?          @map("updated_by")
   failureReason String?          @map("failure_reason")
   tickerKey     String           @map("ticker_key")
   spaceId       String           @default("koala_gains") @map("space_id")
