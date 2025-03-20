@@ -3,7 +3,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import DebugCriterionReport from '@/components/ticker/debug/DebugCriterionReport';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-import { CriterionEvaluation, TickerReport } from '@/types/public-equity/ticker-report-types';
+import { CriterionEvaluation, FullCriterionEvaluation, FullNestedTickerReport, TickerReport } from '@/types/public-equity/ticker-report-types';
 import { CreateAllCriterionReportsRequest, CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -17,11 +17,11 @@ import { useState } from 'react';
 import WebhookUrlInput, { getWebhookUrlFromLocalStorage } from './WebhookUrlInput';
 
 export interface DebugCriterionEvaluationProps {
-  tickerReport: TickerReport;
+  tickerReport: FullNestedTickerReport;
   industryGroupCriteria: IndustryGroupCriteriaDefinition;
 }
 export default function DebugCriterionEvaluation({ tickerReport, industryGroupCriteria }: DebugCriterionEvaluationProps) {
-  const ticker = tickerReport.ticker;
+  const ticker = tickerReport.tickerKey;
 
   const [showCriterionConfirmModal, setShowCriterionConfirmModal] = useState(false);
   const [showSectionConfirmModal, setShowSectionConfirmModal] = useState(false);
@@ -68,14 +68,14 @@ export default function DebugCriterionEvaluation({ tickerReport, industryGroupCr
 
   const handleRegenerateAllSingleCriterionReports = async (criterionKey: string) => {
     regenerateAllSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
-      langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.selectedSector.id, tickerReport.selectedIndustryGroup.id, criterionKey)!,
+      langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.sectorId, tickerReport.industryGroupId, criterionKey)!,
     });
   };
 
   // Handles section-specific regeneration (for checklist, metrics, or individual reports)
   const handleRegenerateSingleCriterionReports = async (criterionKey: string, reportKey: string) => {
     regenerateSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
-      langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.selectedSector.id, tickerReport.selectedIndustryGroup.id, criterionKey)!,
+      langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.sectorId, tickerReport.industryGroupId, criterionKey)!,
       reportKey: reportKey,
     });
   };
@@ -104,16 +104,12 @@ export default function DebugCriterionEvaluation({ tickerReport, industryGroupCr
       </div>
       {industryGroupCriteria.criteria?.map((criterionDefinition) => {
         const criterionKey = criterionDefinition.key;
-        const criterion: CriterionEvaluation | undefined = evaluationOfLatest10QMap[criterionKey];
+        const criterion: FullCriterionEvaluation | undefined = evaluationOfLatest10QMap[criterionKey];
         return (
           <div key={criterionKey + '_report_criterion_key'}>
             <PrivateWrapper>
               <div className="my-5 flex justify-end space-x-5 items-center">
-                <WebhookUrlInput
-                  criterionDefinition={criterionDefinition}
-                  sectorId={tickerReport.selectedSector.id}
-                  industryGroupId={tickerReport.selectedIndustryGroup.id}
-                />
+                <WebhookUrlInput criterionDefinition={criterionDefinition} sectorId={tickerReport.sectorId} industryGroupId={tickerReport.industryGroupId} />
                 <Button
                   disabled={selectedCriterionForRegeneration?.criterionKey === criterionKey && allSingleCriterionReportsLoading}
                   onClick={() => {
@@ -190,9 +186,9 @@ export default function DebugCriterionEvaluation({ tickerReport, industryGroupCr
                   </div>
                   <div className="block-bg-color m-8">
                     <div className="overflow-x-auto">
-                      {criterion?.performanceChecklistEvaluation?.performanceChecklist?.length && (
+                      {criterion?.performanceChecklistEvaluation?.performanceChecklistItems?.length && (
                         <ul className="list-disc mt-2">
-                          {criterion.performanceChecklistEvaluation?.performanceChecklist?.map((item, index) => (
+                          {criterion.performanceChecklistEvaluation?.performanceChecklistItems?.map((item, index) => (
                             <li key={index} className="mb-1 flex items-start">
                               <div className="flex flex-col">
                                 <div className="mr-2">
@@ -253,7 +249,7 @@ export default function DebugCriterionEvaluation({ tickerReport, industryGroupCr
                           </tr>
                         </thead>
                         <tbody className="w-full">
-                          {criterion?.importantMetrics?.metrics?.map((metric) => (
+                          {criterion?.importantMetricsEvaluation?.metrics?.map((metric) => (
                             <tr key={metric.metricKey} className="w-full">
                               <td className="px-4">{metric.metricKey}</td>
                               <td className="px-4">{metric.value}</td>

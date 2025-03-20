@@ -1,35 +1,58 @@
-// app/api/public-equity/create-single-report/route.ts
-
 import { parseLangflowJSON } from '@/lib/langflow';
-import { getTickerReport, saveTickerReport } from '@/lib/publicEquity';
-import { CriterionEvaluation, ImportantMetrics, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
+import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { ImportantMetrics, MetricValueItem, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SaveCriterionMetricsRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
 const saveMetrics = async (req: NextRequest): Promise<ImportantMetrics> => {
   const body = (await req.json()) as SaveCriterionMetricsRequest;
-  const tickerReport = await getTickerReport(body.ticker);
-  const evaluations = tickerReport.evaluationsOfLatest10Q || [];
-  let evaluation: CriterionEvaluation | undefined = evaluations.find((e) => e.criterionKey === body.criterionKey);
-  const newMetrics: ImportantMetrics = {
-    status: ProcessingStatus.Completed,
-    metrics: typeof body.metrics === 'string' ? parseLangflowJSON(body.metrics) : body.metrics,
-  };
-  if (!evaluation) {
-    evaluation = {
-      criterionKey: body.criterionKey,
-      importantMetrics: newMetrics,
-      reports: undefined,
-      performanceChecklistEvaluation: undefined,
-    };
-    evaluations.push(evaluation);
-  } else {
-    evaluation.importantMetrics = newMetrics;
+
+  const tickerReport = await prisma.ticker.findUnique({
+    where: { tickerKey: body.ticker },
+    include: { evaluationsOfLatest10Q: true },
+  });
+
+  if (!tickerReport) {
+    throw new Error(`Ticker not found for key: ${body.ticker}`);
   }
-  tickerReport.evaluationsOfLatest10Q = evaluations;
-  await saveTickerReport(body.ticker, tickerReport);
+
+  const metricsRaw = body.metrics;
+  const checklistItems: MetricValueItem[] = typeof metricsRaw === 'string' ? parseLangflowJSON(metricsRaw) : metricsRaw;
+
+  const newMetrics = await prisma.importantMetricsEvaluation.update({
+    where: {
+      spaceId_tickerKey_criterionKey: {
+        spaceId: KoalaGainsSpaceId,
+        tickerKey: body.ticker,
+        criterionKey: body.criterionKey,
+      },
+    },
+
+    data: {
+      status: ProcessingStatus.Completed,
+      metrics: {
+        deleteMany: {
+          criterionKey: body.criterionKey,
+          tickerKey: body.ticker,
+          spaceId: KoalaGainsSpaceId,
+        },
+        create: checklistItems.map((m: { metricKey: any; value: any; calculationExplanation: any }) => ({
+          metricKey: m.metricKey,
+          value: m.value,
+          calculationExplanation: m.calculationExplanation,
+          tickerKey: body.ticker,
+          criterionKey: body.criterionKey,
+        })),
+      },
+    },
+    include: {
+      metrics: true,
+    },
+  });
 
   return newMetrics;
 };
+
 export const POST = withErrorHandlingV2<ImportantMetrics>(saveMetrics);

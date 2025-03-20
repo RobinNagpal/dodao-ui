@@ -1,5 +1,6 @@
 import { CriterionDefinition } from '@/types/public-equity/criteria-types';
-import { MetricValueItem, PerformanceChecklistItem } from '@/types/public-equity/ticker-report-types';
+import { MetricValueItem, PerformanceChecklistItem, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
+import { CriterionMatch, CriterionMatchAttachment } from '.prisma/client';
 
 export interface TickerCreateRequest {
   tickerKey: string;
@@ -68,4 +69,20 @@ export interface CreateSingleCriterionReportRequest {
 
 export interface CreateAllCriterionReportsRequest {
   langflowWebhookUrl: string;
+}
+
+export interface SaveCriteriaMatchesOfLatest10QRequest {
+  criterionMatchesOfLatest10Q: {
+    criterionMatches: {
+      criterionKey: string;
+      matchedContent: string;
+      matchedAttachments: Omit<CriterionMatchAttachment, 'id' | 'spaceId' | 'criterionMatchId' | 'tickerKey' | 'criterionKey'>[];
+    }[];
+    status: ProcessingStatus;
+    failureReason?: string;
+  };
+}
+
+export interface SaveLatest10QFinancialStatementsRequest {
+  latest10QFinancialStatements: string;
 }

@@ -10,10 +10,12 @@ function Testimonial() {
         <StarRating />
       </div>
       <blockquote className="mt-2">
-        <p className="font-display text-xl font-medium text-white">“Agentic AI is a ‘new labor model, new productivity model, and a new economic model”</p>
+        <p className="font-display text-xl font-medium text-white">
+          “All intelligent investing is value investing — acquiring more that you are paying for. You must value the business in order to value the stock.”
+        </p>
       </blockquote>
       <figcaption className="mt-2 text-sm text-gray-400">
-        <strong className="font-semibold text-indigo-400 before:content-['—_']">Marc Benioff</strong>, CEO of Salesforce
+        <strong className="font-semibold text-indigo-400 before:content-['—_']">Charlie Munger</strong>
       </figcaption>
     </figure>
   );
@@ -37,8 +39,8 @@ export function Hero() {
         {/* Main Hero Text and CTA */}
         <div className="pt-16 lg:col-span-7 lg:pt-0 lg:pl-16 xl:pl-20">
           <div className="mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4 lg:px-0">
-            <h1 className="font-display text-4xl font-extrabold text-white sm:text-6xl">Data-Driven Investing with KoalaGains</h1>
-            <p className="mt-4 text-2xl text-gray-400">Powerful AI insights and deep data extraction to unlock new opportunities. All in one place.</p>
+            <h1 className="font-display text-4xl font-extrabold text-white sm:text-3xl">Value Investing with Deeper AI Created Insights</h1>
+            <p className="mt-4 text-xl text-gray-400">Powerful AI insights and deep data extraction to unlock new opportunities. All in one place.</p>
             <div className="mt-8 flex gap-4">
               <Link
                 href="/custom-reports"

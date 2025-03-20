@@ -1,45 +1,31 @@
-import { ViewCriterionReportItem } from '@/components/ticker-reports/ViewCriterionReportItem';
+import { ReportSection } from '@/components/ticker-reports/ReportSection';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-import { TickerReport } from '@/types/public-equity/ticker-report-types';
+import { CriterionDefinition, IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
+import { FullNestedTickerReport, MetricValueItem } from '@/types/public-equity/ticker-report-types';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export default async function CriterionDetailsPage({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }) {
   const { tickerKey, criterionKey } = await params;
 
-  const response = await fetch(`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${tickerKey}/latest-10q-report.json`, {
-    cache: 'no-cache',
-  });
-  const tickerReport = (await response.json()) as TickerReport;
+  const response = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
+  const tickerReport = (await response.json()) as FullNestedTickerReport;
 
   const criteriaResponse = await fetch(
     `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`,
     { cache: 'no-cache' }
   );
   const industryGroupCriteria: IndustryGroupCriteriaDefinition = (await criteriaResponse.json()) as IndustryGroupCriteriaDefinition;
-
+  const selectedCriterion: CriterionDefinition = industryGroupCriteria.criteria.find((c) => c.key === criterionKey)!;
   if (!tickerReport.evaluationsOfLatest10Q) {
     return <div>No data available</div>;
-  }
-  const reportContentMap: Record<string, string | object> = {};
-  for (const criterion of tickerReport.evaluationsOfLatest10Q ?? []) {
-    for (const report of criterion.reports || []) {
-      if (report.outputFileUrl) {
-        try {
-          const response = await fetch(report.outputFileUrl, { cache: 'no-cache' });
-          reportContentMap[`${criterion.criterionKey}__${report.reportKey}`] = await response.text();
-        } catch (err) {
-          console.error(`Failed to fetch report: ${report.outputFileUrl}`);
-        }
-      }
-    }
   }
 
   const criterion = tickerReport.evaluationsOfLatest10Q.find((item) => item.criterionKey === criterionKey)!;
 
   // Breadcrumb structure
   const breadcrumbs = [
-    { label: `${tickerReport.ticker}`, href: `/public-equities/tickers/${tickerKey}`, name: `${tickerKey}`, current: false },
+    { label: `${tickerReport.tickerKey}`, href: `/public-equities/tickers/${tickerKey}`, name: `${tickerKey}`, current: false },
     {
       label: `Criterion: ${criterionKey}`,
       href: `/public-equities/tickers/${tickerKey}/criteria/${criterionKey}`,
@@ -61,9 +47,9 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
           <div className="overflow-x-auto">
             {/* Performance Checklist Section */}
             <h3 className="text-lg font-semibold mt-6 mb-4">Performance Checklist</h3>
-            {criterion.performanceChecklistEvaluation?.performanceChecklist?.length ? (
+            {criterion.performanceChecklistEvaluation?.performanceChecklistItems?.length ? (
               <ul className="list-disc mt-2">
-                {criterion.performanceChecklistEvaluation.performanceChecklist.map((item, index) => (
+                {criterion.performanceChecklistEvaluation.performanceChecklistItems.map((item, index) => (
                   <li key={index} className="mb-1 flex items-start">
                     <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
                     <span>{item.checklistItem}</span>
@@ -71,11 +57,11 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-gray-500 text-center">No checklist available</p>
+              <p className="text-sm text-gray-500 text-center">No performance checklist available</p>
             )}
 
             <h3 className="text-lg font-semibold mt-6 mb-4">Important Metrics</h3>
-            {criterion.importantMetrics?.metrics?.length ? (
+            {criterion.importantMetricsEvaluation?.metrics?.length ? (
               <table className="w-full border-collapse border border-gray-300">
                 <thead>
                   <tr>
@@ -85,7 +71,7 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
                   </tr>
                 </thead>
                 <tbody>
-                  {criterion.importantMetrics.metrics.map((metric) => (
+                  {criterion.importantMetricsEvaluation?.metrics?.map((metric: MetricValueItem) => (
                     <tr key={metric.metricKey} className="border">
                       <td className="border border-gray-300 px-4 py-2">{metric.metricKey.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}</td>
                       <td className="border border-gray-300 px-4 py-2">{metric.value}</td>
@@ -99,30 +85,18 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
             )}
             {/* Reports Section */}
             <h3 className="text-lg font-semibold mt-6 mb-4">Reports</h3>
-            {criterion.reports?.length ? (
-              criterion.reports.map((report, index) => {
-                const reportContent = reportContentMap[`${criterion.criterionKey}__${report.reportKey}`];
-                return (
-                  <div key={(report.reportKey || index) + '_report_key'} className="mt-2">
-                    <h2 className="text-lg font-semibold">
-                      {(report.reportKey && report.reportKey.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())) || `Report ${index + 1}`}
-                    </h2>
-                    {reportContent ? (
-                      <ViewCriterionReportItem
-                        content={reportContent as string}
-                        criterionKey={criterionKey}
-                        criterionReport={report}
-                        industryGroupCriteria={industryGroupCriteria}
-                      />
-                    ) : (
-                      <div className="text-center">Empty</div>
-                    )}
-                  </div>
-                );
-              })
-            ) : (
-              <p className="text-sm">No reports available.</p>
-            )}
+            {selectedCriterion.reports.map((reportDefinition) => {
+              const report = criterion.reports.find((report) => report.reportKey === reportDefinition.key);
+              return (
+                <ReportSection
+                  key={reportDefinition.key}
+                  reportDefinition={reportDefinition}
+                  report={report}
+                  criterionKey={criterionKey}
+                  industryGroupCriteria={industryGroupCriteria}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

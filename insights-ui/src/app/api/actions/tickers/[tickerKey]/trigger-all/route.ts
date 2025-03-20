@@ -1,16 +1,24 @@
 // app/api/public-equity/all-criterion-report/route.ts
-import { getCriteria } from '@/lib/industryGroupCriteria';
-import { TickerReport } from '@/types/public-equity/ticker-report-types';
+import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
+import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { getTickerReport } from '@/lib/publicEquity';
 
 const PE_US_REITS_WEBHOOK_URL = process.env.PE_US_REITS_WEBHOOK_URL!;
 
-const triggerAllReports = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }) => {
+const triggerAllReports = async (req: NextRequest, { params }: { params: { tickerKey: string } }): Promise<Ticker> => {
   const { tickerKey } = await params;
-  const tickerReport = await getTickerReport(tickerKey);
-  const industryGroupCriteria = await getCriteria(tickerReport.selectedSector.name, tickerReport.selectedIndustryGroup.name);
+
+  const tickerReport = await prisma.ticker.findUnique({
+    where: { tickerKey },
+  });
+
+  if (!tickerReport) {
+    throw new Error(`Ticker report ${tickerKey} not found.`);
+  }
+
+  const industryGroupCriteria = await getCriteriaByIds(tickerReport.sectorId, tickerReport.industryGroupId);
   const firstCriterion = industryGroupCriteria.criteria[0];
   if (!firstCriterion) {
     throw new Error('Criteria list is empty.');
@@ -30,4 +38,4 @@ const triggerAllReports = async (req: NextRequest, { params }: { params: Promise
   console.log(jsonResponse);
   return tickerReport;
 };
-export const POST = withErrorHandlingV2<TickerReport>(triggerAllReports);
+export const POST = withErrorHandlingV2<Ticker>(triggerAllReports);

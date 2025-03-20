@@ -1,5 +1,3 @@
-'use client';
-
 import EditTickerView from '@/components/ticker/EditTickerView';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import gicsData from '@/gicsData/gicsData.json';

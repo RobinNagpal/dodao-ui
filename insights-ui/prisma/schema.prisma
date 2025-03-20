@@ -15,43 +15,44 @@ datasource db {
 // --------------------------
 
 model Ticker {
-  tickerKey       String   @id @unique @map("ticker_key")
-  reportUrl       String?  @map("report_url")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
-  createdBy       String?  @map("created_by")
-  updatedBy       String?  @map("updated_by")
-  sectorId        Int      @map("sector_id")
-  industryGroupId Int      @map("industry_group_id")
+  id                           String   @id @default(uuid())
+  tickerKey                    String   @unique @map("ticker_key")
+  createdAt                    DateTime @default(now()) @map("created_at")
+  updatedAt                    DateTime @updatedAt @map("updated_at")
+  createdBy                    String?  @map("created_by")
+  updatedBy                    String?  @map("updated_by")
+  sectorId                     Int      @map("sector_id")
+  industryGroupId              Int      @map("industry_group_id")
+  spaceId                      String   @default("koala_gains") @map("space_id")
+  latest10QFinancialStatements String?  @map("latest_10q_financial_statements")
 
-  // Relations
+  evaluationsOfLatest10Q         CriterionEvaluation[]
   secFilings                     SecFiling[]
-  TickerReport                   TickerReport[]
-  CriterionEvaluation            CriterionEvaluation[]
-  ImportantMetrics               ImportantMetrics[]
+  ImportantMetrics               ImportantMetricsEvaluation[]
   MetricValueItem                MetricValueItem[]
   CriterionReportItem            CriterionReportItem[]
   PerformanceChecklistEvaluation PerformanceChecklistEvaluation[]
   PerformanceChecklistItem       PerformanceChecklistItem[]
-  CriterionMatchesOfLatest10Q    CriterionMatchesOfLatest10Q[]
   CriterionMatch                 CriterionMatch[]
+  criteriaMatchesOfLatest10Q     CriteriaMatchesOfLatest10Q?
 
+  @@unique([spaceId, tickerKey])
   @@map("tickers")
 }
 
 model SecFiling {
-  id              String                @id @default(uuid())
-  tickerKey       String                @map("ticker_key")
-  filingDate      DateTime              @map("filing_date")
-  form            String                @map("form")
-  filingUrl       String                @map("filing_url")
-  accessionNumber String                @unique @map("accession_number")
-  periodOfReport  String                @map("period_of_report")
-  attachments     SecFilingAttachment[]
-  shortSummary    String?               @map("short_summary")
+  id              String   @id @default(uuid())
+  tickerKey       String   @map("ticker_key")
+  filingDate      DateTime @map("filing_date")
+  form            String   @map("form")
+  filingUrl       String   @map("filing_url")
+  accessionNumber String   @unique @map("accession_number")
+  periodOfReport  String   @map("period_of_report")
+  shortSummary    String?  @map("short_summary")
+  spaceId         String   @default("koala_gains") @map("space_id")
 
-  // Relation to the Ticker model
-  ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
+  attachments SecFilingAttachment[]
+  ticker      Ticker                @relation(fields: [tickerKey], references: [tickerKey])
 
   @@map("sec_filings")
 }
@@ -66,6 +67,7 @@ model SecFilingAttachment {
   documentType   String    @map("document_type")
   secFilingId    String    @map("sec_filing_id")
   secFiling      SecFiling @relation(fields: [secFilingId], references: [id])
+  spaceId        String    @default("koala_gains") @map("space_id")
 
   @@map("sec_filing_attachments")
 }
@@ -97,174 +99,167 @@ enum ProcessingStatus {
   NotStarted
 }
 
-model TickerReport {
-  id                      String   @id @default(uuid())
-  tickerKey               String   @map("ticker_key")
-  selectedIndustryGroupId Int      @map("selected_industry_group_id")
-  selectedSectorId        Int      @map("selected_sector_id")
-  createdAt               DateTime @default(now()) @map("created_at")
-  updatedAt               DateTime @updatedAt @map("updated_at")
-  createdBy               String?  @map("created_by")
-  updatedBy               String?  @map("updated_by")
-
-  evaluations                CriterionEvaluation[]
-  criteriaMatchesOfLatest10Q CriterionMatchesOfLatest10Q?
-
-  // Relation to Ticker (using the same ticker_key)
-  ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
-
-  @@map("ticker_reports")
-}
-
 model CriterionEvaluation {
-  id             String @id @default(uuid())
-  tickerKey      String @map("ticker_key")
-  criterionKey   String @map("criterion_key")
-  tickerReportId String @map("ticker_report_id")
+  id           String @id @default(uuid())
+  tickerKey    String @map("ticker_key")
+  criterionKey String @map("criterion_key")
+  spaceId      String @default("koala_gains") @map("space_id")
 
-  importantMetrics               ImportantMetrics?
+  importantMetricsEvaluation     ImportantMetricsEvaluation?
   performanceChecklistEvaluation PerformanceChecklistEvaluation?
   reports                        CriterionReportItem[]
+  ticker                         Ticker                          @relation(fields: [tickerKey], references: [tickerKey])
 
-  tickerReport TickerReport @relation(fields: [tickerReportId], references: [id])
-  ticker       Ticker       @relation(fields: [tickerKey], references: [tickerKey])
-
+  @@unique([spaceId, tickerKey, criterionKey])
   @@map("criterion_evaluations")
 }
 
-model ImportantMetrics {
-  id           String           @id @default(uuid())
-  status       ProcessingStatus
-  createdAt    DateTime         @default(now()) @map("created_at")
-  updatedAt    DateTime         @updatedAt @map("updated_at")
-  createdBy    String?          @map("created_by")
-  updatedBy    String?          @map("updated_by")
-  tickerKey    String           @map("ticker_key")
-  criterionKey String           @map("criterion_key")
+model ImportantMetricsEvaluation {
+  id                    String           @id @default(uuid())
+  status                ProcessingStatus
+  createdAt             DateTime         @default(now()) @map("created_at")
+  updatedAt             DateTime         @updatedAt @map("updated_at")
+  createdBy             String?          @map("created_by")
+  updatedBy             String?          @map("updated_by")
+  tickerKey             String           @map("ticker_key")
+  criterionKey          String           @map("criterion_key")
+  spaceId               String           @default("koala_gains") @map("space_id")
+  criterionEvaluationId String?          @unique @map("criterion_evaluation_id")
 
-  // One-to-one relation with CriterionEvaluation
-  criterionEvaluationId String?              @unique @map("criterion_evaluation_id")
-  criterionEvaluation   CriterionEvaluation? @relation(fields: [criterionEvaluationId], references: [id])
-  ticker                Ticker               @relation(fields: [tickerKey], references: [tickerKey])
+  criterionEvaluation CriterionEvaluation? @relation(fields: [criterionEvaluationId], references: [id])
+  ticker              Ticker               @relation(fields: [tickerKey], references: [tickerKey])
+  metrics             MetricValueItem[]
 
-  metrics MetricValueItem[]
-
+  @@unique([spaceId, tickerKey, criterionKey])
   @@map("important_metrics")
 }
 
 model MetricValueItem {
-  id                     String           @id @default(uuid())
-  metricKey              String           @map("metric_key")
-  value                  String
-  calculationExplanation String           @map("calculation_explanation")
-  tickerKey              String           @map("ticker_key")
-  criterionKey           String           @map("criterion_key")
-  importantMetricsId     String           @map("important_metrics_id")
-  importantMetrics       ImportantMetrics @relation(fields: [importantMetricsId], references: [id])
-  ticker                 Ticker           @relation(fields: [tickerKey], references: [tickerKey])
+  id                     String @id @default(uuid())
+  metricKey              String @map("metric_key")
+  value                  String @map("value")
+  calculationExplanation String @map("calculation_explanation")
+  tickerKey              String @map("ticker_key")
+  criterionKey           String @map("criterion_key")
+  importantMetricsId     String @map("important_metrics_id")
+  spaceId                String @default("koala_gains") @map("space_id")
+
+  importantMetrics ImportantMetricsEvaluation @relation(fields: [importantMetricsId], references: [id])
+  ticker           Ticker                     @relation(fields: [tickerKey], references: [tickerKey])
 
   @@map("metric_value_items")
 }
 
 model CriterionReportItem {
-  id            String           @id @default(uuid())
-  reportKey     String           @map("report_key")
-  status        ProcessingStatus
-  outputFileUrl String?          @map("output_file_url")
+  id                    String           @id @default(uuid())
+  reportKey             String           @map("report_key")
+  status                ProcessingStatus @map("status")
+  textData              String?          @map("data")
+  jsonData              Json?            @map("json_data")
+  createdAt             DateTime         @default(now()) @map("created_at")
+  updatedAt             DateTime         @updatedAt @map("updated_at")
+  createdBy             String?          @map("created_by")
+  updatedBy             String?          @map("updated_by")
+  tickerKey             String           @map("ticker_key")
+  criterionKey          String           @map("criterion_key")
+  criterionEvaluationId String           @map("criterion_evaluation_id")
+  spaceId               String           @default("koala_gains") @map("space_id")
 
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
-  createdBy    String?  @map("created_by")
-  updatedBy    String?  @map("updated_by")
-  tickerKey    String   @map("ticker_key")
-  criterionKey String   @map("criterion_key")
+  criterionEvaluation CriterionEvaluation @relation(fields: [criterionEvaluationId], references: [id])
+  ticker              Ticker              @relation(fields: [tickerKey], references: [tickerKey])
 
-  criterionEvaluationId String              @map("criterion_evaluation_id")
-  criterionEvaluation   CriterionEvaluation @relation(fields: [criterionEvaluationId], references: [id])
-  ticker                Ticker              @relation(fields: [tickerKey], references: [tickerKey])
-
+  @@unique([spaceId, tickerKey, criterionKey, reportKey])
   @@map("criterion_report_items")
 }
 
 model PerformanceChecklistEvaluation {
-  id     String           @id @default(uuid())
-  status ProcessingStatus
+  id                    String           @id @default(uuid())
+  status                ProcessingStatus @map("status")
+  createdAt             DateTime         @default(now()) @map("created_at")
+  updatedAt             DateTime         @updatedAt @map("updated_at")
+  createdBy             String?          @map("created_by")
+  updatedBy             String?          @map("updated_by")
+  tickerKey             String           @map("ticker_key")
+  criterionKey          String           @map("criterion_key")
+  criterionEvaluationId String?          @unique @map("criterion_evaluation_id")
+  spaceId               String           @default("koala_gains") @map("space_id")
 
-  createdAt             DateTime             @default(now()) @map("created_at")
-  updatedAt             DateTime             @updatedAt @map("updated_at")
-  createdBy             String?              @map("created_by")
-  updatedBy             String?              @map("updated_by")
-  tickerKey             String               @map("ticker_key")
-  criterionKey          String               @map("criterion_key")
-  // One-to-one relation with CriterionEvaluation
-  criterionEvaluationId String?              @unique @map("criterion_evaluation_id")
-  criterionEvaluation   CriterionEvaluation? @relation(fields: [criterionEvaluationId], references: [id])
-  ticker                Ticker               @relation(fields: [tickerKey], references: [tickerKey])
-
+  criterionEvaluation       CriterionEvaluation?       @relation(fields: [criterionEvaluationId], references: [id])
+  ticker                    Ticker                     @relation(fields: [tickerKey], references: [tickerKey])
   performanceChecklistItems PerformanceChecklistItem[]
 
+  @@unique([spaceId, tickerKey, criterionKey])
   @@map("performance_checklist_evaluations")
 }
 
 model PerformanceChecklistItem {
-  id                  String @id @default(uuid())
-  checklistItem       String @map("checklist_item")
-  oneLinerExplanation String @map("one_liner_explanation")
-  informationUsed     String @map("information_used")
-  detailedExplanation String @map("detailed_explanation")
-  evaluationLogic     String @map("evaluation_logic")
-  score               Float
-  tickerKey           String @map("ticker_key")
-  criterionKey        String @map("criterion_key")
+  id                               String @id @default(uuid())
+  checklistItem                    String @map("checklist_item")
+  oneLinerExplanation              String @map("one_liner_explanation")
+  informationUsed                  String @map("information_used")
+  detailedExplanation              String @map("detailed_explanation")
+  evaluationLogic                  String @map("evaluation_logic")
+  score                            Float  @map("score")
+  tickerKey                        String @map("ticker_key")
+  criterionKey                     String @map("criterion_key")
+  performanceChecklistEvaluationId String @map("performance_checklist_evaluation_id")
+  spaceId                          String @default("koala_gains") @map("space_id")
 
-  performanceChecklistEvaluationId String                         @map("performance_checklist_evaluation_id")
-  performanceChecklistEvaluation   PerformanceChecklistEvaluation @relation(fields: [performanceChecklistEvaluationId], references: [id])
-  ticker                           Ticker                         @relation(fields: [tickerKey], references: [tickerKey])
+  performanceChecklistEvaluation PerformanceChecklistEvaluation @relation(fields: [performanceChecklistEvaluationId], references: [id])
+  ticker                         Ticker                         @relation(fields: [tickerKey], references: [tickerKey])
 
   @@map("performance_checklist_items")
 }
 
-model CriterionMatchesOfLatest10Q {
+model CriteriaMatchesOfLatest10Q {
   id            String           @id @default(uuid())
-  status        ProcessingStatus
+  status        ProcessingStatus @map("status")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+  createdBy     String?          @map("created_by")
+  updatedBy     String?          @map("updated_by")
   failureReason String?          @map("failure_reason")
   tickerKey     String           @map("ticker_key")
-  criterionKey  String           @map("criterion_key")
-
-  tickerReportId String       @unique @map("ticker_report_id")
-  tickerReport   TickerReport @relation(fields: [tickerReportId], references: [id])
-  ticker         Ticker       @relation(fields: [tickerKey], references: [tickerKey])
+  tickerId      String           @unique @map("ticker_id")
+  spaceId       String           @default("koala_gains") @map("space_id")
 
   criterionMatches CriterionMatch[]
+  ticker           Ticker           @relation(fields: [tickerId], references: [id])
 
-  @@map("criterion_matches_latest_10q")
+  @@unique([spaceId, tickerKey])
+  @@map("criteria_matches_latest_10q")
 }
 
 model CriterionMatch {
-  id             String @id @default(uuid())
-  criterionKey   String @map("criterion_key")
-  matchedContent String @map("matched_content")
-  tickerKey      String @map("ticker_key")
+  id                            String @id @default(uuid())
+  criterionKey                  String @map("criterion_key")
+  matchedContent                String @map("matched_content")
+  tickerKey                     String @map("ticker_key")
+  spaceId                       String @default("koala_gains") @map("space_id")
+  criterionMatchesOfLatest10QId String @map("criterion_matches_latest_10q_id")
 
-  criterionMatchesOfLatest10QId String                      @map("criterion_matches_latest_10q_id")
-  criterionMatchesOfLatest10Q   CriterionMatchesOfLatest10Q @relation(fields: [criterionMatchesOfLatest10QId], references: [id])
-  ticker                        Ticker                      @relation(fields: [tickerKey], references: [tickerKey])
-  matchedAttachments            CriterionMatchAttachment[]
+  criterionMatchesOfLatest10Q CriteriaMatchesOfLatest10Q @relation(fields: [criterionMatchesOfLatest10QId], references: [id], onDelete: Cascade)
+  ticker                      Ticker                     @relation(fields: [tickerKey], references: [tickerKey])
+  matchedAttachments          CriterionMatchAttachment[]
 
+  @@unique([spaceId, tickerKey, criterionKey])
   @@map("criterion_matches")
 }
 
 model CriterionMatchAttachment {
-  id               String         @id @default(uuid())
-  sequenceNumber   String         @map("sequence_number")
-  description      String         @map("description")
-  purpose          String?        @map("purpose")
-  url              String         @map("url")
-  documentType     String         @map("document_type")
-  criterionMatchId String         @map("criterion_match_id")
-  tickerKey        String         @map("ticker_key")
-  criterionKey     String         @map("criterion_key")
-  criterionMatch   CriterionMatch @relation(fields: [criterionMatchId], references: [id])
+  id               String  @id @default(uuid())
+  sequenceNumber   String  @map("sequence_number")
+  documentName     String? @map("document_name")
+  purpose          String? @map("purpose")
+  url              String  @map("url")
+  content          String  @map("content")
+  relevance        Float   @map("relevance")
+  criterionMatchId String  @map("criterion_match_id")
+  tickerKey        String  @map("ticker_key")
+  criterionKey     String  @map("criterion_key")
+  spaceId          String  @default("koala_gains") @map("space_id")
+
+  criterionMatch CriterionMatch @relation(fields: [criterionMatchId], references: [id], onDelete: Cascade)
 
   @@map("criterion_match_attachments")
 }

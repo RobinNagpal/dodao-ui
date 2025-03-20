@@ -1,6 +1,7 @@
-import { getCriteria } from '@/lib/industryGroupCriteria';
-import { getTickerReport, saveTickerReport } from '@/lib/publicEquity';
-import { CriterionEvaluation, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
+import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
+import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { CriterionEvaluation, PredefinedReports, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
@@ -16,8 +17,8 @@ const triggerSingleCriterionReport = async (
     throw new Error('langflowWebhookUrl is required in the request body.');
   }
 
-  const tickerReport = await getTickerReport(tickerKey);
-  const industryGroupCriteria = await getCriteria(tickerReport.selectedSector.name, tickerReport.selectedIndustryGroup.name);
+  const tickerReport = await prisma.ticker.findUniqueOrThrow({ where: { tickerKey }, include: { evaluationsOfLatest10Q: true } });
+  const industryGroupCriteria = await getCriteriaByIds(tickerReport.sectorId, tickerReport.industryGroupId);
   const matchingCriterion = industryGroupCriteria.criteria.find((crit) => crit.key === criterionKey);
   if (!matchingCriterion) {
     throw new Error(`Criterion with key '${criterionKey}' not found.`);
@@ -35,65 +36,163 @@ const triggerSingleCriterionReport = async (
     headers,
     body: JSON.stringify(payload),
   });
-
-  let updatedCriterionEvaluation: CriterionEvaluation | undefined = tickerReport.evaluationsOfLatest10Q?.find((e) => e.criterionKey === criterionKey);
-  if (!updatedCriterionEvaluation) {
-    updatedCriterionEvaluation = {
-      criterionKey,
-      importantMetrics: {
-        status: ProcessingStatus.NotStarted,
-      },
-      performanceChecklistEvaluation: {
-        status: ProcessingStatus.NotStarted,
-      },
-      reports:
-        industryGroupCriteria.criteria
-          .find((c) => c.key === criterionKey)
-          ?.reports.map((r) => ({
-            reportKey: r.key,
-            status: ProcessingStatus.NotStarted,
-          })) || [],
-    };
-  }
-  if (reportKey === 'importantMetrics') {
-    updatedCriterionEvaluation.importantMetrics = {
-      status: ProcessingStatus.InProgress,
-    };
-  } else if (reportKey === 'performanceChecklist') {
-    updatedCriterionEvaluation.performanceChecklistEvaluation = {
-      status: ProcessingStatus.InProgress,
-    };
-  } else {
-    const report = updatedCriterionEvaluation.reports?.find((r) => r.reportKey === reportKey);
-    if (report) {
-      report.status = ProcessingStatus.InProgress;
-    } else {
-      updatedCriterionEvaluation.reports?.push({
-        reportKey,
-        status: ProcessingStatus.InProgress,
-      });
-    }
-  }
-  let evaluationsOfLatest10Q = [...(tickerReport.evaluationsOfLatest10Q || [])];
-  if (!evaluationsOfLatest10Q || evaluationsOfLatest10Q.length === 0) {
-    evaluationsOfLatest10Q = [updatedCriterionEvaluation];
-  } else {
-    const index = evaluationsOfLatest10Q.findIndex((e) => e.criterionKey === criterionKey);
-    if (index === -1) {
-      evaluationsOfLatest10Q.push(updatedCriterionEvaluation);
-    } else {
-      evaluationsOfLatest10Q[index] = updatedCriterionEvaluation;
-    }
-  }
-  console.log('Saving ticker report with updated evaluationsOfLatest10Q:', JSON.stringify(evaluationsOfLatest10Q, null, 2));
-  await saveTickerReport(tickerKey, {
-    ...tickerReport,
-    evaluationsOfLatest10Q: evaluationsOfLatest10Q,
-  });
-
   const responseJson = await response.json();
   console.log('Response from langflow:', responseJson);
 
-  return updatedCriterionEvaluation;
+  if (reportKey === PredefinedReports.performanceChecklist) {
+    const updatedCriterionEvaluation = await prisma.criterionEvaluation.upsert({
+      where: {
+        spaceId_tickerKey_criterionKey: {
+          spaceId: KoalaGainsSpaceId,
+          criterionKey,
+          tickerKey,
+        },
+      },
+      create: {
+        criterionKey,
+        tickerKey,
+        performanceChecklistEvaluation: {
+          create: {
+            criterionKey,
+            tickerKey,
+            status: ProcessingStatus.InProgress,
+            spaceId: KoalaGainsSpaceId,
+          },
+        },
+      },
+      update: {
+        performanceChecklistEvaluation: {
+          upsert: {
+            create: {
+              criterionKey,
+              tickerKey,
+              status: ProcessingStatus.InProgress,
+              spaceId: KoalaGainsSpaceId,
+            },
+            update: {
+              status: ProcessingStatus.InProgress,
+              performanceChecklistItems: {
+                deleteMany: {
+                  tickerKey,
+                  criterionKey,
+                  spaceId: KoalaGainsSpaceId,
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    return updatedCriterionEvaluation;
+  } else if (reportKey === PredefinedReports.importantMetrics) {
+    const updatedCriterionEvaluation = await prisma.criterionEvaluation.upsert({
+      where: {
+        spaceId_tickerKey_criterionKey: {
+          spaceId: KoalaGainsSpaceId,
+          criterionKey,
+          tickerKey,
+        },
+      },
+      create: {
+        criterionKey,
+        tickerKey,
+        importantMetricsEvaluation: {
+          create: {
+            criterionKey,
+            tickerKey,
+            status: ProcessingStatus.InProgress,
+            spaceId: KoalaGainsSpaceId,
+          },
+        },
+      },
+      update: {
+        importantMetricsEvaluation: {
+          upsert: {
+            create: {
+              criterionKey,
+              tickerKey,
+              status: ProcessingStatus.InProgress,
+              spaceId: KoalaGainsSpaceId,
+            },
+            update: {
+              metrics: {
+                deleteMany: {
+                  tickerKey,
+                  criterionKey,
+                  spaceId: KoalaGainsSpaceId,
+                },
+              },
+              status: ProcessingStatus.InProgress,
+            },
+          },
+        },
+      },
+    });
+    return updatedCriterionEvaluation;
+  } else {
+    const updatedCriterionEvaluation = await prisma.criterionEvaluation.upsert({
+      where: {
+        spaceId_tickerKey_criterionKey: {
+          spaceId: KoalaGainsSpaceId,
+          criterionKey,
+          tickerKey,
+        },
+      },
+      create: {
+        criterionKey,
+        tickerKey,
+        reports: {
+          createMany: {
+            data: [
+              {
+                reportKey,
+                status: ProcessingStatus.InProgress,
+                createdBy: 'system',
+                createdAt: new Date(),
+                tickerKey,
+                criterionKey,
+                textData: null,
+                updatedAt: new Date(),
+                updatedBy: 'system',
+              },
+            ],
+          },
+        },
+      },
+      update: {
+        reports: {
+          upsert: {
+            create: {
+              reportKey,
+              status: ProcessingStatus.InProgress,
+              createdBy: 'system',
+              createdAt: new Date(),
+              tickerKey,
+              criterionKey,
+              textData: null,
+              updatedAt: new Date(),
+              updatedBy: 'system',
+            },
+            update: {
+              textData: null,
+              updatedAt: new Date(),
+              updatedBy: 'system',
+              jsonData: undefined,
+              status: ProcessingStatus.InProgress,
+            },
+            where: {
+              spaceId_tickerKey_criterionKey_reportKey: {
+                spaceId: KoalaGainsSpaceId,
+                reportKey,
+                tickerKey,
+                criterionKey,
+              },
+            },
+          },
+        },
+      },
+    });
+    return updatedCriterionEvaluation;
+  }
 };
 export const POST = withErrorHandlingV2<CriterionEvaluation>(triggerSingleCriterionReport);
