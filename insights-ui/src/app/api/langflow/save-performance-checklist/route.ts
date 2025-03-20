@@ -46,6 +46,11 @@ const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<P
     data: {
       status: ProcessingStatus.Completed,
       performanceChecklistItems: {
+        deleteMany: {
+          criterionKey: body.criterionKey,
+          tickerKey: body.ticker,
+          spaceId: KoalaGainsSpaceId,
+        },
         create: checklistItems.map((item) => ({
           checklistItem: item.checklistItem,
           oneLinerExplanation: item.oneLinerExplanation,

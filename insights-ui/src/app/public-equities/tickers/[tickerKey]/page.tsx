@@ -13,6 +13,7 @@ import {
 import { getReportName } from '@/util/report-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 
 export default async function TickerDetailsPage({ params }: { params: Promise<{ tickerKey: string }> }) {
@@ -23,10 +24,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
     { cache: 'no-cache' }
   );
   const industryGroupCriteria: IndustryGroupCriteriaDefinition = (await criteriaResponse.json()) as IndustryGroupCriteriaDefinition;
-  const tickerResponse = await fetch(
-    `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${tickerKey}/latest-10q-report.json`,
-    { cache: 'no-cache' }
-  );
+  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
 
   const tickerReport = (await tickerResponse.json()) as FullNestedTickerReport;
   const breadcrumbs: BreadcrumbsOjbect[] = [
@@ -50,7 +48,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         name: getReportName(report.criterionKey),
         summary: report.importantMetricsEvaluation?.status || '',
         scores:
-          report.performanceChecklistEvaluation?.performanceChecklist?.map((pc: PerformanceChecklistItem) => ({
+          report.performanceChecklistEvaluation?.performanceChecklistItems?.map((pc: PerformanceChecklistItem) => ({
             score: pc.score,
             comment: `${pc.checklistItem}: ${pc.oneLinerExplanation}`,
           })) || [],
@@ -85,7 +83,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                         <div className="text-sm py-1">{criterion.shortDescription}</div>
                         {report?.performanceChecklistEvaluation && (
                           <ul className="list-disc mt-2">
-                            {report.performanceChecklistEvaluation?.performanceChecklist?.map((item, index) => (
+                            {report.performanceChecklistEvaluation?.performanceChecklistItems?.map((item, index) => (
                               <li key={index} className="mb-1 flex items-start">
                                 <span className="mr-2">{item.score > 0 ? '✅' : '❌'}</span>
                                 <span>{item.checklistItem}</span>

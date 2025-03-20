@@ -1,1 +1,1 @@
-export const KoalaGainsSpaceId = 'koala-gains';
+export const KoalaGainsSpaceId = 'koala_gains';

@@ -48,7 +48,7 @@ export type CriterionEvaluation = CriterionEvaluationPrisma;
 
 export type TickerReport = Ticker;
 
-export type FullPerformanceChecklistEvaluation = PerformanceChecklistEvaluation & { performanceChecklist: PerformanceChecklistItem[] };
+export type FullPerformanceChecklistEvaluation = PerformanceChecklistEvaluation & { performanceChecklistItems: PerformanceChecklistItem[] };
 export type FullImportantMetricsEvaluation = ImportantMetricsEvaluationPrisma & { metrics: MetricValueItem[] };
 
 export interface FullCriterionMatch extends CriterionMatch {

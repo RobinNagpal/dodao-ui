@@ -9,7 +9,7 @@ import { NextRequest } from 'next/server';
 const saveMetrics = async (req: NextRequest): Promise<ImportantMetrics> => {
   const body = (await req.json()) as SaveCriterionMetricsRequest;
 
-  const tickerReport = await prisma.ticker.findUniqueOrThrow({
+  const tickerReport = await prisma.ticker.findUnique({
     where: { tickerKey: body.ticker },
     include: { evaluationsOfLatest10Q: true },
   });
@@ -33,6 +33,11 @@ const saveMetrics = async (req: NextRequest): Promise<ImportantMetrics> => {
     data: {
       status: ProcessingStatus.Completed,
       metrics: {
+        deleteMany: {
+          criterionKey: body.criterionKey,
+          tickerKey: body.ticker,
+          spaceId: KoalaGainsSpaceId,
+        },
         create: checklistItems.map((m: { metricKey: any; value: any; calculationExplanation: any }) => ({
           metricKey: m.metricKey,
           value: m.value,

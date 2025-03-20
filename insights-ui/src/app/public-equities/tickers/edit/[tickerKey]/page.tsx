@@ -14,8 +14,8 @@ export default async function Page({ params }: { params: Promise<{ tickerKey: st
   const ticker = (await response.json()) as Ticker;
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
-      name: `New Ticker`,
-      href: `/public-equities/ticker/create`,
+      name: `Edit Ticker`,
+      href: `/public-equities/ticker/edit`,
       current: true,
     },
   ];

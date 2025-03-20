@@ -56,6 +56,7 @@ const triggerSingleCriterionReport = async (
             criterionKey,
             tickerKey,
             status: ProcessingStatus.InProgress,
+            spaceId: KoalaGainsSpaceId,
           },
         },
       },
@@ -66,6 +67,7 @@ const triggerSingleCriterionReport = async (
               criterionKey,
               tickerKey,
               status: ProcessingStatus.InProgress,
+              spaceId: KoalaGainsSpaceId,
             },
             update: {
               status: ProcessingStatus.InProgress,
@@ -73,6 +75,7 @@ const triggerSingleCriterionReport = async (
                 deleteMany: {
                   tickerKey,
                   criterionKey,
+                  spaceId: KoalaGainsSpaceId,
                 },
               },
             },
@@ -98,6 +101,7 @@ const triggerSingleCriterionReport = async (
             criterionKey,
             tickerKey,
             status: ProcessingStatus.InProgress,
+            spaceId: KoalaGainsSpaceId,
           },
         },
       },
@@ -108,12 +112,14 @@ const triggerSingleCriterionReport = async (
               criterionKey,
               tickerKey,
               status: ProcessingStatus.InProgress,
+              spaceId: KoalaGainsSpaceId,
             },
             update: {
               metrics: {
                 deleteMany: {
                   tickerKey,
                   criterionKey,
+                  spaceId: KoalaGainsSpaceId,
                 },
               },
               status: ProcessingStatus.InProgress,

@@ -14,7 +14,10 @@ const saveReportForCriterion = async (req: NextRequest): Promise<CriterionReport
   const criterionKey = body.criterionKey;
   const reportKey = body.reportKey;
   const data = body.data;
-  const tickerReport = await prisma.ticker.findUniqueOrThrow({ where: { tickerKey }, include: { evaluationsOfLatest10Q: true } });
+  const tickerReport = await prisma.ticker.findUnique({ where: { tickerKey }, include: { evaluationsOfLatest10Q: true } });
+  if (!tickerReport) {
+    throw new Error(`Ticker not found for key: ${body.ticker}`);
+  }
   const industryGroupCriteria = await getCriteriaByIds(tickerReport.sectorId, tickerReport.industryGroupId);
   const matchingCriterion = industryGroupCriteria.criteria.find((crit) => crit.key === criterionKey);
   if (!matchingCriterion) {

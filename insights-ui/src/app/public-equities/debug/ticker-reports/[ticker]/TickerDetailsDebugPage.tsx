@@ -20,7 +20,7 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
   const [industryGroupCriteria, setIndustryGroupCriteria] = useState<IndustryGroupCriteriaDefinition>();
 
   const checkReportExists = async () => {
-    const response = await fetch(`${getBaseUrl()}/tickers/${ticker}`, { cache: 'no-cache' });
+    const response = await fetch(`${getBaseUrl()}/api/tickers/${ticker}`, { cache: 'no-cache' });
     if (response.status === 200) {
       setReportExists(true);
       const report: FullNestedTickerReport = await response.json();
@@ -61,12 +61,6 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <h1>S3 File</h1>
-      <div>
-        <a href={`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/tickers/${ticker}/latest-10q-report.json`} target="_blank">
-          {`/public-equities/US/tickers/${ticker}/latest-10q-report.json`}
-        </a>
-      </div>
       {reportExists && report && industryGroupCriteria ? (
         <div>
           <DebugMatchingAttachments report={report} industryGroupCriteria={industryGroupCriteria} />
