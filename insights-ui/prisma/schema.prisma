@@ -35,7 +35,7 @@ model Ticker {
   PerformanceChecklistEvaluation PerformanceChecklistEvaluation[]
   PerformanceChecklistItem       PerformanceChecklistItem[]
   CriterionMatch                 CriterionMatch[]
-  criteriaMatchesOfLatest10Q     CriteriaMatchesOfLatest10Q[]
+  criteriaMatchesOfLatest10Q     CriteriaMatchesOfLatest10Q?
 
   @@unique([spaceId, tickerKey])
   @@map("tickers")
@@ -221,10 +221,11 @@ model CriteriaMatchesOfLatest10Q {
   updatedBy     String?          @map("updated_by")
   failureReason String?          @map("failure_reason")
   tickerKey     String           @map("ticker_key")
+  tickerId      String           @unique @map("ticker_id")
   spaceId       String           @default("koala_gains") @map("space_id")
 
-  ticker           Ticker           @relation(fields: [tickerKey], references: [tickerKey])
   criterionMatches CriterionMatch[]
+  ticker           Ticker           @relation(fields: [tickerId], references: [id])
 
   @@unique([spaceId, tickerKey])
   @@map("criteria_matches_latest_10q")
@@ -249,10 +250,10 @@ model CriterionMatch {
 model CriterionMatchAttachment {
   id               String  @id @default(uuid())
   sequenceNumber   String  @map("sequence_number")
-  description      String  @map("description")
+  documentName     String? @map("document_name")
   purpose          String? @map("purpose")
   url              String  @map("url")
-  documentName     String  @map("document_name")
+  content          String  @map("content")
   relevance        Float   @map("relevance")
   criterionMatchId String  @map("criterion_match_id")
   tickerKey        String  @map("ticker_key")
