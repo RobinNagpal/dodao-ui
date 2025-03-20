@@ -35,7 +35,6 @@ const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { 
           },
         },
       },
-      
     },
     include: {
       criteriaMatchesOfLatest10Q: {
@@ -50,7 +49,6 @@ const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { 
     },
   });
   console.log(`Updated ticker: ${JSON.stringify(updatedTicker)}`);
-  
 
   const url = 'https://4mbhgkl77s4gubn7i2rdcllbru0wzyxl.lambda-url.us-east-1.on.aws/populate-criteria-matches';
   const payload = { ticker: tickerKey };
