@@ -30,6 +30,7 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
     } catch (error) {
       const requestInfo = `host: ${req.nextUrl.host}, origin: ${req.nextUrl.origin}, url: ${req.url}, searchParams: ${req.nextUrl.searchParams.toString()}`;
       console.log('error for ', requestInfo);
+      console.error((error as any).stack);
       const message = (error as any)?.response?.data + `. Error occurred while processing the request  ${requestInfo}`;
       await logError(message, {}, error as any, null, null);
       await logErrorRequest(error as Error, req);

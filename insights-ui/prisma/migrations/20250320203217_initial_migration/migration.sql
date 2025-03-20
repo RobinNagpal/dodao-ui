@@ -14,8 +14,8 @@ CREATE TABLE "tickers" (
     "updated_by" TEXT,
     "sector_id" INTEGER NOT NULL,
     "industry_group_id" INTEGER NOT NULL,
-    "criteria_matches_of_latest_10q_id" TEXT,
     "space_id" TEXT NOT NULL DEFAULT 'koala_gains',
+    "latest_10q_financial_statements" TEXT,
 
     CONSTRAINT "tickers_pkey" PRIMARY KEY ("id")
 );
@@ -153,7 +153,7 @@ CREATE TABLE "performance_checklist_items" (
 );
 
 -- CreateTable
-CREATE TABLE "criter_matches_latest_10q" (
+CREATE TABLE "criteria_matches_latest_10q" (
     "id" TEXT NOT NULL,
     "status" "ProcessingStatus" NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -162,9 +162,10 @@ CREATE TABLE "criter_matches_latest_10q" (
     "updated_by" TEXT,
     "failure_reason" TEXT,
     "ticker_key" TEXT NOT NULL,
+    "ticker_id" TEXT NOT NULL,
     "space_id" TEXT NOT NULL DEFAULT 'koala_gains',
 
-    CONSTRAINT "criter_matches_latest_10q_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "criteria_matches_latest_10q_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -183,10 +184,10 @@ CREATE TABLE "criterion_matches" (
 CREATE TABLE "criterion_match_attachments" (
     "id" TEXT NOT NULL,
     "sequence_number" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "document_name" TEXT,
     "purpose" TEXT,
     "url" TEXT NOT NULL,
-    "document_name" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
     "relevance" DOUBLE PRECISION NOT NULL,
     "criterion_match_id" TEXT NOT NULL,
     "ticker_key" TEXT NOT NULL,
@@ -198,9 +199,6 @@ CREATE TABLE "criterion_match_attachments" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "tickers_ticker_key_key" ON "tickers"("ticker_key");
-
--- CreateIndex
-CREATE UNIQUE INDEX "tickers_criteria_matches_of_latest_10q_id_key" ON "tickers"("criteria_matches_of_latest_10q_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "tickers_space_id_ticker_key_key" ON "tickers"("space_id", "ticker_key");
@@ -227,7 +225,10 @@ CREATE UNIQUE INDEX "performance_checklist_evaluations_criterion_evaluation_id_k
 CREATE UNIQUE INDEX "performance_checklist_evaluations_space_id_ticker_key_crite_key" ON "performance_checklist_evaluations"("space_id", "ticker_key", "criterion_key");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "criter_matches_latest_10q_space_id_ticker_key_key" ON "criter_matches_latest_10q"("space_id", "ticker_key");
+CREATE UNIQUE INDEX "criteria_matches_latest_10q_ticker_id_key" ON "criteria_matches_latest_10q"("ticker_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "criteria_matches_latest_10q_space_id_ticker_key_key" ON "criteria_matches_latest_10q"("space_id", "ticker_key");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "criterion_matches_space_id_ticker_key_criterion_key_key" ON "criterion_matches"("space_id", "ticker_key", "criterion_key");
@@ -272,13 +273,13 @@ ALTER TABLE "performance_checklist_items" ADD CONSTRAINT "performance_checklist_
 ALTER TABLE "performance_checklist_items" ADD CONSTRAINT "performance_checklist_items_ticker_key_fkey" FOREIGN KEY ("ticker_key") REFERENCES "tickers"("ticker_key") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "criter_matches_latest_10q" ADD CONSTRAINT "criter_matches_latest_10q_ticker_key_fkey" FOREIGN KEY ("ticker_key") REFERENCES "tickers"("ticker_key") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "criteria_matches_latest_10q" ADD CONSTRAINT "criteria_matches_latest_10q_ticker_id_fkey" FOREIGN KEY ("ticker_id") REFERENCES "tickers"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "criterion_matches" ADD CONSTRAINT "criterion_matches_criterion_matches_latest_10q_id_fkey" FOREIGN KEY ("criterion_matches_latest_10q_id") REFERENCES "criter_matches_latest_10q"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "criterion_matches" ADD CONSTRAINT "criterion_matches_criterion_matches_latest_10q_id_fkey" FOREIGN KEY ("criterion_matches_latest_10q_id") REFERENCES "criteria_matches_latest_10q"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "criterion_matches" ADD CONSTRAINT "criterion_matches_ticker_key_fkey" FOREIGN KEY ("ticker_key") REFERENCES "tickers"("ticker_key") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "criterion_match_attachments" ADD CONSTRAINT "criterion_match_attachments_criterion_match_id_fkey" FOREIGN KEY ("criterion_match_id") REFERENCES "criterion_matches"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "criterion_match_attachments" ADD CONSTRAINT "criterion_match_attachments_criterion_match_id_fkey" FOREIGN KEY ("criterion_match_id") REFERENCES "criterion_matches"("id") ON DELETE CASCADE ON UPDATE CASCADE;

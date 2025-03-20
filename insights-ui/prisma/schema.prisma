@@ -23,7 +23,6 @@ model Ticker {
   updatedBy                    String?  @map("updated_by")
   sectorId                     Int      @map("sector_id")
   industryGroupId              Int      @map("industry_group_id")
-  criteriaMatchesOfLatest10QId String?  @unique @map("criteria_matches_of_latest_10q_id")
   spaceId                      String   @default("koala_gains") @map("space_id")
   latest10QFinancialStatements String?  @map("latest_10q_financial_statements")
 
@@ -239,7 +238,7 @@ model CriterionMatch {
   spaceId                       String @default("koala_gains") @map("space_id")
   criterionMatchesOfLatest10QId String @map("criterion_matches_latest_10q_id")
 
-  criterionMatchesOfLatest10Q CriteriaMatchesOfLatest10Q @relation(fields: [criterionMatchesOfLatest10QId], references: [id])
+  criterionMatchesOfLatest10Q CriteriaMatchesOfLatest10Q @relation(fields: [criterionMatchesOfLatest10QId], references: [id], onDelete: Cascade)
   ticker                      Ticker                     @relation(fields: [tickerKey], references: [tickerKey])
   matchedAttachments          CriterionMatchAttachment[]
 
@@ -260,7 +259,7 @@ model CriterionMatchAttachment {
   criterionKey     String  @map("criterion_key")
   spaceId          String  @default("koala_gains") @map("space_id")
 
-  criterionMatch CriterionMatch @relation(fields: [criterionMatchId], references: [id])
+  criterionMatch CriterionMatch @relation(fields: [criterionMatchId], references: [id], onDelete: Cascade)
 
   @@map("criterion_match_attachments")
 }
