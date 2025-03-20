@@ -25,6 +25,7 @@ model Ticker {
   industryGroupId              Int      @map("industry_group_id")
   criteriaMatchesOfLatest10QId String?  @unique @map("criteria_matches_of_latest_10q_id")
   spaceId                      String   @default("koala_gains") @map("space_id")
+  latest10QFinancialStatements String?  @map("latest_10q_financial_statements")
 
   evaluationsOfLatest10Q         CriterionEvaluation[]
   secFilings                     SecFiling[]
@@ -226,7 +227,7 @@ model CriteriaMatchesOfLatest10Q {
   criterionMatches CriterionMatch[]
 
   @@unique([spaceId, tickerKey])
-  @@map("criter_matches_latest_10q")
+  @@map("criteria_matches_latest_10q")
 }
 
 model CriterionMatch {

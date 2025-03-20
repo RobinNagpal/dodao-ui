@@ -6,7 +6,7 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 
 // app/api/public-equity/single-criterion-report/route.ts
 import { NextRequest } from 'next/server';
-import { CriteriaMatchesOfLatest10Q } from '.prisma/client';
+import { CriteriaMatchesOfLatest10Q } from '@prisma/client';
 
 const triggerCriteriaMatchingForTicker = async (
   req: NextRequest,
