@@ -52,12 +52,12 @@ const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { 
 
   const url = 'https://4mbhgkl77s4gubn7i2rdcllbru0wzyxl.lambda-url.us-east-1.on.aws/populate-criteria-matches';
   const payload = { ticker: tickerKey };
-  const response = await fetch(url, {
+  fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
-  await response.text();
+
   return updatedTicker;
 };
 
