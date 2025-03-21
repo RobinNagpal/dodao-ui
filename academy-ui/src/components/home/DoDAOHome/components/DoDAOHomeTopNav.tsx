@@ -35,9 +35,9 @@ const products = [
     icon: AcademicCapIcon,
   },
   {
-    name: 'AI Crowdfunding Analyzer',
-    description: 'Leverage AI to evaluate crowdfunding opportunities.',
-    href: '/home-section/dodao-io/products/ai-crowdfunding-agent',
+    name: 'KoalaGains',
+    description: 'Use AI Agents to get deeper investing insights on crowdfunding and REITs',
+    href: '/home-section/dodao-io/products/koalagains',
     icon: ChartBarIcon,
   },
 ];

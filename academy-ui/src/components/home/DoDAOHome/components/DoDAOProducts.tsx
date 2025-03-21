@@ -1,6 +1,6 @@
 import AcademyGif from '@/images/DoDAOHomePage/Academy_site.gif';
 import TidbitsHubGif from '@/images/DoDAOHomePage/Tidbitshub_giffy.gif';
-import AiAgent from '@/images/DoDAOHomePage/aichatbot.jpg';
+import KoalaGains from '@/images/DoDAOHomePage/koala_gains.gif';
 import { Container } from './Container';
 import { SectionHeading } from './SectionHeading';
 
@@ -22,12 +22,12 @@ const features = [
     imageAlt: 'Academy Sites',
   },
   {
-    name: 'AI Crowdfunding Analyzer',
-    id: 'ai-crowdfunding-analyzer',
+    name: 'KoalaGains',
+    id: 'koala-gains',
     description:
-      'AI Crowdfunding Analyzer is an AI Agent designed to help investors evaluate startups listed on crowdfunding platforms. It generates detailed reports covering founding members, potential risks, key opportunities, market trends, and financial details. The analyzer highlights red and green flags to simplify decision-making and assess market potential. With this tool, investors can make informed decisions quickly and confidently.',
-    imageSrc: AiAgent.src,
-    imageAlt: 'AI Agent for startups',
+      'KoalaGains revolutionizes investment research through powerful AI-driven insights, enabling users to quickly analyze crowdfunding projects, REITs, and public companies. It offers automated financial reports, interactive spider charts, sentiment-driven analysis, and detailed scoring explanations using advanced AI Agents. KoalaGains generates precise, reports tailored to different investment strategies. Investors can now effortlessly discover high-value opportunities and make informed decisions faster than ever before.',
+    imageSrc: KoalaGains.src,
+    imageAlt: 'AI Agent for startups and REITs',
   },
 ];
 
