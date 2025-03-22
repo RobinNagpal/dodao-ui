@@ -69,13 +69,13 @@ const incentives = [
     name: 'Goal and Objectives',
     description:
       'The primary goal of Academy Sites is to make blockchain education accessible, concise, and engaging for users of all skill levels.Traditional learning methods often overwhelm learners with fragmented or overly technical content, making it challenging to grasp the core functionalities of platforms like Arbitrum and Uniswap. Academy sites address this challenge in a very effective way.',
-    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-delivery-light.svg',
+    imageSrc: 'https://cdn-icons-png.flaticon.com/512/1270/1270380.png',
   },
   {
     name: 'The Solution',
     description:
       'Academy Sites provide a structured, interactive, and user-friendly learning environment. By combining detailed guides, bite-sized tidbits, clickable demos, and short videos, the platform caters to diverse learning styles and preferences. These sites align with the branding of their respective platforms, ensuring a consistent user experience, while delivering high-impact educational content that simplifies blockchain technology.',
-    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-chat-light.svg',
+    imageSrc: 'https://cdn-icons-png.flaticon.com/512/8787/8787168.png',
   },
 ];
 

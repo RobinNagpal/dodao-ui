@@ -68,13 +68,13 @@ const incentives = [
     name: 'Goal and Objectives',
     description:
       'KoalaGains aims to help you handle crowdfunded projects and REITs by using smart AI. Many of these investments can be risky if you don’t have full information. We decided to solve this problem by building a platform that shows clear, simple data.',
-    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-delivery-light.svg',
+    imageSrc: 'https://cdn-icons-png.flaticon.com/512/1270/1270380.png',
   },
   {
     name: 'The Solution',
     description:
       'Our AI studies each project’s filings, market signals, and team details. Then it turns that data into easy-to-understand reports. By showing strong points, risks, and potential growth, KoalaGains helps you invest with more confidence and clarity.',
-    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-chat-light.svg',
+    imageSrc: 'https://cdn-icons-png.flaticon.com/512/8787/8787168.png',
   },
 ];
 

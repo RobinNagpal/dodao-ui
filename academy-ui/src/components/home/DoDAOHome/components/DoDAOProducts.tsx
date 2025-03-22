@@ -1,6 +1,6 @@
 import AcademyGif from '@/images/DoDAOHomePage/Academy_site.gif';
 import TidbitsHubGif from '@/images/DoDAOHomePage/Tidbitshub_giffy.gif';
-import KoalaGains from '@/images/DoDAOHomePage/koala_gains.gif';
+import KoalaGains from '@/images/DoDAOHomePage/koala_gains_reduced.gif';
 import { Container } from './Container';
 import { SectionHeading } from './SectionHeading';
 
