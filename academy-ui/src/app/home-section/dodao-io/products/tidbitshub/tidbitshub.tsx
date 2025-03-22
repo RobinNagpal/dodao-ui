@@ -64,13 +64,13 @@ const incentives = [
     name: 'Goal and Objectives',
     description:
       'The objective of Tidbits Hub is to address the challenge of long-form content fatigue, which makes it tedious and overwhelming for customers to navigate through extensive material to find specific product features they are interested in. Long documents often complicate the onboarding process, leading to customer disengagement and product abandonment. Tidbits Hub was specifically designed to tackle this issue effectively.',
-    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-delivery-light.svg',
+    imageSrc: 'https://cdn-icons-png.flaticon.com/512/1270/1270380.png',
   },
   {
     name: 'The Solution',
     description:
       'Tidbits Hub provides a tailored platform that consolidates bite-sized content, interactive demos, and short videos into one seamless experience. It will help companies educate customers effectively, allowing them to grasp product knowledge in under 10-15 minutes.This solution is designed to mimic your company’s branding through white-labeled websites hosted on custom domains (e.g., https://tidbits.company.com). By structuring content into intuitive collections, we ensure users can quickly find and absorb key information without navigating complex documentation.',
-    imageSrc: 'https://tailwindui.com/plus/img/ecommerce/icons/icon-chat-light.svg',
+    imageSrc: 'https://cdn-icons-png.flaticon.com/512/8787/8787168.png',
   },
 ];
 
