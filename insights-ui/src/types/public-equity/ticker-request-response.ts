@@ -71,6 +71,11 @@ export interface CreateAllCriterionReportsRequest {
   langflowWebhookUrl: string;
 }
 
+export interface GetSingleCriteriaMatchingRequest {
+  sequenceNumber: string;
+  criterionKey: string; // 'all' or specific criterion key
+}
+
 export interface SaveCriteriaMatchesOfLatest10QRequest {
   criterionMatchesOfLatest10Q: {
     criterionMatches: {
