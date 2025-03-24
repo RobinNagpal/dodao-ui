@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { GetSingleCriteriaMatchingRequest } from '@/types/public-equity/ticker-request-response';
+import { CriterionMatchResponse, CriterionMatchTextItem, GetSingleCriteriaMatchingRequest } from '@/types/public-equity/ticker-request-response';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
@@ -20,10 +20,9 @@ export interface AttachmentTableActionsProps {
 }
 export default function AttachementTableActions({ tickerKey, attachment, industryGroupCriteria }: AttachmentTableActionsProps) {
   const [showModal, setShowModal] = useState(false);
-  const [attachmentContent, setAttachmentContent] = useState('');
-  const [criterionKey, setCriterionKey] = useState('');
+  const [attachmentContent, setAttachmentContent] = useState<CriterionMatchResponse | null>(null);
 
-  const { data, loading, postData, error } = usePostData<string, GetSingleCriteriaMatchingRequest>({
+  const { data, loading, postData, error } = usePostData<CriterionMatchResponse, GetSingleCriteriaMatchingRequest>({
     errorMessage: 'Failed to get criteria matching',
   });
 
@@ -31,26 +30,30 @@ export default function AttachementTableActions({ tickerKey, attachment, industr
     if (data) {
       setAttachmentContent(data);
     } else if (error) {
-      setAttachmentContent(error);
+      setAttachmentContent({
+        status: 'failure',
+        criterion_matches: [] as CriterionMatchTextItem[],
+        failureReason: error,
+      });
     }
   }, [data, error]);
 
   const renderer = getMarkedRenderer();
 
-  const getMarkdownContent = (content?: string) => {
-    return content ? marked.parse(content, { renderer }) : 'No Information';
+  const getContentFromResponse = (response: CriterionMatchResponse): string => {
+    if (response.status === 'failure') {
+      return response.failureReason || 'No information available';
+    }
+    if (response.criterion_matches && response.criterion_matches.length > 0) {
+      return response.criterion_matches.map((match) => `## ${match.criterion_key}\n\n${match.relevant_text}`).join('\n\n');
+    }
+    return 'No matching text found.';
   };
 
   const handleRegenerateMatchingCriteria = async () => {
-    if (!criterionKey.trim()) {
-      setAttachmentContent('Please select the criterion key from the dropdown');
-      return;
-    }
-    await postData(`${getBaseUrl()}/api/actions/tickers/${tickerKey}/sec-filings/single-criteria-matching`, {
-      criterionKey: criterionKey || '',
+    await postData(`${getBaseUrl()}/api/actions/tickers/${tickerKey}/sec-filings/criteria-matching-for-an-attachment`, {
       sequenceNumber: attachment.sequenceNumber,
     });
-    // setAttachmentContent(response ?? error ?? '');
   };
 
   return (
@@ -61,27 +64,25 @@ export default function AttachementTableActions({ tickerKey, attachment, industr
           <div className="flex justify-around items-center">
             <div>Sequence # {attachment.sequenceNumber}</div>
             <div>{attachment.purpose ?? attachment.description}</div>
-            <div className="min-w-[200px]">
-              <select value={criterionKey} onChange={(e) => setCriterionKey(e.target.value)} className="rounded border p-1 text-black w-full" required>
-                <option value="">Select a criterion</option>
-                <option value="all">all</option>
-                {industryGroupCriteria.criteria.map((criterion) => (
-                  <option key={criterion.key} value={criterion.key}>
-                    {criterion.key}
-                  </option>
-                ))}
-              </select>
-            </div>
             <Button disabled={loading} loading={loading} primary variant={'contained'} onClick={handleRegenerateMatchingCriteria}>
               Process Criteria Matching
             </Button>
           </div>
-          <hr className="m-5"></hr>
+          <hr className="m-5" />
           <div className="h-full w-full">
             {attachmentContent ? (
-              <div className="markdown-body text-md text-left py-10 px-5" dangerouslySetInnerHTML={{ __html: getMarkdownContent(attachmentContent) }} />
+              <div
+                className="markdown-body text-md text-left py-10 px-5"
+                dangerouslySetInnerHTML={{
+                  __html: marked.parse(getContentFromResponse(attachmentContent), { renderer }),
+                }}
+              />
+            ) : error ? (
+              <div>{error}</div>
             ) : (
-              <div className="my-40 text-gray-500">Extracted content from attachment based on the Matching Instructions will be shown here.</div>
+              <div className="flex items-center justify-center my-40 text-gray-500">
+                Extracted content from attachment based on the Matching Instructions will be shown here.
+              </div>
             )}
           </div>
         </div>

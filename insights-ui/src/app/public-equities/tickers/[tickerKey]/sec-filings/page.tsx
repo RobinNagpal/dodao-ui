@@ -5,6 +5,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { DocumentTextIcon } from '@heroicons/react/20/solid';
 import { SecFiling } from '@prisma/client';
 import Link from 'next/link';
+import RepopulateFilingsButton from './RepopulateButton';
 
 export default async function SecFilingPage({ params }: { params: Promise<{ tickerKey: string }> }) {
   const { tickerKey } = await params;
@@ -16,7 +17,7 @@ export default async function SecFilingPage({ params }: { params: Promise<{ tick
     },
     {
       name: tickerKey,
-      href: `/public-equities/tickers/${tickerKey}}/timeline`,
+      href: `/public-equities/tickers/${tickerKey}}/sec-filings`,
       current: true,
     },
   ];
@@ -27,7 +28,10 @@ export default async function SecFilingPage({ params }: { params: Promise<{ tick
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <h1 className="text-2xl font-bold text-color py-8">SEC Filings for {tickerKey}</h1>
+      <div className="flex justify-between">
+        <h1 className="text-2xl font-bold text-color py-8">SEC Filings for {tickerKey}</h1>
+        <RepopulateFilingsButton tickerKey={tickerKey} />
+      </div>
       <div className="flow-root background-color">
         <ul role="list" className="-mb-8">
           {filings.map((filing, idx) => (

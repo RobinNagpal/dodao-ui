@@ -73,7 +73,6 @@ export interface CreateAllCriterionReportsRequest {
 
 export interface GetSingleCriteriaMatchingRequest {
   sequenceNumber: string;
-  criterionKey: string; // 'all' or specific criterion key
 }
 
 export interface SaveCriteriaMatchesOfLatest10QRequest {
@@ -90,4 +89,15 @@ export interface SaveCriteriaMatchesOfLatest10QRequest {
 
 export interface SaveLatest10QFinancialStatementsRequest {
   latest10QFinancialStatements: string;
+}
+
+export interface CriterionMatchTextItem {
+  criterion_key: string;
+  relevant_text: string;
+  relevance_amount: number;
+}
+export interface CriterionMatchResponse {
+  criterion_matches: CriterionMatchTextItem[];
+  status: 'success' | 'failure';
+  failureReason?: string;
 }

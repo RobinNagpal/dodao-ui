@@ -50,7 +50,7 @@ export default function TickerTableActions({ ticker }: TickerTableActionsProps) 
         <Link href={`/public-equities/tickers/${ticker.tickerKey}`} className="link-color">
           View Reports
         </Link>
-        <Link href={`/public-equities/tickers/${ticker.tickerKey}/timeline`} className="link-color ml-8">
+        <Link href={`/public-equities/tickers/${ticker.tickerKey}/sec-filings`} className="link-color ml-8">
           View SEC Filings
         </Link>
       </div>
