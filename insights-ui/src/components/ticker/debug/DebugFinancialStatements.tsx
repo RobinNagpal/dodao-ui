@@ -34,7 +34,7 @@ export default function DebugFinancialStatements({ report }: DebugFinancialState
   });
 
   const handleRegenerateMatchingCriteria = async () => {
-    regenerateMatchingCriteria(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-criteria-matching`);
+    regenerateMatchingCriteria(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-financial-statements`);
   };
 
   return (

@@ -3,6 +3,7 @@
 import { IndustryGroupCriteriaDefinition, CriterionDefinition } from '@/types/public-equity/criteria-types';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 interface CriteriaTableProps {
@@ -45,19 +46,25 @@ export default function CriteriaTable({ sectorName, industryGroupName, customCri
                 <td style={tableCellStyle}>{criterion.name}</td>
                 <td style={tableCellStyle}>{criterion.shortDescription}</td>
                 <td style={tableCellStyle}>{criterion.matchingInstruction}</td>
-                <td style={tableCellStyle} className="flex justify-around">
-                  <a href={`/public-equities/debug/tickers/${ticker}/${criterion.key}`} className="text-blue-500 hover:underline">
-                    Detailed Debug Page
-                  </a>
-                  <a
-                    href={`/public-equities/industry-group-criteria/${slugify(sectorName)}/${slugify(industryGroupName)}/create`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Criteria
-                  </a>
-                  <a href={`/public-equities/tickers/${ticker}`} className="text-blue-500 hover:underline">
-                    Report Page
-                  </a>
+                <td style={tableCellStyle} className="w-48">
+                  <div>
+                    <Link href={`/public-equities/debug/tickers/${ticker}/${criterion.key}`} className="text-blue-500 hover:underline w-full">
+                      Debug Page
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      href={`/public-equities/industry-group-criteria/${slugify(sectorName)}/${slugify(industryGroupName)}/create`}
+                      className="text-blue-500 hover:underline"
+                    >
+                      Criteria Page
+                    </Link>
+                  </div>
+                  <div>
+                    <Link href={`/public-equities/tickers/${ticker}`} className="text-blue-500 hover:underline">
+                      Report Page
+                    </Link>
+                  </div>
                 </td>
               </tr>
             ))
