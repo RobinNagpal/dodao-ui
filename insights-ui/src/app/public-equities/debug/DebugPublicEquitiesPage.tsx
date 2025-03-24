@@ -35,37 +35,37 @@ export default function DebugPublicEquitiesPage() {
               </Link>
             </ol>
             <ol>
-              <Link href="/public-equities/debug/ticker-reports/FVR" className="link-color underline text-xl" target="_blank">
+              <Link href="/public-equities/debug/tickers/FVR" className="link-color underline text-xl" target="_blank">
                 FVR Debug Page
               </Link>
             </ol>
             <ol>
-              <Link href="/public-equities/debug/ticker-reports/PECO" className="link-color underline text-xl" target="_blank">
+              <Link href="/public-equities/debug/tickers/PECO" className="link-color underline text-xl" target="_blank">
                 PECO Debug Page
               </Link>
             </ol>
             <ol>
-              <Link href="/public-equities/debug/ticker-reports/ELS" className="link-color underline text-xl" target="_blank">
+              <Link href="/public-equities/debug/tickers/ELS" className="link-color underline text-xl" target="_blank">
                 ELS Debug Page
               </Link>
             </ol>
             <ol>
-              <Link href="/public-equities/debug/ticker-reports/AMH" className="link-color underline text-xl" target="_blank">
+              <Link href="/public-equities/debug/tickers/AMH" className="link-color underline text-xl" target="_blank">
                 AMH Debug Page
               </Link>
             </ol>
             <ol>
-              <Link href="/public-equities/debug/ticker-reports/AMT" className="link-color underline text-xl" target="_blank">
+              <Link href="/public-equities/debug/tickers/AMT" className="link-color underline text-xl" target="_blank">
                 AMT Debug Page
               </Link>
             </ol>
             <ol>
-              <Link href="/public-equities/debug/ticker-reports/AVB" className="link-color underline text-xl" target="_blank">
+              <Link href="/public-equities/debug/tickers/AVB" className="link-color underline text-xl" target="_blank">
                 AVB Debug Page
               </Link>
             </ol>
             <ol>
-              <Link href="/public-equities/debug/ticker-reports/EQR" className="link-color underline text-xl" target="_blank">
+              <Link href="/public-equities/debug/tickers/EQR" className="link-color underline text-xl" target="_blank">
                 EQR Debug Page
               </Link>
             </ol>

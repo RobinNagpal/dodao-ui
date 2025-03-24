@@ -25,7 +25,7 @@ export default async function TickersTableDebug() {
               <td className="p-3 border text-left">{ticker.tickerKey}</td>
               <td className="p-3 border text-left">
                 <div className="flex items-center gap-2">
-                  <Link href={`/public-equities/debug/ticker-reports/${ticker.tickerKey}`} target="_blank" className="link-color pointer-cursor ">
+                  <Link href={`/public-equities/debug/tickers/${ticker.tickerKey}`} target="_blank" className="link-color pointer-cursor ">
                     Debug Page
                   </Link>
                 </div>
