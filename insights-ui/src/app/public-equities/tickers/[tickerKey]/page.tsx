@@ -1,3 +1,4 @@
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import RadarChart from '@/components/ui/RadarChart';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
@@ -15,6 +16,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
+import ProjectActionsDropdown from './ProjectActionsDropdown';
 
 export default async function TickerDetailsPage({ params }: { params: Promise<{ tickerKey: string }> }) {
   const { tickerKey } = await params;
@@ -63,6 +65,11 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
       <div className="text-color">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto lg:text-center">
+            <div className="flex justify-end">
+              <PrivateWrapper>
+                <ProjectActionsDropdown tickerKey={tickerKey} />
+              </PrivateWrapper>
+            </div>
             <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">{tickerKey}</p>
             <div className="max-w-lg mx-auto">
               <RadarChart data={spiderGraph} />
