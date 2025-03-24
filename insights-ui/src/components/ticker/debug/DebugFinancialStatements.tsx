@@ -1,7 +1,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import DisabledOnLocalhostButton from '@/components/ui/DisabledOnLocalhostButton';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-import { FullNestedTickerReport, ProcessingStatus, TickerReport } from '@/types/public-equity/ticker-report-types';
-import Button from '@dodao/web-core/components/core/buttons/Button';
+import { FullNestedTickerReport } from '@/types/public-equity/ticker-report-types';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -37,15 +37,21 @@ export default function DebugFinancialStatements({ report }: DebugFinancialState
     regenerateMatchingCriteria(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-criteria-matching`);
   };
 
-  console.log('DebugMatchingAttachments report', report);
   return (
     <div className="mt-8">
       {matchingCriteriaError && <div className="text-red-500">{matchingCriteriaError}</div>}
       <PrivateWrapper>
         <div className="flex justify-end mb-4">
-          <Button disabled={matchingCriteriaLoading} loading={matchingCriteriaLoading} primary variant={'contained'} onClick={handleRegenerateMatchingCriteria}>
-            ReFetch Financial Statements
-          </Button>
+          <DisabledOnLocalhostButton
+            loading={matchingCriteriaLoading}
+            primary
+            variant="contained"
+            onClick={handleRegenerateMatchingCriteria}
+            disabled={matchingCriteriaLoading}
+            disabledLabel="Disabled on Localhost"
+          >
+            Refetch Financial Statements
+          </DisabledOnLocalhostButton>
         </div>
       </PrivateWrapper>
       <h1 className="mb-8 font-bold text-xl">Financial Statements</h1>

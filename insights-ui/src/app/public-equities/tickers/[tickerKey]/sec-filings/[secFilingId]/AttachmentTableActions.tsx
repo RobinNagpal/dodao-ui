@@ -5,20 +5,18 @@ import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { SecFilingAttachment } from '@prisma/client';
 import { useState, useEffect } from 'react';
-import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { CriterionMatchResponse, CriterionMatchTextItem, GetSingleCriteriaMatchingRequest } from '@/types/public-equity/ticker-request-response';
-import Button from '@dodao/web-core/components/core/buttons/Button';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
+import DisabledOnLocalhostButton from '@/components/ui/DisabledOnLocalhostButton';
 
 export interface AttachmentTableActionsProps {
   tickerKey: string;
   attachment: SecFilingAttachment;
-  industryGroupCriteria: IndustryGroupCriteriaDefinition;
 }
-export default function AttachementTableActions({ tickerKey, attachment, industryGroupCriteria }: AttachmentTableActionsProps) {
+export default function AttachementTableActions({ tickerKey, attachment }: AttachmentTableActionsProps) {
   const [showModal, setShowModal] = useState(false);
   const [attachmentContent, setAttachmentContent] = useState<CriterionMatchResponse | null>(null);
 
@@ -64,9 +62,16 @@ export default function AttachementTableActions({ tickerKey, attachment, industr
           <div className="flex justify-around items-center">
             <div>Sequence # {attachment.sequenceNumber}</div>
             <div>{attachment.purpose ?? attachment.description}</div>
-            <Button disabled={loading} loading={loading} primary variant={'contained'} onClick={handleRegenerateMatchingCriteria}>
+            <DisabledOnLocalhostButton
+              loading={loading}
+              primary
+              variant="contained"
+              onClick={handleRegenerateMatchingCriteria}
+              disabled={loading}
+              disabledLabel="Disabled on Localhost"
+            >
               Process Criteria Matching
-            </Button>
+            </DisabledOnLocalhostButton>
           </div>
           <hr className="m-5" />
           <div className="h-full w-full">
