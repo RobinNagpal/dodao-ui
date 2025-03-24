@@ -1,13 +1,14 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-import { FullNestedTickerReport, ProcessingStatus, TickerReport } from '@/types/public-equity/ticker-report-types';
-import Button from '@dodao/web-core/components/core/buttons/Button';
+import { FullNestedTickerReport, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useState } from 'react';
+import ManagementDiscussionButton from './ManagementDiscussionButton';
+import DisabledOnLocalhostButton from '@/components/ui/DisabledOnLocalhostButton';
 
 export interface DebugMatchingAttachmentsProps {
   report: FullNestedTickerReport;
@@ -37,44 +38,50 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
     regenerateMatchingCriteria(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-criteria-matching`);
   };
 
-  console.log('DebugMatchingAttachments report', report);
   return (
     <div className="mt-8">
       {matchingCriteriaError && <div className="text-red-500">{matchingCriteriaError}</div>}
       <PrivateWrapper>
         <div className="flex justify-end mb-4">
-          <Button
-            disabled={matchingCriteriaLoading}
+          <DisabledOnLocalhostButton
             loading={matchingCriteriaLoading || report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress}
             primary
-            variant={'contained'}
+            variant="contained"
             onClick={handleRegenerateMatchingCriteria}
+            disabled={matchingCriteriaLoading}
+            disabledLabel="Disabled on Localhost"
           >
-            Regenerate Matching Criteria - Status {report.criteriaMatchesOfLatest10Q?.status}
-          </Button>
+            Regenerate Matching Criteria - Status ${report.criteriaMatchesOfLatest10Q?.status}
+          </DisabledOnLocalhostButton>
         </div>
       </PrivateWrapper>
       <h1 className="mb-8 font-bold text-xl">Matching Attachments</h1>
       {report.criteriaMatchesOfLatest10Q?.criterionMatches?.map((criterion) => {
         return (
-          <Accordion
-            key={criterion.criterionKey}
-            label={criterion.criterionKey}
-            isOpen={selectedCriterionAccordian === `attachments_${criterion.criterionKey}`}
-            onClick={() =>
-              setSelectedCriterionAccordian(
-                selectedCriterionAccordian === `attachments_${criterion.criterionKey}` ? null : `attachments_${criterion.criterionKey}`
-              )
-            }
-          >
-            <div className="mt-4">
-              {criterion.matchedContent ? (
-                <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(criterion.matchedContent) }} />
-              ) : (
-                'No Matched Content'
-              )}
+          <div key={criterion.criterionKey}>
+            <div className="flex justify-end my-5">
+              <PrivateWrapper>
+                <ManagementDiscussionButton tickerKey={ticker} criterionKey={criterion.criterionKey} />
+              </PrivateWrapper>
             </div>
-          </Accordion>
+            <Accordion
+              label={criterion.criterionKey}
+              isOpen={selectedCriterionAccordian === `attachments_${criterion.criterionKey}`}
+              onClick={() =>
+                setSelectedCriterionAccordian(
+                  selectedCriterionAccordian === `attachments_${criterion.criterionKey}` ? null : `attachments_${criterion.criterionKey}`
+                )
+              }
+            >
+              <div className="mt-4">
+                {criterion.matchedContent ? (
+                  <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(criterion.matchedContent) }} />
+                ) : (
+                  'No Matched Content'
+                )}
+              </div>
+            </Accordion>
+          </div>
         );
       })}
     </div>
