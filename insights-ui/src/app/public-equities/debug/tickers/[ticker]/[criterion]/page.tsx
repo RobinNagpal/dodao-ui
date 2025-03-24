@@ -21,14 +21,14 @@ import WebhookUrlInput, { getWebhookUrlFromLocalStorage } from '@/components/tic
 import DebugCriterionReport from '@/components/ticker/debug/DebugCriterionReport';
 
 interface CriterionDebugPageProps {
-  params: {
+  params: Promise<{
     ticker: string;
     criterion: string;
-  };
+  }>;
 }
 
-export default function SingleCriterionDebugPage({ params }: CriterionDebugPageProps) {
-  const { ticker, criterion: criterionKey } = params;
+export default async function SingleCriterionDebugPage({ params }: CriterionDebugPageProps) {
+  const { ticker, criterion: criterionKey } = await params;
 
   const [reportExists, setReportExists] = useState(false);
   const [report, setReport] = useState<FullNestedTickerReport | null>(null);
