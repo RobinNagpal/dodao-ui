@@ -2,10 +2,10 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { DocumentTextIcon } from '@heroicons/react/20/solid';
-import { SecFiling, SecFilingAttachment } from '@prisma/client';
+import { SecFilingAttachment } from '@prisma/client';
 import AttachementTableActions from './AttachmentTableActions';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
 
 export default async function SecFilingPage({ params }: { params: Promise<{ tickerKey: string; secFilingId: string }> }) {
   const { tickerKey, secFilingId } = await params;
@@ -17,7 +17,7 @@ export default async function SecFilingPage({ params }: { params: Promise<{ tick
     },
     {
       name: tickerKey,
-      href: `/public-equities/tickers/${tickerKey}}/timeline`,
+      href: `/public-equities/tickers/${tickerKey}}/sec-filings`,
       current: true,
     },
   ];
@@ -42,7 +42,9 @@ export default async function SecFilingPage({ params }: { params: Promise<{ tick
             <th className="p-3 border text-left">Name</th>
             <th className="p-3 border text-left">URL</th>
             <th className="p-3 border text-left">Doc Type</th>
-            <th className="p-3 border text-left">Actions</th>
+            <PrivateWrapper>
+              <th className="p-3 border text-left">Actions</th>
+            </PrivateWrapper>
           </tr>
         </thead>
         <tbody>
@@ -65,9 +67,11 @@ export default async function SecFilingPage({ params }: { params: Promise<{ tick
                     </a>
                   </td>
                   <td className="p-3 border text-left">{attach.documentType}</td>
-                  <td className="p-3 border text-left flex gap-2">
-                    <AttachementTableActions tickerKey={tickerKey} attachment={attach} industryGroupCriteria={industryGroupCriteria} />
-                  </td>
+                  <PrivateWrapper>
+                    <td className="p-3 border text-left flex gap-2">
+                      <AttachementTableActions tickerKey={tickerKey} attachment={attach} industryGroupCriteria={industryGroupCriteria} />
+                    </td>
+                  </PrivateWrapper>
                 </tr>
               );
             })

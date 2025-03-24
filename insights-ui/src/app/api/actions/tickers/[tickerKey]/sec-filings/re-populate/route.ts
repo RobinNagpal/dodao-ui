@@ -143,23 +143,17 @@ async function fetchAndSaveFilings(tickerKey: string, page: number): Promise<voi
 
 async function rePopulateSecFilings(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<SecFiling[]> {
   const { tickerKey } = await params;
-  try {
-    await fetchAndSaveFilings(tickerKey, 0);
-    const listOfFilings = await prisma.secFiling.findMany({
-      where: {
-        tickerKey: {
-          equals: tickerKey,
-        },
+
+  await fetchAndSaveFilings(tickerKey, 0);
+  const listOfFilings = await prisma.secFiling.findMany({
+    where: {
+      tickerKey: {
+        equals: tickerKey,
       },
-      orderBy: { filingDate: 'desc' },
-    });
-    console.log(`Returning ${listOfFilings.length} filings for ${tickerKey}`);
-    return listOfFilings;
-  } catch (e) {
-    console.error('Error fetching and saving filings:');
-    console.log((e as any).stack);
-    throw e;
-  }
+    },
+    orderBy: { filingDate: 'desc' },
+  });
+  return listOfFilings;
 }
 
 export const POST = withErrorHandlingV2<SecFiling[]>(rePopulateSecFilings);
