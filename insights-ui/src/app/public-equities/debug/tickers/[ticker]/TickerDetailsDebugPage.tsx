@@ -1,5 +1,6 @@
 'use client';
 
+import CriteriaTable from './CriteriaTable';
 import DebugCriterionEvaluation from '@/components/ticker/debug/DebugCriterionEvaluation';
 import DebugMatchingAttachments from '@/components/ticker/debug/DebugMatchingAttachments';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -47,13 +48,18 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
+      name: 'Debug',
+      href: `/public-equities/debug/`,
+      current: false,
+    },
+    {
       name: 'Debug Tickers',
-      href: `/public-equities/debug/ticker-reports`,
+      href: `/public-equities/debug/tickers`,
       current: false,
     },
     {
       name: 'Debug ' + ticker,
-      href: `/public-equities/debug/ticker-reports/${ticker}`,
+      href: `/public-equities/debug/tickers/${ticker}`,
       current: true,
     },
   ];
@@ -64,6 +70,12 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
       {reportExists && report && industryGroupCriteria ? (
         <div>
           <DebugMatchingAttachments report={report} industryGroupCriteria={industryGroupCriteria} />
+          <CriteriaTable
+            sectorName={industryGroupCriteria.selectedSector.name}
+            industryGroupName={industryGroupCriteria.selectedIndustryGroup.name}
+            customCriteria={industryGroupCriteria}
+            ticker={ticker}
+          />
           <DebugCriterionEvaluation tickerReport={report} industryGroupCriteria={industryGroupCriteria} />
         </div>
       ) : (

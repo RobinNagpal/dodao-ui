@@ -30,7 +30,7 @@ export default function DebugPublicEquitiesPage() {
           <h1 className="text-3xl">Ticker</h1>
           <ul>
             <ol>
-              <Link href="/public-equities/debug/ticker-reports" className="link-color underline text-xl" target="_blank">
+              <Link href="/public-equities/debug/tickers" className="link-color underline text-xl" target="_blank">
                 Tickers Table
               </Link>
             </ol>
