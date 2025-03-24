@@ -1,14 +1,19 @@
 'use client';
 
+import TickersTable from '@/app/public-equities/debug/tickers/TickersTable';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Ticker } from '@prisma/client';
 import Link from 'next/link';
 
-export default function DebugPublicEquitiesPage() {
+export default async function DebugPublicEquitiesPage() {
+  const response = await fetch(`${getBaseUrl()}/api/tickers`, { cache: 'no-cache' });
+  const tickers: Ticker[] = (await response.json()) as Ticker[];
   return (
     <PageWrapper>
-      <div className="flex justify-between">
+      <div>
         <div>
-          <h1 className="text-3xl">Criteria</h1>
+          <h1>Criteria</h1>
           <ul>
             <ol>
               <Link href="/public-equities/industry-group-criteria" className="link-color underline text-xl" target="_blank">
@@ -28,48 +33,7 @@ export default function DebugPublicEquitiesPage() {
         </div>
         <div>
           <h1 className="text-3xl">Ticker</h1>
-          <ul>
-            <ol>
-              <Link href="/public-equities/debug/tickers" className="link-color underline text-xl" target="_blank">
-                Tickers Table
-              </Link>
-            </ol>
-            <ol>
-              <Link href="/public-equities/debug/tickers/FVR" className="link-color underline text-xl" target="_blank">
-                FVR Debug Page
-              </Link>
-            </ol>
-            <ol>
-              <Link href="/public-equities/debug/tickers/PECO" className="link-color underline text-xl" target="_blank">
-                PECO Debug Page
-              </Link>
-            </ol>
-            <ol>
-              <Link href="/public-equities/debug/tickers/ELS" className="link-color underline text-xl" target="_blank">
-                ELS Debug Page
-              </Link>
-            </ol>
-            <ol>
-              <Link href="/public-equities/debug/tickers/AMH" className="link-color underline text-xl" target="_blank">
-                AMH Debug Page
-              </Link>
-            </ol>
-            <ol>
-              <Link href="/public-equities/debug/tickers/AMT" className="link-color underline text-xl" target="_blank">
-                AMT Debug Page
-              </Link>
-            </ol>
-            <ol>
-              <Link href="/public-equities/debug/tickers/AVB" className="link-color underline text-xl" target="_blank">
-                AVB Debug Page
-              </Link>
-            </ol>
-            <ol>
-              <Link href="/public-equities/debug/tickers/EQR" className="link-color underline text-xl" target="_blank">
-                EQR Debug Page
-              </Link>
-            </ol>
-          </ul>
+          <TickersTable tickers={tickers} />
         </div>
       </div>
     </PageWrapper>
