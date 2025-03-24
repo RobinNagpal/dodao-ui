@@ -4,8 +4,9 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { DocumentTextIcon } from '@heroicons/react/20/solid';
 import { SecFiling } from '@prisma/client';
+import Link from 'next/link';
 
-export default async function TimelinePage({ params }: { params: Promise<{ tickerKey: string }> }) {
+export default async function SecFilingPage({ params }: { params: Promise<{ tickerKey: string }> }) {
   const { tickerKey } = await params;
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
@@ -45,10 +46,19 @@ export default async function TimelinePage({ params }: { params: Promise<{ ticke
                     </div>
                     <p className="mt-0.5 text-sm text-color">Filed on {new Date(filing.filingDate).toLocaleDateString()}</p>
                     <div className="mt-2 text-sm text-color">
-                      <p>
+                      <p className="flex space-x-5">
                         <a href={filing.filingUrl} target="_blank" rel="noopener noreferrer" className="underline">
                           View Filing
                         </a>
+                        {filing.form === '10-Q' ? (
+                          <>
+                            <Link href={`/public-equities/tickers/${tickerKey}/sec-filings/${filing.id}`} className="link-color">
+                              View Attachments
+                            </Link>
+                          </>
+                        ) : (
+                          <></>
+                        )}
                       </p>
                     </div>
                     <div className="mt-2 text-sm text-color whitespace-pre-wrap">
