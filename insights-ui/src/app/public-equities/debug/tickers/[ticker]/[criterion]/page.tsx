@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation'; // or next/router if you're on an older version
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -21,12 +20,15 @@ import { CreateAllCriterionReportsRequest, CreateSingleCriterionReportRequest } 
 import WebhookUrlInput, { getWebhookUrlFromLocalStorage } from '@/components/ticker/debug/WebhookUrlInput';
 import DebugCriterionReport from '@/components/ticker/debug/DebugCriterionReport';
 
-export default function SingleCriterionDebugPage() {
-  // Grab the URL params from the Next.js router
-  const params = useParams();
-  // e.g. params might be { ticker: "AAPL", criterion: "growth-prospects" }
-  const ticker: string = params?.ticker;
-  const criterionKey: string = params?.criterion;
+interface CriterionDebugPageProps {
+  params: {
+    ticker: string;
+    criterion: string;
+  };
+}
+
+export default function SingleCriterionDebugPage({ params }: CriterionDebugPageProps) {
+  const { ticker, criterion: criterionKey } = params;
 
   const [reportExists, setReportExists] = useState(false);
   const [report, setReport] = useState<FullNestedTickerReport | null>(null);
@@ -171,7 +173,7 @@ export default function SingleCriterionDebugPage() {
     return (
       <PageWrapper>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
-        <div className="mt-8 text-red-500">Criterion key not found.</div>
+        <div className="mt-8 text-red-500">Criterion Key not found.</div>
       </PageWrapper>
     );
   }

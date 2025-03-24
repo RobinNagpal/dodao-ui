@@ -1,7 +1,6 @@
 'use client';
 
 import CriteriaTable from './CriteriaTable';
-import DebugCriterionEvaluation from '@/components/ticker/debug/DebugCriterionEvaluation';
 import DebugMatchingAttachments from '@/components/ticker/debug/DebugMatchingAttachments';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { getGicsNames } from '@/lib/gicsHelper';
@@ -76,7 +75,6 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
             customCriteria={industryGroupCriteria}
             ticker={ticker}
           />
-          <DebugCriterionEvaluation tickerReport={report} industryGroupCriteria={industryGroupCriteria} />
         </div>
       ) : (
         <FullPageLoader />
