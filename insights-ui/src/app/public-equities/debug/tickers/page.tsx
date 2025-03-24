@@ -10,7 +10,6 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 
 async function getTickersResponse(): Promise<Ticker[]> {
-  // Here a better approach could be followed which allows to return server side pages fully rendered
   try {
     const response = await fetch(`${getBaseUrl()}/api/tickers`, { cache: 'no-cache' });
     return await response.json();
