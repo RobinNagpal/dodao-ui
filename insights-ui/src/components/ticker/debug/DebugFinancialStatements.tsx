@@ -9,12 +9,12 @@ import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useState } from 'react';
 
-export interface DebugMatchingAttachmentsProps {
+export interface DebugFinancialStatementsProps {
   report: FullNestedTickerReport;
   industryGroupCriteria: IndustryGroupCriteriaDefinition;
 }
 
-export default function DebugMatchingAttachments({ report }: DebugMatchingAttachmentsProps) {
+export default function DebugFinancialStatements({ report }: DebugFinancialStatementsProps) {
   const ticker = report.tickerKey;
 
   const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
@@ -43,40 +43,25 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
       {matchingCriteriaError && <div className="text-red-500">{matchingCriteriaError}</div>}
       <PrivateWrapper>
         <div className="flex justify-end mb-4">
-          <Button
-            disabled={matchingCriteriaLoading}
-            loading={matchingCriteriaLoading || report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress}
-            primary
-            variant={'contained'}
-            onClick={handleRegenerateMatchingCriteria}
-          >
-            Regenerate Matching Criteria - Status {report.criteriaMatchesOfLatest10Q?.status}
+          <Button disabled={matchingCriteriaLoading} loading={matchingCriteriaLoading} primary variant={'contained'} onClick={handleRegenerateMatchingCriteria}>
+            ReFetch Financial Statements
           </Button>
         </div>
       </PrivateWrapper>
-      <h1 className="mb-8 font-bold text-xl">Matching Attachments</h1>
-      {report.criteriaMatchesOfLatest10Q?.criterionMatches?.map((criterion) => {
-        return (
-          <Accordion
-            key={criterion.criterionKey}
-            label={criterion.criterionKey}
-            isOpen={selectedCriterionAccordian === `attachments_${criterion.criterionKey}`}
-            onClick={() =>
-              setSelectedCriterionAccordian(
-                selectedCriterionAccordian === `attachments_${criterion.criterionKey}` ? null : `attachments_${criterion.criterionKey}`
-              )
-            }
-          >
-            <div className="mt-4">
-              {criterion.matchedContent ? (
-                <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(criterion.matchedContent) }} />
-              ) : (
-                'No Matched Content'
-              )}
-            </div>
-          </Accordion>
-        );
-      })}
+      <h1 className="mb-8 font-bold text-xl">Financial Statements</h1>
+      <Accordion
+        label={'Financial Statements'}
+        isOpen={selectedCriterionAccordian === `financial_statements`}
+        onClick={() => setSelectedCriterionAccordian(selectedCriterionAccordian === `financial_statements` ? null : `financial_statements`)}
+      >
+        <div className="mt-4">
+          {report.latest10QFinancialStatements ? (
+            <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(report.latest10QFinancialStatements) }} />
+          ) : (
+            'No Financial Statements'
+          )}
+        </div>
+      </Accordion>
     </div>
   );
 }
