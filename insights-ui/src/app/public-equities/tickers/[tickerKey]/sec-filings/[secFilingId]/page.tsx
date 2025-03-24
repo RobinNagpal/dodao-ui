@@ -22,12 +22,6 @@ export default async function SecFilingPage({ params }: { params: Promise<{ tick
     },
   ];
 
-  const criteriaResponse = await fetch(
-    `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`,
-    { cache: 'no-cache' }
-  );
-  const industryGroupCriteria: IndustryGroupCriteriaDefinition = (await criteriaResponse.json()) as IndustryGroupCriteriaDefinition;
-
   const filingsResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}/sec-filings/${secFilingId}`, { cache: 'no-cache' });
 
   const attachments = (await filingsResponse.json()) as SecFilingAttachment[];
@@ -69,7 +63,7 @@ export default async function SecFilingPage({ params }: { params: Promise<{ tick
                   <td className="p-3 border text-left">{attach.documentType}</td>
                   <PrivateWrapper>
                     <td className="p-3 border text-left flex gap-2">
-                      <AttachementTableActions tickerKey={tickerKey} attachment={attach} industryGroupCriteria={industryGroupCriteria} />
+                      <AttachementTableActions tickerKey={tickerKey} attachment={attach} />
                     </td>
                   </PrivateWrapper>
                 </tr>

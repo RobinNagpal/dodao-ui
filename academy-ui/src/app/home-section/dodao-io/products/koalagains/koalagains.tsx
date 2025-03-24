@@ -17,19 +17,19 @@ const benefits = [
   {
     name: 'Better Investment Choices',
     href: '#',
-    description: 'KoalaGains uses smart AI models to study data and show you clear facts, helping you invest wisely and see where the best chances are.',
+    description: 'KoalaGains uses smart AI Agents to study data and show you clear facts, helping you invest wisely and see where the best chances are.',
     icon: ScaleIcon,
   },
   {
     name: 'Less Risk',
     href: '#',
-    description: 'Our platform spots warning signs and tells you where the dangers might be, so you can lower the chance of bad investments.',
+    description: 'Our platform offers detailed reports on key investment factors, helping you make informed choices and avoid risky decisions.',
     icon: ShieldCheckIcon,
   },
   {
     name: 'Complete Analysis',
     href: '#',
-    description: 'KoalaGains looks at everything that matters—like company performance, market trends, and finances—to give you a full view of each project.',
+    description: 'KoalaGains looks at everything that matters—like company performance and finances—to give you a full view of each project.',
     icon: ClipboardDocumentCheckIcon,
   },
 ];
@@ -107,8 +107,8 @@ function KoalaGainsComponent() {
                     </span>
                   </h1>
                   <p className="mt-3 text-lg leading-8 text-gray-500">
-                    KoalaGains is an AI-powered platform that simplifies research on crowdfunding projects and REITs. It shows important details, checks risks,
-                    and helps you see both the good and bad parts of every investment.
+                    KoalaGains is an AI-powered platform that simplifies investment research on crowdfunding projects and REITs. It shows important details,
+                    checks risks, and helps you see both the strengths and weaknesses parts of every opportunity.
                   </p>
                   <div className="mt-10 sm:flex sm:justify-center lg:justify-start">
                     <div className="rounded-md shadow">

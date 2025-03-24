@@ -1,6 +1,7 @@
 'use client';
 
 import CriteriaTable from './CriteriaTable';
+import DebugFinancialStatements from '@/components/ticker/debug/DebugFinancialStatements';
 import DebugMatchingAttachments from '@/components/ticker/debug/DebugMatchingAttachments';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { getGicsNames } from '@/lib/gicsHelper';
@@ -68,6 +69,7 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       {reportExists && report && industryGroupCriteria ? (
         <div>
+          <DebugFinancialStatements report={report} industryGroupCriteria={industryGroupCriteria} />
           <DebugMatchingAttachments report={report} industryGroupCriteria={industryGroupCriteria} />
           <CriteriaTable
             sectorName={industryGroupCriteria.selectedSector.name}

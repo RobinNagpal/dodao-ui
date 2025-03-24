@@ -1,21 +1,20 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import DisabledOnLocalhostButton from '@/components/ui/DisabledOnLocalhostButton';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-import { FullNestedTickerReport, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
+import { FullNestedTickerReport } from '@/types/public-equity/ticker-report-types';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useState } from 'react';
-import ManagementDiscussionButton from './ManagementDiscussionButton';
-import DisabledOnLocalhostButton from '@/components/ui/DisabledOnLocalhostButton';
 
-export interface DebugMatchingAttachmentsProps {
+export interface DebugFinancialStatementsProps {
   report: FullNestedTickerReport;
   industryGroupCriteria: IndustryGroupCriteriaDefinition;
 }
 
-export default function DebugMatchingAttachments({ report }: DebugMatchingAttachmentsProps) {
+export default function DebugFinancialStatements({ report }: DebugFinancialStatementsProps) {
   const ticker = report.tickerKey;
 
   const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
@@ -44,46 +43,31 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
       <PrivateWrapper>
         <div className="flex justify-end mb-4">
           <DisabledOnLocalhostButton
-            loading={matchingCriteriaLoading || report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress}
+            loading={matchingCriteriaLoading}
             primary
             variant="contained"
             onClick={handleRegenerateMatchingCriteria}
             disabled={matchingCriteriaLoading}
             disabledLabel="Disabled on Localhost"
           >
-            Regenerate Matching Criteria - Status ${report.criteriaMatchesOfLatest10Q?.status}
+            Refetch Financial Statements
           </DisabledOnLocalhostButton>
         </div>
       </PrivateWrapper>
-      <h1 className="mb-8 font-bold text-xl">Matching Attachments</h1>
-      {report.criteriaMatchesOfLatest10Q?.criterionMatches?.map((criterion) => {
-        return (
-          <div key={criterion.criterionKey}>
-            <div className="flex justify-end my-5">
-              <PrivateWrapper>
-                <ManagementDiscussionButton tickerKey={ticker} criterionKey={criterion.criterionKey} />
-              </PrivateWrapper>
-            </div>
-            <Accordion
-              label={criterion.criterionKey}
-              isOpen={selectedCriterionAccordian === `attachments_${criterion.criterionKey}`}
-              onClick={() =>
-                setSelectedCriterionAccordian(
-                  selectedCriterionAccordian === `attachments_${criterion.criterionKey}` ? null : `attachments_${criterion.criterionKey}`
-                )
-              }
-            >
-              <div className="mt-4">
-                {criterion.matchedContent ? (
-                  <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(criterion.matchedContent) }} />
-                ) : (
-                  'No Matched Content'
-                )}
-              </div>
-            </Accordion>
-          </div>
-        );
-      })}
+      <h1 className="mb-8 font-bold text-xl">Financial Statements</h1>
+      <Accordion
+        label={'Financial Statements'}
+        isOpen={selectedCriterionAccordian === `financial_statements`}
+        onClick={() => setSelectedCriterionAccordian(selectedCriterionAccordian === `financial_statements` ? null : `financial_statements`)}
+      >
+        <div className="mt-4">
+          {report.latest10QFinancialStatements ? (
+            <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(report.latest10QFinancialStatements) }} />
+          ) : (
+            'No Financial Statements'
+          )}
+        </div>
+      </Accordion>
     </div>
   );
 }
