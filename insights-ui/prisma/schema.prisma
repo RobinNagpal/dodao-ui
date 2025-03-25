@@ -25,6 +25,8 @@ model Ticker {
   industryGroupId              Int      @map("industry_group_id")
   spaceId                      String   @default("koala_gains") @map("space_id")
   latest10QFinancialStatements String?  @map("latest_10q_financial_statements")
+  companyName                  String   @map("company_name")
+  shortDescription             String   @map("short_description")
 
   evaluationsOfLatest10Q         CriterionEvaluation[]
   secFilings                     SecFiling[]

@@ -32,6 +32,8 @@ export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps
     tickerKey: ticker?.tickerKey || '',
     sectorId: ticker?.sectorId || initialSector.id,
     industryGroupId: ticker?.industryGroupId || Object.values(initialSector.industryGroups)[0].id,
+    companyName: ticker?.companyName || '',
+    shortDescription: ticker?.shortDescription || '',
   });
 
   const [selectedSector, setSelectedSector] = useState<GicsSector>(initialSector);
@@ -51,23 +53,51 @@ export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps
   const handleSave = async () => {
     if (ticker) {
       await putData(`${getBaseUrl()}/api/tickers/${tickerKey}`, {
-        tickerKey,
+        tickerKey: tickerForm.tickerKey,
         sectorId: tickerForm.sectorId,
         industryGroupId: tickerForm.industryGroupId,
+        companyName: tickerForm.companyName,
+        shortDescription: tickerForm.shortDescription,
       });
     } else {
       await postData(`${getBaseUrl()}/api/tickers`, {
-        tickerKey,
+        tickerKey: tickerForm.tickerKey,
         sectorId: tickerForm.sectorId,
         industryGroupId: tickerForm.industryGroupId,
+        companyName: tickerForm.companyName,
+        shortDescription: tickerForm.shortDescription,
       });
     }
   };
 
   return (
-    <Block title="Edit Ticker" className="font-semibold text-color">
-      <Input modelValue={tickerKey} placeholder="Enter Ticker Key" maxLength={10} className="text-color" onUpdate={(e) => setTickerKey(e as string)}>
+    <Block title={ticker ? 'Edit Ticker' : 'Create Ticker'} className="font-semibold text-color">
+      <Input
+        modelValue={tickerForm.tickerKey}
+        placeholder="Enter Ticker Key"
+        maxLength={10}
+        className="text-color"
+        onUpdate={(e) => setTickerForm({ ...tickerForm, tickerKey: e as string })}
+      >
         Ticker *
+      </Input>
+
+      <Input
+        modelValue={tickerForm.companyName}
+        placeholder="Enter Company Name"
+        className="text-color"
+        onUpdate={(e) => setTickerForm({ ...tickerForm, companyName: e as string })}
+      >
+        Company Name
+      </Input>
+
+      <Input
+        modelValue={tickerForm.shortDescription}
+        placeholder="Enter Short Description"
+        className="text-color"
+        onUpdate={(e) => setTickerForm({ ...tickerForm, shortDescription: e as string })}
+      >
+        Short Description
       </Input>
 
       <StyledSelect

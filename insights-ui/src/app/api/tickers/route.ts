@@ -10,7 +10,7 @@ async function getHandler(): Promise<Ticker[]> {
 }
 
 async function postHandler(req: NextRequest): Promise<Ticker> {
-  const { sectorId, industryGroupId, tickerKey }: TickerCreateRequest = await req.json();
+  const { sectorId, industryGroupId, tickerKey, companyName, shortDescription }: TickerCreateRequest = await req.json();
 
   const existingTicker = await prisma.ticker.findUnique({
     where: { tickerKey },
@@ -26,6 +26,8 @@ async function postHandler(req: NextRequest): Promise<Ticker> {
       tickerKey,
       sectorId,
       industryGroupId,
+      companyName,
+      shortDescription,
     },
   });
 
