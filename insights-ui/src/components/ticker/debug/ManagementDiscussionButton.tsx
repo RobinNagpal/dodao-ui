@@ -26,7 +26,7 @@ export default function ManagementDiscussionButton({ tickerKey, criterionKey }: 
     error: managementDiscussionError,
   } = usePostData<string, {}>({
     errorMessage: 'Failed to regenerate management discussion',
-    successMessage: 'anagement Discussionregeneration started successfully',
+    successMessage: 'Management Discussion regeneration started successfully',
     redirectPath: ``,
   });
 

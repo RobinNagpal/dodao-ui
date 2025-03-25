@@ -28,8 +28,8 @@ export default function DebugFinancialStatements({ report }: DebugFinancialState
     loading: matchingCriteriaLoading,
     error: matchingCriteriaError,
   } = usePostData<{ message: string }, {}>({
-    errorMessage: 'Failed to regenerate matching criteria',
-    successMessage: 'Matching criteria regeneration started successfully',
+    errorMessage: 'Failed to refetch financial statements.',
+    successMessage: 'Financial Statements refetching started successfully',
     redirectPath: ``,
   });
 
