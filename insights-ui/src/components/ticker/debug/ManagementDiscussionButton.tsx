@@ -30,13 +30,13 @@ export default function ManagementDiscussionButton({ tickerKey, criterionKey }: 
     redirectPath: ``,
   });
 
-  // useEffect(() => {
-  //   if (managementDiscussionData) {
-  //     setManagementDiscussionContent(managementDiscussionData);
-  //   } else if (managementDiscussionError) {
-  //     setManagementDiscussionContent(managementDiscussionError);
-  //   }
-  // }, [managementDiscussionData, managementDiscussionError]);
+  useEffect(() => {
+    if (managementDiscussionData) {
+      setManagementDiscussionContent(managementDiscussionData);
+    } else if (managementDiscussionError) {
+      setManagementDiscussionContent(managementDiscussionError);
+    }
+  }, [managementDiscussionData, managementDiscussionError]);
 
   const handleRegenerateManagementDiscussion = async (criterionKey: string) => {
     await regenerateManamentDiscussion(
