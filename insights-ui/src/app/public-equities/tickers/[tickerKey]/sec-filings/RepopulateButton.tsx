@@ -1,7 +1,7 @@
 'use client';
 
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import DisabledOnLocalhostButton from '@/components/ui/DisabledOnLocalhostButton';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { SecFiling } from '@prisma/client';
@@ -20,16 +20,9 @@ export default function RepopulateFilingsButton({ tickerKey }: RepopulateButtonP
 
   return (
     <PrivateWrapper>
-      <DisabledOnLocalhostButton
-        loading={loading}
-        primary
-        variant="contained"
-        onClick={handleRepopulateFilings}
-        disabled={loading}
-        disabledLabel="Disabled on Localhost"
-      >
+      <Button loading={loading} primary variant="contained" onClick={handleRepopulateFilings} disabled={loading}>
         Repopulate Filings
-      </DisabledOnLocalhostButton>
+      </Button>
     </PrivateWrapper>
   );
 }

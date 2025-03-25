@@ -10,7 +10,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { CriterionMatchResponse, CriterionMatchTextItem, GetSingleCriteriaMatchingRequest } from '@/types/public-equity/ticker-request-response';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
-import DisabledOnLocalhostButton from '@/components/ui/DisabledOnLocalhostButton';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 
 export interface AttachmentTableActionsProps {
   tickerKey: string;
@@ -62,16 +62,9 @@ export default function AttachementTableActions({ tickerKey, attachment }: Attac
           <div className="flex justify-around items-center">
             <div>Sequence # {attachment.sequenceNumber}</div>
             <div>{attachment.purpose ?? attachment.description}</div>
-            <DisabledOnLocalhostButton
-              loading={loading}
-              primary
-              variant="contained"
-              onClick={handleRegenerateMatchingCriteria}
-              disabled={loading}
-              disabledLabel="Disabled on Localhost"
-            >
+            <Button loading={loading} primary variant="contained" onClick={handleRegenerateMatchingCriteria} disabled={loading}>
               Process Criteria Matching
-            </DisabledOnLocalhostButton>
+            </Button>
           </div>
           <hr className="m-5" />
           <div className="h-full w-full">

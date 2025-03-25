@@ -2,6 +2,7 @@ import TopNav from '@/components/core/TopNav/TopNav';
 import { themeColors } from '@/util/theme-colors';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
 
@@ -32,8 +33,12 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,500,700&display=swap" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased text-color`} style={{ ...themeColors, backgroundColor: 'var(--bg-color)' }}>
-        <TopNav />
-        {children}
+        <NotificationProvider>
+          <>
+            <TopNav />
+            {children}
+          </>
+        </NotificationProvider>
       </body>
     </html>
   );
