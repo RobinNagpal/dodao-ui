@@ -15,7 +15,10 @@ import Ajv, { ErrorObject } from 'ajv';
 import schema from './insdustryGroupCriteriaJsonSchema.json';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-
+import Form from '@rjsf/core';
+import { RJSFSchema } from '@rjsf/utils';
+import validator from '@rjsf/validator-ajv8';
+import Head from 'next/head';
 interface CriteriaTableProps {
   sectorId: number;
   industryGroupId: number;
@@ -137,9 +140,21 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
 
     console.log('Criteria successfully updated!');
   };
+  const uiSchema = {
+    key: {
+      'ui:classNames': 'p-2 border rounded text-red-500',
+    },
+    name: {
+      'ui:classNames': 'p-2 border rounded',
+    },
+
+  };
 
   return (
     <PageWrapper>
+      <Head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+      </Head>
       <div className="flex justify-between">
         <div></div>
         <div className="text-4xl">Custom Criteria</div>
@@ -196,7 +211,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
             </div>
           )}
 
-          <ReactJson
+          {/* <ReactJson
             src={selectedCriterion || {}}
             onEdit={(edit) => updateSelectedCriterion(edit.updated_src as CriterionDefinition)}
             onAdd={(add) => updateSelectedCriterion(add.updated_src as CriterionDefinition)}
@@ -204,7 +219,17 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
             theme="monokai"
             enableClipboard={false}
             style={{ textAlign: 'left' }}
-          />
+          /> */}
+          <div className="text-left w-full">
+            <Form
+              schema={schema as RJSFSchema}
+              // uiSchema={Ui}
+              formData={selectedCriterion || {}}
+              onChange={(e) => updateSelectedCriterion(e.formData as CriterionDefinition)}
+              validator={validator}
+              noHtml5Validate
+            />
+          </div>
 
           <Button onClick={handleSave} className="m-4" variant="contained" primary disabled={!!validationMessages}>
             Save Changes
