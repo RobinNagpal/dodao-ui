@@ -40,9 +40,8 @@ export default async function AllTickersPage() {
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <PrivateWrapper>
-        <div className="flex justify-between mb-4">
-          <div></div>
-          <Link href={'/public-equities/tickers/create'} className="link-color underline">
+        <div className="flex justify-end mb-4">
+          <Link href={'/public-equities/tickers/create'} className="link-color border border-color rounded-xl p-2">
             Create Ticker
           </Link>
         </div>
@@ -54,19 +53,14 @@ export default async function AllTickersPage() {
           tickers.map((ticker) => (
             <li key={ticker.tickerKey} className="flex items-center justify-between gap-x-6 py-5">
               <div className="min-w-0">
-                <div className="flex items-start gap-x-3">
+                <div className="flex items-center gap-x-3">
                   <p className="text-sm font-semibold heading-color">{ticker.companyName || 'Unknown Company'}</p>
-                  <p
-                    className={classNames(
-                      'mt-0.5 whitespace-nowrap rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset ring-border',
-                      'primary-text-color'
-                    )}
-                  >
+                  <p className="whitespace-nowrap rounded-md px-1.5 py-1 text-xs font-medium ring-1 ring-inset ring-border primary-text-color">
                     {ticker.tickerKey}
                   </p>
                 </div>
-                <div className="mt-1 flex items-center gap-x-2 text-xs text-color">
-                  <p className="truncate">{ticker.shortDescription || 'No description provided'}</p>
+                <div className="mt-2 flex items-center gap-x-2 text-xs text-color">
+                  <p>{ticker.shortDescription || 'No description provided'}</p>
                 </div>
               </div>
               <div className="flex flex-none items-center gap-x-4">
