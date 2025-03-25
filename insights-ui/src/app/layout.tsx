@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
+import { NotificationWrapper } from '@dodao/web-core/components/layout/NotificationWrapper';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -35,6 +36,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased text-color`} style={{ ...themeColors, backgroundColor: 'var(--bg-color)' }}>
         <NotificationProvider>
           <>
+            <NotificationWrapper />
             <TopNav />
             {children}
           </>
