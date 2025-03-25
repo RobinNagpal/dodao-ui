@@ -7,7 +7,8 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const navigation = [
   { name: 'Crowdfunding Reports', href: '/crowd-funding' },
-  { name: 'Reits', href: '/public-equities/tickers' },
+  { name: 'REIT Reports', href: '/public-equities/tickers' },
+  { name: 'Blog', href: '/blogs' },
   { name: 'Docs', href: 'https://docs.koalagains.com' },
 ];
 
