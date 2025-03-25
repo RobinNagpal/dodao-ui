@@ -21,7 +21,7 @@
     "matchingInstruction": {
       "type": "string",
       "minLength": 10,
-      "maxLength": 500
+      "maxLength": 5000
     },
     "importantMetrics": {
       "type": "array",
