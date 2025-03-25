@@ -16,7 +16,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
-import ProjectActionsDropdown from './ProjectActionsDropdown';
+import TickerActionsDropdown from './TickerActionsDropdown';
 
 export default async function TickerDetailsPage({ params }: { params: Promise<{ tickerKey: string }> }) {
   const { tickerKey } = await params;
@@ -67,7 +67,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           <div className="mx-auto lg:text-center">
             <div className="flex justify-end">
               <PrivateWrapper>
-                <ProjectActionsDropdown tickerKey={tickerKey} />
+                <TickerActionsDropdown tickerKey={tickerKey} />
               </PrivateWrapper>
             </div>
             <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">{tickerKey}</p>

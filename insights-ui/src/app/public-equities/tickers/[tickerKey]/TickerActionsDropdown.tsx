@@ -8,7 +8,7 @@ export interface ReportActionsDropdownProps {
   tickerKey: string;
 }
 
-export default function ProjectActionsDropdown({ tickerKey }: ReportActionsDropdownProps) {
+export default function TickerActionsDropdown({ tickerKey }: ReportActionsDropdownProps) {
   const router = useRouter();
 
   const actions: EllipsisDropdownItem[] = [{ key: 'debug', label: 'View Debug Page' }];
