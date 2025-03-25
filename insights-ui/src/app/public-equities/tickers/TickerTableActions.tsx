@@ -39,7 +39,6 @@ export default function TickerTableActions({ ticker }: TickerTableActionsProps) 
     if (!tickerToDelete) return;
     setShowConfirmModal(false);
     await deleteData(`${getBaseUrl()}/api/tickers/${tickerToDelete}`);
-    alert('Ticker deleted successfully.');
 
     setTickerToDelete(null);
   };

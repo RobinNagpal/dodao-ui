@@ -6,6 +6,8 @@ export interface TickerCreateRequest {
   tickerKey: string;
   sectorId: number;
   industryGroupId: number;
+  companyName: string;
+  shortDescription: string;
 }
 
 // Request types for endpoints

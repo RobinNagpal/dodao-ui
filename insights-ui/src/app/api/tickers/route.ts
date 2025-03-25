@@ -10,7 +10,7 @@ async function getHandler(): Promise<Ticker[]> {
 }
 
 async function postHandler(req: NextRequest): Promise<Ticker> {
-  const { sectorId, industryGroupId, tickerKey }: TickerCreateRequest = await req.json();
+  const { sectorId, industryGroupId, tickerKey, companyName, shortDescription }: TickerCreateRequest = await req.json();
 
   const existingTicker = await prisma.ticker.findUnique({
     where: { tickerKey },
@@ -21,12 +21,21 @@ async function postHandler(req: NextRequest): Promise<Ticker> {
     return existingTicker;
   }
 
+  const data: any = {
+    tickerKey,
+    sectorId,
+    industryGroupId,
+  };
+
+  if (companyName && companyName.trim() !== '') {
+    data.companyName = companyName;
+  }
+  if (shortDescription && shortDescription.trim() !== '') {
+    data.shortDescription = shortDescription;
+  }
+
   const newTicker = await prisma.ticker.create({
-    data: {
-      tickerKey,
-      sectorId,
-      industryGroupId,
-    },
+    data,
   });
 
   console.log(`Created new ticker for ${tickerKey}`);

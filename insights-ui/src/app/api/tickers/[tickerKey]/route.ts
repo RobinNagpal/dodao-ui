@@ -48,13 +48,36 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ tick
 async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
   const { tickerKey } = await params;
 
-  // Also delete the s3 file. Test it with
-  const updated = await prisma.ticker.delete({
+  const deletedTicker = await prisma.ticker.delete({
     where: { tickerKey },
   });
 
-  return updated;
+  return deletedTicker;
+}
+
+async function putHandler(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
+  const { tickerKey } = await params;
+  const { tickerKey: newTickerKey, sectorId, industryGroupId, companyName, shortDescription } = await req.json();
+
+  const updatedTicker = await prisma.ticker.update({
+    where: {
+      spaceId_tickerKey: {
+        tickerKey,
+        spaceId: KoalaGainsSpaceId,
+      },
+    },
+    data: {
+      tickerKey: newTickerKey,
+      sectorId,
+      industryGroupId,
+      companyName,
+      shortDescription,
+    },
+  });
+
+  return updatedTicker;
 }
 
 export const GET = withErrorHandlingV2<Ticker>(getHandler);
 export const DELETE = withErrorHandlingV2<Ticker>(deleteHandler);
+export const PUT = withErrorHandlingV2<Ticker>(putHandler);
