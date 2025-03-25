@@ -18,7 +18,6 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Form } from '@/components/rjsf';
 import { RJSFSchema } from '@rjsf/utils';
 import validator from '@rjsf/validator-ajv8';
-import Head from 'next/head';
 interface CriteriaTableProps {
   sectorId: number;
   industryGroupId: number;
@@ -143,9 +142,6 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
 
   return (
     <PageWrapper>
-      <Head>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-      </Head>
       <div className="flex justify-between">
         <div></div>
         <div className="text-4xl">Custom Criteria</div>
