@@ -15,7 +15,9 @@ import Ajv, { ErrorObject } from 'ajv';
 import schema from './insdustryGroupCriteriaJsonSchema.json';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-
+import { Form } from '@/components/rjsf';
+import { RJSFSchema } from '@rjsf/utils';
+import validator from '@rjsf/validator-ajv8';
 interface CriteriaTableProps {
   sectorId: number;
   industryGroupId: number;
@@ -196,7 +198,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
             </div>
           )}
 
-          <ReactJson
+          {/* <ReactJson
             src={selectedCriterion || {}}
             onEdit={(edit) => updateSelectedCriterion(edit.updated_src as CriterionDefinition)}
             onAdd={(add) => updateSelectedCriterion(add.updated_src as CriterionDefinition)}
@@ -204,14 +206,17 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
             theme="monokai"
             enableClipboard={false}
             style={{ textAlign: 'left' }}
-          />
-
-          <Button onClick={handleSave} className="m-4" variant="contained" primary disabled={!!validationMessages}>
-            Save Changes
-          </Button>
-          <Button onClick={handleClose} className="m-4" variant="outlined">
-            Close
-          </Button>
+          /> */}
+          <div className="text-left w-full">
+            <Form
+              schema={schema as RJSFSchema}
+              formData={selectedCriterion || {}}
+              onChange={(e) => updateSelectedCriterion(e.formData as CriterionDefinition)}
+              onSubmit={handleSave}
+              validator={validator}
+              noHtml5Validate
+            />
+          </div>
         </Block>
       </FullPageModal>
 

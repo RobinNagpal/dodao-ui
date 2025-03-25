@@ -18,7 +18,7 @@ const getCriteriaMatchingForManagementDiscussion = async (
 
   const managementDiscussion = await managementDiscussionResponse.json();
 
-  return managementDiscussion.data;
+  return 'message' in managementDiscussion ? managementDiscussion.message : managementDiscussion.data;
 };
 
 export const POST = withErrorHandlingV2<string>(getCriteriaMatchingForManagementDiscussion);

@@ -17,10 +17,15 @@ const getCriteriaMatchingForAttachment = async (req: NextRequest, { params }: { 
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
+  const criteriaMatch = await criteriaMatchResponse.json();
 
-  const criteriaMatch = (await criteriaMatchResponse.json()) as CriterionMatchResponse;
-
-  return criteriaMatch;
+  return 'message' in criteriaMatch
+    ? {
+        criterion_matches: [],
+        status: 'failure',
+        failureReason: criteriaMatch.message,
+      }
+    : (criteriaMatch as CriterionMatchResponse);
 };
 
 export const POST = withErrorHandlingV2<CriterionMatchResponse>(getCriteriaMatchingForAttachment);

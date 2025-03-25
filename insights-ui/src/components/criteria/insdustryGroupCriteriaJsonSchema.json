@@ -5,38 +5,45 @@
   "properties": {
     "key": {
       "type": "string",
+      "title": "Key",
       "minLength": 3,
       "maxLength": 50
     },
     "name": {
       "type": "string",
+      "title": "Name",
       "minLength": 3,
       "maxLength": 100
     },
     "shortDescription": {
       "type": "string",
+      "title": "Short Description",
       "minLength": 10,
       "maxLength": 500
     },
     "matchingInstruction": {
       "type": "string",
+      "title": "Matching Instructions",
       "minLength": 10,
       "maxLength": 5000
     },
     "importantMetrics": {
       "type": "array",
+      "title": "Important Metrics",
       "items": {
         "$ref": "#/definitions/ImportantMetric"
       }
     },
     "reports": {
       "type": "array",
+      "title": "Reports",
       "items": {
         "$ref": "#/definitions/Report"
       }
     },
     "langflowWebhookUrl": {
       "type": "string",
+      "title": "Langflow Webhook Url",
       "minLength": 3,
       "maxLength": 500
     }
@@ -48,21 +55,25 @@
       "properties": {
         "key": {
           "type": "string",
+          "title": "Key",
           "minLength": 3,
           "maxLength": 50
         },
         "name": {
           "type": "string",
+          "title": "Name",
           "minLength": 3,
           "maxLength": 100
         },
         "description": {
           "type": "string",
+          "title": "Description",
           "minLength": 10,
           "maxLength": 500
         },
         "formula": {
           "type": "string",
+          "title": "Formula",
           "minLength": 3,
           "maxLength": 200
         }
@@ -74,21 +85,25 @@
       "properties": {
         "key": {
           "type": "string",
+          "title": "Key",
           "minLength": 3,
           "maxLength": 50
         },
         "name": {
           "type": "string",
+          "title": "Name",
           "minLength": 3,
           "maxLength": 100
         },
         "description": {
           "type": "string",
+          "title": "Description",
           "minLength": 10,
           "maxLength": 500
         },
         "outputType": {
           "type": "string",
+          "title": "Report Output Type",
           "enum": ["Text", "BarGraph", "PieChart", "WaterfallChart"]
         }
       },
