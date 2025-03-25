@@ -8,6 +8,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import TickerActionsDropdown from './[tickerKey]/TickerActionsDropdown';
+import classNames from '@dodao/web-core/utils/classNames';
 
 async function getTickersResponse(): Promise<Ticker[]> {
   try {
@@ -31,10 +32,6 @@ const breadcrumbs: BreadcrumbsOjbect[] = [
     current: true,
   },
 ];
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default async function AllTickersPage() {
   const tickers: Ticker[] = await getTickersResponse();
