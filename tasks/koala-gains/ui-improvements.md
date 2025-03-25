@@ -84,11 +84,12 @@ We can also show a small text on the top right corner of the page that says `Ref
 ## SEO
 - Index home page of koala gains
 - Index all the blogs
-- Add blogs in the nav bar
 - Add meta tags
 - Add sitemap
 - Add robots.txt
 
+# Contact us form
+- This should work and have proper email
 
 # Good to have
 
