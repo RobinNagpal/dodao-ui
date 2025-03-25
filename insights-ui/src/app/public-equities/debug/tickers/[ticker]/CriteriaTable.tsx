@@ -18,8 +18,8 @@ export default function CriteriaTable({ sectorName, industryGroupName, customCri
 
   return (
     <PageWrapper>
-        <div className="mb-8 font-bold text-xl">Custom Criteria</div>
-      
+      <div className="mb-8 font-bold text-xl">Custom Criteria</div>
+
       <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }} className="mt-4">
         <thead>
           <tr className="text-color">
