@@ -1,7 +1,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import DisabledOnLocalhostButton from '@/components/ui/DisabledOnLocalhostButton';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { FullNestedTickerReport } from '@/types/public-equity/ticker-report-types';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -28,8 +28,8 @@ export default function DebugFinancialStatements({ report }: DebugFinancialState
     loading: matchingCriteriaLoading,
     error: matchingCriteriaError,
   } = usePostData<{ message: string }, {}>({
-    errorMessage: 'Failed to regenerate matching criteria',
-    successMessage: 'Matching criteria regeneration started successfully',
+    errorMessage: 'Failed to refetch financial statements.',
+    successMessage: 'Financial Statements refetching started successfully',
     redirectPath: ``,
   });
 
@@ -42,16 +42,9 @@ export default function DebugFinancialStatements({ report }: DebugFinancialState
       {matchingCriteriaError && <div className="text-red-500">{matchingCriteriaError}</div>}
       <PrivateWrapper>
         <div className="flex justify-end mb-4">
-          <DisabledOnLocalhostButton
-            loading={matchingCriteriaLoading}
-            primary
-            variant="contained"
-            onClick={handleRegenerateMatchingCriteria}
-            disabled={matchingCriteriaLoading}
-            disabledLabel="Disabled on Localhost"
-          >
+          <Button loading={matchingCriteriaLoading} primary variant="contained" onClick={handleRegenerateMatchingCriteria} disabled={matchingCriteriaLoading}>
             Refetch Financial Statements
-          </DisabledOnLocalhostButton>
+          </Button>
         </div>
       </PrivateWrapper>
       <h1 className="mb-8 font-bold text-xl">Financial Statements</h1>

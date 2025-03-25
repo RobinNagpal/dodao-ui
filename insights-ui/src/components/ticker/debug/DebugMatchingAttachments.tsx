@@ -8,7 +8,7 @@ import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useState } from 'react';
 import ManagementDiscussionButton from './ManagementDiscussionButton';
-import DisabledOnLocalhostButton from '@/components/ui/DisabledOnLocalhostButton';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 
 export interface DebugMatchingAttachmentsProps {
   report: FullNestedTickerReport;
@@ -43,16 +43,15 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
       {matchingCriteriaError && <div className="text-red-500">{matchingCriteriaError}</div>}
       <PrivateWrapper>
         <div className="flex justify-end mb-4">
-          <DisabledOnLocalhostButton
+          <Button
             loading={matchingCriteriaLoading || report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress}
             primary
             variant="contained"
             onClick={handleRegenerateMatchingCriteria}
             disabled={matchingCriteriaLoading}
-            disabledLabel="Disabled on Localhost"
           >
             Regenerate Matching Criteria - Status ${report.criteriaMatchesOfLatest10Q?.status}
-          </DisabledOnLocalhostButton>
+          </Button>
         </div>
       </PrivateWrapper>
       <h1 className="mb-8 font-bold text-xl">Matching Attachments</h1>
