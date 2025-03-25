@@ -21,14 +21,21 @@ async function postHandler(req: NextRequest): Promise<Ticker> {
     return existingTicker;
   }
 
+  const data: any = {
+    tickerKey,
+    sectorId,
+    industryGroupId,
+  };
+
+  if (companyName && companyName.trim() !== '') {
+    data.companyName = companyName;
+  }
+  if (shortDescription && shortDescription.trim() !== '') {
+    data.shortDescription = shortDescription;
+  }
+
   const newTicker = await prisma.ticker.create({
-    data: {
-      tickerKey,
-      sectorId,
-      industryGroupId,
-      companyName,
-      shortDescription,
-    },
+    data,
   });
 
   console.log(`Created new ticker for ${tickerKey}`);
