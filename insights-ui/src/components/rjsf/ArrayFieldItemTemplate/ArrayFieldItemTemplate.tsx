@@ -1,16 +1,9 @@
-import {
-  ArrayFieldTemplateItemType,
-  FormContextType,
-  RJSFSchema,
-  StrictRJSFSchema,
-} from "@rjsf/utils"
-import { CSSProperties } from "react"
+import { ArrayFieldTemplateItemType, FormContextType, RJSFSchema, StrictRJSFSchema } from '@rjsf/utils';
+import { CSSProperties } from 'react';
 
-export default function ArrayFieldItemTemplate<
-  T = any,
-  S extends StrictRJSFSchema = RJSFSchema,
-  F extends FormContextType = any,
->(props: ArrayFieldTemplateItemType<T, S, F>) {
+export default function ArrayFieldItemTemplate<T = any, S extends StrictRJSFSchema = RJSFSchema, F extends FormContextType = any>(
+  props: ArrayFieldTemplateItemType<T, S, F>
+) {
   const {
     children,
     disabled,
@@ -26,16 +19,15 @@ export default function ArrayFieldItemTemplate<
     readonly,
     registry,
     uiSchema,
-  } = props
+  } = props;
 
-  const { CopyButton, MoveDownButton, MoveUpButton, RemoveButton } =
-    registry.templates.ButtonTemplates
+  const { CopyButton, MoveDownButton, MoveUpButton, RemoveButton } = registry.templates.ButtonTemplates;
   const btnStyle: CSSProperties = {
     flex: 1,
     paddingLeft: 6,
     paddingRight: 6,
-    fontWeight: "bold",
-  }
+    fontWeight: 'bold',
+  };
 
   return (
     <div>
@@ -69,24 +61,12 @@ export default function ArrayFieldItemTemplate<
               )}
               {hasCopy && (
                 <div className="m-0 p-0">
-                  <CopyButton
-                    style={btnStyle}
-                    disabled={disabled || readonly}
-                    onClick={onCopyIndexClick(index)}
-                    uiSchema={uiSchema}
-                    registry={registry}
-                  />
+                  <CopyButton style={btnStyle} disabled={disabled || readonly} onClick={onCopyIndexClick(index)} uiSchema={uiSchema} registry={registry} />
                 </div>
               )}
               {hasRemove && (
                 <div className="m-0 p-0">
-                  <RemoveButton
-                    style={btnStyle}
-                    disabled={disabled || readonly}
-                    onClick={onDropIndexClick(index)}
-                    uiSchema={uiSchema}
-                    registry={registry}
-                  />
+                  <RemoveButton style={btnStyle} disabled={disabled || readonly} onClick={onDropIndexClick(index)} uiSchema={uiSchema} registry={registry} />
                 </div>
               )}
             </div>
@@ -94,5 +74,5 @@ export default function ArrayFieldItemTemplate<
         </div>
       </div>
     </div>
-  )
+  );
 }

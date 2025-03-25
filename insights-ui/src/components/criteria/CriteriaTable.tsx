@@ -140,7 +140,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
 
     console.log('Criteria successfully updated!');
   };
-  
+
   return (
     <PageWrapper>
       <Head>

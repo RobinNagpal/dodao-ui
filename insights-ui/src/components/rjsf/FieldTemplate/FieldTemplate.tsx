@@ -1,17 +1,6 @@
-import {
-  FieldTemplateProps,
-  FormContextType,
-  getTemplate,
-  getUiOptions,
-  RJSFSchema,
-  StrictRJSFSchema,
-} from "@rjsf/utils"
+import { FieldTemplateProps, FormContextType, getTemplate, getUiOptions, RJSFSchema, StrictRJSFSchema } from '@rjsf/utils';
 
-export default function FieldTemplate<
-  T = any,
-  S extends StrictRJSFSchema = RJSFSchema,
-  F extends FormContextType = any,
->({
+export default function FieldTemplate<T = any, S extends StrictRJSFSchema = RJSFSchema, F extends FormContextType = any>({
   id,
   children,
   displayLabel,
@@ -33,15 +22,10 @@ export default function FieldTemplate<
   uiSchema,
   registry,
 }: FieldTemplateProps<T, S, F>) {
-  const uiOptions = getUiOptions(uiSchema)
-  const WrapIfAdditionalTemplate = getTemplate<
-    "WrapIfAdditionalTemplate",
-    T,
-    S,
-    F
-  >("WrapIfAdditionalTemplate", registry, uiOptions)
+  const uiOptions = getUiOptions(uiSchema);
+  const WrapIfAdditionalTemplate = getTemplate<'WrapIfAdditionalTemplate', T, S, F>('WrapIfAdditionalTemplate', registry, uiOptions);
   if (hidden) {
-    return <div className="hidden">{children}</div>
+    return <div className="hidden">{children}</div>;
   }
   return (
     <WrapIfAdditionalTemplate
@@ -60,31 +44,20 @@ export default function FieldTemplate<
     >
       <div className="mb-4 block">
         {displayLabel && (
-          <label
-            htmlFor={id}
-            className={`mb-2 inline-block ${
-              rawErrors.length > 0 ? "text-red-500" : ""
-            }`}
-          >
+          <label htmlFor={id} className={`mb-2 inline-block ${rawErrors.length > 0 ? 'text-red-500' : ''}`}>
             {label}
-            {required ? "*" : null}
+            {required ? '*' : null}
           </label>
         )}
         {children}
         {displayLabel && rawDescription && (
           <small className="mt-1 block">
-            <div
-              className={`${
-                rawErrors.length > 0 ? "text-red-500" : "text-muted-foreground"
-              }`}
-            >
-              {description}
-            </div>
+            <div className={`${rawErrors.length > 0 ? 'text-red-500' : 'text-muted-foreground'}`}>{description}</div>
           </small>
         )}
         {errors}
         {help}
       </div>
     </WrapIfAdditionalTemplate>
-  )
+  );
 }

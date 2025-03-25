@@ -8,13 +8,9 @@ import {
   RJSFSchema,
   StrictRJSFSchema,
   titleId,
-} from "@rjsf/utils"
+} from '@rjsf/utils';
 
-export default function ObjectFieldTemplate<
-  T = any,
-  S extends StrictRJSFSchema = RJSFSchema,
-  F extends FormContextType = any,
->({
+export default function ObjectFieldTemplate<T = any, S extends StrictRJSFSchema = RJSFSchema, F extends FormContextType = any>({
   description,
   title,
   properties,
@@ -28,50 +24,23 @@ export default function ObjectFieldTemplate<
   readonly,
   registry,
 }: ObjectFieldTemplateProps<T, S, F>) {
-  const uiOptions = getUiOptions<T, S, F>(uiSchema)
-  const TitleFieldTemplate = getTemplate<"TitleFieldTemplate", T, S, F>(
-    "TitleFieldTemplate",
-    registry,
-    uiOptions,
-  )
-  const DescriptionFieldTemplate = getTemplate<
-    "DescriptionFieldTemplate",
-    T,
-    S,
-    F
-  >("DescriptionFieldTemplate", registry, uiOptions)
+  const uiOptions = getUiOptions<T, S, F>(uiSchema);
+  const TitleFieldTemplate = getTemplate<'TitleFieldTemplate', T, S, F>('TitleFieldTemplate', registry, uiOptions);
+  const DescriptionFieldTemplate = getTemplate<'DescriptionFieldTemplate', T, S, F>('DescriptionFieldTemplate', registry, uiOptions);
   // Button templates are not overridden in the uiSchema
   const {
     ButtonTemplates: { AddButton },
-  } = registry.templates
+  } = registry.templates;
 
   return (
     <>
-      {title && (
-        <TitleFieldTemplate
-          id={titleId<T>(idSchema)}
-          title={title}
-          required={required}
-          schema={schema}
-          uiSchema={uiSchema}
-          registry={registry}
-        />
-      )}
+      {title && <TitleFieldTemplate id={titleId<T>(idSchema)} title={title} required={required} schema={schema} uiSchema={uiSchema} registry={registry} />}
       {description && (
-        <DescriptionFieldTemplate
-          id={descriptionId<T>(idSchema)}
-          description={description}
-          schema={schema}
-          uiSchema={uiSchema}
-          registry={registry}
-        />
+        <DescriptionFieldTemplate id={descriptionId<T>(idSchema)} description={description} schema={schema} uiSchema={uiSchema} registry={registry} />
       )}
       <div className="p-0">
         {properties.map((element: any, index: number) => (
-          <div
-            key={index}
-            className={`${element.hidden ? "hidden" : ""} mb-2.5 flex`}
-          >
+          <div key={index} className={`${element.hidden ? 'hidden' : ''} mb-2.5 flex`}>
             <div className="w-full"> {element.content}</div>
           </div>
         ))}
@@ -90,5 +59,5 @@ export default function ObjectFieldTemplate<
         ) : null}
       </div>
     </>
-  )
+  );
 }
