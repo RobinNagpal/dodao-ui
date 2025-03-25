@@ -18,17 +18,13 @@ export default function CriteriaTable({ sectorName, industryGroupName, customCri
 
   return (
     <PageWrapper>
-      <div className="flex justify-between">
-        <div></div>
-        <div className="text-4xl">Custom Criteria</div>
-      </div>
+        <div className="mb-8 font-bold text-xl">Custom Criteria</div>
+      
       <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }} className="mt-4">
         <thead>
           <tr className="text-color">
             <th style={tableCellStyle}>Key</th>
             <th style={tableCellStyle}>Name</th>
-            <th style={tableCellStyle}>Short Description</th>
-            <th style={tableCellStyle}>Matching Instruction</th>
             <th style={tableCellStyle}>Actions</th>
           </tr>
         </thead>
@@ -44,8 +40,6 @@ export default function CriteriaTable({ sectorName, industryGroupName, customCri
               <tr key={criterion.key}>
                 <td style={tableCellStyle}>{criterion.key}</td>
                 <td style={tableCellStyle}>{criterion.name}</td>
-                <td style={tableCellStyle}>{criterion.shortDescription}</td>
-                <td style={tableCellStyle}>{criterion.matchingInstruction}</td>
                 <td style={tableCellStyle} className="w-48">
                   <div>
                     <Link href={`/public-equities/debug/tickers/${ticker}/${criterion.key}`} className="text-blue-500 hover:underline w-full">
