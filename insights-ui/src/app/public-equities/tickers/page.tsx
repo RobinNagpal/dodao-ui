@@ -1,16 +1,15 @@
-import { GicsSector } from '@/types/public-equity/gicsSector';
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Ticker } from '@prisma/client';
 import Link from 'next/link';
-import TickerTableActions from './TickerTableActions';
-import gicsData from '@/gicsData/gicsData.json';
-import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import TickerActionsDropdown from './[tickerKey]/TickerActionsDropdown';
 
 async function getTickersResponse(): Promise<Ticker[]> {
-  // Here a better approach could be followed which allows to return server side pages fully rendered
   try {
     const response = await fetch(`${getBaseUrl()}/api/tickers`, { cache: 'no-cache' });
     return await response.json();
@@ -33,54 +32,61 @@ const breadcrumbs: BreadcrumbsOjbect[] = [
   },
 ];
 
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ');
+}
+
 export default async function AllTickersPage() {
   const tickers: Ticker[] = await getTickersResponse();
+
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <PrivateWrapper>
-        <div className="flex justify-between">
+        <div className="flex justify-between mb-4">
           <div></div>
           <Link href={'/public-equities/tickers/create'} className="link-color underline">
             Create Ticker
           </Link>
         </div>
       </PrivateWrapper>
-      <table className="w-full border-collapse border border-gray-300 text-left mt-6">
-        <thead>
-          <tr>
-            <th className="p-3 border text-left">Ticker</th>
-            <th className="p-3 border text-left">Sector</th>
-            <th className="p-3 border text-left">Industry Group</th>
-            <th className="p-3 border text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tickers.length === 0 ? (
-            <tr>
-              <td colSpan={4} className="p-3 border text-center italic">
-                No tickers found.
-              </td>
-            </tr>
-          ) : (
-            tickers.map((ticker) => {
-              const sectors: GicsSector[] = Object.values(gicsData);
-              const sector = sectors.find((sector) => sector.id === ticker.sectorId)!;
-              const industryGroup = Object.values(sector?.industryGroups).find((group) => group.id === ticker.industryGroupId)!;
-              return (
-                <tr key={ticker.tickerKey} className="border">
-                  <td className="p-3 border text-left">{ticker.tickerKey}</td>
-                  <td className="p-3 border text-left">{sector.name}</td>
-                  <td className="p-3 border text-left">{industryGroup.name}</td>
-                  <td className="p-3 border text-left flex gap-2">
-                    <TickerTableActions ticker={ticker} />
-                  </td>
-                </tr>
-              );
-            })
-          )}
-        </tbody>
-      </table>
+      <ul role="list" className="divide-y">
+        {tickers.length === 0 ? (
+          <li className="py-5 text-center italic">No tickers found.</li>
+        ) : (
+          tickers.map((ticker) => (
+            <li key={ticker.tickerKey} className="flex items-center justify-between gap-x-6 py-5">
+              <div className="min-w-0">
+                <div className="flex items-start gap-x-3">
+                  <p className="text-sm font-semibold heading-color">{ticker.companyName || 'Unknown Company'}</p>
+                  <p
+                    className={classNames(
+                      'mt-0.5 whitespace-nowrap rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset ring-border',
+                      'primary-text-color'
+                    )}
+                  >
+                    {ticker.tickerKey}
+                  </p>
+                </div>
+                <div className="mt-1 flex items-center gap-x-2 text-xs text-color">
+                  <p className="truncate">{ticker.shortDescription || 'No description provided'}</p>
+                </div>
+              </div>
+              <div className="flex flex-none items-center gap-x-4">
+                <Link
+                  href={`/public-equities/tickers/${ticker.tickerKey}`}
+                  className="rounded-md bg-block-bg-color px-2.5 py-1.5 text-sm font-semibold link-color shadow-sm ring-1 ring-inset ring-border hover:bg-block-bg-color"
+                >
+                  View Reports
+                </Link>
+                <PrivateWrapper>
+                  <TickerActionsDropdown tickerKey={ticker.tickerKey} />
+                </PrivateWrapper>
+              </div>
+            </li>
+          ))
+        )}
+      </ul>
     </PageWrapper>
   );
 }
