@@ -41,7 +41,8 @@ const triggerFinancialStatementsForTicker = async (req: NextRequest, { params }:
   });
 
   const financialStatements = await financialStatementsResponse.json();
-  return financialStatements.data;
+
+  return 'message' in financialStatements ? financialStatements.message : financialStatements.data;
 };
 
 export const POST = withErrorHandlingV2<string>(triggerFinancialStatementsForTicker);

@@ -140,15 +140,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
 
     console.log('Criteria successfully updated!');
   };
-  const uiSchema = {
-    key: {
-      'ui:classNames': 'p-2 border rounded text-red-500',
-    },
-    name: {
-      'ui:classNames': 'p-2 border rounded',
-    },
-  };
-
+  
   return (
     <PageWrapper>
       <Head>
@@ -222,20 +214,13 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
           <div className="text-left w-full">
             <Form
               schema={schema as RJSFSchema}
-              // uiSchema={Ui}
               formData={selectedCriterion || {}}
               onChange={(e) => updateSelectedCriterion(e.formData as CriterionDefinition)}
+              onSubmit={handleSave}
               validator={validator}
               noHtml5Validate
             />
           </div>
-
-          <Button onClick={handleSave} className="m-4" variant="contained" primary disabled={!!validationMessages}>
-            Save Changes
-          </Button>
-          <Button onClick={handleClose} className="m-4" variant="outlined">
-            Close
-          </Button>
         </Block>
       </FullPageModal>
 
