@@ -15,7 +15,7 @@ import Ajv, { ErrorObject } from 'ajv';
 import schema from './insdustryGroupCriteriaJsonSchema.json';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import Form from '@rjsf/core';
+import { Form } from '@/components/rjsf';
 import { RJSFSchema } from '@rjsf/utils';
 import validator from '@rjsf/validator-ajv8';
 import Head from 'next/head';
@@ -147,7 +147,6 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
     name: {
       'ui:classNames': 'p-2 border rounded',
     },
-
   };
 
   return (
