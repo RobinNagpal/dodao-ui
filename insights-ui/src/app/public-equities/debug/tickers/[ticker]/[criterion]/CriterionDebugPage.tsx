@@ -234,7 +234,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
               </PrivateWrapper>
             </div>
 
-            <div className="block-bg-color m-4 p-3">
+            <div className="m-4 p-3">
               {criterionEvaluation?.performanceChecklistEvaluation?.performanceChecklistItems?.length ? (
                 <ul className="list-disc pl-8">
                   {criterionEvaluation.performanceChecklistEvaluation.performanceChecklistItems.map((item, idx) => (
@@ -242,7 +242,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
                       <div>
                         {item.score === 1 ? '✅' : '❌'} {item.checklistItem}
                       </div>
-                      <div className="pl-4 text-sm text-gray-600">
+                      <div className="pl-4 text-sm">
                         <div>{item.oneLinerExplanation}</div>
                         <div>{item.detailedExplanation}</div>
                         <div>{item.evaluationLogic}</div>
@@ -276,7 +276,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
               </PrivateWrapper>
             </div>
 
-            <div className="block-bg-color m-4 p-3 overflow-x-auto">
+            <div className="m-4 p-3 overflow-x-auto">
               <table className="w-full text-left border-collapse border border-gray-200">
                 <thead>
                   <tr>
