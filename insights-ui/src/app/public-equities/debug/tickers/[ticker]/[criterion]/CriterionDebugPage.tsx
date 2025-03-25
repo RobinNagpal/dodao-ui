@@ -1,24 +1,24 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import DebugCriterionReport from '@/components/ticker/debug/DebugCriterionReport';
+import WebhookUrlInput, { getWebhookUrlFromLocalStorage } from '@/components/ticker/debug/WebhookUrlInput';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
-import { FullNestedTickerReport, FullCriterionEvaluation } from '@/types/public-equity/ticker-report-types';
-import { IndustryGroupCriteriaDefinition, CriterionDefinition } from '@/types/public-equity/criteria-types';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getGicsNames } from '@/lib/gicsHelper';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
+import { CriterionDefinition, IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
+import { FullCriterionEvaluation, FullNestedTickerReport } from '@/types/public-equity/ticker-report-types';
+import { CreateAllCriterionReportsRequest, CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { CreateAllCriterionReportsRequest, CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
-import WebhookUrlInput, { getWebhookUrlFromLocalStorage } from '@/components/ticker/debug/WebhookUrlInput';
-import DebugCriterionReport from '@/components/ticker/debug/DebugCriterionReport';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
+import { useEffect, useState } from 'react';
 
 interface CriterionDebugPageProps {
   ticker: string;
@@ -214,116 +214,108 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
           />
         )}
 
-        {/* Now the actual displayed data for the single criterion */}
-        {criterionEvaluation ? (
-          <div className="mt-8">
-            {/* Performance Checklist */}
-            <div className="mb-8">
-              <div className="flex">
-                <h2 className="text-lg font-bold">Performance Checklist</h2>
-                <PrivateWrapper>
-                  <IconButton
-                    iconName={IconTypes.Reload}
-                    primary
-                    variant="outlined"
-                    disabled={selectedSectionForRegeneration?.section === 'performanceChecklist' && singleCriterionReportsLoading}
-                    onClick={() => {
-                      setSelectedSectionForRegeneration({ section: 'performanceChecklist' });
-                      setShowSectionConfirmModal(true);
-                    }}
-                    loading={selectedSectionForRegeneration?.section === 'performanceChecklist' && singleCriterionReportsLoading}
-                    className="ml-2"
-                  />
-                </PrivateWrapper>
-              </div>
-
-              <div className="block-bg-color m-4 p-3">
-                {criterionEvaluation.performanceChecklistEvaluation?.performanceChecklistItems?.length ? (
-                  <ul className="list-disc pl-8">
-                    {criterionEvaluation.performanceChecklistEvaluation.performanceChecklistItems.map((item, idx) => (
-                      <li key={idx} className="mb-2">
-                        <div>
-                          {item.score === 1 ? '✅' : '❌'} {item.checklistItem}
-                        </div>
-                        <div className="pl-4 text-sm text-gray-600">
-                          <div>{item.oneLinerExplanation}</div>
-                          <div>{item.detailedExplanation}</div>
-                          <div>{item.evaluationLogic}</div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <div>No performance checklist items found.</div>
-                )}
-              </div>
+        <div className="mt-8">
+          <div className="mb-8">
+            <div className="flex">
+              <h2 className="text-lg font-bold">Performance Checklist</h2>
+              <PrivateWrapper>
+                <IconButton
+                  iconName={IconTypes.Reload}
+                  primary
+                  variant="outlined"
+                  disabled={selectedSectionForRegeneration?.section === 'performanceChecklist' && singleCriterionReportsLoading}
+                  onClick={() => {
+                    setSelectedSectionForRegeneration({ section: 'performanceChecklist' });
+                    setShowSectionConfirmModal(true);
+                  }}
+                  loading={selectedSectionForRegeneration?.section === 'performanceChecklist' && singleCriterionReportsLoading}
+                  className="ml-2"
+                />
+              </PrivateWrapper>
             </div>
 
-            {/* Important Metrics */}
-            <div className="mb-8">
-              <div className="flex">
-                <h2 className="text-lg font-bold">Important Metrics</h2>
-                <PrivateWrapper>
-                  <IconButton
-                    iconName={IconTypes.Reload}
-                    primary
-                    variant="outlined"
-                    disabled={selectedSectionForRegeneration?.section === 'importantMetrics' && singleCriterionReportsLoading}
-                    onClick={() => {
-                      setSelectedSectionForRegeneration({ section: 'importantMetrics' });
-                      setShowSectionConfirmModal(true);
-                    }}
-                    loading={selectedSectionForRegeneration?.section === 'importantMetrics' && singleCriterionReportsLoading}
-                    className="ml-2"
-                  />
-                </PrivateWrapper>
-              </div>
+            <div className="block-bg-color m-4 p-3">
+              {criterionEvaluation?.performanceChecklistEvaluation?.performanceChecklistItems?.length ? (
+                <ul className="list-disc pl-8">
+                  {criterionEvaluation.performanceChecklistEvaluation.performanceChecklistItems.map((item, idx) => (
+                    <li key={idx} className="mb-2">
+                      <div>
+                        {item.score === 1 ? '✅' : '❌'} {item.checklistItem}
+                      </div>
+                      <div className="pl-4 text-sm text-gray-600">
+                        <div>{item.oneLinerExplanation}</div>
+                        <div>{item.detailedExplanation}</div>
+                        <div>{item.evaluationLogic}</div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div>No performance checklist items found.</div>
+              )}
+            </div>
+          </div>
 
-              <div className="block-bg-color m-4 p-3 overflow-x-auto">
-                <table className="w-full text-left border-collapse border border-gray-200">
-                  <thead>
-                    <tr>
-                      <th className="px-4 py-2 border">Key</th>
-                      <th className="px-4 py-2 border">Value</th>
+          {/* Important Metrics */}
+          <div className="mb-8">
+            <div className="flex">
+              <h2 className="text-lg font-bold">Important Metrics</h2>
+              <PrivateWrapper>
+                <IconButton
+                  iconName={IconTypes.Reload}
+                  primary
+                  variant="outlined"
+                  disabled={selectedSectionForRegeneration?.section === 'importantMetrics' && singleCriterionReportsLoading}
+                  onClick={() => {
+                    setSelectedSectionForRegeneration({ section: 'importantMetrics' });
+                    setShowSectionConfirmModal(true);
+                  }}
+                  loading={selectedSectionForRegeneration?.section === 'importantMetrics' && singleCriterionReportsLoading}
+                  className="ml-2"
+                />
+              </PrivateWrapper>
+            </div>
+
+            <div className="block-bg-color m-4 p-3 overflow-x-auto">
+              <table className="w-full text-left border-collapse border border-gray-200">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-2 border">Key</th>
+                    <th className="px-4 py-2 border">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {criterionEvaluation?.importantMetricsEvaluation?.metrics?.map((metric) => (
+                    <tr key={metric.metricKey}>
+                      <td className="px-4 py-2 border">{metric.metricKey}</td>
+                      <td className="px-4 py-2 border">{metric.value}</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {criterionEvaluation.importantMetricsEvaluation?.metrics?.map((metric) => (
-                      <tr key={metric.metricKey}>
-                        <td className="px-4 py-2 border">{metric.metricKey}</td>
-                        <td className="px-4 py-2 border">{metric.value}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
+          </div>
 
-            {/* Reports */}
-            <div className="mb-8">
-              <h2 className="text-lg font-bold">Reports</h2>
-              {/* We show each "reportDefinition" in the IndustryGroupCriteria to keep ordering/keys consistent */}
-              {criterionDefinition.reports?.map((reportDef) => {
-                const actualReportEval = criterionEvaluation.reports?.find((r) => r.reportKey === reportDef.key);
-                return (
-                  <div key={reportDef.key} className="my-4">
-                    <DebugCriterionReport
-                      tickerReport={report}
-                      industryGroupCriteria={industryGroupCriteria}
-                      criterionDefinition={criterionDefinition}
-                      reportDefinition={reportDef}
-                      report={actualReportEval}
-                    />
-                  </div>
-                );
-              })}
-            </div>
+          {/* Reports */}
+          <div className="mb-8">
+            <h2 className="text-lg font-bold">Reports</h2>
+            {/* We show each "reportDefinition" in the IndustryGroupCriteria to keep ordering/keys consistent */}
+            {criterionDefinition.reports?.map((reportDef) => {
+              const actualReportEval = criterionEvaluation?.reports?.find((r) => r.reportKey === reportDef.key);
+              return (
+                <div key={reportDef.key} className="my-4">
+                  <DebugCriterionReport
+                    tickerReport={report}
+                    industryGroupCriteria={industryGroupCriteria}
+                    criterionDefinition={criterionDefinition}
+                    reportDefinition={reportDef}
+                    report={actualReportEval}
+                  />
+                </div>
+              );
+            })}
           </div>
-        ) : (
-          <div>
-            <p>No evaluation data found for criterion &quot;{criterionKey}&quot;.</p>
-          </div>
-        )}
+        </div>
       </div>
 
       {/* Confirmation Modal for section-specific regeneration */}
