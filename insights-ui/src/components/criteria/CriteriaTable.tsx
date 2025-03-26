@@ -1,23 +1,23 @@
 'use client';
 
-import { IndustryGroupCriteriaDefinition, CriterionDefinition } from '@/types/public-equity/criteria-types';
+import { Form } from '@/components/rjsf';
+import { CriterionDefinition, IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { CreateCustomCriteriaRequestWithCriteria } from '@/types/public-equity/ticker-request-response';
 import Block from '@dodao/web-core/components/app/Block';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
-import React, { useEffect, useRef, useState } from 'react';
-import ReactJson from 'react-json-view';
-import Ajv, { ErrorObject } from 'ajv';
-import schema from './insdustryGroupCriteriaJsonSchema.json';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Form } from '@/components/rjsf';
 import { RJSFSchema } from '@rjsf/utils';
 import validator from '@rjsf/validator-ajv8';
+import Ajv, { ErrorObject } from 'ajv';
+import React, { useEffect, useRef, useState } from 'react';
+import schema from './insdustryGroupCriteriaJsonSchema.json';
+
 interface CriteriaTableProps {
   sectorId: number;
   industryGroupId: number;
@@ -140,6 +140,11 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
     console.log('Criteria successfully updated!');
   };
 
+  const uiSchema = {
+    matchingInstruction: {
+      'ui:widget': 'textarea',
+    },
+  };
   return (
     <PageWrapper>
       <div className="flex justify-between">
@@ -186,7 +191,6 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
       {/* Modal for JSON Editing */}
       <FullPageModal open={open} onClose={handleClose} title={isEditing ? 'Edit Criterion' : 'Add Criterion'}>
         <Block className="text-left scroll-auto min-h-full">
-          {/* 🚀 Display validation messages inside the modal */}
           {validationMessages && validationMessages.length > 0 && (
             <div className="text-red-500 bg-red-100 border border-red-400 p-2 rounded mb-2">
               <strong>Validation Errors:</strong>
@@ -197,16 +201,6 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
               </ul>
             </div>
           )}
-
-          {/* <ReactJson
-            src={selectedCriterion || {}}
-            onEdit={(edit) => updateSelectedCriterion(edit.updated_src as CriterionDefinition)}
-            onAdd={(add) => updateSelectedCriterion(add.updated_src as CriterionDefinition)}
-            onDelete={(del) => updateSelectedCriterion(del.updated_src as CriterionDefinition)}
-            theme="monokai"
-            enableClipboard={false}
-            style={{ textAlign: 'left' }}
-          /> */}
           <div className="text-left w-full">
             <Form
               schema={schema as RJSFSchema}
@@ -215,6 +209,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
               onSubmit={handleSave}
               validator={validator}
               noHtml5Validate
+              uiSchema={uiSchema}
             />
           </div>
         </Block>

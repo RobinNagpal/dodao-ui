@@ -1,6 +1,7 @@
 'use client';
 
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import PerformanceChecklistEvaluation from '@/components/ticker-reports/PerformanceChecklistEvaluation';
 import DebugCriterionReport from '@/components/ticker/debug/DebugCriterionReport';
 import WebhookUrlInput, { getWebhookUrlFromLocalStorage } from '@/components/ticker/debug/WebhookUrlInput';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -234,26 +235,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
               </PrivateWrapper>
             </div>
 
-            <div className="m-4 p-3">
-              {criterionEvaluation?.performanceChecklistEvaluation?.performanceChecklistItems?.length ? (
-                <ul className="list-disc pl-8">
-                  {criterionEvaluation.performanceChecklistEvaluation.performanceChecklistItems.map((item, idx) => (
-                    <li key={idx} className="mb-2">
-                      <div>
-                        {item.score === 1 ? '✅' : '❌'} {item.checklistItem}
-                      </div>
-                      <div className="pl-4 text-sm">
-                        <div>{item.oneLinerExplanation}</div>
-                        <div>{item.detailedExplanation}</div>
-                        <div>{item.evaluationLogic}</div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <div>No performance checklist items found.</div>
-              )}
-            </div>
+            <PerformanceChecklistEvaluation criterion={criterionEvaluation || undefined} />
           </div>
 
           {/* Important Metrics */}
