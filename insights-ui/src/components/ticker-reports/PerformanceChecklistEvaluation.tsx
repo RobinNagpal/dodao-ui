@@ -11,8 +11,22 @@ export default function PerformanceChecklistEvaluation({ criterion }: { criterio
                 <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
                 <span className="font-bold">{item.checklistItem}</span>
               </li>
-              <div className="text-sm">{item.detailedExplanation}</div>
-              <div className="text-sm">{item.evaluationLogic}</div>
+              <div className="text-sm">
+                <span className="font-bold">One-line Explanation :</span>
+                {item.oneLinerExplanation}
+              </div>
+              <div className="text-sm">
+                <span className="font-bold">Information Used :</span>
+                {item.informationUsed}
+              </div>
+              <div className="text-sm">
+                <span className="font-bold">Detailed Explanation :</span>
+                {item.detailedExplanation}
+              </div>
+              <div className="text-sm">
+                <span className="font-bold">Evaluation Logic :</span>
+                {item.evaluationLogic}
+              </div>
             </div>
           ))}
         </ul>
