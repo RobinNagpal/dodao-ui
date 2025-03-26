@@ -7,7 +7,8 @@ import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import FinancialStatementsButton from './FinancialStatementsButton';
 
 export interface DebugFinancialStatementsProps {
   report: FullNestedTickerReport;
@@ -17,6 +18,7 @@ export interface DebugFinancialStatementsProps {
 export default function DebugFinancialStatements({ report }: DebugFinancialStatementsProps) {
   const ticker = report.tickerKey;
 
+  const [financialStatementsContent, setFinancialStatementsContent] = useState(report.latest10QFinancialStatements ?? 'No Financial Statements');
   const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
   const renderer = getMarkedRenderer();
   const getMarkdownContent = (content?: string) => {
@@ -24,25 +26,40 @@ export default function DebugFinancialStatements({ report }: DebugFinancialState
   };
 
   const {
-    postData: regenerateMatchingCriteria,
-    loading: matchingCriteriaLoading,
-    error: matchingCriteriaError,
-  } = usePostData<{ message: string }, {}>({
+    data: financialStatementsData,
+    postData: regeneratefinancialStatements,
+    loading: financialStatementsLoading,
+    error: financialStatementsError,
+  } = usePostData<string, {}>({
     errorMessage: 'Failed to refetch financial statements.',
     successMessage: 'Financial Statements refetching started successfully',
     redirectPath: ``,
   });
 
-  const handleRegenerateMatchingCriteria = async () => {
-    regenerateMatchingCriteria(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-financial-statements`);
+  useEffect(() => {
+    if (financialStatementsData) {
+      setFinancialStatementsContent(financialStatementsData);
+    } else if (financialStatementsError) {
+      setFinancialStatementsContent(financialStatementsError);
+    }
+  }, [financialStatementsData, financialStatementsError]);
+
+  const handleRegenerateFinancialStatements = async () => {
+    await regeneratefinancialStatements(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-financial-statements`);
   };
 
   return (
     <div className="mt-8">
-      {matchingCriteriaError && <div className="text-red-500">{matchingCriteriaError}</div>}
+      {financialStatementsError && <div className="text-red-500">{financialStatementsError}</div>}
       <PrivateWrapper>
         <div className="flex justify-end mb-4">
-          <Button loading={matchingCriteriaLoading} primary variant="contained" onClick={handleRegenerateMatchingCriteria} disabled={matchingCriteriaLoading}>
+          <Button
+            loading={financialStatementsLoading}
+            primary
+            variant="contained"
+            onClick={handleRegenerateFinancialStatements}
+            disabled={financialStatementsLoading}
+          >
             Refetch Financial Statements
           </Button>
         </div>
@@ -54,11 +71,10 @@ export default function DebugFinancialStatements({ report }: DebugFinancialState
         onClick={() => setSelectedCriterionAccordian(selectedCriterionAccordian === `financial_statements` ? null : `financial_statements`)}
       >
         <div className="mt-4">
-          {report.latest10QFinancialStatements ? (
-            <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(report.latest10QFinancialStatements) }} />
-          ) : (
-            'No Financial Statements'
-          )}
+          <PrivateWrapper>
+            <FinancialStatementsButton tickerKey={ticker} financialStatementsContent={financialStatementsContent} />
+          </PrivateWrapper>
+          <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(financialStatementsContent) }} />
         </div>
       </Accordion>
     </div>
