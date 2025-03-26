@@ -20,7 +20,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useEffect, useState } from 'react';
-import { ProcessingStatus } from '@/types/public-equity/ticker-report-types'; // Adjust the path if necessary
+import { ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 
 interface CriterionDebugPageProps {
   ticker: string;
@@ -125,7 +125,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
       }
     };
 
-    const pollingInterval = setInterval(pollReportStatus, 20000); // Poll every 20 seconds
+    const pollingInterval = setInterval(pollReportStatus, 20000);
 
     return () => {
       clearInterval(pollingInterval);
@@ -373,6 +373,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
                     criterionDefinition={criterionDefinition}
                     reportDefinition={reportDef}
                     report={actualReportEval}
+                    onRegenerate={handleRegenerateSingleCriterionReports}
                   />
                 </div>
               );
