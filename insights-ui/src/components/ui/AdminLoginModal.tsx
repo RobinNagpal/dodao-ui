@@ -5,6 +5,7 @@ import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSec
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { isAdmin } from '@/util/auth/isAdmin';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 interface AdminLoginModalProps {
   open: boolean;
@@ -22,17 +23,25 @@ export default function AdminLoginModal({ open, onClose }: AdminLoginModalProps)
     }
   }, [open]);
 
-  const validAdminCodes = (process.env.NEXT_PUBLIC_ADMIN_CODES || '').split(',').map((code) => code.trim());
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
-    if (validAdminCodes.includes(adminCode)) {
-      localStorage.setItem('AUTHENTICATION_KEY', adminCode);
-      onClose();
-      setAdminCode('');
-    } else {
-      setError('Incorrect admin code');
+    try {
+      const response = await fetch(`${getBaseUrl()}/api/actions/authenticate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adminCode }),
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.setItem('AUTHENTICATION_KEY', adminCode);
+        onClose();
+      } else {
+        setError(data.message || 'Incorrect admin code');
+      }
+    } catch (err) {
+      setError('Error occurred while authenticating');
     }
   };
 
