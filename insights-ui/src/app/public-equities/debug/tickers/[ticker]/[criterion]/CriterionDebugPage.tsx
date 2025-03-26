@@ -19,8 +19,9 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ProcessingStatus } from '@/types/public-equity/ticker-report-types';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 
 interface CriterionDebugPageProps {
   ticker: string;
@@ -44,6 +45,101 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
     reportKey?: string;
   } | null>(null);
 
+  /**
+   * 1. Fetch the Ticker’s entire report
+   */
+  const {
+    data: fetchedReport,
+    error: tickerReportError,
+    loading: tickerReportLoading,
+    reFetchData: reFetchTickerReport,
+  } = useFetchData<FullNestedTickerReport>(`${getBaseUrl()}/api/tickers/${ticker}`, {}, 'Failed to fetch ticker data');
+
+  /**
+   * 2. Based on the sector/industry from the fetched Ticker Report, build the custom-criteria.json URL
+   *    We skip the fetch unless we have a valid Ticker Report.
+   */
+  const [sectorAndIndustryUrl, setSectorAndIndustryUrl] = useState<string>('');
+  const {
+    data: fetchedIndustryGroupCriteria,
+    error: industryGroupCriteriaError,
+    loading: industryGroupCriteriaLoading,
+  } = useFetchData<IndustryGroupCriteriaDefinition>(sectorAndIndustryUrl, { skipInitialFetch: !sectorAndIndustryUrl }, 'Failed to fetch custom criteria');
+
+  /**
+   * 3. Once Ticker Report is fetched, set local states and build the URL for IndustryGroupCriteria
+   */
+  useEffect(() => {
+    if (fetchedReport) {
+      setReport(fetchedReport);
+      setReportExists(true);
+
+      const { sectorName, industryGroupName } = getGicsNames(fetchedReport.sectorId, fetchedReport.industryGroupId);
+      const newUrl = `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/${slugify(sectorName)}/${slugify(
+        industryGroupName
+      )}/custom-criteria.json`;
+      setSectorAndIndustryUrl(newUrl);
+    }
+    if (tickerReportError) {
+      // If there's an error (e.g., 404), we can mark it as non-existent
+      setReportExists(false);
+    }
+  }, [fetchedReport, tickerReportError]);
+
+  /**
+   * 4. Once the IndustryGroupCriteria is fetched, set local states for criterionDefinition, criterionEvaluation
+   */
+  useEffect(() => {
+    if (fetchedIndustryGroupCriteria && report) {
+      setIndustryGroupCriteria(fetchedIndustryGroupCriteria);
+
+      // Find the specific criterion definition for this route param
+      const cDef = fetchedIndustryGroupCriteria.criteria?.find((c) => c.key === criterionKey) || null;
+      setCriterionDefinition(cDef);
+
+      // Ticker’s evaluation of that criterion
+      const evaluationOfLatest10QMap =
+        report.evaluationsOfLatest10Q && Object.fromEntries(report.evaluationsOfLatest10Q.map((crit) => [crit.criterionKey, crit]));
+      const cEval = (evaluationOfLatest10QMap && evaluationOfLatest10QMap[criterionKey]) || null;
+      setCriterionEvaluation(cEval);
+    }
+  }, [fetchedIndustryGroupCriteria, report, criterionKey]);
+
+  /**
+   * Polling logic (re-fetch the Ticker Report to check if a re-generated section is completed)
+   */
+  useEffect(() => {
+    if (!pollingSection) return;
+
+    const pollReportStatus = async () => {
+      const newFetchedReport = await reFetchTickerReport();
+      if (!newFetchedReport) return;
+
+      const evaluation = newFetchedReport.evaluationsOfLatest10Q?.find((evaluationItem) => evaluationItem.criterionKey === criterionKey);
+
+      let statusToCheck: ProcessingStatus;
+      switch (pollingSection) {
+        case 'performanceChecklist':
+          statusToCheck = evaluation?.performanceChecklistEvaluation?.status as ProcessingStatus;
+          break;
+        case 'importantMetrics':
+          statusToCheck = evaluation?.importantMetricsEvaluation?.status as ProcessingStatus;
+          break;
+        default:
+          // If it's a specific report, find it in evaluation.reports
+          const reportItem = evaluation?.reports?.find((r) => r.reportKey === pollingSection);
+          statusToCheck = reportItem?.status as ProcessingStatus;
+      }
+
+      if (statusToCheck === ProcessingStatus.Completed) {
+        setPollingSection(null);
+      }
+    };
+
+    const pollingInterval = setInterval(pollReportStatus, 20000);
+    return () => clearInterval(pollingInterval);
+  }, [pollingSection, reFetchTickerReport, criterionKey]);
+
   // Hooks for re-generation
   const {
     data: allSingleCriterionReportsResponse,
@@ -55,82 +151,6 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
     successMessage: 'Criterion regeneration started successfully',
     redirectPath: ``,
   });
-
-  const fetchTickerReport = async () => {
-    const response = await fetch(`${getBaseUrl()}/api/tickers/${ticker}`, {
-      cache: 'no-cache',
-    });
-    if (response.status === 200) {
-      const fetchedReport: FullNestedTickerReport = await response.json();
-      setReport(fetchedReport);
-
-      // Retrieve sectorName & industryGroupName
-      const { sectorName, industryGroupName } = getGicsNames(fetchedReport.sectorId, fetchedReport.industryGroupId);
-
-      // Fetch custom criteria JSON
-      const criteriaResponse = await fetch(
-        `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/${slugify(sectorName)}/${slugify(
-          industryGroupName
-        )}/custom-criteria.json`,
-        { cache: 'no-cache' }
-      );
-
-      if (criteriaResponse.status === 200) {
-        const igCriteria: IndustryGroupCriteriaDefinition = await criteriaResponse.json();
-        setIndustryGroupCriteria(igCriteria);
-
-        // Find the criterionDefinition
-        const cDef = igCriteria.criteria?.find((c) => c.key === criterionKey) || null;
-        setCriterionDefinition(cDef);
-
-        // Get the actual ticker's evaluation of that criterion
-        const evaluationOfLatest10QMap =
-          fetchedReport.evaluationsOfLatest10Q && Object.fromEntries(fetchedReport.evaluationsOfLatest10Q.map((crit) => [crit.criterionKey, crit]));
-
-        const cEval = (evaluationOfLatest10QMap && evaluationOfLatest10QMap[criterionKey]) || null;
-        setCriterionEvaluation(cEval);
-      }
-      return fetchedReport;
-    }
-    return null;
-  };
-
-  useEffect(() => {
-    if (!pollingSection) return;
-
-    const pollReportStatus = async () => {
-      const fetchedReport = await fetchTickerReport();
-
-      if (!fetchedReport) return;
-
-      const evaluation = fetchedReport.evaluationsOfLatest10Q?.find((evaluationItem) => evaluationItem.criterionKey === criterionKey);
-
-      let statusToCheck: ProcessingStatus;
-
-      switch (pollingSection) {
-        case 'performanceChecklist':
-          statusToCheck = evaluation?.performanceChecklistEvaluation?.status as ProcessingStatus;
-          break;
-        case 'importantMetrics':
-          statusToCheck = evaluation?.importantMetricsEvaluation?.status as ProcessingStatus;
-          break;
-        default:
-          // For specific report, find the report in the evaluation
-          const reportItem = evaluation?.reports?.find((report) => report.reportKey === pollingSection);
-          statusToCheck = reportItem?.status as ProcessingStatus;
-      }
-
-      if (statusToCheck === ProcessingStatus.Completed) {
-        setPollingSection(null);
-      }
-    };
-
-    const pollingInterval = setInterval(pollReportStatus, 20000);
-
-    return () => {
-      clearInterval(pollingInterval);
-    };
-  }, [pollingSection, ticker, criterionKey]);
 
   const {
     data: singleCriterionReportsResponse,
@@ -144,73 +164,95 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
   });
 
   // On mount, fetch the Ticker’s entire report and the sector’s custom criteria
-  useEffect(() => {
-    const checkReportExists = async () => {
-      const response = await fetch(`${getBaseUrl()}/api/tickers/${ticker}`, {
-        cache: 'no-cache',
-      });
-      if (response.status === 200) {
-        setReportExists(true);
-        const fetchedReport: FullNestedTickerReport = await response.json();
-        setReport(fetchedReport);
+  // useEffect(() => {
+  //   const checkReportExists = async () => {
+  //     const response = await fetch(`${getBaseUrl()}/api/tickers/${ticker}`, {
+  //       cache: 'no-cache',
+  //     });
+  //     if (response.status === 200) {
+  //       setReportExists(true);
+  //       const fetchedReport: FullNestedTickerReport = await response.json();
+  //       setReport(fetchedReport);
 
-        // Retrieve sectorName & industryGroupName
-        const { sectorName, industryGroupName } = getGicsNames(fetchedReport.sectorId, fetchedReport.industryGroupId);
+  //       // Retrieve sectorName & industryGroupName
+  //       const { sectorName, industryGroupName } = getGicsNames(fetchedReport.sectorId, fetchedReport.industryGroupId);
 
-        // Then fetch custom criteria JSON for the ticker's sector/industry group
-        const criteriaResponse = await fetch(
-          `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/${slugify(sectorName)}/${slugify(
-            industryGroupName
-          )}/custom-criteria.json`,
-          { cache: 'no-cache' }
-        );
+  //       // Then fetch custom criteria JSON for the ticker's sector/industry group
+  //       const criteriaResponse = await fetch(
+  //         `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/${slugify(sectorName)}/${slugify(
+  //           industryGroupName
+  //         )}/custom-criteria.json`,
+  //         { cache: 'no-cache' }
+  //       );
 
-        if (criteriaResponse.status === 200) {
-          const igCriteria: IndustryGroupCriteriaDefinition = await criteriaResponse.json();
-          setIndustryGroupCriteria(igCriteria);
+  //       if (criteriaResponse.status === 200) {
+  //         const igCriteria: IndustryGroupCriteriaDefinition = await criteriaResponse.json();
+  //         setIndustryGroupCriteria(igCriteria);
 
-          // Now find the one criterionDefinition that matches the route param
-          const cDef = igCriteria.criteria?.find((c) => c.key === criterionKey) || null;
-          setCriterionDefinition(cDef);
+  //         // Now find the one criterionDefinition that matches the route param
+  //         const cDef = igCriteria.criteria?.find((c) => c.key === criterionKey) || null;
+  //         setCriterionDefinition(cDef);
 
-          // Also get the actual ticker's evaluation of that criterion
-          // The array is `evaluationsOfLatest10Q`, which are FullCriterionEvaluation
-          const evaluationOfLatest10QMap =
-            fetchedReport.evaluationsOfLatest10Q && Object.fromEntries(fetchedReport.evaluationsOfLatest10Q.map((crit) => [crit.criterionKey, crit]));
+  //         // Also get the actual ticker's evaluation of that criterion
+  //         // The array is `evaluationsOfLatest10Q`, which are FullCriterionEvaluation
+  //         const evaluationOfLatest10QMap =
+  //           fetchedReport.evaluationsOfLatest10Q && Object.fromEntries(fetchedReport.evaluationsOfLatest10Q.map((crit) => [crit.criterionKey, crit]));
 
-          // Grab the specific evaluation object
-          const cEval = (evaluationOfLatest10QMap && evaluationOfLatest10QMap[criterionKey]) || null;
+  //         // Grab the specific evaluation object
+  //         const cEval = (evaluationOfLatest10QMap && evaluationOfLatest10QMap[criterionKey]) || null;
 
-          setCriterionEvaluation(cEval);
-        }
-      } else {
-        setReportExists(false);
-      }
-    };
+  //         setCriterionEvaluation(cEval);
+  //       }
+  //     } else {
+  //       setReportExists(false);
+  //     }
+  //   };
 
-    checkReportExists();
-  }, [ticker, criterionKey]);
+  //   checkReportExists();
+  // }, [ticker, criterionKey]);
 
   // Button Handlers
-  const handleRegenerateAllSingleCriterionReports = async () => {
-    if (!report || !criterionKey) return;
+  // const handleRegenerateAllSingleCriterionReports = async () => {
+  //   if (!report || !criterionKey) return;
 
-    regenerateAllSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
+  //   regenerateAllSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
+  //     langflowWebhookUrl: getWebhookUrlFromLocalStorage(report.sectorId, report.industryGroupId, criterionKey)!,
+  //   });
+  // };
+
+  // const handleRegenerateSingleCriterionReports = async (section: string, reportKey: string | undefined) => {
+  //   if (!report || !criterionKey) return;
+
+  //   // For "report" we pass `reportKey`, otherwise we pass section
+  //   await regenerateSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
+  //     langflowWebhookUrl: getWebhookUrlFromLocalStorage(report.sectorId, report.industryGroupId, criterionKey)!,
+  //     reportKey: section === 'report' && reportKey ? reportKey : section,
+  //   });
+
+  //   setPollingSection(section === 'report' && reportKey ? reportKey : section);
+  // };
+
+  const handleRegenerateAllSingleCriterionReports = useCallback(async () => {
+    if (!report || !criterionKey) return;
+    await regenerateAllSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
       langflowWebhookUrl: getWebhookUrlFromLocalStorage(report.sectorId, report.industryGroupId, criterionKey)!,
     });
-  };
+  }, [report, criterionKey, regenerateAllSingleCriterionReports, ticker]);
 
-  const handleRegenerateSingleCriterionReports = async (section: string, reportKey: string | undefined) => {
-    if (!report || !criterionKey) return;
+  const handleRegenerateSingleCriterionReports = useCallback(
+    async (section: string, reportKey: string | undefined) => {
+      if (!report || !criterionKey) return;
 
-    // For "report" we pass `reportKey`, otherwise we pass section
-    await regenerateSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
-      langflowWebhookUrl: getWebhookUrlFromLocalStorage(report.sectorId, report.industryGroupId, criterionKey)!,
-      reportKey: section === 'report' && reportKey ? reportKey : section,
-    });
+      // For "report" we pass `reportKey`, otherwise we pass section
+      await regenerateSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
+        langflowWebhookUrl: getWebhookUrlFromLocalStorage(report.sectorId, report.industryGroupId, criterionKey)!,
+        reportKey: section === 'report' && reportKey ? reportKey : section,
+      });
 
-    setPollingSection(section === 'report' && reportKey ? reportKey : section);
-  };
+      setPollingSection(section === 'report' && reportKey ? reportKey : section);
+    },
+    [report, criterionKey, regenerateSingleCriterionReports, ticker]
+  );
 
   // Build breadcrumbs
   const breadcrumbs: BreadcrumbsOjbect[] = [
@@ -237,6 +279,15 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
   ];
 
   // Render
+  if (tickerReportLoading || industryGroupCriteriaLoading) {
+    return (
+      <PageWrapper>
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        <FullPageLoader />
+      </PageWrapper>
+    );
+  }
+
   if (!reportExists || !report || !industryGroupCriteria) {
     return (
       <PageWrapper>
