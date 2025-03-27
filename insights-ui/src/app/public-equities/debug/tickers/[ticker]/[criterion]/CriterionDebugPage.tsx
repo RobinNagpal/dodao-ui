@@ -32,12 +32,6 @@ interface CriterionDebugPageProps {
 
 export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDebugPageProps) {
   const [industryGroupCriteria, setIndustryGroupCriteria] = useState<IndustryGroupCriteriaDefinition | null>(null);
-  const [criterionDefinition, setCriterionDefinition] = useState<CriterionDefinition | null>(null);
-
-  const [pollingSection, setPollingSection] = useState<string | null>(null);
-  const [loadingActive, setLoadingActive] = useState(false);
-
-  // Confirmation modal states
   const [showCriterionConfirmModal, setShowCriterionConfirmModal] = useState(false);
   const [showSectionConfirmModal, setShowSectionConfirmModal] = useState(false);
   const [selectedSectionForRegeneration, setSelectedSectionForRegeneration] = useState<{
@@ -65,43 +59,6 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
       fetchIndustryGroupCriteria(tickerReport.sectorId, tickerReport.industryGroupId);
     }
   }, [tickerReport]);
-  useEffect(() => {
-    if (!pollingSection) return;
-
-    console.log(`Polling ${pollingSection}`);
-    // setLoadingActive(true);
-
-    const pollReportStatus = async () => {
-      const newFetchedReport = await reFetchTickerReport();
-      if (!newFetchedReport) return;
-
-      const evaluation = newFetchedReport.evaluationsOfLatest10Q?.find((evaluationItem) => evaluationItem.criterionKey === criterionKey);
-
-      let statusToCheck: ProcessingStatus;
-      switch (pollingSection) {
-        case 'performanceChecklist':
-          statusToCheck = evaluation?.performanceChecklistEvaluation?.status as ProcessingStatus;
-          break;
-        case 'importantMetrics':
-          statusToCheck = evaluation?.importantMetricsEvaluation?.status as ProcessingStatus;
-          break;
-        default:
-          // If it's a specific report, find it in evaluation.reports
-          const reportItem = evaluation?.reports?.find((r) => r.reportKey === pollingSection);
-          statusToCheck = reportItem?.status as ProcessingStatus;
-      }
-
-      console.log(`Polling ${pollingSection} status: ${statusToCheck}`);
-
-      if (statusToCheck === ProcessingStatus.Completed) {
-        // setLoadingActive(false);
-        setPollingSection(null);
-      }
-    };
-
-    const pollingInterval = setInterval(pollReportStatus, 20000);
-    return () => clearInterval(pollingInterval);
-  }, [pollingSection, reFetchTickerReport, criterionKey]);
 
   // Hooks for re-generation
   const {
@@ -143,7 +100,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
         reportKey: section === 'report' && reportKey ? reportKey : section,
       });
 
-      setPollingSection(section === 'report' && reportKey ? reportKey : section);
+      await reFetchTickerReport();
     },
     [tickerReport, criterionKey, regenerateSingleCriterionReports, ticker]
   );
@@ -172,6 +129,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
     },
   ];
 
+  const criterionDefinition = industryGroupCriteria?.criteria.find((c) => c.key === criterionKey);
   const criterionEvaluation = tickerReport?.evaluationsOfLatest10Q?.find((evaluationItem) => evaluationItem.criterionKey === criterionKey);
 
   const shouldPollPage =
@@ -193,7 +151,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
     return (
       <PageWrapper>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
-        <div className="mt-8 text-red-500">Criterion Evaluation not found in the report.</div>
+        <div className="mt-8 text-red-500">Criterion Definition not found.</div>
       </PageWrapper>
     );
   }
@@ -202,7 +160,13 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
 
-      {/* Single Criterion Debug UI */}
+      <ReloadingData
+        loadDataFn={reFetchTickerReport}
+        needsLoading={!!shouldPollPage}
+        reloadDurationInSec={20} // optional, defaults to 20
+        message="Reloading In-progress reports ..."
+      />
+
       <div className="mt-8">
         <h1 className="font-bold text-2xl mb-4">Debug: {criterionKey}</h1>
 
@@ -237,13 +201,6 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
             askForTextInput={true}
           />
         )}
-
-        <ReloadingData
-          loadDataFn={reFetchTickerReport}
-          needsLoading={!!shouldPollPage}
-          reloadDurationInSec={20} // optional, defaults to 20
-          message="Reloading In-progress reports ..."
-        />
 
         <div className="mt-8">
           <div className="mb-8">
@@ -339,6 +296,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
           onConfirm={async () => {
             await handleRegenerateSingleCriterionReports(selectedSectionForRegeneration.section, selectedSectionForRegeneration.reportKey);
             setShowSectionConfirmModal(false);
+            await reFetchTickerReport();
           }}
           title="Regenerate Section"
           confirmationText={`Are you sure you want to regenerate ${

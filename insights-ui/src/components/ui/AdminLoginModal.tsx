@@ -35,13 +35,8 @@ export default function AdminLoginModal({ open, onClose }: AdminLoginModalProps)
   }, [open]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const response = await postData(`${getBaseUrl()}/api/actions/authenticate`, { adminCode });
-
-    if (response?.success) {
-      localStorage.setItem('AUTHENTICATION_KEY', adminCode);
-      onClose();
-    }
+    localStorage.setItem('AUTHENTICATION_KEY', adminCode);
+    onClose();
   };
 
   return (

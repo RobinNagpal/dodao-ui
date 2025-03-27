@@ -14,7 +14,6 @@ export default function ReloadingData({ loadDataFn, needsLoading, reloadDuration
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleReload = useCallback(async () => {
-    // Prevent overlapping reload calls
     if (isLoading) return;
 
     setIsLoading(true);
@@ -25,7 +24,6 @@ export default function ReloadingData({ loadDataFn, needsLoading, reloadDuration
       console.error('Error reloading data:', error);
     } finally {
       setIsLoading(false);
-      // Reset the countdown after a reload
       setCountdown(reloadDurationInSec);
     }
   }, [loadDataFn, isLoading, onLoadComplete, reloadDurationInSec]);
@@ -44,9 +42,11 @@ export default function ReloadingData({ loadDataFn, needsLoading, reloadDuration
       // Set up polling that decrements the countdown every second
       intervalIdRef.current = setInterval(() => {
         setCountdown((prevCount) => {
-          // When countdown reaches 1, call loadDataFn and reset countdown
           if (prevCount <= 1) {
-            handleReload();
+            // Schedule handleReload asynchronously to avoid updating parent during render
+            setTimeout(() => {
+              handleReload();
+            }, 0);
             return reloadDurationInSec;
           }
           return prevCount - 1;
@@ -54,7 +54,6 @@ export default function ReloadingData({ loadDataFn, needsLoading, reloadDuration
       }, 1000);
     }
 
-    // Cleanup the interval when needsLoading changes or component unmounts
     return () => {
       if (intervalIdRef.current) {
         clearInterval(intervalIdRef.current);
@@ -63,14 +62,13 @@ export default function ReloadingData({ loadDataFn, needsLoading, reloadDuration
     };
   }, [needsLoading, reloadDurationInSec, handleReload]);
 
-  // If needsLoading is false, do not render the component
   if (!needsLoading) {
     return null;
   }
 
   return (
-    <div className="flex items-center space-x-2 bg-blue-50 p-2 rounded-md">
-      <div className="text-sm text-gray-700">{isLoading ? 'Updating...' : `${message} in ${countdown} sec`}</div>
+    <div className="flex items-center space-x-2 block-bg-color p-2 rounded-md">
+      <div className="text-sm text-color">{isLoading ? 'Updating...' : `${message} in ${countdown} sec`}</div>
     </div>
   );
 }
