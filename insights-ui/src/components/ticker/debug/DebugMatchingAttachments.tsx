@@ -22,7 +22,7 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
   const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
   const renderer = getMarkedRenderer();
   const getMarkdownContent = (content?: string) => {
-    return content ? marked.parse(content, { renderer }) : 'No Information';
+    return content ? marked.parse(content, { renderer }) : 'No Matched Content';
   };
 
   const {
@@ -75,11 +75,7 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
               }
             >
               <div className="mt-4">
-                {criterion.matchedContent ? (
-                  <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(criterion.matchedContent) }} />
-                ) : (
-                  'No Matched Content'
-                )}
+                <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(criterion.matchedContent) }} />
               </div>
             </Accordion>
           </div>
