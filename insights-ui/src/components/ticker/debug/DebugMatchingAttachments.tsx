@@ -13,9 +13,10 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 export interface DebugMatchingAttachmentsProps {
   report: FullNestedTickerReport;
   industryGroupCriteria: IndustryGroupCriteriaDefinition;
+  onPostUpdate: () => Promise<void>;
 }
 
-export default function DebugMatchingAttachments({ report }: DebugMatchingAttachmentsProps) {
+export default function DebugMatchingAttachments({ report, onPostUpdate }: DebugMatchingAttachmentsProps) {
   const ticker = report.tickerKey;
 
   const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
@@ -35,7 +36,8 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
   });
 
   const handleRegenerateMatchingCriteria = async () => {
-    regenerateMatchingCriteria(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-criteria-matching`);
+    await regenerateMatchingCriteria(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-criteria-matching`);
+    await onPostUpdate();
   };
 
   return (
@@ -50,7 +52,7 @@ export default function DebugMatchingAttachments({ report }: DebugMatchingAttach
             onClick={handleRegenerateMatchingCriteria}
             disabled={matchingCriteriaLoading}
           >
-            Regenerate Matching Criteria - Status ${report.criteriaMatchesOfLatest10Q?.status}
+            Regenerate Matching Criteria
           </Button>
         </div>
       </PrivateWrapper>
