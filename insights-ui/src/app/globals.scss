@@ -1,11 +1,11 @@
-@import 'styles/variables';
-@import 'styles/theme-styles';
-@import 'styles/scrollbar';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
+@import 'styles/variables';
+@import 'styles/theme-styles';
+@import 'styles/scrollbar';
 
 @import "styles/markdown";
 

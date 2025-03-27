@@ -1,4 +1,3 @@
-import DisabledOnLocalhostButton from '@/components/ui/DisabledOnLocalhostButton';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -27,7 +26,7 @@ export default function ManagementDiscussionButton({ tickerKey, criterionKey }: 
     error: managementDiscussionError,
   } = usePostData<string, {}>({
     errorMessage: 'Failed to regenerate management discussion',
-    successMessage: 'anagement Discussionregeneration started successfully',
+    successMessage: 'Management Discussion regeneration started successfully',
     redirectPath: ``,
   });
 
@@ -55,16 +54,15 @@ export default function ManagementDiscussionButton({ tickerKey, criterionKey }: 
           <div className="flex justify-around items-center">
             <div>Management Discussion Criteria Matching</div>
             <div>Criterion : {criterionKey}</div>
-            <DisabledOnLocalhostButton
+            <Button
               loading={managementDiscussionLoading}
               primary
               variant="contained"
               onClick={() => handleRegenerateManagementDiscussion(criterionKey)}
               disabled={managementDiscussionLoading}
-              disabledLabel="Disabled on Localhost"
             >
               Process Criteria Matching
-            </DisabledOnLocalhostButton>
+            </Button>
           </div>
           <hr className="m-5" />
           <div className="h-full w-full">

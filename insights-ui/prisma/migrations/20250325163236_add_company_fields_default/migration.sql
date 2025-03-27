@@ -6,7 +6,8 @@
 
 */
 -- AlterTable
-ALTER TABLE "tickers" ALTER COLUMN "company_name" SET NOT NULL,
-ALTER COLUMN "company_name" SET DEFAULT 'Unknown Company',
-ALTER COLUMN "short_description" SET NOT NULL,
-ALTER COLUMN "short_description" SET DEFAULT 'No description provided';
+update tickers set company_name='Unknown Company', short_description = 'No description provided';
+
+ALTER TABLE "tickers"
+    ALTER COLUMN "company_name" SET NOT NULL,
+    ALTER COLUMN "short_description" SET NOT NULL;

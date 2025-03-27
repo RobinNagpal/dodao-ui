@@ -1,3 +1,4 @@
+import PerformanceChecklistEvaluation from '@/components/ticker-reports/PerformanceChecklistEvaluation';
 import { ReportSection } from '@/components/ticker-reports/ReportSection';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CriterionDefinition, IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
@@ -47,18 +48,7 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
           <div className="overflow-x-auto">
             {/* Performance Checklist Section */}
             <h3 className="text-lg font-semibold mt-6 mb-4">Performance Checklist</h3>
-            {criterion.performanceChecklistEvaluation?.performanceChecklistItems?.length ? (
-              <ul className="list-disc mt-2">
-                {criterion.performanceChecklistEvaluation.performanceChecklistItems.map((item, index) => (
-                  <li key={index} className="mb-1 flex items-start">
-                    <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
-                    <span>{item.checklistItem}</span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-sm text-gray-500 text-center">No performance checklist available</p>
-            )}
+            <PerformanceChecklistEvaluation criterion={criterion} />
 
             <h3 className="text-lg font-semibold mt-6 mb-4">Important Metrics</h3>
             {criterion.importantMetricsEvaluation?.metrics?.length ? (

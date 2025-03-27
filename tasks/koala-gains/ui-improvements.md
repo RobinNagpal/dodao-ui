@@ -1,22 +1,4 @@
 # Must have fixes
-
-## Add notifications and make sure they work
-This is what we have in academy UI
-```jsx
-  return (
-  <html lang="en" className="h-full">
-  <body className={'max-h-screen'} style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
-  <StyledComponentsRegistry>
-    <NotificationProvider>
-      <ChildLayout session={session} space={space} spaceError={!space}>
-        {children}
-      </ChildLayout>
-    </NotificationProvider>
-  </StyledComponentsRegistry>
-  </body>
-  </html>
-);
-```
 We need to add the notifications provider. The `usePostData` hook already has the notifications stuff, so see if that works.
 
 ## Criteria Definition Page
