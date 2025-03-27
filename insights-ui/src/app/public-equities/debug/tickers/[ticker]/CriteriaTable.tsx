@@ -42,7 +42,7 @@ export default function CriteriaTable({ sectorName, industryGroupName, customCri
                 <td style={tableCellStyle}>{criterion.name}</td>
                 <td style={tableCellStyle} className="w-48">
                   <div>
-                    <Link href={`/public-equities/debug/tickers/${ticker}/${criterion.key}`} className="text-blue-500 hover:underline w-full">
+                    <Link href={`/public-equities/debug/tickers/${ticker}/criteria/${criterion.key}`} className="text-blue-500 hover:underline w-full">
                       Debug Page
                     </Link>
                   </div>
@@ -55,7 +55,7 @@ export default function CriteriaTable({ sectorName, industryGroupName, customCri
                     </Link>
                   </div>
                   <div>
-                    <Link href={`/public-equities/tickers/${ticker}`} className="text-blue-500 hover:underline">
+                    <Link href={`/public-equities/tickers/${ticker}/criteria/${criterion.key}`} className="text-blue-500 hover:underline">
                       Report Page
                     </Link>
                   </div>

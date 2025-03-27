@@ -6,6 +6,8 @@ import { CriterionDefinition, IndustryGroupCriteriaDefinition } from '@/types/pu
 import { FullNestedTickerReport } from '@/types/public-equity/ticker-report-types';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import CriterionActionsDropdown from './CriterionActionsDropdown';
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
 
 export default async function CriterionDetailsPage({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }) {
   const { tickerKey, criterionKey } = await params;
@@ -31,7 +33,7 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
     {
       label: `Criterion: ${criterionKey}`,
       href: `/public-equities/tickers/${tickerKey}/criteria/${criterionKey}`,
-      name: `Criterion: ${criterionKey}`,
+      name: `Criterion: ${selectedCriterion.name}`,
       current: true,
     },
   ];
@@ -40,6 +42,11 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="mx-auto text-color">
+        <div className="flex justify-end">
+          <PrivateWrapper>
+            <CriterionActionsDropdown tickerKey={tickerKey} criterionKey={criterionKey} />
+          </PrivateWrapper>
+        </div>
         <div className="text-center text-color my-5">
           <h1 className="font-semibold leading-6 text-2xl">Ticker: {tickerKey}</h1>
           <div className="my-5">Criterion: {criterionEvaluation.criterionKey}</div>
