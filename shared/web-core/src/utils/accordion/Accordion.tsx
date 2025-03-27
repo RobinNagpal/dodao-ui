@@ -15,11 +15,17 @@ export default function Accordion({ isOpen, label, onClick, children, hasError =
     <div>
       {hasError && <div className="text-red-500 ml-1 mb-2">{errorMessage}</div>}
       <div
-        className={`rounded-md mb-4 pt-2 cursor-pointer ${styles.accordionContainer} ${hasError ? styles.error : ''} ${isOpen ? styles.isOpened : ''}`}
+        // Increased bottom margin (mb-6) and top padding (pt-3) for better spacing
+        className={`rounded-md mb-6 py-3 cursor-pointer ${styles.accordionContainer} ${hasError ? styles.error : ''} ${isOpen ? styles.isOpened : ''}`}
         onClick={(e) => !isOpen && onClick(e)}
       >
         <div id={`accordion-${label}`}>
-          <button type="button" className="flex rounded-md items-center justify-between w-full px-2 font-medium rtl:text-right gap-2" onClick={onClick}>
+          <button
+            type="button"
+            // Increased horizontal padding from px-2 to px-4 for a more spacious feel
+            className="flex rounded-md items-center justify-between w-full px-4 font-medium rtl:text-right gap-2"
+            onClick={onClick}
+          >
             <span className="text-lg">{label}</span>
             <svg
               className="w-3 h-3 shrink-0"
@@ -38,7 +44,8 @@ export default function Accordion({ isOpen, label, onClick, children, hasError =
             maxHeight: isOpen ? '1000px' : '0',
             opacity: isOpen ? 1 : 0,
             overflow: 'auto',
-            padding: '0 1rem 1rem 1rem',
+            // When open, add padding on all sides; when closed, keep horizontal padding only
+            padding: isOpen ? '1.5rem' : '0 1.5rem',
           }}
           className={styles.accordionContent}
         >

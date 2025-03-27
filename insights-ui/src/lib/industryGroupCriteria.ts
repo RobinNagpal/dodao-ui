@@ -96,6 +96,6 @@ export async function getCriteria(sectorName: string, industryGroupName: string)
 export async function getCriteriaByIds(sectorId: number, industryGroupId: number): Promise<IndustryGroupCriteriaDefinition> {
   const { sectorName, industryGroupName } = getGicsNames(sectorId, industryGroupId);
   const key = getCriteriaFileKey(sectorName, industryGroupName);
-  const dataStr = await getObjectFromS3(key);
-  return JSON.parse(dataStr) as IndustryGroupCriteriaDefinition;
+  const response = await fetch(`https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/${key}`);
+  return (await response.json()) as IndustryGroupCriteriaDefinition;
 }
