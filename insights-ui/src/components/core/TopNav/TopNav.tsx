@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import AdminLoginModal from '@/components/ui/AdminLoginModal';
 
 const navigation = [
   { name: 'Crowdfunding Reports', href: '/crowd-funding', newTab: false },
@@ -15,6 +16,7 @@ const navigation = [
 
 export default function TopNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   return (
     <header className="bg-gray-800 mt-2">
@@ -39,9 +41,9 @@ export default function TopNav() {
               {item.name}
             </Link>
           ))}
-          <a href="#" className="text-sm/6 font-semibold text-gray-300 hover:text-white">
+          <div onClick={() => setLoginModalOpen(true)} className="text-sm/6 font-semibold text-gray-300 hover:text-white cursor-pointer">
             Log in <span aria-hidden="true">&rarr;</span>
-          </a>
+          </div>
         </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -80,6 +82,7 @@ export default function TopNav() {
           </div>
         </DialogPanel>
       </Dialog>
+      <AdminLoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
     </header>
   );
 }
