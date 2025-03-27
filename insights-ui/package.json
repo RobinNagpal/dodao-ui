@@ -23,6 +23,7 @@
     "@rjsf/validator-ajv8": "^5.24.8",
     "ajv": "^8.17.1",
     "chart.js": "^4.4.7",
+    "cheerio": "^1.0.0",
     "gray-matter": "^4.0.3",
     "json5": "^2.2.3",
     "next": "15.0.3",
@@ -34,7 +35,9 @@
     "react-dom": "18.3.1",
     "react-json-view": "^1.21.3",
     "rehype-slug": "^6.0.0",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "turndown": "^7.2.0",
+    "turndown-plugin-gfm": "^1.0.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
