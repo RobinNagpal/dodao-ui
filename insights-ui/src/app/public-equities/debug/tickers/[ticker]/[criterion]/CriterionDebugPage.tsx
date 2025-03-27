@@ -6,6 +6,7 @@ import DebugCriterionReport from '@/components/ticker/debug/DebugCriterionReport
 import WebhookUrlInput, { getWebhookUrlFromLocalStorage } from '@/components/ticker/debug/WebhookUrlInput';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { getGicsNames } from '@/lib/gicsHelper';
+import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
 import { CriterionDefinition, IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { FullCriterionEvaluation, FullNestedTickerReport } from '@/types/public-equity/ticker-report-types';
 import { CreateAllCriterionReportsRequest, CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
@@ -30,11 +31,8 @@ interface CriterionDebugPageProps {
 }
 
 export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDebugPageProps) {
-  const [reportExists, setReportExists] = useState(false);
-  const [report, setReport] = useState<FullNestedTickerReport | null>(null);
   const [industryGroupCriteria, setIndustryGroupCriteria] = useState<IndustryGroupCriteriaDefinition | null>(null);
   const [criterionDefinition, setCriterionDefinition] = useState<CriterionDefinition | null>(null);
-  const [criterionEvaluation, setCriterionEvaluation] = useState<FullCriterionEvaluation | null>(null);
 
   const [pollingSection, setPollingSection] = useState<string | null>(null);
   const [loadingActive, setLoadingActive] = useState(false);
@@ -51,65 +49,22 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
    * 1. Fetch the Ticker’s entire report
    */
   const {
-    data: fetchedReport,
+    data: tickerReport,
     error: tickerReportError,
     loading: tickerReportLoading,
     reFetchData: reFetchTickerReport,
   } = useFetchData<FullNestedTickerReport>(`${getBaseUrl()}/api/tickers/${ticker}`, { cache: 'no-cache' }, 'Failed to fetch ticker data');
 
-  /**
-   * 2. Based on the sector/industry from the fetched Ticker Report, build the custom-criteria.json URL
-   *    We skip the fetch unless we have a valid Ticker Report.
-   */
-  const [sectorAndIndustryUrl, setSectorAndIndustryUrl] = useState<string>('');
-  const {
-    data: fetchedIndustryGroupCriteria,
-    error: industryGroupCriteriaError,
-    loading: industryGroupCriteriaLoading,
-  } = useFetchData<IndustryGroupCriteriaDefinition>(sectorAndIndustryUrl, { skipInitialFetch: !sectorAndIndustryUrl }, 'Failed to fetch custom criteria');
+  const fetchIndustryGroupCriteria = async (sectorId: number, industryGroupId: number) => {
+    const industryGroupCriteria = await getCriteriaByIds(sectorId, industryGroupId);
+    setIndustryGroupCriteria(industryGroupCriteria);
+  };
 
-  /**
-   * 3. Once Ticker Report is fetched, set local states and build the URL for IndustryGroupCriteria
-   */
   useEffect(() => {
-    if (fetchedReport) {
-      setReport(fetchedReport);
-      setReportExists(true);
-
-      const { sectorName, industryGroupName } = getGicsNames(fetchedReport.sectorId, fetchedReport.industryGroupId);
-      const newUrl = `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/${slugify(sectorName)}/${slugify(
-        industryGroupName
-      )}/custom-criteria.json`;
-      setSectorAndIndustryUrl(newUrl);
+    if (tickerReport?.sectorId && tickerReport?.industryGroupId) {
+      fetchIndustryGroupCriteria(tickerReport.sectorId, tickerReport.industryGroupId);
     }
-    if (tickerReportError) {
-      // If there's an error (e.g., 404), we can mark it as non-existent
-      setReportExists(false);
-    }
-  }, [fetchedReport, tickerReportError]);
-
-  /**
-   * 4. Once the IndustryGroupCriteria is fetched, set local states for criterionDefinition, criterionEvaluation
-   */
-  useEffect(() => {
-    if (fetchedIndustryGroupCriteria && report) {
-      setIndustryGroupCriteria(fetchedIndustryGroupCriteria);
-
-      // Find the specific criterion definition for this route param
-      const cDef = fetchedIndustryGroupCriteria.criteria?.find((c) => c.key === criterionKey) || null;
-      setCriterionDefinition(cDef);
-
-      // Ticker’s evaluation of that criterion
-      const evaluationOfLatest10QMap =
-        report.evaluationsOfLatest10Q && Object.fromEntries(report.evaluationsOfLatest10Q.map((crit) => [crit.criterionKey, crit]));
-      const cEval = (evaluationOfLatest10QMap && evaluationOfLatest10QMap[criterionKey]) || null;
-      setCriterionEvaluation(cEval);
-    }
-  }, [fetchedIndustryGroupCriteria, report, criterionKey]);
-
-  /**
-   * Polling logic (re-fetch the Ticker Report to check if a re-generated section is completed)
-   */
+  }, [tickerReport]);
   useEffect(() => {
     if (!pollingSection) return;
 
@@ -172,25 +127,25 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
   });
 
   const handleRegenerateAllSingleCriterionReports = useCallback(async () => {
-    if (!report || !criterionKey) return;
+    if (!tickerReport || !criterionKey) return;
     await regenerateAllSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
-      langflowWebhookUrl: getWebhookUrlFromLocalStorage(report.sectorId, report.industryGroupId, criterionKey)!,
+      langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.sectorId, tickerReport.industryGroupId, criterionKey)!,
     });
-  }, [report, criterionKey, regenerateAllSingleCriterionReports, ticker]);
+  }, [tickerReport, criterionKey, regenerateAllSingleCriterionReports, ticker]);
 
   const handleRegenerateSingleCriterionReports = useCallback(
     async (section: string, reportKey: string | undefined) => {
-      if (!report || !criterionKey) return;
+      if (!tickerReport || !criterionKey) return;
 
       // For "report" we pass `reportKey`, otherwise we pass section
       await regenerateSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-single-criterion-reports`, {
-        langflowWebhookUrl: getWebhookUrlFromLocalStorage(report.sectorId, report.industryGroupId, criterionKey)!,
+        langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.sectorId, tickerReport.industryGroupId, criterionKey)!,
         reportKey: section === 'report' && reportKey ? reportKey : section,
       });
 
       setPollingSection(section === 'report' && reportKey ? reportKey : section);
     },
-    [report, criterionKey, regenerateSingleCriterionReports, ticker]
+    [tickerReport, criterionKey, regenerateSingleCriterionReports, ticker]
   );
 
   // Build breadcrumbs
@@ -217,17 +172,14 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
     },
   ];
 
-  // Render
-  // if (tickerReportLoading || industryGroupCriteriaLoading) {
-  //   return (
-  //     <PageWrapper>
-  //       <Breadcrumbs breadcrumbs={breadcrumbs} />
-  //       <FullPageLoader />
-  //     </PageWrapper>
-  //   );
-  // }
+  const criterionEvaluation = tickerReport?.evaluationsOfLatest10Q?.find((evaluationItem) => evaluationItem.criterionKey === criterionKey);
 
-  if (!reportExists || !report || !industryGroupCriteria) {
+  const shouldPollPage =
+    criterionEvaluation?.importantMetricsEvaluation?.status === ProcessingStatus.InProgress ||
+    criterionEvaluation?.performanceChecklistEvaluation?.status === ProcessingStatus.InProgress ||
+    criterionEvaluation?.reports?.some((r) => r.status === ProcessingStatus.InProgress);
+
+  if (tickerReportLoading || !tickerReport || !industryGroupCriteria) {
     return (
       <PageWrapper>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -241,7 +193,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
     return (
       <PageWrapper>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
-        <div className="mt-8 text-red-500">Criterion Key not found.</div>
+        <div className="mt-8 text-red-500">Criterion Evaluation not found in the report.</div>
       </PageWrapper>
     );
   }
@@ -257,7 +209,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
         <PrivateWrapper>
           <div className="mb-5 flex items-center space-x-5">
             {/* Webhook URL input (per-criterion) */}
-            <WebhookUrlInput criterionDefinition={criterionDefinition} sectorId={report.sectorId} industryGroupId={report.industryGroupId} />
+            <WebhookUrlInput criterionDefinition={criterionDefinition} sectorId={tickerReport.sectorId} industryGroupId={tickerReport.industryGroupId} />
 
             {/* This is the "Regenerate (3m)" button for the entire criterion */}
             <Button
@@ -286,12 +238,12 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
           />
         )}
 
-        {/* <ReloadingData
+        <ReloadingData
           loadDataFn={reFetchTickerReport}
-          needsLoading={loadingActive}
+          needsLoading={!!shouldPollPage}
           reloadDurationInSec={20} // optional, defaults to 20
-          message="Loading new data from server"
-        /> */}
+          message="Reloading In-progress reports ..."
+        />
 
         <div className="mt-8">
           <div className="mb-8">
@@ -365,7 +317,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
               return (
                 <div key={reportDef.key} className="my-4">
                   <DebugCriterionReport
-                    tickerReport={report}
+                    tickerReport={tickerReport}
                     industryGroupCriteria={industryGroupCriteria}
                     criterionDefinition={criterionDefinition}
                     reportDefinition={reportDef}
