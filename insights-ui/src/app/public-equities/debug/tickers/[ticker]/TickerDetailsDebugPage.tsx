@@ -1,50 +1,39 @@
 'use client';
 
-import CriteriaTable from './CriteriaTable';
 import DebugFinancialStatements from '@/components/ticker/debug/DebugFinancialStatements';
 import DebugMatchingAttachments from '@/components/ticker/debug/DebugMatchingAttachments';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { getGicsNames } from '@/lib/gicsHelper';
+import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { FullNestedTickerReport } from '@/types/public-equity/ticker-report-types';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { useEffect, useState } from 'react';
+import CriteriaTable from './CriteriaTable';
 
 export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
   // New state for section-specific regeneration confirmation
-  const [reportExists, setReportExists] = useState(false);
-  const [report, setReport] = useState<FullNestedTickerReport>();
+
   const [industryGroupCriteria, setIndustryGroupCriteria] = useState<IndustryGroupCriteriaDefinition>();
+  const {
+    data: tickerReport,
+    loading,
+    error,
+    reFetchData,
+  } = useFetchData<FullNestedTickerReport>(`${getBaseUrl()}/api/tickers/${ticker}`, { cache: 'no-cache' }, 'Failed to fetch ticker report');
 
-  const checkReportExists = async () => {
-    const response = await fetch(`${getBaseUrl()}/api/tickers/${ticker}`, { cache: 'no-cache' });
-    if (response.status === 200) {
-      setReportExists(true);
-      const report: FullNestedTickerReport = await response.json();
-      setReport(report);
-      const { sectorName, industryGroupName } = getGicsNames(report.sectorId, report.industryGroupId);
-      const industryGroupCriteria = await fetch(
-        `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/${slugify(sectorName)}/${slugify(
-          industryGroupName
-        )}/custom-criteria.json`,
-        { cache: 'no-cache' }
-      );
-
-      if (industryGroupCriteria.status === 200) {
-        setIndustryGroupCriteria(await industryGroupCriteria.json());
-      }
-    } else {
-      setReportExists(false);
-    }
+  const fetchIndustryGroupCriteria = async (sectorId: number, industryGroupId: number) => {
+    const industryGroupCriteria = await getCriteriaByIds(sectorId, industryGroupId);
+    setIndustryGroupCriteria(industryGroupCriteria);
   };
-
   useEffect(() => {
-    checkReportExists();
-  }, []);
+    if (tickerReport?.sectorId && tickerReport?.industryGroupId) {
+      fetchIndustryGroupCriteria(tickerReport.sectorId, tickerReport.industryGroupId);
+    }
+  }, [tickerReport]);
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
@@ -64,13 +53,18 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
     },
   ];
 
+  const onPostUpdate = async () => {
+    await reFetchData();
+  };
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      {reportExists && report && industryGroupCriteria ? (
+      {loading && <FullPageLoader />}
+      {error && <div className="text-red-500">{error}</div>}
+      {tickerReport && industryGroupCriteria && (
         <div>
-          <DebugFinancialStatements report={report} industryGroupCriteria={industryGroupCriteria} />
-          <DebugMatchingAttachments report={report} industryGroupCriteria={industryGroupCriteria} />
+          <DebugFinancialStatements report={tickerReport} industryGroupCriteria={industryGroupCriteria} onPostUpdate={onPostUpdate} />
+          <DebugMatchingAttachments report={tickerReport} industryGroupCriteria={industryGroupCriteria} onPostUpdate={onPostUpdate} />
           <CriteriaTable
             sectorName={industryGroupCriteria.selectedSector.name}
             industryGroupName={industryGroupCriteria.selectedIndustryGroup.name}
@@ -78,8 +72,6 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
             ticker={ticker}
           />
         </div>
-      ) : (
-        <FullPageLoader />
       )}
     </PageWrapper>
   );
