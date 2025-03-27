@@ -26,17 +26,8 @@ export default function ManagementDiscussionButton({ tickerKey, criterionKey }: 
     error: managementDiscussionError,
   } = usePostData<string, {}>({
     errorMessage: 'Failed to regenerate management discussion',
-    successMessage: 'Management Discussion regeneration started successfully',
     redirectPath: ``,
   });
-
-  /*  useEffect(() => {
-    if (updatedManagementDiscussion) {
-      setManagementDiscussionContent(updatedManagementDiscussion);
-    } else if (managementDiscussionError) {
-      setManagementDiscussionContent(managementDiscussionError);
-    }
-  }, [updatedManagementDiscussion, managementDiscussionError]);*/
 
   const handleRegenerateManagementDiscussion = async (criterionKey: string) => {
     await regenerateManagementDiscussion(
@@ -64,22 +55,15 @@ export default function ManagementDiscussionButton({ tickerKey, criterionKey }: 
               Process Criteria Matching
             </Button>
           </div>
+          <div>{managementDiscussionError && <div className="text-red-500">{managementDiscussionError}</div>}</div>
           <hr className="m-5" />
           <div className="h-full w-full">
-            {updatedManagementDiscussion ? (
-              <div
-                className="markdown-body text-md text-left py-10 px-5"
-                dangerouslySetInnerHTML={{
-                  __html: getMarkdownContent(updatedManagementDiscussion),
-                }}
-              />
-            ) : managementDiscussionError ? (
-              <div className="text-red-500">{managementDiscussionError}</div>
-            ) : (
-              <div className="flex items-center justify-center my-40 text-gray-500">
-                Extracted content from Management Discussion section, based on the Matching Instructions will be shown here.
-              </div>
-            )}
+            <div
+              className="markdown-body text-md text-left py-10 px-5"
+              dangerouslySetInnerHTML={{
+                __html: getMarkdownContent(updatedManagementDiscussion),
+              }}
+            />
           </div>
         </div>
       </FullPageModal>

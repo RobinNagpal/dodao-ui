@@ -31,7 +31,6 @@ export default function DebugFinancialStatements({ report, onPostUpdate }: Debug
     error: financialStatementsError,
   } = usePostData<string, {}>({
     errorMessage: 'Failed to refetch financial statements.',
-    successMessage: 'Financial Statements refetching started successfully',
     redirectPath: ``,
   });
 
