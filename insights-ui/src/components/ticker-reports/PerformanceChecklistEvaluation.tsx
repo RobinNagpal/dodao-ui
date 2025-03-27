@@ -1,12 +1,12 @@
 import { FullCriterionEvaluation } from '@/types/public-equity/ticker-report-types';
 
-export default function PerformanceChecklistEvaluation({ criterion }: { criterion?: FullCriterionEvaluation }) {
+export default function PerformanceChecklistEvaluation({ criterionEvaluation }: { criterionEvaluation?: FullCriterionEvaluation }) {
   return (
     <>
-      {criterion?.performanceChecklistEvaluation?.performanceChecklistItems?.length ? (
+      {criterionEvaluation?.performanceChecklistEvaluation?.performanceChecklistItems?.length ? (
         <ul className="list-disc mt-2">
-          {criterion.performanceChecklistEvaluation.performanceChecklistItems.map((item, index) => (
-            <div key={index + '_performance_checklist_' + criterion.criterionKey} className="mb-3">
+          {criterionEvaluation.performanceChecklistEvaluation.performanceChecklistItems.map((item, index) => (
+            <div key={index + '_performance_checklist_' + criterionEvaluation.criterionKey} className="mb-3">
               <li className="flex items-start">
                 <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
                 <span className="font-bold">{item.checklistItem}</span>

@@ -1,6 +1,7 @@
 'use client';
 
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import ImportantMetricsReport from '@/components/ticker-reports/ImportantMetricsReport';
 import PerformanceChecklistEvaluation from '@/components/ticker-reports/PerformanceChecklistEvaluation';
 import DebugCriterionReport from '@/components/ticker/debug/DebugCriterionReport';
 import WebhookUrlInput, { getWebhookUrlFromLocalStorage } from '@/components/ticker/debug/WebhookUrlInput';
@@ -222,12 +223,12 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
               </PrivateWrapper>
             </div>
 
-            <PerformanceChecklistEvaluation criterion={criterionEvaluation || undefined} />
+            <PerformanceChecklistEvaluation criterionEvaluation={criterionEvaluation || undefined} />
           </div>
 
           {/* Important Metrics */}
           <div className="mb-8">
-            <div className="flex">
+            <div className="flex mb-4">
               <h2 className="text-lg font-bold">Important Metrics</h2>
               <PrivateWrapper>
                 <IconButton
@@ -245,24 +246,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
               </PrivateWrapper>
             </div>
 
-            <div className="m-4 p-3 overflow-x-auto">
-              <table className="w-full text-left border-collapse border border-gray-200">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-2 border">Key</th>
-                    <th className="px-4 py-2 border">Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {criterionEvaluation?.importantMetricsEvaluation?.metrics?.map((metric) => (
-                    <tr key={metric.metricKey}>
-                      <td className="px-4 py-2 border">{metric.metricKey}</td>
-                      <td className="px-4 py-2 border">{metric.value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <ImportantMetricsReport criterionEvaluation={criterionEvaluation} />
           </div>
 
           {/* Reports */}
