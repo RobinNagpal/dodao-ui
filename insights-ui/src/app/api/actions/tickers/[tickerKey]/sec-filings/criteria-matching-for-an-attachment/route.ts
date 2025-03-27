@@ -19,13 +19,10 @@ const getCriteriaMatchingForAttachment = async (req: NextRequest, { params }: { 
   });
   const criteriaMatch = await criteriaMatchResponse.json();
 
-  return 'message' in criteriaMatch
-    ? {
-        criterion_matches: [],
-        status: 'failure',
-        failureReason: criteriaMatch.message,
-      }
-    : (criteriaMatch as CriterionMatchResponse);
+  if ('message' in criteriaMatch) {
+    throw new Error(criteriaMatch.message);
+  }
+  return criteriaMatch as CriterionMatchResponse;
 };
 
 export const POST = withErrorHandlingV2<CriterionMatchResponse>(getCriteriaMatchingForAttachment);
