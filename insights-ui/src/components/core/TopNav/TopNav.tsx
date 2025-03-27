@@ -1,10 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { UserIcon } from '@heroicons/react/24/solid';
 import AdminLoginModal from '@/components/ui/AdminLoginModal';
+import { getAuthKey } from '@/util/auth/authKey';
 
 const navigation = [
   { name: 'Crowdfunding Reports', href: '/crowd-funding', newTab: false },
@@ -17,6 +19,34 @@ const navigation = [
 export default function TopNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const toggleMenu = () => {
+    setMenuOpen((prev) => !prev);
+  };
+
+  const isLoggedin = getAuthKey() ? true : false;
+
+  const handleLogout = () => {
+    localStorage.removeItem('AUTHENTICATION_KEY');
+    setMenuOpen(false);
+    setMobileMenuOpen(false);
+  };
+
+  // Close the menu when clicking outside the component
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Cast event.target as Node to access the 'contains' method
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="bg-gray-800 mt-2">
@@ -35,15 +65,46 @@ export default function TopNav() {
             <Bars3Icon aria-hidden="true" className="h-6 w-6" />
           </button>
         </div>
-        <div className="hidden lg:flex lg:gap-x-12">
+        <div className="hidden lg:flex lg:gap-x-12 items-center">
           {navigation.map((item) => (
-            <Link key={item.name} href={item.href} className="text-sm/6 font-semibold text-gray-300 hover:text-white" target={item.newTab ? '_blank' : '_self'}>
+            <Link key={item.name} href={item.href} className="text-sm/6 font-semibold text-color" target={item.newTab ? '_blank' : '_self'}>
               {item.name}
             </Link>
           ))}
-          <div onClick={() => setLoginModalOpen(true)} className="text-sm/6 font-semibold text-gray-300 hover:text-white cursor-pointer">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </div>
+          {isLoggedin ? (
+            <div className="relative" ref={menuRef}>
+              <div>
+                <button
+                  type="button"
+                  onClick={toggleMenu}
+                  className="relative flex text-sm ring-2 ring-color rounded-full "
+                  id="user-menu-button"
+                  aria-expanded={menuOpen}
+                  aria-haspopup="true"
+                >
+                  <span className="absolute -inset-1.5"></span>
+                  <span className="sr-only">Open user menu</span>
+                  <UserIcon className="m-2 text-color h-5 w-5" />
+                </button>
+              </div>
+              {menuOpen && (
+                <div
+                  className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md background-color py-1 ring-1 shadow-lg ring-color focus:outline-hidden"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="user-menu-button"
+                >
+                  <div className="block px-4 py-2 text-sm font-semibold text-color cursor-pointer" id="user-menu-item-2" onClick={handleLogout}>
+                    Log out
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div onClick={() => setLoginModalOpen(true)} className="text-sm/6 font-semibold text-color cursor-pointer">
+              Log in <span aria-hidden="true">&rarr;</span>
+            </div>
+          )}
         </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -74,9 +135,18 @@ export default function TopNav() {
                 ))}
               </div>
               <div className="py-6">
-                <a href="#" className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700">
-                  Log in
-                </a>
+                {isLoggedin ? (
+                  <div onClick={handleLogout} className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700">
+                    Log out
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => setLoginModalOpen(true)}
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700"
+                  >
+                    Log in
+                  </div>
+                )}
               </div>
             </div>
           </div>
