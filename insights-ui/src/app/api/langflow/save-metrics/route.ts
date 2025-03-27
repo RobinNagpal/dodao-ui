@@ -38,12 +38,13 @@ const saveMetrics = async (req: NextRequest): Promise<ImportantMetrics> => {
           tickerKey: body.ticker,
           spaceId: KoalaGainsSpaceId,
         },
-        create: checklistItems.map((m: { metricKey: any; value: any; calculationExplanation: any }) => ({
+        create: checklistItems.map((m: MetricValueItem) => ({
           metricKey: m.metricKey,
           value: m.value,
           calculationExplanation: m.calculationExplanation,
           tickerKey: body.ticker,
           criterionKey: body.criterionKey,
+          allInformationUsed: m.allInformationUsed,
         })),
       },
     },

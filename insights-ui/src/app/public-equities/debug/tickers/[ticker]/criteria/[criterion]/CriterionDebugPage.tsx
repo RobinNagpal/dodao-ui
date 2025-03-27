@@ -246,7 +246,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
               </PrivateWrapper>
             </div>
 
-            <ImportantMetricsReport criterionEvaluation={criterionEvaluation} />
+            <ImportantMetricsReport criterionEvaluation={criterionEvaluation} showAllInformationUsed={true} />
           </div>
 
           {/* Reports */}

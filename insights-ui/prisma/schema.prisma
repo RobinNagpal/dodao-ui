@@ -141,6 +141,7 @@ model MetricValueItem {
   metricKey              String @map("metric_key")
   value                  String @map("value")
   calculationExplanation String @map("calculation_explanation")
+  allInformationUsed     String @default("Not provided") @map("all_information_used")
   tickerKey              String @map("ticker_key")
   criterionKey           String @map("criterion_key")
   importantMetricsId     String @map("important_metrics_id")
