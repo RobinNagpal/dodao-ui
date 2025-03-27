@@ -3,19 +3,21 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 
 interface AuthResponse {
   success: boolean;
-  message?: string;
 }
 
 async function postHandler(req: NextRequest): Promise<AuthResponse> {
   const { adminCode } = await req.json();
+  const validAdminCodes = process.env.ADMIN_CODES?.split(',').map((x) => x.trim()) || [];
 
-  const validAdminCodes = process.env.ADMIN_CODES?.split(',').map((code) => code.trim()) || [];
-
-  if (validAdminCodes.includes(adminCode)) {
-    return { success: true };
-  } else {
-    return { success: false, message: 'Incorrect admin code' };
+  if (!validAdminCodes.includes(adminCode)) {
+    throw {
+      response: {
+        data: 'Incorrect admin code',
+      },
+    };
   }
+
+  return { success: true };
 }
 
 export const POST = withErrorHandlingV2<AuthResponse>(postHandler);

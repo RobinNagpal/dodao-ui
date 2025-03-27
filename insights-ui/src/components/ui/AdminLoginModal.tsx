@@ -6,42 +6,41 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { isAdmin } from '@/util/auth/isAdmin';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 interface AdminLoginModalProps {
   open: boolean;
   onClose: () => void;
 }
 
+interface AuthResponse {
+  success: boolean;
+}
+
 export default function AdminLoginModal({ open, onClose }: AdminLoginModalProps) {
   const [adminCode, setAdminCode] = useState('');
-  const [error, setError] = useState('');
+
+  const { postData, loading } = usePostData<AuthResponse, { adminCode: string }>(
+    {
+      successMessage: 'Successfully authenticated as admin!',
+      errorMessage: 'Invalid admin code',
+    },
+    {}
+  );
 
   useEffect(() => {
     if (!open) {
       setAdminCode('');
-      setError('');
     }
   }, [open]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
-    try {
-      const response = await fetch(`${getBaseUrl()}/api/actions/authenticate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ adminCode }),
-      });
-      const data = await response.json();
+    const response = await postData(`${getBaseUrl()}/api/actions/authenticate`, { adminCode });
 
-      if (data.success) {
-        localStorage.setItem('AUTHENTICATION_KEY', adminCode);
-        onClose();
-      } else {
-        setError(data.message || 'Incorrect admin code');
-      }
-    } catch (err) {
-      setError('Error occurred while authenticating');
+    if (response?.success) {
+      localStorage.setItem('AUTHENTICATION_KEY', adminCode);
+      onClose();
     }
   };
 
@@ -50,11 +49,10 @@ export default function AdminLoginModal({ open, onClose }: AdminLoginModalProps)
       <div className="p-4">
         {!isAdmin() && (
           <form onSubmit={handleSubmit}>
-            <Input id="adminCode" modelValue={adminCode} onUpdate={(e) => (e ? setAdminCode(e.toString()) : setAdminCode(''))} required />
-            {error && <p className="mt-2 text-center text-sm text-red-500">{error}</p>}
+            <Input id="adminCode" modelValue={adminCode} onUpdate={(val) => setAdminCode(val?.toString() ?? '')} required />
             <div className="w-full flex justify-center">
-              <Button type="submit" primary variant={'contained'} className="mt-4">
-                Authenticate
+              <Button type="submit" primary variant="contained" className="mt-4" disabled={loading}>
+                {loading ? 'Authenticating...' : 'Authenticate'}
               </Button>
             </div>
           </form>
