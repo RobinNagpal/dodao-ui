@@ -50,7 +50,7 @@ export default function DebugCriterionReport({
             className={'ml-2'}
             primary
             variant={'outlined'}
-            loading={report?.status === ProcessingStatus.InProgress}
+            // loading={report?.status === ProcessingStatus.InProgress}
           />
         </PrivateWrapper>
       </h2>
