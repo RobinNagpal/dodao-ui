@@ -12,16 +12,16 @@ export interface ManagementDiscussionButtonProps {
 }
 
 export default function ManagementDiscussionButton({ tickerKey, criterionKey }: ManagementDiscussionButtonProps) {
-  const [showManangementModal, setShowManangementModal] = useState(false);
-  const [managementDiscussionContent, setManagementDiscussionContent] = useState('');
+  const [showManagementModal, setShowManagementModal] = useState(false);
+
   const renderer = getMarkedRenderer();
   const getMarkdownContent = (content?: string) => {
     return content ? marked.parse(content, { renderer }) : 'No Information';
   };
 
   const {
-    data: managementDiscussionData,
-    postData: regenerateManamentDiscussion,
+    data: updatedManagementDiscussion,
+    postData: regenerateManagementDiscussion,
     loading: managementDiscussionLoading,
     error: managementDiscussionError,
   } = usePostData<string, {}>({
@@ -30,26 +30,26 @@ export default function ManagementDiscussionButton({ tickerKey, criterionKey }: 
     redirectPath: ``,
   });
 
-  useEffect(() => {
-    if (managementDiscussionData) {
-      setManagementDiscussionContent(managementDiscussionData);
+  /*  useEffect(() => {
+    if (updatedManagementDiscussion) {
+      setManagementDiscussionContent(updatedManagementDiscussion);
     } else if (managementDiscussionError) {
       setManagementDiscussionContent(managementDiscussionError);
     }
-  }, [managementDiscussionData, managementDiscussionError]);
+  }, [updatedManagementDiscussion, managementDiscussionError]);*/
 
   const handleRegenerateManagementDiscussion = async (criterionKey: string) => {
-    await regenerateManamentDiscussion(
+    await regenerateManagementDiscussion(
       `${getBaseUrl()}/api/actions/tickers/${tickerKey}/criterion/${criterionKey}/criteria-matching-for-management-discussion`
     );
   };
 
   return (
     <div>
-      <Button primary onClick={() => setShowManangementModal(true)}>
+      <Button primary onClick={() => setShowManagementModal(true)}>
         Management Discussion
       </Button>
-      <FullPageModal open={showManangementModal} onClose={() => setShowManangementModal(false)} title={''}>
+      <FullPageModal open={showManagementModal} onClose={() => setShowManagementModal(false)} title={''}>
         <div className="min-h-[70vh]">
           <div className="flex justify-around items-center">
             <div>Management Discussion Criteria Matching</div>
@@ -66,11 +66,11 @@ export default function ManagementDiscussionButton({ tickerKey, criterionKey }: 
           </div>
           <hr className="m-5" />
           <div className="h-full w-full">
-            {managementDiscussionContent ? (
+            {updatedManagementDiscussion ? (
               <div
                 className="markdown-body text-md text-left py-10 px-5"
                 dangerouslySetInnerHTML={{
-                  __html: getMarkdownContent(managementDiscussionContent),
+                  __html: getMarkdownContent(updatedManagementDiscussion),
                 }}
               />
             ) : managementDiscussionError ? (

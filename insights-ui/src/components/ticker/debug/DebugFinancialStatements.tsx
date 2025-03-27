@@ -7,18 +7,18 @@ import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import FinancialStatementsButton from './FinancialStatementsButton';
 
 export interface DebugFinancialStatementsProps {
   report: FullNestedTickerReport;
   industryGroupCriteria: IndustryGroupCriteriaDefinition;
+  onPostUpdate: () => Promise<void>;
 }
 
-export default function DebugFinancialStatements({ report }: DebugFinancialStatementsProps) {
+export default function DebugFinancialStatements({ report, onPostUpdate }: DebugFinancialStatementsProps) {
   const ticker = report.tickerKey;
 
-  const [financialStatementsContent, setFinancialStatementsContent] = useState(report.latest10QFinancialStatements ?? 'No Financial Statements');
   const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
   const renderer = getMarkedRenderer();
   const getMarkdownContent = (content?: string) => {
@@ -26,8 +26,7 @@ export default function DebugFinancialStatements({ report }: DebugFinancialState
   };
 
   const {
-    data: financialStatementsData,
-    postData: regeneratefinancialStatements,
+    postData: regenerateFinancialStatements,
     loading: financialStatementsLoading,
     error: financialStatementsError,
   } = usePostData<string, {}>({
@@ -36,16 +35,9 @@ export default function DebugFinancialStatements({ report }: DebugFinancialState
     redirectPath: ``,
   });
 
-  useEffect(() => {
-    if (financialStatementsData) {
-      setFinancialStatementsContent(financialStatementsData);
-    } else if (financialStatementsError) {
-      setFinancialStatementsContent(financialStatementsError);
-    }
-  }, [financialStatementsData, financialStatementsError]);
-
   const handleRegenerateFinancialStatements = async () => {
-    await regeneratefinancialStatements(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-financial-statements`);
+    await regenerateFinancialStatements(`${getBaseUrl()}/api/actions/tickers/${ticker}/trigger-financial-statements`);
+    await onPostUpdate();
   };
 
   return (
@@ -72,9 +64,13 @@ export default function DebugFinancialStatements({ report }: DebugFinancialState
       >
         <div className="mt-4">
           <PrivateWrapper>
-            <FinancialStatementsButton tickerKey={ticker} financialStatementsContent={financialStatementsContent} />
+            <FinancialStatementsButton
+              tickerKey={ticker}
+              financialStatementsContent={report?.latest10QFinancialStatements || undefined}
+              onPostUpdate={onPostUpdate}
+            />
           </PrivateWrapper>
-          <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(financialStatementsContent) }} />
+          <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(report?.latest10QFinancialStatements ?? '') }} />
         </div>
       </Accordion>
     </div>

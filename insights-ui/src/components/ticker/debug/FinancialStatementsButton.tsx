@@ -10,11 +10,16 @@ import { useState } from 'react';
 
 export interface FinancialStatementsButtonProps {
   tickerKey: string;
-  financialStatementsContent: string;
+  financialStatementsContent?: string;
+  onPostUpdate: () => Promise<void>;
 }
 
-export default function FinancialStatementsButton({ tickerKey, financialStatementsContent: financialStatementsContentRaw }: FinancialStatementsButtonProps) {
-  const [showManangementModal, setShowManangementModal] = useState(false);
+export default function FinancialStatementsButton({
+  tickerKey,
+  financialStatementsContent: financialStatementsContentRaw,
+  onPostUpdate,
+}: FinancialStatementsButtonProps) {
+  const [showFinancialStatementsModal, setShowFinancialStatementsModal] = useState(false);
   const [financialStatementsContent, setFinancialStatementsContent] = useState(financialStatementsContentRaw);
   const [showPreview, setShowPreview] = useState(false);
   const renderer = getMarkedRenderer();
@@ -23,7 +28,6 @@ export default function FinancialStatementsButton({ tickerKey, financialStatemen
   };
 
   const {
-    data: financialStatementsData,
     postData: saveFinancialStatements,
     loading: financialStatementsLoading,
     error: financialStatementsError,
@@ -35,18 +39,19 @@ export default function FinancialStatementsButton({ tickerKey, financialStatemen
 
   const handleSaveFinancialStatements = async () => {
     await saveFinancialStatements(`${getBaseUrl()}/api/tickers/${tickerKey}/financial-statements`, {
-      latest10QFinancialStatements: financialStatementsContent,
+      latest10QFinancialStatements: financialStatementsContent ?? '',
     });
+    await onPostUpdate();
   };
 
   return (
     <div>
       <div className="flex justify-end">
-        <Button primary onClick={() => setShowManangementModal(true)}>
+        <Button primary onClick={() => setShowFinancialStatementsModal(true)}>
           Upsert Statements
         </Button>
       </div>
-      <FullPageModal open={showManangementModal} onClose={() => setShowManangementModal(false)} title={''}>
+      <FullPageModal open={showFinancialStatementsModal} onClose={() => setShowFinancialStatementsModal(false)} title={''}>
         <div className="min-h-[70vh]">
           <div className="flex justify-around items-center">
             <div>Financial Statements</div>
@@ -63,6 +68,7 @@ export default function FinancialStatementsButton({ tickerKey, financialStatemen
               Save Financial Statements
             </Button>
           </div>
+          <div>{financialStatementsError && <div className="text-red-500">{financialStatementsError}</div>}</div>
           <hr className="m-5" />
           <div className="max-h-[80vh] w-full text-left">
             {showPreview ? (
