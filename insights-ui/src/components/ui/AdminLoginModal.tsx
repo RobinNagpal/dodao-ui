@@ -20,7 +20,7 @@ interface AuthResponse {
 export default function AdminLoginModal({ open, onClose }: AdminLoginModalProps) {
   const [adminCode, setAdminCode] = useState('');
 
-  const { postData, loading } = usePostData<AuthResponse, { adminCode: string }>(
+  const { postData, loading, data, error } = usePostData<AuthResponse, { adminCode: string }>(
     {
       successMessage: 'Successfully authenticated as admin!',
       errorMessage: 'Invalid admin code',
@@ -49,6 +49,7 @@ export default function AdminLoginModal({ open, onClose }: AdminLoginModalProps)
       <div className="p-4">
         {!isAdmin() && (
           <form onSubmit={handleSubmit}>
+            {error && <div className="text-red-500 ml-1 mb-2">{error}</div>}
             <Input id="adminCode" modelValue={adminCode} onUpdate={(val) => setAdminCode(val?.toString() ?? '')} required />
             <div className="w-full flex justify-center">
               <Button type="submit" primary variant="contained" className="mt-4" disabled={loading}>

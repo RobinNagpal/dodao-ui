@@ -41,9 +41,9 @@ export default function TopNav() {
               {item.name}
             </Link>
           ))}
-          <p onClick={() => setLoginModalOpen(true)} className="text-sm/6 font-semibold text-gray-300 hover:text-white cursor-pointer">
+          <div onClick={() => setLoginModalOpen(true)} className="text-sm/6 font-semibold text-gray-300 hover:text-white cursor-pointer">
             Log in <span aria-hidden="true">&rarr;</span>
-          </p>
+          </div>
         </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">

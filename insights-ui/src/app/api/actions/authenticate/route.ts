@@ -6,15 +6,11 @@ interface AuthResponse {
 }
 
 async function postHandler(req: NextRequest): Promise<AuthResponse> {
-  const { adminCode } = await req.json();
-  const validAdminCodes = process.env.ADMIN_CODES?.split(',').map((x) => x.trim()) || [];
+  const { adminCode } = (await req.json()) as { adminCode: string };
+  const validAdminCodes = process.env.ADMIN_CODES?.split(',').find((x) => x.trim() === adminCode);
 
-  if (!validAdminCodes.includes(adminCode)) {
-    throw {
-      response: {
-        data: 'Incorrect admin code',
-      },
-    };
+  if (!validAdminCodes) {
+    throw new Error('Invalid admin code');
   }
 
   return { success: true };

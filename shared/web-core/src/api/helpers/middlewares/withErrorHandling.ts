@@ -34,7 +34,9 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
       const message = (error as any)?.response?.data + `. Error occurred while processing the request  ${requestInfo}`;
       await logError(message, {}, error as any, null, null);
       await logErrorRequest(error as Error, req);
-      return NextResponse.json({ error: message }, { status: 500 });
+
+      const userMessage = (error as any)?.response?.data || (error as any)?.message;
+      return NextResponse.json({ error: userMessage }, { status: 500 });
     }
   };
 }
