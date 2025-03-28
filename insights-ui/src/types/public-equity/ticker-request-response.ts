@@ -103,3 +103,11 @@ export interface CriterionMatchResponse {
   status: 'success' | 'failure';
   failureReason?: string;
 }
+
+export interface MarkdownContentRequest {
+  htmlContent: string;
+}
+
+export interface MarkdownContentResponse {
+  markdown: string;
+}
