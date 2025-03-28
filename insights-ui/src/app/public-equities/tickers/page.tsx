@@ -39,7 +39,13 @@ export default async function AllTickersPage() {
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <PrivateWrapper>
         <div className="flex justify-end mb-4">
-          <Link href={'/public-equities/tickers/create'} className="link-color border border-color rounded-xl p-2">
+          <Link
+            href={'/public-equities/industry-group-criteria/real-estate/equity-real-estate-investment-trusts-reits/create'}
+            className="link-color border border-color rounded-xl p-2"
+          >
+            View Criteria
+          </Link>
+          <Link href={'/public-equities/tickers/create'} className="link-color border border-color ml-4 rounded-xl p-2">
             Create Ticker
           </Link>
         </div>

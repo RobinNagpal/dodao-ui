@@ -17,6 +17,11 @@ export default async function DebugPage() {
               Criteria Table
             </Link>
           </ol>
+          <ol>
+            <Link href="/public-equities/industry-group-criteria" className="link-color underline text-xl" target="_blank">
+              REIT Criteria
+            </Link>
+          </ol>
         </ul>
       </div>
       <h1 className="text-3xl">Ticker</h1>

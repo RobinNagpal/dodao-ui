@@ -38,9 +38,17 @@ export default async function AllTickersPage() {
       <PrivateWrapper>
         <div className="flex justify-between">
           <div></div>
-          <Link href={'/public-equities/tickers/create'} className="link-color underline">
-            Create Ticker
-          </Link>
+          <div>
+            <Link
+              href={'/public-equities/industry-group-criteria/real-estate/equity-real-estate-investment-trusts-reits/create'}
+              className="link-color border border-color rounded-xl p-2"
+            >
+              View Criteria
+            </Link>
+            <Link href={'/public-equities/tickers/create'} className="link-color underline ml-4">
+              Create Ticker
+            </Link>
+          </div>
         </div>
       </PrivateWrapper>
       <TickersTable tickers={tickers} />
