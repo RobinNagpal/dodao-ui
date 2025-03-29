@@ -17,9 +17,44 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+// insights-ui\src\app\layout.tsx
 export const metadata: Metadata = {
   title: 'KoalaGains',
   description: 'Making investments more insightful',
+  keywords: [
+    'KoalaGains',
+    'AI-driven investing',
+    'value investing',
+    'investment insights',
+    'REIT analysis',
+    'crowdfunding reports',
+    'financial data extraction',
+    'investment research',
+  ],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: 'https://koalagains.com/',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'KoalaGains',
+    description: 'Making investments more insightful',
+    images: ['https://koalagains.com/koalagain_logo.png'],
+    site: '@dodao_io',
+    creator: '@dodao_io',
+  },
+  openGraph: {
+    title: 'KoalaGains',
+    description: 'Making investments more insightful',
+    url: 'https://koalagains.com/',
+    type: 'website',
+    images: ['https://koalagains.com/koalagain_logo.png'],
+    siteName: 'KoalaGains',
+    locale: 'en_US',
+  },
 };
 
 export default function RootLayout({

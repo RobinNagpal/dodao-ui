@@ -1,4 +1,5 @@
 import { ReportType } from '@/types/project/project';
+import { getPostsData } from '@/util/blog-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
@@ -30,15 +31,14 @@ async function getAllProjects(): Promise<string[]> {
 }
 
 // Generate sitemap URLs
-async function generateSitemapUrls(): Promise<SiteMapUrl[]> {
+async function generateCrowdFundingUrls(): Promise<SiteMapUrl[]> {
   const projectIds = await getAllProjects();
   const urls: SiteMapUrl[] = [];
 
-  // Add home page URL
   urls.push({
-    url: '/',
+    url: '/crowd-funding',
     changefreq: 'daily',
-    priority: 1.0,
+    priority: 0.8,
   });
 
   if (projectIds.length === 0) {
@@ -65,12 +65,120 @@ async function generateSitemapUrls(): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-// Handle GET request for sitemap
-async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
+async function getAllTickers(): Promise<string[]> {
+  const baseUrl = getBaseUrl();
   try {
-    const baseUrl = getBaseUrl();
+    const response = await fetch(`${baseUrl}/api/tickers`, { cache: 'no-cache' });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch tickers: ${response.statusText}`);
+    }
+    const tickersData = await response.json();
+    return tickersData.map((t: any) => t.tickerKey);
+  } catch (error) {
+    console.error('Error fetching tickers:', error);
+    return [];
+  }
+}
+
+async function getAllCriteriaKeys(): Promise<string[]> {
+  try {
+    const response = await fetch(
+      'https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json',
+      { cache: 'no-cache' }
+    );
+    const data = await response.json();
+    return data?.criteria?.map((c: any) => c.key) || [];
+  } catch (error) {
+    console.error('Error fetching criteria:', error);
+    return [];
+  }
+}
+
+async function generateTickerUrls(): Promise<SiteMapUrl[]> {
+  const urls: SiteMapUrl[] = [];
+  const tickerKeys = await getAllTickers();
+  const criterionKeys = await getAllCriteriaKeys();
+
+  urls.push({
+    url: '/public-equities/tickers',
+    changefreq: 'daily',
+    priority: 0.8,
+  });
+
+  for (const tickerKey of tickerKeys) {
+    urls.push({
+      url: `/public-equities/tickers/${tickerKey}`,
+      changefreq: 'weekly',
+      priority: 0.8,
+    });
+
+    for (const cKey of criterionKeys) {
+      urls.push({
+        url: `/public-equities/tickers/${tickerKey}/criteria/${cKey}`,
+        changefreq: 'weekly',
+        priority: 0.7,
+      });
+    }
+  }
+
+  return urls;
+}
+
+async function generateBlogUrls(): Promise<SiteMapUrl[]> {
+  const urls: SiteMapUrl[] = [];
+
+  urls.push({
+    url: '/blogs',
+    changefreq: 'daily',
+    priority: 0.8,
+  });
+
+  const posts = await getPostsData();
+
+  posts.forEach((post) => {
+    urls.push({
+      url: `/blogs/${post.id}`,
+      changefreq: 'weekly',
+      priority: 0.7,
+    });
+  });
+
+  return urls;
+}
+
+async function generateSitemapUrls(): Promise<SiteMapUrl[]> {
+  const urls: SiteMapUrl[] = [];
+
+  urls.push(
+    {
+      url: '/',
+      changefreq: 'daily',
+      priority: 1.0,
+    },
+    {
+      url: '/custom-reports',
+      changefreq: 'daily',
+      priority: 0.8,
+    }
+  );
+
+  const crowdFundingUrls = await generateCrowdFundingUrls();
+  urls.push(...crowdFundingUrls);
+
+  const tickerUrls = await generateTickerUrls();
+  urls.push(...tickerUrls);
+
+  const blogUrls = await generateBlogUrls();
+  urls.push(...blogUrls);
+
+  return urls;
+}
+
+async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
+  const host = req.headers.get('host') as string;
+  try {
     const urls = await generateSitemapUrls();
-    const smStream = new SitemapStream({ hostname: baseUrl });
+    const smStream = new SitemapStream({ hostname: 'https://' + host });
 
     for (const url of urls) {
       smStream.write(url);
