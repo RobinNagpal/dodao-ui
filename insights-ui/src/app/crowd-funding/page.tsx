@@ -16,6 +16,15 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://koalagains.com/crowd-funding',
   },
+  keywords: [
+    'Crowdfunding Projects',
+    'Investment Opportunities',
+    'Crowdfunding Analysis',
+    'Financial Analysis',
+    'AI-driven Insights',
+    'KoalaGains Crowdfunding',
+    'Investment Reports',
+  ],
 };
 
 export default async function Home() {

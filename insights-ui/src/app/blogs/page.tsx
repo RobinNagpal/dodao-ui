@@ -10,6 +10,16 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://koalagains.com/blogs',
   },
+  keywords: [
+    'KoalaGains Blog',
+    'REITs',
+    'Crowdfunding',
+    'Investment Insights',
+    'Financial Analysis',
+    'AI-driven insights',
+    'REIT Analysis',
+    'Crowdfunding Reports',
+  ],
 };
 
 export default async function BlogsPage() {

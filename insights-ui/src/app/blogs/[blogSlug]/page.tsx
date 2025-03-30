@@ -10,16 +10,14 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { Metadata } from 'next';
 
-export async function generateMetadata({ params }: { params: { blogSlug: string } }): Promise<Metadata> {
-  const { blogSlug } = params;
+export async function generateMetadata({ params }: { params: Promise<{ blogSlug: string }> }): Promise<Metadata> {
+  const blogSlug = (await params).blogSlug as string;
   const filePath = path.join(process.cwd(), 'blogs', `${blogSlug}.mdx`);
 
   try {
     const fileContents = fs.readFileSync(filePath, 'utf8');
     const { data } = matter(fileContents);
     const blogData = data as BlogInterface;
-
-    console.log(blogData);
 
     const title = blogData.title ?? 'Untitled Blog';
     const description = blogData.abstract ?? 'Explore the latest insights on KoalaGains.';
