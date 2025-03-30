@@ -1,5 +1,6 @@
 'use client';
 
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -16,8 +17,10 @@ export default function LookupTablePage() {
   ];
   return (
     <PageWrapper>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <CriteriaLookupTableWithNoSSR />
+      <PrivateWrapper>
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        <CriteriaLookupTableWithNoSSR />
+      </PrivateWrapper>
     </PageWrapper>
   );
 }

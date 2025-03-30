@@ -27,8 +27,8 @@ export default function AllInOnePlatform() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl sm:text-center">
-            <h2 className="text-base/7 font-semibold text-indigo-400">Elevate your investing</h2>
-            <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-white sm:text-5xl sm:text-balance">Why use Koalagain?</p>
+            <p className="text-base/7 font-semibold text-indigo-400">Elevate your investing</p>
+            <h2 className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-white sm:text-5xl sm:text-balance">Why use Koalagain?</h2>
             <p className="mt-6 text-lg/8 text-gray-300">
               Access everything you need to make well-informed decisions without jumping between multiple websites and cumbersome data sources.
             </p>

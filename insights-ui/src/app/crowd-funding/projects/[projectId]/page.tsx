@@ -5,7 +5,6 @@ import { Metadata } from 'next';
 import React from 'react';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import ProjectDebugPage from '@/components/projects/ProjectDebugPage';
 import ProjectDetailPage from '@/components/projects/ProductDetailsPage';
 
 export async function generateMetadata({ params }: { params: Promise<{ projectId: string }> }): Promise<Metadata> {
@@ -15,8 +14,8 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
   const data: { projectDetails: ProjectDetails } = await res.json();
 
   return {
-    title: `${data.projectDetails.name} - Crowdfunding Project | DoDAO`,
-    description: `DoDAO Agentic Insights provides detailed analysis and insights for "${data.projectDetails.name}" with graphs, reports and metrics like growth,financial health ,traction, valuation ,Execution and speed.`,
+    title: `${data.projectDetails.name} - Crowdfunding Project`,
+    description: `KoalaGains provides detailed analysis and insights for "${data.projectDetails.name}" with graphs, reports and metrics like growth,financial health ,traction, valuation ,Execution and speed.`,
     keywords: [
       'Crowdfunding',
       'Traction',
@@ -39,12 +38,12 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
       canonical: `https://koalagains.com/crowd-funding/projects/${projectId}`,
     },
     openGraph: {
-      title: `${data.projectDetails.name} - Crowdfunding Project | DoDAO`,
-      description: `DoDAO Agentic Insights provides detailed analysis and insights for "${data.projectDetails.name}" with graphs, reports and metrics like growth,financial health ,traction, valuation ,Execution and speed.`,
+      title: `${data.projectDetails.name} - Crowdfunding Project`,
+      description: `KoalaGains provides detailed analysis and insights for "${data.projectDetails.name}" with graphs, reports and metrics like growth,financial health ,traction, valuation ,Execution and speed.`,
       url: `https://koalagains.com/crowd-funding/projects/${projectId}`,
       type: 'website',
       images: [data.projectDetails.imgUrl || ''],
-      siteName: 'Agentic Insights - DoDao',
+      siteName: 'KoalaGains',
     },
   };
 }

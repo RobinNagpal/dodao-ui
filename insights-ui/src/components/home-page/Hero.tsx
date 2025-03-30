@@ -27,7 +27,7 @@ export function Hero() {
         {/* Hero Image + Background Pattern */}
         <div className="relative flex items-end lg:col-span-5 lg:row-span-2">
           <div className="relative z-10 mx-auto flex w-64 rounded-xl shadow-xl md:w-80 lg:w-auto">
-            <Image src={coverImage} alt="" priority />
+            <Image src={coverImage} alt="Hero image representing KoalaGains." priority />
           </div>
         </div>
 
