@@ -3,13 +3,11 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import RadarChart from '@/components/ui/RadarChart';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import {
-  CriterionEvaluation,
   FullCriterionEvaluation,
   FullNestedTickerReport,
   PerformanceChecklistItem,
   SpiderGraphForTicker,
   SpiderGraphPie,
-  TickerReport,
 } from '@/types/public-equity/ticker-report-types';
 import { getReportName } from '@/util/report-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -17,6 +15,53 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import TickerActionsDropdown from './TickerActionsDropdown';
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: { tickerKey: string } }): Promise<Metadata> {
+  const { tickerKey } = params;
+
+  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
+  let tickerData: FullNestedTickerReport | null = null;
+
+  if (tickerResponse.ok) {
+    tickerData = await tickerResponse.json();
+  }
+
+  const companyName = tickerData?.companyName ?? tickerKey;
+  const shortDescription = `Financial analysis and reports for ${companyName} (${tickerKey}). Explore key metrics, insights, and AI-driven evaluations to make informed investment decisions.`;
+  const canonicalUrl = `https://koalagains.com/public-equities/tickers/${tickerKey}`;
+  const dynamicKeywords = [
+    companyName,
+    `Analysis on ${companyName}`,
+    `Financial Analysis on ${companyName}`,
+    `Reports on ${companyName}`,
+    `${companyName} REIT analysis`,
+    'investment insights',
+    'public equities',
+    'KoalaGains',
+  ];
+
+  return {
+    title: `${companyName} (${tickerKey}) | KoalaGains`,
+    description: shortDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${companyName} (${tickerKey}) | KoalaGains`,
+      description: shortDescription,
+      url: canonicalUrl,
+      siteName: 'KoalaGains',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${companyName} (${tickerKey}) | KoalaGains`,
+      description: shortDescription,
+    },
+    keywords: dynamicKeywords,
+  };
+}
 
 export default async function TickerDetailsPage({ params }: { params: Promise<{ tickerKey: string }> }) {
   const { tickerKey } = await params;
@@ -70,7 +115,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                 <TickerActionsDropdown tickerKey={tickerKey} />
               </PrivateWrapper>
             </div>
-            <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">{tickerKey}</p>
+            <h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">{tickerKey}</h1>
             <div className="max-w-lg mx-auto">
               <RadarChart data={spiderGraph} />
             </div>

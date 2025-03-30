@@ -3,6 +3,15 @@ import { CurrencyDollarIcon, HomeIcon } from '@heroicons/react/20/solid';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Custom Reports | KoalaGains',
+  description: 'Generate quick, data-driven reports on crowdfunding projects and REITs. KoalaGains helps investors make informed decisions faster.',
+  alternates: {
+    canonical: 'https://koalagains.com/custom-reports',
+  },
+};
 
 const breadcrumbs: BreadcrumbsOjbect[] = [
   {

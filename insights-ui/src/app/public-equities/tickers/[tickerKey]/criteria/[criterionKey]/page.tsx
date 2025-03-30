@@ -8,6 +8,61 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import CriterionActionsDropdown from './CriterionActionsDropdown';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import { Metadata } from 'next';
+import { getCriterionName } from '@/util/criterion-name-by-key';
+
+export async function generateMetadata({ params }: { params: { tickerKey: string; criterionKey: string } }): Promise<Metadata> {
+  const { tickerKey, criterionKey } = params;
+
+  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
+  let tickerData: FullNestedTickerReport | null = null;
+
+  if (tickerResponse.ok) {
+    tickerData = await tickerResponse.json();
+  }
+
+  const companyName = tickerData?.companyName ?? tickerKey;
+  const criterionName = getCriterionName(criterionKey);
+
+  const shortDescription = `In-depth analysis of ${criterionName} for ${companyName} (${tickerKey}). Explore performance checklists, AI-driven insights, and more.`;
+
+  const canonicalUrl = `https://koalagains.com/public-equities/tickers/${tickerKey}/criteria/${criterionKey}`;
+
+  const dynamicKeywords = [
+    companyName,
+    criterionName,
+    `${companyName} ${criterionName}`,
+    `Analysis on ${companyName}`,
+    `Financial Analysis on ${companyName}`,
+    `Reports on ${companyName}`,
+    `${companyName} ${criterionName} Analysis`,
+    'REIT analysis',
+    'investment insights',
+    'public equities',
+    'KoalaGains',
+  ];
+
+  return {
+    title: `${companyName} (${tickerKey}) – ${criterionName} | KoalaGains`,
+    description: shortDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${companyName} (${tickerKey}) – ${criterionName} | KoalaGains`,
+      description: shortDescription,
+      url: canonicalUrl,
+      siteName: 'KoalaGains',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${companyName} (${tickerKey}) – ${criterionName} | KoalaGains`,
+      description: shortDescription,
+    },
+    keywords: dynamicKeywords,
+  };
+}
 
 export default async function CriterionDetailsPage({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }) {
   const { tickerKey, criterionKey } = await params;

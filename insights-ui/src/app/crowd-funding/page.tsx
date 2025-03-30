@@ -7,6 +7,16 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import ProjectSummaryCard from '@/components/projects/ProjectSummaryCard';
 import AddProjectButton from '@/components/ui/AddProjectButton';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Crowdfunding Projects | KoalaGains',
+  description:
+    'Browse our list of active crowdfunding projects on KoalaGains. Discover new opportunities, track performance, and dive deeper with AI-driven insights.',
+  alternates: {
+    canonical: 'https://koalagains.com/crowd-funding',
+  },
+};
 
 export default async function Home() {
   const apiUrl = `${getBaseUrl()}/api/crowd-funding/projects`;

@@ -8,6 +8,51 @@ import path from 'path';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: { blogSlug: string } }): Promise<Metadata> {
+  const { blogSlug } = params;
+  const filePath = path.join(process.cwd(), 'blogs', `${blogSlug}.mdx`);
+
+  try {
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    const { data } = matter(fileContents);
+    const blogData = data as BlogInterface;
+
+    console.log(blogData);
+
+    const title = blogData.title ?? 'Untitled Blog';
+    const description = blogData.abstract ?? 'Explore the latest insights on KoalaGains.';
+    const canonicalUrl = `https://koalagains.com/blogs/${blogSlug}`;
+
+    return {
+      title: `${title}`,
+      description,
+      alternates: {
+        canonical: canonicalUrl,
+      },
+      openGraph: {
+        title: `${title}`,
+        description,
+        url: canonicalUrl,
+        images: ['https://koalagains.com/koalagain_logo.png'],
+        type: 'article',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${title}`,
+        description,
+        images: ['https://koalagains.com/koalagain_logo.png'],
+      },
+      keywords: blogData.seoKeywords,
+    };
+  } catch (error) {
+    return {
+      title: 'KoalaGains Blog',
+      description: 'Stay updated with the latest insights on investing, REIT analysis, and more.',
+    };
+  }
+}
 
 export default async function PostPage({ params }: { params: Promise<{ blogSlug: string }> }) {
   const slug = (await params).blogSlug as string;
@@ -33,6 +78,8 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
   const renderer = getMarkedRenderer();
 
   const blogContents = marked.parse(content, { renderer });
+
+  console.log('blogContents', data);
 
   return (
     <PageWrapper>
