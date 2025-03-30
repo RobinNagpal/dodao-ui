@@ -11,8 +11,8 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { Metadata } from 'next';
 import { getCriterionName } from '@/util/criterion-name-by-key';
 
-export async function generateMetadata({ params }: { params: { tickerKey: string; criterionKey: string } }): Promise<Metadata> {
-  const { tickerKey, criterionKey } = params;
+export async function generateMetadata({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }): Promise<Metadata> {
+  const { tickerKey, criterionKey } = await params;
 
   const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
   let tickerData: FullNestedTickerReport | null = null;
