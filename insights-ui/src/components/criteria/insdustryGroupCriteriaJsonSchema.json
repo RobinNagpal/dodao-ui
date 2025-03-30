@@ -104,7 +104,7 @@
         "outputType": {
           "type": "string",
           "title": "Report Output Type",
-          "enum": ["Text", "BarGraph", "PieChart", "WaterfallChart"]
+          "enum": ["Text", "BarGraph", "PieChart", "WaterfallChart", "DoughnutChart"]
         }
       },
       "required": ["key", "name", "description", "outputType"]

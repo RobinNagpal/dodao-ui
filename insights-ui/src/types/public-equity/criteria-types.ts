@@ -20,6 +20,7 @@ export enum OutputType {
   BarGraph = 'BarGraph',
   PieChart = 'PieChart',
   WaterfallChart = 'WaterfallChart',
+  DoughnutChart = 'DoughnutChart',
 }
 export interface CriterionReportDefinition {
   key: string;

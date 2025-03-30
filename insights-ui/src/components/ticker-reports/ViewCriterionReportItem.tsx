@@ -4,6 +4,7 @@ import { IndustryGroupCriteriaDefinition, OutputType } from '@/types/public-equi
 import { CriterionReportItem } from '@/types/public-equity/ticker-report-types';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
+import CriterionReportDonutChart from '../visualizations/CriterionReportDoughnutChart';
 
 interface ReportContentProps {
   criterionKey: string;
@@ -29,6 +30,8 @@ export function ViewCriterionReportItem({ criterionKey, report, industryGroupCri
     return <CriterionReportWaterfallChart content={content} />;
   } else if (reportDefinition && reportDefinition?.outputType === 'PieChart') {
     return <CriterionReportPieChart content={content} />;
+  } else if (reportDefinition && reportDefinition?.outputType === 'DoughnutChart') {
+    return <CriterionReportDonutChart content={content} />;
   }
 
   return <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(content) }} />;
