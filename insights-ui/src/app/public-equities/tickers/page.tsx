@@ -6,7 +6,17 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import TickerActionsDropdown from './[tickerKey]/TickerActionsDropdown';
-import classNames from '@dodao/web-core/utils/classNames';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'REIT Tickers | KoalaGains',
+  description:
+    'Explore all available REIT tickers. Dive into detailed AI-driven financial reports, analyze key metrics, and streamline your public equities research on KoalaGains.',
+  alternates: {
+    canonical: 'https://koalagains.com/public-equities/tickers',
+  },
+  keywords: ['REIT', 'Tickers', 'Public Equities', 'REIT Financial Reports', 'KoalaGains', 'REIT Analysis'],
+};
 
 async function getTickersResponse(): Promise<Ticker[]> {
   try {

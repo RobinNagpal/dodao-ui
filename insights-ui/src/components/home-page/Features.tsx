@@ -30,8 +30,8 @@ export default function Features() {
         <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
           <div className="lg:pr-8 lg:pt-4">
             <div className="lg:max-w-lg">
-              <h2 className="text-base/7 font-semibold text-indigo-400">Revolutionized Investment analysis with AI</h2>
-              <p className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">Unique Features of KoalaGains</p>
+              <p className="text-base/7 font-semibold text-indigo-400">Revolutionized Investment analysis with AI</p>
+              <h2 className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">Unique Features of KoalaGains</h2>
               <p className="mt-6 text-lg/8 text-gray-300">
                 Our platform automatically collects, organizes and presents data in intuitive reports. This smart platform adapts to your personal investment
                 style making your analysis faster and more efficient.
@@ -51,7 +51,7 @@ export default function Features() {
           </div>
           <Image
             src={platformImage}
-            alt={'finance graph'}
+            alt="Finance graph"
             // width={2432}
             // height={1442}
             className="w-[48rem] h-full max-w-none rounded-xl shadow-xl ring-1 ring-white/10 sm:w-[57rem] md:-ml-4 lg:-ml-0 opacity-60"

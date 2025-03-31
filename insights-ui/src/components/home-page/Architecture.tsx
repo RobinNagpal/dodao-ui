@@ -77,7 +77,7 @@ export default function Architecture() {
       </div>
       <div className="relative overflow-hidden pt-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <Image src={architectureImage} alt="" priority />
+          <Image src={architectureImage} alt="Architecture diagram showing KoalaGains’ layered AI-driven analysis flow" priority />
           <div aria-hidden="true" className="relative">
             <div className="absolute -inset-x-20 bottom-0 bg-linear-to-t from-gray-900 pt-[7%]" />
           </div>

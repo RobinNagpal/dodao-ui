@@ -121,7 +121,7 @@ function KoalaGainsComponent() {
                     </div>
                     <div className="mt-3 rounded-md shadow sm:ml-3 sm:mt-0">
                       <a
-                        href="https://agentic-insights.dodao.io/"
+                        href="https://koalagains.com/"
                         className="flex w-full items-center justify-center rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-indigo-600 hover:bg-gray-50 md:px-10 md:py-4 md:text-lg"
                       >
                         Live demo

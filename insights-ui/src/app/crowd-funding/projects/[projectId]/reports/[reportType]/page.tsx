@@ -33,9 +33,10 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
   const readableReportType = reportTitles[reportType] || 'Project Report';
 
   return {
-    title: `${readableReportType} - ${projectId} | DoDAO`,
-    description: `Explore the ${readableReportType} for the crowdfunding project "${projectId}". ${report.summary || ''}`,
+    title: `${readableReportType} - ${projectData.projectDetails.name}`,
+    description: `Explore the ${readableReportType} for the crowdfunding project "${projectData.projectDetails.name}". ${report.summary || ''}`,
     keywords: [
+      projectData.projectDetails.name,
       'crowdfunding insights',
       'investment analysis',
       'investor reports',
@@ -51,14 +52,14 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
       follow: true,
     },
     alternates: {
-      canonical: `https://dodao.io/crowd-funding/projects/${projectId}/reports/${reportType}`,
+      canonical: `https://koalagains.com/crowd-funding/projects/${projectId}/reports/${reportType}`,
     },
     openGraph: {
-      title: `${readableReportType} - ${projectId} | DoDAO`,
+      title: `${readableReportType} - ${projectId}`,
       description: `View the ${readableReportType} for project "${projectId}". Detailed analysis of investment risks, funding health, and team assessment.`,
-      url: `https://dodao.io/crowd-funding/projects/${projectId}/reports/${reportType}`,
+      url: `https://koalagains.com/crowd-funding/projects/${projectId}/reports/${reportType}`,
       type: 'article',
-      siteName: 'DoDAO',
+      siteName: 'KoalaGains',
     },
   };
 }
