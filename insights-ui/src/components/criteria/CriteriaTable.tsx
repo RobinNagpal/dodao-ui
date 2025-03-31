@@ -1,5 +1,6 @@
 'use client';
 
+import ViewCriterionModal from '@/components/criteria/ViewCriterionModal';
 import { Form } from '@/components/rjsf';
 import { CriterionDefinition, IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { CreateCustomCriteriaRequestWithCriteria } from '@/types/public-equity/ticker-request-response';
@@ -36,6 +37,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
   const [pendingUpsert, setPendingUpsert] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [criterionToDelete, setCriterionToDelete] = useState<CriterionDefinition | null>(null);
+  const [selectionCriterionToViewInModal, setSelectionCriterionToViewInModal] = useState<CriterionDefinition | null>();
 
   // Store the original key before editing
   const originalKeyRef = useRef<string | null>(null);
@@ -191,7 +193,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
                 <td style={tableCellStyle} className="flex justify-around">
                   <IconButton onClick={() => handleOpen(criterion)} iconName={IconTypes.Edit} removeBorder={true} />
                   <IconButton onClick={() => handleDeleteClick(criterion)} iconName={IconTypes.Trash} removeBorder={true} />
-                  <IconButton iconName={IconTypes.ArrowsPointingOutIcon} removeBorder={true} />
+                  <IconButton onClick={() => setSelectionCriterionToViewInModal(criterion)} iconName={IconTypes.ArrowsPointingOutIcon} removeBorder={true} />
                 </td>
               </tr>
             ))
@@ -236,6 +238,14 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
           title="Delete Criterion"
           confirmationText="Are you sure you want to delete this criterion?"
           askForTextInput={true}
+        />
+      )}
+      {selectionCriterionToViewInModal && (
+        <ViewCriterionModal
+          open={!!selectionCriterionToViewInModal}
+          onClose={() => setSelectionCriterionToViewInModal(null)}
+          title={'View Criterion - ' + setSelectionCriterionToViewInModal.name}
+          criterion={selectionCriterionToViewInModal}
         />
       )}
     </PageWrapper>
