@@ -191,7 +191,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
                 <td style={tableCellStyle} className="flex justify-around">
                   <IconButton onClick={() => handleOpen(criterion)} iconName={IconTypes.Edit} removeBorder={true} />
                   <IconButton onClick={() => handleDeleteClick(criterion)} iconName={IconTypes.Trash} removeBorder={true} />
-                  <IconButton iconName={IconTypes.Reading} removeBorder={true} />
+                  <IconButton iconName={IconTypes.ArrowsPointingOutIcon} removeBorder={true} />
                 </td>
               </tr>
             ))

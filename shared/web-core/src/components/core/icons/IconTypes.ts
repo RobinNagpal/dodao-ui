@@ -9,4 +9,8 @@ export enum IconTypes {
   Reload = 'Reload',
   PlusIcon = 'PlusIcon',
   Refresh = 'ArrowPathIcon',
+  Reading = 'Reading',
+  Summary = 'Summary',
+  FullScreenIcon = 'FullScreenIcon',
+  ArrowsPointingOutIcon = 'ArrowsPointingOutIcon',
 }

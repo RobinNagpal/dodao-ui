@@ -1,5 +1,7 @@
 'use client';
 
+import ReadingIcon from '@dodao/web-core/components/core/icons/ReadingIcon';
+import SummaryIcon from '@dodao/web-core/components/core/icons/SummaryIcon';
 import React from 'react';
 import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
@@ -8,7 +10,7 @@ import ArrowDownTrayIcon from '@heroicons/react/24/outline/ArrowDownTrayIcon';
 import DocumentPlusIcon from '@heroicons/react/24/solid/DocumentPlusIcon';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid';
-import { PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/20/solid';
+import { PencilSquareIcon, PlusIcon, TrashIcon, ArrowsPointingOutIcon } from '@heroicons/react/20/solid';
 import styles from './IconButton.module.scss';
 
 export type IconButtonProps = {
@@ -70,8 +72,14 @@ const IconButton: React.FC<IconButtonProps> = ({
         return <RobotIconSolid />;
       case IconTypes.PlusIcon:
         return <PlusIcon width={width} height={height} />;
+      case IconTypes.ArrowsPointingOutIcon:
+        return <ArrowsPointingOutIcon width={width} height={height} />;
       case IconTypes.Refresh:
         return <ArrowPathIcon width={width} height={height} />;
+      case IconTypes.Reading:
+        return <ReadingIcon />;
+      case IconTypes.Summary:
+        return <SummaryIcon />;
       default:
         return null;
     }
