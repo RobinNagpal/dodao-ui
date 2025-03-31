@@ -9,6 +9,7 @@ import { marked } from 'marked';
 import { useState } from 'react';
 import ManagementDiscussionButton from './ManagementDiscussionButton';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 
 export interface DebugMatchingAttachmentsProps {
   report: FullNestedTickerReport;
@@ -24,6 +25,8 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
   const getMarkdownContent = (content?: string) => {
     return content ? marked.parse(content, { renderer }) : 'No Matched Content';
   };
+
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const {
     postData: regenerateMatchingCriteria,
@@ -49,7 +52,7 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
             loading={matchingCriteriaLoading || report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress}
             primary
             variant="contained"
-            onClick={handleRegenerateMatchingCriteria}
+            onClick={() => setShowConfirmModal(true)}
             disabled={matchingCriteriaLoading}
           >
             Regenerate Matching Criteria
@@ -81,6 +84,20 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
           </div>
         );
       })}
+      {showConfirmModal && (
+        <ConfirmationModal
+          open={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          onConfirm={async () => {
+            await handleRegenerateMatchingCriteria();
+            setShowConfirmModal(false);
+          }}
+          title="Regenerate Matching Criteria"
+          confirmationText="Are you sure you want to regenerate the matching criteria?"
+          askForTextInput={true}
+          confirming={matchingCriteriaLoading}
+        />
+      )}
     </div>
   );
 }

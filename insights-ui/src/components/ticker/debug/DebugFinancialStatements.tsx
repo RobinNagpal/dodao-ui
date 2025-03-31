@@ -9,6 +9,7 @@ import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 import { useState } from 'react';
 import FinancialStatementsButton from './FinancialStatementsButton';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 
 export interface DebugFinancialStatementsProps {
   report: FullNestedTickerReport;
@@ -24,6 +25,8 @@ export default function DebugFinancialStatements({ report, onPostUpdate }: Debug
   const getMarkdownContent = (content?: string) => {
     return content ? marked.parse(content, { renderer }) : 'No Information';
   };
+
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const {
     postData: regenerateFinancialStatements,
@@ -48,7 +51,7 @@ export default function DebugFinancialStatements({ report, onPostUpdate }: Debug
             loading={financialStatementsLoading}
             primary
             variant="contained"
-            onClick={handleRegenerateFinancialStatements}
+            onClick={() => setShowConfirmModal(true)}
             disabled={financialStatementsLoading}
           >
             Refetch Financial Statements
@@ -72,6 +75,20 @@ export default function DebugFinancialStatements({ report, onPostUpdate }: Debug
           <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(report?.latest10QFinancialStatements ?? '') }} />
         </div>
       </Accordion>
+      {showConfirmModal && (
+        <ConfirmationModal
+          open={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          onConfirm={async () => {
+            await handleRegenerateFinancialStatements();
+            setShowConfirmModal(false);
+          }}
+          title="Refetch Financial Statements"
+          confirmationText="Are you sure you want to refetch the financial statements?"
+          askForTextInput={true}
+          confirming={financialStatementsLoading}
+        />
+      )}
     </div>
   );
 }
