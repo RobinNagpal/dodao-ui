@@ -77,8 +77,6 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
 
   const blogContents = marked.parse(content, { renderer });
 
-  console.log('blogContents', data);
-
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
