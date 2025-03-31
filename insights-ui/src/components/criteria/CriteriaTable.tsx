@@ -144,6 +144,16 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
     matchingInstruction: {
       'ui:widget': 'textarea',
     },
+    importantMetrics: {
+      items: {
+        description: {
+          'ui:widget': 'textarea',
+        },
+        formula: {
+          'ui:widget': 'textarea',
+        },
+      },
+    },
   };
   return (
     <PageWrapper>
@@ -181,6 +191,7 @@ export default function CriteriaTable({ sectorId, industryGroupId, customCriteri
                 <td style={tableCellStyle} className="flex justify-around">
                   <IconButton onClick={() => handleOpen(criterion)} iconName={IconTypes.Edit} removeBorder={true} />
                   <IconButton onClick={() => handleDeleteClick(criterion)} iconName={IconTypes.Trash} removeBorder={true} />
+                  <IconButton iconName={IconTypes.Reading} removeBorder={true} />
                 </td>
               </tr>
             ))
