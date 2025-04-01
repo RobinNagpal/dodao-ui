@@ -1,0 +1,14 @@
+type: object
+properties:
+  valuation:
+    type: string
+  risk_assessment:
+    type: string
+  recommendations:
+    type: array
+    items:
+      type: string
+required:
+  - valuation
+  - risk_assessment
+  - recommendations

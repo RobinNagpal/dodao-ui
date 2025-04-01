@@ -1,0 +1,12 @@
+type: object
+properties:
+  last_close:
+    type: number
+  high:
+    type: number
+  low:
+    type: number
+required:
+  - last_close
+  - high
+  - low

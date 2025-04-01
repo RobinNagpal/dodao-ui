@@ -266,3 +266,75 @@ model CriterionMatchAttachment {
 
   @@map("criterion_match_attachments")
 }
+
+model Prompt {
+  id             String          @id @default(uuid())
+  spaceId        String          @map("space_id")
+  name           String          @map("name")
+  key            String          @map("key")
+  excerpt        String?         @map("excerpt")
+  inputSchema    String?         @map("input_schema")
+  outputSchema   String?         @map("output_schema")
+  sampleJson     String?         @map("sample_json")
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  createdBy      String          @map("created_by")
+  updatedBy      String          @map("updated_by")
+  promptVersions PromptVersion[]
+
+  activePromptVersionId String?            @unique @map("active_prompt_version_id")
+  activePromptVersion   PromptVersion?     @relation("ActivePromptVersion", fields: [activePromptVersionId], references: [id])
+  PromptInvocation      PromptInvocation[]
+
+  @@unique([spaceId, key])
+  @@map("prompts")
+}
+
+model PromptVersion {
+  id             String   @id @default(uuid())
+  spaceId        String   @map("space_id")
+  promptId       String   @map("prompt_id")
+  version        Int      @map("version")
+  promptTemplate String   @map("prompt_template")
+  commitMessage  String?  @map("commit_message")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  createdBy      String   @map("created_by")
+  updatedBy      String   @map("updated_by")
+
+  prompt Prompt @relation(fields: [promptId], references: [id])
+
+  activeInPrompt Prompt? @relation("ActivePromptVersion")
+
+  promptInvocations PromptInvocation[]
+
+  @@unique([promptId, version])
+  @@map("prompt_versions")
+}
+
+enum PromptInvocationStatus {
+  Completed
+  Failed
+  InProgress
+  NotStarted
+}
+
+model PromptInvocation {
+  id              String                 @id @default(uuid())
+  spaceId         String                 @map("space_id")
+  promptId        String                 @map("prompt_id")
+  promptVersionId String                 @map("prompt_version_id")
+  inputJson       String                 @map("input_json")
+  outputJson      String                 @map("output_json")
+  status          PromptInvocationStatus @map("status")
+  error           String?                @map("error")
+  createdAt       DateTime               @default(now()) @map("created_at")
+  updatedAt       DateTime               @updatedAt @map("updated_at")
+  createdBy       String                 @map("created_by")
+  updatedBy       String                 @map("updated_by")
+
+  prompt        Prompt        @relation(fields: [promptId], references: [id])
+  promptVersion PromptVersion @relation(fields: [promptVersionId], references: [id])
+
+  @@map("prompt_invocations")
+}

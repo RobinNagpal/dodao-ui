@@ -1,0 +1,12 @@
+type: object
+properties:
+  current_price:
+    type: number
+  volume:
+    type: number
+  sentiment:
+    type: string
+required:
+  - current_price
+  - volume
+  - sentiment

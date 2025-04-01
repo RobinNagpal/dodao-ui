@@ -1,0 +1,8 @@
+type: object
+properties:
+  analysis:
+    $ref: "result.schema.yaml"
+  comments:
+    type: string
+required:
+  - analysis
