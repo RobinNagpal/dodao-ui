@@ -26,7 +26,7 @@ export interface PromptFormData {
 export interface PromptUpsertFormProps {
   prompt?: Prompt;
   upserting?: boolean;
-  onUpsert?: (prompt: PromptFormData) => Promise<void>;
+  onUpsert: (prompt: PromptFormData) => Promise<void>;
 }
 
 export default function PromptUpsertForm({ prompt, upserting, onUpsert }: PromptUpsertFormProps): JSX.Element {

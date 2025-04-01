@@ -2,6 +2,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { PromptInvocationStatus } from '.prisma/client';
 
 interface CreateInvocationRequest {
   promptVersionId: string;
@@ -49,11 +50,14 @@ async function createInvocation(req: NextRequest, context: { params: { spaceId: 
   const invocation = await prisma.promptInvocation.create({
     data: {
       spaceId,
+      promptId: versionRecord.promptId,
+      outputJson: '',
       promptVersionId: versionRecord.id,
       inputJson: body.inputJson || '',
-      status: body.status || 'PENDING',
+      status: (body.status as PromptInvocationStatus) || PromptInvocationStatus.InProgress,
       error: body.error || '',
-      createdBy: body.createdBy || '',
+      createdBy: body.createdBy || 'unknown',
+      updatedBy: body.createdBy || 'unknown',
     },
   });
   return invocation;
