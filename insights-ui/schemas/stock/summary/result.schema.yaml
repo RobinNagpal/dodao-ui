@@ -1,0 +1,17 @@
+type: object
+properties:
+  summary_text:
+    type: string
+  key_metrics:
+    type: object
+    properties:
+      pe_ratio:
+        type: number
+      pb_ratio:
+        type: number
+    required:
+      - pe_ratio
+      - pb_ratio
+required:
+  - summary_text
+  - key_metrics

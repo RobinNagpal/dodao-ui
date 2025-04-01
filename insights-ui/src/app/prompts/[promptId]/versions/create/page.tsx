@@ -1,0 +1,106 @@
+'use client';
+
+import Block from '@dodao/web-core/components/app/Block';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Input from '@dodao/web-core/components/core/input/Input';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import Editor from '@monaco-editor/react';
+import Handlebars from 'handlebars';
+import { useParams } from 'next/navigation';
+import { FormEvent, useEffect, useState } from 'react';
+
+interface CreatePromptVersionForm {
+  promptTemplate: string;
+  commitMessage?: string;
+}
+
+export default function CreatePromptVersionPage(): JSX.Element {
+  const { promptId } = useParams() as { promptId: string };
+
+  // State for our sample data, preview HTML, and compilation error
+  const [sampleData, setSampleData] = useState<any>({});
+  const [previewHtml, setPreviewHtml] = useState<string>('');
+  const [templateError, setTemplateError] = useState<string>('');
+
+  const [formData, setFormData] = useState<CreatePromptVersionForm>({
+    promptTemplate: '',
+    commitMessage: '',
+  });
+
+  // Fetch the parent prompt to get its sampleJson for the preview
+  const {
+    data: parentPrompt,
+    error: parentPromptError,
+    loading: parentPromptLoading,
+  } = useFetchData<any>(`${getBaseUrl()}/api/koala_gains/prompts/${promptId}`, { cache: 'no-cache' }, 'Failed to fetch prompt data');
+
+  const { postData, loading } = usePostData<any, CreatePromptVersionForm>({
+    successMessage: 'Prompt version created successfully!',
+    errorMessage: 'Failed to create prompt version.',
+    redirectPath: `/prompts/${promptId}`,
+  });
+
+  // When parentPrompt is loaded, parse its sampleJson
+  useEffect(() => {
+    if (parentPrompt && parentPrompt.sampleJson) {
+      try {
+        const parsed = JSON.parse(parentPrompt.sampleJson);
+        setSampleData(parsed);
+      } catch (err) {
+        console.error('Error parsing sampleJson', err);
+      }
+    }
+  }, [parentPrompt]);
+
+  // On every change in the template or sample data, compile the template
+  useEffect(() => {
+    try {
+      const template = Handlebars.compile(formData.promptTemplate);
+      const rendered = template(sampleData);
+      setPreviewHtml(rendered);
+      setTemplateError('');
+    } catch (error: any) {
+      setTemplateError(error.message || 'Template compilation error');
+      setPreviewHtml('');
+    }
+  }, [formData.promptTemplate, sampleData]);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    await postData(`${getBaseUrl()}/api/koala_gains/prompts/${promptId}/versions`, formData);
+  };
+
+  return (
+    <PageWrapper>
+      <Block title="Create Prompt Version" className="text-color">
+        <form onSubmit={handleSubmit}>
+          <div className="mt-4">
+            <label className="block mb-2">Prompt Template</label>
+            <Editor
+              height="300px"
+              defaultLanguage="handlebars"
+              value={formData.promptTemplate}
+              theme="vs-dark"
+              onChange={(value) => setFormData((prev) => ({ ...prev, promptTemplate: value || '' }))}
+            />
+            {templateError && <p className="mt-2 text-red-500">Error: {templateError}</p>}
+          </div>
+
+          <div className="mt-4">
+            <h2 className="text-xl heading-color">Preview</h2>
+            <div className="p-4 border border-color mt-2" dangerouslySetInnerHTML={{ __html: previewHtml }} />
+          </div>
+          <Input modelValue={formData.commitMessage} onUpdate={(val) => setFormData((prev) => ({ ...prev, commitMessage: val as string }))}>
+            Commit Message
+          </Input>
+          <Button disabled={loading} variant="contained" primary className="mt-4" loading={loading}>
+            {loading ? 'Creating...' : 'Create Prompt Version'}
+          </Button>
+        </form>
+      </Block>
+    </PageWrapper>
+  );
+}

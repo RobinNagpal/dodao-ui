@@ -1,0 +1,9 @@
+type: object
+properties:
+  company:
+    $ref: "../entities/company.schema.yaml"
+  stock:
+    $ref: "../entities/stock.schema.yaml"
+required:
+  - company
+  - stock
