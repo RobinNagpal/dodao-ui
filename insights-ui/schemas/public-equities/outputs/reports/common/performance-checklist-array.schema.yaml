@@ -1,0 +1,25 @@
+type: array
+items:
+  type: object
+  properties:
+    id:
+      type: string
+    checklistItem:
+      type: string
+    oneLinerExplanation:
+      type: string
+    informationUsed:
+      type: string
+    detailedExplanation:
+      type: string
+    evaluationLogic:
+      type: string
+    score:
+      type: number
+  required:
+    - checklistItem
+    - oneLinerExplanation
+    - informationUsed
+    - detailedExplanation
+    - evaluationLogic
+    - score

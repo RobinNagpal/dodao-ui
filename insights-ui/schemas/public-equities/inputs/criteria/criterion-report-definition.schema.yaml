@@ -1,0 +1,21 @@
+type: object
+properties:
+  key:
+    type: string
+  name:
+    type: string
+  description:
+    type: string
+  outputType:
+    type: string
+    enum:
+      - Text
+      - BarGraph
+      - PieChart
+      - WaterfallChart
+      - DoughnutChart
+required:
+  - key
+  - name
+  - description
+  - outputType 

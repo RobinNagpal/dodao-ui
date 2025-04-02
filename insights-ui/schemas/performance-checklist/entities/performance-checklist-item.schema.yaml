@@ -1,0 +1,34 @@
+type: object
+properties:
+  id:
+    type: string
+  checklistItem:
+    type: string
+  oneLinerExplanation:
+    type: string
+  informationUsed:
+    type: string
+  detailedExplanation:
+    type: string
+  evaluationLogic:
+    type: string
+  score:
+    type: number
+  tickerKey:
+    type: string
+  criterionKey:
+    type: string
+  spaceId:
+    type: string
+    default: "koala_gains"
+required:
+  - checklistItem
+  - oneLinerExplanation
+  - informationUsed
+  - detailedExplanation
+  - evaluationLogic
+  - score
+  - tickerKey
+  - criterionKey
+  - performanceChecklistEvaluationId
+  - spaceId 

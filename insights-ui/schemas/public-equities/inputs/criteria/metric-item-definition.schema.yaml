@@ -1,0 +1,15 @@
+type: object
+properties:
+  key:
+    type: string
+  name:
+    type: string
+  description:
+    type: string
+  formula:
+    type: string
+required:
+  - key
+  - name
+  - description
+  - formula 

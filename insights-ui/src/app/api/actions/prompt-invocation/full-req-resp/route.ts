@@ -1,0 +1,155 @@
+import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import $RefParser from '@apidevtools/json-schema-ref-parser';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { ChatOpenAI } from '@langchain/openai';
+import Ajv, { ErrorObject } from 'ajv';
+import fs from 'fs';
+import Handlebars from 'handlebars';
+
+import { NextRequest } from 'next/server';
+import path from 'path';
+import { PromptInvocationStatus } from '.prisma/client';
+
+export interface PromptInvocationRequest {
+  spaceId?: string;
+  input: Record<string, unknown>;
+  templateKey: string;
+  llmProvider: string;
+  model: string;
+  bodyToAppend?: string;
+}
+
+export interface PromptInvocationResponse {
+  request: PromptInvocationRequest;
+  prompt: string;
+  response: Record<string, unknown>;
+}
+async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> {
+  const request = await req.json();
+  const { input, templateKey, llmProvider, model, bodyToAppend } = request as PromptInvocationRequest;
+
+  if (!req.body) {
+    throw new Error(`Request body is missing`);
+  }
+
+  // Ensure required fields are present.
+  if (!input || !templateKey || !llmProvider || !model) {
+    throw new Error(`Missing required fields: input, templateId, llmProvider, or model`);
+  }
+
+  const prompt = await prisma.prompt.findFirstOrThrow({
+    where: {
+      spaceId: request.spaceId || KoalaGainsSpaceId,
+      key: templateKey,
+    },
+    include: {
+      activePromptVersion: true,
+    },
+  });
+
+  if (!prompt.activePromptVersion) {
+    throw new Error(`Active prompt version not found for template ${templateKey}`);
+  }
+
+  const invocation = await prisma.promptInvocation.create({
+    data: {
+      spaceId: KoalaGainsSpaceId,
+      inputJson: JSON.stringify(request),
+      promptId: prompt.id,
+      promptVersionId: prompt.activePromptVersion.id,
+      status: PromptInvocationStatus.InProgress,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      createdBy: 'unknown',
+      updatedBy: 'unknown',
+      llmProvider: llmProvider,
+      model: model,
+      bodyToAppend: bodyToAppend,
+    },
+  });
+
+  try {
+    const templateContent = prompt.activePromptVersion.promptTemplate;
+
+    const inputSchemaPath = path.join(__dirname, '..', 'schemas', prompt.inputSchema);
+    if (!fs.existsSync(inputSchemaPath)) {
+      throw new Error(`Input schema file ${prompt.inputSchema} not found`);
+    }
+
+    const inputSchema = await $RefParser.dereference(inputSchemaPath);
+
+    const { valid, errors } = validateData(inputSchema, input);
+    if (!valid) {
+      throw new Error(`Input validation failed: ${JSON.stringify(errors)}`);
+    }
+
+    // Validate the provided input against the input schema.
+
+    // Compile the Handlebars template with the provided input.
+    const compiledTemplate = Handlebars.compile(templateContent);
+    const finalPrompt = bodyToAppend ? `${compiledTemplate(input)}\n\n\n${bodyToAppend}` : compiledTemplate(input);
+
+    // Choose LLM based on llmProvider. Currently, only "openai" is supported.
+    let llm: ChatOpenAI | undefined;
+    if (llmProvider.toLowerCase() === 'openai') {
+      llm = new ChatOpenAI({ model: model });
+    } else {
+      throw new Error(`Unsupported llmProvider: ${llmProvider}`);
+    }
+
+    const outputSchemaPath = path.join(__dirname, '..', 'schemas', prompt.outputSchema);
+    if (!fs.existsSync(outputSchemaPath)) {
+      throw new Error(`Output schema file ${prompt.outputSchema} not found`);
+    }
+
+    const outputSchema = await $RefParser.dereference(outputSchemaPath);
+
+    const modelWithStructure = llm.withStructuredOutput(outputSchema);
+    const result = await modelWithStructure.invoke(finalPrompt);
+    if (result) {
+      prisma.promptInvocation.update({
+        where: {
+          id: invocation.id,
+        },
+        data: {
+          outputJson: JSON.stringify(result),
+          updatedAt: new Date(),
+        },
+      });
+    }
+    const { valid: validOutput, errors: outputErrors } = validateData(outputSchema, result);
+
+    if (!validOutput) {
+      throw new Error(`Output validation failed: ${JSON.stringify(outputErrors)}`);
+    }
+
+    return {
+      request: request,
+      prompt: finalPrompt,
+      response: result,
+    };
+  } catch (e) {
+    prisma.promptInvocation.update({
+      where: {
+        id: invocation.id,
+      },
+      data: {
+        status: PromptInvocationStatus.Failed,
+        error: (e as any)?.message,
+        updatedAt: new Date(),
+      },
+    });
+
+    throw e;
+  }
+}
+
+function validateData(schema: object, data: unknown): { valid: boolean; errors?: ErrorObject[] } {
+  const ajv = new Ajv();
+  const validate = ajv.compile(schema);
+  const valid = validate(data);
+  return { valid: !!valid, errors: validate.errors || [] };
+}
+
+export const POST = withErrorHandlingV2<PromptInvocationResponse>(postHandler);

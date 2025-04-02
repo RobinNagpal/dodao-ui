@@ -1,8 +1,0 @@
-type: object
-properties:
-  summary:
-    $ref: "result.schema.yaml"
-  additional_notes:
-    type: string
-required:
-  - summary
