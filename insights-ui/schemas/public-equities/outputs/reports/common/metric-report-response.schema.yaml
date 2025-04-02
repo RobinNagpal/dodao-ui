@@ -1,0 +1,8 @@
+type: object
+properties:
+  metrics:
+    type: array
+    items:
+      $ref: './metric-values-item.schema.yaml'
+required:
+  - metrics

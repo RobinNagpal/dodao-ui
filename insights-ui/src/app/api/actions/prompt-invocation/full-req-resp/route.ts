@@ -72,9 +72,9 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
   try {
     const templateContent = prompt.activePromptVersion.promptTemplate;
 
-    const inputSchemaPath = path.join(__dirname, '..', 'schemas', prompt.inputSchema);
+    const inputSchemaPath = path.join(process.cwd(), 'schemas', prompt.inputSchema);
     if (!fs.existsSync(inputSchemaPath)) {
-      throw new Error(`Input schema file ${prompt.inputSchema} not found`);
+      throw new Error(`Input schema file ${prompt.inputSchema} not found. Path ${inputSchemaPath}`);
     }
 
     const inputSchema = await $RefParser.dereference(inputSchemaPath);
@@ -98,7 +98,7 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
       throw new Error(`Unsupported llmProvider: ${llmProvider}`);
     }
 
-    const outputSchemaPath = path.join(__dirname, '..', 'schemas', prompt.outputSchema);
+    const outputSchemaPath = path.join(process.cwd(), 'schemas', prompt.outputSchema);
     if (!fs.existsSync(outputSchemaPath)) {
       throw new Error(`Output schema file ${prompt.outputSchema} not found`);
     }
@@ -107,6 +107,7 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
 
     const modelWithStructure = llm.withStructuredOutput(outputSchema);
     const result = await modelWithStructure.invoke(finalPrompt);
+    console.log(`Result: ${JSON.stringify(result)}`);
     if (result) {
       prisma.promptInvocation.update({
         where: {

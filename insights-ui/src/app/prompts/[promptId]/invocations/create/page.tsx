@@ -1,9 +1,11 @@
 // app/prompts/[promptId]/invocations/create/page.tsx
 'use client';
 
+import { PromptInvocationRequest } from '@/app/api/actions/prompt-invocation/full-req-resp/route';
 import RawJsonJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import SampleBodyEditModal from '@/components/prompts/SampleBodyEditModal';
 import SampleJsonEditModal from '@/components/prompts/SampleJsonEditModal';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -18,15 +20,19 @@ import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import Handlebars from 'handlebars';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 
 import type { Prompt, PromptVersion } from '@prisma/client';
 
 interface CreateInvocationForm {
   promptVersionId: string;
-  inputJson: string;
+  input: string;
   llmProvider: string;
   model: string;
   bodyToAppend?: string;
+  inputJson: string;
+  commitMessage?: string;
 }
 
 export default function CreateInvocationPage(): JSX.Element {
@@ -36,9 +42,9 @@ export default function CreateInvocationPage(): JSX.Element {
   // Form state with strict types
   const [formData, setFormData] = useState<CreateInvocationForm>({
     promptVersionId: '',
-    inputJson: '',
+    input: '',
     llmProvider: 'openai',
-    model: 'gpt-3.5-turbo',
+    model: 'gpt-4o-mini',
     bodyToAppend: '',
   });
 
@@ -85,7 +91,7 @@ export default function CreateInvocationPage(): JSX.Element {
       if (!prompt) {
         return;
       }
-      const parsedInput = JSON.parse(formData.inputJson || prompt.sampleJson || '');
+      const parsedInput = JSON.parse(formData.input || prompt.sampleJson || '');
       const template = Handlebars.compile(selectedTemplate);
       const rendered = template(parsedInput);
       setPreviewPrompt(rendered);
@@ -94,12 +100,12 @@ export default function CreateInvocationPage(): JSX.Element {
       setPreviewError(error.message || 'Error during template compilation');
       setPreviewPrompt('');
     }
-  }, [formData.inputJson, selectedTemplate, prompt]);
+  }, [formData.input, selectedTemplate, prompt]);
 
   useEffect(() => {
     setFormData({
       bodyToAppend: prompt?.sampleBodyToAppend || '',
-      inputJson: prompt?.sampleJson || '{}',
+      input: prompt?.sampleJson || '{}',
       llmProvider: formData.llmProvider,
       model: formData.model,
       promptVersionId: formData.promptVersionId,
@@ -107,15 +113,25 @@ export default function CreateInvocationPage(): JSX.Element {
   }, [prompt]);
 
   // Use the post hook to send the invocation request.
-  const { postData, loading } = usePostData<any, CreateInvocationForm>({
+  const { postData, loading } = usePostData<any, PromptInvocationRequest>({
     successMessage: 'Prompt invocation started successfully!',
     errorMessage: 'Failed to start prompt invocation.',
     redirectPath: `/prompts/${promptId}`,
   });
 
   const handleSubmit = async (e: FormEvent) => {
+    if (!prompt) return;
+
     e.preventDefault();
-    await postData(`${getBaseUrl()}/api/actions/prompt-invocation/full-req-resp`, formData);
+    const request: PromptInvocationRequest = {
+      input: JSON.parse(formData.input),
+      bodyToAppend: formData.bodyToAppend,
+      llmProvider: formData.llmProvider,
+      model: formData.model,
+      templateKey: prompt.key,
+      spaceId: KoalaGainsSpaceId,
+    };
+    await postData(`${getBaseUrl()}/api/actions/prompt-invocation/full-req-resp`, request);
   };
 
   const renderer = getMarkedRenderer();
@@ -127,8 +143,27 @@ export default function CreateInvocationPage(): JSX.Element {
     label: m,
   }));
 
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: 'Prompts',
+      href: '/prompts',
+      current: false,
+    },
+    {
+      name: prompt?.name || 'Prompt',
+      href: `/prompts/${promptId}`,
+      current: false,
+    },
+    {
+      name: 'Create Invocation',
+      href: `/prompts/${promptId}/invocations/create`,
+      current: true,
+    },
+  ];
+
   return (
     <PageWrapper>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
       <Block title="Run Prompt Invocation" className="text-color">
         {promptVersionsLoading ? (
           <p>Loading versions...</p>
@@ -181,9 +216,9 @@ export default function CreateInvocationPage(): JSX.Element {
                 </div>
               </div>
               <div className="block-bg-color w-full py-4 px-2">
-                {formData.inputJson ? (
+                {formData.input ? (
                   <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs">
-                    {JSON.stringify(JSON.parse(formData.inputJson), null, 2)}
+                    {JSON.stringify(JSON.parse(formData.input), null, 2)}
                   </pre>
                 ) : (
                   <pre className="text-xs">Click on the edit icon to add the JSON</pre>
@@ -232,8 +267,8 @@ export default function CreateInvocationPage(): JSX.Element {
           open={showSampleJsonModal}
           onClose={() => setShowSampleJsonModal(false)}
           title="Sample JSON"
-          sampleJson={JSON.parse(formData.inputJson)}
-          onSave={(json: string) => setFormData((s) => ({ ...s, inputJson: json }))}
+          sampleJson={JSON.parse(formData.input)}
+          onSave={(json: string) => setFormData((s) => ({ ...s, input: json }))}
         />
       )}
       {showRawJsonModal && (
@@ -241,8 +276,8 @@ export default function CreateInvocationPage(): JSX.Element {
           open={showRawJsonModal}
           onClose={() => setShowRawJsonModal(false)}
           title="Raw JSON"
-          sampleJson={formData.inputJson}
-          onSave={(json) => setFormData((s) => ({ ...s, inputJson: json }))}
+          sampleJson={formData.input}
+          onSave={(json) => setFormData((s) => ({ ...s, input: json }))}
         />
       )}
       {showSampleBodyToAppendModal && (
