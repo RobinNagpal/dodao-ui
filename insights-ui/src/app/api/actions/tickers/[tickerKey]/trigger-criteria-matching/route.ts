@@ -8,7 +8,7 @@ import fetch from 'node-fetch';
 
 const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> => {
   const { tickerKey } = await params;
-
+  const pythonBackendBaseUrl = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
   const updatedTicker = await prisma.ticker.update({
     where: {
       spaceId_tickerKey: {
@@ -23,9 +23,13 @@ const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { 
             tickerKey,
             spaceId: KoalaGainsSpaceId,
             status: ProcessingStatus.InProgress,
+            matchingAttachmentsCount: 0,
+            matchingAttachmentsProcessedCount: 0,
           },
           update: {
             status: ProcessingStatus.InProgress,
+            matchingAttachmentsCount: 0,
+            matchingAttachmentsProcessedCount: 0,
             criterionMatches: {
               deleteMany: {
                 tickerKey,
@@ -46,7 +50,7 @@ const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { 
   });
   console.log(`Updated ticker: ${JSON.stringify(updatedTicker)}`);
 
-  const url = 'https://4mbhgkl77s4gubn7i2rdcllbru0wzyxl.lambda-url.us-east-1.on.aws/populate-criteria-matches';
+  const url = `${pythonBackendBaseUrl}/api/public-equities/US/populate-criteria-matches`;
   const payload = { ticker: tickerKey };
   fetch(url, {
     method: 'POST',
