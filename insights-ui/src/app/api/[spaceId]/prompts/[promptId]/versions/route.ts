@@ -30,14 +30,6 @@ async function createVersion(req: NextRequest, context: { params: { spaceId: str
   const { spaceId, promptId } = context.params;
   const body: CreatePromptVersionRequest = await req.json();
 
-  // Check if version already exists
-  const existing = await prisma.promptVersion.findUnique({
-    where: { promptId_version: { promptId, version: body.version } },
-  });
-  if (existing) {
-    throw new Error(`Prompt version ${body.version} already exists for this prompt.`);
-  }
-
   // Query the highest version for this prompt & space
   const lastVersion = await prisma.promptVersion.findFirst({
     where: { promptId, spaceId },

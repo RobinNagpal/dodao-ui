@@ -111,7 +111,7 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           open={showRawJsonModal}
           onClose={() => setShowRawJsonModal(false)}
           title="Raw JSON"
-          sampleJson={JSON.parse(formData.sampleJson)}
+          sampleJson={formData.sampleJson}
           onSave={(json) => setFormData((s) => ({ ...s, sampleJson: json }))}
         />
       )}

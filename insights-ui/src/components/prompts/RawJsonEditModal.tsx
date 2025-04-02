@@ -11,8 +11,14 @@ export interface RawJsonEditModalProps {
   onSave?: (json: string) => void;
 }
 
-export default function RawJsonEditModal({ open, onClose, title, sampleJson: jsonObj, onSave }: RawJsonEditModalProps) {
-  const [rawJson, setRawJson] = useState<string>(jsonObj ? JSON.stringify(jsonObj, null, 2) : '{}');
+export default function RawJsonEditModal({ open, onClose, title, sampleJson, onSave }: RawJsonEditModalProps) {
+  let jsonObj = undefined;
+  try {
+    jsonObj = JSON.parse(sampleJson);
+  } catch (error) {
+    console.log(error);
+  }
+  const [rawJson, setRawJson] = useState<string>(jsonObj ? JSON.stringify(jsonObj, null, 2) : '');
   const [isValid, setIsValid] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -52,7 +58,7 @@ export default function RawJsonEditModal({ open, onClose, title, sampleJson: jso
         <div className="flex-1 overflow-hidden">
           <TextareaAutosize
             label={''}
-            modelValue={rawJson || '{}'}
+            modelValue={rawJson || ''}
             onUpdate={(val) => setRawJson(val as string)}
             className="h-full w-full font-mono text-sm resize-none pb-4"
             fillParent={true}
