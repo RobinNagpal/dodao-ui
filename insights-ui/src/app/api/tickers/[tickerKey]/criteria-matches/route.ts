@@ -45,16 +45,6 @@ async function saveCriteriaMatchesOfLatest10Q(req: NextRequest, { params }: { pa
             spaceId: KoalaGainsSpaceId,
             tickerKey: tickerKey,
             matchedContent: c.matchedContent,
-            matchedAttachments: {
-              create: c.matchedAttachments.map((a) => {
-                return {
-                  ...a,
-                  spaceId: KoalaGainsSpaceId,
-                  tickerKey,
-                  criterionKey: c.criterionKey,
-                };
-              }),
-            },
           };
         }),
       },

@@ -39,11 +39,7 @@ const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { 
     include: {
       criteriaMatchesOfLatest10Q: {
         include: {
-          criterionMatches: {
-            include: {
-              matchedAttachments: true,
-            },
-          },
+          criterionMatches: true,
         },
       },
     },

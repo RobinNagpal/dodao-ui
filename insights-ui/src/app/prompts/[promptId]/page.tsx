@@ -19,6 +19,8 @@ export default function PromptDetailsPage(): JSX.Element {
   const [prompt, setPrompt] = useState<PromptWithVersions | null>(null);
   const params = useParams() as { promptId?: string };
   const router = useRouter();
+  const [showSampleJsonModal, setShowSampleJsonModal] = useState(false);
+  const [showRawJsonModal, setShowRawJsonModal] = useState(false);
 
   const actions: EllipsisDropdownItem[] = [{ key: 'edit', label: 'Edit Page' }];
 

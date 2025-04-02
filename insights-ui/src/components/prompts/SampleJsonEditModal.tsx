@@ -27,8 +27,6 @@ export default function SampleJsonEditModal({ open, onClose, title, sampleJson: 
           setSampleJson(del.updated_src);
         }}
         enableClipboard={true}
-
-
       />
     </FullPageModal>
   );

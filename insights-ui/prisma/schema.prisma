@@ -24,6 +24,7 @@ model Ticker {
   sectorId                     Int      @map("sector_id")
   industryGroupId              Int      @map("industry_group_id")
   spaceId                      String   @default("koala_gains") @map("space_id")
+  // latest10QInformationId       String?  @map("latest_10q_information_id")
   latest10QFinancialStatements String?  @map("latest_10q_financial_statements")
   companyName                  String   @default("Unknown Company") @map("company_name")
   shortDescription             String   @default("No description provided") @map("short_description")
@@ -37,6 +38,7 @@ model Ticker {
   PerformanceChecklistItem       PerformanceChecklistItem[]
   CriterionMatch                 CriterionMatch[]
   criteriaMatchesOfLatest10Q     CriteriaMatchesOfLatest10Q?
+  // latest10QInformation           Latest10QInformation?            @relation(fields: [latest10QInformationId], references: [id])
 
   @@unique([spaceId, tickerKey])
   @@map("tickers")
@@ -215,16 +217,18 @@ model PerformanceChecklistItem {
 }
 
 model CriteriaMatchesOfLatest10Q {
-  id            String           @id @default(uuid())
-  status        ProcessingStatus @map("status")
-  createdAt     DateTime         @default(now()) @map("created_at")
-  updatedAt     DateTime         @updatedAt @map("updated_at")
-  createdBy     String?          @map("created_by")
-  updatedBy     String?          @map("updated_by")
-  failureReason String?          @map("failure_reason")
-  tickerKey     String           @map("ticker_key")
-  tickerId      String           @unique @map("ticker_id")
-  spaceId       String           @default("koala_gains") @map("space_id")
+  id                                String           @id @default(uuid())
+  status                            ProcessingStatus @map("status")
+  createdAt                         DateTime         @default(now()) @map("created_at")
+  updatedAt                         DateTime         @updatedAt @map("updated_at")
+  createdBy                         String?          @map("created_by")
+  updatedBy                         String?          @map("updated_by")
+  failureReason                     String?          @map("failure_reason")
+  tickerKey                         String           @map("ticker_key")
+  tickerId                          String           @unique @map("ticker_id")
+  spaceId                           String           @default("koala_gains") @map("space_id")
+  matchingAttachmentsCount          Int?             @map("matching_attachments_count")
+  matchingAttachmentsProcessedCount Int?             @map("matching_attachments_processed_count")
 
   criterionMatches CriterionMatch[]
   ticker           Ticker           @relation(fields: [tickerId], references: [id])
@@ -243,28 +247,9 @@ model CriterionMatch {
 
   criterionMatchesOfLatest10Q CriteriaMatchesOfLatest10Q @relation(fields: [criterionMatchesOfLatest10QId], references: [id], onDelete: Cascade)
   ticker                      Ticker                     @relation(fields: [tickerKey], references: [tickerKey])
-  matchedAttachments          CriterionMatchAttachment[]
 
   @@unique([spaceId, tickerKey, criterionKey])
   @@map("criterion_matches")
-}
-
-model CriterionMatchAttachment {
-  id               String  @id @default(uuid())
-  sequenceNumber   String  @map("sequence_number")
-  documentName     String? @map("document_name")
-  purpose          String? @map("purpose")
-  url              String  @map("url")
-  content          String  @map("content")
-  relevance        Float   @map("relevance")
-  criterionMatchId String  @map("criterion_match_id")
-  tickerKey        String  @map("ticker_key")
-  criterionKey     String  @map("criterion_key")
-  spaceId          String  @default("koala_gains") @map("space_id")
-
-  criterionMatch CriterionMatch @relation(fields: [criterionMatchId], references: [id], onDelete: Cascade)
-
-  @@map("criterion_match_attachments")
 }
 
 model Prompt {
@@ -338,3 +323,33 @@ model PromptInvocation {
 
   @@map("prompt_invocations")
 }
+
+// model Latest10QInformation {
+//   id          String               @id @default(uuid())
+//   spaceId     String               @default("koala_gains") @map("space_id")
+//   tickerKey   String               @map("ticker_key")
+//   periodOfReport String               @map("period_of_report")
+//   filingUrl      String               @map("filing_url")
+//   attachments Latest10Attachment[]
+//   Ticker      Ticker[]
+//
+//   @@map("latest_10q_informations")
+// }
+//
+// model Latest10Attachment {
+//   id                     String  @id @default(uuid())
+//   spaceId                String  @default("koala_gains") @map("space_id")
+//   tickerKey              String  @map("ticker_key")
+//   sequenceNumber         String  @map("sequence_number")
+//   documentName           String? @map("document_name")
+//   purpose                String? @map("purpose")
+//   url                    String  @map("url")
+//   latest10QInformationId String? @map("latest_10q_information_id")
+//   /// [CriterionAttachmentMatch]
+//   criterionMatches       Json[]  @map("criterion_matches") @db.JsonB
+//
+//   Latest10QInformation Latest10QInformation? @relation(fields: [latest10QInformationId], references: [id])
+//
+//   @@unique([spaceId, tickerKey, sequenceNumber])
+//   @@map("latest_10_attachments")
+// }

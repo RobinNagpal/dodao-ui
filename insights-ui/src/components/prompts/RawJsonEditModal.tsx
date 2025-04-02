@@ -24,7 +24,7 @@ export default function RawJsonEditModal({ open, onClose, title, sampleJson: jso
         setErrorMessage('JSON cannot be empty');
         return;
       }
-      
+
       JSON.parse(rawJson);
       setIsValid(true);
       setErrorMessage('');
@@ -36,7 +36,7 @@ export default function RawJsonEditModal({ open, onClose, title, sampleJson: jso
 
   const handleSave = () => {
     if (!isValid) return;
-    
+
     try {
       const parsedJson = JSON.parse(rawJson);
       onSave?.(JSON.stringify(parsedJson));
@@ -50,28 +50,19 @@ export default function RawJsonEditModal({ open, onClose, title, sampleJson: jso
     <FullPageModal open={open} onClose={onClose} title={title}>
       <div className="flex flex-col h-[calc(100vh-120px)] p-4">
         <div className="flex-1 overflow-hidden">
-          <TextareaAutosize 
-            label={''} 
-            modelValue={rawJson || '{}'} 
+          <TextareaAutosize
+            label={''}
+            modelValue={rawJson || '{}'}
             onUpdate={(val) => setRawJson(val as string)}
             className="h-full w-full font-mono text-sm resize-none pb-4"
             fillParent={true}
           />
         </div>
-        
-        {!isValid && (
-          <div className="mt-2 text-red-500 text-sm">
-            {errorMessage}
-          </div>
-        )}
-        
+
+        {!isValid && <div className="mt-2 text-red-500 text-sm">{errorMessage}</div>}
+
         <div className="flex justify-end mt-4 pt-4 border-t border-gray-200">
-          <Button 
-            onClick={handleSave} 
-            primary 
-            variant="contained"
-            disabled={!isValid}
-          >
+          <Button onClick={handleSave} primary variant="contained" disabled={!isValid}>
             Save
           </Button>
         </div>
