@@ -9,13 +9,11 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import ReloadingData from '@/components/ui/ReloadingData';
 import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-import { FullNestedTickerReport, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
+import { FullNestedTickerReport, PredefinedReports, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { CreateAllCriterionReportsRequest, CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
-import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -32,7 +30,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
   const [industryGroupCriteria, setIndustryGroupCriteria] = useState<IndustryGroupCriteriaDefinition | null>(null);
   const [showCriterionConfirmModal, setShowCriterionConfirmModal] = useState(false);
   const [showSectionConfirmModal, setShowSectionConfirmModal] = useState(false);
-  const [selectedSectionForRegeneration, setselectedSectionForRegeneration] = useState<{
+  const [selectedSectionForRegeneration, setSelectedSectionForRegeneration] = useState<{
     section: string;
     reportKey?: string;
   } | null>(null);
@@ -201,55 +199,31 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
         )}
 
         <div className="mt-8">
-          <div className="mb-8">
-            <div className="flex">
-              <h2 className="text-lg font-bold">Performance Checklist</h2>
-              <PrivateWrapper>
-                <IconButton
-                  iconName={IconTypes.Reload}
-                  primary
-                  variant="outlined"
-                  disabled={selectedSectionForRegeneration?.section === 'performanceChecklist' && singleCriterionReportsLoading}
-                  onClick={() => {
-                    setselectedSectionForRegeneration({ section: 'performanceChecklist' });
-                    setShowSectionConfirmModal(true);
-                  }}
-                  loading={
-                    criterionEvaluation?.performanceChecklistEvaluation?.status === ProcessingStatus.InProgress ||
-                    (selectedSectionForRegeneration?.section === 'performanceChecklist' && singleCriterionReportsLoading)
-                  }
-                  className="ml-2"
-                />
-              </PrivateWrapper>
-            </div>
-
-            <PerformanceChecklistEvaluation criterionEvaluation={criterionEvaluation || undefined} />
+          <div className="flex justify-end">
+            <Button
+              disabled={singleCriterionReportsLoading}
+              onClick={() => {
+                setSelectedSectionForRegeneration({ section: PredefinedReports.performanceChecklistAndMetricsCombined });
+                setShowSectionConfirmModal(true);
+              }}
+              loading={selectedSectionForRegeneration?.section === PredefinedReports.performanceChecklistAndMetricsCombined && singleCriterionReportsLoading}
+            >
+              Regenerate metrics & performanceChecklist
+            </Button>
           </div>
 
-          {/* Important Metrics */}
           <div className="mb-8">
             <div className="flex mb-4">
               <h2 className="text-lg font-bold">Important Metrics</h2>
-              <PrivateWrapper>
-                <IconButton
-                  iconName={IconTypes.Reload}
-                  primary
-                  variant="outlined"
-                  disabled={selectedSectionForRegeneration?.section === 'importantMetrics' && singleCriterionReportsLoading}
-                  onClick={() => {
-                    setselectedSectionForRegeneration({ section: 'importantMetrics' });
-                    setShowSectionConfirmModal(true);
-                  }}
-                  loading={
-                    criterionEvaluation?.importantMetricsEvaluation?.status === ProcessingStatus.InProgress ||
-                    (selectedSectionForRegeneration?.section === 'importantMetrics' && singleCriterionReportsLoading)
-                  }
-                  className="ml-2"
-                />
-              </PrivateWrapper>
             </div>
-
             <ImportantMetricsReport criterionEvaluation={criterionEvaluation} showAllInformationUsed={true} />
+          </div>
+
+          <div className="mb-8">
+            <div className="flex mb-4">
+              <h2 className="text-lg font-bold">Performance Checklist</h2>
+            </div>
+            <PerformanceChecklistEvaluation criterionEvaluation={criterionEvaluation || undefined} />
           </div>
 
           {/* Reports */}
@@ -288,7 +262,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
           title="Regenerate Section"
           confirmationText={`Are you sure you want to regenerate ${
             selectedSectionForRegeneration.section === 'report' && selectedSectionForRegeneration.reportKey
-              ? `report ${selectedSectionForRegeneration.reportKey}`
+              ? `report '${selectedSectionForRegeneration.reportKey}'`
               : selectedSectionForRegeneration.section
           } for criterion ${criterionKey}?`}
           askForTextInput={true}

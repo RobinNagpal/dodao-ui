@@ -39,7 +39,7 @@ const triggerSingleCriterionReport = async (
   const responseJson = await response.json();
   console.log('Response from langflow:', responseJson);
 
-  if (reportKey === PredefinedReports.performanceChecklist) {
+  if (reportKey === PredefinedReports.performanceChecklistAndMetricsCombined) {
     const updatedCriterionEvaluation = await prisma.criterionEvaluation.upsert({
       where: {
         spaceId_tickerKey_criterionKey: {
@@ -52,6 +52,14 @@ const triggerSingleCriterionReport = async (
         criterionKey,
         tickerKey,
         performanceChecklistEvaluation: {
+          create: {
+            criterionKey,
+            tickerKey,
+            status: ProcessingStatus.InProgress,
+            spaceId: KoalaGainsSpaceId,
+          },
+        },
+        importantMetricsEvaluation: {
           create: {
             criterionKey,
             tickerKey,
@@ -81,31 +89,6 @@ const triggerSingleCriterionReport = async (
             },
           },
         },
-      },
-    });
-    return updatedCriterionEvaluation;
-  } else if (reportKey === PredefinedReports.importantMetrics) {
-    const updatedCriterionEvaluation = await prisma.criterionEvaluation.upsert({
-      where: {
-        spaceId_tickerKey_criterionKey: {
-          spaceId: KoalaGainsSpaceId,
-          criterionKey,
-          tickerKey,
-        },
-      },
-      create: {
-        criterionKey,
-        tickerKey,
-        importantMetricsEvaluation: {
-          create: {
-            criterionKey,
-            tickerKey,
-            status: ProcessingStatus.InProgress,
-            spaceId: KoalaGainsSpaceId,
-          },
-        },
-      },
-      update: {
         importantMetricsEvaluation: {
           upsert: {
             create: {

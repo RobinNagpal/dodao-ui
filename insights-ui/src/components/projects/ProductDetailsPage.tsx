@@ -4,7 +4,7 @@ import { ProjectDetails, REPORT_TYPES_TO_DISPLAY, ReportInterfaceWithType, Repor
 import { getReportName } from '@/util/report-utils';
 import Link from 'next/link';
 import React from 'react';
-import RadarChart from '../ui/RadarChart';
+import RadarChart from '../visualizations/RadarChart';
 import PrivateWrapper from '../auth/PrivateWrapper';
 import ProjectInfoTable from './ProjectInfoTable';
 

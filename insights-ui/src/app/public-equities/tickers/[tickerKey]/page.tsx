@@ -1,6 +1,6 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import RadarChart from '@/components/ui/RadarChart';
+import RadarChart from '@/components/visualizations/RadarChart';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import {
   FullCriterionEvaluation,
@@ -115,7 +115,10 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                 <TickerActionsDropdown tickerKey={tickerKey} />
               </PrivateWrapper>
             </div>
-            <h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">{tickerKey}</h1>
+            <h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">
+              {tickerReport.companyName} ({tickerKey})
+            </h1>
+            <h2 className="mt-5 whitespace-pre-line">{tickerReport.shortDescription}</h2>
             <div className="max-w-lg mx-auto">
               <RadarChart data={spiderGraph} />
             </div>

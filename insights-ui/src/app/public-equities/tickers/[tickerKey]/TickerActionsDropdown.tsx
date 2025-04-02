@@ -19,6 +19,7 @@ export default function TickerActionsDropdown({ tickerKey }: ReportActionsDropdo
   const actions: EllipsisDropdownItem[] = [
     { key: 'debug', label: 'Debug Page' },
     { key: 'edit', label: 'Edit Page' },
+    { key: 'sec', label: 'SEC Filings' },
     { key: 'delete', label: 'Delete' },
   ];
 
@@ -42,6 +43,8 @@ export default function TickerActionsDropdown({ tickerKey }: ReportActionsDropdo
             router.push(`/public-equities/debug/tickers/${tickerKey}`);
           } else if (key === 'edit') {
             router.push(`/public-equities/tickers/${tickerKey}/edit`);
+          } else if (key === 'sec') {
+            router.push(`/public-equities/tickers/${tickerKey}/sec-filings`);
           } else if (key === 'delete') {
             setShowConfirmModal(true);
           }

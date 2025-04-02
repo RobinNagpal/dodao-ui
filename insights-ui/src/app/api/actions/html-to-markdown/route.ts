@@ -15,13 +15,21 @@ async function postHandler(req: NextRequest): Promise<MarkdownContentResponse> {
 
   // Convert HTML to Markdown
   const $ = cheerio.load(body.htmlContent);
-  $('*').removeAttr('style');
 
-  // Retrieve the cleaned HTML from Cheerio
-  const cleanHtml = $.html();
+  // Remove the head tag and its content
+  $('head').remove();
+
+  // Remove any element with an inline style that includes "display: none"
+  $('[style*="display: none"]').remove();
+
+  // Remove inline style attributes from all elements within the body
+  $('body *').removeAttr('style');
+
+  // Extract only the inner content of the <body> tag
+  const bodyContent = $('body').html();
 
   // Convert the cleaned HTML to Markdown
-  const markdown = turndownService.turndown(cleanHtml);
+  const markdown = turndownService.turndown(bodyContent);
 
   return { markdown };
 }
