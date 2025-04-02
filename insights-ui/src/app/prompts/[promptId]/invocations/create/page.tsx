@@ -31,7 +31,6 @@ interface CreateInvocationForm {
   llmProvider: string;
   model: string;
   bodyToAppend?: string;
-  inputJson: string;
   commitMessage?: string;
 }
 
