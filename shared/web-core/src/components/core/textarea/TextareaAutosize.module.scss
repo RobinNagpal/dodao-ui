@@ -1,0 +1,17 @@
+.textarea {
+  width: 100%;
+  resize: none;
+  overflow: auto;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  /* Additional shared styling… */
+}
+
+.error {
+  border: 2px solid red;
+}
+
+.fullHeight {
+  height: 100%;
+}

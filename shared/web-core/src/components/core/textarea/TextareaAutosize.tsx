@@ -1,6 +1,6 @@
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styles from './TextareaAutosize.module.scss';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { v4 } from 'uuid';
 
 export interface TextareaAutosizeProps {
@@ -8,6 +8,7 @@ export interface TextareaAutosizeProps {
   label: string | null;
   modelValue?: string | number;
   autosize?: boolean;
+  fillParent?: boolean; // New prop for full parent height
   minHeight?: number;
   maxHeight?: number;
   number?: number;
@@ -22,24 +23,12 @@ export interface TextareaAutosizeProps {
   rows?: number;
 }
 
-const Textarea = styled.textarea<{ error: boolean }>`
-  width: 100%;
-  resize: none;
-  overflow: auto;
-
-  background-color: var(--bg-color);
-  border: ${(props) => (props.error ? '2px solid red;' : '')};
-  color: var(--text-color);
-  &:focus {
-    box-shadow: ${(props) => (props.error ? '0 0 0 2px red' : '0 0 0 2px var(--primary-color)')};
-  }
-`;
-
 export default function TextareaAutosize({
   id = '',
   modelValue = '',
   minHeight = 100,
   maxHeight = 300,
+  fillParent,
   number,
   error,
   onUpdate,
@@ -57,20 +46,26 @@ export default function TextareaAutosize({
 
   const resize = () => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto'; // Reset the height to auto before calculating the new height
-      let contentHeight = textareaRef.current.scrollHeight;
-      if (minHeight) {
-        contentHeight = contentHeight < minHeight ? minHeight : contentHeight;
-      }
-      if (maxHeight) {
-        if (contentHeight > maxHeight) {
-          contentHeight = maxHeight;
-          setMaxHeightScroll(true);
-        } else {
-          setMaxHeightScroll(false);
+      if (fillParent) {
+        // If fillParent is true, set height to 100% of the parent container.
+        textareaRef.current.style.height = '100%';
+      } else {
+        // Reset the height to auto before calculating the new height.
+        textareaRef.current.style.height = 'auto';
+        let contentHeight = textareaRef.current.scrollHeight;
+        if (minHeight) {
+          contentHeight = contentHeight < minHeight ? minHeight : contentHeight;
         }
+        if (maxHeight) {
+          if (contentHeight > maxHeight) {
+            contentHeight = maxHeight;
+            setMaxHeightScroll(true);
+          } else {
+            setMaxHeightScroll(false);
+          }
+        }
+        textareaRef.current.style.height = contentHeight + 'px';
       }
-      textareaRef.current.style.height = contentHeight + 'px';
     }
   };
 
@@ -78,7 +73,7 @@ export default function TextareaAutosize({
     resize();
     const contents = e.target.value;
     if (number) {
-      onUpdate && onUpdate && onUpdate(!contents ? undefined : parseFloat(contents));
+      onUpdate && onUpdate(!contents ? undefined : parseFloat(contents));
     } else {
       onUpdate && onUpdate(contents);
     }
@@ -86,7 +81,7 @@ export default function TextareaAutosize({
 
   useEffect(() => {
     resize();
-  }, [minHeight, maxHeight, id]);
+  }, [minHeight, maxHeight, id, fillParent]);
 
   useEffect(() => {
     resize();
@@ -97,7 +92,6 @@ export default function TextareaAutosize({
   }, [modelValue]);
 
   const uuid = v4();
-
   const slugLabel = (label && slugify(label)) || '';
 
   return (
@@ -107,20 +101,23 @@ export default function TextareaAutosize({
           {label}
         </label>
       )}
-
-      <div className="mt-2 w-full">
-        <Textarea
+      <div className="mt-2 w-full h-full">
+        <textarea
           name={id || slugLabel || uuid}
           id={id || slugLabel || uuid}
-          className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
-            textAreaClassName || ''
-          }`}
+          className={`
+            ${styles.textarea} 
+            ${error ? styles.error : ''} 
+            ${fillParent ? styles.fullHeight : ''} 
+            ${textAreaClassName || ''}
+            
+            w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6
+          `}
           ref={textareaRef}
           onChange={handleInput}
           onFocus={resize}
           value={modelValue as string}
           placeholder={placeholder}
-          error={!!error}
           onKeyDown={onKeyDown}
           rows={rows}
           onBlur={onBlur}

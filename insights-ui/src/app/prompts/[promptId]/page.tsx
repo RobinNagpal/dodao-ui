@@ -1,11 +1,13 @@
 // app/prompts/[promptId]/page.tsx
 'use client';
 
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { useEffect, useState } from 'react';
 import { Prompt, PromptVersion } from '@prisma/client';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 interface PromptWithVersions extends Prompt {
   promptVersions: PromptVersion[];
@@ -14,6 +16,9 @@ interface PromptWithVersions extends Prompt {
 export default function PromptDetailsPage(): JSX.Element {
   const [prompt, setPrompt] = useState<PromptWithVersions | null>(null);
   const params = useParams() as { promptId?: string };
+  const router = useRouter();
+
+  const actions: EllipsisDropdownItem[] = [{ key: 'edit', label: 'Edit Page' }];
 
   useEffect(() => {
     if (!params.promptId) return;
@@ -30,7 +35,19 @@ export default function PromptDetailsPage(): JSX.Element {
   return (
     <PageWrapper>
       <div className="p-4 text-color">
-        <h1 className="text-2xl heading-color mb-2">Prompt Details</h1>
+        <div className="flex justify-between">
+          <h1 className="text-2xl heading-color mb-2">Prompt Details</h1>
+          <PrivateWrapper>
+            <EllipsisDropdown
+              items={actions}
+              onSelect={async (key) => {
+                if (key === 'edit') {
+                  router.push(`/prompts/edit/${prompt.id}`);
+                }
+              }}
+            />
+          </PrivateWrapper>
+        </div>
         <p className="mb-4">Name: {prompt.name}</p>
         <p className="mb-4">Key: {prompt.key}</p>
         <p className="mb-4">Excerpt: {prompt.excerpt}</p>

@@ -1,10 +1,14 @@
 // app/prompts/edit/create/page.tsx
 'use client';
 
+import SampleJsonEditModal from '@/components/prompts/SampleJsonEditModal';
+import RawJsonJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PromptSchema } from '@/types/prompt-schemas';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
@@ -40,7 +44,8 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
     outputSchema: prompt?.outputSchema || '',
     sampleJson: prompt?.sampleJson || '',
   });
-
+  const [showSampleJsonModal, setShowSampleJsonModal] = useState(false);
+  const [showRawJsonModal, setShowRawJsonModal] = useState(false);
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await onUpsert(formData);
@@ -72,14 +77,45 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
             setSelectedItemId={(value) => setFormData((s) => ({ ...s, outputSchema: value as string }))}
           />
 
-          <Input modelValue={formData.sampleJson} onUpdate={(val) => setFormData((s) => ({ ...s, sampleJson: val as string }))}>
-            Sample JSON
-          </Input>
+          <div className="my-4">
+            <div className="flex justify-end w-full mb-2 gap-2 items-center">
+              <span className="text-sm text-gray-500">Visual Editor:</span>
+              <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleJsonModal(true)} />
+              <span className="text-sm text-gray-500 ml-2">Raw JSON:</span>
+              <IconButton iconName={IconTypes.Edit} onClick={() => setShowRawJsonModal(true)} />
+            </div>
+            <div className="block-bg-color w-full py-4 px-2">
+              {formData.sampleJson ? (
+                <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs">
+                  {JSON.stringify(JSON.parse(formData.sampleJson), null, 2)}
+                </pre>
+              ) : (
+                <pre className="text-xs">Click on the edit icon to add the JSON</pre>
+              )}
+            </div>
+          </div>
           <Button disabled={upserting} variant="contained" primary loading={upserting}>
             Submit
           </Button>
         </form>
       </Block>
+      {showSampleJsonModal && (
+        <SampleJsonEditModal
+          open={showSampleJsonModal}
+          onClose={() => setShowSampleJsonModal(false)}
+          title="Sample JSON"
+          sampleJson={JSON.parse(formData.sampleJson)}
+        />
+      )}
+      {showRawJsonModal && (
+        <RawJsonJsonEditModal
+          open={showRawJsonModal}
+          onClose={() => setShowRawJsonModal(false)}
+          title="Raw JSON"
+          sampleJson={JSON.parse(formData.sampleJson)}
+          onSave={(json) => setFormData((s) => ({ ...s, sampleJson: json }))}
+        />
+      )}
     </PageWrapper>
   );
 }
