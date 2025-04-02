@@ -10,6 +10,8 @@ import { useState } from 'react';
 import ManagementDiscussionButton from './ManagementDiscussionButton';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import ReloadingData from '@/components/ui/ReloadingData';
+import ProgressBar from '@/components/ui/ProgressBar';
 
 export interface DebugMatchingAttachmentsProps {
   report: FullNestedTickerReport;
@@ -46,8 +48,15 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
   return (
     <div className="mt-8">
       {matchingCriteriaError && <div className="text-red-500">{matchingCriteriaError}</div>}
+      <ReloadingData
+        loadDataFn={onPostUpdate}
+        needsLoading={!!(report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress)}
+        reloadDurationInSec={20} // optional, defaults to 20
+        message="Reloading In-progress items ..."
+      />
+
       <PrivateWrapper>
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end my-4">
           <Button
             loading={matchingCriteriaLoading || report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress}
             primary
@@ -59,6 +68,13 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
           </Button>
         </div>
       </PrivateWrapper>
+      {report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress && (
+        <ProgressBar
+          processedCount={report.criteriaMatchesOfLatest10Q?.matchingAttachmentsProcessedCount ?? 0}
+          totalCount={report.criteriaMatchesOfLatest10Q?.matchingAttachmentsCount ?? 0}
+        />
+      )}
+
       <h1 className="mb-8 font-bold text-xl">Matching Attachments</h1>
       {report.criteriaMatchesOfLatest10Q?.criterionMatches?.map((criterion) => {
         return (
