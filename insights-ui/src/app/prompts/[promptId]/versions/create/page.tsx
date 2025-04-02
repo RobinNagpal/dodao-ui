@@ -11,6 +11,8 @@ import Editor from '@monaco-editor/react';
 import Handlebars from 'handlebars';
 import { useParams } from 'next/navigation';
 import { FormEvent, useEffect, useState } from 'react';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 
 interface CreatePromptVersionForm {
   promptTemplate: string;
@@ -73,8 +75,27 @@ export default function CreatePromptVersionPage(): JSX.Element {
     await postData(`${getBaseUrl()}/api/koala_gains/prompts/${promptId}/versions`, formData);
   };
 
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: 'Prompts',
+      href: '/prompts',
+      current: false,
+    },
+    {
+      name: parentPrompt?.name || 'Prompt',
+      href: `/prompts/${promptId}`,
+      current: false,
+    },
+    {
+      name: 'Create Version',
+      href: `/prompts/${promptId}/versions/create`,
+      current: true,
+    },
+  ];
+
   return (
     <PageWrapper>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
       <Block title="Create Prompt Version" className="text-color">
         <form onSubmit={handleSubmit}>
           <div className="mt-4">

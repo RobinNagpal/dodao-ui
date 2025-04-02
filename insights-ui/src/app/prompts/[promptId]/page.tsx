@@ -2,10 +2,12 @@
 'use client';
 
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { Prompt, PromptVersion } from '@prisma/client';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -34,9 +36,23 @@ export default function PromptDetailsPage(): JSX.Element {
 
   if (!prompt) return <div className="p-4 text-color">Loading...</div>;
 
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: 'Prompts',
+      href: '/prompts',
+      current: false,
+    },
+    {
+      name: prompt.name,
+      href: `/prompts/${prompt.id}`,
+      current: true,
+    },
+  ];
+
   return (
     <PageWrapper>
-      <div className="p-4 text-color">
+      <div className="text-color">
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
         <div className="flex justify-between">
           <h1 className="text-2xl heading-color mb-2">Prompt Details</h1>
           <PrivateWrapper>

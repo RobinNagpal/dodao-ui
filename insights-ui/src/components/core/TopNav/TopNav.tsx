@@ -20,16 +20,20 @@ export default function TopNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedin, setIsLoggedin] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setIsLoggedin(!!getAuthKey());
+  }, []);
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
   };
 
-  const isLoggedin = getAuthKey() ? true : false;
-
   const handleLogout = () => {
     localStorage.removeItem('AUTHENTICATION_KEY');
+    setIsLoggedin(false);
     setMenuOpen(false);
     setMobileMenuOpen(false);
   };
@@ -37,7 +41,6 @@ export default function TopNav() {
   // Close the menu when clicking outside the component
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // Cast event.target as Node to access the 'contains' method
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuOpen(false);
       }
@@ -77,7 +80,7 @@ export default function TopNav() {
                 <button
                   type="button"
                   onClick={toggleMenu}
-                  className="relative flex text-sm ring-2 ring-color rounded-full "
+                  className="relative flex text-sm ring-2 ring-color rounded-full"
                   id="user-menu-button"
                   aria-expanded={menuOpen}
                   aria-haspopup="true"
@@ -94,16 +97,27 @@ export default function TopNav() {
                   aria-orientation="vertical"
                   aria-labelledby="user-menu-button"
                 >
-                  <div className="block px-4 py-2 text-sm font-semibold text-color cursor-pointer" id="user-menu-item-2" onClick={handleLogout}>
+                  <Link href="/prompts" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
+                    Prompts
+                  </Link>
+                  <Link href="/invocations" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
+                    Invocations
+                  </Link>
+                  <div className="border-t border-gray-700 my-1"></div>
+                  <button
+                    className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
+                    id="user-menu-item-2"
+                    onClick={handleLogout}
+                  >
                     Log out
-                  </div>
+                  </button>
                 </div>
               )}
             </div>
           ) : (
-            <div onClick={() => setLoginModalOpen(true)} className="text-sm/6 font-semibold text-color cursor-pointer">
+            <button onClick={() => setLoginModalOpen(true)} className="text-sm/6 font-semibold text-color cursor-pointer">
               Log in <span aria-hidden="true">&rarr;</span>
-            </div>
+            </button>
           )}
         </div>
       </nav>
@@ -136,16 +150,34 @@ export default function TopNav() {
               </div>
               <div className="py-6">
                 {isLoggedin ? (
-                  <div onClick={handleLogout} className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700">
-                    Log out
-                  </div>
+                  <>
+                    <Link
+                      href="/prompts"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+                    >
+                      Prompts
+                    </Link>
+                    <Link
+                      href="/invocations"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+                    >
+                      Invocations
+                    </Link>
+                    <div className="border-t border-gray-700 my-1"></div>
+                    <button
+                      onClick={handleLogout}
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+                    >
+                      Log out
+                    </button>
+                  </>
                 ) : (
-                  <div
+                  <button
                     onClick={() => setLoginModalOpen(true)}
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700"
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
                   >
                     Log in
-                  </div>
+                  </button>
                 )}
               </div>
             </div>
