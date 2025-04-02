@@ -13,6 +13,8 @@ import { useParams } from 'next/navigation';
 import { FormEvent, useEffect, useState } from 'react';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 
 interface CreatePromptVersionForm {
   promptTemplate: string;
@@ -26,6 +28,7 @@ export default function CreatePromptVersionPage(): JSX.Element {
   const [sampleData, setSampleData] = useState<any>({});
   const [previewHtml, setPreviewHtml] = useState<string>('');
   const [templateError, setTemplateError] = useState<string>('');
+  const [sampleBodyToAppend, setSampleBodyToAppend] = useState<string>('');
 
   const [formData, setFormData] = useState<CreatePromptVersionForm>({
     promptTemplate: '',
@@ -100,19 +103,39 @@ export default function CreatePromptVersionPage(): JSX.Element {
         <form onSubmit={handleSubmit}>
           <div className="mt-4">
             <label className="block mb-2">Prompt Template</label>
-            <Editor
-              height="300px"
-              defaultLanguage="handlebars"
-              value={formData.promptTemplate}
-              theme="vs-dark"
-              onChange={(value) => setFormData((prev) => ({ ...prev, promptTemplate: value || '' }))}
-            />
-            {templateError && <p className="mt-2 text-red-500">Error: {templateError}</p>}
+            <div className="flex gap-4">
+              <div className="flex-1">
+                <Editor
+                  height="300px"
+                  defaultLanguage="handlebars"
+                  value={formData.promptTemplate}
+                  theme="vs-dark"
+                  onChange={(value) => setFormData((prev) => ({ ...prev, promptTemplate: value || '' }))}
+                />
+                {templateError && <p className="mt-2 text-red-500">Error: {templateError}</p>}
+              </div>
+            </div>
           </div>
 
           <div className="mt-4">
             <h2 className="text-xl heading-color">Preview</h2>
-            <div className="p-4 border border-color mt-2" dangerouslySetInnerHTML={{ __html: previewHtml }} />
+            <div className="flex-1 border-l border-gray-200">
+              <Editor
+                height="300px"
+                defaultLanguage="markdown"
+                value={previewHtml}
+                options={{
+                  readOnly: true,
+                  minimap: { enabled: false },
+                  scrollBeyondLastLine: false,
+                  wordWrap: 'on',
+                  lineNumbers: 'off',
+                  folding: false,
+                  fontSize: 14,
+                  fontFamily: 'monospace',
+                }}
+              />
+            </div>
           </div>
           <Input modelValue={formData.commitMessage} onUpdate={(val) => setFormData((prev) => ({ ...prev, commitMessage: val as string }))}>
             Commit Message

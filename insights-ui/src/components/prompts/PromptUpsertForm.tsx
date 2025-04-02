@@ -14,8 +14,11 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { Prompt } from '@prisma/client';
+import { marked } from 'marked';
 import { FormEvent, useState } from 'react';
+import SampleBodyEditModal from './SampleBodyEditModal';
 
 export interface PromptFormData {
   id?: string;
@@ -25,6 +28,7 @@ export interface PromptFormData {
   inputSchema: string;
   outputSchema: string;
   sampleJson: string;
+  sampleBodyToAppend?: string;
 }
 
 export interface PromptUpsertFormProps {
@@ -43,14 +47,24 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
     inputSchema: prompt?.inputSchema || '',
     outputSchema: prompt?.outputSchema || '',
     sampleJson: prompt?.sampleJson || '',
+    sampleBodyToAppend: prompt?.sampleBodyToAppend || '',
   });
   const [showSampleJsonModal, setShowSampleJsonModal] = useState(false);
   const [showRawJsonModal, setShowRawJsonModal] = useState(false);
+  const [showSampleBodyToAppendModal, setShowSampleBodyToAppendModal] = useState(false);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await onUpsert(formData);
   };
 
+  const handleSampleBodySave = (sampleBody: string) => {
+    setFormData((s) => ({ ...s, sampleBodyToAppend: sampleBody }));
+    setShowSampleBodyToAppendModal(false);
+  };
+  const renderer = getMarkedRenderer();
+
+  const sampleBodyToAppend = formData.sampleBodyToAppend && marked.parse(formData.sampleBodyToAppend, { renderer });
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -77,11 +91,14 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
         />
 
         <div className="my-4">
-          <div className="flex justify-end w-full mb-2 gap-2 items-center">
-            <span className="text-sm text-gray-500">Visual Editor:</span>
-            <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleJsonModal(true)} />
-            <span className="text-sm text-gray-500 ml-2">Raw JSON:</span>
-            <IconButton iconName={IconTypes.Edit} onClick={() => setShowRawJsonModal(true)} />
+          <div className="flex justify-between w-full mb-2 gap-2 items-center">
+            <div>Sample Json</div>
+            <div>
+              <span className="text-sm text-gray-500">Visual Editor:</span>
+              <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleJsonModal(true)} />
+              <span className="text-sm text-gray-500 ml-2">Raw JSON:</span>
+              <IconButton iconName={IconTypes.Edit} onClick={() => setShowRawJsonModal(true)} />
+            </div>
           </div>
           <div className="block-bg-color w-full py-4 px-2">
             {formData.sampleJson ? (
@@ -93,6 +110,27 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
             )}
           </div>
         </div>
+
+        <div className="my-4">
+          <div className="flex justify-between w-full mb-2 gap-2 items-center">
+            <div>Sample Body to append</div>
+            <div>
+              <span className="text-sm text-gray-500 ml-2">Edit:</span>
+              <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleBodyToAppendModal(true)} />
+            </div>
+          </div>
+          <div className="block-bg-color w-full py-4 px-2">
+            {sampleBodyToAppend ? (
+              <pre
+                className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs"
+                dangerouslySetInnerHTML={{ __html: sampleBodyToAppend }}
+              />
+            ) : (
+              <pre className="text-xs">Click on the edit icon to add the body to append</pre>
+            )}
+          </div>
+        </div>
+
         <Button disabled={upserting} variant="contained" primary loading={upserting}>
           Submit
         </Button>
@@ -104,6 +142,7 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           onClose={() => setShowSampleJsonModal(false)}
           title="Sample JSON"
           sampleJson={JSON.parse(formData.sampleJson)}
+          onSave={(json: string) => setFormData((s) => ({ ...s, sampleJson: json }))}
         />
       )}
       {showRawJsonModal && (
@@ -113,6 +152,14 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           title="Raw JSON"
           sampleJson={formData.sampleJson}
           onSave={(json) => setFormData((s) => ({ ...s, sampleJson: json }))}
+        />
+      )}
+      {showSampleBodyToAppendModal && (
+        <SampleBodyEditModal
+          isOpen={showSampleBodyToAppendModal}
+          onClose={() => setShowSampleBodyToAppendModal(false)}
+          onSave={handleSampleBodySave}
+          initialValue={formData.sampleBodyToAppend || ''}
         />
       )}
     </>

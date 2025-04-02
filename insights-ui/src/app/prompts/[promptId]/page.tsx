@@ -133,6 +133,9 @@ export default function PromptDetailsPage() {
         <Link href={`/prompts/${prompt.id}/versions/create`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block">
           Create New Version
         </Link>
+        <Link href={`/prompts/${prompt.id}/invocations/create`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block ml-4">
+          Invoke
+        </Link>
       </div>
     </PageWrapper>
   );

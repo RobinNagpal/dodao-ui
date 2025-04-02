@@ -11,6 +11,7 @@ interface UpdatePromptRequest {
   outputSchema?: string;
   sampleJson?: string;
   updatedBy?: string;
+  sampleBodyToAppend?: string;
 }
 
 // GET /api/[spaceId]/prompts/[promptId]
@@ -44,6 +45,7 @@ async function updatePrompt(req: NextRequest, context: { params: { spaceId: stri
       inputSchema: body.inputSchema,
       outputSchema: body.outputSchema,
       sampleJson: body.sampleJson,
+      sampleBodyToAppend: body.sampleBodyToAppend,
       updatedBy: body.updatedBy,
     },
   });
