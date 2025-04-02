@@ -21,15 +21,19 @@ export default function TopNav() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(!!getAuthKey());
+  }, []);
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
   };
 
-  const isLoggedin = getAuthKey() ? true : false;
-
   const handleLogout = () => {
     localStorage.removeItem('AUTHENTICATION_KEY');
+    setIsLoggedIn(false);
     setMenuOpen(false);
     setMobileMenuOpen(false);
   };
@@ -71,7 +75,7 @@ export default function TopNav() {
               {item.name}
             </Link>
           ))}
-          {isLoggedin ? (
+          {isLoggedIn ? (
             <div className="relative" ref={menuRef}>
               <div>
                 <button
@@ -135,7 +139,7 @@ export default function TopNav() {
                 ))}
               </div>
               <div className="py-6">
-                {isLoggedin ? (
+                {isLoggedIn ? (
                   <div onClick={handleLogout} className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700">
                     Log out
                   </div>

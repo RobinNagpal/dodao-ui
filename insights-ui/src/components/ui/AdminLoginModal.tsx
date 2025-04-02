@@ -19,6 +19,7 @@ interface AuthResponse {
 
 export default function AdminLoginModal({ open, onClose }: AdminLoginModalProps) {
   const [adminCode, setAdminCode] = useState('');
+  const [isAdminUser, setIsAdminUser] = useState(false);
 
   const { postData, loading, data, error } = usePostData<AuthResponse, { adminCode: string }>(
     {
@@ -29,20 +30,26 @@ export default function AdminLoginModal({ open, onClose }: AdminLoginModalProps)
   );
 
   useEffect(() => {
+    setIsAdminUser(isAdmin());
+  }, []);
+
+  useEffect(() => {
     if (!open) {
       setAdminCode('');
     }
   }, [open]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     localStorage.setItem('AUTHENTICATION_KEY', adminCode);
+    setIsAdminUser(true);
     onClose();
   };
 
   return (
-    <SingleSectionModal open={open} onClose={onClose} title={isAdmin() ? 'You are already logged in as admin.' : 'Admin Login'}>
+    <SingleSectionModal open={open} onClose={onClose} title={isAdminUser ? 'You are already logged in as admin.' : 'Admin Login'}>
       <div className="p-4">
-        {!isAdmin() && (
+        {!isAdminUser && (
           <form onSubmit={handleSubmit}>
             {error && <div className="text-red-500 ml-1 mb-2">{error}</div>}
             <Input id="adminCode" modelValue={adminCode} onUpdate={(val) => setAdminCode(val?.toString() ?? '')} required />
