@@ -1,0 +1,34 @@
+type: object
+properties:
+  id:
+    type: string
+  status:
+    type: string
+    enum: ["InProgress", "Completed", "Failed"]
+  tickerKey:
+    type: string
+  criterionKey:
+    type: string
+  spaceId:
+    type: string
+    default: "koala_gains"
+  createdBy:
+    type: string
+    nullable: true
+  updatedBy:
+    type: string
+    nullable: true
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time
+required:
+  - id
+  - status
+  - tickerKey
+  - criterionKey
+  - spaceId
+  - createdAt
+  - updatedAt 

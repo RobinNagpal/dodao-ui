@@ -8,6 +8,9 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import Block from '@dodao/web-core/components/app/Block';
 import Editor from '@monaco-editor/react';
 import Handlebars from 'handlebars';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import Link from 'next/link';
 
 export default function ViewPromptVersionPage(): JSX.Element {
   const { promptId, version } = useParams() as { promptId: string; version: string };
@@ -67,9 +70,34 @@ export default function ViewPromptVersionPage(): JSX.Element {
     }
   }, [promptVersion, sampleData]);
 
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: 'Prompts',
+      href: '/prompts',
+      current: false,
+    },
+    {
+      name: parentPrompt?.name || 'Prompt',
+      href: `/prompts/${promptId}`,
+      current: false,
+    },
+    {
+      name: `Version ${version}`,
+      href: `/prompts/${promptId}/versions/${version}`,
+      current: true,
+    },
+  ];
+
   return (
     <PageWrapper>
-      <Block title="View Prompt Version" className="text-color">
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl heading-color">View Prompt Version</h1>
+        <Link href={`/prompts/${promptId}/versions/create`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block">
+          Create New Version
+        </Link>
+      </div>
+      <Block className="text-color">
         {promptVersion ? (
           <div>
             <div className="mt-4">

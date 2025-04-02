@@ -52,53 +52,52 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
   };
 
   return (
-    <PageWrapper>
-      <Block title="Create Prompt" className="text-color">
-        <form onSubmit={handleSubmit}>
-          <Input modelValue={formData.name} onUpdate={(val) => setFormData((s) => ({ ...s, name: val as string }))}>
-            Prompt Name
-          </Input>
-          <Input modelValue={formData.key} onUpdate={(val) => setFormData((s) => ({ ...s, key: val as string }))}>
-            Key
-          </Input>
-          <Input modelValue={formData.excerpt} onUpdate={(val) => setFormData((s) => ({ ...s, excerpt: val as string }))}>
-            Excerpt
-          </Input>
-          <StyledSelect
-            label={'Input Schema'}
-            selectedItemId={formData.inputSchema}
-            items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title} - ${schema.filePath}` })) || []}
-            setSelectedItemId={(value) => setFormData((s) => ({ ...s, inputSchema: value as string }))}
-          />
-          <StyledSelect
-            label={'Output Schema'}
-            selectedItemId={formData.outputSchema}
-            items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title} - ${schema.filePath}` })) || []}
-            setSelectedItemId={(value) => setFormData((s) => ({ ...s, outputSchema: value as string }))}
-          />
+    <>
+      <form onSubmit={handleSubmit}>
+        <Input modelValue={formData.name} onUpdate={(val) => setFormData((s) => ({ ...s, name: val as string }))}>
+          Prompt Name
+        </Input>
+        <Input modelValue={formData.key} onUpdate={(val) => setFormData((s) => ({ ...s, key: val as string }))}>
+          Key
+        </Input>
+        <Input modelValue={formData.excerpt} onUpdate={(val) => setFormData((s) => ({ ...s, excerpt: val as string }))}>
+          Excerpt
+        </Input>
+        <StyledSelect
+          label={'Input Schema'}
+          selectedItemId={formData.inputSchema}
+          items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title} - ${schema.filePath}` })) || []}
+          setSelectedItemId={(value) => setFormData((s) => ({ ...s, inputSchema: value as string }))}
+        />
+        <StyledSelect
+          label={'Output Schema'}
+          selectedItemId={formData.outputSchema}
+          items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title} - ${schema.filePath}` })) || []}
+          setSelectedItemId={(value) => setFormData((s) => ({ ...s, outputSchema: value as string }))}
+        />
 
-          <div className="my-4">
-            <div className="flex justify-end w-full mb-2 gap-2 items-center">
-              <span className="text-sm text-gray-500">Visual Editor:</span>
-              <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleJsonModal(true)} />
-              <span className="text-sm text-gray-500 ml-2">Raw JSON:</span>
-              <IconButton iconName={IconTypes.Edit} onClick={() => setShowRawJsonModal(true)} />
-            </div>
-            <div className="block-bg-color w-full py-4 px-2">
-              {formData.sampleJson ? (
-                <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs">
-                  {JSON.stringify(JSON.parse(formData.sampleJson), null, 2)}
-                </pre>
-              ) : (
-                <pre className="text-xs">Click on the edit icon to add the JSON</pre>
-              )}
-            </div>
+        <div className="my-4">
+          <div className="flex justify-end w-full mb-2 gap-2 items-center">
+            <span className="text-sm text-gray-500">Visual Editor:</span>
+            <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleJsonModal(true)} />
+            <span className="text-sm text-gray-500 ml-2">Raw JSON:</span>
+            <IconButton iconName={IconTypes.Edit} onClick={() => setShowRawJsonModal(true)} />
           </div>
-          <Button disabled={upserting} variant="contained" primary loading={upserting}>
-            Submit
-          </Button>
-        </form>
-      </Block>
+          <div className="block-bg-color w-full py-4 px-2">
+            {formData.sampleJson ? (
+              <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs">
+                {JSON.stringify(JSON.parse(formData.sampleJson), null, 2)}
+              </pre>
+            ) : (
+              <pre className="text-xs">Click on the edit icon to add the JSON</pre>
+            )}
+          </div>
+        </div>
+        <Button disabled={upserting} variant="contained" primary loading={upserting}>
+          Submit
+        </Button>
+      </form>
+
       {showSampleJsonModal && (
         <SampleJsonEditModal
           open={showSampleJsonModal}
@@ -116,6 +115,6 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           onSave={(json) => setFormData((s) => ({ ...s, sampleJson: json }))}
         />
       )}
-    </PageWrapper>
+    </>
   );
 }

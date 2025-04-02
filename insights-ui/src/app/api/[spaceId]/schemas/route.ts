@@ -22,7 +22,10 @@ async function getAllSchemas() {
     const schema = await getDereferencedSchema(schemaFile);
     const entityName = schema.title || path.basename(schemaFile, path.extname(schemaFile));
 
-    const schemaResponse: PromptSchema = { title: entityName, filePath: schemaFile.replace(process.cwd(), '') };
+    const schemaResponse: PromptSchema = {
+      title: entityName.replace('.schema', ''),
+      filePath: schemaFile.replace(process.cwd(), '').replace('/schemas/', ''),
+    };
     console.log(`schema: ${schemaResponse}`);
     schemas.push(schemaResponse);
   }
