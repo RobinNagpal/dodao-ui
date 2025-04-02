@@ -13,8 +13,8 @@ const ProgressBar = ({ processedCount, totalCount }: ProgressBarProps) => {
       <div className="mb-1 text-sm font-medium text-color">
         Progress: {processedCount} / {totalCount}
       </div>
-      <div className="w-full bg-primary-text rounded-full h-4 flex items-center px-1 relative overflow-hidden">
-        <div className="background-color h-3 rounded-full" style={{ width: `${percentage}%` }}>
+      <div className="w-full block-bg-color rounded-full h-3 flex items-center relative overflow-hidden">
+        <div className="bg-primary-color h-3 rounded-full" style={{ width: `${percentage}%` }}>
           {/* Shimmer overlay */}
           <div className="absolute inset-0 shimmer" />
         </div>

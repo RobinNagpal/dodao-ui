@@ -44,6 +44,10 @@
 .bg-primary-text {
   background-color: var(--primary-text-color);
 }
+
+.bg-primary-color {
+  background-color: var(--primary-color);
+}
 .ring-border {
   /* When used in conjunction with Tailwind’s ring-1, this sets the ring color */
   --tw-ring-color: var(--border-color);
