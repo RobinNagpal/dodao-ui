@@ -42,7 +42,7 @@ export default function PromptsListPage(): JSX.Element {
               <tr key={prompt.id} className="border border-color">
                 <td className="p-2 border border-color">{prompt.name}</td>
                 <td className="p-2 border border-color">{prompt.key}</td>
-                <td className="p-2 border border-color">{/* If we included it with activePromptVersion in the fetch, we could show the version */}</td>
+                <td className="p-2 border border-color">{prompt.activePromptVersionId || 'Not Set'}</td>
                 <td className="p-2 border border-color">
                   <Link href={`/prompts/${prompt.id}`} className="link-color underline mr-4">
                     View

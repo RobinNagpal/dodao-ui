@@ -1,5 +1,7 @@
 'use client';
 
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -66,25 +68,27 @@ export default function ViewPromptVersionPage(): JSX.Element {
   }, [promptVersion, sampleData]);
 
   return (
-    <Block title="View Prompt Version" className="text-color">
-      {promptVersion ? (
-        <div>
-          <p className="mb-2">
-            <strong>Commit Message:</strong> {promptVersion.commitMessage}
-          </p>
-          <div className="mt-4">
-            <h2 className="text-xl heading-color mb-2">Template</h2>
-            <Editor height="300px" defaultLanguage="handlebars" value={promptVersion.promptTemplate} theme="vs-dark" options={{ readOnly: true }} />
+    <PageWrapper>
+      <Block title="View Prompt Version" className="text-color">
+        {promptVersion ? (
+          <div>
+            <div className="mt-4">
+              <h2 className="text-xl heading-color mb-2">Template</h2>
+              <Editor height="300px" defaultLanguage="handlebars" value={promptVersion.promptTemplate} theme="vs-dark" options={{ readOnly: true }} />
+            </div>
+            {templateError && <p className="mt-2 text-red-500">Error in template: {templateError}</p>}
+            <div className="mt-4">
+              <h2 className="text-xl heading-color mb-2">Preview</h2>
+              <div className="p-4 border border-color" dangerouslySetInnerHTML={{ __html: previewHtml }} />
+            </div>
+            <p className="mt-4">
+              <strong>Commit Message:</strong> {promptVersion.commitMessage}
+            </p>
           </div>
-          {templateError && <p className="mt-2 text-red-500">Error in template: {templateError}</p>}
-          <div className="mt-4">
-            <h2 className="text-xl heading-color mb-2">Preview</h2>
-            <div className="p-4 border border-color" dangerouslySetInnerHTML={{ __html: previewHtml }} />
-          </div>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </Block>
+        ) : (
+          <FullPageLoader />
+        )}
+      </Block>
+    </PageWrapper>
   );
 }
