@@ -29,10 +29,10 @@ export default function ProjectInfoTable({ initialProjectDetails }: ProjectInfoT
           <dt className="text-sm/6 font-medium">SEC Filing Link</dt>
           <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{initialProjectDetails.projectInfoInput.secFilingUrl}</dd>
         </div>
-        {initialProjectDetails.projectInfoInput.additionalUrls && (
+        {(initialProjectDetails.projectInfoInput.additionalUrls || []).length > 0 && (
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm/6 font-medium">Additional Links</dt>
-            {initialProjectDetails.projectInfoInput.additionalUrls.map((url, index) => (
+            {(initialProjectDetails.projectInfoInput.additionalUrls || []).map((url, index) => (
               <dd key={index} className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
                 {url}
               </dd>

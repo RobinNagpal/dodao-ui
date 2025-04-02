@@ -31,6 +31,7 @@ export interface SpiderGraphPie {
 export enum PredefinedReports {
   performanceChecklist = 'performanceChecklist',
   importantMetrics = 'importantMetrics',
+  performanceChecklistAndMetricsCombined = 'performance_and_metrics',
 }
 export type SpiderGraphForTicker = Record<string, SpiderGraphPie>;
 
