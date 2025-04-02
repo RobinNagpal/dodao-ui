@@ -19,8 +19,6 @@ export default function PromptDetailsPage(): JSX.Element {
   const [prompt, setPrompt] = useState<PromptWithVersions | null>(null);
   const params = useParams() as { promptId?: string };
   const router = useRouter();
-  const [showSampleJsonModal, setShowSampleJsonModal] = useState(false);
-  const [showRawJsonModal, setShowRawJsonModal] = useState(false);
 
   const actions: EllipsisDropdownItem[] = [{ key: 'edit', label: 'Edit Page' }];
 
@@ -60,16 +58,10 @@ export default function PromptDetailsPage(): JSX.Element {
         <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Sample JSON:</div>
-            <div>
-              <span className="text-sm text-gray-500">Visual Editor:</span>
-              <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleJsonModal(true)} />
-              <span className="text-sm text-gray-500 ml-2">Raw JSON:</span>
-              <IconButton iconName={IconTypes.Edit} onClick={() => setShowRawJsonModal(true)} />
-            </div>
           </div>
           <div className="block-bg-color w-full py-4 px-2">
             {prompt.sampleJson ? (
-              <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs">
+              <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs">
                 {JSON.stringify(JSON.parse(prompt.sampleJson), null, 2)}
               </pre>
             ) : (
