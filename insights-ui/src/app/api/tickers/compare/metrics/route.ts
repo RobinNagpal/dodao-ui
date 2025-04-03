@@ -1,8 +1,9 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { TickerCompareMetrics } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
-async function getHandler(): Promise<any[]> {
+async function getHandler(): Promise<TickerCompareMetrics[]> {
   const tickers = await prisma.ticker.findMany({
     where: {
       spaceId: KoalaGainsSpaceId,
@@ -10,7 +11,8 @@ async function getHandler(): Promise<any[]> {
     take: 20,
     select: {
       tickerKey: true,
-      companyName: true,
+      sectorId: true,
+      industryGroupId: true,
       evaluationsOfLatest10Q: {
         select: {
           importantMetricsEvaluation: {
@@ -26,4 +28,4 @@ async function getHandler(): Promise<any[]> {
   return tickers;
 }
 
-export const GET = withErrorHandlingV2(getHandler);
+export const GET = withErrorHandlingV2<TickerCompareMetrics[]>(getHandler);

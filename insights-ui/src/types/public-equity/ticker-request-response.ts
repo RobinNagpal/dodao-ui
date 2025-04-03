@@ -1,5 +1,5 @@
 import { CriterionDefinition } from '@/types/public-equity/criteria-types';
-import { MetricValueItem, PerformanceChecklistItem, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
+import { FullImportantMetricsEvaluation, MetricValueItem, PerformanceChecklistItem, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 
 export interface TickerCreateRequest {
   tickerKey: string;
@@ -108,4 +108,15 @@ export interface MarkdownContentRequest {
 
 export interface MarkdownContentResponse {
   markdown: string;
+}
+
+export interface Latest10QMetricsEvaluation {
+  importantMetricsEvaluation: FullImportantMetricsEvaluation | null;
+}
+
+export interface TickerCompareMetrics {
+  tickerKey: string;
+  sectorId: number;
+  industryGroupId: number;
+  evaluationsOfLatest10Q: Latest10QMetricsEvaluation[];
 }
