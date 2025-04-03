@@ -52,3 +52,7 @@
   /* When used in conjunction with Tailwind’s ring-1, this sets the ring color */
   --tw-ring-color: var(--border-color);
 }
+
+.border-primary-color {
+  border-color: var(--primary-color);
+}
