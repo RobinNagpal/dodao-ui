@@ -93,7 +93,13 @@ export default function ViewPromptVersionPage(): JSX.Element {
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl heading-color">View Prompt Version</h1>
-        <Link href={`/prompts/${promptId}/versions/create`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block">
+        <Link
+          href={`/prompts/${promptId}/versions/create`}
+          className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block"
+          onClick={() => {
+            sessionStorage.setItem('promptTemplate', promptVersion?.promptTemplate || '');
+          }}
+        >
           Create New Version
         </Link>
       </div>
@@ -101,13 +107,30 @@ export default function ViewPromptVersionPage(): JSX.Element {
         {promptVersion ? (
           <div>
             <div className="mt-4">
-              <h2 className="text-xl heading-color mb-2">Template</h2>
+              <h2 className="text-xl heading-color mb-2">Prompt Template</h2>
               <Editor height="300px" defaultLanguage="handlebars" value={promptVersion.promptTemplate} theme="vs-dark" options={{ readOnly: true }} />
             </div>
             {templateError && <p className="mt-2 text-red-500">Error in template: {templateError}</p>}
             <div className="mt-4">
               <h2 className="text-xl heading-color mb-2">Preview</h2>
-              <div className="p-4 border border-color" dangerouslySetInnerHTML={{ __html: previewHtml }} />
+              <div className="flex-1 border-l border-gray-200">
+                <Editor
+                  height="300px"
+                  defaultLanguage="markdown"
+                  value={previewHtml}
+                  theme="vs-dark"
+                  options={{
+                    readOnly: true,
+                    minimap: { enabled: false },
+                    scrollBeyondLastLine: false,
+                    wordWrap: 'on',
+                    lineNumbers: 'off',
+                    folding: false,
+                    fontSize: 14,
+                    fontFamily: 'monospace',
+                  }}
+                />
+              </div>
             </div>
             <p className="mt-4">
               <strong>Commit Message:</strong> {promptVersion.commitMessage}

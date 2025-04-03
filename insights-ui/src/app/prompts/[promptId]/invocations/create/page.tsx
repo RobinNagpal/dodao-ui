@@ -1,7 +1,7 @@
 // app/prompts/[promptId]/invocations/create/page.tsx
 'use client';
 
-import { PromptInvocationRequest } from '@/app/api/actions/prompt-invocation/full-req-resp/route';
+import { PromptInvocationRequest, PromptInvocationResponse } from '@/app/api/actions/prompt-invocation/full-req-resp/route';
 import RawJsonJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import SampleBodyEditModal from '@/components/prompts/SampleBodyEditModal';
 import SampleJsonEditModal from '@/components/prompts/SampleJsonEditModal';
@@ -24,6 +24,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 
 import type { Prompt, PromptVersion } from '@prisma/client';
+import { Editor } from '@monaco-editor/react';
 
 interface CreateInvocationForm {
   promptVersionId: string;
@@ -112,10 +113,10 @@ export default function CreateInvocationPage(): JSX.Element {
   }, [prompt]);
 
   // Use the post hook to send the invocation request.
-  const { postData, loading } = usePostData<any, PromptInvocationRequest>({
+  const { postData, loading } = usePostData<PromptInvocationResponse, PromptInvocationRequest>({
     successMessage: 'Prompt invocation started successfully!',
     errorMessage: 'Failed to start prompt invocation.',
-    redirectPath: `/prompts/${promptId}`,
+    redirectPath: `/prompts/${promptId}/invocations`,
   });
 
   const handleSubmit = async (e: FormEvent) => {
@@ -206,7 +207,7 @@ export default function CreateInvocationPage(): JSX.Element {
 
             <div className="my-4">
               <div className="flex justify-between w-full mb-2 gap-2 items-center">
-                <div>Sample Json</div>
+                <div>Sample Input Json</div>
                 <div>
                   <span className="text-sm text-gray-500">Visual Editor:</span>
                   <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleJsonModal(true)} />
@@ -247,11 +248,28 @@ export default function CreateInvocationPage(): JSX.Element {
 
             {/* Live Preview Section */}
             <div className="mb-4">
-              <h2 className="text-xl heading-color mb-2">Preview</h2>
+              <h2 className="text-xl heading-color mb-2">Prompt Template Preview</h2>
               {previewError ? (
                 <p className="text-red-500">Error: {previewError}</p>
               ) : (
-                <div className="p-4 border border-color" dangerouslySetInnerHTML={{ __html: previewPrompt }} />
+                <div className="flex-1 border-l border-gray-200">
+                  <Editor
+                    height="300px"
+                    defaultLanguage="markdown"
+                    value={previewPrompt}
+                    theme="vs-dark"
+                    options={{
+                      readOnly: true,
+                      minimap: { enabled: false },
+                      scrollBeyondLastLine: false,
+                      wordWrap: 'on',
+                      lineNumbers: 'off',
+                      folding: false,
+                      fontSize: 14,
+                      fontFamily: 'monospace',
+                    }}
+                  />
+                </div>
               )}
             </div>
 

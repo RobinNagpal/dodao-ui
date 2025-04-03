@@ -25,9 +25,11 @@ export default function PromptsListPage(): JSX.Element {
     <PageWrapper>
       <div className="p-4 text-color">
         <h1 className="text-2xl heading-color mb-4">All Prompts</h1>
-        <button onClick={() => router.push('/prompts/create')} className="border border-color px-4 py-2 block-bg-color hover:bg-primary-text text-color">
-          Create Prompt
-        </button>
+        <div className="flex justify-end">
+          <button onClick={() => router.push('/prompts/create')} className="border border-color px-4 py-2 block-bg-color hover:bg-primary-text text-color">
+            Create Prompt
+          </button>
+        </div>
         <table className="mt-4 w-full border border-color">
           <thead className="block-bg-color">
             <tr>
@@ -47,8 +49,11 @@ export default function PromptsListPage(): JSX.Element {
                   <Link href={`/prompts/${prompt.id}`} className="link-color underline mr-4">
                     View
                   </Link>
-                  <Link href={`/prompts/edit/${prompt.id}`} className="link-color underline">
+                  <Link href={`/prompts/edit/${prompt.id}`} className="link-color underline mr-4">
                     Edit
+                  </Link>
+                  <Link href={`/prompts/${prompt.id}/invocations`} className="link-color underline">
+                    Invocations
                   </Link>
                 </td>
               </tr>
