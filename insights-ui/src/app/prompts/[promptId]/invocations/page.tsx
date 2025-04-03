@@ -5,6 +5,7 @@ import { Prompt, PromptInvocation } from '@prisma/client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 interface InvocationWithPrompt extends PromptInvocation {
   prompt: Prompt;
@@ -14,7 +15,7 @@ export default function PromptInvocationsListPage(): JSX.Element {
   const params = useParams() as { promptId?: string };
 
   useEffect(() => {
-    fetch(`/api/koala_gains/prompts/${params.promptId}/invocations`)
+    fetch(`${getBaseUrl()}/api/koala_gains/prompts/${params.promptId}/invocations`)
       .then((res) => res.json())
       .then((data: InvocationWithPrompt[]) => setPromptInvocations(data))
       .catch((err) => console.error(err));
