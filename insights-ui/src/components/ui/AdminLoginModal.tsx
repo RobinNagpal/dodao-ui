@@ -11,13 +11,14 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 interface AdminLoginModalProps {
   open: boolean;
   onClose: () => void;
+  onLoginSuccess?: () => void;
 }
 
 interface AuthResponse {
   success: boolean;
 }
 
-export default function AdminLoginModal({ open, onClose }: AdminLoginModalProps) {
+export default function AdminLoginModal({ open, onClose, onLoginSuccess }: AdminLoginModalProps) {
   const [adminCode, setAdminCode] = useState('');
 
   const { postData, loading, data, error } = usePostData<AuthResponse, { adminCode: string }>(
@@ -36,6 +37,9 @@ export default function AdminLoginModal({ open, onClose }: AdminLoginModalProps)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     localStorage.setItem('AUTHENTICATION_KEY', adminCode);
+    if (onLoginSuccess) {
+      onLoginSuccess();
+    }
     onClose();
   };
 

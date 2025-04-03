@@ -23,8 +23,12 @@ export default function TopNav() {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
+  const checkLoginStatus = () => {
     setIsLoggedin(!!getAuthKey());
+  };
+
+  useEffect(() => {
+    checkLoginStatus();
   }, []);
 
   const toggleMenu = () => {
@@ -36,6 +40,10 @@ export default function TopNav() {
     setIsLoggedin(false);
     setMenuOpen(false);
     setMobileMenuOpen(false);
+  };
+
+  const handleLoginSuccess = () => {
+    checkLoginStatus();
   };
 
   // Close the menu when clicking outside the component
@@ -184,7 +192,7 @@ export default function TopNav() {
           </div>
         </DialogPanel>
       </Dialog>
-      <AdminLoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
+      <AdminLoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} onLoginSuccess={handleLoginSuccess} />
     </header>
   );
 }
