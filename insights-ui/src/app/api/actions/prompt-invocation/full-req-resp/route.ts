@@ -72,7 +72,7 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
   try {
     const templateContent = prompt.activePromptVersion.promptTemplate;
 
-    const inputSchemaPath = path.join(process.cwd(), 'schemas', prompt.inputSchema);
+    const inputSchemaPath = path.join(process.cwd(), prompt.inputSchema);
     if (!fs.existsSync(inputSchemaPath)) {
       throw new Error(`Input schema file ${prompt.inputSchema} not found. Path ${inputSchemaPath}`);
     }
@@ -98,7 +98,7 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
       throw new Error(`Unsupported llmProvider: ${llmProvider}`);
     }
 
-    const outputSchemaPath = path.join(process.cwd(), 'schemas', prompt.outputSchema);
+    const outputSchemaPath = path.join(process.cwd(), prompt.outputSchema);
     if (!fs.existsSync(outputSchemaPath)) {
       throw new Error(`Output schema file ${prompt.outputSchema} not found`);
     }
@@ -109,13 +109,14 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
     const result = await modelWithStructure.invoke(finalPrompt);
     console.log(`Result: ${JSON.stringify(result)}`);
     if (result) {
-      prisma.promptInvocation.update({
+      await prisma.promptInvocation.update({
         where: {
           id: invocation.id,
         },
         data: {
           outputJson: JSON.stringify(result),
           updatedAt: new Date(),
+          status: PromptInvocationStatus.Completed,
         },
       });
     }
@@ -131,7 +132,7 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
       response: result,
     };
   } catch (e) {
-    prisma.promptInvocation.update({
+    await prisma.promptInvocation.update({
       where: {
         id: invocation.id,
       },

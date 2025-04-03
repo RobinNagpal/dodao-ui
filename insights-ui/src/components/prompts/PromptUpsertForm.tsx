@@ -5,12 +5,10 @@ import SampleJsonEditModal from '@/components/prompts/SampleJsonEditModal';
 import RawJsonJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PromptSchema } from '@/types/prompt-schemas';
-import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -92,7 +90,7 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
 
         <div className="my-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
-            <div>Sample Json</div>
+            <div>Sample Input Json</div>
             <div>
               <span className="text-sm text-gray-500">Visual Editor:</span>
               <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleJsonModal(true)} />

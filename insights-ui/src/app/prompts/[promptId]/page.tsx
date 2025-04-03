@@ -22,7 +22,10 @@ export default function PromptDetailsPage() {
   const params = useParams() as { promptId?: string };
   const router = useRouter();
 
-  const actions: EllipsisDropdownItem[] = [{ key: 'edit', label: 'Edit Page' }];
+  const actions: EllipsisDropdownItem[] = [
+    { key: 'edit', label: 'Edit Page' },
+    { key: 'invocations', label: 'Invocations' },
+  ];
 
   useEffect(() => {
     if (!params.promptId) return;
@@ -65,6 +68,8 @@ export default function PromptDetailsPage() {
               onSelect={async (key) => {
                 if (key === 'edit') {
                   router.push(`/prompts/edit/${prompt.id}`);
+                } else if (key === 'invocations') {
+                  router.push(`/prompts/${prompt.id}/invocations`);
                 }
               }}
             />
@@ -77,7 +82,7 @@ export default function PromptDetailsPage() {
         <p className="mb-4">Output Schema: {prompt.outputSchema}</p>
         <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
-            <div>Sample JSON:</div>
+            <div>Sample Input JSON:</div>
           </div>
           <div className="block-bg-color w-full py-4 px-2">
             {prompt.sampleJson ? (
@@ -85,7 +90,7 @@ export default function PromptDetailsPage() {
                 {JSON.stringify(JSON.parse(prompt.sampleJson), null, 2)}
               </pre>
             ) : (
-              <pre className="text-xs">No Sample JSON Added</pre>
+              <pre className="text-xs">No Sample Input JSON Added</pre>
             )}
           </div>
         </div>
@@ -133,8 +138,13 @@ export default function PromptDetailsPage() {
         <Link href={`/prompts/${prompt.id}/versions/create`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block">
           Create New Version
         </Link>
-        <Link href={`/prompts/${prompt.id}/invocations/create`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block ml-4">
-          Invoke
+        {prompt.promptVersions.length > 0 && (
+          <Link href={`/prompts/${prompt.id}/invocations/create`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block ml-4">
+            Invoke prompt
+          </Link>
+        )}
+        <Link href={`/prompts/${prompt.id}/invocations`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block ml-4">
+          See Prompt Invocations
         </Link>
       </div>
     </PageWrapper>
