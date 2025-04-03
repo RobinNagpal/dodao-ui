@@ -6,6 +6,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { PromptInvocation, Prompt, PromptVersion } from '@prisma/client';
 import { marked } from 'marked';
@@ -27,7 +28,7 @@ export default function PromptInvocationDetailsPage() {
   useEffect(() => {
     if (!params.invocationId || !params.promptId) return;
     const fetchData = async () => {
-      const res = await fetch(`/api/koala_gains/prompts/${params.promptId}/invocations/${params.invocationId}`);
+      const res = await fetch(`${getBaseUrl()}/api/koala_gains/prompts/${params.promptId}/invocations/${params.invocationId}`);
       const data = await res.json();
       setInvocation(data);
     };
@@ -77,8 +78,8 @@ export default function PromptInvocationDetailsPage() {
         </div>
         <p className="mb-4">Prompt: {invocation.prompt.name}</p>
         <p className="mb-4">Status: {invocation.status}</p>
-        <p className="mb-4">Created At: {new Date(invocation.updatedAt).toLocaleString()}</p>
-        <p className="mb-4">Created By: {invocation.createdBy}</p>
+        <p className="mb-4">Updated At: {new Date(invocation.updatedAt).toLocaleString()}</p>
+        <p className="mb-4">Updated By: {invocation.updatedBy}</p>
         <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Input JSON:</div>

@@ -113,10 +113,9 @@ export default function CreateInvocationPage(): JSX.Element {
   }, [prompt]);
 
   // Use the post hook to send the invocation request.
-  const { postData, loading } = usePostData<PromptInvocationResponse, PromptInvocationRequest>({
+  const { postData, loading, error } = usePostData<PromptInvocationResponse, PromptInvocationRequest>({
     successMessage: 'Prompt invocation started successfully!',
     errorMessage: 'Failed to start prompt invocation.',
-    redirectPath: `/prompts/${promptId}/invocations`,
   });
 
   const handleSubmit = async (e: FormEvent) => {
@@ -124,14 +123,17 @@ export default function CreateInvocationPage(): JSX.Element {
 
     e.preventDefault();
     const request: PromptInvocationRequest = {
-      input: JSON.parse(formData.input),
+      inputJson: JSON.parse(formData.input),
       bodyToAppend: formData.bodyToAppend,
       llmProvider: formData.llmProvider,
       model: formData.model,
-      templateKey: prompt.key,
+      promptKey: prompt.key,
       spaceId: KoalaGainsSpaceId,
     };
-    await postData(`${getBaseUrl()}/api/actions/prompt-invocation/full-req-resp`, request);
+    const data = await postData(`${getBaseUrl()}/api/actions/prompt-invocation/full-req-resp`, request);
+    if (!error) {
+      router.push(`/prompts/${promptId}/invocations/${data?.invocationId}`);
+    }
   };
 
   const renderer = getMarkedRenderer();

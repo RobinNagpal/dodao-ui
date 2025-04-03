@@ -34,6 +34,7 @@ async function saveCriteriaMatchesOfLatest10Q(req: NextRequest, { params }: { pa
     data: {
       status: request.status,
       failureReason: request.failureReason,
+      updatedAt: new Date(),
       criterionMatches: {
         deleteMany: {
           spaceId: KoalaGainsSpaceId,

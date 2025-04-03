@@ -6,6 +6,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { Prompt, PromptVersion } from '@prisma/client';
 import { marked } from 'marked';
@@ -30,7 +31,7 @@ export default function PromptDetailsPage() {
   useEffect(() => {
     if (!params.promptId) return;
     const fetchData = async () => {
-      const res = await fetch(`/api/koala_gains/prompts/${params.promptId}`);
+      const res = await fetch(`${getBaseUrl()}/api/koala_gains/prompts/${params.promptId}`);
       const data = await res.json();
       setPrompt(data);
     };

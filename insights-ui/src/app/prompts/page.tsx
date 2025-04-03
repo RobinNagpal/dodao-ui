@@ -1,7 +1,9 @@
 // app/prompts/page.tsx
 'use client';
 
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Prompt } from '@prisma/client'; // or wherever your TS types are generated
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -15,7 +17,7 @@ export default function PromptsListPage(): JSX.Element {
     // For example, fetch from our new endpoint:
     // This is a client side fetch; you'd specify the spaceId or get it from user context
     // You might also do this from a server component, but here's a simple client version:
-    fetch(`/api/koala_gains/prompts`)
+    fetch(`${getBaseUrl()}/api/koala_gains/prompts`)
       .then((res) => res.json())
       .then((data: Prompt[]) => setPrompts(data))
       .catch((err) => console.error(err));
@@ -26,9 +28,9 @@ export default function PromptsListPage(): JSX.Element {
       <div className="p-4 text-color">
         <h1 className="text-2xl heading-color mb-4">All Prompts</h1>
         <div className="flex justify-end">
-          <button onClick={() => router.push('/prompts/create')} className="border border-color px-4 py-2 block-bg-color hover:bg-primary-text text-color">
+          <Button onClick={() => router.push('/prompts/create')} primary variant="contained">
             Create Prompt
-          </button>
+          </Button>
         </div>
         <table className="mt-4 w-full border border-color">
           <thead className="block-bg-color">
