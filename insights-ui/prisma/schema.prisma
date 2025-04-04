@@ -28,7 +28,6 @@ model Ticker {
   latest10QFinancialStatements String?  @map("latest_10q_financial_statements")
   companyName                  String   @default("Unknown Company") @map("company_name")
   shortDescription             String   @default("No description provided") @map("short_description")
-  latest10QInfoId                String? @unique @map("latest_10q_info_id")
 
   evaluationsOfLatest10Q         CriterionEvaluation[]
   secFilings                     SecFiling[]
@@ -42,7 +41,7 @@ model Ticker {
   latest10QInfo                  Latest10QInfo? 
   // latest10QInformation           Latest10QInformation?            @relation(fields: [latest10QInformationId], references: [id])
 
-  @@unique([spaceId, tickerKey,latest10QInfoId])
+  @@unique([spaceId, tickerKey])
   @@map("tickers")
 }
 
@@ -331,13 +330,13 @@ model PromptInvocation {
 }
 
 model Latest10QInfo {
-  id                    String @id @default(uuid())
-  spaceId               String @default("koala_gains") @map("space_id")
-  tickerId             String @unique @map("ticker_id")
-  tickerKey             String  @map("ticker_key")
-  reportingPeriod       String @map("reporting_period")
-  secFillingUrl         String @map("sec_filling_url")
-  ticker                Ticker @relation(fields: [tickerId], references: [id])
+  id              String   @id @default(uuid())
+  spaceId         String   @default("koala_gains") @map("space_id")
+  tickerKey       String   @map("ticker_key")
+  tickerId        String   @unique @map("ticker_id")
+  reportingPeriod String   @map("reporting_period")
+  secFilingUrl    String   @map("sec_filing_url")
+  ticker          Ticker   @relation(fields: [tickerId], references: [id])
 
   @@map("latest_10q_infos")
 }
