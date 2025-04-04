@@ -11,7 +11,7 @@
     }
   ],
   "functions": {
-    "api/**/*.js": {
+    "api/**/*": {
       "includeFiles": "./schemas/**/*.yaml"
     }
   }
