@@ -38,6 +38,28 @@ async function postHandler(req: NextRequest): Promise<Ticker> {
     data,
   });
 
+  const url = 'https://4mbhgkl77s4gubn7i2rdcllbru0wzyxl.lambda-url.us-east-1.on.aws/reporting_period_and_filing_link';
+  const payload = { ticker: tickerKey };
+  const ReportingPeriodAndFilingLinkResponse = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const ReportingPeriodAndFilingLink = await ReportingPeriodAndFilingLinkResponse.json();
+  console.log('ReportingPeriodAndFilingLink', ReportingPeriodAndFilingLink);
+  if ('message' in ReportingPeriodAndFilingLink) {
+    throw new Error(ReportingPeriodAndFilingLink.message);
+  }
+
+  const newLatest10QInfo = await prisma.latest10QInfo.create({
+    data: {
+      tickerKey,
+      reportingPeriod: ReportingPeriodAndFilingLink.data[1],
+      secFilingUrl: ReportingPeriodAndFilingLink.data[0],
+      tickerId: newTicker.id,
+    },
+  });
+  console.log('created new Latest10QInfo', newLatest10QInfo);
   console.log(`Created new ticker for ${tickerKey}`);
   return newTicker;
 }
