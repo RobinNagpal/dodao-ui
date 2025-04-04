@@ -333,10 +333,11 @@ model PromptInvocation {
 model Latest10QInfo {
   id                    String @id @default(uuid())
   spaceId               String @default("koala_gains") @map("space_id")
-  tickerKey             String @unique @map("ticker_key")
+  tickerId             String @unique @map("ticker_id")
+  tickerKey             String  @map("ticker_key")
   reportingPeriod       String @map("reporting_period")
   secFillingUrl         String @map("sec_filling_url")
-  ticker                Ticker @relation(fields: [tickerKey], references: [tickerKey])
+  ticker                Ticker @relation(fields: [tickerId], references: [id])
 
   @@map("latest_10q_infos")
 }
