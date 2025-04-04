@@ -28,6 +28,7 @@ model Ticker {
   latest10QFinancialStatements String?  @map("latest_10q_financial_statements")
   companyName                  String   @default("Unknown Company") @map("company_name")
   shortDescription             String   @default("No description provided") @map("short_description")
+  latest10QInfoId                String? @map("latest_10q_info_id")
 
   evaluationsOfLatest10Q         CriterionEvaluation[]
   secFilings                     SecFiling[]
@@ -38,7 +39,7 @@ model Ticker {
   PerformanceChecklistItem       PerformanceChecklistItem[]
   CriterionMatch                 CriterionMatch[]
   criteriaMatchesOfLatest10Q     CriteriaMatchesOfLatest10Q?
-  latest10QInfo                   Latest10QInfo? @relation(fields: [id], references: [id])
+  latest10QInfo                  Latest10QInfo? @relation(fields: [latest10QInfoId], references: [id])
   // latest10QInformation           Latest10QInformation?            @relation(fields: [latest10QInformationId], references: [id])
 
   @@unique([spaceId, tickerKey])
