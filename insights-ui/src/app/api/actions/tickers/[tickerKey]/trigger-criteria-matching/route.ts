@@ -25,11 +25,13 @@ const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { 
             status: ProcessingStatus.InProgress,
             matchingAttachmentsCount: 0,
             matchingAttachmentsProcessedCount: 0,
+            updatedAt: new Date(),
           },
           update: {
             status: ProcessingStatus.InProgress,
             matchingAttachmentsCount: 0,
             matchingAttachmentsProcessedCount: 0,
+            updatedAt: new Date(),
             criterionMatches: {
               deleteMany: {
                 tickerKey,

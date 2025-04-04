@@ -37,7 +37,6 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
   } = usePostData<{ message: string }, {}>({
     errorMessage: 'Failed to regenerate matching criteria',
     successMessage: 'Matching criteria regeneration started successfully',
-    redirectPath: ``,
   });
 
   const handleRegenerateMatchingCriteria = async () => {
@@ -56,7 +55,9 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
       />
 
       <PrivateWrapper>
-        <div className="flex justify-end my-4">
+        <div className="flex items-center justify-end my-4">
+          <div className="mr-4">Last updated at: {new Date(report.criteriaMatchesOfLatest10Q.updatedAt).toLocaleString()}</div>
+
           <Button
             loading={matchingCriteriaLoading || report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress}
             primary

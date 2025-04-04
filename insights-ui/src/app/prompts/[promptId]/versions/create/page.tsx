@@ -48,6 +48,14 @@ export default function CreatePromptVersionPage(): JSX.Element {
     redirectPath: `/prompts/${promptId}`,
   });
 
+  useEffect(() => {
+    const storedTemplate = sessionStorage.getItem('promptTemplate');
+    if (storedTemplate) {
+      setFormData((prev) => ({ ...prev, promptTemplate: storedTemplate }));
+      sessionStorage.removeItem('promptTemplate');
+    }
+  }, []);
+
   // When parentPrompt is loaded, parse its sampleJson
   useEffect(() => {
     if (parentPrompt && parentPrompt.sampleJson) {
@@ -99,22 +107,27 @@ export default function CreatePromptVersionPage(): JSX.Element {
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <Block title="Create Prompt Version" className="text-color">
+      <h1 className="text-2xl heading-color">Create Prompt Version</h1>
+      <Block className="text-color">
         <form onSubmit={handleSubmit}>
-          <div className="mt-4">
-            <label className="block mb-2">Prompt Template</label>
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Editor
-                  height="300px"
-                  defaultLanguage="handlebars"
-                  value={formData.promptTemplate}
-                  theme="vs-dark"
-                  onChange={(value) => setFormData((prev) => ({ ...prev, promptTemplate: value || '' }))}
-                />
-                {templateError && <p className="mt-2 text-red-500">Error: {templateError}</p>}
-              </div>
+          <div className="mb-4">
+            <div className="flex justify-between w-full mb-2 gap-2 items-center">
+              <div>Sample Input JSON:</div>
             </div>
+            <div className="block-bg-color w-full py-4 px-2">
+              <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs">{JSON.stringify(sampleData, null, 2)}</pre>
+            </div>
+          </div>
+          <div className="mt-4">
+            <h2 className="text-xl heading-color mb-2">Prompt Template</h2>
+            <Editor
+              height="300px"
+              defaultLanguage="handlebars"
+              value={formData.promptTemplate}
+              theme="vs-dark"
+              onChange={(value) => setFormData((prev) => ({ ...prev, promptTemplate: value || '' }))}
+            />
+            {templateError && <p className="mt-2 text-red-500">Error: {templateError}</p>}
           </div>
 
           <div className="mt-4">
@@ -124,6 +137,7 @@ export default function CreatePromptVersionPage(): JSX.Element {
                 height="300px"
                 defaultLanguage="markdown"
                 value={previewHtml}
+                theme="vs-dark"
                 options={{
                   readOnly: true,
                   minimap: { enabled: false },

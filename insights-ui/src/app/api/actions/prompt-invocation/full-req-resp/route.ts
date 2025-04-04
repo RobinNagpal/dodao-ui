@@ -13,8 +13,8 @@ import { PromptInvocationStatus } from '.prisma/client';
 
 export interface PromptInvocationRequest {
   spaceId?: string;
-  input: Record<string, unknown>;
-  templateKey: string;
+  inputJson: Record<string, unknown>;
+  promptKey: string;
   llmProvider: string;
   model: string;
   bodyToAppend?: string;
@@ -24,24 +24,25 @@ export interface PromptInvocationResponse {
   request: PromptInvocationRequest;
   prompt: string;
   response: Record<string, unknown>;
+  invocationId: string;
 }
 async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> {
   const request = await req.json();
-  const { input, templateKey, llmProvider, model, bodyToAppend } = request as PromptInvocationRequest;
+  const { inputJson, promptKey, llmProvider, model, bodyToAppend } = request as PromptInvocationRequest;
 
   if (!req.body) {
     throw new Error(`Request body is missing`);
   }
 
   // Ensure required fields are present.
-  if (!input || !templateKey || !llmProvider || !model) {
+  if (!inputJson || !promptKey || !llmProvider || !model) {
     throw new Error(`Missing required fields: input, templateId, llmProvider, or model`);
   }
 
   const prompt = await prisma.prompt.findFirstOrThrow({
     where: {
       spaceId: request.spaceId || KoalaGainsSpaceId,
-      key: templateKey,
+      key: promptKey,
     },
     include: {
       activePromptVersion: true,
@@ -49,7 +50,7 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
   });
 
   if (!prompt.activePromptVersion) {
-    throw new Error(`Active prompt version not found for template ${templateKey}`);
+    throw new Error(`Active prompt version not found for template ${promptKey}`);
   }
 
   const invocation = await prisma.promptInvocation.create({
@@ -72,14 +73,14 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
   try {
     const templateContent = prompt.activePromptVersion.promptTemplate;
 
-    const inputSchemaPath = path.join(process.cwd(), 'schemas', prompt.inputSchema);
+    const inputSchemaPath = path.join(process.cwd(), prompt.inputSchema);
     if (!fs.existsSync(inputSchemaPath)) {
       throw new Error(`Input schema file ${prompt.inputSchema} not found. Path ${inputSchemaPath}`);
     }
 
     const inputSchema = await $RefParser.dereference(inputSchemaPath);
 
-    const { valid, errors } = validateData(inputSchema, input);
+    const { valid, errors } = validateData(inputSchema, inputJson);
     if (!valid) {
       throw new Error(`Input validation failed: ${JSON.stringify(errors)}`);
     }
@@ -88,7 +89,7 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
 
     // Compile the Handlebars template with the provided input.
     const compiledTemplate = Handlebars.compile(templateContent);
-    const finalPrompt = bodyToAppend ? `${compiledTemplate(input)}\n\n\n${bodyToAppend}` : compiledTemplate(input);
+    const finalPrompt = bodyToAppend ? `${compiledTemplate(inputJson)}\n\n\n${bodyToAppend}` : compiledTemplate(inputJson);
 
     // Choose LLM based on llmProvider. Currently, only "openai" is supported.
     let llm: ChatOpenAI | undefined;
@@ -98,7 +99,7 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
       throw new Error(`Unsupported llmProvider: ${llmProvider}`);
     }
 
-    const outputSchemaPath = path.join(process.cwd(), 'schemas', prompt.outputSchema);
+    const outputSchemaPath = path.join(process.cwd(), prompt.outputSchema);
     if (!fs.existsSync(outputSchemaPath)) {
       throw new Error(`Output schema file ${prompt.outputSchema} not found`);
     }
@@ -109,13 +110,14 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
     const result = await modelWithStructure.invoke(finalPrompt);
     console.log(`Result: ${JSON.stringify(result)}`);
     if (result) {
-      prisma.promptInvocation.update({
+      await prisma.promptInvocation.update({
         where: {
           id: invocation.id,
         },
         data: {
           outputJson: JSON.stringify(result),
           updatedAt: new Date(),
+          status: PromptInvocationStatus.Completed,
         },
       });
     }
@@ -129,9 +131,10 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
       request: request,
       prompt: finalPrompt,
       response: result,
+      invocationId: invocation.id,
     };
   } catch (e) {
-    prisma.promptInvocation.update({
+    await prisma.promptInvocation.update({
       where: {
         id: invocation.id,
       },
