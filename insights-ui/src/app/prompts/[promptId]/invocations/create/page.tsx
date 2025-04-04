@@ -1,6 +1,7 @@
 // app/prompts/[promptId]/invocations/create/page.tsx
 'use client';
 
+import { FullPromptResponse } from '@/app/api/[spaceId]/prompts/[promptId]/route';
 import { PromptInvocationRequest, PromptInvocationResponse } from '@/app/api/actions/prompt-invocation/full-req-resp/route';
 import RawJsonJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import SampleBodyEditModal from '@/components/prompts/SampleBodyEditModal';
@@ -8,10 +9,11 @@ import SampleJsonEditModal from '@/components/prompts/SampleJsonEditModal';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
-import { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -27,8 +29,8 @@ import type { Prompt, PromptVersion } from '@prisma/client';
 import { Editor } from '@monaco-editor/react';
 
 interface CreateInvocationForm {
-  promptVersionId: string;
-  input: string;
+  promptVersionId?: string;
+  inputJsonString: string;
   llmProvider: string;
   model: string;
   bodyToAppend?: string;
@@ -41,8 +43,7 @@ export default function CreateInvocationPage(): JSX.Element {
 
   // Form state with strict types
   const [formData, setFormData] = useState<CreateInvocationForm>({
-    promptVersionId: '',
-    input: '',
+    inputJsonString: '',
     llmProvider: 'openai',
     model: 'gpt-4o-mini',
     bodyToAppend: '',
@@ -50,49 +51,37 @@ export default function CreateInvocationPage(): JSX.Element {
 
   // Local state for selected template (from chosen prompt version),
   // live preview HTML, and compilation errors.
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('');
+
   const [previewPrompt, setPreviewPrompt] = useState<string>('');
   const [previewError, setPreviewError] = useState<string>('');
   const [showSampleJsonModal, setShowSampleJsonModal] = useState(false);
   const [showRawJsonModal, setShowRawJsonModal] = useState(false);
   const [showSampleBodyToAppendModal, setShowSampleBodyToAppendModal] = useState(false);
+  const [selectedPromptVersion, setSelectedPromptVersion] = useState<PromptVersion | null>(null);
 
   // Fetch available prompt versions for this prompt
-  const {
-    data: promptVersions,
-    error: promptVersionsError,
-    loading: promptVersionsLoading,
-  } = useFetchData<PromptVersion[]>(`${getBaseUrl()}/api/koala_gains/prompts/${promptId}/versions`, { cache: 'no-cache' }, 'Failed to fetch prompt versions');
 
-  const { data: prompt } = useFetchData<Prompt>(`${getBaseUrl()}/api/koala_gains/prompts/${promptId}`, { cache: 'no-cache' }, 'Failed to fetch prompt');
-  // When prompt versions load, set the default selected version if not already chosen
-  useEffect(() => {
-    if (promptVersions && promptVersions.length > 0 && !formData.promptVersionId) {
-      const defaultVersion = promptVersions[0];
-      setFormData((prev) => ({ ...prev, promptVersionId: defaultVersion.id }));
-      setSelectedTemplate(defaultVersion.promptTemplate);
-    }
-  }, [promptVersions, formData.promptVersionId]);
+  const { data: prompt, loading: promptLoading } = useFetchData<FullPromptResponse>(
+    `${getBaseUrl()}/api/koala_gains/prompts/${promptId}`,
+    { cache: 'no-cache' },
+    'Failed to fetch prompt'
+  );
 
   // When a new version is selected, update the selected template.
   const handleVersionChange = (selectedId: string | null): void => {
     if (!selectedId) return;
     setFormData((prev) => ({ ...prev, promptVersionId: selectedId }));
-    const version = promptVersions?.find((v) => v.id === selectedId);
-    if (version) {
-      setSelectedTemplate(version.promptTemplate);
-    }
   };
 
   // Compile the Handlebars template using the provided input JSON.
   // If the JSON is invalid or the template fails to compile, display an error.
   useEffect(() => {
     try {
-      if (!prompt) {
-        return;
-      }
-      const parsedInput = JSON.parse(formData.input || prompt.sampleJson || '');
-      const template = Handlebars.compile(selectedTemplate);
+      const selectedVersion = prompt?.promptVersions?.find((v) => v.id === formData.promptVersionId);
+      if (!prompt || !selectedVersion?.promptTemplate) return;
+
+      const parsedInput = JSON.parse(formData.inputJsonString || prompt.sampleJson || '');
+      const template = Handlebars.compile(selectedVersion?.promptTemplate);
       const rendered = template(parsedInput);
       setPreviewPrompt(rendered);
       setPreviewError('');
@@ -100,15 +89,15 @@ export default function CreateInvocationPage(): JSX.Element {
       setPreviewError(error.message || 'Error during template compilation');
       setPreviewPrompt('');
     }
-  }, [formData.input, selectedTemplate, prompt]);
+  }, [formData.inputJsonString, formData.promptVersionId]);
 
   useEffect(() => {
     setFormData({
       bodyToAppend: prompt?.sampleBodyToAppend || '',
-      input: prompt?.sampleJson || '{}',
+      inputJsonString: prompt?.sampleJson || '{}',
       llmProvider: formData.llmProvider,
       model: formData.model,
-      promptVersionId: formData.promptVersionId,
+      promptVersionId: prompt?.activePromptVersion?.id,
     });
   }, [prompt]);
 
@@ -123,12 +112,13 @@ export default function CreateInvocationPage(): JSX.Element {
 
     e.preventDefault();
     const request: PromptInvocationRequest = {
-      inputJson: JSON.parse(formData.input),
+      inputJson: JSON.parse(formData.inputJsonString),
       bodyToAppend: formData.bodyToAppend,
       llmProvider: formData.llmProvider,
       model: formData.model,
       promptKey: prompt.key,
       spaceId: KoalaGainsSpaceId,
+      requestFrom: 'ui',
     };
     const data = await postData(`${getBaseUrl()}/api/actions/prompt-invocation/full-req-resp`, request);
     if (!error) {
@@ -167,8 +157,8 @@ export default function CreateInvocationPage(): JSX.Element {
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <Block title="Run Prompt Invocation" className="text-color">
-        {promptVersionsLoading ? (
-          <p>Loading versions...</p>
+        {promptLoading ? (
+          <FullPageLoader />
         ) : (
           <form onSubmit={handleSubmit}>
             {/* Select the Prompt Version */}
@@ -178,7 +168,7 @@ export default function CreateInvocationPage(): JSX.Element {
                 label="Version"
                 selectedItemId={formData.promptVersionId}
                 items={
-                  promptVersions?.map((v) => ({
+                  prompt?.promptVersions?.map((v) => ({
                     id: v.id,
                     label: `Version ${v.version} - ${v.commitMessage || 'No commit message'}`,
                   })) || []
@@ -218,9 +208,9 @@ export default function CreateInvocationPage(): JSX.Element {
                 </div>
               </div>
               <div className="block-bg-color w-full py-4 px-2">
-                {formData.input ? (
+                {formData.inputJsonString ? (
                   <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs">
-                    {JSON.stringify(JSON.parse(formData.input), null, 2)}
+                    {JSON.stringify(JSON.parse(formData.inputJsonString), null, 2)}
                   </pre>
                 ) : (
                   <pre className="text-xs">Click on the edit icon to add the JSON</pre>
@@ -244,6 +234,21 @@ export default function CreateInvocationPage(): JSX.Element {
                   />
                 ) : (
                   <pre className="text-xs">Click on the edit icon to add the body to append</pre>
+                )}
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <div className="flex justify-between w-full mb-2 gap-2 items-center">
+                <div>Transformation Patch:</div>
+              </div>
+              <div className="block-bg-color w-full py-4 px-2">
+                {prompt?.transformationPatch ? (
+                  <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs">
+                    {JSON.stringify(prompt.transformationPatch, null, 2)}
+                  </pre>
+                ) : (
+                  <pre className="text-xs">No Transformation patch</pre>
                 )}
               </div>
             </div>
@@ -286,8 +291,8 @@ export default function CreateInvocationPage(): JSX.Element {
           open={showSampleJsonModal}
           onClose={() => setShowSampleJsonModal(false)}
           title="Sample JSON"
-          sampleJson={JSON.parse(formData.input)}
-          onSave={(json: string) => setFormData((s) => ({ ...s, input: json }))}
+          sampleJson={JSON.parse(formData.inputJsonString)}
+          onSave={(json: string) => setFormData((s) => ({ ...s, inputJsonString: json }))}
         />
       )}
       {showRawJsonModal && (
@@ -295,8 +300,8 @@ export default function CreateInvocationPage(): JSX.Element {
           open={showRawJsonModal}
           onClose={() => setShowRawJsonModal(false)}
           title="Raw JSON"
-          sampleJson={formData.input}
-          onSave={(json) => setFormData((s) => ({ ...s, input: json }))}
+          sampleJson={formData.inputJsonString}
+          onSave={(json) => setFormData((s) => ({ ...s, inputJsonString: json }))}
         />
       )}
       {showSampleBodyToAppendModal && (

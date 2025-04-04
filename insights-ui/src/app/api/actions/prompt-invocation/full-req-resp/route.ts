@@ -6,7 +6,7 @@ import { ChatOpenAI } from '@langchain/openai';
 import Ajv, { ErrorObject } from 'ajv';
 import fs from 'fs';
 import Handlebars from 'handlebars';
-
+import jsonpatch from 'jsonpatch';
 import { NextRequest } from 'next/server';
 import path from 'path';
 import { PromptInvocationStatus } from '.prisma/client';
@@ -18,6 +18,7 @@ export interface PromptInvocationRequest {
   llmProvider: string;
   model: string;
   bodyToAppend?: string;
+  requestFrom: 'ui' | 'langflow';
 }
 
 export interface PromptInvocationResponse {
@@ -26,9 +27,9 @@ export interface PromptInvocationResponse {
   response: Record<string, unknown>;
   invocationId: string;
 }
-async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> {
+async function postHandler(req: NextRequest): Promise<any> {
   const request = await req.json();
-  const { inputJson, promptKey, llmProvider, model, bodyToAppend } = request as PromptInvocationRequest;
+  const { inputJson, promptKey, llmProvider, model, bodyToAppend, requestFrom = 'ui' } = request as PromptInvocationRequest;
 
   if (!req.body) {
     throw new Error(`Request body is missing`);
@@ -127,12 +128,36 @@ async function postHandler(req: NextRequest): Promise<PromptInvocationResponse> 
       throw new Error(`Output validation failed: ${JSON.stringify(outputErrors)}`);
     }
 
-    return {
+    const originalObject = {
       request: request,
       prompt: finalPrompt,
       response: result,
       invocationId: invocation.id,
     };
+
+    if (prompt.transformationPatch) {
+      const patchedObject = jsonpatch.apply_patch(originalObject, prompt.transformationPatch as any[]);
+
+      await prisma.promptInvocation.update({
+        where: {
+          id: invocation.id,
+        },
+        data: {
+          transformedJson: JSON.stringify(patchedObject),
+          updatedAt: new Date(),
+          status: PromptInvocationStatus.Completed,
+        },
+      });
+
+      if (requestFrom === 'ui') {
+        return {
+          ...patchedObject,
+          invocationId: invocation.id,
+        };
+      } else {
+        return patchedObject;
+      }
+    }
   } catch (e) {
     await prisma.promptInvocation.update({
       where: {
@@ -156,4 +181,4 @@ function validateData(schema: object, data: unknown): { valid: boolean; errors?:
   return { valid: !!valid, errors: validate.errors || [] };
 }
 
-export const POST = withErrorHandlingV2<PromptInvocationResponse>(postHandler);
+export const POST = withErrorHandlingV2<any>(postHandler);
