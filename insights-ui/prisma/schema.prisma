@@ -38,6 +38,7 @@ model Ticker {
   PerformanceChecklistItem       PerformanceChecklistItem[]
   CriterionMatch                 CriterionMatch[]
   criteriaMatchesOfLatest10Q     CriteriaMatchesOfLatest10Q?
+  latest10QInfo                   Latest10QInfo? @relation(fields: [id], references: [id])
   // latest10QInformation           Latest10QInformation?            @relation(fields: [latest10QInformationId], references: [id])
 
   @@unique([spaceId, tickerKey])
@@ -326,6 +327,15 @@ model PromptInvocation {
   promptVersion PromptVersion @relation(fields: [promptVersionId], references: [id])
 
   @@map("prompt_invocations")
+}
+
+model Latest10QInfo{
+  id                    String @id @default(uuid())
+  reportingPeriod      String @map("reporting_period")
+  secFillingUrl         String @map("sec_filling_url")
+  Ticker Ticker[]
+
+  @@map("latest_10q_info")
 }
 
 // model Latest10QInformation {
