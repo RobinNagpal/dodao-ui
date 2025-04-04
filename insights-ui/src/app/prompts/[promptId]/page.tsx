@@ -6,6 +6,7 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -32,7 +33,12 @@ export default function PromptDetailsPage() {
     { key: 'invocations', label: 'Invocations' },
   ];
 
-  if (!prompt) return <div className="p-4 text-color">Loading...</div>;
+  if (!prompt)
+    return (
+      <PageWrapper>
+        <FullPageLoader />
+      </PageWrapper>
+    );
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {

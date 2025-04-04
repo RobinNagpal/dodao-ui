@@ -1,40 +1,33 @@
 // app/prompts/[promptId]/invocations/[invocationId]/page.tsx
 'use client';
 
+import { FullPromptInvocationResponse } from '@/app/api/[spaceId]/prompts/[promptId]/invocations/[invocationId]/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { PromptInvocation, Prompt, PromptVersion } from '@prisma/client';
 import { marked } from 'marked';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-
-interface PromptInvocationWithDetails extends PromptInvocation {
-  prompt: Prompt;
-}
+import React from 'react';
 
 export default function PromptInvocationDetailsPage() {
-  const [invocation, setInvocation] = useState<PromptInvocationWithDetails | null>(null);
   const params = useParams() as { promptId?: string; invocationId?: string };
   const router = useRouter();
 
   const actions: EllipsisDropdownItem[] = [{ key: 'new', label: 'New Invocation' }];
-
-  useEffect(() => {
-    if (!params.invocationId || !params.promptId) return;
-    const fetchData = async () => {
-      const res = await fetch(`${getBaseUrl()}/api/koala_gains/prompts/${params.promptId}/invocations/${params.invocationId}`);
-      const data = await res.json();
-      setInvocation(data);
-    };
-    fetchData();
-  }, [params.invocationId, params.promptId]);
+  const { data: invocation } = useFetchData<FullPromptInvocationResponse>(
+    `${getBaseUrl()}/api/koala_gains/prompts/${params.promptId}/invocations/${params.invocationId}`,
+    {
+      cache: 'no-cache',
+    },
+    'Cannot fetch prompt invocation data'
+  );
 
   if (!invocation)
     return (
