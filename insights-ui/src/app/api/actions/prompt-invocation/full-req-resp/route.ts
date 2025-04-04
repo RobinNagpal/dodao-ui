@@ -135,11 +135,29 @@ async function postHandler(req: NextRequest): Promise<any> {
       invocationId: invocation.id,
     };
 
-    if (requestFrom === 'langflow' && prompt.transformationPatch) {
+    if (prompt.transformationPatch) {
       const patchedObject = jsonpatch.apply_patch(originalObject, prompt.transformationPatch as any[]);
-      return patchedObject;
+
+      await prisma.promptInvocation.update({
+        where: {
+          id: invocation.id,
+        },
+        data: {
+          transformedJson: JSON.stringify(patchedObject),
+          updatedAt: new Date(),
+          status: PromptInvocationStatus.Completed,
+        },
+      });
+
+      if (requestFrom === 'ui') {
+        return {
+          ...patchedObject,
+          invocationId: invocation.id,
+        };
+      } else {
+        return patchedObject;
+      }
     }
-    return originalObject;
   } catch (e) {
     await prisma.promptInvocation.update({
       where: {

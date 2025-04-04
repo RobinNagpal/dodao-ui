@@ -5,6 +5,7 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
@@ -35,7 +36,12 @@ export default function PromptInvocationDetailsPage() {
     fetchData();
   }, [params.invocationId, params.promptId]);
 
-  if (!invocation) return <div className="p-4 text-color">Loading...</div>;
+  if (!invocation)
+    return (
+      <PageWrapper>
+        <FullPageLoader />
+      </PageWrapper>
+    );
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
@@ -92,6 +98,21 @@ export default function PromptInvocationDetailsPage() {
         </div>
         <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
+            <div>Body to Append:</div>
+          </div>
+          <div className="block-bg-color w-full py-4 px-2">
+            {bodyToAppend ? (
+              <pre
+                className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs markdown-body"
+                dangerouslySetInnerHTML={{ __html: bodyToAppend || '' }}
+              />
+            ) : (
+              <pre className="text-xs">No Body to Append Added</pre>
+            )}
+          </div>
+        </div>
+        <div className="mb-4">
+          <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Output JSON:</div>
           </div>
           <div className="block-bg-color w-full py-4 px-2">
@@ -104,18 +125,18 @@ export default function PromptInvocationDetailsPage() {
             )}
           </div>
         </div>
+
         <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
-            <div>Body to Append:</div>
+            <div>Transformed JSON:</div>
           </div>
           <div className="block-bg-color w-full py-4 px-2">
-            {bodyToAppend ? (
-              <pre
-                className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs markdown-body"
-                dangerouslySetInnerHTML={{ __html: bodyToAppend || '' }}
-              />
+            {invocation.transformedJson ? (
+              <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs">
+                {JSON.stringify(JSON.parse(invocation.transformedJson as any), null, 2)}
+              </pre>
             ) : (
-              <pre className="text-xs">No Body to Append Added</pre>
+              <pre className="text-xs">No Transformed JSON</pre>
             )}
           </div>
         </div>

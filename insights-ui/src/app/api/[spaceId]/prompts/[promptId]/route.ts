@@ -2,7 +2,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { Prisma } from '@prisma/client';
+import { Prisma, Prompt, PromptVersion } from '@prisma/client';
 
 interface UpdatePromptRequest {
   name?: string;
@@ -16,11 +16,13 @@ interface UpdatePromptRequest {
   transformationPatch?: Prisma.JsonValue;
 }
 
+export type FullPromptResponse = Prompt & { promptVersions: PromptVersion[]; activePromptVersion: PromptVersion | null };
+
 // GET /api/[spaceId]/prompts/[promptId]
 async function getPrompt(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string }> }) {
   const { spaceId, promptId } = await context.params;
 
-  const prompt = await prisma.prompt.findFirstOrThrow({
+  const prompt: FullPromptResponse = await prisma.prompt.findFirstOrThrow({
     where: {
       id: promptId,
       spaceId,
