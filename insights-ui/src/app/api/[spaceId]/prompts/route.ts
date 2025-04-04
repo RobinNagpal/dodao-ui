@@ -2,6 +2,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { Prisma } from '@prisma/client';
 
 // Type for the body when creating a prompt
 interface CreatePromptRequest {
@@ -12,6 +13,7 @@ interface CreatePromptRequest {
   outputSchema: string;
   sampleJson: string;
   createdBy?: string;
+  transformationPatch?: Prisma.JsonValue;
 }
 
 // GET /api/[spaceId]/prompts
@@ -60,6 +62,7 @@ async function createPrompt(req: NextRequest, context: { params: { spaceId: stri
       sampleJson: body.sampleJson || '',
       createdBy: body.createdBy || 'unknown',
       updatedBy: body.createdBy || 'unknown',
+      transformationPatch: body.transformationPatch || undefined,
     },
   });
 

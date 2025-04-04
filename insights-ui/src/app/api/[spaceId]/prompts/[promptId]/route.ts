@@ -2,6 +2,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { Prisma } from '@prisma/client';
 
 interface UpdatePromptRequest {
   name?: string;
@@ -12,6 +13,7 @@ interface UpdatePromptRequest {
   sampleJson?: string;
   updatedBy?: string;
   sampleBodyToAppend?: string;
+  transformationPatch?: Prisma.JsonValue;
 }
 
 // GET /api/[spaceId]/prompts/[promptId]
@@ -47,6 +49,7 @@ async function updatePrompt(req: NextRequest, context: { params: { spaceId: stri
       sampleJson: body.sampleJson,
       sampleBodyToAppend: body.sampleBodyToAppend,
       updatedBy: body.updatedBy,
+      transformationPatch: body.transformationPatch || undefined,
     },
   });
   return updatedPrompt;

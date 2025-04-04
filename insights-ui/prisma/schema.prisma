@@ -262,6 +262,7 @@ model Prompt {
   outputSchema       String          @map("output_schema")
   sampleJson         String?         @map("sample_json")
   sampleBodyToAppend String?         @map("sample_body_to_append")
+  transformationPatch Json?          @map("transformation_patch") @db.JsonB
   createdAt          DateTime        @default(now()) @map("created_at")
   updatedAt          DateTime        @updatedAt @map("updated_at")
   createdBy          String          @map("created_by")

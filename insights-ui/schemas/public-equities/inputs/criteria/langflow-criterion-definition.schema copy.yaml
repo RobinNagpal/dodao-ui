@@ -1,0 +1,15 @@
+type: object
+properties:
+  ticker:
+    type: string
+  shouldTriggerNext:
+    type: boolean
+  reportKey:
+    type: string
+  criterion:
+    $ref: './criterion-definition.schema.yaml'
+required:
+  - ticker
+  - shouldTriggerNext
+  - reportKey
+  - criterion
