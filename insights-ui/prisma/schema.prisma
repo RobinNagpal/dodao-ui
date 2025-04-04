@@ -331,11 +331,13 @@ model PromptInvocation {
 
 model Latest10QInfo{
   id                    String @id @default(uuid())
+  spaceId               String @default("koala_gains") @map("space_id")
+  tickerKey            String @map("ticker_key")
   reportingPeriod      String @map("reporting_period")
   secFillingUrl         String @map("sec_filling_url")
   Ticker Ticker[]
 
-  @@map("latest_10q_info")
+  @@map("latest_10q_infos")
 }
 
 // model Latest10QInformation {
