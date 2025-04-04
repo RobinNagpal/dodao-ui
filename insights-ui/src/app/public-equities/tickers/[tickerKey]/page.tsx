@@ -128,18 +128,20 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
             <div className="max-w-lg mx-auto">
               <RadarChart data={spiderGraph} />
             </div>
-            <div className="border-b border-gray-100 text-left">
-              <dl className="divide-y text-color">
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium">Reporting Period</dt>
-                  <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{Latest10QData.reportingPeriod}</dd>
-                </div>
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium">SEC 10Q Filing Link</dt>
-                  <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{Latest10QData.secFilingUrl}</dd>
-                </div>
-              </dl>
-            </div>
+            {Latest10QData && (
+              <div className="border-b border-gray-100 text-left">
+                <dl className="divide-y text-color">
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm/6 font-medium">Reporting Period</dt>
+                    <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{Latest10QData.reportingPeriod}</dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm/6 font-medium">SEC 10Q Filing Link</dt>
+                    <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{Latest10QData.secFilingUrl}</dd>
+                  </div>
+                </dl>
+              </div>
+            )}
             <div className="mx-auto mt-12 text-left">
               <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-8 lg:max-w-none lg:grid-cols-2">
                 {industryGroupCriteria?.criteria?.map((criterion) => {
