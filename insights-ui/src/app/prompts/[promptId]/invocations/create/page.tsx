@@ -129,6 +129,7 @@ export default function CreateInvocationPage(): JSX.Element {
       model: formData.model,
       promptKey: prompt.key,
       spaceId: KoalaGainsSpaceId,
+      requestFrom: 'ui',
     };
     const data = await postData(`${getBaseUrl()}/api/actions/prompt-invocation/full-req-resp`, request);
     if (!error) {
