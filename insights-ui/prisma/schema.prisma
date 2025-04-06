@@ -254,20 +254,21 @@ model CriterionMatch {
 }
 
 model Prompt {
-  id                 String          @id @default(uuid())
-  spaceId            String          @map("space_id")
-  name               String          @map("name")
-  key                String          @map("key")
-  excerpt            String?         @map("excerpt")
-  inputSchema        String          @map("input_schema")
-  outputSchema       String          @map("output_schema")
-  sampleJson         String?         @map("sample_json")
-  sampleBodyToAppend String?         @map("sample_body_to_append")
-  createdAt          DateTime        @default(now()) @map("created_at")
-  updatedAt          DateTime        @updatedAt @map("updated_at")
-  createdBy          String          @map("created_by")
-  updatedBy          String          @map("updated_by")
-  promptVersions     PromptVersion[]
+  id                  String          @id @default(uuid())
+  spaceId             String          @map("space_id")
+  name                String          @map("name")
+  key                 String          @map("key")
+  excerpt             String?         @map("excerpt")
+  inputSchema         String          @map("input_schema")
+  outputSchema        String          @map("output_schema")
+  sampleJson          String?         @map("sample_json")
+  sampleBodyToAppend  String?         @map("sample_body_to_append")
+  transformationPatch Json?           @map("transformation_patch") @db.JsonB
+  createdAt           DateTime        @default(now()) @map("created_at")
+  updatedAt           DateTime        @updatedAt @map("updated_at")
+  createdBy           String          @map("created_by")
+  updatedBy           String          @map("updated_by")
+  promptVersions      PromptVersion[]
 
   activePromptVersionId String?            @unique @map("active_prompt_version_id")
   activePromptVersion   PromptVersion?     @relation("ActivePromptVersion", fields: [activePromptVersionId], references: [id])
@@ -313,6 +314,7 @@ model PromptInvocation {
   promptVersionId String                 @map("prompt_version_id")
   inputJson       Json                   @map("input_json") @db.JsonB
   outputJson      Json?                  @map("output_json") @db.JsonB
+  transformedJson Json?                  @map("transformed_json") @db.JsonB
   status          PromptInvocationStatus @map("status")
   error           String?                @map("error")
   createdAt       DateTime               @default(now()) @map("created_at")

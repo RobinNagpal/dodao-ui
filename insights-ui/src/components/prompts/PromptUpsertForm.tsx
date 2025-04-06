@@ -13,10 +13,11 @@ import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { Prompt } from '@prisma/client';
+import { Prisma, Prompt } from '@prisma/client';
 import { marked } from 'marked';
 import { FormEvent, useState } from 'react';
 import SampleBodyEditModal from './SampleBodyEditModal';
+import TransformationPatchEditModal from './TransformationPatchEditModal';
 
 export interface PromptFormData {
   id?: string;
@@ -27,6 +28,7 @@ export interface PromptFormData {
   outputSchema: string;
   sampleJson: string;
   sampleBodyToAppend?: string;
+  transformationPatch?: Prisma.JsonValue;
 }
 
 export interface PromptUpsertFormProps {
@@ -46,10 +48,12 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
     outputSchema: prompt?.outputSchema || '',
     sampleJson: prompt?.sampleJson || '',
     sampleBodyToAppend: prompt?.sampleBodyToAppend || '',
+    transformationPatch: prompt?.transformationPatch || null,
   });
   const [showSampleJsonModal, setShowSampleJsonModal] = useState(false);
   const [showRawJsonModal, setShowRawJsonModal] = useState(false);
   const [showSampleBodyToAppendModal, setShowSampleBodyToAppendModal] = useState(false);
+  const [showTransformationPatchModal, setShowTransformationPatchModal] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -129,6 +133,28 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           </div>
         </div>
 
+        <div className="my-4">
+          <div className="flex justify-between w-full mb-2 gap-2 items-center">
+            <div>Transformation Patch</div>
+            <div>
+              <span className="text-sm text-gray-500 ml-2">Edit:</span>
+              <IconButton iconName={IconTypes.Edit} onClick={() => setShowTransformationPatchModal(true)} />
+            </div>
+          </div>
+          <div className="block-bg-color w-full py-4 px-2">
+            {formData.transformationPatch ? (
+              <pre
+                className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs"
+                dangerouslySetInnerHTML={{
+                  __html: JSON.stringify(formData.transformationPatch, null, 2),
+                }}
+              />
+            ) : (
+              <pre className="text-xs">Click on the edit icon to add the transformation patch</pre>
+            )}
+          </div>
+        </div>
+
         <Button disabled={upserting} variant="contained" primary loading={upserting}>
           Submit
         </Button>
@@ -158,6 +184,15 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           onClose={() => setShowSampleBodyToAppendModal(false)}
           onSave={handleSampleBodySave}
           initialValue={formData.sampleBodyToAppend || ''}
+        />
+      )}
+      {showTransformationPatchModal && (
+        <TransformationPatchEditModal
+          open={showTransformationPatchModal}
+          onClose={() => setShowTransformationPatchModal(false)}
+          title="Transformation Patch"
+          transformationPatch={formData.transformationPatch || null}
+          onSave={(patch: Prisma.JsonValue) => setFormData((s) => ({ ...s, transformationPatch: patch }))}
         />
       )}
     </>
