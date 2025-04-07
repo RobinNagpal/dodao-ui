@@ -258,7 +258,7 @@ model Prompt {
   name                String          @map("name")
   key                 String          @map("key")
   excerpt             String?         @map("excerpt")
-  inputSchema         String          @map("input_schema")
+  inputSchema         String?          @map("input_schema")
   outputSchema        String          @map("output_schema")
   sampleJson          String?         @map("sample_json")
   sampleBodyToAppend  String?         @map("sample_body_to_append")
@@ -311,7 +311,7 @@ model PromptInvocation {
   spaceId         String                 @map("space_id")
   promptId        String                 @map("prompt_id")
   promptVersionId String                 @map("prompt_version_id")
-  inputJson       Json                   @map("input_json") @db.JsonB
+  inputJson       Json?                   @map("input_json") @db.JsonB
   outputJson      Json?                  @map("output_json") @db.JsonB
   transformedJson Json?                  @map("transformed_json") @db.JsonB
   status          PromptInvocationStatus @map("status")
