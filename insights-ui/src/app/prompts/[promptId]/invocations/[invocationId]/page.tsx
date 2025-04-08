@@ -134,6 +134,17 @@ export default function PromptInvocationDetailsPage() {
           </div>
         </div>
 
+        {invocation.error && (
+          <div className="mb-4">
+            <div className="flex justify-between w-full mb-2 gap-2 items-center">
+              <div>Invocation Error:</div>
+            </div>
+            <div className="block-bg-color w-full py-4 px-2">
+              <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs text-red-500">{invocation.error}</pre>
+            </div>
+          </div>
+        )}
+
         <Link href={`/prompts/${invocation.promptId}/invocations`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block">
           See Prompt Invocations
         </Link>
