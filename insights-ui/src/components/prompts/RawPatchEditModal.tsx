@@ -13,13 +13,25 @@ export interface RawPatchEditModalProps {
 }
 
 export default function RawPatchEditModal({ open, onClose, title, sampleJson, onSave }: RawPatchEditModalProps) {
-  let jsonObj = undefined;
-  try {
-    jsonObj = JSON.parse(sampleJson);
-  } catch (error) {
-    console.log(error);
-  }
-  const [rawJson, setRawJson] = useState<string>(jsonObj ? JSON.stringify(jsonObj, null, 2) : '');
+  // Use a function to initialize rawJson
+  const getInitialJson = (): string => {
+    if (!sampleJson) return '';
+    // If sampleJson is a string, try to parse it to be safe
+    if (typeof sampleJson === 'string') {
+      try {
+        const parsed = JSON.parse(sampleJson);
+        return JSON.stringify(parsed, null, 2);
+      } catch (error) {
+        console.log('Error parsing JSON string:', error);
+        return sampleJson; // Fallback to original string if parsing fails
+      }
+    } else {
+      // If it's already an object/array, stringify it
+      return JSON.stringify(sampleJson, null, 2);
+    }
+  };
+
+  const [rawJson, setRawJson] = useState<string>(getInitialJson());
   const [isValid, setIsValid] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
