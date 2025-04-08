@@ -26,6 +26,9 @@ async function getPrompts(req: NextRequest, context: { params: Promise<{ spaceId
     include: {
       activePromptVersion: true, // show some relation if needed
     },
+    orderBy: {
+      updatedAt: 'desc',
+    },
   });
   return prompts;
 }

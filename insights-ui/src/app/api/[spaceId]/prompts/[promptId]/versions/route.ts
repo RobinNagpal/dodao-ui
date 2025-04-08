@@ -19,7 +19,7 @@ async function getVersions(req: NextRequest, context: { params: { spaceId: strin
       promptId,
     },
     orderBy: {
-      version: 'asc',
+      version: 'desc',
     },
   });
   return versions;
@@ -51,7 +51,7 @@ async function createVersion(req: NextRequest, context: { params: { spaceId: str
   });
   await prisma.prompt.update({
     where: { id: promptId },
-    data: { activePromptVersionId: newVersion.id },
+    data: { activePromptVersionId: newVersion.id, updatedAt: new Date() },
   });
   return newVersion;
 }
