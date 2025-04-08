@@ -32,7 +32,7 @@ async function postHandler(req: NextRequest): Promise<any> {
   const { promptKey, llmProvider, model, bodyToAppend, requestFrom = 'ui' } = request as PromptInvocationRequest;
 
   // Default inputJson to an empty object if it is not attached
-  const inputJson = request.inputJson || {};
+  const inputJson = request.inputJson;
 
   if (!req.body) {
     throw new Error(`Request body is missing`);
@@ -60,7 +60,7 @@ async function postHandler(req: NextRequest): Promise<any> {
   const invocation = await prisma.promptInvocation.create({
     data: {
       spaceId: KoalaGainsSpaceId,
-      inputJson: JSON.stringify({ ...request, inputJson }),
+      inputJson: inputJson ? JSON.stringify(inputJson) : null,
       promptId: prompt.id,
       promptVersionId: prompt.activePromptVersion.id,
       status: PromptInvocationStatus.InProgress,
@@ -91,7 +91,7 @@ async function postHandler(req: NextRequest): Promise<any> {
 
     // Compile the Handlebars template with the provided input.
     const compiledTemplate = Handlebars.compile(templateContent);
-    const finalPrompt = bodyToAppend ? `${compiledTemplate(inputJson)}\n\n\n${bodyToAppend}` : compiledTemplate(inputJson);
+    const finalPrompt = bodyToAppend ? `${compiledTemplate(inputJson || {})}\n\n\n${bodyToAppend}` : compiledTemplate(inputJson || {});
 
     // Choose LLM based on llmProvider. Currently, only "openai" is supported.
     let llm: ChatOpenAI | undefined;
@@ -180,6 +180,10 @@ function validateData(schema: object, data: unknown): { valid: boolean; errors?:
   const validate = ajv.compile(schema);
   const valid = validate(data);
   return { valid: !!valid, errors: validate.errors || [] };
+}
+
+function removeNullBytes(str: string) {
+  return str.replace(/\0/g, '');
 }
 
 export const POST = withErrorHandlingV2<any>(postHandler);
