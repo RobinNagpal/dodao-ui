@@ -44,7 +44,7 @@ export interface SaveCriterionReportRequest {
   ticker: string;
   criterionKey: string;
   reportKey: string;
-  data: string;
+  message: string;
 }
 
 export interface CreateAiCriteriaRequest {

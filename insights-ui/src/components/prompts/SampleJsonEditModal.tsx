@@ -31,7 +31,7 @@ export default function SampleJsonEditModal({ open, onClose, title, sampleJson: 
         enableClipboard={true}
       />
 
-      <div className="flex justify-end mt-4 pt-4 border-t border-gray-200">
+      <div className="flex justify-end mt-4 mx-4 pt-4 border-t border-gray-200">
         <Button onClick={() => onSave(JSON.stringify(sampleJson, null, 2))} primary variant="contained">
           Save
         </Button>
