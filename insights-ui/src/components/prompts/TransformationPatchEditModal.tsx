@@ -37,7 +37,7 @@ export default function TransformationPatchEditModal({ open, onClose, title, tra
         />
       </div>
 
-      <div className="flex justify-end mt-4 pt-4 border-t border-gray-200">
+      <div className="flex justify-end mt-4 mx-4 pt-4 border-t border-gray-200">
         <Button onClick={handleSave} primary variant="contained">
           Save
         </Button>

@@ -2,7 +2,7 @@
 'use client';
 
 import SampleJsonEditModal from '@/components/prompts/SampleJsonEditModal';
-import RawJsonJsonEditModal from '@/components/prompts/RawJsonEditModal';
+import RawJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PromptSchema } from '@/types/prompt-schemas';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -20,6 +20,7 @@ import { FormEvent, useState } from 'react';
 import SampleBodyEditModal from './SampleBodyEditModal';
 import TransformationPatchEditModal from './TransformationPatchEditModal';
 import { UpdatePromptRequest } from '@/app/api/[spaceId]/prompts/[promptId]/route';
+import RawPatchEditModal from './RawPatchEditModal';
 
 export interface PromptFormData extends UpdatePromptRequest {
   id?: string;
@@ -47,6 +48,7 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
   });
   const [showSampleJsonModal, setShowSampleJsonModal] = useState(false);
   const [showRawJsonModal, setShowRawJsonModal] = useState(false);
+  const [showRawPatchModal, setShowRawPatchModal] = useState(false);
   const [showSampleBodyToAppendModal, setShowSampleBodyToAppendModal] = useState(false);
   const [showTransformationPatchModal, setShowTransformationPatchModal] = useState(false);
 
@@ -138,8 +140,10 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Transformation Patch</div>
             <div>
-              <span className="text-sm text-gray-500 ml-2">Edit:</span>
+              <span className="text-sm text-gray-500">Visual Editor:</span>
               <IconButton iconName={IconTypes.Edit} onClick={() => setShowTransformationPatchModal(true)} />
+              <span className="text-sm text-gray-500 ml-2">Raw Patch:</span>
+              <IconButton iconName={IconTypes.Edit} onClick={() => setShowRawPatchModal(true)} />
             </div>
           </div>
           <div className="block-bg-color w-full py-4 px-2">
@@ -165,13 +169,13 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
         <SampleJsonEditModal
           open={showSampleJsonModal}
           onClose={() => setShowSampleJsonModal(false)}
-          title="Sample JSON"
+          title="Sample Input JSON"
           sampleJson={formData.sampleJson ? JSON.parse(formData.sampleJson) : undefined}
           onSave={(json: string) => setFormData((s) => ({ ...s, sampleJson: json }))}
         />
       )}
       {showRawJsonModal && (
-        <RawJsonJsonEditModal
+        <RawJsonEditModal
           open={showRawJsonModal}
           onClose={() => setShowRawJsonModal(false)}
           title="Raw JSON"
@@ -193,6 +197,15 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           onClose={() => setShowTransformationPatchModal(false)}
           title="Transformation Patch"
           transformationPatch={formData.transformationPatch || null}
+          onSave={(patch: Prisma.JsonValue) => setFormData((s) => ({ ...s, transformationPatch: patch }))}
+        />
+      )}
+      {showRawPatchModal && (
+        <RawPatchEditModal
+          open={showRawPatchModal}
+          onClose={() => setShowRawPatchModal(false)}
+          title="Raw Patch"
+          sampleJson={formData.transformationPatch}
           onSave={(patch: Prisma.JsonValue) => setFormData((s) => ({ ...s, transformationPatch: patch }))}
         />
       )}
