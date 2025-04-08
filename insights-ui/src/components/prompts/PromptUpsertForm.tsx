@@ -10,6 +10,7 @@ import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
@@ -18,17 +19,10 @@ import { marked } from 'marked';
 import { FormEvent, useState } from 'react';
 import SampleBodyEditModal from './SampleBodyEditModal';
 import TransformationPatchEditModal from './TransformationPatchEditModal';
+import { UpdatePromptRequest } from '@/app/api/[spaceId]/prompts/[promptId]/route';
 
-export interface PromptFormData {
+export interface PromptFormData extends UpdatePromptRequest {
   id?: string;
-  name: string;
-  key: string;
-  excerpt: string;
-  inputSchema: string;
-  outputSchema: string;
-  sampleJson: string;
-  sampleBodyToAppend?: string;
-  transformationPatch?: Prisma.JsonValue;
 }
 
 export interface PromptUpsertFormProps {
@@ -47,6 +41,7 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
     inputSchema: prompt?.inputSchema || '',
     outputSchema: prompt?.outputSchema || '',
     sampleJson: prompt?.sampleJson || '',
+    notes: prompt?.notes || '',
     sampleBodyToAppend: prompt?.sampleBodyToAppend || '',
     transformationPatch: prompt?.transformationPatch || null,
   });
@@ -92,6 +87,12 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           setSelectedItemId={(value) => setFormData((s) => ({ ...s, outputSchema: value as string }))}
         />
 
+        <TextareaAutosize
+          label={'Notes'}
+          modelValue={formData.notes}
+          autosize={true}
+          onUpdate={(value) => setFormData((s) => ({ ...s, notes: value as string }))}
+        />
         <div className="my-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Sample Input Json</div>
@@ -165,7 +166,7 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           open={showSampleJsonModal}
           onClose={() => setShowSampleJsonModal(false)}
           title="Sample JSON"
-          sampleJson={JSON.parse(formData.sampleJson)}
+          sampleJson={formData.sampleJson ? JSON.parse(formData.sampleJson) : undefined}
           onSave={(json: string) => setFormData((s) => ({ ...s, sampleJson: json }))}
         />
       )}
