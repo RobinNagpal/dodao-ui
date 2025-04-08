@@ -82,6 +82,7 @@ export default function PromptDetailsPage() {
         <p className="mb-4">Excerpt: {prompt.excerpt}</p>
         <p className="mb-4">Input Schema: {prompt.inputSchema}</p>
         <p className="mb-4">Output Schema: {prompt.outputSchema}</p>
+        <p className="mb-4">Notes: {prompt.notes || 'No notes added'}</p>
         <div className="mb-4">
           <div className="mb-2">Current Prompt Template</div>
           <div className="flex-1 border-l border-gray-200">

@@ -1,25 +1,55 @@
-// app/prompts/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
 import { PromptWithActiveVersion } from '@/app/api/[spaceId]/prompts/route';
+import LoadingOrError from '@/components/core/LoadingOrError';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import Input from '@dodao/web-core/components/core/input/Input';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Input from '@dodao/web-core/components/core/input/Input';
+import { useEffect, useState } from 'react';
+
+/**
+ * Helper function to truncate text to the first `wordLimit` words.
+ */
+function truncateText(text: string, wordLimit: number): string {
+  const words = text.split(/\s+/);
+  if (words.length <= wordLimit) return text;
+  return words.slice(0, wordLimit).join(' ') + '...';
+}
+
+/**
+ * Modal component to display the full notes.
+ */
+interface PromptNotesModalProps {
+  open: boolean;
+  onClose: () => void;
+  notes: string;
+}
+
+function PromptNotesModal({ open, onClose, notes }: PromptNotesModalProps): JSX.Element {
+  return (
+    <FullPageModal open={open} onClose={onClose} title="Full Notes">
+      <div className="p-4">
+        <p>{notes}</p>
+      </div>
+    </FullPageModal>
+  );
+}
 
 export default function PromptsListPage(): JSX.Element {
-  const { data: prompts, loading } = useFetchData<PromptWithActiveVersion[]>(
-    `${getBaseUrl()}/api/koala_gains/prompts`,
-    { cache: 'no-cache' },
-    'Failed to fetch prompts.'
-  );
+  const {
+    data: prompts,
+    loading,
+    error,
+  } = useFetchData<PromptWithActiveVersion[]>(`${getBaseUrl()}/api/koala_gains/prompts`, { cache: 'no-cache' }, 'Failed to fetch prompts.');
   const router = useRouter();
   const [filterText, setFilterText] = useState<string>('');
+  const [selectedNote, setSelectedNote] = useState<string>('');
+  const [showNotesModal, setShowNotesModal] = useState<boolean>(false);
 
   // Load the saved filter text from local storage on mount.
   useEffect(() => {
@@ -34,12 +64,9 @@ export default function PromptsListPage(): JSX.Element {
     localStorage.setItem('prompts_filter_text', filterText);
   }, [filterText]);
 
-  if (loading)
-    return (
-      <PageWrapper>
-        <FullPageLoader />
-      </PageWrapper>
-    );
+  if (loading || error) {
+    return <LoadingOrError loading={loading} error={error} />;
+  }
 
   // Filter prompts based on the filter text provided by the user.
   const filteredPrompts =
@@ -73,6 +100,7 @@ export default function PromptsListPage(): JSX.Element {
             <tr>
               <th className="text-left p-2 border-color border">Name</th>
               <th className="text-left p-2 border-color border">Key</th>
+              <th className="text-left p-2 border-color border">Notes</th>
               <th className="text-left p-2 border-color border">Active Version</th>
               <th className="text-left p-2 border-color border">Actions</th>
             </tr>
@@ -82,6 +110,26 @@ export default function PromptsListPage(): JSX.Element {
               <tr key={prompt.id} className="border border-color">
                 <td className="p-2 border border-color">{prompt.name}</td>
                 <td className="p-2 border border-color">{prompt.key}</td>
+                <td className="p-2 border border-color">
+                  {prompt.notes ? (
+                    <>
+                      {truncateText(prompt.notes, 20)}{' '}
+                      {prompt.notes.split(/\s+/).length > 20 && (
+                        <button
+                          onClick={() => {
+                            setSelectedNote(prompt.notes || 'No Notes');
+                            setShowNotesModal(true);
+                          }}
+                          className="text-blue-500 underline"
+                        >
+                          View Full
+                        </button>
+                      )}
+                    </>
+                  ) : (
+                    'No notes added'
+                  )}
+                </td>
                 <td className="p-2 border border-color">
                   {prompt.activePromptVersion?.version ? (
                     <>
@@ -94,21 +142,24 @@ export default function PromptsListPage(): JSX.Element {
                   )}
                 </td>
                 <td className="p-2 border border-color">
-                  <Link href={`/prompts/${prompt.id}`} className="link-color underline mr-4">
-                    View
-                  </Link>
-                  <Link href={`/prompts/edit/${prompt.id}`} className="link-color underline mr-4">
-                    Edit
-                  </Link>
-                  <Link href={`/prompts/${prompt.id}/invocations`} className="link-color underline">
-                    Invocations
-                  </Link>
+                  <div className="flex flex-col">
+                    <Link href={`/prompts/${prompt.id}`} className="link-color underline mr-4">
+                      View
+                    </Link>
+                    <Link href={`/prompts/edit/${prompt.id}`} className="link-color underline mr-4">
+                      Edit
+                    </Link>
+                    <Link href={`/prompts/${prompt.id}/invocations`} className="link-color underline">
+                      Invocations
+                    </Link>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {showNotesModal && <PromptNotesModal open={showNotesModal} onClose={() => setShowNotesModal(false)} notes={selectedNote} />}
     </PageWrapper>
   );
 }
