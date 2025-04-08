@@ -28,7 +28,7 @@ const triggerSingleCriterionReport = async (
     ticker: tickerKey,
     shouldTriggerNext: false,
     reportKey: reportKey,
-    criterion: JSON.stringify(matchingCriterion),
+    criterion: matchingCriterion,
   };
   const headers = { 'Content-Type': 'application/json' };
   const response = await fetch(body.langflowWebhookUrl, {
