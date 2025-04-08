@@ -11,7 +11,7 @@ async function getPromptInvocations(req: NextRequest, context: { params: Promise
     orderBy: {
       updatedAt: 'desc',
     },
-    take: 25,
+    take: 40,
     include: {
       prompt: {
         select: {
