@@ -2,8 +2,12 @@ I have a react nextjs app which uses the new app router.
 
 Create a component for .......
 
+Also, create a checklist of the rules that were applicable to the
+component, and the ones you have followed in the code output.
 
-Make sure to keep it consistent with the existing code. Here are some of the things we follow in the codebase:
+Make sure to keep it consistent with the existing code.
+
+Rules
 - The code has very strict types and all types and mentioned explicitly 
 - For colors we use special theme classes which uses CSS variables. Below I am passing the theme-styles.scss 
 - For making a server side component and request I use normal fetch without any cache. Here is an example 
@@ -114,6 +118,34 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
     Refetch Financial Statements
   </Button>
 </div>
+```
+
+- We have a component for other form elements as well
+```tsx
+
+import Input from '@dodao/web-core/components/core/input/Input';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
+
+
+<Input modelValue={formData.name} onUpdate={(val) => setFormData((s) => ({ ...s, name: val as string }))} className="custom-classes" helpText="Some help text">
+  Prompt Name
+</Input>
+
+<StyledSelect
+  label={'Output Schema'}
+  selectedItemId={formData.outputSchema}
+  items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title} - ${schema.filePath}` })) || []}
+  setSelectedItemId={(value) => setFormData((s) => ({ ...s, outputSchema: value as string }))}
+/>
+
+<TextareaAutosize
+  label={'Notes'}
+  modelValue={formData.notes}
+  autosize={true}
+  onUpdate={(value) => setFormData((s) => ({ ...s, notes: value as string }))}
+/>
+
 ```
 - All the actions are protected by the `<PrivateWrapper>` Component. 
 ```tsx
@@ -226,8 +258,46 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
 
 ```
 
-- The new version of nextjs requires calling await on the page 
+- The new version of nextjs requires calling await on the page component. So make sure to do that. 
+```tsx
+export default async function Page({ params }: { params: Promise<{ projectId: string }> }) {
+  const { projectId } = await params;
+}
+```
 
+- We have a helper component to show loading or error messages for client components. reuse it in the cases where its relevant
+```tsx
+'use client';
+
+import LoadingOrError from '@/components/core/LoadingOrError';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Prompt, PromptInvocation } from '@prisma/client';
+import Link from 'next/link';
+
+interface InvocationWithPrompt extends PromptInvocation {
+  prompt: Prompt;
+}
+export default function PromptInvocationsListPage(): JSX.Element {
+  const {
+    data: promptInvocations,
+    loading,
+    error,
+  } = useFetchData<InvocationWithPrompt[]>(`${getBaseUrl()}/api/koala_gains/invocations`, { cache: 'no-cache' }, 'Failed to fetch invocations');
+
+  if (loading || error) {
+    return <LoadingOrError error={error} loading={loading} />;
+  }
+
+  return (
+    <PageWrapper>
+      {promptInvocations && 'Other component here'}
+    </PageWrapper>
+  );
+}
+
+```
 
 ----
 theme-styles.scss

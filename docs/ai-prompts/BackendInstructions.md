@@ -2,6 +2,12 @@ I have a nextjs application which uses the new router. I want to write the code 
 
 ......
 
+Also, create a checklist of the rules that were applicable to the
+component, and the ones you have followed in the code output.
+
+Make sure to keep it consistent with the existing code. 
+
+Rules
 - Make sure to use strict types and mention the types explicitly.
 - I have `withErrorHandlingV2` middleware which handles errors in the API, logs them and returns a proper response.
 - So for any exception scenarios, throw an error and it will be handled by the middleware. 
@@ -84,4 +90,13 @@ export const PUT = withErrorHandlingV2(updatePrompt);
 export const DELETE = withErrorHandlingV2(deletePrompt);
 
 
+```
+
+- The new version of nextjs requires calling await on the page component. So make sure to do that.
+
+```ts
+async function getPrompts(req: NextRequest, context: { params: Promise<{ spaceId: string }> }) {
+  const { spaceId } = await context.params;
+
+}
 ```
