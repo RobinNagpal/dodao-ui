@@ -60,7 +60,7 @@ async function postHandler(req: NextRequest): Promise<any> {
   const invocation = await prisma.promptInvocation.create({
     data: {
       spaceId: KoalaGainsSpaceId,
-      inputJson: inputJson ? JSON.stringify(inputJson) : null,
+      inputJson: inputJson ? JSON.stringify(inputJson) : undefined,
       promptId: prompt.id,
       promptVersionId: prompt.activePromptVersion.id,
       status: PromptInvocationStatus.InProgress,
