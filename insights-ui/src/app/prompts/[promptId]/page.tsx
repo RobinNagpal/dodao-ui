@@ -11,6 +11,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
+import Editor from '@monaco-editor/react';
 import { marked } from 'marked';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -81,6 +82,27 @@ export default function PromptDetailsPage() {
         <p className="mb-4">Excerpt: {prompt.excerpt}</p>
         <p className="mb-4">Input Schema: {prompt.inputSchema}</p>
         <p className="mb-4">Output Schema: {prompt.outputSchema}</p>
+        <div className="mb-4">
+          <div className="mb-2">Current Prompt Template</div>
+          <div className="flex-1 border-l border-gray-200">
+            <Editor
+              height="300px"
+              defaultLanguage="markdown"
+              value={prompt.activePromptVersion?.promptTemplate || 'No Active Version set for this prompt'}
+              theme="vs-dark"
+              options={{
+                readOnly: true,
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+                wordWrap: 'on',
+                lineNumbers: 'off',
+                folding: false,
+                fontSize: 14,
+                fontFamily: 'monospace',
+              }}
+            />
+          </div>
+        </div>
         <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Sample Input JSON:</div>
