@@ -1,3 +1,5 @@
+I have a react nextjs app which uses the new app router.
+
 Create a component for .......
 
 
@@ -223,6 +225,8 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
 }
 
 ```
+
+- The new version of nextjs requires calling await on the page 
 
 
 ----

@@ -70,4 +70,4 @@ Checklist for contribution to Tidbits Hub:
 - [ ] Understand the features we want to add in the Tidbits Hub application
 
 ### Coding Patters
-[Coding Instructions](docs/AIInstructions.md)
+[Coding Instructions](docs/ai-prompts/UIIInstructions)

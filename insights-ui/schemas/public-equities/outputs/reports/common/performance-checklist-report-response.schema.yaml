@@ -3,6 +3,6 @@ properties:
   performanceChecklist:
     type: array
     items:
-      $ref: './metric-values-item.schema.yaml'
+      $ref: './performance-checklist-values-item.schema.yaml'
 required:
-  - metrics
+  - performanceChecklist
