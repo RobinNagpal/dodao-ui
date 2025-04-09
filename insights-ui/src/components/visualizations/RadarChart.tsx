@@ -26,7 +26,6 @@ import { Radar } from 'react-chartjs-2';
 
 // Register necessary Chart.js components
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
-
 // Register the alternate circles and spokes plugin
 ChartJS.register(AlternateRingBackgroundPlugin);
 
@@ -46,7 +45,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
 
   const scores: number[] = itemKeys.map((category) => {
     const rawScore = data[category].scores.reduce((acc, item) => acc + item.score, 0);
-    return rawScore === 0 ? SCORE_OFFSET : rawScore; // Apply offset ONLY if score is 0
+    return rawScore === 0 ? SCORE_OFFSET : rawScore;
   });
 
   // Define a custom tooltip positioner to show tooltips outside the radar chart.
@@ -72,10 +71,10 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
     return { x, y };
   };
 
-  // get graph color based on the overall score percentage
+  // Get dynamic color based on the overall score percentage
   const graphColor = getGraphColor(data);
 
-  // Convert data into the required format
+  // Convert data into the required format for the radar chart
   const chartData: ChartData<'radar'> = {
     labels: itemKeys.map((itemKey) => data[itemKey].name),
     datasets: [
@@ -103,11 +102,35 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
         suggestedMin: 0,
         suggestedMax: 5,
         pointLabels: {
-          font: {
-            size: 14,
-            // weight : 'bold',
-          },
+          // Use a custom callback to wrap the text if it takes more than 20% of the chart's width
+          font: { size: 14 },
           color: '#ffffff',
+          callback: function (value: string): string | string[] {
+            // 'this' is bound to the radial scale (ExtendedRadialLinearScale)
+            const scale = this as ExtendedRadialLinearScale;
+            const ctx = scale.ctx;
+            if (!ctx) return value;
+            // Get the chart width and compute maximum allowed width for the label
+            const chartWidth = scale.chart.width;
+            const maxWidth = chartWidth * 0.2; // 20% of the chart width
+
+            // Split the label into words so we can measure and wrap them appropriately
+            const words = value.split(' ');
+            let line = '';
+            const lines: string[] = [];
+            for (let word of words) {
+              const testLine = line ? line + ' ' + word : word;
+              const measure = ctx.measureText(testLine).width;
+              if (measure > maxWidth && line !== '') {
+                lines.push(line);
+                line = word;
+              } else {
+                line = testLine;
+              }
+            }
+            lines.push(line);
+            return lines;
+          },
         },
         ticks: {
           display: false,
@@ -127,8 +150,8 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
         display: false, // Hide main legend
       },
       tooltip: {
-        enabled: true, // Enable tooltips
-        intersect: false, // Tooltip shows as soon as you enter a section
+        enabled: true,
+        intersect: false,
         backgroundColor: 'rgba(0, 0, 0, 1)',
         titleFont: { size: 18 },
         bodyFont: { size: 14 },
@@ -162,7 +185,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
       },
     },
     onHover: (event, chartElements) => {
-      const canvas = event.native?.target as HTMLCanvasElement; // Get the canvas element
+      const canvas = event.native?.target as HTMLCanvasElement;
       canvas.style.cursor = chartElements.length ? 'pointer' : 'default';
     },
   };
