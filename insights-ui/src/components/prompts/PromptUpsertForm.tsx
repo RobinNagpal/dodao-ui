@@ -79,13 +79,13 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
         <StyledSelect
           label={'Input Schema'}
           selectedItemId={formData.inputSchema}
-          items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title} - ${schema.filePath}` })) || []}
+          items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title}` })) || []}
           setSelectedItemId={(value) => setFormData((s) => ({ ...s, inputSchema: value as string }))}
         />
         <StyledSelect
           label={'Output Schema'}
           selectedItemId={formData.outputSchema}
-          items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title} - ${schema.filePath}` })) || []}
+          items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title}` })) || []}
           setSelectedItemId={(value) => setFormData((s) => ({ ...s, outputSchema: value as string }))}
         />
 
@@ -170,7 +170,7 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           open={showSampleJsonModal}
           onClose={() => setShowSampleJsonModal(false)}
           title="Sample Input JSON"
-          sampleJson={formData.sampleJson ? JSON.parse(formData.sampleJson) : undefined}
+          sampleJson={formData.sampleJson || ''}
           onSave={(json: string) => setFormData((s) => ({ ...s, sampleJson: json }))}
         />
       )}

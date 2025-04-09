@@ -331,6 +331,27 @@ model PromptInvocation {
   @@map("prompt_invocations")
 }
 
+model TestPromptInvocation {
+  id               String                 @id @default(uuid())
+  spaceId          String                 @map("space_id")
+  promptId         String                 @map("prompt_id")
+  promptTemplate   String                 @map("prompt_template")
+  inputJson        Json?                  @map("input_json") @db.JsonB
+  bodyToAppend     String?                @map("body_to_append")
+  outputJson       Json?                   @map("output_json") @db.JsonB
+  transformedJson  Json?                  @map("transformed_json") @db.JsonB
+  status           PromptInvocationStatus @map("status")
+  error            String?                @map("error")
+  createdAt        DateTime               @default(now()) @map("created_at")
+  updatedAt        DateTime               @updatedAt @map("updated_at")
+  createdBy        String                 @map("created_by")
+  updatedBy        String                 @map("updated_by")
+  llmProvider      String                 @map("llm_provider")
+  model            String                 @map("model")
+
+  @@map("test_prompt_invocations")
+}
+
 // model Latest10QInformation {
 //   id          String               @id @default(uuid())
 //   spaceId     String               @default("koala_gains") @map("space_id")
