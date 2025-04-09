@@ -12,6 +12,7 @@ import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid';
 import { PencilSquareIcon, PlusIcon, TrashIcon, ArrowsPointingOutIcon } from '@heroicons/react/20/solid';
 import styles from './IconButton.module.scss';
+import { ClipboardIcon } from '@heroicons/react/24/outline';
 
 export type IconButtonProps = {
   disabled?: boolean;
@@ -76,6 +77,8 @@ const IconButton: React.FC<IconButtonProps> = ({
         return <ArrowsPointingOutIcon width={width} height={height} />;
       case IconTypes.Refresh:
         return <ArrowPathIcon width={width} height={height} />;
+      case IconTypes.Clipboard:
+        return <ClipboardIcon width={width} height={height} />;
       case IconTypes.Reading:
         return <ReadingIcon />;
       case IconTypes.Summary:

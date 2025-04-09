@@ -5,7 +5,9 @@ import { FullPromptResponse } from '@/app/api/[spaceId]/prompts/[promptId]/route
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -15,11 +17,12 @@ import Editor from '@monaco-editor/react';
 import { marked } from 'marked';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function PromptDetailsPage() {
   const params = useParams() as { promptId?: string };
   const router = useRouter();
+  const [copied, setCopied] = useState(false);
 
   const { data: prompt } = useFetchData<FullPromptResponse>(
     `${getBaseUrl()}/api/koala_gains/prompts/${params.promptId}`,
@@ -58,6 +61,12 @@ export default function PromptDetailsPage() {
 
   const sampleBodyToAppend = prompt?.sampleBodyToAppend && marked.parse(prompt.sampleBodyToAppend, { renderer });
 
+  const handleCopy = async (text: string) => {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <PageWrapper>
       <div className="text-color">
@@ -78,7 +87,11 @@ export default function PromptDetailsPage() {
           </PrivateWrapper>
         </div>
         <p className="mb-4">Name: {prompt.name}</p>
-        <p className="mb-4">Key: {prompt.key}</p>
+        <p className="mb-4 flex items-center gap-2">
+          <span>Key: {prompt.key}</span>
+          <IconButton iconName={IconTypes.Clipboard} onClick={() => handleCopy(prompt.key)} tooltip="Copy key to clipboard" removeBorder />
+          {copied && <span className="ml-2 text-color text-sm">Copied!</span>}
+        </p>
         <p className="mb-4">Excerpt: {prompt.excerpt}</p>
         <p className="mb-4">Input Schema: {prompt.inputSchema}</p>
         <p className="mb-4">Output Schema: {prompt.outputSchema}</p>
@@ -185,6 +198,9 @@ export default function PromptDetailsPage() {
         )}
         <Link href={`/prompts/${prompt.id}/invocations`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block ml-4">
           See Prompt Invocations
+        </Link>
+        <Link href={`/prompts/${prompt.id}/test-invocations`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block ml-4">
+          Test Prompt
         </Link>
       </div>
     </PageWrapper>
