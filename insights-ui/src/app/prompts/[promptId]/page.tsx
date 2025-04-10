@@ -4,6 +4,7 @@
 import { FullPromptResponse } from '@/app/api/[spaceId]/prompts/[promptId]/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { parseMarkdown } from '@/util/parse-markdown';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
@@ -12,9 +13,7 @@ import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoad
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import Editor from '@monaco-editor/react';
-import { marked } from 'marked';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -57,9 +56,7 @@ export default function PromptDetailsPage() {
     },
   ];
 
-  const renderer = getMarkedRenderer();
-
-  const sampleBodyToAppend = prompt?.sampleBodyToAppend && marked.parse(prompt.sampleBodyToAppend, { renderer });
+  const sampleBodyToAppend = prompt?.sampleBodyToAppend && parseMarkdown(prompt.sampleBodyToAppend);
 
   const handleCopy = async (text: string) => {
     await navigator.clipboard.writeText(text);

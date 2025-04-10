@@ -4,14 +4,13 @@
 import { FullPromptInvocationResponse } from '@/app/api/[spaceId]/prompts/[promptId]/invocations/[invocationId]/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { parseMarkdown } from '@/util/parse-markdown';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
@@ -54,9 +53,7 @@ export default function PromptInvocationDetailsPage() {
     },
   ];
 
-  const renderer = getMarkedRenderer();
-
-  const bodyToAppend = invocation.bodyToAppend && marked.parse(invocation.bodyToAppend, { renderer });
+  const bodyToAppend = invocation.bodyToAppend && parseMarkdown(invocation.bodyToAppend);
 
   return (
     <PageWrapper>
