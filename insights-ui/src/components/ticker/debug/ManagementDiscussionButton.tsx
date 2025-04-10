@@ -1,10 +1,9 @@
+import { parseMarkdown } from '@/util/parse-markdown';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export interface ManagementDiscussionButtonProps {
   tickerKey: string;
@@ -14,9 +13,8 @@ export interface ManagementDiscussionButtonProps {
 export default function ManagementDiscussionButton({ tickerKey, criterionKey }: ManagementDiscussionButtonProps) {
   const [showManagementModal, setShowManagementModal] = useState(false);
 
-  const renderer = getMarkedRenderer();
   const getMarkdownContent = (content?: string) => {
-    return content ? marked.parse(content, { renderer }) : 'No Information';
+    return content ? parseMarkdown(content) : 'No Information';
   };
 
   const {

@@ -7,6 +7,7 @@ import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoad
 import { TickerCompareMetricsAndChecklist } from '@/types/public-equity/ticker-request-response';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
+import { formatKey } from '@/util/format-key';
 
 export default function CompareMetricsTable() {
   const { data, loading, error } = useFetchData<TickerCompareMetricsAndChecklist[]>(
@@ -130,11 +131,6 @@ export default function CompareMetricsTable() {
 
   // Find the active criterion group
   const activeGroup = criterionGroups.find((group) => group.criterion === activeCriterion);
-
-  // Helper to format keys for display.
-  function formatKey(key: string) {
-    return key.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
-  }
 
   // Helper to get metric display name
   function getMetricDisplayName(criterionKey: string, metricKey: string): string {

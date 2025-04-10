@@ -2,9 +2,8 @@ import CriterionReportPieChart from '@/components/visualizations/CriterionReport
 import CriterionReportWaterfallChart from '@/components/visualizations/CriterionReportWaterfallChart';
 import { IndustryGroupCriteriaDefinition, OutputType } from '@/types/public-equity/criteria-types';
 import { CriterionReportItem } from '@/types/public-equity/ticker-report-types';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
 import CriterionReportDonutChart from '../visualizations/CriterionReportDoughnutChart';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 interface ReportContentProps {
   criterionKey: string;
@@ -18,9 +17,8 @@ export function ViewCriterionReportItem({ criterionKey, report, industryGroupCri
     return <div>Report not found</div>;
   }
   const content = reportDefinition.outputType === OutputType.Text ? report.textData : JSON.stringify(report.jsonData, null, 2);
-  const renderer = getMarkedRenderer();
   const getMarkdownContent = (content?: string) => {
-    return content ? marked.parse(content, { renderer }) : 'No Information';
+    return content ? parseMarkdown(content) : 'No Information';
   };
 
   if (!content) {

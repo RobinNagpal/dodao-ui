@@ -1,13 +1,10 @@
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { Metadata } from 'next';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { ProjectDetails, ReportType, SpiderGraph } from '@/types/project/project';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 export async function generateMetadata({ params }: { params: Promise<{ projectId: string; reportType: string }> }): Promise<Metadata> {
   const { projectId, reportType } = await params;
@@ -92,9 +89,7 @@ export default async function ReportDetailPage({ params }: { params: Promise<{ p
     },
   ];
 
-  const renderer = getMarkedRenderer();
-
-  const reportDetailContents = reportData.reportDetail && marked.parse(reportData.reportDetail, { renderer });
+  const reportDetailContents = reportData.reportDetail && parseMarkdown(reportData.reportDetail);
 
   return (
     <PageWrapper>
