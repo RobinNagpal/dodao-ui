@@ -2,7 +2,6 @@
 
 import { useState, FormEvent, useEffect } from 'react';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -18,13 +17,12 @@ import RawJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import SampleBodyEditModal from '@/components/prompts/SampleBodyEditModal';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
 import { PromptInvocationStatus, TestPromptInvocation } from '@prisma/client';
 import LoadingOrError from '@/components/core/LoadingOrError';
 import TestPromptInvocationModal from './TestPromptInvocationModal';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 // These types come from your API route for test prompt invocations.
 export interface TestPromptInvocationRequest {
@@ -155,9 +153,7 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
     },
   ];
 
-  const renderer = getMarkedRenderer();
-
-  const sampleBodyToAppend = parentPrompt?.sampleBodyToAppend && marked.parse(parentPrompt.sampleBodyToAppend, { renderer });
+  const sampleBodyToAppend = parentPrompt?.sampleBodyToAppend && parseMarkdown(parentPrompt.sampleBodyToAppend);
 
   const {
     data: promptInvocations,

@@ -4,14 +4,13 @@ import { FullNestedTickerReport, ProcessingStatus } from '@/types/public-equity/
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
 import { useState } from 'react';
 import ManagementDiscussionButton from './ManagementDiscussionButton';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import ReloadingData from '@/components/ui/ReloadingData';
 import ProgressBar from '@/components/ui/ProgressBar';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 export interface DebugMatchingAttachmentsProps {
   report: FullNestedTickerReport;
@@ -23,9 +22,8 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
   const ticker = report.tickerKey;
 
   const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
-  const renderer = getMarkedRenderer();
   const getMarkdownContent = (content?: string) => {
-    return content ? marked.parse(content, { renderer }) : 'No Matched Content';
+    return content ? parseMarkdown(content) : 'No Matched Content';
   };
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);

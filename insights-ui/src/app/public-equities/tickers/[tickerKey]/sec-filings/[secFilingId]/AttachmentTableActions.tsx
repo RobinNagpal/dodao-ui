@@ -8,9 +8,8 @@ import { useState } from 'react';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { CriterionMatchResponse, GetSingleCriteriaMatchingRequest } from '@/types/public-equity/ticker-request-response';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 export interface AttachmentTableActionsProps {
   tickerKey: string;
@@ -23,9 +22,8 @@ export default function AttachementTableActions({ tickerKey, attachment }: Attac
     errorMessage: 'Failed to get criteria matching',
   });
 
-  const renderer = getMarkedRenderer();
   const getMarkdownContent = (content?: string) => {
-    return content ? marked.parse(content, { renderer }) : 'No Information';
+    return content ? parseMarkdown(content) : 'No Information';
   };
 
   const handleRegenerateMatchingCriteria = async () => {

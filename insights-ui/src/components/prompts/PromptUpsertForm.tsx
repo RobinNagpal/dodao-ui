@@ -13,14 +13,13 @@ import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { Prisma, Prompt } from '@prisma/client';
-import { marked } from 'marked';
 import { FormEvent, useState } from 'react';
 import SampleBodyEditModal from './SampleBodyEditModal';
 import TransformationPatchEditModal from './TransformationPatchEditModal';
 import { UpdatePromptRequest } from '@/app/api/[spaceId]/prompts/[promptId]/route';
 import RawPatchEditModal from './RawPatchEditModal';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 export interface PromptFormData extends UpdatePromptRequest {
   id?: string;
@@ -61,9 +60,8 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
     setFormData((s) => ({ ...s, sampleBodyToAppend: sampleBody }));
     setShowSampleBodyToAppendModal(false);
   };
-  const renderer = getMarkedRenderer();
 
-  const sampleBodyToAppend = formData.sampleBodyToAppend && marked.parse(formData.sampleBodyToAppend, { renderer });
+  const sampleBodyToAppend = formData.sampleBodyToAppend && parseMarkdown(formData.sampleBodyToAppend);
   return (
     <>
       <form onSubmit={handleSubmit}>

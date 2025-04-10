@@ -1,14 +1,13 @@
 import { BlogInterface } from '@/types/blog';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import fs from 'fs';
 import matter from 'gray-matter';
-import { marked } from 'marked';
 import Image from 'next/image';
 import path from 'path';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { Metadata } from 'next';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 export async function generateMetadata({ params }: { params: Promise<{ blogSlug: string }> }): Promise<Metadata> {
   const blogSlug = (await params).blogSlug as string;
@@ -73,10 +72,6 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
     },
   ];
 
-  const renderer = getMarkedRenderer();
-
-  const blogContents = marked.parse(content, { renderer });
-
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -94,7 +89,7 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
                 <Image src={'/images/blogs' + data.bannerImage} width={672} height={448} alt={data.title} className="w-full my-4 rounded-md" />
               )}
 
-              <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: blogContents }} />
+              <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: parseMarkdown(content) }} />
             </article>
           </div>
         </div>

@@ -11,8 +11,6 @@ import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
 import React, { useState, useEffect, FormEvent } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -24,9 +22,8 @@ import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/
 import Handlebars from 'handlebars';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
-
-import type { Prompt, PromptVersion } from '@prisma/client';
 import { Editor } from '@monaco-editor/react';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 interface CreateInvocationForm {
   promptVersionId?: string;
@@ -57,7 +54,6 @@ export default function CreateInvocationPage(): JSX.Element {
   const [showSampleJsonModal, setShowSampleJsonModal] = useState(false);
   const [showRawJsonModal, setShowRawJsonModal] = useState(false);
   const [showSampleBodyToAppendModal, setShowSampleBodyToAppendModal] = useState(false);
-  const [selectedPromptVersion, setSelectedPromptVersion] = useState<PromptVersion | null>(null);
 
   // Fetch available prompt versions for this prompt
 
@@ -126,9 +122,7 @@ export default function CreateInvocationPage(): JSX.Element {
     }
   };
 
-  const renderer = getMarkedRenderer();
-
-  const sampleBodyToAppend = formData.bodyToAppend && marked.parse(formData.bodyToAppend, { renderer });
+  const sampleBodyToAppend = formData.bodyToAppend && parseMarkdown(formData.bodyToAppend);
 
   const modelItems: StyledSelectItem[] = ['o3-mini', 'gpt-4o', 'gpt-4o-mini'].map((m) => ({
     id: m,

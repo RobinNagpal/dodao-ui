@@ -5,11 +5,10 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
 import { useState } from 'react';
 import FinancialStatementsButton from './FinancialStatementsButton';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 export interface DebugFinancialStatementsProps {
   report: FullNestedTickerReport;
@@ -21,9 +20,8 @@ export default function DebugFinancialStatements({ report, onPostUpdate }: Debug
   const ticker = report.tickerKey;
 
   const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
-  const renderer = getMarkedRenderer();
   const getMarkdownContent = (content?: string) => {
-    return content ? marked.parse(content, { renderer }) : 'No Information';
+    return content ? parseMarkdown(content) : 'No Information';
   };
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
