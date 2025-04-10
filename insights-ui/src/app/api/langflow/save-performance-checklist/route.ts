@@ -52,6 +52,7 @@ const savePerformanceChecklistForCriterion = async (req: NextRequest): Promise<P
           spaceId: KoalaGainsSpaceId,
         },
         create: checklistItems.map((item) => ({
+          metricKey: item.metricKey,
           checklistItem: item.checklistItem,
           oneLinerExplanation: item.oneLinerExplanation,
           informationUsed: item.informationUsed,

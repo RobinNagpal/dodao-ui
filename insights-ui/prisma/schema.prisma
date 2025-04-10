@@ -199,6 +199,7 @@ model PerformanceChecklistEvaluation {
 
 model PerformanceChecklistItem {
   id                               String @id @default(uuid())
+  metricKey                        String? @map("metric_key")
   checklistItem                    String @map("checklist_item")
   oneLinerExplanation              String @map("one_liner_explanation")
   informationUsed                  String @map("information_used")

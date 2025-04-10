@@ -61,7 +61,7 @@ export default async function AllTickersPage() {
         </div>
       </PrivateWrapper>
       <div className="flex justify-end mb-4">
-        <Link href={'/public-equities/tickers/compare-metrics'} className="link-color border border-color rounded-xl p-2">
+        <Link href={'/public-equities/tickers/compare-metrics-and-checklist'} className="link-color border border-color rounded-xl p-2">
           Metrics Comparison
         </Link>
       </div>
