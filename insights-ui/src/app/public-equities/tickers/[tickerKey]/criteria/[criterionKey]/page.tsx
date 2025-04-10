@@ -10,6 +10,7 @@ import CriterionActionsDropdown from './CriterionActionsDropdown';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { Metadata } from 'next';
 import { getCriterionName } from '@/util/criterion-name-by-key';
+import { formatKey } from '@/util/format-key';
 
 export async function generateMetadata({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }): Promise<Metadata> {
   const { tickerKey, criterionKey } = await params;
@@ -104,7 +105,7 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
         </div>
         <div className="text-center text-color my-5">
           <h1 className="font-semibold leading-6 text-2xl">Ticker: {tickerKey}</h1>
-          <div className="my-5">Criterion: {criterionEvaluation.criterionKey}</div>
+          <div className="my-5">Criterion: {formatKey(criterionEvaluation.criterionKey)}</div>
         </div>
 
         <div className="block-bg-color p-8">
@@ -116,19 +117,23 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
             <h3 className="text-lg font-semibold mt-6 mb-4">Important Metrics</h3>
             <ImportantMetricsReport criterionEvaluation={criterionEvaluation} />
             {/* Reports Section */}
-            <h3 className="text-lg font-semibold mt-6 mb-4">Reports</h3>
-            {selectedCriterion.reports.map((reportDefinition) => {
-              const report = criterionEvaluation.reports.find((report) => report.reportKey === reportDefinition.key);
-              return (
-                <ReportSection
-                  key={reportDefinition.key}
-                  reportDefinition={reportDefinition}
-                  report={report}
-                  criterionKey={criterionKey}
-                  industryGroupCriteria={industryGroupCriteria}
-                />
-              );
-            })}
+            {criterionEvaluation.reports.length > 0 && (
+              <>
+                <h3 className="text-lg font-semibold mt-6 mb-4">Reports</h3>
+                {selectedCriterion.reports.map((reportDefinition) => {
+                  const report = criterionEvaluation.reports.find((report) => report.reportKey === reportDefinition.key);
+                  return (
+                    <ReportSection
+                      key={reportDefinition.key}
+                      reportDefinition={reportDefinition}
+                      report={report}
+                      criterionKey={criterionKey}
+                      industryGroupCriteria={industryGroupCriteria}
+                    />
+                  );
+                })}
+              </>
+            )}
           </div>
         </div>
       </div>
