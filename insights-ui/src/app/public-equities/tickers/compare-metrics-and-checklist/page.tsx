@@ -4,12 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
-import { TickerCompareMetrics } from '@/types/public-equity/ticker-request-response';
-import { IndustryGroupCriteriaDefinition, CriterionDefinition } from '@/types/public-equity/criteria-types';
+import { TickerCompareMetricsAndChecklist } from '@/types/public-equity/ticker-request-response';
+import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
 
 export default function CompareMetricsTable() {
-  const { data, loading, error } = useFetchData<TickerCompareMetrics[]>(`${getBaseUrl()}/api/tickers/compare/metrics`, {}, 'Failed to fetch metrics');
+  const { data, loading, error } = useFetchData<TickerCompareMetricsAndChecklist[]>(
+    `${getBaseUrl()}/api/tickers/compare/metrics-and-checklist`,
+    {},
+    'Failed to fetch metrics'
+  );
   const [activeCriterion, setActiveCriterion] = useState<string | null>(null);
   const [industryGroupCriteria, setIndustryGroupCriteria] = useState<IndustryGroupCriteriaDefinition | null>(null);
   const [isLoadingCriteria, setIsLoadingCriteria] = useState(false);
@@ -23,7 +27,7 @@ export default function CompareMetricsTable() {
         if (firstTicker.sectorId && firstTicker.industryGroupId) {
           setIsLoadingCriteria(true);
           try {
-            const criteria = await getCriteriaByIds(60, 6010);
+            const criteria = await getCriteriaByIds(firstTicker.sectorId, firstTicker.industryGroupId);
             setIndustryGroupCriteria(criteria);
           } catch (error) {
             console.error('Failed to fetch industry group criteria:', error);
@@ -58,37 +62,50 @@ export default function CompareMetricsTable() {
     validMetricsBycriterion[criterion.key] = new Set(criterion.importantMetrics.map((metric) => metric.key));
   });
 
-  // First, merge metrics from ALL evaluations for each ticker.
-  const tickerMetricsData = data.map((ticker) => {
+  // Merge metrics and performance checklist data from ALL evaluations for each ticker.
+  // The checklist mapping will hold the checklist score for a given metric key.
+  const tickerData = data.map((ticker) => {
     const metricsMapping: { [key: string]: string | number } = {};
+    const checklistMapping: { [key: string]: number } = {};
+
     ticker.evaluationsOfLatest10Q.forEach((evaluationObj) => {
-      const evaluation = evaluationObj.importantMetricsEvaluation;
-      if (evaluation && evaluation.metrics && validCriterionKeys.has(evaluation.criterionKey)) {
-        evaluation.metrics.forEach((metric) => {
-          // Only include valid metrics for this criterion
-          if (validMetricsBycriterion[evaluation.criterionKey]?.has(metric.metricKey)) {
+      // Process important metrics evaluation
+      const metricsEvaluation = evaluationObj.importantMetricsEvaluation;
+      if (metricsEvaluation && metricsEvaluation.metrics && validCriterionKeys.has(metricsEvaluation.criterionKey)) {
+        metricsEvaluation.metrics.forEach((metric) => {
+          if (validMetricsBycriterion[metricsEvaluation.criterionKey]?.has(metric.metricKey)) {
             // Overwrite duplicate keys if present.
             metricsMapping[metric.metricKey] = metric.value;
           }
         });
       }
+      // Process performance checklist evaluation
+      const checklistEvaluation = evaluationObj.performanceChecklistEvaluation;
+      if (checklistEvaluation && checklistEvaluation.performanceChecklistItems && validCriterionKeys.has(checklistEvaluation.criterionKey)) {
+        checklistEvaluation.performanceChecklistItems.forEach((checklistItem) => {
+          // Check if checklist item has a valid metric key
+          if (checklistItem.metricKey && validMetricsBycriterion[checklistEvaluation.criterionKey]?.has(checklistItem.metricKey)) {
+            // Overwrite duplicate keys if present.
+            checklistMapping[checklistItem.metricKey] = checklistItem.score;
+          }
+        });
+      }
     });
-    return { tickerKey: ticker.tickerKey, metrics: metricsMapping };
+
+    return { tickerKey: ticker.tickerKey, metrics: metricsMapping, checklist: checklistMapping };
   });
 
-  // Next, build a global grouping: criterion key -> set of metric keys.
+  // Build global grouping: criterion key -> set of metric keys from metrics evaluations.
   const criterionToMetricKeys: { [criterion: string]: Set<string> } = {};
   data.forEach((ticker) => {
     ticker.evaluationsOfLatest10Q.forEach((evaluationObj) => {
-      const evaluation = evaluationObj.importantMetricsEvaluation;
-      if (evaluation && evaluation.metrics && validCriterionKeys.has(evaluation.criterionKey)) {
-        const crit = evaluation.criterionKey;
+      const metricsEvaluation = evaluationObj.importantMetricsEvaluation;
+      if (metricsEvaluation && metricsEvaluation.metrics && validCriterionKeys.has(metricsEvaluation.criterionKey)) {
+        const crit = metricsEvaluation.criterionKey;
         if (!criterionToMetricKeys[crit]) {
           criterionToMetricKeys[crit] = new Set();
         }
-
-        evaluation.metrics.forEach((metric) => {
-          // Only add valid metrics
+        metricsEvaluation.metrics.forEach((metric) => {
           if (validMetricsBycriterion[crit]?.has(metric.metricKey)) {
             criterionToMetricKeys[crit].add(metric.metricKey);
           }
@@ -97,13 +114,12 @@ export default function CompareMetricsTable() {
     });
   });
 
-  // Transform to an array of groups.
+  // Transform to an array of groups with display names.
   const criterionGroups = Object.entries(criterionToMetricKeys)
-    .filter(([criterion]) => validCriterionKeys.has(criterion)) // Extra safety filter
+    .filter(([criterion]) => validCriterionKeys.has(criterion)) // Extra safety
     .map(([criterion, metricSet]) => ({
       criterion,
       metricKeys: Array.from(metricSet),
-      // Add display name from criteria definition
       displayName: industryGroupCriteria.criteria.find((c) => c.key === criterion)?.name || formatKey(criterion),
     }));
 
@@ -178,12 +194,17 @@ export default function CompareMetricsTable() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {tickerMetricsData.map((ticker) => (
+                      {tickerData.map((ticker) => (
                         <tr key={ticker.tickerKey} className="divide-x divide-gray-200">
                           <td className="whitespace-nowrap py-4 px-4 text-sm font-medium primary-text-color">{ticker.tickerKey}</td>
                           {activeGroup.metricKeys.map((metricKey) => (
                             <td key={metricKey} className="whitespace-nowrap p-4 text-center text-sm text-color">
+                              {/* Show metric value or N/A */}
                               {ticker.metrics[metricKey] !== undefined ? ticker.metrics[metricKey] : 'N/A'}
+                              {/* If checklist item exists for this metric key, show tick or cross */}
+                              {ticker.checklist && ticker.checklist[metricKey] !== undefined && (
+                                <span className="ml-2">{ticker.checklist[metricKey] === 1 ? '✅' : '❌'}</span>
+                              )}
                             </td>
                           ))}
                         </tr>
