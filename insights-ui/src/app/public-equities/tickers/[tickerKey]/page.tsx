@@ -89,18 +89,19 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   const reports: FullCriterionEvaluation[] = tickerReport.evaluationsOfLatest10Q || [];
   const reportMap = new Map(reports.map((report) => [report.criterionKey, report]));
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
-    reports.map((report): [string, SpiderGraphPie] => {
+    industryGroupCriteria.criteria.map((criterion) => {
+      const report = reportMap.get(criterion.key);
       const pieData: SpiderGraphPie = {
-        key: report.criterionKey,
-        name: getReportName(report.criterionKey),
-        summary: report.importantMetricsEvaluation?.status || '',
+        key: criterion.key,
+        name: getReportName(criterion.key),
+        summary: criterion.shortDescription,
         scores:
-          report.performanceChecklistEvaluation?.performanceChecklistItems?.map((pc: PerformanceChecklistItem) => ({
+          report?.performanceChecklistEvaluation?.performanceChecklistItems?.map((pc: PerformanceChecklistItem) => ({
             score: pc.score,
             comment: `${pc.checklistItem}: ${pc.oneLinerExplanation}`,
           })) || [],
       };
-      return [report.criterionKey, pieData];
+      return [criterion.key, pieData];
     })
   );
 
