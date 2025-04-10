@@ -1,5 +1,6 @@
 import { BlogInterface } from '@/types/blog';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
+import { newKatexExtension } from '@dodao/web-core/utils/ui/newKatexMarketExtension';
 import fs from 'fs';
 import matter from 'gray-matter';
 import { marked } from 'marked';
@@ -73,7 +74,7 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
     },
   ];
 
-  const renderer = getMarkedRenderer();
+  const renderer = getMarkedRenderer(newKatexExtension());
 
   const blogContents = marked.parse(content, { renderer });
 
@@ -87,7 +88,7 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
               {data.category.title}
             </a>
           </p>
-          <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty  sm:text-5xl">{data.title}</h1>
+          <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty  sm:text-3xl">{data.title}</h1>
           <div className="mt-10 max-w-6xl text-md">
             <article className="mx-auto text-color">
               {data.bannerImage && (
