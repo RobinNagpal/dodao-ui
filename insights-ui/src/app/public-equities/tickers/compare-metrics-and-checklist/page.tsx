@@ -172,8 +172,8 @@ export default function CompareMetricsTable() {
               {criterionGroups.map((group) => (
                 <button
                   key={group.criterion}
-                  className={`py-2 px-4 text-md transition-colors ${
-                    activeCriterion === group.criterion ? 'font-bold border-b-2 border-primary-color primary-color' : 'font-medium'
+                  className={`py-2 px-4 text-md transition-colors border-b-2 ${
+                    activeCriterion === group.criterion ? 'font-bold border-primary-color primary-color' : 'font-medium border-color'
                   }`}
                   onClick={() => setActiveCriterion(group.criterion)}
                 >
@@ -195,7 +195,7 @@ export default function CompareMetricsTable() {
                         </th>
                         {activeGroup.metricKeys.map((metricKey) => (
                           <th key={metricKey} scope="col" className="py-3.5 px-2 text-center text-sm font-semibold primary-text-color">
-                            <div className="flex items-center justify-center gap-x-2">
+                            <div className="flex items-center justify-center gap-x-1">
                               {getMetricDisplayName(activeGroup.criterion, metricKey)}
                               <HeadingFlyoutMenu description={getMetricDescription(activeGroup.criterion, metricKey)} />
                             </div>
@@ -209,11 +209,11 @@ export default function CompareMetricsTable() {
                           <td className="whitespace-nowrap py-4 px-2 text-sm font-medium primary-text-color">{ticker.tickerKey}</td>
                           {activeGroup.metricKeys.map((metricKey) => (
                             <td key={metricKey} className="whitespace-nowrap p-4 text-center text-sm text-color">
-                              <div className="flex items-center justify-center gap-x-2">
+                              <div className="flex items-center justify-center gap-x-1">
                                 <span>{ticker.metrics[metricKey] !== undefined ? ticker.metrics[metricKey] : 'N/A'}</span>
 
                                 {ticker.checklist && ticker.checklist[metricKey] !== undefined && (
-                                  <span className="flex items-center">
+                                  <span className="flex items-center gap-x-1">
                                     <span>{ticker.checklist[metricKey].some((item) => item.score === 1) ? '✅' : '❌'}</span>
                                     <ValueFlyoutMenu checklistItems={ticker.checklist[metricKey]} />
                                   </span>
