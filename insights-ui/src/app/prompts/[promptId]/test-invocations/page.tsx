@@ -204,7 +204,7 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
                             <span>{invocation.status}</span>
                             <Popup IconComponent={InformationCircleIcon}>
                               <div
-                                className="markdown-body whitespace-normal break-words"
+                                className="block-bg-color whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs markdown-body"
                                 dangerouslySetInnerHTML={{ __html: parseMarkdown(invocation.error!) }}
                               />
                             </Popup>
@@ -320,7 +320,7 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
             </div>
             <div className="block-bg-color w-full py-4 px-2">
               {sampleBodyToAppend ? (
-                <pre
+                <div
                   className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs"
                   dangerouslySetInnerHTML={{ __html: sampleBodyToAppend }}
                 />

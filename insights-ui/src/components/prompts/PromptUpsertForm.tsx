@@ -124,8 +124,8 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           </div>
           <div className="block-bg-color w-full py-4 px-2">
             {sampleBodyToAppend ? (
-              <pre
-                className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs"
+              <div
+                className="block-bg-color whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs markdown-body"
                 dangerouslySetInnerHTML={{ __html: sampleBodyToAppend }}
               />
             ) : (
@@ -146,8 +146,8 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           </div>
           <div className="block-bg-color w-full py-4 px-2">
             {formData.transformationPatch ? (
-              <pre
-                className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs"
+              <div
+                className="block-bg-color whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs markdown-body"
                 dangerouslySetInnerHTML={{
                   __html: JSON.stringify(formData.transformationPatch, null, 2),
                 }}
