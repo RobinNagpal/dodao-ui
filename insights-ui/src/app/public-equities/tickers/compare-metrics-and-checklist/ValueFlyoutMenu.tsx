@@ -12,7 +12,7 @@ export default function ValueFlyoutMenu({ checklistItems }: ValueFlyMenuProps) {
     <Popup IconComponent={InformationCircleIcon}>
       <ul className="mt-2">
         {checklistItems.map((item) => (
-          <li key={item.id} className="space-y-2">
+          <li key={item.checklistItem} className="space-y-2">
             <div className="text-sm">
               <p className="font-bold whitespace-nowrap">One-line Explanation:</p>
               <div className="markdown-body whitespace-normal break-words" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.oneLinerExplanation) }} />
