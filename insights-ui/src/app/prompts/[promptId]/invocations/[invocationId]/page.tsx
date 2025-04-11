@@ -1,6 +1,6 @@
 // app/prompts/[promptId]/invocations/[invocationId]/page.tsx
 'use client';
-
+import unescape from 'lodash/unescape';
 import { FullPromptInvocationResponse } from '@/app/api/[spaceId]/prompts/[promptId]/invocations/[invocationId]/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -11,9 +11,34 @@ import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoad
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Editor } from '@monaco-editor/react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
+
+function InvocationOutput({ invocation }: { invocation: FullPromptInvocationResponse }) {
+  if (invocation.prompt.outputSchema === 'public-equities/outputs/reports/common/message-response.schema.yaml') {
+    if (invocation.outputJson) {
+      const parsedOutput = JSON.parse(invocation.outputJson as any);
+      const message = parsedOutput?.message;
+      if (message) {
+        return (
+          <div className="block-bg-color w-full py-4 px-2">
+            <div
+              className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs markdown-body"
+              dangerouslySetInnerHTML={{ __html: (message && parseMarkdown(message)) || '' }}
+            />
+          </div>
+        );
+      }
+    }
+  }
+  return invocation.outputJson ? (
+    <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs">
+      {JSON.stringify(JSON.parse(invocation.outputJson as any), null, 2)}
+    </pre>
+  ) : null;
+}
 
 export default function PromptInvocationDetailsPage() {
   const params = useParams() as { promptId?: string; invocationId?: string };
@@ -77,6 +102,27 @@ export default function PromptInvocationDetailsPage() {
         <p className="mb-4">Updated At: {new Date(invocation.updatedAt).toLocaleString()}</p>
         <p className="mb-4">Updated By: {invocation.updatedBy}</p>
         <div className="mb-4">
+          <h2 className="heading-color">Prompt Template</h2>
+          <div className="flex-1 border-l border-gray-200">
+            <Editor
+              height="300px"
+              defaultLanguage="markdown"
+              value={invocation.prompt.activePromptVersion?.promptTemplate || 'No Prompt Template'}
+              theme="vs-dark"
+              options={{
+                readOnly: true,
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+                wordWrap: 'on',
+                lineNumbers: 'off',
+                folding: false,
+                fontSize: 14,
+                fontFamily: 'monospace',
+              }}
+            />
+          </div>
+        </div>
+        <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Input JSON:</div>
           </div>
@@ -92,7 +138,7 @@ export default function PromptInvocationDetailsPage() {
           </div>
           <div className="block-bg-color w-full py-4 px-2">
             {bodyToAppend ? (
-              <pre
+              <div
                 className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs markdown-body"
                 dangerouslySetInnerHTML={{ __html: bodyToAppend || '' }}
               />
@@ -103,16 +149,10 @@ export default function PromptInvocationDetailsPage() {
         </div>
         <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
-            <div>Output JSON:</div>
+            <div>Output JSON or Message:</div>
           </div>
           <div className="block-bg-color w-full py-4 px-2">
-            {invocation.outputJson ? (
-              <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs">
-                {JSON.stringify(JSON.parse(invocation.outputJson as any), null, 2)}
-              </pre>
-            ) : (
-              <pre className="text-xs">No Output JSON</pre>
-            )}
+            {invocation.outputJson ? <InvocationOutput invocation={invocation} /> : <pre className="text-xs">No Output JSON</pre>}
           </div>
         </div>
 

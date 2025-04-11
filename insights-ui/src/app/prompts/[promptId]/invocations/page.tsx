@@ -30,9 +30,9 @@ export default function PromptInvocationsListPage(): JSX.Element {
             <tr>
               <th className="text-left p-2 border-color border">Prompt Name</th>
               <th className="text-left p-2 border-color border">Prompt Key</th>
-              <th className="text-left p-2 border-color border">Updated At</th>
+              <th className="text-left p-2 border-color border">Invoked At</th>
               <th className="text-left p-2 border-color border">Ticker</th>
-              <th className="text-left p-2 border-color border">Updated By</th>
+              <th className="text-left p-2 border-color border">Invoked By</th>
               <th className="text-left p-2 border-color border">Status</th>
               <th className="text-left p-2 border-color border">Actions</th>
             </tr>
