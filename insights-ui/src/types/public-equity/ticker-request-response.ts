@@ -27,13 +27,6 @@ export interface UpsertCustomCriteriaRequest {
   criteria: CriterionDefinition[];
 }
 
-export interface NextCriterionReportRequest {
-  ticker: string;
-  shouldTriggerNext: boolean;
-  criterionKey: string;
-  overflow?: string;
-}
-
 export interface SavePerformanceChecklistRequest {
   ticker: string;
   criterionKey: string;
