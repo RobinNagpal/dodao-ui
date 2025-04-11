@@ -31,6 +31,7 @@ export default function PromptInvocationsListPage(): JSX.Element {
               <th className="text-left p-2 border-color border">Prompt Name</th>
               <th className="text-left p-2 border-color border">Prompt Key</th>
               <th className="text-left p-2 border-color border">Updated At</th>
+              <th className="text-left p-2 border-color border">Ticker</th>
               <th className="text-left p-2 border-color border">Updated By</th>
               <th className="text-left p-2 border-color border">Status</th>
               <th className="text-left p-2 border-color border">Actions</th>
@@ -40,8 +41,9 @@ export default function PromptInvocationsListPage(): JSX.Element {
             {promptInvocations.map((invocation) => (
               <tr key={invocation.id} className="border border-color">
                 <td className="p-2 border border-color">{invocation.prompt.name}</td>
-                <td className="p-2 border border-color">{invocation.prompt.key}</td>
+                <td className="p-2 border border-color">{invocation.prompt.key.replace('US/public-equities/real-estate/equity-reits/', 'equity-reits - ')}</td>
                 <td className="p-2 border border-color">{new Date(invocation.updatedAt).toLocaleString()}</td>
+                <td className="p-2 border border-color">{invocation.inputJson ? JSON.parse(invocation.inputJson.toString())?.ticker : '-'}</td>
                 <td className="p-2 border border-color">{invocation.createdBy}</td>
                 <td className="p-2 border border-color">{invocation.status}</td>
                 <td className="p-2 border border-color">
