@@ -94,7 +94,7 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
         promptId: parentPrompt.id,
         inputJsonString: parentPrompt.sampleJson || '',
         llmProvider: 'openai',
-        model: 'gpt-4o-mini',
+        model: 'gpt-4o',
         bodyToAppend: '',
       });
     }
@@ -118,7 +118,7 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
     refetchTestInvocations();
   };
   const handleSampleBodySave = (sampleBody: string) => {
-    setFormData((s) => ({ ...s, sampleBodyToAppend: sampleBody }));
+    setFormData((s) => ({ ...s, bodyToAppend: sampleBody }));
     setShowSampleBodyToAppendModal(false);
   };
 
@@ -153,7 +153,8 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
     },
   ];
 
-  const sampleBodyToAppend = parentPrompt?.sampleBodyToAppend && parseMarkdown(parentPrompt.sampleBodyToAppend);
+  const sampleBodyToAppend =
+    (formData.bodyToAppend && parseMarkdown(formData.bodyToAppend)) || (parentPrompt?.sampleBodyToAppend && parseMarkdown(parentPrompt.sampleBodyToAppend));
 
   const {
     data: promptInvocations,
@@ -174,12 +175,12 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
 
-      <div className="text-color mx-auto max-w-4xl px-4">
+      <div className="text-color px-4">
         <h1 className="heading-color text-2xl mb-4 text-center">Test Prompt Invocation</h1>
 
         <Accordion isOpen={showInvocationsAccordion} onClick={() => setShowInvocationsAccordion(!showInvocationsAccordion)} label="Test Invocations">
           {promptInvocations && promptInvocations.length > 0 ? (
-            <div className="p-4 text-color">
+            <div className="p-y-4 text-color">
               <h1 className="text-2xl heading-color mb-4">All Test Invocations</h1>
               <table className="mt-4 w-full border border-color">
                 <thead className="block-bg-color">
