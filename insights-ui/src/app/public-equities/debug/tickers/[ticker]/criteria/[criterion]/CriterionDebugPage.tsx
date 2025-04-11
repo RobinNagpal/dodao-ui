@@ -79,13 +79,6 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
     redirectPath: ``,
   });
 
-  const handleRegenerateAllSingleCriterionReports = useCallback(async () => {
-    if (!tickerReport || !criterionKey) return;
-    await regenerateAllSingleCriterionReports(`${getBaseUrl()}/api/actions/tickers/${ticker}/criterion/${criterionKey}/trigger-all-criterion-reports`, {
-      langflowWebhookUrl: getWebhookUrlFromLocalStorage(tickerReport.sectorId, tickerReport.industryGroupId, criterionKey)!,
-    });
-  }, [tickerReport, criterionKey, regenerateAllSingleCriterionReports, ticker]);
-
   const handleRegenerateSingleCriterionReports = useCallback(
     async (section: string, reportKey: string | undefined) => {
       if (!tickerReport || !criterionKey) return;
@@ -167,36 +160,10 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
         <h1 className="font-bold text-2xl mb-4">Debug: {criterionKey}</h1>
 
         <PrivateWrapper>
-          <div className="mb-5 flex items-center space-x-5">
-            {/* Webhook URL input (per-criterion) */}
+          <div className="mb-5">
             <WebhookUrlInput criterionDefinition={criterionDefinition} sectorId={tickerReport.sectorId} industryGroupId={tickerReport.industryGroupId} />
-
-            {/* This is the "Regenerate (3m)" button for the entire criterion */}
-            <Button
-              disabled={allSingleCriterionReportsLoading}
-              onClick={() => setShowCriterionConfirmModal(true)}
-              loading={allSingleCriterionReportsLoading}
-              className="w-48"
-            >
-              Regenerate (3m)
-            </Button>
           </div>
         </PrivateWrapper>
-
-        {/** Confirm modal for regenerating all (3 modules) */}
-        {showCriterionConfirmModal && (
-          <ConfirmationModal
-            open={showCriterionConfirmModal}
-            onClose={() => setShowCriterionConfirmModal(false)}
-            onConfirm={async () => {
-              await handleRegenerateAllSingleCriterionReports();
-              setShowCriterionConfirmModal(false);
-            }}
-            title="Regenerate Criterion Reports"
-            confirmationText={`Are you sure you want to regenerate reports for ${criterionKey}?`}
-            askForTextInput={true}
-          />
-        )}
 
         <div className="mt-8">
           <div className="flex justify-end">

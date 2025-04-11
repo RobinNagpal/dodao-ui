@@ -26,7 +26,6 @@ const triggerSingleCriterionReport = async (
   const reportKey = body.reportKey;
   const payload = {
     ticker: tickerKey,
-    shouldTriggerNext: false,
     reportKey: reportKey,
     criterion: matchingCriterion,
   };
