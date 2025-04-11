@@ -23,6 +23,8 @@ import TestPromptInvocationModal from './TestPromptInvocationModal';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import { parseMarkdown } from '@/util/parse-markdown';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import Popup from '@dodao/web-core/components/core/popup/Popup';
 
 // These types come from your API route for test prompt invocations.
 export interface TestPromptInvocationRequest {
@@ -197,15 +199,15 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
                       <td className="p-1 border border-color">{invocation.createdBy}</td>
                       <td className="p-1 border border-color">
                         {invocation.status === PromptInvocationStatus.Failed ? (
-                          <>
+                          <div className="flex items-center">
                             <span>{invocation.status}</span>
-                            <span
-                              title={invocation.error!}
-                              className="ml-2 inline-block w-5 h-5 rounded-full border border-color text-center leading-5 text-xs cursor-pointer"
-                            >
-                              i
-                            </span>
-                          </>
+                            <Popup IconComponent={InformationCircleIcon}>
+                              <div
+                                className="markdown-body whitespace-normal break-words"
+                                dangerouslySetInnerHTML={{ __html: parseMarkdown(invocation.error!) }}
+                              />
+                            </Popup>
+                          </div>
                         ) : (
                           invocation.status
                         )}

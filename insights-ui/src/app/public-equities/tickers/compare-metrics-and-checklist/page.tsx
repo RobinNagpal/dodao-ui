@@ -8,6 +8,8 @@ import { TickerCompareMetricsAndChecklist } from '@/types/public-equity/ticker-r
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
 import { formatKey } from '@/util/format-key';
+import ValueFlyoutMenu from './ValueFlyoutMenu';
+import HeadingFlyoutMenu from './HeadingFlyoutMenu';
 
 export default function CompareMetricsTable() {
   const { data, loading, error } = useFetchData<TickerCompareMetricsAndChecklist[]>(
@@ -64,10 +66,10 @@ export default function CompareMetricsTable() {
   });
 
   // Merge metrics and performance checklist data from ALL evaluations for each ticker.
-  // The checklist mapping will hold the checklist score for a given metric key.
+  // For checklistMapping, instead of a number, we now store an array of PerformanceChecklistItem.
   const tickerData = data.map((ticker) => {
     const metricsMapping: { [key: string]: string | number } = {};
-    const checklistMapping: { [key: string]: number } = {};
+    const checklistMapping: { [key: string]: any[] } = {};
 
     ticker.evaluationsOfLatest10Q.forEach((evaluationObj) => {
       // Process important metrics evaluation
@@ -80,14 +82,16 @@ export default function CompareMetricsTable() {
           }
         });
       }
-      // Process performance checklist evaluation
+
+      // Process performance checklist evaluation and store checklist items in an array
       const checklistEvaluation = evaluationObj.performanceChecklistEvaluation;
       if (checklistEvaluation && checklistEvaluation.performanceChecklistItems && validCriterionKeys.has(checklistEvaluation.criterionKey)) {
         checklistEvaluation.performanceChecklistItems.forEach((checklistItem) => {
-          // Check if checklist item has a valid metric key
           if (checklistItem.metricKey && validMetricsBycriterion[checklistEvaluation.criterionKey]?.has(checklistItem.metricKey)) {
-            // Overwrite duplicate keys if present.
-            checklistMapping[checklistItem.metricKey] = checklistItem.score;
+            if (!checklistMapping[checklistItem.metricKey]) {
+              checklistMapping[checklistItem.metricKey] = [];
+            }
+            checklistMapping[checklistItem.metricKey].push(checklistItem);
           }
         });
       }
@@ -141,6 +145,13 @@ export default function CompareMetricsTable() {
     return metric?.name || formatKey(metricKey);
   }
 
+  function getMetricDescription(criterionKey: string, metricKey: string): string {
+    const criterion = industryGroupCriteria?.criteria.find((c) => c.key === criterionKey);
+    if (!criterion) return '';
+    const metric = criterion.importantMetrics.find((m) => m.key === metricKey);
+    return metric?.description || '';
+  }
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center mt-6">
@@ -179,12 +190,15 @@ export default function CompareMetricsTable() {
                   <table className="min-w-full divide-y divide-gray-300">
                     <thead>
                       <tr className="divide-x divide-gray-200">
-                        <th scope="col" className="py-3.5 px-4 text-left text-sm font-semibold primary-text-color">
+                        <th scope="col" className="py-3.5 px-2 text-left text-sm font-semibold primary-text-color">
                           Tickers
                         </th>
                         {activeGroup.metricKeys.map((metricKey) => (
-                          <th key={metricKey} scope="col" className="py-3.5 px-4 text-center text-sm font-semibold primary-text-color">
-                            {getMetricDisplayName(activeGroup.criterion, metricKey)}
+                          <th key={metricKey} scope="col" className="py-3.5 px-2 text-center text-sm font-semibold primary-text-color">
+                            <div className="flex items-center justify-center gap-x-2">
+                              {getMetricDisplayName(activeGroup.criterion, metricKey)}
+                              <HeadingFlyoutMenu description={getMetricDescription(activeGroup.criterion, metricKey)} />
+                            </div>
                           </th>
                         ))}
                       </tr>
@@ -192,15 +206,23 @@ export default function CompareMetricsTable() {
                     <tbody className="divide-y divide-gray-200">
                       {tickerData.map((ticker) => (
                         <tr key={ticker.tickerKey} className="divide-x divide-gray-200">
-                          <td className="whitespace-nowrap py-4 px-4 text-sm font-medium primary-text-color">{ticker.tickerKey}</td>
+                          <td className="whitespace-nowrap py-4 px-2 text-sm font-medium primary-text-color">{ticker.tickerKey}</td>
                           {activeGroup.metricKeys.map((metricKey) => (
-                            <td key={metricKey} className="whitespace-nowrap p-4 text-center text-sm text-color">
-                              {/* Show metric value or N/A */}
-                              {ticker.metrics[metricKey] !== undefined ? ticker.metrics[metricKey] : 'N/A'}
-                              {/* If checklist item exists for this metric key, show tick or cross */}
-                              {ticker.checklist && ticker.checklist[metricKey] !== undefined && (
-                                <span className="ml-2">{ticker.checklist[metricKey] === 1 ? '✅' : '❌'}</span>
-                              )}
+                            <td className="whitespace-nowrap p-4 text-center text-sm text-color">
+                              <div className="flex items-center justify-center gap-x-2">
+                                {/* Metric Value */}
+                                <span>{ticker.metrics[metricKey] !== undefined ? ticker.metrics[metricKey] : 'N/A'}</span>
+
+                                {/* Checklist tick/cross and Flyout */}
+                                {ticker.checklist && ticker.checklist[metricKey] !== undefined && (
+                                  <span className="flex items-center">
+                                    {/* Tick/Cross based on score */}
+                                    <span>{ticker.checklist[metricKey].some((item) => item.score === 1) ? '✅' : '❌'}</span>
+                                    {/* Information icon with flyout */}
+                                    <ValueFlyoutMenu checklistItems={ticker.checklist[metricKey]} />
+                                  </span>
+                                )}
+                              </div>
                             </td>
                           ))}
                         </tr>
