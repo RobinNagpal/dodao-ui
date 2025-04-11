@@ -13,11 +13,11 @@ export default function PerformanceChecklistEvaluation({ criterionEvaluation }: 
                 <span className="font-bold">{item.checklistItem}</span>
               </li>
               <li className="text-sm flex gap-1">
-                <span className="font-bold">One-line Explanation: </span>
+                <span className="font-bold whitespace-nowrap">One-line Explanation: </span>
                 <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.oneLinerExplanation) }} />
               </li>
               <li className="text-sm flex gap-1">
-                <span className="font-bold">Information Used: </span>
+                <span className="font-bold whitespace-nowrap">Information Used: </span>
                 <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.informationUsed) }} />
               </li>
               <li className="text-sm flex gap-1">
@@ -25,7 +25,7 @@ export default function PerformanceChecklistEvaluation({ criterionEvaluation }: 
                 <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.detailedExplanation) }} />
               </li>
               <li className="text-sm flex gap-1">
-                <span className="font-bold">Evaluation Logic: </span>
+                <span className="font-bold whitespace-nowrap">Evaluation Logic: </span>
                 <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.evaluationLogic) }} />
               </li>
             </div>
