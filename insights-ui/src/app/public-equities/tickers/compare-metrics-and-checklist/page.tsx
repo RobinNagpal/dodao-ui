@@ -208,17 +208,13 @@ export default function CompareMetricsTable() {
                         <tr key={ticker.tickerKey} className="divide-x divide-gray-200">
                           <td className="whitespace-nowrap py-4 px-2 text-sm font-medium primary-text-color">{ticker.tickerKey}</td>
                           {activeGroup.metricKeys.map((metricKey) => (
-                            <td className="whitespace-nowrap p-4 text-center text-sm text-color">
+                            <td key={metricKey} className="whitespace-nowrap p-4 text-center text-sm text-color">
                               <div className="flex items-center justify-center gap-x-2">
-                                {/* Metric Value */}
                                 <span>{ticker.metrics[metricKey] !== undefined ? ticker.metrics[metricKey] : 'N/A'}</span>
 
-                                {/* Checklist tick/cross and Flyout */}
                                 {ticker.checklist && ticker.checklist[metricKey] !== undefined && (
                                   <span className="flex items-center">
-                                    {/* Tick/Cross based on score */}
                                     <span>{ticker.checklist[metricKey].some((item) => item.score === 1) ? '✅' : '❌'}</span>
-                                    {/* Information icon with flyout */}
                                     <ValueFlyoutMenu checklistItems={ticker.checklist[metricKey]} />
                                   </span>
                                 )}
