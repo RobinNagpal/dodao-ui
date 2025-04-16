@@ -1,11 +1,10 @@
 import MarkdownEditor from '@/components/Markdown/MarkdownEditor';
 import { SaveLatest10QFinancialStatementsRequest } from '@/types/public-equity/ticker-request-response';
+import { parseMarkdown } from '@/util/parse-markdown';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
 import { useState } from 'react';
 
 export interface FinancialStatementsButtonProps {
@@ -22,9 +21,8 @@ export default function FinancialStatementsButton({
   const [showFinancialStatementsModal, setShowFinancialStatementsModal] = useState(false);
   const [financialStatementsContent, setFinancialStatementsContent] = useState(financialStatementsContentRaw);
   const [showPreview, setShowPreview] = useState(false);
-  const renderer = getMarkedRenderer();
   const getMarkdownContent = (content?: string) => {
-    return content ? marked.parse(content, { renderer }) : 'No Information';
+    return content ? parseMarkdown(content) : 'No Information';
   };
 
   const {

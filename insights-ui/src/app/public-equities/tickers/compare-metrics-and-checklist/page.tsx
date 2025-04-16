@@ -4,12 +4,19 @@ import React, { useState, useEffect } from 'react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
-import { TickerCompareMetrics } from '@/types/public-equity/ticker-request-response';
-import { IndustryGroupCriteriaDefinition, CriterionDefinition } from '@/types/public-equity/criteria-types';
+import { TickerCompareMetricsAndChecklist } from '@/types/public-equity/ticker-request-response';
+import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
+import { formatKey } from '@/util/format-key';
+import ValueFlyoutMenu from './ValueFlyoutMenu';
+import HeadingFlyoutMenu from './HeadingFlyoutMenu';
 
 export default function CompareMetricsTable() {
-  const { data, loading, error } = useFetchData<TickerCompareMetrics[]>(`${getBaseUrl()}/api/tickers/compare/metrics`, {}, 'Failed to fetch metrics');
+  const { data, loading, error } = useFetchData<TickerCompareMetricsAndChecklist[]>(
+    `${getBaseUrl()}/api/tickers/compare/metrics-and-checklist`,
+    {},
+    'Failed to fetch metrics'
+  );
   const [activeCriterion, setActiveCriterion] = useState<string | null>(null);
   const [industryGroupCriteria, setIndustryGroupCriteria] = useState<IndustryGroupCriteriaDefinition | null>(null);
   const [isLoadingCriteria, setIsLoadingCriteria] = useState(false);
@@ -23,7 +30,7 @@ export default function CompareMetricsTable() {
         if (firstTicker.sectorId && firstTicker.industryGroupId) {
           setIsLoadingCriteria(true);
           try {
-            const criteria = await getCriteriaByIds(60, 6010);
+            const criteria = await getCriteriaByIds(firstTicker.sectorId, firstTicker.industryGroupId);
             setIndustryGroupCriteria(criteria);
           } catch (error) {
             console.error('Failed to fetch industry group criteria:', error);
@@ -58,37 +65,52 @@ export default function CompareMetricsTable() {
     validMetricsBycriterion[criterion.key] = new Set(criterion.importantMetrics.map((metric) => metric.key));
   });
 
-  // First, merge metrics from ALL evaluations for each ticker.
-  const tickerMetricsData = data.map((ticker) => {
+  // Merge metrics and performance checklist data from ALL evaluations for each ticker.
+  // For checklistMapping, instead of a number, we now store an array of PerformanceChecklistItem.
+  const tickerData = data.map((ticker) => {
     const metricsMapping: { [key: string]: string | number } = {};
+    const checklistMapping: { [key: string]: any[] } = {};
+
     ticker.evaluationsOfLatest10Q.forEach((evaluationObj) => {
-      const evaluation = evaluationObj.importantMetricsEvaluation;
-      if (evaluation && evaluation.metrics && validCriterionKeys.has(evaluation.criterionKey)) {
-        evaluation.metrics.forEach((metric) => {
-          // Only include valid metrics for this criterion
-          if (validMetricsBycriterion[evaluation.criterionKey]?.has(metric.metricKey)) {
+      // Process important metrics evaluation
+      const metricsEvaluation = evaluationObj.importantMetricsEvaluation;
+      if (metricsEvaluation && metricsEvaluation.metrics && validCriterionKeys.has(metricsEvaluation.criterionKey)) {
+        metricsEvaluation.metrics.forEach((metric) => {
+          if (validMetricsBycriterion[metricsEvaluation.criterionKey]?.has(metric.metricKey)) {
             // Overwrite duplicate keys if present.
             metricsMapping[metric.metricKey] = metric.value;
           }
         });
       }
+
+      // Process performance checklist evaluation and store checklist items in an array
+      const checklistEvaluation = evaluationObj.performanceChecklistEvaluation;
+      if (checklistEvaluation && checklistEvaluation.performanceChecklistItems && validCriterionKeys.has(checklistEvaluation.criterionKey)) {
+        checklistEvaluation.performanceChecklistItems.forEach((checklistItem) => {
+          if (checklistItem.metricKey && validMetricsBycriterion[checklistEvaluation.criterionKey]?.has(checklistItem.metricKey)) {
+            if (!checklistMapping[checklistItem.metricKey]) {
+              checklistMapping[checklistItem.metricKey] = [];
+            }
+            checklistMapping[checklistItem.metricKey].push(checklistItem);
+          }
+        });
+      }
     });
-    return { tickerKey: ticker.tickerKey, metrics: metricsMapping };
+
+    return { tickerKey: ticker.tickerKey, metrics: metricsMapping, checklist: checklistMapping };
   });
 
-  // Next, build a global grouping: criterion key -> set of metric keys.
+  // Build global grouping: criterion key -> set of metric keys from metrics evaluations.
   const criterionToMetricKeys: { [criterion: string]: Set<string> } = {};
   data.forEach((ticker) => {
     ticker.evaluationsOfLatest10Q.forEach((evaluationObj) => {
-      const evaluation = evaluationObj.importantMetricsEvaluation;
-      if (evaluation && evaluation.metrics && validCriterionKeys.has(evaluation.criterionKey)) {
-        const crit = evaluation.criterionKey;
+      const metricsEvaluation = evaluationObj.importantMetricsEvaluation;
+      if (metricsEvaluation && metricsEvaluation.metrics && validCriterionKeys.has(metricsEvaluation.criterionKey)) {
+        const crit = metricsEvaluation.criterionKey;
         if (!criterionToMetricKeys[crit]) {
           criterionToMetricKeys[crit] = new Set();
         }
-
-        evaluation.metrics.forEach((metric) => {
-          // Only add valid metrics
+        metricsEvaluation.metrics.forEach((metric) => {
           if (validMetricsBycriterion[crit]?.has(metric.metricKey)) {
             criterionToMetricKeys[crit].add(metric.metricKey);
           }
@@ -97,13 +119,12 @@ export default function CompareMetricsTable() {
     });
   });
 
-  // Transform to an array of groups.
+  // Transform to an array of groups with display names.
   const criterionGroups = Object.entries(criterionToMetricKeys)
-    .filter(([criterion]) => validCriterionKeys.has(criterion)) // Extra safety filter
+    .filter(([criterion]) => validCriterionKeys.has(criterion)) // Extra safety
     .map(([criterion, metricSet]) => ({
       criterion,
       metricKeys: Array.from(metricSet),
-      // Add display name from criteria definition
       displayName: industryGroupCriteria.criteria.find((c) => c.key === criterion)?.name || formatKey(criterion),
     }));
 
@@ -115,11 +136,6 @@ export default function CompareMetricsTable() {
   // Find the active criterion group
   const activeGroup = criterionGroups.find((group) => group.criterion === activeCriterion);
 
-  // Helper to format keys for display.
-  function formatKey(key: string) {
-    return key.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
-  }
-
   // Helper to get metric display name
   function getMetricDisplayName(criterionKey: string, metricKey: string): string {
     const criterion = industryGroupCriteria?.criteria.find((c) => c.key === criterionKey);
@@ -127,6 +143,13 @@ export default function CompareMetricsTable() {
 
     const metric = criterion.importantMetrics.find((m) => m.key === metricKey);
     return metric?.name || formatKey(metricKey);
+  }
+
+  function getMetricDescription(criterionKey: string, metricKey: string): string {
+    const criterion = industryGroupCriteria?.criteria.find((c) => c.key === criterionKey);
+    if (!criterion) return '';
+    const metric = criterion.importantMetrics.find((m) => m.key === metricKey);
+    return metric?.description || '';
   }
 
   return (
@@ -149,8 +172,8 @@ export default function CompareMetricsTable() {
               {criterionGroups.map((group) => (
                 <button
                   key={group.criterion}
-                  className={`py-2 px-4 text-md transition-colors ${
-                    activeCriterion === group.criterion ? 'font-bold border-b-2 border-primary-color primary-color' : 'font-medium'
+                  className={`py-2 px-4 text-md transition-colors border-b-2 ${
+                    activeCriterion === group.criterion ? 'font-bold border-primary-color primary-color' : 'font-medium border-color'
                   }`}
                   onClick={() => setActiveCriterion(group.criterion)}
                 >
@@ -167,23 +190,35 @@ export default function CompareMetricsTable() {
                   <table className="min-w-full divide-y divide-gray-300">
                     <thead>
                       <tr className="divide-x divide-gray-200">
-                        <th scope="col" className="py-3.5 px-4 text-left text-sm font-semibold primary-text-color">
+                        <th scope="col" className="py-3.5 px-2 text-left text-sm font-semibold primary-text-color">
                           Tickers
                         </th>
                         {activeGroup.metricKeys.map((metricKey) => (
-                          <th key={metricKey} scope="col" className="py-3.5 px-4 text-center text-sm font-semibold primary-text-color">
-                            {getMetricDisplayName(activeGroup.criterion, metricKey)}
+                          <th key={metricKey} scope="col" className="py-3.5 px-2 text-center text-sm font-semibold primary-text-color">
+                            <div className="flex items-center justify-center gap-x-1">
+                              {getMetricDisplayName(activeGroup.criterion, metricKey)}
+                              <HeadingFlyoutMenu description={getMetricDescription(activeGroup.criterion, metricKey)} />
+                            </div>
                           </th>
                         ))}
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {tickerMetricsData.map((ticker) => (
+                      {tickerData.map((ticker) => (
                         <tr key={ticker.tickerKey} className="divide-x divide-gray-200">
-                          <td className="whitespace-nowrap py-4 px-4 text-sm font-medium primary-text-color">{ticker.tickerKey}</td>
+                          <td className="whitespace-nowrap py-4 px-2 text-sm font-medium primary-text-color">{ticker.tickerKey}</td>
                           {activeGroup.metricKeys.map((metricKey) => (
                             <td key={metricKey} className="whitespace-nowrap p-4 text-center text-sm text-color">
-                              {ticker.metrics[metricKey] !== undefined ? ticker.metrics[metricKey] : 'N/A'}
+                              <div className="flex items-center justify-center gap-x-1">
+                                <span>{ticker.metrics[metricKey] !== undefined ? ticker.metrics[metricKey] : 'N/A'}</span>
+
+                                {ticker.checklist && ticker.checklist[metricKey] !== undefined && (
+                                  <span className="flex items-center gap-x-1">
+                                    <span>{ticker.checklist[metricKey].some((item) => item.score === 1) ? '✅' : '❌'}</span>
+                                    <ValueFlyoutMenu checklistItems={ticker.checklist[metricKey]} />
+                                  </span>
+                                )}
+                              </div>
                             </td>
                           ))}
                         </tr>

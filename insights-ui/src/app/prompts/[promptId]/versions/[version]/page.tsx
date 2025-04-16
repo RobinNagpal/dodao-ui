@@ -93,15 +93,20 @@ export default function ViewPromptVersionPage(): JSX.Element {
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl heading-color">View Prompt Version</h1>
-        <Link
-          href={`/prompts/${promptId}/versions/create`}
-          className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block"
-          onClick={() => {
-            sessionStorage.setItem('promptTemplate', promptVersion?.promptTemplate || '');
-          }}
-        >
-          Create New Version
-        </Link>
+        <div className="flex gap-2">
+          <Link href={`/prompts/${promptId}/test-invocations`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block ml-4">
+            Test Prompt
+          </Link>
+          <Link
+            href={`/prompts/${promptId}/versions/create`}
+            className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block"
+            onClick={() => {
+              sessionStorage.setItem('promptTemplate', promptVersion?.promptTemplate || '');
+            }}
+          >
+            Create New Version
+          </Link>
+        </div>
       </div>
       <Block className="text-color">
         {promptVersion ? (

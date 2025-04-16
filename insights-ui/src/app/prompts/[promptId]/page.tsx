@@ -4,21 +4,24 @@
 import { FullPromptResponse } from '@/app/api/[spaceId]/prompts/[promptId]/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { parseMarkdown } from '@/util/parse-markdown';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
+import Editor from '@monaco-editor/react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function PromptDetailsPage() {
   const params = useParams() as { promptId?: string };
   const router = useRouter();
+  const [copied, setCopied] = useState(false);
 
   const { data: prompt } = useFetchData<FullPromptResponse>(
     `${getBaseUrl()}/api/koala_gains/prompts/${params.promptId}`,
@@ -53,9 +56,13 @@ export default function PromptDetailsPage() {
     },
   ];
 
-  const renderer = getMarkedRenderer();
+  const sampleBodyToAppend = prompt?.sampleBodyToAppend && parseMarkdown(prompt.sampleBodyToAppend);
 
-  const sampleBodyToAppend = prompt?.sampleBodyToAppend && marked.parse(prompt.sampleBodyToAppend, { renderer });
+  const handleCopy = async (text: string) => {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <PageWrapper>
@@ -77,10 +84,36 @@ export default function PromptDetailsPage() {
           </PrivateWrapper>
         </div>
         <p className="mb-4">Name: {prompt.name}</p>
-        <p className="mb-4">Key: {prompt.key}</p>
+        <p className="mb-4 flex items-center gap-2">
+          <span>Key: {prompt.key}</span>
+          <IconButton iconName={IconTypes.Clipboard} onClick={() => handleCopy(prompt.key)} tooltip="Copy key to clipboard" removeBorder />
+          {copied && <span className="ml-2 text-color text-sm">Copied!</span>}
+        </p>
         <p className="mb-4">Excerpt: {prompt.excerpt}</p>
         <p className="mb-4">Input Schema: {prompt.inputSchema}</p>
         <p className="mb-4">Output Schema: {prompt.outputSchema}</p>
+        <p className="mb-4">Notes: {prompt.notes || 'No notes added'}</p>
+        <div className="mb-4">
+          <div className="mb-2">Current Prompt Template</div>
+          <div className="flex-1 border-l border-gray-200">
+            <Editor
+              height="300px"
+              defaultLanguage="markdown"
+              value={prompt.activePromptVersion?.promptTemplate || 'No Active Version set for this prompt'}
+              theme="vs-dark"
+              options={{
+                readOnly: true,
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+                wordWrap: 'on',
+                lineNumbers: 'off',
+                folding: false,
+                fontSize: 14,
+                fontFamily: 'monospace',
+              }}
+            />
+          </div>
+        </div>
         <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Sample Input JSON:</div>
@@ -101,8 +134,8 @@ export default function PromptDetailsPage() {
           </div>
           <div className="block-bg-color w-full py-4 px-2">
             {sampleBodyToAppend ? (
-              <pre
-                className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs markdown-body"
+              <div
+                className="block-bg-color whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs markdown-body"
                 dangerouslySetInnerHTML={{ __html: sampleBodyToAppend || '' }}
               />
             ) : (
@@ -162,6 +195,9 @@ export default function PromptDetailsPage() {
         )}
         <Link href={`/prompts/${prompt.id}/invocations`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block ml-4">
           See Prompt Invocations
+        </Link>
+        <Link href={`/prompts/${prompt.id}/test-invocations`} className="block-bg-color hover:bg-primary-text text-color px-4 py-2 inline-block ml-4">
+          Test Prompt
         </Link>
       </div>
     </PageWrapper>

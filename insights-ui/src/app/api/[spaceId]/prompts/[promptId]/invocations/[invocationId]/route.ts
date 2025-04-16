@@ -1,12 +1,14 @@
 // app/api/[spaceId]/prompts/[promptId]/invocations/[invocationId]/route.ts
-import { Prompt, PromptInvocation } from '@prisma/client';
+import { Prompt, PromptInvocation, PromptVersion } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 // GET /api/[spaceId]/prompts/[promptId]/invocations/[invocationId]
 
-export type FullPromptInvocationResponse = PromptInvocation & { prompt: Prompt };
+export type FullPromptInvocationResponse = PromptInvocation & {
+  prompt: Prompt & { promptVersions: PromptVersion[]; activePromptVersion: PromptVersion | null };
+};
 
 async function getInvocation(req: NextRequest, context: { params: { spaceId: string; promptId: string; invocationId: string } }) {
   const { spaceId, promptId, invocationId } = context.params;
@@ -20,7 +22,11 @@ async function getInvocation(req: NextRequest, context: { params: { spaceId: str
       },
     },
     include: {
-      prompt: true,
+      prompt: {
+        include: {
+          activePromptVersion: true,
+        },
+      },
     },
   });
   return invocation;

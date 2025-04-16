@@ -13,4 +13,5 @@ export enum IconTypes {
   Summary = 'Summary',
   FullScreenIcon = 'FullScreenIcon',
   ArrowsPointingOutIcon = 'ArrowsPointingOutIcon',
+  Clipboard = 'Clipboard',
 }

@@ -1,5 +1,11 @@
 import { CriterionDefinition } from '@/types/public-equity/criteria-types';
-import { FullImportantMetricsEvaluation, MetricValueItem, PerformanceChecklistItem, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
+import {
+  FullImportantMetricsEvaluation,
+  FullPerformanceChecklistEvaluation,
+  MetricValueItem,
+  PerformanceChecklistItem,
+  ProcessingStatus,
+} from '@/types/public-equity/ticker-report-types';
 
 export interface TickerCreateRequest {
   tickerKey: string;
@@ -21,13 +27,6 @@ export interface UpsertCustomCriteriaRequest {
   criteria: CriterionDefinition[];
 }
 
-export interface NextCriterionReportRequest {
-  ticker: string;
-  shouldTriggerNext: boolean;
-  criterionKey: string;
-  overflow?: string;
-}
-
 export interface SavePerformanceChecklistRequest {
   ticker: string;
   criterionKey: string;
@@ -44,7 +43,7 @@ export interface SaveCriterionReportRequest {
   ticker: string;
   criterionKey: string;
   reportKey: string;
-  data: string;
+  message: string;
 }
 
 export interface CreateAiCriteriaRequest {
@@ -112,9 +111,10 @@ export interface MarkdownContentResponse {
 
 export interface Latest10QMetricsEvaluation {
   importantMetricsEvaluation: FullImportantMetricsEvaluation | null;
+  performanceChecklistEvaluation: FullPerformanceChecklistEvaluation | null;
 }
 
-export interface TickerCompareMetrics {
+export interface TickerCompareMetricsAndChecklist {
   tickerKey: string;
   sectorId: number;
   industryGroupId: number;

@@ -1,9 +1,9 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TickerCompareMetrics } from '@/types/public-equity/ticker-request-response';
+import { TickerCompareMetricsAndChecklist } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
-async function getHandler(): Promise<TickerCompareMetrics[]> {
+async function getHandler(): Promise<TickerCompareMetricsAndChecklist[]> {
   const tickers = await prisma.ticker.findMany({
     where: {
       spaceId: KoalaGainsSpaceId,
@@ -20,6 +20,11 @@ async function getHandler(): Promise<TickerCompareMetrics[]> {
               metrics: true,
             },
           },
+          performanceChecklistEvaluation: {
+            include: {
+              performanceChecklistItems: true,
+            },
+          },
         },
       },
     },
@@ -28,4 +33,4 @@ async function getHandler(): Promise<TickerCompareMetrics[]> {
   return tickers;
 }
 
-export const GET = withErrorHandlingV2<TickerCompareMetrics[]>(getHandler);
+export const GET = withErrorHandlingV2<TickerCompareMetricsAndChecklist[]>(getHandler);

@@ -4,16 +4,17 @@ import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, Prompt, PromptVersion } from '@prisma/client';
 
-interface UpdatePromptRequest {
-  name?: string;
-  key?: string;
-  excerpt?: string;
+export interface UpdatePromptRequest {
+  name: string;
+  key: string;
+  excerpt: string;
   inputSchema?: string;
-  outputSchema?: string;
+  outputSchema: string;
   sampleJson?: string;
   updatedBy?: string;
   sampleBodyToAppend?: string;
   transformationPatch?: Prisma.JsonValue;
+  notes?: string;
 }
 
 export type FullPromptResponse = Prompt & { promptVersions: PromptVersion[]; activePromptVersion: PromptVersion | null };
@@ -51,6 +52,7 @@ async function updatePrompt(req: NextRequest, context: { params: { spaceId: stri
       sampleJson: body.sampleJson,
       sampleBodyToAppend: body.sampleBodyToAppend,
       updatedBy: body.updatedBy,
+      notes: body.notes,
       transformationPatch: body.transformationPatch || undefined,
     },
   });

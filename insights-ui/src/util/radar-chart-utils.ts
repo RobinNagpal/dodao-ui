@@ -1,42 +1,34 @@
+// Extend the Chart.js RadialLinearScale to include properties that are used but not part of the default type
+export interface ExtendedRadialLinearScale extends RadialLinearScale {
+  xCenter: number;
+  yCenter: number;
+  drawingArea: number;
+}
+
 import { SpiderGraph } from '@/types/project/project';
 import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types';
-import {
-  Chart as ChartJS,
-  Chart,
-  ChartData,
-  ChartOptions,
-  ChartType,
-  Filler,
-  Legend,
-  LineElement,
-  Plugin,
-  PointElement,
-  RadialLinearScale,
-  Tooltip,
-  TooltipItem,
-  TooltipPositionerFunction,
-} from 'chart.js';
-import { Radar } from 'react-chartjs-2';
+import { Chart, Plugin, RadialLinearScale } from 'chart.js';
 
 export const AlternateRingBackgroundPlugin: Plugin = {
   id: 'alternateRingBackground',
   // Use beforeDatasetsDraw so the filled rings appear behind the data
-  beforeDatasetsDraw: (chart) => {
+  beforeDatasetsDraw: (chart: Chart) => {
     const ctx = chart.ctx;
-    const radialScale = chart.scales.r as RadialLinearScale;
+    // Get the radial scale ("r"). Use our extended interface and check if it exists.
+    const radialScale = chart.scales.r as ExtendedRadialLinearScale | undefined;
+    if (!radialScale) {
+      return;
+    }
 
-    const centerX = radialScale.xCenter; // Center X of the chart
-    const centerY = radialScale.yCenter; // Center Y of the chart
-
-    const ticks = radialScale.ticks;
+    // Destructure values from the radial scale
+    const { xCenter, yCenter, drawingArea, ticks } = radialScale;
     if (!ticks || ticks.length < 2) return;
 
-    // Define two colors (adjust these to your needs)
+    // Define two colors for alternating background rings.
     const color2 = 'rgba(33, 48, 74, 1)'; // darker grey
-    const color1 = 'rgba(100, 100, 100, 1)'; // e.g. light grey
+    const color1 = 'rgba(100, 100, 100, 1)'; // lighter grey
 
-    // Loop through ticks starting at 1. Each ring is drawn between
-    // ticks[i-1] and ticks[i].
+    // Draw concentric rings between each tick
     for (let i = 1; i < ticks.length; i++) {
       const outerRadius = radialScale.getDistanceFromCenterForValue(ticks[i].value);
       const innerRadius = radialScale.getDistanceFromCenterForValue(ticks[i - 1].value);
@@ -44,33 +36,29 @@ export const AlternateRingBackgroundPlugin: Plugin = {
       ctx.save();
       ctx.beginPath();
       // Draw outer circle (clockwise)
-      ctx.arc(centerX, centerY, outerRadius, 0, Math.PI * 2);
+      ctx.arc(xCenter, yCenter, outerRadius, 0, Math.PI * 2);
       // Draw inner circle (counter-clockwise) to "cut out" the center part
-      ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2, true);
+      ctx.arc(xCenter, yCenter, innerRadius, 0, Math.PI * 2, true);
       ctx.closePath();
 
-      // Alternate the fill color based on the ring index.
+      // Alternate fill colors between the rings
       ctx.fillStyle = i % 2 === 1 ? color1 : color2;
       ctx.fill();
       ctx.restore();
     }
 
-    // Draw radial lines (spokes)
+    // Draw radial lines (spokes) if labels exist
     const labels = chart.data.labels || [];
     const totalLabels = labels.length;
-
+    if (!totalLabels || typeof drawingArea !== 'number') return;
     for (let i = 0; i < totalLabels; i++) {
-      const angle = (2 * Math.PI * i) / totalLabels - Math.PI / 2; // Compute angle
+      const angle = (2 * Math.PI * i) / totalLabels - Math.PI / 2; // Compute angle from the vertical
+      const endX = xCenter + drawingArea * Math.cos(angle);
+      const endY = yCenter + drawingArea * Math.sin(angle);
 
-      // Calculate endpoint of the line at the outer edge of the chart
-      const outerRadius = (radialScale as any).drawingArea;
-      const endX = centerX + outerRadius * Math.cos(angle);
-      const endY = centerY + outerRadius * Math.sin(angle);
-
-      // Draw the line
       ctx.save();
       ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
+      ctx.moveTo(xCenter, yCenter);
       ctx.lineTo(endX, endY);
       ctx.strokeStyle = color2;
       ctx.lineWidth = 4;
@@ -80,7 +68,6 @@ export const AlternateRingBackgroundPlugin: Plugin = {
   },
 };
 
-// Define the return type for the graph color
 interface GraphColor {
   background: string;
   border: string;
@@ -89,16 +76,19 @@ interface GraphColor {
 export const getGraphColor = (data: SpiderGraph | SpiderGraphForTicker): GraphColor => {
   const itemKeys = Object.keys(data);
 
-  // Calculate total possible score (total number of entries)
-  const totalPossibleScore = itemKeys.reduce((acc, category) => acc + data[category].scores.length, 0);
+  // Calculate the total possible score (each item's scores array length)
+  const totalPossibleScore = itemKeys.reduce((acc: number, category: string) => acc + (data[category].scores?.length || 0), 0);
 
-  // Calculate total obtained score (sum of all 1s)
-  const totalObtainedScore = itemKeys.reduce((acc, category) => acc + data[category].scores.reduce((sum, item) => sum + item.score, 0), 0);
+  // Calculate the sum of obtained scores
+  const totalObtainedScore = itemKeys.reduce(
+    (acc: number, category: string) => acc + data[category].scores.reduce((sum: number, item) => sum + item.score, 0),
+    0
+  );
 
   // Compute overall percentage score
   const overallPercentage = (totalObtainedScore / totalPossibleScore) * 100;
 
-  // Determine the dynamic color based on the overall percentage
+  // Return the corresponding color based on the percentage
   if (overallPercentage < 20) {
     return { background: 'rgba(255, 0, 0, 0.7)', border: 'rgba(255, 0, 0, 1)' }; // Red
   } else if (overallPercentage < 50) {
@@ -114,33 +104,28 @@ export const HighlightPlugin: Plugin = {
   id: 'highlightSlice',
   afterDatasetsDraw: (chart: Chart<'radar'>) => {
     const { ctx, scales, tooltip } = chart;
-    const activeElement = tooltip?.dataPoints?.[0]; // Get the hovered data point
+    if (!tooltip || tooltip.opacity === 0) return;
+    const activeElement = tooltip.dataPoints?.[0];
+    if (!activeElement) return;
 
-    if (tooltip && tooltip.opacity === 0) {
-      return;
-    }
-    // Clear the chart if no tooltip is active
-    if (!activeElement) {
-      return;
-    }
-    const index = activeElement.dataIndex; // Index of the hovered point
-    const radialScale = scales.r as RadialLinearScale;
+    const index = activeElement.dataIndex;
+    const radialScale = scales.r as ExtendedRadialLinearScale | undefined;
+    if (!radialScale) return;
 
-    const centerX = radialScale.xCenter; // Center X of the chart
-    const centerY = radialScale.yCenter; // Center Y of the chart
-    const outerRadius = (radialScale as any).drawingArea; // Outer radius of the radar chart
+    const { xCenter, yCenter, drawingArea } = radialScale;
+    if (typeof drawingArea !== 'number') return;
 
     const dataCount = chart.data.labels?.length || 0;
+    if (dataCount === 0) return;
     const prevAngle = (2 * Math.PI * (index - 0.5)) / dataCount - Math.PI / 2;
     const nextAngle = (2 * Math.PI * (index + 0.5)) / dataCount - Math.PI / 2;
 
-    // Draw the pizza slice
-
+    // Draw the highlighted (pizza-slice) area for the hovered data point
     ctx.save();
     ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
-    ctx.arc(centerX, centerY, outerRadius, prevAngle, nextAngle);
-    ctx.lineTo(centerX, centerY);
+    ctx.moveTo(xCenter, yCenter);
+    ctx.arc(xCenter, yCenter, drawingArea, prevAngle, nextAngle);
+    ctx.lineTo(xCenter, yCenter);
     ctx.closePath();
     ctx.fillStyle = 'rgba(200, 200, 200, 0.4)'; // Highlight color
     ctx.fill();

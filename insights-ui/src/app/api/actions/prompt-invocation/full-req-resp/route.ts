@@ -13,7 +13,7 @@ import { PromptInvocationStatus } from '.prisma/client';
 
 export interface PromptInvocationRequest {
   spaceId?: string;
-  inputJson: Record<string, unknown>;
+  inputJson?: Record<string, unknown>;
   promptKey: string;
   llmProvider: string;
   model: string;
@@ -29,14 +29,17 @@ export interface PromptInvocationResponse {
 }
 async function postHandler(req: NextRequest): Promise<any> {
   const request = await req.json();
-  const { inputJson, promptKey, llmProvider, model, bodyToAppend, requestFrom = 'ui' } = request as PromptInvocationRequest;
+  const { promptKey, llmProvider, model, bodyToAppend, requestFrom = 'ui' } = request as PromptInvocationRequest;
+
+  // Default inputJson to an empty object if it is not attached
+  const inputJson = request.inputJson;
 
   if (!req.body) {
     throw new Error(`Request body is missing`);
   }
 
   // Ensure required fields are present.
-  if (!inputJson || !promptKey || !llmProvider || !model) {
+  if (!promptKey || !llmProvider || !model) {
     throw new Error(`Missing required fields: input, templateId, llmProvider, or model`);
   }
 
@@ -57,7 +60,7 @@ async function postHandler(req: NextRequest): Promise<any> {
   const invocation = await prisma.promptInvocation.create({
     data: {
       spaceId: KoalaGainsSpaceId,
-      inputJson: JSON.stringify(request),
+      inputJson: inputJson ? JSON.stringify(inputJson) : undefined,
       promptId: prompt.id,
       promptVersionId: prompt.activePromptVersion.id,
       status: PromptInvocationStatus.InProgress,
@@ -74,23 +77,21 @@ async function postHandler(req: NextRequest): Promise<any> {
   try {
     const templateContent = prompt.activePromptVersion.promptTemplate;
 
-    const inputSchemaPath = path.join(process.cwd(), 'schemas', prompt.inputSchema);
-    if (!fs.existsSync(inputSchemaPath)) {
-      throw new Error(`Input schema file ${prompt.inputSchema} not found. Path ${inputSchemaPath}`);
+    if (prompt.inputSchema && prompt.inputSchema.trim() !== '') {
+      const inputSchemaPath = path.join(process.cwd(), 'schemas', prompt.inputSchema);
+      if (!fs.existsSync(inputSchemaPath)) {
+        throw new Error(`Input schema file ${prompt.inputSchema} not found. Path ${inputSchemaPath}`);
+      }
+      const inputSchema = await $RefParser.dereference(inputSchemaPath);
+      const { valid, errors } = validateData(inputSchema, inputJson);
+      if (!valid) {
+        throw new Error(`Input validation failed: ${JSON.stringify(errors)}`);
+      }
     }
-
-    const inputSchema = await $RefParser.dereference(inputSchemaPath);
-
-    const { valid, errors } = validateData(inputSchema, inputJson);
-    if (!valid) {
-      throw new Error(`Input validation failed: ${JSON.stringify(errors)}`);
-    }
-
-    // Validate the provided input against the input schema.
 
     // Compile the Handlebars template with the provided input.
     const compiledTemplate = Handlebars.compile(templateContent);
-    const finalPrompt = bodyToAppend ? `${compiledTemplate(inputJson)}\n\n\n${bodyToAppend}` : compiledTemplate(inputJson);
+    const finalPrompt = bodyToAppend ? `${compiledTemplate(inputJson || {})}\n\n\n${bodyToAppend}` : compiledTemplate(inputJson || {});
 
     // Choose LLM based on llmProvider. Currently, only "openai" is supported.
     let llm: ChatOpenAI | undefined;
@@ -179,6 +180,10 @@ function validateData(schema: object, data: unknown): { valid: boolean; errors?:
   const validate = ajv.compile(schema);
   const valid = validate(data);
   return { valid: !!valid, errors: validate.errors || [] };
+}
+
+function removeNullBytes(str: string) {
+  return str.replace(/\0/g, '');
 }
 
 export const POST = withErrorHandlingV2<any>(postHandler);

@@ -1,0 +1,8 @@
+type: object
+properties:
+  performanceChecklist:
+    type: array
+    items:
+      $ref: './performance-checklist-values-item.schema.yaml'
+required:
+  - performanceChecklist

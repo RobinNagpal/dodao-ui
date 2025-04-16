@@ -2,7 +2,7 @@
 'use client';
 
 import SampleJsonEditModal from '@/components/prompts/SampleJsonEditModal';
-import RawJsonJsonEditModal from '@/components/prompts/RawJsonEditModal';
+import RawJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PromptSchema } from '@/types/prompt-schemas';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -10,25 +10,19 @@ import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { Prisma, Prompt } from '@prisma/client';
-import { marked } from 'marked';
 import { FormEvent, useState } from 'react';
 import SampleBodyEditModal from './SampleBodyEditModal';
 import TransformationPatchEditModal from './TransformationPatchEditModal';
+import { UpdatePromptRequest } from '@/app/api/[spaceId]/prompts/[promptId]/route';
+import RawPatchEditModal from './RawPatchEditModal';
+import { parseMarkdown } from '@/util/parse-markdown';
 
-export interface PromptFormData {
+export interface PromptFormData extends UpdatePromptRequest {
   id?: string;
-  name: string;
-  key: string;
-  excerpt: string;
-  inputSchema: string;
-  outputSchema: string;
-  sampleJson: string;
-  sampleBodyToAppend?: string;
-  transformationPatch?: Prisma.JsonValue;
 }
 
 export interface PromptUpsertFormProps {
@@ -47,11 +41,13 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
     inputSchema: prompt?.inputSchema || '',
     outputSchema: prompt?.outputSchema || '',
     sampleJson: prompt?.sampleJson || '',
+    notes: prompt?.notes || '',
     sampleBodyToAppend: prompt?.sampleBodyToAppend || '',
     transformationPatch: prompt?.transformationPatch || null,
   });
   const [showSampleJsonModal, setShowSampleJsonModal] = useState(false);
   const [showRawJsonModal, setShowRawJsonModal] = useState(false);
+  const [showRawPatchModal, setShowRawPatchModal] = useState(false);
   const [showSampleBodyToAppendModal, setShowSampleBodyToAppendModal] = useState(false);
   const [showTransformationPatchModal, setShowTransformationPatchModal] = useState(false);
 
@@ -64,9 +60,8 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
     setFormData((s) => ({ ...s, sampleBodyToAppend: sampleBody }));
     setShowSampleBodyToAppendModal(false);
   };
-  const renderer = getMarkedRenderer();
 
-  const sampleBodyToAppend = formData.sampleBodyToAppend && marked.parse(formData.sampleBodyToAppend, { renderer });
+  const sampleBodyToAppend = formData.sampleBodyToAppend && parseMarkdown(formData.sampleBodyToAppend);
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -82,16 +77,22 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
         <StyledSelect
           label={'Input Schema'}
           selectedItemId={formData.inputSchema}
-          items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title} - ${schema.filePath}` })) || []}
+          items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title}` })) || []}
           setSelectedItemId={(value) => setFormData((s) => ({ ...s, inputSchema: value as string }))}
         />
         <StyledSelect
           label={'Output Schema'}
           selectedItemId={formData.outputSchema}
-          items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title} - ${schema.filePath}` })) || []}
+          items={schemas?.map((schema: PromptSchema) => ({ id: schema.filePath, label: `${schema.title}` })) || []}
           setSelectedItemId={(value) => setFormData((s) => ({ ...s, outputSchema: value as string }))}
         />
 
+        <TextareaAutosize
+          label={'Notes'}
+          modelValue={formData.notes}
+          autosize={true}
+          onUpdate={(value) => setFormData((s) => ({ ...s, notes: value as string }))}
+        />
         <div className="my-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Sample Input Json</div>
@@ -123,8 +124,8 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           </div>
           <div className="block-bg-color w-full py-4 px-2">
             {sampleBodyToAppend ? (
-              <pre
-                className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs"
+              <div
+                className="block-bg-color whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs markdown-body"
                 dangerouslySetInnerHTML={{ __html: sampleBodyToAppend }}
               />
             ) : (
@@ -137,14 +138,16 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Transformation Patch</div>
             <div>
-              <span className="text-sm text-gray-500 ml-2">Edit:</span>
+              <span className="text-sm text-gray-500">Visual Editor:</span>
               <IconButton iconName={IconTypes.Edit} onClick={() => setShowTransformationPatchModal(true)} />
+              <span className="text-sm text-gray-500 ml-2">Raw Patch:</span>
+              <IconButton iconName={IconTypes.Edit} onClick={() => setShowRawPatchModal(true)} />
             </div>
           </div>
           <div className="block-bg-color w-full py-4 px-2">
             {formData.transformationPatch ? (
-              <pre
-                className="whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs"
+              <div
+                className="block-bg-color whitespace-pre-wrap break-words overflow-x-auto max-h-[200px] overflow-y-auto text-xs markdown-body"
                 dangerouslySetInnerHTML={{
                   __html: JSON.stringify(formData.transformationPatch, null, 2),
                 }}
@@ -164,13 +167,13 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
         <SampleJsonEditModal
           open={showSampleJsonModal}
           onClose={() => setShowSampleJsonModal(false)}
-          title="Sample JSON"
-          sampleJson={JSON.parse(formData.sampleJson)}
+          title="Sample Input JSON"
+          sampleJson={formData.sampleJson || ''}
           onSave={(json: string) => setFormData((s) => ({ ...s, sampleJson: json }))}
         />
       )}
       {showRawJsonModal && (
-        <RawJsonJsonEditModal
+        <RawJsonEditModal
           open={showRawJsonModal}
           onClose={() => setShowRawJsonModal(false)}
           title="Raw JSON"
@@ -192,6 +195,15 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           onClose={() => setShowTransformationPatchModal(false)}
           title="Transformation Patch"
           transformationPatch={formData.transformationPatch || null}
+          onSave={(patch: Prisma.JsonValue) => setFormData((s) => ({ ...s, transformationPatch: patch }))}
+        />
+      )}
+      {showRawPatchModal && (
+        <RawPatchEditModal
+          open={showRawPatchModal}
+          onClose={() => setShowRawPatchModal(false)}
+          title="Raw Patch"
+          sampleJson={formData.transformationPatch}
           onSave={(patch: Prisma.JsonValue) => setFormData((s) => ({ ...s, transformationPatch: patch }))}
         />
       )}

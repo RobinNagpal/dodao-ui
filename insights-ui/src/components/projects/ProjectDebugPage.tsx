@@ -12,10 +12,9 @@ import {
 } from '@/types/project/project';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { marked } from 'marked';
 import { useEffect, useState } from 'react';
 import RepopulateButton from '../ui/RepopulateButton';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 interface ProjectDetailPageProps {
   projectId: string;
@@ -70,10 +69,8 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
     }
   }, [reloadTrigger]);
 
-  const renderer = getMarkedRenderer();
-
   const getMarkdownContent = (content?: string) => {
-    return content ? marked.parse(content, { renderer }) : 'No Information';
+    return content ? parseMarkdown(content) : 'No Information';
   };
 
   return (

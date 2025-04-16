@@ -13,7 +13,7 @@ const saveReportForCriterion = async (req: NextRequest): Promise<CriterionReport
   const tickerKey = body.ticker;
   const criterionKey = body.criterionKey;
   const reportKey = body.reportKey;
-  const data = body.data;
+  const data = body.message;
   const tickerReport = await prisma.ticker.findUnique({ where: { tickerKey }, include: { evaluationsOfLatest10Q: true } });
   if (!tickerReport) {
     throw new Error(`Ticker not found for key: ${body.ticker}`);

@@ -68,3 +68,6 @@ Checklist for contribution to Tidbits Hub:
 - [ ] Understand what is a Tidbit
 - [ ] Understand what is a Clickable Demo
 - [ ] Understand the features we want to add in the Tidbits Hub application
+
+### Coding Patters
+[Coding Instructions](docs/ai-prompts/UIIInstructions)

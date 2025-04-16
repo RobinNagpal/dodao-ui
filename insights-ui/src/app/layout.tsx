@@ -6,6 +6,7 @@ import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationCo
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
 import { NotificationWrapper } from '@dodao/web-core/components/layout/NotificationWrapper';
+import Script from 'next/script';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -80,6 +81,19 @@ export default function RootLayout({
             {children}
           </>
         </NotificationProvider>
+
+        <>
+          <Script src={`https://www.googletagmanager.com/gtag/js?id=G-MYQG66ESX3`} />
+          <Script id="google-analytics">
+            {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', 'G-MYQG66ESX3');
+        `}
+          </Script>
+        </>
       </body>
     </html>
   );
