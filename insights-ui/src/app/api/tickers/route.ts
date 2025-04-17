@@ -9,6 +9,12 @@ async function getHandler(): Promise<Ticker[]> {
   return tickers;
 }
 
+interface latest10QInfo {
+  filingUrl: string;
+  periodOfReport: string;
+  filingDate: string;
+}
+
 async function postHandler(req: NextRequest): Promise<Ticker> {
   const { sectorId, industryGroupId, tickerKey, companyName, shortDescription }: TickerCreateRequest = await req.json();
 
@@ -38,29 +44,29 @@ async function postHandler(req: NextRequest): Promise<Ticker> {
     data,
   });
 
-  const url = 'https://4mbhgkl77s4gubn7i2rdcllbru0wzyxl.lambda-url.us-east-1.on.aws/reporting_period_and_filing_link';
+  const lambdaUrl = 'https://4mbhgkl77s4gubn7i2rdcllbru0wzyxl.lambda-url.us-east-1.on.aws/latest-10q-info';
   const payload = { ticker: tickerKey };
-  const ReportingPeriodAndFilingLinkResponse = await fetch(url, {
+  const latest10qInfoResponse = await fetch(lambdaUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
-  const ReportingPeriodAndFilingLink = await ReportingPeriodAndFilingLinkResponse.json();
-  console.log('ReportingPeriodAndFilingLink', ReportingPeriodAndFilingLink);
-  if ('message' in ReportingPeriodAndFilingLink) {
-    throw new Error(ReportingPeriodAndFilingLink.message);
+  const latest10qInfo = await latest10qInfoResponse.json();
+  if ('message' in latest10qInfo) {
+    throw new Error(latest10qInfo.message);
   }
 
-  const newLatest10QInfo = await prisma.latest10QInfo.create({
+  const latest10QInfoData = latest10qInfo.data as latest10QInfo;
+
+  await prisma.latest10QInfo.create({
     data: {
       tickerKey,
-      reportingPeriod: ReportingPeriodAndFilingLink.data[1],
-      secFilingUrl: ReportingPeriodAndFilingLink.data[0],
-      tickerId: newTicker.id,
+      filingUrl: latest10QInfoData.filingUrl,
+      periodOfReport: latest10QInfoData.periodOfReport,
+      filingDate: latest10QInfoData.filingDate,
     },
   });
-  console.log('created new Latest10QInfo', newLatest10QInfo);
-  console.log(`Created new ticker for ${tickerKey}`);
+
   return newTicker;
 }
 

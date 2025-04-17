@@ -357,11 +357,13 @@ model TestPromptInvocation {
 model Latest10QInfo {
   id              String   @id @default(uuid())
   spaceId         String   @default("koala_gains") @map("space_id")
-  tickerKey       String   @map("ticker_key")
-  tickerId        String   @unique @map("ticker_id")
-  reportingPeriod String   @map("reporting_period")
-  secFilingUrl    String   @map("sec_filing_url")
-  ticker          Ticker   @relation(fields: [tickerId], references: [id])
+  tickerKey       String   @unique @map("ticker_key")
+  filingUrl       String   @map("filing_url")
+  periodOfReport  String   @map("period_of_report")
+  filingDate      String   @map("filing_date")
+  sharePrice      Int?     @map("share_price")
+  
+  ticker          Ticker   @relation(fields: [tickerKey], references: [tickerKey])
 
   @@map("latest_10q_infos")
 }
