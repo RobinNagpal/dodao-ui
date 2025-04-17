@@ -70,11 +70,6 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
     `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`,
     { cache: 'no-cache' }
   );
-  const Latest10QInfoResponse = await fetch(`${getBaseUrl()}/api/actions/tickers/${tickerKey}/ten-q-info`, { cache: 'no-cache' });
-  let Latest10QData;
-  if (Latest10QInfoResponse.ok) {
-    Latest10QData = await Latest10QInfoResponse.json();
-  }
 
   const industryGroupCriteria: IndustryGroupCriteriaDefinition = (await criteriaResponse.json()) as IndustryGroupCriteriaDefinition;
   const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
@@ -129,16 +124,16 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
             <div className="max-w-lg mx-auto">
               <RadarChart data={spiderGraph} />
             </div>
-            {Latest10QData && (
+            {tickerReport.latest10QInfo && (
               <div className="border-b border-gray-100 text-left">
                 <dl className="divide-y text-color">
                   <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm/6 font-medium">Reporting Period</dt>
-                    <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{Latest10QData.reportingPeriod}</dd>
+                    <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{tickerReport.latest10QInfo.periodOfReport}</dd>
                   </div>
                   <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm/6 font-medium">SEC 10Q Filing Link</dt>
-                    <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{Latest10QData.secFilingUrl}</dd>
+                    <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{tickerReport.latest10QInfo.filingUrl}</dd>
                   </div>
                 </dl>
               </div>
