@@ -16,6 +16,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import TickerActionsDropdown from './TickerActionsDropdown';
 import { Metadata } from 'next';
+import PopulateLatest10QInfoButton from './PopulateLatest10QInfoButton';
 
 export async function generateMetadata({ params }: { params: Promise<{ tickerKey: string }> }): Promise<Metadata> {
   const { tickerKey } = await params;
@@ -124,7 +125,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
             <div className="max-w-lg mx-auto">
               <RadarChart data={spiderGraph} />
             </div>
-            {tickerReport.latest10QInfo && (
+            {tickerReport.latest10QInfo ? (
               <div className="border-b border-gray-100 text-left">
                 <dl className="divide-y text-color">
                   <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -137,6 +138,10 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                   </div>
                 </dl>
               </div>
+            ) : (
+              <PrivateWrapper>
+                <PopulateLatest10QInfoButton tickerKey={tickerKey} />
+              </PrivateWrapper>
             )}
             <div className="mx-auto mt-12 text-left">
               <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-8 lg:max-w-none lg:grid-cols-2">

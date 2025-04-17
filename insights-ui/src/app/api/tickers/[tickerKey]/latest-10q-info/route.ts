@@ -34,6 +34,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ tic
       filingUrl: latest10QInfoData.filingUrl,
       periodOfReport: latest10QInfoData.periodOfReport,
       filingDate: latest10QInfoData.filingDate,
+      priceAtPeriodEnd: latest10QInfoData.priceAtPeriodEnd,
     },
   });
 

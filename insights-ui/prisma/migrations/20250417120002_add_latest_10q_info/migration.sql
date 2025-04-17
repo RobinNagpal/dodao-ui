@@ -6,7 +6,7 @@ CREATE TABLE "latest_10q_infos" (
     "filing_url" TEXT NOT NULL,
     "period_of_report" TEXT NOT NULL,
     "filing_date" TEXT NOT NULL,
-    "share_price" INTEGER,
+    "price_at_period_end" INTEGER NOT NULL,
 
     CONSTRAINT "latest_10q_infos_pkey" PRIMARY KEY ("id")
 );

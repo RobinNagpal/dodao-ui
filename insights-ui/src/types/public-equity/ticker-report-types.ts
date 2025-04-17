@@ -71,4 +71,5 @@ export interface Latest10QInfoResponse {
   filingUrl: string;
   periodOfReport: string;
   filingDate: string;
+  priceAtPeriodEnd: number;
 }
