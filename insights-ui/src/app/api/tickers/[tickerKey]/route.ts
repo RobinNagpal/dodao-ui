@@ -15,6 +15,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ tick
       },
     },
     include: {
+      latest10QInfo: true,
       criteriaMatchesOfLatest10Q: {
         include: {
           criterionMatches: true,

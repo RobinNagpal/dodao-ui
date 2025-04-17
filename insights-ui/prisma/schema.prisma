@@ -38,6 +38,7 @@ model Ticker {
   PerformanceChecklistItem       PerformanceChecklistItem[]
   CriterionMatch                 CriterionMatch[]
   criteriaMatchesOfLatest10Q     CriteriaMatchesOfLatest10Q?
+  latest10QInfo                  Latest10QInfo? 
   // latest10QInformation           Latest10QInformation?            @relation(fields: [latest10QInformationId], references: [id])
 
   @@unique([spaceId, tickerKey])
@@ -351,6 +352,20 @@ model TestPromptInvocation {
   model            String                 @map("model")
 
   @@map("test_prompt_invocations")
+}
+
+model Latest10QInfo {
+  id              String   @id @default(uuid())
+  spaceId         String   @default("koala_gains") @map("space_id")
+  tickerKey       String   @unique @map("ticker_key")
+  filingUrl       String   @map("filing_url")
+  periodOfReport  String   @map("period_of_report")
+  filingDate      String   @map("filing_date")
+  priceAtPeriodEnd      Int     @map("price_at_period_end")
+  
+  ticker          Ticker   @relation(fields: [tickerKey], references: [tickerKey])
+
+  @@map("latest_10q_infos")
 }
 
 // model Latest10QInformation {
