@@ -30,7 +30,7 @@ export default function ReportDebugPage({ reportsData, reportType }: ReportDebug
           onClick={() =>
             regenerateAReportOfAllProjects(
               reportsData.map((proj) => proj.projectId),
-              'gpt-4o',
+              'o4-mini',
               reportType
             )
           }
@@ -42,7 +42,7 @@ export default function ReportDebugPage({ reportsData, reportType }: ReportDebug
           onClick={() =>
             regenerateAReportOfAllProjects(
               reportsData.map((proj) => proj.projectId),
-              'gpt-4o-mini',
+              'o4-mini',
               reportType
             )
           }

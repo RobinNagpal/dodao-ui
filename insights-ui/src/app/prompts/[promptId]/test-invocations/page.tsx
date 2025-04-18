@@ -82,7 +82,7 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
   const [previewHtml, setPreviewHtml] = useState<string>('');
   const [selectedInvocation, setSelectedInvocation] = useState<TestPromptInvocation>();
 
-  const modelItems: StyledSelectItem[] = ['o3-mini', 'gpt-4o', 'gpt-4o-mini'].map((m) => ({
+  const modelItems: StyledSelectItem[] = ['o3-mini', 'o4-mini', 'gpt-4o', 'gpt-4o-mini'].map((m) => ({
     id: m,
     label: m,
   }));
@@ -96,7 +96,7 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
         promptId: parentPrompt.id,
         inputJsonString: parentPrompt.sampleJson || '',
         llmProvider: 'openai',
-        model: 'gpt-4o',
+        model: 'o4-mini',
         bodyToAppend: '',
       });
     }

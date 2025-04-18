@@ -11,10 +11,7 @@ interface ProjectTableProps {
   projectIds: string[];
 }
 
-const MODEL_OPTIONS = [
-  { key: 'gpt-4o', label: 'gpt-4o' },
-  { key: 'gpt-4o-mini', label: 'gpt-4o-mini' },
-];
+const MODEL_OPTIONS = [{ key: 'o4-mini', label: 'o4-mini' }];
 
 export default function ProjectTable({ projectIds }: ProjectTableProps) {
   const router = useRouter();

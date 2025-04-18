@@ -124,7 +124,7 @@ export default function CreateInvocationPage(): JSX.Element {
 
   const sampleBodyToAppend = formData.bodyToAppend && parseMarkdown(formData.bodyToAppend);
 
-  const modelItems: StyledSelectItem[] = ['o3-mini', 'gpt-4o', 'gpt-4o-mini'].map((m) => ({
+  const modelItems: StyledSelectItem[] = ['o3-mini', 'o4-mini', 'gpt-4o', 'gpt-4o-mini'].map((m) => ({
     id: m,
     label: m,
   }));

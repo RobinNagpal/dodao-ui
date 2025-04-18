@@ -10,10 +10,7 @@ export interface ReportActionsDropdownProps {
   postGenerateReport?: (projectId: string, result: { success: boolean; message: string }) => Promise<{ success: boolean; message: string }>;
 }
 
-const MODEL_OPTIONS = [
-  { key: 'gpt-4o', label: 'gpt-4o' },
-  { key: 'gpt-4o-mini', label: 'gpt-4o-mini' },
-];
+const MODEL_OPTIONS = [{ key: 'o4-mini', label: 'o4-mini' }];
 
 export default function ProjectActionsDropdown({ projectId, postGenerateReport }: ReportActionsDropdownProps) {
   const router = useRouter();

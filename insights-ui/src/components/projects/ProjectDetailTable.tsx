@@ -15,7 +15,7 @@ interface ProjectDetailTableProps {
 }
 
 const MODEL_OPTIONS = [
-  { key: 'gpt-4o', label: 'gpt-4o' },
+  { key: 'o4-mini', label: 'o4-mini' },
   { key: 'gpt-4o-mini', label: 'gpt-4o-mini' },
 ];
 

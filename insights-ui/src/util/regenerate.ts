@@ -7,6 +7,7 @@ export async function regenerateReport(projectId: string, model: string, reportT
   try {
     const response = await fetch(`${baseURL}/api/projects/${projectId}/${url}`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         'x-admin-key': getAuthKey(),
