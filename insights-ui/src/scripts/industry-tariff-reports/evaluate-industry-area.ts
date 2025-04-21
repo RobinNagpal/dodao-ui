@@ -1,6 +1,6 @@
-import { IndustryHeadings, IndustrySubHeading } from '@/scripts/industry-reports/industry-main-headings';
-import { TariffUpdatesForIndustry } from '@/scripts/industry-reports/industry-tarrifs';
-import { getLlmResponse } from '@/scripts/industry-reports/llm-utils';
+import { IndustryHeadings, IndustrySubHeading } from '@/scripts/industry-tariff-reports/industry-main-headings';
+import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/industry-tarrifs';
+import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { z } from 'zod';
 import fs from 'fs';
@@ -122,22 +122,24 @@ const EvaluateIndustryAreaSchema = z.object({
   positiveTariffImpactOnCompanyType: z
     .array(PositiveTariffImpactOnCompanyTypeSchema)
     .describe(
-      '4-5 Types of companies that will be positively impacted by the tariffs.' +
+      '3 Types of companies that will be positively impacted by the tariffs.' +
+        'Include specific examples of companies and the type of products when sharing information of the company types that are impacted. ' +
         'Information about each company should be 400-600 words long.' +
         'Focus only on US companies'
     ),
   negativeTariffImpactOnCompanyType: z
     .array(NegativeTariffImpactOnCompanyTypeSchema)
     .describe(
-      '4-5 Types of companies that will be negatively impacted by the tariffs. ' +
+      '3 Types of companies that will be negatively impacted by the tariffs. ' +
+        'Include specific examples of companies and the type of products when sharing information of the company types that are impacted. ' +
         'Information about each company should be 400-600 words long. ' +
-        'Take example of companies and the type of products when creating the summary. ' +
         'Focus only on public US companies. '
     ),
   tariffImpactSummary: z
     .string()
     .describe(
       'Summary of the impact of tariffs on the area of the industry. ' +
+        'Include specific examples of companies and the type of products when creating the summary. ' +
         'Include hyperlinks/citations in the content where ever possible. ' +
         'Take example of companies and the type of products when creating the summary. ' +
         'Every definition, and number, company name etc should have a hyperlink. '
@@ -249,13 +251,22 @@ export function getEvaluateIndustryAreaPrompt(headings: IndustryHeadings, tariff
   - Competitors of the company and their scale
   
   
+  - 3 Type of companies that will be positively impacted by the tariffs. Include specific examples of companies and the type of products when sharing information of the company types that are impacted. 
+  - 3 Type of companies that will be negatively impacted by the tariffs. Include specific examples of companies and the type of products when sharing information of the company types that are impacted.
+  
   Include hyperlinks/citations in the content where ever possible.
   Every definition, and number should have a hyperlink.
   
-  The tariff summary should be at least 4-5 paragraphs long and should clearly explain which type of companies under
+  The tariff summary should be 
+  - At least 4-5 paragraphs long and should clearly explain which type of companies under
   this industry will be positively impacted by the tariffs and which type of companies under this industry will be negatively
-  and why. Answer should be very specific and should include facts and reasoning. Take example of companies and the type 
-  of products when creating the summary. Answer in future tense.
+  and why. 
+  - Answer should be very specific and should include facts and reasoning. 
+  - Take example of companies and the type  of products when creating the summary.
+  - Dont be abstract and generic, use specific examples of companies and the type of products when creating the summary.
+  - Dont say generic stuff like "local companies will be positively impacted by the tariffs" or "importers will be negatively impacted by the tariffs". Share concrete examples of companies and the type of products when creating the summary.
+  - Answer in future tense.
+  - Keep it specific to the impact on US companies.
   
   Dont use any Katex or Latex or italics formatting in the response.
   

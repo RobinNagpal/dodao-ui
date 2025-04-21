@@ -1,4 +1,4 @@
-import { getLlmResponse } from '@/scripts/industry-reports/llm-utils';
+import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
 import { z, ZodObject } from 'zod';
 import { addDirectoryIfNotPresent, industryHeadingsFileName, reportsOutDir } from '@/scripts/reportFileUtils';
 import fs from 'fs';

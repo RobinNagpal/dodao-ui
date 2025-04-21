@@ -1,5 +1,5 @@
-import { IndustryHeadings } from '@/scripts/industry-reports/industry-main-headings';
-import { getLlmResponse } from '@/scripts/industry-reports/llm-utils';
+import { IndustryHeadings } from '@/scripts/industry-tariff-reports/industry-main-headings';
+import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';

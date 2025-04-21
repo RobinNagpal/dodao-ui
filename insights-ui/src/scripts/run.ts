@@ -2,25 +2,25 @@ import {
   getAndWriteEvaluateIndustryAreaJson,
   readEvaluateIndustryAreaJsonFromFile,
   writeEvaluateIndustryAreaToMarkdownFile,
-} from '@/scripts/industry-reports/evaluate-industry-area';
+} from '@/scripts/industry-tariff-reports/evaluate-industry-area';
 import {
   getAndWriteIndustryHeadings,
   readIndustryHeadingsFromFile,
   writeIndustryHeadingsToMarkdownFile,
-} from '@/scripts/industry-reports/industry-main-headings';
-import { getAndWriteIntroductionsJson, readIntroductionJsonFromFile, writeIntroductionToMarkdownFile } from '@/scripts/industry-reports/introduction';
+} from '@/scripts/industry-tariff-reports/industry-main-headings';
+import { getAndWriteIntroductionsJson, readIntroductionJsonFromFile, writeIntroductionToMarkdownFile } from '@/scripts/industry-tariff-reports/introduction';
 import {
   getAndWriteUnderstandIndustryJson,
   readUnderstandIndustryJsonFromFile,
   writeUnderstandIndustryToMarkdownFile,
-} from '@/scripts/industry-reports/understand-industry';
+} from '@/scripts/industry-tariff-reports/understand-industry';
 import * as dotenv from 'dotenv';
 import {
   getTariffUpdatesForIndustryAndSaveToFile,
   readTariffUpdatesFromFile,
   TariffUpdatesForIndustry,
   writeTariffUpdatesToMarkdownFile,
-} from './industry-reports/industry-tarrifs';
+} from '@/scripts/industry-tariff-reports/industry-tarrifs';
 
 dotenv.config();
 
@@ -46,7 +46,7 @@ async function doIt() {
   const tariffUpdates: TariffUpdatesForIndustry = await readTariffUpdatesFromFile(industry);
   // writeTariffUpdatesToMarkdownFile(industry, tariffUpdates);
 
-  const firstIndustryArea = headings.headings[0].subHeadings[1];
+  const firstIndustryArea = headings.headings[3].subHeadings[2];
   // ##### Evaluate Industry Area #####
   await getAndWriteEvaluateIndustryAreaJson(industry, firstIndustryArea, headings, tariffUpdates, date);
   const evaluateIndustryArea = await readEvaluateIndustryAreaJsonFromFile(industry, firstIndustryArea, headings);
