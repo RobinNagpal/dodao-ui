@@ -1,45 +1,57 @@
-import { getHeadingsAndSubHeadings, IndustryHeadings } from '@/scripts/industry-reports/industry-main-headings';
+import {
+  getAndWriteEvaluateIndustryAreaJson,
+  readEvaluateIndustryAreaJsonFromFile,
+  writeEvaluateIndustryAreaToMarkdownFile,
+} from '@/scripts/industry-reports/evaluate-industry-area';
+import {
+  getAndWriteIndustryHeadings,
+  readIndustryHeadingsFromFile,
+  writeIndustryHeadingsToMarkdownFile,
+} from '@/scripts/industry-reports/industry-main-headings';
 import { getAndWriteIntroductionsJson, readIntroductionJsonFromFile, writeIntroductionToMarkdownFile } from '@/scripts/industry-reports/introduction';
-import { addDirectoryIfNotPresent, industryHeadingsFileName, reportsOutDir } from '@/scripts/reportFileUtils';
+import {
+  getAndWriteUnderstandIndustryJson,
+  readUnderstandIndustryJsonFromFile,
+  writeUnderstandIndustryToMarkdownFile,
+} from '@/scripts/industry-reports/understand-industry';
 import * as dotenv from 'dotenv';
-import * as fs from 'fs';
-import path from 'path';
+import {
+  getTariffUpdatesForIndustryAndSaveToFile,
+  readTariffUpdatesFromFile,
+  TariffUpdatesForIndustry,
+  writeTariffUpdatesToMarkdownFile,
+} from './industry-reports/industry-tarrifs';
 
 dotenv.config();
-
-async function getAndWriteIndustryHeadings(industry: string) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase());
-  const filePath = path.join(dirPath, industryHeadingsFileName);
-  addDirectoryIfNotPresent(dirPath);
-
-  const headings = await getHeadingsAndSubHeadings(industry);
-  console.log(JSON.stringify(headings, null, 2));
-  fs.writeFileSync(filePath, JSON.stringify(headings, null, 2), {
-    encoding: 'utf-8',
-  });
-}
-
-async function readIndustryHeadings(industry: string): Promise<IndustryHeadings> {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase());
-  const filePath = path.join(dirPath, industryHeadingsFileName);
-  if (!fs.existsSync(filePath)) {
-    throw new Error(`File not found: ${filePath}`);
-  }
-  // Read the file contents and convert to string
-  const contents: string = fs.readFileSync(filePath, 'utf-8').toString();
-  // Parse the JSON data
-  const headings: IndustryHeadings = JSON.parse(contents);
-  return headings;
-}
 
 async function doIt() {
   const industry = 'Plastic';
   // await getAndWriteIndustryHeadings(industry);
-  const headings = await readIndustryHeadings(industry);
+  const headings = await readIndustryHeadingsFromFile(industry);
+  // await writeIndustryHeadingsToMarkdownFile(industry, headings);
   const date = 'April 20, 2025';
-  await getAndWriteIntroductionsJson(industry, date, headings);
-  const introductions = await readIntroductionJsonFromFile(industry);
-  writeIntroductionToMarkdownFile(industry, introductions);
+
+  // ##### Introduction #####
+  // await getAndWriteIntroductionsJson(industry, date, headings);
+  // const introductions = await readIntroductionJsonFromFile(industry);
+  // writeIntroductionToMarkdownFile(industry, introductions);
+
+  // ##### Understand Industry #####
+  // await getAndWriteUnderstandIndustryJson(industry, headings);
+  // const understandIndustry = await readUnderstandIndustryJsonFromFile(industry);
+  // writeUnderstandIndustryToMarkdownFile(industry, understandIndustry);
+
+  // ##### Tariff Updates #####
+  // await getTariffUpdatesForIndustryAndSaveToFile(industry, date, headings);
+  const tariffUpdates: TariffUpdatesForIndustry = await readTariffUpdatesFromFile(industry);
+  // writeTariffUpdatesToMarkdownFile(industry, tariffUpdates);
+
+  const firstIndustryArea = headings.headings[0].subHeadings[1];
+  // ##### Evaluate Industry Area #####
+  await getAndWriteEvaluateIndustryAreaJson(industry, firstIndustryArea, headings, tariffUpdates, date);
+  const evaluateIndustryArea = await readEvaluateIndustryAreaJsonFromFile(industry, firstIndustryArea, headings);
+  console.log('Evaluate Industry Area:', evaluateIndustryArea);
+  writeEvaluateIndustryAreaToMarkdownFile(industry, firstIndustryArea, headings, evaluateIndustryArea);
 }
 
 doIt().catch((err) => {

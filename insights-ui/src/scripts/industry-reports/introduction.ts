@@ -148,6 +148,9 @@ function getIntroductionPrompt(industry: string, date: string, industryHeadings:
   
   Include hyperlinks in the content where ever possible.
   
+  Dont use any Katex or Latex or italics formatting in the response.
+  
+  Dont use any Katex or Latex or italics formatting in the response.
   
   ${JSON.stringify(industryHeadings, null, 2)}
   `;
