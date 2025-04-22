@@ -98,7 +98,7 @@ export async function doIt(reportType: ReportType, industry: string, date: strin
     case ReportType.EVALUATE_INDUSTRY_AREA:
       const tariff = readTariffUpdatesFromFile(industry);
       const firstArea = headings.headings[0].subHeadings[0];
-      await getAndWriteEvaluateIndustryAreaJson(industry, firstArea, headings, tariff!, date);
+      // await getAndWriteEvaluateIndustryAreaJson(industry, firstArea, headings, tariff!, date);
       const evaluated = readEvaluateIndustryAreaJsonFromFile(industry, firstArea, headings);
       writeEvaluateIndustryAreaToMarkdownFile(industry, firstArea, headings, evaluated);
       break;

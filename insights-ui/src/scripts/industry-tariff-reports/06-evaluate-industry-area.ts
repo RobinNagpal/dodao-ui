@@ -1,6 +1,6 @@
 import { IndustryAreaHeadings, IndustrySubHeading } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
-import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
+import { getLlmResponse, outputInstructions } from '@/scripts/industry-tariff-reports/llm-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { z } from 'zod';
 import fs from 'fs';
@@ -49,6 +49,14 @@ const EstablishedPlayerSchema = z.object({
   competitors: z.string().describe('Major competitors and their market position'),
 });
 
+const NewChallengersArraySchema = z.object({
+  newChallengers: z.array(NewChallengerSchema).describe('Array of new challengers'),
+});
+
+const EstablishedPlayersArraySchema = z.object({
+  establishedPlayers: z.array(EstablishedPlayerSchema).describe('Array of established players'),
+});
+
 const HeadwindsAndTailwindsSchema = z.object({
   headwinds: z.string().array().describe('4–5 key headwinds, each explained in 3–4 lines with reasoning'),
   tailwinds: z.string().array().describe('4–5 key tailwinds, each explained in 3–4 lines with reasoning'),
@@ -64,25 +72,6 @@ const NegativeTariffImpactOnCompanyTypeSchema = z.object({
   companyType: z.string().describe('Category of companies negatively affected by tariffs'),
   impact: z.string().describe('Expected decrease in revenue and growth rate due to tariffs'),
   reasoning: z.string().describe('Rationale for the projected impact'),
-});
-
-const EvaluateIndustryAreaSchema = z.object({
-  title: z.string().describe('Industry area title'),
-  aboutParagraphs: z.string().array().describe('Detailed overview of the industry area, in 3–5 lines per paragraph, with citations for definitions and data'),
-  newChallengers: z
-    .array(NewChallengerSchema)
-    .describe('Three leading new challengers (public US companies, IPO in the last 5–7 years), 500–800 words each, with citations'),
-  establishedPlayers: z
-    .array(EstablishedPlayerSchema)
-    .describe('Three top established players (public US companies, 5+ years in industry), 500–800 words each, with citations'),
-  headwindsAndTailwinds: HeadwindsAndTailwindsSchema.describe('Headwinds and tailwinds for this industry area, with citations'),
-  positiveTariffImpactOnCompanyType: z
-    .array(PositiveTariffImpactOnCompanyTypeSchema)
-    .describe('Three company categories that benefit from the tariffs, 400–600 words each, with specific examples'),
-  negativeTariffImpactOnCompanyType: z
-    .array(NegativeTariffImpactOnCompanyTypeSchema)
-    .describe('Three company categories that are harmed by the tariffs, 400–600 words each, with specific examples'),
-  tariffImpactSummary: z.string().describe('4–5 paragraph summary of tariff impacts on US companies, with examples, facts, and reasoning'),
 });
 
 interface CompanyProduct {
@@ -127,6 +116,14 @@ interface EstablishedPlayer {
   impactOfTariffs: string;
 }
 
+interface NewChallengersArray {
+  newChallengers: NewChallenger[];
+}
+
+interface EstablishedPlayersArray {
+  establishedPlayers: EstablishedPlayer[];
+}
+
 interface HeadwindsAndTailwinds {
   headwinds: string[];
   tailwinds: string[];
@@ -155,71 +152,6 @@ interface EvaluateIndustryArea {
   tariffImpactSummary: string;
 }
 
-export function getEvaluateIndustryAreaPrompt(
-  headings: IndustryAreaHeadings,
-  tariffUpdates: TariffUpdatesForIndustry,
-  industry: IndustrySubHeading,
-  date: string
-) {
-  const prompt = `
-I’m researching the ${industry.title} sector and need a detailed report.
-
-Summary: ${industry.oneLineSummary}
-Key companies: ${industry.companies.map((c) => c.name).join(', ')}
-
-Please focus only on public US companies.
-
-Report scope (8,000–10,000 words total):
-
-1. **New Challengers** (3 companies):
-   - Public US IPOs in the last 5–7 years disrupting the industry.
-   - Select the companies with some unique advantage over established players.
-   - Make sure there is some unique advantage the selected new player has over established players.
-   - 500–800 words each, covering:
-     • Company name, description, website, ticker
-     • Product portfolio and revenue breakdown
-     • Management overview
-     • Competitive advantage
-     • Past performance (5 years): revenue, cost, profitability, ROC (numbers & facts)
-     • Projected performance (next 5 years)
-     • Impact of recent tariffs
-     • Competitors
-
-2. **Established Players** (3 companies):
-   - Public US companies with 5+ years in the sector.
-   - 500–800 words each, same details as above.
-
-3. **Industry Headwinds & Tailwinds**:
-   - 4–5 headwinds and 4–5 tailwinds, each 3–4 lines with reasoning.
-
-4. **Tariff Impacts**:
-   - Three categories of companies positively affected (400–600 words each, with examples).
-   - Three categories of companies negatively affected (400–600 words each, with examples).
-
-5. **Tariff Impact Summary**:
-   - 4–5 paragraphs summarizing effects on US companies
-   - Use specific examples, facts, citations. Write in future tense.
-
-# For output content:
-- Cite the latest figures and embed hyperlinks to sources.
-- Include hyperlinks/citations in the content where ever possible in the markdown format.
-- Dont forget to include hyperlinks/citations in the content where ever possible.
-- Avoid LaTeX, italics, or KaTeX formatting, or   character for space
-- Use only headings and subheadings, bold, bullets, points, tables for formatting the content.
-- Use markdown format for output.
-- All amounts, dollar values, or figures should be wrapped in backticks.
-
-
-Industry areas details:
-${JSON.stringify(headings, null, 2)}
-
-# Tariff Updates
-${JSON.stringify(tariffUpdates, null, 2)}
-`;
-
-  return prompt;
-}
-
 /**
  * Converts a NewChallenger object to Markdown with organized sections and tables.
  */
@@ -228,7 +160,8 @@ function challengerToMarkdown(challenger: NewChallenger): string {
   const header =
     `### ${challenger.companyName} (Ticker: ${challenger.companyTicker})\n` +
     `**Description:** ${challenger.companyDescription}\n` +
-    `**Website:** [${challenger.companyWebsite}](${challenger.companyWebsite})\n\n`;
+    `**Website:** [${challenger.companyWebsite}](${challenger.companyWebsite})\n\n` +
+    `**Unique Advantage:** ${challenger.uniqueAdvantage}\n\n`;
 
   // Product Portfolio
   const productsSection =
@@ -303,14 +236,263 @@ function establishedPlayerToMarkdown(player: EstablishedPlayer): string {
   return header + productsSection + performanceSection + managementSection + footer;
 }
 
-async function getEvaluateIndustryArea(
+async function getEstablishedPlayers(
+  headings: IndustryAreaHeadings,
+  tariffUpdates: TariffUpdatesForIndustry,
   industry: IndustrySubHeading,
+  date: string
+): Promise<EstablishedPlayer[]> {
+  const prompt = `Evaluate the following section for *Established Players* in the ${industry.title} sector based on these instructions:
+- Focus on public US companies with 5+ years in the sector.
+- Focus on US based companies.
+- Provide three top established players.
+- For each: companyName, companyDescription, companyWebsite, companyTicker, products (portfolio & revenue breakdown), aboutManagement, uniqueAdvantage, pastPerformance (5 years), futureGrowth (next 5 years), impactOfTariffs, competitors.
+- Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.
+- Output JSON array matching EstablishedPlayerSchema.
+
+${outputInstructions}
+
+Industry Summary: ${industry.oneLineSummary}
+Key Companies: ${industry.companies.map((c) => c.name).join(', ')}
+
+Tariff Updates: ${JSON.stringify(tariffUpdates)}
+Date: ${date}
+
+The selected companies should be just from the ${industry.title} sector. 
+Do not include any companies from other headings or subheadings as they will be covered separately.
+Make sure to select companies just from the ${industry.title} sector and not from other headings or subheadings.
+
+# All the industry areas. You need to only cover the ${industry.title} area.
+${JSON.stringify(headings, null, 2)}
+
+`;
+
+  return (await getLlmResponse<EstablishedPlayersArray>(prompt, EstablishedPlayersArraySchema)).establishedPlayers;
+}
+
+// 2. New Challengers
+async function getNewChallengers(
+  headings: IndustryAreaHeadings,
+  tariffUpdates: TariffUpdatesForIndustry,
+  industry: IndustrySubHeading,
+  establishedPlayers: EstablishedPlayer[],
+  date: string
+): Promise<NewChallenger[]> {
+  const prompt = `Evaluate the following section for *New Challengers* in the ${industry.title} sector:
+- Select three public US companies IPO'd in the last 5–7 years.
+- Focus on US based companies or western companies. Ignore any chinese companies.
+- The companies should have unique edge over established players which creates probability of huge success in the future.
+- Make sure to select the best of the best new players and they not be old established players.
+- For each: companyName, companyDescription, companyWebsite, companyTicker, products, aboutManagement, uniqueAdvantage, pastPerformance, futureGrowth, impactOfTariffs, competitors.
+- Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.
+- Output JSON array matching NewChallengerSchema.
+
+# Industry Summary: 
+${industry.oneLineSummary}
+
+# Key Companies: 
+${industry.companies.map((c) => c.name).join(', ')}
+
+# Established Players:
+${JSON.stringify(
+  establishedPlayers.map((ep) => ep.companyName),
+  null,
+  2
+)}
+
+# Tariff Updates: 
+${JSON.stringify(tariffUpdates)}
+
+# Date: 
+${date}
+
+${outputInstructions}
+
+The selected companies should be just from the ${industry.title} sector. 
+Do not include any companies from other headings or subheadings as they will be covered separately.
+Make sure to select companies just from the ${industry.title} sector and not from other headings or subheadings.
+
+# All the industry areas. You need to only cover the ${industry.title} area.
+${JSON.stringify(headings, null, 2)}
+
+`;
+
+  return (await getLlmResponse<NewChallengersArray>(prompt, NewChallengersArraySchema)).newChallengers;
+}
+
+// 3. Headwinds & Tailwinds
+async function getHeadwindsAndTailwinds(headings: IndustryAreaHeadings, tariffUpdates: TariffUpdatesForIndustry, industry: IndustrySubHeading, date: string) {
+  const prompt = `List 4–5 key *headwinds* and 4–5 key *tailwinds* for the ${industry.title} sector:
+- Each explained in 3–4 lines with reasoning. When explaining, take specific examples of the companies and the products. 
+- Make sure to take examples.
+- Output JSON matching HeadwindsAndTailwindsSchema.
+
+Tariff Updates: ${JSON.stringify(tariffUpdates)}
+Date: ${date}
+
+${outputInstructions}
+
+The headwinds and tailwinds should be only for the ${industry.title} sector. 
+Do not include any headwinds or tailwinds from other headings or subheadings as they will be covered separately.
+Make sure to select headwinds and tailwinds just from the ${industry.title} sector and not from other headings or subheadings.
+
+# All the industry areas. You need to only cover the ${industry.title} area.
+${JSON.stringify(headings, null, 2)}
+`;
+
+  return await getLlmResponse<HeadwindsAndTailwinds>(prompt, HeadwindsAndTailwindsSchema);
+}
+
+// 4. Tariff Impact by Company Type
+async function getTariffImpactByCompanyType(
+  headings: IndustryAreaHeadings,
+  tariffUpdates: TariffUpdatesForIndustry,
+  industry: IndustrySubHeading,
+  date: string
+) {
+  const prompt = `Analyze the new tariffs for the ${industry.title} sector and provide:
+- Three categories of companies *positively* affected (companyType, impact, reasoning).
+- Three categories of companies *negatively* affected (companyType, impact, reasoning).
+- Output a JSON object with two arrays: positiveTariffImpactOnCompanyType and negativeTariffImpactOnCompanyType matching their schemas.
+
+Tariff Updates: ${JSON.stringify(tariffUpdates)}
+Date: ${date}
+
+${outputInstructions}
+
+The selected tariff impact should be just from the ${industry.title} sector.
+Do not include any tariff impact from other headings or subheadings as they will be covered separately.
+Make sure to select tariff impact just from the ${industry.title} sector and not from other headings or subheadings.
+
+# All the industry areas. You need to only cover the ${industry.title} area.
+${JSON.stringify(headings, null, 2)}
+
+`;
+
+  const schema = z.object({
+    positiveTariffImpactOnCompanyType: z.array(PositiveTariffImpactOnCompanyTypeSchema),
+    negativeTariffImpactOnCompanyType: z.array(NegativeTariffImpactOnCompanyTypeSchema),
+  });
+
+  interface TariffImpactByCompanyType {
+    positiveTariffImpactOnCompanyType: PositiveTariffImpactOnCompanyType[];
+    negativeTariffImpactOnCompanyType: NegativeTariffImpactOnCompanyType[];
+  }
+
+  return await getLlmResponse<TariffImpactByCompanyType>(prompt, schema);
+}
+
+// 5. Tariff Impact Summary
+async function getTariffImpactSummary(
+  tariffUpdates: TariffUpdatesForIndustry,
+  industry: IndustrySubHeading,
+  establishedPlayers: EstablishedPlayer[],
+  newChallengers: NewChallenger[],
+  headwindsAndTailwinds: HeadwindsAndTailwinds,
+  positiveTariffImpactOnCompanyType: PositiveTariffImpactOnCompanyType[],
+  negativeTariffImpactOnCompanyType: NegativeTariffImpactOnCompanyType[]
+) {
+  const prompt = `Write a 3-5 paragraph and Summarize the impact on established players, new challengers, headwinds and tailwinds, and tariff impact by company type in the ${
+    industry.title
+  } sector:
+- Add one paragraph for positive impact and include the companies that will be most positively affected to be included first in that paragraph.
+- Add one paragraph for negative impact and include the companies that will be most negatively affected to be included first in that paragraph.
+- Use future tense.
+- Include specific examples, facts, and reasoning.
+- Output a single string.
+
+
+# Tariff Updates: 
+${JSON.stringify(tariffUpdates)}
+
+# Established Players: 
+${JSON.stringify(establishedPlayers, null, 2)}
+
+# New Challengers:
+${JSON.stringify(newChallengers, null, 2)}
+
+# Headwinds and Tailwinds:
+${JSON.stringify(headwindsAndTailwinds, null, 2)}
+
+# Positive Tariff Impact on Company Type:
+${JSON.stringify(positiveTariffImpactOnCompanyType, null, 2)}
+
+# Negative Tariff Impact on Company Type:
+${JSON.stringify(negativeTariffImpactOnCompanyType, null, 2)}
+
+
+${outputInstructions}
+`;
+
+  const schema = z.object({
+    summary: z.string().describe('Summary of tariff impacts'),
+  });
+
+  interface TariffImpactSummary {
+    summary: string;
+  }
+  return (await getLlmResponse<TariffImpactSummary>(prompt, schema)).summary;
+}
+export async function getAndWriteEvaluateIndustryAreaJson(
+  industry: string,
+  industryArea: IndustrySubHeading,
   headings: IndustryAreaHeadings,
   tariffUpdates: TariffUpdatesForIndustry,
   date: string
-): Promise<EvaluateIndustryArea> {
-  const prompt = getEvaluateIndustryAreaPrompt(headings, tariffUpdates, industry, date);
-  return await getLlmResponse<EvaluateIndustryArea>(prompt, EvaluateIndustryAreaSchema);
+) {
+  // 1
+  console.log('Invoking LLM for established players');
+  const establishedPlayers = await getEstablishedPlayers(headings, tariffUpdates, industryArea, date);
+  console.log('Found established players:', establishedPlayers);
+
+  // 2
+  console.log('Invoking LLM for new challengers');
+  const newChallengers = await getNewChallengers(headings, tariffUpdates, industryArea, establishedPlayers, date);
+  console.log('Found new challengers:', newChallengers);
+
+  // 3
+  console.log('Invoking LLM for headwinds and tailwinds');
+  const headwindsAndTailwinds = await getHeadwindsAndTailwinds(headings, tariffUpdates, industryArea, date);
+  console.log('Found headwinds and tailwinds:', headwindsAndTailwinds);
+
+  // 4
+  console.log('Invoking LLM for tariff impact by company type');
+  const { positiveTariffImpactOnCompanyType, negativeTariffImpactOnCompanyType } = await getTariffImpactByCompanyType(
+    headings,
+    tariffUpdates,
+    industryArea,
+    date
+  );
+  console.log('Found tariff impact by company type:', positiveTariffImpactOnCompanyType, negativeTariffImpactOnCompanyType);
+
+  // 5
+  console.log('Invoking LLM for tariff impact summary');
+  const tariffImpactSummary = await getTariffImpactSummary(
+    tariffUpdates,
+    industryArea,
+    establishedPlayers,
+    newChallengers,
+    headwindsAndTailwinds,
+    positiveTariffImpactOnCompanyType,
+    negativeTariffImpactOnCompanyType
+  );
+
+  console.log('Found tariff impact summary:', tariffImpactSummary);
+
+  const result = {
+    title: industryArea.title,
+    aboutParagraphs: industryArea.oneLineSummary,
+    establishedPlayers,
+    newChallengers,
+    headwindsAndTailwinds,
+    positiveTariffImpactOnCompanyType,
+    negativeTariffImpactOnCompanyType,
+    tariffImpactSummary,
+  };
+
+  const jsonPath = getJsonFilePath(industry, industryArea, headings);
+  addDirectoryIfNotPresent(path.dirname(jsonPath));
+  fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2), 'utf-8');
 }
 
 function getJsonFilePath(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings) {
@@ -332,20 +514,6 @@ function getJsonFilePath(industry: string, industryArea: IndustrySubHeading, hea
 
 function getMarkdownFilePath(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings) {
   return getJsonFilePath(industry, industryArea, headings).replace('.json', '.md');
-}
-
-export async function getAndWriteEvaluateIndustryAreaJson(
-  industry: string,
-  industryArea: IndustrySubHeading,
-  headings: IndustryAreaHeadings,
-  tariffUpdates: TariffUpdatesForIndustry,
-  date: string
-) {
-  const evaluateIndustryArea = await getEvaluateIndustryArea(industryArea, headings, tariffUpdates, date);
-  const filePath = getJsonFilePath(industry, industryArea, headings);
-  fs.writeFileSync(filePath, JSON.stringify(evaluateIndustryArea, null, 2), {
-    encoding: 'utf-8',
-  });
 }
 
 export function readEvaluateIndustryAreaJsonFromFile(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings) {
@@ -370,7 +538,7 @@ export function writeEvaluateIndustryAreaToMarkdownFile(
 
   const md = [];
   md.push(`# ${industryArea.title}`);
-  md.push(...evaluateIndustryArea.aboutParagraphs);
+  md.push(evaluateIndustryArea.aboutParagraphs);
   md.push(`## Established Players`);
   evaluateIndustryArea.establishedPlayers.forEach((p) => md.push(establishedPlayerToMarkdown(p)));
   md.push(`## Newer Challengers`);
