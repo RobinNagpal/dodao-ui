@@ -175,7 +175,7 @@ async function postHandler(req: NextRequest): Promise<any> {
   }
 }
 
-function validateData(schema: object, data: unknown): { valid: boolean; errors?: ErrorObject[] } {
+export function validateData(schema: object, data: unknown): { valid: boolean; errors?: ErrorObject[] } {
   const ajv = new Ajv();
   const validate = ajv.compile(schema);
   const valid = validate(data);
