@@ -27,8 +27,17 @@ function getIndustryAreaPrompt(industry: string, headings: IndustryAreaHeadings)
   sub-headings in detail, but in this section I want to explain how these sub-headings are related to each other and 
   how they divide the industry into various areas.
   
-  Follow the below instructions:
+  # Follow the below instructions:
   - Add 5-6 paragraphs that explain how the given areas divide in the industry into various sub-areas which cover
+  
+  # For output content:
+  - Cite the latest figures and embed hyperlinks to sources.
+  - Include hyperlinks/citations in the content where ever possible in the markdown format.
+  - Dont forget to include hyperlinks/citations in the content where ever possible.
+  - Avoid LaTeX, italics, or KaTeX formatting, or   character for space
+  - Use only headings and subheadings, bold, bullets, points, tables for formatting the content.
+  - Use markdown format for output.
+  - All amounts, dollar values, or figures should be wrapped in backticks.
 
   # Headings and Subheadings
   ${JSON.stringify(headings, null, 2)}

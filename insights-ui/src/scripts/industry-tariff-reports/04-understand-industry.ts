@@ -47,7 +47,6 @@ I want to understand the ${industry} industry in depth. Give me a very detailed 
 - The full article should be at least **3000 words**
 - Below are the consolidated key areas to cover under each of the six headings
 - I am also adding more details about the industry to ensure each area is discussed
-- Don’t use KaTeX, LaTeX, or italics formatting in the response.
 
 # Important Headings Below
 
@@ -96,6 +95,17 @@ I want to understand the ${industry} industry in depth. Give me a very detailed 
 - **Strategic Moves**: M&A, vertical integration, diversification, partnerships
 - **Risk Management**: regulatory evolution, technological obsolescence, geopolitical exposure
 
+
+#  For output content:
+  - Cite the latest figures and embed hyperlinks to sources.
+  - Include hyperlinks/citations in the content where ever possible in the markdown format.
+  - Dont forget to include hyperlinks/citations in the content where ever possible.
+  - Avoid LaTeX, italics, or KaTeX formatting, or   character for space
+  - Use only headings and subheadings, bold, bullets, points, tables for formatting the content.
+  - Use markdown format for output.
+  - All amounts, dollar values, or figures should be wrapped in backticks.
+
+
 # Various Sectors/Areas I want you to cover
 
 ${JSON.stringify(headings, null, 2)}
@@ -106,6 +116,7 @@ ${JSON.stringify(headings, null, 2)}
 }
 
 export async function getUnderstandIndustry(industry: string, headings: IndustryAreaHeadings) {
+  console.log('Invoking LLM for understanding industry');
   return await getLlmResponse<UnderstandIndustry>(getUnderstandIndustryPrompt(industry, headings), UnderstandIndustrySchema);
 }
 

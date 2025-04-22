@@ -145,5 +145,5 @@ export async function doIt(reportType: ReportType, industry: string, date: strin
 }
 
 // Example usage:
-doIt(ReportType.TARIFF_UPDATES, 'Plastic', 'April 21, 2025').catch(console.error);
+doIt(ReportType.EVALUATE_INDUSTRY_AREA, 'Plastic', 'April 21, 2025').catch(console.error);
 // doIt(ReportType.ALL, 'Plastic', 'April 21, 2025').catch(console.error);

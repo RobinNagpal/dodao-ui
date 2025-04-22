@@ -8,142 +8,81 @@ import path from 'path';
 import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
 
 const CompanyProductSchema = z.object({
-  productName: z.string().describe('Name of the product.'),
-  productDescription: z.string().describe('Two line description of the product.'),
-  percentageOfRevenue: z.string().describe('Percentage of revenue from the product.'),
-  competitors: z.string().array().describe('Competitors of the product and their scale.'),
+  productName: z.string().describe('Product name'),
+  productDescription: z.string().describe('Brief two-line description of the product'),
+  percentageOfRevenue: z.string().describe('Percentage of total revenue contributed'),
+  competitors: z.string().array().describe('List of competitors and their relative market scale'),
 });
 
 const PerformanceMetricsSchema = z.object({
-  revenueGrowth: z.string().describe('Revenue growth of the company. ' + 'Include details on both the percentage and the dollar value.'),
-  costOfRevenue: z
-    .string()
-    .describe(
-      'Cost of revenue of the company needed to support the growth and explain if its was a good or a bad. ' +
-        'Include details on both the percentage and the dollar value.'
-    ),
-  profitabilityGrowth: z.string().describe('Profitability growth of the company. ' + 'Include details on both the percentage and the dollar value.'),
-  rocGrowth: z.string().describe('ROC growth of the company. Include details on both the percentage and the dollar value.'),
+  revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
+  costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
+  profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
+  rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
 });
 
 const NewChallengerSchema = z.object({
-  companyName: z.string().describe('Name of the company.'),
-  companyDescription: z.string().describe('One paragraph description of the company.'),
-  companyWebsite: z.string().describe('Website of the company.'),
-  companyTicker: z.string().describe('Ticker of the company.'),
-  products: z.array(CompanyProductSchema).describe('Products of the company and the revenue each product generates.'),
-  aboutManagement: z.string().describe('About the management team of the company.'),
-  uniqueAdvantage: z.string().describe('Unique advantage of the company against the established players.'),
-  pastPerformance: PerformanceMetricsSchema.describe('Growth, Revenue, and Profitability, ROC of the company in the last five years'),
-  futureGrowth: PerformanceMetricsSchema.describe('Growth, Revenue, and Profitability, ROC of the company expected in the next five years'),
-  impactOfTariffs: z.string().describe('Impact of the new tariffs on the company. Explain in 3-4 lines with facts and reasoning.'),
-  competitors: z.string().describe('Competitors of the company and their scale.'),
+  companyName: z.string().describe('Name of the company'),
+  companyDescription: z.string().describe('One-paragraph overview of the company'),
+  companyWebsite: z.string().describe('Company website URL'),
+  companyTicker: z.string().describe('Stock ticker symbol'),
+  products: z.array(CompanyProductSchema).describe('Product portfolio and revenue breakdown'),
+  aboutManagement: z.string().describe('Summary of the management team'),
+  uniqueAdvantage: z.string().describe('Key competitive advantage over established players'),
+  pastPerformance: PerformanceMetricsSchema.describe('Financial performance over the past five years'),
+  futureGrowth: PerformanceMetricsSchema.describe('Projected financial performance over the next five years'),
+  impactOfTariffs: z.string().describe('Impact of new tariffs on the company, with facts and reasoning (5-6 lines)'),
+  competitors: z.string().describe('Major competitors and their market position'),
 });
 
 const EstablishedPlayerSchema = z.object({
-  companyName: z.string().describe('Name of the company.'),
-  companyDescription: z.string().describe('One paragraph description of the company.'),
-  companyWebsite: z.string().describe('Website of the company.'),
-  companyTicker: z.string().describe('Ticker of the company.'),
-  products: z.array(CompanyProductSchema).describe('Products of the company and the revenue each product generates.'),
-  aboutManagement: z.string().describe('About the management team of the company.'),
-  uniqueAdvantage: z.string().describe('Unique advantage of the company against the established players.'),
-  pastPerformance: PerformanceMetricsSchema.describe('Growth, Revenue, and Profitability, ROC of the company in the last five years'),
-  futureGrowth: PerformanceMetricsSchema.describe('Growth, Revenue, and Profitability, ROC of the company expected in the next five years'),
-  impactOfTariffs: z.string().describe('Impact of the new tariffs on the company. Explain in 3-4 lines with facts and reasoning.'),
-  competitors: z.string().describe('Competitors of the company and their scale.'),
+  companyName: z.string().describe('Name of the company'),
+  companyDescription: z.string().describe('One-paragraph overview of the company'),
+  companyWebsite: z.string().describe('Company website URL'),
+  companyTicker: z.string().describe('Stock ticker symbol'),
+  products: z.array(CompanyProductSchema).describe('Product portfolio and revenue breakdown'),
+  aboutManagement: z.string().describe('Summary of the management team'),
+  uniqueAdvantage: z.string().describe('Key competitive advantage'),
+  pastPerformance: PerformanceMetricsSchema.describe('Financial performance over the past five years'),
+  futureGrowth: PerformanceMetricsSchema.describe('Projected financial performance over the next five years'),
+  impactOfTariffs: z.string().describe('Impact of new tariffs on the company, with facts and reasoning (5-6 lines)'),
+  competitors: z.string().describe('Major competitors and their market position'),
 });
 
 const HeadwindsAndTailwindsSchema = z.object({
-  headwinds: z
-    .string()
-    .array()
-    .describe(
-      '4-5 Headwinds faced by ths area of the industry and its impact on the growth and revenue. ' +
-        'Each headwind should be 3-4 lines long and give full reasoning behind it.'
-    ),
-  tailwinds: z
-    .string()
-    .array()
-    .describe(
-      '4-5 Tailwinds faced by ths area of the industry and its impact on the growth and revenue.' +
-        'Each tailwind should be 3-4 lines long and give full reasoning behind it.'
-    ),
+  headwinds: z.string().array().describe('4–5 key headwinds, each explained in 3–4 lines with reasoning'),
+  tailwinds: z.string().array().describe('4–5 key tailwinds, each explained in 3–4 lines with reasoning'),
 });
 
 const PositiveTariffImpactOnCompanyTypeSchema = z.object({
-  companyType: z.string().describe('Type of the companies that will be positively impacted by the tariffs.'),
-  impact: z.string().describe('Expected increase in revenue and growth rate of the companies purely due to the tariffs.'),
-  reasoning: z.string().describe('Reasoning behind the expected increase in revenue and growth rate of the companies purely due to the tariffs.'),
+  companyType: z.string().describe('Category of companies positively affected by tariffs'),
+  impact: z.string().describe('Expected increase in revenue and growth rate due to tariffs'),
+  reasoning: z.string().describe('Rationale for the projected impact'),
 });
 
 const NegativeTariffImpactOnCompanyTypeSchema = z.object({
-  companyType: z.string().describe('Type of the companies that will be positively impacted by the tariffs.'),
-  impact: z.string().describe('Expected increase in revenue and growth rate of the companies purely due to the tariffs.'),
-  reasoning: z.string().describe('Reasoning behind the expected increase in revenue and growth rate of the companies purely due to the tariffs.'),
+  companyType: z.string().describe('Category of companies negatively affected by tariffs'),
+  impact: z.string().describe('Expected decrease in revenue and growth rate due to tariffs'),
+  reasoning: z.string().describe('Rationale for the projected impact'),
 });
 
 const EvaluateIndustryAreaSchema = z.object({
-  title: z.string().describe('Title of the area which is being discussed. '),
-
-  aboutParagraphs: z
-    .string()
-    .array()
-    .describe(
-      'Paragraphs of 3-5 lines each which explain in the industry area in detail. ' +
-        'Be very specific. ' +
-        'Include hyperlinks/citations in the content where ever possible. ' +
-        'Every definition, and number should have a hyperlink. '
-    ),
+  title: z.string().describe('Industry area title'),
+  aboutParagraphs: z.string().array().describe('Detailed overview of the industry area, in 3–5 lines per paragraph, with citations for definitions and data'),
   newChallengers: z
     .array(NewChallengerSchema)
-    .describe(
-      '3 Top New challengers in the area of the industry.' +
-        'Content about each company should be 500-800 words long.' +
-        'Focus only on public US companies. ' +
-        'Include hyperlinks/citations in the content where ever possible. ' +
-        'Every definition, and number, company name etc should have a hyperlink. '
-    ),
+    .describe('Three leading new challengers (public US companies, IPO in the last 5–7 years), 500–800 words each, with citations'),
   establishedPlayers: z
     .array(EstablishedPlayerSchema)
-    .describe(
-      '3 Top Established in the area of the industry.' +
-        'Content about each company should be 500-800 words long.' +
-        'Focus only on public US companies. ' +
-        'Include hyperlinks/citations in the content where ever possible. ' +
-        'Every definition, and number, company name etc should have a hyperlink. '
-    ),
-  headwindsAndTailwinds: HeadwindsAndTailwindsSchema.describe(
-    '4-5 Headwinds and Tailwinds faced by the area of the industry.' +
-      'Focus only on public US companies. ' +
-      'Include hyperlinks/citations in the content where ever possible. ' +
-      'Every definition, and number, company name etc should have a hyperlink. '
-  ),
+    .describe('Three top established players (public US companies, 5+ years in industry), 500–800 words each, with citations'),
+  headwindsAndTailwinds: HeadwindsAndTailwindsSchema.describe('Headwinds and tailwinds for this industry area, with citations'),
   positiveTariffImpactOnCompanyType: z
     .array(PositiveTariffImpactOnCompanyTypeSchema)
-    .describe(
-      '3 Types of companies that will be positively impacted by the tariffs.' +
-        'Include specific examples of companies and the type of products when sharing information of the company types that are impacted. ' +
-        'Information about each company should be 400-600 words long.' +
-        'Focus only on US companies'
-    ),
+    .describe('Three company categories that benefit from the tariffs, 400–600 words each, with specific examples'),
   negativeTariffImpactOnCompanyType: z
     .array(NegativeTariffImpactOnCompanyTypeSchema)
-    .describe(
-      '3 Types of companies that will be negatively impacted by the tariffs. ' +
-        'Include specific examples of companies and the type of products when sharing information of the company types that are impacted. ' +
-        'Information about each company should be 400-600 words long. ' +
-        'Focus only on public US companies. '
-    ),
-  tariffImpactSummary: z
-    .string()
-    .describe(
-      'Summary of the impact of tariffs on the area of the industry. ' +
-        'Include specific examples of companies and the type of products when creating the summary. ' +
-        'Include hyperlinks/citations in the content where ever possible. ' +
-        'Take example of companies and the type of products when creating the summary. ' +
-        'Every definition, and number, company name etc should have a hyperlink. '
-    ),
+    .describe('Three company categories that are harmed by the tariffs, 400–600 words each, with specific examples'),
+  tariffImpactSummary: z.string().describe('4–5 paragraph summary of tariff impacts on US companies, with examples, facts, and reasoning'),
 });
 
 interface CompanyProduct {
@@ -223,149 +162,145 @@ export function getEvaluateIndustryAreaPrompt(
   date: string
 ) {
   const prompt = `
-  I want to know about the new challengers and established players in the ${industry.title} industry.
-  
-  Couple of more lines about the ${industry.title} industry.
-  - Summary: ${industry.oneLineSummary}
-  - Few Companies involved: ${industry.companies.map((company) => company.name).join(', ')}
-  
-  Focus only on public US companies. 
-  
-  Total response will be 8000-10000 words long.
-  
-  For the provided industry area, please provide the following:
-  - 3 new challengers which are public US companies which has IPO in the last 5-7 years and which are disrupting the 
-  industry and challenging the established players. Only consider best of the best new players who have something unique 
-  to offer.
-  - Make sure to properly choose the new players and not just any random company if should best of the best.
-  
-  - 3 established players which are public US companies which are already in the industry for more than 5-7 years and 
-  have been very stable, but can still scale. Only consider the top 4-5 player.
-  
-  The details for both the challenger and new player should include 
-  - Name of the company
-  - Description of the company
-  - Website of the company
-  - Ticker of the company
-  - Products of the company and the revenue each product generates
-  - About the management team of the company
-  - Unique advantage of the company against the established players
-  - Growth, Revenue, and Profitability, ROC of the company in the last five years. Make sure to include the numbers and facts
-  - Growth, Revenue, and Profitability, ROC of the company expected in the next five years
-  - Impact of the tariffs on the company
-  - Competitors of the company and their scale
-  
-  
-  - 3 Type of companies that will be positively impacted by the tariffs. Include specific examples of companies and the type of products when sharing information of the company types that are impacted. 
-  - 3 Type of companies that will be negatively impacted by the tariffs. Include specific examples of companies and the type of products when sharing information of the company types that are impacted.
-  
-  Include hyperlinks/citations in the content where ever possible.
-  Every definition, and number should have a hyperlink.
-  
-  The tariff summary should be 
-  - At least 4-5 paragraphs long and should clearly explain which type of companies under
-  this industry will be positively impacted by the tariffs and which type of companies under this industry will be negatively
-  and why. 
-  - Answer should be very specific and should include facts and reasoning. 
-  - Take example of companies and the type  of products when creating the summary.
-  - Dont be abstract and generic, use specific examples of companies and the type of products when creating the summary.
-  - Dont say generic stuff like "local companies will be positively impacted by the tariffs" or "importers will be negatively impacted by the tariffs". Share concrete examples of companies and the type of products when creating the summary.
-  - Answer in future tense.
-  - Keep it specific to the impact on US companies.
-  
-  Dont use any Katex or Latex or italics formatting in the response.
-  
-  Here are more details about the areas of the industry that I want to know about:
-  
-  ${JSON.stringify(headings, null, 2)}
-  
-  
-  # Tariff Updates
-  ${JSON.stringify(tariffUpdates, null, 2)}
-  
-  `;
+I’m researching the ${industry.title} sector and need a detailed report.
+
+Summary: ${industry.oneLineSummary}
+Key companies: ${industry.companies.map((c) => c.name).join(', ')}
+
+Please focus only on public US companies.
+
+Report scope (8,000–10,000 words total):
+
+1. **New Challengers** (3 companies):
+   - Public US IPOs in the last 5–7 years disrupting the industry.
+   - Select the companies with some unique advantage over established players.
+   - Make sure there is some unique advantage the selected new player has over established players.
+   - 500–800 words each, covering:
+     • Company name, description, website, ticker
+     • Product portfolio and revenue breakdown
+     • Management overview
+     • Competitive advantage
+     • Past performance (5 years): revenue, cost, profitability, ROC (numbers & facts)
+     • Projected performance (next 5 years)
+     • Impact of recent tariffs
+     • Competitors
+
+2. **Established Players** (3 companies):
+   - Public US companies with 5+ years in the sector.
+   - 500–800 words each, same details as above.
+
+3. **Industry Headwinds & Tailwinds**:
+   - 4–5 headwinds and 4–5 tailwinds, each 3–4 lines with reasoning.
+
+4. **Tariff Impacts**:
+   - Three categories of companies positively affected (400–600 words each, with examples).
+   - Three categories of companies negatively affected (400–600 words each, with examples).
+
+5. **Tariff Impact Summary**:
+   - 4–5 paragraphs summarizing effects on US companies
+   - Use specific examples, facts, citations. Write in future tense.
+
+# For output content:
+- Cite the latest figures and embed hyperlinks to sources.
+- Include hyperlinks/citations in the content where ever possible in the markdown format.
+- Dont forget to include hyperlinks/citations in the content where ever possible.
+- Avoid LaTeX, italics, or KaTeX formatting, or   character for space
+- Use only headings and subheadings, bold, bullets, points, tables for formatting the content.
+- Use markdown format for output.
+- All amounts, dollar values, or figures should be wrapped in backticks.
+
+
+Industry areas details:
+${JSON.stringify(headings, null, 2)}
+
+# Tariff Updates
+${JSON.stringify(tariffUpdates, null, 2)}
+`;
 
   return prompt;
 }
 
 /**
- * Converts a NewChallenger object to Markdown with a product table and all properties.
+ * Converts a NewChallenger object to Markdown with organized sections and tables.
  */
 function challengerToMarkdown(challenger: NewChallenger): string {
+  // Company Header
   const header =
-    `### ${challenger.companyName} - (Ticker - ${challenger.companyTicker})\n` +
-    `**Description:** ${challenger.companyDescription}\n\n` +
-    `**Website:** ${challenger.companyWebsite}\n\n`;
+    `### ${challenger.companyName} (Ticker: ${challenger.companyTicker})\n` +
+    `**Description:** ${challenger.companyDescription}\n` +
+    `**Website:** [${challenger.companyWebsite}](${challenger.companyWebsite})\n\n`;
 
-  // Build products table
-  const tableHeader = `| Product Name | Description | % of Revenue | Competitors |\n` + `| ------------ | ----------- | ------------ | ----------- |\n`;
-  const tableRows = challenger.products
-    .map((p) => `| ${p.productName} | ${p.productDescription} | ${p.percentageOfRevenue} | ${p.competitors.join(', ')} |`)
-    .join('\n');
+  // Product Portfolio
+  const productsSection =
+    `#### Products\n` +
+    `| Name | Description | % of Revenue | Competitors |\n` +
+    `| ---- | ----------- | ------------ | ----------- |\n` +
+    challenger.products.map((p) => `| ${p.productName} | ${p.productDescription} | ${p.percentageOfRevenue} | ${p.competitors.join(', ')} |`).join('\n') +
+    `\n\n`;
 
-  const productsTable = tableHeader + tableRows + '\n\n';
+  // Performance Metrics
+  const past = challenger.pastPerformance;
+  const future = challenger.futureGrowth;
+  const performanceSection =
+    `#### Performance\n` +
+    `- **Past 5 Years:**\n` +
+    `  - Revenue Growth: ${past.revenueGrowth}\n` +
+    `  - Cost of Revenue: ${past.costOfRevenue}\n` +
+    `  - Profitability Growth: ${past.profitabilityGrowth}\n` +
+    `  - ROC Growth: ${past.rocGrowth}\n` +
+    `- **Next 5 Years (Projected):**\n` +
+    `  - Revenue Growth: ${future.revenueGrowth}\n` +
+    `  - Cost of Revenue: ${future.costOfRevenue}\n` +
+    `  - Profitability Growth: ${future.profitabilityGrowth}\n` +
+    `  - ROC Growth: ${future.rocGrowth}\n\n`;
 
-  const pastPerformance =
-    `  - **Revenue Growth:** ${challenger.pastPerformance.revenueGrowth}\n\n` +
-    `  - **Cost of Revenue:** ${challenger.pastPerformance.costOfRevenue}\n\n` +
-    `  - **Profitability Growth:** ${challenger.pastPerformance.profitabilityGrowth}\n\n` +
-    `  - **ROC Growth:** ${challenger.pastPerformance.rocGrowth}\n\n`;
+  // Management & Strategy
+  const managementSection =
+    `#### Management & Strategy\n` + `- About Management: ${challenger.aboutManagement}\n` + `- Unique Advantage: ${challenger.uniqueAdvantage}\n\n`;
 
-  const futureGrowth =
-    `  - **Revenue Growth:** ${challenger.futureGrowth.revenueGrowth}\n\n` +
-    `  - **Cost of Revenue:** ${challenger.futureGrowth.costOfRevenue}\n\n` +
-    `  - **Profitability Growth:** ${challenger.futureGrowth.profitabilityGrowth}\n\n` +
-    `  - **ROC Growth:** ${challenger.futureGrowth.rocGrowth}\n\n`;
+  // Tariff Impact & Competitors
+  const footer = `#### Tariffs & Competitors\n` + `- Tariff Impact: ${challenger.impactOfTariffs}\n` + `- Competitors: ${challenger.competitors}\n`;
 
-  const footer =
-    `**About Management:** ${challenger.aboutManagement}\n\n` +
-    `**Unique Advantage:** ${challenger.uniqueAdvantage}\n\n` +
-    `**Past Performance:**\n\n${pastPerformance}\n\n` +
-    `**Future Growth:**\n\n${futureGrowth}\n\n` +
-    `**Tariff Impact:** ${challenger.impactOfTariffs}\n\n` +
-    `**Competitors:** ${challenger.competitors}`;
-
-  return header + productsTable + footer;
+  return header + productsSection + performanceSection + managementSection + footer;
 }
 
 /**
- * Converts an EstablishedPlayer object to Markdown with a product table and all properties.
+ * Converts an EstablishedPlayer object to Markdown with organized sections and tables.
  */
 function establishedPlayerToMarkdown(player: EstablishedPlayer): string {
   const header =
-    `### ${player.companyName} - (Ticker - ${player.companyTicker})\n` +
-    `**Description:** ${player.companyDescription}\n\n` +
-    `**Website:** ${player.companyWebsite}\n\n`;
+    `### ${player.companyName} (Ticker: ${player.companyTicker})\n` +
+    `**Description:** ${player.companyDescription}\n` +
+    `**Website:** [${player.companyWebsite}](${player.companyWebsite})\n\n`;
 
-  // Build products table
-  const tableHeader = `| Product Name | Description | % of Revenue | Competitors |\n` + `| ------------ | ----------- | ------------ | ----------- |\n`;
-  const tableRows = player.products
-    .map((p) => `| ${p.productName} | ${p.productDescription} | ${p.percentageOfRevenue} | ${p.competitors.join(', ')} |`)
-    .join('\n');
+  const productsSection =
+    `#### Products\n` +
+    `| Name | Description | % of Revenue | Competitors |\n` +
+    `| ---- | ----------- | ------------ | ----------- |\n` +
+    player.products.map((p) => `| ${p.productName} | ${p.productDescription} | ${p.percentageOfRevenue} | ${p.competitors.join(', ')} |`).join('\n') +
+    `\n\n`;
 
-  const productsTable = tableHeader + tableRows + '\n\n';
+  const past = player.pastPerformance;
+  const future = player.futureGrowth;
+  const performanceSection =
+    `#### Performance\n` +
+    `- **Past 5 Years:**\n` +
+    `  - Revenue Growth: ${past.revenueGrowth}\n` +
+    `  - Cost of Revenue: ${past.costOfRevenue}\n` +
+    `  - Profitability Growth: ${past.profitabilityGrowth}\n` +
+    `  - ROC Growth: ${past.rocGrowth}\n` +
+    `- **Next 5 Years (Projected):**\n` +
+    `  - Revenue Growth: ${future.revenueGrowth}\n` +
+    `  - Cost of Revenue: ${future.costOfRevenue}\n` +
+    `  - Profitability Growth: ${future.profitabilityGrowth}\n` +
+    `  - ROC Growth: ${future.rocGrowth}\n\n`;
 
-  const pastPerformance =
-    `  - **Revenue Growth:** ${player.pastPerformance.revenueGrowth}\n\n` +
-    `  - **Cost of Revenue:** ${player.pastPerformance.costOfRevenue}\n\n` +
-    `  - **Profitability Growth:** ${player.pastPerformance.profitabilityGrowth}\n\n` +
-    `  - **ROC Growth:** ${player.pastPerformance.rocGrowth}\n\n`;
+  const managementSection =
+    `#### Management & Strategy\n` + `- About Management: ${player.aboutManagement}\n` + `- Unique Advantage: ${player.uniqueAdvantage}\n\n`;
 
-  const futureGrowth =
-    `  - **Revenue Growth:** ${player.futureGrowth.revenueGrowth}\n\n` +
-    `  - **Cost of Revenue:** ${player.futureGrowth.costOfRevenue}\n\n` +
-    `  - **Profitability Growth:** ${player.futureGrowth.profitabilityGrowth}\n\n` +
-    `  - **ROC Growth:** ${player.futureGrowth.rocGrowth}\n\n`;
+  const footer = `#### Tariffs & Competitors\n` + `- Tariff Impact: ${player.impactOfTariffs}\n` + `- Competitors: ${player.competitors}\n`;
 
-  const footer =
-    `**About Management:** ${player.aboutManagement}\n\n` +
-    `**Unique Advantage:** ${player.uniqueAdvantage}\n\n` +
-    `**Past Performance:**\n\n${pastPerformance}\n\n` +
-    `**Future Growth:**\n\n${futureGrowth}\n\n` +
-    `**Tariff Impact:** ${player.impactOfTariffs}\n\n` +
-    `**Competitors:** ${player.competitors}`;
-
-  return header + productsTable + footer;
+  return header + productsSection + performanceSection + managementSection + footer;
 }
 
 async function getEvaluateIndustryArea(
@@ -433,29 +368,22 @@ export function writeEvaluateIndustryAreaToMarkdownFile(
 ) {
   const filePath = getMarkdownFilePath(industry, industryArea, headings);
 
-  const markdownContent =
-    `# ${industryArea.title}\n\n` +
-    `${evaluateIndustryArea.aboutParagraphs.map((paragraph) => `${paragraph}`).join('\n\n')}\n` +
-    `## New Challengers\n\n` +
-    `${evaluateIndustryArea.newChallengers.map((challenger) => challengerToMarkdown(challenger)).join('\n\n')}\n` +
-    `## Established Players\n\n` +
-    `${evaluateIndustryArea.establishedPlayers.map((establishedPlayer) => establishedPlayerToMarkdown(establishedPlayer)).join('\n\n')}\n` +
-    `## Headwinds\n\n` +
-    `${evaluateIndustryArea.headwindsAndTailwinds.headwinds.map((headwind) => `${headwind}`).join('\n\n')}\n` +
-    `## Tailwinds\n\n` +
-    `${evaluateIndustryArea.headwindsAndTailwinds.tailwinds.map((tailwind) => `${tailwind}`).join('\n\n')}\n` +
-    `## Company types that will be Positively Impacted by Tariffs\n\n` +
-    `${evaluateIndustryArea.positiveTariffImpactOnCompanyType
-      .map((impact) => `### ${impact.companyType}\n- **Impact**: ${impact.impact}\n- **Reason**: ${impact.reasoning}`)
-      .join('\n\n')}\n` +
-    `## Company types that will be Negatively Impacted by Tariffs\n\n` +
-    `${evaluateIndustryArea.negativeTariffImpactOnCompanyType
-      .map((impact) => `### ${impact.companyType}\n- **Impact**: ${impact.impact}\n- **Reason**: ${impact.reasoning}`)
-      .join('\n\n')}\n` +
-    `## Tariff Impact Summary\n\n` +
-    `${evaluateIndustryArea.tariffImpactSummary}`;
+  const md = [];
+  md.push(`# ${industryArea.title}`);
+  md.push(...evaluateIndustryArea.aboutParagraphs);
+  md.push(`## Established Players`);
+  evaluateIndustryArea.establishedPlayers.forEach((p) => md.push(establishedPlayerToMarkdown(p)));
+  md.push(`## Newer Challengers`);
+  evaluateIndustryArea.newChallengers.forEach((c) => md.push(challengerToMarkdown(c)));
+  md.push(`## Headwinds & Tailwinds`);
+  md.push(`### Headwinds`, ...evaluateIndustryArea.headwindsAndTailwinds.headwinds);
+  md.push(`### Tailwinds`, ...evaluateIndustryArea.headwindsAndTailwinds.tailwinds);
+  md.push(`## Tariff Impact by Company Type`);
+  md.push(`### Positive Impact`);
+  evaluateIndustryArea.positiveTariffImpactOnCompanyType.forEach((i) => md.push(`#### ${i.companyType}\n- Impact: ${i.impact}\n- Reasoning: ${i.reasoning}`));
+  md.push(`### Negative Impact`);
+  evaluateIndustryArea.negativeTariffImpactOnCompanyType.forEach((i) => md.push(`#### ${i.companyType}\n- Impact: ${i.impact}\n- Reasoning: ${i.reasoning}`));
+  md.push(`## Tariff Impact Summary`, evaluateIndustryArea.tariffImpactSummary);
 
-  fs.writeFileSync(filePath, markdownContent, {
-    encoding: 'utf-8',
-  });
+  fs.writeFileSync(filePath, md.join('\n\n'), 'utf-8');
 }
