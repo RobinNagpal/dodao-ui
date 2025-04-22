@@ -13,6 +13,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useEffect, useState } from 'react';
 import CriteriaTable from './CriteriaTable';
+import DebugTickerInfo from '@/components/ticker/debug/DebugTickerInfo';
 
 export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
   // New state for section-specific regeneration confirmation
@@ -71,6 +72,7 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
             customCriteria={industryGroupCriteria}
             ticker={ticker}
           />
+          <DebugTickerInfo report={tickerReport} onPostUpdate={onPostUpdate} />
         </div>
       )}
     </PageWrapper>

@@ -54,7 +54,9 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
 
       <PrivateWrapper>
         <div className="flex items-center justify-end my-4">
-          <div className="mr-4">Last updated at: {new Date(report.criteriaMatchesOfLatest10Q.updatedAt).toLocaleString()}</div>
+          <div className="mr-4">
+            Last updated at: {report.criteriaMatchesOfLatest10Q?.updatedAt ? new Date(report.criteriaMatchesOfLatest10Q.updatedAt).toLocaleString() : ''}
+          </div>
 
           <Button
             loading={matchingCriteriaLoading || report.criteriaMatchesOfLatest10Q?.status === ProcessingStatus.InProgress}
@@ -75,7 +77,7 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
       )}
 
       <h1 className="mb-8 font-bold text-xl">Matching Attachments</h1>
-      {report.criteriaMatchesOfLatest10Q.failureReason && <div className="text-red-500">{report.criteriaMatchesOfLatest10Q.failureReason}</div>}
+      {report.criteriaMatchesOfLatest10Q?.failureReason && <div className="text-red-500">{report.criteriaMatchesOfLatest10Q.failureReason}</div>}
       {report.criteriaMatchesOfLatest10Q?.criterionMatches?.map((criterion) => {
         return (
           <div key={criterion.criterionKey}>

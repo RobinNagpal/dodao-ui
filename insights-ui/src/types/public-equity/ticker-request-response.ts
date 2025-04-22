@@ -90,6 +90,10 @@ export interface SaveLatest10QFinancialStatementsRequest {
   latest10QFinancialStatements: string;
 }
 
+export interface SaveTickerInfoRequest {
+  tickerInfo: string;
+}
+
 export interface CriterionMatchTextItem {
   criterion_key: string;
   relevant_text: string;

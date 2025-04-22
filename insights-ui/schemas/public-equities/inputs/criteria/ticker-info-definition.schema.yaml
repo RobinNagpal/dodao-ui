@@ -1,0 +1,19 @@
+type: object
+properties:
+  tickerKey:
+    type: string
+    description: "Ticker symbol of the REIT"
+  companyName:
+    type: string
+    description: "Full legal name of the REIT"
+  shortDescription:
+    type: string
+    description: "Description of the company"
+  referenceDate:
+    type: string
+    description: "Date for which to report info"
+required:
+  - tickerKey
+  - companyName
+  - shortDescription
+  - referenceDate

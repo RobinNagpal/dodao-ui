@@ -1,0 +1,87 @@
+type: object
+properties:
+  yearsSinceIpo:
+    type: string
+    description: "Number of years since the IPO, as a string (e.g. '0.6 years')"
+  gicsClassification:
+    type: object
+    description: "GICS sector-to-sub-industry breakdown"
+    properties:
+      sector:
+        type: string
+      industryGroup:
+        type: string
+      industry:
+        type: string
+      subIndustry:
+        type: string
+    required:
+      - sector
+      - industryGroup
+      - industry
+      - subIndustry
+  businessModel:
+    type: string
+    description: "Description of the REIT’s core operating model and revenue drivers"
+  dividendProfile:
+    type: string
+    description: "Narrative description of the dividend policy and recent payout history"
+  competitiveEdge:
+    type: array
+    description: "List of key competitive advantages versus peers"
+    items:
+      type: string
+  comparables:
+    type: array
+    description: "Array of comparable REITs with key metrics and comparison comments"
+    items:
+      type: object
+      properties:
+        ticker:
+          type: string
+          description: "Ticker symbol of the comparable REIT"
+        companyName:
+          type: string
+          description: "Full name of the comparable REIT"
+        businessModel:
+          type: string
+          description: "Description of the comparable’s business model"
+        occupancyRate:
+          type: string
+          description: "Current portfolio occupancy rate (if any)"
+        dividendProfile:
+          type: string
+          description: "Narrative description of that REIT’s dividend profile"
+        comparisonParagraph:
+          type: string
+          description: "Paragraph comparing the REIT to the target"
+      required:
+        - ticker
+        - companyName
+        - businessModel
+        - occupancyRate
+        - dividendProfile
+        - comparisonParagraph
+  latestNews:
+    type: string
+    description: "Latest news or recent developments/announcements"
+  outlook:
+    type: string
+    description: "5‑year outlook for the REIT of this type (sub‑industry)"
+  headwinds:
+    type: string
+    description: "Key headwinds facing the REIT"
+  tailwinds:
+    type: string
+    description: "Key tailwinds supporting the REIT"
+required:
+  - yearsSinceIpo
+  - gicsClassification
+  - businessModel
+  - dividendProfile
+  - competitiveEdge
+  - comparables
+  - latestNews
+  - outlook
+  - headwinds
+  - tailwinds

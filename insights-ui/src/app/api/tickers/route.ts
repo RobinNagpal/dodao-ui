@@ -1,9 +1,11 @@
 import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { Latest10QInfoResponse } from '@/types/public-equity/ticker-report-types';
 import { TickerCreateRequest } from '@/types/public-equity/ticker-request-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { getTickerInfo } from './[tickerKey]/ticker-info/getTickerInfo';
 
 async function getHandler(): Promise<Ticker[]> {
   const tickers = await prisma.ticker.findMany();
@@ -63,7 +65,21 @@ async function postHandler(req: NextRequest): Promise<Ticker> {
     },
   });
 
-  return newTicker;
+  const aboutTickerString = await getTickerInfo(newTicker);
+
+  const updatedTicker = await prisma.ticker.update({
+    where: {
+      spaceId_tickerKey: {
+        spaceId: KoalaGainsSpaceId,
+        tickerKey,
+      },
+    },
+    data: {
+      tickerInfo: aboutTickerString,
+    },
+  });
+
+  return updatedTicker;
 }
 
 export const GET = withErrorHandlingV2<Ticker[]>(getHandler);

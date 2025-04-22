@@ -17,6 +17,8 @@ import Link from 'next/link';
 import TickerActionsDropdown from './TickerActionsDropdown';
 import { Metadata } from 'next';
 import PopulateLatest10QInfoButton from './PopulateLatest10QInfoButton';
+import { parseMarkdown } from '@/util/parse-markdown';
+import PopulateTickerInfoButton from './PopulateTickerInfoButton';
 
 export async function generateMetadata({ params }: { params: Promise<{ tickerKey: string }> }): Promise<Metadata> {
   const { tickerKey } = await params;
@@ -134,7 +136,9 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                   </div>
                   <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm/6 font-medium">SEC 10Q Filing Link</dt>
-                    <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{tickerReport.latest10QInfo.filingUrl}</dd>
+                    <a href={tickerReport.latest10QInfo.filingUrl} target="_blank" className="link-color mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
+                      {tickerReport.latest10QInfo.filingUrl}
+                    </a>
                   </div>
                 </dl>
               </div>
@@ -178,6 +182,24 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                 })}
               </dl>
             </div>
+            {tickerReport.tickerInfo ? (
+              <div className="text-left my-8">
+                <div className="border-y border-gray-100">
+                  <h3 className="font-semibold text-xl text-center my-5">
+                    About {tickerReport.companyName} ({tickerKey})
+                  </h3>
+                </div>
+                <div className="my-5">
+                  <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(tickerReport.tickerInfo) }} />
+                </div>
+              </div>
+            ) : (
+              <PrivateWrapper>
+                <div className="my-8">
+                  <PopulateTickerInfoButton tickerKey={tickerKey} />
+                </div>
+              </PrivateWrapper>
+            )}
           </div>
         </div>
       </div>
