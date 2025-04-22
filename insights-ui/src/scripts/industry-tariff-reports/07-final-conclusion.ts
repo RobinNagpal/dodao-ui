@@ -1,6 +1,6 @@
 import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
-import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
+import { getLlmResponse, outputInstructions } from '@/scripts/industry-tariff-reports/llm-utils';
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
@@ -76,7 +76,8 @@ function getFinalConclusionPrompt(
   return `Write a final conclusion section for the ${industry} industry. The conclusion should be 4-6 paragraphs long and should follow the following rules: 
   1. The conclusion should be concise and to the point, avoiding unnecessary details or jargon. 
   2. This is the conclusion, so there should be no introduction as this is the last sections of the report.
-  3. The conclusion section should be specific to the ${industry} industry but mentions that
+  3. Make sure to include the concrete company names and the company types and the reasoning.
+  4. The conclusion section should be specific to the ${industry} industry but mentions that
      - In this full report, we will discuss the latest tariff updates and their impact on the ${industry} industry.
      - The report assumes that the reader is not familiar with the ${industry} industry hence we first start with the 
         introduction of the industry.
@@ -86,7 +87,7 @@ function getFinalConclusionPrompt(
      - For each of these areas we also create a final summary.
      - I will provide you the final summaries so that you know what will be discussed, but don't take any insights from them
      in this sections, as this is the executive summary(introduction) section.
-  4. Dont use Katex or Latex or italics formatting in the response.
+  
 
    Conclusion should include the following fields:
     - Title
@@ -95,6 +96,8 @@ function getFinalConclusionPrompt(
     - Negative impacts a string which is a summary of all the area specific summaries which tell about negative impacts of new tariffs on the industry. 
     - Final statements a string which is a final statement of the report.
 
+    ${outputInstructions}
+    
    # Industry Areas
    ${JSON.stringify(headings, null, 2)}
    
@@ -126,7 +129,7 @@ async function getFinalConclusion(
 }
 
 function getFinalConclusionJsonFileName(industry: string) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'final-conclusion');
+  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '07-final-conclusion');
   const fileName = path.join(dirPath, 'final-conclusion.json');
   addDirectoryIfNotPresent(dirPath);
   return fileName;

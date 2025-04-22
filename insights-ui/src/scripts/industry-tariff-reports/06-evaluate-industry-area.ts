@@ -400,7 +400,9 @@ async function getTariffImpactSummary(
 - Use future tense.
 - Include specific examples, facts, and reasoning.
 - Output a single string.
+- Focus on impact on US based companies.
 
+${outputInstructions}
 
 # Tariff Updates: 
 ${JSON.stringify(tariffUpdates)}
@@ -421,7 +423,7 @@ ${JSON.stringify(positiveTariffImpactOnCompanyType, null, 2)}
 ${JSON.stringify(negativeTariffImpactOnCompanyType, null, 2)}
 
 
-${outputInstructions}
+
 `;
 
   const schema = z.object({

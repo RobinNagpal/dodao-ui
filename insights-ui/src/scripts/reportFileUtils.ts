@@ -1,7 +1,6 @@
 import fs from 'fs';
 
 export const reportsOutDir = 'reports-out';
-export const industryHeadingsFileName = 'industry-headings.json';
 
 export function addDirectoryIfNotPresent(dirPath: string) {
   // Create the directory if it doesn't exist
