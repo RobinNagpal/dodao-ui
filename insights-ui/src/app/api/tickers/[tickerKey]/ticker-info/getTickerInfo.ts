@@ -6,7 +6,7 @@ import fs from 'fs';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { ChatOpenAI } from '@langchain/openai';
 import Handlebars from 'handlebars';
-import { validateData } from '@/app/api/actions/prompt-invocation/full-req-resp/route';
+import Ajv, { ErrorObject } from 'ajv';
 
 interface ComparableReit {
   ticker: string;
@@ -151,4 +151,11 @@ ${result.comparables
     `.trim();
 
   return aboutTickerString;
+}
+
+function validateData(schema: object, data: unknown): { valid: boolean; errors?: ErrorObject[] } {
+  const ajv = new Ajv();
+  const validate = ajv.compile(schema);
+  const valid = validate(data);
+  return { valid: !!valid, errors: validate.errors || [] };
 }
