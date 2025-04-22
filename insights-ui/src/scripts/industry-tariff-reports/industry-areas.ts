@@ -45,28 +45,27 @@ async function getIndustryAreaSection(industry: string, headings: IndustryAreaHe
 
 function getIndustryAreaJsonFilePath(industry: string): string {
   const fileName = `industry-area.json`;
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'industry-areas');
+  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '05-industry-areas');
   addDirectoryIfNotPresent(dirPath);
   const jsonFilePath = path.join(dirPath, fileName);
   return jsonFilePath;
 }
 
-async function writeIndustryAreaSectionToFile(industry: string, headings: IndustryAreaHeadings): Promise<void> {
+export async function getAndWriteIndustryAreaSectionToJsonFile(industry: string, headings: IndustryAreaHeadings): Promise<void> {
   const industryAreaSection = await getIndustryAreaSection(industry, headings);
   const filePath = getIndustryAreaJsonFilePath(industry);
   fs.writeFileSync(filePath, JSON.stringify(industryAreaSection, null, 2));
 }
 
-async function readIndustryAreaSectionFromFile(industry: string): Promise<IndustryAreaSection> {
+export async function readIndustryAreaSectionFromFile(industry: string): Promise<IndustryAreaSection> {
   const filePath = getIndustryAreaJsonFilePath(industry);
   const data = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(data) as IndustryAreaSection;
 }
 
-async function writeIndustryAreaSectionToMarkdownFile(industry: string): Promise<void> {
+export async function writeIndustryAreaSectionToMarkdownFile(industry: string, industryAreaSection: IndustryAreaSection): Promise<void> {
   const filePath = getIndustryAreaJsonFilePath(industry).replace('.json', '.md');
-  const industryAreaSection = await readIndustryAreaSectionFromFile(industry);
-  const markdownContent = `# Industry Area\n\n## ${industryAreaSection.title}\n\n${industryAreaSection.industryAreas}`;
+  const markdownContent = `# ${industryAreaSection.title}\n\n${industryAreaSection.industryAreas}`;
   fs.writeFileSync(filePath, markdownContent, {
     encoding: 'utf-8',
   });

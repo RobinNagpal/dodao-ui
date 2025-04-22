@@ -163,7 +163,7 @@ export async function getIntroduction(industry: string, date: string, industryHe
 }
 
 export async function readIntroductionJsonFromFile(industry: string) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'introduction');
+  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '02-introduction');
   const filePath = path.join(dirPath, 'introduction.json');
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
@@ -178,7 +178,7 @@ export async function readIntroductionJsonFromFile(industry: string) {
 export async function getAndWriteIntroductionsJson(industry: string, date: string, headings: IndustryAreaHeadings) {
   const introduction = await getIntroduction(industry, date, headings);
   console.log('Introduction:', introduction);
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'introduction');
+  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '02-introduction');
   const filePath = path.join(dirPath, 'introduction.json');
   fs.writeFileSync(filePath, JSON.stringify(introduction, null, 2), {
     encoding: 'utf-8',
@@ -186,7 +186,7 @@ export async function getAndWriteIntroductionsJson(industry: string, date: strin
 }
 
 export function writeIntroductionToMarkdownFile(industry: string, introduction: Introduction) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'introduction');
+  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '02-introduction');
   const filePath = path.join(dirPath, 'introduction.md');
   addDirectoryIfNotPresent(dirPath);
 

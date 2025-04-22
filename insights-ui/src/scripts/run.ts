@@ -5,6 +5,11 @@ import {
   writeEvaluateIndustryAreaToMarkdownFile,
 } from '@/scripts/industry-tariff-reports/evaluate-industry-area';
 import {
+  getAndWriteIndustryAreaSectionToJsonFile,
+  readIndustryAreaSectionFromFile,
+  writeIndustryAreaSectionToMarkdownFile,
+} from '@/scripts/industry-tariff-reports/industry-areas';
+import {
   getAndWriteIndustryHeadings,
   readIndustryHeadingsFromFile,
   writeIndustryHeadingsToMarkdownFile,
@@ -52,6 +57,11 @@ async function doIt() {
   // await getTariffUpdatesForIndustryAndSaveToFile(industry, date, headings);
   const tariffUpdates: TariffUpdatesForIndustry = await readTariffUpdatesFromFile(industry);
   // writeTariffUpdatesToMarkdownFile(industry, tariffUpdates);
+
+  // ##### Industry Area Section #####
+  await getAndWriteIndustryAreaSectionToJsonFile(industry, headings);
+  const industryAreaSection = await readIndustryAreaSectionFromFile(industry);
+  await writeIndustryAreaSectionToMarkdownFile(industry, industryAreaSection);
 
   // const firstIndustryArea = headings.headings[3].subHeadings[2];
   // ##### Evaluate Industry Area #####
@@ -110,8 +120,8 @@ async function doIt() {
 
   // ##### Final Conclusion #####
   // await getFinalConclusionAndSaveToFile(industry, headings, tariffUpdates, tariffSummaries, positiveImpacts, negativeImpacts);
-  const finalConclusion = await readFinalConclusionFromFile(industry);
-  writeFinalConclusionToMarkdownFile(industry, finalConclusion);
+  // const finalConclusion = await readFinalConclusionFromFile(industry);
+  // writeFinalConclusionToMarkdownFile(industry, finalConclusion);
 }
 
 doIt().catch((err) => {

@@ -40,133 +40,61 @@ interface UnderstandIndustry {
 
 function getUnderstandIndustryPrompt(industry: string, headings: IndustryAreaHeadings) {
   const prompt = `
+I want to understand the ${industry} industry in depth. Give me a very detailed article with:
+- Exactly **6 Headings** and **2–3 small paragraphs** under each heading
+- Share as many facts as possible (volumes, amounts, dollar values)
+- Add hyperlinks for definitions and key numbers throughout
+- The full article should be at least **3000 words**
+- Below are the consolidated key areas to cover under each of the six headings
+- I am also adding more details about the industry to ensure each area is discussed
+- Don’t use KaTeX, LaTeX, or italics formatting in the response.
 
-I want to understand the ${industry} industry in depth. Give me a very detailed article
-with 
-- 6-12 Headings and 2-3 small paragraphs under each heading
-- Try to share as many facts as possible. Facts can include volume/amount or dollar value.
-- Add hyperlinks in the content for most definitionss, and numbers.
-- The full article should be at least 3000 words
-- Below are some of the important headings and I want you to focus on the most relevant ones. 
-- I am also adding more details about the industry and I want to make sure each of those main areas
-are being discussed in the article 
-- Dont use any Katex or Latex or italics formatting in the response.
+# Important Headings Below
 
-# Important Headings Below 
+### 1. Product & Innovation
+> *(Inside‑out view of what’s made, why it sells, and how it evolves)*
+- **Definition & Scope**: core product, add‑ons, bundles, segmentation (technology, end‑use, premium vs. commodity)
+- **Features & Performance**: key specs, quality standards, certifications, customer KPIs (speed, durability, efficiency)
+- **R&D, Tech Stack & Pipeline**: incumbent R&D spend, emerging variants, digitalization (IoT, AI, robotics), disruptive innovations
+- **Lifecycle & Differentiation**: R&D→launch→growth→maturity→decline, cannibalization strategies, unique value propositions
 
-### 1. Product Deep‑Dive  
-> *(Your “inside‑out” view of what’s made and why it sells.)*  
-- **Product Definition & Scope**  
-  - What exactly is “the product”? (Core good/service, add‑ons, bundled offers)  
-  - How do you classify / segment it? (By technology, by end‑use, premium vs. commodity)  
-- **Features & Performance Metrics**  
-  - Key specs, quality standards, certifications  
-  - KPIs customers care about (e.g. speed, durability, efficiency)  
-- **Use‑Cases & Customer Jobs**  
-  - Primary “jobs to be done”  
-  - Secondary or emergent use‑cases  
-- **Product Portfolio & Lifecycle**  
-  - Stages (R&D → launch → growth → maturity → decline)  
-  - Cannibalization & sunsetting strategies  
-- **Value Proposition & Differentiation**  
-  - What problem(s) does it solve?  
-  - How is it unique vs. competitors?  
-- **Pricing & Packaging**  
-  - Cost‑plus, value‑based, tiered, subscription, a la carte…  
-  - Volume / channel discounts, bundling strategies  
-- **R&D & Innovation Pipeline**  
-  - How much do incumbents invest?  
-  - Emerging variants, incremental vs. disruptive innovations  
+### 2. Market & Competition
+> *(Outside‑in view of who buys, why, on what terms, and who else competes)*
+- **Market Size & Segmentation**: TAM, SAM; by geography, vertical, customer size, demographics
+- **Growth & Trends**: historical growth rates, 1–5 year forecasts, macro drivers (economic, regulatory, social), micro trends (tech adoption, consumer preferences)
+- **Buyer Personas & Process**: decision‑makers vs. users vs. influencers, purchase criteria, timelines, procurement cycles
+- **Competitive Dynamics**: number/size of players, market shares, business models, revenue streams, SWOT, Porter’s Five Forces
+- **Voice‑of‑Customer & Partners**: NPS, surveys, sentiment; suppliers, distributors, OEMs, NGOs
 
+### 3. Supply Chain & Operations
+> *(End‑to‑end value chain from inputs to delivery and risks)*
+- **Raw Materials & Inputs**: key feedstocks, commodity vs. specialty inputs; price volatility
+- **Manufacturing & Logistics**: process flows, capital equipment, batch vs. continuous, lead times, footprints, JIT vs. stockpiling
+- **Alliances & Channels**: joint ventures, licensing, distribution partners, go‑to‑market models, after‑sales support
+- **Operational Risks**: supply interruptions, quality failures, inventory constraints
 
-### 2. Market Analysis  
-> *(Your “outside‑in” view of who buys, why, and on what terms.)*  
-- **Market Definition & Segmentation**  
-  - Total addressable market (TAM), serviceable available market (SAM)  
-  - By geography, end‑market verticals, customer size, demographics  
-- **Market Size & Growth Rates**  
-  - Historical growth  
-  - Near‑term forecasts (1–5 years)  
-- **Demand Drivers & Trends**  
-  - Macro: economic cycles, regulation, social shifts  
-  - Micro: technology adoption, consumer preferences  
-- **Customer Personas & Buying Process**  
-  - Decision‑makers vs. users vs. influencers  
-  - Purchase criteria, decision timelines, procurement cycles  
-- **Distribution & Go‑to‑Market**  
-  - Direct vs. indirect channels (e‑commerce, distributors, OEM partnerships)  
-  - Sales force models, marketing funnels, after‑sales support  
-- **Competitive Dynamics**  
-  - Number & size of competitors; market shares  
-  - Price wars, margin pressures, service differentiators  
-- **Pricing Dynamics & Elasticity**  
-  - Typical price points, discounting norms  
-  - Sensitivity to price changes  
-- **Barriers to Entry & Exit**  
-  - Capital intensity, intellectual property, regulatory hurdles  
+### 4. Financial & Economic Metrics
+> *(Quantitative health and performance benchmarks)*
+- **Cost Structure & Unit Economics**: fixed vs. variable costs, scale effects
+- **Margin Analysis**: gross, EBITDA, net
+- **Capital & Working Capital**: capital intensity, capex, cash conversion cycle
+- **Valuation & Pricing Dynamics**: EV/EBITDA, P/E, P/S benchmarks, price points, elasticity, discounting norms
+- **Market Risks**: demand shocks, margin pressure, currency/regulatory impacts
 
+### 5. Regulation, ESG & Legal
+> *(Rules, responsibilities, and sustainability requirements)*
+- **Regulatory Framework**: industry‑specific rules (safety, environmental, trade), policy trends (tariffs, subsidies, bans)
+- **Standards & Certifications**: ISO, UL, FDA, CE, extended producer responsibility
+- **Intellectual Property**: patents, trademarks, trade secrets, IP disputes
+- **ESG & Sustainability**: emissions, waste, water usage, circular economy (recycling, take‑back), social governance (labor, board), reporting & ratings (CDP, MSCI)
+- **Geo‑Political & Legal Risks**: trade wars, sanctions, compliance
 
-### 3. Value Chain & Supply Chain  
-- **Raw Materials & Inputs**  
-  - Key feedstocks, commodity vs. specialty inputs  
-- **Manufacturing / Production**  
-  - Process flows, capital equipment, batch vs. continuous  
-- **Logistics & Inventory**  
-  - Lead times, geographic footprint, JIT vs. stockpiling  
-- **Channel Partners & Alliances**  
-  - Joint ventures, co‑development, licensing deals  
-
-
-### 4. Competitive Landscape  
-- **Key Players & Market Positioning**  
-- **Business Models & Revenue Streams**  
-- **SWOT Analysis** (strengths, weaknesses, opportunities, threats)  
-- **Porter’s Five Forces** (rivalry, new entrants, substitutes, buyer/supplier power)  
-
-
-### 5. Regulatory & Legal Environment  
-- **Industry‑Specific Regulations** (safety, environmental, trade)  
-- **Standards & Certifications** (ISO, UL, FDA, CE, etc.)  
-- **Intellectual Property** (patents, trademarks, trade secrets)  
-- **Policy Trends** (tariffs, subsidies, bans, extended producer responsibility)  
-
-### 6. Financial & Economic Metrics  
-- **Cost Structure & Unit Economics**  
-- **Typical Margins** (gross, EBITDA, net)  
-- **Capital Intensity & Working Capital Needs**  
-- **Valuation Benchmarks** (EV/EBITDA, P/E, P/S)  
-
-
-### 7. Technology & Innovation  
-- **Current Tech Stack** (materials, software, hardware)  
-- **Digitalization & Automation** (IoT, AI, robotics)  
-- **R&D Trends** (open innovation, consortia, start‑up ecosystems)  
-- **Disruptive Threats** (new entrants, substitute technologies)  
-
-
-### 8. Sustainability & ESG  
-- **Environmental Impact** (emissions, waste, water)  
-- **Circular Economy Initiatives** (recycling, take‑back programs)  
-- **Social & Governance Factors** (labor practices, board structure)  
-- **Reporting & Ratings** (CDP, MSCI, Sustainalytics)  
-
-
-### 9. Customer & Stakeholder Perspectives  
-- **Voice‑of‑Customer** (NPS, satisfaction surveys, social media sentiment)  
-- **Key Partners** (suppliers, distributors, regulators, NGOs)  
-
-
-### 10. Risks & Challenges  
-- **Market Risks** (demand shocks, competitive disruptions)  
-- **Operational Risks** (supply interruptions, quality failures)  
-- **Regulatory & Geo‑Political Risks**  
-- **Technology Obsolescence**  
-
-
-### 11. Future Outlook & Strategic Implications  
-- **Emerging Themes** (demographic shifts, climate transition, digital convergence)  
-- **Scenario Planning** (best case / worst case)  
-- **Strategic Moves** (M&A, vertical integration, diversification)  
+### 6. Future Outlook & Strategy
+> *(Forward‑looking themes, scenarios, and strategic imperatives)*
+- **Emerging Themes**: demographic shifts, digital convergence, climate transition
+- **Scenario Planning**: best‑case vs. worst‑case outlooks, stress tests
+- **Strategic Moves**: M&A, vertical integration, diversification, partnerships
+- **Risk Management**: regulatory evolution, technological obsolescence, geopolitical exposure
 
 # Various Sectors/Areas I want you to cover
 
@@ -181,20 +109,26 @@ export async function getUnderstandIndustry(industry: string, headings: Industry
   return await getLlmResponse<UnderstandIndustry>(getUnderstandIndustryPrompt(industry, headings), UnderstandIndustrySchema);
 }
 
+function getJsonFilePath(industry: string): string {
+  const fileName = `understand-industry.json`;
+  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '04-understand-industry');
+  addDirectoryIfNotPresent(dirPath);
+  const jsonFilePath = path.join(dirPath, fileName);
+  return jsonFilePath;
+}
+
 export async function getAndWriteUnderstandIndustryJson(industry: string, headings: IndustryAreaHeadings) {
   const understandIndustry = await getUnderstandIndustry(industry, headings);
   console.log('Understand Industry:', understandIndustry);
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'understand-industry');
-  const filePath = path.join(dirPath, 'understand-industry.json');
-  addDirectoryIfNotPresent(dirPath);
+
+  const filePath = getJsonFilePath(industry);
   fs.writeFileSync(filePath, JSON.stringify(understandIndustry, null, 2), {
     encoding: 'utf-8',
   });
 }
 
 export async function readUnderstandIndustryJsonFromFile(industry: string) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'understand-industry');
-  const filePath = path.join(dirPath, 'understand-industry.json');
+  const filePath = getJsonFilePath(industry);
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
   }
@@ -206,14 +140,11 @@ export async function readUnderstandIndustryJsonFromFile(industry: string) {
 }
 
 export function writeUnderstandIndustryToMarkdownFile(industry: string, understandIndustry: UnderstandIndustry) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'understand-industry');
-  const filePath = path.join(dirPath, 'understand-industry.md');
-  addDirectoryIfNotPresent(dirPath);
+  const filePath = getJsonFilePath(industry).replace('.json', '.md');
 
   const markdownContent =
     `# ${understandIndustry.title}\n\n` +
     `${understandIndustry.sections.map((section) => `## ${section.title}\n${section.paragraphs.join('\n\n')}`).join('\n\n')}\n`;
-  addDirectoryIfNotPresent(dirPath);
 
   fs.writeFileSync(filePath, markdownContent, {
     encoding: 'utf-8',

@@ -389,7 +389,7 @@ function getJsonFilePath(industry: string, industryArea: IndustrySubHeading, hea
     )
     .find((item) => item.subHeading === industryArea.title)?.headingAndSubheadingIndex;
 
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'evaluate-industry-area');
+  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '06-evaluate-industry-area');
   const filePath = path.join(dirPath, `${headingAndSubheadingIndex}-evaluate-${slugify(industryArea.title)}.json`);
   addDirectoryIfNotPresent(dirPath);
   return filePath;

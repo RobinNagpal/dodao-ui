@@ -70,30 +70,29 @@ async function getTariffUpdatesForIndustry(industry: string, date: string, headi
   return tariffUpdatesResponse;
 }
 
-export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryAreaHeadings) {
-  const tariffUpdates = await getTariffUpdatesForIndustry(industry, date, headings);
-
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'tariff-updates');
+function getJsonFilePath(industry: string) {
+  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '03-tariff-updates');
   const filePath = path.join(dirPath, 'tariff-updates.json');
   addDirectoryIfNotPresent(dirPath);
+  return filePath;
+}
+
+export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryAreaHeadings) {
+  const tariffUpdates = await getTariffUpdatesForIndustry(industry, date, headings);
+  const filePath = getJsonFilePath(industry);
   fs.writeFileSync(filePath, JSON.stringify(tariffUpdates, null, 2), {
     encoding: 'utf-8',
   });
 }
 
 export async function readTariffUpdatesFromFile(industry: string) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'tariff-updates');
-  const filePath = path.join(dirPath, 'tariff-updates.json');
-  addDirectoryIfNotPresent(dirPath);
+  const filePath = getJsonFilePath(industry);
   const data = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(data) as TariffUpdatesForIndustry;
 }
 
 export function writeTariffUpdatesToMarkdownFile(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'tariff-updates');
-  const filePath = path.join(dirPath, 'tariff-updates.md');
-  addDirectoryIfNotPresent(dirPath);
-
+  const filePath = getJsonFilePath(industry).replace('.json', '.md');
   const markdownContent =
     `# Tariff Updates for ${industry}\n\n` +
     `${tariffUpdates.countrySpecificTariffs.map((country) => `## ${country.countryName}\n\n${country.tariffDetails}\n\n${country.changes}`).join('\n\n')}\n`;

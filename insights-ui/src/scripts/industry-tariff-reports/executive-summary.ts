@@ -72,7 +72,7 @@ async function getExecutiveSummary(
 }
 
 function getExecutiveSummaryJsonFileName(industry: string) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'executive-summary');
+  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '01-executive-summary');
   const fileName = path.join(dirPath, 'executive-summary.json');
   addDirectoryIfNotPresent(dirPath);
   return fileName;
