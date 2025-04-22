@@ -1,4 +1,4 @@
-import { IndustryHeadings } from '@/scripts/industry-tariff-reports/industry-main-headings';
+import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/industry-main-headings';
 import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
 import fs from 'fs';
 import path from 'path';
@@ -39,7 +39,7 @@ export interface TariffUpdatesForIndustry {
   countrySpecificTariffs: CountrySpecificTariff[];
 }
 
-function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headings: IndustryHeadings) {
+function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headings: IndustryAreaHeadings) {
   const prompt = `
   I want to know about the new tariffs added for the ${industry} industry as of ${date}.
   Make sure to verify all the new tariffs added for ${industry} industry and as of ${date} because they have been changing almost everyday.
@@ -61,7 +61,7 @@ function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headi
   return prompt;
 }
 
-async function getTariffUpdatesForIndustry(industry: string, date: string, headings: IndustryHeadings): Promise<TariffUpdatesForIndustry> {
+async function getTariffUpdatesForIndustry(industry: string, date: string, headings: IndustryAreaHeadings): Promise<TariffUpdatesForIndustry> {
   const prompt = getTariffUpdatesForIndustryPrompt(industry, date, headings);
 
   const tariffUpdatesResponse: TariffUpdatesForIndustry = await getLlmResponse<TariffUpdatesForIndustry>(prompt, TariffUpdatesForIndustrySchema);
@@ -70,7 +70,7 @@ async function getTariffUpdatesForIndustry(industry: string, date: string, headi
   return tariffUpdatesResponse;
 }
 
-export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryHeadings) {
+export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryAreaHeadings) {
   const tariffUpdates = await getTariffUpdatesForIndustry(industry, date, headings);
 
   const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'tariff-updates');

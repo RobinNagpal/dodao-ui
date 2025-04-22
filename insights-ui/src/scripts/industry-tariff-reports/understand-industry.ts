@@ -1,5 +1,5 @@
 import { getLlmResponse } from './llm-utils';
-import { IndustryHeadings } from './industry-main-headings';
+import { IndustryAreaHeadings } from './industry-main-headings';
 import fs from 'fs';
 import path from 'path';
 import { z, ZodObject } from 'zod';
@@ -38,7 +38,7 @@ interface UnderstandIndustry {
   }[];
 }
 
-function getUnderstandIndustryPrompt(industry: string, headings: IndustryHeadings) {
+function getUnderstandIndustryPrompt(industry: string, headings: IndustryAreaHeadings) {
   const prompt = `
 
 I want to understand the ${industry} industry in depth. Give me a very detailed article
@@ -177,11 +177,11 @@ ${JSON.stringify(headings, null, 2)}
   return prompt;
 }
 
-export async function getUnderstandIndustry(industry: string, headings: IndustryHeadings) {
+export async function getUnderstandIndustry(industry: string, headings: IndustryAreaHeadings) {
   return await getLlmResponse<UnderstandIndustry>(getUnderstandIndustryPrompt(industry, headings), UnderstandIndustrySchema);
 }
 
-export async function getAndWriteUnderstandIndustryJson(industry: string, headings: IndustryHeadings) {
+export async function getAndWriteUnderstandIndustryJson(industry: string, headings: IndustryAreaHeadings) {
   const understandIndustry = await getUnderstandIndustry(industry, headings);
   console.log('Understand Industry:', understandIndustry);
   const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'understand-industry');

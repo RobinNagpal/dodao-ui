@@ -1,4 +1,4 @@
-import { IndustryHeadings } from '@/scripts/industry-tariff-reports/industry-main-headings';
+import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/industry-main-headings';
 import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
 import fs from 'fs';
 import path from 'path';
@@ -134,7 +134,7 @@ export interface Introduction {
   countrySpecificImports: CountrySpecificImport[];
 }
 
-function getIntroductionPrompt(industry: string, date: string, industryHeadings: IndustryHeadings) {
+function getIntroductionPrompt(industry: string, date: string, industryHeadings: IndustryAreaHeadings) {
   const prompt: string = `
   As an investor I want to learn everything about ${industry} sub-industry(GICS). 
   
@@ -158,7 +158,7 @@ function getIntroductionPrompt(industry: string, date: string, industryHeadings:
   return prompt;
 }
 
-export async function getIntroduction(industry: string, date: string, industryHeadings: IndustryHeadings) {
+export async function getIntroduction(industry: string, date: string, industryHeadings: IndustryAreaHeadings) {
   return await getLlmResponse<Introduction>(getIntroductionPrompt(industry, date, industryHeadings), IntroductionSchema);
 }
 
@@ -175,7 +175,7 @@ export async function readIntroductionJsonFromFile(industry: string) {
   return introduction;
 }
 
-export async function getAndWriteIntroductionsJson(industry: string, date: string, headings: IndustryHeadings) {
+export async function getAndWriteIntroductionsJson(industry: string, date: string, headings: IndustryAreaHeadings) {
   const introduction = await getIntroduction(industry, date, headings);
   console.log('Introduction:', introduction);
   const dirPath = path.join(reportsOutDir, industry.toLowerCase(), 'introduction');

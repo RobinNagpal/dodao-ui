@@ -1,4 +1,4 @@
-import { IndustryHeadings, IndustrySubHeading } from '@/scripts/industry-tariff-reports/industry-main-headings';
+import { IndustryAreaHeadings, IndustrySubHeading } from '@/scripts/industry-tariff-reports/industry-main-headings';
 import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/industry-tarrifs';
 import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
@@ -193,13 +193,13 @@ interface HeadwindsAndTailwinds {
   tailwinds: string[];
 }
 
-interface PositiveTariffImpactOnCompanyType {
+export interface PositiveTariffImpactOnCompanyType {
   companyType: string;
   impact: string;
   reasoning: string;
 }
 
-interface NegativeTariffImpactOnCompanyType {
+export interface NegativeTariffImpactOnCompanyType {
   companyType: string;
   impact: string;
   reasoning: string;
@@ -216,7 +216,12 @@ interface EvaluateIndustryArea {
   tariffImpactSummary: string;
 }
 
-export function getEvaluateIndustryAreaPrompt(headings: IndustryHeadings, tariffUpdates: TariffUpdatesForIndustry, industry: IndustrySubHeading, date: string) {
+export function getEvaluateIndustryAreaPrompt(
+  headings: IndustryAreaHeadings,
+  tariffUpdates: TariffUpdatesForIndustry,
+  industry: IndustrySubHeading,
+  date: string
+) {
   const prompt = `
   I want to know about the new challengers and established players in the ${industry.title} industry.
   
@@ -365,7 +370,7 @@ function establishedPlayerToMarkdown(player: EstablishedPlayer): string {
 
 async function getEvaluateIndustryArea(
   industry: IndustrySubHeading,
-  headings: IndustryHeadings,
+  headings: IndustryAreaHeadings,
   tariffUpdates: TariffUpdatesForIndustry,
   date: string
 ): Promise<EvaluateIndustryArea> {
@@ -373,7 +378,7 @@ async function getEvaluateIndustryArea(
   return await getLlmResponse<EvaluateIndustryArea>(prompt, EvaluateIndustryAreaSchema);
 }
 
-function getJsonFilePath(industry: string, industryArea: IndustrySubHeading, headings: IndustryHeadings) {
+function getJsonFilePath(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings) {
   const headingAndSubheadingIndex = headings.headings
     .flatMap((heading, headingIndex) =>
       heading.subHeadings.map((subHeading, index) => ({
@@ -390,14 +395,14 @@ function getJsonFilePath(industry: string, industryArea: IndustrySubHeading, hea
   return filePath;
 }
 
-function getMarkdownFilePath(industry: string, industryArea: IndustrySubHeading, headings: IndustryHeadings) {
+function getMarkdownFilePath(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings) {
   return getJsonFilePath(industry, industryArea, headings).replace('.json', '.md');
 }
 
 export async function getAndWriteEvaluateIndustryAreaJson(
   industry: string,
   industryArea: IndustrySubHeading,
-  headings: IndustryHeadings,
+  headings: IndustryAreaHeadings,
   tariffUpdates: TariffUpdatesForIndustry,
   date: string
 ) {
@@ -408,7 +413,7 @@ export async function getAndWriteEvaluateIndustryAreaJson(
   });
 }
 
-export async function readEvaluateIndustryAreaJsonFromFile(industry: string, industryArea: IndustrySubHeading, headings: IndustryHeadings) {
+export function readEvaluateIndustryAreaJsonFromFile(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings) {
   const filePath = getJsonFilePath(industry, industryArea, headings);
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
@@ -423,7 +428,7 @@ export async function readEvaluateIndustryAreaJsonFromFile(industry: string, ind
 export function writeEvaluateIndustryAreaToMarkdownFile(
   industry: string,
   industryArea: IndustrySubHeading,
-  headings: IndustryHeadings,
+  headings: IndustryAreaHeadings,
   evaluateIndustryArea: EvaluateIndustryArea
 ) {
   const filePath = getMarkdownFilePath(industry, industryArea, headings);

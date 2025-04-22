@@ -42,7 +42,7 @@ export interface IndustryHeading {
   subHeadings: IndustrySubHeading[];
 }
 
-export interface IndustryHeadings {
+export interface IndustryAreaHeadings {
   headings: IndustryHeading[];
 }
 
@@ -71,7 +71,7 @@ function getMainIndustryPrompt(industry: string) {
 }
 
 export async function getHeadingsAndSubHeadings(industry: string) {
-  return await getLlmResponse<IndustryHeadings>(getMainIndustryPrompt(industry), IndustryHeadingsSchema);
+  return await getLlmResponse<IndustryAreaHeadings>(getMainIndustryPrompt(industry), IndustryHeadingsSchema);
 }
 
 export async function getAndWriteIndustryHeadings(industry: string) {
@@ -86,7 +86,7 @@ export async function getAndWriteIndustryHeadings(industry: string) {
   });
 }
 
-export async function readIndustryHeadingsFromFile(industry: string): Promise<IndustryHeadings> {
+export async function readIndustryHeadingsFromFile(industry: string): Promise<IndustryAreaHeadings> {
   const dirPath = path.join(reportsOutDir, industry.toLowerCase());
   const filePath = path.join(dirPath, industryHeadingsFileName);
   if (!fs.existsSync(filePath)) {
@@ -95,11 +95,11 @@ export async function readIndustryHeadingsFromFile(industry: string): Promise<In
   // Read the file contents and convert to string
   const contents: string = fs.readFileSync(filePath, 'utf-8').toString();
   // Parse the JSON data
-  const headings: IndustryHeadings = JSON.parse(contents);
+  const headings: IndustryAreaHeadings = JSON.parse(contents);
   return headings;
 }
 
-export async function writeIndustryHeadingsToMarkdownFile(industry: string, headings: IndustryHeadings) {
+export async function writeIndustryHeadingsToMarkdownFile(industry: string, headings: IndustryAreaHeadings) {
   const dirPath = path.join(reportsOutDir, industry.toLowerCase());
   const filePath = path.join(dirPath, industryHeadingsFileName.replace('.json', '.md'));
   addDirectoryIfNotPresent(dirPath);
