@@ -28,6 +28,7 @@ model Ticker {
   latest10QFinancialStatements String?  @map("latest_10q_financial_statements")
   companyName                  String   @default("Unknown Company") @map("company_name")
   shortDescription             String   @default("No description provided") @map("short_description")
+  tickerInfo                 String?  @map("ticker_info")
 
   evaluationsOfLatest10Q         CriterionEvaluation[]
   secFilings                     SecFiling[]
