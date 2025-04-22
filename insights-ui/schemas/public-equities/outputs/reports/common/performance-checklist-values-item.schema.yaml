@@ -1,5 +1,7 @@
 type: object
 properties:
+  metricKey:
+    type: string
   checklistItem:
     type: string
   oneLinerExplanation:
@@ -13,6 +15,7 @@ properties:
   score:
     type: number
 required:
+  - metricKey
   - checklistItem
   - oneLinerExplanation
   - informationUsed

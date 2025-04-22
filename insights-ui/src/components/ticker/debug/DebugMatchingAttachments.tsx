@@ -75,6 +75,7 @@ export default function DebugMatchingAttachments({ report, onPostUpdate }: Debug
       )}
 
       <h1 className="mb-8 font-bold text-xl">Matching Attachments</h1>
+      {report.criteriaMatchesOfLatest10Q.failureReason && <div className="text-red-500">{report.criteriaMatchesOfLatest10Q.failureReason}</div>}
       {report.criteriaMatchesOfLatest10Q?.criterionMatches?.map((criterion) => {
         return (
           <div key={criterion.criterionKey}>
