@@ -43,15 +43,24 @@ function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headi
   const prompt = `
   I want to know about the new tariffs added for the ${industry} industry as of ${date}.
   Make sure to verify all the new tariffs added for ${industry} industry and as of ${date} because they have been changing almost everyday.
+
   Please give me the details of the new tariffs added for the top 5 countries who has the maximum trading volume with the US for the given industry. 
+
   The details should include 
   - Name of the country
-  - Description of the new tariffs added as of the mentioned date for the given industry
-  - Description of the changes in the tariff policy as compared to the previous policy for the given industry
+  - Description of the new tariffs added as of the mentioned date for the given industry. Add 6-8 lines of description.
+  - Description of the changes in the tariff policy as compared to the previous policy for the given industry. Add 6-8 lines for this as well.
   
   
-  Include hyperlinks/citations in the content where ever possible.
-  Every definition, and number should have a hyperlink.
+  For output content:
+  - Cite the latest figures and embed hyperlinks to sources.
+  - Include hyperlinks/citations in the content where ever possible in the markdown format.
+  - Dont forget to include hyperlinks/citations in the content where ever possible.
+  - Avoid LaTeX, italics, or KaTeX formatting, or   character for space
+  - Use only headings and subheadings, bold, bullets, points, tables for formatting the content.
+  - Use markdown format for output.
+  - All amounts, dollar values, or figures should be wrapped in backticks.
+
   
   Here are more details about the areas of the industry that I want to know about:
   
@@ -63,7 +72,7 @@ function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headi
 
 async function getTariffUpdatesForIndustry(industry: string, date: string, headings: IndustryAreaHeadings): Promise<TariffUpdatesForIndustry> {
   const prompt = getTariffUpdatesForIndustryPrompt(industry, date, headings);
-
+  console.log(`Invoking LLM for tariffs`);
   const tariffUpdatesResponse: TariffUpdatesForIndustry = await getLlmResponse<TariffUpdatesForIndustry>(prompt, TariffUpdatesForIndustrySchema);
   console.log('LLM analysis response:\n', JSON.stringify(tariffUpdatesResponse, null, 2));
 
@@ -85,7 +94,7 @@ export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string,
   });
 }
 
-export async function readTariffUpdatesFromFile(industry: string) {
+export function readTariffUpdatesFromFile(industry: string) {
   const filePath = getJsonFilePath(industry);
   const data = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(data) as TariffUpdatesForIndustry;

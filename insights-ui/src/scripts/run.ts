@@ -1,15 +1,4 @@
 import {
-  getAndWriteEvaluateIndustryAreaJson,
-  PositiveTariffImpactOnCompanyType,
-  readEvaluateIndustryAreaJsonFromFile,
-  writeEvaluateIndustryAreaToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
-import {
-  getAndWriteIndustryAreaSectionToJsonFile,
-  readIndustryAreaSectionFromFile,
-  writeIndustryAreaSectionToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/05-industry-areas';
-import {
   getAndWriteIndustryHeadings,
   readIndustryHeadingsFromFile,
   writeIndustryHeadingsToMarkdownFile,
@@ -20,13 +9,23 @@ import {
   readUnderstandIndustryJsonFromFile,
   writeUnderstandIndustryToMarkdownFile,
 } from '@/scripts/industry-tariff-reports/04-understand-industry';
-import * as dotenv from 'dotenv';
 import {
   getTariffUpdatesForIndustryAndSaveToFile,
   readTariffUpdatesFromFile,
-  TariffUpdatesForIndustry,
   writeTariffUpdatesToMarkdownFile,
+  TariffUpdatesForIndustry,
 } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
+import {
+  getAndWriteIndustryAreaSectionToJsonFile,
+  readIndustryAreaSectionFromFile,
+  writeIndustryAreaSectionToMarkdownFile,
+} from '@/scripts/industry-tariff-reports/05-industry-areas';
+import {
+  getAndWriteEvaluateIndustryAreaJson,
+  readEvaluateIndustryAreaJsonFromFile,
+  writeEvaluateIndustryAreaToMarkdownFile,
+  PositiveTariffImpactOnCompanyType,
+} from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 import {
   getExecutiveSummaryAndSaveToFile,
   readExecutiveSummaryFromFile,
@@ -37,97 +36,114 @@ import {
   readFinalConclusionFromFile,
   writeFinalConclusionToMarkdownFile,
 } from '@/scripts/industry-tariff-reports/07-final-conclusion';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-async function doIt() {
-  const industry = 'Plastic';
-  // await getAndWriteIndustryHeadings(industry);
-  const headings = await readIndustryHeadingsFromFile(industry);
-  // await writeIndustryHeadingsToMarkdownFile(industry, headings);
-  const date = 'April 21, 2025';
-
-  // ##### Introduction #####
-  await getAndWriteIntroductionsJson(industry, date, headings);
-  const introductions = await readIntroductionJsonFromFile(industry);
-  writeIntroductionToMarkdownFile(industry, introductions);
-
-  // ##### Understand Industry #####
-  // await getAndWriteUnderstandIndustryJson(industry, headings);
-  // const understandIndustry = await readUnderstandIndustryJsonFromFile(industry);
-  // writeUnderstandIndustryToMarkdownFile(industry, understandIndustry);
-
-  // ##### Tariff Updates #####
-  // await getTariffUpdatesForIndustryAndSaveToFile(industry, date, headings);
-  const tariffUpdates: TariffUpdatesForIndustry = await readTariffUpdatesFromFile(industry);
-  // writeTariffUpdatesToMarkdownFile(industry, tariffUpdates);
-
-  // ##### Industry Area Section #####
-  // await getAndWriteIndustryAreaSectionToJsonFile(industry, headings);
-  // const industryAreaSection = await readIndustryAreaSectionFromFile(industry);
-  // await writeIndustryAreaSectionToMarkdownFile(industry, industryAreaSection);
-
-  // const firstIndustryArea = headings.headings[3].subHeadings[2];
-  // ##### Evaluate Industry Area #####
-  // await getAndWriteEvaluateIndustryAreaJson(industry, firstIndustryArea, headings, tariffUpdates, date);
-  // const evaluateIndustryArea = await readEvaluateIndustryAreaJsonFromFile(industry, firstIndustryArea, headings);
-  // console.log('Evaluate Industry Area:', evaluateIndustryArea);
-  // writeEvaluateIndustryAreaToMarkdownFile(industry, firstIndustryArea, headings, evaluateIndustryArea);
-
-  const tariffSummaries = headings.headings
-    .flatMap((h) =>
-      h.subHeadings.map((sh) => {
-        return {
-          heading: h,
-          subHeading: sh,
-        };
-      })
-    )
-    .map((h_and_sh) => {
-      const evaluateIndustryArea = readEvaluateIndustryAreaJsonFromFile(industry, h_and_sh.subHeading, headings);
-      return evaluateIndustryArea.tariffImpactSummary;
-    });
-
-  // ##### Executive Summary #####
-  // await getExecutiveSummaryAndSaveToFile(industry, headings, tariffUpdates, tariffSummaries);
-  // const executiveSummary = await readExecutiveSummaryFromFile(industry);
-  // writeExecutiveSummaryToMarkdownFile(industry, executiveSummary);
-  // console.log('Executive Summary:', executiveSummary);
-
-  const positiveImpacts: PositiveTariffImpactOnCompanyType[] = headings.headings
-    .flatMap((h) =>
-      h.subHeadings.map((sh) => {
-        return {
-          heading: h,
-          subHeading: sh,
-        };
-      })
-    )
-    .flatMap((h_and_sh) => {
-      const evaluateIndustryArea = readEvaluateIndustryAreaJsonFromFile(industry, h_and_sh.subHeading, headings);
-      return evaluateIndustryArea.positiveTariffImpactOnCompanyType;
-    });
-
-  const negativeImpacts = headings.headings
-    .flatMap((h) =>
-      h.subHeadings.map((sh) => {
-        return {
-          heading: h,
-          subHeading: sh,
-        };
-      })
-    )
-    .flatMap((h_and_sh) => {
-      const evaluateIndustryArea = readEvaluateIndustryAreaJsonFromFile(industry, h_and_sh.subHeading, headings);
-      return evaluateIndustryArea.negativeTariffImpactOnCompanyType;
-    });
-
-  // ##### Final Conclusion #####
-  // await getFinalConclusionAndSaveToFile(industry, headings, tariffUpdates, tariffSummaries, positiveImpacts, negativeImpacts);
-  // const finalConclusion = await readFinalConclusionFromFile(industry);
-  // writeFinalConclusionToMarkdownFile(industry, finalConclusion);
+/**
+ * Types of report sections supported by this script.
+ */
+export enum ReportType {
+  HEADINGS = 'HEADINGS',
+  INTRODUCTION = 'INTRODUCTION',
+  UNDERSTAND_INDUSTRY = 'UNDERSTAND_INDUSTRY',
+  TARIFF_UPDATES = 'TARIFF_UPDATES',
+  INDUSTRY_AREA_SECTION = 'INDUSTRY_AREA_SECTION',
+  EVALUATE_INDUSTRY_AREA = 'EVALUATE_INDUSTRY_AREA',
+  EXECUTIVE_SUMMARY = 'EXECUTIVE_SUMMARY',
+  FINAL_CONCLUSION = 'FINAL_CONCLUSION',
+  ALL = 'ALL',
 }
 
-doIt().catch((err) => {
-  console.error(err);
-});
+/**
+ * Generate the specified section of the industry report.
+ * @param reportType Which part of the report to produce
+ * @param industry The industry name (e.g., 'Plastic')
+ * @param date Report date string (e.g., 'April 21, 2025')
+ */
+export async function doIt(reportType: ReportType, industry: string, date: string) {
+  // Pre-read common dependencies
+  const headings = await readIndustryHeadingsFromFile(industry);
+
+  switch (reportType) {
+    case ReportType.HEADINGS:
+      await getAndWriteIndustryHeadings(industry);
+      writeIndustryHeadingsToMarkdownFile(industry, headings);
+      break;
+
+    case ReportType.INTRODUCTION:
+      await getAndWriteIntroductionsJson(industry, date, headings);
+      const introductions = readIntroductionJsonFromFile(industry);
+      writeIntroductionToMarkdownFile(industry, introductions);
+      break;
+
+    case ReportType.UNDERSTAND_INDUSTRY:
+      await getAndWriteUnderstandIndustryJson(industry, headings);
+      const understandIndustry = readUnderstandIndustryJsonFromFile(industry);
+      writeUnderstandIndustryToMarkdownFile(industry, understandIndustry);
+      break;
+
+    case ReportType.TARIFF_UPDATES:
+      await getTariffUpdatesForIndustryAndSaveToFile(industry, date, headings);
+      const tariffUpdatesForIndustry = readTariffUpdatesFromFile(industry);
+      writeTariffUpdatesToMarkdownFile(industry, tariffUpdatesForIndustry);
+      break;
+
+    case ReportType.INDUSTRY_AREA_SECTION:
+      await getAndWriteIndustryAreaSectionToJsonFile(industry, headings);
+      const industryAreaSection = readIndustryAreaSectionFromFile(industry);
+      writeIndustryAreaSectionToMarkdownFile(industry, industryAreaSection);
+      break;
+
+    case ReportType.EVALUATE_INDUSTRY_AREA:
+      const tariff = readTariffUpdatesFromFile(industry);
+      const firstArea = headings.headings[0].subHeadings[0];
+      await getAndWriteEvaluateIndustryAreaJson(industry, firstArea, headings, tariff!, date);
+      const evaluated = readEvaluateIndustryAreaJsonFromFile(industry, firstArea, headings);
+      writeEvaluateIndustryAreaToMarkdownFile(industry, firstArea, headings, evaluated);
+      break;
+
+    case ReportType.EXECUTIVE_SUMMARY:
+      const tariffUpdates = readTariffUpdatesFromFile(industry);
+      const summaries = headings.headings.flatMap((h) =>
+        h.subHeadings.map((sh) => {
+          const evalArea = readEvaluateIndustryAreaJsonFromFile(industry, sh, headings);
+          return evalArea.tariffImpactSummary;
+        })
+      );
+      await getExecutiveSummaryAndSaveToFile(industry, headings, tariffUpdates, summaries);
+      const execSummary = await readExecutiveSummaryFromFile(industry);
+      writeExecutiveSummaryToMarkdownFile(industry, execSummary);
+      break;
+
+    case ReportType.FINAL_CONCLUSION:
+      const tariffs = readTariffUpdatesFromFile(industry);
+      const summariesAll = headings.headings.flatMap((h) =>
+        h.subHeadings.map((sh) => readEvaluateIndustryAreaJsonFromFile(industry, sh, headings).tariffImpactSummary)
+      );
+      const positiveImpacts = headings.headings.flatMap((h) =>
+        h.subHeadings.flatMap((sh) => readEvaluateIndustryAreaJsonFromFile(industry, sh, headings).positiveTariffImpactOnCompanyType)
+      );
+      const negativeImpacts = headings.headings.flatMap((h) =>
+        h.subHeadings.flatMap((sh) => readEvaluateIndustryAreaJsonFromFile(industry, sh, headings).negativeTariffImpactOnCompanyType)
+      );
+      await getFinalConclusionAndSaveToFile(industry, headings, tariffs, summariesAll, positiveImpacts, negativeImpacts);
+      const conclusion = await readFinalConclusionFromFile(industry);
+      writeFinalConclusionToMarkdownFile(industry, conclusion);
+      break;
+
+    case ReportType.ALL:
+    default:
+      // Run all sections in sequence
+      for (const type of Object.values(ReportType)) {
+        if (type === ReportType.ALL) continue;
+        // @ts-ignore
+        await doIt(type, industry, date);
+      }
+      break;
+  }
+}
+
+// Example usage:
+doIt(ReportType.TARIFF_UPDATES, 'Plastic', 'April 21, 2025').catch(console.error);
+// doIt(ReportType.ALL, 'Plastic', 'April 21, 2025').catch(console.error);

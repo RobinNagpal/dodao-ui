@@ -99,7 +99,7 @@ export async function readIndustryHeadingsFromFile(industry: string): Promise<In
   return headings;
 }
 
-export async function writeIndustryHeadingsToMarkdownFile(industry: string, headings: IndustryAreaHeadings) {
+export function writeIndustryHeadingsToMarkdownFile(industry: string, headings: IndustryAreaHeadings) {
   const dirPath = path.join(reportsOutDir, industry.toLowerCase());
   const filePath = path.join(dirPath, industryHeadingsFileName.replace('.json', '.md'));
   addDirectoryIfNotPresent(dirPath);

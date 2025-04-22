@@ -57,13 +57,13 @@ export async function getAndWriteIndustryAreaSectionToJsonFile(industry: string,
   fs.writeFileSync(filePath, JSON.stringify(industryAreaSection, null, 2));
 }
 
-export async function readIndustryAreaSectionFromFile(industry: string): Promise<IndustryAreaSection> {
+export function readIndustryAreaSectionFromFile(industry: string): IndustryAreaSection {
   const filePath = getIndustryAreaJsonFilePath(industry);
   const data = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(data) as IndustryAreaSection;
 }
 
-export async function writeIndustryAreaSectionToMarkdownFile(industry: string, industryAreaSection: IndustryAreaSection): Promise<void> {
+export function writeIndustryAreaSectionToMarkdownFile(industry: string, industryAreaSection: IndustryAreaSection): void {
   const filePath = getIndustryAreaJsonFilePath(industry).replace('.json', '.md');
   const markdownContent = `# ${industryAreaSection.title}\n\n${industryAreaSection.industryAreas}`;
   fs.writeFileSync(filePath, markdownContent, {

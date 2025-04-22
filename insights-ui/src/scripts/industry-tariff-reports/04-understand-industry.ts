@@ -127,7 +127,7 @@ export async function getAndWriteUnderstandIndustryJson(industry: string, headin
   });
 }
 
-export async function readUnderstandIndustryJsonFromFile(industry: string) {
+export function readUnderstandIndustryJsonFromFile(industry: string) {
   const filePath = getJsonFilePath(industry);
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);

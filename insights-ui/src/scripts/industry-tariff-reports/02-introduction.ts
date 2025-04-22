@@ -134,7 +134,7 @@ export async function getIntroduction(industry: string, date: string, industryHe
   return await getLlmResponse<Introduction>(getIntroductionPrompt(industry, date, industryHeadings), IntroductionSchema);
 }
 
-export async function readIntroductionJsonFromFile(industry: string) {
+export function readIntroductionJsonFromFile(industry: string) {
   const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '02-introduction');
   const filePath = path.join(dirPath, 'introduction.json');
   if (!fs.existsSync(filePath)) {
