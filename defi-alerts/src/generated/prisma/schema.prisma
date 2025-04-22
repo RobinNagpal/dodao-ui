@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Chain {
+  ETHEREUM
+  POLYGON
+  ARBITRUM
+  OPTIMISM
+}
+
+enum DeliveryChannelType {
+  EMAIL
+  WEBHOOK
+}
+
+enum SeverityLevel {
+  NONE
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum NotificationFrequency {
+  IMMEDIATE
+  AT_MOST_ONCE_PER_HOUR
+  AT_MOST_ONCE_PER_3_HOURS
+  AT_MOST_ONCE_PER_6_HOURS
+  AT_MOST_ONCE_PER_12_HOURS
+  AT_MOST_ONCE_PER_DAY
+}
+
+enum AlertCategory {
+  GENERAL
+  PERSONALIZED
+}
+
+enum AlertActionType {
+  SUPPLY
+  BORROW
+  LIQUIDITY_PROVISION
+}
+
+enum ConditionType {
+  APR_RISE_ABOVE
+  APR_FALLS_BELOW
+  APR_OUTSIDE_RANGE
+  RATE_DIFF_ABOVE
+  RATE_DIFF_BELOW
+  POSITION_OUT_OF_RANGE
+  POSITION_BACK_IN_RANGE
+  FEES_EARNED_THRESHOLD
+  IMPERMANENT_LOSS_EXCEEDS
+}
+
+enum Protocol {
+  AAVE
+  MORPHO
+  SPARK
+}
+
+model User {
+  id     String  @id @default(cuid())
+  email  String? @unique
+  alerts Alert[]
+}
+
+model Alert {
+  id                    String                @id @default(cuid())
+  user                  User?                 @relation(fields: [userId], references: [id])
+  userId                String?
+  category              AlertCategory
+  actionType            AlertActionType
+  isComparison          Boolean               @default(false)
+  walletAddress         String?
+  selectedChains        String[]
+  selectedMarkets       String[]
+  compareProtocols      Protocol[]
+  notificationFrequency NotificationFrequency
+  conditions            AlertCondition[]
+  deliveryChannels      DeliveryChannel[]
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+}
+
+model AlertCondition {
+  id                 String        @id @default(cuid())
+  alert              Alert         @relation(fields: [alertId], references: [id])
+  alertId            String
+  conditionType      ConditionType
+  thresholdValue     Float?
+  thresholdValueLow  Float?
+  thresholdValueHigh Float?
+  severity           SeverityLevel
+}
+
+model DeliveryChannel {
+  id          String              @id @default(cuid())
+  alert       Alert               @relation(fields: [alertId], references: [id])
+  alertId     String
+  channelType DeliveryChannelType
+  email       String?
+  webhookUrl  String?
+}
