@@ -3,36 +3,40 @@ import {
   PositiveTariffImpactOnCompanyType,
   readEvaluateIndustryAreaJsonFromFile,
   writeEvaluateIndustryAreaToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/evaluate-industry-area';
+} from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 import {
   getAndWriteIndustryAreaSectionToJsonFile,
   readIndustryAreaSectionFromFile,
   writeIndustryAreaSectionToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/industry-areas';
+} from '@/scripts/industry-tariff-reports/05-industry-areas';
 import {
   getAndWriteIndustryHeadings,
   readIndustryHeadingsFromFile,
   writeIndustryHeadingsToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/industry-main-headings';
-import { getAndWriteIntroductionsJson, readIntroductionJsonFromFile, writeIntroductionToMarkdownFile } from '@/scripts/industry-tariff-reports/introduction';
+} from '@/scripts/industry-tariff-reports/00-industry-main-headings';
+import { getAndWriteIntroductionsJson, readIntroductionJsonFromFile, writeIntroductionToMarkdownFile } from '@/scripts/industry-tariff-reports/02-introduction';
 import {
   getAndWriteUnderstandIndustryJson,
   readUnderstandIndustryJsonFromFile,
   writeUnderstandIndustryToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/understand-industry';
+} from '@/scripts/industry-tariff-reports/04-understand-industry';
 import * as dotenv from 'dotenv';
 import {
   getTariffUpdatesForIndustryAndSaveToFile,
   readTariffUpdatesFromFile,
   TariffUpdatesForIndustry,
   writeTariffUpdatesToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/industry-tarrifs';
+} from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import {
   getExecutiveSummaryAndSaveToFile,
   readExecutiveSummaryFromFile,
   writeExecutiveSummaryToMarkdownFile,
-} from './industry-tariff-reports/executive-summary';
-import { getFinalConclusionAndSaveToFile, readFinalConclusionFromFile, writeFinalConclusionToMarkdownFile } from './industry-tariff-reports/final-conclusion';
+} from '@/scripts/industry-tariff-reports/01-executive-summary';
+import {
+  getFinalConclusionAndSaveToFile,
+  readFinalConclusionFromFile,
+  writeFinalConclusionToMarkdownFile,
+} from '@/scripts/industry-tariff-reports/07-final-conclusion';
 
 dotenv.config();
 
@@ -41,12 +45,12 @@ async function doIt() {
   // await getAndWriteIndustryHeadings(industry);
   const headings = await readIndustryHeadingsFromFile(industry);
   // await writeIndustryHeadingsToMarkdownFile(industry, headings);
-  const date = 'April 20, 2025';
+  const date = 'April 21, 2025';
 
   // ##### Introduction #####
-  // await getAndWriteIntroductionsJson(industry, date, headings);
-  // const introductions = await readIntroductionJsonFromFile(industry);
-  // writeIntroductionToMarkdownFile(industry, introductions);
+  await getAndWriteIntroductionsJson(industry, date, headings);
+  const introductions = await readIntroductionJsonFromFile(industry);
+  writeIntroductionToMarkdownFile(industry, introductions);
 
   // ##### Understand Industry #####
   // await getAndWriteUnderstandIndustryJson(industry, headings);
@@ -59,9 +63,9 @@ async function doIt() {
   // writeTariffUpdatesToMarkdownFile(industry, tariffUpdates);
 
   // ##### Industry Area Section #####
-  await getAndWriteIndustryAreaSectionToJsonFile(industry, headings);
-  const industryAreaSection = await readIndustryAreaSectionFromFile(industry);
-  await writeIndustryAreaSectionToMarkdownFile(industry, industryAreaSection);
+  // await getAndWriteIndustryAreaSectionToJsonFile(industry, headings);
+  // const industryAreaSection = await readIndustryAreaSectionFromFile(industry);
+  // await writeIndustryAreaSectionToMarkdownFile(industry, industryAreaSection);
 
   // const firstIndustryArea = headings.headings[3].subHeadings[2];
   // ##### Evaluate Industry Area #####

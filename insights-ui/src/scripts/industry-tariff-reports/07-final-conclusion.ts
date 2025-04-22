@@ -1,11 +1,11 @@
-import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/industry-main-headings';
-import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/industry-tarrifs';
+import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
+import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
 import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
-import { NegativeTariffImpactOnCompanyType, PositiveTariffImpactOnCompanyType } from './evaluate-industry-area';
+import { NegativeTariffImpactOnCompanyType, PositiveTariffImpactOnCompanyType } from 'src/scripts/industry-tariff-reports/06-evaluate-industry-area';
 
 const PositiveImpactsSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),

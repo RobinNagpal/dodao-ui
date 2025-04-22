@@ -1,5 +1,5 @@
-import { IndustryAreaHeadings, IndustrySubHeading } from '@/scripts/industry-tariff-reports/industry-main-headings';
-import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/industry-tarrifs';
+import { IndustryAreaHeadings, IndustrySubHeading } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
+import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { z } from 'zod';

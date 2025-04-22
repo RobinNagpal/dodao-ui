@@ -1,5 +1,5 @@
 import { getLlmResponse } from './llm-utils';
-import { IndustryAreaHeadings } from './industry-main-headings';
+import { IndustryAreaHeadings } from './00-industry-main-headings';
 import fs from 'fs';
 import path from 'path';
 import { z, ZodObject } from 'zod';
@@ -81,7 +81,7 @@ I want to understand the ${industry} industry in depth. Give me a very detailed 
 - **Valuation & Pricing Dynamics**: EV/EBITDA, P/E, P/S benchmarks, price points, elasticity, discounting norms
 - **Market Risks**: demand shocks, margin pressure, currency/regulatory impacts
 
-### 5. Regulation, ESG & Legal
+### 5. Regulation & Legal
 > *(Rules, responsibilities, and sustainability requirements)*
 - **Regulatory Framework**: industry‑specific rules (safety, environmental, trade), policy trends (tariffs, subsidies, bans)
 - **Standards & Certifications**: ISO, UL, FDA, CE, extended producer responsibility

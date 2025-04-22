@@ -1,4 +1,4 @@
-import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/industry-main-headings';
+import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
 import fs from 'fs';
 import path from 'path';
