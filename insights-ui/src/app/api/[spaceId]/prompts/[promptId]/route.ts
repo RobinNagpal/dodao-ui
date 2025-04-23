@@ -37,8 +37,8 @@ async function getPrompt(req: NextRequest, context: { params: Promise<{ spaceId:
 }
 
 // PUT /api/[spaceId]/prompts/[promptId]
-async function updatePrompt(req: NextRequest, context: { params: { spaceId: string; promptId: string } }) {
-  const { spaceId, promptId } = context.params;
+async function updatePrompt(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string }> }) {
+  const { spaceId, promptId } = await context.params;
   const body: UpdatePromptRequest = await req.json();
 
   const updatedPrompt = await prisma.prompt.update({
@@ -60,8 +60,8 @@ async function updatePrompt(req: NextRequest, context: { params: { spaceId: stri
 }
 
 // DELETE /api/[spaceId]/prompts/[promptId]
-async function deletePrompt(req: NextRequest, context: { params: { spaceId: string; promptId: string } }) {
-  const { spaceId, promptId } = context.params;
+async function deletePrompt(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string }> }) {
+  const { spaceId, promptId } = await context.params;
 
   // Could do business logic checks here (e.g., if versions exist, etc.)
   const deleted = await prisma.prompt.delete({
