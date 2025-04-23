@@ -73,7 +73,14 @@ interface GraphColor {
   border: string;
 }
 
-export const getGraphColor = (data: SpiderGraph | SpiderGraphForTicker): GraphColor => {
+const THRESHOLDS = [
+  { min: 0, max: 20, color: { background: 'rgba(255, 0,   0,   0.7)', border: 'rgba(255, 0,   0,   1)' } }, // red
+  { min: 20, max: 50, color: { background: 'rgba(255, 165, 0,   0.7)', border: 'rgba(255, 165, 0,   1)' } }, // orange
+  { min: 50, max: 80, color: { background: 'rgba(255, 240, 0,   0.7)', border: 'rgba(255, 240, 0,   1)' } }, // yellow
+  { min: 80, max: 100, color: { background: 'rgba(0,   255, 0,   0.7)', border: 'rgba(0,   255, 0,   1)' } }, // green
+] as const;
+
+export const getSpiderGraphScorePercentage = (data: SpiderGraph | SpiderGraphForTicker): number => {
   const itemKeys = Object.keys(data);
 
   // Calculate the total possible score (each item's scores array length)
@@ -86,19 +93,23 @@ export const getGraphColor = (data: SpiderGraph | SpiderGraphForTicker): GraphCo
   );
 
   // Compute overall percentage score
-  const overallPercentage = (totalObtainedScore / totalPossibleScore) * 100;
-
-  // Return the corresponding color based on the percentage
-  if (overallPercentage < 20) {
-    return { background: 'rgba(255, 0, 0, 0.7)', border: 'rgba(255, 0, 0, 1)' }; // Red
-  } else if (overallPercentage < 50) {
-    return { background: 'rgba(255, 165, 0, 0.7)', border: 'rgba(255, 165, 0, 1)' }; // Orange
-  } else if (overallPercentage < 80) {
-    return { background: 'rgba(255, 206, 0, 0.7)', border: 'rgba(255, 206, 0, 1)' }; // Yellow
-  } else {
-    return { background: 'rgba(0, 255, 0, 0.7)', border: 'rgba(0, 255, 0, 1)' }; // Green
-  }
+  return (totalObtainedScore / totalPossibleScore) * 100;
 };
+
+export function getGraphColor(percentage: number): GraphColor {
+  const band = THRESHOLDS.find((t) => percentage >= t.min && percentage < t.max) ?? THRESHOLDS[THRESHOLDS.length - 1];
+  return band.color;
+}
+
+export function getLegendItems() {
+  return THRESHOLDS.map(({ min, max, color }) => ({
+    label: `${min}% – ${max}%`,
+    style: {
+      backgroundColor: color.background,
+      border: `2px solid ${color.border}`,
+    },
+  }));
+}
 
 export const HighlightPlugin: Plugin = {
   id: 'highlightSlice',

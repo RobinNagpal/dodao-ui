@@ -31,6 +31,7 @@ ChartJS.register(AlternateRingBackgroundPlugin);
 
 interface RadarChartProps {
   data: SpiderGraph | SpiderGraphForTicker;
+  scorePercentage: number;
 }
 
 declare module 'chart.js' {
@@ -39,7 +40,7 @@ declare module 'chart.js' {
   }
 }
 
-const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
+const RadarChart: React.FC<RadarChartProps> = ({ data, scorePercentage }) => {
   const itemKeys = Object.keys(data);
   const SCORE_OFFSET = 0.5; // Adds padding ONLY for zero scores
 
@@ -72,7 +73,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
   };
 
   // Get dynamic color based on the overall score percentage
-  const graphColor = getGraphColor(data);
+  const graphColor = getGraphColor(scorePercentage);
 
   // Convert data into the required format for the radar chart
   const chartData: ChartData<'radar'> = {
@@ -104,7 +105,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
         pointLabels: {
           // Use a custom callback to wrap the text if it takes more than 20% of the chart's width
           font: { size: 14 },
-          color: '#ffffff',
+          color: '#d5d5d5',
           callback: function (value: string): string | string[] {
             // 'this' is bound to the radial scale (ExtendedRadialLinearScale)
             const scale = this as ExtendedRadialLinearScale;
@@ -156,7 +157,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data }) => {
         titleFont: { size: 18 },
         bodyFont: { size: 14 },
         footerFont: { size: 14 },
-        padding: 15,
+        padding: 10,
         position: 'myCustomPositioner',
         caretSize: 0,
         callbacks: {

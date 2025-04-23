@@ -7,6 +7,7 @@ import React from 'react';
 import RadarChart from '../visualizations/RadarChart';
 import PrivateWrapper from '../auth/PrivateWrapper';
 import ProjectInfoTable from './ProjectInfoTable';
+import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 
 interface ProjectDetailPageProps {
   projectId: string;
@@ -45,6 +46,8 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
     })
   );
 
+  const spiderGraphScorePercentage = getSpiderGraphScorePercentage(spiderGraph);
+
   return (
     <div className="text-color">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -57,7 +60,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
           <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">{initialProjectDetails.name}</p>
           <p className="mt-5 whitespace-pre-line">{initialProjectDetails.processedProjectInfo?.startupSummary}</p>
           <div className="max-w-lg mx-auto">
-            <RadarChart data={spiderGraph} />
+            <RadarChart data={spiderGraph} scorePercentage={spiderGraphScorePercentage} />
           </div>
           <ProjectInfoTable initialProjectDetails={initialProjectDetails} />
           <div className="mx-auto mt-12 text-left">
