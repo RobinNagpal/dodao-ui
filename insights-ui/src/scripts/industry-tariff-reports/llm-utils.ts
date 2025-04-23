@@ -1,10 +1,15 @@
 import { ChatOpenAI } from '@langchain/openai';
 import { ZodObject } from 'zod';
 
-const model = new ChatOpenAI({
+const o4MiniModel = new ChatOpenAI({
   apiKey: process.env.OPENAI_API_KEY,
   model: 'o4-mini',
   temperature: 1,
+});
+
+export const gpt4OSearchModel = new ChatOpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+  model: 'gpt-4o-search-preview',
 });
 
 export const outputInstructions =
@@ -19,7 +24,7 @@ export const outputInstructions =
 - All amounts, dollar values, or figures should be wrapped in backticks.
 `;
 
-export async function getLlmResponse<T extends Record<string, any>>(prompt: string, schema: ZodObject<any>): Promise<T> {
+export async function getLlmResponse<T extends Record<string, any>>(prompt: string, schema: ZodObject<any>, model: ChatOpenAI = o4MiniModel): Promise<T> {
   const structuredLLM = model.withStructuredOutput<T>(schema);
   const headingsResponse: T = await structuredLLM.invoke(prompt);
   console.log('LLM analysis response:\n', JSON.stringify(headingsResponse, null, 2));

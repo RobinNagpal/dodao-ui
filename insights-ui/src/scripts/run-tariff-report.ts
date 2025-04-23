@@ -97,7 +97,7 @@ export async function doIt(reportType: ReportType, industry: string, date: strin
 
     case ReportType.EVALUATE_INDUSTRY_AREA:
       const tariff = readTariffUpdatesFromFile(industry);
-      const firstArea = headings.headings[3].subHeadings[2];
+      const firstArea = headings.headings[0].subHeadings[2];
       await getAndWriteEvaluateIndustryAreaJson(industry, firstArea, headings, tariff!, date);
       const evaluated = readEvaluateIndustryAreaJsonFromFile(industry, firstArea, headings);
       writeEvaluateIndustryAreaToMarkdownFile(industry, firstArea, headings, evaluated);
@@ -145,5 +145,5 @@ export async function doIt(reportType: ReportType, industry: string, date: strin
 }
 
 // Example usage:
-doIt(ReportType.FINAL_CONCLUSION, 'Plastic', 'April 21, 2025').catch(console.error);
+doIt(ReportType.EVALUATE_INDUSTRY_AREA, 'Plastic', 'April 21, 2025').catch(console.error);
 // doIt(ReportType.ALL, 'Plastic', 'April 21, 2025').catch(console.error);

@@ -1,6 +1,6 @@
 import { IndustryAreaHeadings, IndustrySubHeading } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
-import { getLlmResponse, outputInstructions } from '@/scripts/industry-tariff-reports/llm-utils';
+import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/industry-tariff-reports/llm-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { z } from 'zod';
 import fs from 'fs';
@@ -271,6 +271,16 @@ ${JSON.stringify(headings, null, 2)}
 }
 
 // 2. New Challengers
+// A minimal schema for step 1: name + ticker only
+const NewChallengerListSchema = z.object({
+  newChallengers: z.array(
+    z.object({
+      companyName: z.string().describe('Name of the company'),
+      companyTicker: z.string().describe('Stock ticker symbol'),
+    })
+  ),
+});
+
 async function getNewChallengers(
   headings: IndustryAreaHeadings,
   tariffUpdates: TariffUpdatesForIndustry,
@@ -278,21 +288,31 @@ async function getNewChallengers(
   establishedPlayers: EstablishedPlayer[],
   date: string
 ): Promise<NewChallenger[]> {
-  const prompt = `Evaluate the following section for *New Challengers* in the ${industry.title} sector:
+  // --- STEP 1: Fetch just names + tickers ---
+  console.log('[NewChallengers] → Fetching list of names and tickers');
+  const listPrompt = `
+Evaluate the *New Challengers* in the ${industry.title} sector **but output only** each company's **name** and **ticker** in JSON:
 - Select three public US companies IPO'd in the last 5–7 years.
-- Focus on US based companies or western companies. Ignore any chinese companies.
+- Ignore any Chinese companies.
+- Output JSON matching:
+- Make sure the companies are active and are being publicly traded as of ${date} on Nasdaq or NYSE.
+- The company should be traded on US exchanges i.e. Nasdaq or NYSE.
+- Dont return duplicate companies.
 - The companies should have unique edge over established players which creates probability of huge success in the future.
 - Make sure to select the best of the best new players and they not be old established players.
-- For each: companyName, companyDescription, companyWebsite, companyTicker, products, aboutManagement, uniqueAdvantage, pastPerformance, futureGrowth, impactOfTariffs, competitors.
-- Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.
-- Output JSON array matching NewChallengerSchema.
-
-# Industry Summary: 
-${industry.oneLineSummary}
-
-# Key Companies: 
-${industry.companies.map((c) => c.name).join(', ')}
-
+- Ignore challengers like Zymergen Inc, 
+- Try to find three challenger that fall under this category of ${industry.title} sector.
+  {
+    "newChallengers": [
+      { "companyName": "...", "companyTicker": "..." },
+      …
+    ]
+  }
+  
+The selected companies should be just from the ${industry.title} sector. 
+Do not include any companies from other headings or subheadings as they will be covered separately.
+Make sure to select companies just from the ${industry.title} sector and not from other headings or subheadings.
+  
 # Established Players:
 ${JSON.stringify(
   establishedPlayers.map((ep) => ep.companyName),
@@ -300,24 +320,45 @@ ${JSON.stringify(
   2
 )}
 
-# Tariff Updates: 
-${JSON.stringify(tariffUpdates)}
-
-# Date: 
-${date}
-
-${outputInstructions}
-
-The selected companies should be just from the ${industry.title} sector. 
-Do not include any companies from other headings or subheadings as they will be covered separately.
-Make sure to select companies just from the ${industry.title} sector and not from other headings or subheadings.
-
+  
 # All the industry areas. You need to only cover the ${industry.title} area.
 ${JSON.stringify(headings, null, 2)}
 
 `;
+  const { newChallengers: basicList } = await getLlmResponse<{ newChallengers: { companyName: string; companyTicker: string }[] }>(
+    listPrompt,
+    NewChallengerListSchema,
+    gpt4OSearchModel
+  );
+  console.log('[NewChallengers] ← Received basic list:', basicList);
 
-  return (await getLlmResponse<NewChallengersArray>(prompt, NewChallengersArraySchema)).newChallengers;
+  // --- STEP 2: For each, fetch full details ---
+  const detailedList: NewChallenger[] = [];
+  for (const { companyName, companyTicker } of basicList) {
+    console.log(`[NewChallengers] → Fetching details for ${companyName} (${companyTicker})`);
+    const detailPrompt = `
+Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${industry.title} sector:
+- companyName, companyDescription, companyWebsite, companyTicker
+- products (portfolio & revenue breakdown)
+- aboutManagement, uniqueAdvantage
+- pastPerformance (5 yrs), futureGrowth (5 yrs)
+- impactOfTariffs (5–6 lines of facts & reasoning)
+- competitors
+- Output JSON matching NewChallengerSchema exactly.
+- Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.
+
+${outputInstructions}
+
+# Tariff Updates:
+${JSON.stringify(tariffUpdates, null, 2)}
+
+`;
+    const newChallenger = await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, gpt4OSearchModel);
+    console.log(`[NewChallengers] ← Details for ${companyName}:`, newChallenger);
+    detailedList.push(newChallenger);
+  }
+
+  return detailedList;
 }
 
 // 3. Headwinds & Tailwinds
@@ -395,17 +436,16 @@ async function getTariffImpactSummary(
   const prompt = `Write a 3-5 paragraph and Summarize the impact on established players, new challengers, headwinds and tailwinds, and tariff impact by company type in the ${
     industry.title
   } sector:
+- Write the summary as if it will be used by investors. 
 - Add one paragraph for positive impact and include the companies that will be most positively affected to be included first in that paragraph.
 - Add one paragraph for negative impact and include the companies that will be most negatively affected to be included first in that paragraph.
-- Use future tense.
-- Include specific examples, facts, and reasoning.
-- Output a single string.
+- Add one paragraph about Final Notes for the effect of on ${industry.title} sector.
+- Summary should be 3 paragraphs long, with each paragraph of 6-8 lines long.
+- Include specific examples of companies, facts, and reasoning.
 - Focus on impact on US based companies.
 
 ${outputInstructions}
 
-# Tariff Updates: 
-${JSON.stringify(tariffUpdates)}
 
 # Established Players: 
 ${JSON.stringify(establishedPlayers, null, 2)}
@@ -421,8 +461,6 @@ ${JSON.stringify(positiveTariffImpactOnCompanyType, null, 2)}
 
 # Negative Tariff Impact on Company Type:
 ${JSON.stringify(negativeTariffImpactOnCompanyType, null, 2)}
-
-
 
 `;
 
