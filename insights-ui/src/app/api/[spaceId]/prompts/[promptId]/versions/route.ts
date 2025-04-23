@@ -11,8 +11,8 @@ interface CreatePromptVersionRequest {
 }
 
 // GET /api/[spaceId]/prompts/[promptId]/versions
-async function getVersions(req: NextRequest, context: { params: { spaceId: string; promptId: string } }) {
-  const { spaceId, promptId } = context.params;
+async function getVersions(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string }> }) {
+  const { spaceId, promptId } = await context.params;
   const versions = await prisma.promptVersion.findMany({
     where: {
       spaceId,
@@ -26,8 +26,8 @@ async function getVersions(req: NextRequest, context: { params: { spaceId: strin
 }
 
 // POST /api/[spaceId]/prompts/[promptId]/versions
-async function createVersion(req: NextRequest, context: { params: { spaceId: string; promptId: string } }) {
-  const { spaceId, promptId } = context.params;
+async function createVersion(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string }> }) {
+  const { spaceId, promptId } = await context.params;
   const body: CreatePromptVersionRequest = await req.json();
 
   // Query the highest version for this prompt & space

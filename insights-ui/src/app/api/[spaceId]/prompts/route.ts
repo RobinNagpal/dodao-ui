@@ -34,8 +34,8 @@ async function getPrompts(req: NextRequest, context: { params: Promise<{ spaceId
 }
 
 // POST /api/[spaceId]/prompts
-async function createPrompt(req: NextRequest, context: { params: { spaceId: string } }) {
-  const { spaceId } = context.params;
+async function createPrompt(req: NextRequest, context: { params: Promise<{ spaceId: string }> }) {
+  const { spaceId } = await context.params;
   const body: CreatePromptRequest = await req.json();
 
   // Basic validation
