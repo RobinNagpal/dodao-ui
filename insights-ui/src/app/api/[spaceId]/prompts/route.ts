@@ -13,6 +13,7 @@ interface CreatePromptRequest {
   outputSchema: string;
   sampleJson: string;
   createdBy?: string;
+  sampleBodyToAppend?: string;
   transformationPatch?: Prisma.JsonValue;
 }
 
@@ -67,6 +68,7 @@ async function createPrompt(req: NextRequest, context: { params: Promise<{ space
       sampleJson: body.sampleJson || '',
       createdBy: body.createdBy || 'unknown',
       updatedBy: body.createdBy || 'unknown',
+      sampleBodyToAppend: body.sampleBodyToAppend || '',
       transformationPatch: body.transformationPatch || undefined,
     },
   });
