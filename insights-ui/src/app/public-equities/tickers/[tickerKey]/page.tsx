@@ -19,6 +19,9 @@ import { Metadata } from 'next';
 import PopulateLatest10QInfoButton from './PopulateLatest10QInfoButton';
 import { parseMarkdown } from '@/util/parse-markdown';
 import PopulateTickerInfoButton from './PopulateTickerInfoButton';
+import SpiderChartFlyoutMenu from './SpiderChartFlyoutMenu';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
+import { getGraphColor, getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 
 export async function generateMetadata({ params }: { params: Promise<{ tickerKey: string }> }): Promise<Metadata> {
   const { tickerKey } = await params;
@@ -109,6 +112,23 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
     })
   );
 
+  function safeParseTickerInfo(raw: string | null | undefined) {
+    if (!raw) {
+      return {};
+    }
+
+    try {
+      return JSON.parse(raw);
+    } catch (err) {
+      console.warn('tickerInfo wasn’t valid JSON, falling back to string:', raw);
+      return {};
+    }
+  }
+
+  const spiderGraphScorePercentage = getSpiderGraphScorePercentage(spiderGraph);
+  const { border } = getGraphColor(spiderGraphScorePercentage);
+  const aboutTicker = safeParseTickerInfo(tickerReport.tickerInfo);
+
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -120,12 +140,34 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                 <TickerActionsDropdown tickerKey={tickerKey} />
               </PrivateWrapper>
             </div>
-            <h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">
-              {tickerReport.companyName} ({tickerKey})
-            </h1>
-            <h2 className="mt-5 whitespace-pre-line">{tickerReport.shortDescription}</h2>
-            <div className="max-w-lg mx-auto">
-              <RadarChart data={spiderGraph} />
+            <div className="mx-auto max-w-7xl">
+              <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none text-left">
+                <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl">
+                  {tickerReport.companyName} ({tickerKey}){' '}
+                  <a href={aboutTicker.websiteUrl} target="_blank">
+                    <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
+                  </a>
+                </h1>
+                <div className="flex flex-col gap-x-5 gap-y-2 lg:flex-row">
+                  <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
+                    <p className="mt-6">{tickerReport.shortDescription}</p>
+                    <p className="mt-6">{aboutTicker.reitInfo}</p>
+                  </div>
+                  <div className="lg:flex lg:flex-auto lg:justify-center relative">
+                    <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full">
+                      <div className="w-full max-w-lg mx-auto relative">
+                        <div className="absolute top-10 right-0 flex space-x-2">
+                          <div className="text-2xl font-bold -z-10" style={{ color: border }}>
+                            {spiderGraphScorePercentage}%
+                          </div>
+                          <SpiderChartFlyoutMenu />
+                        </div>
+                        <RadarChart data={spiderGraph} scorePercentage={spiderGraphScorePercentage} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             {tickerReport.latest10QInfo ? (
               <div className="border-b border-gray-100 text-left">

@@ -116,39 +116,7 @@ export async function getTickerInfo(ticker: Ticker): Promise<string> {
     throw e;
   }
 
-  const aboutTickerString = `
-***Years Since IPO***: ${result.yearsSinceIpo}
-    
-***REIT Type***: ${result.gicsClassification.subIndustry}
-    
-***Business Model***: ${result.businessModel}
-    
-***Dividend Profile***: ${result.dividendProfile}
-    
-***Competitive Edge***:
-${result.competitiveEdge.map((edge: string[]) => `- ${edge}`).join('\n')}
-    
-***Comparables***:
-${result.comparables
-  .map(
-    (comp: ComparableReit) => `- **${comp.ticker} (${comp.companyName})**
-  - Model: ${comp.businessModel}
-  - Occupancy Rate: ${comp.occupancyRate}
-  - Dividend Profile: ${comp.dividendProfile}
-  - Comparison: ${comp.comparisonParagraph}`
-  )
-  .join('\n\n')}
-    
-***Latest News***: ${result.latestNews}
-    
-***Outlook***: ${result.outlook}
-    
-***Headwinds***: ${result.headwinds}
-    
-***Tailwinds***: ${result.tailwinds}
-    `.trim();
-
-  return aboutTickerString;
+  return JSON.stringify(result, null, 2);
 }
 
 function validateData(schema: object, data: unknown): { valid: boolean; errors?: ErrorObject[] } {
