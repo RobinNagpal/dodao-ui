@@ -2,5 +2,6 @@ type: object
 properties:
   message:
     type: string
+    description: "Output of the prompt"
 required:
   - message
