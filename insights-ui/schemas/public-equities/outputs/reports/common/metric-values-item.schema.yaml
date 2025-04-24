@@ -2,12 +2,16 @@ type: object
 properties:
   metricKey:
     type: string
+    description: "key that must be same as the key from the metrics definition array"
   value:
     type: string
+    description: "the computed value (either positive or negative) as string, otherwise N/A if didnt get computed"
   calculationExplanation:
     type: string
+    description: "first include the definition that was provided,  1-2 sentences explaining how you arrived at this value. facts and information used from the data"
   allInformationUsed:
     type: string
+    description: "capture the 5 to 10 qualitative and quantitative points that were used to calculate the value and output"
 required:
   - metricKey
   - value

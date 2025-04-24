@@ -3,6 +3,12 @@ properties:
   reitInfo:
     type: string
     description: "Important REIT info other than the given short description of the company"
+  reitWebsiteUrl:
+    type: string
+    description: "Main Website Url of the REIT"
+  valuation:
+    type: string
+    description: "Categorize the REIT as Overvalued/Undervalued/Fairly Valued"
   yearsSinceIpo:
     type: string
     description: "Number of years since the IPO, as a string (e.g. '0.6 years')"
