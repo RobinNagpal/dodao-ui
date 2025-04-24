@@ -4,20 +4,15 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import getBaseUrl from "@dodao/web-core/utils/api/getBaseURL";
-
-type Condition = {
-  conditionType: string;
-  thresholdValue?: string;
-  thresholdValueLow?: string;
-  thresholdValueHigh?: string;
-  severity: string;
-};
-
-type Channel = {
-  channelType: "EMAIL" | "WEBHOOK";
-  email?: string;
-  webhookUrl?: string;
-};
+import {
+  Condition,
+  Channel,
+  ConditionType,
+  SeverityLevel,
+  NotificationFrequency,
+  severityOptions,
+  frequencyOptions,
+} from "@/types/alerts";
 
 export default function CompoundMarketAlertPage() {
   const router = useRouter();
@@ -37,26 +32,6 @@ export default function CompoundMarketAlertPage() {
     { channelType: "EMAIL", email: "" },
   ]);
 
-  // Helpers
-  const conditionOptions = [
-    { label: "APR rises above threshold", value: "APR_RISE_ABOVE" },
-    { label: "APR falls below threshold", value: "APR_FALLS_BELOW" },
-    { label: "APR is outside a range", value: "APR_OUTSIDE_RANGE" },
-  ];
-  const severityOptions = [
-    { label: "None", value: "NONE" },
-    { label: "Low", value: "LOW" },
-    { label: "Medium", value: "MEDIUM" },
-    { label: "High", value: "HIGH" },
-  ];
-  const frequencyOptions = [
-    { label: "Immediate", value: "IMMEDIATE" },
-    { label: "Every 6h", value: "AT_MOST_ONCE_PER_6_HOURS" },
-    { label: "Every 12h", value: "AT_MOST_ONCE_PER_12_HOURS" },
-    { label: "Daily", value: "AT_MOST_ONCE_PER_DAY" },
-  ];
-
-  // Chain & market toggles (unchanged)
   const toggleChain = (chain: string) =>
     setSelectedChains((cs) =>
       cs.includes(chain) ? cs.filter((c) => c !== chain) : [...cs, chain]
@@ -66,20 +41,11 @@ export default function CompoundMarketAlertPage() {
       ms.includes(market) ? ms.filter((m) => m !== market) : [...ms, market]
     );
 
-  // Condition handlers
-  const addCondition = () =>
-    setConditions((cs) => [
-      ...cs,
-      { conditionType: "APR_RISE_ABOVE", thresholdValue: "", severity: "NONE" },
-    ]);
   const updateCondition = (i: number, field: keyof Condition, val: string) =>
     setConditions((cs) =>
       cs.map((c, idx) => (idx === i ? { ...c, [field]: val } : c))
     );
-  const removeCondition = (i: number) =>
-    setConditions((cs) => cs.filter((_, idx) => idx !== i));
 
-  // Channel handlers
   const addChannel = () =>
     setChannels((ch) => [...ch, { channelType: "EMAIL", email: "" }]);
   const updateChannel = (i: number, field: keyof Channel, val: string) =>
@@ -89,7 +55,6 @@ export default function CompoundMarketAlertPage() {
   const removeChannel = (i: number) =>
     setChannels((ch) => ch.filter((_, idx) => idx !== i));
 
-  // POST to API
   const handleCreateAlert = async () => {
     const email = localStorage.getItem("email")!;
     const payload = {
@@ -99,11 +64,11 @@ export default function CompoundMarketAlertPage() {
       selectedMarkets,
       notificationFrequency,
       conditions: conditions.map((c) => ({
-        type: c.conditionType,
+        type: c.conditionType as ConditionType,
         value: c.thresholdValue,
-        min: c.thresholdValueLow,
-        max: c.thresholdValueHigh,
-        severity: c.severity,
+        min: c.thresholdLow,
+        max: c.thresholdHigh,
+        severity: c.severity as SeverityLevel,
       })),
       deliveryChannels: channels.map((c) => ({
         type: c.channelType,
@@ -260,7 +225,12 @@ export default function CompoundMarketAlertPage() {
             </p>
           </div>
           <button
-            onClick={addCondition}
+            onClick={() =>
+              setConditions((cs) => [
+                ...cs,
+                { conditionType: "APR_RISE_ABOVE", severity: "NONE" },
+              ])
+            }
             className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
           >
             Add New Condition +
@@ -280,15 +250,28 @@ export default function CompoundMarketAlertPage() {
               <select
                 value={cond.conditionType}
                 onChange={(e) =>
-                  updateCondition(i, "conditionType", e.target.value)
+                  setConditions((cs) =>
+                    cs.map((c, idx) =>
+                      idx === i
+                        ? {
+                            ...c,
+                            conditionType: e.target.value as ConditionType,
+                          }
+                        : c
+                    )
+                  )
                 }
-                className="border border-gray-300 rounded-md px-3 py-2 w-full"
+                className="border rounded px-3 py-2 w-full"
               >
-                {conditionOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
+                <option value="APR_RISE_ABOVE">
+                  APR rises above threshold
+                </option>
+                <option value="APR_FALLS_BELOW">
+                  APR falls below threshold
+                </option>
+                <option value="APR_OUTSIDE_RANGE">
+                  APR is outside a range
+                </option>
               </select>
             </div>
 
@@ -299,18 +282,18 @@ export default function CompoundMarketAlertPage() {
                   <input
                     type="text"
                     placeholder="Min"
-                    value={cond.thresholdValueLow}
+                    value={cond.thresholdLow}
                     onChange={(e) =>
-                      updateCondition(i, "thresholdValueLow", e.target.value)
+                      updateCondition(i, "thresholdLow", e.target.value)
                     }
                     className="border border-gray-300 rounded-md px-2 py-1 w-full"
                   />
                   <input
                     type="text"
                     placeholder="Max"
-                    value={cond.thresholdValueHigh}
+                    value={cond.thresholdHigh}
                     onChange={(e) =>
-                      updateCondition(i, "thresholdValueHigh", e.target.value)
+                      updateCondition(i, "thresholdHigh", e.target.value)
                     }
                     className="border border-gray-300 rounded-md px-2 py-1 w-full"
                   />
@@ -336,8 +319,16 @@ export default function CompoundMarketAlertPage() {
             <div className="col-span-3">
               <select
                 value={cond.severity}
-                onChange={(e) => updateCondition(i, "severity", e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 w-full"
+                onChange={(e) =>
+                  setConditions((cs) =>
+                    cs.map((c, idx) =>
+                      idx === i
+                        ? { ...c, severity: e.target.value as SeverityLevel }
+                        : c
+                    )
+                  )
+                }
+                className="border rounded px-3 py-2 w-full"
               >
                 {severityOptions.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -350,7 +341,9 @@ export default function CompoundMarketAlertPage() {
             {/* Remove */}
             {conditions.length > 1 && (
               <button
-                onClick={() => removeCondition(i)}
+                onClick={() =>
+                  setConditions((cs) => cs.filter((_, idx) => idx !== i))
+                }
                 className="col-span-1 text-red-500"
               >
                 ✕
@@ -366,8 +359,10 @@ export default function CompoundMarketAlertPage() {
           </label>
           <select
             value={notificationFrequency}
-            onChange={(e) => setNotificationFrequency(e.target.value)}
-            className="border border-gray-300 rounded-md px-3 py-2 w-full"
+            onChange={(e) =>
+              setNotificationFrequency(e.target.value as NotificationFrequency)
+            }
+            className="border rounded px-3 py-2 w-full"
           >
             {frequencyOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>

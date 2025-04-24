@@ -1,5 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
+import {
+  AlertCategory,
+  AlertActionType,
+  NotificationFrequency,
+  ConditionType,
+  SeverityLevel,
+  DeliveryChannelType,
+} from "@prisma/client";
+
+interface AlertRequestBody {
+  email: string;
+  walletAddress: string;
+  category: AlertCategory;
+  actionType: AlertActionType;
+  selectedChains: string[];
+  selectedMarkets: string[];
+  compareProtocols: string[];
+  notificationFrequency: NotificationFrequency;
+  conditions: Array<{
+    type: ConditionType;
+    value?: string;
+    min?: string;
+    max?: string;
+    severity: SeverityLevel;
+  }>;
+  deliveryChannels: Array<{
+    type: DeliveryChannelType;
+    email?: string;
+    webhookUrl?: string;
+  }>;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,7 +45,7 @@ export async function POST(request: NextRequest) {
       notificationFrequency,
       conditions,
       deliveryChannels,
-    } = await request.json();
+    }: AlertRequestBody = await request.json();
 
     // Basic validation
     if (
@@ -47,20 +78,16 @@ export async function POST(request: NextRequest) {
         compareProtocols,
         notificationFrequency,
         conditions: {
-          create: conditions.map((c: any) => ({
+          create: conditions.map((c) => ({
             conditionType: c.type,
-            thresholdValue: parseFloat(c.value || c.threshold),
+            thresholdValue: c.value ? parseFloat(c.value) : undefined,
             severity: c.severity,
-            ...(c.min !== undefined && {
-              thresholdValueLow: parseFloat(c.min),
-            }),
-            ...(c.max !== undefined && {
-              thresholdValueHigh: parseFloat(c.max),
-            }),
+            thresholdValueLow: c.min ? parseFloat(c.min) : undefined,
+            thresholdValueHigh: c.max ? parseFloat(c.max) : undefined,
           })),
         },
         deliveryChannels: {
-          create: deliveryChannels.map((d: any) => ({
+          create: deliveryChannels.map((d) => ({
             channelType: d.type,
             email: d.type === "EMAIL" ? d.email : undefined,
             webhookUrl: d.type === "WEBHOOK" ? d.webhookUrl : undefined,

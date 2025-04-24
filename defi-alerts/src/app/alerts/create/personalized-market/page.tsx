@@ -4,40 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import getBaseUrl from "@dodao/web-core/utils/api/getBaseURL";
-
-type SupplyRow = {
-  chain: string;
-  market: string;
-  rate: string;
-  conditionType: "APR_RISE_ABOVE" | "APR_FALLS_BELOW" | "APR_OUTSIDE_RANGE";
-  threshold: string;
-  severity: "NONE" | "LOW" | "MEDIUM" | "HIGH";
-  frequency:
-    | "IMMEDIATE"
-    | "AT_MOST_ONCE_PER_6_HOURS"
-    | "AT_MOST_ONCE_PER_12_HOURS"
-    | "AT_MOST_ONCE_PER_DAY";
-};
-
-type BorrowRow = {
-  chain: string;
-  market: string;
-  rate: string;
-  conditionType: "APR_RISE_ABOVE" | "APR_FALLS_BELOW" | "APR_OUTSIDE_RANGE";
-  threshold: string;
-  severity: "NONE" | "LOW" | "MEDIUM" | "HIGH";
-  frequency:
-    | "IMMEDIATE"
-    | "AT_MOST_ONCE_PER_6_HOURS"
-    | "AT_MOST_ONCE_PER_12_HOURS"
-    | "AT_MOST_ONCE_PER_DAY";
-};
-
-type Channel = {
-  channelType: "EMAIL" | "WEBHOOK";
-  email?: string;
-  webhookUrl?: string;
-};
+import {
+  SupplyRow,
+  BorrowRow,
+  Channel,
+  severityOptions,
+  frequencyOptions,
+  ConditionType,
+} from "@/types/alerts";
 
 export default function PersonalizedMarketAlertPage() {
   const router = useRouter();
@@ -113,13 +87,6 @@ export default function PersonalizedMarketAlertPage() {
     { label: "APR falls below threshold", value: "APR_FALLS_BELOW" },
     { label: "APR is outside a range", value: "APR_OUTSIDE_RANGE" },
   ] as const;
-  const severityOptions = ["NONE", "LOW", "MEDIUM", "HIGH"] as const;
-  const frequencyOptions = [
-    { label: "Immediate", value: "IMMEDIATE" },
-    { label: "Once/6h", value: "AT_MOST_ONCE_PER_6_HOURS" },
-    { label: "Once/12h", value: "AT_MOST_ONCE_PER_12_HOURS" },
-    { label: "Once/day", value: "AT_MOST_ONCE_PER_DAY" },
-  ] as const;
 
   // Submit → two POSTs: one for SUPPLY, one for BORROW
   const handleCreateAlert = async () => {
@@ -139,11 +106,18 @@ export default function PersonalizedMarketAlertPage() {
             compareProtocols: [],
             notificationFrequency: r.frequency,
             conditions: [
-              {
-                type: r.conditionType,
-                value: r.threshold,
-                severity: r.severity,
-              },
+              r.conditionType === "APR_OUTSIDE_RANGE"
+                ? {
+                    type: r.conditionType,
+                    min: r.thresholdLow,
+                    max: r.thresholdHigh,
+                    severity: r.severity,
+                  }
+                : {
+                    type: r.conditionType,
+                    value: r.threshold,
+                    severity: r.severity,
+                  },
             ],
             deliveryChannels: channels.map((c) => ({
               type: c.channelType,
@@ -172,11 +146,18 @@ export default function PersonalizedMarketAlertPage() {
             compareProtocols: [],
             notificationFrequency: r.frequency,
             conditions: [
-              {
-                type: r.conditionType,
-                value: r.threshold,
-                severity: r.severity,
-              },
+              r.conditionType === "APR_OUTSIDE_RANGE"
+                ? {
+                    type: r.conditionType,
+                    min: r.thresholdLow,
+                    max: r.thresholdHigh,
+                    severity: r.severity,
+                  }
+                : {
+                    type: r.conditionType,
+                    value: r.threshold,
+                    severity: r.severity,
+                  },
             ],
             deliveryChannels: channels.map((c) => ({
               type: c.channelType,
@@ -253,7 +234,7 @@ export default function PersonalizedMarketAlertPage() {
                         updateSupplyRow(
                           i,
                           "conditionType",
-                          e.target.value as SupplyRow["conditionType"]
+                          e.target.value as ConditionType
                         )
                       }
                       className="border px-2 py-1 rounded"
@@ -266,15 +247,43 @@ export default function PersonalizedMarketAlertPage() {
                     </select>
                   </td>
                   <td className="py-2">
-                    <input
-                      type="text"
-                      value={r.threshold}
-                      onChange={(e) =>
-                        updateSupplyRow(i, "threshold", e.target.value)
-                      }
-                      className="border px-2 py-1 rounded w-20"
-                    />
+                    {r.conditionType === "APR_OUTSIDE_RANGE" ? (
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="text"
+                          placeholder="Min"
+                          value={r.thresholdLow}
+                          onChange={(e) =>
+                            updateSupplyRow(i, "thresholdLow", e.target.value)
+                          }
+                          className="border px-2 py-1 rounded w-20"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Max"
+                          value={r.thresholdHigh}
+                          onChange={(e) =>
+                            updateSupplyRow(i, "thresholdHigh", e.target.value)
+                          }
+                          className="border px-2 py-1 rounded w-20"
+                        />
+                        <span>%</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center">
+                        <input
+                          type="text"
+                          value={r.threshold}
+                          onChange={(e) =>
+                            updateSupplyRow(i, "threshold", e.target.value)
+                          }
+                          className="border px-2 py-1 rounded w-20"
+                        />
+                        <span className="ml-2">%</span>
+                      </div>
+                    )}
                   </td>
+
                   <td className="py-2">
                     <select
                       value={r.severity}
@@ -287,9 +296,9 @@ export default function PersonalizedMarketAlertPage() {
                       }
                       className="border px-2 py-1 rounded"
                     >
-                      {severityOptions.map((v) => (
-                        <option key={v} value={v}>
-                          {v.toLowerCase()}
+                      {severityOptions.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
                         </option>
                       ))}
                     </select>
@@ -352,7 +361,7 @@ export default function PersonalizedMarketAlertPage() {
                         updateBorrowRow(
                           i,
                           "conditionType",
-                          e.target.value as BorrowRow["conditionType"]
+                          e.target.value as ConditionType
                         )
                       }
                       className="border px-2 py-1 rounded"
@@ -365,15 +374,43 @@ export default function PersonalizedMarketAlertPage() {
                     </select>
                   </td>
                   <td className="py-2">
-                    <input
-                      type="text"
-                      value={r.threshold}
-                      onChange={(e) =>
-                        updateBorrowRow(i, "threshold", e.target.value)
-                      }
-                      className="border px-2 py-1 rounded w-20"
-                    />
+                    {r.conditionType === "APR_OUTSIDE_RANGE" ? (
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="text"
+                          placeholder="Min"
+                          value={r.thresholdLow}
+                          onChange={(e) =>
+                            updateBorrowRow(i, "thresholdLow", e.target.value)
+                          }
+                          className="border px-2 py-1 rounded w-20"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Max"
+                          value={r.thresholdHigh}
+                          onChange={(e) =>
+                            updateBorrowRow(i, "thresholdHigh", e.target.value)
+                          }
+                          className="border px-2 py-1 rounded w-20"
+                        />
+                        <span>%</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center">
+                        <input
+                          type="text"
+                          value={r.threshold}
+                          onChange={(e) =>
+                            updateBorrowRow(i, "threshold", e.target.value)
+                          }
+                          className="border px-2 py-1 rounded w-20"
+                        />
+                        <span className="ml-2">%</span>
+                      </div>
+                    )}
                   </td>
+
                   <td className="py-2">
                     <select
                       value={r.severity}
@@ -386,9 +423,9 @@ export default function PersonalizedMarketAlertPage() {
                       }
                       className="border px-2 py-1 rounded"
                     >
-                      {severityOptions.map((v) => (
-                        <option key={v} value={v}>
-                          {v.toLowerCase()}
+                      {severityOptions.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
                         </option>
                       ))}
                     </select>

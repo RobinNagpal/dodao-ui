@@ -1,5 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
+import {
+  AlertActionType,
+  NotificationFrequency,
+  ConditionType,
+  SeverityLevel,
+  DeliveryChannelType,
+} from "@prisma/client";
+
+type Payload = {
+  email: string;
+  actionType: AlertActionType;
+  selectedChains: string[];
+  selectedMarkets: string[];
+  notificationFrequency: NotificationFrequency;
+  conditions: Array<{
+    type: ConditionType;
+    value?: string;
+    min?: string;
+    max?: string;
+    severity: SeverityLevel;
+  }>;
+  deliveryChannels: Array<{
+    type: DeliveryChannelType;
+    email?: string;
+    webhookUrl?: string;
+  }>;
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,9 +38,21 @@ export async function POST(request: NextRequest) {
       notificationFrequency,
       conditions,
       deliveryChannels,
-    } = await request.json();
+    } = (await request.json()) as Payload;
 
-    if (!email || !actionType || !selectedChains?.length || !conditions) {
+    if (
+      !email ||
+      !actionType ||
+      !Array.isArray(selectedChains) ||
+      selectedChains.length === 0 ||
+      !Array.isArray(selectedMarkets) ||
+      selectedMarkets.length === 0 ||
+      !notificationFrequency ||
+      !Array.isArray(conditions) ||
+      conditions.length === 0 ||
+      !Array.isArray(deliveryChannels) ||
+      deliveryChannels.length === 0
+    ) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -29,10 +68,10 @@ export async function POST(request: NextRequest) {
       data: {
         user: { connect: { id: user.id } },
         category: "GENERAL",
-        actionType: actionType as any,
+        actionType,
         selectedChains,
         selectedMarkets,
-        compareProtocols: [], // extend when you collect protocols
+        compareProtocols: [],
         notificationFrequency: notificationFrequency as any,
         conditions: {
           create: conditions.map((c: any) => ({
@@ -56,7 +95,7 @@ export async function POST(request: NextRequest) {
           create: deliveryChannels.map((d: any) => ({
             channelType: d.type as any,
             email: d.type === "EMAIL" ? d.email : undefined,
-            webhookUrl: d.type === "WEBHOOK" ? d.url : undefined,
+            webhookUrl: d.type === "WEBHOOK" ? d.webhookUrl : undefined,
           })),
         },
       },
@@ -64,7 +103,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true, alertId: alert.id });
   } catch (err: any) {
-    console.error(err);
+    console.error("[compound-market route] error:", err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

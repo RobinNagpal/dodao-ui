@@ -4,13 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import getBaseUrl from "@dodao/web-core/utils/api/getBaseURL";
-
-type Threshold = { value: string; severity: string };
-type Channel = {
-  channelType: "EMAIL" | "WEBHOOK";
-  email?: string;
-  webhookUrl?: string;
-};
+import {
+  ComparisonRow,
+  Channel,
+  NotificationFrequency,
+  SeverityLevel,
+  frequencyOptions,
+  severityOptions,
+} from "@/types/alerts";
 
 export default function CompareCompoundPage() {
   const router = useRouter();
@@ -21,10 +22,19 @@ export default function CompareCompoundPage() {
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([]);
   const [notificationFrequency, setNotificationFrequency] =
-    useState<string>("IMMEDIATE");
-  const [thresholds, setThresholds] = useState<Threshold[]>([
-    { value: "0.5", severity: "NONE" },
+    useState<NotificationFrequency>("IMMEDIATE");
+
+  const [thresholds, setThresholds] = useState<ComparisonRow[]>([
+    {
+      platform: "",
+      chain: "",
+      market: "",
+      threshold: "",
+      severity: "NONE",
+      frequency: "IMMEDIATE",
+    },
   ]);
+
   const [channels, setChannels] = useState<Channel[]>([
     { channelType: "EMAIL", email: "" },
   ]);
@@ -45,8 +55,23 @@ export default function CompareCompoundPage() {
 
   // threshold handlers
   const addThreshold = () =>
-    setThresholds((ts) => [...ts, { value: "", severity: "NONE" }]);
-  const updateThreshold = (idx: number, field: keyof Threshold, val: string) =>
+    setThresholds((ts) => [
+      ...ts,
+      {
+        platform: "",
+        chain: "",
+        market: "",
+        threshold: "",
+        severity: "NONE",
+        frequency: "IMMEDIATE",
+      },
+    ]);
+
+  const updateThreshold = (
+    idx: number,
+    field: keyof ComparisonRow,
+    val: string
+  ) =>
     setThresholds((ts) =>
       ts.map((t, i) => (i === idx ? { ...t, [field]: val } : t))
     );
@@ -63,15 +88,6 @@ export default function CompareCompoundPage() {
   const removeChannel = (idx: number) =>
     setChannels((ch) => ch.filter((_, i) => i !== idx));
 
-  const frequencyOptions = [
-    { label: "Immediate", value: "IMMEDIATE" },
-    { label: "Hourly", value: "AT_MOST_ONCE_PER_HOUR" },
-    { label: "Every 3h", value: "AT_MOST_ONCE_PER_3_HOURS" },
-    { label: "Every 6h", value: "AT_MOST_ONCE_PER_6_HOURS" },
-    { label: "Every 12h", value: "AT_MOST_ONCE_PER_12_HOURS" },
-    { label: "Daily", value: "AT_MOST_ONCE_PER_DAY" },
-  ];
-
   const handleCreateAlert = async () => {
     const email = localStorage.getItem("email")!;
     const payload = {
@@ -85,13 +101,13 @@ export default function CompareCompoundPage() {
       notificationFrequency,
       conditions: thresholds.map((t) => ({
         type: alertType === "supply" ? "RATE_DIFF_ABOVE" : "RATE_DIFF_BELOW",
-        value: t.value,
+        value: t.threshold,
         severity: t.severity,
       })),
       deliveryChannels: channels.map((c) => ({
         type: c.channelType,
         email: c.channelType === "EMAIL" ? c.email : undefined,
-        url: c.channelType === "WEBHOOK" ? c.webhookUrl : undefined,
+        webhookUrl: c.channelType === "WEBHOOK" ? c.webhookUrl : undefined,
       })),
     };
 
@@ -253,8 +269,10 @@ export default function CompareCompoundPage() {
             <div className="col-span-5 flex items-center">
               <input
                 type="text"
-                value={th.value}
-                onChange={(e) => updateThreshold(i, "value", e.target.value)}
+                value={th.threshold}
+                onChange={(e) =>
+                  updateThreshold(i, "threshold", e.target.value)
+                }
                 className="border px-2 py-1 rounded w-20"
               />
               <span className="ml-2">APR</span>
@@ -262,12 +280,18 @@ export default function CompareCompoundPage() {
             <div className="col-span-6">
               <select
                 value={th.severity}
-                onChange={(e) => updateThreshold(i, "severity", e.target.value)}
+                onChange={(e) =>
+                  updateThreshold(
+                    i,
+                    "severity",
+                    e.target.value as SeverityLevel
+                  )
+                }
                 className="border px-3 py-2 rounded w-full"
               >
-                {["NONE", "LOW", "MEDIUM", "HIGH"].map((v) => (
-                  <option key={v} value={v}>
-                    {v.charAt(0) + v.slice(1).toLowerCase()}
+                {severityOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
                   </option>
                 ))}
               </select>
@@ -289,7 +313,9 @@ export default function CompareCompoundPage() {
           </label>
           <select
             value={notificationFrequency}
-            onChange={(e) => setNotificationFrequency(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              setNotificationFrequency(e.target.value as NotificationFrequency)
+            }
             className="border border-gray-300 rounded-md px-3 py-2 w-full"
           >
             {frequencyOptions.map((opt) => (
