@@ -3,38 +3,124 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import getBaseUrl from "@dodao/web-core/utils/api/getBaseURL";
+
+type Condition = {
+  conditionType: string;
+  thresholdValue?: string;
+  thresholdValueLow?: string;
+  thresholdValueHigh?: string;
+  severity: string;
+};
+
+type Channel = {
+  channelType: "EMAIL" | "WEBHOOK";
+  email?: string;
+  webhookUrl?: string;
+};
 
 export default function CompoundMarketAlertPage() {
   const router = useRouter();
-  const [alertType, setAlertType] = useState<string>("borrow");
+  const baseUrl = getBaseUrl();
+
+  const [alertType, setAlertType] = useState<"borrow" | "supply">("borrow");
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([]);
-  const [conditionType, setConditionType] = useState<string>(
-    "APR rises above threshold"
-  );
-  const [threshold, setThreshold] = useState<string>("");
-  const [severity, setSeverity] = useState<string>("none");
-  const [showConditionDropdown, setShowConditionDropdown] = useState(false);
-  const [showSeverityDropdown, setShowSeverityDropdown] = useState(false);
+  const [notificationFrequency, setNotificationFrequency] =
+    useState<string>("IMMEDIATE");
 
-  const toggleChain = (chain: string) => {
-    if (selectedChains.includes(chain)) {
-      setSelectedChains(selectedChains.filter((c) => c !== chain));
-    } else {
-      setSelectedChains([...selectedChains, chain]);
+  const [conditions, setConditions] = useState<Condition[]>([
+    { conditionType: "APR_RISE_ABOVE", thresholdValue: "", severity: "NONE" },
+  ]);
+
+  const [channels, setChannels] = useState<Channel[]>([
+    { channelType: "EMAIL", email: "" },
+  ]);
+
+  // Helpers
+  const conditionOptions = [
+    { label: "APR rises above threshold", value: "APR_RISE_ABOVE" },
+    { label: "APR falls below threshold", value: "APR_FALLS_BELOW" },
+    { label: "APR is outside a range", value: "APR_OUTSIDE_RANGE" },
+  ];
+  const severityOptions = [
+    { label: "None", value: "NONE" },
+    { label: "Low", value: "LOW" },
+    { label: "Medium", value: "MEDIUM" },
+    { label: "High", value: "HIGH" },
+  ];
+  const frequencyOptions = [
+    { label: "Immediate", value: "IMMEDIATE" },
+    { label: "Every 6h", value: "AT_MOST_ONCE_PER_6_HOURS" },
+    { label: "Every 12h", value: "AT_MOST_ONCE_PER_12_HOURS" },
+    { label: "Daily", value: "AT_MOST_ONCE_PER_DAY" },
+  ];
+
+  // Chain & market toggles (unchanged)
+  const toggleChain = (chain: string) =>
+    setSelectedChains((cs) =>
+      cs.includes(chain) ? cs.filter((c) => c !== chain) : [...cs, chain]
+    );
+  const toggleMarket = (market: string) =>
+    setSelectedMarkets((ms) =>
+      ms.includes(market) ? ms.filter((m) => m !== market) : [...ms, market]
+    );
+
+  // Condition handlers
+  const addCondition = () =>
+    setConditions((cs) => [
+      ...cs,
+      { conditionType: "APR_RISE_ABOVE", thresholdValue: "", severity: "NONE" },
+    ]);
+  const updateCondition = (i: number, field: keyof Condition, val: string) =>
+    setConditions((cs) =>
+      cs.map((c, idx) => (idx === i ? { ...c, [field]: val } : c))
+    );
+  const removeCondition = (i: number) =>
+    setConditions((cs) => cs.filter((_, idx) => idx !== i));
+
+  // Channel handlers
+  const addChannel = () =>
+    setChannels((ch) => [...ch, { channelType: "EMAIL", email: "" }]);
+  const updateChannel = (i: number, field: keyof Channel, val: string) =>
+    setChannels((ch) =>
+      ch.map((c, idx) => (idx === i ? { ...c, [field]: val } : c))
+    );
+  const removeChannel = (i: number) =>
+    setChannels((ch) => ch.filter((_, idx) => idx !== i));
+
+  // POST to API
+  const handleCreateAlert = async () => {
+    const email = localStorage.getItem("email")!;
+    const payload = {
+      email,
+      actionType: alertType.toUpperCase(),
+      selectedChains,
+      selectedMarkets,
+      notificationFrequency,
+      conditions: conditions.map((c) => ({
+        type: c.conditionType,
+        value: c.thresholdValue,
+        min: c.thresholdValueLow,
+        max: c.thresholdValueHigh,
+        severity: c.severity,
+      })),
+      deliveryChannels: channels.map((c) => ({
+        type: c.channelType,
+        email: c.channelType === "EMAIL" ? c.email : undefined,
+        url: c.channelType === "WEBHOOK" ? c.webhookUrl : undefined,
+      })),
+    };
+
+    const res = await fetch(`${baseUrl}/api/alerts/create/compound-market`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      alert("Failed to create alert");
+      return;
     }
-  };
-
-  const toggleMarket = (market: string) => {
-    if (selectedMarkets.includes(market)) {
-      setSelectedMarkets(selectedMarkets.filter((m) => m !== market));
-    } else {
-      setSelectedMarkets([...selectedMarkets, market]);
-    }
-  };
-
-  const handleCreateAlert = () => {
-    // In a real app, you would save the alert configuration
     router.push("/alerts");
   };
 
@@ -173,192 +259,184 @@ export default function CompoundMarketAlertPage() {
               Define when you want to be alerted about market changes.
             </p>
           </div>
-          <button className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">
+          <button
+            onClick={addCondition}
+            className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+          >
             Add New Condition +
           </button>
         </div>
 
-        <div className="border-t border-gray-200 pt-4">
-          <div className="grid grid-cols-12 gap-4 mb-4">
-            <div className="col-span-1 flex items-center">#</div>
-            <div className="col-span-5">Condition Type</div>
-            <div className="col-span-3">Threshold</div>
-            <div className="col-span-3">Severity Level</div>
-          </div>
+        {/* Conditions List */}
+        {conditions.map((cond, i) => (
+          <div
+            key={i}
+            className="grid grid-cols-12 gap-4 mb-4 items-center border-t pt-4"
+          >
+            <div className="col-span-1 flex items-center">{i + 1}.</div>
 
-          <div className="grid grid-cols-12 gap-4 items-center">
-            <div className="col-span-1">1.</div>
-            <div className="col-span-5 relative">
-              <div
-                className="border border-gray-300 rounded-md px-3 py-2 flex justify-between items-center cursor-pointer"
-                onClick={() => setShowConditionDropdown(!showConditionDropdown)}
+            {/* Type */}
+            <div className="col-span-4">
+              <select
+                value={cond.conditionType}
+                onChange={(e) =>
+                  updateCondition(i, "conditionType", e.target.value)
+                }
+                className="border border-gray-300 rounded-md px-3 py-2 w-full"
               >
-                <span>{conditionType}</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </div>
+                {conditionOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-              {showConditionDropdown && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
-                  {[
-                    "APR rises above threshold",
-                    "APR falls below threshold",
-                    "APR is outside a range",
-                  ].map((type) => (
-                    <div
-                      key={type}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => {
-                        setConditionType(type);
-                        setShowConditionDropdown(false);
-                      }}
-                    >
-                      {type}
-                    </div>
-                  ))}
+            {/* Thresholds */}
+            {cond.conditionType === "APR_OUTSIDE_RANGE" ? (
+              <>
+                <div className="col-span-3 flex items-center space-x-2">
+                  <input
+                    type="text"
+                    placeholder="Min"
+                    value={cond.thresholdValueLow}
+                    onChange={(e) =>
+                      updateCondition(i, "thresholdValueLow", e.target.value)
+                    }
+                    className="border border-gray-300 rounded-md px-2 py-1 w-full"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Max"
+                    value={cond.thresholdValueHigh}
+                    onChange={(e) =>
+                      updateCondition(i, "thresholdValueHigh", e.target.value)
+                    }
+                    className="border border-gray-300 rounded-md px-2 py-1 w-full"
+                  />
+                  <span>%</span>
                 </div>
-              )}
-            </div>
+              </>
+            ) : (
+              <div className="col-span-3 flex items-center">
+                <input
+                  type="text"
+                  placeholder="Value"
+                  value={cond.thresholdValue}
+                  onChange={(e) =>
+                    updateCondition(i, "thresholdValue", e.target.value)
+                  }
+                  className="border border-gray-300 rounded-md px-3 py-2 w-full"
+                />
+                <span className="ml-2">%</span>
+              </div>
+            )}
 
-            <div className="col-span-3 flex items-center">
-              <input
-                type="text"
-                value={threshold}
-                onChange={(e) => setThreshold(e.target.value)}
-                placeholder="Value"
-                className="border border-gray-300 rounded-md px-3 py-2 w-24"
-              />
-              <span className="ml-2">%</span>
-            </div>
-
-            <div className="col-span-3 relative">
-              <div
-                className="border border-gray-300 rounded-md px-3 py-2 flex justify-between items-center cursor-pointer"
-                onClick={() => setShowSeverityDropdown(!showSeverityDropdown)}
+            {/* Severity */}
+            <div className="col-span-3">
+              <select
+                value={cond.severity}
+                onChange={(e) => updateCondition(i, "severity", e.target.value)}
+                className="border border-gray-300 rounded-md px-3 py-2 w-full"
               >
-                <span className="capitalize">
-                  {severity === "none" ? "None" : severity}
-                </span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </div>
-
-              {showSeverityDropdown && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
-                  {[
-                    {
-                      value: "none",
-                      label: "None",
-                      description: "No Color Indicator",
-                    },
-                    {
-                      value: "low",
-                      label: "Low",
-                      description: "Informational",
-                    },
-                    {
-                      value: "medium",
-                      label: "Medium",
-                      description: "Attention Needed",
-                    },
-                    {
-                      value: "high",
-                      label: "High",
-                      description: "Urgent Action",
-                    },
-                  ].map((option) => (
-                    <div
-                      key={option.value}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => {
-                        setSeverity(option.value);
-                        setShowSeverityDropdown(false);
-                      }}
-                    >
-                      <div className="flex items-center">
-                        {option.value !== "none" && (
-                          <div
-                            className={`w-4 h-4 rounded-full mr-2 ${
-                              option.value === "low"
-                                ? "bg-blue-300"
-                                : option.value === "medium"
-                                ? "bg-yellow-300"
-                                : option.value === "high"
-                                ? "bg-red-300"
-                                : ""
-                            }`}
-                          ></div>
-                        )}
-                        <div>
-                          <div className="capitalize">{option.label}</div>
-                          <div className="text-xs text-gray-500">
-                            {option.description}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                {severityOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
             </div>
+
+            {/* Remove */}
+            {conditions.length > 1 && (
+              <button
+                onClick={() => removeCondition(i)}
+                className="col-span-1 text-red-500"
+              >
+                ✕
+              </button>
+            )}
           </div>
+        ))}
+
+        {/* Notification Frequency */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">
+            Notification Frequency
+          </label>
+          <select
+            value={notificationFrequency}
+            onChange={(e) => setNotificationFrequency(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-2 w-full"
+          >
+            {frequencyOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
       {/* Delivery Channel Settings */}
       <div className="border border-gray-200 rounded-lg p-6 mb-6">
-        <div className="mb-4">
-          <h2 className="text-lg font-medium">Delivery Channel Settings</h2>
-          <p className="text-sm text-gray-500">
-            Choose how you want to receive your alerts.
-          </p>
-        </div>
-
-        <div className="mb-4">
-          <h3 className="text-md font-medium mb-2">Delivery Channel 1</h3>
-
-          <div className="mb-3">
-            <p className="text-sm text-gray-500 mb-1">Channel Type</p>
-            <select className="border border-gray-300 rounded-md px-3 py-2 w-full">
-              <option>Email</option>
-            </select>
-          </div>
-
+        <div className="flex justify-between items-center mb-4">
           <div>
-            <p className="text-sm text-gray-500 mb-1">Email Address</p>
-            <input
-              type="email"
-              className="border border-gray-300 rounded-md px-3 py-2 w-full"
-              placeholder="your@email.com"
-            />
+            <h2 className="text-lg font-medium">Delivery Channel Settings</h2>
+            <p className="text-sm text-gray-500">
+              Choose how you want to receive your alerts.
+            </p>
           </div>
+          <button
+            onClick={addChannel}
+            className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+          >
+            + Add Another Channel
+          </button>
         </div>
 
-        <button className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">
-          + Add Another Channel
-        </button>
+        {channels.map((ch, i) => (
+          <div key={i} className="mb-4 flex items-center gap-4">
+            <select
+              value={ch.channelType}
+              onChange={(e) =>
+                updateChannel(
+                  i,
+                  "channelType",
+                  e.target.value as Channel["channelType"]
+                )
+              }
+              className="border border-gray-300 rounded-md px-3 py-2"
+            >
+              <option value="EMAIL">Email</option>
+              <option value="WEBHOOK">Webhook</option>
+            </select>
+
+            {ch.channelType === "EMAIL" ? (
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={ch.email}
+                onChange={(e) => updateChannel(i, "email", e.target.value)}
+                className="border border-gray-300 rounded-md px-3 py-2 flex-1"
+              />
+            ) : (
+              <input
+                type="url"
+                placeholder="https://webhook.site/..."
+                value={ch.webhookUrl}
+                onChange={(e) => updateChannel(i, "webhookUrl", e.target.value)}
+                className="border border-gray-300 rounded-md px-3 py-2 flex-1"
+              />
+            )}
+
+            {channels.length > 1 && (
+              <button onClick={() => removeChannel(i)} className="text-red-500">
+                ✕
+              </button>
+            )}
+          </div>
+        ))}
       </div>
 
       {/* Action Buttons */}

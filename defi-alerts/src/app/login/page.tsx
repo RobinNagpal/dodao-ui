@@ -2,118 +2,98 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import getBaseUrl from "@dodao/web-core/utils/api/getBaseURL";
+import { EmailForm } from "@/components/login/email-form";
+import { VerificationForm } from "@/components/login/verification-form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [step, setStep] = useState(1); // 1 for email entry, 2 for verification code
+  const [step, setStep] = useState<1 | 2>(1); // 1 for email, 2 for code
   const router = useRouter();
+  const baseUrl = getBaseUrl();
 
-  const handleEmailSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (email) {
+  const handleEmailSubmit = async (submittedEmail: string) => {
+    try {
+      const res = await fetch(`${baseUrl}/api/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: submittedEmail }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to send verification code");
+      }
+
+      const { userId } = await res.json();
+      localStorage.setItem("email", submittedEmail);
+      localStorage.setItem("userId", userId);
+      setEmail(submittedEmail);
       setStep(2);
+    } catch (err) {
+      console.error(err);
+      return "Error sending verification code. Please try again.";
     }
   };
 
-  const handleVerificationSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (verificationCode) {
-      // In a real app, you would verify the code here
+  const handleVerificationSubmit = async (verificationCode: string) => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const res = await fetch(`${baseUrl}/api/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: verificationCode, userId }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Invalid verification code");
+      }
+
+      localStorage.setItem("isLoggedIn", "true");
       router.push("/alerts");
+      return null;
+    } catch (err) {
+      console.error(err);
+      return "Incorrect code. Please try again.";
     }
   };
 
   const handleUseAnotherEmail = () => {
+    localStorage.removeItem("email");
+    localStorage.removeItem("userId");
     setStep(1);
-    setVerificationCode("");
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white">
-      <div className="w-full max-w-md p-6 border border-gray-200 rounded-lg">
-        <h1 className="text-2xl font-bold text-center mb-2">
-          Compound III Alerts
-        </h1>
-
-        {step === 1 ? (
-          <>
-            <p className="text-gray-600 text-center mb-6">
-              Enter your email to sign in to your account
-            </p>
-
-            <form onSubmit={handleEmailSubmit}>
-              <div className="mb-4">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-[#0f172a] text-white py-3 rounded-md hover:bg-[#1e293b] transition mb-3"
-              >
-                Continue with Email
-              </button>
-            </form>
-          </>
-        ) : (
-          <>
-            <p className="text-gray-600 text-center mb-4">
-              Enter the verification code sent to your email
-            </p>
-
-            <p className="text-gray-600 text-center mb-6">
-              We sent a verification code to {email}
-            </p>
-
-            <form onSubmit={handleVerificationSubmit}>
-              <div className="mb-4">
-                <label
-                  htmlFor="verificationCode"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Verification Code
-                </label>
-                <input
-                  type="text"
-                  id="verificationCode"
-                  value={verificationCode}
-                  onChange={(e) => setVerificationCode(e.target.value)}
-                  placeholder="123456"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-[#0f172a] text-white py-3 rounded-md hover:bg-[#1e293b] transition mb-3"
-              >
-                Sign In
-              </button>
-            </form>
-
-            <button
-              onClick={handleUseAnotherEmail}
-              className="w-full text-center text-gray-600 hover:text-gray-900"
-            >
-              Use a different email
-            </button>
-          </>
-        )}
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+      <div className="w-full max-w-md">
+        <Card className="border-slate-200 shadow-lg">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-center text-2xl font-bold">
+              DeFi Alerts
+            </CardTitle>
+            <CardDescription className="text-center text-slate-500">
+              Monitor and receive alerts for DeFi markets
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {step === 1 ? (
+              <EmailForm onSubmit={handleEmailSubmit} initialEmail={email} />
+            ) : (
+              <VerificationForm
+                email={email}
+                onSubmit={handleVerificationSubmit}
+                onChangeEmail={handleUseAnotherEmail}
+              />
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

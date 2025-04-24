@@ -6,19 +6,11 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-enum Chain {
-  ETHEREUM
-  POLYGON
-  ARBITRUM
-  OPTIMISM
 }
 
 enum DeliveryChannelType {
@@ -35,8 +27,6 @@ enum SeverityLevel {
 
 enum NotificationFrequency {
   IMMEDIATE
-  AT_MOST_ONCE_PER_HOUR
-  AT_MOST_ONCE_PER_3_HOURS
   AT_MOST_ONCE_PER_6_HOURS
   AT_MOST_ONCE_PER_12_HOURS
   AT_MOST_ONCE_PER_DAY
@@ -65,12 +55,6 @@ enum ConditionType {
   IMPERMANENT_LOSS_EXCEEDS
 }
 
-enum Protocol {
-  AAVE
-  MORPHO
-  SPARK
-}
-
 model User {
   id     String  @id @default(cuid())
   email  String? @unique
@@ -87,7 +71,7 @@ model Alert {
   walletAddress         String?
   selectedChains        String[]
   selectedMarkets       String[]
-  compareProtocols      Protocol[]
+  compareProtocols      String[]
   notificationFrequency NotificationFrequency
   conditions            AlertCondition[]
   deliveryChannels      DeliveryChannel[]

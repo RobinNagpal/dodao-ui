@@ -3,43 +3,107 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import getBaseUrl from "@dodao/web-core/utils/api/getBaseURL";
+
+type Threshold = { value: string; severity: string };
+type Channel = {
+  channelType: "EMAIL" | "WEBHOOK";
+  email?: string;
+  webhookUrl?: string;
+};
 
 export default function CompareCompoundPage() {
   const router = useRouter();
-  const [alertType, setAlertType] = useState<string>("supply");
+  const baseUrl = getBaseUrl();
+
+  const [alertType, setAlertType] = useState<"supply" | "borrow">("supply");
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([]);
-  const [thresholdValue, setThresholdValue] = useState<string>("0.5");
-  const [severity, setSeverity] = useState<string>("none");
-  const [showSeverityDropdown, setShowSeverityDropdown] = useState(false);
+  const [notificationFrequency, setNotificationFrequency] =
+    useState<string>("IMMEDIATE");
+  const [thresholds, setThresholds] = useState<Threshold[]>([
+    { value: "0.5", severity: "NONE" },
+  ]);
+  const [channels, setChannels] = useState<Channel[]>([
+    { channelType: "EMAIL", email: "" },
+  ]);
 
-  const togglePlatform = (platform: string) => {
-    if (selectedPlatforms.includes(platform)) {
-      setSelectedPlatforms(selectedPlatforms.filter((p) => p !== platform));
-    } else {
-      setSelectedPlatforms([...selectedPlatforms, platform]);
+  // toggles
+  const togglePlatform = (p: string) =>
+    setSelectedPlatforms((ps) =>
+      ps.includes(p) ? ps.filter((x) => x !== p) : [...ps, p]
+    );
+  const toggleChain = (c: string) =>
+    setSelectedChains((cs) =>
+      cs.includes(c) ? cs.filter((x) => x !== c) : [...cs, c]
+    );
+  const toggleMarket = (m: string) =>
+    setSelectedMarkets((ms) =>
+      ms.includes(m) ? ms.filter((x) => x !== m) : [...ms, m]
+    );
+
+  // threshold handlers
+  const addThreshold = () =>
+    setThresholds((ts) => [...ts, { value: "", severity: "NONE" }]);
+  const updateThreshold = (idx: number, field: keyof Threshold, val: string) =>
+    setThresholds((ts) =>
+      ts.map((t, i) => (i === idx ? { ...t, [field]: val } : t))
+    );
+  const removeThreshold = (idx: number) =>
+    setThresholds((ts) => ts.filter((_, i) => i !== idx));
+
+  // channel handlers
+  const addChannel = () =>
+    setChannels((ch) => [...ch, { channelType: "EMAIL", email: "" }]);
+  const updateChannel = (idx: number, field: keyof Channel, val: string) =>
+    setChannels((ch) =>
+      ch.map((c, i) => (i === idx ? { ...c, [field]: val } : c))
+    );
+  const removeChannel = (idx: number) =>
+    setChannels((ch) => ch.filter((_, i) => i !== idx));
+
+  const frequencyOptions = [
+    { label: "Immediate", value: "IMMEDIATE" },
+    { label: "Hourly", value: "AT_MOST_ONCE_PER_HOUR" },
+    { label: "Every 3h", value: "AT_MOST_ONCE_PER_3_HOURS" },
+    { label: "Every 6h", value: "AT_MOST_ONCE_PER_6_HOURS" },
+    { label: "Every 12h", value: "AT_MOST_ONCE_PER_12_HOURS" },
+    { label: "Daily", value: "AT_MOST_ONCE_PER_DAY" },
+  ];
+
+  const handleCreateAlert = async () => {
+    const email = localStorage.getItem("email")!;
+    const payload = {
+      email,
+      category: "GENERAL",
+      actionType: alertType.toUpperCase(), // SUPPLY or BORROW
+      isComparison: true,
+      selectedChains,
+      selectedMarkets,
+      compareProtocols: selectedPlatforms,
+      notificationFrequency,
+      conditions: thresholds.map((t) => ({
+        type: alertType === "supply" ? "RATE_DIFF_ABOVE" : "RATE_DIFF_BELOW",
+        value: t.value,
+        severity: t.severity,
+      })),
+      deliveryChannels: channels.map((c) => ({
+        type: c.channelType,
+        email: c.channelType === "EMAIL" ? c.email : undefined,
+        url: c.channelType === "WEBHOOK" ? c.webhookUrl : undefined,
+      })),
+    };
+
+    const res = await fetch(`${baseUrl}/api/alerts/create/compare-compound`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      alert("Failed to create compare alert");
+      return;
     }
-  };
-
-  const toggleChain = (chain: string) => {
-    if (selectedChains.includes(chain)) {
-      setSelectedChains(selectedChains.filter((c) => c !== chain));
-    } else {
-      setSelectedChains([...selectedChains, chain]);
-    }
-  };
-
-  const toggleMarket = (market: string) => {
-    if (selectedMarkets.includes(market)) {
-      setSelectedMarkets(selectedMarkets.filter((m) => m !== market));
-    } else {
-      setSelectedMarkets([...selectedMarkets, market]);
-    }
-  };
-
-  const handleCreateAlert = () => {
-    // In a real app, you would save the alert configuration
     router.push("/alerts");
   };
 
@@ -47,17 +111,11 @@ export default function CompareCompoundPage() {
     <div className="p-6 max-w-6xl mx-auto">
       {/* Breadcrumb */}
       <div className="flex items-center text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-gray-700">
-          Home
-        </Link>
+        <Link href="/">Home</Link>
         <span className="mx-2">{">"}</span>
-        <Link href="/alerts" className="hover:text-gray-700">
-          Alerts
-        </Link>
+        <Link href="/alerts">Alerts</Link>
         <span className="mx-2">{">"}</span>
-        <Link href="/alerts/create" className="hover:text-gray-700">
-          Create Alert
-        </Link>
+        <Link href="/alerts/create">Create Alert</Link>
         <span className="mx-2">{">"}</span>
         <span className="text-gray-700">Compare Compound</span>
       </div>
@@ -68,315 +126,245 @@ export default function CompareCompoundPage() {
         DeFi platforms.
       </p>
 
-      {/* Alert Type */}
-      <div className="border border-gray-200 rounded-lg p-6 mb-6">
+      {/* --- Alert Type --- */}
+      <div className="border p-6 rounded-lg mb-6">
         <h2 className="text-lg font-medium mb-4">Alert Type</h2>
-        <p className="text-sm text-gray-500 mb-4">
-          Choose the type of alert you want to create.
-        </p>
-
-        <div className="flex items-center mb-2">
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="alertType"
-              checked={alertType === "supply"}
-              onChange={() => setAlertType("supply")}
-              className="mr-2"
-            />
-            <span>Supply Comparison</span>
-          </label>
-          <span className="ml-2 text-sm text-gray-500">
-            (Alert when Compound offers higher rates)
-          </span>
-        </div>
-
-        <div className="flex items-center">
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="alertType"
-              checked={alertType === "borrow"}
-              onChange={() => setAlertType("borrow")}
-              className="mr-2"
-            />
-            <span>Borrow Comparison</span>
-          </label>
-          <span className="ml-2 text-sm text-gray-500">
-            (Alert when Compound offers lower rates)
-          </span>
-        </div>
+        <label className="flex items-center mb-2">
+          <input
+            type="radio"
+            checked={alertType === "supply"}
+            onChange={() => setAlertType("supply")}
+            className="mr-2"
+          />
+          Supply Comparison
+        </label>
+        <label className="flex items-center">
+          <input
+            type="radio"
+            checked={alertType === "borrow"}
+            onChange={() => setAlertType("borrow")}
+            className="mr-2"
+          />
+          Borrow Comparison
+        </label>
       </div>
 
-      {/* Market Selection */}
-      <div className="border border-gray-200 rounded-lg p-6 mb-6">
-        <h2 className="text-lg font-medium mb-4">Market Selection</h2>
-        <p className="text-sm text-gray-500 mb-4">
-          Select the platforms to compare with and the markets you want to
-          monitor.
-        </p>
-
+      {/* --- Platforms / Chains / Markets --- */}
+      <div className="border p-6 rounded-lg mb-6">
+        {/* Platforms */}
         <div className="mb-6">
-          <h3 className="text-md font-medium mb-2">Compare With</h3>
-          <p className="text-sm text-gray-500 mb-3">
-            Select one or more platforms to compare Compound’s APR performance
-            against.
-          </p>
-
+          <h3 className="font-medium mb-2">Compare With</h3>
           <div className="flex flex-wrap gap-3">
-            {["Aave", "Morpho", "Spark"].map((platform) => (
+            {["Aave", "Morpho", "Spark"].map((p) => (
               <div
-                key={platform}
-                onClick={() => togglePlatform(platform)}
-                className={`border rounded-md px-3 py-2 flex items-center cursor-pointer ${
-                  selectedPlatforms.includes(platform)
+                key={p}
+                onClick={() => togglePlatform(p)}
+                className={`border px-3 py-2 rounded cursor-pointer ${
+                  selectedPlatforms.includes(p)
                     ? "border-blue-500 bg-blue-50"
                     : "border-gray-300"
                 }`}
               >
                 <input
                   type="checkbox"
-                  checked={selectedPlatforms.includes(platform)}
-                  onChange={() => {}}
+                  checked={selectedPlatforms.includes(p)}
+                  readOnly
                   className="mr-2"
                 />
-                <span>{platform}</span>
+                {p}
               </div>
             ))}
           </div>
         </div>
-
+        {/* Chains */}
         <div className="mb-6">
-          <h3 className="text-md font-medium mb-2">Chains</h3>
-          <p className="text-sm text-gray-500 mb-3">
-            Choose the chains where you want to track Compound’s APR.
-          </p>
-
+          <h3 className="font-medium mb-2">Chains</h3>
           <div className="flex flex-wrap gap-3">
             {["Ethereum", "Arbitrum", "Optimism", "Polygon", "Base"].map(
-              (chain) => (
+              (c) => (
                 <div
-                  key={chain}
-                  onClick={() => toggleChain(chain)}
-                  className={`border rounded-md px-3 py-2 flex items-center cursor-pointer ${
-                    selectedChains.includes(chain)
+                  key={c}
+                  onClick={() => toggleChain(c)}
+                  className={`border px-3 py-2 rounded cursor-pointer ${
+                    selectedChains.includes(c)
                       ? "border-blue-500 bg-blue-50"
                       : "border-gray-300"
                   }`}
                 >
                   <input
                     type="checkbox"
-                    checked={selectedChains.includes(chain)}
-                    onChange={() => {}}
+                    checked={selectedChains.includes(c)}
+                    readOnly
                     className="mr-2"
                   />
-                  <span>{chain}</span>
+                  {c}
                 </div>
               )
             )}
           </div>
         </div>
-
+        {/* Markets */}
         <div>
-          <h3 className="text-md font-medium mb-2">Markets</h3>
-          <p className="text-sm text-gray-500 mb-3">
-            Select one or more markets to monitor.
-          </p>
-
+          <h3 className="font-medium mb-2">Markets</h3>
           <div className="flex flex-wrap gap-3">
-            {["USDC", "Wrapped BTC", "USDT", "ETH", "USDS"].map((market) => (
+            {["USDC", "WBTC", "USDT", "ETH", "USDS"].map((m) => (
               <div
-                key={market}
-                onClick={() => toggleMarket(market)}
-                className={`border rounded-md px-3 py-2 flex items-center cursor-pointer ${
-                  selectedMarkets.includes(market)
+                key={m}
+                onClick={() => toggleMarket(m)}
+                className={`border px-3 py-2 rounded cursor-pointer ${
+                  selectedMarkets.includes(m)
                     ? "border-blue-500 bg-blue-50"
                     : "border-gray-300"
                 }`}
               >
                 <input
                   type="checkbox"
-                  checked={selectedMarkets.includes(market)}
-                  onChange={() => {}}
+                  checked={selectedMarkets.includes(m)}
+                  readOnly
                   className="mr-2"
                 />
-                <span>{market}</span>
+                {m}
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Rate Difference Thresholds */}
-      <div className="border border-gray-200 rounded-lg p-6 mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <h2 className="text-lg font-medium">Rate Difference Thresholds</h2>
-            <p className="text-sm text-gray-500">
-              Define when you want to be alerted about rate differences between
-              Compound and Aave.
-            </p>
-          </div>
-          <button className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">
-            Add New Threshold +
+      {/* --- Thresholds --- */}
+      <div className="border p-6 rounded-lg mb-6">
+        <div className="flex justify-between mb-4">
+          <h2 className="text-lg font-medium">Rate Difference Thresholds</h2>
+          <button
+            onClick={addThreshold}
+            className="text-sm px-3 py-1 border rounded hover:bg-gray-50"
+          >
+            + Add New Threshold
           </button>
         </div>
-
-        <p className="text-sm mb-6">
+        <p className="text-sm mb-4">
           {alertType === "supply"
-            ? "You'll be notified when Compound's supply rates are higher than Aave's rates by the specified threshold."
-            : "You'll be notified when Compound's borrow rates are lower than Aave's rates by the specified threshold."}
+            ? "Notify when Compound supply APR > other APR by threshold."
+            : "Notify when Compound borrow APR < other APR by threshold."}
         </p>
 
-        <div className="border-t border-gray-200 pt-4">
-          <div className="grid grid-cols-12 gap-4 mb-4">
-            <div className="col-span-1 flex items-center">#</div>
-            <div className="col-span-5">Threshold Value</div>
-            <div className="col-span-6">Severity Level</div>
-          </div>
-
-          <div className="grid grid-cols-12 gap-4 items-center">
-            <div className="col-span-1">1.</div>
+        {thresholds.map((th, i) => (
+          <div key={i} className="grid grid-cols-12 gap-4 items-center mb-4">
+            <div className="col-span-1">{i + 1}.</div>
             <div className="col-span-5 flex items-center">
               <input
                 type="text"
-                value={thresholdValue}
-                onChange={(e) => setThresholdValue(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 w-24"
+                value={th.value}
+                onChange={(e) => updateThreshold(i, "value", e.target.value)}
+                className="border px-2 py-1 rounded w-20"
               />
               <span className="ml-2">APR</span>
             </div>
-
-            <div className="col-span-6 relative">
-              <div
-                className="border border-gray-300 rounded-md px-3 py-2 flex justify-between items-center cursor-pointer"
-                onClick={() => setShowSeverityDropdown(!showSeverityDropdown)}
+            <div className="col-span-6">
+              <select
+                value={th.severity}
+                onChange={(e) => updateThreshold(i, "severity", e.target.value)}
+                className="border px-3 py-2 rounded w-full"
               >
-                <span className="capitalize">
-                  {severity === "none" ? "None" : severity}
-                </span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </div>
-
-              {showSeverityDropdown && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
-                  {[
-                    {
-                      value: "none",
-                      label: "None",
-                      description: "No Color Indicator",
-                    },
-                    {
-                      value: "low",
-                      label: "Low",
-                      description: "Informational",
-                    },
-                    {
-                      value: "medium",
-                      label: "Medium",
-                      description: "Attention Needed",
-                    },
-                    {
-                      value: "high",
-                      label: "High",
-                      description: "Urgent Action",
-                    },
-                  ].map((option) => (
-                    <div
-                      key={option.value}
-                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => {
-                        setSeverity(option.value);
-                        setShowSeverityDropdown(false);
-                      }}
-                    >
-                      <div className="flex items-center">
-                        {option.value !== "none" && (
-                          <div
-                            className={`w-4 h-4 rounded-full mr-2 ${
-                              option.value === "low"
-                                ? "bg-blue-300"
-                                : option.value === "medium"
-                                ? "bg-yellow-300"
-                                : option.value === "high"
-                                ? "bg-red-300"
-                                : ""
-                            }`}
-                          ></div>
-                        )}
-                        <div>
-                          <div className="capitalize">{option.label}</div>
-                          <div className="text-xs text-gray-500">
-                            {option.description}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                {["NONE", "LOW", "MEDIUM", "HIGH"].map((v) => (
+                  <option key={v} value={v}>
+                    {v.charAt(0) + v.slice(1).toLowerCase()}
+                  </option>
+                ))}
+              </select>
             </div>
+            {thresholds.length > 1 && (
+              <button
+                onClick={() => removeThreshold(i)}
+                className="col-span-1 text-red-500"
+              >
+                ✕
+              </button>
+            )}
           </div>
+        ))}
+        {/* Notification Frequency */}
+        <div className="border p-6 rounded-lg mb-6">
+          <label className="block text-sm font-medium mb-1">
+            Notification Frequency
+          </label>
+          <select
+            value={notificationFrequency}
+            onChange={(e) => setNotificationFrequency(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-2 w-full"
+          >
+            {frequencyOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
-      {/* Delivery Channel Settings */}
-      <div className="border border-gray-200 rounded-lg p-6 mb-6">
-        <div className="mb-4">
-          <h2 className="text-lg font-medium">Delivery Channel Settings</h2>
-          <p className="text-sm text-gray-500">
-            Choose how you want to receive your alerts.
-          </p>
+      {/* --- Channels --- */}
+      <div className="border p-6 rounded-lg mb-6">
+        <div className="flex justify-between mb-4">
+          <h2 className="text-lg font-medium">Delivery Channels</h2>
+          <button
+            onClick={addChannel}
+            className="text-sm px-3 py-1 border rounded hover:bg-gray-50"
+          >
+            + Add Another Channel
+          </button>
         </div>
-
-        <div className="mb-4">
-          <h3 className="text-md font-medium mb-2">Delivery Channel 1</h3>
-
-          <div className="mb-3">
-            <p className="text-sm text-gray-500 mb-1">Channel Type</p>
-            <select className="border border-gray-300 rounded-md px-3 py-2 w-full">
-              <option>Email</option>
+        {channels.map((ch, i) => (
+          <div key={i} className="flex items-center gap-4 mb-4">
+            <select
+              value={ch.channelType}
+              onChange={(e) =>
+                updateChannel(
+                  i,
+                  "channelType",
+                  e.target.value as Channel["channelType"]
+                )
+              }
+              className="border px-3 py-2 rounded"
+            >
+              <option value="EMAIL">Email</option>
+              <option value="WEBHOOK">Webhook</option>
             </select>
+            {ch.channelType === "EMAIL" ? (
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={ch.email}
+                onChange={(e) => updateChannel(i, "email", e.target.value)}
+                className="border px-3 py-2 rounded flex-1"
+              />
+            ) : (
+              <input
+                type="url"
+                placeholder="https://..."
+                value={ch.webhookUrl}
+                onChange={(e) => updateChannel(i, "webhookUrl", e.target.value)}
+                className="border px-3 py-2 rounded flex-1"
+              />
+            )}
+            {channels.length > 1 && (
+              <button onClick={() => removeChannel(i)} className="text-red-500">
+                ✕
+              </button>
+            )}
           </div>
-
-          <div>
-            <p className="text-sm text-gray-500 mb-1">Email Address</p>
-            <input
-              type="email"
-              className="border border-gray-300 rounded-md px-3 py-2 w-full"
-              placeholder="your@email.com"
-            />
-          </div>
-        </div>
-
-        <button className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">
-          + Add Another Channel
-        </button>
+        ))}
       </div>
 
-      {/* Action Buttons */}
+      {/* --- Actions --- */}
       <div className="flex justify-end gap-4">
         <button
           onClick={() => router.push("/alerts/create")}
-          className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+          className="px-4 py-2 border rounded hover:bg-gray-50"
         >
           Cancel
         </button>
         <button
           onClick={handleCreateAlert}
-          className="px-4 py-2 bg-[#0f172a] text-white rounded-md hover:bg-[#1e293b]"
+          className="px-4 py-2 bg-[#0f172a] text-white rounded hover:bg-[#1e293b]"
         >
           Create Alert
         </button>
