@@ -544,6 +544,84 @@ export async function getAndWriteEvaluateIndustryAreaJson(
   fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2), 'utf-8');
 }
 
+export enum EvaluateIndustryContent {
+  ALL = 'ALL',
+  ESTABLISHED_PLAYERS = 'ESTABLISHED_PLAYERS',
+  NEW_CHALLENGERS = 'NEW_CHALLENGERS',
+  HEADWINDS_AND_TAILWINDS = 'HEADWINDS_AND_TAILWINDS',
+  TARIFF_IMPACT_BY_COMPANY_TYPE = 'TARIFF_IMPACT_BY_COMPANY_TYPE',
+  TARIFF_IMPACT_SUMMARY = 'TARIFF_IMPACT_SUMMARY',
+}
+
+export async function regenerateTariffImpactSummary(
+  tariffUpdates: TariffUpdatesForIndustry,
+  industryArea: IndustrySubHeading,
+  currentReport: EvaluateIndustryArea
+) {
+  console.log('Invoking LLM for tariff impact summary');
+  const tariffImpactSummary = await getTariffImpactSummary(
+    tariffUpdates,
+    industryArea,
+    currentReport.establishedPlayers,
+    currentReport.newChallengers,
+    currentReport.headwindsAndTailwinds,
+    currentReport.positiveTariffImpactOnCompanyType,
+    currentReport.negativeTariffImpactOnCompanyType
+  );
+
+  console.log('Found tariff impact summary:', tariffImpactSummary);
+
+  return tariffImpactSummary;
+}
+
+export async function regenerateEvaluateIndustryAreaJson(
+  tariffIndustry: TariffReportIndustry,
+  industryArea: IndustrySubHeading,
+  headings: IndustryAreaHeadings,
+  tariffUpdates: TariffUpdatesForIndustry,
+  date: string,
+  content: EvaluateIndustryContent
+) {
+  const jsonPath = getJsonFilePath(tariffIndustry.name, industryArea, headings);
+  if (!fs.existsSync(jsonPath)) {
+  }
+
+  // load existing or start new result
+  const result: EvaluateIndustryArea = readEvaluateIndustryAreaJsonFromFile(tariffIndustry.name, industryArea, headings);
+
+  switch (content) {
+    case EvaluateIndustryContent.ESTABLISHED_PLAYERS:
+      result.establishedPlayers = await getEstablishedPlayers(tariffIndustry, headings, tariffUpdates, industryArea, date);
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
+      break;
+    case EvaluateIndustryContent.NEW_CHALLENGERS:
+      result.newChallengers = await getNewChallengers(tariffIndustry, headings, tariffUpdates, industryArea, result.establishedPlayers, date);
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
+      break;
+    case EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS:
+      result.headwindsAndTailwinds = await getHeadwindsAndTailwinds(headings, tariffUpdates, industryArea, date);
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
+      break;
+    case EvaluateIndustryContent.TARIFF_IMPACT_BY_COMPANY_TYPE:
+      const impact = await getTariffImpactByCompanyType(headings, tariffUpdates, industryArea, date);
+      result.positiveTariffImpactOnCompanyType = impact.positiveTariffImpactOnCompanyType;
+      result.negativeTariffImpactOnCompanyType = impact.negativeTariffImpactOnCompanyType;
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
+      break;
+    case EvaluateIndustryContent.TARIFF_IMPACT_SUMMARY:
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
+      break;
+    case EvaluateIndustryContent.ALL:
+    default:
+      // regenerate everything
+      return getAndWriteEvaluateIndustryAreaJson(tariffIndustry, industryArea, headings, tariffUpdates, date);
+  }
+
+  // write updated file and markdown
+  fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2), 'utf-8');
+  writeEvaluateIndustryAreaToMarkdownFile(tariffIndustry.name, industryArea, headings, result);
+}
+
 function getJsonFilePath(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings) {
   const headingAndSubheadingIndex = headings.headings
     .flatMap((heading, headingIndex) =>
@@ -565,7 +643,7 @@ function getMarkdownFilePath(industry: string, industryArea: IndustrySubHeading,
   return getJsonFilePath(industry, industryArea, headings).replace('.json', '.md');
 }
 
-export function readEvaluateIndustryAreaJsonFromFile(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings) {
+export function readEvaluateIndustryAreaJsonFromFile(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings): EvaluateIndustryArea {
   const filePath = getJsonFilePath(industry, industryArea, headings);
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
