@@ -3,18 +3,22 @@ import {
   readIndustryHeadingsFromFile,
   writeIndustryHeadingsToMarkdownFile,
 } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
+import {
+  getExecutiveSummaryAndSaveToFile,
+  readExecutiveSummaryFromFile,
+  writeExecutiveSummaryToMarkdownFile,
+} from '@/scripts/industry-tariff-reports/01-executive-summary';
 import { getAndWriteIntroductionsJson, readIntroductionJsonFromFile, writeIntroductionToMarkdownFile } from '@/scripts/industry-tariff-reports/02-introduction';
+import {
+  getTariffUpdatesForIndustryAndSaveToFile,
+  readTariffUpdatesFromFile,
+  writeTariffUpdatesToMarkdownFile,
+} from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import {
   getAndWriteUnderstandIndustryJson,
   readUnderstandIndustryJsonFromFile,
   writeUnderstandIndustryToMarkdownFile,
 } from '@/scripts/industry-tariff-reports/04-understand-industry';
-import {
-  getTariffUpdatesForIndustryAndSaveToFile,
-  readTariffUpdatesFromFile,
-  writeTariffUpdatesToMarkdownFile,
-  TariffUpdatesForIndustry,
-} from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import {
   getAndWriteIndustryAreaSectionToJsonFile,
   readIndustryAreaSectionFromFile,
@@ -24,18 +28,13 @@ import {
   getAndWriteEvaluateIndustryAreaJson,
   readEvaluateIndustryAreaJsonFromFile,
   writeEvaluateIndustryAreaToMarkdownFile,
-  PositiveTariffImpactOnCompanyType,
 } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
-import {
-  getExecutiveSummaryAndSaveToFile,
-  readExecutiveSummaryFromFile,
-  writeExecutiveSummaryToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/01-executive-summary';
 import {
   getFinalConclusionAndSaveToFile,
   readFinalConclusionFromFile,
   writeFinalConclusionToMarkdownFile,
 } from '@/scripts/industry-tariff-reports/07-final-conclusion';
+import { TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -55,13 +54,19 @@ export enum ReportType {
   ALL = 'ALL',
 }
 
-/**
- * Generate the specified section of the industry report.
- * @param reportType Which part of the report to produce
- * @param industry The industry name (e.g., 'Plastic')
- * @param date Report date string (e.g., 'April 21, 2025')
- */
-export async function doIt(reportType: ReportType, industry: string, date: string) {
+export async function doIt(
+  reportType: ReportType,
+  tariffIndustry: TariffReportIndustry,
+  evaluationReportToGenerate: {
+    headingIndex: number;
+    subHeadingIndex: number;
+  } = {
+    headingIndex: 0,
+    subHeadingIndex: 0,
+  }
+) {
+  const industry = tariffIndustry.name;
+  const date = tariffIndustry.asOfDate;
   // Pre-read common dependencies
   const headings = await readIndustryHeadingsFromFile(industry);
 
@@ -97,8 +102,9 @@ export async function doIt(reportType: ReportType, industry: string, date: strin
 
     case ReportType.EVALUATE_INDUSTRY_AREA:
       const tariff = readTariffUpdatesFromFile(industry);
-      const firstArea = headings.headings[0].subHeadings[2];
-      await getAndWriteEvaluateIndustryAreaJson(industry, firstArea, headings, tariff!, date);
+      const { headingIndex, subHeadingIndex } = evaluationReportToGenerate;
+      const firstArea = headings.headings[headingIndex].subHeadings[subHeadingIndex];
+      await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, firstArea, headings, tariff!, date);
       const evaluated = readEvaluateIndustryAreaJsonFromFile(industry, firstArea, headings);
       writeEvaluateIndustryAreaToMarkdownFile(industry, firstArea, headings, evaluated);
       break;
@@ -144,6 +150,19 @@ export async function doIt(reportType: ReportType, industry: string, date: strin
   }
 }
 
+const industry: TariffReportIndustry = {
+  name: 'Plastic',
+  companiesToIgnore: ['Pactiv Evergreen Inc', 'Danimer Scientific(DNMR)', 'Zymergen Inc (ZY)', 'Amyris, Inc.'],
+  asOfDate: 'April 21, 2025',
+};
+
 // Example usage:
-doIt(ReportType.EVALUATE_INDUSTRY_AREA, 'Plastic', 'April 21, 2025').catch(console.error);
+doIt(ReportType.TARIFF_UPDATES, industry, {
+  headingIndex: 1,
+  subHeadingIndex: 0,
+})
+  .then(() => {
+    console.log('Tariff updates generated successfully.');
+  })
+  .catch(console.error);
 // doIt(ReportType.ALL, 'Plastic', 'April 21, 2025').catch(console.error);

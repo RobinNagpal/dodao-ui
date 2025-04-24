@@ -27,7 +27,5 @@ export const outputInstructions =
 export async function getLlmResponse<T extends Record<string, any>>(prompt: string, schema: ZodObject<any>, model: ChatOpenAI = o4MiniModel): Promise<T> {
   const structuredLLM = model.withStructuredOutput<T>(schema);
   const headingsResponse: T = await structuredLLM.invoke(prompt);
-  console.log('LLM analysis response:\n', JSON.stringify(headingsResponse, null, 2));
-
   return headingsResponse;
 }

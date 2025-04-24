@@ -6,6 +6,7 @@ import { z } from 'zod';
 import fs from 'fs';
 import path from 'path';
 import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
+import { TariffReportIndustry } from './tariff-types';
 
 const CompanyProductSchema = z.object({
   productName: z.string().describe('Product name'),
@@ -159,7 +160,7 @@ function challengerToMarkdown(challenger: NewChallenger): string {
   // Company Header
   const header =
     `### ${challenger.companyName} (Ticker: ${challenger.companyTicker})\n` +
-    `**Description:** ${challenger.companyDescription}\n` +
+    `**Description:** ${challenger.companyDescription}\n\n` +
     `**Website:** [${challenger.companyWebsite}](${challenger.companyWebsite})\n\n` +
     `**Unique Advantage:** ${challenger.uniqueAdvantage}\n\n`;
 
@@ -192,7 +193,7 @@ function challengerToMarkdown(challenger: NewChallenger): string {
     `#### Management & Strategy\n` + `- About Management: ${challenger.aboutManagement}\n` + `- Unique Advantage: ${challenger.uniqueAdvantage}\n\n`;
 
   // Tariff Impact & Competitors
-  const footer = `#### Tariffs & Competitors\n` + `- Tariff Impact: ${challenger.impactOfTariffs}\n` + `- Competitors: ${challenger.competitors}\n`;
+  const footer = `#### Tariffs & Competitors\n\n` + `- Tariff Impact: ${challenger.impactOfTariffs}\n\n` + `- Competitors: ${challenger.competitors}\n`;
 
   return header + productsSection + performanceSection + managementSection + footer;
 }
@@ -203,7 +204,7 @@ function challengerToMarkdown(challenger: NewChallenger): string {
 function establishedPlayerToMarkdown(player: EstablishedPlayer): string {
   const header =
     `### ${player.companyName} (Ticker: ${player.companyTicker})\n` +
-    `**Description:** ${player.companyDescription}\n` +
+    `**Description:** ${player.companyDescription}\n\n` +
     `**Website:** [${player.companyWebsite}](${player.companyWebsite})\n\n`;
 
   const productsSection =
@@ -229,14 +230,15 @@ function establishedPlayerToMarkdown(player: EstablishedPlayer): string {
     `  - ROC Growth: ${future.rocGrowth}\n\n`;
 
   const managementSection =
-    `#### Management & Strategy\n` + `- About Management: ${player.aboutManagement}\n` + `- Unique Advantage: ${player.uniqueAdvantage}\n\n`;
+    `#### Management & Strategy\n\n` + `- About Management: ${player.aboutManagement}\n\n` + `- Unique Advantage: ${player.uniqueAdvantage}\n\n`;
 
-  const footer = `#### Tariffs & Competitors\n` + `- Tariff Impact: ${player.impactOfTariffs}\n` + `- Competitors: ${player.competitors}\n`;
+  const footer = `#### Tariffs & Competitors\n\n` + `- Tariff Impact: ${player.impactOfTariffs}\n\n` + `- Competitors: ${player.competitors}\n\n`;
 
   return header + productsSection + performanceSection + managementSection + footer;
 }
 
 async function getEstablishedPlayers(
+  tariffIndustry: TariffReportIndustry,
   headings: IndustryAreaHeadings,
   tariffUpdates: TariffUpdatesForIndustry,
   industry: IndustrySubHeading,
@@ -249,6 +251,9 @@ async function getEstablishedPlayers(
 - For each: companyName, companyDescription, companyWebsite, companyTicker, products (portfolio & revenue breakdown), aboutManagement, uniqueAdvantage, pastPerformance (5 years), futureGrowth (next 5 years), impactOfTariffs, competitors.
 - Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.
 - Output JSON array matching EstablishedPlayerSchema.
+- Ignore companies like ${tariffIndustry.companiesToIgnore.join(', ')} as they are no longer active.
+- Make sure the companies are active and are being publicly traded as of ${date} on Nasdaq or NYSE.
+- The company should be traded on US exchanges i.e. Nasdaq or NYSE.
 
 ${outputInstructions}
 
@@ -257,6 +262,7 @@ Key Companies: ${industry.companies.map((c) => c.name).join(', ')}
 
 Tariff Updates: ${JSON.stringify(tariffUpdates)}
 Date: ${date}
+
 
 The selected companies should be just from the ${industry.title} sector. 
 Do not include any companies from other headings or subheadings as they will be covered separately.
@@ -282,6 +288,7 @@ const NewChallengerListSchema = z.object({
 });
 
 async function getNewChallengers(
+  tariffIndustry: TariffReportIndustry,
   headings: IndustryAreaHeadings,
   tariffUpdates: TariffUpdatesForIndustry,
   industry: IndustrySubHeading,
@@ -292,7 +299,7 @@ async function getNewChallengers(
   console.log('[NewChallengers] → Fetching list of names and tickers');
   const listPrompt = `
 Evaluate the *New Challengers* in the ${industry.title} sector **but output only** each company's **name** and **ticker** in JSON:
-- Select three public US companies IPO'd in the last 5–7 years.
+- Select three public US companies IPO'd in the last 7 years.
 - Ignore any Chinese companies.
 - Output JSON matching:
 - Make sure the companies are active and are being publicly traded as of ${date} on Nasdaq or NYSE.
@@ -300,7 +307,8 @@ Evaluate the *New Challengers* in the ${industry.title} sector **but output only
 - Dont return duplicate companies.
 - The companies should have unique edge over established players which creates probability of huge success in the future.
 - Make sure to select the best of the best new players and they not be old established players.
-- Ignore challengers like Zymergen Inc, 
+- Ignore challengers like ${tariffIndustry.companiesToIgnore.join(', ')} as they no longer active.
+- Make sure the company is not bankrupt or not active.
 - Try to find three challenger that fall under this category of ${industry.title} sector.
   {
     "newChallengers": [
@@ -474,20 +482,21 @@ ${JSON.stringify(negativeTariffImpactOnCompanyType, null, 2)}
   return (await getLlmResponse<TariffImpactSummary>(prompt, schema)).summary;
 }
 export async function getAndWriteEvaluateIndustryAreaJson(
-  industry: string,
+  tariffIndustry: TariffReportIndustry,
   industryArea: IndustrySubHeading,
   headings: IndustryAreaHeadings,
   tariffUpdates: TariffUpdatesForIndustry,
   date: string
 ) {
+  const industry = tariffIndustry.name;
   // 1
   console.log('Invoking LLM for established players');
-  const establishedPlayers = await getEstablishedPlayers(headings, tariffUpdates, industryArea, date);
+  const establishedPlayers = await getEstablishedPlayers(tariffIndustry, headings, tariffUpdates, industryArea, date);
   console.log('Found established players:', establishedPlayers);
 
   // 2
   console.log('Invoking LLM for new challengers');
-  const newChallengers = await getNewChallengers(headings, tariffUpdates, industryArea, establishedPlayers, date);
+  const newChallengers = await getNewChallengers(tariffIndustry, headings, tariffUpdates, industryArea, establishedPlayers, date);
   console.log('Found new challengers:', newChallengers);
 
   // 3
@@ -581,8 +590,11 @@ export function writeEvaluateIndustryAreaToMarkdownFile(
   md.push(evaluateIndustryArea.aboutParagraphs);
   md.push(`## Established Players`);
   evaluateIndustryArea.establishedPlayers.forEach((p) => md.push(establishedPlayerToMarkdown(p)));
-  md.push(`## Newer Challengers`);
-  evaluateIndustryArea.newChallengers.forEach((c) => md.push(challengerToMarkdown(c)));
+
+  if (evaluateIndustryArea.newChallengers.length) {
+    md.push(`## Newer Challengers`);
+    evaluateIndustryArea.newChallengers.forEach((c) => md.push(challengerToMarkdown(c)));
+  }
   md.push(`## Headwinds & Tailwinds`);
   md.push(`### Headwinds`, ...evaluateIndustryArea.headwindsAndTailwinds.headwinds);
   md.push(`### Tailwinds`, ...evaluateIndustryArea.headwindsAndTailwinds.tailwinds);
