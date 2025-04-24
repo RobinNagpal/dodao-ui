@@ -4,9 +4,9 @@ import { prisma } from '@/prisma';
 import path from 'path';
 import fs from 'fs';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
-import { ChatOpenAI } from '@langchain/openai';
 import Handlebars from 'handlebars';
 import Ajv, { ErrorObject } from 'ajv';
+import { gpt4OSearchModel } from '@/scripts/industry-tariff-reports/llm-utils';
 
 interface ComparableReit {
   ticker: string;
@@ -51,7 +51,7 @@ export async function getTickerInfo(ticker: Ticker): Promise<string> {
       createdBy: 'unknown',
       updatedBy: 'unknown',
       llmProvider: 'openai',
-      model: 'o4-mini',
+      model: gpt4OSearchModel.model,
     },
   });
 
@@ -75,8 +75,6 @@ export async function getTickerInfo(ticker: Ticker): Promise<string> {
     const compiledTemplate = Handlebars.compile(templateContent);
     const finalPrompt = compiledTemplate(inputJson || {});
 
-    const llm = new ChatOpenAI({ model: 'o4-mini' });
-
     const outputSchemaPath = path.join(process.cwd(), 'schemas', prompt.outputSchema);
     if (!fs.existsSync(outputSchemaPath)) {
       throw new Error(`Output schema file ${prompt.outputSchema} not found`);
@@ -84,7 +82,7 @@ export async function getTickerInfo(ticker: Ticker): Promise<string> {
 
     const outputSchema = await $RefParser.dereference(outputSchemaPath);
 
-    const modelWithStructure = llm.withStructuredOutput(outputSchema);
+    const modelWithStructure = gpt4OSearchModel.withStructuredOutput(outputSchema);
     result = await modelWithStructure.invoke(finalPrompt);
     if (result) {
       await prisma.promptInvocation.update({
@@ -118,39 +116,7 @@ export async function getTickerInfo(ticker: Ticker): Promise<string> {
     throw e;
   }
 
-  const aboutTickerString = `
-***Years Since IPO***: ${result.yearsSinceIpo}
-    
-***REIT Type***: ${result.gicsClassification.subIndustry}
-    
-***Business Model***: ${result.businessModel}
-    
-***Dividend Profile***: ${result.dividendProfile}
-    
-***Competitive Edge***:
-${result.competitiveEdge.map((edge: string[]) => `- ${edge}`).join('\n')}
-    
-***Comparables***:
-${result.comparables
-  .map(
-    (comp: ComparableReit) => `- **${comp.ticker} (${comp.companyName})**
-  - Model: ${comp.businessModel}
-  - Occupancy Rate: ${comp.occupancyRate}
-  - Dividend Profile: ${comp.dividendProfile}
-  - Comparison: ${comp.comparisonParagraph}`
-  )
-  .join('\n\n')}
-    
-***Latest News***: ${result.latestNews}
-    
-***Outlook***: ${result.outlook}
-    
-***Headwinds***: ${result.headwinds}
-    
-***Tailwinds***: ${result.tailwinds}
-    `.trim();
-
-  return aboutTickerString;
+  return JSON.stringify(result, null, 2);
 }
 
 function validateData(schema: object, data: unknown): { valid: boolean; errors?: ErrorObject[] } {

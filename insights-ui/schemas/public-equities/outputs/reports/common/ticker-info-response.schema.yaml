@@ -1,5 +1,8 @@
 type: object
 properties:
+  reitInfo:
+    type: string
+    description: "Important REIT info other than the given short description of the company"
   yearsSinceIpo:
     type: string
     description: "Number of years since the IPO, as a string (e.g. '0.6 years')"

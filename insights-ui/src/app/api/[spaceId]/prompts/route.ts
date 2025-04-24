@@ -13,6 +13,7 @@ interface CreatePromptRequest {
   outputSchema: string;
   sampleJson: string;
   createdBy?: string;
+  sampleBodyToAppend?: string;
   transformationPatch?: Prisma.JsonValue;
 }
 
@@ -34,8 +35,8 @@ async function getPrompts(req: NextRequest, context: { params: Promise<{ spaceId
 }
 
 // POST /api/[spaceId]/prompts
-async function createPrompt(req: NextRequest, context: { params: { spaceId: string } }) {
-  const { spaceId } = context.params;
+async function createPrompt(req: NextRequest, context: { params: Promise<{ spaceId: string }> }) {
+  const { spaceId } = await context.params;
   const body: CreatePromptRequest = await req.json();
 
   // Basic validation
@@ -67,6 +68,7 @@ async function createPrompt(req: NextRequest, context: { params: { spaceId: stri
       sampleJson: body.sampleJson || '',
       createdBy: body.createdBy || 'unknown',
       updatedBy: body.createdBy || 'unknown',
+      sampleBodyToAppend: body.sampleBodyToAppend || '',
       transformationPatch: body.transformationPatch || undefined,
     },
   });

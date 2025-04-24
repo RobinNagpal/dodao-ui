@@ -10,8 +10,8 @@ export type FullPromptInvocationResponse = PromptInvocation & {
   prompt: Prompt & { promptVersions: PromptVersion[]; activePromptVersion: PromptVersion | null };
 };
 
-async function getInvocation(req: NextRequest, context: { params: { spaceId: string; promptId: string; invocationId: string } }) {
-  const { spaceId, promptId, invocationId } = context.params;
+async function getInvocation(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string; invocationId: string }> }) {
+  const { spaceId, promptId, invocationId } = await context.params;
 
   const invocation = await prisma.promptInvocation.findFirstOrThrow({
     where: {
