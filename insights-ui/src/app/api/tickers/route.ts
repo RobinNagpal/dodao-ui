@@ -66,13 +66,13 @@ async function postHandler(req: NextRequest): Promise<Ticker> {
   });
 
   const inputJson = {
-      tickerKey: newTicker.tickerKey,
-      companyName: newTicker.companyName,
-      shortDescription: newTicker.shortDescription,
-      referenceDate: 'April 20, 2025',
-    };
-  
-    const aboutTickerString = await invokePrompt('US/public-equities/real-estate/equity-reits/ticker-info', inputJson);
+    tickerKey: newTicker.tickerKey,
+    companyName: newTicker.companyName,
+    shortDescription: newTicker.shortDescription,
+    referenceDate: 'April 20, 2025',
+  };
+
+  const aboutTickerString = await invokePrompt('US/public-equities/real-estate/equity-reits/ticker-info', inputJson);
 
   const updatedTicker = await prisma.ticker.update({
     where: {
