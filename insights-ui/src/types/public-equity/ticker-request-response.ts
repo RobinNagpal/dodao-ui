@@ -94,6 +94,10 @@ export interface SaveTickerInfoRequest {
   tickerInfo: string;
 }
 
+export interface SaveTickerNewsRequest {
+  tickerNews: string;
+}
+
 export interface CriterionMatchTextItem {
   criterion_key: string;
   relevant_text: string;

@@ -1,0 +1,22 @@
+type: object
+properties:
+  articles:
+    type: array
+    items:
+      type: object
+      properties:
+        date:
+          type: string
+          description: "Publication date."
+        title:
+          type: string
+          description: "Headline of the news article."
+        content:
+          type: string
+          description: "Article detail with inline citations wherever possible (e.g., [Reuters](…))."
+      required:
+        - date
+        - title
+        - content
+required:
+  - articles
