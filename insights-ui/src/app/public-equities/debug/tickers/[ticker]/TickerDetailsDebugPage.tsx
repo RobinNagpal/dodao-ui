@@ -14,6 +14,8 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useEffect, useState } from 'react';
 import CriteriaTable from './CriteriaTable';
 import DebugTickerInfo from '@/components/ticker/debug/DebugTickerInfo';
+import PopulateLatest10QInfoButton from '@/app/public-equities/tickers/[tickerKey]/PopulateLatest10QInfoButton';
+import DebugTickerNews from '@/components/ticker/debug/DebugTickerNews';
 
 export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
   // New state for section-specific regeneration confirmation
@@ -73,6 +75,26 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
             ticker={ticker}
           />
           <DebugTickerInfo report={tickerReport} onPostUpdate={onPostUpdate} />
+          <DebugTickerNews report={tickerReport} onPostUpdate={onPostUpdate} />
+          <h1 className="mt-8 font-bold text-xl">Latest 10Q Info</h1>
+          {tickerReport.latest10QInfo ? (
+            <div className="border-b border-gray-100 text-left">
+              <dl className="divide-y text-color">
+                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm/6 font-medium">Reporting Period</dt>
+                  <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{tickerReport.latest10QInfo.periodOfReport}</dd>
+                </div>
+                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm/6 font-medium">SEC 10Q Filing Link</dt>
+                  <a href={tickerReport.latest10QInfo.filingUrl} target="_blank" className="link-color mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
+                    {tickerReport.latest10QInfo.filingUrl}
+                  </a>
+                </div>
+              </dl>
+            </div>
+          ) : (
+            <PopulateLatest10QInfoButton tickerKey={ticker} />
+          )}
         </div>
       )}
     </PageWrapper>
