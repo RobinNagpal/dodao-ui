@@ -40,7 +40,7 @@ async function postHandler(req: NextRequest): Promise<any> {
 
   // Ensure required fields are present.
   if (!promptKey || !llmProvider || !model) {
-    throw new Error(`Missing required fields: input, templateId, llmProvider, or model`);
+    throw new Error(`Missing required fields: promptKey, llmProvider, or model`);
   }
 
   const prompt = await prisma.prompt.findFirstOrThrow({
@@ -68,9 +68,9 @@ async function postHandler(req: NextRequest): Promise<any> {
       updatedAt: new Date(),
       createdBy: 'unknown',
       updatedBy: 'unknown',
-      llmProvider: llmProvider,
-      model: model,
-      bodyToAppend: bodyToAppend,
+      llmProvider,
+      model,
+      bodyToAppend,
     },
   });
 
@@ -109,68 +109,106 @@ async function postHandler(req: NextRequest): Promise<any> {
     const outputSchema = await $RefParser.dereference(outputSchemaPath);
 
     const modelWithStructure = llm.withStructuredOutput(outputSchema);
-    const result = await modelWithStructure.invoke(finalPrompt);
-    console.log(`Result: ${JSON.stringify(result)}`);
-    if (result) {
+
+    // 5) Invoke + validate (retry once)
+    const maxAttempts = 2;
+    let result: any;
+    let validOutput = false;
+    let outputErrors: ErrorObject[] = [];
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      result = await modelWithStructure.invoke(finalPrompt);
+      console.log(`LLM attempt ${attempt}:`, JSON.stringify(result));
+
+      const validation = validateData(outputSchema, result);
+      validOutput = validation.valid;
+      outputErrors = validation.errors || [];
+
+      if (validOutput) {
+        break;
+      } else if (attempt < maxAttempts) {
+        console.warn(`Validation failed (attempt ${attempt}), retrying…`, outputErrors);
+      }
+    }
+
+    if (!validOutput) {
+      // persist last attempt's output regardless
       await prisma.promptInvocation.update({
-        where: {
-          id: invocation.id,
-        },
+        where: { id: invocation.id },
         data: {
           outputJson: JSON.stringify(result),
           updatedAt: new Date(),
-          status: PromptInvocationStatus.Completed,
         },
       });
-    }
-    const { valid: validOutput, errors: outputErrors } = validateData(outputSchema, result);
-
-    if (!validOutput) {
-      throw new Error(`Output validation failed: ${JSON.stringify(outputErrors)}`);
+      throw new Error(`Output validation failed after ${maxAttempts} attempts: ${JSON.stringify(outputErrors)}`);
     }
 
-    const originalObject = {
-      request: request,
+    // 6) Persist the raw output
+    await prisma.promptInvocation.update({
+      where: { id: invocation.id },
+      data: {
+        outputJson: JSON.stringify(result),
+        updatedAt: new Date(),
+        status: PromptInvocationStatus.Completed,
+      },
+    });
+
+    // 7) Build the object to patch
+    let resultObject = {
+      request,
       prompt: finalPrompt,
       response: result,
       invocationId: invocation.id,
     };
 
+    // 8) Transformation patch + retry logic
     if (prompt.transformationPatch) {
-      const patchedObject = jsonpatch.apply_patch(originalObject, prompt.transformationPatch as any[]);
+      let patched: any;
 
-      await prisma.promptInvocation.update({
-        where: {
-          id: invocation.id,
-        },
-        data: {
-          transformedJson: JSON.stringify(patchedObject),
-          updatedAt: new Date(),
-          status: PromptInvocationStatus.Completed,
-        },
-      });
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
+          patched = jsonpatch.apply_patch(resultObject, prompt.transformationPatch as any[]);
 
-      if (requestFrom === 'ui') {
-        return {
-          ...patchedObject,
-          invocationId: invocation.id,
-        };
-      } else {
-        return patchedObject;
+          await prisma.promptInvocation.update({
+            where: { id: invocation.id },
+            data: {
+              transformedJson: JSON.stringify(patched),
+              updatedAt: new Date(),
+              status: PromptInvocationStatus.Completed,
+            },
+          });
+          break;
+        } catch (err) {
+          if (attempt < maxAttempts) {
+            console.warn(`Patch attempt ${attempt} failed—re-invoking LLM & retrying…`, err);
+            // re-invoke to get fresh result
+            const fresh = await modelWithStructure.invoke(finalPrompt);
+            console.log(`Re-invocation ${attempt} result:`, fresh);
+            resultObject.response = fresh;
+          } else {
+            throw new Error(`Patching failed after ${maxAttempts} attempts: ${err}`);
+          }
+        }
       }
+
+      return requestFrom === 'ui' ? { ...patched, invocationId: invocation.id } : patched;
     }
+
+    // 9) No patch: return the raw object
+    const output = {
+      ...resultObject,
+      invocationId: invocation.id,
+    };
+    return requestFrom === 'ui' ? output : output;
   } catch (e) {
     await prisma.promptInvocation.update({
-      where: {
-        id: invocation.id,
-      },
+      where: { id: invocation.id },
       data: {
         status: PromptInvocationStatus.Failed,
         error: (e as any)?.message,
         updatedAt: new Date(),
       },
     });
-
     throw e;
   }
 }
@@ -180,10 +218,6 @@ function validateData(schema: object, data: unknown): { valid: boolean; errors?:
   const validate = ajv.compile(schema);
   const valid = validate(data);
   return { valid: !!valid, errors: validate.errors || [] };
-}
-
-function removeNullBytes(str: string) {
-  return str.replace(/\0/g, '');
 }
 
 export const POST = withErrorHandlingV2<any>(postHandler);
