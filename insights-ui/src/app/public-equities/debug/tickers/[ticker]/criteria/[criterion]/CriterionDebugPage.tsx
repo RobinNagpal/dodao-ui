@@ -56,18 +56,6 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
     }
   }, [tickerReport]);
 
-  // Hooks for re-generation
-  const {
-    data: allSingleCriterionReportsResponse,
-    postData: regenerateAllSingleCriterionReports,
-    loading: allSingleCriterionReportsLoading,
-    error: allSingleCriterionReportsError,
-  } = usePostData<{ message: string }, CreateAllCriterionReportsRequest>({
-    errorMessage: 'Failed to regenerate criterion reports',
-    successMessage: 'Criterion regeneration started successfully',
-    redirectPath: ``,
-  });
-
   const {
     data: singleCriterionReportsResponse,
     postData: regenerateSingleCriterionReports,

@@ -2,36 +2,36 @@
 
 import RawJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import SampleJsonEditModal from '@/components/prompts/SampleJsonEditModal';
-import { SaveTickerInfoRequest } from '@/types/public-equity/ticker-request-response';
+import { SaveTickerNewsRequest } from '@/types/public-equity/ticker-request-response';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
-export interface TickerInfoButtonProps {
+export interface TickerNewsButtonProps {
   tickerKey: string;
-  tickerInfoContent?: string;
+  tickerNewsContent?: string;
   onUpdate: () => Promise<void>;
 }
 
-export default function TickerInfoButton({ tickerKey, tickerInfoContent, onUpdate }: TickerInfoButtonProps) {
+export default function TickerNewsButton({ tickerKey, tickerNewsContent, onUpdate }: TickerNewsButtonProps) {
   const [showSampleJsonModal, setShowSampleJsonModal] = useState(false);
   const [showRawJsonModal, setShowRawJsonModal] = useState(false);
 
   const {
-    putData: saveTickerInfo,
-    loading: tickerInfoLoading,
-    error: tickerInfoError,
-  } = usePutData<string, SaveTickerInfoRequest>({
-    errorMessage: 'Failed to save Ticker Info',
-    successMessage: 'Ticker Info saved successfully',
+    putData: saveTickerNews,
+    loading: tickerNewsLoading,
+    error: tickerNewsError,
+  } = usePutData<string, SaveTickerNewsRequest>({
+    errorMessage: 'Failed to save Ticker News',
+    successMessage: 'Ticker News saved successfully',
     redirectPath: ``,
   });
 
-  const handleSaveTickerInfo = async (jsonString: string) => {
-    await saveTickerInfo(`${getBaseUrl()}/api/tickers/${tickerKey}/ticker-info`, {
-      tickerInfo: jsonString ?? '',
+  const handleSaveTickerNews = async (jsonString: string) => {
+    await saveTickerNews(`${getBaseUrl()}/api/tickers/${tickerKey}/ticker-news`, {
+      tickerNews: jsonString ?? '',
     });
     await onUpdate();
     setShowRawJsonModal(false);
@@ -50,18 +50,18 @@ export default function TickerInfoButton({ tickerKey, tickerInfoContent, onUpdat
         <SampleJsonEditModal
           open={showSampleJsonModal}
           onClose={() => setShowSampleJsonModal(false)}
-          title="Ticker Info JSON"
-          sampleJson={tickerInfoContent || ''}
-          onSave={(jsonString) => handleSaveTickerInfo(jsonString)}
+          title="Ticker News JSON"
+          sampleJson={tickerNewsContent || ''}
+          onSave={(jsonString) => handleSaveTickerNews(jsonString)}
         />
       )}
       {showRawJsonModal && (
         <RawJsonEditModal
           open={showRawJsonModal}
           onClose={() => setShowRawJsonModal(false)}
-          title="Ticker Info JSON"
-          sampleJson={tickerInfoContent}
-          onSave={(jsonString) => handleSaveTickerInfo(jsonString)}
+          title="Ticker News JSON"
+          sampleJson={tickerNewsContent}
+          onSave={(jsonString) => handleSaveTickerNews(jsonString)}
         />
       )}
     </div>
