@@ -10,6 +10,7 @@ import jsonpatch from 'jsonpatch';
 import { NextRequest } from 'next/server';
 import path from 'path';
 import { PromptInvocationStatus } from '.prisma/client';
+import { getLLMResponse } from '@/util/get-llm-response';
 
 export interface PromptInvocationRequest {
   spaceId?: string;
@@ -40,7 +41,7 @@ async function postHandler(req: NextRequest): Promise<any> {
 
   // Ensure required fields are present.
   if (!promptKey || !llmProvider || !model) {
-    throw new Error(`Missing required fields: promptKey, llmProvider, or model`);
+    throw new Error(`Missing required fields: input, templateId, llmProvider, or model`);
   }
 
   const prompt = await prisma.prompt.findFirstOrThrow({
@@ -68,9 +69,9 @@ async function postHandler(req: NextRequest): Promise<any> {
       updatedAt: new Date(),
       createdBy: 'unknown',
       updatedBy: 'unknown',
-      llmProvider,
-      model,
-      bodyToAppend,
+      llmProvider: llmProvider,
+      model: model,
+      bodyToAppend: bodyToAppend,
     },
   });
 
@@ -108,98 +109,45 @@ async function postHandler(req: NextRequest): Promise<any> {
 
     const outputSchema = await $RefParser.dereference(outputSchemaPath);
 
-    const modelWithStructure = llm.withStructuredOutput(outputSchema);
-
-    // 5) Invoke + validate (retry once)
-    const maxAttempts = 2;
-    let result: any;
-    let validOutput = false;
-    let outputErrors: ErrorObject[] = [];
-
-    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-      result = await modelWithStructure.invoke(finalPrompt);
-      console.log(`LLM attempt ${attempt}:`, JSON.stringify(result));
-
-      const validation = validateData(outputSchema, result);
-      validOutput = validation.valid;
-      outputErrors = validation.errors || [];
-
-      if (validOutput) {
-        break;
-      } else if (attempt < maxAttempts) {
-        console.warn(`Validation failed (attempt ${attempt}), retrying…`, outputErrors);
-      }
-    }
-
-    if (!validOutput) {
-      // persist last attempt's output regardless
-      await prisma.promptInvocation.update({
-        where: { id: invocation.id },
-        data: {
-          outputJson: JSON.stringify(result),
-          updatedAt: new Date(),
-        },
-      });
-      throw new Error(`Output validation failed after ${maxAttempts} attempts: ${JSON.stringify(outputErrors)}`);
-    }
-
-    // 6) Persist the raw output
-    await prisma.promptInvocation.update({
-      where: { id: invocation.id },
-      data: {
-        outputJson: JSON.stringify(result),
-        updatedAt: new Date(),
-        status: PromptInvocationStatus.Completed,
-      },
+    const result = await getLLMResponse({
+      invocationId: invocation.id,
+      llmProvider,
+      modelName: model,
+      prompt: finalPrompt,
+      outputSchema,
+      maxRetries: 1,
     });
 
-    // 7) Build the object to patch
-    let resultObject = {
-      request,
+    const originalObject = {
+      request: request,
       prompt: finalPrompt,
       response: result,
       invocationId: invocation.id,
     };
 
-    // 8) Transformation patch + retry logic
     if (prompt.transformationPatch) {
-      let patched: any;
+      const patchedObject = jsonpatch.apply_patch(originalObject, prompt.transformationPatch as any[]);
 
-      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-        try {
-          patched = jsonpatch.apply_patch(resultObject, prompt.transformationPatch as any[]);
+      await prisma.promptInvocation.update({
+        where: {
+          id: invocation.id,
+        },
+        data: {
+          transformedJson: JSON.stringify(patchedObject),
+          updatedAt: new Date(),
+          status: PromptInvocationStatus.Completed,
+        },
+      });
 
-          await prisma.promptInvocation.update({
-            where: { id: invocation.id },
-            data: {
-              transformedJson: JSON.stringify(patched),
-              updatedAt: new Date(),
-              status: PromptInvocationStatus.Completed,
-            },
-          });
-          break;
-        } catch (err) {
-          if (attempt < maxAttempts) {
-            console.warn(`Patch attempt ${attempt} failed—re-invoking LLM & retrying…`, err);
-            // re-invoke to get fresh result
-            const fresh = await modelWithStructure.invoke(finalPrompt);
-            console.log(`Re-invocation ${attempt} result:`, fresh);
-            resultObject.response = fresh;
-          } else {
-            throw new Error(`Patching failed after ${maxAttempts} attempts: ${err}`);
-          }
-        }
+      if (requestFrom === 'ui') {
+        return {
+          ...patchedObject,
+          invocationId: invocation.id,
+        };
+      } else {
+        return patchedObject;
       }
-
-      return requestFrom === 'ui' ? { ...patched, invocationId: invocation.id } : patched;
     }
-
-    // 9) No patch: return the raw object
-    const output = {
-      ...resultObject,
-      invocationId: invocation.id,
-    };
-    return requestFrom === 'ui' ? output : output;
   } catch (e) {
     await prisma.promptInvocation.update({
       where: { id: invocation.id },
