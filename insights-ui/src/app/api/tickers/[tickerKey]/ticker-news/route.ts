@@ -5,7 +5,7 @@ import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { SaveTickerNewsRequest } from '@/types/public-equity/ticker-request-response';
 import { invokePrompt } from '@/util/run-prompt';
-import { getTodayDate } from '@/util/get-today-date';
+import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-today-date';
 
 async function saveTickerNews(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
   const { tickerKey } = await params;
@@ -21,7 +21,7 @@ async function saveTickerNews(req: NextRequest, { params }: { params: Promise<{ 
     tickerKey: existingTicker.tickerKey,
     companyName: existingTicker.companyName,
     shortDescription: existingTicker.shortDescription,
-    referenceDate: getTodayDate(),
+    referenceDate: getTodayDateAsMonthDDYYYYFormat(),
   };
 
   const tickerNewsString = await invokePrompt('US/public-equities/real-estate/equity-reits/ticker-news', inputJson);
