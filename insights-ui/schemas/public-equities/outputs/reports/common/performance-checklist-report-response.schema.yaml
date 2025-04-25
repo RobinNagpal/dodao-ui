@@ -4,6 +4,7 @@ additionalProperties: false
 properties:
   performanceChecklist:
     type: array
+    description: "Contains array of objects"
     items:
       $ref: './performance-checklist-values-item.schema.yaml'
 required:

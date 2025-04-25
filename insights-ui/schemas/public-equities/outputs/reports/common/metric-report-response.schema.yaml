@@ -4,6 +4,7 @@ additionalProperties: false
 properties:
   metrics:
     type: array
+    description: "Contains array of objects"
     items:
       $ref: './metric-values-item.schema.yaml'
 required:
