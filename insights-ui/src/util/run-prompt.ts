@@ -66,7 +66,13 @@ export async function invokePrompt(promptKey: string, input?: any): Promise<stri
     const llm = gpt4OSearchModel.withStructuredOutput(outputSchema);
     const result = await llm.invoke(finalPrompt);
 
-    // 7. Mark invocation complete
+    // 7. Validate output
+    const { valid: outValid, errors: outErrs } = validateData(outputSchema, result);
+    if (!outValid) {
+      throw new Error(`Output validation failed: ${JSON.stringify(outErrs)}`);
+    }
+
+    // 8. Mark invocation complete
     await prisma.promptInvocation.update({
       where: { id: invocation.id },
       data: {
@@ -75,12 +81,6 @@ export async function invokePrompt(promptKey: string, input?: any): Promise<stri
         updatedAt: new Date(),
       },
     });
-
-    // 8. Validate output
-    const { valid: outValid, errors: outErrs } = validateData(outputSchema, result);
-    if (!outValid) {
-      throw new Error(`Output validation failed: ${JSON.stringify(outErrs)}`);
-    }
 
     return JSON.stringify(result, null, 2);
   } catch (err) {

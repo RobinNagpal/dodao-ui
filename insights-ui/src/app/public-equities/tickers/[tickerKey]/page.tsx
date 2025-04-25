@@ -20,10 +20,16 @@ import { parseMarkdown } from '@/util/parse-markdown';
 import SpiderChartFlyoutMenu from './SpiderChartFlyoutMenu';
 import {
   ArrowTopRightOnSquareIcon,
+  ArrowTrendingDownIcon,
+  ArrowTrendingUpIcon,
+  BriefcaseIcon,
   BuildingOfficeIcon,
   CalendarIcon,
+  CheckIcon,
+  DivideIcon,
   DocumentCurrencyDollarIcon,
   InformationCircleIcon,
+  MagnifyingGlassIcon,
   ScaleIcon,
 } from '@heroicons/react/20/solid';
 import { getGraphColor, getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
@@ -126,142 +132,184 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 text-color">
-        <div className="mx-auto lg:text-center">
-          {/* Private Ellipsis */}
-          <div className="flex justify-end">
-            <PrivateWrapper>
-              <TickerActionsDropdown tickerKey={tickerKey} />
-            </PrivateWrapper>
-          </div>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 text-color lg:text-center">
+        {/* Private Ellipsis */}
+        <div className="flex justify-end">
+          <PrivateWrapper>
+            <TickerActionsDropdown tickerKey={tickerKey} />
+          </PrivateWrapper>
+        </div>
 
-          <div className="mx-auto max-w-7xl">
-            <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none text-left">
-              <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl">
-                {tickerReport.companyName} ({tickerKey}){' '}
-                <a href={aboutTicker.reitWebsiteUrl} target="_blank">
-                  <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
-                </a>
-              </h1>
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none text-left">
+            <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl">
+              {tickerReport.companyName} ({tickerKey}){' '}
+              <a href={aboutTicker.reitWebsiteUrl} target="_blank">
+                <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
+              </a>
+            </h1>
 
-              {/* Ticker Info and Spider Chart Row */}
-              <div className="flex flex-col gap-x-5 gap-y-2 lg:flex-row">
-                {/* Ticker Info on the left */}
-                <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
-                  <p className="mt-6">{tickerReport.shortDescription}</p>
-                  <p className="mt-6">
-                    <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.reitInfo ?? 'Not yet populated') }} />
-                  </p>
-                </div>
+            {/* Ticker Info and Spider Chart Row */}
+            <div className="flex flex-col gap-x-5 gap-y-2 lg:flex-row">
+              {/* Ticker Info on the left */}
+              <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
+                <p className="mt-6">{tickerReport.shortDescription}</p>
+                <p className="mt-6">
+                  <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.reitInfo ?? 'Not yet populated') }} />
+                </p>
+              </div>
 
-                {/* Spider chart on the right */}
-                <div className="lg:flex lg:flex-auto lg:justify-center relative">
-                  <div className="lg:absolute lg:top-10 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
-                    <div className="w-full max-w-lg mx-auto relative">
-                      <div className="absolute top-10 right-0 flex space-x-2">
-                        <div className="text-2xl font-bold -z-10" style={{ color: border }}>
-                          {spiderGraphScorePercentage.toFixed(0)}%
-                        </div>
-                        <SpiderChartFlyoutMenu />
+              {/* Spider chart on the right */}
+              <div className="lg:flex lg:flex-auto lg:justify-center relative">
+                <div className="lg:absolute lg:top-10 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
+                  <div className="w-full max-w-lg mx-auto relative">
+                    <div className="absolute top-10 right-0 flex space-x-2">
+                      <div className="text-2xl font-bold -z-10" style={{ color: border }}>
+                        {spiderGraphScorePercentage.toFixed(0)}%
                       </div>
-                      <RadarChart data={spiderGraph} scorePercentage={spiderGraphScorePercentage} />
+                      <SpiderChartFlyoutMenu />
                     </div>
+                    <RadarChart data={spiderGraph} scorePercentage={spiderGraphScorePercentage} />
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Icons row */}
-          <div className="my-8 flex items-center justify-center lg:justify-start space-x-8">
-            <div className="flex items-center justify-start space-x-2">
-              <span className="block-bg-color rounded-full p-2">
-                <CalendarIcon className="size-5" title="Years Since IPO" />
-              </span>
-              <div>{aboutTicker.yearsSinceIpo}</div>
-            </div>
-
-            <div className="flex items-center justify-start space-x-2">
-              <span className="block-bg-color rounded-full p-2">
-                <BuildingOfficeIcon className="size-5" title="REIT Type" />
-              </span>
-              <div>{aboutTicker.gicsClassification?.subIndustry ?? 'N/A'}</div>
-            </div>
-
-            <div className="flex items-center justify-start space-x-2">
-              <span className="block-bg-color rounded-full p-2">
-                <DocumentCurrencyDollarIcon className="size-5" title="SEC Latest 10Q Filing" />
-              </span>
-              <div>
-                <a href={tickerReport.latest10QInfo?.filingUrl} target="_blank" className="hover:underline">
-                  SEC 10Q
-                </a>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-start space-x-2">
-              <span className="block-bg-color rounded-full p-2">
-                <ScaleIcon className="size-5" title="Valuation" />
-              </span>
-              <div>{aboutTicker.valuation ?? 'N/A'}</div>
-            </div>
+        {/* Icons row */}
+        <div className="my-8 flex items-center justify-center lg:justify-start space-x-8">
+          <div className="flex items-center justify-start space-x-2">
+            <span className="block-bg-color rounded-full p-2">
+              <CalendarIcon className="size-5" title="Years Since IPO" />
+            </span>
+            <div>{aboutTicker.yearsSinceIpo}</div>
           </div>
 
-          {/* Latest News block */}
-          <div className="w-full text-left p-4 block-bg-color rounded-xl flex">
-            <span>
-              <InformationCircleIcon className="size-5 inline mr-2" title="Latest News" />
+          <div className="flex items-center justify-start space-x-2">
+            <span className="block-bg-color rounded-full p-2">
+              <BuildingOfficeIcon className="size-5" title="REIT Type" />
+            </span>
+            <div>{aboutTicker.gicsClassification?.subIndustry ?? 'N/A'}</div>
+          </div>
+
+          <div className="flex items-center justify-start space-x-2">
+            <span className="block-bg-color rounded-full p-2">
+              <DocumentCurrencyDollarIcon className="size-5" title="SEC Latest 10Q Filing" />
             </span>
             <div>
-              <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.latestNews ?? 'Not yet populated') }} />
+              <a href={tickerReport.latest10QInfo?.filingUrl} target="_blank" className="hover:underline link-color">
+                SEC 10Q
+              </a>
             </div>
           </div>
 
-          {/* Reports Section */}
-          <div className="border-y border-color my-8">
-            <div className="font-semibold text-xl text-center my-5">Analysis Reports</div>
+          <div className="flex items-center justify-start space-x-2">
+            <span className="block-bg-color rounded-full p-2">
+              <ScaleIcon className="size-5" title="Valuation" />
+            </span>
+            <div>{aboutTicker.valuation ?? 'N/A'}</div>
           </div>
-          <div className="mx-auto mt-12 text-left">
-            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-8 md:max-w-none md:grid-cols-2">
-              {industryGroupCriteria?.criteria?.map((criterion) => {
-                const report = reportMap.get(criterion.key);
-                return (
-                  <div key={criterion.key} className="relative text-left block-bg-color p-4 rounded-xl">
-                    <dt className="my-2">
-                      <div className="flex items-center font-semibold">
-                        <span className="text-lg">📄</span>
-                        <div className="ml-2 text-xl">{criterion.name}</div>
-                      </div>
-                      <div className="text-sm py-1">{criterion.shortDescription}</div>
-                      {report?.performanceChecklistEvaluation && (
-                        <ul className="list-disc mt-2">
-                          {report.performanceChecklistEvaluation?.performanceChecklistItems?.map((item, index) => (
-                            <li key={index} className="mb-1 flex items-start">
-                              <span className="mr-2">{item.score > 0 ? '✅' : '❌'}</span>
-                              <span>{item.checklistItem}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </dt>
-                    <div className="absolute bottom-0 right-0 p-4">
-                      <Link href={`/public-equities/tickers/${tickerKey}/criteria/${criterion.key}`} className="link-color text-sm mt-4 font-semibold">
-                        See Full Report &rarr;
-                      </Link>
-                    </div>
-                  </div>
-                );
-              })}
-            </dl>
-          </div>
+        </div>
 
-          {/* News section */}
-          <div className="border-y border-color my-8">
-            <div className="font-semibold text-xl text-center my-5">News</div>
+        {/* Latest News block */}
+        <div className="w-full text-left p-4 block-bg-color rounded-xl flex">
+          <span>
+            <InformationCircleIcon className="size-5 inline mr-2" title="Latest News" />
+          </span>
+          <div>
+            <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.latestNews ?? 'Not yet populated') }} />
           </div>
-          <TickerNewsSection articles={aboutTicker.tickerNews?.articles ?? []} />
+        </div>
+
+        {/* Reports Section */}
+        <div className="font-semibold text-xl text-left my-8">Analysis Reports</div>
+        <div className="mx-auto mt-12 text-left">
+          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-8 md:max-w-none md:grid-cols-2">
+            {industryGroupCriteria?.criteria?.map((criterion) => {
+              const report = reportMap.get(criterion.key);
+              return (
+                <div key={criterion.key} className="relative text-left block-bg-color p-4 rounded-xl">
+                  <dt className="my-2">
+                    <div className="flex items-center font-semibold">
+                      <span className="text-lg">📄</span>
+                      <div className="ml-2 text-xl">{criterion.name}</div>
+                    </div>
+                    <div className="text-sm py-1">{criterion.shortDescription}</div>
+                    {report?.performanceChecklistEvaluation && (
+                      <ul className="list-disc mt-2">
+                        {report.performanceChecklistEvaluation?.performanceChecklistItems?.map((item, index) => (
+                          <li key={index} className="mb-1 flex items-start">
+                            <span className="mr-2">{item.score > 0 ? '✅' : '❌'}</span>
+                            <span>{item.checklistItem}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </dt>
+                  <div className="absolute bottom-0 right-0 p-4">
+                    <Link href={`/public-equities/tickers/${tickerKey}/criteria/${criterion.key}`} className="link-color text-sm mt-4 font-semibold">
+                      See Full Report &rarr;
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </dl>
+        </div>
+
+        {/* News section */}
+        <div className="font-semibold text-xl text-left my-8">News</div>
+        <TickerNewsSection articles={aboutTicker.tickerNews?.articles ?? []} />
+
+        {/* Competitive Edge */}
+        <div className="font-semibold text-xl text-left my-8">{tickerKey}&apos;s Competitive Edge</div>
+        <div className="text-left block-bg-color p-4 rounded-lg">
+          <div className="font-semibold my-2">Competitive Edge of {tickerKey} over its peers:</div>
+          {aboutTicker.competitiveEdge &&
+            aboutTicker.competitiveEdge.map((ce: string, i: number) => (
+              <div key={i + '_competitiveEdge'} className="w-full text-left px-4 block-bg-color rounded-xl flex">
+                <span>
+                  <CheckIcon className="size-5 inline mr-2" />
+                </span>
+                <div>{ce}</div>
+              </div>
+            ))}
+        </div>
+
+        {/* Further info section */}
+        <div className="font-semibold text-xl text-left my-8">More Info About {tickerKey}</div>
+        <div className="flex flex-col space-y-2">
+          <InfoBlock heading="Business Model" content={aboutTicker.businessModel} IconComponent={BriefcaseIcon} />
+
+          <InfoBlock heading="Dividend Profile" content={aboutTicker.dividendProfile} IconComponent={DivideIcon} />
+
+          <InfoBlock heading="5-Year Outlook" content={aboutTicker.outlook} IconComponent={MagnifyingGlassIcon} />
+
+          <InfoBlock heading="Tailwinds" content={aboutTicker.tailwinds} IconComponent={ArrowTrendingUpIcon} />
+
+          <InfoBlock heading="Headwinds" content={aboutTicker.headwinds} IconComponent={ArrowTrendingDownIcon} />
         </div>
       </div>
     </PageWrapper>
+  );
+}
+
+interface InfoBlockProps {
+  heading: string;
+  content: string;
+  IconComponent: React.ComponentType<{ className?: string }>;
+  IconClasses?: string;
+}
+
+function InfoBlock({ heading, content, IconComponent, IconClasses }: InfoBlockProps): JSX.Element {
+  return (
+    <div className="text-left block-bg-color p-4 rounded-lg">
+      <div className="flex items-center justify-start">
+        <IconComponent className={IconClasses ?? 'size-5 mr-2'} />
+        <div className="font-semibold my-2">{heading}</div>
+      </div>
+      <div className="px-4">{content}</div>
+    </div>
   );
 }

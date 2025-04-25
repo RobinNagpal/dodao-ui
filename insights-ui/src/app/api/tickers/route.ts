@@ -2,6 +2,7 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { Latest10QInfoResponse } from '@/types/public-equity/ticker-report-types';
 import { TickerCreateRequest } from '@/types/public-equity/ticker-request-response';
+import { getTodayDate } from '@/util/get-today-date';
 import { invokePrompt } from '@/util/run-prompt';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
@@ -69,7 +70,7 @@ async function postHandler(req: NextRequest): Promise<Ticker> {
     tickerKey: newTicker.tickerKey,
     companyName: newTicker.companyName,
     shortDescription: newTicker.shortDescription,
-    referenceDate: 'April 20, 2025',
+    referenceDate: getTodayDate(),
   };
 
   const aboutTickerString = await invokePrompt('US/public-equities/real-estate/equity-reits/ticker-info', inputJson);

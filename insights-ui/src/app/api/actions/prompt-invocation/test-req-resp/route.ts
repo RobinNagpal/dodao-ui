@@ -100,6 +100,12 @@ async function postHandler(req: NextRequest): Promise<TestPromptInvocationRespon
     const result = await modelWithStructure.invoke(finalPrompt);
     console.log(`Result: ${JSON.stringify(result)}`);
 
+    // Validate the output against the output schema.
+    const { valid: validOutput, errors: outputErrors } = validateData(outputSchema, result);
+    if (!validOutput) {
+      throw new Error(`Output validation failed: ${JSON.stringify(outputErrors)}`);
+    }
+
     // Update the test invocation record with the output.
     await prisma.testPromptInvocation.update({
       where: { id: invocation.id },
@@ -109,12 +115,6 @@ async function postHandler(req: NextRequest): Promise<TestPromptInvocationRespon
         status: PromptInvocationStatus.Completed,
       },
     });
-
-    // Validate the output against the output schema.
-    const { valid: validOutput, errors: outputErrors } = validateData(outputSchema, result);
-    if (!validOutput) {
-      throw new Error(`Output validation failed: ${JSON.stringify(outputErrors)}`);
-    }
 
     const originalResponse = {
       response: result,

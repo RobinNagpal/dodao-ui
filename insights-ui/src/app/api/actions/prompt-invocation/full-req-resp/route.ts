@@ -112,6 +112,11 @@ async function postHandler(req: NextRequest): Promise<any> {
     const result = await modelWithStructure.invoke(finalPrompt);
     console.log(`Result: ${JSON.stringify(result)}`);
     if (result) {
+      const { valid: validOutput, errors: outputErrors } = validateData(outputSchema, result);
+
+      if (!validOutput) {
+        throw new Error(`Output validation failed: ${JSON.stringify(outputErrors)}`);
+      }
       await prisma.promptInvocation.update({
         where: {
           id: invocation.id,
@@ -122,11 +127,6 @@ async function postHandler(req: NextRequest): Promise<any> {
           status: PromptInvocationStatus.Completed,
         },
       });
-    }
-    const { valid: validOutput, errors: outputErrors } = validateData(outputSchema, result);
-
-    if (!validOutput) {
-      throw new Error(`Output validation failed: ${JSON.stringify(outputErrors)}`);
     }
 
     const originalObject = {
