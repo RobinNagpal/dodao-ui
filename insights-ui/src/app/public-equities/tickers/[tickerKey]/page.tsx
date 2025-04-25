@@ -150,7 +150,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                 <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
                   <p className="mt-6">{tickerReport.shortDescription}</p>
                   <p className="mt-6">
-                    <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.reitInfo) }} />
+                    <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.reitInfo ?? 'Not yet populated') }} />
                   </p>
                 </div>
 
@@ -213,7 +213,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
               <InformationCircleIcon className="size-5 inline mr-2" title="Latest News" />
             </span>
             <div>
-              <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.latestNews) }} />
+              <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.latestNews ?? 'Not yet populated') }} />
             </div>
           </div>
 

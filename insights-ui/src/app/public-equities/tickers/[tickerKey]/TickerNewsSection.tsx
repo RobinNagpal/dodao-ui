@@ -25,7 +25,7 @@ function NewsModal({ open, onClose, article }: NewsModalProps): JSX.Element {
   return (
     <FullPageModal open={open} onClose={onClose} title={article.title} className="max-w-4xl">
       <div className="p-4">
-        <span className="markdown-body text-sm" dangerouslySetInnerHTML={{ __html: parseMarkdown(article.content) }} />
+        <span className="markdown-body text-sm" dangerouslySetInnerHTML={{ __html: parseMarkdown(article.content ?? 'Not yet populated') }} />
       </div>
     </FullPageModal>
   );
