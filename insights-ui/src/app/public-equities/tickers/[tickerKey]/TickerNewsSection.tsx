@@ -1,11 +1,6 @@
-'use client';
+import FullPageNewsButton from './FullPageNewsButton';
 
-import { parseMarkdown } from '@/util/parse-markdown';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
-import { useState } from 'react';
-
-interface Article {
+export interface Article {
   date: string;
   title: string;
   content: string;
@@ -15,26 +10,7 @@ export interface TickerNewsSectionProps {
   articles: Article[];
 }
 
-interface NewsModalProps {
-  open: boolean;
-  onClose: () => void;
-  article: Article;
-}
-
-function NewsModal({ open, onClose, article }: NewsModalProps): JSX.Element {
-  return (
-    <FullPageModal open={open} onClose={onClose} title={article.title} className="max-w-4xl">
-      <div className="p-4">
-        <span className="markdown-body text-sm" dangerouslySetInnerHTML={{ __html: parseMarkdown(article.content ?? 'Not yet populated') }} />
-      </div>
-    </FullPageModal>
-  );
-}
-
 export default function TickerNewsSection({ articles }: TickerNewsSectionProps) {
-  const [selectedNews, setSelectedNews] = useState<Article>();
-  const [showNewsModal, setShowNewsModal] = useState<boolean>(false);
-
   function truncateText(text: string, wordLimit: number): string {
     const words = text.split(/\s+/);
     if (words.length <= wordLimit) return text;
@@ -50,20 +26,8 @@ export default function TickerNewsSection({ articles }: TickerNewsSectionProps) 
             <h3 className="font-semibold mb-2">{a.title}</h3>
           </div>
           <div className="text-sm">
-            {truncateText(a.content, 40)}{' '}
-            {a.content.split(/\s+/).length > 40 && (
-              <button
-                onClick={() => {
-                  setSelectedNews(a);
-                  setShowNewsModal(true);
-                }}
-                className="link-color underline"
-              >
-                View Full
-              </button>
-            )}
+            {truncateText(a.content, 40)} {a.content.split(/\s+/).length > 40 && <FullPageNewsButton article={a} />}
           </div>
-          {showNewsModal && <NewsModal open={showNewsModal} onClose={() => setShowNewsModal(false)} article={selectedNews!} />}
         </div>
       ))}
     </div>
