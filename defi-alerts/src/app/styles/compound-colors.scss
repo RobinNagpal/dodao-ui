@@ -1,0 +1,60 @@
+:root {
+    /* Compound Protocol Colors */
+    --compound-green: #00D395;
+    --compound-green-light: #00E6A5;
+    --compound-green-dark: #00A376;
+    --compound-blue: #00A3FF;
+    --compound-blue-light: #33B5FF;
+    --compound-blue-dark: #0082CC;
+    
+    /* Token Colors */
+    --token-eth: #627EEA;
+    --token-usdc: #2775CA;
+    --token-dai: #F5AC37;
+    --token-usdt: #26A17B;
+    --token-wbtc: #F7931A;
+    --token-comp: #00D395;
+    
+    /* Status Colors */
+    --status-healthy: #2BB673;
+    --status-warning: #FF9F1C;
+    --status-danger: #E03131;
+    --status-neutral: #657786;
+  }
+  
+  /* Dark mode adjustments */
+  .dark {
+    --compound-green: #00E6A5;
+    --compound-green-light: #33EEBA;
+    --compound-green-dark: #00B386;
+    --compound-blue: #1DA1F2;
+    --compound-blue-light: #4DB5F5;
+    --compound-blue-dark: #0C85D0;
+  }
+  
+  /* Compound token classes */
+  .text-token-eth { color: var(--token-eth); }
+  .text-token-usdc { color: var(--token-usdc); }
+  .text-token-dai { color: var(--token-dai); }
+  .text-token-usdt { color: var(--token-usdt); }
+  .text-token-wbtc { color: var(--token-wbtc); }
+  .text-token-comp { color: var(--token-comp); }
+  
+  .bg-token-eth { background-color: var(--token-eth); }
+  .bg-token-usdc { background-color: var(--token-usdc); }
+  .bg-token-dai { background-color: var(--token-dai); }
+  .bg-token-usdt { background-color: var(--token-usdt); }
+  .bg-token-wbtc { background-color: var(--token-wbtc); }
+  .bg-token-comp { background-color: var(--token-comp); }
+  
+  /* Status classes */
+  .text-status-healthy { color: var(--status-healthy); }
+  .text-status-warning { color: var(--status-warning); }
+  .text-status-danger { color: var(--status-danger); }
+  .text-status-neutral { color: var(--status-neutral); }
+  
+  .bg-status-healthy { background-color: var(--status-healthy); }
+  .bg-status-warning { background-color: var(--status-warning); }
+  .bg-status-danger { background-color: var(--status-danger); }
+  .bg-status-neutral { background-color: var(--status-neutral); }
+  

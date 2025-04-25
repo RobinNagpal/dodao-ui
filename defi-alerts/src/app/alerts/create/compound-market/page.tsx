@@ -5,11 +5,33 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import getBaseUrl from "@dodao/web-core/utils/api/getBaseURL";
 import {
-  Condition,
-  Channel,
-  ConditionType,
-  SeverityLevel,
-  NotificationFrequency,
+  ChevronRight,
+  Home,
+  Bell,
+  TrendingUp,
+  Plus,
+  X,
+  ArrowLeft,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  type Condition,
+  type Channel,
+  type ConditionType,
+  type SeverityLevel,
+  type NotificationFrequency,
   severityOptions,
   frequencyOptions,
 } from "@/types/alerts";
@@ -36,6 +58,7 @@ export default function CompoundMarketAlertPage() {
     setSelectedChains((cs) =>
       cs.includes(chain) ? cs.filter((c) => c !== chain) : [...cs, chain]
     );
+
   const toggleMarket = (market: string) =>
     setSelectedMarkets((ms) =>
       ms.includes(market) ? ms.filter((m) => m !== market) : [...ms, market]
@@ -48,10 +71,12 @@ export default function CompoundMarketAlertPage() {
 
   const addChannel = () =>
     setChannels((ch) => [...ch, { channelType: "EMAIL", email: "" }]);
+
   const updateChannel = (i: number, field: keyof Channel, val: string) =>
     setChannels((ch) =>
       ch.map((c, idx) => (idx === i ? { ...c, [field]: val } : c))
     );
+
   const removeChannel = (i: number) =>
     setChannels((ch) => ch.filter((_, idx) => idx !== i));
 
@@ -77,377 +102,500 @@ export default function CompoundMarketAlertPage() {
       })),
     };
 
-    const res = await fetch(`${baseUrl}/api/alerts/create/compound-market`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) {
-      alert("Failed to create alert");
-      return;
+    try {
+      const res = await fetch(`${baseUrl}/api/alerts/create/compound-market`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to create alert");
+      }
+
+      router.push("/alerts");
+    } catch (error) {
+      console.error("Error creating alert:", error);
+      alert("Failed to create alert. Please try again.");
     }
-    router.push("/alerts");
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="container max-w-6xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
-      <div className="flex items-center text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-gray-700">
-          Home
+      <nav className="flex items-center text-sm mb-6">
+        <Link
+          href="/"
+          className="text-theme-muted hover-text-slate-900 flex items-center gap-1"
+        >
+          <Home size={14} />
+          <span>Home</span>
         </Link>
-        <span className="mx-2">{">"}</span>
-        <Link href="/alerts" className="hover:text-gray-700">
-          Alerts
+        <ChevronRight size={14} className="mx-2 text-slate-400" />
+        <Link
+          href="/alerts"
+          className="text-theme-muted hover-text-slate-900 flex items-center gap-1"
+        >
+          <Bell size={14} />
+          <span>Alerts</span>
         </Link>
-        <span className="mx-2">{">"}</span>
-        <Link href="/alerts/create" className="hover:text-gray-700">
-          Create Alert
+        <ChevronRight size={14} className="mx-2 text-slate-400" />
+        <Link
+          href="/alerts/create"
+          className="text-theme-muted hover-text-slate-900 flex items-center gap-1"
+        >
+          <TrendingUp size={14} />
+          <span>Create Alert</span>
         </Link>
-        <span className="mx-2">{">"}</span>
-        <span className="text-gray-700">Compound Market</span>
-      </div>
+        <ChevronRight size={14} className="mx-2 text-slate-400" />
+        <span className="text-theme-primary font-medium">Compound Market</span>
+      </nav>
 
-      <h1 className="text-3xl font-bold mb-2">Create Market Alert</h1>
-      <p className="text-gray-600 mb-8">
-        Configure a new market alert with your preferred settings.
-      </p>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2 text-theme-primary">
+          Create Market Alert
+        </h1>
+        <p className="text-theme-muted">
+          Configure a new market alert with your preferred settings.
+        </p>
+      </div>
 
       {/* Alert Type */}
-      <div className="border border-gray-200 rounded-lg p-6 mb-6">
-        <h2 className="text-lg font-medium mb-4">Alert Type</h2>
-        <p className="text-sm text-gray-500 mb-4">
-          Choose the type of alert you want to create.
-        </p>
+      <Card className="mb-6 border-theme-border-primary">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg text-theme-primary">
+            Alert Type
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">
+            Choose the type of alert you want to create.
+          </p>
 
-        <div className="flex items-center mb-2">
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="alertType"
-              checked={alertType === "borrow"}
-              onChange={() => setAlertType("borrow")}
-              className="mr-2"
-            />
-            <span>Borrow Alert</span>
-          </label>
-        </div>
-
-        <div className="flex items-center">
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="alertType"
-              checked={alertType === "supply"}
-              onChange={() => setAlertType("supply")}
-              className="mr-2"
-            />
-            <span>Supply Alert</span>
-          </label>
-        </div>
-      </div>
+          <RadioGroup
+            value={alertType}
+            onValueChange={(value) =>
+              setAlertType(value as "borrow" | "supply")
+            }
+            className="space-y-3"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="borrow" id="borrow" />
+              <Label htmlFor="borrow" className="text-theme-primary">
+                Borrow Alert
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="supply" id="supply" />
+              <Label htmlFor="supply" className="text-theme-primary">
+                Supply Alert
+              </Label>
+            </div>
+          </RadioGroup>
+        </CardContent>
+      </Card>
 
       {/* Market Selection */}
-      <div className="border border-gray-200 rounded-lg p-6 mb-6">
-        <h2 className="text-lg font-medium mb-4">Market Selection</h2>
-        <p className="text-sm text-gray-500 mb-4">
-          Select the chains and markets you want to monitor.
-        </p>
-
-        <div className="mb-6">
-          <h3 className="text-md font-medium mb-2">Chains</h3>
-          <p className="text-sm text-gray-500 mb-3">
-            Select one or more chains to monitor.
+      <Card className="mb-6 border-theme-border-primary">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg text-theme-primary">
+            Market Selection
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">
+            Select the chains and markets you want to monitor.
           </p>
 
-          <div className="flex flex-wrap gap-3">
-            {["Ethereum", "Arbitrum", "Optimism", "Polygon", "Base"].map(
-              (chain) => (
+          <div className="mb-6">
+            <h3 className="text-md font-medium mb-2 text-theme-primary">
+              Chains
+            </h3>
+            <p className="text-sm text-theme-muted mb-3">
+              Select one or more chains to monitor.
+            </p>
+
+            <div className="flex flex-wrap gap-3">
+              {["Ethereum", "Arbitrum", "Optimism", "Polygon", "Base"].map(
+                (chain) => (
+                  <div
+                    key={chain}
+                    onClick={() => toggleChain(chain)}
+                    className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
+                      selectedChains.includes(chain)
+                        ? "border-primary bg-theme-bg-muted"
+                        : "border-theme-border-primary"
+                    }`}
+                  >
+                    <div
+                      className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
+                        selectedChains.includes(chain)
+                          ? "bg-primary border-primary"
+                          : "border-theme-border-secondary"
+                      }`}
+                    >
+                      {selectedChains.includes(chain) && (
+                        <svg
+                          width="10"
+                          height="8"
+                          viewBox="0 0 10 8"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9 1L3.5 6.5L1 4"
+                            stroke="white"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                    <span className="text-theme-primary">{chain}</span>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-md font-medium mb-2 text-theme-primary">
+              Markets
+            </h3>
+            <p className="text-sm text-theme-muted mb-3">
+              Select one or more markets to monitor.
+            </p>
+
+            <div className="flex flex-wrap gap-3">
+              {["USDC", "Wrapped BTC", "USDT", "ETH", "USDS"].map((market) => (
                 <div
-                  key={chain}
-                  onClick={() => toggleChain(chain)}
-                  className={`border rounded-md px-3 py-2 flex items-center cursor-pointer ${
-                    selectedChains.includes(chain)
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-300"
+                  key={market}
+                  onClick={() => toggleMarket(market)}
+                  className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
+                    selectedMarkets.includes(market)
+                      ? "border-primary bg-theme-bg-muted"
+                      : "border-theme-border-primary"
                   }`}
                 >
-                  <input
-                    type="checkbox"
-                    checked={selectedChains.includes(chain)}
-                    onChange={() => {}}
-                    className="mr-2"
-                  />
-                  <span>{chain}</span>
+                  <div
+                    className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
+                      selectedMarkets.includes(market)
+                        ? "bg-primary border-primary"
+                        : "border-theme-border-secondary"
+                    }`}
+                  >
+                    {selectedMarkets.includes(market) && (
+                      <svg
+                        width="10"
+                        height="8"
+                        viewBox="0 0 10 8"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9 1L3.5 6.5L1 4"
+                          stroke="white"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                  <span className="text-theme-primary">{market}</span>
                 </div>
-              )
-            )}
+              ))}
+            </div>
           </div>
-        </div>
-
-        <div>
-          <h3 className="text-md font-medium mb-2">Markets</h3>
-          <p className="text-sm text-gray-500 mb-3">
-            Select one or more markets to monitor.
-          </p>
-
-          <div className="flex flex-wrap gap-3">
-            {["USDC", "Wrapped BTC", "USDT", "ETH", "USDS"].map((market) => (
-              <div
-                key={market}
-                onClick={() => toggleMarket(market)}
-                className={`border rounded-md px-3 py-2 flex items-center cursor-pointer ${
-                  selectedMarkets.includes(market)
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-300"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedMarkets.includes(market)}
-                  onChange={() => {}}
-                  className="mr-2"
-                />
-                <span>{market}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Condition Settings */}
-      <div className="border border-gray-200 rounded-lg p-6 mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <h2 className="text-lg font-medium">Condition Settings</h2>
-            <p className="text-sm text-gray-500">
-              Define when you want to be alerted about market changes.
-            </p>
-          </div>
-          <button
+      <Card className="mb-6 border-theme-border-primary">
+        <CardHeader className="pb-3 flex flex-row items-center justify-between">
+          <CardTitle className="text-lg text-theme-primary">
+            Condition Settings
+          </CardTitle>
+          <Button
+            variant="outline"
+            size="sm"
             onClick={() =>
               setConditions((cs) => [
                 ...cs,
                 { conditionType: "APR_RISE_ABOVE", severity: "NONE" },
               ])
             }
-            className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+            className="text-theme-primary border-theme-border-primary"
           >
-            Add New Condition +
-          </button>
-        </div>
+            <Plus size={16} className="mr-1" /> Add Condition
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">
+            Define when you want to be alerted about market changes.
+          </p>
 
-        {/* Conditions List */}
-        {conditions.map((cond, i) => (
-          <div
-            key={i}
-            className="grid grid-cols-12 gap-4 mb-4 items-center border-t pt-4"
-          >
-            <div className="col-span-1 flex items-center">{i + 1}.</div>
+          {/* Conditions List */}
+          {conditions.map((cond, i) => (
+            <div
+              key={i}
+              className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-theme-border-primary pt-4"
+            >
+              <div className="col-span-1 flex items-center text-theme-muted">
+                <Badge
+                  variant="outline"
+                  className="h-6 w-6 flex items-center justify-center p-0 rounded-full"
+                >
+                  {i + 1}
+                </Badge>
+              </div>
 
-            {/* Type */}
-            <div className="col-span-4">
-              <select
-                value={cond.conditionType}
-                onChange={(e) =>
-                  setConditions((cs) =>
-                    cs.map((c, idx) =>
-                      idx === i
-                        ? {
-                            ...c,
-                            conditionType: e.target.value as ConditionType,
-                          }
-                        : c
+              {/* Type */}
+              <div className="col-span-4">
+                <Select
+                  value={cond.conditionType}
+                  onValueChange={(value) =>
+                    setConditions((cs) =>
+                      cs.map((c, idx) =>
+                        idx === i
+                          ? {
+                              ...c,
+                              conditionType: value as ConditionType,
+                            }
+                          : c
+                      )
                     )
-                  )
-                }
-                className="border rounded px-3 py-2 w-full"
-              >
-                <option value="APR_RISE_ABOVE">
-                  APR rises above threshold
-                </option>
-                <option value="APR_FALLS_BELOW">
-                  APR falls below threshold
-                </option>
-                <option value="APR_OUTSIDE_RANGE">
-                  APR is outside a range
-                </option>
-              </select>
-            </div>
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select condition type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="APR_RISE_ABOVE">
+                      APR rises above threshold
+                    </SelectItem>
+                    <SelectItem value="APR_FALLS_BELOW">
+                      APR falls below threshold
+                    </SelectItem>
+                    <SelectItem value="APR_OUTSIDE_RANGE">
+                      APR is outside a range
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            {/* Thresholds */}
-            {cond.conditionType === "APR_OUTSIDE_RANGE" ? (
-              <>
+              {/* Thresholds */}
+              {cond.conditionType === "APR_OUTSIDE_RANGE" ? (
                 <div className="col-span-3 flex items-center space-x-2">
-                  <input
+                  <Input
                     type="text"
                     placeholder="Min"
-                    value={cond.thresholdLow}
+                    value={cond.thresholdLow || ""}
                     onChange={(e) =>
                       updateCondition(i, "thresholdLow", e.target.value)
                     }
-                    className="border border-gray-300 rounded-md px-2 py-1 w-full"
+                    className="border-theme-border-primary"
                   />
-                  <input
+                  <Input
                     type="text"
                     placeholder="Max"
-                    value={cond.thresholdHigh}
+                    value={cond.thresholdHigh || ""}
                     onChange={(e) =>
                       updateCondition(i, "thresholdHigh", e.target.value)
                     }
-                    className="border border-gray-300 rounded-md px-2 py-1 w-full"
+                    className="border-theme-border-primary"
                   />
-                  <span>%</span>
+                  <span className="text-theme-muted">%</span>
                 </div>
-              </>
-            ) : (
-              <div className="col-span-3 flex items-center">
-                <input
-                  type="text"
-                  placeholder="Value"
-                  value={cond.thresholdValue}
-                  onChange={(e) =>
-                    updateCondition(i, "thresholdValue", e.target.value)
-                  }
-                  className="border border-gray-300 rounded-md px-3 py-2 w-full"
-                />
-                <span className="ml-2">%</span>
-              </div>
-            )}
+              ) : (
+                <div className="col-span-3 flex items-center">
+                  <Input
+                    type="text"
+                    placeholder="Value"
+                    value={cond.thresholdValue || ""}
+                    onChange={(e) =>
+                      updateCondition(i, "thresholdValue", e.target.value)
+                    }
+                    className="border-theme-border-primary"
+                  />
+                  <span className="ml-2 text-theme-muted">%</span>
+                </div>
+              )}
 
-            {/* Severity */}
-            <div className="col-span-3">
-              <select
-                value={cond.severity}
-                onChange={(e) =>
-                  setConditions((cs) =>
-                    cs.map((c, idx) =>
-                      idx === i
-                        ? { ...c, severity: e.target.value as SeverityLevel }
-                        : c
+              {/* Severity */}
+              <div className="col-span-3">
+                <Select
+                  value={cond.severity}
+                  onValueChange={(value) =>
+                    setConditions((cs) =>
+                      cs.map((c, idx) =>
+                        idx === i
+                          ? { ...c, severity: value as SeverityLevel }
+                          : c
+                      )
                     )
-                  )
-                }
-                className="border rounded px-3 py-2 w-full"
-              >
-                {severityOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select severity" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {severityOptions.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Remove */}
+              {conditions.length > 1 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() =>
+                    setConditions((cs) => cs.filter((_, idx) => idx !== i))
+                  }
+                  className="col-span-1 text-red-500 h-8 w-8"
+                >
+                  <X size={16} />
+                </Button>
+              )}
             </div>
+          ))}
 
-            {/* Remove */}
-            {conditions.length > 1 && (
-              <button
-                onClick={() =>
-                  setConditions((cs) => cs.filter((_, idx) => idx !== i))
-                }
-                className="col-span-1 text-red-500"
-              >
-                ✕
-              </button>
-            )}
+          {/* Notification Frequency */}
+          <div className="mt-6">
+            <Label
+              htmlFor="frequency"
+              className="block text-sm font-medium mb-2"
+            >
+              Notification Frequency
+            </Label>
+            <Select
+              value={notificationFrequency}
+              onValueChange={(value) =>
+                setNotificationFrequency(value as NotificationFrequency)
+              }
+            >
+              <SelectTrigger className="w-full" id="frequency">
+                <SelectValue placeholder="Select frequency" />
+              </SelectTrigger>
+              <SelectContent>
+                {frequencyOptions.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-        ))}
-
-        {/* Notification Frequency */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
-            Notification Frequency
-          </label>
-          <select
-            value={notificationFrequency}
-            onChange={(e) =>
-              setNotificationFrequency(e.target.value as NotificationFrequency)
-            }
-            className="border rounded px-3 py-2 w-full"
-          >
-            {frequencyOptions.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Delivery Channel Settings */}
-      <div className="border border-gray-200 rounded-lg p-6 mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <h2 className="text-lg font-medium">Delivery Channel Settings</h2>
-            <p className="text-sm text-gray-500">
-              Choose how you want to receive your alerts.
-            </p>
-          </div>
-          <button
+      <Card className="mb-6 border-theme-border-primary">
+        <CardHeader className="pb-3 flex flex-row items-center justify-between">
+          <CardTitle className="text-lg text-theme-primary">
+            Delivery Channel Settings
+          </CardTitle>
+          <Button
+            variant="outline"
+            size="sm"
             onClick={addChannel}
-            className="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+            className="text-theme-primary border-theme-border-primary"
           >
-            + Add Another Channel
-          </button>
-        </div>
+            <Plus size={16} className="mr-1" /> Add Channel
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">
+            Choose how you want to receive your alerts.
+          </p>
 
-        {channels.map((ch, i) => (
-          <div key={i} className="mb-4 flex items-center gap-4">
-            <select
-              value={ch.channelType}
-              onChange={(e) =>
-                updateChannel(
-                  i,
-                  "channelType",
-                  e.target.value as Channel["channelType"]
-                )
-              }
-              className="border border-gray-300 rounded-md px-3 py-2"
-            >
-              <option value="EMAIL">Email</option>
-              <option value="WEBHOOK">Webhook</option>
-            </select>
+          {channels.map((ch, i) => (
+            <div key={i} className="mb-4 flex items-center gap-4">
+              <Select
+                value={ch.channelType}
+                onValueChange={(value) =>
+                  updateChannel(
+                    i,
+                    "channelType",
+                    value as Channel["channelType"]
+                  )
+                }
+              >
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Select channel" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="EMAIL">Email</SelectItem>
+                  <SelectItem value="WEBHOOK">Webhook</SelectItem>
+                </SelectContent>
+              </Select>
 
-            {ch.channelType === "EMAIL" ? (
-              <input
-                type="email"
-                placeholder="you@example.com"
-                value={ch.email}
-                onChange={(e) => updateChannel(i, "email", e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 flex-1"
-              />
-            ) : (
-              <input
-                type="url"
-                placeholder="https://webhook.site/..."
-                value={ch.webhookUrl}
-                onChange={(e) => updateChannel(i, "webhookUrl", e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-2 flex-1"
-              />
-            )}
+              {ch.channelType === "EMAIL" ? (
+                <Input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={ch.email || ""}
+                  onChange={(e) => updateChannel(i, "email", e.target.value)}
+                  className="flex-1 border-theme-border-primary"
+                />
+              ) : (
+                <Input
+                  type="url"
+                  placeholder="https://webhook.site/..."
+                  value={ch.webhookUrl || ""}
+                  onChange={(e) =>
+                    updateChannel(i, "webhookUrl", e.target.value)
+                  }
+                  className="flex-1 border-theme-border-primary"
+                />
+              )}
 
-            {channels.length > 1 && (
-              <button onClick={() => removeChannel(i)} className="text-red-500">
-                ✕
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
+              {channels.length > 1 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => removeChannel(i)}
+                  className="text-red-500 h-8 w-8"
+                >
+                  <X size={16} />
+                </Button>
+              )}
+            </div>
+          ))}
+        </CardContent>
+      </Card>
 
       {/* Action Buttons */}
-      <div className="flex justify-end gap-4">
-        <button
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
           onClick={() => router.push("/alerts/create")}
-          className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+          className="border-theme-border-primary text-theme-primary"
         >
-          Cancel
-        </button>
-        <button
-          onClick={handleCreateAlert}
-          className="px-4 py-2 bg-[#0f172a] text-white rounded-md hover:bg-[#1e293b]"
-        >
-          Create Alert
-        </button>
+          <ArrowLeft size={16} className="mr-2" /> Back
+        </Button>
+
+        <div className="space-x-4">
+          <Button
+            variant="outline"
+            onClick={() => router.push("/alerts/create")}
+            className="border-theme-border-primary text-theme-primary"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleCreateAlert}
+            className="bg-primary text-white hover-bg-slate-800"
+          >
+            Create Alert
+          </Button>
+        </div>
       </div>
     </div>
   );

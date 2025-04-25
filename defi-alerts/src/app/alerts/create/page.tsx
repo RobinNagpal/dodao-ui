@@ -1,6 +1,28 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {
+  ChevronRight,
+  ArrowRight,
+  Home,
+  Bell,
+  TrendingUp,
+  BarChart3,
+  Wallet,
+  LineChart,
+  ArrowUpRight,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export default function CreateAlertPage() {
   const router = useRouter();
@@ -18,154 +40,210 @@ export default function CreateAlertPage() {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="container max-w-6xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
-      <div className="flex items-center text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-gray-700">
-          Home
+      <nav className="flex items-center text-sm mb-6">
+        <Link
+          href="/"
+          className="text-theme-muted hover-text-slate-900 flex items-center gap-1"
+        >
+          <Home size={14} />
+          <span>Home</span>
         </Link>
-        <span className="mx-2">{">"}</span>
-        <Link href="/alerts" className="hover:text-gray-700">
-          Alerts
+        <ChevronRight size={14} className="mx-2 text-slate-400" />
+        <Link
+          href="/alerts"
+          className="text-theme-muted hover-text-slate-900 flex items-center gap-1"
+        >
+          <Bell size={14} />
+          <span>Alerts</span>
         </Link>
-        <span className="mx-2">{">"}</span>
-        <span className="text-gray-700">Create Alert</span>
+        <ChevronRight size={14} className="mx-2 text-slate-400" />
+        <span className="text-theme-primary font-medium">Create Alert</span>
+      </nav>
+
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2 text-theme-primary">
+          Create Alert
+        </h1>
+        <p className="text-theme-muted">
+          Choose the type of alert you want to create for DeFi markets
+        </p>
       </div>
 
-      <h1 className="text-3xl font-bold mb-2">Create Alert</h1>
-      <p className="text-gray-600 mb-8">
-        Choose the type of alert you want to create.
-      </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* General Market Alerts */}
-        <div className="border border-gray-200 rounded-lg p-6">
-          <h2 className="text-xl font-bold mb-2">General Market Alerts</h2>
-          <p className="text-gray-600 mb-6">
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <BarChart3 className="text-theme-secondary" />
+            <h2 className="text-xl font-bold text-theme-primary">
+              General Market Alerts
+            </h2>
+          </div>
+          <p className="text-theme-muted mb-4">
             Monitor any market or chain on Compound
           </p>
 
-          {/* Compound Alerts */}
-          <div
-            className="border border-gray-200 rounded-lg p-4 mb-4 cursor-pointer hover:border-gray-400 transition flex justify-between items-center"
-            onClick={() => handleSelectAlertType("general", "compound")}
-          >
-            <div>
-              <h3 className="font-medium">Compound Alerts</h3>
-              <p className="text-gray-500 text-sm">
+          <Card className="overflow-hidden border-theme-primary transition-all hover:shadow-md">
+            <CardHeader className="bg-theme-bg-secondary pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg text-theme-primary">
+                <TrendingUp size={18} className="text-theme-secondary" />
+                Compound Alerts
+              </CardTitle>
+              <CardDescription className="text-theme-muted">
                 Get notified when market rates change
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-4">
+              <div className="flex items-center gap-2 text-sm text-theme-secondary mb-2">
+                <Badge variant="outline" className="bg-theme-bg-primary">
+                  Supply APY
+                </Badge>
+                <Badge variant="outline" className="bg-theme-bg-primary">
+                  Borrow APY
+                </Badge>
+              </div>
+              <p className="text-sm text-theme-muted">
+                Track specific metrics for any Compound market and get alerts
+                when they cross your thresholds.
               </p>
-            </div>
-            <div className="text-gray-400">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            </CardContent>
+            <CardFooter className="border-t border-theme-border-primary bg-theme-bg-secondary flex justify-end py-3">
+              <Button
+                variant="ghost"
+                className="text-theme-secondary hover-text-slate-900 hover-bg-slate-100 gap-1"
+                onClick={() => handleSelectAlertType("general", "compound")}
               >
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </div>
-          </div>
+                Select <ArrowRight size={16} />
+              </Button>
+            </CardFooter>
+          </Card>
 
-          {/* When Compound Outperforms */}
-          <div
-            className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-gray-400 transition flex justify-between items-center"
-            onClick={() => handleSelectAlertType("general", "outperforms")}
-          >
-            <div>
-              <h3 className="font-medium">When Compound Outperforms</h3>
-              <p className="text-gray-500 text-sm">
+          <Card className="overflow-hidden border-theme-primary transition-all hover:shadow-md">
+            <CardHeader className="bg-theme-bg-secondary pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg text-theme-primary">
+                <ArrowUpRight size={18} className="text-theme-secondary" />
+                When Compound Outperforms
+              </CardTitle>
+              <CardDescription className="text-theme-muted">
                 Get notified when Compound offers better rates than other
                 protocols
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-4">
+              <div className="flex items-center gap-2 text-sm text-theme-secondary mb-2">
+                <Badge variant="outline" className="bg-theme-bg-primary">
+                  Aave
+                </Badge>
+                <Badge variant="outline" className="bg-theme-bg-primary">
+                  Morpho
+                </Badge>
+                <Badge variant="outline" className="bg-theme-bg-primary">
+                  Spark
+                </Badge>
+              </div>
+              <p className="text-sm text-theme-muted">
+                Compare Compound with other DeFi protocols and get alerts when
+                Compound offers better rates.
               </p>
-            </div>
-            <div className="text-gray-400">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            </CardContent>
+            <CardFooter className="border-t border-theme-border-primary bg-theme-bg-secondary flex justify-end py-3">
+              <Button
+                variant="ghost"
+                className="text-theme-secondary hover-text-slate-900 hover-bg-slate-100 gap-1"
+                onClick={() => handleSelectAlertType("general", "outperforms")}
               >
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </div>
-          </div>
+                Select <ArrowRight size={16} />
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
 
         {/* Your Personalized Alerts */}
-        <div className="border border-gray-200 rounded-lg p-6">
-          <h2 className="text-xl font-bold mb-2">Your Personalized Alerts</h2>
-          <p className="text-gray-600 mb-6">
-            Monitor markets based on your wallet activity
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Wallet className="text-theme-secondary" />
+            <h2 className="text-xl font-bold text-theme-primary">
+              Your Personalized Alerts
+            </h2>
+          </div>
+          <p className="text-theme-muted mb-4">
+            Monitor markets based on your wallet activity and positions
           </p>
 
-          {/* Compound Alerts */}
-          <div
-            className="border border-gray-200 rounded-lg p-4 mb-4 cursor-pointer hover:border-gray-400 transition flex justify-between items-center"
-            onClick={() => handleSelectAlertType("personalized", "compound")}
-          >
-            <div>
-              <h3 className="font-medium">Compound Alerts</h3>
-              <p className="text-gray-500 text-sm">
+          <Card className="overflow-hidden border-theme-primary transition-all hover:shadow-md">
+            <CardHeader className="bg-theme-bg-secondary pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg text-theme-primary">
+                <LineChart size={18} className="text-theme-secondary" />
+                Compound Alerts
+              </CardTitle>
+              <CardDescription className="text-theme-muted">
                 Get notified when market rates change for your positions
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-4">
+              <div className="flex items-center gap-2 text-sm text-theme-secondary mb-2">
+                <Badge variant="outline" className="bg-theme-bg-primary">
+                  Your Supplies
+                </Badge>
+                <Badge variant="outline" className="bg-theme-bg-primary">
+                  Your Borrows
+                </Badge>
+              </div>
+              <p className="text-sm text-theme-muted">
+                Track metrics for markets where you have active positions and
+                get personalized alerts.
               </p>
-            </div>
-            <div className="text-gray-400">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            </CardContent>
+            <CardFooter className="border-t border-theme-border-primary bg-theme-bg-secondary flex justify-end py-3">
+              <Button
+                variant="ghost"
+                className="text-theme-secondary hover-text-slate-900 hover-bg-slate-100 gap-1"
+                onClick={() =>
+                  handleSelectAlertType("personalized", "compound")
+                }
               >
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </div>
-          </div>
+                Select <ArrowRight size={16} />
+              </Button>
+            </CardFooter>
+          </Card>
 
-          {/* When Compound Outperforms */}
-          <div
-            className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-gray-400 transition flex justify-between items-center"
-            onClick={() => handleSelectAlertType("personalized", "outperforms")}
-          >
-            <div>
-              <h3 className="font-medium">When Compound Outperforms</h3>
-              <p className="text-gray-500 text-sm">
+          <Card className="overflow-hidden border-theme-primary transition-all hover:shadow-md">
+            <CardHeader className="bg-theme-bg-secondary pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg text-theme-primary">
+                <TrendingUp size={18} className="text-theme-secondary" />
+                When Compound Outperforms
+              </CardTitle>
+              <CardDescription className="text-theme-muted">
                 Get notified when you can earn more or save more using Compound
-                based on your positions
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-4">
+              <div className="flex items-center gap-2 text-sm text-theme-secondary mb-2">
+                <Badge variant="outline" className="bg-theme-bg-primary">
+                  Better Rates
+                </Badge>
+                <Badge variant="outline" className="bg-theme-bg-primary">
+                  Lower Fees
+                </Badge>
+              </div>
+              <p className="text-sm text-theme-muted">
+                Compare your current positions with Compound and get alerts when
+                you could benefit from switching.
               </p>
-            </div>
-            <div className="text-gray-400">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            </CardContent>
+            <CardFooter className="border-t border-theme-border-primary bg-theme-bg-secondary flex justify-end py-3">
+              <Button
+                variant="ghost"
+                className="text-theme-secondary hover-text-slate-900 hover-bg-slate-100 gap-1"
+                onClick={() =>
+                  handleSelectAlertType("personalized", "outperforms")
+                }
               >
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </div>
-          </div>
+                Select <ArrowRight size={16} />
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
       </div>
     </div>

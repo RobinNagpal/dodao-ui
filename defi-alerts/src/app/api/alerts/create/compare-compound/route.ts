@@ -26,7 +26,7 @@ interface CompareCompoundRequest {
   deliveryChannels: {
     type: DeliveryChannelType;
     email?: string;
-    url?: string;
+    webhookUrl?: string;
   }[];
 }
 

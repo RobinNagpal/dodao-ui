@@ -38,7 +38,7 @@ export function EmailForm({ onSubmit, initialEmail = "" }: EmailFormProps) {
       <div className="space-y-2">
         <Label htmlFor="email">Email address</Label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-theme-muted">
             <AtSign size={18} />
           </div>
           <Input
@@ -62,7 +62,7 @@ export function EmailForm({ onSubmit, initialEmail = "" }: EmailFormProps) {
 
       <Button
         type="submit"
-        className="w-full bg-slate-900 hover:bg-slate-800"
+        className="w-full button-theme-primary"
         disabled={isSubmitting}
       >
         {isSubmitting ? "Sending..." : "Continue with Email"}

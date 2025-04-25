@@ -41,16 +41,16 @@ export function VerificationForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="mb-4 text-center">
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-theme-muted">
           We've sent a verification code to
         </p>
-        <p className="font-medium text-slate-700">{email}</p>
+        <p className="font-medium text-theme-secondary">{email}</p>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="verificationCode">Verification Code</Label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-theme-muted">
             <KeyRound size={18} />
           </div>
           <Input
@@ -73,18 +73,14 @@ export function VerificationForm({
         </Alert>
       )}
 
-      <Button
-        type="submit"
-        className="w-full bg-slate-900 hover:bg-slate-800"
-        disabled={isSubmitting}
-      >
+      <Button type="submit" className="w-full " disabled={isSubmitting}>
         {isSubmitting ? "Verifying..." : "Sign In"}
       </Button>
 
       <Button
         type="button"
         variant="ghost"
-        className="w-full text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+        className="w-full text-theme-muted hover-text-theme-primary "
         onClick={onChangeEmail}
       >
         Use a different email
