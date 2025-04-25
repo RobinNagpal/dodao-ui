@@ -10,6 +10,9 @@ Create two charts focusing  on the effects of tariffs. Follow the following rule
 - Insert line breaks in label description and Caption if they are too long and wont fit in one line easily.
 - Use the relevant type of chart for showing the information 
 - The charts should be black theme based and the colors should be some shades of "#4F46E5" color. 
+
+Here is the content from which you need to create the charts:
+${content}
 `
   );
 }
