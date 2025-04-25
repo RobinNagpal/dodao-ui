@@ -1,6 +1,6 @@
 // app/prompts/[promptId]/invocations/[invocationId]/page.tsx
 'use client';
-import unescape from 'lodash/unescape';
+import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import { FullPromptInvocationResponse } from '@/app/api/[spaceId]/prompts/[promptId]/invocations/[invocationId]/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -43,7 +43,7 @@ function InvocationOutput({ invocation }: { invocation: FullPromptInvocationResp
 export default function PromptInvocationDetailsPage() {
   const params = useParams() as { promptId?: string; invocationId?: string };
   const router = useRouter();
-
+  const [showPromptRequestSentToLLM, setShowPromptRequestSentToLLM] = React.useState(false);
   const actions: EllipsisDropdownItem[] = [{ key: 'new', label: 'New Invocation' }];
   const { data: invocation } = useFetchData<FullPromptInvocationResponse>(
     `${getBaseUrl()}/api/koala_gains/prompts/${params.promptId}/invocations/${params.invocationId}`,
@@ -147,6 +147,13 @@ export default function PromptInvocationDetailsPage() {
             )}
           </div>
         </div>
+        <Accordion
+          label={'Prompt Request Sent to LLM'}
+          isOpen={showPromptRequestSentToLLM}
+          onClick={() => setShowPromptRequestSentToLLM(!showPromptRequestSentToLLM)}
+        >
+          <div className="mt-4">{invocation.promptRequestToLlm ? parseMarkdown(invocation.promptRequestToLlm) : 'No Request Logging'}</div>
+        </Accordion>
         <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Output JSON or Message:</div>

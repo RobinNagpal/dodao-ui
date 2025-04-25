@@ -93,6 +93,16 @@ async function postHandler(req: NextRequest): Promise<any> {
     const compiledTemplate = Handlebars.compile(templateContent);
     const finalPrompt = bodyToAppend ? `${compiledTemplate(inputJson || {})}\n\n\n${bodyToAppend}` : compiledTemplate(inputJson || {});
 
+    await prisma.promptInvocation.update({
+      where: {
+        id: invocation.id,
+      },
+      data: {
+        promptRequestToLlm: finalPrompt,
+        updatedAt: new Date(),
+      },
+    });
+
     // Choose LLM based on llmProvider. Currently, only "openai" is supported.
     let llm: ChatOpenAI | undefined;
     if (llmProvider.toLowerCase() === 'openai') {
