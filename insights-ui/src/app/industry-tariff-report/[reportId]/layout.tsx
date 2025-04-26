@@ -96,7 +96,7 @@ export default async function IndustryTariffReportLayout({ children, params }: {
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 text-color">
+      <div className="mx-auto text-color">
         <div className="mx-auto">
           {/* Private Actions Dropdown */}
           <div className="flex justify-end mb-4">

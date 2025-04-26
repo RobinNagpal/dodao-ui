@@ -4,8 +4,8 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import IndustryAreasActions from '@/components/industry-tariff/section-actions/IndustryAreasActions';
 import Link from 'next/link';
 
-export default async function IndustryAreasPage({ params }: { params: { reportId: string } }) {
-  const { reportId } = params;
+export default async function IndustryAreasPage({ params }: { params: Promise<{ reportId: string }> }) {
+  const { reportId } = await params;
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}`, { cache: 'no-cache' });

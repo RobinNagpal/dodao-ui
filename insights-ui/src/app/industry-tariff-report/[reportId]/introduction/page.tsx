@@ -3,8 +3,8 @@ import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tari
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import IntroductionSectionActions from '@/components/industry-tariff/section-actions/IntroductionSectionActions';
 
-export default async function AboutConsumptionPage({ params }: { params: { reportId: string } }) {
-  const { reportId } = params;
+export default async function AboutConsumptionPage({ params }: { params: Promise<{ reportId: string }> }) {
+  const { reportId } = await params;
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}`, { cache: 'no-cache' });

@@ -4,8 +4,8 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-actions/EvaluateIndustryAreasActions';
 import Link from 'next/link';
 
-export default async function EvaluateIndustryAreaPage({ params }: { params: { reportId: string; index: string } }) {
-  const { reportId, index } = params;
+export default async function EvaluateIndustryAreaPage({ params }: { params: Promise<{ reportId: string; index: string }> }) {
+  const { reportId, index } = await params;
   const areaIndex = Number.parseInt(index, 10);
 
   // Fetch the report data
