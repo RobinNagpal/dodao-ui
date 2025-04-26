@@ -1,13 +1,14 @@
+@use "sass:meta";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
-@import 'styles/variables';
-@import 'styles/theme-styles';
-@import 'styles/scrollbar';
+@include meta.load-css('styles/variables');
+@include meta.load-css('styles/theme-styles');
+@include meta.load-css('styles/scrollbar');
 
-@import "styles/markdown";
+@include meta.load-css("styles/markdown");
 
 body {
   font-family: 'Inter', sans-serif;
