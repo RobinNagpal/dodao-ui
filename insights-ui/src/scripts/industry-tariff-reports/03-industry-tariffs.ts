@@ -1,5 +1,5 @@
-import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/industry-tariff-reports/llm-utils';
+import { CountrySpecificTariff, IndustryAreaHeadings, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
@@ -22,16 +22,6 @@ const CountrySpecificTariffSchema = z.object({
         'Every definition, and number, company name etc should have a hyperlink. '
     ),
 });
-
-export interface CountrySpecificTariff {
-  countryName: string;
-  tariffDetails: string;
-  changes: string;
-}
-
-export interface TariffUpdatesForIndustry {
-  countrySpecificTariffs: CountrySpecificTariff[];
-}
 
 // 1) Schema for exactly 5 country names
 const TopCountriesSchema = z.object({

@@ -1,8 +1,9 @@
 import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
-import { z, ZodObject } from 'zod';
+import { IndustryAreaHeadings, IndustryHeading } from '@/scripts/industry-tariff-reports/tariff-types';
 import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/reportFileUtils';
 import fs from 'fs';
 import path from 'path';
+import { z, ZodObject } from 'zod';
 
 export const industryHeadingsFileName = 'industry-headings.json';
 
@@ -26,27 +27,6 @@ export const IndustryHeadingSchema = z.object({
 export const IndustryHeadingsSchema: ZodObject<any> = z.object({
   headings: z.array(IndustryHeadingSchema).describe('Array of main headings.'),
 });
-
-interface PublicCompany {
-  name: string;
-  ticker: string;
-}
-
-export interface IndustrySubHeading {
-  title: string;
-  oneLineSummary: string;
-  companies: PublicCompany[];
-}
-
-export interface IndustryHeading {
-  title: string;
-  oneLineSummary: string;
-  subHeadings: IndustrySubHeading[];
-}
-
-export interface IndustryAreaHeadings {
-  headings: IndustryHeading[];
-}
 
 function getMainIndustryPrompt(industry: string) {
   const prompt: string = `

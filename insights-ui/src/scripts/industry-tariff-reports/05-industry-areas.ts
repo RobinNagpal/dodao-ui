@@ -1,5 +1,5 @@
-import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
+import { IndustryAreaHeadings, IndustryAreaSection } from '@/scripts/industry-tariff-reports/tariff-types';
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
@@ -14,11 +14,6 @@ const IndustryAreaSectionSchema = z.object({
         'the most important aspects of the industry'
     ),
 });
-
-interface IndustryAreaSection {
-  title: string;
-  industryAreas: string;
-}
 
 function getIndustryAreaPrompt(industry: string, headings: IndustryAreaHeadings) {
   const prompt = `

@@ -1,6 +1,5 @@
-import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
-import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { getLlmResponse, outputInstructions } from '@/scripts/industry-tariff-reports/llm-utils';
+import { ExecutiveSummary, IndustryAreaHeadings, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
@@ -17,11 +16,6 @@ const ExecutiveSummarySchema = z.object({
         'Share the latest sate as of the date passed'
     ),
 });
-
-export interface ExecutiveSummary {
-  title: string;
-  executiveSummary: string;
-}
 
 function getExecutiveSummaryPrompt(
   industry: string,

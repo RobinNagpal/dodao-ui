@@ -1,5 +1,5 @@
-import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
+import { IndustryAreaHeadings, Introduction } from '@/scripts/industry-tariff-reports/tariff-types';
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
@@ -78,15 +78,6 @@ export const IntroductionSchema = z.object({
   usProduction: USProductionSchema,
   countrySpecificImports: z.array(CountrySpecificImportSchema).describe('List of country-specific import analyses.'),
 });
-
-export interface Introduction {
-  aboutSector: { title: string; aboutSector: string };
-  aboutConsumption: { title: string; aboutConsumption: string };
-  pastGrowth: { title: string; aboutGrowth: string };
-  futureGrowth: { title: string; aboutGrowth: string };
-  usProduction: { title: string; aboutProduction: string };
-  countrySpecificImports: Array<{ title: string; aboutImport: string }>;
-}
 
 // Build the prompt for the introduction section
 function getIntroductionPrompt(industry: string, date: string, industryHeadings: IndustryAreaHeadings) {

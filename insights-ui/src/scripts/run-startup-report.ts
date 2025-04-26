@@ -1,6 +1,7 @@
 import {
   GenerateIndustryHeadingsRequest,
   getAndWriteIndustryHeadings,
+  IndustryAreaHeadings,
   readIndustryHeadingsFromFile,
   writeIndustryHeadingsToMarkdownFile,
 } from '@/scripts/startup-landscape/00-industry-main-headings';

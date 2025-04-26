@@ -1,11 +1,15 @@
-import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
-import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { getLlmResponse, outputInstructions } from '@/scripts/industry-tariff-reports/llm-utils';
+import {
+  FinalConclusion,
+  IndustryAreaHeadings,
+  NegativeTariffImpactOnCompanyType,
+  PositiveTariffImpactOnCompanyType,
+  TariffUpdatesForIndustry,
+} from '@/scripts/industry-tariff-reports/tariff-types';
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
 import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
-import { NegativeTariffImpactOnCompanyType, PositiveTariffImpactOnCompanyType } from './06-evaluate-industry-area';
 
 const PositiveImpactsSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),
@@ -46,24 +50,6 @@ const FinalConclusion = z.object({
   ),
   finalStatements: z.string().describe('Final statements of the report.'),
 });
-
-interface PositiveImpacts {
-  title: string;
-  positiveImpacts: string;
-}
-
-interface NegativeImpacts {
-  title: string;
-  negativeImpacts: string;
-}
-
-export interface FinalConclusion {
-  title: string;
-  conclusionBrief: string;
-  positiveImpacts: PositiveImpacts;
-  negativeImpacts: NegativeImpacts;
-  finalStatements: string;
-}
 
 function getFinalConclusionPrompt(
   industry: string,

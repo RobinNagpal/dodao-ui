@@ -1,9 +1,9 @@
-import { getLlmResponse } from './llm-utils';
-import { IndustryAreaHeadings } from './00-industry-main-headings';
+import { IndustryAreaHeadings, UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import fs from 'fs';
 import path from 'path';
-import { z, ZodObject } from 'zod';
+import { z } from 'zod';
 import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
+import { getLlmResponse } from './llm-utils';
 
 const IndustrySectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific part of the article.'),
@@ -29,14 +29,6 @@ const UnderstandIndustrySchema = z.object({
         'Every definition, and number should have a hyperlink. '
     ),
 });
-
-interface UnderstandIndustry {
-  title: string;
-  sections: {
-    title: string;
-    paragraphs: string[];
-  }[];
-}
 
 function getUnderstandIndustryPrompt(industry: string, headings: IndustryAreaHeadings) {
   const prompt = `

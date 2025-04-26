@@ -1,25 +1,27 @@
-import { IndustryAreaHeadings, IndustrySubHeading } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
-import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/industry-tariff-reports/llm-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { z } from 'zod';
 import fs from 'fs';
 import path from 'path';
+import { z } from 'zod';
+import { generateChartUrls, img } from '../chart-utils';
 import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
-import { TariffReportIndustry } from './tariff-types';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { getChartPrompt } from '../chart-utils';
-
-const REGION = process.env.AWS_REGION!;
-const BUCKET_NAME = process.env.TARIFF_CHARTS_BUCKET!;
-const s3Client = new S3Client({ region: REGION });
+import {
+  EstablishedPlayer,
+  EstablishedPlayersArray,
+  EvaluateIndustryArea,
+  HeadwindsAndTailwinds,
+  IndustryAreaHeadings,
+  IndustrySubHeading,
+  NegativeTariffImpactOnCompanyType,
+  NewChallenger,
+  PositiveTariffImpactOnCompanyType,
+  TariffReportIndustry,
+  TariffUpdatesForIndustry,
+} from './tariff-types';
 
 // ---------------------------------------------------------------------------
 // ─── 1. TYPE & SCHEMA EXTENSIONS ────────────────────────────────────────────
 // ---------------------------------------------------------------------------
-
-// A small utility type because we use it a lot
-export type ChartUrls = string[]; // always 0+ images (usually 1‑2)
 
 const CompanyProductSchema = z.object({
   productName: z.string().describe('Product name'),
@@ -87,91 +89,6 @@ const NegativeTariffImpactOnCompanyTypeSchema = z.object({
   impact: z.string().describe('Expected decrease in revenue and growth rate due to tariffs'),
   reasoning: z.string().describe('Rationale for the projected impact'),
 });
-
-interface CompanyProduct {
-  productName: string;
-  productDescription: string;
-  percentageOfRevenue: string;
-  competitors: string[];
-}
-
-interface PerformanceMetrics {
-  revenueGrowth: string;
-  costOfRevenue: string;
-  profitabilityGrowth: string;
-  rocGrowth: string;
-}
-
-interface NewChallenger {
-  companyName: string;
-  companyDescription: string;
-  companyWebsite: string;
-  companyTicker: string;
-  products: CompanyProduct[];
-  aboutManagement: string;
-  uniqueAdvantage: string;
-  pastPerformance: PerformanceMetrics;
-  futureGrowth: PerformanceMetrics;
-  competitors: string;
-  impactOfTariffs: string;
-  chartUrls?: ChartUrls;
-}
-
-interface EstablishedPlayer {
-  companyName: string;
-  companyDescription: string;
-  companyWebsite: string;
-  companyTicker: string;
-  products: CompanyProduct[];
-  aboutManagement: string;
-  uniqueAdvantage: string;
-  pastPerformance: PerformanceMetrics;
-  futureGrowth: PerformanceMetrics;
-  competitors: string;
-  impactOfTariffs: string;
-  chartUrls?: ChartUrls;
-}
-
-interface NewChallengersArray {
-  newChallengers: NewChallenger[];
-}
-
-interface EstablishedPlayersArray {
-  establishedPlayers: EstablishedPlayer[];
-}
-
-interface HeadwindsAndTailwinds {
-  headwinds: string[];
-  tailwinds: string[];
-  headwindChartUrls?: ChartUrls;
-  tailwindChartUrls?: ChartUrls;
-}
-
-export interface PositiveTariffImpactOnCompanyType {
-  companyType: string;
-  impact: string;
-  reasoning: string;
-  chartUrls?: ChartUrls;
-}
-
-export interface NegativeTariffImpactOnCompanyType {
-  companyType: string;
-  impact: string;
-  reasoning: string;
-  chartUrls?: ChartUrls;
-}
-
-interface EvaluateIndustryArea {
-  title: string;
-  aboutParagraphs: string[];
-  newChallengers: NewChallenger[];
-  establishedPlayers: EstablishedPlayer[];
-  headwindsAndTailwinds: HeadwindsAndTailwinds;
-  positiveTariffImpactOnCompanyType: PositiveTariffImpactOnCompanyType[];
-  negativeTariffImpactOnCompanyType: NegativeTariffImpactOnCompanyType[];
-  tariffImpactSummary: string;
-  tariffImpactSummaryChartUrls?: ChartUrls;
-}
 
 /**
  * Converts a NewChallenger object to Markdown with organized sections and tables.
@@ -670,7 +587,12 @@ export async function regenerateCharts(
       const chall = report.newChallengers[entityIndex];
       chall.chartUrls = await generateChartUrls(
         JSON.stringify(chall, null, 2),
-        chartsPrefix(industry.name, industryArea.title, 'new-challenger', slugify(chall.companyName))
+        chartsPrefix({
+          industry: industry.name,
+          industryArea: industryArea.title,
+          reportSection: 'new-challenger',
+          reportSubSection: chall.companyName,
+        })
       );
       break;
     }
@@ -678,21 +600,36 @@ export async function regenerateCharts(
       const pl = report.establishedPlayers[entityIndex];
       pl.chartUrls = await generateChartUrls(
         JSON.stringify(pl, null, 2),
-        chartsPrefix(industry.name, industryArea.title, 'established-player', slugify(pl.companyName))
+        chartsPrefix({
+          industry: industry.name,
+          industryArea: industryArea.title,
+          reportSection: 'established-player',
+          reportSubSection: pl.companyName,
+        })
       );
       break;
     }
     case ChartEntityType.HEADWINDS: {
       report.headwindsAndTailwinds.headwindChartUrls = await generateChartUrls(
         report.headwindsAndTailwinds.headwinds.join('\n'),
-        chartsPrefix(industry.name, industryArea.title, 'headwinds', 'headwinds')
+        chartsPrefix({
+          industry: industry.name,
+          industryArea: industryArea.title,
+          reportSection: 'headwinds',
+          reportSubSection: 'headwinds',
+        })
       );
       break;
     }
     case ChartEntityType.TAILWINDS: {
       report.headwindsAndTailwinds.tailwindChartUrls = await generateChartUrls(
         report.headwindsAndTailwinds.tailwinds.join('\n'),
-        chartsPrefix(industry.name, industryArea.title, 'tailwinds', 'tailwinds')
+        chartsPrefix({
+          industry: industry.name,
+          industryArea: industryArea.title,
+          reportSection: 'tailwinds',
+          reportSubSection: 'tailwinds',
+        })
       );
       break;
     }
@@ -700,7 +637,12 @@ export async function regenerateCharts(
       const pos = report.positiveTariffImpactOnCompanyType[entityIndex];
       pos.chartUrls = await generateChartUrls(
         `${pos.companyType}\n${pos.impact}\n${pos.reasoning}`,
-        chartsPrefix(industry.name, industryArea.title, 'positive-impact', slugify(pos.companyType))
+        chartsPrefix({
+          industry: industry.name,
+          industryArea: industryArea.title,
+          reportSection: 'positive-impact',
+          reportSubSection: pos.companyType,
+        })
       );
       break;
     }
@@ -708,14 +650,24 @@ export async function regenerateCharts(
       const neg = report.negativeTariffImpactOnCompanyType[entityIndex];
       neg.chartUrls = await generateChartUrls(
         `${neg.companyType}\n${neg.impact}\n${neg.reasoning}`,
-        chartsPrefix(industry.name, industryArea.title, 'negative-impact', slugify(neg.companyType))
+        chartsPrefix({
+          industry: industry.name,
+          industryArea: industryArea.title,
+          reportSection: 'negative-impact',
+          reportSubSection: neg.companyType,
+        })
       );
       break;
     }
     case ChartEntityType.SUMMARY: {
       report.tariffImpactSummaryChartUrls = await generateChartUrls(
         report.tariffImpactSummary,
-        chartsPrefix(industry.name, industryArea.title, 'summary', 'summary')
+        chartsPrefix({
+          industry: industry.name,
+          industryArea: industryArea.title,
+          reportSection: 'summary',
+          reportSubSection: 'summary',
+        })
       );
       break;
     }
@@ -765,8 +717,6 @@ export function readEvaluateIndustryAreaJsonFromFile(industry: string, industryA
   const evaluateIndustryArea: EvaluateIndustryArea = JSON.parse(contents);
   return evaluateIndustryArea;
 }
-
-const img = (urls?: string[]) => (urls ?? []).map((u) => `![chart](${u})`).join('\n\n');
 
 /** Markdown writer – now embeds charts right after the relevant text */
 export function writeEvaluateIndustryAreaToMarkdownFile(
@@ -827,46 +777,22 @@ export function writeEvaluateIndustryAreaToMarkdownFile(
   fs.writeFileSync(filePath, md.join('\n\n'), 'utf-8');
 }
 
-/**
- * One‑shot helper – given raw *content* (serialised JSON / markdown / text),
- * create `n` images with the global getChartPrompt() rules and upload them to
- * the charts bucket. Returns an array of S3 URLs.
- */
-export async function generateChartUrls(content: string, s3Prefix: string, n = 2): Promise<ChartUrls> {
-  const promptText = getChartPrompt(content);
-
-  const { data } = {} as any;
-
-  const urls: string[] = [];
-  let idx = 0;
-  for (const { url } of data) {
-    const res = await fetch(url!);
-    const arrayBuffer = await res.arrayBuffer();
-    const key = `${s3Prefix}/chart-${idx++}.png`;
-    const s3Url = await uploadImageToS3(new Uint8Array(arrayBuffer), key);
-    urls.push(s3Url);
-  }
-  return urls;
-}
-
 // ---------------------------------------------------------------------------
 // ─── 4. HELPERS: PATH BUILDERS ──────────────────────────────────────────────
 // ---------------------------------------------------------------------------
 
-function chartsPrefix(industry: string, area: string, category: string, slug: string): string {
-  return [industry.toLowerCase(), slugify(area), category, slug].join('/');
+function chartsPrefix({
+  industry,
+  industryArea,
+  reportSection,
+  reportSubSection,
+}: {
+  industry: string;
+  industryArea: string;
+  reportSection: string;
+  reportSubSection: string;
+}): string {
+  return [slugify(industry), slugify(industryArea), slugify(reportSection), slugify(reportSubSection)].join('/');
 }
 
 /** Upload binary blob to S3 & return public https URL */
-export async function uploadImageToS3(data: Uint8Array, key: string, contentType = 'image/png'): Promise<string> {
-  await s3Client.send(
-    new PutObjectCommand({
-      Bucket: BUCKET_NAME,
-      Key: key,
-      Body: data,
-      ContentType: contentType,
-      ACL: 'public-read',
-    })
-  );
-  return `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${key}`;
-}
