@@ -106,14 +106,14 @@ export default async function IndustryTariffReportLayout({ children, params }: {
           </div>
 
           {/* Book UI with Navigation and Content */}
-          <div className="flex h-[calc(100vh-10rem)] overflow-hidden rounded-lg border border-color background-color shadow-lg">
+          <div className="flex min-h-[calc(100vh-10rem)] overflow-hidden rounded-lg border border-color background-color shadow-lg">
             {/* Left side - Book spine/navigation */}
             <BookNavigation report={report} reportId={reportId} />
 
             {/* Right side - Book content */}
-            <div className="flex-1 overflow-y-auto bg-background p-8">
+            <div className="flex-1 bg-background p-8">
               <div className="mx-auto max-w-4xl">
-                <div className="relative min-h-[calc(100vh-16rem)] rounded-lg block-bg-color p-8 shadow-md">
+                <div className="relative min-h-[calc(100vh-10rem)] rounded-lg block-bg-color p-8 shadow-md">
                   {/* Page corner fold effect */}
                   <div className="absolute right-0 top-0 h-12 w-12 bg-muted/20">
                     <div className="absolute right-0 top-0 h-0 w-0 border-l-[48px] border-b-[48px] border-l-transparent border-b-[var(--block-bg)]"></div>

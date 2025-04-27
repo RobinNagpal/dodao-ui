@@ -2,115 +2,24 @@ import { prisma } from '@/prisma';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
-
+import introduction from '@/../reports-out/plastic/02-introduction/introduction.json';
+import tariffUpdates from '@/../reports-out/plastic/03-tariff-updates/tariff-updates.json';
+import understandIndustry from '@/../reports-out/plastic/04-understand-industry/understand-industry.json';
+import industryAreas from '@/../reports-out/plastic/05-industry-areas/industry-area.json';
+import finalConclusion from '@/../reports-out/plastic/07-final-conclusion/final-conclusion.json';
+import industryAreaHeadings from '@/../reports-out/plastic/industry-headings.json';
 // Sample data for demonstration
 const sampleReport: IndustryTariffReport = {
-  industryAreaHeadings: {
-    headings: [
-      {
-        title: 'Automotive Industry',
-        oneLineSummary: 'Overview of the automotive manufacturing sector',
-        subHeadings: [
-          {
-            title: 'Electric Vehicles',
-            oneLineSummary: 'The growing EV market segment',
-            companies: [
-              { name: 'Tesla', ticker: 'TSLA' },
-              { name: 'Rivian', ticker: 'RIVN' },
-            ],
-          },
-          {
-            title: 'Traditional Vehicles',
-            oneLineSummary: 'Established automotive manufacturers',
-            companies: [
-              { name: 'Ford', ticker: 'F' },
-              { name: 'General Motors', ticker: 'GM' },
-            ],
-          },
-        ],
-      },
-    ],
-  },
+  industryAreaHeadings: industryAreaHeadings,
   executiveSummary: {
     title: 'Executive Summary',
     executiveSummary:
       'This report provides a comprehensive analysis of the automotive industry, focusing on tariff impacts across various segments including electric vehicles and traditional manufacturers.',
   },
-  introduction: {
-    aboutSector: {
-      title: 'About the Automotive Sector',
-      aboutSector: 'The automotive sector is a global industry involved in the design, development, manufacturing, marketing, and selling of motor vehicles.',
-    },
-    aboutConsumption: {
-      title: 'Consumption Patterns',
-      aboutConsumption: 'Global automotive consumption has shifted toward electric vehicles and more fuel-efficient options in recent years.',
-    },
-    pastGrowth: {
-      title: 'Historical Growth',
-      aboutGrowth: 'The automotive industry has seen steady growth over the past decade with emerging markets driving much of the expansion.',
-    },
-    futureGrowth: {
-      title: 'Future Growth Projections',
-      aboutGrowth: 'Future growth is expected to be driven by electric vehicles, autonomous driving technology, and connected car services.',
-    },
-    usProduction: {
-      title: 'US Production',
-      aboutProduction: 'US automotive production remains significant globally, with major manufacturing centers in Michigan, Tennessee, and Alabama.',
-    },
-    countrySpecificImports: [
-      {
-        title: 'Imports from China',
-        aboutImport: 'Chinese automotive imports to the US have increased, particularly in parts and components.',
-      },
-      {
-        title: 'Imports from Mexico',
-        aboutImport: 'Mexico is a major source of automotive imports to the US due to USMCA trade agreements.',
-      },
-    ],
-  },
-  tariffUpdates: {
-    countrySpecificTariffs: [
-      {
-        countryName: 'China',
-        tariffDetails: '25% tariff on automotive parts and components',
-        changes: 'Increased from 10% in 2023',
-      },
-      {
-        countryName: 'European Union',
-        tariffDetails: '15% tariff on luxury vehicles',
-        changes: 'New tariff implemented in 2024',
-      },
-    ],
-  },
-  understandIndustry: {
-    title: 'Understanding the Automotive Industry',
-    sections: [
-      {
-        title: 'Market Structure',
-        paragraphs: [
-          'The automotive industry is highly consolidated with a few major players dominating global production.',
-          'Emerging electric vehicle manufacturers are disrupting traditional market structures.',
-        ],
-      },
-      {
-        title: 'Supply Chain',
-        paragraphs: [
-          'Automotive supply chains are complex and global, with components sourced from dozens of countries.',
-          'Recent disruptions have highlighted vulnerabilities in just-in-time manufacturing models.',
-        ],
-      },
-    ],
-  },
-  industryAreas: [
-    {
-      title: 'Electric Vehicles',
-      industryAreas: 'The electric vehicle segment is growing rapidly, with increasing consumer adoption and government incentives driving expansion.',
-    },
-    {
-      title: 'Autonomous Driving',
-      industryAreas: 'Self-driving technology is advancing quickly, with major investments from traditional automakers and tech companies.',
-    },
-  ],
+  introduction,
+  tariffUpdates: tariffUpdates,
+  understandIndustry: understandIndustry,
+  industryAreas: industryAreas,
   evaluateIndustryAreas: [
     {
       title: 'Electric Vehicles Segment',
@@ -204,22 +113,7 @@ const sampleReport: IndustryTariffReport = {
         'Overall, tariffs have mixed impacts on the EV segment, with domestic manufacturers gaining advantages while those dependent on global supply chains facing increased costs.',
     },
   ],
-  finalConclusion: {
-    title: 'Final Conclusion',
-    conclusionBrief:
-      'The automotive industry is undergoing significant transformation driven by electrification, with tariffs playing an important role in shaping competitive dynamics.',
-    positiveImpacts: {
-      title: 'Positive Tariff Impacts',
-      positiveImpacts: 'Tariffs have encouraged domestic manufacturing investment and reshoring of production, particularly in the electric vehicle segment.',
-    },
-    negativeImpacts: {
-      title: 'Negative Tariff Impacts',
-      negativeImpacts:
-        'Higher component costs have increased vehicle prices for consumers and squeezed margins for manufacturers dependent on global supply chains.',
-    },
-    finalStatements:
-      'Companies that can adapt to the changing tariff environment while navigating the transition to electric vehicles will be best positioned for long-term success in the automotive industry.',
-  },
+  finalConclusion,
 };
 async function getHandler(): Promise<IndustryTariffReport> {
   console.log('Fetching industry tariff report...');

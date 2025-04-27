@@ -1,3 +1,5 @@
+import { getMarkdownContentForIntroduction } from '@/scripts/industry-tariff-reports/02-introduction';
+import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
@@ -18,7 +20,7 @@ export default async function AboutConsumptionPage({ params }: { params: Promise
     return <div>Report not found</div>;
   }
 
-  const { aboutConsumption } = report.introduction;
+  const content = report.introduction ? parseMarkdown(getMarkdownContentForIntroduction(report.introduction)) : 'No content available';
 
   return (
     <div>
@@ -28,10 +30,7 @@ export default async function AboutConsumptionPage({ params }: { params: Promise
         </PrivateWrapper>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6">{aboutConsumption.title}</h1>
-      <div className="mb-6">
-        <p>{aboutConsumption.aboutConsumption}</p>
-      </div>
+      <div dangerouslySetInnerHTML={{ __html: content }} className="markdown-body" />
     </div>
   );
 }

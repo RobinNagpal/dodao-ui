@@ -148,11 +148,7 @@ export async function getAndWriteIntroductionsJson(industry: string, date: strin
   });
 }
 
-export function writeIntroductionToMarkdownFile(industry: string, introduction: Introduction) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '02-introduction');
-  const filePath = path.join(dirPath, 'introduction.md');
-  addDirectoryIfNotPresent(dirPath);
-
+export function getMarkdownContentForIntroduction(introduction: Introduction) {
   const markdownContent =
     `# Introduction\n\n` +
     `## ${introduction.aboutSector.title}\n${introduction.aboutSector.aboutSector}\n\n` +
@@ -162,6 +158,14 @@ export function writeIntroductionToMarkdownFile(industry: string, introduction: 
     `## ${introduction.usProduction.title}\n${introduction.usProduction.aboutProduction}\n\n` +
     `## Country Specific Imports\n` +
     `${introduction.countrySpecificImports.map((importInfo) => `### ${importInfo.title}\n${importInfo.aboutImport}`).join('\n\n')}\n`;
+  return markdownContent;
+}
+
+export function writeIntroductionToMarkdownFile(industry: string, introduction: Introduction) {
+  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '02-introduction');
+  const filePath = path.join(dirPath, 'introduction.md');
+  addDirectoryIfNotPresent(dirPath);
+  const markdownContent = getMarkdownContentForIntroduction(introduction);
   addDirectoryIfNotPresent(dirPath);
 
   fs.writeFileSync(filePath, markdownContent, {
