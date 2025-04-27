@@ -7,7 +7,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ReportActionsDropdown from '@/components/industry-tariff/ReportActionsDropdown';
 import BookNavigation from '@/components/industry-tariff/book-navigation';
-import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
+import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 

@@ -1,4 +1,4 @@
-import { getLlmResponse, outputInstructions } from '@/scripts/industry-tariff-reports/llm-utils';
+import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import {
   FinalConclusion,
   IndustryAreaHeadings,
@@ -134,7 +134,7 @@ export async function getFinalConclusionAndSaveToFile(
   fs.writeFileSync(fileName, JSON.stringify(finalConclusion, null, 2));
 }
 
-export async function readFinalConclusionFromFile(industry: string) {
+export function readFinalConclusionFromFile(industry: string) {
   const fileName = getFinalConclusionJsonFileName(industry);
 
   const data = fs.readFileSync(fileName, 'utf-8');

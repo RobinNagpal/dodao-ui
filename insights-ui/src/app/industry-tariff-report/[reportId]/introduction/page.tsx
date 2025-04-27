@@ -1,7 +1,7 @@
 import { getMarkdownContentForIntroduction } from '@/scripts/industry-tariff-reports/02-introduction';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
+import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import IntroductionSectionActions from '@/components/industry-tariff/section-actions/IntroductionSectionActions';
 

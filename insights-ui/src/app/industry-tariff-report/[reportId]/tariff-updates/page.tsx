@@ -2,7 +2,7 @@ import { getMarkdownContentForIntroduction } from '@/scripts/industry-tariff-rep
 import { getMarkdownContentForIndustryTariffs } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
+import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import TariffUpdatesActions from '@/components/industry-tariff/section-actions/TariffUpdatesActions';
 import Link from 'next/link';

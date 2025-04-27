@@ -1,13 +1,11 @@
-import { prisma } from '@/prisma';
-import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { Ticker } from '@prisma/client';
 import introduction from '@/../reports-out/plastic/02-introduction/introduction.json';
 import tariffUpdates from '@/../reports-out/plastic/03-tariff-updates/tariff-updates.json';
 import understandIndustry from '@/../reports-out/plastic/04-understand-industry/understand-industry.json';
 import industryAreas from '@/../reports-out/plastic/05-industry-areas/industry-area.json';
 import finalConclusion from '@/../reports-out/plastic/07-final-conclusion/final-conclusion.json';
 import industryAreaHeadings from '@/../reports-out/plastic/industry-headings.json';
+import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 // Sample data for demonstration
 const sampleReport: IndustryTariffReport = {
   industryAreaHeadings: industryAreaHeadings,

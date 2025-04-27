@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
 import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
-import { getLlmResponse } from './llm-utils';
+import { getLlmResponse } from '@/scripts/llm-utils';
 
 const IndustrySectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific part of the article.'),

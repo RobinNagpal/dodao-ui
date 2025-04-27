@@ -27,15 +27,17 @@ export default function CountrySpecificImportActions({ reportId, importIndex, co
   const handleRegenerate = async () => {
     try {
       setIsRegenerating(true);
-      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}/regenerate-section`, {
+      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/generate-introduction`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          section: 'introduction',
+          industry: reportId,
+          date: new Date().toISOString().split('T')[0],
           subSection: 'countrySpecificImports',
           index: importIndex,
+          countryName: countryName,
         }),
       });
 

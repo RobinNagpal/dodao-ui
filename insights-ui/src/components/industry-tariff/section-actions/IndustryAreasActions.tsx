@@ -28,21 +28,16 @@ export default function IndustryAreasActions({ reportId, areaIndex, areaTitle }:
   const handleRegenerate = async () => {
     try {
       setIsRegenerating(true);
-      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}/regenerate-section`, {
+      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/generate-industry-areas`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(
-          areaIndex !== undefined
-            ? {
-                section: 'industryAreas',
-                index: areaIndex,
-              }
-            : {
-                section: 'industryAreas',
-              }
-        ),
+        body: JSON.stringify({
+          industry: reportId,
+          areaIndex: areaIndex,
+          areaTitle: areaTitle,
+        }),
       });
 
       if (response.ok) {

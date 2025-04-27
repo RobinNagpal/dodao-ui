@@ -1,4 +1,4 @@
-import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
+import { getLlmResponse } from '@/scripts/llm-utils';
 import { IndustryAreaHeadings, IndustryHeading } from '@/scripts/industry-tariff-reports/tariff-types';
 import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/reportFileUtils';
 import fs from 'fs';
@@ -65,7 +65,7 @@ export async function getAndWriteIndustryHeadings(industry: string) {
   });
 }
 
-export async function readIndustryHeadingsFromFile(industry: string): Promise<IndustryAreaHeadings> {
+export function readIndustryHeadingsFromFile(industry: string): IndustryAreaHeadings {
   const dirPath = path.join(reportsOutDir, industry.toLowerCase());
   const filePath = path.join(dirPath, industryHeadingsFileName);
   if (!fs.existsSync(filePath)) {

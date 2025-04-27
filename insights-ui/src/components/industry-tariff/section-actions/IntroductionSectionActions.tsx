@@ -26,14 +26,15 @@ export default function IntroductionSectionActions({ reportId, sectionKey, secti
   const handleRegenerate = async () => {
     try {
       setIsRegenerating(true);
-      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}/regenerate-section`, {
+      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/generate-introduction`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          section: 'introduction',
-          subSection: sectionKey,
+          industry: reportId,
+          date: new Date().toISOString().split('T')[0],
+          sectionKey: sectionKey,
         }),
       });
 

@@ -28,22 +28,17 @@ export default function TariffUpdatesActions({ reportId, tariffIndex, countryNam
   const handleRegenerate = async () => {
     try {
       setIsRegenerating(true);
-      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}/regenerate-section`, {
+      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/generate-tariff-updates`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(
-          tariffIndex !== undefined
-            ? {
-                section: 'tariffUpdates',
-                subSection: 'countrySpecificTariffs',
-                index: tariffIndex,
-              }
-            : {
-                section: 'tariffUpdates',
-              }
-        ),
+        body: JSON.stringify({
+          industry: reportId,
+          date: new Date().toISOString().split('T')[0],
+          tariffIndex: tariffIndex,
+          countryName: countryName,
+        }),
       });
 
       if (response.ok) {

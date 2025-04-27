@@ -1,6 +1,6 @@
 'use client';
 
-import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
+import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 
 interface BookContentProps {
   report: IndustryTariffReport;

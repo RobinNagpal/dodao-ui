@@ -4,7 +4,7 @@ import type React from 'react';
 
 import Link from 'next/link';
 import { ChevronDown, ChevronRight, ChevronUp, FileText, Folder } from 'lucide-react';
-import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
+import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 

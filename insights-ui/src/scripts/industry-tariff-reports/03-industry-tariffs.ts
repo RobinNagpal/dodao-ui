@@ -1,4 +1,4 @@
-import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/industry-tariff-reports/llm-utils';
+import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/llm-utils';
 import { CountrySpecificTariff, IndustryAreaHeadings, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import fs from 'fs';
 import path from 'path';

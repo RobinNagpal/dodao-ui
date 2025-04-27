@@ -1,4 +1,4 @@
-import { getLlmResponse, outputInstructions } from '@/scripts/industry-tariff-reports/llm-utils';
+import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { ExecutiveSummary, IndustryAreaHeadings, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import fs from 'fs';
 import path from 'path';
@@ -85,7 +85,7 @@ export async function getExecutiveSummaryAndSaveToFile(
   fs.writeFileSync(fileName, JSON.stringify(executiveSummary, null, 2));
 }
 
-export async function readExecutiveSummaryFromFile(industry: string) {
+export function readExecutiveSummaryFromFile(industry: string) {
   const fileName = getExecutiveSummaryJsonFileName(industry);
   const data = fs.readFileSync(fileName, 'utf-8');
   return JSON.parse(data) as ExecutiveSummary;

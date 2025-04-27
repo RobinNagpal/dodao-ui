@@ -24,14 +24,12 @@ export default function ExecutiveSummaryActions({ reportId }: ExecutiveSummaryAc
   const handleRegenerate = async () => {
     try {
       setIsRegenerating(true);
-      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}/regenerate-section`, {
+      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}/generate-executive-summary`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          section: 'executiveSummary',
-        }),
+        body: JSON.stringify({}),
       });
 
       if (response.ok) {

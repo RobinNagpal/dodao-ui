@@ -6,7 +6,7 @@ import fs from 'fs';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import Handlebars from 'handlebars';
 import Ajv, { ErrorObject } from 'ajv';
-import { gpt4OSearchModel } from '@/scripts/industry-tariff-reports/llm-utils';
+import { gpt4OSearchModel } from '@/scripts/llm-utils';
 
 export async function invokePrompt(promptKey: string, input?: any): Promise<string> {
   const prompt = await prisma.prompt.findFirstOrThrow({

@@ -33,14 +33,14 @@ export default function FinalConclusionActions({ reportId, sectionKey }: FinalCo
   const handleRegenerate = async () => {
     try {
       setIsRegenerating(true);
-      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}/regenerate-section`, {
+      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/generate-final-conclusion`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          section: 'finalConclusion',
-          subSection: sectionKey,
+          industry: reportId,
+          sectionKey: sectionKey,
         }),
       });
 
