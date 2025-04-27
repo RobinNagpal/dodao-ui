@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 
-import { getNumberOfHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { ChevronDown, ChevronRight, ChevronUp, FileText, Folder } from 'lucide-react';
 
@@ -85,7 +85,7 @@ export default function BookNavigation({ report, industryId }: BookNavigationPro
         >
           {report.industryAreaHeadings.headings.flatMap((heading, index) => {
             return heading.subHeadings.map((subHeading, subIndex) => {
-              const indexInArray = index * getNumberOfHeadings(industryId) + subIndex;
+              const indexInArray = index * getNumberOfSubHeadings(industryId) + subIndex;
               const evaluated = report?.evaluateIndustryAreas[indexInArray];
               if (!evaluated) {
                 return null;

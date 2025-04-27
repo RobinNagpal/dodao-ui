@@ -2,7 +2,7 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-actions/EvaluateIndustryAreasActions';
 import { getMarkdownContentForEvaluateIndustryArea } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 
-import { getNumberOfHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -14,7 +14,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
   const headingIndex = Number.parseInt(headingString, 10);
   const subHeadingIndex = Number.parseInt(subHeadingString, 10);
 
-  const indexInArray = headingIndex * getNumberOfHeadings(industryId) + subHeadingIndex;
+  const indexInArray = headingIndex * getNumberOfSubHeadings(industryId) + subHeadingIndex;
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
