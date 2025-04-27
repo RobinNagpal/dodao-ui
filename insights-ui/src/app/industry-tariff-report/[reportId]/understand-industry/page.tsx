@@ -1,8 +1,9 @@
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import UnderstandIndustryActions from '@/components/industry-tariff/section-actions/UnderstandIndustryActions';
-import Link from 'next/link';
+import { getMarkdownContentForUnderstandIndustry } from '@/scripts/industry-tariff-reports/04-understand-industry';
+import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
+import { parseMarkdown } from '@/util/parse-markdown';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export default async function UnderstandIndustryPage({ params }: { params: Promise<{ reportId: string }> }) {
   const { reportId } = await params;
@@ -19,8 +20,7 @@ export default async function UnderstandIndustryPage({ params }: { params: Promi
     return <div>Report not found</div>;
   }
 
-  const { understandIndustry } = report;
-
+  const content = report.understandIndustry ? parseMarkdown(getMarkdownContentForUnderstandIndustry(report.understandIndustry)) : 'No content available';
   return (
     <div>
       <div className="flex justify-end mb-4">
@@ -29,27 +29,7 @@ export default async function UnderstandIndustryPage({ params }: { params: Promi
         </PrivateWrapper>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6 heading-color">{understandIndustry.title}</h1>
-
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-4 heading-color">Industry Sections</h2>
-        <div className="space-y-4">
-          {understandIndustry.sections.map((section, index) => (
-            <div key={index} className="border rounded-md p-4">
-              <h3 className="text-lg font-medium mb-2 heading-color">{section.title}</h3>
-              {section.paragraphs.length > 0 && (
-                <p className="mb-2">
-                  {section.paragraphs[0]}
-                  {section.paragraphs.length > 1 ? '...' : ''}
-                </p>
-              )}
-              <Link href={`/industry-tariff-report/${reportId}/understand-industry/sections/${index}`} className="link-color hover:underline">
-                Read more
-              </Link>
-            </div>
-          ))}
-        </div>
-      </div>
+      <div dangerouslySetInnerHTML={{ __html: content }} className="markdown-body" />
     </div>
   );
 }

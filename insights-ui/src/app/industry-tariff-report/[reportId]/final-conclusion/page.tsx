@@ -1,7 +1,9 @@
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import FinalConclusionActions from '@/components/industry-tariff/section-actions/FinalConclusionActions';
+import { getMarkdownContentForFinalConclusion } from '@/scripts/industry-tariff-reports/07-final-conclusion';
+import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
+import { parseMarkdown } from '@/util/parse-markdown';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export default async function FinalConclusionPage({ params }: { params: Promise<{ reportId: string }> }) {
   const { reportId } = await params;
@@ -18,8 +20,7 @@ export default async function FinalConclusionPage({ params }: { params: Promise<
     return <div>Report not found</div>;
   }
 
-  const { finalConclusion } = report;
-
+  const content = report.finalConclusion ? parseMarkdown(getMarkdownContentForFinalConclusion(report.finalConclusion)) : 'No content available';
   return (
     <div>
       <div className="flex justify-end mb-4">
@@ -28,22 +29,7 @@ export default async function FinalConclusionPage({ params }: { params: Promise<
         </PrivateWrapper>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6 heading-color">{finalConclusion.title}</h1>
-      <div className="mb-6">
-        <p>{finalConclusion.conclusionBrief}</p>
-      </div>
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 heading-color">{finalConclusion.positiveImpacts.title}</h2>
-        <p>{finalConclusion.positiveImpacts.positiveImpacts}</p>
-      </div>
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 heading-color">{finalConclusion.negativeImpacts.title}</h2>
-        <p>{finalConclusion.negativeImpacts.negativeImpacts}</p>
-      </div>
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2 heading-color">Final Statements</h2>
-        <p>{finalConclusion.finalStatements}</p>
-      </div>
+      <div dangerouslySetInnerHTML={{ __html: content }} className="markdown-body" />
     </div>
   );
 }

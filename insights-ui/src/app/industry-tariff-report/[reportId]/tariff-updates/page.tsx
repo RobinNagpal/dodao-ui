@@ -1,3 +1,6 @@
+import { getMarkdownContentForIntroduction } from '@/scripts/industry-tariff-reports/02-introduction';
+import { getMarkdownContentForIndustryTariffs } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
+import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
@@ -19,7 +22,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
     return <div>Report not found</div>;
   }
 
-  const { tariffUpdates } = report;
+  const content = report.tariffUpdates ? parseMarkdown(getMarkdownContentForIndustryTariffs('Plastics', report.tariffUpdates)) : 'No content available';
 
   return (
     <div>
@@ -29,27 +32,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
         </PrivateWrapper>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6 heading-color">Tariff Updates</h1>
-
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-4 heading-color">Country Specific Tariffs</h2>
-        <div className="space-y-4">
-          {tariffUpdates.countrySpecificTariffs.map((tariff, index) => (
-            <div key={index} className="border rounded-md p-4">
-              <h3 className="text-lg font-medium mb-2 heading-color">{tariff.countryName}</h3>
-              <p className="mb-2">
-                <span className="font-medium heading-color">Tariff Details:</span> {tariff.tariffDetails}
-              </p>
-              <p className="mb-2">
-                <span className="font-medium heading-color">Recent Changes:</span> {tariff.changes}
-              </p>
-              <Link href={`/industry-tariff-report/${reportId}/tariff-updates/country-specific-tariffs/${index}`} className="link-color hover:underline">
-                View details
-              </Link>
-            </div>
-          ))}
-        </div>
-      </div>
+      <div dangerouslySetInnerHTML={{ __html: content }} className="markdown-body" />
     </div>
   );
 }

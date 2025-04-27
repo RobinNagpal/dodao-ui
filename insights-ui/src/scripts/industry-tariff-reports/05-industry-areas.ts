@@ -67,9 +67,14 @@ export function readIndustryAreaSectionFromFile(industry: string): IndustryAreaS
   return JSON.parse(data) as IndustryAreaSection;
 }
 
+export function getMarkdownContentForIndustryAreas(industryAreaSection: IndustryAreaSection) {
+  const markdownContent = `# ${industryAreaSection.title}\n\n${industryAreaSection.industryAreas}`;
+  return markdownContent;
+}
+
 export function writeIndustryAreaSectionToMarkdownFile(industry: string, industryAreaSection: IndustryAreaSection): void {
   const filePath = getIndustryAreaJsonFilePath(industry).replace('.json', '.md');
-  const markdownContent = `# ${industryAreaSection.title}\n\n${industryAreaSection.industryAreas}`;
+  const markdownContent = getMarkdownContentForIndustryAreas(industryAreaSection);
   fs.writeFileSync(filePath, markdownContent, {
     encoding: 'utf-8',
   });

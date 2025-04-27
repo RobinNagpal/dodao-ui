@@ -1,7 +1,9 @@
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ExecutiveSummaryActions from '@/components/industry-tariff/section-actions/ExecutiveSummaryActions';
+import { getMarkdownContentForExecutiveSummary } from '@/scripts/industry-tariff-reports/01-executive-summary';
+import type { IndustryTariffReport } from '@/types/industry-tariff/industry-tariff-report-types';
+import { parseMarkdown } from '@/util/parse-markdown';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export default async function ExecutiveSummaryPage({ params }: { params: Promise<{ reportId: string }> }) {
   const { reportId } = await params;
@@ -18,8 +20,7 @@ export default async function ExecutiveSummaryPage({ params }: { params: Promise
     return <div>Report not found</div>;
   }
 
-  const { executiveSummary } = report;
-
+  const content = report.executiveSummary ? parseMarkdown(getMarkdownContentForExecutiveSummary(report.executiveSummary)) : 'No content available';
   return (
     <div>
       <div className="flex justify-end mb-4">
@@ -28,10 +29,7 @@ export default async function ExecutiveSummaryPage({ params }: { params: Promise
         </PrivateWrapper>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6 heading-color">{executiveSummary.title}</h1>
-      <div className="mb-6">
-        <p>{executiveSummary.executiveSummary}</p>
-      </div>
+      <div dangerouslySetInnerHTML={{ __html: content }} className="markdown-body" />
     </div>
   );
 }

@@ -116,11 +116,16 @@ export function readTariffUpdatesFromFile(industry: string) {
   return JSON.parse(data) as TariffUpdatesForIndustry;
 }
 
-export function writeTariffUpdatesToMarkdownFile(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
-  const filePath = getJsonFilePath(industry).replace('.json', '.md');
+export function getMarkdownContentForIndustryTariffs(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
   const markdownContent =
     `# Tariff Updates for ${industry}\n\n` +
     `${tariffUpdates.countrySpecificTariffs.map((country) => `## ${country.countryName}\n\n${country.tariffDetails}\n\n${country.changes}`).join('\n\n')}\n`;
+  return markdownContent;
+}
+
+export function writeTariffUpdatesToMarkdownFile(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
+  const filePath = getJsonFilePath(industry).replace('.json', '.md');
+  const markdownContent = getMarkdownContentForIndustryTariffs(industry, tariffUpdates);
 
   fs.writeFileSync(filePath, markdownContent, {
     encoding: 'utf-8',

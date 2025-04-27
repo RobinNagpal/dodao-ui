@@ -142,12 +142,16 @@ export function readUnderstandIndustryJsonFromFile(industry: string) {
   return understandIndustry;
 }
 
-export function writeUnderstandIndustryToMarkdownFile(industry: string, understandIndustry: UnderstandIndustry) {
-  const filePath = getJsonFilePath(industry).replace('.json', '.md');
-
+export function getMarkdownContentForUnderstandIndustry(understandIndustry: UnderstandIndustry) {
   const markdownContent =
     `# ${understandIndustry.title}\n\n` +
     `${understandIndustry.sections.map((section) => `## ${section.title}\n${section.paragraphs.join('\n\n')}`).join('\n\n')}\n`;
+  return markdownContent;
+}
+
+export function writeUnderstandIndustryToMarkdownFile(industry: string, understandIndustry: UnderstandIndustry) {
+  const filePath = getJsonFilePath(industry).replace('.json', '.md');
+  const markdownContent = getMarkdownContentForUnderstandIndustry(understandIndustry);
 
   fs.writeFileSync(filePath, markdownContent, {
     encoding: 'utf-8',

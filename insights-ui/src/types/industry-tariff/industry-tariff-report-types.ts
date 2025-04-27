@@ -184,7 +184,7 @@ export interface IndustryTariffReport {
   introduction: Introduction;
   tariffUpdates: TariffUpdatesForIndustry;
   understandIndustry: UnderstandIndustry;
-  industryAreas: IndustryAreaSection[];
+  industryAreas: IndustryAreaSection;
   evaluateIndustryAreas: EvaluateIndustryArea[];
   finalConclusion: FinalConclusion;
 }

@@ -141,9 +141,7 @@ export async function readFinalConclusionFromFile(industry: string) {
   return JSON.parse(data) as FinalConclusion;
 }
 
-export function writeFinalConclusionToMarkdownFile(industry: string, finalConclusion: FinalConclusion) {
-  const filePath = getFinalConclusionJsonFileName(industry).replace('.json', '.md');
-
+export function getMarkdownContentForFinalConclusion(finalConclusion: FinalConclusion) {
   const markdownContent =
     `# Final Conclusion\n\n` +
     `## ${finalConclusion.title}\n` +
@@ -154,6 +152,12 @@ export function writeFinalConclusionToMarkdownFile(industry: string, finalConclu
     `${finalConclusion.negativeImpacts.negativeImpacts}\n\n` +
     `## Final Statements\n` +
     `${finalConclusion.finalStatements}\n`;
+  return markdownContent;
+}
+
+export function writeFinalConclusionToMarkdownFile(industry: string, finalConclusion: FinalConclusion) {
+  const filePath = getFinalConclusionJsonFileName(industry).replace('.json', '.md');
+  const markdownContent = getMarkdownContentForFinalConclusion(finalConclusion);
 
   fs.writeFileSync(filePath, markdownContent, {
     encoding: 'utf-8',

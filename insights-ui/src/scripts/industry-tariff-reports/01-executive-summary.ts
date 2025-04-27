@@ -91,10 +91,15 @@ export async function readExecutiveSummaryFromFile(industry: string) {
   return JSON.parse(data) as ExecutiveSummary;
 }
 
+export function getMarkdownContentForExecutiveSummary(executiveSummary: ExecutiveSummary) {
+  const markdownContent = `# Executive Summary\n\n` + `${executiveSummary.executiveSummary}\n`;
+  return markdownContent;
+}
+
 export function writeExecutiveSummaryToMarkdownFile(industry: string, executiveSummary: ExecutiveSummary) {
   const filePath = getExecutiveSummaryJsonFileName(industry).replace('.json', '.md');
 
-  const markdownContent = `# Executive Summary\n\n` + `${executiveSummary.executiveSummary}\n`;
+  const markdownContent = getMarkdownContentForExecutiveSummary(executiveSummary);
 
   fs.writeFileSync(filePath, markdownContent, {
     encoding: 'utf-8',
