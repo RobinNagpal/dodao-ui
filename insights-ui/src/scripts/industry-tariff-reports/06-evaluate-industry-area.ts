@@ -718,20 +718,12 @@ export function readEvaluateIndustryAreaJsonFromFile(industry: string, industryA
   return evaluateIndustryArea;
 }
 
-/** Markdown writer – now embeds charts right after the relevant text */
-export function writeEvaluateIndustryAreaToMarkdownFile(
-  industry: string,
-  industryArea: IndustrySubHeading,
-  headings: IndustryAreaHeadings,
-  evaluateIndustryArea: EvaluateIndustryArea
-) {
-  const filePath = getMarkdownFilePath(industry, industryArea, headings);
-
+export function getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea: EvaluateIndustryArea) {
   const md: string[] = [];
 
   /* ───────────────────── header ───────────────────── */
-  md.push(`# ${industryArea.title}`);
-  md.push(evaluateIndustryArea.aboutParagraphs.join('\n\n'));
+  md.push(`# ${evaluateIndustryArea.title}`);
+  md.push(evaluateIndustryArea.aboutParagraphs.toString());
 
   /* ───────────────── Established Players ──────────── */
   md.push('## Established Players');
@@ -774,7 +766,20 @@ export function writeEvaluateIndustryAreaToMarkdownFile(
   md.push(img(evaluateIndustryArea.tariffImpactSummaryChartUrls));
 
   /* write file */
-  fs.writeFileSync(filePath, md.join('\n\n'), 'utf-8');
+  const markdownContent = md.join('\n\n');
+  return markdownContent;
+}
+
+/** Markdown writer – now embeds charts right after the relevant text */
+export function writeEvaluateIndustryAreaToMarkdownFile(
+  industry: string,
+  industryArea: IndustrySubHeading,
+  headings: IndustryAreaHeadings,
+  evaluateIndustryArea: EvaluateIndustryArea
+) {
+  const filePath = getMarkdownFilePath(industry, industryArea, headings);
+  const markdownContent = getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea);
+  fs.writeFileSync(filePath, markdownContent, 'utf-8');
 }
 
 // ---------------------------------------------------------------------------

@@ -8,10 +8,10 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 export interface ExecutiveSummaryActionsProps {
-  industrySlug: string;
+  industryId: string;
 }
 
-export default function ExecutiveSummaryActions({ industrySlug }: ExecutiveSummaryActionsProps) {
+export default function ExecutiveSummaryActions({ industryId }: ExecutiveSummaryActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
 
@@ -23,11 +23,11 @@ export default function ExecutiveSummaryActions({ industrySlug }: ExecutiveSumma
   const { postData, loading: isRegenerating } = usePostData<any, any>({
     successMessage: 'Executive summary regenerated successfully!',
     errorMessage: 'Failed to regenerate executive summary. Please try again.',
-    redirectPath: `/industry-tariff-report/${industrySlug}/executive-summary`,
+    redirectPath: `/industry-tariff-report/${industryId}/executive-summary`,
   });
 
   const handleRegenerate = async () => {
-    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}/generate-executive-summary`, {});
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-executive-summary`, {});
     router.refresh();
     setShowRegenerateModal(false);
   };
@@ -40,7 +40,7 @@ export default function ExecutiveSummaryActions({ industrySlug }: ExecutiveSumma
           if (key === 'regenerate') {
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
-            router.push(`/industry-tariff-report/${industrySlug}/edit/executive-summary`);
+            router.push(`/industry-tariff-report/${industryId}/edit/executive-summary`);
           }
         }}
       />

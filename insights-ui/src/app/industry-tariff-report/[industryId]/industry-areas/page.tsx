@@ -1,15 +1,15 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import ExecutiveSummaryActions from '@/components/industry-tariff/section-actions/ExecutiveSummaryActions';
-import { getMarkdownContentForExecutiveSummary } from '@/scripts/industry-tariff-reports/01-executive-summary';
+import IndustryAreasActions from '@/components/industry-tariff/section-actions/IndustryAreasActions';
+import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-reports/05-industry-areas';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
-export default async function ExecutiveSummaryPage({ params }: { params: Promise<{ industrySlug: string }> }) {
-  const { industrySlug } = await params;
+export default async function IndustryAreasPage({ params }: { params: Promise<{ industryId: string }> }) {
+  const { industryId } = await params;
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -20,12 +20,13 @@ export default async function ExecutiveSummaryPage({ params }: { params: Promise
     return <div>Report not found</div>;
   }
 
-  const content = report.executiveSummary ? parseMarkdown(getMarkdownContentForExecutiveSummary(report.executiveSummary)) : 'No content available';
+  const content = report.industryAreas ? parseMarkdown(getMarkdownContentForIndustryAreas(report.industryAreas)) : 'No content available';
+
   return (
     <div>
       <div className="flex justify-end mb-4">
         <PrivateWrapper>
-          <ExecutiveSummaryActions industrySlug={industrySlug} />
+          <IndustryAreasActions industryId={industryId} />
         </PrivateWrapper>
       </div>
 

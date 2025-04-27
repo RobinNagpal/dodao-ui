@@ -3,11 +3,11 @@ import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tar
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ExecutiveSummaryActions from '@/components/industry-tariff/section-actions/ExecutiveSummaryActions';
 
-export default async function IndustryTariffReportPage({ params }: { params: Promise<{ industrySlug: string }> }) {
-  const { industrySlug } = await params;
+export default async function IndustryTariffReportPage({ params }: { params: Promise<{ industryId: string }> }) {
+  const { industryId } = await params;
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -23,21 +23,14 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
     );
   }
 
-  // Display the executive summary as the default page
-  const { executiveSummary } = report;
-
   return (
     <div>
       <div className="flex justify-end mb-4">
         <PrivateWrapper>
-          <ExecutiveSummaryActions industrySlug={industrySlug} />
+          <ExecutiveSummaryActions industryId={industryId} />
         </PrivateWrapper>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6 heading-color">{executiveSummary.title}</h1>
-      <div className="mb-6">
-        <p>{executiveSummary.executiveSummary}</p>
-      </div>
       <div className="mt-8">
         <h2 className="text-xl font-semibold mb-4 heading-color">Report Overview</h2>
         <p>

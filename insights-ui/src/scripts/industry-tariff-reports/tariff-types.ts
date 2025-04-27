@@ -146,7 +146,7 @@ export interface NegativeTariffImpactOnCompanyType {
 
 export interface EvaluateIndustryArea {
   title: string;
-  aboutParagraphs: string[];
+  aboutParagraphs: string;
   newChallengers: NewChallenger[];
   establishedPlayers: EstablishedPlayer[];
   headwindsAndTailwinds: HeadwindsAndTailwinds;

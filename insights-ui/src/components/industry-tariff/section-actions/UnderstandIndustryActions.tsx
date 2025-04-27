@@ -8,10 +8,10 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 export interface UnderstandIndustryActionsProps {
-  industrySlug: string;
+  industryId: string;
 }
 
-export default function UnderstandIndustryActions({ industrySlug }: UnderstandIndustryActionsProps) {
+export default function UnderstandIndustryActions({ industryId }: UnderstandIndustryActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
 
@@ -23,11 +23,11 @@ export default function UnderstandIndustryActions({ industrySlug }: UnderstandIn
   const { postData, loading: isRegenerating } = usePostData<any, any>({
     successMessage: `Understand Industry Section regenerated successfully!`,
     errorMessage: `Failed to regenerate Understand Industry Section. Please try again.`,
-    redirectPath: `/industry-tariff-report/${industrySlug}/understand-industry`,
+    redirectPath: `/industry-tariff-report/${industryId}/understand-industry`,
   });
 
   const handleRegenerate = async () => {
-    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}/regenerate-section`, {});
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/regenerate-section`, {});
     router.refresh();
     setShowRegenerateModal(false);
   };

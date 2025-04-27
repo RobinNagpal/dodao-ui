@@ -9,8 +9,8 @@ import {
 } from '@/scripts/industry-tariff-reports/04-understand-industry';
 import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 
-async function postHandler(req: NextRequest, { params }: { params: { industry: string } }): Promise<IndustryTariffReport> {
-  const { industry } = params;
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
+  const { industry } = await params;
 
   if (!industry) {
     throw new Error('Industry is required');

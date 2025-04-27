@@ -8,12 +8,12 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 export interface IntroductionSectionActionsProps {
-  industrySlug: string;
+  industryId: string;
   sectionKey: string;
   sectionName: string;
 }
 
-export default function IntroductionSectionActions({ industrySlug, sectionKey, sectionName }: IntroductionSectionActionsProps) {
+export default function IntroductionSectionActions({ industryId, sectionKey, sectionName }: IntroductionSectionActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
 
@@ -25,12 +25,12 @@ export default function IntroductionSectionActions({ industrySlug, sectionKey, s
   const { postData, loading: isRegenerating } = usePostData<any, any>({
     successMessage: `${sectionName} regenerated successfully!`,
     errorMessage: `Failed to regenerate ${sectionName}. Please try again.`,
-    redirectPath: `/industry-tariff-report/${industrySlug}/introduction`,
+    redirectPath: `/industry-tariff-report/${industryId}/introduction`,
   });
 
   const handleRegenerate = async () => {
     await postData(`${getBaseUrl()}/api/industry-tariff-reports/generate-introduction`, {
-      industry: industrySlug,
+      industry: industryId,
       date: new Date().toISOString().split('T')[0],
       sectionKey: sectionKey,
     });
@@ -46,7 +46,7 @@ export default function IntroductionSectionActions({ industrySlug, sectionKey, s
           if (key === 'regenerate') {
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
-            router.push(`/industry-tariff-report/${industrySlug}/edit/introduction/${sectionKey}`);
+            router.push(`/industry-tariff-report/${industryId}/edit/introduction/${sectionKey}`);
           }
         }}
       />

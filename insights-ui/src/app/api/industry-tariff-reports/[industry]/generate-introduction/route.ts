@@ -9,8 +9,8 @@ interface GenerateIntroductionRequest {
   date: string;
 }
 
-async function postHandler(req: NextRequest, { params }: { params: { industry: string } }): Promise<IndustryTariffReport> {
-  const { industry } = params;
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
+  const { industry } = await params;
   const request = (await req.json()) as GenerateIntroductionRequest;
   const { date } = request;
 

@@ -11,15 +11,15 @@ import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/
 import { readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { readEvaluateIndustryAreaJsonFromFile } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 
-async function postHandler(req: NextRequest, { params }: { params: { industry: string } }): Promise<IndustryTariffReport> {
-  const { industry } = params;
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
+  const { industry } = await params;
 
   if (!industry) {
     throw new Error('Industry is required');
   }
 
   // Get dependencies
-  const headings = await readIndustryHeadingsFromFile(industry);
+  const headings = readIndustryHeadingsFromFile(industry);
   const tariffs = readTariffUpdatesFromFile(industry);
 
   // Get summaries and impacts from evaluated areas

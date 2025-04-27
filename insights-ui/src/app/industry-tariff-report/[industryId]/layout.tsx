@@ -1,21 +1,18 @@
-import type React from 'react';
-import { CSSProperties } from 'react';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import ReportActionsDropdown from '@/components/industry-tariff/ReportActionsDropdown';
 import BookNavigation from '@/components/industry-tariff/book-navigation';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
+import type React from 'react';
 
-export async function generateMetadata({ params }: { params: Promise<{ industrySlug: string }> }): Promise<Metadata> {
-  const { industrySlug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
+  const { industryId } = await params;
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
   let reportData: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -23,9 +20,9 @@ export async function generateMetadata({ params }: { params: Promise<{ industryS
   }
 
   // Extract industry name or use report ID as fallback
-  const industryName = reportData?.executiveSummary?.title || `Industry Report ${industrySlug}`;
+  const industryName = reportData?.executiveSummary?.title || `Industry Report ${industryId}`;
   const shortDescription = `Comprehensive tariff analysis for ${industryName}. Explore industry insights, tariff impacts, and company evaluations.`;
-  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industrySlug}`;
+  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}`;
 
   const dynamicKeywords = [industryName, 'tariff analysis', 'industry report', 'tariff impacts', 'industry evaluation', 'KoalaGains'];
 
@@ -51,16 +48,16 @@ export async function generateMetadata({ params }: { params: Promise<{ industryS
   };
 }
 
-export default async function IndustryTariffReportLayout({ children, params }: { children: React.ReactNode; params: Promise<{ industrySlug: string }> }) {
+export default async function IndustryTariffReportLayout({ children, params }: { children: React.ReactNode; params: Promise<{ industryId: string }> }) {
   const paa = await params;
-  const { industrySlug } = paa;
+  const { industryId } = paa;
   const heads = await headers();
 
   const pathname = heads.get('next-url');
   console.log(`Pathname: ${pathname}`);
   console.log(`Pathname: ${JSON.stringify(paa)}`);
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -87,8 +84,8 @@ export default async function IndustryTariffReportLayout({ children, params }: {
       current: false,
     },
     {
-      name: report.executiveSummary?.title || `Report ${industrySlug}`,
-      href: `/industry-tariff-report/${industrySlug}`,
+      name: report.executiveSummary?.title || `Report ${industryId}`,
+      href: `/industry-tariff-report/${industryId}`,
       current: true,
     },
   ];
@@ -98,17 +95,10 @@ export default async function IndustryTariffReportLayout({ children, params }: {
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="mx-auto text-color">
         <div className="mx-auto">
-          {/* Private Actions Dropdown */}
-          <div className="flex justify-end mb-4">
-            <PrivateWrapper>
-              <ReportActionsDropdown industrySlug={industrySlug} />
-            </PrivateWrapper>
-          </div>
-
           {/* Book UI with Navigation and Content */}
           <div className="flex min-h-[calc(100vh-10rem)] overflow-hidden rounded-lg border border-color background-color shadow-lg">
             {/* Left side - Book spine/navigation */}
-            <BookNavigation report={report} industrySlug={industrySlug} />
+            <BookNavigation report={report} industryId={industryId} />
 
             {/* Right side - Book content */}
             <div className="flex-1 bg-background p-8">

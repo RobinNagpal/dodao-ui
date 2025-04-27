@@ -4,6 +4,7 @@ import { readIntroductionJsonFromFile } from '@/scripts/industry-tariff-reports/
 import { readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { readUnderstandIndustryJsonFromFile } from '@/scripts/industry-tariff-reports/04-understand-industry';
 import { readIndustryAreaSectionFromFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
+import { readEvaluateIndustryAreaJsonFromFile } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 import { readFinalConclusionFromFile } from '@/scripts/industry-tariff-reports/07-final-conclusion';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 
@@ -16,8 +17,12 @@ export function getIndustryTariffReport(industry: string): IndustryTariffReport 
   const industryAreas = readIndustryAreaSectionFromFile(industry);
   const tariffUpdates = readTariffUpdatesFromFile(industry);
 
+  const evaluateIndustryAreas = industryAreaHeadings.headings.flatMap((h) =>
+    h.subHeadings.map((sh) => readEvaluateIndustryAreaJsonFromFile(industry, sh, industryAreaHeadings))
+  );
+
   return {
-    evaluateIndustryAreas: [],
+    evaluateIndustryAreas: evaluateIndustryAreas,
     executiveSummary,
     finalConclusion,
     industryAreaHeadings,

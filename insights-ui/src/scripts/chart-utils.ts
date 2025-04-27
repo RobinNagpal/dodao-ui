@@ -66,7 +66,7 @@ async function getAssistantResponse() {
     console.log(run.status);
   }
 }
-getAndWriteFile('file-abc123');
+// getAndWriteFile('file-abc123');
 
 /**
  * One‑shot helper – given raw *content* (serialised JSON / markdown / text),

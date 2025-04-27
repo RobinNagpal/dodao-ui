@@ -8,26 +8,15 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 export interface EvaluateIndustryAreasActionsProps {
-  industrySlug: string;
-  areaIndex?: number;
-  areaTitle?: string;
-  subSection?: string;
+  industryId: string;
+  sectionName: string;
+  headingIndex: number;
+  subHeadingIndex: number;
 }
 
-export default function EvaluateIndustryAreasActions({ industrySlug, areaIndex, areaTitle, subSection }: EvaluateIndustryAreasActionsProps) {
+export default function EvaluateIndustryAreasActions({ industryId, sectionName, headingIndex, subHeadingIndex }: EvaluateIndustryAreasActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
-
-  let sectionName = areaTitle || 'Industry Area Evaluation';
-
-  if (subSection) {
-    if (subSection === 'newChallengers') sectionName = 'New Challengers';
-    else if (subSection === 'establishedPlayers') sectionName = 'Established Players';
-    else if (subSection === 'headwindsAndTailwinds') sectionName = 'Headwinds & Tailwinds';
-    else if (subSection === 'positiveTariffImpactOnCompanyType') sectionName = 'Positive Tariff Impact';
-    else if (subSection === 'negativeTariffImpactOnCompanyType') sectionName = 'Negative Tariff Impact';
-    else if (subSection === 'tariffImpactSummary') sectionName = 'Tariff Impact Summary';
-  }
 
   const actions: EllipsisDropdownItem[] = [
     { key: 'regenerate', label: `Regenerate ${sectionName}` },
@@ -37,40 +26,18 @@ export default function EvaluateIndustryAreasActions({ industrySlug, areaIndex, 
   const { postData, loading: isRegenerating } = usePostData<any, any>({
     successMessage: `${sectionName} regenerated successfully!`,
     errorMessage: `Failed to regenerate ${sectionName}. Please try again.`,
-    redirectPath: `/industry-tariff-report/${industrySlug}/evaluate-industry-areas`,
+    redirectPath: `/industry-tariff-report/${industryId}/evaluate-industry-areas/${headingIndex}-${subHeadingIndex}`,
   });
 
   const handleRegenerate = async () => {
-    const payload: any = {};
-
-    if (areaIndex !== undefined) {
-      payload.section = 'evaluateIndustryAreas';
-      payload.index = areaIndex;
-
-      if (subSection) {
-        payload.subSection = subSection;
-      }
-    } else {
-      payload.section = 'evaluateIndustryAreas';
-    }
-
-    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}/regenerate-section`, payload);
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/generate-evaluate-industry-areas`, {
+      industry: industryId,
+      date: new Date().toISOString().split('T')[0],
+      headingIndex,
+      subHeadingIndex,
+    });
     router.refresh();
     setShowRegenerateModal(false);
-  };
-
-  const getEditPath = () => {
-    let path = `/industry-tariff-report/${industrySlug}/edit/evaluate-industry-areas`;
-
-    if (areaIndex !== undefined) {
-      path += `/${areaIndex}`;
-
-      if (subSection) {
-        path += `/${subSection}`;
-      }
-    }
-
-    return path;
   };
 
   return (
@@ -81,7 +48,7 @@ export default function EvaluateIndustryAreasActions({ industrySlug, areaIndex, 
           if (key === 'regenerate') {
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
-            router.push(getEditPath());
+            router.push(`/industry-tariff-report/${industryId}/edit/evaluate-industry-areas/${headingIndex}-${subHeadingIndex}`);
           }
         }}
       />

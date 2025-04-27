@@ -8,11 +8,11 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 export interface FinalConclusionActionsProps {
-  industrySlug: string;
+  industryId: string;
   sectionKey?: string;
 }
 
-export default function FinalConclusionActions({ industrySlug, sectionKey }: FinalConclusionActionsProps) {
+export default function FinalConclusionActions({ industryId, sectionKey }: FinalConclusionActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
 
@@ -32,12 +32,12 @@ export default function FinalConclusionActions({ industrySlug, sectionKey }: Fin
   const { postData, loading: isRegenerating } = usePostData<any, any>({
     successMessage: `${sectionName} regenerated successfully!`,
     errorMessage: `Failed to regenerate ${sectionName}. Please try again.`,
-    redirectPath: `/industry-tariff-report/${industrySlug}/final-conclusion`,
+    redirectPath: `/industry-tariff-report/${industryId}/final-conclusion`,
   });
 
   const handleRegenerate = async () => {
     await postData(`${getBaseUrl()}/api/industry-tariff-reports/generate-final-conclusion`, {
-      industry: industrySlug,
+      industry: industryId,
       sectionKey: sectionKey,
     });
     router.refresh();
@@ -54,8 +54,8 @@ export default function FinalConclusionActions({ industrySlug, sectionKey }: Fin
           } else if (key === 'edit') {
             router.push(
               sectionKey
-                ? `/industry-tariff-report/${industrySlug}/edit/final-conclusion/${sectionKey}`
-                : `/industry-tariff-report/${industrySlug}/edit/final-conclusion`
+                ? `/industry-tariff-report/${industryId}/edit/final-conclusion/${sectionKey}`
+                : `/industry-tariff-report/${industryId}/edit/final-conclusion`
             );
           }
         }}

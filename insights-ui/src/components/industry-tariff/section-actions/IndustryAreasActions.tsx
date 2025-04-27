@@ -8,12 +8,12 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 export interface IndustryAreasActionsProps {
-  industrySlug: string;
+  industryId: string;
   areaIndex?: number;
   areaTitle?: string;
 }
 
-export default function IndustryAreasActions({ industrySlug, areaIndex, areaTitle }: IndustryAreasActionsProps) {
+export default function IndustryAreasActions({ industryId, areaIndex, areaTitle }: IndustryAreasActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
 
@@ -27,12 +27,12 @@ export default function IndustryAreasActions({ industrySlug, areaIndex, areaTitl
   const { postData, loading: isRegenerating } = usePostData<any, any>({
     successMessage: `${sectionName} regenerated successfully!`,
     errorMessage: `Failed to regenerate ${sectionName}. Please try again.`,
-    redirectPath: `/industry-tariff-report/${industrySlug}/industry-areas`,
+    redirectPath: `/industry-tariff-report/${industryId}/industry-areas`,
   });
 
   const handleRegenerate = async () => {
     await postData(`${getBaseUrl()}/api/industry-tariff-reports/generate-industry-areas`, {
-      industry: industrySlug,
+      industry: industryId,
       areaIndex: areaIndex,
       areaTitle: areaTitle,
     });
@@ -49,9 +49,9 @@ export default function IndustryAreasActions({ industrySlug, areaIndex, areaTitl
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
             if (areaIndex !== undefined) {
-              router.push(`/industry-tariff-report/${industrySlug}/edit/industry-areas/${areaIndex}`);
+              router.push(`/industry-tariff-report/${industryId}/edit/industry-areas/${areaIndex}`);
             } else {
-              router.push(`/industry-tariff-report/${industrySlug}/edit/industry-areas`);
+              router.push(`/industry-tariff-report/${industryId}/edit/industry-areas`);
             }
           }
         }}

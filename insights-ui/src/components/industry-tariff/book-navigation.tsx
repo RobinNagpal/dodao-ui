@@ -1,19 +1,21 @@
 'use client';
 
-import type React from 'react';
+import { cn } from '@/lib/utils';
+
+import { getNumberOfHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { ChevronDown, ChevronRight, ChevronUp, FileText, Folder } from 'lucide-react';
 
 import Link from 'next/link';
-import { ChevronDown, ChevronRight, ChevronUp, FileText, Folder } from 'lucide-react';
-import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
+import type React from 'react';
 
 interface BookNavigationProps {
   report: IndustryTariffReport;
-  reportId: string;
+  industryId: string;
 }
 
-export default function BookNavigation({ report, reportId }: BookNavigationProps) {
+export default function BookNavigation({ report, industryId }: BookNavigationProps) {
   const pathname = usePathname();
 
   console.log('pathname', pathname);
@@ -34,67 +36,80 @@ export default function BookNavigation({ report, reportId }: BookNavigationProps
           title="Executive Summary"
           section="executive-summary"
           isExpanded={isSectionExpanded('executive-summary')}
-          reportId={reportId}
+          reportId={industryId}
           currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${reportId}/executive-summary`)}
+          isActive={isActive(`/industry-tariff-report/${industryId}/executive-summary`)}
         />
 
         <NavSection
           title="Introduction"
           section="introduction"
           isExpanded={isSectionExpanded('introduction')}
-          reportId={reportId}
+          reportId={industryId}
           currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${reportId}/introduction`)}
+          isActive={isActive(`/industry-tariff-report/${industryId}/introduction`)}
         />
 
         <NavSection
           title="Tariff Updates"
           section="tariff-updates"
           isExpanded={isSectionExpanded('tariff-updates')}
-          reportId={reportId}
+          reportId={industryId}
           currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${reportId}/tariff-updates`)}
+          isActive={isActive(`/industry-tariff-report/${industryId}/tariff-updates`)}
         />
 
         <NavSection
           title="Understand Industry"
           section="understand-industry"
-          reportId={reportId}
+          reportId={industryId}
           currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${reportId}/understand-industry`)}
+          isActive={isActive(`/industry-tariff-report/${industryId}/understand-industry`)}
         />
 
         <NavSection
           title="Industry Areas"
           section="industry-areas"
-          reportId={reportId}
+          reportId={industryId}
           currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${reportId}/industry-areas`)}
+          isActive={isActive(`/industry-tariff-report/${industryId}/industry-areas`)}
         />
 
         <NavSection
           title="Evaluate Industry Areas"
           section="evaluate-industry-areas"
           isExpanded={isSectionExpanded('evaluate-industry-areas')}
-          reportId={reportId}
+          reportId={industryId}
           currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${reportId}/evaluate-industry-areas`)}
+          isActive={isActive(`/industry-tariff-report/${industryId}/evaluate-industry-areas`)}
         >
-          <NavItem
-            title="Areas Evaluation"
-            href={`/industry-tariff-report/${reportId}/evaluate-industry-areas`}
-            isActive={pathname.includes(`/industry-tariff-report/${reportId}/evaluate-industry-areas`)}
-            isArray
-          />
+          {report.industryAreaHeadings.headings.flatMap((heading, index) => {
+            return heading.subHeadings.map((subHeading, subIndex) => {
+              const indexInArray = index * getNumberOfHeadings(industryId) + subIndex;
+              const evaluated = report?.evaluateIndustryAreas[indexInArray];
+              if (!evaluated) {
+                return null;
+              }
+
+              return (
+                <NavItem
+                  key={index + '-' + subIndex}
+                  title={evaluated.title}
+                  href={`/industry-tariff-report/${industryId}/evaluate-industry-areas/${index + '-' + subIndex}`}
+                  isActive={pathname.includes(`/industry-tariff-report/${industryId}/evaluate-industry-areas/${index + '-' + subIndex}`)}
+                  isArray
+                />
+              );
+            });
+          })}
         </NavSection>
 
         <NavSection
           title="Final Conclusion"
           section="final-conclusion"
-          reportId={reportId}
+          reportId={industryId}
           currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${reportId}/final-conclusion`)}
+          isActive={isActive(`/industry-tariff-report/${industryId}/final-conclusion`)}
         />
       </div>
     </div>

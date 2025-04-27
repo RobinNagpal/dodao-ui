@@ -8,12 +8,12 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 export interface TariffUpdatesActionsProps {
-  industrySlug: string;
+  industryId: string;
   tariffIndex?: number;
   countryName?: string;
 }
 
-export default function TariffUpdatesActions({ industrySlug, tariffIndex, countryName }: TariffUpdatesActionsProps) {
+export default function TariffUpdatesActions({ industryId, tariffIndex, countryName }: TariffUpdatesActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
 
@@ -27,12 +27,12 @@ export default function TariffUpdatesActions({ industrySlug, tariffIndex, countr
   const { postData, loading: isRegenerating } = usePostData<any, any>({
     successMessage: `${sectionName} regenerated successfully!`,
     errorMessage: `Failed to regenerate ${sectionName}. Please try again.`,
-    redirectPath: `/industry-tariff-report/${industrySlug}/tariff-updates`,
+    redirectPath: `/industry-tariff-report/${industryId}/tariff-updates`,
   });
 
   const handleRegenerate = async () => {
     await postData(`${getBaseUrl()}/api/industry-tariff-reports/generate-tariff-updates`, {
-      industry: industrySlug,
+      industry: industryId,
       date: new Date().toISOString().split('T')[0],
       tariffIndex: tariffIndex,
       countryName: countryName,
@@ -50,9 +50,9 @@ export default function TariffUpdatesActions({ industrySlug, tariffIndex, countr
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
             if (tariffIndex !== undefined) {
-              router.push(`/industry-tariff-report/${industrySlug}/edit/tariff-updates/country-specific-tariffs/${tariffIndex}`);
+              router.push(`/industry-tariff-report/${industryId}/edit/tariff-updates/country-specific-tariffs/${tariffIndex}`);
             } else {
-              router.push(`/industry-tariff-report/${industrySlug}/edit/tariff-updates`);
+              router.push(`/industry-tariff-report/${industryId}/edit/tariff-updates`);
             }
           }
         }}
