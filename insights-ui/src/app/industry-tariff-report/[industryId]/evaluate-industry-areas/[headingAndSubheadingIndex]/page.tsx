@@ -64,8 +64,8 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
       </div>
 
       {/* About section */}
-      <div className="mb-10">
-        <p>{evaluateIndustryArea.aboutParagraphs}</p>
+      <div className="mb-10 markdown-body">
+        <div dangerouslySetInnerHTML={{ __html: evaluateIndustryArea.aboutParagraphs ? parseMarkdown(evaluateIndustryArea.aboutParagraphs) : '' }} />
       </div>
 
       {/* Established Players section */}
@@ -77,12 +77,16 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
               <h3 className="text-lg font-medium mb-2">
                 {player.companyName} (Ticker: {player.companyTicker})
               </h3>
-              <p>
-                <strong>Description:</strong> {player.companyDescription}
-              </p>
-              <p>
-                <strong>Impact of Tariffs:</strong> {player.impactOfTariffs}
-              </p>
+              <div className="markdown-body">
+                <p>
+                  <strong>Description:</strong>{' '}
+                  <span dangerouslySetInnerHTML={{ __html: player.companyDescription ? parseMarkdown(player.companyDescription) : '' }} />
+                </p>
+                <p>
+                  <strong>Impact of Tariffs:</strong>{' '}
+                  <span dangerouslySetInnerHTML={{ __html: player.impactOfTariffs ? parseMarkdown(player.impactOfTariffs) : '' }} />
+                </p>
+              </div>
             </div>
           ))}
         </div>,
@@ -99,12 +103,16 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                 <h3 className="text-lg font-medium mb-2">
                   {challenger.companyName} (Ticker: {challenger.companyTicker})
                 </h3>
-                <p>
-                  <strong>Description:</strong> {challenger.companyDescription}
-                </p>
-                <p>
-                  <strong>Impact of Tariffs:</strong> {challenger.impactOfTariffs}
-                </p>
+                <div className="markdown-body">
+                  <p>
+                    <strong>Description:</strong>{' '}
+                    <span dangerouslySetInnerHTML={{ __html: challenger.companyDescription ? parseMarkdown(challenger.companyDescription) : '' }} />
+                  </p>
+                  <p>
+                    <strong>Impact of Tariffs:</strong>{' '}
+                    <span dangerouslySetInnerHTML={{ __html: challenger.impactOfTariffs ? parseMarkdown(challenger.impactOfTariffs) : '' }} />
+                  </p>
+                </div>
               </div>
             ))}
           </div>,
@@ -117,21 +125,17 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
         <div>
           <div className="mb-4">
             <h3 className="text-lg font-medium mb-2">Headwinds</h3>
-            <ul className="list-disc pl-5">
+            <ul className="list-disc pl-5 markdown-body">
               {evaluateIndustryArea.headwindsAndTailwinds.headwinds.map((item, idx) => (
-                <li key={idx} className="mb-2">
-                  {item}
-                </li>
+                <li key={idx} className="mb-2" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
               ))}
             </ul>
           </div>
           <div>
             <h3 className="text-lg font-medium mb-2">Tailwinds</h3>
-            <ul className="list-disc pl-5">
+            <ul className="list-disc pl-5 markdown-body">
               {evaluateIndustryArea.headwindsAndTailwinds.tailwinds.map((item, idx) => (
-                <li key={idx} className="mb-2">
-                  {item}
-                </li>
+                <li key={idx} className="mb-2" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
               ))}
             </ul>
           </div>
@@ -148,12 +152,14 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
             {evaluateIndustryArea.positiveTariffImpactOnCompanyType.map((impact, idx) => (
               <div key={idx} className="mb-3 p-3 border rounded">
                 <h4 className="font-medium">{impact.companyType}</h4>
-                <p>
-                  <strong>Impact:</strong> {impact.impact}
-                </p>
-                <p>
-                  <strong>Reasoning:</strong> {impact.reasoning}
-                </p>
+                <div className="markdown-body">
+                  <p>
+                    <strong>Impact:</strong> <span dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
+                  </p>
+                  <p>
+                    <strong>Reasoning:</strong> <span dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -162,12 +168,14 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
             {evaluateIndustryArea.negativeTariffImpactOnCompanyType.map((impact, idx) => (
               <div key={idx} className="mb-3 p-3 border rounded">
                 <h4 className="font-medium">{impact.companyType}</h4>
-                <p>
-                  <strong>Impact:</strong> {impact.impact}
-                </p>
-                <p>
-                  <strong>Reasoning:</strong> {impact.reasoning}
-                </p>
+                <div className="markdown-body">
+                  <p>
+                    <strong>Impact:</strong> <span dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
+                  </p>
+                  <p>
+                    <strong>Reasoning:</strong> <span dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -178,8 +186,8 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
       {/* Tariff Impact Summary section */}
       {renderSection(
         'Tariff Impact Summary',
-        <div className="prose max-w-none">
-          <p>{evaluateIndustryArea.tariffImpactSummary}</p>
+        <div className="prose max-w-none markdown-body">
+          <div dangerouslySetInnerHTML={{ __html: evaluateIndustryArea.tariffImpactSummary ? parseMarkdown(evaluateIndustryArea.tariffImpactSummary) : '' }} />
         </div>,
         EvaluateIndustryContent.TARIFF_IMPACT_SUMMARY
       )}
