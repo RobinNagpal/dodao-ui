@@ -5,53 +5,40 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 export interface TariffUpdatesActionsProps {
-  reportId: string;
+  industrySlug: string;
   tariffIndex?: number;
   countryName?: string;
 }
 
-export default function TariffUpdatesActions({ reportId, tariffIndex, countryName }: TariffUpdatesActionsProps) {
+export default function TariffUpdatesActions({ industrySlug, tariffIndex, countryName }: TariffUpdatesActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
-  const [isRegenerating, setIsRegenerating] = useState(false);
 
   const sectionName = countryName ? `${countryName} Tariffs` : 'Tariff Updates';
 
   const actions: EllipsisDropdownItem[] = [
     { key: 'regenerate', label: `Regenerate ${sectionName}` },
     { key: 'edit', label: `Edit ${sectionName}` },
-    { key: 'debug', label: `Debug ${sectionName}` },
   ];
 
-  const handleRegenerate = async () => {
-    try {
-      setIsRegenerating(true);
-      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/generate-tariff-updates`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          industry: reportId,
-          date: new Date().toISOString().split('T')[0],
-          tariffIndex: tariffIndex,
-          countryName: countryName,
-        }),
-      });
+  const { postData, loading: isRegenerating } = usePostData<any, any>({
+    successMessage: `${sectionName} regenerated successfully!`,
+    errorMessage: `Failed to regenerate ${sectionName}. Please try again.`,
+    redirectPath: `/industry-tariff-report/${industrySlug}/tariff-updates`,
+  });
 
-      if (response.ok) {
-        router.refresh();
-      } else {
-        console.error('Failed to regenerate section');
-      }
-    } catch (error) {
-      console.error('Error regenerating section:', error);
-    } finally {
-      setIsRegenerating(false);
-      setShowRegenerateModal(false);
-    }
+  const handleRegenerate = async () => {
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/generate-tariff-updates`, {
+      industry: industrySlug,
+      date: new Date().toISOString().split('T')[0],
+      tariffIndex: tariffIndex,
+      countryName: countryName,
+    });
+    router.refresh();
+    setShowRegenerateModal(false);
   };
 
   return (
@@ -63,15 +50,9 @@ export default function TariffUpdatesActions({ reportId, tariffIndex, countryNam
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
             if (tariffIndex !== undefined) {
-              router.push(`/industry-tariff-report/${reportId}/edit/tariff-updates/country-specific-tariffs/${tariffIndex}`);
+              router.push(`/industry-tariff-report/${industrySlug}/edit/tariff-updates/country-specific-tariffs/${tariffIndex}`);
             } else {
-              router.push(`/industry-tariff-report/${reportId}/edit/tariff-updates`);
-            }
-          } else if (key === 'debug') {
-            if (tariffIndex !== undefined) {
-              router.push(`/industry-tariff-report/${reportId}/debug/tariff-updates/country-specific-tariffs/${tariffIndex}`);
-            } else {
-              router.push(`/industry-tariff-report/${reportId}/debug/tariff-updates`);
+              router.push(`/industry-tariff-report/${industrySlug}/edit/tariff-updates`);
             }
           }
         }}

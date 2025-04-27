@@ -5,58 +5,31 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 export interface UnderstandIndustryActionsProps {
-  reportId: string;
-  sectionIndex?: number;
-  sectionTitle?: string;
+  industrySlug: string;
 }
 
-export default function UnderstandIndustryActions({ reportId, sectionIndex, sectionTitle }: UnderstandIndustryActionsProps) {
+export default function UnderstandIndustryActions({ industrySlug }: UnderstandIndustryActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
-  const [isRegenerating, setIsRegenerating] = useState(false);
-
-  const sectionName = sectionTitle || 'Industry Understanding';
 
   const actions: EllipsisDropdownItem[] = [
-    { key: 'regenerate', label: `Regenerate ${sectionName}` },
-    { key: 'edit', label: `Edit ${sectionName}` },
-    { key: 'debug', label: `Debug ${sectionName}` },
+    { key: 'regenerate', label: `Regenerate Understand Industry Section` },
+    { key: 'edit', label: `Edit Understand Industry Section` },
   ];
 
-  const handleRegenerate = async () => {
-    try {
-      setIsRegenerating(true);
-      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}/regenerate-section`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(
-          sectionIndex !== undefined
-            ? {
-                section: 'understandIndustry',
-                subSection: 'sections',
-                index: sectionIndex,
-              }
-            : {
-                section: 'understandIndustry',
-              }
-        ),
-      });
+  const { postData, loading: isRegenerating } = usePostData<any, any>({
+    successMessage: `Understand Industry Section regenerated successfully!`,
+    errorMessage: `Failed to regenerate Understand Industry Section. Please try again.`,
+    redirectPath: `/industry-tariff-report/${industrySlug}/understand-industry`,
+  });
 
-      if (response.ok) {
-        router.refresh();
-      } else {
-        console.error('Failed to regenerate section');
-      }
-    } catch (error) {
-      console.error('Error regenerating section:', error);
-    } finally {
-      setIsRegenerating(false);
-      setShowRegenerateModal(false);
-    }
+  const handleRegenerate = async () => {
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}/regenerate-section`, {});
+    router.refresh();
+    setShowRegenerateModal(false);
   };
 
   return (
@@ -66,18 +39,6 @@ export default function UnderstandIndustryActions({ reportId, sectionIndex, sect
         onSelect={async (key) => {
           if (key === 'regenerate') {
             setShowRegenerateModal(true);
-          } else if (key === 'edit') {
-            if (sectionIndex !== undefined) {
-              router.push(`/industry-tariff-report/${reportId}/edit/understand-industry/sections/${sectionIndex}`);
-            } else {
-              router.push(`/industry-tariff-report/${reportId}/edit/understand-industry`);
-            }
-          } else if (key === 'debug') {
-            if (sectionIndex !== undefined) {
-              router.push(`/industry-tariff-report/${reportId}/debug/understand-industry/sections/${sectionIndex}`);
-            } else {
-              router.push(`/industry-tariff-report/${reportId}/debug/understand-industry`);
-            }
           }
         }}
       />
@@ -86,8 +47,8 @@ export default function UnderstandIndustryActions({ reportId, sectionIndex, sect
           open={showRegenerateModal}
           onClose={() => setShowRegenerateModal(false)}
           onConfirm={handleRegenerate}
-          title={`Regenerate ${sectionName}`}
-          confirmationText={`Are you sure you want to regenerate the ${sectionName.toLowerCase()}? This will replace the current content.`}
+          title={`Regenerate Understand Industry Section`}
+          confirmationText={`Are you sure you want to regenerate the Understand Industry Section? This will replace the current content.`}
           confirming={isRegenerating}
           askForTextInput={false}
         />

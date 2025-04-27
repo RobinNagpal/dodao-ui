@@ -11,11 +11,11 @@ import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tar
 import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 
-export async function generateMetadata({ params }: { params: Promise<{ reportId: string }> }): Promise<Metadata> {
-  const { reportId } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ industrySlug: string }> }): Promise<Metadata> {
+  const { industrySlug } = await params;
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}`, { cache: 'no-cache' });
   let reportData: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -23,9 +23,9 @@ export async function generateMetadata({ params }: { params: Promise<{ reportId:
   }
 
   // Extract industry name or use report ID as fallback
-  const industryName = reportData?.executiveSummary?.title || `Industry Report ${reportId}`;
+  const industryName = reportData?.executiveSummary?.title || `Industry Report ${industrySlug}`;
   const shortDescription = `Comprehensive tariff analysis for ${industryName}. Explore industry insights, tariff impacts, and company evaluations.`;
-  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${reportId}`;
+  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industrySlug}`;
 
   const dynamicKeywords = [industryName, 'tariff analysis', 'industry report', 'tariff impacts', 'industry evaluation', 'KoalaGains'];
 
@@ -51,16 +51,16 @@ export async function generateMetadata({ params }: { params: Promise<{ reportId:
   };
 }
 
-export default async function IndustryTariffReportLayout({ children, params }: { children: React.ReactNode; params: Promise<{ reportId: string }> }) {
+export default async function IndustryTariffReportLayout({ children, params }: { children: React.ReactNode; params: Promise<{ industrySlug: string }> }) {
   const paa = await params;
-  const { reportId } = paa;
+  const { industrySlug } = paa;
   const heads = await headers();
 
   const pathname = heads.get('next-url');
   console.log(`Pathname: ${pathname}`);
   console.log(`Pathname: ${JSON.stringify(paa)}`);
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}`, { cache: 'no-cache' });
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -87,8 +87,8 @@ export default async function IndustryTariffReportLayout({ children, params }: {
       current: false,
     },
     {
-      name: report.executiveSummary?.title || `Report ${reportId}`,
-      href: `/industry-tariff-report/${reportId}`,
+      name: report.executiveSummary?.title || `Report ${industrySlug}`,
+      href: `/industry-tariff-report/${industrySlug}`,
       current: true,
     },
   ];
@@ -101,14 +101,14 @@ export default async function IndustryTariffReportLayout({ children, params }: {
           {/* Private Actions Dropdown */}
           <div className="flex justify-end mb-4">
             <PrivateWrapper>
-              <ReportActionsDropdown reportId={reportId} />
+              <ReportActionsDropdown industrySlug={industrySlug} />
             </PrivateWrapper>
           </div>
 
           {/* Book UI with Navigation and Content */}
           <div className="flex min-h-[calc(100vh-10rem)] overflow-hidden rounded-lg border border-color background-color shadow-lg">
             {/* Left side - Book spine/navigation */}
-            <BookNavigation report={report} reportId={reportId} />
+            <BookNavigation report={report} industrySlug={industrySlug} />
 
             {/* Right side - Book content */}
             <div className="flex-1 bg-background p-8">

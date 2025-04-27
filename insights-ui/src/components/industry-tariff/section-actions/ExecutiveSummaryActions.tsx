@@ -5,45 +5,31 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 export interface ExecutiveSummaryActionsProps {
-  reportId: string;
+  industrySlug: string;
 }
 
-export default function ExecutiveSummaryActions({ reportId }: ExecutiveSummaryActionsProps) {
+export default function ExecutiveSummaryActions({ industrySlug }: ExecutiveSummaryActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
-  const [isRegenerating, setIsRegenerating] = useState(false);
 
   const actions: EllipsisDropdownItem[] = [
     { key: 'regenerate', label: 'Regenerate Summary' },
     { key: 'edit', label: 'Edit Summary' },
-    { key: 'debug', label: 'Debug Summary' },
   ];
 
-  const handleRegenerate = async () => {
-    try {
-      setIsRegenerating(true);
-      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}/generate-executive-summary`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({}),
-      });
+  const { postData, loading: isRegenerating } = usePostData<any, any>({
+    successMessage: 'Executive summary regenerated successfully!',
+    errorMessage: 'Failed to regenerate executive summary. Please try again.',
+    redirectPath: `/industry-tariff-report/${industrySlug}/executive-summary`,
+  });
 
-      if (response.ok) {
-        // Refresh the page to show the regenerated content
-        router.refresh();
-      } else {
-        console.error('Failed to regenerate section');
-      }
-    } catch (error) {
-      console.error('Error regenerating section:', error);
-    } finally {
-      setIsRegenerating(false);
-      setShowRegenerateModal(false);
-    }
+  const handleRegenerate = async () => {
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}/generate-executive-summary`, {});
+    router.refresh();
+    setShowRegenerateModal(false);
   };
 
   return (
@@ -54,9 +40,7 @@ export default function ExecutiveSummaryActions({ reportId }: ExecutiveSummaryAc
           if (key === 'regenerate') {
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
-            router.push(`/industry-tariff-report/${reportId}/edit/executive-summary`);
-          } else if (key === 'debug') {
-            router.push(`/industry-tariff-report/${reportId}/debug/executive-summary`);
+            router.push(`/industry-tariff-report/${industrySlug}/edit/executive-summary`);
           }
         }}
       />

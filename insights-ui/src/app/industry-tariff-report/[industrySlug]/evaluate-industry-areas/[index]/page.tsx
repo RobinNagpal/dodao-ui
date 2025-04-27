@@ -4,12 +4,12 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-actions/EvaluateIndustryAreasActions';
 import Link from 'next/link';
 
-export default async function EvaluateIndustryAreaPage({ params }: { params: Promise<{ reportId: string; index: string }> }) {
-  const { reportId, index } = await params;
+export default async function EvaluateIndustryAreaPage({ params }: { params: Promise<{ industrySlug: string; index: string }> }) {
+  const { industrySlug, index } = await params;
   const areaIndex = Number.parseInt(index, 10);
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}`, { cache: 'no-cache' });
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -26,7 +26,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
     <div>
       <div className="flex justify-end mb-4">
         <PrivateWrapper>
-          <EvaluateIndustryAreasActions reportId={reportId} areaIndex={areaIndex} areaTitle={area.title} />
+          <EvaluateIndustryAreasActions industrySlug={industrySlug} areaIndex={areaIndex} areaTitle={area.title} />
         </PrivateWrapper>
       </div>
 
@@ -49,7 +49,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
               <h3 className="text-lg font-medium mb-2 heading-color">{company.companyName}</h3>
               <p className="mb-2">{company.companyDescription.substring(0, 150)}...</p>
               <Link
-                href={`/industry-tariff-report/${reportId}/evaluate-industry-areas/${areaIndex}/new-challengers/${idx}`}
+                href={`/industry-tariff-report/${industrySlug}/evaluate-industry-areas/${areaIndex}/new-challengers/${idx}`}
                 className="link-color hover:underline"
               >
                 View details
@@ -67,7 +67,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
               <h3 className="text-lg font-medium mb-2 heading-color">{company.companyName}</h3>
               <p className="mb-2">{company.companyDescription.substring(0, 150)}...</p>
               <Link
-                href={`/industry-tariff-report/${reportId}/evaluate-industry-areas/${areaIndex}/established-players/${idx}`}
+                href={`/industry-tariff-report/${industrySlug}/evaluate-industry-areas/${areaIndex}/established-players/${idx}`}
                 className="link-color hover:underline"
               >
                 View details
@@ -79,7 +79,10 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
 
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-4 heading-color">Headwinds & Tailwinds</h2>
-        <Link href={`/industry-tariff-report/${reportId}/evaluate-industry-areas/${areaIndex}/headwinds-and-tailwinds`} className="link-color hover:underline">
+        <Link
+          href={`/industry-tariff-report/${industrySlug}/evaluate-industry-areas/${areaIndex}/headwinds-and-tailwinds`}
+          className="link-color hover:underline"
+        >
           View headwinds and tailwinds
         </Link>
       </div>
@@ -89,13 +92,13 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
         <p className="mb-4">{area.tariffImpactSummary}</p>
         <div className="space-y-4">
           <Link
-            href={`/industry-tariff-report/${reportId}/evaluate-industry-areas/${areaIndex}/positive-tariff-impact`}
+            href={`/industry-tariff-report/${industrySlug}/evaluate-industry-areas/${areaIndex}/positive-tariff-impact`}
             className="link-color hover:underline block"
           >
             View positive tariff impacts
           </Link>
           <Link
-            href={`/industry-tariff-report/${reportId}/evaluate-industry-areas/${areaIndex}/negative-tariff-impact`}
+            href={`/industry-tariff-report/${industrySlug}/evaluate-industry-areas/${areaIndex}/negative-tariff-impact`}
             className="link-color hover:underline block"
           >
             View negative tariff impacts

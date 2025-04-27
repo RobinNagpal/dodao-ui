@@ -5,16 +5,16 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 export interface FinalConclusionActionsProps {
-  reportId: string;
+  industrySlug: string;
   sectionKey?: string;
 }
 
-export default function FinalConclusionActions({ reportId, sectionKey }: FinalConclusionActionsProps) {
+export default function FinalConclusionActions({ industrySlug, sectionKey }: FinalConclusionActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
-  const [isRegenerating, setIsRegenerating] = useState(false);
 
   const sectionName = sectionKey
     ? sectionKey === 'positiveImpacts'
@@ -27,35 +27,21 @@ export default function FinalConclusionActions({ reportId, sectionKey }: FinalCo
   const actions: EllipsisDropdownItem[] = [
     { key: 'regenerate', label: `Regenerate ${sectionName}` },
     { key: 'edit', label: `Edit ${sectionName}` },
-    { key: 'debug', label: `Debug ${sectionName}` },
   ];
 
-  const handleRegenerate = async () => {
-    try {
-      setIsRegenerating(true);
-      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/generate-final-conclusion`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          industry: reportId,
-          sectionKey: sectionKey,
-        }),
-      });
+  const { postData, loading: isRegenerating } = usePostData<any, any>({
+    successMessage: `${sectionName} regenerated successfully!`,
+    errorMessage: `Failed to regenerate ${sectionName}. Please try again.`,
+    redirectPath: `/industry-tariff-report/${industrySlug}/final-conclusion`,
+  });
 
-      if (response.ok) {
-        // Refresh the page to show the regenerated content
-        router.refresh();
-      } else {
-        console.error('Failed to regenerate section');
-      }
-    } catch (error) {
-      console.error('Error regenerating section:', error);
-    } finally {
-      setIsRegenerating(false);
-      setShowRegenerateModal(false);
-    }
+  const handleRegenerate = async () => {
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/generate-final-conclusion`, {
+      industry: industrySlug,
+      sectionKey: sectionKey,
+    });
+    router.refresh();
+    setShowRegenerateModal(false);
   };
 
   return (
@@ -68,14 +54,8 @@ export default function FinalConclusionActions({ reportId, sectionKey }: FinalCo
           } else if (key === 'edit') {
             router.push(
               sectionKey
-                ? `/industry-tariff-report/${reportId}/edit/final-conclusion/${sectionKey}`
-                : `/industry-tariff-report/${reportId}/edit/final-conclusion`
-            );
-          } else if (key === 'debug') {
-            router.push(
-              sectionKey
-                ? `/industry-tariff-report/${reportId}/debug/final-conclusion/${sectionKey}`
-                : `/industry-tariff-report/${reportId}/debug/final-conclusion`
+                ? `/industry-tariff-report/${industrySlug}/edit/final-conclusion/${sectionKey}`
+                : `/industry-tariff-report/${industrySlug}/edit/final-conclusion`
             );
           }
         }}

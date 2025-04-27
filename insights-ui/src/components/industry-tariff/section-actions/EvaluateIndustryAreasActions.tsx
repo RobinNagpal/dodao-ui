@@ -5,18 +5,18 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 export interface EvaluateIndustryAreasActionsProps {
-  reportId: string;
+  industrySlug: string;
   areaIndex?: number;
   areaTitle?: string;
   subSection?: string;
 }
 
-export default function EvaluateIndustryAreasActions({ reportId, areaIndex, areaTitle, subSection }: EvaluateIndustryAreasActionsProps) {
+export default function EvaluateIndustryAreasActions({ industrySlug, areaIndex, areaTitle, subSection }: EvaluateIndustryAreasActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
-  const [isRegenerating, setIsRegenerating] = useState(false);
 
   let sectionName = areaTitle || 'Industry Area Evaluation';
 
@@ -32,63 +32,35 @@ export default function EvaluateIndustryAreasActions({ reportId, areaIndex, area
   const actions: EllipsisDropdownItem[] = [
     { key: 'regenerate', label: `Regenerate ${sectionName}` },
     { key: 'edit', label: `Edit ${sectionName}` },
-    { key: 'debug', label: `Debug ${sectionName}` },
   ];
 
+  const { postData, loading: isRegenerating } = usePostData<any, any>({
+    successMessage: `${sectionName} regenerated successfully!`,
+    errorMessage: `Failed to regenerate ${sectionName}. Please try again.`,
+    redirectPath: `/industry-tariff-report/${industrySlug}/evaluate-industry-areas`,
+  });
+
   const handleRegenerate = async () => {
-    try {
-      setIsRegenerating(true);
+    const payload: any = {};
 
-      const payload: any = {};
+    if (areaIndex !== undefined) {
+      payload.section = 'evaluateIndustryAreas';
+      payload.index = areaIndex;
 
-      if (areaIndex !== undefined) {
-        payload.section = 'evaluateIndustryAreas';
-        payload.index = areaIndex;
-
-        if (subSection) {
-          payload.subSection = subSection;
-        }
-      } else {
-        payload.section = 'evaluateIndustryAreas';
+      if (subSection) {
+        payload.subSection = subSection;
       }
-
-      const response = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}/regenerate-section`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (response.ok) {
-        router.refresh();
-      } else {
-        console.error('Failed to regenerate section');
-      }
-    } catch (error) {
-      console.error('Error regenerating section:', error);
-    } finally {
-      setIsRegenerating(false);
-      setShowRegenerateModal(false);
+    } else {
+      payload.section = 'evaluateIndustryAreas';
     }
+
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}/regenerate-section`, payload);
+    router.refresh();
+    setShowRegenerateModal(false);
   };
 
   const getEditPath = () => {
-    let path = `/industry-tariff-report/${reportId}/edit/evaluate-industry-areas`;
-
-    if (areaIndex !== undefined) {
-      path += `/${areaIndex}`;
-
-      if (subSection) {
-        path += `/${subSection}`;
-      }
-    }
-
-    return path;
-  };
-
-  const getDebugPath = () => {
-    let path = `/industry-tariff-report/${reportId}/debug/evaluate-industry-areas`;
+    let path = `/industry-tariff-report/${industrySlug}/edit/evaluate-industry-areas`;
 
     if (areaIndex !== undefined) {
       path += `/${areaIndex}`;
@@ -110,8 +82,6 @@ export default function EvaluateIndustryAreasActions({ reportId, areaIndex, area
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
             router.push(getEditPath());
-          } else if (key === 'debug') {
-            router.push(getDebugPath());
           }
         }}
       />

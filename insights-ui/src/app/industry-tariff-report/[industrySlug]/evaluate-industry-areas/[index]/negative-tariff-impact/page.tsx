@@ -3,12 +3,12 @@ import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tar
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-actions/EvaluateIndustryAreasActions';
 
-export default async function PositiveTariffImpactPage({ params }: { params: Promise<{ reportId: string; index: string }> }) {
-  const { reportId, index } = await params;
+export default async function NegativeTariffImpactPage({ params }: { params: Promise<{ industrySlug: string; index: string }> }) {
+  const { industrySlug, index } = await params;
   const areaIndex = Number.parseInt(index, 10);
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}`, { cache: 'no-cache' });
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -20,20 +20,25 @@ export default async function PositiveTariffImpactPage({ params }: { params: Pro
   }
 
   const area = report.evaluateIndustryAreas[areaIndex];
-  const { positiveTariffImpactOnCompanyType } = area;
+  const { negativeTariffImpactOnCompanyType } = area;
 
   return (
     <div>
       <div className="flex justify-end mb-4">
         <PrivateWrapper>
-          <EvaluateIndustryAreasActions reportId={reportId} areaIndex={areaIndex} areaTitle={area.title} subSection="positiveTariffImpactOnCompanyType" />
+          <EvaluateIndustryAreasActions
+            industrySlug={industrySlug}
+            areaIndex={areaIndex}
+            areaTitle={area.title}
+            subSection="negativeTariffImpactOnCompanyType"
+          />
         </PrivateWrapper>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6 heading-color">Positive Tariff Impact: {area.title}</h1>
+      <h1 className="text-2xl font-bold mb-6 heading-color">Negative Tariff Impact: {area.title}</h1>
 
       <div className="mb-8 space-y-6">
-        {positiveTariffImpactOnCompanyType.map((impact, idx) => (
+        {negativeTariffImpactOnCompanyType.map((impact, idx) => (
           <div key={idx} className="border rounded-md p-4">
             <h2 className="text-xl font-semibold mb-2 heading-color">{impact.companyType}</h2>
             <div className="mb-4">

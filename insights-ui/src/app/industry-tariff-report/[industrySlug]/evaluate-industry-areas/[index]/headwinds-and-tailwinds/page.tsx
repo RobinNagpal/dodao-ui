@@ -3,12 +3,12 @@ import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tar
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-actions/EvaluateIndustryAreasActions';
 
-export default async function HeadwindsAndTailwindsPage({ params }: { params: Promise<{ reportId: string; index: string }> }) {
-  const { reportId, index } = await params;
+export default async function HeadwindsAndTailwindsPage({ params }: { params: Promise<{ industrySlug: string; index: string }> }) {
+  const { industrySlug, index } = await params;
   const areaIndex = Number.parseInt(index, 10);
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}`, { cache: 'no-cache' });
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -26,7 +26,7 @@ export default async function HeadwindsAndTailwindsPage({ params }: { params: Pr
     <div>
       <div className="flex justify-end mb-4">
         <PrivateWrapper>
-          <EvaluateIndustryAreasActions reportId={reportId} areaIndex={areaIndex} areaTitle={area.title} subSection="headwindsAndTailwinds" />
+          <EvaluateIndustryAreasActions industrySlug={industrySlug} areaIndex={areaIndex} areaTitle={area.title} subSection="headwindsAndTailwinds" />
         </PrivateWrapper>
       </div>
 

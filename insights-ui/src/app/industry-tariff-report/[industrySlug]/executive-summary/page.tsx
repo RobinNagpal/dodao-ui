@@ -5,11 +5,11 @@ import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tar
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
-export default async function ExecutiveSummaryPage({ params }: { params: Promise<{ reportId: string }> }) {
-  const { reportId } = await params;
+export default async function ExecutiveSummaryPage({ params }: { params: Promise<{ industrySlug: string }> }) {
+  const { industrySlug } = await params;
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${reportId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industrySlug}`, { cache: 'no-cache' });
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -25,7 +25,7 @@ export default async function ExecutiveSummaryPage({ params }: { params: Promise
     <div>
       <div className="flex justify-end mb-4">
         <PrivateWrapper>
-          <ExecutiveSummaryActions reportId={reportId} />
+          <ExecutiveSummaryActions industrySlug={industrySlug} />
         </PrivateWrapper>
       </div>
 
