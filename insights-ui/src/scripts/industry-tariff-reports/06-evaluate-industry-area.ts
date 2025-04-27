@@ -6,9 +6,11 @@ import { z } from 'zod';
 import { generateChartUrls, img } from '../chart-utils';
 import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
 import {
+  ChartEntityType,
   EstablishedPlayer,
   EstablishedPlayersArray,
   EvaluateIndustryArea,
+  EvaluateIndustryContent,
   HeadwindsAndTailwinds,
   IndustryAreaHeadings,
   IndustrySubHeading,
@@ -481,15 +483,6 @@ export async function getAndWriteEvaluateIndustryAreaJson(
   fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2), 'utf-8');
 }
 
-export enum EvaluateIndustryContent {
-  ALL = 'ALL',
-  ESTABLISHED_PLAYERS = 'ESTABLISHED_PLAYERS',
-  NEW_CHALLENGERS = 'NEW_CHALLENGERS',
-  HEADWINDS_AND_TAILWINDS = 'HEADWINDS_AND_TAILWINDS',
-  TARIFF_IMPACT_BY_COMPANY_TYPE = 'TARIFF_IMPACT_BY_COMPANY_TYPE',
-  TARIFF_IMPACT_SUMMARY = 'TARIFF_IMPACT_SUMMARY',
-}
-
 export async function regenerateTariffImpactSummary(
   tariffUpdates: TariffUpdatesForIndustry,
   industryArea: IndustrySubHeading,
@@ -557,16 +550,6 @@ export async function regenerateEvaluateIndustryAreaJson(
   // write updated file and markdown
   fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2), 'utf-8');
   writeEvaluateIndustryAreaToMarkdownFile(tariffIndustry.name, industryArea, headings, result);
-}
-
-export enum ChartEntityType {
-  NEW_CHALLENGER = 'NEW_CHALLENGER',
-  ESTABLISHED_PLAYER = 'ESTABLISHED_PLAYER',
-  HEADWINDS = 'HEADWINDS',
-  TAILWINDS = 'TAILWINDS',
-  POSITIVE_IMPACT = 'POSITIVE_IMPACT',
-  NEGATIVE_IMPACT = 'NEGATIVE_IMPACT',
-  SUMMARY = 'SUMMARY',
 }
 
 /**

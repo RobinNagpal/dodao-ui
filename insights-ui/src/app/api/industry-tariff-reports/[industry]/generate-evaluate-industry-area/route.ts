@@ -1,26 +1,28 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { IndustryTariffReport, TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { EvaluateIndustryContent, IndustryTariffReport, TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import {
   getAndWriteEvaluateIndustryAreaJson,
   readEvaluateIndustryAreaJsonFromFile,
+  regenerateEvaluateIndustryAreaJson,
   writeEvaluateIndustryAreaToMarkdownFile,
 } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import { readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 
-interface GenerateEvaluateIndustryAreaRequest {
+export interface GenerateEvaluateIndustryAreaRequest {
   companiesToIgnore?: string[];
   date: string;
   headingIndex: number;
   subHeadingIndex: number;
+  sectionType?: EvaluateIndustryContent;
 }
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
   const request = (await req.json()) as GenerateEvaluateIndustryAreaRequest;
-  const { companiesToIgnore = [], date, headingIndex, subHeadingIndex } = request;
+  const { companiesToIgnore = [], date, headingIndex, subHeadingIndex, sectionType = EvaluateIndustryContent.ALL } = request;
 
   if (!industry || !date || headingIndex === undefined || subHeadingIndex === undefined) {
     throw new Error('Industry, date, headingIndex, and subHeadingIndex are required');
@@ -38,8 +40,13 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   const tariff = readTariffUpdatesFromFile(industry);
   const area = headings.headings[headingIndex].subHeadings[subHeadingIndex];
 
-  // Generate the evaluation
-  await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date);
+  // Generate the evaluation based on section type
+  if (sectionType === EvaluateIndustryContent.ALL) {
+    await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date);
+  } else {
+    await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType);
+  }
+
   const evaluated = readEvaluateIndustryAreaJsonFromFile(industry, area, headings);
   writeEvaluateIndustryAreaToMarkdownFile(industry, area, headings, evaluated);
 
