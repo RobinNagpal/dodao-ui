@@ -1,5 +1,6 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-actions/EvaluateIndustryAreasActions';
+import { establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-markdown';
 
 import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { EvaluateIndustryContent, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -72,23 +73,15 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
       {renderSection(
         'Established Players',
         <div>
-          {evaluateIndustryArea.establishedPlayers.map((player, idx) => (
-            <div key={idx} className="mb-6 p-4 border rounded">
-              <h3 className="text-lg font-medium mb-2">
-                {player.companyName} (Ticker: {player.companyTicker})
-              </h3>
-              <div className="markdown-body">
-                <p>
-                  <strong>Description:</strong>{' '}
-                  <span dangerouslySetInnerHTML={{ __html: player.companyDescription ? parseMarkdown(player.companyDescription) : '' }} />
-                </p>
-                <p>
-                  <strong>Impact of Tariffs:</strong>{' '}
-                  <span dangerouslySetInnerHTML={{ __html: player.impactOfTariffs ? parseMarkdown(player.impactOfTariffs) : '' }} />
-                </p>
+          {evaluateIndustryArea.establishedPlayers.map((player, idx) => {
+            const markdown = establishedPlayerToMarkdown(player);
+            const renderedMarkdown = markdown && parseMarkdown(markdown);
+            return (
+              <div key={idx} className="mb-6 p-4 border rounded">
+                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>,
         EvaluateIndustryContent.ESTABLISHED_PLAYERS
       )}
@@ -98,23 +91,15 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
         renderSection(
           'New Challengers',
           <div>
-            {evaluateIndustryArea.newChallengers.map((challenger, idx) => (
-              <div key={idx} className="mb-6 p-4 border rounded">
-                <h3 className="text-lg font-medium mb-2">
-                  {challenger.companyName} (Ticker: {challenger.companyTicker})
-                </h3>
-                <div className="markdown-body">
-                  <p>
-                    <strong>Description:</strong>{' '}
-                    <span dangerouslySetInnerHTML={{ __html: challenger.companyDescription ? parseMarkdown(challenger.companyDescription) : '' }} />
-                  </p>
-                  <p>
-                    <strong>Impact of Tariffs:</strong>{' '}
-                    <span dangerouslySetInnerHTML={{ __html: challenger.impactOfTariffs ? parseMarkdown(challenger.impactOfTariffs) : '' }} />
-                  </p>
+            {evaluateIndustryArea.newChallengers.map((challenger, idx) => {
+              const markdown = establishedPlayerToMarkdown(challenger);
+              const renderedMarkdown = markdown && parseMarkdown(markdown);
+              return (
+                <div key={idx} className="mb-6 p-4 border rounded">
+                  <div className="markdown-body" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>,
           EvaluateIndustryContent.NEW_CHALLENGERS
         )}
