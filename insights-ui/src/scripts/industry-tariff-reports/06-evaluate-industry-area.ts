@@ -1,11 +1,11 @@
-import { challengerToMarkdown, establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-markdown';
-import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/llm-utils';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
+import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/llm-utils';
 import { generateChartUrls, img } from '../chart-utils';
 import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
+import { challengerToMarkdown, establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-markdown';
 import {
   ChartEntityType,
   EstablishedPlayer,
@@ -93,6 +93,51 @@ const NegativeTariffImpactOnCompanyTypeSchema = z.object({
   reasoning: z.string().describe('Rationale for the projected impact'),
 });
 
+/**
+ * Creates a standard prompt format for industry sector analysis
+ */
+function createIndustrySectorPrompt({
+  industry,
+  headings,
+  tariffUpdates,
+  date,
+  instructions,
+  context = {},
+}: {
+  industry: IndustrySubHeading;
+  headings: IndustryAreaHeadings;
+  tariffUpdates: TariffUpdatesForIndustry;
+  date: string;
+  instructions: string;
+  context?: Record<string, any>;
+}): string {
+  const commonPrompt = `
+${instructions}
+
+Tariff Updates: ${JSON.stringify(tariffUpdates)}
+Date: ${date}
+
+${outputInstructions}
+
+The analysis should be only for the ${industry.title} sector. 
+Do not include any data from other headings or subheadings as they will be covered separately.
+Make sure to focus just on the ${industry.title} sector and not on other headings or subheadings.
+
+# All the industry areas. You need to only cover the ${industry.title} area.
+${JSON.stringify(headings, null, 2)}
+`;
+
+  // Add any additional context if provided
+  const contextStr = Object.entries(context)
+    .map(([key, value]) => `# ${key}:\n${typeof value === 'string' ? value : JSON.stringify(value, null, 2)}`)
+    .join('\n\n');
+
+  return contextStr ? `${commonPrompt}\n\n${contextStr}` : commonPrompt;
+}
+
+/**
+ * Get established players with structured data
+ */
 async function getEstablishedPlayers(
   tariffIndustry: TariffReportIndustry,
   headings: IndustryAreaHeadings,
@@ -100,7 +145,7 @@ async function getEstablishedPlayers(
   industry: IndustrySubHeading,
   date: string
 ): Promise<EstablishedPlayer[]> {
-  const prompt = `Evaluate the following section for *Established Players* in the ${industry.title} sector based on these instructions:
+  const instructions = `Evaluate the following section for *Established Players* in the ${industry.title} sector based on these instructions:
 - Focus on public US companies with 5+ years in the sector.
 - Focus on US based companies.
 - Provide three top established players.
@@ -109,30 +154,25 @@ async function getEstablishedPlayers(
 - Output JSON array matching EstablishedPlayerSchema.
 - Ignore companies like ${tariffIndustry.companiesToIgnore.join(', ')} as they are no longer active.
 - Make sure the companies are active and are being publicly traded as of ${date} on Nasdaq or NYSE.
-- The company should be traded on US exchanges i.e. Nasdaq or NYSE.
+- The company should be traded on US exchanges i.e. Nasdaq or NYSE.`;
 
-${outputInstructions}
+  const context = {
+    'Industry Summary': industry.oneLineSummary,
+    'Key Companies': industry.companies.map((c) => c.name).join(', '),
+  };
 
-Industry Summary: ${industry.oneLineSummary}
-Key Companies: ${industry.companies.map((c) => c.name).join(', ')}
-
-Tariff Updates: ${JSON.stringify(tariffUpdates)}
-Date: ${date}
-
-
-The selected companies should be just from the ${industry.title} sector. 
-Do not include any companies from other headings or subheadings as they will be covered separately.
-Make sure to select companies just from the ${industry.title} sector and not from other headings or subheadings.
-
-# All the industry areas. You need to only cover the ${industry.title} area.
-${JSON.stringify(headings, null, 2)}
-
-`;
+  const prompt = createIndustrySectorPrompt({
+    industry,
+    headings,
+    tariffUpdates,
+    date,
+    instructions,
+    context,
+  });
 
   return (await getLlmResponse<EstablishedPlayersArray>(prompt, EstablishedPlayersArraySchema)).establishedPlayers;
 }
 
-// 2. New Challengers
 // A minimal schema for step 1: name + ticker only
 const NewChallengerListSchema = z.object({
   newChallengers: z.array(
@@ -143,6 +183,9 @@ const NewChallengerListSchema = z.object({
   ),
 });
 
+/**
+ * Get new challengers using a two-step approach for better results
+ */
 async function getNewChallengers(
   tariffIndustry: TariffReportIndustry,
   headings: IndustryAreaHeadings,
@@ -151,13 +194,15 @@ async function getNewChallengers(
   establishedPlayers: EstablishedPlayer[],
   date: string
 ): Promise<NewChallenger[]> {
+  const logger = (message: string) => console.log(`[NewChallengers] ${message}`);
+
   // --- STEP 1: Fetch just names + tickers ---
-  console.log('[NewChallengers] → Fetching list of names and tickers');
-  const listPrompt = `
+  logger('→ Fetching list of names and tickers');
+
+  const listInstructions = `
 Evaluate the *New Challengers* in the ${industry.title} sector **but output only** each company's **name** and **ticker** in JSON:
 - Select three public US companies IPO'd in the last 7 years.
 - Ignore any Chinese companies.
-- Output JSON matching:
 - Make sure the companies are active and are being publicly traded as of ${date} on Nasdaq or NYSE.
 - The company should be traded on US exchanges i.e. Nasdaq or NYSE.
 - Dont return duplicate companies.
@@ -165,42 +210,32 @@ Evaluate the *New Challengers* in the ${industry.title} sector **but output only
 - Make sure to select the best of the best new players and they not be old established players.
 - Ignore challengers like ${tariffIndustry.companiesToIgnore.join(', ')} as they no longer active.
 - Make sure the company is not bankrupt or not active.
-- Try to find three challenger that fall under this category of ${industry.title} sector.
-  {
-    "newChallengers": [
-      { "companyName": "...", "companyTicker": "..." },
-      …
-    ]
-  }
-  
-The selected companies should be just from the ${industry.title} sector. 
-Do not include any companies from other headings or subheadings as they will be covered separately.
-Make sure to select companies just from the ${industry.title} sector and not from other headings or subheadings.
-  
-# Established Players:
-${JSON.stringify(
-  establishedPlayers.map((ep) => ep.companyName),
-  null,
-  2
-)}
+- Try to find three challenger that fall under this category of ${industry.title} sector.`;
 
-  
-# All the industry areas. You need to only cover the ${industry.title} area.
-${JSON.stringify(headings, null, 2)}
+  const listPrompt = createIndustrySectorPrompt({
+    industry,
+    headings,
+    tariffUpdates,
+    date,
+    instructions: listInstructions,
+    context: {
+      'Established Players': establishedPlayers.map((ep) => ep.companyName),
+    },
+  });
 
-`;
   const { newChallengers: basicList } = await getLlmResponse<{ newChallengers: { companyName: string; companyTicker: string }[] }>(
     listPrompt,
     NewChallengerListSchema,
     gpt4OSearchModel
   );
-  console.log('[NewChallengers] ← Received basic list:', basicList);
+  logger(`← Received basic list: ${JSON.stringify(basicList)}`);
 
   // --- STEP 2: For each, fetch full details ---
   const detailedList: NewChallenger[] = [];
   for (const { companyName, companyTicker } of basicList) {
-    console.log(`[NewChallengers] → Fetching details for ${companyName} (${companyTicker})`);
-    const detailPrompt = `
+    logger(`→ Fetching details for ${companyName} (${companyTicker})`);
+
+    const detailInstructions = `
 Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${industry.title} sector:
 - companyName, companyDescription, companyWebsite, companyTicker
 - products (portfolio & revenue breakdown)
@@ -209,70 +244,70 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${i
 - impactOfTariffs (5–6 lines of facts & reasoning)
 - competitors
 - Output JSON matching NewChallengerSchema exactly.
-- Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.
+- Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.`;
 
-${outputInstructions}
+    const detailPrompt = createIndustrySectorPrompt({
+      industry,
+      headings,
+      tariffUpdates,
+      date,
+      instructions: detailInstructions,
+    });
 
-# Tariff Updates:
-${JSON.stringify(tariffUpdates, null, 2)}
-
-`;
     const newChallenger = await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, gpt4OSearchModel);
-    console.log(`[NewChallengers] ← Details for ${companyName}:`, newChallenger);
+    logger(`← Received details for ${companyName}`);
     detailedList.push(newChallenger);
   }
 
   return detailedList;
 }
 
-// 3. Headwinds & Tailwinds
-async function getHeadwindsAndTailwinds(headings: IndustryAreaHeadings, tariffUpdates: TariffUpdatesForIndustry, industry: IndustrySubHeading, date: string) {
-  const prompt = `List 4–5 key *headwinds* and 4–5 key *tailwinds* for the ${industry.title} sector:
+/**
+ * Get headwinds and tailwinds analysis
+ */
+async function getHeadwindsAndTailwinds(
+  headings: IndustryAreaHeadings,
+  tariffUpdates: TariffUpdatesForIndustry,
+  industry: IndustrySubHeading,
+  date: string
+): Promise<HeadwindsAndTailwinds> {
+  const instructions = `List 4–5 key *headwinds* and 4–5 key *tailwinds* for the ${industry.title} sector:
 - Each explained in 3–4 lines with reasoning. When explaining, take specific examples of the companies and the products. 
 - Make sure to take examples.
-- Output JSON matching HeadwindsAndTailwindsSchema.
+- Output JSON matching HeadwindsAndTailwindsSchema.`;
 
-Tariff Updates: ${JSON.stringify(tariffUpdates)}
-Date: ${date}
-
-${outputInstructions}
-
-The headwinds and tailwinds should be only for the ${industry.title} sector. 
-Do not include any headwinds or tailwinds from other headings or subheadings as they will be covered separately.
-Make sure to select headwinds and tailwinds just from the ${industry.title} sector and not from other headings or subheadings.
-
-# All the industry areas. You need to only cover the ${industry.title} area.
-${JSON.stringify(headings, null, 2)}
-`;
+  const prompt = createIndustrySectorPrompt({
+    industry,
+    headings,
+    tariffUpdates,
+    date,
+    instructions,
+  });
 
   return await getLlmResponse<HeadwindsAndTailwinds>(prompt, HeadwindsAndTailwindsSchema);
 }
 
-// 4. Tariff Impact by Company Type
+/**
+ * Get tariff impact by company type analysis
+ */
 async function getTariffImpactByCompanyType(
   headings: IndustryAreaHeadings,
   tariffUpdates: TariffUpdatesForIndustry,
   industry: IndustrySubHeading,
   date: string
 ) {
-  const prompt = `Analyze the new tariffs for the ${industry.title} sector and provide:
+  const instructions = `Analyze the new tariffs for the ${industry.title} sector and provide:
 - Three categories of companies *positively* affected (companyType, impact, reasoning).
 - Three categories of companies *negatively* affected (companyType, impact, reasoning).
-- Output a JSON object with two arrays: positiveTariffImpactOnCompanyType and negativeTariffImpactOnCompanyType matching their schemas.
+- Output a JSON object with two arrays: positiveTariffImpactOnCompanyType and negativeTariffImpactOnCompanyType matching their schemas.`;
 
-Tariff Updates: ${JSON.stringify(tariffUpdates)}
-Date: ${date}
-
-${outputInstructions}
-
-The selected tariff impact should be just from the ${industry.title} sector.
-Do not include any tariff impact from other headings or subheadings as they will be covered separately.
-Make sure to select tariff impact just from the ${industry.title} sector and not from other headings or subheadings.
-
-# All the industry areas. You need to only cover the ${industry.title} area.
-${JSON.stringify(headings, null, 2)}
-
-`;
+  const prompt = createIndustrySectorPrompt({
+    industry,
+    headings,
+    tariffUpdates,
+    date,
+    instructions,
+  });
 
   const schema = z.object({
     positiveTariffImpactOnCompanyType: z.array(PositiveTariffImpactOnCompanyTypeSchema),
@@ -287,7 +322,9 @@ ${JSON.stringify(headings, null, 2)}
   return await getLlmResponse<TariffImpactByCompanyType>(prompt, schema);
 }
 
-// 5. Tariff Impact Summary
+/**
+ * Generate an overall tariff impact summary
+ */
 async function getTariffImpactSummary(
   tariffUpdates: TariffUpdatesForIndustry,
   industry: IndustrySubHeading,
@@ -297,36 +334,31 @@ async function getTariffImpactSummary(
   positiveTariffImpactOnCompanyType: PositiveTariffImpactOnCompanyType[],
   negativeTariffImpactOnCompanyType: NegativeTariffImpactOnCompanyType[]
 ) {
-  const prompt = `Write a 3-5 paragraph and Summarize the impact on established players, new challengers, headwinds and tailwinds, and tariff impact by company type in the ${
-    industry.title
-  } sector:
+  const instructions = `Write a 3-5 paragraph and Summarize the impact on established players, new challengers, headwinds and tailwinds, and tariff impact by company type in the ${industry.title} sector:
 - Write the summary as if it will be used by investors. 
 - Add one paragraph for positive impact and include the companies that will be most positively affected to be included first in that paragraph.
 - Add one paragraph for negative impact and include the companies that will be most negatively affected to be included first in that paragraph.
 - Add one paragraph about Final Notes for the effect of on ${industry.title} sector.
 - Summary should be 3 paragraphs long, with each paragraph of 6-8 lines long.
 - Include specific examples of companies, facts, and reasoning.
-- Focus on impact on US based companies.
+- Focus on impact on US based companies.`;
 
-${outputInstructions}
+  const context = {
+    'Established Players': establishedPlayers,
+    'New Challengers': newChallengers,
+    'Headwinds and Tailwinds': headwindsAndTailwinds,
+    'Positive Tariff Impact on Company Type': positiveTariffImpactOnCompanyType,
+    'Negative Tariff Impact on Company Type': negativeTariffImpactOnCompanyType,
+  };
 
-
-# Established Players: 
-${JSON.stringify(establishedPlayers, null, 2)}
-
-# New Challengers:
-${JSON.stringify(newChallengers, null, 2)}
-
-# Headwinds and Tailwinds:
-${JSON.stringify(headwindsAndTailwinds, null, 2)}
-
-# Positive Tariff Impact on Company Type:
-${JSON.stringify(positiveTariffImpactOnCompanyType, null, 2)}
-
-# Negative Tariff Impact on Company Type:
-${JSON.stringify(negativeTariffImpactOnCompanyType, null, 2)}
-
-`;
+  const prompt = createIndustrySectorPrompt({
+    industry,
+    headings: { headings: [] }, // Not needed for summary
+    tariffUpdates,
+    date: '', // Not needed for summary
+    instructions,
+    context,
+  });
 
   const schema = z.object({
     summary: z.string().describe('Summary of tariff impacts'),
@@ -335,6 +367,7 @@ ${JSON.stringify(negativeTariffImpactOnCompanyType, null, 2)}
   interface TariffImpactSummary {
     summary: string;
   }
+
   return (await getLlmResponse<TariffImpactSummary>(prompt, schema)).summary;
 }
 export async function getAndWriteEvaluateIndustryAreaJson(
