@@ -1,3 +1,4 @@
+import { safeParseJsonString } from '@/util/safe-parse-json-string';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import React from 'react';
@@ -12,7 +13,7 @@ export interface ViewCriteriaModalProps {
 }
 
 export default function SampleJsonEditModal({ open, onClose, title, sampleJson: jsonObjString, onSave }: ViewCriteriaModalProps) {
-  const [sampleJson, setSampleJson] = React.useState<object | null>(jsonObjString ? JSON.parse(jsonObjString) : {});
+  const [sampleJson, setSampleJson] = React.useState<object | null>(safeParseJsonString(jsonObjString));
   return (
     <FullPageModal open={open} onClose={onClose} title={title}>
       <div className="overflow-auto">

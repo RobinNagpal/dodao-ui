@@ -7,6 +7,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import TickerInfoButton from './TickerInfoButton';
+import { safeParseJsonString } from '@/util/safe-parse-json-string';
 
 export interface DebugTickerInfoProps {
   report: FullNestedTickerReport;
@@ -51,7 +52,7 @@ export default function DebugTickerInfo({ report, onPostUpdate }: DebugTickerInf
         <div className="mt-4">
           <TickerInfoButton tickerKey={ticker} tickerInfoContent={report.tickerInfo || undefined} onUpdate={onPostUpdate} />
           <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs">
-            {report.tickerInfo ? JSON.stringify(JSON.parse(report.tickerInfo), null, 2) : 'Not populated yet'}
+            {report.tickerInfo ? JSON.stringify(safeParseJsonString(report.tickerInfo), null, 2) : 'Not populated yet'}
           </pre>
         </div>
       </Accordion>
