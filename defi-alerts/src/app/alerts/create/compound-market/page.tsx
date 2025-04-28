@@ -35,10 +35,12 @@ import {
   severityOptions,
   frequencyOptions,
 } from "@/types/alerts";
+import { useNotificationContext } from "@dodao/web-core/ui/contexts/NotificationContext";
 
 export default function CompoundMarketAlertPage() {
   const router = useRouter();
   const baseUrl = getBaseUrl();
+  const { showNotification } = useNotificationContext();
 
   const [alertType, setAlertType] = useState<"borrow" | "supply">("borrow");
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
@@ -108,15 +110,30 @@ export default function CompoundMarketAlertPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      const json = await res.json();
 
       if (!res.ok) {
-        throw new Error("Failed to create alert");
+        showNotification({
+          type: "error",
+          heading: "Couldn’t create alert",
+          message: json.error || "Unknown server error",
+        });
+        return;
       }
 
+      showNotification({
+        type: "success",
+        heading: "Alert created",
+        message: "Your market alert was saved successfully.",
+      });
       router.push("/alerts");
-    } catch (error) {
-      console.error("Error creating alert:", error);
-      alert("Failed to create alert. Please try again.");
+    } catch (err: any) {
+      console.error("Error creating alert:", err);
+      showNotification({
+        type: "error",
+        heading: "Network Error",
+        message: err.message || "Please try again.",
+      });
     }
   };
 
@@ -152,7 +169,7 @@ export default function CompoundMarketAlertPage() {
       </nav>
 
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-theme-primary">
+        <h1 className="text-3xl font-bold mb-1 text-theme-primary">
           Create Market Alert
         </h1>
         <p className="text-theme-muted">
@@ -162,7 +179,7 @@ export default function CompoundMarketAlertPage() {
 
       {/* Alert Type */}
       <Card className="mb-6 border-theme-border-primary">
-        <CardHeader className="pb-3">
+        <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Alert Type
           </CardTitle>
@@ -197,7 +214,7 @@ export default function CompoundMarketAlertPage() {
 
       {/* Market Selection */}
       <Card className="mb-6 border-theme-border-primary">
-        <CardHeader className="pb-3">
+        <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Market Selection
           </CardTitle>
@@ -208,7 +225,7 @@ export default function CompoundMarketAlertPage() {
           </p>
 
           <div className="mb-6">
-            <h3 className="text-md font-medium mb-2 text-theme-primary">
+            <h3 className="text-md font-medium mb-1 text-theme-primary">
               Chains
             </h3>
             <p className="text-sm text-theme-muted mb-3">
@@ -260,7 +277,7 @@ export default function CompoundMarketAlertPage() {
           </div>
 
           <div>
-            <h3 className="text-md font-medium mb-2 text-theme-primary">
+            <h3 className="text-md font-medium mb-1 text-theme-primary">
               Markets
             </h3>
             <p className="text-sm text-theme-muted mb-3">
@@ -313,7 +330,7 @@ export default function CompoundMarketAlertPage() {
 
       {/* Condition Settings */}
       <Card className="mb-6 border-theme-border-primary">
-        <CardHeader className="pb-3 flex flex-row items-center justify-between">
+        <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Condition Settings
           </CardTitle>
@@ -491,13 +508,17 @@ export default function CompoundMarketAlertPage() {
                 ))}
               </SelectContent>
             </Select>
+            <p className="text-sm text-theme-muted mt-4">
+              This limits how often you'll receive notifications for this alert,
+              regardless of how many thresholds are triggered.
+            </p>
           </div>
         </CardContent>
       </Card>
 
       {/* Delivery Channel Settings */}
       <Card className="mb-6 border-theme-border-primary">
-        <CardHeader className="pb-3 flex flex-row items-center justify-between">
+        <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Delivery Channel Settings
           </CardTitle>
@@ -582,13 +603,6 @@ export default function CompoundMarketAlertPage() {
         </Button>
 
         <div className="space-x-4">
-          <Button
-            variant="outline"
-            onClick={() => router.push("/alerts/create")}
-            className="border-theme-border-primary text-theme-primary"
-          >
-            Cancel
-          </Button>
           <Button
             onClick={handleCreateAlert}
             className="bg-primary text-white hover-bg-slate-800"

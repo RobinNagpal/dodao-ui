@@ -1,12 +1,11 @@
+@use 'styles/slate-colors.scss';
+@use 'styles/theme-variables.scss';
+@use 'styles/theme-utilities.scss';
+@use 'styles/theme-styles.scss';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import 'styles/slate-colors.scss';
-@import 'styles/theme-variables.scss';
-@import 'styles/theme-utilities.scss';
-@import 'styles/theme-styles.scss';
-@import 'styles/compound-colors.scss';
 
 body {
   font-family: var(--font-inter), sans-serif;
@@ -79,23 +78,4 @@ code, pre {
   body {
     @apply bg-background text-foreground;
   }
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--theme-bg-secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--theme-muted);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-secondary);
 }

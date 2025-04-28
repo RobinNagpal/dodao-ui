@@ -40,7 +40,6 @@ enum AlertCategory {
 enum AlertActionType {
   SUPPLY
   BORROW
-  LIQUIDITY_PROVISION
 }
 
 enum ConditionType {
@@ -49,10 +48,11 @@ enum ConditionType {
   APR_OUTSIDE_RANGE
   RATE_DIFF_ABOVE
   RATE_DIFF_BELOW
-  POSITION_OUT_OF_RANGE
-  POSITION_BACK_IN_RANGE
-  FEES_EARNED_THRESHOLD
-  IMPERMANENT_LOSS_EXCEEDS
+}
+
+enum AlertStatus {
+  ACTIVE
+  PAUSED
 }
 
 model User {
@@ -74,6 +74,7 @@ model Alert {
   compareProtocols      String[]
   notificationFrequency NotificationFrequency
   conditions            AlertCondition[]
+  status                AlertStatus           @default(ACTIVE)
   deliveryChannels      DeliveryChannel[]
   createdAt             DateTime              @default(now())
   updatedAt             DateTime              @updatedAt

@@ -5,12 +5,39 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import getBaseUrl from "@dodao/web-core/utils/api/getBaseURL";
 import {
-  SupplyRow,
-  BorrowRow,
-  Channel,
+  ChevronRight,
+  Home,
+  Bell,
+  TrendingUp,
+  Plus,
+  X,
+  ArrowLeft,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  type SupplyRow,
+  type BorrowRow,
+  type Channel,
   severityOptions,
   frequencyOptions,
-  ConditionType,
+  type ConditionType,
 } from "@/types/alerts";
 
 export default function PersonalizedMarketAlertPage() {
@@ -27,16 +54,16 @@ export default function PersonalizedMarketAlertPage() {
     conditionType: "APR_RISE_ABOVE",
     threshold: "",
     severity: "NONE",
-    frequency: "AT_MOST_ONCE_PER_DAY",
+    frequency: "IMMEDIATE",
   };
   const secondSupply: SupplyRow = {
     chain: "Solana",
     market: "SOL",
     rate: "6.2%",
-    conditionType: "APR_FALLS_BELOW",
+    conditionType: "APR_RISE_ABOVE",
     threshold: "",
-    severity: "LOW",
-    frequency: "AT_MOST_ONCE_PER_DAY",
+    severity: "NONE",
+    frequency: "IMMEDIATE",
   };
   const [supplyRows, setSupplyRows] = useState<SupplyRow[]>([
     defaultSupply,
@@ -53,10 +80,10 @@ export default function PersonalizedMarketAlertPage() {
     chain: "Base",
     market: "DAI",
     rate: "3.8%",
-    conditionType: "APR_RISE_ABOVE",
+    conditionType: "APR_FALLS_BELOW",
     threshold: "",
     severity: "NONE",
-    frequency: "AT_MOST_ONCE_PER_DAY",
+    frequency: "IMMEDIATE",
   };
 
   const [borrowRows, setBorrowRows] = useState<BorrowRow[]>([
@@ -174,355 +201,447 @@ export default function PersonalizedMarketAlertPage() {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      {/* …breadcrumb & header… */}
-      <div className="flex items-center text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-gray-700">
-          Home
+    <div className="container max-w-6xl mx-auto px-4 py-8">
+      {/* Breadcrumb */}
+      <nav className="flex items-center text-sm mb-6">
+        <Link
+          href="/"
+          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+        >
+          <Home size={14} />
+          <span>Home</span>
         </Link>
-        <span className="mx-2">{">"}</span>
-        <Link href="/alerts" className="hover:text-gray-700">
-          Alerts
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <Link
+          href="/alerts"
+          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+        >
+          <Bell size={14} />
+          <span>Alerts</span>
         </Link>
-        <span className="mx-2">{">"}</span>
-        <Link href="/alerts/create" className="hover:text-gray-700">
-          Create Alert
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <Link
+          href="/alerts/create"
+          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+        >
+          <TrendingUp size={14} />
+          <span>Create Alert</span>
         </Link>
-        <span className="mx-2">{">"}</span>
-        <span className="text-gray-700">Personalized Market Alert</span>
-      </div>
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <span className="text-theme-primary font-medium">
+          Personalized Market Alert
+        </span>
+      </nav>
 
-      <h1 className="text-3xl font-bold mb-2">
-        Create Personalized Market Alert
-      </h1>
-      <p className="text-gray-600 mb-8">
-        Configure market alerts specifically for your positions on Compound.
-      </p>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2 text-theme-primary">
+          Create Personalized Market Alert
+        </h1>
+        <p className="text-theme-muted">
+          Configure market alerts specifically for your positions on Compound.
+        </p>
+      </div>
 
       {/* Supply Positions */}
-      <div className="border p-6 rounded-lg mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-medium">Supply Positions</h2>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full mb-4">
-            <thead>
-              <tr>
-                <th>Chain</th>
-                <th>Market</th>
-                <th>Rate</th>
-                <th>Condition</th>
-                <th>Threshold</th>
-                <th>Severity</th>
-                <th>Frequency</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {supplyRows.map((r, i) => (
-                <tr key={i} className="border-t">
-                  <td className="py-2">{r.chain}</td>
-                  <td className="py-2">
-                    {r.market}
-                    <div className="text-xs text-gray-500">{r.rate}</div>
-                  </td>
-                  <td className="py-2">{r.rate}</td>
-                  <td className="py-2">
-                    <select
-                      value={r.conditionType}
-                      onChange={(e) =>
-                        updateSupplyRow(
-                          i,
-                          "conditionType",
-                          e.target.value as ConditionType
-                        )
-                      }
-                      className="border px-2 py-1 rounded"
-                    >
-                      {conditionOptions.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="py-2">
-                    {r.conditionType === "APR_OUTSIDE_RANGE" ? (
-                      <div className="flex items-center space-x-2">
-                        <input
-                          type="text"
-                          placeholder="Min"
-                          value={r.thresholdLow}
-                          onChange={(e) =>
-                            updateSupplyRow(i, "thresholdLow", e.target.value)
-                          }
-                          className="border px-2 py-1 rounded w-20"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Max"
-                          value={r.thresholdHigh}
-                          onChange={(e) =>
-                            updateSupplyRow(i, "thresholdHigh", e.target.value)
-                          }
-                          className="border px-2 py-1 rounded w-20"
-                        />
-                        <span>%</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center">
-                        <input
-                          type="text"
-                          value={r.threshold}
-                          onChange={(e) =>
-                            updateSupplyRow(i, "threshold", e.target.value)
-                          }
-                          className="border px-2 py-1 rounded w-20"
-                        />
-                        <span className="ml-2">%</span>
-                      </div>
-                    )}
-                  </td>
-
-                  <td className="py-2">
-                    <select
-                      value={r.severity}
-                      onChange={(e) =>
-                        updateSupplyRow(
-                          i,
-                          "severity",
-                          e.target.value as SupplyRow["severity"]
-                        )
-                      }
-                      className="border px-2 py-1 rounded"
-                    >
-                      {severityOptions.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="py-2">
-                    <select
-                      value={r.frequency}
-                      onChange={(e) =>
-                        updateSupplyRow(
-                          i,
-                          "frequency",
-                          e.target.value as SupplyRow["frequency"]
-                        )
-                      }
-                      className="border px-2 py-1 rounded"
-                    >
-                      {frequencyOptions.map((f) => (
-                        <option key={f.value} value={f.value}>
-                          {f.label}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <Card className="mb-6 border-theme-border-primary">
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">
+            Supply Positions
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">
+            Set alert conditions for each of your supply positions.
+          </p>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Chain</TableHead>
+                  <TableHead>Market</TableHead>
+                  <TableHead>Rate</TableHead>
+                  <TableHead>Condition</TableHead>
+                  <TableHead>Threshold</TableHead>
+                  <TableHead>Severity</TableHead>
+                  <TableHead>Frequency</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {supplyRows.map((r, i) => (
+                  <TableRow key={i}>
+                    <TableCell className="text-theme-primary">
+                      {r.chain}
+                    </TableCell>
+                    <TableCell className="text-theme-primary">
+                      {r.market}
+                    </TableCell>
+                    <TableCell className="text-theme-primary">
+                      {r.rate}
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={r.conditionType}
+                        onValueChange={(value) =>
+                          updateSupplyRow(
+                            i,
+                            "conditionType",
+                            value as ConditionType
+                          )
+                        }
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select condition" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {conditionOptions.map((opt) => (
+                            <SelectItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      {r.conditionType === "APR_OUTSIDE_RANGE" ? (
+                        <div className="flex items-center space-x-2">
+                          <Input
+                            type="text"
+                            placeholder="Min"
+                            value={r.thresholdLow || ""}
+                            onChange={(e) =>
+                              updateSupplyRow(i, "thresholdLow", e.target.value)
+                            }
+                            className="w-20 border-theme-border-primary"
+                          />
+                          <Input
+                            type="text"
+                            placeholder="Max"
+                            value={r.thresholdHigh || ""}
+                            onChange={(e) =>
+                              updateSupplyRow(
+                                i,
+                                "thresholdHigh",
+                                e.target.value
+                              )
+                            }
+                            className="w-20 border-theme-border-primary"
+                          />
+                          <span className="text-theme-muted">%</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center">
+                          <Input
+                            type="text"
+                            value={r.threshold || ""}
+                            onChange={(e) =>
+                              updateSupplyRow(i, "threshold", e.target.value)
+                            }
+                            className="w-20 border-theme-border-primary"
+                          />
+                          <span className="ml-2 text-theme-muted">%</span>
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={r.severity}
+                        onValueChange={(value) =>
+                          updateSupplyRow(
+                            i,
+                            "severity",
+                            value as SupplyRow["severity"]
+                          )
+                        }
+                      >
+                        <SelectTrigger className="w-[120px]">
+                          <SelectValue placeholder="Select severity" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {severityOptions.map((opt) => (
+                            <SelectItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={r.frequency}
+                        onValueChange={(value) =>
+                          updateSupplyRow(
+                            i,
+                            "frequency",
+                            value as SupplyRow["frequency"]
+                          )
+                        }
+                      >
+                        <SelectTrigger className="w-[140px]">
+                          <SelectValue placeholder="Select frequency" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {frequencyOptions.map((f) => (
+                            <SelectItem key={f.value} value={f.value}>
+                              {f.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Borrow Position */}
-      <div className="border p-6 rounded-lg mb-6">
-        <h2 className="text-lg font-medium mb-2">Borrow Position</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full mb-4">
-            <thead>
-              <tr>
-                <th>Chain</th>
-                <th>Market</th>
-                <th>Rate</th>
-                <th>Condition</th>
-                <th>Threshold</th>
-                <th>Severity</th>
-                <th>Frequency</th>
-              </tr>
-            </thead>
-            <tbody>
-              {borrowRows.map((r, i) => (
-                <tr key={i} className="border-t">
-                  <td className="py-2">{r.chain}</td>
-                  <td className="py-2">
-                    {r.market}
-                    <div className="text-xs text-gray-500">{r.rate}</div>
-                  </td>
-                  <td className="py-2">{r.rate}</td>
-                  <td className="py-2">
-                    <select
-                      value={r.conditionType}
-                      onChange={(e) =>
-                        updateBorrowRow(
-                          i,
-                          "conditionType",
-                          e.target.value as ConditionType
-                        )
-                      }
-                      className="border px-2 py-1 rounded"
-                    >
-                      {conditionOptions.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="py-2">
-                    {r.conditionType === "APR_OUTSIDE_RANGE" ? (
-                      <div className="flex items-center space-x-2">
-                        <input
-                          type="text"
-                          placeholder="Min"
-                          value={r.thresholdLow}
-                          onChange={(e) =>
-                            updateBorrowRow(i, "thresholdLow", e.target.value)
-                          }
-                          className="border px-2 py-1 rounded w-20"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Max"
-                          value={r.thresholdHigh}
-                          onChange={(e) =>
-                            updateBorrowRow(i, "thresholdHigh", e.target.value)
-                          }
-                          className="border px-2 py-1 rounded w-20"
-                        />
-                        <span>%</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center">
-                        <input
-                          type="text"
-                          value={r.threshold}
-                          onChange={(e) =>
-                            updateBorrowRow(i, "threshold", e.target.value)
-                          }
-                          className="border px-2 py-1 rounded w-20"
-                        />
-                        <span className="ml-2">%</span>
-                      </div>
-                    )}
-                  </td>
-
-                  <td className="py-2">
-                    <select
-                      value={r.severity}
-                      onChange={(e) =>
-                        updateBorrowRow(
-                          i,
-                          "severity",
-                          e.target.value as BorrowRow["severity"]
-                        )
-                      }
-                      className="border px-2 py-1 rounded"
-                    >
-                      {severityOptions.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="py-2">
-                    <select
-                      value={r.frequency}
-                      onChange={(e) =>
-                        updateBorrowRow(
-                          i,
-                          "frequency",
-                          e.target.value as BorrowRow["frequency"]
-                        )
-                      }
-                      className="border px-2 py-1 rounded"
-                    >
-                      {frequencyOptions.map((f) => (
-                        <option key={f.value} value={f.value}>
-                          {f.label}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <Card className="mb-6 border-theme-border-primary">
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">
+            Borrow Position
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">
+            Set alert conditions for each of your borrow positions.
+          </p>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Chain</TableHead>
+                  <TableHead>Market</TableHead>
+                  <TableHead>Rate</TableHead>
+                  <TableHead>Condition</TableHead>
+                  <TableHead>Threshold</TableHead>
+                  <TableHead>Severity</TableHead>
+                  <TableHead>Frequency</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {borrowRows.map((r, i) => (
+                  <TableRow key={i}>
+                    <TableCell className="text-theme-primary">
+                      {r.chain}
+                    </TableCell>
+                    <TableCell className="text-theme-primary">
+                      {r.market}
+                    </TableCell>
+                    <TableCell className="text-theme-primary">
+                      {r.rate}
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={r.conditionType}
+                        onValueChange={(value) =>
+                          updateBorrowRow(
+                            i,
+                            "conditionType",
+                            value as ConditionType
+                          )
+                        }
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select condition" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {conditionOptions.map((opt) => (
+                            <SelectItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      {r.conditionType === "APR_OUTSIDE_RANGE" ? (
+                        <div className="flex items-center space-x-2">
+                          <Input
+                            type="text"
+                            placeholder="Min"
+                            value={r.thresholdLow || ""}
+                            onChange={(e) =>
+                              updateBorrowRow(i, "thresholdLow", e.target.value)
+                            }
+                            className="w-20 border-theme-border-primary"
+                          />
+                          <Input
+                            type="text"
+                            placeholder="Max"
+                            value={r.thresholdHigh || ""}
+                            onChange={(e) =>
+                              updateBorrowRow(
+                                i,
+                                "thresholdHigh",
+                                e.target.value
+                              )
+                            }
+                            className="w-20 border-theme-border-primary"
+                          />
+                          <span className="text-theme-muted">%</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center">
+                          <Input
+                            type="text"
+                            value={r.threshold || ""}
+                            onChange={(e) =>
+                              updateBorrowRow(i, "threshold", e.target.value)
+                            }
+                            className="w-20 border-theme-border-primary"
+                          />
+                          <span className="ml-2 text-theme-muted">%</span>
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={r.severity}
+                        onValueChange={(value) =>
+                          updateBorrowRow(
+                            i,
+                            "severity",
+                            value as BorrowRow["severity"]
+                          )
+                        }
+                      >
+                        <SelectTrigger className="w-[120px]">
+                          <SelectValue placeholder="Select severity" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {severityOptions.map((opt) => (
+                            <SelectItem key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={r.frequency}
+                        onValueChange={(value) =>
+                          updateBorrowRow(
+                            i,
+                            "frequency",
+                            value as BorrowRow["frequency"]
+                          )
+                        }
+                      >
+                        <SelectTrigger className="w-[140px]">
+                          <SelectValue placeholder="Select frequency" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {frequencyOptions.map((f) => (
+                            <SelectItem key={f.value} value={f.value}>
+                              {f.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Delivery Channels */}
-      <div className="border p-6 rounded-lg mb-6">
-        <div className="flex justify-between mb-4">
-          <h2 className="text-lg font-medium">Delivery Channels</h2>
-          <button
+      <Card className="mb-6 border-theme-border-primary">
+        <CardHeader className="pb-1 flex flex-row items-center justify-between">
+          <CardTitle className="text-lg text-theme-primary">
+            Delivery Channel Settings
+          </CardTitle>
+          <Button
+            variant="outline"
+            size="sm"
             onClick={addChannel}
-            className="text-sm px-3 py-1 border rounded hover:bg-gray-50"
+            className="text-theme-primary border-theme-border-primary"
           >
-            + Add Another Channel
-          </button>
-        </div>
-        {channels.map((c, i) => (
-          <div key={i} className="flex gap-4 mb-4">
-            <select
-              value={c.channelType}
-              onChange={(e) =>
-                updateChannel(
-                  i,
-                  "channelType",
-                  e.target.value as Channel["channelType"]
-                )
-              }
-              className="border px-2 py-1 rounded"
-            >
-              <option value="EMAIL">Email</option>
-              <option value="WEBHOOK">Webhook</option>
-            </select>
-            {c.channelType === "EMAIL" ? (
-              <input
-                type="email"
-                placeholder="you@example.com"
-                value={c.email}
-                onChange={(e) => updateChannel(i, "email", e.target.value)}
-                className="border px-2 py-1 rounded flex-1"
-              />
-            ) : (
-              <input
-                type="url"
-                placeholder="https://..."
-                value={c.webhookUrl}
-                onChange={(e) => updateChannel(i, "webhookUrl", e.target.value)}
-                className="border px-2 py-1 rounded flex-1"
-              />
-            )}
-            {channels.length > 1 && (
-              <button onClick={() => removeChannel(i)} className="text-red-500">
-                ✕
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
+            <Plus size={16} className="mr-1" /> Add Channel
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">
+            Choose how you want to receive your alerts.
+          </p>
 
-      {/* Actions */}
-      <div className="flex justify-end gap-4">
-        <button
+          {channels.map((ch, i) => (
+            <div key={i} className="mb-4 flex items-center gap-4">
+              <Select
+                value={ch.channelType}
+                onValueChange={(value) =>
+                  updateChannel(
+                    i,
+                    "channelType",
+                    value as Channel["channelType"]
+                  )
+                }
+              >
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Select channel" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="EMAIL">Email</SelectItem>
+                  <SelectItem value="WEBHOOK">Webhook</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {ch.channelType === "EMAIL" ? (
+                <Input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={ch.email || ""}
+                  onChange={(e) => updateChannel(i, "email", e.target.value)}
+                  className="flex-1 border-theme-border-primary"
+                />
+              ) : (
+                <Input
+                  type="url"
+                  placeholder="https://webhook.site/..."
+                  value={ch.webhookUrl || ""}
+                  onChange={(e) =>
+                    updateChannel(i, "webhookUrl", e.target.value)
+                  }
+                  className="flex-1 border-theme-border-primary"
+                />
+              )}
+
+              {channels.length > 1 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => removeChannel(i)}
+                  className="text-red-500 h-8 w-8"
+                >
+                  <X size={16} />
+                </Button>
+              )}
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Action Buttons */}
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
           onClick={() => router.push("/alerts/create")}
-          className="px-4 py-2 border rounded"
+          className="border-theme-border-primary text-theme-primary"
         >
-          Cancel
-        </button>
-        <button
+          <ArrowLeft size={16} className="mr-2" /> Back
+        </Button>
+
+        <Button
           onClick={handleCreateAlert}
-          className="px-4 py-2 bg-[#0f172a] text-white rounded"
+          className="bg-primary text-white hover-bg-slate-800"
         >
           Create Personalized Alerts
-        </button>
+        </Button>
       </div>
     </div>
   );

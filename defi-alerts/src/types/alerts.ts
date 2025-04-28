@@ -15,6 +15,8 @@ export type NotificationFrequency =
 
 export type DeliveryChannelType = "EMAIL" | "WEBHOOK";
 
+export type AlertStatus = "ACTIVE" | "PAUSED";
+
 export interface Channel {
   channelType: DeliveryChannelType;
   email?: string;
@@ -43,10 +45,20 @@ export interface SupplyRow {
 
 export interface BorrowRow extends SupplyRow {}
 
+export interface GeneralComparisonRow {
+  platform: string;
+  chain: string;
+  market: string;
+  threshold: string;
+  severity: SeverityLevel;
+  frequency: NotificationFrequency;
+}
+
 export interface ComparisonRow {
   platform: string;
   chain: string;
   market: string;
+  rate: string;
   threshold: string;
   severity: SeverityLevel;
   frequency: NotificationFrequency;
@@ -68,3 +80,20 @@ export const frequencyOptions: {
   { label: "Every 12 h", value: "AT_MOST_ONCE_PER_12_HOURS" },
   { label: "Daily", value: "AT_MOST_ONCE_PER_DAY" },
 ];
+
+export interface Alert {
+  id: string;
+  category: "GENERAL" | "PERSONALIZED";
+  actionType: "SUPPLY" | "BORROW";
+  isComparison: boolean;
+  walletAddress?: string;
+  selectedChains: string[];
+  selectedMarkets: string[];
+  compareProtocols: string[];
+  notificationFrequency: NotificationFrequency;
+  status: AlertStatus;
+  conditions: Condition[];
+  deliveryChannels: Channel[];
+  createdAt: string;
+  updatedAt: string;
+}

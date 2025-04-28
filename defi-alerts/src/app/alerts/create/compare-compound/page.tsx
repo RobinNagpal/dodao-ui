@@ -5,17 +5,41 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import getBaseUrl from "@dodao/web-core/utils/api/getBaseURL";
 import {
-  ComparisonRow,
-  Channel,
-  NotificationFrequency,
-  SeverityLevel,
+  ChevronRight,
+  Home,
+  Bell,
+  TrendingUp,
+  Plus,
+  X,
+  ArrowLeft,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  type Channel,
+  type NotificationFrequency,
+  type SeverityLevel,
   frequencyOptions,
   severityOptions,
+  GeneralComparisonRow,
 } from "@/types/alerts";
+import { useNotificationContext } from "@dodao/web-core/ui/contexts/NotificationContext";
 
 export default function CompareCompoundPage() {
   const router = useRouter();
   const baseUrl = getBaseUrl();
+  const { showNotification } = useNotificationContext();
 
   const [alertType, setAlertType] = useState<"supply" | "borrow">("supply");
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
@@ -24,7 +48,7 @@ export default function CompareCompoundPage() {
   const [notificationFrequency, setNotificationFrequency] =
     useState<NotificationFrequency>("IMMEDIATE");
 
-  const [thresholds, setThresholds] = useState<ComparisonRow[]>([
+  const [thresholds, setThresholds] = useState<GeneralComparisonRow[]>([
     {
       platform: "",
       chain: "",
@@ -69,7 +93,7 @@ export default function CompareCompoundPage() {
 
   const updateThreshold = (
     idx: number,
-    field: keyof ComparisonRow,
+    field: keyof GeneralComparisonRow,
     val: string
   ) =>
     setThresholds((ts) =>
@@ -89,6 +113,19 @@ export default function CompareCompoundPage() {
     setChannels((ch) => ch.filter((_, i) => i !== idx));
 
   const handleCreateAlert = async () => {
+    if (
+      !selectedPlatforms.length ||
+      !selectedChains.length ||
+      !selectedMarkets.length
+    ) {
+      showNotification({
+        type: "error",
+        heading: "Incomplete form",
+        message: "Please pick at least one platform, chain, and market.",
+      });
+      return;
+    }
+
     const email = localStorage.getItem("email")!;
     const payload = {
       email,
@@ -111,289 +148,495 @@ export default function CompareCompoundPage() {
       })),
     };
 
-    const res = await fetch(`${baseUrl}/api/alerts/create/compare-compound`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) {
-      alert("Failed to create compare alert");
-      return;
+    try {
+      const res = await fetch(`${baseUrl}/api/alerts/create/compare-compound`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json();
+
+      if (!res.ok) {
+        // show backend’s error message
+        showNotification({
+          type: "error",
+          heading: "Couldn’t create comparison alert",
+          message: json.error || "Unknown server error",
+        });
+        return;
+      }
+
+      // success
+      showNotification({
+        type: "success",
+        heading: "Alert created 🎉",
+        message: "You’ll now be notified when Compound beats other rates.",
+      });
+      router.push("/alerts");
+    } catch (err: any) {
+      // network or unexpected failure
+      showNotification({
+        type: "error",
+        heading: "Network error",
+        message: err.message || "Please try again.",
+      });
     }
-    router.push("/alerts");
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="container max-w-6xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
-      <div className="flex items-center text-sm text-gray-500 mb-6">
-        <Link href="/">Home</Link>
-        <span className="mx-2">{">"}</span>
-        <Link href="/alerts">Alerts</Link>
-        <span className="mx-2">{">"}</span>
-        <Link href="/alerts/create">Create Alert</Link>
-        <span className="mx-2">{">"}</span>
-        <span className="text-gray-700">Compare Compound</span>
+      <nav className="flex items-center text-sm mb-6">
+        <Link
+          href="/"
+          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+        >
+          <Home size={14} />
+          <span>Home</span>
+        </Link>
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <Link
+          href="/alerts"
+          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+        >
+          <Bell size={14} />
+          <span>Alerts</span>
+        </Link>
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <Link
+          href="/alerts/create"
+          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+        >
+          <TrendingUp size={14} />
+          <span>Create Alert</span>
+        </Link>
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <span className="text-theme-primary font-medium">Compare Compound</span>
+      </nav>
+
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-1 text-theme-primary">
+          Compare Compound Rates
+        </h1>
+        <p className="text-theme-muted">
+          Set up alerts to monitor when Compound offers better rates than other
+          DeFi platforms.
+        </p>
       </div>
 
-      <h1 className="text-3xl font-bold mb-2">Compare Compound Rates</h1>
-      <p className="text-gray-600 mb-8">
-        Set up alerts to monitor when Compound offers better rates than other
-        DeFi platforms.
-      </p>
+      {/* Alert Type */}
+      <Card className="mb-6 border-theme-border-primary">
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">
+            Alert Type
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">
+            Choose the type of alert you want to create.
+          </p>
 
-      {/* --- Alert Type --- */}
-      <div className="border p-6 rounded-lg mb-6">
-        <h2 className="text-lg font-medium mb-4">Alert Type</h2>
-        <label className="flex items-center mb-2">
-          <input
-            type="radio"
-            checked={alertType === "supply"}
-            onChange={() => setAlertType("supply")}
-            className="mr-2"
-          />
-          Supply Comparison
-        </label>
-        <label className="flex items-center">
-          <input
-            type="radio"
-            checked={alertType === "borrow"}
-            onChange={() => setAlertType("borrow")}
-            className="mr-2"
-          />
-          Borrow Comparison
-        </label>
-      </div>
+          <RadioGroup
+            value={alertType}
+            onValueChange={(value) =>
+              setAlertType(value as "supply" | "borrow")
+            }
+            className="space-y-3"
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="supply" id="supply" />
+              <Label htmlFor="supply" className="text-theme-primary">
+                Supply Comparison (Alert when Compound offers higher rates)
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="borrow" id="borrow" />
+              <Label htmlFor="borrow" className="text-theme-primary">
+                Borrow Comparison (Alert when Compound offers lower rates)
+              </Label>
+            </div>
+          </RadioGroup>
+        </CardContent>
+      </Card>
 
-      {/* --- Platforms / Chains / Markets --- */}
-      <div className="border p-6 rounded-lg mb-6">
-        {/* Platforms */}
-        <div className="mb-6">
-          <h3 className="font-medium mb-2">Compare With</h3>
-          <div className="flex flex-wrap gap-3">
-            {["Aave", "Morpho", "Spark"].map((p) => (
-              <div
-                key={p}
-                onClick={() => togglePlatform(p)}
-                className={`border px-3 py-2 rounded cursor-pointer ${
-                  selectedPlatforms.includes(p)
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-300"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedPlatforms.includes(p)}
-                  readOnly
-                  className="mr-2"
-                />
-                {p}
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Chains */}
-        <div className="mb-6">
-          <h3 className="font-medium mb-2">Chains</h3>
-          <div className="flex flex-wrap gap-3">
-            {["Ethereum", "Arbitrum", "Optimism", "Polygon", "Base"].map(
-              (c) => (
+      {/* Platforms / Chains / Markets */}
+      <Card className="mb-6 border-theme-border-primary">
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">
+            Market Selection
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">
+            Select the platforms to compare with and the markets you want to
+            monitor.
+          </p>
+          {/* Platforms */}
+          <div className="mb-6">
+            <h3 className="text-md font-medium mb-1 text-theme-primary">
+              Compare With
+            </h3>
+            <p className="text-sm text-theme-muted mb-3">
+              Select one or more platforms to compare Compound rates against.
+            </p>
+
+            <div className="flex flex-wrap gap-3">
+              {["Aave", "Morpho", "Spark"].map((p) => (
                 <div
-                  key={c}
-                  onClick={() => toggleChain(c)}
-                  className={`border px-3 py-2 rounded cursor-pointer ${
-                    selectedChains.includes(c)
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-300"
+                  key={p}
+                  onClick={() => togglePlatform(p)}
+                  className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
+                    selectedPlatforms.includes(p)
+                      ? "border-primary bg-theme-bg-muted"
+                      : "border-theme-border-primary"
                   }`}
                 >
-                  <input
-                    type="checkbox"
-                    checked={selectedChains.includes(c)}
-                    readOnly
-                    className="mr-2"
-                  />
-                  {c}
+                  <div
+                    className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
+                      selectedPlatforms.includes(p)
+                        ? "bg-primary border-primary"
+                        : "border-theme-border-secondary"
+                    }`}
+                  >
+                    {selectedPlatforms.includes(p) && (
+                      <svg
+                        width="10"
+                        height="8"
+                        viewBox="0 0 10 8"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9 1L3.5 6.5L1 4"
+                          stroke="white"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                  <span className="text-theme-primary">{p}</span>
                 </div>
-              )
-            )}
-          </div>
-        </div>
-        {/* Markets */}
-        <div>
-          <h3 className="font-medium mb-2">Markets</h3>
-          <div className="flex flex-wrap gap-3">
-            {["USDC", "WBTC", "USDT", "ETH", "USDS"].map((m) => (
-              <div
-                key={m}
-                onClick={() => toggleMarket(m)}
-                className={`border px-3 py-2 rounded cursor-pointer ${
-                  selectedMarkets.includes(m)
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-300"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedMarkets.includes(m)}
-                  readOnly
-                  className="mr-2"
-                />
-                {m}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* --- Thresholds --- */}
-      <div className="border p-6 rounded-lg mb-6">
-        <div className="flex justify-between mb-4">
-          <h2 className="text-lg font-medium">Rate Difference Thresholds</h2>
-          <button
-            onClick={addThreshold}
-            className="text-sm px-3 py-1 border rounded hover:bg-gray-50"
-          >
-            + Add New Threshold
-          </button>
-        </div>
-        <p className="text-sm mb-4">
-          {alertType === "supply"
-            ? "Notify when Compound supply APR > other APR by threshold."
-            : "Notify when Compound borrow APR < other APR by threshold."}
-        </p>
-
-        {thresholds.map((th, i) => (
-          <div key={i} className="grid grid-cols-12 gap-4 items-center mb-4">
-            <div className="col-span-1">{i + 1}.</div>
-            <div className="col-span-5 flex items-center">
-              <input
-                type="text"
-                value={th.threshold}
-                onChange={(e) =>
-                  updateThreshold(i, "threshold", e.target.value)
-                }
-                className="border px-2 py-1 rounded w-20"
-              />
-              <span className="ml-2">APR</span>
+              ))}
             </div>
-            <div className="col-span-6">
-              <select
-                value={th.severity}
-                onChange={(e) =>
-                  updateThreshold(
+          </div>
+
+          {/* Chains */}
+          <div className="mb-6">
+            <h3 className="text-md font-medium mb-1 text-theme-primary">
+              Chains
+            </h3>
+            <p className="text-sm text-theme-muted mb-3">
+              Select one or more chains to monitor.
+            </p>
+
+            <div className="flex flex-wrap gap-3">
+              {["Ethereum", "Arbitrum", "Optimism", "Polygon", "Base"].map(
+                (c) => (
+                  <div
+                    key={c}
+                    onClick={() => toggleChain(c)}
+                    className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
+                      selectedChains.includes(c)
+                        ? "border-primary bg-theme-bg-muted"
+                        : "border-theme-border-primary"
+                    }`}
+                  >
+                    <div
+                      className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
+                        selectedChains.includes(c)
+                          ? "bg-primary border-primary"
+                          : "border-theme-border-secondary"
+                      }`}
+                    >
+                      {selectedChains.includes(c) && (
+                        <svg
+                          width="10"
+                          height="8"
+                          viewBox="0 0 10 8"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9 1L3.5 6.5L1 4"
+                            stroke="white"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                    <span className="text-theme-primary">{c}</span>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+
+          {/* Markets */}
+          <div>
+            <h3 className="text-md font-medium mb-1 text-theme-primary">
+              Markets
+            </h3>
+            <p className="text-sm text-theme-muted mb-3">
+              Select one or more markets to monitor.
+            </p>
+
+            <div className="flex flex-wrap gap-3">
+              {["USDC", "WBTC", "USDT", "ETH", "USDS"].map((m) => (
+                <div
+                  key={m}
+                  onClick={() => toggleMarket(m)}
+                  className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
+                    selectedMarkets.includes(m)
+                      ? "border-primary bg-theme-bg-muted"
+                      : "border-theme-border-primary"
+                  }`}
+                >
+                  <div
+                    className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
+                      selectedMarkets.includes(m)
+                        ? "bg-primary border-primary"
+                        : "border-theme-border-secondary"
+                    }`}
+                  >
+                    {selectedMarkets.includes(m) && (
+                      <svg
+                        width="10"
+                        height="8"
+                        viewBox="0 0 10 8"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9 1L3.5 6.5L1 4"
+                          stroke="white"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                  <span className="text-theme-primary">{m}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Thresholds */}
+      <Card className="mb-6 border-theme-border-primary">
+        <CardHeader className="pb-1 flex flex-row items-center justify-between">
+          <CardTitle className="text-lg text-theme-primary">
+            Rate Difference Thresholds
+          </CardTitle>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={addThreshold}
+            className="text-theme-primary border-theme-border-primary"
+          >
+            <Plus size={16} className="mr-1" /> Add Threshold
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">
+            {alertType === "supply"
+              ? "Notify when Compound supply APR > other APR by threshold."
+              : "Notify when Compound borrow APR < other APR by threshold."}
+          </p>
+
+          {thresholds.map((th, i) => (
+            <div
+              key={i}
+              className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-theme-border-primary pt-4"
+            >
+              <div className="col-span-1 flex items-center text-theme-muted">
+                <Badge
+                  variant="outline"
+                  className="h-6 w-6 flex items-center justify-center p-0 rounded-full"
+                >
+                  {i + 1}
+                </Badge>
+              </div>
+
+              <div className="col-span-5 flex items-center">
+                <Input
+                  type="text"
+                  value={th.threshold}
+                  onChange={(e) =>
+                    updateThreshold(i, "threshold", e.target.value)
+                  }
+                  className="w-20 border-theme-border-primary"
+                  placeholder="0.5"
+                />
+                <span className="ml-2 text-theme-muted">% APR</span>
+              </div>
+
+              <div className="col-span-5">
+                <Select
+                  value={th.severity}
+                  onValueChange={(value) =>
+                    updateThreshold(i, "severity", value as SeverityLevel)
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select severity" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {severityOptions.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {thresholds.length > 1 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => removeThreshold(i)}
+                  className="col-span-1 text-red-500 h-8 w-8"
+                >
+                  <X size={16} />
+                </Button>
+              )}
+            </div>
+          ))}
+
+          {/* Notification Frequency */}
+          <div className="mt-6">
+            <Label
+              htmlFor="frequency"
+              className="block text-sm font-medium mb-2"
+            >
+              Notification Frequency
+            </Label>
+            <Select
+              value={notificationFrequency}
+              onValueChange={(value) =>
+                setNotificationFrequency(value as NotificationFrequency)
+              }
+            >
+              <SelectTrigger className="w-full" id="frequency">
+                <SelectValue placeholder="Select frequency" />
+              </SelectTrigger>
+              <SelectContent>
+                {frequencyOptions.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-theme-muted mt-4">
+              This limits how often you'll receive notifications for this alert,
+              regardless of how many thresholds are triggered.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Delivery Channel Settings */}
+      <Card className="mb-6 border-theme-border-primary">
+        <CardHeader className="pb-1 flex flex-row items-center justify-between">
+          <CardTitle className="text-lg text-theme-primary">
+            Delivery Channel Settings
+          </CardTitle>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={addChannel}
+            className="text-theme-primary border-theme-border-primary"
+          >
+            <Plus size={16} className="mr-1" /> Add Channel
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">
+            Choose how you want to receive your alerts.
+          </p>
+
+          {channels.map((ch, i) => (
+            <div key={i} className="mb-4 flex items-center gap-4">
+              <Select
+                value={ch.channelType}
+                onValueChange={(value) =>
+                  updateChannel(
                     i,
-                    "severity",
-                    e.target.value as SeverityLevel
+                    "channelType",
+                    value as Channel["channelType"]
                   )
                 }
-                className="border px-3 py-2 rounded w-full"
               >
-                {severityOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Select channel" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="EMAIL">Email</SelectItem>
+                  <SelectItem value="WEBHOOK">Webhook</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {ch.channelType === "EMAIL" ? (
+                <Input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={ch.email || ""}
+                  onChange={(e) => updateChannel(i, "email", e.target.value)}
+                  className="flex-1 border-theme-border-primary"
+                />
+              ) : (
+                <Input
+                  type="url"
+                  placeholder="https://webhook.site/..."
+                  value={ch.webhookUrl || ""}
+                  onChange={(e) =>
+                    updateChannel(i, "webhookUrl", e.target.value)
+                  }
+                  className="flex-1 border-theme-border-primary"
+                />
+              )}
+
+              {channels.length > 1 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => removeChannel(i)}
+                  className="text-red-500 h-8 w-8"
+                >
+                  <X size={16} />
+                </Button>
+              )}
             </div>
-            {thresholds.length > 1 && (
-              <button
-                onClick={() => removeThreshold(i)}
-                className="col-span-1 text-red-500"
-              >
-                ✕
-              </button>
-            )}
-          </div>
-        ))}
-        {/* Notification Frequency */}
-        <div className="border p-6 rounded-lg mb-6">
-          <label className="block text-sm font-medium mb-1">
-            Notification Frequency
-          </label>
-          <select
-            value={notificationFrequency}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-              setNotificationFrequency(e.target.value as NotificationFrequency)
-            }
-            className="border border-gray-300 rounded-md px-3 py-2 w-full"
-          >
-            {frequencyOptions.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+          ))}
+        </CardContent>
+      </Card>
 
-      {/* --- Channels --- */}
-      <div className="border p-6 rounded-lg mb-6">
-        <div className="flex justify-between mb-4">
-          <h2 className="text-lg font-medium">Delivery Channels</h2>
-          <button
-            onClick={addChannel}
-            className="text-sm px-3 py-1 border rounded hover:bg-gray-50"
-          >
-            + Add Another Channel
-          </button>
-        </div>
-        {channels.map((ch, i) => (
-          <div key={i} className="flex items-center gap-4 mb-4">
-            <select
-              value={ch.channelType}
-              onChange={(e) =>
-                updateChannel(
-                  i,
-                  "channelType",
-                  e.target.value as Channel["channelType"]
-                )
-              }
-              className="border px-3 py-2 rounded"
-            >
-              <option value="EMAIL">Email</option>
-              <option value="WEBHOOK">Webhook</option>
-            </select>
-            {ch.channelType === "EMAIL" ? (
-              <input
-                type="email"
-                placeholder="you@example.com"
-                value={ch.email}
-                onChange={(e) => updateChannel(i, "email", e.target.value)}
-                className="border px-3 py-2 rounded flex-1"
-              />
-            ) : (
-              <input
-                type="url"
-                placeholder="https://..."
-                value={ch.webhookUrl}
-                onChange={(e) => updateChannel(i, "webhookUrl", e.target.value)}
-                className="border px-3 py-2 rounded flex-1"
-              />
-            )}
-            {channels.length > 1 && (
-              <button onClick={() => removeChannel(i)} className="text-red-500">
-                ✕
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* --- Actions --- */}
-      <div className="flex justify-end gap-4">
-        <button
+      {/* Action Buttons */}
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
           onClick={() => router.push("/alerts/create")}
-          className="px-4 py-2 border rounded hover:bg-gray-50"
+          className="border-theme-border-primary text-theme-primary"
         >
-          Cancel
-        </button>
-        <button
-          onClick={handleCreateAlert}
-          className="px-4 py-2 bg-[#0f172a] text-white rounded hover:bg-[#1e293b]"
-        >
-          Create Alert
-        </button>
+          <ArrowLeft size={16} className="mr-2" /> Back
+        </Button>
+
+        <div className="space-x-4">
+          <Button
+            onClick={handleCreateAlert}
+            className="bg-primary text-white hover-bg-slate-800"
+          >
+            Create Alert
+          </Button>
+        </div>
       </div>
     </div>
   );

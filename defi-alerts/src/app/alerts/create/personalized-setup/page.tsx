@@ -1,19 +1,54 @@
-// File: src/app/alerts/create/personalized-setup/page.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {
+  ChevronRight,
+  Home,
+  Bell,
+  TrendingUp,
+  ArrowLeft,
+  ArrowRight,
+  Wallet,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useNotificationContext } from "@dodao/web-core/ui/contexts/NotificationContext";
+import { isAddress } from "ethers";
 
 export default function PersonalizedSetupPage() {
   const router = useRouter();
   const [walletAddress, setWalletAddress] = useState("");
+  const { showNotification } = useNotificationContext();
 
   const handleNext = () => {
     if (!walletAddress) {
-      alert("Enter a wallet address");
+      showNotification({
+        type: "error",
+        heading: "Missing Address",
+        message: "Please enter your wallet address before moving on.",
+      });
       return;
     }
+
+    if (!isAddress(walletAddress.trim())) {
+      showNotification({
+        type: "error",
+        heading: "Invalid Address",
+        message: "That doesn’t look like a valid ETH address.",
+      });
+      return;
+    }
+
     // stash for downstream
     localStorage.setItem("walletAddress", walletAddress);
 
@@ -29,47 +64,95 @@ export default function PersonalizedSetupPage() {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      {/* …breadcrumb… */}
-      <div className="flex items-center text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-gray-700">
-          Home
+    <div className="container max-w-6xl mx-auto px-4 py-8">
+      {/* Breadcrumb */}
+      <nav className="flex items-center text-sm mb-6">
+        <Link
+          href="/"
+          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+        >
+          <Home size={14} />
+          <span>Home</span>
         </Link>
-        <span className="mx-2">{">"}</span>
-        <Link href="/alerts" className="hover:text-gray-700">
-          Alerts
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <Link
+          href="/alerts"
+          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+        >
+          <Bell size={14} />
+          <span>Alerts</span>
         </Link>
-        <span className="mx-2">{">"}</span>
-        <Link href="/alerts/create" className="hover:text-gray-700">
-          Create Alert
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <Link
+          href="/alerts/create"
+          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+        >
+          <TrendingUp size={14} />
+          <span>Create Alert</span>
         </Link>
-        <span className="mx-2">{">"}</span>
-        <span className="text-gray-700">Personalized Setup</span>
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <span className="text-theme-primary font-medium">
+          Personalized Setup
+        </span>
+      </nav>
+
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2 text-theme-primary">
+          Set Up Personalized Alerts
+        </h1>
+        <p className="text-theme-muted">
+          Configure alerts based on your wallet activity.
+        </p>
       </div>
-      <h1 className="text-3xl font-bold mb-2">Set Up Personalized Alerts</h1>
-      <div className="border p-8 rounded-lg mb-6">
-        <label className="block mb-2 font-medium">Wallet Address</label>
-        <input
-          type="text"
-          value={walletAddress}
-          onChange={(e) => setWalletAddress(e.target.value)}
-          placeholder="0x…"
-          className="w-full p-2 border rounded"
-        />
-      </div>
+
+      <Card className="mb-6 border-theme-border-primary">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg text-theme-primary">
+            Enter Your Wallet Address
+          </CardTitle>
+          <CardDescription className="text-theme-muted">
+            Write your wallet address to see your active positions and set up
+            personalized alerts.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="walletAddress" className="text-theme-primary">
+                Wallet Address
+              </Label>
+              <div className="flex items-center">
+                <Wallet className="mr-2 h-4 w-4 text-theme-muted" />
+                <Input
+                  id="walletAddress"
+                  type="text"
+                  value={walletAddress}
+                  onChange={(e) => setWalletAddress(e.target.value)}
+                  placeholder="0x..."
+                  className="border-theme-border-primary"
+                />
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Action Buttons */}
       <div className="flex justify-between">
-        <button
+        <Button
+          variant="outline"
           onClick={() => router.push("/alerts/create")}
-          className="px-6 py-2 border rounded"
+          className="border-theme-border-primary text-theme-primary"
         >
-          ← Back
-        </button>
-        <button
+          <ArrowLeft size={16} className="mr-2" /> Back
+        </Button>
+
+        <Button
           onClick={handleNext}
-          className="px-6 py-2 bg-[#0f172a] text-white rounded"
+          className="bg-primary text-white hover-bg-slate-800"
         >
-          Next →
-        </button>
+          Next <ArrowRight size={16} className="ml-2" />
+        </Button>
       </div>
     </div>
   );
