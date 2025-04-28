@@ -6,6 +6,7 @@ import { NextRequest } from 'next/server';
 import { SaveTickerInfoRequest } from '@/types/public-equity/ticker-request-response';
 import { invokePrompt } from '@/util/run-prompt';
 import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-today-date';
+import { safeParseJsonString } from '@/util/safe-parse-json-string';
 
 async function saveTickerInfo(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
   const { tickerKey } = await params;
@@ -28,7 +29,7 @@ async function saveTickerInfo(req: NextRequest, { params }: { params: Promise<{ 
   const aboutTickerString = await invokePrompt('US/public-equities/real-estate/equity-reits/ticker-info', inputJson);
 
   const aboutObj = JSON.parse(aboutTickerString);
-  const existingInfoObj = JSON.parse(existingTicker.tickerInfo || '{}');
+  const existingInfoObj = safeParseJsonString(existingTicker.tickerInfo);
 
   if (existingInfoObj.tickerNews !== undefined) {
     aboutObj.tickerNews = existingInfoObj.tickerNews;

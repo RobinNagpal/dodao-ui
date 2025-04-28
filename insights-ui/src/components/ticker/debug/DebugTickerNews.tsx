@@ -17,7 +17,7 @@ export interface DebugTickerNewsProps {
 export default function DebugTickerNews({ report, onPostUpdate }: DebugTickerNewsProps) {
   const ticker = report.tickerKey;
 
-  const tickerNews = safeParseJsonString(report.tickerInfo).tickerNews ?? {};
+  const tickerNews = safeParseJsonString(report.tickerInfo).tickerNews ?? '';
 
   const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
