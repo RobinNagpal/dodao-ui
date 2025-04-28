@@ -167,6 +167,9 @@ jobs:
         with:
           node-version: 20
 
+      - name: Set environment variables
+        run: echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+
       - name: Shared Web Core - Install dependencies
         run: cd shared/web-core && yarn
 
