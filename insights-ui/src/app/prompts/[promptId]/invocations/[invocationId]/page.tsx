@@ -152,7 +152,7 @@ export default function PromptInvocationDetailsPage() {
           isOpen={showPromptRequestSentToLLM}
           onClick={() => setShowPromptRequestSentToLLM(!showPromptRequestSentToLLM)}
         >
-          <div className="mt-4">{invocation.promptRequestToLlm ? parseMarkdown(invocation.promptRequestToLlm) : 'No Request Logging'}</div>
+          <div className="markdown-body mt-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(invocation.promptRequestToLlm ?? 'No Request Logging') }} />
         </Accordion>
         <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
