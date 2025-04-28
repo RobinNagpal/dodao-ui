@@ -2,7 +2,7 @@ import { IndustryAreaHeadings, UnderstandIndustry } from '@/scripts/industry-tar
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
-import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
+import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';
 import { getLlmResponse } from '@/scripts/llm-utils';
 
 const IndustrySectionSchema = z.object({

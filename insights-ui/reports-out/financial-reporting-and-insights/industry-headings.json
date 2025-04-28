@@ -1,240 +1,240 @@
 {
   "headings": [
     {
-      "title": "Retail Investment Insights",
-      "summary": "Focused on individual investors, this area covers consumer‑facing platforms that translate complex market data into actionable stock, alternative asset and real estate insights. It excludes generic accounting or real‑time data APIs, instead emphasizing curated research, thematic dashboards and crowd‑sourced signals. The three subareas target equity analysis, non‑public alternatives and real estate/REIT intelligence. Each service layer sits atop raw data, offering a pure insight experience rather than execution or portfolio accounting.",
+      "title": "Investor-Facing Research & Insights",
+      "summary": "Platforms in this area deliver curated research, market commentary and actionable recommendations directly to retail and advisory channels. They combine user-generated analysis, professional newsletters and alternative investment marketplaces to empower individual investors. Emphasis is on digestible, subscription-driven content rather than raw data feeds or portfolio engines. These solutions sit at the end of the value chain, translating complex financial research into investable ideas.",
       "subHeadings": [
         {
-          "title": "Stock & Equity Analysis Apps",
-          "summary": "Tools designed for retail investors to dissect company fundamentals, earnings forecasts, valuation metrics and event‑driven signals. They blend quantitative research, crowd‑sourced sentiment and expert commentary. These apps avoid real‑time trading APIs and focus strictly on insight delivery.",
+          "title": "Crowdsourced Investment Research",
+          "summary": "Platforms aggregating user-generated analysis, community commentary and analyst ratings to surface stock and ETF insights. They foster peer collaboration and leverage large contributor bases to highlight investment themes, sentiment and conviction levels without providing real-time pricing.",
           "startups": [
             {
               "name": "Seeking Alpha",
-              "summary": "Crowd‑sourced investment research platform featuring user‑generated stock analysis, earnings transcripts and quant‑rated ideas for long and short positions."
+              "summary": "A community-driven research site where investors publish articles, earnings call transcripts and opinion pieces. It aggregates thousands of user posts and crowd sentiment on equities and funds, enabling readers to compare viewpoints before making decisions."
             },
             {
               "name": "TipRanks",
-              "summary": "Aggregates analyst ratings, insider trades, hedge fund moves and social sentiment into a unified score, helping users track expert performance and price‑target alerts."
+              "summary": "Aggregates analyst ratings, financial blogger sentiment and insider filings into a transparent ranking system. Provides users with performance tracking of contributors to identify top-performing analysts and bloggers in equities and ETFs."
             },
             {
-              "name": "Simply Wall St",
-              "summary": "Transforms company fundamentals into easy‑to‑digest infographics, comparing valuation, profitability and growth across sectors to simplify decision‑making."
+              "name": "The Motley Fool",
+              "summary": "Subscription-based service offering in-depth equity research, stock recommendations and educational content. Known for long-term investment outlooks, model portfolios and community discussion forums targeting retail investors."
             }
           ]
         },
         {
-          "title": "Alternative Investment Discovery Tools",
-          "summary": "Platforms that curate non‑public opportunities—private credit, venture capital, real estate and other illiquid assets—for retail audiences. They provide deep‑dive sponsor due diligence, expected yield analytics and deal terms without acting as execution or custody venues.",
+          "title": "Premium Market News & Analysis",
+          "summary": "Subscription newsletters and briefings that distill macro trends, sector developments and company news into concise daily or weekly digests. They focus on interpretive commentary and thematic analysis rather than raw data or accounting reports, helping investors spot opportunities and risks quickly.",
           "startups": [
             {
-              "name": "Yieldstreet",
-              "summary": "Curates private credit and asset‑backed deals across art finance, marine lending and real estate, offering sponsor track records and projected returns."
+              "name": "Finimize",
+              "summary": "Delivers concise, daily financial news and market analysis via mobile app and email. Simplifies complex developments into bite-sized insights, charts and Q&A format to help retail investors stay informed."
             },
+            {
+              "name": "Morning Brew Finance",
+              "summary": "A branch of Morning Brew focusing on financial markets, delivering a daily newsletter with market movers, economic indicators and thematic stories. Integrates charts and expert commentary for busy readers."
+            },
+            {
+              "name": "The Daily Upside",
+              "summary": "Subscription publication offering deep-dive analysis on companies, industries and regulatory shifts. Targets institutional and retail investors with long-form investigative articles and data-driven trend reports."
+            }
+          ]
+        },
+        {
+          "title": "Alternative Investments Distribution & Insights",
+          "summary": "Digital marketplaces and advisory platforms that provide access to private equity, real estate, credit and other non-public asset classes. They combine deal sourcing, due-diligence summaries and performance analytics to guide investors through alternative strategies.",
+          "startups": [
             {
               "name": "Moonfare",
-              "summary": "Enables retail access to top‑tier private equity and venture funds, complete with performance analytics, minimum investment filters and secondary market pricing."
+              "summary": "A digital investment platform granting accredited investors access to top-tier private equity funds. Offers fund performance dashboards, due-diligence materials and portfolio reporting on PE allocations."
             },
             {
-              "name": "Crowdcube",
-              "summary": "UK‑based equity crowdfunding platform providing in‑depth issuer profiles, use‑of‑proceeds breakdowns and post‑funding performance insights."
-            }
-          ]
-        },
-        {
-          "title": "Real Estate & REIT Insights",
-          "summary": "Services delivering research on property markets, REIT valuations, occupancy trends and cap‑rate movements. Targeted at small investors and REIT allocators, they provide benchmarking, peer‑group analysis and thematic reports without listing or transaction capabilities.",
-          "startups": [
-            {
-              "name": "Realogy Insights",
-              "summary": "Offers national and local real estate trend data, REIT valuation dashboards and rental‑rate movement analytics for scenario planning."
+              "name": "Yieldstreet",
+              "summary": "Online marketplace for alternative assets including real estate, art finance and litigation funding. Provides curated deal insights, projected returns and risk profiles to individual investors."
             },
             {
-              "name": "Fundrise Research",
-              "summary": "Combines REIT performance tracking with macroeconomic indicators and sector‑specific reports on student housing, data centers and industrial spaces."
-            },
-            {
-              "name": "CrowdStreet Insights",
-              "summary": "Publishes commercial real estate market reports, sponsor track records and regional cap‑rate analyses tailored to accredited investors."
+              "name": "iCapital Network",
+              "summary": "Technology-enabled distribution network connecting wealth managers to alternative investment products. Offers fund data, manager research and performance analytics for private equity, hedge funds and real assets."
             }
           ]
         }
       ]
     },
     {
-      "title": "Institutional & Wealth Management Insights",
-      "summary": "Serving professional allocators—asset managers, hedge funds, family offices and institutional investors—this area focuses on deep analytics for fixed income, private markets and UHNW intelligence. Platforms provide credit research, private deal flow mapping and high‑touch wealth insights. They exclude accounting, ETL or real‑time data delivery, centering purely on research and signal generation.",
+      "title": "Asset Class Intelligence & Research",
+      "summary": "Midstream research providers focusing on deep-dive intelligence across specific asset classes. These platforms deliver standardized data, peer benchmarks and proprietary models for private markets, real estate, commodities and fixed income, enabling investment teams to conduct due-diligence and valuation analysis.",
       "subHeadings": [
         {
-          "title": "Bond & Fixed Income Analytics",
-          "summary": "Research platforms specialized in credit markets, yield‑curve modeling, relative‑value detection and structured‑product insights. They combine credit data, transaction analysis and quantitative engines to generate investment signals and scenario tests.",
-          "startups": [
-            {
-              "name": "YieldIQ",
-              "summary": "AI‑driven credit curve construction, corporate and municipal bond heatmaps, and analytics for duration and convexity risk management."
-            },
-            {
-              "name": "BondBrain",
-              "summary": "Web‑based liquidity dashboards, credit‑spread decompositions and structured‑note valuation tools across diverse issuers."
-            },
-            {
-              "name": "CreditScape",
-              "summary": "Deep‑dive research on high‑yield, investment‑grade and emerging‑market debt, featuring proprietary default‑risk scores and stress‑test simulations."
-            }
-          ]
-        },
-        {
-          "title": "Private Market & VC Deal Sourcing Insights",
-          "summary": "Aggregators of private capital deal flow, fund performance data and startup traction metrics. They help professional allocators benchmark managers, track valuations and uncover emerging themes in venture, growth equity and buy‑outs.",
+          "title": "Private Markets & Pre-IPO Research",
+          "summary": "Comprehensive datasets and analytics on venture capital, private equity and pre-IPO companies. Tools include deal flow tracking, valuation metrics and exit-event forecasting to support alternative asset allocations.",
           "startups": [
             {
               "name": "PitchBook",
-              "summary": "Comprehensive data on private and public capital markets, including fund profiles, deal valuations, investor networks and exit analytics."
+              "summary": "Offers detailed data on private and public companies, investors, M&A transactions and valuations. Includes predictive deal-flow analytics and peer benchmarking for venture and PE professionals."
             },
             {
               "name": "CB Insights",
-              "summary": "Machine‑learning platform that maps venture and M&A activity, highlights rising startups and reveals corporate investment patterns."
+              "summary": "Aggregates funding rounds, corporate innovation metrics and startup signals into thematic reports. Uses machine learning to identify emerging technology trends and high-growth private companies."
             },
             {
-              "name": "Preqin Insights",
-              "summary": "Private equity, venture, real estate and infrastructure performance benchmarking, fund‑manager analytics and dry‑powder forecasts."
+              "name": "Preqin",
+              "summary": "Provides intelligence on alternative assets including private equity, real estate and hedge funds. Delivers performance benchmarks, fundraising analytics and investor commitment data for institutional allocators."
             }
           ]
         },
         {
-          "title": "Family Office & UHNW Intelligence Platforms",
-          "summary": "High‑touch research services for family offices and ultra‑high‑net‑worth individuals. They curate alternative opportunities, market outlooks and bespoke thematic studies on art, collectibles, impact projects and direct co‑investment deals.",
+          "title": "Real Estate & REIT Analytics",
+          "summary": "Platforms tracking commercial property transactions, occupancy metrics and REIT performance. They provide ownership maps, lease expirations and portfolio benchmarks to support real estate investment and asset management decisions.",
           "startups": [
             {
-              "name": "Wealth‑X",
-              "summary": "Analytics on global UHNW individuals, tracking net‑worth shifts, asset allocations and investment preferences."
+              "name": "Yardi Matrix",
+              "summary": "Commercial real estate data service offering property-level performance metrics, tenant rosters and market analytics. Tracks REIT portfolios, development pipelines and pricing trends."
             },
             {
-              "name": "Campden Research",
-              "summary": "In‑depth reports, peer‑group surveys and custom briefings on family office strategies, LP‑GP dynamics and cross‑border tax implications."
+              "name": "Reonomy",
+              "summary": "AI-driven platform delivering ownership, transaction history and spatial analytics for commercial real estate. Helps investors identify off-market opportunities and assess property risk profiles."
             },
             {
-              "name": "Altrata",
-              "summary": "Intelligence on wealth networks, UHNWI ownership structures and philanthropic trends, enabling family offices to find co‑investment partners."
+              "name": "VTS",
+              "summary": "Workspace leasing and asset management solution with analytics on deal velocity, occupancy trends and submarket performance. Enables real-time portfolio monitoring without providing market-data feeds."
+            }
+          ]
+        },
+        {
+          "title": "Commodities & FX Research",
+          "summary": "Specialized research platforms offering forward curves, fundamental analysis and thematic reports on commodity and currency markets. They deliver supply-demand models, weather impacts and geopolitical insights to guide trading and hedging strategies.",
+          "startups": [
+            {
+              "name": "StoneX Group",
+              "summary": "Institutional brokerage and research provider offering detailed reports on energy, metals and agricultural commodity markets. Combines field surveys with data modeling to forecast supply-demand balances."
+            },
+            {
+              "name": "Marex Spectron",
+              "summary": "Offers tailored commodity research and market commentary across energy, base metals and soft commodities. Provides scenario analyses on price drivers and regulatory changes."
+            },
+            {
+              "name": "Commodity Weather Group",
+              "summary": "Delivers weather-based analytics for agriculture, energy and logistics sectors. Model outputs inform commodity pricing risk and trading strategies by quantifying climate impacts."
             }
           ]
         }
       ]
     },
     {
-      "title": "Advanced Analytics & Insights Platforms",
-      "summary": "Midstream solutions that power analytical workflows for professional investors. They stop short of wholesale data integration or real‑time APIs, instead offering modular tools for factor research, risk simulation and ESG analysis across asset classes. These platforms serve purely as decision‑support layers rather than trading or data‑warehousing engines.",
+      "title": "Macro & Thematic Insights",
+      "summary": "Midstream platforms synthesizing global economic indicators, ESG metrics and cross-sector thematic analysis. They enable investors to incorporate macro trends, sustainability factors and emerging themes into portfolio construction without handling raw data streams.",
       "subHeadings": [
         {
-          "title": "Factor & Quantitative Research Platforms",
-          "summary": "Tools for building, testing and deploying factor‑based strategies. They provide historical factor libraries, cross‑asset backtesting engines and automated signal generation from statistical models.",
+          "title": "Macro Economic Indicators & Dashboards",
+          "summary": "Interactive hubs for time-series economic data, forecasts and country comparisons. Provide intuitive charting and scenario-planning tools for top-down asset allocation and risk assessment.",
           "startups": [
             {
-              "name": "FactorResearch",
-              "summary": "Pre‑tested factor universes, custom factor creation and performance analytics that accelerate quant idea discovery."
+              "name": "Macrobond",
+              "summary": "Time series analytics platform combining global economic, financial and demographic datasets. Offers customizable dashboards, scenario modeling and country-level forecasts."
             },
             {
-              "name": "QuantConnect",
-              "summary": "Open‑source algorithmic research and backtesting environment supporting equities, futures and FX with community‑driven strategies."
+              "name": "Trading Economics",
+              "summary": "Aggregates historical data and consensus forecasts on GDP, employment, inflation and trade for over 200 countries. Features charts, alerts and export tools for macro research."
             },
             {
-              "name": "AlphaTheory",
-              "summary": "Statistical models for idea ranking, optimal position sizing and ex‑post attribution on model‑driven portfolios."
+              "name": "CEIC Data",
+              "summary": "Provides detailed macroeconomic, financial and industry data on emerging and developed markets. Includes thematic dashboards on supply chains, consumer prices and credit cycles."
             }
           ]
         },
         {
-          "title": "Risk & Scenario Modeling Tools",
-          "summary": "Platforms that simulate tail risks, stress scenarios and multi‑asset exposures. They blend historical stress tests, Monte Carlo engines and idiosyncratic shocking to evaluate P&L impacts under adverse conditions.",
+          "title": "ESG & Impact Investing Insights",
+          "summary": "Research services assessing corporate environmental, social and governance performance. Platforms deliver risk screenings, climate-scenario analysis and impact measurement tools to align investments with sustainability goals.",
           "startups": [
             {
-              "name": "Riskfuel",
-              "summary": "GPU‑accelerated Monte Carlo valuation and risk analytics for derivatives and exotic instruments."
+              "name": "Sustainalytics",
+              "summary": "ESG and governance research provider offering company risk ratings, controversy monitoring and sector-specific ESG scores. Supports integration of sustainability factors into investment processes."
             },
             {
-              "name": "Kensho",
-              "summary": "Event‑driven risk models and scenario analysis merging NLP‑extracted news signals with quantitative risk engines."
+              "name": "Clarity AI",
+              "summary": "Delivers ESG metrics, climate-risk analytics and impact measurement for public and private portfolios. Uses big data and machine learning to benchmark companies on sustainability themes."
             },
             {
-              "name": "Qontigo",
-              "summary": "Multi‑asset risk frameworks, factor‑based decomposition and customizable stress libraries for systematic and discretionary teams."
+              "name": "Arabesque S-Ray",
+              "summary": "Analyzes corporate sustainability performance using over 200 ESG indicators. Provides intuitive scoring and thematic filters to identify leaders and laggards within industries."
             }
           ]
         },
         {
-          "title": "ESG & Impact Investing Intelligence",
-          "summary": "Platforms quantifying ESG factors, sustainable impact and climate risks. They leverage alternative data, regulatory filings and scientific research to score companies and identify thematic opportunities.",
+          "title": "Thematic & Trend Analysis",
+          "summary": "Platforms that employ NLP, network science and predictive models to map emerging market themes and innovation hotspots. They help investors spot cross-industry trends and technology inflection points without focusing on individual security pricing.",
           "startups": [
             {
-              "name": "Truvalue Labs",
-              "summary": "AI‑extracted ESG event streams from unstructured sources to generate real‑time ESG scores and materiality charts."
+              "name": "TrendSpottr",
+              "summary": "Predictive intelligence platform detecting emerging trends and viral content in social and web data. Quantifies signal strength and momentum for investment decision support."
             },
             {
-              "name": "Arabesque S‑Ray",
-              "summary": "Machine‑learning ESG ratings covering sustainability metrics, carbon risk and governance, benchmarked across geographies."
+              "name": "Quid",
+              "summary": "Uses natural language processing and network analysis to visualize relationships among companies, technologies and themes. Enables exploration of innovation ecosystems and trend clusters."
             },
             {
-              "name": "Impact Cubed",
-              "summary": "Climate‑scenario analysis, SDG alignment scoring and portfolio heatmaps on carbon footprint, water stress and social impact."
+              "name": "AlphaSense",
+              "summary": "AI-powered search engine for financial documents, transcripts and filings. Identifies thematic insights and expert sentiment across earnings calls, research reports and news."
             }
           ]
         }
       ]
     },
     {
-      "title": "Alternative Data & Research Providers",
-      "summary": "Upstream producers of raw or semi‑processed data streams and research signals that feed downstream insight platforms. They collect satellite imagery, web‑scraped, social sentiment and supply‑chain data, transforming them into thematic investment indicators—without offering execution, generic ETL services or portfolio reporting.",
+      "title": "Alternative Data & Market Intelligence",
+      "summary": "Upstream aggregators and analysis engines for non-traditional data sources such as web scraping, social signals and niche datasets. They prepare, normalize and enrich these feeds so quant and research teams can incorporate unique signals into investment models.",
       "subHeadings": [
         {
-          "title": "Satellite & Geoanalytics for Investment",
-          "summary": "Providers of satellite imagery analysis and geospatial analytics to derive foot‑traffic estimates, crop‑yield forecasts, inventory levels and infrastructure monitoring signals for investors.",
+          "title": "Alternative Data Marketplaces",
+          "summary": "Platforms connecting institutional investors with curated alternative datasets ranging from satellite imagery to credit card transaction trends. They handle vendor due diligence, data normalization and delivery.",
           "startups": [
             {
-              "name": "Orbital Insight",
-              "summary": "Analyzes commercial satellite imagery to deliver mobility, construction and commodity inventory indicators for macro and equity investors."
+              "name": "Eagle Alpha",
+              "summary": "Curates and delivers alternative data products from dozens of providers, covering credit card transactions, foot traffic and web activity. Offers compliance, vendor evaluation and integration support."
             },
             {
-              "name": "Descartes Labs",
-              "summary": "ML‑powered analysis of high‑resolution imagery and sensor networks to forecast agricultural output, shipping traffic and energy performance."
+              "name": "Thinknum Alternative Data",
+              "summary": "Web-scrapes millions of publicly available sources to generate metrics on hiring, product listings, social engagement and more. Provides standardized APIs and dashboards for strategy development."
             },
             {
-              "name": "Planet Labs",
-              "summary": "Operates a large small‑satellite fleet offering daily imagery feeds and derived indices on land use, supply‑chain bottlenecks and environmental shifts."
+              "name": "Quandl",
+              "summary": "Central repository for alternative and niche financial datasets including asset flows, supply-chain metrics and pricing indices. Offers tools for data exploration, backtesting and integration into quant models."
             }
           ]
         },
         {
-          "title": "Social & Sentiment Data Platforms",
-          "summary": "Aggregators of social media, news, forums and other text sources to quantify sentiment, influencer activity and event risk. They provide alerts when market narratives shift significantly.",
+          "title": "News & Textual Analytics",
+          "summary": "Solutions that ingest, classify and score unstructured news, filings and social media content. They apply AI/ML to extract sentiment, event triggers and risk signals for systematic deployment in research workflows.",
           "startups": [
             {
-              "name": "Sentifi",
-              "summary": "Monitors news, blogs and social media to produce sentiment scores, influencer rankings and event‑driven alerts for equities and commodities."
+              "name": "RavenPack",
+              "summary": "Processes global news and social feeds to detect market-moving events, sentiment shifts and thematic correlations. Delivers structured event datasets and sentiment analytics to quants and analysts."
             },
             {
-              "name": "Accern",
-              "summary": "NLP‑driven extraction of market signals from newswires, social feeds and regulatory filings, delivering custom sentiment streams."
+              "name": "Sentieo",
+              "summary": "Financial research platform combining document search, transcript analytics and smart tagging. Offers embedded data visualizations and NLP-driven insights across SEC filings and research notes."
             },
             {
-              "name": "Thinknum",
-              "summary": "Scrapes 1,000+ websites to generate real‑time indicators on hiring trends, pricing, search volumes and social buzz."
+              "name": "NewsWhip",
+              "summary": "Analyzes social and online news distribution to measure story virality, audience engagement and emerging narratives. Provides real-time flags on high-impact news events for investment teams."
             }
           ]
         },
         {
-          "title": "Supply Chain & Web‑Scraped Data for Investment",
-          "summary": "Services that collect and normalize import/export records, logistics flows, e‑commerce listings and retail pricing to create alpha‑generating datasets for allocators.",
+          "title": "Web & Social Media Sentiment Insights",
+          "summary": "Services quantifying investor sentiment and behavioral signals from social platforms, forums and search data. Provide leading indicators on asset flows, retail interest and risk appetite trends.",
           "startups": [
             {
-              "name": "ImportGenius",
-              "summary": "Provides import/export manifests and shipping‑route data to track trade volumes, supplier patterns and end‑market demand shifts."
+              "name": "Dataminr",
+              "summary": "AI-driven platform scanning public social media and news to detect early signals of market-relevant events and sentiment shifts. Delivers real-time alerts to trading desks and research teams."
             },
             {
-              "name": "Panjiva",
-              "summary": "Aggregates global trade data with buyer‑seller linkages and shipment timings, revealing manufacturing and consumption trends."
+              "name": "Social Market Analytics",
+              "summary": "Generates sentiment indicators for stocks and ETFs by analyzing Twitter and other social feeds. Offers licensing of proprietary indices for quantitative strategies."
             },
             {
-              "name": "ImportYeti",
-              "summary": "On‑demand access to customs filings and supplier networks, enabling deep dives into product sourcing and trade corridors."
+              "name": "Predata",
+              "summary": "Monitors online behavior, search trends and social chatter to forecast geopolitical and economic risks. Provides leading-edge signals for macro hedging and event-driven trading strategies."
             }
           ]
         }

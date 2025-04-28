@@ -68,12 +68,14 @@ export async function doIt(
   const industry = tariffIndustry.name;
   const date = tariffIndustry.asOfDate;
   // Pre-read common dependencies
+
+  await getAndWriteIndustryHeadings(industry);
   const headings = await readIndustryHeadingsFromFile(industry);
 
   switch (reportType) {
     case ReportType.HEADINGS:
       await getAndWriteIndustryHeadings(industry);
-      writeIndustryHeadingsToMarkdownFile(industry, headings);
+      await writeIndustryHeadingsToMarkdownFile(industry, headings);
       break;
 
     case ReportType.INTRODUCTION:
@@ -153,11 +155,11 @@ export async function doIt(
 const industry: TariffReportIndustry = {
   name: 'Plastic',
   companiesToIgnore: ['Pactiv Evergreen Inc', 'Danimer Scientific(DNMR)', 'Zymergen Inc (ZY)', 'Amyris, Inc.'],
-  asOfDate: 'April 21, 2025',
+  asOfDate: 'April 28, 2025',
 };
 
 // Example usage:
-doIt(ReportType.TARIFF_UPDATES, industry, {
+doIt(ReportType.HEADINGS, industry, {
   headingIndex: 1,
   subHeadingIndex: 0,
 })

@@ -3,7 +3,7 @@ import { CountrySpecificTariff, IndustryAreaHeadings, TariffUpdatesForIndustry }
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
-import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
+import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';
 
 const CountrySpecificTariffSchema = z.object({
   countryName: z.string().describe('Name of the country.'),

@@ -3,7 +3,7 @@ import { IndustryAreaHeadings, Introduction } from '@/scripts/industry-tariff-re
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
-import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
+import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';
 
 // Schemas for the Introduction section of an industry report
 export const AboutSectorSchema = z.object({

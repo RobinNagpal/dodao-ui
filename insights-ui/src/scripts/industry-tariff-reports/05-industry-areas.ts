@@ -3,7 +3,7 @@ import { IndustryAreaHeadings, IndustryAreaSection } from '@/scripts/industry-ta
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
-import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
+import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';
 
 const IndustryAreaSectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses various industry areas.'),

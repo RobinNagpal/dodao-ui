@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/llm-utils';
 import { generateChartUrls, img } from '../chart-utils';
-import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
+import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';
 import { challengerToMarkdown, establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-markdown';
 import {
   ChartEntityType,

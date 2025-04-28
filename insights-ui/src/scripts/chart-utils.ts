@@ -1,11 +1,7 @@
 import { ChartUrls } from '@/scripts/industry-tariff-reports/tariff-types';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { uploadFileToS3 } from '@/scripts/report-file-utils';
 import fs from 'fs';
 import OpenAI from 'openai';
-
-const REGION = process.env.AWS_REGION!;
-const BUCKET_NAME = process.env.TARIFF_CHARTS_BUCKET!;
-const s3Client = new S3Client({ region: REGION });
 
 export function getChartPrompt(content: string) {
   return (
@@ -26,9 +22,8 @@ ${content}
   );
 }
 
-const openai = new OpenAI();
-
 async function getAndWriteFile(fileId: string) {
+  const openai = new OpenAI();
   const response = await openai.files.content(fileId);
 
   // Extract the binary data from the Response object
@@ -42,6 +37,7 @@ async function getAndWriteFile(fileId: string) {
 }
 
 async function getAssistantResponse() {
+  const openai = new OpenAI();
   const thread = await openai.beta.threads.create({});
 
   const message = await openai.beta.threads.messages.create(thread.id, {
@@ -84,23 +80,10 @@ export async function generateChartUrls(content: string, s3Prefix: string, n = 2
     const res = await fetch(url!);
     const arrayBuffer = await res.arrayBuffer();
     const key = `${s3Prefix}/chart-${idx++}.png`;
-    const s3Url = await uploadImageToS3(new Uint8Array(arrayBuffer), key);
+    const s3Url = await uploadFileToS3(new Uint8Array(arrayBuffer), key);
     urls.push(s3Url);
   }
   return [];
-}
-
-export async function uploadImageToS3(data: Uint8Array, key: string, contentType = 'image/png'): Promise<string> {
-  await s3Client.send(
-    new PutObjectCommand({
-      Bucket: BUCKET_NAME,
-      Key: key,
-      Body: data,
-      ContentType: contentType,
-      ACL: 'public-read',
-    })
-  );
-  return `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${key}`;
 }
 
 export const img = (urls?: ChartUrls) => (urls ?? []).map((u) => `![chart](${u})`).join('\n\n');

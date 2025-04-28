@@ -51,5 +51,5 @@ const startupIndustry: GenerateIndustryHeadingsRequest = {
     'It should not be related to hosting managing quantitative data or data warehousing. ',
 };
 
-doIt(ReportType.HEADINGS, startupIndustry, 'April 21, 2025').catch(console.error);
+doIt(ReportType.HEADINGS, startupIndustry, 'April 28, 2025').catch(console.error);
 // doIt(ReportType.ALL, 'Plastic', 'April 21, 2025').catch(console.error);

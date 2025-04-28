@@ -1,7 +1,7 @@
 import { getLlmResponse } from '@/scripts/llm-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { z, ZodObject } from 'zod';
-import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/reportFileUtils';
+import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';
 import fs from 'fs';
 import path from 'path';
 

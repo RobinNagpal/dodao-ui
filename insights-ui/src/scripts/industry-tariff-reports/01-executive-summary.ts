@@ -3,7 +3,7 @@ import { ExecutiveSummary, IndustryAreaHeadings, TariffUpdatesForIndustry } from
 import fs from 'fs';
 import path from 'path';
 import { z } from 'zod';
-import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
+import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';
 
 const ExecutiveSummarySchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),
