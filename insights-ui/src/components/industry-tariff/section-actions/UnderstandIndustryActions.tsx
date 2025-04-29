@@ -27,7 +27,7 @@ export default function UnderstandIndustryActions({ industryId }: UnderstandIndu
   });
 
   const handleRegenerate = async () => {
-    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/regenerate-section`, {});
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-understand-industry`, {});
     router.refresh();
     setShowRegenerateModal(false);
   };
