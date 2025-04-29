@@ -40,6 +40,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   }
   await getFinalConclusionAndSaveToFile(industry, headings, tariffs, summariesAll, positiveImpacts, negativeImpacts);
   const conclusion = await readFinalConclusionFromFile(industry);
+  if (!conclusion) {
+    throw new Error('Final conclusion not found');
+  }
   await writeFinalConclusionToMarkdownFile(industry, conclusion);
 
   return getIndustryTariffReport(industry);

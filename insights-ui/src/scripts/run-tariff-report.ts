@@ -85,30 +85,34 @@ export async function doIt(
 
     case ReportType.INTRODUCTION:
       await getAndWriteIntroductionsJson(industry, date, headings);
-      const introductions = readIntroductionJsonFromFile(industry);
-      writeIntroductionToMarkdownFile(industry, introductions);
+      const introductions = await readIntroductionJsonFromFile(industry);
+      if (!introductions) throw new Error('Introductions not found');
+      await writeIntroductionToMarkdownFile(industry, introductions);
       break;
 
     case ReportType.UNDERSTAND_INDUSTRY:
       await getAndWriteUnderstandIndustryJson(industry, headings);
-      const understandIndustry = readUnderstandIndustryJsonFromFile(industry);
-      writeUnderstandIndustryToMarkdownFile(industry, understandIndustry);
+      const understandIndustry = await readUnderstandIndustryJsonFromFile(industry);
+      if (!understandIndustry) throw new Error('Understand industry section not found');
+      await writeUnderstandIndustryToMarkdownFile(industry, understandIndustry);
       break;
 
     case ReportType.TARIFF_UPDATES:
       await getTariffUpdatesForIndustryAndSaveToFile(industry, date, headings);
-      const tariffUpdatesForIndustry = readTariffUpdatesFromFile(industry);
-      writeTariffUpdatesToMarkdownFile(industry, tariffUpdatesForIndustry);
+      const tariffUpdatesForIndustry = await readTariffUpdatesFromFile(industry);
+      if (!tariffUpdatesForIndustry) throw new Error('Tariff updates not found');
+      await writeTariffUpdatesToMarkdownFile(industry, tariffUpdatesForIndustry);
       break;
 
     case ReportType.INDUSTRY_AREA_SECTION:
       await getAndWriteIndustryAreaSectionToJsonFile(industry, headings);
-      const industryAreaSection = readIndustryAreaSectionFromFile(industry);
-      writeIndustryAreaSectionToMarkdownFile(industry, industryAreaSection);
+      const industryAreaSection = await readIndustryAreaSectionFromFile(industry);
+      if (!industryAreaSection) throw new Error('Industry area section not found');
+      await writeIndustryAreaSectionToMarkdownFile(industry, industryAreaSection);
       break;
 
     case ReportType.EVALUATE_INDUSTRY_AREA:
-      const tariff = readTariffUpdatesFromFile(industry);
+      const tariff = await readTariffUpdatesFromFile(industry);
       const { headingIndex, subHeadingIndex } = evaluationReportToGenerate;
       const firstArea = headings.headings[headingIndex].subHeadings[subHeadingIndex];
       await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, firstArea, headings, tariff!, date);
@@ -119,21 +123,25 @@ export async function doIt(
       break;
 
     case ReportType.EXECUTIVE_SUMMARY:
-      const tariffUpdates = readTariffUpdatesFromFile(industry);
+      const tariffUpdates = await readTariffUpdatesFromFile(industry);
       const summaries = await getSummariesOfEvaluatedAreas(industry, headings);
+      if (!tariffUpdates) throw new Error('Tariff updates not found');
       await getExecutiveSummaryAndSaveToFile(industry, headings, tariffUpdates, summaries);
       const execSummary = await readExecutiveSummaryFromFile(industry);
-      writeExecutiveSummaryToMarkdownFile(industry, execSummary);
+      if (!execSummary) throw new Error('Executive summary not found');
+      await writeExecutiveSummaryToMarkdownFile(industry, execSummary);
       break;
 
     case ReportType.FINAL_CONCLUSION:
-      const tariffs = readTariffUpdatesFromFile(industry);
+      const tariffs = await readTariffUpdatesFromFile(industry);
+      if (!tariffs) throw new Error('Tariff updates not found');
       const summariesAll = await getSummariesOfEvaluatedAreas(industry, headings);
       const positiveImpacts = await getPositiveImpactsOfEvaluatedAreas(industry, headings);
       const negativeImpacts = await getNegativeImpactsOfEvaluatedAreas(industry, headings);
       await getFinalConclusionAndSaveToFile(industry, headings, tariffs, summariesAll, positiveImpacts, negativeImpacts);
       const conclusion = await readFinalConclusionFromFile(industry);
-      writeFinalConclusionToMarkdownFile(industry, conclusion);
+      if (!conclusion) throw new Error('Final conclusion not found');
+      await writeFinalConclusionToMarkdownFile(industry, conclusion);
       break;
 
     case ReportType.ALL:

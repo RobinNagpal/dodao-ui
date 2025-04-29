@@ -6,10 +6,8 @@ import {
   PositiveTariffImpactOnCompanyType,
   TariffUpdatesForIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
-import fs from 'fs';
-import path from 'path';
 import { z } from 'zod';
-import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';
+import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 
 const PositiveImpactsSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),
@@ -114,11 +112,8 @@ async function getFinalConclusion(
   return response;
 }
 
-function getFinalConclusionJsonFileName(industry: string) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '07-final-conclusion');
-  const fileName = path.join(dirPath, 'final-conclusion.json');
-  addDirectoryIfNotPresent(dirPath);
-  return fileName;
+function getS3Key(industry: string, fileName: string): string {
+  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/07-final-conclusion/${fileName}`;
 }
 
 export async function getFinalConclusionAndSaveToFile(
@@ -130,15 +125,25 @@ export async function getFinalConclusionAndSaveToFile(
   negativeImpacts: NegativeTariffImpactOnCompanyType[]
 ) {
   const finalConclusion = await getFinalConclusion(industry, headings, tariffUpdates, tariffSummaries, positiveImpacts, negativeImpacts);
-  const fileName = getFinalConclusionJsonFileName(industry);
-  fs.writeFileSync(fileName, JSON.stringify(finalConclusion, null, 2));
+  
+  // Upload JSON to S3
+  const jsonKey = getS3Key(industry, 'final-conclusion.json');
+  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(finalConclusion, null, 2)), jsonKey, 'application/json');
+
+  // Generate and upload markdown
+  const markdownContent = getMarkdownContentForFinalConclusion(finalConclusion);
+  const markdownKey = getS3Key(industry, 'final-conclusion.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), markdownKey, 'text/markdown');
 }
 
-export function readFinalConclusionFromFile(industry: string) {
-  const fileName = getFinalConclusionJsonFileName(industry);
-
-  const data = fs.readFileSync(fileName, 'utf-8');
-  return JSON.parse(data) as FinalConclusion;
+export async function readFinalConclusionFromFile(industry: string): Promise<FinalConclusion | undefined> {
+  try {
+    const key = getS3Key(industry, 'final-conclusion.json');
+    return await getJsonFromS3<FinalConclusion>(key);
+  } catch (error) {
+    console.error(`Error reading final conclusion from S3: ${error}`);
+    return undefined;
+  }
 }
 
 export function getMarkdownContentForFinalConclusion(finalConclusion: FinalConclusion) {
@@ -155,11 +160,8 @@ export function getMarkdownContentForFinalConclusion(finalConclusion: FinalConcl
   return markdownContent;
 }
 
-export function writeFinalConclusionToMarkdownFile(industry: string, finalConclusion: FinalConclusion) {
-  const filePath = getFinalConclusionJsonFileName(industry).replace('.json', '.md');
+export async function writeFinalConclusionToMarkdownFile(industry: string, finalConclusion: FinalConclusion) {
   const markdownContent = getMarkdownContentForFinalConclusion(finalConclusion);
-
-  fs.writeFileSync(filePath, markdownContent, {
-    encoding: 'utf-8',
-  });
+  const key = getS3Key(industry, 'final-conclusion.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }

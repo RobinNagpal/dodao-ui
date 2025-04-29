@@ -22,6 +22,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   // Generate the industry areas section
   await getAndWriteIndustryAreaSectionToJsonFile(industry, headings);
   const industryAreaSection = await readIndustryAreaSectionFromFile(industry);
+  if (!industryAreaSection) {
+    throw new Error('Industry area section not found');
+  }
   await writeIndustryAreaSectionToMarkdownFile(industry, industryAreaSection);
 
   return getIndustryTariffReport(industry);
