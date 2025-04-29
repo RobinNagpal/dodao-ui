@@ -1,5 +1,5 @@
 import { challengerToMarkdown, establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-markdown';
-import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/llm-utils';
+import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { getJsonFromS3, uploadFileToS3 } from '@/scripts/report-file-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { z } from 'zod';
@@ -182,6 +182,43 @@ const NewChallengerListSchema = z.object({
 });
 
 /**
+ * Get detailed information for a single new challenger
+ */
+async function getNewChallengerDetails(
+  headings: IndustryAreaHeadings,
+  tariffUpdates: TariffUpdatesForIndustry,
+  industry: IndustrySubHeading,
+  establishedPlayers: EstablishedPlayer[],
+  date: string,
+  companyName: string,
+  companyTicker: string
+): Promise<NewChallenger> {
+  const detailInstructions = `
+Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${industry.title} sector:
+- companyName, companyDescription, companyWebsite, companyTicker
+- products (portfolio & revenue breakdown)
+- aboutManagement, uniqueAdvantage
+- pastPerformance (5 yrs), futureGrowth (5 yrs)
+- impactOfTariffs (5–6 lines of facts & reasoning)
+- competitors
+- Output JSON matching NewChallengerSchema exactly.
+- Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.`;
+
+  const detailPrompt = createIndustrySectorPrompt({
+    industry,
+    headings,
+    tariffUpdates,
+    date,
+    instructions: detailInstructions,
+    context: {
+      'Established Players': establishedPlayers.map((ep) => ep.companyName),
+    },
+  });
+
+  return await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, 'gpt-4o-search-preview');
+}
+
+/**
  * Get new challengers using a two-step approach for better results
  */
 async function getNewChallengers(
@@ -192,14 +229,12 @@ async function getNewChallengers(
   establishedPlayers: EstablishedPlayer[],
   date: string
 ): Promise<NewChallenger[]> {
-  const logger = (message: string) => console.log(`[NewChallengers] ${message}`);
-
   // --- STEP 1: Fetch just names + tickers ---
-  logger('→ Fetching list of names and tickers');
+  console.log(`[NewChallengers] ${'→ Fetching list of names and tickers'}`);
 
   const listInstructions = `
 Evaluate the *New Challengers* in the ${industry.title} sector **but output only** each company's **name** and **ticker** in JSON:
-- Select three public US companies IPO'd in the last 7 years.
+- Select three public US companies IPO's in the last 7 years.
 - Ignore any Chinese companies.
 - Make sure the companies are active and are being publicly traded as of ${date} on Nasdaq or NYSE.
 - The company should be traded on US exchanges i.e. Nasdaq or NYSE.
@@ -226,34 +261,14 @@ Evaluate the *New Challengers* in the ${industry.title} sector **but output only
     NewChallengerListSchema,
     'gpt-4o-search-preview'
   );
-  logger(`← Received basic list: ${JSON.stringify(basicList)}`);
+  console.log(`[NewChallengers] ${`← Received basic list: ${JSON.stringify(basicList)}`}`);
 
   // --- STEP 2: For each, fetch full details ---
   const detailedList: NewChallenger[] = [];
   for (const { companyName, companyTicker } of basicList) {
-    logger(`→ Fetching details for ${companyName} (${companyTicker})`);
-
-    const detailInstructions = `
-Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${industry.title} sector:
-- companyName, companyDescription, companyWebsite, companyTicker
-- products (portfolio & revenue breakdown)
-- aboutManagement, uniqueAdvantage
-- pastPerformance (5 yrs), futureGrowth (5 yrs)
-- impactOfTariffs (5–6 lines of facts & reasoning)
-- competitors
-- Output JSON matching NewChallengerSchema exactly.
-- Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.`;
-
-    const detailPrompt = createIndustrySectorPrompt({
-      industry,
-      headings,
-      tariffUpdates,
-      date,
-      instructions: detailInstructions,
-    });
-
-    const newChallenger = await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, 'gpt-4o-search-preview');
-    logger(`← Received details for ${companyName}`);
+    console.log(`[NewChallengers] ${`→ Fetching details for ${companyName} (${companyTicker})`}`);
+    const newChallenger = await getNewChallengerDetails(headings, tariffUpdates, industry, establishedPlayers, date, companyName, companyTicker);
+    console.log(`[NewChallengers] ${`← Received details for ${companyName}`}`);
     detailedList.push(newChallenger);
   }
 
@@ -481,7 +496,8 @@ export async function regenerateEvaluateIndustryAreaJson(
   headings: IndustryAreaHeadings,
   tariffUpdates: TariffUpdatesForIndustry,
   date: string,
-  content: EvaluateIndustryContent
+  content: EvaluateIndustryContent,
+  challengerTicker?: string
 ) {
   // load existing or start new result
   const result = await readEvaluateIndustryAreaJsonFromFile(tariffIndustry.name, industryArea, headings);
@@ -491,11 +507,35 @@ export async function regenerateEvaluateIndustryAreaJson(
 
   switch (content) {
     case EvaluateIndustryContent.ESTABLISHED_PLAYERS:
+      console.log('Regenerating established players');
       result.establishedPlayers = await getEstablishedPlayers(tariffIndustry, headings, tariffUpdates, industryArea, date);
       result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
       break;
     case EvaluateIndustryContent.NEW_CHALLENGERS:
+      console.log('Regenerating new challengers');
       result.newChallengers = await getNewChallengers(tariffIndustry, headings, tariffUpdates, industryArea, result.establishedPlayers, date);
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
+      break;
+    case EvaluateIndustryContent.NEW_CHALLENGER:
+      if (!challengerTicker) {
+        throw new Error('Challenger ticker is required for individual challenger regeneration');
+      }
+      const existingChallenger = result.newChallengers.find((c) => c.companyTicker === challengerTicker);
+      if (!existingChallenger) {
+        throw new Error(`Challenger with ticker ${challengerTicker} not found`);
+      }
+      console.log(`Regenerating new challenger ${existingChallenger.companyName} (${challengerTicker})`);
+      const newChallenger = await getNewChallengerDetails(
+        headings,
+        tariffUpdates,
+        industryArea,
+        result.establishedPlayers,
+        date,
+        existingChallenger.companyName,
+        challengerTicker
+      );
+      const challengerIndex = result.newChallengers.findIndex((c) => c.companyTicker === challengerTicker);
+      result.newChallengers[challengerIndex] = newChallenger;
       result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
       break;
     case EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS:

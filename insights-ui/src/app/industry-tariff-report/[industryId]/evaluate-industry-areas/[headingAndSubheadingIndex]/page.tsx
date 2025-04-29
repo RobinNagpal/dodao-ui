@@ -112,6 +112,19 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
               const renderedMarkdown = markdown && parseMarkdown(markdown);
               return (
                 <div key={idx} className="mb-6 p-4 border rounded">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-medium">{challenger.companyName}</h3>
+                    <PrivateWrapper>
+                      <EvaluateIndustryAreasActions
+                        industryId={industryId}
+                        sectionName={`New Challenger: ${challenger.companyName}`}
+                        headingIndex={headingIndex}
+                        subHeadingIndex={subHeadingIndex}
+                        sectionType={EvaluateIndustryContent.NEW_CHALLENGER}
+                        challengerTicker={challenger.companyTicker}
+                      />
+                    </PrivateWrapper>
+                  </div>
                   <div className="markdown-body" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
                 </div>
               );

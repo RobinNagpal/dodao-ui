@@ -5,7 +5,6 @@ import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcru
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
 import type React from 'react';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
@@ -51,12 +50,6 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
 export default async function IndustryTariffReportLayout({ children, params }: { children: React.ReactNode; params: Promise<{ industryId: string }> }) {
   const paa = await params;
   const { industryId } = paa;
-  const heads = await headers();
-
-  const pathname = heads.get('next-url');
-  console.log(`Pathname: ${pathname}`);
-  console.log(`Pathname: ${JSON.stringify(paa)}`);
-  // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
   let report: IndustryTariffReport | null = null;
 

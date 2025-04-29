@@ -193,10 +193,20 @@ export interface IndustryTariffReport {
   finalConclusion?: FinalConclusion;
 }
 
+export interface BasicNewChallenger {
+  companyName: string;
+  companyTicker: string;
+}
+
+export interface NewChallengersList {
+  newChallengers: BasicNewChallenger[];
+}
+
 export enum EvaluateIndustryContent {
   ALL = 'ALL',
   ESTABLISHED_PLAYERS = 'ESTABLISHED_PLAYERS',
   NEW_CHALLENGERS = 'NEW_CHALLENGERS',
+  NEW_CHALLENGER = 'NEW_CHALLENGER',
   HEADWINDS_AND_TAILWINDS = 'HEADWINDS_AND_TAILWINDS',
   TARIFF_IMPACT_BY_COMPANY_TYPE = 'TARIFF_IMPACT_BY_COMPANY_TYPE',
   TARIFF_IMPACT_SUMMARY = 'TARIFF_IMPACT_SUMMARY',
