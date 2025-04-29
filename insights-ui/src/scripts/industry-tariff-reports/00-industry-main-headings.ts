@@ -1,6 +1,6 @@
-import { getLlmResponse } from '@/scripts/llm-utils';
 import { IndustryAreaHeadings, IndustryHeading } from '@/scripts/industry-tariff-reports/tariff-types';
-import { uploadFileToS3, getJsonFromS3, readFileFromS3 } from '@/scripts/report-file-utils';
+import { getLlmResponse } from '@/scripts/llm-utils';
+import { getJsonFromS3, uploadFileToS3 } from '@/scripts/report-file-utils';
 import { z, ZodObject } from 'zod';
 
 export const industryHeadingsFileName = 'industry-headings.json';
@@ -86,7 +86,7 @@ function generateMarkdownContent(industry: string, headings: IndustryAreaHeading
   return `# ${industry} Areas\n\n` + headings.headings.map((heading) => contentForHeadings(heading)).join('\n\n\n') + `\n\n\n`;
 }
 
-export async function readIndustryHeadingsFromFile(industry: string): Promise<IndustryAreaHeadings> {
+export async function readIndustryHeadingsFromFile(industry: string): Promise<IndustryAreaHeadings | undefined> {
   const key = getS3Key(industry, industryHeadingsFileName);
   return await getJsonFromS3<IndustryAreaHeadings>(key);
 }

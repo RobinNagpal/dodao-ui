@@ -24,7 +24,10 @@ export async function getIndustryTariffReport(industry: string): Promise<Industr
   const tariffUpdates = await readTariffUpdatesFromFile(industry);
 
   const evaluateIndustryAreas: EvaluateIndustryArea[] = [];
-  for (const evaluateIndustryArea of industryAreaHeadings.headings) {
+  const headings = industryAreaHeadings?.headings;
+  if (!headings) throw new Error(`Headings not found for industry: ${industry}`);
+
+  for (const evaluateIndustryArea of headings) {
     for (const subHeading of evaluateIndustryArea.subHeadings) {
       const evaluateIndustryAreaData = await readEvaluateIndustryAreaJsonFromFile(industry, subHeading, industryAreaHeadings);
       if (evaluateIndustryAreaData) {

@@ -30,7 +30,7 @@ export async function uploadFileToS3(data: Uint8Array, key: string, contentType 
   return `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${key}`;
 }
 
-export async function readFileFromS3(key: string): Promise<string> {
+export async function readFileFromS3(key: string): Promise<string | undefined> {
   const params = {
     Bucket: BUCKET_NAME,
     Key: key,
@@ -38,18 +38,14 @@ export async function readFileFromS3(key: string): Promise<string> {
 
   const data = await s3Client.send(new GetObjectCommand(params));
   const transformToString = data.Body?.transformToString();
-  if (!transformToString) {
-    throw new Error('Failed to read file from S3');
-  }
+
   const fileData = await transformToString;
-  if (!fileData) {
-    throw new Error('Failed to read file from S3');
-  }
 
   return fileData;
 }
 
-export async function getJsonFromS3<T>(key: string): Promise<T> {
+export async function getJsonFromS3<T>(key: string): Promise<T | undefined> {
   const fileData = await readFileFromS3(key);
-  return JSON.parse(fileData) as T;
+
+  return fileData ? (JSON.parse(fileData) as T) : undefined;
 }

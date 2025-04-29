@@ -404,13 +404,8 @@ export async function readEvaluateIndustryAreaJsonFromFile(
   industryArea: IndustrySubHeading,
   headings: IndustryAreaHeadings
 ): Promise<EvaluateIndustryArea | undefined> {
-  try {
-    const key = getS3Key(industry, industryArea, headings, '.json');
-    return await getJsonFromS3<EvaluateIndustryArea>(key);
-  } catch (error) {
-    console.error(`Error reading file from S3: ${error}`);
-    return undefined;
-  }
+  const key = getS3Key(industry, industryArea, headings, '.json');
+  return await getJsonFromS3<EvaluateIndustryArea>(key);
 }
 
 export async function writeEvaluateIndustryAreaToMarkdownFile(

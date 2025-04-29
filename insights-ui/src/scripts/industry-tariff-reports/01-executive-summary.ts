@@ -76,7 +76,7 @@ export async function getExecutiveSummaryAndSaveToFile(
   tariffSummaries: string[]
 ) {
   const executiveSummary = await getExecutiveSummary(industry, headings, tariffUpdates, tariffSummaries);
-  
+
   // Upload JSON to S3
   const jsonKey = getS3Key(industry, 'executive-summary.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(executiveSummary, null, 2)), jsonKey, 'application/json');
@@ -88,13 +88,8 @@ export async function getExecutiveSummaryAndSaveToFile(
 }
 
 export async function readExecutiveSummaryFromFile(industry: string): Promise<ExecutiveSummary | undefined> {
-  try {
-    const key = getS3Key(industry, 'executive-summary.json');
-    return await getJsonFromS3<ExecutiveSummary>(key);
-  } catch (error) {
-    console.error(`Error reading executive summary from S3: ${error}`);
-    return undefined;
-  }
+  const key = getS3Key(industry, 'executive-summary.json');
+  return await getJsonFromS3<ExecutiveSummary>(key);
 }
 
 export function getMarkdownContentForExecutiveSummary(executiveSummary: ExecutiveSummary) {

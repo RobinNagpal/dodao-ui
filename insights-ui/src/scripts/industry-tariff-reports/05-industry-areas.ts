@@ -51,7 +51,7 @@ function getS3Key(industry: string, fileName: string): string {
 
 export async function getAndWriteIndustryAreaSectionToJsonFile(industry: string, headings: IndustryAreaHeadings): Promise<void> {
   const industryAreaSection = await getIndustryAreaSection(industry, headings);
-  
+
   // Upload JSON to S3
   const jsonKey = getS3Key(industry, 'industry-area.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(industryAreaSection, null, 2)), jsonKey, 'application/json');
@@ -63,13 +63,8 @@ export async function getAndWriteIndustryAreaSectionToJsonFile(industry: string,
 }
 
 export async function readIndustryAreaSectionFromFile(industry: string): Promise<IndustryAreaSection | undefined> {
-  try {
-    const key = getS3Key(industry, 'industry-area.json');
-    return await getJsonFromS3<IndustryAreaSection>(key);
-  } catch (error) {
-    console.error(`Error reading industry area section from S3: ${error}`);
-    return undefined;
-  }
+  const key = getS3Key(industry, 'industry-area.json');
+  return await getJsonFromS3<IndustryAreaSection>(key);
 }
 
 export function getMarkdownContentForIndustryAreas(industryAreaSection: IndustryAreaSection) {

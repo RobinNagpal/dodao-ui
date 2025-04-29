@@ -76,6 +76,7 @@ export async function doIt(
 
   await getAndWriteIndustryHeadings(industry);
   const headings = await readIndustryHeadingsFromFile(industry);
+  if (!headings) throw new Error('Headings not found');
 
   switch (reportType) {
     case ReportType.HEADINGS:

@@ -125,7 +125,7 @@ export async function getFinalConclusionAndSaveToFile(
   negativeImpacts: NegativeTariffImpactOnCompanyType[]
 ) {
   const finalConclusion = await getFinalConclusion(industry, headings, tariffUpdates, tariffSummaries, positiveImpacts, negativeImpacts);
-  
+
   // Upload JSON to S3
   const jsonKey = getS3Key(industry, 'final-conclusion.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(finalConclusion, null, 2)), jsonKey, 'application/json');
@@ -137,13 +137,8 @@ export async function getFinalConclusionAndSaveToFile(
 }
 
 export async function readFinalConclusionFromFile(industry: string): Promise<FinalConclusion | undefined> {
-  try {
-    const key = getS3Key(industry, 'final-conclusion.json');
-    return await getJsonFromS3<FinalConclusion>(key);
-  } catch (error) {
-    console.error(`Error reading final conclusion from S3: ${error}`);
-    return undefined;
-  }
+  const key = getS3Key(industry, 'final-conclusion.json');
+  return await getJsonFromS3<FinalConclusion>(key);
 }
 
 export function getMarkdownContentForFinalConclusion(finalConclusion: FinalConclusion) {

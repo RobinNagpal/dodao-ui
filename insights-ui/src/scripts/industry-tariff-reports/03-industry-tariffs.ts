@@ -138,13 +138,8 @@ export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string,
 }
 
 export async function readTariffUpdatesFromFile(industry: string): Promise<TariffUpdatesForIndustry | undefined> {
-  try {
-    const key = getS3Key(industry, 'tariff-updates.json');
-    return await getJsonFromS3<TariffUpdatesForIndustry>(key);
-  } catch (error) {
-    console.error(`Error reading tariff updates from S3: ${error}`);
-    return undefined;
-  }
+  const key = getS3Key(industry, 'tariff-updates.json');
+  return await getJsonFromS3<TariffUpdatesForIndustry>(key);
 }
 
 function getMarkdownContentForCountryTariffs(tariff: CountrySpecificTariff) {

@@ -129,13 +129,8 @@ export async function getAndWriteUnderstandIndustryJson(industry: string, headin
 }
 
 export async function readUnderstandIndustryJsonFromFile(industry: string): Promise<UnderstandIndustry | undefined> {
-  try {
-    const key = getS3Key(industry, 'understand-industry.json');
-    return await getJsonFromS3<UnderstandIndustry>(key);
-  } catch (error) {
-    console.error(`Error reading understand industry from S3: ${error}`);
-    return undefined;
-  }
+  const key = getS3Key(industry, 'understand-industry.json');
+  return await getJsonFromS3<UnderstandIndustry>(key);
 }
 
 export function getMarkdownContentForUnderstandIndustry(understandIndustry: UnderstandIndustry) {

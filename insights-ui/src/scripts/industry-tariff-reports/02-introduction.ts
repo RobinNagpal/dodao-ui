@@ -9,9 +9,9 @@ const aboutSectorSchema = z.object({
   aboutSector: z
     .string()
     .describe(
-      'Concise overview (6–8 lines) of the industry\'s scope and core segments. ' +
-      'Focus on key products and market drivers; include up-to-date figures as of the given date. ' +
-      'Embed hyperlinks for data sources where available.'
+      "Concise overview (6–8 lines) of the industry's scope and core segments. " +
+        'Focus on key products and market drivers; include up-to-date figures as of the given date. ' +
+        'Embed hyperlinks for data sources where available.'
     ),
 });
 
@@ -19,10 +19,7 @@ const aboutConsumptionSchema = z.object({
   title: z.string().describe('Title for the About Consumption section'),
   aboutConsumption: z
     .string()
-    .describe(
-      'Analysis (6–8 lines) of the industry\'s consumption patterns. ' +
-      'Highlight key drivers and cite up-to-date metrics with hyperlinks.'
-    ),
+    .describe("Analysis (6–8 lines) of the industry's consumption patterns. " + 'Highlight key drivers and cite up-to-date metrics with hyperlinks.'),
 });
 
 const pastGrowthSchema = z.object({
@@ -30,8 +27,7 @@ const pastGrowthSchema = z.object({
   aboutGrowth: z
     .string()
     .describe(
-      'Analysis (6–8 lines) of the industry\'s CAGR over the past five years. ' +
-      'Highlight major drivers and cite up-to-date metrics with hyperlinks.'
+      "Analysis (6–8 lines) of the industry's CAGR over the past five years. " + 'Highlight major drivers and cite up-to-date metrics with hyperlinks.'
     ),
 });
 
@@ -141,7 +137,7 @@ function getS3Key(industry: string, fileName: string): string {
 export async function getAndWriteIntroductionsJson(industry: string, date: string, headings: IndustryAreaHeadings) {
   const introduction = await getIntroduction(industry, date, headings);
   console.log('Introduction:', introduction);
-  
+
   // Upload JSON to S3
   const jsonKey = getS3Key(industry, 'introduction.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(introduction, null, 2)), jsonKey, 'application/json');
@@ -153,13 +149,8 @@ export async function getAndWriteIntroductionsJson(industry: string, date: strin
 }
 
 export async function readIntroductionJsonFromFile(industry: string): Promise<Introduction | undefined> {
-  try {
-    const key = getS3Key(industry, 'introduction.json');
-    return await getJsonFromS3<Introduction>(key);
-  } catch (error) {
-    console.error(`Error reading introduction from S3: ${error}`);
-    return undefined;
-  }
+  const key = getS3Key(industry, 'introduction.json');
+  return await getJsonFromS3<Introduction>(key);
 }
 
 export function getMarkdownContentForIntroduction(introduction: Introduction) {
