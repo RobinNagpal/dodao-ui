@@ -1,7 +1,7 @@
-import { cleanOpenAIUrls, getLlmResponse, gpt4OSearchModel, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
 import { CountrySpecificTariff, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { getLlmResponse, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
+import { getJsonFromS3, uploadFileToS3 } from '@/scripts/report-file-utils';
 import { z } from 'zod';
-import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 
 const CountrySpecificTariffSchema = z.object({
   countryName: z.string().describe('Name of the country.'),
@@ -117,14 +117,22 @@ function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headi
 }
 
 // 3) Use it in your tariff-fetcher
-async function getTariffUpdatesForIndustry(industry: string, date: string, headings: IndustryAreasWrapper): Promise<TariffUpdatesForIndustry> {
+async function getTariffUpdatesForIndustry(
+  industry: string,
+  date: string,
+  headings: IndustryAreasWrapper,
+  countryName?: string
+): Promise<TariffUpdatesForIndustry> {
   console.log(`Fetching top 5 trading partners for ${industry}…`);
   const topCountries = await getTopTradingCountries(industry, date);
 
   console.log(`Invoking LLM for tariffs for each of:`, topCountries);
   const countrySpecificTariffs: CountrySpecificTariff[] = [];
 
-  for (const country of topCountries) {
+  // If a specific country is requested, only process that country
+  const countriesToProcess = countryName ? [countryName] : topCountries;
+
+  for (const country of countriesToProcess) {
     const prompt = getTariffUpdatesForIndustryPrompt(industry, date, headings, country);
     console.log(`Fetching tariffs for ${country}…`);
     const countryTariff = await getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, 'gpt-4o-search-preview');
@@ -132,15 +140,26 @@ async function getTariffUpdatesForIndustry(industry: string, date: string, headi
     countrySpecificTariffs.push(countryTariff);
   }
 
-  return { countrySpecificTariffs };
+  return { countryNames: topCountries, countrySpecificTariffs };
 }
 
 function getS3Key(industry: string, fileName: string): string {
   return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/03-tariff-updates/${fileName}`;
 }
 
-export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryAreasWrapper) {
-  const tariffUpdates = await getTariffUpdatesForIndustry(industry, date, headings);
+export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryAreasWrapper, countryName?: string) {
+  const tariffUpdates = await getTariffUpdatesForIndustry(industry, date, headings, countryName);
+
+  // If regenerating a specific country, merge with existing data
+  if (countryName) {
+    const existingTariffUpdates = await readTariffUpdatesFromFile(industry);
+    if (existingTariffUpdates) {
+      // Remove the old entry for this country if it exists
+      const filteredTariffs = existingTariffUpdates.countrySpecificTariffs.filter((tariff) => tariff.countryName !== countryName);
+      // Add the new tariff data
+      tariffUpdates.countrySpecificTariffs = [...filteredTariffs, ...tariffUpdates.countrySpecificTariffs];
+    }
+  }
 
   // Upload JSON to S3
   const jsonKey = getS3Key(industry, 'tariff-updates.json');
@@ -157,9 +176,8 @@ export async function readTariffUpdatesFromFile(industry: string): Promise<Tarif
   return await getJsonFromS3<TariffUpdatesForIndustry>(key);
 }
 
-function getMarkdownContentForCountryTariffs(tariff: CountrySpecificTariff) {
-  return (
-    `## ${tariff.countryName}\n\n` +
+export function getMarkdownContentForCountryTariffs(tariff: CountrySpecificTariff): string {
+  const content =
     `${tariff.tariffDetails}\n\n` +
     `${tariff.existingTradeAmountAndAgreement}\n\n` +
     `${tariff.newChanges}\n\n` +
@@ -167,17 +185,16 @@ function getMarkdownContentForCountryTariffs(tariff: CountrySpecificTariff) {
     `### Trade Impacted by New Tariff\n\n` +
     `${tariff.tradeImpactedByNewTariff}\n\n` +
     `### Trade Exempted by New Tariff\n\n` +
-    `${tariff.tradeExemptedByNewTariff}\n`
-  );
+    `${tariff.tradeExemptedByNewTariff}\n`;
+  return recursivelyCleanOpenAiUrls(content);
 }
 
 export function getMarkdownContentForIndustryTariffs(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
   const markdownContent =
     `# Tariff Updates for ${industry}\n\n` +
-    `${tariffUpdates.countrySpecificTariffs.map((country) => getMarkdownContentForCountryTariffs(country)).join('\n\n')}\n`;
-  const cleanOpenAIUrls1 = recursivelyCleanOpenAiUrls(markdownContent);
-  console.log(`Markdown content for ${industry}:\n`, cleanOpenAIUrls1);
-  return cleanOpenAIUrls1;
+    `${tariffUpdates.countrySpecificTariffs.map((country) => `##${country.countryName}\n\n${getMarkdownContentForCountryTariffs(country)}`).join('\n\n')}\n`;
+
+  return markdownContent;
 }
 
 export async function writeTariffUpdatesToMarkdownFile(industry: string, tariffUpdates: TariffUpdatesForIndustry) {

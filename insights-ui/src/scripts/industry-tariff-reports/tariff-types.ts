@@ -55,6 +55,7 @@ export interface CountrySpecificTariff {
 }
 
 export interface TariffUpdatesForIndustry {
+  countryNames: string[];
   countrySpecificTariffs: CountrySpecificTariff[];
 }
 
