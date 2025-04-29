@@ -224,7 +224,7 @@ Evaluate the *New Challengers* in the ${industry.title} sector **but output only
   const { newChallengers: basicList } = await getLlmResponse<{ newChallengers: { companyName: string; companyTicker: string }[] }>(
     listPrompt,
     NewChallengerListSchema,
-    gpt4OSearchModel
+    'gpt-4o-search-preview'
   );
   logger(`← Received basic list: ${JSON.stringify(basicList)}`);
 
@@ -252,7 +252,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${i
       instructions: detailInstructions,
     });
 
-    const newChallenger = await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, gpt4OSearchModel);
+    const newChallenger = await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, 'gpt-4o-search-preview');
     logger(`← Received details for ${companyName}`);
     detailedList.push(newChallenger);
   }

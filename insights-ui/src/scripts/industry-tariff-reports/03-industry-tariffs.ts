@@ -86,7 +86,7 @@ async function getTariffUpdatesForIndustry(industry: string, date: string, headi
 
   for (const country of topCountries) {
     const prompt = getTariffUpdatesForIndustryPrompt(industry, date, headings, country);
-    const countryTariff = await getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, gpt4OSearchModel);
+    const countryTariff = await getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, 'gpt-4o-search-preview');
     countrySpecificTariffs.push(countryTariff);
   }
 
@@ -99,7 +99,7 @@ function getS3Key(industry: string, fileName: string): string {
 
 export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryAreaHeadings) {
   const tariffUpdates = await getTariffUpdatesForIndustry(industry, date, headings);
-  
+
   // Upload JSON to S3
   const jsonKey = getS3Key(industry, 'tariff-updates.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(tariffUpdates, null, 2)), jsonKey, 'application/json');
