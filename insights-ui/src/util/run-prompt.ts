@@ -70,6 +70,7 @@ export async function invokePrompt(promptKey: string, input?: any): Promise<stri
     await prisma.promptInvocation.update({
       where: { id: invocation.id },
       data: {
+        promptRequestToLlm: finalPrompt,
         outputJson: JSON.stringify(result),
         status: PromptInvocationStatus.Completed,
         updatedAt: new Date(),
