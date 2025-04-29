@@ -1,4 +1,9 @@
-import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
+import {
+  getIndustryTariffReport,
+  getNegativeImpactsOfEvaluatedAreas,
+  getPositiveImpactsOfEvaluatedAreas,
+  getSummariesOfEvaluatedAreas,
+} from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -19,19 +24,15 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   }
 
   // Get dependencies
-  const headings = readIndustryHeadingsFromFile(industry);
-  const tariffs = readTariffUpdatesFromFile(industry);
+  const headings = await readIndustryHeadingsFromFile(industry);
+  const tariffs = await readTariffUpdatesFromFile(industry);
 
   // Get summaries and impacts from evaluated areas
-  const summariesAll = headings.headings.flatMap((h) =>
-    h.subHeadings.map((sh) => readEvaluateIndustryAreaJsonFromFile(industry, sh, headings).tariffImpactSummary)
-  );
-  const positiveImpacts = headings.headings.flatMap((h) =>
-    h.subHeadings.flatMap((sh) => readEvaluateIndustryAreaJsonFromFile(industry, sh, headings).positiveTariffImpactOnCompanyType)
-  );
-  const negativeImpacts = headings.headings.flatMap((h) =>
-    h.subHeadings.flatMap((sh) => readEvaluateIndustryAreaJsonFromFile(industry, sh, headings).negativeTariffImpactOnCompanyType)
-  );
+  const summariesAll = await getSummariesOfEvaluatedAreas(industry, headings);
+
+  const positiveImpacts = await getPositiveImpactsOfEvaluatedAreas(industry, headings);
+
+  const negativeImpacts = await getNegativeImpactsOfEvaluatedAreas(industry, headings);
 
   // Generate the final conclusion
   await getFinalConclusionAndSaveToFile(industry, headings, tariffs, summariesAll, positiveImpacts, negativeImpacts);

@@ -1,15 +1,14 @@
-import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { NextRequest } from 'next/server';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import {
   getExecutiveSummaryAndSaveToFile,
   readExecutiveSummaryFromFile,
   writeExecutiveSummaryToMarkdownFile,
 } from '@/scripts/industry-tariff-reports/01-executive-summary';
-import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import { readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
-import { readEvaluateIndustryAreaJsonFromFile } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
+import { getIndustryTariffReport, getSummariesOfEvaluatedAreas } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
+import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { NextRequest } from 'next/server';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
@@ -19,16 +18,11 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   }
 
   // Get dependencies
-  const headings = readIndustryHeadingsFromFile(industry);
-  const tariffUpdates = readTariffUpdatesFromFile(industry);
+  const headings = await readIndustryHeadingsFromFile(industry);
+  const tariffUpdates = await readTariffUpdatesFromFile(industry);
 
   // Get summaries from evaluated areas
-  const summaries = headings.headings.flatMap((h) =>
-    h.subHeadings.map((sh) => {
-      const evalArea = readEvaluateIndustryAreaJsonFromFile(industry, sh, headings);
-      return evalArea.tariffImpactSummary;
-    })
-  );
+  const summaries = await getSummariesOfEvaluatedAreas(industry, headings);
 
   // Generate the executive summary
   await getExecutiveSummaryAndSaveToFile(industry, headings, tariffUpdates, summaries);

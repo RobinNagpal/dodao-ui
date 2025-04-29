@@ -6,20 +6,32 @@ import { readUnderstandIndustryJsonFromFile } from '@/scripts/industry-tariff-re
 import { readIndustryAreaSectionFromFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
 import { readEvaluateIndustryAreaJsonFromFile } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 import { readFinalConclusionFromFile } from '@/scripts/industry-tariff-reports/07-final-conclusion';
-import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import {
+  EvaluateIndustryArea,
+  IndustryAreaHeadings,
+  IndustryTariffReport,
+  NegativeTariffImpactOnCompanyType,
+  PositiveTariffImpactOnCompanyType,
+} from '@/scripts/industry-tariff-reports/tariff-types';
 
-export function getIndustryTariffReport(industry: string): IndustryTariffReport {
-  const introduction = readIntroductionJsonFromFile(industry);
-  const executiveSummary = readExecutiveSummaryFromFile(industry);
-  const understandIndustry = readUnderstandIndustryJsonFromFile(industry);
-  const finalConclusion = readFinalConclusionFromFile(industry);
-  const industryAreaHeadings = readIndustryHeadingsFromFile(industry);
-  const industryAreas = readIndustryAreaSectionFromFile(industry);
-  const tariffUpdates = readTariffUpdatesFromFile(industry);
+export async function getIndustryTariffReport(industry: string): Promise<IndustryTariffReport> {
+  const introduction = await readIntroductionJsonFromFile(industry);
+  const executiveSummary = await readExecutiveSummaryFromFile(industry);
+  const understandIndustry = await readUnderstandIndustryJsonFromFile(industry);
+  const finalConclusion = await readFinalConclusionFromFile(industry);
+  const industryAreaHeadings = await readIndustryHeadingsFromFile(industry);
+  const industryAreas = await readIndustryAreaSectionFromFile(industry);
+  const tariffUpdates = await readTariffUpdatesFromFile(industry);
 
-  const evaluateIndustryAreas = industryAreaHeadings.headings.flatMap((h) =>
-    h.subHeadings.map((sh) => readEvaluateIndustryAreaJsonFromFile(industry, sh, industryAreaHeadings))
-  );
+  const evaluateIndustryAreas: EvaluateIndustryArea[] = [];
+  for (const evaluateIndustryArea of industryAreaHeadings.headings) {
+    for (const subHeading of evaluateIndustryArea.subHeadings) {
+      const evaluateIndustryAreaData = await readEvaluateIndustryAreaJsonFromFile(industry, subHeading, industryAreaHeadings);
+      if (evaluateIndustryAreaData) {
+        evaluateIndustryAreas.push(evaluateIndustryAreaData);
+      }
+    }
+  }
 
   return {
     evaluateIndustryAreas: evaluateIndustryAreas,
@@ -31,4 +43,45 @@ export function getIndustryTariffReport(industry: string): IndustryTariffReport 
     understandIndustry,
     introduction,
   };
+}
+
+export async function getSummariesOfEvaluatedAreas(industry: string, headings: IndustryAreaHeadings) {
+  const summaries: string[] = [];
+
+  for (const heading of headings.headings) {
+    for (const subHeading of heading.subHeadings) {
+      const evalArea = await readEvaluateIndustryAreaJsonFromFile(industry, subHeading, headings);
+      if (evalArea?.tariffImpactSummary) {
+        summaries.push(evalArea.tariffImpactSummary);
+      }
+    }
+  }
+  return summaries;
+}
+
+export async function getPositiveImpactsOfEvaluatedAreas(industry: string, headings: IndustryAreaHeadings) {
+  const positiveImpacts: PositiveTariffImpactOnCompanyType[] = [];
+
+  for (const heading of headings.headings) {
+    for (const subHeading of heading.subHeadings) {
+      const evalArea = await readEvaluateIndustryAreaJsonFromFile(industry, subHeading, headings);
+      if (evalArea?.positiveTariffImpactOnCompanyType?.length) {
+        positiveImpacts.push(...evalArea.positiveTariffImpactOnCompanyType);
+      }
+    }
+  }
+  return positiveImpacts;
+}
+export async function getNegativeImpactsOfEvaluatedAreas(industry: string, headings: IndustryAreaHeadings) {
+  const negativeImpacts: NegativeTariffImpactOnCompanyType[] = [];
+
+  for (const heading of headings.headings) {
+    for (const subHeading of heading.subHeadings) {
+      const evalArea = await readEvaluateIndustryAreaJsonFromFile(industry, subHeading, headings);
+      if (evalArea?.negativeTariffImpactOnCompanyType?.length) {
+        negativeImpacts.push(...evalArea.negativeTariffImpactOnCompanyType);
+      }
+    }
+  }
+  return negativeImpacts;
 }

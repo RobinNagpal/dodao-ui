@@ -34,6 +34,11 @@ import {
   readFinalConclusionFromFile,
   writeFinalConclusionToMarkdownFile,
 } from '@/scripts/industry-tariff-reports/07-final-conclusion';
+import {
+  getNegativeImpactsOfEvaluatedAreas,
+  getPositiveImpactsOfEvaluatedAreas,
+  getSummariesOfEvaluatedAreas,
+} from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import { TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import * as dotenv from 'dotenv';
 
@@ -107,18 +112,15 @@ export async function doIt(
       const { headingIndex, subHeadingIndex } = evaluationReportToGenerate;
       const firstArea = headings.headings[headingIndex].subHeadings[subHeadingIndex];
       await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, firstArea, headings, tariff!, date);
-      const evaluated = readEvaluateIndustryAreaJsonFromFile(industry, firstArea, headings);
-      writeEvaluateIndustryAreaToMarkdownFile(industry, firstArea, headings, evaluated);
+      const evaluated = await readEvaluateIndustryAreaJsonFromFile(industry, firstArea, headings);
+      if (evaluated) {
+        await writeEvaluateIndustryAreaToMarkdownFile(industry, firstArea, headings, evaluated);
+      }
       break;
 
     case ReportType.EXECUTIVE_SUMMARY:
       const tariffUpdates = readTariffUpdatesFromFile(industry);
-      const summaries = headings.headings.flatMap((h) =>
-        h.subHeadings.map((sh) => {
-          const evalArea = readEvaluateIndustryAreaJsonFromFile(industry, sh, headings);
-          return evalArea.tariffImpactSummary;
-        })
-      );
+      const summaries = await getSummariesOfEvaluatedAreas(industry, headings);
       await getExecutiveSummaryAndSaveToFile(industry, headings, tariffUpdates, summaries);
       const execSummary = await readExecutiveSummaryFromFile(industry);
       writeExecutiveSummaryToMarkdownFile(industry, execSummary);
@@ -126,15 +128,9 @@ export async function doIt(
 
     case ReportType.FINAL_CONCLUSION:
       const tariffs = readTariffUpdatesFromFile(industry);
-      const summariesAll = headings.headings.flatMap((h) =>
-        h.subHeadings.map((sh) => readEvaluateIndustryAreaJsonFromFile(industry, sh, headings).tariffImpactSummary)
-      );
-      const positiveImpacts = headings.headings.flatMap((h) =>
-        h.subHeadings.flatMap((sh) => readEvaluateIndustryAreaJsonFromFile(industry, sh, headings).positiveTariffImpactOnCompanyType)
-      );
-      const negativeImpacts = headings.headings.flatMap((h) =>
-        h.subHeadings.flatMap((sh) => readEvaluateIndustryAreaJsonFromFile(industry, sh, headings).negativeTariffImpactOnCompanyType)
-      );
+      const summariesAll = await getSummariesOfEvaluatedAreas(industry, headings);
+      const positiveImpacts = await getPositiveImpactsOfEvaluatedAreas(industry, headings);
+      const negativeImpacts = await getNegativeImpactsOfEvaluatedAreas(industry, headings);
       await getFinalConclusionAndSaveToFile(industry, headings, tariffs, summariesAll, positiveImpacts, negativeImpacts);
       const conclusion = await readFinalConclusionFromFile(industry);
       writeFinalConclusionToMarkdownFile(industry, conclusion);

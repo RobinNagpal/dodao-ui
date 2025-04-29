@@ -34,7 +34,7 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {heading.subHeadings.map((subHeading, subIndex) => {
               const indexInArray = index * getNumberOfSubHeadings(industryId) + subIndex;
-              const evaluated = report?.evaluateIndustryAreas[indexInArray];
+              const evaluated = report?.evaluateIndustryAreas?.[indexInArray];
 
               if (!evaluated) {
                 return (

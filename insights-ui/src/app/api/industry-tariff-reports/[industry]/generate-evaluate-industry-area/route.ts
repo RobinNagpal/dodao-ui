@@ -36,8 +36,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   };
 
   // Get dependencies
-  const headings = readIndustryHeadingsFromFile(industry);
-  const tariff = readTariffUpdatesFromFile(industry);
+  const headings = await readIndustryHeadingsFromFile(industry);
+  const tariff = await readTariffUpdatesFromFile(industry);
   const area = headings.headings[headingIndex].subHeadings[subHeadingIndex];
 
   // Generate the evaluation based on section type
@@ -47,9 +47,10 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
     await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType);
   }
 
-  const evaluated = readEvaluateIndustryAreaJsonFromFile(industry, area, headings);
-  writeEvaluateIndustryAreaToMarkdownFile(industry, area, headings, evaluated);
-
+  const evaluated = await readEvaluateIndustryAreaJsonFromFile(industry, area, headings);
+  if (evaluated) {
+    await writeEvaluateIndustryAreaToMarkdownFile(industry, area, headings, evaluated);
+  }
   return getIndustryTariffReport(industry);
 }
 

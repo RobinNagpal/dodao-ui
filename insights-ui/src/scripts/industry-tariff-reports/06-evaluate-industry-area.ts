@@ -1,11 +1,9 @@
-import fs from 'fs';
-import path from 'path';
-import { z } from 'zod';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/llm-utils';
-import { generateChartUrls, img } from '../chart-utils';
-import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';
 import { challengerToMarkdown, establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-markdown';
+import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/llm-utils';
+import { getJsonFromS3, uploadFileToS3 } from '@/scripts/report-file-utils';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
+import { z } from 'zod';
+import { generateChartUrls, img } from '../chart-utils';
 import {
   ChartEntityType,
   EstablishedPlayer,
@@ -370,6 +368,47 @@ async function getTariffImpactSummary(
 
   return (await getLlmResponse<TariffImpactSummary>(prompt, schema)).summary;
 }
+
+function getS3Key(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings, extension: string): string {
+  const headingAndSubheadingIndex = headings.headings
+    .flatMap((heading, headingIndex) =>
+      heading.subHeadings.map((subHeading, index) => ({
+        headingAndSubheadingIndex: `${headingIndex}_${index}`,
+        heading: heading.title,
+        subHeading: subHeading.title,
+      }))
+    )
+    .find((item) => item.subHeading === industryArea.title)?.headingAndSubheadingIndex;
+
+  const baseFileName = `${headingAndSubheadingIndex}-evaluate-${slugify(industryArea.title)}`;
+  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/06-evaluate-industry-area/${baseFileName}${extension}`;
+}
+
+export async function readEvaluateIndustryAreaJsonFromFile(
+  industry: string,
+  industryArea: IndustrySubHeading,
+  headings: IndustryAreaHeadings
+): Promise<EvaluateIndustryArea | undefined> {
+  try {
+    const key = getS3Key(industry, industryArea, headings, '.json');
+    return await getJsonFromS3<EvaluateIndustryArea>(key);
+  } catch (error) {
+    console.error(`Error reading file from S3: ${error}`);
+    return undefined;
+  }
+}
+
+export async function writeEvaluateIndustryAreaToMarkdownFile(
+  industry: string,
+  industryArea: IndustrySubHeading,
+  headings: IndustryAreaHeadings,
+  evaluateIndustryArea: EvaluateIndustryArea
+) {
+  const markdownContent = getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea);
+  const key = getS3Key(industry, industryArea, headings, '.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
+}
+
 export async function getAndWriteEvaluateIndustryAreaJson(
   tariffIndustry: TariffReportIndustry,
   industryArea: IndustrySubHeading,
@@ -428,30 +467,12 @@ export async function getAndWriteEvaluateIndustryAreaJson(
     tariffImpactSummary,
   };
 
-  const jsonPath = getJsonFilePath(industry, industryArea, headings);
-  addDirectoryIfNotPresent(path.dirname(jsonPath));
-  fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2), 'utf-8');
-}
+  // Upload JSON to S3
+  const jsonKey = getS3Key(industry, industryArea, headings, '.json');
+  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(result, null, 2)), jsonKey, 'application/json');
 
-export async function regenerateTariffImpactSummary(
-  tariffUpdates: TariffUpdatesForIndustry,
-  industryArea: IndustrySubHeading,
-  currentReport: EvaluateIndustryArea
-) {
-  console.log('Invoking LLM for tariff impact summary');
-  const tariffImpactSummary = await getTariffImpactSummary(
-    tariffUpdates,
-    industryArea,
-    currentReport.establishedPlayers,
-    currentReport.newChallengers,
-    currentReport.headwindsAndTailwinds,
-    currentReport.positiveTariffImpactOnCompanyType,
-    currentReport.negativeTariffImpactOnCompanyType
-  );
-
-  console.log('Found tariff impact summary:', tariffImpactSummary);
-
-  return tariffImpactSummary;
+  // Generate and upload markdown
+  await writeEvaluateIndustryAreaToMarkdownFile(industry, industryArea, headings, result);
 }
 
 export async function regenerateEvaluateIndustryAreaJson(
@@ -462,12 +483,11 @@ export async function regenerateEvaluateIndustryAreaJson(
   date: string,
   content: EvaluateIndustryContent
 ) {
-  const jsonPath = getJsonFilePath(tariffIndustry.name, industryArea, headings);
-  if (!fs.existsSync(jsonPath)) {
-  }
-
   // load existing or start new result
-  const result: EvaluateIndustryArea = readEvaluateIndustryAreaJsonFromFile(tariffIndustry.name, industryArea, headings);
+  const result = await readEvaluateIndustryAreaJsonFromFile(tariffIndustry.name, industryArea, headings);
+  if (!result) {
+    return;
+  }
 
   switch (content) {
     case EvaluateIndustryContent.ESTABLISHED_PLAYERS:
@@ -497,13 +517,16 @@ export async function regenerateEvaluateIndustryAreaJson(
       return getAndWriteEvaluateIndustryAreaJson(tariffIndustry, industryArea, headings, tariffUpdates, date);
   }
 
-  // write updated file and markdown
-  fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2), 'utf-8');
-  writeEvaluateIndustryAreaToMarkdownFile(tariffIndustry.name, industryArea, headings, result);
+  // Upload updated JSON to S3
+  const jsonKey = getS3Key(tariffIndustry.name, industryArea, headings, '.json');
+  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(result, null, 2)), jsonKey, 'application/json');
+
+  // Generate and upload updated markdown
+  await writeEvaluateIndustryAreaToMarkdownFile(tariffIndustry.name, industryArea, headings, result);
 }
 
 /**
- * Generic function – regenerates *just* the charts for a specific entity
+ * Generic function – regenerates *just* the charts for a specific entity
  * without touching the underlying descriptive text.
  */
 export async function regenerateCharts(
@@ -513,7 +536,11 @@ export async function regenerateCharts(
   entityType: ChartEntityType,
   entityIndex = 0
 ): Promise<void> {
-  const report = readEvaluateIndustryAreaJsonFromFile(industry.name, industryArea, headings);
+  const report = await readEvaluateIndustryAreaJsonFromFile(industry.name, industryArea, headings);
+
+  if (!report) {
+    return;
+  }
 
   switch (entityType) {
     case ChartEntityType.NEW_CHALLENGER: {
@@ -607,8 +634,8 @@ export async function regenerateCharts(
   }
 
   // Persist modified JSON
-  const jsonPath = getJsonFilePath(industry.name, industryArea, headings);
-  fs.writeFileSync(jsonPath, JSON.stringify(report, null, 2), 'utf-8');
+  const jsonKey = getS3Key(industry.name, industryArea, headings, '.json');
+  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(report, null, 2)), jsonKey, 'application/json');
 }
 
 // ---------------------------------------------------------------------------
@@ -618,37 +645,8 @@ function writeImg(url: string) {
   return `![chart](${url})`; // simple helper
 }
 
-function getJsonFilePath(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings) {
-  const headingAndSubheadingIndex = headings.headings
-    .flatMap((heading, headingIndex) =>
-      heading.subHeadings.map((subHeading, index) => ({
-        headingAndSubheadingIndex: `${headingIndex}_${index}`,
-        heading: heading.title,
-        subHeading: subHeading.title,
-      }))
-    )
-    .find((item) => item.subHeading === industryArea.title)?.headingAndSubheadingIndex;
-
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '06-evaluate-industry-area');
-  const filePath = path.join(dirPath, `${headingAndSubheadingIndex}-evaluate-${slugify(industryArea.title)}.json`);
-  addDirectoryIfNotPresent(dirPath);
-  return filePath;
-}
-
 function getMarkdownFilePath(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings) {
-  return getJsonFilePath(industry, industryArea, headings).replace('.json', '.md');
-}
-
-export function readEvaluateIndustryAreaJsonFromFile(industry: string, industryArea: IndustrySubHeading, headings: IndustryAreaHeadings): EvaluateIndustryArea {
-  const filePath = getJsonFilePath(industry, industryArea, headings);
-  if (!fs.existsSync(filePath)) {
-    throw new Error(`File not found: ${filePath}`);
-  }
-  // Read the file contents and convert to string
-  const contents: string = fs.readFileSync(filePath, 'utf-8').toString();
-  // Parse the JSON data
-  const evaluateIndustryArea: EvaluateIndustryArea = JSON.parse(contents);
-  return evaluateIndustryArea;
+  return getS3Key(industry, industryArea, headings, '.md');
 }
 
 export function getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea: EvaluateIndustryArea) {
@@ -703,18 +701,6 @@ export function getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea: 
   return markdownContent;
 }
 
-/** Markdown writer – now embeds charts right after the relevant text */
-export function writeEvaluateIndustryAreaToMarkdownFile(
-  industry: string,
-  industryArea: IndustrySubHeading,
-  headings: IndustryAreaHeadings,
-  evaluateIndustryArea: EvaluateIndustryArea
-) {
-  const filePath = getMarkdownFilePath(industry, industryArea, headings);
-  const markdownContent = getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea);
-  fs.writeFileSync(filePath, markdownContent, 'utf-8');
-}
-
 // ---------------------------------------------------------------------------
 // ─── 4. HELPERS: PATH BUILDERS ──────────────────────────────────────────────
 // ---------------------------------------------------------------------------
@@ -734,3 +720,24 @@ function chartsPrefix({
 }
 
 /** Upload binary blob to S3 & return public https URL */
+
+export async function regenerateTariffImpactSummary(
+  tariffUpdates: TariffUpdatesForIndustry,
+  industryArea: IndustrySubHeading,
+  currentReport: EvaluateIndustryArea
+) {
+  console.log('Invoking LLM for tariff impact summary');
+  const tariffImpactSummary = await getTariffImpactSummary(
+    tariffUpdates,
+    industryArea,
+    currentReport.establishedPlayers,
+    currentReport.newChallengers,
+    currentReport.headwindsAndTailwinds,
+    currentReport.positiveTariffImpactOnCompanyType,
+    currentReport.negativeTariffImpactOnCompanyType
+  );
+
+  console.log('Found tariff impact summary:', tariffImpactSummary);
+
+  return tariffImpactSummary;
+}

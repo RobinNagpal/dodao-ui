@@ -180,14 +180,14 @@ export interface FinalConclusion {
 // Tariff updates for a specific industry
 
 export interface IndustryTariffReport {
-  industryAreaHeadings: IndustryAreaHeadings;
-  executiveSummary: ExecutiveSummary;
-  introduction: Introduction;
-  tariffUpdates: TariffUpdatesForIndustry;
-  understandIndustry: UnderstandIndustry;
-  industryAreas: IndustryAreaSection;
-  evaluateIndustryAreas: EvaluateIndustryArea[];
-  finalConclusion: FinalConclusion;
+  industryAreaHeadings?: IndustryAreaHeadings;
+  executiveSummary?: ExecutiveSummary;
+  introduction?: Introduction;
+  tariffUpdates?: TariffUpdatesForIndustry;
+  understandIndustry?: UnderstandIndustry;
+  industryAreas?: IndustryAreaSection;
+  evaluateIndustryAreas?: EvaluateIndustryArea[];
+  finalConclusion?: FinalConclusion;
 }
 
 export enum EvaluateIndustryContent {
