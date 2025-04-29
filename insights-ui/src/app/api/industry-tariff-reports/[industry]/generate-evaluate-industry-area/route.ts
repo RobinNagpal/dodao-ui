@@ -42,7 +42,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!headings) throw new Error(`Headings not found for industry: ${industry}`);
 
   const tariff = await readTariffUpdatesFromFile(industry);
-  const area = headings.headings[headingIndex].subHeadings[subHeadingIndex];
+  const area = headings.areas[headingIndex].subAreas[subHeadingIndex];
 
   if (!tariff) {
     throw new Error('Tariff updates not found');

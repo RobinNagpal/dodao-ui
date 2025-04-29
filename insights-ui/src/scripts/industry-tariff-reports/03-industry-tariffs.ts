@@ -1,5 +1,5 @@
 import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/llm-utils';
-import { CountrySpecificTariff, IndustryAreaHeadings, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { CountrySpecificTariff, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 
@@ -38,6 +38,15 @@ const CountrySpecificTariffSchema = z.object({
       'Description of the subcategories and the amount of trade impacted by the new tariff for the given industry.' +
         'Include hyperlinks/citations in the content where ever possible. '
     ),
+
+  impactOnIndustrySubArea: z
+    .string()
+    .array()
+    .describe(
+      'Change of tariff for the specific sub-area. Tell me one line for each sub-area/sub-heading' +
+        'Include hyperlinks/citations in the content where ever possible. ' +
+        'Every definition, and number, company name etc should have a hyperlink. '
+    ),
 });
 
 // 1) Schema for exactly 5 country names
@@ -68,7 +77,7 @@ async function getTopTradingCountries(industry: string, date: string): Promise<s
   return response.topCountries;
 }
 
-function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headings: IndustryAreaHeadings, country: string) {
+function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headings: IndustryAreasWrapper, country: string) {
   const prompt = `
   I want to know about the new tariffs added for the ${industry} industry as of ${date} for ${country}.
   Make sure to verify all the new tariffs added for ${industry} industry and as of ${date} for ${country} because they have been changing almost everyday.
@@ -90,19 +99,21 @@ function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headi
   amount of trade that is impacted by the new tariff and the amount of trade that is exempted by the new tariff for 
   the given industry.
   
-  ${outputInstructions}
+  For each of the Industry Areas below, I want to know for each of these headings and subheadings, if the new tariffs apply for this area/sub-area and ${country}
   
-  Here are more details about the areas of the industry about which I want to know the tariffs:
-  
+ 
   # Industry Areas
   ${JSON.stringify(headings, null, 2)}
+  
+  # Output Instructions
+  ${outputInstructions}
   `;
 
   return prompt;
 }
 
 // 3) Use it in your tariff-fetcher
-async function getTariffUpdatesForIndustry(industry: string, date: string, headings: IndustryAreaHeadings): Promise<TariffUpdatesForIndustry> {
+async function getTariffUpdatesForIndustry(industry: string, date: string, headings: IndustryAreasWrapper): Promise<TariffUpdatesForIndustry> {
   console.log(`Fetching top 5 trading partners for ${industry}…`);
   const topCountries = await getTopTradingCountries(industry, date);
 
@@ -124,7 +135,7 @@ function getS3Key(industry: string, fileName: string): string {
   return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/03-tariff-updates/${fileName}`;
 }
 
-export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryAreaHeadings) {
+export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryAreasWrapper) {
   const tariffUpdates = await getTariffUpdatesForIndustry(industry, date, headings);
 
   // Upload JSON to S3

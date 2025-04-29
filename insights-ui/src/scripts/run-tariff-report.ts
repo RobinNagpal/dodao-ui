@@ -115,7 +115,7 @@ export async function doIt(
     case ReportType.EVALUATE_INDUSTRY_AREA:
       const tariff = await readTariffUpdatesFromFile(industry);
       const { headingIndex, subHeadingIndex } = evaluationReportToGenerate;
-      const firstArea = headings.headings[headingIndex].subHeadings[subHeadingIndex];
+      const firstArea = headings.areas[headingIndex].subAreas[subHeadingIndex];
       await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, firstArea, headings, tariff!, date);
       const evaluated = await readEvaluateIndustryAreaJsonFromFile(industry, firstArea, headings);
       if (evaluated) {

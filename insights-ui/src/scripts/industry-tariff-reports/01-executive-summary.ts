@@ -1,5 +1,5 @@
 import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
-import { ExecutiveSummary, IndustryAreaHeadings, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { ExecutiveSummary, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 
@@ -17,7 +17,7 @@ const ExecutiveSummarySchema = z.object({
 
 function getExecutiveSummaryPrompt(
   industry: string,
-  headings: IndustryAreaHeadings,
+  headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[]
 ): string {
@@ -55,7 +55,7 @@ function getExecutiveSummaryPrompt(
 
 async function getExecutiveSummary(
   industry: string,
-  headings: IndustryAreaHeadings,
+  headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[]
 ): Promise<ExecutiveSummary> {
@@ -71,7 +71,7 @@ function getS3Key(industry: string, fileName: string): string {
 
 export async function getExecutiveSummaryAndSaveToFile(
   industry: string,
-  headings: IndustryAreaHeadings,
+  headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[]
 ) {

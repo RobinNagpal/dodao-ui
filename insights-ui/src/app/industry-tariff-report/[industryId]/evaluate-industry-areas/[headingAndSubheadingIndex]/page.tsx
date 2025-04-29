@@ -46,17 +46,13 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
   );
 
   // Function to render placeholder content
-  const renderPlaceholder = () => (
-    <div className="text-gray-500 italic">No Content Available</div>
-  );
+  const renderPlaceholder = () => <div className="text-gray-500 italic">No Content Available</div>;
 
   return (
     <div>
       {/* Title and Overall Actions */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold heading-color">
-          {evaluateIndustryArea?.title || 'Industry Area Evaluation'}
-        </h1>
+        <h1 className="text-2xl font-bold heading-color">{evaluateIndustryArea?.title || 'Industry Area Evaluation'}</h1>
         <PrivateWrapper>
           <EvaluateIndustryAreasActions
             industryId={industryId}
@@ -85,19 +81,17 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
       {renderSection(
         'Established Players',
         <div>
-          {evaluateIndustryArea?.establishedPlayers && evaluateIndustryArea.establishedPlayers.length > 0 ? (
-            evaluateIndustryArea.establishedPlayers.map((player, idx) => {
-              const markdown = establishedPlayerToMarkdown(player);
-              const renderedMarkdown = markdown && parseMarkdown(markdown);
-              return (
-                <div key={idx} className="mb-6 p-4 border rounded">
-                  <div className="markdown-body" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
-                </div>
-              );
-            })
-          ) : (
-            renderPlaceholder()
-          )}
+          {evaluateIndustryArea?.establishedPlayers && evaluateIndustryArea.establishedPlayers.length > 0
+            ? evaluateIndustryArea.establishedPlayers.map((player, idx) => {
+                const markdown = establishedPlayerToMarkdown(player);
+                const renderedMarkdown = markdown && parseMarkdown(markdown);
+                return (
+                  <div key={idx} className="mb-6 p-4 border rounded">
+                    <div className="markdown-body" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
+                  </div>
+                );
+              })
+            : renderPlaceholder()}
         </div>,
         EvaluateIndustryContent.ESTABLISHED_PLAYERS
       )}
@@ -106,32 +100,30 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
       {renderSection(
         'New Challengers',
         <div>
-          {evaluateIndustryArea?.newChallengers && evaluateIndustryArea.newChallengers.length > 0 ? (
-            evaluateIndustryArea.newChallengers.map((challenger, idx) => {
-              const markdown = establishedPlayerToMarkdown(challenger);
-              const renderedMarkdown = markdown && parseMarkdown(markdown);
-              return (
-                <div key={idx} className="mb-6 p-4 border rounded">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-medium">{challenger.companyName}</h3>
-                    <PrivateWrapper>
-                      <EvaluateIndustryAreasActions
-                        industryId={industryId}
-                        sectionName={`New Challenger: ${challenger.companyName}`}
-                        headingIndex={headingIndex}
-                        subHeadingIndex={subHeadingIndex}
-                        sectionType={EvaluateIndustryContent.NEW_CHALLENGER}
-                        challengerTicker={challenger.companyTicker}
-                      />
-                    </PrivateWrapper>
+          {evaluateIndustryArea?.newChallengersDetails && evaluateIndustryArea.newChallengersDetails.length > 0
+            ? evaluateIndustryArea.newChallengersDetails.map((challenger, idx) => {
+                const markdown = establishedPlayerToMarkdown(challenger);
+                const renderedMarkdown = markdown && parseMarkdown(markdown);
+                return (
+                  <div key={idx} className="mb-6 p-4 border rounded">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-medium">{challenger.companyName}</h3>
+                      <PrivateWrapper>
+                        <EvaluateIndustryAreasActions
+                          industryId={industryId}
+                          sectionName={`New Challenger: ${challenger.companyName}`}
+                          headingIndex={headingIndex}
+                          subHeadingIndex={subHeadingIndex}
+                          sectionType={EvaluateIndustryContent.NEW_CHALLENGER}
+                          challengerTicker={challenger.companyTicker}
+                        />
+                      </PrivateWrapper>
+                    </div>
+                    <div className="markdown-body" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
                   </div>
-                  <div className="markdown-body" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
-                </div>
-              );
-            })
-          ) : (
-            renderPlaceholder()
-          )}
+                );
+              })
+            : renderPlaceholder()}
         </div>,
         EvaluateIndustryContent.NEW_CHALLENGERS
       )}
@@ -174,43 +166,39 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
         <div>
           <div className="mb-4">
             <h3 className="text-lg font-medium mb-2">Positive Impact</h3>
-            {evaluateIndustryArea?.positiveTariffImpactOnCompanyType && evaluateIndustryArea.positiveTariffImpactOnCompanyType.length > 0 ? (
-              evaluateIndustryArea.positiveTariffImpactOnCompanyType.map((impact, idx) => (
-                <div key={idx} className="mb-3 p-3 border rounded">
-                  <h4 className="font-medium">{impact.companyType}</h4>
-                  <div className="markdown-body">
-                    <p>
-                      <strong>Impact:</strong> <span dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
-                    </p>
-                    <p>
-                      <strong>Reasoning:</strong> <span dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
-                    </p>
+            {evaluateIndustryArea?.positiveTariffImpactOnCompanyType && evaluateIndustryArea.positiveTariffImpactOnCompanyType.length > 0
+              ? evaluateIndustryArea.positiveTariffImpactOnCompanyType.map((impact, idx) => (
+                  <div key={idx} className="mb-3 p-3 border rounded">
+                    <h4 className="font-medium">{impact.companyType}</h4>
+                    <div className="markdown-body">
+                      <p>
+                        <strong>Impact:</strong> <span dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
+                      </p>
+                      <p>
+                        <strong>Reasoning:</strong> <span dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))
-            ) : (
-              renderPlaceholder()
-            )}
+                ))
+              : renderPlaceholder()}
           </div>
           <div>
             <h3 className="text-lg font-medium mb-2">Negative Impact</h3>
-            {evaluateIndustryArea?.negativeTariffImpactOnCompanyType && evaluateIndustryArea.negativeTariffImpactOnCompanyType.length > 0 ? (
-              evaluateIndustryArea.negativeTariffImpactOnCompanyType.map((impact, idx) => (
-                <div key={idx} className="mb-3 p-3 border rounded">
-                  <h4 className="font-medium">{impact.companyType}</h4>
-                  <div className="markdown-body">
-                    <p>
-                      <strong>Impact:</strong> <span dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
-                    </p>
-                    <p>
-                      <strong>Reasoning:</strong> <span dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
-                    </p>
+            {evaluateIndustryArea?.negativeTariffImpactOnCompanyType && evaluateIndustryArea.negativeTariffImpactOnCompanyType.length > 0
+              ? evaluateIndustryArea.negativeTariffImpactOnCompanyType.map((impact, idx) => (
+                  <div key={idx} className="mb-3 p-3 border rounded">
+                    <h4 className="font-medium">{impact.companyType}</h4>
+                    <div className="markdown-body">
+                      <p>
+                        <strong>Impact:</strong> <span dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
+                      </p>
+                      <p>
+                        <strong>Reasoning:</strong> <span dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))
-            ) : (
-              renderPlaceholder()
-            )}
+                ))
+              : renderPlaceholder()}
           </div>
         </div>,
         EvaluateIndustryContent.TARIFF_IMPACT_BY_COMPANY_TYPE

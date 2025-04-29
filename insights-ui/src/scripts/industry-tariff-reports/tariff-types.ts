@@ -10,20 +10,20 @@ interface PublicCompany {
   ticker: string;
 }
 
-export interface IndustrySubHeading {
+export interface IndustrySubAreas {
   title: string;
   oneLineSummary: string;
   companies: PublicCompany[];
 }
 
-export interface IndustryHeading {
+export interface IndustryAreas {
   title: string;
   oneLineSummary: string;
-  subHeadings: IndustrySubHeading[];
+  subAreas: IndustrySubAreas[];
 }
 
-export interface IndustryAreaHeadings {
-  headings: IndustryHeading[];
+export interface IndustryAreasWrapper {
+  areas: IndustryAreas[];
 }
 
 // 01-executive-summary.ts
@@ -184,7 +184,7 @@ export interface FinalConclusion {
 // Tariff updates for a specific industry
 
 export interface IndustryTariffReport {
-  industryAreaHeadings?: IndustryAreaHeadings;
+  industryAreaHeadings?: IndustryAreasWrapper;
   executiveSummary?: ExecutiveSummary;
   introduction?: Introduction;
   tariffUpdates?: TariffUpdatesForIndustry;

@@ -1,7 +1,7 @@
 import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import {
   FinalConclusion,
-  IndustryAreaHeadings,
+  IndustryAreasWrapper,
   NegativeTariffImpactOnCompanyType,
   PositiveTariffImpactOnCompanyType,
   TariffUpdatesForIndustry,
@@ -51,7 +51,7 @@ const FinalConclusion = z.object({
 
 function getFinalConclusionPrompt(
   industry: string,
-  headings: IndustryAreaHeadings,
+  headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[],
   positiveImpacts: PositiveTariffImpactOnCompanyType[],
@@ -101,7 +101,7 @@ function getFinalConclusionPrompt(
 
 async function getFinalConclusion(
   industry: string,
-  headings: IndustryAreaHeadings,
+  headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[],
   positiveImpacts: PositiveTariffImpactOnCompanyType[],
@@ -118,7 +118,7 @@ function getS3Key(industry: string, fileName: string): string {
 
 export async function getFinalConclusionAndSaveToFile(
   industry: string,
-  headings: IndustryAreaHeadings,
+  headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[],
   positiveImpacts: PositiveTariffImpactOnCompanyType[],
