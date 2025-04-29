@@ -31,7 +31,7 @@ export default function TariffUpdatesActions({ industryId, tariffIndex, countryN
   });
 
   const handleRegenerate = async () => {
-    await postData(`${getBaseUrl()}/api/industry-tariff-reports/generate-tariff-updates`, {
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-tariff-updates`, {
       industry: industryId,
       date: new Date().toISOString().split('T')[0],
       tariffIndex: tariffIndex,

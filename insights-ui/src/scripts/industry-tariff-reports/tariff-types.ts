@@ -47,7 +47,10 @@ export interface Introduction {
 export interface CountrySpecificTariff {
   countryName: string;
   tariffDetails: string;
-  changes: string;
+  existingTradeAmountAndAgreement: string;
+  newChanges: string;
+  tradeImpactedByNewTariff: string;
+  tradeExemptedByNewTariff: string;
 }
 
 export interface TariffUpdatesForIndustry {

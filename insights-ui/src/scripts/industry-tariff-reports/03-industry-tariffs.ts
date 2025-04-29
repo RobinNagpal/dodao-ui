@@ -8,16 +8,35 @@ const CountrySpecificTariffSchema = z.object({
   tariffDetails: z
     .string()
     .describe(
-      'Description of the new tariffs added as of the mentioned date for the given industry.' +
+      'Description of the new tariffs added as of the mentioned date for the given industry. Add 4-5 lines' +
         'Include hyperlinks/citations in the content where ever possible. ' +
         'Every definition, and number, company name etc should have a hyperlink. '
     ),
-  changes: z
+  existingTradeAmountAndAgreement: z
     .string()
     .describe(
-      'Description of the changes in the tariff policy as compared to the previous policy for the given industry.' +
+      'Description and the amount of trade that is conducted with the US for the given industry. Add 4-5 lines' +
         'Include hyperlinks/citations in the content where ever possible. ' +
         'Every definition, and number, company name etc should have a hyperlink. '
+    ),
+  newChanges: z
+    .string()
+    .describe(
+      'Description of the changes in the tariff policy as compared to the previous policy for the given industry. Add 4-5 lines' +
+        'Include hyperlinks/citations in the content where ever possible. ' +
+        'Every definition, and number, company name etc should have a hyperlink. '
+    ),
+  tradeExemptedByNewTariff: z
+    .string()
+    .describe(
+      'Description of the subcategories and the amount of trade exempted by the new tariff for the given industry.' +
+        'Include hyperlinks/citations in the content where ever possible. '
+    ),
+  tradeImpactedByNewTariff: z
+    .string()
+    .describe(
+      'Description of the subcategories and the amount of trade impacted by the new tariff for the given industry.' +
+        'Include hyperlinks/citations in the content where ever possible. '
     ),
 });
 
@@ -58,12 +77,18 @@ function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headi
 
   The details should include 
   - Name of the country
+  - Amount of trade that is conducted with the US for the given industry
   - Description of the new tariffs added as of the mentioned date for the given industry. Add 6-8 lines of description.
   - Description of the changes in the tariff policy as compared to the previous policy for the given industry. Add 6-8 lines for this as well.
+  - For Canada and Mexico, make sure to consider only the tariffs that are added in excess of the USMCA agreement.
+  - For other countries, make sure to consider only the tariffs that are added in excess of the existing agreement.
   - Include the real date when the tariffs were added.
   - We are interested in the tariffs that US has added
   - You can also include the tariff that the other country has added, but stress more on the tariffs that US has added.
-  
+ 
+  Also many or most of the products or subcategories can be exempted from the new tariffs. Calculate and mention the  
+  amount of trade that is impacted by the new tariff and the amount of trade that is exempted by the new tariff for 
+  the given industry.
   
   ${outputInstructions}
   
@@ -86,7 +111,9 @@ async function getTariffUpdatesForIndustry(industry: string, date: string, headi
 
   for (const country of topCountries) {
     const prompt = getTariffUpdatesForIndustryPrompt(industry, date, headings, country);
+    console.log(`Fetching tariffs for ${country}…`);
     const countryTariff = await getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, 'gpt-4o-search-preview');
+    console.log(`Tariff for ${country} fetched successfully.`, JSON.stringify(countryTariff));
     countrySpecificTariffs.push(countryTariff);
   }
 
@@ -120,10 +147,23 @@ export async function readTariffUpdatesFromFile(industry: string): Promise<Tarif
   }
 }
 
+function getMarkdownContentForCountryTariffs(tariff: CountrySpecificTariff) {
+  return (
+    `## ${tariff.countryName}\n\n` +
+    `${tariff.tariffDetails}\n\n` +
+    `${tariff.existingTradeAmountAndAgreement}\n\n` +
+    `${tariff.newChanges}\n\n` +
+    `### Trade Impacted by New Tariff\n\n` +
+    `${tariff.tradeImpactedByNewTariff}\n\n` +
+    `### Trade Exempted by New Tariff\n\n` +
+    `${tariff.tradeExemptedByNewTariff}\n`
+  );
+}
+
 export function getMarkdownContentForIndustryTariffs(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
   const markdownContent =
     `# Tariff Updates for ${industry}\n\n` +
-    `${tariffUpdates.countrySpecificTariffs.map((country) => `## ${country.countryName}\n\n${country.tariffDetails}\n\n${country.changes}`).join('\n\n')}\n`;
+    `${tariffUpdates.countrySpecificTariffs.map((country) => getMarkdownContentForCountryTariffs(country)).join('\n\n')}\n`;
   return markdownContent;
 }
 
