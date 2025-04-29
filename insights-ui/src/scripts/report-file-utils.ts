@@ -36,12 +36,14 @@ export async function readFileFromS3(key: string): Promise<string | undefined> {
     Key: key,
   };
 
-  const data = await s3Client.send(new GetObjectCommand(params));
-  const transformToString = data.Body?.transformToString();
+  try {
+    const data = await s3Client.send(new GetObjectCommand(params));
+    const transformToString = data.Body?.transformToString();
 
-  const fileData = await transformToString;
+    const fileData = await transformToString;
 
-  return fileData;
+    return fileData;
+  } catch (error) {}
 }
 
 export async function getJsonFromS3<T>(key: string): Promise<T | undefined> {

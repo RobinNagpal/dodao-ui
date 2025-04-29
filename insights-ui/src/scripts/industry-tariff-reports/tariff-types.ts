@@ -150,7 +150,8 @@ export interface NegativeTariffImpactOnCompanyType {
 export interface EvaluateIndustryArea {
   title: string;
   aboutParagraphs: string;
-  newChallengers: NewChallenger[];
+  newChallengersRefs: NewChallengerRef[];
+  newChallengersDetails: NewChallenger[];
   establishedPlayers: EstablishedPlayer[];
   headwindsAndTailwinds: HeadwindsAndTailwinds;
   positiveTariffImpactOnCompanyType: PositiveTariffImpactOnCompanyType[];
@@ -193,13 +194,9 @@ export interface IndustryTariffReport {
   finalConclusion?: FinalConclusion;
 }
 
-export interface BasicNewChallenger {
+export interface NewChallengerRef {
   companyName: string;
   companyTicker: string;
-}
-
-export interface NewChallengersList {
-  newChallengers: BasicNewChallenger[];
 }
 
 export enum EvaluateIndustryContent {

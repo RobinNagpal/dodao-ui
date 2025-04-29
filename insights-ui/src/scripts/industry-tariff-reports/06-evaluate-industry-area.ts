@@ -15,6 +15,7 @@ import {
   IndustrySubHeading,
   NegativeTariffImpactOnCompanyType,
   NewChallenger,
+  NewChallengerRef,
   PositiveTariffImpactOnCompanyType,
   TariffReportIndustry,
   TariffUpdatesForIndustry,
@@ -228,7 +229,7 @@ async function getNewChallengers(
   industry: IndustrySubHeading,
   establishedPlayers: EstablishedPlayer[],
   date: string
-): Promise<NewChallenger[]> {
+): Promise<{ newChallengersRefs: NewChallengerRef[]; newChallengersDetails: NewChallenger[] }> {
   // --- STEP 1: Fetch just names + tickers ---
   console.log(`[NewChallengers] ${'→ Fetching list of names and tickers'}`);
 
@@ -272,7 +273,7 @@ Evaluate the *New Challengers* in the ${industry.title} sector **but output only
     detailedList.push(newChallenger);
   }
 
-  return detailedList;
+  return { newChallengersRefs: basicList, newChallengersDetails: detailedList };
 }
 
 /**
@@ -434,8 +435,16 @@ export async function getAndWriteEvaluateIndustryAreaJson(
 
   // 2
   console.log('Invoking LLM for new challengers');
-  const newChallengers = await getNewChallengers(tariffIndustry, headings, tariffUpdates, industryArea, establishedPlayers, date);
-  console.log('Found new challengers:', newChallengers);
+  const { newChallengersRefs, newChallengersDetails } = await getNewChallengers(
+    tariffIndustry,
+    headings,
+    tariffUpdates,
+    industryArea,
+    establishedPlayers,
+    date
+  );
+  console.log('Found new challengers:', newChallengersRefs);
+  console.log('Found new challenger details:', newChallengersRefs);
 
   // 3
   console.log('Invoking LLM for headwinds and tailwinds');
@@ -458,7 +467,7 @@ export async function getAndWriteEvaluateIndustryAreaJson(
     tariffUpdates,
     industryArea,
     establishedPlayers,
-    newChallengers,
+    newChallengersDetails,
     headwindsAndTailwinds,
     positiveTariffImpactOnCompanyType,
     negativeTariffImpactOnCompanyType
@@ -466,11 +475,12 @@ export async function getAndWriteEvaluateIndustryAreaJson(
 
   console.log('Found tariff impact summary:', tariffImpactSummary);
 
-  const result = {
+  const result: EvaluateIndustryArea = {
     title: industryArea.title,
     aboutParagraphs: industryArea.oneLineSummary,
     establishedPlayers,
-    newChallengers,
+    newChallengersRefs,
+    newChallengersDetails,
     headwindsAndTailwinds,
     positiveTariffImpactOnCompanyType,
     negativeTariffImpactOnCompanyType,
@@ -497,6 +507,7 @@ export async function regenerateEvaluateIndustryAreaJson(
   // load existing or start new result
   const result = await readEvaluateIndustryAreaJsonFromFile(tariffIndustry.name, industryArea, headings);
   if (!result) {
+    await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, industryArea, headings, tariffUpdates, date);
     return;
   }
 
@@ -508,14 +519,23 @@ export async function regenerateEvaluateIndustryAreaJson(
       break;
     case EvaluateIndustryContent.NEW_CHALLENGERS:
       console.log('Regenerating new challengers');
-      result.newChallengers = await getNewChallengers(tariffIndustry, headings, tariffUpdates, industryArea, result.establishedPlayers, date);
+      const { newChallengersRefs, newChallengersDetails } = await getNewChallengers(
+        tariffIndustry,
+        headings,
+        tariffUpdates,
+        industryArea,
+        result.establishedPlayers,
+        date
+      );
+      result.newChallengersRefs = newChallengersRefs;
+      result.newChallengersDetails = newChallengersDetails;
       result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
       break;
     case EvaluateIndustryContent.NEW_CHALLENGER:
       if (!challengerTicker) {
         throw new Error('Challenger ticker is required for individual challenger regeneration');
       }
-      const existingChallenger = result.newChallengers.find((c) => c.companyTicker === challengerTicker);
+      const existingChallenger = result.newChallengersRefs.find((c) => c.companyTicker === challengerTicker);
       if (!existingChallenger) {
         throw new Error(`Challenger with ticker ${challengerTicker} not found`);
       }
@@ -529,8 +549,8 @@ export async function regenerateEvaluateIndustryAreaJson(
         existingChallenger.companyName,
         challengerTicker
       );
-      const challengerIndex = result.newChallengers.findIndex((c) => c.companyTicker === challengerTicker);
-      result.newChallengers[challengerIndex] = newChallenger;
+      const challengerIndex = result.newChallengersDetails.findIndex((c) => c.companyTicker === challengerTicker);
+      result.newChallengersDetails[challengerIndex] = newChallenger;
       result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
       break;
     case EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS:
@@ -579,7 +599,7 @@ export async function regenerateCharts(
 
   switch (entityType) {
     case ChartEntityType.NEW_CHALLENGER: {
-      const chall = report.newChallengers[entityIndex];
+      const chall = report.newChallengersDetails[entityIndex];
       chall.chartUrls = await generateChartUrls(
         JSON.stringify(chall, null, 2),
         chartsPrefix({
@@ -699,9 +719,9 @@ export function getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea: 
   });
 
   /* ───────────────── New Challengers ──────────────── */
-  if (evaluateIndustryArea.newChallengers.length) {
+  if (evaluateIndustryArea.newChallengersDetails.length) {
     md.push('## Newer Challengers');
-    evaluateIndustryArea.newChallengers.forEach((c) => {
+    evaluateIndustryArea.newChallengersDetails.forEach((c) => {
       md.push(challengerToMarkdown(c));
       md.push(img(c.chartUrls));
     });
@@ -766,7 +786,7 @@ export async function regenerateTariffImpactSummary(
     tariffUpdates,
     industryArea,
     currentReport.establishedPlayers,
-    currentReport.newChallengers,
+    currentReport.newChallengersDetails,
     currentReport.headwindsAndTailwinds,
     currentReport.positiveTariffImpactOnCompanyType,
     currentReport.negativeTariffImpactOnCompanyType
