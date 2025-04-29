@@ -18,7 +18,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   // Generate the headings
   await getAndWriteIndustryHeadings(industry);
   const headings = await readIndustryHeadingsFromFile(industry);
-  writeIndustryHeadingsToMarkdownFile(industry, headings);
+  await writeIndustryHeadingsToMarkdownFile(industry, headings);
 
   return getIndustryTariffReport(industry);
 }

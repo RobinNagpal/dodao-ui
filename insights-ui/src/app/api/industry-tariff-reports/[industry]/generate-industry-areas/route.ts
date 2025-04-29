@@ -21,8 +21,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   // Generate the industry areas section
   await getAndWriteIndustryAreaSectionToJsonFile(industry, headings);
-  const industryAreaSection = readIndustryAreaSectionFromFile(industry);
-  writeIndustryAreaSectionToMarkdownFile(industry, industryAreaSection);
+  const industryAreaSection = await readIndustryAreaSectionFromFile(industry);
+  await writeIndustryAreaSectionToMarkdownFile(industry, industryAreaSection);
 
   return getIndustryTariffReport(industry);
 }

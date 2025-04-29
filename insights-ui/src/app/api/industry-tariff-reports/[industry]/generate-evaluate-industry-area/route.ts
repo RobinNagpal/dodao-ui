@@ -40,6 +40,10 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   const tariff = await readTariffUpdatesFromFile(industry);
   const area = headings.headings[headingIndex].subHeadings[subHeadingIndex];
 
+  if (!tariff) {
+    throw new Error('Tariff updates not found');
+  }
+
   // Generate the evaluation based on section type
   if (sectionType === EvaluateIndustryContent.ALL) {
     await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date);

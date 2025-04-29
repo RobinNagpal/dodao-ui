@@ -25,9 +25,16 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   const summaries = await getSummariesOfEvaluatedAreas(industry, headings);
 
   // Generate the executive summary
+  if (!tariffUpdates) {
+    throw new Error('Tariff updates not found');
+  }
+
   await getExecutiveSummaryAndSaveToFile(industry, headings, tariffUpdates, summaries);
-  const execSummary = readExecutiveSummaryFromFile(industry);
-  writeExecutiveSummaryToMarkdownFile(industry, execSummary);
+  const execSummary = await readExecutiveSummaryFromFile(industry);
+  if (!execSummary) {
+    throw new Error('Executive summary not found');
+  }
+  await writeExecutiveSummaryToMarkdownFile(industry, execSummary);
 
   return getIndustryTariffReport(industry);
 }

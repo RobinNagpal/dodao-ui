@@ -35,9 +35,12 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   const negativeImpacts = await getNegativeImpactsOfEvaluatedAreas(industry, headings);
 
   // Generate the final conclusion
+  if (!tariffs) {
+    throw new Error('Tariff updates not found');
+  }
   await getFinalConclusionAndSaveToFile(industry, headings, tariffs, summariesAll, positiveImpacts, negativeImpacts);
   const conclusion = await readFinalConclusionFromFile(industry);
-  writeFinalConclusionToMarkdownFile(industry, conclusion);
+  await writeFinalConclusionToMarkdownFile(industry, conclusion);
 
   return getIndustryTariffReport(industry);
 }

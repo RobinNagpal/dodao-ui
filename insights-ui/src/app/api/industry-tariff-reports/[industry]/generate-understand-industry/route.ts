@@ -21,8 +21,11 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   // Generate the understand industry section
   await getAndWriteUnderstandIndustryJson(industry, headings);
-  const understandIndustry = readUnderstandIndustryJsonFromFile(industry);
-  writeUnderstandIndustryToMarkdownFile(industry, understandIndustry);
+  const understandIndustry = await readUnderstandIndustryJsonFromFile(industry);
+  if (!understandIndustry) {
+    throw new Error('Understand industry section not found');
+  }
+  await writeUnderstandIndustryToMarkdownFile(industry, understandIndustry);
 
   return getIndustryTariffReport(industry);
 }

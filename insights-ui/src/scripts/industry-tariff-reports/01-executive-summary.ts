@@ -1,9 +1,7 @@
 import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { ExecutiveSummary, IndustryAreaHeadings, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-import fs from 'fs';
-import path from 'path';
 import { z } from 'zod';
-import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';
+import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 
 const ExecutiveSummarySchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),
@@ -67,11 +65,8 @@ async function getExecutiveSummary(
   return response;
 }
 
-function getExecutiveSummaryJsonFileName(industry: string) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '01-executive-summary');
-  const fileName = path.join(dirPath, 'executive-summary.json');
-  addDirectoryIfNotPresent(dirPath);
-  return fileName;
+function getS3Key(industry: string, fileName: string): string {
+  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/01-executive-summary/${fileName}`;
 }
 
 export async function getExecutiveSummaryAndSaveToFile(
@@ -81,14 +76,25 @@ export async function getExecutiveSummaryAndSaveToFile(
   tariffSummaries: string[]
 ) {
   const executiveSummary = await getExecutiveSummary(industry, headings, tariffUpdates, tariffSummaries);
-  const fileName = getExecutiveSummaryJsonFileName(industry);
-  fs.writeFileSync(fileName, JSON.stringify(executiveSummary, null, 2));
+  
+  // Upload JSON to S3
+  const jsonKey = getS3Key(industry, 'executive-summary.json');
+  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(executiveSummary, null, 2)), jsonKey, 'application/json');
+
+  // Generate and upload markdown
+  const markdownContent = getMarkdownContentForExecutiveSummary(executiveSummary);
+  const markdownKey = getS3Key(industry, 'executive-summary.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), markdownKey, 'text/markdown');
 }
 
-export function readExecutiveSummaryFromFile(industry: string) {
-  const fileName = getExecutiveSummaryJsonFileName(industry);
-  const data = fs.readFileSync(fileName, 'utf-8');
-  return JSON.parse(data) as ExecutiveSummary;
+export async function readExecutiveSummaryFromFile(industry: string): Promise<ExecutiveSummary | undefined> {
+  try {
+    const key = getS3Key(industry, 'executive-summary.json');
+    return await getJsonFromS3<ExecutiveSummary>(key);
+  } catch (error) {
+    console.error(`Error reading executive summary from S3: ${error}`);
+    return undefined;
+  }
 }
 
 export function getMarkdownContentForExecutiveSummary(executiveSummary: ExecutiveSummary) {
@@ -96,12 +102,8 @@ export function getMarkdownContentForExecutiveSummary(executiveSummary: Executiv
   return markdownContent;
 }
 
-export function writeExecutiveSummaryToMarkdownFile(industry: string, executiveSummary: ExecutiveSummary) {
-  const filePath = getExecutiveSummaryJsonFileName(industry).replace('.json', '.md');
-
+export async function writeExecutiveSummaryToMarkdownFile(industry: string, executiveSummary: ExecutiveSummary) {
   const markdownContent = getMarkdownContentForExecutiveSummary(executiveSummary);
-
-  fs.writeFileSync(filePath, markdownContent, {
-    encoding: 'utf-8',
-  });
+  const key = getS3Key(industry, 'executive-summary.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }

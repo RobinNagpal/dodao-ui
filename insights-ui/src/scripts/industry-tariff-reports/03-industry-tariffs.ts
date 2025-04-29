@@ -1,9 +1,7 @@
 import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/llm-utils';
 import { CountrySpecificTariff, IndustryAreaHeadings, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-import fs from 'fs';
-import path from 'path';
 import { z } from 'zod';
-import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';
+import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 
 const CountrySpecificTariffSchema = z.object({
   countryName: z.string().describe('Name of the country.'),
@@ -95,25 +93,31 @@ async function getTariffUpdatesForIndustry(industry: string, date: string, headi
   return { countrySpecificTariffs };
 }
 
-function getJsonFilePath(industry: string) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '03-tariff-updates');
-  const filePath = path.join(dirPath, 'tariff-updates.json');
-  addDirectoryIfNotPresent(dirPath);
-  return filePath;
+function getS3Key(industry: string, fileName: string): string {
+  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/03-tariff-updates/${fileName}`;
 }
 
 export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryAreaHeadings) {
   const tariffUpdates = await getTariffUpdatesForIndustry(industry, date, headings);
-  const filePath = getJsonFilePath(industry);
-  fs.writeFileSync(filePath, JSON.stringify(tariffUpdates, null, 2), {
-    encoding: 'utf-8',
-  });
+  
+  // Upload JSON to S3
+  const jsonKey = getS3Key(industry, 'tariff-updates.json');
+  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(tariffUpdates, null, 2)), jsonKey, 'application/json');
+
+  // Generate and upload markdown
+  const markdownContent = getMarkdownContentForIndustryTariffs(industry, tariffUpdates);
+  const markdownKey = getS3Key(industry, 'tariff-updates.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), markdownKey, 'text/markdown');
 }
 
-export function readTariffUpdatesFromFile(industry: string) {
-  const filePath = getJsonFilePath(industry);
-  const data = fs.readFileSync(filePath, 'utf-8');
-  return JSON.parse(data) as TariffUpdatesForIndustry;
+export async function readTariffUpdatesFromFile(industry: string): Promise<TariffUpdatesForIndustry | undefined> {
+  try {
+    const key = getS3Key(industry, 'tariff-updates.json');
+    return await getJsonFromS3<TariffUpdatesForIndustry>(key);
+  } catch (error) {
+    console.error(`Error reading tariff updates from S3: ${error}`);
+    return undefined;
+  }
 }
 
 export function getMarkdownContentForIndustryTariffs(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
@@ -123,11 +127,8 @@ export function getMarkdownContentForIndustryTariffs(industry: string, tariffUpd
   return markdownContent;
 }
 
-export function writeTariffUpdatesToMarkdownFile(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
-  const filePath = getJsonFilePath(industry).replace('.json', '.md');
+export async function writeTariffUpdatesToMarkdownFile(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
   const markdownContent = getMarkdownContentForIndustryTariffs(industry, tariffUpdates);
-
-  fs.writeFileSync(filePath, markdownContent, {
-    encoding: 'utf-8',
-  });
+  const key = getS3Key(industry, 'tariff-updates.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }

@@ -23,8 +23,13 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   // Generate the introduction
   await getAndWriteIntroductionsJson(industry, date, headings);
-  const introductions = readIntroductionJsonFromFile(industry);
-  writeIntroductionToMarkdownFile(industry, introductions);
+  const introductions = await readIntroductionJsonFromFile(industry);
+
+  if (!introductions) {
+    throw new Error('Introduction not found');
+  }
+
+  await writeIntroductionToMarkdownFile(industry, introductions);
 
   return getIndustryTariffReport(industry);
 }

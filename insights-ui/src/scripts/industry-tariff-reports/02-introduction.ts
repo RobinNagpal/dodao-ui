@@ -1,19 +1,37 @@
 import { getLlmResponse } from '@/scripts/llm-utils';
 import { IndustryAreaHeadings, Introduction } from '@/scripts/industry-tariff-reports/tariff-types';
-import fs from 'fs';
-import path from 'path';
 import { z } from 'zod';
-import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';
+import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 
 // Schemas for the Introduction section of an industry report
-export const AboutSectorSchema = z.object({
-  title: z.string().describe('Heading for the sector overview.'),
+const aboutSectorSchema = z.object({
+  title: z.string().describe('Title for the About Sector section'),
   aboutSector: z
     .string()
     .describe(
-      'Concise overview (6–8 lines) of the industry’s scope and core segments. ' +
-        'Focus on key products and market drivers; include up-to-date figures as of the given date. ' +
-        'Embed hyperlinks for data sources where available.'
+      'Concise overview (6–8 lines) of the industry\'s scope and core segments. ' +
+      'Focus on key products and market drivers; include up-to-date figures as of the given date. ' +
+      'Embed hyperlinks for data sources where available.'
+    ),
+});
+
+const aboutConsumptionSchema = z.object({
+  title: z.string().describe('Title for the About Consumption section'),
+  aboutConsumption: z
+    .string()
+    .describe(
+      'Analysis (6–8 lines) of the industry\'s consumption patterns. ' +
+      'Highlight key drivers and cite up-to-date metrics with hyperlinks.'
+    ),
+});
+
+const pastGrowthSchema = z.object({
+  title: z.string().describe('Title for the Past Growth section'),
+  aboutGrowth: z
+    .string()
+    .describe(
+      'Analysis (6–8 lines) of the industry\'s CAGR over the past five years. ' +
+      'Highlight major drivers and cite up-to-date metrics with hyperlinks.'
     ),
 });
 
@@ -25,15 +43,6 @@ export const USConsumptionSchema = z.object({
       'Detailed summary (6–8 lines) of US consumption volume and value. ' +
         'Break down by end-use categories and report both tonnage and dollar figures as of the given date. ' +
         'Include hyperlinks to authoritative sources.'
-    ),
-});
-
-export const PastGrowthSchema = z.object({
-  title: z.string().describe('Heading for historical growth rates.'),
-  aboutGrowth: z
-    .string()
-    .describe(
-      'Analysis (6–8 lines) of the industry’s CAGR over the past five years. ' + 'Highlight major drivers and cite up-to-date metrics with hyperlinks.'
     ),
 });
 
@@ -71,9 +80,9 @@ export const CountrySpecificImportSchema = z.object({
 });
 
 export const IntroductionSchema = z.object({
-  aboutSector: AboutSectorSchema,
-  aboutConsumption: USConsumptionSchema,
-  pastGrowth: PastGrowthSchema,
+  aboutSector: aboutSectorSchema,
+  aboutConsumption: aboutConsumptionSchema,
+  pastGrowth: pastGrowthSchema,
   futureGrowth: FutureGrowthSchema,
   usProduction: USProductionSchema,
   countrySpecificImports: z.array(CountrySpecificImportSchema).describe('List of country-specific import analyses.'),
@@ -125,27 +134,32 @@ export async function getIntroduction(industry: string, date: string, industryHe
   return await getLlmResponse<Introduction>(getIntroductionPrompt(industry, date, industryHeadings), IntroductionSchema);
 }
 
-export function readIntroductionJsonFromFile(industry: string) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '02-introduction');
-  const filePath = path.join(dirPath, 'introduction.json');
-  if (!fs.existsSync(filePath)) {
-    throw new Error(`File not found: ${filePath}`);
-  }
-  // Read the file contents and convert to string
-  const contents: string = fs.readFileSync(filePath, 'utf-8').toString();
-  // Parse the JSON data
-  const introduction: Introduction = JSON.parse(contents);
-  return introduction;
+function getS3Key(industry: string, fileName: string): string {
+  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/02-introduction/${fileName}`;
 }
 
 export async function getAndWriteIntroductionsJson(industry: string, date: string, headings: IndustryAreaHeadings) {
   const introduction = await getIntroduction(industry, date, headings);
   console.log('Introduction:', introduction);
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '02-introduction');
-  const filePath = path.join(dirPath, 'introduction.json');
-  fs.writeFileSync(filePath, JSON.stringify(introduction, null, 2), {
-    encoding: 'utf-8',
-  });
+  
+  // Upload JSON to S3
+  const jsonKey = getS3Key(industry, 'introduction.json');
+  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(introduction, null, 2)), jsonKey, 'application/json');
+
+  // Generate and upload markdown
+  const markdownContent = getMarkdownContentForIntroduction(introduction);
+  const markdownKey = getS3Key(industry, 'introduction.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), markdownKey, 'text/markdown');
+}
+
+export async function readIntroductionJsonFromFile(industry: string): Promise<Introduction | undefined> {
+  try {
+    const key = getS3Key(industry, 'introduction.json');
+    return await getJsonFromS3<Introduction>(key);
+  } catch (error) {
+    console.error(`Error reading introduction from S3: ${error}`);
+    return undefined;
+  }
 }
 
 export function getMarkdownContentForIntroduction(introduction: Introduction) {
@@ -161,14 +175,8 @@ export function getMarkdownContentForIntroduction(introduction: Introduction) {
   return markdownContent;
 }
 
-export function writeIntroductionToMarkdownFile(industry: string, introduction: Introduction) {
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '02-introduction');
-  const filePath = path.join(dirPath, 'introduction.md');
-  addDirectoryIfNotPresent(dirPath);
+export async function writeIntroductionToMarkdownFile(industry: string, introduction: Introduction) {
   const markdownContent = getMarkdownContentForIntroduction(introduction);
-  addDirectoryIfNotPresent(dirPath);
-
-  fs.writeFileSync(filePath, markdownContent, {
-    encoding: 'utf-8',
-  });
+  const key = getS3Key(industry, 'introduction.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }

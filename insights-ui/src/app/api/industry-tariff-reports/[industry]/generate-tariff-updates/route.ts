@@ -27,8 +27,11 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   // Generate the tariff updates
   await getTariffUpdatesForIndustryAndSaveToFile(industry, date, headings);
-  const tariffUpdatesForIndustry = readTariffUpdatesFromFile(industry);
-  writeTariffUpdatesToMarkdownFile(industry, tariffUpdatesForIndustry);
+  const tariffUpdatesForIndustry = await readTariffUpdatesFromFile(industry);
+  if (!tariffUpdatesForIndustry) {
+    throw new Error('Tariff updates not found');
+  }
+  await writeTariffUpdatesToMarkdownFile(industry, tariffUpdatesForIndustry);
 
   return getIndustryTariffReport(industry);
 }
