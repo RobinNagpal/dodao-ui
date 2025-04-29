@@ -28,6 +28,93 @@ export const outputInstructions =
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+export function cleanOpenAIUrls(obj: any): any {
+  if (typeof obj === 'object' && obj !== null) {
+    if (Array.isArray(obj)) {
+      return obj.map(cleanOpenAIUrls);
+    } else {
+      const result: Record<string, any> = {};
+      for (const key in obj) {
+        result[key] = cleanOpenAIUrls(obj[key]);
+      }
+      return result;
+    }
+  } else if (typeof obj === 'string') {
+    // Remove ?utm_source=openai, &utm_source=openai, or utm_source=openai at the end of the string
+    return obj.replace(/(\?utm_source=openai|&utm_source=openai|utm_source=openai)$/, '');
+  }
+  return obj;
+}
+
+/**
+ * Recursively traverses an object or array.
+ * - Removes specific trailing query parameters (?utm_source=openai or &utm_source=openai)
+ *   from string values that are plain URLs.
+ * - Removes the same parameters from URLs embedded within Markdown links ([text](url))
+ *   found within string values.
+ * @param data The data structure (object, array, string, etc.) to clean.
+ * @returns The cleaned data structure.
+ */
+export function recursivelyCleanOpenAiUrls(data: any): any {
+  const suffixToRemove1 = '?utm_source=openai';
+  const suffixToRemove2 = '&utm_source=openai'; // Handle cases where it's not the first query param
+
+  // Regex to find Markdown links and capture the parts: prefix=[text](, url, suffix=)
+  const markdownLinkRegex = /(\[.*?\]\()([^)]+)(\))/g;
+
+  // --- String Processing ---
+  if (typeof data === 'string') {
+    let cleanedString = data;
+
+    // 1. Clean URLs within Markdown links inside the string
+    cleanedString = cleanedString.replace(markdownLinkRegex, (match, prefix: string, url: string, suffixMark: string): string => {
+      let cleanedUrl = url;
+      if (cleanedUrl.endsWith(suffixToRemove1)) {
+        cleanedUrl = cleanedUrl.substring(0, cleanedUrl.length - suffixToRemove1.length);
+      } else if (cleanedUrl.endsWith(suffixToRemove2)) {
+        // Use else if
+        cleanedUrl = cleanedUrl.substring(0, cleanedUrl.length - suffixToRemove2.length);
+      }
+      // Reconstruct the markdown link with the potentially cleaned URL
+      return `${prefix}${cleanedUrl}${suffixMark}`;
+    });
+
+    // 2. Clean the string IF the entire string itself is a URL ending with the suffix
+    // (This handles cases where the JSON value is just the URL string)
+    if (cleanedString.endsWith(suffixToRemove1)) {
+      cleanedString = cleanedString.substring(0, cleanedString.length - suffixToRemove1.length);
+    } else if (cleanedString.endsWith(suffixToRemove2)) {
+      // Use else if
+      cleanedString = cleanedString.substring(0, cleanedString.length - suffixToRemove2.length);
+    }
+
+    return cleanedString;
+  }
+
+  // --- Array Processing ---
+  if (Array.isArray(data)) {
+    // Recursively clean each item in the array
+    return data.map((item) => recursivelyCleanOpenAiUrls(item));
+  }
+
+  // --- Object Processing ---
+  // Use `typeof data === 'object'` and `data !== null` to check for plain objects
+  if (data !== null && typeof data === 'object') {
+    const newObj: Record<string, any> = {};
+    for (const key in data) {
+      // Ensure it's an own property, not from the prototype chain
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        // Recursively clean the value associated with the key
+        newObj[key] = recursivelyCleanOpenAiUrls(data[key]);
+      }
+    }
+    return newObj;
+  }
+
+  // Return primitives (numbers, booleans, null, undefined) and anything else as is
+  return data;
+}
+
 export async function getLlmResponse<T extends Record<string, any>>(
   prompt: string,
   schema: ZodObject<any>,

@@ -51,6 +51,7 @@ export interface CountrySpecificTariff {
   newChanges: string;
   tradeImpactedByNewTariff: string;
   tradeExemptedByNewTariff: string;
+  tariffChangesForIndustrySubArea: string[];
 }
 
 export interface TariffUpdatesForIndustry {

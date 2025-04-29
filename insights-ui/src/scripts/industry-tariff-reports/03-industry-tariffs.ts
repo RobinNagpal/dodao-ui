@@ -1,4 +1,4 @@
-import { getLlmResponse, gpt4OSearchModel, outputInstructions } from '@/scripts/llm-utils';
+import { cleanOpenAIUrls, getLlmResponse, gpt4OSearchModel, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
 import { CountrySpecificTariff, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
@@ -39,7 +39,7 @@ const CountrySpecificTariffSchema = z.object({
         'Include hyperlinks/citations in the content where ever possible. '
     ),
 
-  impactOnIndustrySubArea: z
+  tariffChangesForIndustrySubArea: z
     .string()
     .array()
     .describe(
@@ -88,6 +88,8 @@ function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headi
   - Name of the country
   - Amount of trade that is conducted with the US for the given industry
   - Description of the new tariffs added as of the mentioned date for the given industry. Add 6-8 lines of description.
+  - Verify if the tariffs have actually been added for the given industry and country.
+  - Many of the articles share that that the tariffs might be applied, don't consider those articles which are not 100% sure that the tariffs have been added.
   - Description of the changes in the tariff policy as compared to the previous policy for the given industry. Add 6-8 lines for this as well.
   - For Canada and Mexico, make sure to consider only the tariffs that are added in excess of the USMCA agreement.
   - For other countries, make sure to consider only the tariffs that are added in excess of the existing agreement.
@@ -99,7 +101,9 @@ function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headi
   amount of trade that is impacted by the new tariff and the amount of trade that is exempted by the new tariff for 
   the given industry.
   
-  For each of the Industry Areas below, I want to know for each of these headings and subheadings, if the new tariffs apply for this area/sub-area and ${country}
+  For each of the Industry Areas & Subareas below, I want to 
+  1. Know the changes to the tariffs for that area and sub-area and ${country} by the Trump Government.
+  2. I want to know the exact change. Mention the numerical figures as much as possible. 
   
  
   # Industry Areas
@@ -159,6 +163,7 @@ function getMarkdownContentForCountryTariffs(tariff: CountrySpecificTariff) {
     `${tariff.tariffDetails}\n\n` +
     `${tariff.existingTradeAmountAndAgreement}\n\n` +
     `${tariff.newChanges}\n\n` +
+    `${tariff.tariffChangesForIndustrySubArea?.map((changes) => `- ${changes}`)?.join('\n\n')}\n\n` +
     `### Trade Impacted by New Tariff\n\n` +
     `${tariff.tradeImpactedByNewTariff}\n\n` +
     `### Trade Exempted by New Tariff\n\n` +
@@ -170,7 +175,9 @@ export function getMarkdownContentForIndustryTariffs(industry: string, tariffUpd
   const markdownContent =
     `# Tariff Updates for ${industry}\n\n` +
     `${tariffUpdates.countrySpecificTariffs.map((country) => getMarkdownContentForCountryTariffs(country)).join('\n\n')}\n`;
-  return markdownContent;
+  const cleanOpenAIUrls1 = recursivelyCleanOpenAiUrls(markdownContent);
+  console.log(`Markdown content for ${industry}:\n`, cleanOpenAIUrls1);
+  return cleanOpenAIUrls1;
 }
 
 export async function writeTariffUpdatesToMarkdownFile(industry: string, tariffUpdates: TariffUpdatesForIndustry) {

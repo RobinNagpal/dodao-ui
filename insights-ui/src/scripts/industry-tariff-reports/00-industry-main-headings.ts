@@ -19,11 +19,11 @@ export const IndustrySubHeadingSchema = z.object({
 export const IndustryHeadingSchema = z.object({
   title: z.string().describe('Title of the one of the main headings.'),
   oneLineSummary: z.string().describe('One line summary of the heading.'),
-  subArea: z.array(IndustrySubHeadingSchema).describe('Array of subheadings under the main heading.'),
+  subAreas: z.array(IndustrySubHeadingSchema).describe('Array of subheadings under the main heading.'),
 });
 
 export const IndustryHeadingsSchema: ZodObject<any> = z.object({
-  area: z.array(IndustryHeadingSchema).describe('Array of main headings.'),
+  areas: z.array(IndustryHeadingSchema).describe('Array of main headings.'),
 });
 
 function getMainIndustryPrompt(industry: string) {
