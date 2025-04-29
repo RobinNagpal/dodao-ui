@@ -26,12 +26,13 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
 
   return (
     <div>
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between mb-4">
+        <h1 className="text-3xl font-bold">Tariff Updates</h1>
         <PrivateWrapper>
           <TariffUpdatesActions industryId={industryId} />
         </PrivateWrapper>
       </div>
-      <h1 className="text-3xl">Tariff Updates</h1>
+
       {report.tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
         const markdownContent = getMarkdownContentForCountryTariffs(countryTariff);
         return (

@@ -19,13 +19,15 @@ export default function TariffUpdatesActions({ industryId, tariffIndex, countryN
 
   const sectionName = countryName ? `${countryName} Tariffs` : 'Tariff Updates';
 
-  const actions: EllipsisDropdownItem[] = [{ key: 'edit', label: `Edit ${sectionName}` }];
+  const actions: EllipsisDropdownItem[] = [];
 
   if (countryName) {
     actions.push({ key: 'regenerate-country', label: `Regenerate ${countryName} Tariffs` });
   } else {
     actions.push({ key: 'regenerate', label: `Regenerate ${sectionName}` });
   }
+
+  actions.push({ key: 'edit', label: `Edit ${sectionName}` });
 
   const { postData, loading: isRegenerating } = usePostData<any, any>({
     successMessage: `${sectionName} regenerated successfully!`,

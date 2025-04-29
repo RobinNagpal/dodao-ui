@@ -123,14 +123,24 @@ async function getTariffUpdatesForIndustry(
   headings: IndustryAreasWrapper,
   countryName?: string
 ): Promise<TariffUpdatesForIndustry> {
-  console.log(`Fetching top 5 trading partners for ${industry}…`);
-  const topCountries = await getTopTradingCountries(industry, date);
+  // Get existing tariff data to maintain order
+  const existingTariffUpdates = await readTariffUpdatesFromFile(industry);
+  const existingCountryNames = existingTariffUpdates?.countryNames || [];
 
-  console.log(`Invoking LLM for tariffs for each of:`, topCountries);
+  // Get the list of countries to process
+  let countriesToProcess: string[];
+  if (countryName) {
+    // If regenerating a specific country, use the existing countryNames to maintain order
+    countriesToProcess = [countryName];
+  } else {
+    // For full regeneration, get the top trading countries
+    console.log(`Fetching top 5 trading partners for ${industry}…`);
+    const topCountries = await getTopTradingCountries(industry, date);
+    countriesToProcess = topCountries;
+  }
+
+  console.log(`Invoking LLM for tariffs for each of:`, countriesToProcess);
   const countrySpecificTariffs: CountrySpecificTariff[] = [];
-
-  // If a specific country is requested, only process that country
-  const countriesToProcess = countryName ? [countryName] : topCountries;
 
   for (const country of countriesToProcess) {
     const prompt = getTariffUpdatesForIndustryPrompt(industry, date, headings, country);
@@ -140,7 +150,46 @@ async function getTariffUpdatesForIndustry(
     countrySpecificTariffs.push(countryTariff);
   }
 
-  return { countryNames: topCountries, countrySpecificTariffs };
+  // If we have existing data, maintain the order
+  if (existingTariffUpdates && existingTariffUpdates.countrySpecificTariffs.length > 0) {
+    // Create a map of new tariffs for quick lookup
+    const newTariffsMap = new Map(countrySpecificTariffs.map((tariff) => [tariff.countryName, tariff]));
+
+    // Create a new array maintaining the existing order
+    const orderedTariffs = existingCountryNames.map((country) => {
+      // If this is the country being regenerated, use the new data
+      if (countryName && country === countryName) {
+        const newTariff = newTariffsMap.get(country);
+        if (!newTariff) {
+          console.error(`Failed to get new tariff data for ${country}`);
+          return existingTariffUpdates.countrySpecificTariffs.find((t) => t.countryName === country)!;
+        }
+        return newTariff;
+      }
+      // Otherwise, use existing data if available, or new data if not
+      const existingTariff = existingTariffUpdates.countrySpecificTariffs.find((t) => t.countryName === country);
+      if (!existingTariff) {
+        console.error(`Failed to find existing tariff data for ${country}`);
+        return newTariffsMap.get(country)!;
+      }
+      return existingTariff;
+    });
+
+    const result = {
+      countryNames: existingCountryNames,
+      countrySpecificTariffs: orderedTariffs,
+    };
+    console.log('Generated tariff updates with order:', result.countryNames);
+    return result;
+  }
+
+  // If no existing data, use the new data in the order it was generated
+  const result = {
+    countryNames: countriesToProcess,
+    countrySpecificTariffs,
+  };
+  console.log('Generated new tariff updates:', result);
+  return result;
 }
 
 function getS3Key(industry: string, fileName: string): string {
@@ -148,27 +197,29 @@ function getS3Key(industry: string, fileName: string): string {
 }
 
 export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryAreasWrapper, countryName?: string) {
+  console.log(`Starting tariff update generation for ${industry} ${countryName ? ` (${countryName})` : ''}`);
   const tariffUpdates = await getTariffUpdatesForIndustry(industry, date, headings, countryName);
 
-  // If regenerating a specific country, merge with existing data
-  if (countryName) {
-    const existingTariffUpdates = await readTariffUpdatesFromFile(industry);
-    if (existingTariffUpdates) {
-      // Remove the old entry for this country if it exists
-      const filteredTariffs = existingTariffUpdates.countrySpecificTariffs.filter((tariff) => tariff.countryName !== countryName);
-      // Add the new tariff data
-      tariffUpdates.countrySpecificTariffs = [...filteredTariffs, ...tariffUpdates.countrySpecificTariffs];
-    }
+  if (!tariffUpdates.countrySpecificTariffs || tariffUpdates.countrySpecificTariffs.length === 0) {
+    throw new Error('No tariff data generated');
   }
 
   // Upload JSON to S3
   const jsonKey = getS3Key(industry, 'tariff-updates.json');
-  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(tariffUpdates, null, 2)), jsonKey, 'application/json');
+  const jsonContent = JSON.stringify(tariffUpdates, null, 2);
+  console.log(`Uploading tariff updates to S3: ${jsonKey}`);
+  await uploadFileToS3(new TextEncoder().encode(jsonContent), jsonKey, 'application/json');
 
   // Generate and upload markdown
   const markdownContent = getMarkdownContentForIndustryTariffs(industry, tariffUpdates);
+  if (!markdownContent) {
+    throw new Error('Failed to generate markdown content');
+  }
   const markdownKey = getS3Key(industry, 'tariff-updates.md');
+  console.log(`Uploading markdown to S3: ${markdownKey}`);
   await uploadFileToS3(new TextEncoder().encode(markdownContent), markdownKey, 'text/markdown');
+
+  console.log('Tariff updates saved successfully');
 }
 
 export async function readTariffUpdatesFromFile(industry: string): Promise<TariffUpdatesForIndustry | undefined> {
