@@ -1,5 +1,5 @@
 export interface TariffReportIndustry {
-  name: string;
+  industryId: string;
   companiesToIgnore: string[];
   asOfDate: string;
 }
@@ -10,7 +10,7 @@ interface PublicCompany {
   ticker: string;
 }
 
-export interface IndustrySubAreas {
+export interface IndustrySubArea {
   title: string;
   oneLineSummary: string;
   companies: PublicCompany[];
@@ -19,7 +19,7 @@ export interface IndustrySubAreas {
 export interface IndustryAreas {
   title: string;
   oneLineSummary: string;
-  subAreas: IndustrySubAreas[];
+  subAreas: IndustrySubArea[];
 }
 
 export interface IndustryAreasWrapper {
@@ -149,12 +149,23 @@ export interface NegativeTariffImpactOnCompanyType {
   chartUrls?: ChartUrls;
 }
 
+export interface NewChallengerRef {
+  companyName: string;
+  companyTicker: string;
+}
+
+export interface EstablishedPlayerRef {
+  companyName: string;
+  companyTicker: string;
+}
+
 export interface EvaluateIndustryArea {
   title: string;
   aboutParagraphs: string;
+  establishedPlayersRefs: EstablishedPlayerRef[];
+  establishedPlayerDetails: EstablishedPlayer[];
   newChallengersRefs: NewChallengerRef[];
   newChallengersDetails: NewChallenger[];
-  establishedPlayers: EstablishedPlayer[];
   headwindsAndTailwinds: HeadwindsAndTailwinds;
   positiveTariffImpactOnCompanyType: PositiveTariffImpactOnCompanyType[];
   negativeTariffImpactOnCompanyType: NegativeTariffImpactOnCompanyType[];
@@ -196,14 +207,10 @@ export interface IndustryTariffReport {
   finalConclusion?: FinalConclusion;
 }
 
-export interface NewChallengerRef {
-  companyName: string;
-  companyTicker: string;
-}
-
 export enum EvaluateIndustryContent {
   ALL = 'ALL',
   ESTABLISHED_PLAYERS = 'ESTABLISHED_PLAYERS',
+  ESTABLISHED_PLAYER = 'ESTABLISHED_PLAYER',
   NEW_CHALLENGERS = 'NEW_CHALLENGERS',
   NEW_CHALLENGER = 'NEW_CHALLENGER',
   HEADWINDS_AND_TAILWINDS = 'HEADWINDS_AND_TAILWINDS',

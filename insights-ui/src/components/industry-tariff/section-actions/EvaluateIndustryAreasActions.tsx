@@ -15,6 +15,7 @@ export interface EvaluateIndustryAreasActionsProps {
   subHeadingIndex: number;
   sectionType?: EvaluateIndustryContent;
   challengerTicker?: string;
+  establishedPlayerTicker?: string;
 }
 
 export default function EvaluateIndustryAreasActions({
@@ -24,6 +25,7 @@ export default function EvaluateIndustryAreasActions({
   subHeadingIndex,
   sectionType = EvaluateIndustryContent.ALL,
   challengerTicker,
+  establishedPlayerTicker,
 }: EvaluateIndustryAreasActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
@@ -46,6 +48,7 @@ export default function EvaluateIndustryAreasActions({
       subHeadingIndex,
       sectionType,
       challengerTicker,
+      establishedPlayerTicker,
     };
     await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, request);
     router.refresh();

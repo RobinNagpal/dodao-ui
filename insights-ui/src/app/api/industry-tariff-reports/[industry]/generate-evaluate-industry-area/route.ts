@@ -19,12 +19,13 @@ export interface GenerateEvaluateIndustryAreaRequest {
   subHeadingIndex: number;
   sectionType?: EvaluateIndustryContent;
   challengerTicker?: string;
+  establishedPlayerTicker?: string;
 }
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
   const request = (await req.json()) as GenerateEvaluateIndustryAreaRequest;
-  const { date, headingIndex, subHeadingIndex, sectionType = EvaluateIndustryContent.ALL, challengerTicker } = request;
+  const { date, headingIndex, subHeadingIndex, sectionType = EvaluateIndustryContent.ALL, challengerTicker, establishedPlayerTicker } = request;
 
   if (!industry || !date || headingIndex === undefined || subHeadingIndex === undefined) {
     throw new Error('Industry, date, headingIndex, and subHeadingIndex are required');
@@ -32,7 +33,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   // Create tariff report industry object
   const tariffIndustry: TariffReportIndustry = {
-    name: industry,
+    industryId: industry,
     companiesToIgnore: getDefinitionByIndustryId(industry).companiesToIgnore,
     asOfDate: date,
   };
@@ -54,6 +55,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
     await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date);
   } else if (sectionType === EvaluateIndustryContent.NEW_CHALLENGER && challengerTicker) {
     await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType, challengerTicker);
+  } else if (sectionType === EvaluateIndustryContent.ESTABLISHED_PLAYER && establishedPlayerTicker) {
+    await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType, establishedPlayerTicker);
   } else {
     await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType);
   }

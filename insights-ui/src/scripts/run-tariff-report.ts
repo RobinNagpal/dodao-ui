@@ -70,7 +70,7 @@ export async function doIt(
     subHeadingIndex: 0,
   }
 ) {
-  const industry = tariffIndustry.name;
+  const industry = tariffIndustry.industryId;
   const date = tariffIndustry.asOfDate;
   // Pre-read common dependencies
 
@@ -158,7 +158,7 @@ export async function doIt(
 }
 
 const industry: TariffReportIndustry = {
-  name: 'Plastic',
+  industryId: 'Plastic',
   companiesToIgnore: ['Pactiv Evergreen Inc', 'Danimer Scientific(DNMR)', 'Zymergen Inc (ZY)', 'Amyris, Inc.'],
   asOfDate: 'April 28, 2025',
 };
