@@ -25,6 +25,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   // Get dependencies
   const headings = await readIndustryHeadingsFromFile(industry);
+  if (!headings) throw new Error(`Headings not found for industry: ${industry}`);
+
   const tariffs = await readTariffUpdatesFromFile(industry);
 
   // Get summaries and impacts from evaluated areas

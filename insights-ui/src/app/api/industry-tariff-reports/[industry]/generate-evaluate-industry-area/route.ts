@@ -1,4 +1,5 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
+import { getDefinitionByIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { EvaluateIndustryContent, IndustryTariffReport, TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -17,12 +18,13 @@ export interface GenerateEvaluateIndustryAreaRequest {
   headingIndex: number;
   subHeadingIndex: number;
   sectionType?: EvaluateIndustryContent;
+  challengerTicker?: string;
 }
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
   const request = (await req.json()) as GenerateEvaluateIndustryAreaRequest;
-  const { companiesToIgnore = [], date, headingIndex, subHeadingIndex, sectionType = EvaluateIndustryContent.ALL } = request;
+  const { date, headingIndex, subHeadingIndex, sectionType = EvaluateIndustryContent.ALL, challengerTicker } = request;
 
   if (!industry || !date || headingIndex === undefined || subHeadingIndex === undefined) {
     throw new Error('Industry, date, headingIndex, and subHeadingIndex are required');
@@ -31,22 +33,27 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   // Create tariff report industry object
   const tariffIndustry: TariffReportIndustry = {
     name: industry,
-    companiesToIgnore: companiesToIgnore,
+    companiesToIgnore: getDefinitionByIndustryId(industry).companiesToIgnore,
     asOfDate: date,
   };
 
   // Get dependencies
   const headings = await readIndustryHeadingsFromFile(industry);
+  if (!headings) throw new Error(`Headings not found for industry: ${industry}`);
+
   const tariff = await readTariffUpdatesFromFile(industry);
-  const area = headings.headings[headingIndex].subHeadings[subHeadingIndex];
+  const area = headings.areas[headingIndex].subAreas[subHeadingIndex];
 
   if (!tariff) {
     throw new Error('Tariff updates not found');
   }
 
+  console.log(`Generating evaluation for ${industry} - ${area} - ${sectionType} - ${headingIndex} - ${subHeadingIndex}`);
   // Generate the evaluation based on section type
   if (sectionType === EvaluateIndustryContent.ALL) {
     await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date);
+  } else if (sectionType === EvaluateIndustryContent.NEW_CHALLENGER && challengerTicker) {
+    await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType, challengerTicker);
   } else {
     await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType);
   }

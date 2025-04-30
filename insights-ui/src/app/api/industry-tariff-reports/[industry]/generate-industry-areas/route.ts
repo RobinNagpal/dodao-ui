@@ -18,6 +18,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   // Get the headings first
   const headings = await readIndustryHeadingsFromFile(industry);
+  if (!headings) throw new Error(`Headings not found for industry: ${industry}`);
 
   // Generate the industry areas section
   await getAndWriteIndustryAreaSectionToJsonFile(industry, headings);

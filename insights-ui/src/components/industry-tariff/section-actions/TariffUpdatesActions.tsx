@@ -19,10 +19,15 @@ export default function TariffUpdatesActions({ industryId, tariffIndex, countryN
 
   const sectionName = countryName ? `${countryName} Tariffs` : 'Tariff Updates';
 
-  const actions: EllipsisDropdownItem[] = [
-    { key: 'regenerate', label: `Regenerate ${sectionName}` },
-    { key: 'edit', label: `Edit ${sectionName}` },
-  ];
+  const actions: EllipsisDropdownItem[] = [];
+
+  if (countryName) {
+    actions.push({ key: 'regenerate-country', label: `Regenerate ${countryName} Tariffs` });
+  } else {
+    actions.push({ key: 'regenerate', label: `Regenerate ${sectionName}` });
+  }
+
+  actions.push({ key: 'edit', label: `Edit ${sectionName}` });
 
   const { postData, loading: isRegenerating } = usePostData<any, any>({
     successMessage: `${sectionName} regenerated successfully!`,
@@ -30,12 +35,12 @@ export default function TariffUpdatesActions({ industryId, tariffIndex, countryN
     redirectPath: `/industry-tariff-report/${industryId}/tariff-updates`,
   });
 
-  const handleRegenerate = async () => {
-    await postData(`${getBaseUrl()}/api/industry-tariff-reports/generate-tariff-updates`, {
+  const handleRegenerate = async (isCountrySpecific: boolean = false) => {
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-tariff-updates`, {
       industry: industryId,
       date: new Date().toISOString().split('T')[0],
       tariffIndex: tariffIndex,
-      countryName: countryName,
+      countryName: isCountrySpecific ? countryName : undefined,
     });
     router.refresh();
     setShowRegenerateModal(false);
@@ -46,7 +51,7 @@ export default function TariffUpdatesActions({ industryId, tariffIndex, countryN
       <EllipsisDropdown
         items={actions}
         onSelect={async (key) => {
-          if (key === 'regenerate') {
+          if (key === 'regenerate' || key === 'regenerate-country') {
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
             if (tariffIndex !== undefined) {
@@ -61,7 +66,7 @@ export default function TariffUpdatesActions({ industryId, tariffIndex, countryN
         <ConfirmationModal
           open={showRegenerateModal}
           onClose={() => setShowRegenerateModal(false)}
-          onConfirm={handleRegenerate}
+          onConfirm={() => handleRegenerate(actions[0].key === 'regenerate-country')}
           title={`Regenerate ${sectionName}`}
           confirmationText={`Are you sure you want to regenerate the ${sectionName.toLowerCase()}? This will replace the current content.`}
           confirming={isRegenerating}

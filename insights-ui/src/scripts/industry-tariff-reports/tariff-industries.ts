@@ -5,6 +5,7 @@ export interface TariffIndustryDefinition {
   subHeadingsCount: number;
   establishedPlayersCount: number;
   newChallengersCount: number;
+  companiesToIgnore: string[];
 }
 
 export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
@@ -15,6 +16,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     subHeadingsCount: 3,
     establishedPlayersCount: 3,
     newChallengersCount: 3,
+    companiesToIgnore: ['Pactiv Evergreen Inc', 'Danimer Scientific(DNMR)', 'Zymergen Inc (ZY)', 'Amyris, Inc.'],
   },
   Toys: {
     name: 'Toys',
@@ -23,6 +25,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
     newChallengersCount: 3,
+    companiesToIgnore: [],
   },
   Aluminium: {
     name: 'Aluminium',
@@ -31,21 +34,28 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     subHeadingsCount: 3,
     establishedPlayersCount: 3,
     newChallengersCount: 3,
+    companiesToIgnore: [],
+  },
+  Automobiles: {
+    name: 'Automobiles',
+    industryId: 'automobiles',
+    headingsCount: 4,
+    subHeadingsCount: 3,
+    establishedPlayersCount: 3,
+    newChallengersCount: 3,
+    companiesToIgnore: [],
   },
 };
 
 export function getNumberOfHeadings(industryId: string): number {
-  const industryDefinition = Object.entries(TariffIndustries).find((k, v) => {
-    return k[1].industryId === industryId;
-  });
-  if (!industryDefinition) {
-    throw new Error(`Industry ${industryId} not found`);
-  }
-
-  return industryDefinition[1].headingsCount;
+  return getDefinitionByIndustryId(industryId).headingsCount;
 }
 
 export function getNumberOfSubHeadings(industryId: string): number {
+  return getDefinitionByIndustryId(industryId).subHeadingsCount;
+}
+
+export function getDefinitionByIndustryId(industryId: string): TariffIndustryDefinition {
   const industryDefinition = Object.entries(TariffIndustries).find((k, v) => {
     return k[1].industryId === industryId;
   });
@@ -53,5 +63,5 @@ export function getNumberOfSubHeadings(industryId: string): number {
     throw new Error(`Industry ${industryId} not found`);
   }
 
-  return industryDefinition[1].subHeadingsCount;
+  return industryDefinition[1];
 }

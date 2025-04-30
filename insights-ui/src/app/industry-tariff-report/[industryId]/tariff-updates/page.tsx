@@ -1,11 +1,9 @@
-import { getMarkdownContentForIntroduction } from '@/scripts/industry-tariff-reports/02-introduction';
-import { getMarkdownContentForIndustryTariffs } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
-import { parseMarkdown } from '@/util/parse-markdown';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import TariffUpdatesActions from '@/components/industry-tariff/section-actions/TariffUpdatesActions';
-import Link from 'next/link';
+import { getMarkdownContentForCountryTariffs } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
+import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { parseMarkdown } from '@/util/parse-markdown';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export default async function TariffUpdatesPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
@@ -22,17 +20,38 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
     return <div>Report not found</div>;
   }
 
-  const content = report.tariffUpdates ? parseMarkdown(getMarkdownContentForIndustryTariffs('Plastics', report.tariffUpdates)) : 'No content available';
+  if (!report.tariffUpdates) {
+    return <div>No tariff updates available</div>;
+  }
 
   return (
     <div>
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between mb-4">
+        <h1 className="text-3xl font-bold">Tariff Updates</h1>
         <PrivateWrapper>
           <TariffUpdatesActions industryId={industryId} />
         </PrivateWrapper>
       </div>
 
-      <div dangerouslySetInnerHTML={{ __html: content }} className="markdown-body" />
+      {report.tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
+        const markdownContent = getMarkdownContentForCountryTariffs(countryTariff);
+        return (
+          <div key={countryTariff.countryName} className="mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">{countryTariff.countryName}</h2>
+              <PrivateWrapper>
+                <TariffUpdatesActions industryId={industryId} tariffIndex={index} countryName={countryTariff.countryName} />
+              </PrivateWrapper>
+            </div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: markdownContent && parseMarkdown(markdownContent),
+              }}
+              className="markdown-body"
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }

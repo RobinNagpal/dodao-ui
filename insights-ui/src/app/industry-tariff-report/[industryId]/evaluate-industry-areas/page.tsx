@@ -20,7 +20,7 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
 
   const { industryAreaHeadings } = report;
 
-  if (!industryAreaHeadings?.headings || industryAreaHeadings?.headings?.length === 0) {
+  if (!industryAreaHeadings?.areas || industryAreaHeadings?.areas?.length === 0) {
     return <div>No industry area headings found</div>;
   }
 
@@ -28,11 +28,11 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
     <div className="space-y-8">
       <h1 className="text-2xl font-bold mb-6 heading-color">Evaluate Industry Areas</h1>
 
-      {industryAreaHeadings.headings.map((heading, index) => (
+      {industryAreaHeadings.areas.map((heading, index) => (
         <div key={`heading-${index}`} className="mb-6">
           <h2 className="text-xl font-semibold mb-3 heading-color">{heading.title}</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {heading.subHeadings.map((subHeading, subIndex) => {
+            {heading.subAreas.map((subHeading, subIndex) => {
               const indexInArray = index * getNumberOfSubHeadings(industryId) + subIndex;
               const evaluated = report?.evaluateIndustryAreas?.[indexInArray];
 

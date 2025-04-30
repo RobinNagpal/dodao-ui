@@ -83,8 +83,8 @@ export default function BookNavigation({ report, industryId }: BookNavigationPro
           currentPath={pathname}
           isActive={isActive(`/industry-tariff-report/${industryId}/evaluate-industry-areas`)}
         >
-          {report.industryAreaHeadings?.headings?.flatMap((heading, index) => {
-            return heading.subHeadings.map((subHeading, subIndex) => {
+          {report.industryAreaHeadings?.areas?.flatMap((heading, index) => {
+            return heading.subAreas.map((subHeading, subIndex) => {
               const indexInArray = index * getNumberOfSubHeadings(industryId) + subIndex;
               const evaluated = report?.evaluateIndustryAreas?.[indexInArray];
 

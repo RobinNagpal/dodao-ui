@@ -1,4 +1,4 @@
-import { IndustryAreaHeadings, UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { IndustryAreasWrapper, UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 import { getLlmResponse } from '@/scripts/llm-utils';
@@ -28,7 +28,7 @@ const UnderstandIndustrySchema = z.object({
     ),
 });
 
-function getUnderstandIndustryPrompt(industry: string, headings: IndustryAreaHeadings) {
+function getUnderstandIndustryPrompt(industry: string, headings: IndustryAreasWrapper) {
   const prompt = `
 I want to understand the ${industry} industry in depth. Give me a very detailed article with:
 - Exactly **6 Headings** and **2–3 small paragraphs** under each heading
@@ -105,7 +105,7 @@ ${JSON.stringify(headings, null, 2)}
   return prompt;
 }
 
-export async function getUnderstandIndustry(industry: string, headings: IndustryAreaHeadings) {
+export async function getUnderstandIndustry(industry: string, headings: IndustryAreasWrapper) {
   console.log('Invoking LLM for understanding industry');
   return await getLlmResponse<UnderstandIndustry>(getUnderstandIndustryPrompt(industry, headings), UnderstandIndustrySchema);
 }
@@ -114,7 +114,7 @@ function getS3Key(industry: string, fileName: string): string {
   return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/04-understand-industry/${fileName}`;
 }
 
-export async function getAndWriteUnderstandIndustryJson(industry: string, headings: IndustryAreaHeadings) {
+export async function getAndWriteUnderstandIndustryJson(industry: string, headings: IndustryAreasWrapper) {
   const understandIndustry = await getUnderstandIndustry(industry, headings);
   console.log('Understand Industry:', understandIndustry);
 
@@ -129,13 +129,8 @@ export async function getAndWriteUnderstandIndustryJson(industry: string, headin
 }
 
 export async function readUnderstandIndustryJsonFromFile(industry: string): Promise<UnderstandIndustry | undefined> {
-  try {
-    const key = getS3Key(industry, 'understand-industry.json');
-    return await getJsonFromS3<UnderstandIndustry>(key);
-  } catch (error) {
-    console.error(`Error reading understand industry from S3: ${error}`);
-    return undefined;
-  }
+  const key = getS3Key(industry, 'understand-industry.json');
+  return await getJsonFromS3<UnderstandIndustry>(key);
 }
 
 export function getMarkdownContentForUnderstandIndustry(understandIndustry: UnderstandIndustry) {
