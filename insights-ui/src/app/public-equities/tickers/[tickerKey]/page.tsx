@@ -329,7 +329,7 @@ function InfoBlock({ heading, content, IconComponent, IconClasses }: InfoBlockPr
         <IconComponent className={IconClasses ?? 'size-5 mr-2'} />
         <div className="font-semibold my-2">{heading}</div>
       </div>
-      <div className="markdown-body px-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(content) }} />
+      <div className="markdown-body px-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(content ?? 'Not yet populated') }} />
     </div>
   );
 }
