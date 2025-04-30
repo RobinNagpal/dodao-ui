@@ -1,7 +1,7 @@
 import { getAuthKey } from './auth/authKey';
 
 export async function regenerateAReportOfAllProjects(projectIds: string[], model: string, reportType: string): Promise<{ success: boolean; message: string }> {
-  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
+  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || 'https://ai-insights.dodao.io';
 
   try {
     const response = await fetch(`${baseURL}/api/projects/reports/${reportType}/regenerate`, {

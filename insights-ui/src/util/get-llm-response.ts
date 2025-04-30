@@ -60,7 +60,7 @@ export async function getLLMResponse({ invocationId, llmProvider, modelName, pro
           },
         });
       } else {
-        throw new Error('Unexpected failure in getLLMResponse');
+        throw new Error('Unexpected failure in getLLMResponse: ', err);
       }
       throw err;
     }

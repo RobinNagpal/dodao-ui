@@ -8,7 +8,7 @@ import fetch from 'node-fetch';
 
 const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> => {
   const { tickerKey } = await params;
-  const pythonBackendBaseUrl = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
+  const pythonBackendBaseUrl = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || 'https://ai-insights.dodao.io';
   const updatedTicker = await prisma.ticker.update({
     where: {
       spaceId_tickerKey: {

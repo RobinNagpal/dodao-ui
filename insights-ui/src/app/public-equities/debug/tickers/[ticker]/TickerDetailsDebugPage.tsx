@@ -5,7 +5,7 @@ import DebugMatchingAttachments from '@/components/ticker/debug/DebugMatchingAtt
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { getCriteriaByIds } from '@/lib/industryGroupCriteria';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
-import { FullNestedTickerReport } from '@/types/public-equity/ticker-report-types';
+import { FullNestedTickerReport, LinkedinProfile } from '@/types/public-equity/ticker-report-types';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -16,6 +16,7 @@ import CriteriaTable from './CriteriaTable';
 import DebugTickerInfo from '@/components/ticker/debug/DebugTickerInfo';
 import PopulateLatest10QInfoButton from '@/app/public-equities/tickers/[tickerKey]/PopulateLatest10QInfoButton';
 import DebugTickerNews from '@/components/ticker/debug/DebugTickerNews';
+import PopulateManagementTeamButton from '@/app/public-equities/tickers/[tickerKey]/PopulateManagementTeamButton';
 
 export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
   // New state for section-specific regeneration confirmation
@@ -59,6 +60,9 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
   const onPostUpdate = async () => {
     await reFetchData();
   };
+
+  const managementTeam = (tickerReport?.managementTeam as LinkedinProfile[]) || [];
+
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -95,6 +99,29 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
           ) : (
             <PopulateLatest10QInfoButton tickerKey={ticker} />
           )}
+
+          <div className="my-8">
+            <div className="font-semibold text-xl text-left my-8">Management Team</div>
+            <div className="mx-auto">
+              <ul role="list" className="flex flex-wrap justify-center gap-10">
+                {managementTeam.length > 0 ? (
+                  managementTeam.map((member) => (
+                    <li key={member.fullName} className="flex flex-col items-center">
+                      <img
+                        alt={member.fullName}
+                        src={member.profilePicUrl != null ? member.profilePicUrl : '/dummy-avatar.svg'}
+                        className="mx-auto size-32 rounded-full"
+                      />
+                      <h3 className="mt-6 text-base/7 font-semibold tracking-tight">{member.fullName}</h3>
+                      <p className="text-sm/6">{member.occupation}</p>
+                    </li>
+                  ))
+                ) : (
+                  <PopulateManagementTeamButton tickerKey={ticker} />
+                )}
+              </ul>
+            </div>
+          </div>
         </div>
       )}
     </PageWrapper>

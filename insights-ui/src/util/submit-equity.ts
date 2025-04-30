@@ -2,7 +2,7 @@ import { PublicEquitySubmissionData } from '@/types/public-equity/gicsSector';
 import { getAuthKey } from './auth/authKey';
 
 export async function submitEquity(equityDetails: PublicEquitySubmissionData): Promise<{ success: boolean; message: string }> {
-  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
+  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || 'https://ai-insights.dodao.io';
   try {
     const response = await fetch(`${baseURL}/api/public-equities/US/submit`, {
       method: 'POST',
