@@ -9,7 +9,11 @@ import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 async function getHandler(): Promise<Ticker[]> {
-  const tickers = await prisma.ticker.findMany();
+  const tickers = await prisma.ticker.findMany({
+    orderBy: {
+      createdAt: 'asc',
+    },
+  });
   return tickers;
 }
 
