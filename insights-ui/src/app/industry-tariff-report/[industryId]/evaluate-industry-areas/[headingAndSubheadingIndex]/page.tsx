@@ -1,9 +1,9 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-actions/EvaluateIndustryAreasActions';
-import { establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-markdown';
+import { establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 
 import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { EvaluateIndustryContent, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { EvaluateIndustryContent, IndustryArea, IndustrySubArea, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
@@ -24,10 +24,19 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
     report = await reportResponse.json();
   }
 
+  const area: IndustryArea | undefined = report?.industryAreas?.areas?.[headingIndex];
+  const subArea: IndustrySubArea | undefined = area?.subAreas?.[subHeadingIndex];
+
   const evaluateIndustryArea = report?.evaluateIndustryAreas?.[indexInArray];
 
   // Function to render section with header and actions
-  const renderSection = (title: string, content: JSX.Element, sectionType: EvaluateIndustryContent) => (
+  const renderSection = (
+    title: string,
+    content: JSX.Element,
+    sectionType: EvaluateIndustryContent,
+    challengerTicker?: string,
+    establishedPlayerTicker?: string
+  ) => (
     <div className="mb-12">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold heading-color">{title}</h2>
@@ -38,6 +47,8 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
             headingIndex={headingIndex}
             subHeadingIndex={subHeadingIndex}
             sectionType={sectionType}
+            challengerTicker={challengerTicker}
+            establishedPlayerTicker={establishedPlayerTicker}
           />
         </PrivateWrapper>
       </div>
@@ -52,7 +63,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
     <div>
       {/* Title and Overall Actions */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold heading-color">{evaluateIndustryArea?.title || 'Industry Area Evaluation'}</h1>
+        <h1 className="text-2xl font-bold heading-color">{evaluateIndustryArea?.title || subArea?.title || 'Industry Area Evaluation'}</h1>
         <PrivateWrapper>
           <EvaluateIndustryAreasActions
             industryId={industryId}
@@ -81,12 +92,25 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
       {renderSection(
         'Established Players',
         <div>
-          {evaluateIndustryArea?.establishedPlayers && evaluateIndustryArea.establishedPlayers.length > 0
-            ? evaluateIndustryArea.establishedPlayers.map((player, idx) => {
+          {evaluateIndustryArea?.establishedPlayerDetails && evaluateIndustryArea.establishedPlayerDetails.length > 0
+            ? evaluateIndustryArea.establishedPlayerDetails.map((player, idx) => {
                 const markdown = establishedPlayerToMarkdown(player);
                 const renderedMarkdown = markdown && parseMarkdown(markdown);
                 return (
                   <div key={idx} className="mb-6 p-4 border rounded">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-medium">{player.companyName}</h3>
+                      <PrivateWrapper>
+                        <EvaluateIndustryAreasActions
+                          industryId={industryId}
+                          sectionName={`Established Player: ${player.companyName}`}
+                          headingIndex={headingIndex}
+                          subHeadingIndex={subHeadingIndex}
+                          sectionType={EvaluateIndustryContent.ESTABLISHED_PLAYER}
+                          establishedPlayerTicker={player.companyTicker}
+                        />
+                      </PrivateWrapper>
+                    </div>
                     <div className="markdown-body" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
                   </div>
                 );

@@ -1,6 +1,10 @@
+import {
+  readTariffUpdatesFromFile,
+  writeJsonFileForIndustryTariffs,
+  writeMarkdownFileForIndustryTariffs,
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { CountrySpecificTariff, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-import { getLlmResponse, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
-import { getJsonFromS3, uploadFileToS3 } from '@/scripts/report-file-utils';
+import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
 
 const CountrySpecificTariffSchema = z.object({
@@ -192,10 +196,6 @@ async function getTariffUpdatesForIndustry(
   return result;
 }
 
-function getS3Key(industry: string, fileName: string): string {
-  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/03-tariff-updates/${fileName}`;
-}
-
 export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryAreasWrapper, countryName?: string) {
   console.log(`Starting tariff update generation for ${industry} ${countryName ? ` (${countryName})` : ''}`);
   const tariffUpdates = await getTariffUpdatesForIndustry(industry, date, headings, countryName);
@@ -205,51 +205,8 @@ export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string,
   }
 
   // Upload JSON to S3
-  const jsonKey = getS3Key(industry, 'tariff-updates.json');
-  const jsonContent = JSON.stringify(tariffUpdates, null, 2);
-  console.log(`Uploading tariff updates to S3: ${jsonKey}`);
-  await uploadFileToS3(new TextEncoder().encode(jsonContent), jsonKey, 'application/json');
+  await writeJsonFileForIndustryTariffs(industry, tariffUpdates);
 
   // Generate and upload markdown
-  const markdownContent = getMarkdownContentForIndustryTariffs(industry, tariffUpdates);
-  if (!markdownContent) {
-    throw new Error('Failed to generate markdown content');
-  }
-  const markdownKey = getS3Key(industry, 'tariff-updates.md');
-  console.log(`Uploading markdown to S3: ${markdownKey}`);
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), markdownKey, 'text/markdown');
-
-  console.log('Tariff updates saved successfully');
-}
-
-export async function readTariffUpdatesFromFile(industry: string): Promise<TariffUpdatesForIndustry | undefined> {
-  const key = getS3Key(industry, 'tariff-updates.json');
-  return await getJsonFromS3<TariffUpdatesForIndustry>(key);
-}
-
-export function getMarkdownContentForCountryTariffs(tariff: CountrySpecificTariff): string {
-  const content =
-    `${tariff.tariffDetails}\n\n` +
-    `${tariff.existingTradeAmountAndAgreement}\n\n` +
-    `${tariff.newChanges}\n\n` +
-    `${tariff.tariffChangesForIndustrySubArea?.map((changes) => `- ${changes}`)?.join('\n\n')}\n\n` +
-    `### Trade Impacted by New Tariff\n\n` +
-    `${tariff.tradeImpactedByNewTariff}\n\n` +
-    `### Trade Exempted by New Tariff\n\n` +
-    `${tariff.tradeExemptedByNewTariff}\n`;
-  return recursivelyCleanOpenAiUrls(content);
-}
-
-export function getMarkdownContentForIndustryTariffs(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
-  const markdownContent =
-    `# Tariff Updates for ${industry}\n\n` +
-    `${tariffUpdates.countrySpecificTariffs.map((country) => `##${country.countryName}\n\n${getMarkdownContentForCountryTariffs(country)}`).join('\n\n')}\n`;
-
-  return markdownContent;
-}
-
-export async function writeTariffUpdatesToMarkdownFile(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
-  const markdownContent = getMarkdownContentForIndustryTariffs(industry, tariffUpdates);
-  const key = getS3Key(industry, 'tariff-updates.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
+  await writeMarkdownFileForIndustryTariffs(industry, tariffUpdates);
 }

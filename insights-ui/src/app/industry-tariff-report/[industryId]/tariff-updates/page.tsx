@@ -1,6 +1,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import TariffUpdatesActions from '@/components/industry-tariff/section-actions/TariffUpdatesActions';
-import { getMarkdownContentForCountryTariffs } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
+
+import { getMarkdownContentForCountryTariffs } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';

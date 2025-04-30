@@ -1,16 +1,15 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import { getDefinitionByIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import {
+  readEvaluateSubIndustryAreaJsonFromFile,
+  readIndustryHeadingsFromFile,
+  readTariffUpdatesFromFile,
+  writeMarkdownFileForEvaluateSubIndustryArea,
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { EvaluateIndustryContent, IndustryTariffReport, TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import {
-  getAndWriteEvaluateIndustryAreaJson,
-  readEvaluateIndustryAreaJsonFromFile,
-  regenerateEvaluateIndustryAreaJson,
-  writeEvaluateIndustryAreaToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
-import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
-import { readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
+import { getAndWriteEvaluateIndustryAreaJson, regenerateEvaluateIndustryAreaJson } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 
 export interface GenerateEvaluateIndustryAreaRequest {
   companiesToIgnore?: string[];
@@ -19,12 +18,13 @@ export interface GenerateEvaluateIndustryAreaRequest {
   subHeadingIndex: number;
   sectionType?: EvaluateIndustryContent;
   challengerTicker?: string;
+  establishedPlayerTicker?: string;
 }
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
   const request = (await req.json()) as GenerateEvaluateIndustryAreaRequest;
-  const { date, headingIndex, subHeadingIndex, sectionType = EvaluateIndustryContent.ALL, challengerTicker } = request;
+  const { date, headingIndex, subHeadingIndex, sectionType = EvaluateIndustryContent.ALL, challengerTicker, establishedPlayerTicker } = request;
 
   if (!industry || !date || headingIndex === undefined || subHeadingIndex === undefined) {
     throw new Error('Industry, date, headingIndex, and subHeadingIndex are required');
@@ -32,7 +32,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   // Create tariff report industry object
   const tariffIndustry: TariffReportIndustry = {
-    name: industry,
+    industryId: industry,
     companiesToIgnore: getDefinitionByIndustryId(industry).companiesToIgnore,
     asOfDate: date,
   };
@@ -54,13 +54,15 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
     await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date);
   } else if (sectionType === EvaluateIndustryContent.NEW_CHALLENGER && challengerTicker) {
     await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType, challengerTicker);
+  } else if (sectionType === EvaluateIndustryContent.ESTABLISHED_PLAYER && establishedPlayerTicker) {
+    await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType, establishedPlayerTicker);
   } else {
     await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType);
   }
 
-  const evaluated = await readEvaluateIndustryAreaJsonFromFile(industry, area, headings);
+  const evaluated = await readEvaluateSubIndustryAreaJsonFromFile(industry, area, headings);
   if (evaluated) {
-    await writeEvaluateIndustryAreaToMarkdownFile(industry, area, headings, evaluated);
+    await writeMarkdownFileForEvaluateSubIndustryArea(industry, area, headings, evaluated);
   }
   return getIndustryTariffReport(industry);
 }

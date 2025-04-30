@@ -1,4 +1,4 @@
-import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
+import { writeJsonFileForFinalConclusion, writeMarkdownFileForFinalConclusion } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import {
   FinalConclusion,
   IndustryAreasWrapper,
@@ -6,8 +6,8 @@ import {
   PositiveTariffImpactOnCompanyType,
   TariffUpdatesForIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
+import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
-import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 
 const PositiveImpactsSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),
@@ -33,7 +33,7 @@ const NegativeImpactsSchema = z.object({
     ),
 });
 
-const FinalConclusion = z.object({
+const FinalConclusionSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),
   conclusionBrief: z.string().describe('Brief conclusion of the report.'),
   positiveImpacts: PositiveImpactsSchema.describe(
@@ -108,12 +108,8 @@ async function getFinalConclusion(
   negativeImpacts: NegativeTariffImpactOnCompanyType[]
 ): Promise<FinalConclusion> {
   const prompt = getFinalConclusionPrompt(industry, headings, tariffUpdates, tariffSummaries, positiveImpacts, negativeImpacts);
-  const response = await getLlmResponse<FinalConclusion>(prompt, FinalConclusion);
+  const response = await getLlmResponse<FinalConclusion>(prompt, FinalConclusionSchema);
   return response;
-}
-
-function getS3Key(industry: string, fileName: string): string {
-  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/07-final-conclusion/${fileName}`;
 }
 
 export async function getFinalConclusionAndSaveToFile(
@@ -127,36 +123,6 @@ export async function getFinalConclusionAndSaveToFile(
   const finalConclusion = await getFinalConclusion(industry, headings, tariffUpdates, tariffSummaries, positiveImpacts, negativeImpacts);
 
   // Upload JSON to S3
-  const jsonKey = getS3Key(industry, 'final-conclusion.json');
-  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(finalConclusion, null, 2)), jsonKey, 'application/json');
-
-  // Generate and upload markdown
-  const markdownContent = getMarkdownContentForFinalConclusion(finalConclusion);
-  const markdownKey = getS3Key(industry, 'final-conclusion.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), markdownKey, 'text/markdown');
-}
-
-export async function readFinalConclusionFromFile(industry: string): Promise<FinalConclusion | undefined> {
-  const key = getS3Key(industry, 'final-conclusion.json');
-  return await getJsonFromS3<FinalConclusion>(key);
-}
-
-export function getMarkdownContentForFinalConclusion(finalConclusion: FinalConclusion) {
-  const markdownContent =
-    `# Final Conclusion\n\n` +
-    `## ${finalConclusion.title}\n` +
-    `${finalConclusion.conclusionBrief}\n\n` +
-    `## ${finalConclusion.positiveImpacts.title}\n` +
-    `${finalConclusion.positiveImpacts.positiveImpacts}\n\n` +
-    `## ${finalConclusion.negativeImpacts.title}\n` +
-    `${finalConclusion.negativeImpacts.negativeImpacts}\n\n` +
-    `## Final Statements\n` +
-    `${finalConclusion.finalStatements}\n`;
-  return markdownContent;
-}
-
-export async function writeFinalConclusionToMarkdownFile(industry: string, finalConclusion: FinalConclusion) {
-  const markdownContent = getMarkdownContentForFinalConclusion(finalConclusion);
-  const key = getS3Key(industry, 'final-conclusion.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
+  await writeJsonFileForFinalConclusion(industry, finalConclusion);
+  await writeMarkdownFileForFinalConclusion(industry, finalConclusion);
 }

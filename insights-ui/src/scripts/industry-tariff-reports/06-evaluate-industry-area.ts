@@ -1,18 +1,23 @@
-import { challengerToMarkdown, establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-markdown';
+import {
+  getS3KeyForSubIndustryArea,
+  readEvaluateSubIndustryAreaJsonFromFile,
+  writeJsonFileForEvaluateSubIndustryArea,
+  writeMarkdownFileForEvaluateSubIndustryArea,
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
-import { getJsonFromS3, uploadFileToS3 } from '@/scripts/report-file-utils';
+import { uploadFileToS3 } from '@/scripts/report-file-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { z } from 'zod';
-import { generateChartUrls, img } from '../chart-utils';
+import { generateChartUrls } from '../chart-utils';
 import {
   ChartEntityType,
   EstablishedPlayer,
-  EstablishedPlayersArray,
+  EstablishedPlayerRef,
   EvaluateIndustryArea,
   EvaluateIndustryContent,
   HeadwindsAndTailwinds,
   IndustryAreasWrapper,
-  IndustrySubAreas,
+  IndustrySubArea,
   NegativeTariffImpactOnCompanyType,
   NewChallenger,
   NewChallengerRef,
@@ -96,33 +101,49 @@ const NegativeTariffImpactOnCompanyTypeSchema = z.object({
  * Creates a standard prompt format for industry sector analysis
  */
 function createIndustrySectorPrompt({
-  industry,
+  subArea,
   areas,
   tariffUpdates,
   date,
   instructions,
   context = {},
 }: {
-  industry: IndustrySubAreas;
+  subArea: IndustrySubArea;
   areas: IndustryAreasWrapper;
   tariffUpdates: TariffUpdatesForIndustry;
   date: string;
   instructions: string;
   context?: Record<string, any>;
 }): string {
+  const area = areas.areas.find((a) => a.subAreas.some((s) => s.title === subArea.title));
+  if (!area) {
+    throw new Error(`Area not found for subArea: ${subArea.title}`);
+  }
   const commonPrompt = `
 ${instructions}
 
-Tariff Updates: ${JSON.stringify(tariffUpdates)}
-Date: ${date}
+Focus on Specific Sector and Subsector:
 
+# Sector - ${area.title}
+Description: ${area.oneLineSummary}
+
+# Subsector - ${subArea.title}
+Description: ${subArea.oneLineSummary}
+
+# Output Instructions:
 ${outputInstructions}
 
-The analysis should be only for the ${industry.title} sector. 
-Do not include any data from other headings or subheadings as they will be covered separately.
-Make sure to focus just on the ${industry.title} sector and not on other headings or subheadings.
+# Tariff Updates: 
+${JSON.stringify(tariffUpdates)}
 
-# All the industry areas. You need to only cover the ${industry.title} area.
+# Date: 
+${date}
+
+The analysis should be only for the ${subArea.title} sector. 
+Do not include any data from other headings or subheadings as they will be covered separately.
+Make sure to focus just on the ${subArea.title} sector and not on other headings or subheadings.
+
+# All the industry areas. You need to only cover the ${subArea.title} area.
 ${JSON.stringify(areas, null, 2)}
 `;
 
@@ -134,42 +155,111 @@ ${JSON.stringify(areas, null, 2)}
   return contextStr ? `${commonPrompt}\n\n${contextStr}` : commonPrompt;
 }
 
+// A minimal schema for step 1: name + ticker only
+const EstablishedPlayerListSchema = z.object({
+  establishedPlayers: z.array(
+    z.object({
+      companyName: z.string().describe('Name of the company'),
+      companyTicker: z.string().describe('Stock ticker symbol'),
+    })
+  ),
+});
+
 /**
- * Get established players with structured data
+ * Get detailed information for a single established player
+ */
+async function getEstablishedPlayerDetails(
+  tariffIndustry: TariffReportIndustry,
+  areas: IndustryAreasWrapper,
+  tariffUpdates: TariffUpdatesForIndustry,
+  subArea: IndustrySubArea,
+  date: string,
+  companyName: string,
+  companyTicker: string
+): Promise<EstablishedPlayer> {
+  const subAreaInfo = getSubAreaInfoString(subArea, areas, tariffIndustry);
+  const detailInstructions = `
+Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${subAreaInfo} sector:
+- companyName, companyDescription, companyWebsite, companyTicker
+- products (portfolio & revenue breakdown)
+- aboutManagement, uniqueAdvantage
+- pastPerformance (5 yrs), futureGrowth (5 yrs)
+- impactOfTariffs (5–6 lines of facts & reasoning)
+- competitors
+- Output JSON matching EstablishedPlayerSchema exactly.
+- Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.`;
+
+  const detailPrompt = createIndustrySectorPrompt({
+    subArea: subArea,
+    areas,
+    tariffUpdates,
+    date,
+    instructions: detailInstructions,
+  });
+
+  return await getLlmResponse<EstablishedPlayer>(detailPrompt, EstablishedPlayerSchema, 'gpt-4o-search-preview');
+}
+
+function getSubAreaInfoString(subArea: IndustrySubArea, areas: IndustryAreasWrapper, tariffIndustry: TariffReportIndustry) {
+  const area = areas.areas.find((a) => a.subAreas.some((s) => s.title === subArea.title));
+  if (!area) {
+    throw new Error(`Area not found for subArea: ${subArea.title}`);
+  }
+
+  const subAreaInfo = `${tariffIndustry.industryId} - ${area.title} - ${subArea.title}`;
+  return subAreaInfo;
+}
+
+/**
+ * Get established players using a two-step approach for better results
  */
 async function getEstablishedPlayers(
   tariffIndustry: TariffReportIndustry,
   areas: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
-  industry: IndustrySubAreas,
+  subArea: IndustrySubArea,
   date: string
-): Promise<EstablishedPlayer[]> {
-  const instructions = `Evaluate the following section for *Established Players* in the ${industry.title} sector based on these instructions:
-- Focus on public US companies with 5+ years in the sector.
+): Promise<{ establishedPlayersRefs: EstablishedPlayerRef[]; establishedPlayerDetails: EstablishedPlayer[] }> {
+  // --- STEP 1: Fetch just names + tickers ---
+  console.log(`[EstablishedPlayers] ${'→ Fetching list of names and tickers'}`);
+  const subAreaInfo = getSubAreaInfoString(subArea, areas, tariffIndustry);
+  const listInstructions = `
+Find the three *Established Players* in the ${subAreaInfo} sector  **but output only** each company's **name** and **ticker** in JSON:
+- Select three biggest and most performant public US companies with 5+ years in the sector.
 - Focus on US based companies.
-- Provide three top established players.
-- For each: companyName, companyDescription, companyWebsite, companyTicker, products (portfolio & revenue breakdown), aboutManagement, uniqueAdvantage, pastPerformance (5 years), futureGrowth (next 5 years), impactOfTariffs, competitors.
-- Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.
-- Output JSON array matching EstablishedPlayerSchema.
-- Ignore companies like ${tariffIndustry.companiesToIgnore.join(', ')} as they are no longer active.
+- Bigger Focus is on ${tariffIndustry.industryId}
 - Make sure the companies are active and are being publicly traded as of ${date} on Nasdaq or NYSE.
-- The company should be traded on US exchanges i.e. Nasdaq or NYSE.`;
+- The company should be traded on US exchanges i.e. Nasdaq or NYSE.
+- Dont return duplicate companies.
+- Ignore companies like ${tariffIndustry.companiesToIgnore.join(', ')} as they are no longer active.
+- Make sure the company is not bankrupt or not active.
+- Try to find three established players that fall under this category of ${subArea.oneLineSummary} sector.
 
-  const context = {
-    'Industry Summary': industry.oneLineSummary,
-    'Key Companies': industry.companies.map((c) => c.name).join(', '),
-  };
+Do not include any data from other areas or sub-areas as they will be covered separately.
 
-  const prompt = createIndustrySectorPrompt({
-    industry,
-    areas,
-    tariffUpdates,
-    date,
-    instructions,
-    context,
-  });
+Make sure to focus just on the ${subArea.title} sector and not on other areas or sub-areas
 
-  return (await getLlmResponse<EstablishedPlayersArray>(prompt, EstablishedPlayersArraySchema)).establishedPlayers;
+# Other areas and sub-areas
+${JSON.stringify(areas, null, 2)}
+`;
+
+  const { establishedPlayers: basicList } = await getLlmResponse<{ establishedPlayers: { companyName: string; companyTicker: string }[] }>(
+    listInstructions,
+    EstablishedPlayerListSchema,
+    'gpt-4o-search-preview'
+  );
+  console.log(`[EstablishedPlayers] ${`← Received basic list: ${JSON.stringify(basicList)}`}`);
+
+  // --- STEP 2: For each, fetch full details ---
+  const detailedList: EstablishedPlayer[] = [];
+  for (const { companyName, companyTicker } of basicList) {
+    console.log(`[EstablishedPlayers] ${`→ Fetching details for ${companyName} (${companyTicker})`}`);
+    const establishedPlayer = await getEstablishedPlayerDetails(tariffIndustry, areas, tariffUpdates, subArea, date, companyName, companyTicker);
+    console.log(`[EstablishedPlayers] ${`← Received details for ${companyName}`}`);
+    detailedList.push(establishedPlayer);
+  }
+
+  return { establishedPlayersRefs: basicList, establishedPlayerDetails: detailedList };
 }
 
 // A minimal schema for step 1: name + ticker only
@@ -186,16 +276,18 @@ const NewChallengerListSchema = z.object({
  * Get detailed information for a single new challenger
  */
 async function getNewChallengerDetails(
+  tariffIndustry: TariffReportIndustry,
   areas: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
-  industry: IndustrySubAreas,
+  industry: IndustrySubArea,
   establishedPlayers: EstablishedPlayer[],
   date: string,
   companyName: string,
   companyTicker: string
 ): Promise<NewChallenger> {
+  const subAreaInfo = getSubAreaInfoString(industry, areas, tariffIndustry);
   const detailInstructions = `
-Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${industry.title} sector:
+Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${subAreaInfo} sector:
 - companyName, companyDescription, companyWebsite, companyTicker
 - products (portfolio & revenue breakdown)
 - aboutManagement, uniqueAdvantage
@@ -203,10 +295,10 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${i
 - impactOfTariffs (5–6 lines of facts & reasoning)
 - competitors
 - Output JSON matching NewChallengerSchema exactly.
-- Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.`;
-
+- Explain tariff impact with facts and reasoning and explain in at least 5-6 lines. Be very specific to the company and dont share general information. Explain in simple way if it will be good or bad for the company.
+`;
   const detailPrompt = createIndustrySectorPrompt({
-    industry,
+    subArea: industry,
     areas,
     tariffUpdates,
     date,
@@ -226,16 +318,16 @@ async function getNewChallengers(
   tariffIndustry: TariffReportIndustry,
   areas: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
-  industry: IndustrySubAreas,
+  subArea: IndustrySubArea,
   establishedPlayers: EstablishedPlayer[],
   date: string
 ): Promise<{ newChallengersRefs: NewChallengerRef[]; newChallengersDetails: NewChallenger[] }> {
   // --- STEP 1: Fetch just names + tickers ---
   console.log(`[NewChallengers] ${'→ Fetching list of names and tickers'}`);
-
+  const subAreaInfo = getSubAreaInfoString(subArea, areas, tariffIndustry);
   const listInstructions = `
-Evaluate the *New Challengers* in the ${industry.title} sector **but output only** each company's **name** and **ticker** in JSON:
-- Select three public US companies IPO's in the last 7 years.
+Find the *New Challengers* in the ${subAreaInfo} sector **but output only** each company's **name** and **ticker** in JSON:
+- Select upto three public US companies IPO's in the last 7 years.
 - Ignore any Chinese companies.
 - Make sure the companies are active and are being publicly traded as of ${date} on Nasdaq or NYSE.
 - The company should be traded on US exchanges i.e. Nasdaq or NYSE.
@@ -244,21 +336,17 @@ Evaluate the *New Challengers* in the ${industry.title} sector **but output only
 - Make sure to select the best of the best new players and they not be old established players.
 - Ignore challengers like ${tariffIndustry.companiesToIgnore.join(', ')} as they no longer active.
 - Make sure the company is not bankrupt or not active.
-- Try to find three challenger that fall under this category of ${industry.title} sector.`;
 
-  const listPrompt = createIndustrySectorPrompt({
-    industry,
-    areas,
-    tariffUpdates,
-    date,
-    instructions: listInstructions,
-    context: {
-      'Established Players': establishedPlayers.map((ep) => ep.companyName),
-    },
-  });
+Do not include any data from other areas or sub-areas as they will be covered separately.
+
+Make sure to focus just on the ${subArea.title} sector and not on other areas or sub-areas
+
+# Other areas and sub-areas
+${JSON.stringify(areas, null, 2)}
+`;
 
   const { newChallengers: basicList } = await getLlmResponse<{ newChallengers: { companyName: string; companyTicker: string }[] }>(
-    listPrompt,
+    listInstructions,
     NewChallengerListSchema,
     'gpt-4o-search-preview'
   );
@@ -268,7 +356,7 @@ Evaluate the *New Challengers* in the ${industry.title} sector **but output only
   const detailedList: NewChallenger[] = [];
   for (const { companyName, companyTicker } of basicList) {
     console.log(`[NewChallengers] ${`→ Fetching details for ${companyName} (${companyTicker})`}`);
-    const newChallenger = await getNewChallengerDetails(areas, tariffUpdates, industry, establishedPlayers, date, companyName, companyTicker);
+    const newChallenger = await getNewChallengerDetails(tariffIndustry, areas, tariffUpdates, subArea, establishedPlayers, date, companyName, companyTicker);
     console.log(`[NewChallengers] ${`← Received details for ${companyName}`}`);
     detailedList.push(newChallenger);
   }
@@ -280,18 +368,22 @@ Evaluate the *New Challengers* in the ${industry.title} sector **but output only
  * Get headwinds and tailwinds analysis
  */
 async function getHeadwindsAndTailwinds(
+  tariffIndustry: TariffReportIndustry,
   areas: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
-  industry: IndustrySubAreas,
+  subArea: IndustrySubArea,
   date: string
 ): Promise<HeadwindsAndTailwinds> {
-  const instructions = `List 4–5 key *headwinds* and 4–5 key *tailwinds* for the ${industry.title} sector:
+  const subAreaInfo = getSubAreaInfoString(subArea, areas, tariffIndustry);
+  const instructions = `List 4–5 key *headwinds* and 4–5 key *tailwinds* for the ${subAreaInfo} sector:
 - Each explained in 3–4 lines with reasoning. When explaining, take specific examples of the companies and the products. 
+- Focus on the specific Sector And Subsector.
 - Make sure to take examples.
-- Output JSON matching HeadwindsAndTailwindsSchema.`;
+- Output JSON matching HeadwindsAndTailwindsSchema.
+`;
 
   const prompt = createIndustrySectorPrompt({
-    industry,
+    subArea,
     areas,
     tariffUpdates,
     date,
@@ -304,14 +396,14 @@ async function getHeadwindsAndTailwinds(
 /**
  * Get tariff impact by company type analysis
  */
-async function getTariffImpactByCompanyType(areas: IndustryAreasWrapper, tariffUpdates: TariffUpdatesForIndustry, industry: IndustrySubAreas, date: string) {
+async function getTariffImpactByCompanyType(areas: IndustryAreasWrapper, tariffUpdates: TariffUpdatesForIndustry, industry: IndustrySubArea, date: string) {
   const instructions = `Analyze the new tariffs for the ${industry.title} sector and provide:
 - Three categories of companies *positively* affected (companyType, impact, reasoning).
 - Three categories of companies *negatively* affected (companyType, impact, reasoning).
 - Output a JSON object with two arrays: positiveTariffImpactOnCompanyType and negativeTariffImpactOnCompanyType matching their schemas.`;
 
   const prompt = createIndustrySectorPrompt({
-    industry,
+    subArea: industry,
     areas,
     tariffUpdates,
     date,
@@ -336,18 +428,19 @@ async function getTariffImpactByCompanyType(areas: IndustryAreasWrapper, tariffU
  */
 async function getTariffImpactSummary(
   tariffUpdates: TariffUpdatesForIndustry,
-  industry: IndustrySubAreas,
+  industryAreasWrapper: IndustryAreasWrapper,
+  subArea: IndustrySubArea,
   establishedPlayers: EstablishedPlayer[],
   newChallengers: NewChallenger[],
   headwindsAndTailwinds: HeadwindsAndTailwinds,
   positiveTariffImpactOnCompanyType: PositiveTariffImpactOnCompanyType[],
   negativeTariffImpactOnCompanyType: NegativeTariffImpactOnCompanyType[]
 ) {
-  const instructions = `Write a 3-5 paragraph and Summarize the impact on established players, new challengers, headwinds and tailwinds, and tariff impact by company type in the ${industry.title} sector:
+  const instructions = `Write a 3-5 paragraph and Summarize the impact on established players, new challengers, headwinds and tailwinds, and tariff impact by company type in the ${subArea.title} sector:
 - Write the summary as if it will be used by investors. 
 - Add one paragraph for positive impact and include the companies that will be most positively affected to be included first in that paragraph.
 - Add one paragraph for negative impact and include the companies that will be most negatively affected to be included first in that paragraph.
-- Add one paragraph about Final Notes for the effect of on ${industry.title} sector.
+- Add one paragraph about Final Notes for the effect of on ${subArea.title} sector.
 - Summary should be 3 paragraphs long, with each paragraph of 6-8 lines long.
 - Include specific examples of companies, facts, and reasoning.
 - Focus on impact on US based companies.`;
@@ -361,8 +454,8 @@ async function getTariffImpactSummary(
   };
 
   const prompt = createIndustrySectorPrompt({
-    industry,
-    areas: { areas: [] }, // Not needed for summary
+    subArea: subArea,
+    areas: industryAreasWrapper, // Not needed for summary
     tariffUpdates,
     date: '', // Not needed for summary
     instructions,
@@ -380,62 +473,34 @@ async function getTariffImpactSummary(
   return (await getLlmResponse<TariffImpactSummary>(prompt, schema)).summary;
 }
 
-function getS3Key(industry: string, industryArea: IndustrySubAreas, headings: IndustryAreasWrapper, extension: string): string {
-  const headingAndSubheadingIndex = headings.areas
-    .flatMap((heading, headingIndex) =>
-      heading.subAreas.map((subHeading, index) => ({
-        headingAndSubheadingIndex: `${headingIndex}_${index}`,
-        heading: heading.title,
-        subHeading: subHeading.title,
-      }))
-    )
-    .find((item) => item.subHeading === industryArea.title)?.headingAndSubheadingIndex;
-
-  const baseFileName = `${headingAndSubheadingIndex}-evaluate-${slugify(industryArea.title)}`;
-  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/06-evaluate-industry-area/${baseFileName}${extension}`;
-}
-
-export async function readEvaluateIndustryAreaJsonFromFile(
-  industry: string,
-  industryArea: IndustrySubAreas,
-  headings: IndustryAreasWrapper
-): Promise<EvaluateIndustryArea | undefined> {
-  const key = getS3Key(industry, industryArea, headings, '.json');
-  return await getJsonFromS3<EvaluateIndustryArea>(key);
-}
-
-export async function writeEvaluateIndustryAreaToMarkdownFile(
-  industry: string,
-  industryArea: IndustrySubAreas,
-  headings: IndustryAreasWrapper,
-  evaluateIndustryArea: EvaluateIndustryArea
-) {
-  const markdownContent = getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea);
-  const key = getS3Key(industry, industryArea, headings, '.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
-}
-
 export async function getAndWriteEvaluateIndustryAreaJson(
   tariffIndustry: TariffReportIndustry,
-  industryArea: IndustrySubAreas,
-  headings: IndustryAreasWrapper,
+  industryArea: IndustrySubArea,
+  industryAreasWrapper: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   date: string
 ) {
-  const industry = tariffIndustry.name;
+  const industry = tariffIndustry.industryId;
   // 1
   console.log('Invoking LLM for established players');
-  const establishedPlayers = await getEstablishedPlayers(tariffIndustry, headings, tariffUpdates, industryArea, date);
-  console.log('Found established players:', establishedPlayers);
+  const { establishedPlayersRefs, establishedPlayerDetails } = await getEstablishedPlayers(
+    tariffIndustry,
+    industryAreasWrapper,
+    tariffUpdates,
+    industryArea,
+    date
+  );
+  console.log('Found established players:', establishedPlayersRefs);
+  console.log('Found established player details:', establishedPlayerDetails);
 
   // 2
   console.log('Invoking LLM for new challengers');
   const { newChallengersRefs, newChallengersDetails } = await getNewChallengers(
     tariffIndustry,
-    headings,
+    industryAreasWrapper,
     tariffUpdates,
     industryArea,
-    establishedPlayers,
+    establishedPlayerDetails,
     date
   );
   console.log('Found new challengers:', newChallengersRefs);
@@ -443,13 +508,13 @@ export async function getAndWriteEvaluateIndustryAreaJson(
 
   // 3
   console.log('Invoking LLM for headwinds and tailwinds');
-  const headwindsAndTailwinds = await getHeadwindsAndTailwinds(headings, tariffUpdates, industryArea, date);
+  const headwindsAndTailwinds = await getHeadwindsAndTailwinds(tariffIndustry, industryAreasWrapper, tariffUpdates, industryArea, date);
   console.log('Found headwinds and tailwinds:', headwindsAndTailwinds);
 
   // 4
   console.log('Invoking LLM for tariff impact by company type');
   const { positiveTariffImpactOnCompanyType, negativeTariffImpactOnCompanyType } = await getTariffImpactByCompanyType(
-    headings,
+    industryAreasWrapper,
     tariffUpdates,
     industryArea,
     date
@@ -460,8 +525,9 @@ export async function getAndWriteEvaluateIndustryAreaJson(
   console.log('Invoking LLM for tariff impact summary');
   const tariffImpactSummary = await getTariffImpactSummary(
     tariffUpdates,
+    industryAreasWrapper,
     industryArea,
-    establishedPlayers,
+    establishedPlayerDetails,
     newChallengersDetails,
     headwindsAndTailwinds,
     positiveTariffImpactOnCompanyType,
@@ -473,7 +539,8 @@ export async function getAndWriteEvaluateIndustryAreaJson(
   const result: EvaluateIndustryArea = {
     title: industryArea.title,
     aboutParagraphs: industryArea.oneLineSummary,
-    establishedPlayers,
+    establishedPlayersRefs,
+    establishedPlayerDetails,
     newChallengersRefs,
     newChallengersDetails,
     headwindsAndTailwinds,
@@ -483,48 +550,76 @@ export async function getAndWriteEvaluateIndustryAreaJson(
   };
 
   // Upload JSON to S3
-  const jsonKey = getS3Key(industry, industryArea, headings, '.json');
-  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(result, null, 2)), jsonKey, 'application/json');
-
-  // Generate and upload markdown
-  await writeEvaluateIndustryAreaToMarkdownFile(industry, industryArea, headings, result);
+  await writeJsonFileForEvaluateSubIndustryArea(industry, industryArea, industryAreasWrapper, result);
+  await writeMarkdownFileForEvaluateSubIndustryArea(industry, industryArea, industryAreasWrapper, result);
 }
 
 export async function regenerateEvaluateIndustryAreaJson(
   tariffIndustry: TariffReportIndustry,
-  industryArea: IndustrySubAreas,
-  headings: IndustryAreasWrapper,
+  industryArea: IndustrySubArea,
+  industryAreasWrapper: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   date: string,
   content: EvaluateIndustryContent,
-  challengerTicker?: string
+  challengerTicker?: string,
+  establishedPlayerTicker?: string
 ) {
   // load existing or start new result
-  const result = await readEvaluateIndustryAreaJsonFromFile(tariffIndustry.name, industryArea, headings);
+  const result = await readEvaluateSubIndustryAreaJsonFromFile(tariffIndustry.industryId, industryArea, industryAreasWrapper);
   if (!result) {
-    await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, industryArea, headings, tariffUpdates, date);
+    await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, industryArea, industryAreasWrapper, tariffUpdates, date);
     return;
   }
 
   switch (content) {
     case EvaluateIndustryContent.ESTABLISHED_PLAYERS:
       console.log('Regenerating established players');
-      result.establishedPlayers = await getEstablishedPlayers(tariffIndustry, headings, tariffUpdates, industryArea, date);
-      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
+      const { establishedPlayersRefs, establishedPlayerDetails } = await getEstablishedPlayers(
+        tariffIndustry,
+        industryAreasWrapper,
+        tariffUpdates,
+        industryArea,
+        date
+      );
+      result.establishedPlayersRefs = establishedPlayersRefs;
+      result.establishedPlayerDetails = establishedPlayerDetails;
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
+      break;
+    case EvaluateIndustryContent.ESTABLISHED_PLAYER:
+      if (!establishedPlayerTicker) {
+        throw new Error('Established player ticker is required for individual player regeneration');
+      }
+      const existingPlayer = result.establishedPlayersRefs.find((p) => p.companyTicker === establishedPlayerTicker);
+      if (!existingPlayer) {
+        throw new Error(`Established player with ticker ${establishedPlayerTicker} not found`);
+      }
+      console.log(`Regenerating established player ${existingPlayer.companyName} (${establishedPlayerTicker})`);
+      const newPlayer = await getEstablishedPlayerDetails(
+        tariffIndustry,
+        industryAreasWrapper,
+        tariffUpdates,
+        industryArea,
+        date,
+        existingPlayer.companyName,
+        establishedPlayerTicker
+      );
+      const playerIndex = result.establishedPlayerDetails.findIndex((p) => p.companyTicker === establishedPlayerTicker);
+      result.establishedPlayerDetails[playerIndex] = newPlayer;
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
       break;
     case EvaluateIndustryContent.NEW_CHALLENGERS:
       console.log('Regenerating new challengers');
       const { newChallengersRefs, newChallengersDetails } = await getNewChallengers(
         tariffIndustry,
-        headings,
+        industryAreasWrapper,
         tariffUpdates,
         industryArea,
-        result.establishedPlayers,
+        result.establishedPlayerDetails,
         date
       );
       result.newChallengersRefs = newChallengersRefs;
       result.newChallengersDetails = newChallengersDetails;
-      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
       break;
     case EvaluateIndustryContent.NEW_CHALLENGER:
       if (!challengerTicker) {
@@ -536,43 +631,44 @@ export async function regenerateEvaluateIndustryAreaJson(
       }
       console.log(`Regenerating new challenger ${existingChallenger.companyName} (${challengerTicker})`);
       const newChallenger = await getNewChallengerDetails(
-        headings,
+        tariffIndustry,
+        industryAreasWrapper,
         tariffUpdates,
         industryArea,
-        result.establishedPlayers,
+        result.establishedPlayerDetails,
         date,
         existingChallenger.companyName,
         challengerTicker
       );
       const challengerIndex = result.newChallengersDetails.findIndex((c) => c.companyTicker === challengerTicker);
       result.newChallengersDetails[challengerIndex] = newChallenger;
-      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
       break;
     case EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS:
-      result.headwindsAndTailwinds = await getHeadwindsAndTailwinds(headings, tariffUpdates, industryArea, date);
-      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
+      result.headwindsAndTailwinds = await getHeadwindsAndTailwinds(tariffIndustry, industryAreasWrapper, tariffUpdates, industryArea, date);
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
       break;
     case EvaluateIndustryContent.TARIFF_IMPACT_BY_COMPANY_TYPE:
-      const impact = await getTariffImpactByCompanyType(headings, tariffUpdates, industryArea, date);
+      const impact = await getTariffImpactByCompanyType(industryAreasWrapper, tariffUpdates, industryArea, date);
       result.positiveTariffImpactOnCompanyType = impact.positiveTariffImpactOnCompanyType;
       result.negativeTariffImpactOnCompanyType = impact.negativeTariffImpactOnCompanyType;
-      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
       break;
     case EvaluateIndustryContent.TARIFF_IMPACT_SUMMARY:
-      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryArea, result);
+      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
       break;
     case EvaluateIndustryContent.ALL:
     default:
       // regenerate everything
-      return getAndWriteEvaluateIndustryAreaJson(tariffIndustry, industryArea, headings, tariffUpdates, date);
+      return getAndWriteEvaluateIndustryAreaJson(tariffIndustry, industryArea, industryAreasWrapper, tariffUpdates, date);
   }
 
   // Upload updated JSON to S3
-  const jsonKey = getS3Key(tariffIndustry.name, industryArea, headings, '.json');
+  const jsonKey = getS3KeyForSubIndustryArea(tariffIndustry.industryId, industryArea, industryAreasWrapper, '.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(result, null, 2)), jsonKey, 'application/json');
 
   // Generate and upload updated markdown
-  await writeEvaluateIndustryAreaToMarkdownFile(tariffIndustry.name, industryArea, headings, result);
+  await writeMarkdownFileForEvaluateSubIndustryArea(tariffIndustry.industryId, industryArea, industryAreasWrapper, result);
 }
 
 /**
@@ -581,12 +677,12 @@ export async function regenerateEvaluateIndustryAreaJson(
  */
 export async function regenerateCharts(
   industry: TariffReportIndustry,
-  industryArea: IndustrySubAreas,
+  industryArea: IndustrySubArea,
   headings: IndustryAreasWrapper,
   entityType: ChartEntityType,
   entityIndex = 0
 ): Promise<void> {
-  const report = await readEvaluateIndustryAreaJsonFromFile(industry.name, industryArea, headings);
+  const report = await readEvaluateSubIndustryAreaJsonFromFile(industry.industryId, industryArea, headings);
 
   if (!report) {
     return;
@@ -598,7 +694,7 @@ export async function regenerateCharts(
       chall.chartUrls = await generateChartUrls(
         JSON.stringify(chall, null, 2),
         chartsPrefix({
-          industry: industry.name,
+          industry: industry.industryId,
           industryArea: industryArea.title,
           reportSection: 'new-challenger',
           reportSubSection: chall.companyName,
@@ -607,11 +703,11 @@ export async function regenerateCharts(
       break;
     }
     case ChartEntityType.ESTABLISHED_PLAYER: {
-      const pl = report.establishedPlayers[entityIndex];
+      const pl = report.establishedPlayerDetails[entityIndex];
       pl.chartUrls = await generateChartUrls(
         JSON.stringify(pl, null, 2),
         chartsPrefix({
-          industry: industry.name,
+          industry: industry.industryId,
           industryArea: industryArea.title,
           reportSection: 'established-player',
           reportSubSection: pl.companyName,
@@ -623,7 +719,7 @@ export async function regenerateCharts(
       report.headwindsAndTailwinds.headwindChartUrls = await generateChartUrls(
         report.headwindsAndTailwinds.headwinds.join('\n'),
         chartsPrefix({
-          industry: industry.name,
+          industry: industry.industryId,
           industryArea: industryArea.title,
           reportSection: 'headwinds',
           reportSubSection: 'headwinds',
@@ -635,7 +731,7 @@ export async function regenerateCharts(
       report.headwindsAndTailwinds.tailwindChartUrls = await generateChartUrls(
         report.headwindsAndTailwinds.tailwinds.join('\n'),
         chartsPrefix({
-          industry: industry.name,
+          industry: industry.industryId,
           industryArea: industryArea.title,
           reportSection: 'tailwinds',
           reportSubSection: 'tailwinds',
@@ -648,7 +744,7 @@ export async function regenerateCharts(
       pos.chartUrls = await generateChartUrls(
         `${pos.companyType}\n${pos.impact}\n${pos.reasoning}`,
         chartsPrefix({
-          industry: industry.name,
+          industry: industry.industryId,
           industryArea: industryArea.title,
           reportSection: 'positive-impact',
           reportSubSection: pos.companyType,
@@ -661,7 +757,7 @@ export async function regenerateCharts(
       neg.chartUrls = await generateChartUrls(
         `${neg.companyType}\n${neg.impact}\n${neg.reasoning}`,
         chartsPrefix({
-          industry: industry.name,
+          industry: industry.industryId,
           industryArea: industryArea.title,
           reportSection: 'negative-impact',
           reportSubSection: neg.companyType,
@@ -673,7 +769,7 @@ export async function regenerateCharts(
       report.tariffImpactSummaryChartUrls = await generateChartUrls(
         report.tariffImpactSummary,
         chartsPrefix({
-          industry: industry.name,
+          industry: industry.industryId,
           industryArea: industryArea.title,
           reportSection: 'summary',
           reportSubSection: 'summary',
@@ -684,7 +780,7 @@ export async function regenerateCharts(
   }
 
   // Persist modified JSON
-  const jsonKey = getS3Key(industry.name, industryArea, headings, '.json');
+  const jsonKey = getS3KeyForSubIndustryArea(industry.industryId, industryArea, headings, '.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(report, null, 2)), jsonKey, 'application/json');
 }
 
@@ -695,60 +791,8 @@ function writeImg(url: string) {
   return `![chart](${url})`; // simple helper
 }
 
-function getMarkdownFilePath(industry: string, industryArea: IndustrySubAreas, headings: IndustryAreasWrapper) {
-  return getS3Key(industry, industryArea, headings, '.md');
-}
-
-export function getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea: EvaluateIndustryArea) {
-  const md: string[] = [];
-
-  /* ───────────────────── header ───────────────────── */
-  md.push(`# ${evaluateIndustryArea.title}`);
-  md.push(evaluateIndustryArea.aboutParagraphs.toString());
-
-  /* ───────────────── Established Players ──────────── */
-  md.push('## Established Players');
-  evaluateIndustryArea.establishedPlayers.forEach((p) => {
-    md.push(establishedPlayerToMarkdown(p));
-    md.push(img(p.chartUrls));
-  });
-
-  /* ───────────────── New Challengers ──────────────── */
-  if (evaluateIndustryArea.newChallengersDetails.length) {
-    md.push('## Newer Challengers');
-    evaluateIndustryArea.newChallengersDetails.forEach((c) => {
-      md.push(challengerToMarkdown(c));
-      md.push(img(c.chartUrls));
-    });
-  }
-
-  /* ──────────────── Headwinds & Tailwinds ─────────── */
-  md.push('## Headwinds & Tailwinds');
-  md.push('### Headwinds', ...evaluateIndustryArea.headwindsAndTailwinds.headwinds);
-  md.push(img(evaluateIndustryArea.headwindsAndTailwinds.headwindChartUrls));
-  md.push('### Tailwinds', ...evaluateIndustryArea.headwindsAndTailwinds.tailwinds);
-  md.push(img(evaluateIndustryArea.headwindsAndTailwinds.tailwindChartUrls));
-
-  /* ───────── Tariff Impact by Company Type ────────── */
-  md.push('## Tariff Impact by Company Type');
-  md.push('### Positive Impact');
-  evaluateIndustryArea.positiveTariffImpactOnCompanyType.forEach((i) => {
-    md.push(`#### ${i.companyType}\n- Impact: ${i.impact}\n- Reasoning: ${i.reasoning}`);
-    md.push(img(i.chartUrls));
-  });
-  md.push('### Negative Impact');
-  evaluateIndustryArea.negativeTariffImpactOnCompanyType.forEach((i) => {
-    md.push(`#### ${i.companyType}\n- Impact: ${i.impact}\n- Reasoning: ${i.reasoning}`);
-    md.push(img(i.chartUrls));
-  });
-
-  /* ───────────────────── Summary ──────────────────── */
-  md.push('## Tariff Impact Summary', evaluateIndustryArea.tariffImpactSummary);
-  md.push(img(evaluateIndustryArea.tariffImpactSummaryChartUrls));
-
-  /* write file */
-  const markdownContent = md.join('\n\n');
-  return markdownContent;
+function getMarkdownFilePath(industry: string, industryArea: IndustrySubArea, headings: IndustryAreasWrapper) {
+  return getS3KeyForSubIndustryArea(industry, industryArea, headings, '.md');
 }
 
 // ---------------------------------------------------------------------------
@@ -773,14 +817,16 @@ function chartsPrefix({
 
 export async function regenerateTariffImpactSummary(
   tariffUpdates: TariffUpdatesForIndustry,
-  industryArea: IndustrySubAreas,
+  industryAreasWrapper: IndustryAreasWrapper,
+  subArea: IndustrySubArea,
   currentReport: EvaluateIndustryArea
 ) {
   console.log('Invoking LLM for tariff impact summary');
   const tariffImpactSummary = await getTariffImpactSummary(
     tariffUpdates,
-    industryArea,
-    currentReport.establishedPlayers,
+    industryAreasWrapper,
+    subArea,
+    currentReport.establishedPlayerDetails,
     currentReport.newChallengersDetails,
     currentReport.headwindsAndTailwinds,
     currentReport.positiveTariffImpactOnCompanyType,

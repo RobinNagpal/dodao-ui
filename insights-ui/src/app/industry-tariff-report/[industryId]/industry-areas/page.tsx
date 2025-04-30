@@ -1,6 +1,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import IndustryAreasActions from '@/components/industry-tariff/section-actions/IndustryAreasActions';
-import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-reports/05-industry-areas';
+
+import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -20,7 +21,7 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
     return <div>Report not found</div>;
   }
 
-  const content = report.industryAreas ? parseMarkdown(getMarkdownContentForIndustryAreas(report.industryAreas)) : 'No content available';
+  const content = report.industryAreasSections ? parseMarkdown(getMarkdownContentForIndustryAreas(report.industryAreasSections)) : 'No content available';
 
   return (
     <div>

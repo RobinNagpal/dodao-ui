@@ -1,4 +1,4 @@
-import { getMarkdownContentForIntroduction } from '@/scripts/industry-tariff-reports/02-introduction';
+import { getMarkdownContentForIntroduction } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';

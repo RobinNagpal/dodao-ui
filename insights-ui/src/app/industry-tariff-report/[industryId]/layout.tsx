@@ -1,4 +1,4 @@
-import BookNavigation from '@/components/industry-tariff/book-navigation';
+import ReportLeftNavigation from '@/components/industry-tariff/report-left-navigation';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -91,7 +91,7 @@ export default async function IndustryTariffReportLayout({ children, params }: {
           {/* Book UI with Navigation and Content */}
           <div className="flex min-h-[calc(100vh-10rem)] overflow-hidden rounded-lg border border-color background-color shadow-lg">
             {/* Left side - Book spine/navigation */}
-            <BookNavigation report={report} industryId={industryId} />
+            <ReportLeftNavigation report={report} industryId={industryId} />
 
             {/* Right side - Book content */}
             <div className="flex-1 bg-background p-8">

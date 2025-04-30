@@ -1,6 +1,6 @@
-import { IndustryAreasWrapper, IndustryAreas } from '@/scripts/industry-tariff-reports/tariff-types';
+import { writeJsonAndMarkdownFilesForIndustryAreas } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { IndustryAreasWrapper } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getLlmResponse } from '@/scripts/llm-utils';
-import { getJsonFromS3, uploadFileToS3 } from '@/scripts/report-file-utils';
 import { z, ZodObject } from 'zod';
 
 export const industryHeadingsFileName = 'industry-headings.json';
@@ -46,53 +46,10 @@ function getMainIndustryPrompt(industry: string) {
   return prompt;
 }
 
-export async function getHeadingsAndSubHeadings(industry: string) {
-  return await getLlmResponse<IndustryAreasWrapper>(getMainIndustryPrompt(industry), IndustryHeadingsSchema);
-}
-
-function getS3Key(industry: string, fileName: string): string {
-  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/${fileName}`;
-}
-
 export async function getAndWriteIndustryHeadings(industry: string) {
-  const headings = await getHeadingsAndSubHeadings(industry);
+  const headings = await getLlmResponse<IndustryAreasWrapper>(getMainIndustryPrompt(industry), IndustryHeadingsSchema);
   console.log(JSON.stringify(headings, null, 2));
 
   // Upload JSON to S3
-  const jsonKey = getS3Key(industry, industryHeadingsFileName);
-  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(headings, null, 2)), jsonKey, 'application/json');
-
-  // Generate and upload markdown
-  const markdownContent = generateMarkdownContent(industry, headings);
-  const markdownKey = getS3Key(industry, industryHeadingsFileName.replace('.json', '.md'));
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), markdownKey, 'text/markdown');
-}
-
-function generateMarkdownContent(industry: string, headings: IndustryAreasWrapper): string {
-  const contentForHeadings = (heading: IndustryAreas) => {
-    return (
-      `## ${heading.title}\n${heading.oneLineSummary}\n\n` +
-      `${heading.subAreas
-        .map(
-          (subHeading) =>
-            `### ${subHeading.title}\n${subHeading.oneLineSummary}\n\n${subHeading.companies
-              .map((company) => `${company.name} (${company.ticker})`)
-              .join(', ')}`
-        )
-        .join('\n\n')}`
-    );
-  };
-
-  return `# ${industry} Areas\n\n` + headings.areas.map((heading) => contentForHeadings(heading)).join('\n\n\n') + `\n\n\n`;
-}
-
-export async function readIndustryHeadingsFromFile(industry: string): Promise<IndustryAreasWrapper | undefined> {
-  const key = getS3Key(industry, industryHeadingsFileName);
-  return await getJsonFromS3<IndustryAreasWrapper>(key);
-}
-
-export async function writeIndustryHeadingsToMarkdownFile(industry: string, headings: IndustryAreasWrapper) {
-  const markdownContent = generateMarkdownContent(industry, headings);
-  const key = getS3Key(industry, industryHeadingsFileName.replace('.json', '.md'));
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
+  await writeJsonAndMarkdownFilesForIndustryAreas(industry, headings);
 }

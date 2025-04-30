@@ -1,7 +1,7 @@
-import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
+import { writeJsonAndMarkdownFilesForExecutiveSummary } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { ExecutiveSummary, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
-import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 
 const ExecutiveSummarySchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),
@@ -65,40 +65,12 @@ async function getExecutiveSummary(
   return response;
 }
 
-function getS3Key(industry: string, fileName: string): string {
-  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/01-executive-summary/${fileName}`;
-}
-
 export async function getExecutiveSummaryAndSaveToFile(
-  industry: string,
+  industryId: string,
   headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[]
 ) {
-  const executiveSummary = await getExecutiveSummary(industry, headings, tariffUpdates, tariffSummaries);
-
-  // Upload JSON to S3
-  const jsonKey = getS3Key(industry, 'executive-summary.json');
-  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(executiveSummary, null, 2)), jsonKey, 'application/json');
-
-  // Generate and upload markdown
-  const markdownContent = getMarkdownContentForExecutiveSummary(executiveSummary);
-  const markdownKey = getS3Key(industry, 'executive-summary.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), markdownKey, 'text/markdown');
-}
-
-export async function readExecutiveSummaryFromFile(industry: string): Promise<ExecutiveSummary | undefined> {
-  const key = getS3Key(industry, 'executive-summary.json');
-  return await getJsonFromS3<ExecutiveSummary>(key);
-}
-
-export function getMarkdownContentForExecutiveSummary(executiveSummary: ExecutiveSummary) {
-  const markdownContent = `# Executive Summary\n\n` + `${executiveSummary.executiveSummary}\n`;
-  return markdownContent;
-}
-
-export async function writeExecutiveSummaryToMarkdownFile(industry: string, executiveSummary: ExecutiveSummary) {
-  const markdownContent = getMarkdownContentForExecutiveSummary(executiveSummary);
-  const key = getS3Key(industry, 'executive-summary.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
+  const executiveSummary = await getExecutiveSummary(industryId, headings, tariffUpdates, tariffSummaries);
+  await writeJsonAndMarkdownFilesForExecutiveSummary(industryId, executiveSummary);
 }

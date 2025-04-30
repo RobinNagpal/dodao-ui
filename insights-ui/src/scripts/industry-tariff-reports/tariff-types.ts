@@ -1,5 +1,5 @@
 export interface TariffReportIndustry {
-  name: string;
+  industryId: string;
   companiesToIgnore: string[];
   asOfDate: string;
 }
@@ -10,20 +10,20 @@ interface PublicCompany {
   ticker: string;
 }
 
-export interface IndustrySubAreas {
+export interface IndustrySubArea {
   title: string;
   oneLineSummary: string;
   companies: PublicCompany[];
 }
 
-export interface IndustryAreas {
+export interface IndustryArea {
   title: string;
   oneLineSummary: string;
-  subAreas: IndustrySubAreas[];
+  subAreas: IndustrySubArea[];
 }
 
 export interface IndustryAreasWrapper {
-  areas: IndustryAreas[];
+  areas: IndustryArea[];
 }
 
 // 01-executive-summary.ts
@@ -149,12 +149,23 @@ export interface NegativeTariffImpactOnCompanyType {
   chartUrls?: ChartUrls;
 }
 
+export interface NewChallengerRef {
+  companyName: string;
+  companyTicker: string;
+}
+
+export interface EstablishedPlayerRef {
+  companyName: string;
+  companyTicker: string;
+}
+
 export interface EvaluateIndustryArea {
   title: string;
   aboutParagraphs: string;
+  establishedPlayersRefs: EstablishedPlayerRef[];
+  establishedPlayerDetails: EstablishedPlayer[];
   newChallengersRefs: NewChallengerRef[];
   newChallengersDetails: NewChallenger[];
-  establishedPlayers: EstablishedPlayer[];
   headwindsAndTailwinds: HeadwindsAndTailwinds;
   positiveTariffImpactOnCompanyType: PositiveTariffImpactOnCompanyType[];
   negativeTariffImpactOnCompanyType: NegativeTariffImpactOnCompanyType[];
@@ -186,24 +197,20 @@ export interface FinalConclusion {
 // Tariff updates for a specific industry
 
 export interface IndustryTariffReport {
-  industryAreaHeadings?: IndustryAreasWrapper;
+  industryAreas?: IndustryAreasWrapper;
   executiveSummary?: ExecutiveSummary;
   introduction?: Introduction;
   tariffUpdates?: TariffUpdatesForIndustry;
   understandIndustry?: UnderstandIndustry;
-  industryAreas?: IndustryAreaSection;
+  industryAreasSections?: IndustryAreaSection;
   evaluateIndustryAreas?: EvaluateIndustryArea[];
   finalConclusion?: FinalConclusion;
-}
-
-export interface NewChallengerRef {
-  companyName: string;
-  companyTicker: string;
 }
 
 export enum EvaluateIndustryContent {
   ALL = 'ALL',
   ESTABLISHED_PLAYERS = 'ESTABLISHED_PLAYERS',
+  ESTABLISHED_PLAYER = 'ESTABLISHED_PLAYER',
   NEW_CHALLENGERS = 'NEW_CHALLENGERS',
   NEW_CHALLENGER = 'NEW_CHALLENGER',
   HEADWINDS_AND_TAILWINDS = 'HEADWINDS_AND_TAILWINDS',

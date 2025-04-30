@@ -18,9 +18,9 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
     return <div>Report not found</div>;
   }
 
-  const { industryAreaHeadings } = report;
+  const { industryAreas } = report;
 
-  if (!industryAreaHeadings?.areas || industryAreaHeadings?.areas?.length === 0) {
+  if (!industryAreas?.areas || industryAreas?.areas?.length === 0) {
     return <div>No industry area headings found</div>;
   }
 
@@ -28,7 +28,7 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
     <div className="space-y-8">
       <h1 className="text-2xl font-bold mb-6 heading-color">Evaluate Industry Areas</h1>
 
-      {industryAreaHeadings.areas.map((heading, index) => (
+      {industryAreas.areas.map((heading, index) => (
         <div key={`heading-${index}`} className="mb-6">
           <h2 className="text-xl font-semibold mb-3 heading-color">{heading.title}</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
