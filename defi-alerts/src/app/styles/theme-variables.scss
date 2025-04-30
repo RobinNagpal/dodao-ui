@@ -1,0 +1,48 @@
+:root {
+  /* Semantic theme variables */
+  --theme-primary: var(--slate-900-hex);
+  --theme-secondary: var(--slate-700-hex);
+  --theme-muted: var(--slate-500-hex);
+  --theme-light: var(--slate-300-hex);
+  
+  --theme-bg-primary: var(--slate-50-hex);
+  --theme-bg-secondary: var(--slate-100-hex);
+  --theme-bg-muted: var(--slate-200-hex);
+  --theme-bg-dark: var(--slate-800-hex);
+  
+  --theme-border-primary: var(--slate-200-hex);
+  --theme-border-secondary: var(--slate-300-hex);
+
+  /* Component-specific variables */
+  --theme-card-bg: white;
+  --theme-card-border: var(--slate-200-hex);
+  --theme-button-primary: var(--slate-900-hex);
+  --theme-button-primary-hover: var(--slate-800-hex);
+  --theme-button-text: white;
+  --theme-input-border: var(--slate-300-hex);
+  --theme-input-focus: var(--slate-900-hex);
+}
+
+/* Dark mode overrides */
+.dark {
+  --theme-primary: var(--slate-100-hex);
+  --theme-secondary: var(--slate-300-hex);
+  --theme-muted: var(--slate-400-hex);
+  --theme-light: var(--slate-500-hex);
+  
+  --theme-bg-primary: var(--slate-950-hex);
+  --theme-bg-secondary: var(--slate-900-hex);
+  --theme-bg-muted: var(--slate-800-hex);
+  --theme-bg-dark: var(--slate-700-hex);
+  
+  --theme-border-primary: var(--slate-700-hex);
+  --theme-border-secondary: var(--slate-600-hex);
+  
+  --theme-card-bg: var(--slate-900-hex);
+  --theme-card-border: var(--slate-700-hex);
+  --theme-button-primary: var(--slate-100-hex);
+  --theme-button-primary-hover: var(--slate-200-hex);
+  --theme-button-text: var(--slate-900-hex);
+  --theme-input-border: var(--slate-600-hex);
+  --theme-input-focus: var(--slate-300-hex);
+}

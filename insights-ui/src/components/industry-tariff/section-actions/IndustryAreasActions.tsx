@@ -31,7 +31,7 @@ export default function IndustryAreasActions({ industryId, areaIndex, areaTitle 
   });
 
   const handleRegenerate = async () => {
-    await postData(`${getBaseUrl()}/api/industry-tariff-reports/generate-industry-areas`, {
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-industry-areas`, {
       industry: industryId,
       areaIndex: areaIndex,
       areaTitle: areaTitle,

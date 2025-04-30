@@ -1,5 +1,5 @@
 import { getLlmResponse } from '@/scripts/llm-utils';
-import { IndustryAreaHeadings, Introduction } from '@/scripts/industry-tariff-reports/tariff-types';
+import { IndustryAreasWrapper, Introduction } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 
@@ -85,7 +85,7 @@ export const IntroductionSchema = z.object({
 });
 
 // Build the prompt for the introduction section
-function getIntroductionPrompt(industry: string, date: string, industryHeadings: IndustryAreaHeadings) {
+function getIntroductionPrompt(industry: string, date: string, industryHeadings: IndustryAreasWrapper) {
   return `
 As an investor, provide an introduction to the ${industry} sub-industry (GICS) as of ${date}. 
 
@@ -126,7 +126,7 @@ ${JSON.stringify(industryHeadings, null, 2)}
 
 export { getIntroductionPrompt };
 
-export async function getIntroduction(industry: string, date: string, industryHeadings: IndustryAreaHeadings) {
+export async function getIntroduction(industry: string, date: string, industryHeadings: IndustryAreasWrapper) {
   return await getLlmResponse<Introduction>(getIntroductionPrompt(industry, date, industryHeadings), IntroductionSchema);
 }
 
@@ -134,7 +134,7 @@ function getS3Key(industry: string, fileName: string): string {
   return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/02-introduction/${fileName}`;
 }
 
-export async function getAndWriteIntroductionsJson(industry: string, date: string, headings: IndustryAreaHeadings) {
+export async function getAndWriteIntroductionsJson(industry: string, date: string, headings: IndustryAreasWrapper) {
   const introduction = await getIntroduction(industry, date, headings);
   console.log('Introduction:', introduction);
 
@@ -149,13 +149,8 @@ export async function getAndWriteIntroductionsJson(industry: string, date: strin
 }
 
 export async function readIntroductionJsonFromFile(industry: string): Promise<Introduction | undefined> {
-  try {
-    const key = getS3Key(industry, 'introduction.json');
-    return await getJsonFromS3<Introduction>(key);
-  } catch (error) {
-    console.error(`Error reading introduction from S3: ${error}`);
-    return undefined;
-  }
+  const key = getS3Key(industry, 'introduction.json');
+  return await getJsonFromS3<Introduction>(key);
 }
 
 export function getMarkdownContentForIntroduction(introduction: Introduction) {

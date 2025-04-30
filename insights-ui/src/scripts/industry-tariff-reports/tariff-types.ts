@@ -10,20 +10,20 @@ interface PublicCompany {
   ticker: string;
 }
 
-export interface IndustrySubHeading {
+export interface IndustrySubAreas {
   title: string;
   oneLineSummary: string;
   companies: PublicCompany[];
 }
 
-export interface IndustryHeading {
+export interface IndustryAreas {
   title: string;
   oneLineSummary: string;
-  subHeadings: IndustrySubHeading[];
+  subAreas: IndustrySubAreas[];
 }
 
-export interface IndustryAreaHeadings {
-  headings: IndustryHeading[];
+export interface IndustryAreasWrapper {
+  areas: IndustryAreas[];
 }
 
 // 01-executive-summary.ts
@@ -47,10 +47,15 @@ export interface Introduction {
 export interface CountrySpecificTariff {
   countryName: string;
   tariffDetails: string;
-  changes: string;
+  existingTradeAmountAndAgreement: string;
+  newChanges: string;
+  tradeImpactedByNewTariff: string;
+  tradeExemptedByNewTariff: string;
+  tariffChangesForIndustrySubArea: string[];
 }
 
 export interface TariffUpdatesForIndustry {
+  countryNames: string[];
   countrySpecificTariffs: CountrySpecificTariff[];
 }
 
@@ -147,7 +152,8 @@ export interface NegativeTariffImpactOnCompanyType {
 export interface EvaluateIndustryArea {
   title: string;
   aboutParagraphs: string;
-  newChallengers: NewChallenger[];
+  newChallengersRefs: NewChallengerRef[];
+  newChallengersDetails: NewChallenger[];
   establishedPlayers: EstablishedPlayer[];
   headwindsAndTailwinds: HeadwindsAndTailwinds;
   positiveTariffImpactOnCompanyType: PositiveTariffImpactOnCompanyType[];
@@ -180,7 +186,7 @@ export interface FinalConclusion {
 // Tariff updates for a specific industry
 
 export interface IndustryTariffReport {
-  industryAreaHeadings?: IndustryAreaHeadings;
+  industryAreaHeadings?: IndustryAreasWrapper;
   executiveSummary?: ExecutiveSummary;
   introduction?: Introduction;
   tariffUpdates?: TariffUpdatesForIndustry;
@@ -190,10 +196,16 @@ export interface IndustryTariffReport {
   finalConclusion?: FinalConclusion;
 }
 
+export interface NewChallengerRef {
+  companyName: string;
+  companyTicker: string;
+}
+
 export enum EvaluateIndustryContent {
   ALL = 'ALL',
   ESTABLISHED_PLAYERS = 'ESTABLISHED_PLAYERS',
   NEW_CHALLENGERS = 'NEW_CHALLENGERS',
+  NEW_CHALLENGER = 'NEW_CHALLENGER',
   HEADWINDS_AND_TAILWINDS = 'HEADWINDS_AND_TAILWINDS',
   TARIFF_IMPACT_BY_COMPANY_TYPE = 'TARIFF_IMPACT_BY_COMPANY_TYPE',
   TARIFF_IMPACT_SUMMARY = 'TARIFF_IMPACT_SUMMARY',

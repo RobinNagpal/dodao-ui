@@ -1,5 +1,5 @@
 import { getLlmResponse } from '@/scripts/llm-utils';
-import { IndustryAreaHeadings, IndustryAreaSection } from '@/scripts/industry-tariff-reports/tariff-types';
+import { IndustryAreasWrapper, IndustryAreaSection } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 
@@ -13,7 +13,7 @@ const IndustryAreaSectionSchema = z.object({
     ),
 });
 
-function getIndustryAreaPrompt(industry: string, headings: IndustryAreaHeadings) {
+function getIndustryAreaPrompt(industry: string, headings: IndustryAreasWrapper) {
   const prompt = `
   I want to explain to the investors how following headings and subheadings divide the ${industry} industry into nice 
   areas so that they cover the whole of the industry. In some of the next sections I will be discussing each of these
@@ -39,7 +39,7 @@ function getIndustryAreaPrompt(industry: string, headings: IndustryAreaHeadings)
   return prompt;
 }
 
-async function getIndustryAreaSection(industry: string, headings: IndustryAreaHeadings): Promise<IndustryAreaSection> {
+async function getIndustryAreaSection(industry: string, headings: IndustryAreasWrapper): Promise<IndustryAreaSection> {
   const prompt = getIndustryAreaPrompt(industry, headings);
   const response = await getLlmResponse<IndustryAreaSection>(prompt, IndustryAreaSectionSchema);
   return response;
@@ -49,7 +49,7 @@ function getS3Key(industry: string, fileName: string): string {
   return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/05-industry-areas/${fileName}`;
 }
 
-export async function getAndWriteIndustryAreaSectionToJsonFile(industry: string, headings: IndustryAreaHeadings): Promise<void> {
+export async function getAndWriteIndustryAreaSectionToJsonFile(industry: string, headings: IndustryAreasWrapper): Promise<void> {
   const industryAreaSection = await getIndustryAreaSection(industry, headings);
 
   // Upload JSON to S3
@@ -63,13 +63,8 @@ export async function getAndWriteIndustryAreaSectionToJsonFile(industry: string,
 }
 
 export async function readIndustryAreaSectionFromFile(industry: string): Promise<IndustryAreaSection | undefined> {
-  try {
-    const key = getS3Key(industry, 'industry-area.json');
-    return await getJsonFromS3<IndustryAreaSection>(key);
-  } catch (error) {
-    console.error(`Error reading industry area section from S3: ${error}`);
-    return undefined;
-  }
+  const key = getS3Key(industry, 'industry-area.json');
+  return await getJsonFromS3<IndustryAreaSection>(key);
 }
 
 export function getMarkdownContentForIndustryAreas(industryAreaSection: IndustryAreaSection) {

@@ -11,12 +11,13 @@ import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/
 
 interface GenerateTariffUpdatesRequest {
   date: string;
+  countryName?: string;
 }
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
   const request = (await req.json()) as GenerateTariffUpdatesRequest;
-  const { date } = request;
+  const { date, countryName } = request;
 
   if (!industry || !date) {
     throw new Error('Industry and date are required');
@@ -24,9 +25,10 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   // Get the headings first
   const headings = await readIndustryHeadingsFromFile(industry);
+  if (!headings) throw new Error(`Headings not found for industry: ${industry}`);
 
   // Generate the tariff updates
-  await getTariffUpdatesForIndustryAndSaveToFile(industry, date, headings);
+  await getTariffUpdatesForIndustryAndSaveToFile(industry, date, headings, countryName);
   const tariffUpdatesForIndustry = await readTariffUpdatesFromFile(industry);
   if (!tariffUpdatesForIndustry) {
     throw new Error('Tariff updates not found');
