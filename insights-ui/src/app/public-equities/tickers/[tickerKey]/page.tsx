@@ -283,7 +283,12 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                       src={member.profilePicUrl != null ? member.profilePicUrl : '/dummy-avatar.svg'}
                       className="mx-auto size-32 rounded-full"
                     />
-                    <h3 className="mt-6 text-base/7 font-semibold tracking-tight">{member.fullName}</h3>
+                    <div className="flex items-center mt-6">
+                      <h3 className="text-base/7 font-semibold tracking-tight mr-2">{member.fullName}</h3>
+                      <a href={`https://www.linkedin.com/in/${member.publicIdentifier}`} target="_blank" title="LinkedIn Url">
+                        <ArrowTopRightOnSquareIcon className="size-5 cursor-pointer inline link-color" />
+                      </a>
+                    </div>
                     <p className="text-sm/6 text-center max-w-xs whitespace-normal break-words">{member.occupation}</p>
                   </li>
                 ))}
