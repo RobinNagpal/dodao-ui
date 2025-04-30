@@ -41,7 +41,7 @@ const getTeamLinkedInProfilesForTicker = async (req: NextRequest, { params }: { 
   console.log('search preview result: ', JSON.stringify(teamInfo, null, 2));
 
   // for each team member, call your Python backend
-  const pythonBackendBaseUrl = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
+  const pythonBackendBaseUrl = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || 'https://ai-insights.dodao.io';
   const endpoint = `${pythonBackendBaseUrl}/api/public-equities/US/get-linkedIn-profile`;
 
   const profilesOrNull = await Promise.all(
