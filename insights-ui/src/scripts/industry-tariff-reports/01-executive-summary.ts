@@ -76,7 +76,7 @@ export async function getExecutiveSummaryAndSaveToFile(
   tariffSummaries: string[]
 ) {
   const executiveSummary = await getExecutiveSummary(industry, headings, tariffUpdates, tariffSummaries);
-  
+
   // Upload JSON to S3
   const jsonKey = getS3Key(industry, 'executive-summary.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(executiveSummary, null, 2)), jsonKey, 'application/json');

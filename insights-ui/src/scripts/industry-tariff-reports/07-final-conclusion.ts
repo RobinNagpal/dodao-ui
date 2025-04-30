@@ -125,7 +125,7 @@ export async function getFinalConclusionAndSaveToFile(
   negativeImpacts: NegativeTariffImpactOnCompanyType[]
 ) {
   const finalConclusion = await getFinalConclusion(industry, headings, tariffUpdates, tariffSummaries, positiveImpacts, negativeImpacts);
-  
+
   // Upload JSON to S3
   const jsonKey = getS3Key(industry, 'final-conclusion.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(finalConclusion, null, 2)), jsonKey, 'application/json');
