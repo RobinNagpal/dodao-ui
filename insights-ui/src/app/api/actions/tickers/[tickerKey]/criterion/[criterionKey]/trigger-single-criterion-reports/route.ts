@@ -29,6 +29,7 @@ const triggerSingleCriterionReport = async (
     reportKey: reportKey,
     criterion: matchingCriterion,
   };
+  console.log('payload: ', payload);
   const headers = { 'Content-Type': 'application/json' };
   const response = await fetch(body.langflowWebhookUrl, {
     method: 'POST',
