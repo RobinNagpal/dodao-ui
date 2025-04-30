@@ -31,6 +31,7 @@ export async function getLLMResponse({ invocationId, llmProvider, modelName, pro
 
       const valid = validate(result);
       if (!valid) {
+        console.error('Schema validation errors:', validate.errors);
         throw new Error(`Validation failed: ${JSON.stringify(validate.errors)}`);
       }
 
@@ -60,7 +61,7 @@ export async function getLLMResponse({ invocationId, llmProvider, modelName, pro
           },
         });
       } else {
-        throw new Error('Unexpected failure in getLLMResponse: ', err);
+        throw new Error(`Unexpected failure in getLLMResponse: ${err instanceof Error ? err.message : String(err)}`);
       }
       throw err;
     }
