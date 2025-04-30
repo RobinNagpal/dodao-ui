@@ -3,34 +3,28 @@ import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-repo
 import { getAndWriteIntroductionsJson } from '@/scripts/industry-tariff-reports/02-introduction';
 import { getTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { getAndWriteUnderstandIndustryJson } from '@/scripts/industry-tariff-reports/04-understand-industry';
-import {
-  getAndWriteIndustryAreaSectionToJsonFile,
-  readIndustryAreaSectionFromFile,
-  writeIndustryAreaSectionToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/05-industry-areas';
-import {
-  getAndWriteEvaluateIndustryAreaJson,
-  readEvaluateIndustryAreaJsonFromFile,
-  writeEvaluateIndustryAreaToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
-import {
-  getFinalConclusionAndSaveToFile,
-  readFinalConclusionFromFile,
-  writeFinalConclusionToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/07-final-conclusion';
+import { getAndWriteIndustryAreaSectionToJsonFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
+import { getAndWriteEvaluateIndustryAreaJson } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
+import { getFinalConclusionAndSaveToFile } from '@/scripts/industry-tariff-reports/07-final-conclusion';
 import {
   getNegativeImpactsOfEvaluatedAreas,
   getPositiveImpactsOfEvaluatedAreas,
   getSummariesOfEvaluatedAreas,
 } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import {
+  readEvaluateSubIndustryAreaJsonFromFile,
   readExecutiveSummaryFromFile,
+  readFinalConclusionFromFile,
+  readIndustryAreaSectionFromFile,
   readIndustryHeadingsFromFile,
   readIntroductionJsonFromFile,
   readTariffUpdatesFromFile,
   readUnderstandIndustryJsonFromFile,
+  writeMarkdownFileForEvaluateSubIndustryArea,
   writeMarkdownFileForExecutiveSummary,
+  writeMarkdownFileForFinalConclusion,
   writeMarkdownFileForIndustryAreas,
+  writeMarkdownFileForIndustryAreaSections,
   writeMarkdownFileForIndustryTariffs,
   writeMarkdownFileForIntroduction,
   writeMarkdownFileForUnderstandIndustry,
@@ -105,7 +99,7 @@ export async function doIt(
       await getAndWriteIndustryAreaSectionToJsonFile(industry, headings);
       const industryAreaSection = await readIndustryAreaSectionFromFile(industry);
       if (!industryAreaSection) throw new Error('Industry area section not found');
-      await writeIndustryAreaSectionToMarkdownFile(industry, industryAreaSection);
+      await writeMarkdownFileForIndustryAreaSections(industry, industryAreaSection);
       break;
 
     case ReportType.EVALUATE_INDUSTRY_AREA:
@@ -113,9 +107,9 @@ export async function doIt(
       const { headingIndex, subHeadingIndex } = evaluationReportToGenerate;
       const firstArea = headings.areas[headingIndex].subAreas[subHeadingIndex];
       await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, firstArea, headings, tariff!, date);
-      const evaluated = await readEvaluateIndustryAreaJsonFromFile(industry, firstArea, headings);
+      const evaluated = await readEvaluateSubIndustryAreaJsonFromFile(industry, firstArea, headings);
       if (evaluated) {
-        await writeEvaluateIndustryAreaToMarkdownFile(industry, firstArea, headings, evaluated);
+        await writeMarkdownFileForEvaluateSubIndustryArea(industry, firstArea, headings, evaluated);
       }
       break;
 
@@ -138,7 +132,7 @@ export async function doIt(
       await getFinalConclusionAndSaveToFile(industry, headings, tariffs, summariesAll, positiveImpacts, negativeImpacts);
       const conclusion = await readFinalConclusionFromFile(industry);
       if (!conclusion) throw new Error('Final conclusion not found');
-      await writeFinalConclusionToMarkdownFile(industry, conclusion);
+      await writeMarkdownFileForFinalConclusion(industry, conclusion);
       break;
 
     case ReportType.ALL:

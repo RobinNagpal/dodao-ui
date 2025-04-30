@@ -1,8 +1,8 @@
-import { readIndustryAreaSectionFromFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
-import { readEvaluateIndustryAreaJsonFromFile } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
-import { readFinalConclusionFromFile } from '@/scripts/industry-tariff-reports/07-final-conclusion';
 import {
+  readEvaluateSubIndustryAreaJsonFromFile,
   readExecutiveSummaryFromFile,
+  readFinalConclusionFromFile,
+  readIndustryAreaSectionFromFile,
   readIndustryHeadingsFromFile,
   readIntroductionJsonFromFile,
   readTariffUpdatesFromFile,
@@ -31,7 +31,7 @@ export async function getIndustryTariffReport(industry: string): Promise<Industr
 
   for (const evaluateIndustryArea of headings) {
     for (const subHeading of evaluateIndustryArea.subAreas) {
-      const evaluateIndustryAreaData = await readEvaluateIndustryAreaJsonFromFile(industry, subHeading, industryAreaHeadings);
+      const evaluateIndustryAreaData = await readEvaluateSubIndustryAreaJsonFromFile(industry, subHeading, industryAreaHeadings);
       if (evaluateIndustryAreaData) {
         evaluateIndustryAreas.push(evaluateIndustryAreaData);
       }
@@ -55,7 +55,7 @@ export async function getSummariesOfEvaluatedAreas(industry: string, headings: I
 
   for (const heading of headings.areas) {
     for (const subHeading of heading.subAreas) {
-      const evalArea = await readEvaluateIndustryAreaJsonFromFile(industry, subHeading, headings);
+      const evalArea = await readEvaluateSubIndustryAreaJsonFromFile(industry, subHeading, headings);
       if (evalArea?.tariffImpactSummary) {
         summaries.push(evalArea.tariffImpactSummary);
       }
@@ -69,7 +69,7 @@ export async function getPositiveImpactsOfEvaluatedAreas(industry: string, headi
 
   for (const heading of headings.areas) {
     for (const subHeading of heading.subAreas) {
-      const evalArea = await readEvaluateIndustryAreaJsonFromFile(industry, subHeading, headings);
+      const evalArea = await readEvaluateSubIndustryAreaJsonFromFile(industry, subHeading, headings);
       if (evalArea?.positiveTariffImpactOnCompanyType?.length) {
         positiveImpacts.push(...evalArea.positiveTariffImpactOnCompanyType);
       }
@@ -82,7 +82,7 @@ export async function getNegativeImpactsOfEvaluatedAreas(industry: string, headi
 
   for (const heading of headings.areas) {
     for (const subHeading of heading.subAreas) {
-      const evalArea = await readEvaluateIndustryAreaJsonFromFile(industry, subHeading, headings);
+      const evalArea = await readEvaluateSubIndustryAreaJsonFromFile(industry, subHeading, headings);
       if (evalArea?.negativeTariffImpactOnCompanyType?.length) {
         negativeImpacts.push(...evalArea.negativeTariffImpactOnCompanyType);
       }

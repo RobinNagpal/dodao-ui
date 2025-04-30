@@ -1,8 +1,12 @@
+import { img } from '@/scripts/chart-utils';
 import {
   CountrySpecificTariff,
   EstablishedPlayer,
+  EvaluateIndustryArea,
   ExecutiveSummary,
+  FinalConclusion,
   IndustryArea,
+  IndustryAreaSection,
   IndustryAreasWrapper,
   Introduction,
   NewChallenger,
@@ -98,12 +102,13 @@ export function getMarkdownContentForUnderstandIndustry(understandIndustry: Unde
 // 05-IndustryAreas
 //--------------------------------------------------------------------------------------------------------
 
-//--------------------------------------------------------------------------------------------------------
-// 00-IndustryAreas
-//--------------------------------------------------------------------------------------------------------
+export function getMarkdownContentForIndustryAreas(industryAreaSection: IndustryAreaSection) {
+  const markdownContent = `# ${industryAreaSection.title}\n\n${industryAreaSection.industryAreas}`;
+  return markdownContent;
+}
 
 //--------------------------------------------------------------------------------------------------------
-// 00-IndustryAreas
+// 06-EvaluateIndustryArea
 //--------------------------------------------------------------------------------------------------------
 
 /**
@@ -188,4 +193,73 @@ export function establishedPlayerToMarkdown(player: EstablishedPlayer): string {
   const footer = `#### Tariffs & Competitors\n\n` + `- Tariff Impact: ${player.impactOfTariffs}\n\n` + `- Competitors: ${player.competitors}\n\n`;
 
   return header + productsSection + performanceSection + managementSection + footer;
+}
+
+export function getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea: EvaluateIndustryArea) {
+  const md: string[] = [];
+
+  /* ───────────────────── header ───────────────────── */
+  md.push(`# ${evaluateIndustryArea.title}`);
+  md.push(evaluateIndustryArea.aboutParagraphs.toString());
+
+  /* ───────────────── Established Players ──────────── */
+  md.push('## Established Players');
+  evaluateIndustryArea.establishedPlayerDetails.forEach((p) => {
+    md.push(establishedPlayerToMarkdown(p));
+    md.push(img(p.chartUrls));
+  });
+
+  /* ───────────────── New Challengers ──────────────── */
+  if (evaluateIndustryArea.newChallengersDetails.length) {
+    md.push('## Newer Challengers');
+    evaluateIndustryArea.newChallengersDetails.forEach((c) => {
+      md.push(challengerToMarkdown(c));
+      md.push(img(c.chartUrls));
+    });
+  }
+
+  /* ──────────────── Headwinds & Tailwinds ─────────── */
+  md.push('## Headwinds & Tailwinds');
+  md.push('### Headwinds', ...evaluateIndustryArea.headwindsAndTailwinds.headwinds);
+  md.push(img(evaluateIndustryArea.headwindsAndTailwinds.headwindChartUrls));
+  md.push('### Tailwinds', ...evaluateIndustryArea.headwindsAndTailwinds.tailwinds);
+  md.push(img(evaluateIndustryArea.headwindsAndTailwinds.tailwindChartUrls));
+
+  /* ───────── Tariff Impact by Company Type ────────── */
+  md.push('## Tariff Impact by Company Type');
+  md.push('### Positive Impact');
+  evaluateIndustryArea.positiveTariffImpactOnCompanyType.forEach((i) => {
+    md.push(`#### ${i.companyType}\n- Impact: ${i.impact}\n- Reasoning: ${i.reasoning}`);
+    md.push(img(i.chartUrls));
+  });
+  md.push('### Negative Impact');
+  evaluateIndustryArea.negativeTariffImpactOnCompanyType.forEach((i) => {
+    md.push(`#### ${i.companyType}\n- Impact: ${i.impact}\n- Reasoning: ${i.reasoning}`);
+    md.push(img(i.chartUrls));
+  });
+
+  /* ───────────────────── Summary ──────────────────── */
+  md.push('## Tariff Impact Summary', evaluateIndustryArea.tariffImpactSummary);
+  md.push(img(evaluateIndustryArea.tariffImpactSummaryChartUrls));
+
+  /* write file */
+  const markdownContent = md.join('\n\n');
+  return markdownContent;
+}
+
+//--------------------------------------------------------------------------------------------------------
+// 07-FinalConclusion
+//--------------------------------------------------------------------------------------------------------
+export function getMarkdownContentForFinalConclusion(finalConclusion: FinalConclusion) {
+  const markdownContent =
+    `# Final Conclusion\n\n` +
+    `## ${finalConclusion.title}\n` +
+    `${finalConclusion.conclusionBrief}\n\n` +
+    `## ${finalConclusion.positiveImpacts.title}\n` +
+    `${finalConclusion.positiveImpacts.positiveImpacts}\n\n` +
+    `## ${finalConclusion.negativeImpacts.title}\n` +
+    `${finalConclusion.negativeImpacts.negativeImpacts}\n\n` +
+    `## Final Statements\n` +
+    `${finalConclusion.finalStatements}\n`;
+  return markdownContent;
 }

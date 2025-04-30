@@ -1,14 +1,18 @@
-import { challengerToMarkdown, establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
+import {
+  getS3KeyForSubIndustryArea,
+  readEvaluateSubIndustryAreaJsonFromFile,
+  writeJsonFileForEvaluateSubIndustryArea,
+  writeMarkdownFileForEvaluateSubIndustryArea,
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
-import { getJsonFromS3, uploadFileToS3 } from '@/scripts/report-file-utils';
+import { uploadFileToS3 } from '@/scripts/report-file-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { z } from 'zod';
-import { generateChartUrls, img } from '../chart-utils';
+import { generateChartUrls } from '../chart-utils';
 import {
   ChartEntityType,
   EstablishedPlayer,
   EstablishedPlayerRef,
-  EstablishedPlayersArray,
   EvaluateIndustryArea,
   EvaluateIndustryContent,
   HeadwindsAndTailwinds,
@@ -469,41 +473,6 @@ async function getTariffImpactSummary(
   return (await getLlmResponse<TariffImpactSummary>(prompt, schema)).summary;
 }
 
-function getS3Key(industry: string, industryArea: IndustrySubArea, headings: IndustryAreasWrapper, extension: string): string {
-  const headingAndSubheadingIndex = headings.areas
-    .flatMap((heading, headingIndex) =>
-      heading.subAreas.map((subHeading, index) => ({
-        headingAndSubheadingIndex: `${headingIndex}_${index}`,
-        heading: heading.title,
-        subHeading: subHeading.title,
-      }))
-    )
-    .find((item) => item.subHeading === industryArea.title)?.headingAndSubheadingIndex;
-
-  const baseFileName = `${headingAndSubheadingIndex}-evaluate-${slugify(industryArea.title)}`;
-  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/06-evaluate-industry-area/${baseFileName}${extension}`;
-}
-
-export async function readEvaluateIndustryAreaJsonFromFile(
-  industry: string,
-  industryArea: IndustrySubArea,
-  headings: IndustryAreasWrapper
-): Promise<EvaluateIndustryArea | undefined> {
-  const key = getS3Key(industry, industryArea, headings, '.json');
-  return await getJsonFromS3<EvaluateIndustryArea>(key);
-}
-
-export async function writeEvaluateIndustryAreaToMarkdownFile(
-  industry: string,
-  industryArea: IndustrySubArea,
-  headings: IndustryAreasWrapper,
-  evaluateIndustryArea: EvaluateIndustryArea
-) {
-  const markdownContent = getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea);
-  const key = getS3Key(industry, industryArea, headings, '.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
-}
-
 export async function getAndWriteEvaluateIndustryAreaJson(
   tariffIndustry: TariffReportIndustry,
   industryArea: IndustrySubArea,
@@ -581,11 +550,8 @@ export async function getAndWriteEvaluateIndustryAreaJson(
   };
 
   // Upload JSON to S3
-  const jsonKey = getS3Key(industry, industryArea, industryAreasWrapper, '.json');
-  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(result, null, 2)), jsonKey, 'application/json');
-
-  // Generate and upload markdown
-  await writeEvaluateIndustryAreaToMarkdownFile(industry, industryArea, industryAreasWrapper, result);
+  await writeJsonFileForEvaluateSubIndustryArea(industry, industryArea, industryAreasWrapper, result);
+  await writeMarkdownFileForEvaluateSubIndustryArea(industry, industryArea, industryAreasWrapper, result);
 }
 
 export async function regenerateEvaluateIndustryAreaJson(
@@ -599,7 +565,7 @@ export async function regenerateEvaluateIndustryAreaJson(
   establishedPlayerTicker?: string
 ) {
   // load existing or start new result
-  const result = await readEvaluateIndustryAreaJsonFromFile(tariffIndustry.industryId, industryArea, industryAreasWrapper);
+  const result = await readEvaluateSubIndustryAreaJsonFromFile(tariffIndustry.industryId, industryArea, industryAreasWrapper);
   if (!result) {
     await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, industryArea, industryAreasWrapper, tariffUpdates, date);
     return;
@@ -698,11 +664,11 @@ export async function regenerateEvaluateIndustryAreaJson(
   }
 
   // Upload updated JSON to S3
-  const jsonKey = getS3Key(tariffIndustry.industryId, industryArea, industryAreasWrapper, '.json');
+  const jsonKey = getS3KeyForSubIndustryArea(tariffIndustry.industryId, industryArea, industryAreasWrapper, '.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(result, null, 2)), jsonKey, 'application/json');
 
   // Generate and upload updated markdown
-  await writeEvaluateIndustryAreaToMarkdownFile(tariffIndustry.industryId, industryArea, industryAreasWrapper, result);
+  await writeMarkdownFileForEvaluateSubIndustryArea(tariffIndustry.industryId, industryArea, industryAreasWrapper, result);
 }
 
 /**
@@ -716,7 +682,7 @@ export async function regenerateCharts(
   entityType: ChartEntityType,
   entityIndex = 0
 ): Promise<void> {
-  const report = await readEvaluateIndustryAreaJsonFromFile(industry.industryId, industryArea, headings);
+  const report = await readEvaluateSubIndustryAreaJsonFromFile(industry.industryId, industryArea, headings);
 
   if (!report) {
     return;
@@ -814,7 +780,7 @@ export async function regenerateCharts(
   }
 
   // Persist modified JSON
-  const jsonKey = getS3Key(industry.industryId, industryArea, headings, '.json');
+  const jsonKey = getS3KeyForSubIndustryArea(industry.industryId, industryArea, headings, '.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(report, null, 2)), jsonKey, 'application/json');
 }
 
@@ -826,59 +792,7 @@ function writeImg(url: string) {
 }
 
 function getMarkdownFilePath(industry: string, industryArea: IndustrySubArea, headings: IndustryAreasWrapper) {
-  return getS3Key(industry, industryArea, headings, '.md');
-}
-
-export function getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea: EvaluateIndustryArea) {
-  const md: string[] = [];
-
-  /* ───────────────────── header ───────────────────── */
-  md.push(`# ${evaluateIndustryArea.title}`);
-  md.push(evaluateIndustryArea.aboutParagraphs.toString());
-
-  /* ───────────────── Established Players ──────────── */
-  md.push('## Established Players');
-  evaluateIndustryArea.establishedPlayerDetails.forEach((p) => {
-    md.push(establishedPlayerToMarkdown(p));
-    md.push(img(p.chartUrls));
-  });
-
-  /* ───────────────── New Challengers ──────────────── */
-  if (evaluateIndustryArea.newChallengersDetails.length) {
-    md.push('## Newer Challengers');
-    evaluateIndustryArea.newChallengersDetails.forEach((c) => {
-      md.push(challengerToMarkdown(c));
-      md.push(img(c.chartUrls));
-    });
-  }
-
-  /* ──────────────── Headwinds & Tailwinds ─────────── */
-  md.push('## Headwinds & Tailwinds');
-  md.push('### Headwinds', ...evaluateIndustryArea.headwindsAndTailwinds.headwinds);
-  md.push(img(evaluateIndustryArea.headwindsAndTailwinds.headwindChartUrls));
-  md.push('### Tailwinds', ...evaluateIndustryArea.headwindsAndTailwinds.tailwinds);
-  md.push(img(evaluateIndustryArea.headwindsAndTailwinds.tailwindChartUrls));
-
-  /* ───────── Tariff Impact by Company Type ────────── */
-  md.push('## Tariff Impact by Company Type');
-  md.push('### Positive Impact');
-  evaluateIndustryArea.positiveTariffImpactOnCompanyType.forEach((i) => {
-    md.push(`#### ${i.companyType}\n- Impact: ${i.impact}\n- Reasoning: ${i.reasoning}`);
-    md.push(img(i.chartUrls));
-  });
-  md.push('### Negative Impact');
-  evaluateIndustryArea.negativeTariffImpactOnCompanyType.forEach((i) => {
-    md.push(`#### ${i.companyType}\n- Impact: ${i.impact}\n- Reasoning: ${i.reasoning}`);
-    md.push(img(i.chartUrls));
-  });
-
-  /* ───────────────────── Summary ──────────────────── */
-  md.push('## Tariff Impact Summary', evaluateIndustryArea.tariffImpactSummary);
-  md.push(img(evaluateIndustryArea.tariffImpactSummaryChartUrls));
-
-  /* write file */
-  const markdownContent = md.join('\n\n');
-  return markdownContent;
+  return getS3KeyForSubIndustryArea(industry, industryArea, headings, '.md');
 }
 
 // ---------------------------------------------------------------------------

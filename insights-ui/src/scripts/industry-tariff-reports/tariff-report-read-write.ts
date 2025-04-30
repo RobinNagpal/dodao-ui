@@ -1,19 +1,27 @@
 import { industryHeadingsFileName } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import {
   generateMarkdownContent,
+  getMarkdownContentForEvaluateIndustryArea,
   getMarkdownContentForExecutiveSummary,
+  getMarkdownContentForFinalConclusion,
+  getMarkdownContentForIndustryAreas,
   getMarkdownContentForIndustryTariffs,
   getMarkdownContentForIntroduction,
   getMarkdownContentForUnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import {
+  EvaluateIndustryArea,
   ExecutiveSummary,
+  FinalConclusion,
+  IndustryAreaSection,
   IndustryAreasWrapper,
+  IndustrySubArea,
   Introduction,
   TariffUpdatesForIndustry,
   UnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getJsonFromS3, uploadFileToS3 } from '@/scripts/report-file-utils';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 
 //--------------------------------------------------------------------------------------------------------
 // 00-IndustryAreas
@@ -146,3 +154,91 @@ export async function writeMarkdownFileForUnderstandIndustry(industry: string, u
 //--------------------------------------------------------------------------------------------------------
 // 05-IndustryAreas
 //--------------------------------------------------------------------------------------------------------
+export function getS3KeyForIndustryAreasSections(industry: string, fileName: string): string {
+  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/05-industry-areas/${fileName}`;
+}
+
+export async function writeJsonFileForIndustryAreaSections(industry: string, industryAreaSection: IndustryAreaSection) {
+  const jsonKey = getS3KeyForIndustryAreasSections(industry, 'industry-area.json');
+  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(industryAreaSection, null, 2)), jsonKey, 'application/json');
+}
+
+export async function readIndustryAreaSectionFromFile(industry: string): Promise<IndustryAreaSection | undefined> {
+  const key = getS3KeyForIndustryAreasSections(industry, 'industry-area.json');
+  return await getJsonFromS3<IndustryAreaSection>(key);
+}
+
+export async function writeMarkdownFileForIndustryAreaSections(industry: string, industryAreaSection: IndustryAreaSection): Promise<void> {
+  const markdownContent = getMarkdownContentForIndustryAreas(industryAreaSection);
+  const key = getS3KeyForIndustryAreasSections(industry, 'industry-area.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
+}
+
+//--------------------------------------------------------------------------------------------------------
+// 06-EvaluateSubIndustryArea
+//--------------------------------------------------------------------------------------------------------
+
+export function getS3KeyForSubIndustryArea(industry: string, industryArea: IndustrySubArea, headings: IndustryAreasWrapper, extension: string): string {
+  const headingAndSubheadingIndex = headings.areas
+    .flatMap((heading, headingIndex) =>
+      heading.subAreas.map((subHeading, index) => ({
+        headingAndSubheadingIndex: `${headingIndex}_${index}`,
+        heading: heading.title,
+        subHeading: subHeading.title,
+      }))
+    )
+    .find((item) => item.subHeading === industryArea.title)?.headingAndSubheadingIndex;
+
+  const baseFileName = `${headingAndSubheadingIndex}-evaluate-${slugify(industryArea.title)}`;
+  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/06-evaluate-industry-area/${baseFileName}${extension}`;
+}
+
+export async function readEvaluateSubIndustryAreaJsonFromFile(
+  industry: string,
+  industryArea: IndustrySubArea,
+  headings: IndustryAreasWrapper
+): Promise<EvaluateIndustryArea | undefined> {
+  const key = getS3KeyForSubIndustryArea(industry, industryArea, headings, '.json');
+  return await getJsonFromS3<EvaluateIndustryArea>(key);
+}
+
+export async function writeMarkdownFileForEvaluateSubIndustryArea(
+  industry: string,
+  industryArea: IndustrySubArea,
+  headings: IndustryAreasWrapper,
+  evaluateIndustryArea: EvaluateIndustryArea
+) {
+  const markdownContent = getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea);
+  const key = getS3KeyForSubIndustryArea(industry, industryArea, headings, '.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
+}
+
+export async function writeJsonFileForEvaluateSubIndustryArea(
+  industry: string,
+  industryArea: IndustrySubArea,
+  industryAreasWrapper: IndustryAreasWrapper,
+  result: EvaluateIndustryArea
+) {
+  const jsonKey = getS3KeyForSubIndustryArea(industry, industryArea, industryAreasWrapper, '.json');
+  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(result, null, 2)), jsonKey, 'application/json');
+}
+
+export function getS3KeyForFinalConclusion(industry: string, fileName: string): string {
+  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/07-final-conclusion/${fileName}`;
+}
+
+export async function writeJsonFileForFinalConclusion(industry: string, finalConclusion: FinalConclusion) {
+  const jsonKey = getS3KeyForFinalConclusion(industry, 'final-conclusion.json');
+  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(finalConclusion, null, 2)), jsonKey, 'application/json');
+}
+
+export async function readFinalConclusionFromFile(industry: string): Promise<FinalConclusion | undefined> {
+  const key = getS3KeyForFinalConclusion(industry, 'final-conclusion.json');
+  return await getJsonFromS3<FinalConclusion>(key);
+}
+
+export async function writeMarkdownFileForFinalConclusion(industry: string, finalConclusion: FinalConclusion) {
+  const markdownContent = getMarkdownContentForFinalConclusion(finalConclusion);
+  const key = getS3KeyForFinalConclusion(industry, 'final-conclusion.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
+}

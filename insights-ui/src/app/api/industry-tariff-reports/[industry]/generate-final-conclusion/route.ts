@@ -4,16 +4,17 @@ import {
   getPositiveImpactsOfEvaluatedAreas,
   getSummariesOfEvaluatedAreas,
 } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { readIndustryHeadingsFromFile, readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import {
+  readEvaluateSubIndustryAreaJsonFromFile,
+  readFinalConclusionFromFile,
+  readIndustryHeadingsFromFile,
+  readTariffUpdatesFromFile,
+  writeMarkdownFileForFinalConclusion,
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import {
-  getFinalConclusionAndSaveToFile,
-  readFinalConclusionFromFile,
-  writeFinalConclusionToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/07-final-conclusion';
-import { readEvaluateIndustryAreaJsonFromFile } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
+import { getFinalConclusionAndSaveToFile } from '@/scripts/industry-tariff-reports/07-final-conclusion';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
@@ -44,7 +45,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!conclusion) {
     throw new Error('Final conclusion not found');
   }
-  await writeFinalConclusionToMarkdownFile(industry, conclusion);
+  await writeMarkdownFileForFinalConclusion(industry, conclusion);
 
   return getIndustryTariffReport(industry);
 }

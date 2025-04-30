@@ -1,15 +1,15 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import { getDefinitionByIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { readIndustryHeadingsFromFile, readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import {
+  readEvaluateSubIndustryAreaJsonFromFile,
+  readIndustryHeadingsFromFile,
+  readTariffUpdatesFromFile,
+  writeMarkdownFileForEvaluateSubIndustryArea,
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { EvaluateIndustryContent, IndustryTariffReport, TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import {
-  getAndWriteEvaluateIndustryAreaJson,
-  readEvaluateIndustryAreaJsonFromFile,
-  regenerateEvaluateIndustryAreaJson,
-  writeEvaluateIndustryAreaToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
+import { getAndWriteEvaluateIndustryAreaJson, regenerateEvaluateIndustryAreaJson } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 
 export interface GenerateEvaluateIndustryAreaRequest {
   companiesToIgnore?: string[];
@@ -60,9 +60,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
     await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType);
   }
 
-  const evaluated = await readEvaluateIndustryAreaJsonFromFile(industry, area, headings);
+  const evaluated = await readEvaluateSubIndustryAreaJsonFromFile(industry, area, headings);
   if (evaluated) {
-    await writeEvaluateIndustryAreaToMarkdownFile(industry, area, headings, evaluated);
+    await writeMarkdownFileForEvaluateSubIndustryArea(industry, area, headings, evaluated);
   }
   return getIndustryTariffReport(industry);
 }
