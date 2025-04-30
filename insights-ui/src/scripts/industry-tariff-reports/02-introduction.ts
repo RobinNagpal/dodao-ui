@@ -1,7 +1,7 @@
-import { getLlmResponse } from '@/scripts/llm-utils';
+import { writeJsonFileForIntroduction, writeMarkdownFileForIntroduction } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryAreasWrapper, Introduction } from '@/scripts/industry-tariff-reports/tariff-types';
+import { getLlmResponse } from '@/scripts/llm-utils';
 import { z } from 'zod';
-import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 
 // Schemas for the Introduction section of an industry report
 const aboutSectorSchema = z.object({
@@ -124,50 +124,11 @@ ${JSON.stringify(industryHeadings, null, 2)}
 `;
 }
 
-export { getIntroductionPrompt };
-
-export async function getIntroduction(industry: string, date: string, industryHeadings: IndustryAreasWrapper) {
-  return await getLlmResponse<Introduction>(getIntroductionPrompt(industry, date, industryHeadings), IntroductionSchema);
-}
-
-function getS3Key(industry: string, fileName: string): string {
-  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/02-introduction/${fileName}`;
-}
-
 export async function getAndWriteIntroductionsJson(industry: string, date: string, headings: IndustryAreasWrapper) {
-  const introduction = await getIntroduction(industry, date, headings);
+  const introduction = await getLlmResponse<Introduction>(getIntroductionPrompt(industry, date, headings), IntroductionSchema);
   console.log('Introduction:', introduction);
 
   // Upload JSON to S3
-  const jsonKey = getS3Key(industry, 'introduction.json');
-  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(introduction, null, 2)), jsonKey, 'application/json');
-
-  // Generate and upload markdown
-  const markdownContent = getMarkdownContentForIntroduction(introduction);
-  const markdownKey = getS3Key(industry, 'introduction.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), markdownKey, 'text/markdown');
-}
-
-export async function readIntroductionJsonFromFile(industry: string): Promise<Introduction | undefined> {
-  const key = getS3Key(industry, 'introduction.json');
-  return await getJsonFromS3<Introduction>(key);
-}
-
-export function getMarkdownContentForIntroduction(introduction: Introduction) {
-  const markdownContent =
-    `# Introduction\n\n` +
-    `## ${introduction.aboutSector.title}\n${introduction.aboutSector.aboutSector}\n\n` +
-    `## ${introduction.aboutConsumption.title}\n${introduction.aboutConsumption.aboutConsumption}\n\n` +
-    `## ${introduction.pastGrowth.title}\n${introduction.pastGrowth.aboutGrowth}\n\n` +
-    `## ${introduction.futureGrowth.title}\n${introduction.futureGrowth.aboutGrowth}\n\n` +
-    `## ${introduction.usProduction.title}\n${introduction.usProduction.aboutProduction}\n\n` +
-    `## Country Specific Imports\n` +
-    `${introduction.countrySpecificImports.map((importInfo) => `### ${importInfo.title}\n${importInfo.aboutImport}`).join('\n\n')}\n`;
-  return markdownContent;
-}
-
-export async function writeIntroductionToMarkdownFile(industry: string, introduction: Introduction) {
-  const markdownContent = getMarkdownContentForIntroduction(introduction);
-  const key = getS3Key(industry, 'introduction.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
+  await writeJsonFileForIntroduction(industry, introduction);
+  await writeMarkdownFileForIntroduction(industry, introduction);
 }

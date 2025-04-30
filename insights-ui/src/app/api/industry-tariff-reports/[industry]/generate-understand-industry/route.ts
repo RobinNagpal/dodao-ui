@@ -1,13 +1,13 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import {
+  readIndustryHeadingsFromFile,
+  readUnderstandIndustryJsonFromFile,
+  writeMarkdownFileForUnderstandIndustry,
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import {
-  getAndWriteUnderstandIndustryJson,
-  readUnderstandIndustryJsonFromFile,
-  writeUnderstandIndustryToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/04-understand-industry';
+import { getAndWriteUnderstandIndustryJson } from '@/scripts/industry-tariff-reports/04-understand-industry';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
@@ -27,7 +27,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!understandIndustry) {
     throw new Error('Understand industry section not found');
   }
-  await writeUnderstandIndustryToMarkdownFile(industry, understandIndustry);
+  await writeMarkdownFileForUnderstandIndustry(industry, understandIndustry);
 
   return getIndustryTariffReport(industry);
 }

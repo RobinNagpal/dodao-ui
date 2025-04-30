@@ -1,20 +1,8 @@
 import { getAndWriteIndustryHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
-import {
-  getExecutiveSummaryAndSaveToFile,
-  readExecutiveSummaryFromFile,
-  writeExecutiveSummaryToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/01-executive-summary';
-import { getAndWriteIntroductionsJson, readIntroductionJsonFromFile, writeIntroductionToMarkdownFile } from '@/scripts/industry-tariff-reports/02-introduction';
-import {
-  getTariffUpdatesForIndustryAndSaveToFile,
-  readTariffUpdatesFromFile,
-  writeTariffUpdatesToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/03-industry-tariffs';
-import {
-  getAndWriteUnderstandIndustryJson,
-  readUnderstandIndustryJsonFromFile,
-  writeUnderstandIndustryToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/04-understand-industry';
+import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-reports/01-executive-summary';
+import { getAndWriteIntroductionsJson } from '@/scripts/industry-tariff-reports/02-introduction';
+import { getTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
+import { getAndWriteUnderstandIndustryJson } from '@/scripts/industry-tariff-reports/04-understand-industry';
 import {
   getAndWriteIndustryAreaSectionToJsonFile,
   readIndustryAreaSectionFromFile,
@@ -35,7 +23,18 @@ import {
   getPositiveImpactsOfEvaluatedAreas,
   getSummariesOfEvaluatedAreas,
 } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { readIndustryHeadingsFromFile, writeIndustryHeadingsToMarkdownFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import {
+  readExecutiveSummaryFromFile,
+  readIndustryHeadingsFromFile,
+  readIntroductionJsonFromFile,
+  readTariffUpdatesFromFile,
+  readUnderstandIndustryJsonFromFile,
+  writeMarkdownFileForExecutiveSummary,
+  writeMarkdownFileForIndustryAreas,
+  writeMarkdownFileForIndustryTariffs,
+  writeMarkdownFileForIntroduction,
+  writeMarkdownFileForUnderstandIndustry,
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import * as dotenv from 'dotenv';
 
@@ -78,28 +77,28 @@ export async function doIt(
   switch (reportType) {
     case ReportType.HEADINGS:
       await getAndWriteIndustryHeadings(industry);
-      await writeIndustryHeadingsToMarkdownFile(industry, headings);
+      await writeMarkdownFileForIndustryAreas(industry, headings);
       break;
 
     case ReportType.INTRODUCTION:
       await getAndWriteIntroductionsJson(industry, date, headings);
       const introductions = await readIntroductionJsonFromFile(industry);
       if (!introductions) throw new Error('Introductions not found');
-      await writeIntroductionToMarkdownFile(industry, introductions);
+      await writeMarkdownFileForIntroduction(industry, introductions);
       break;
 
     case ReportType.UNDERSTAND_INDUSTRY:
       await getAndWriteUnderstandIndustryJson(industry, headings);
       const understandIndustry = await readUnderstandIndustryJsonFromFile(industry);
       if (!understandIndustry) throw new Error('Understand industry section not found');
-      await writeUnderstandIndustryToMarkdownFile(industry, understandIndustry);
+      await writeMarkdownFileForUnderstandIndustry(industry, understandIndustry);
       break;
 
     case ReportType.TARIFF_UPDATES:
       await getTariffUpdatesForIndustryAndSaveToFile(industry, date, headings);
       const tariffUpdatesForIndustry = await readTariffUpdatesFromFile(industry);
       if (!tariffUpdatesForIndustry) throw new Error('Tariff updates not found');
-      await writeTariffUpdatesToMarkdownFile(industry, tariffUpdatesForIndustry);
+      await writeMarkdownFileForIndustryTariffs(industry, tariffUpdatesForIndustry);
       break;
 
     case ReportType.INDUSTRY_AREA_SECTION:
@@ -127,7 +126,7 @@ export async function doIt(
       await getExecutiveSummaryAndSaveToFile(industry, headings, tariffUpdates, summaries);
       const execSummary = await readExecutiveSummaryFromFile(industry);
       if (!execSummary) throw new Error('Executive summary not found');
-      await writeExecutiveSummaryToMarkdownFile(industry, execSummary);
+      await writeMarkdownFileForExecutiveSummary(industry, execSummary);
       break;
 
     case ReportType.FINAL_CONCLUSION:

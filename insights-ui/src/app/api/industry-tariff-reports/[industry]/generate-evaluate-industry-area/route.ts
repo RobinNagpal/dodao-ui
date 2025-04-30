@@ -1,6 +1,6 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import { getDefinitionByIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { readIndustryHeadingsFromFile, readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { EvaluateIndustryContent, IndustryTariffReport, TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -10,7 +10,6 @@ import {
   regenerateEvaluateIndustryAreaJson,
   writeEvaluateIndustryAreaToMarkdownFile,
 } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
-import { readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 
 export interface GenerateEvaluateIndustryAreaRequest {
   companiesToIgnore?: string[];

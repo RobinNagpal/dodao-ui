@@ -1,13 +1,13 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import {
+  readIndustryHeadingsFromFile,
+  readTariffUpdatesFromFile,
+  writeMarkdownFileForIndustryTariffs,
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import {
-  getTariffUpdatesForIndustryAndSaveToFile,
-  readTariffUpdatesFromFile,
-  writeTariffUpdatesToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/03-industry-tariffs';
+import { getTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 
 interface GenerateTariffUpdatesRequest {
   date: string;
@@ -33,7 +33,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!tariffUpdatesForIndustry) {
     throw new Error('Tariff updates not found');
   }
-  await writeTariffUpdatesToMarkdownFile(industry, tariffUpdatesForIndustry);
+  await writeMarkdownFileForIndustryTariffs(industry, tariffUpdatesForIndustry);
 
   return getIndustryTariffReport(industry);
 }

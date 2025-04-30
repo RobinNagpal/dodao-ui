@@ -1,7 +1,7 @@
+import { writeJsonFileForUnderstandIndustry, writeMarkdownFileForUnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryAreasWrapper, UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-import { z } from 'zod';
-import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
 import { getLlmResponse } from '@/scripts/llm-utils';
+import { z } from 'zod';
 
 const IndustrySectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific part of the article.'),
@@ -110,38 +110,10 @@ export async function getUnderstandIndustry(industry: string, headings: Industry
   return await getLlmResponse<UnderstandIndustry>(getUnderstandIndustryPrompt(industry, headings), UnderstandIndustrySchema);
 }
 
-function getS3Key(industry: string, fileName: string): string {
-  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/04-understand-industry/${fileName}`;
-}
-
 export async function getAndWriteUnderstandIndustryJson(industry: string, headings: IndustryAreasWrapper) {
   const understandIndustry = await getUnderstandIndustry(industry, headings);
   console.log('Understand Industry:', understandIndustry);
 
-  // Upload JSON to S3
-  const jsonKey = getS3Key(industry, 'understand-industry.json');
-  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(understandIndustry, null, 2)), jsonKey, 'application/json');
-
-  // Generate and upload markdown
-  const markdownContent = getMarkdownContentForUnderstandIndustry(understandIndustry);
-  const markdownKey = getS3Key(industry, 'understand-industry.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), markdownKey, 'text/markdown');
-}
-
-export async function readUnderstandIndustryJsonFromFile(industry: string): Promise<UnderstandIndustry | undefined> {
-  const key = getS3Key(industry, 'understand-industry.json');
-  return await getJsonFromS3<UnderstandIndustry>(key);
-}
-
-export function getMarkdownContentForUnderstandIndustry(understandIndustry: UnderstandIndustry) {
-  const markdownContent =
-    `# ${understandIndustry.title}\n\n` +
-    `${understandIndustry.sections.map((section) => `## ${section.title}\n${section.paragraphs.join('\n\n')}`).join('\n\n')}\n`;
-  return markdownContent;
-}
-
-export async function writeUnderstandIndustryToMarkdownFile(industry: string, understandIndustry: UnderstandIndustry) {
-  const markdownContent = getMarkdownContentForUnderstandIndustry(understandIndustry);
-  const key = getS3Key(industry, 'understand-industry.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
+  await writeJsonFileForUnderstandIndustry(industry, understandIndustry);
+  await writeMarkdownFileForUnderstandIndustry(industry, understandIndustry);
 }

@@ -1,11 +1,11 @@
-import {
-  getExecutiveSummaryAndSaveToFile,
-  readExecutiveSummaryFromFile,
-  writeExecutiveSummaryToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/01-executive-summary';
-import { readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
+import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-reports/01-executive-summary';
 import { getIndustryTariffReport, getSummariesOfEvaluatedAreas } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import {
+  readExecutiveSummaryFromFile,
+  readIndustryHeadingsFromFile,
+  readTariffUpdatesFromFile,
+  writeMarkdownFileForExecutiveSummary,
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -36,7 +36,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!execSummary) {
     throw new Error('Executive summary not found');
   }
-  await writeExecutiveSummaryToMarkdownFile(industry, execSummary);
+  await writeMarkdownFileForExecutiveSummary(industry, execSummary);
 
   return getIndustryTariffReport(industry);
 }

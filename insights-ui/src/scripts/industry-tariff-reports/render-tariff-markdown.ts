@@ -1,4 +1,15 @@
-import { EstablishedPlayer, IndustryArea, IndustryAreasWrapper, NewChallenger } from '@/scripts/industry-tariff-reports/tariff-types';
+import {
+  CountrySpecificTariff,
+  EstablishedPlayer,
+  ExecutiveSummary,
+  IndustryArea,
+  IndustryAreasWrapper,
+  Introduction,
+  NewChallenger,
+  TariffUpdatesForIndustry,
+  UnderstandIndustry,
+} from '@/scripts/industry-tariff-reports/tariff-types';
+import { recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
 
 //--------------------------------------------------------------------------------------------------------
 // 00-IndustryAreas
@@ -20,6 +31,80 @@ export function generateMarkdownContent(industryId: string, industryAreasWrapper
 
   return `# ${industryId} Areas\n\n` + industryAreasWrapper.areas.map((heading) => contentForHeadings(heading)).join('\n\n\n') + `\n\n\n`;
 }
+
+//--------------------------------------------------------------------------------------------------------
+// 01-ExecutiveSummary
+//--------------------------------------------------------------------------------------------------------
+
+export function getMarkdownContentForExecutiveSummary(executiveSummary: ExecutiveSummary) {
+  const markdownContent = `# Executive Summary\n\n` + `${executiveSummary.executiveSummary}\n`;
+  return markdownContent;
+}
+
+//--------------------------------------------------------------------------------------------------------
+// 02-Introduction
+//--------------------------------------------------------------------------------------------------------
+
+export function getMarkdownContentForIntroduction(introduction: Introduction) {
+  const markdownContent =
+    `# Introduction\n\n` +
+    `## ${introduction.aboutSector.title}\n${introduction.aboutSector.aboutSector}\n\n` +
+    `## ${introduction.aboutConsumption.title}\n${introduction.aboutConsumption.aboutConsumption}\n\n` +
+    `## ${introduction.pastGrowth.title}\n${introduction.pastGrowth.aboutGrowth}\n\n` +
+    `## ${introduction.futureGrowth.title}\n${introduction.futureGrowth.aboutGrowth}\n\n` +
+    `## ${introduction.usProduction.title}\n${introduction.usProduction.aboutProduction}\n\n` +
+    `## Country Specific Imports\n` +
+    `${introduction.countrySpecificImports.map((importInfo) => `### ${importInfo.title}\n${importInfo.aboutImport}`).join('\n\n')}\n`;
+  return markdownContent;
+}
+
+//--------------------------------------------------------------------------------------------------------
+// 03-IndustryTariffs
+//--------------------------------------------------------------------------------------------------------
+
+export function getMarkdownContentForCountryTariffs(tariff: CountrySpecificTariff): string {
+  const content =
+    `${tariff.tariffDetails}\n\n` +
+    `${tariff.existingTradeAmountAndAgreement}\n\n` +
+    `${tariff.newChanges}\n\n` +
+    `${tariff.tariffChangesForIndustrySubArea?.map((changes) => `- ${changes}`)?.join('\n\n')}\n\n` +
+    `### Trade Impacted by New Tariff\n\n` +
+    `${tariff.tradeImpactedByNewTariff}\n\n` +
+    `### Trade Exempted by New Tariff\n\n` +
+    `${tariff.tradeExemptedByNewTariff}\n`;
+  return recursivelyCleanOpenAiUrls(content);
+}
+
+export function getMarkdownContentForIndustryTariffs(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
+  const markdownContent =
+    `# Tariff Updates for ${industry}\n\n` +
+    `${tariffUpdates.countrySpecificTariffs.map((country) => `##${country.countryName}\n\n${getMarkdownContentForCountryTariffs(country)}`).join('\n\n')}\n`;
+
+  return markdownContent;
+}
+
+//--------------------------------------------------------------------------------------------------------
+// 04-UnderstandIndustry
+//--------------------------------------------------------------------------------------------------------
+
+export function getMarkdownContentForUnderstandIndustry(understandIndustry: UnderstandIndustry) {
+  const markdownContent =
+    `# ${understandIndustry.title}\n\n` +
+    `${understandIndustry.sections.map((section) => `## ${section.title}\n${section.paragraphs.join('\n\n')}`).join('\n\n')}\n`;
+  return markdownContent;
+}
+
+//--------------------------------------------------------------------------------------------------------
+// 05-IndustryAreas
+//--------------------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------------
+// 00-IndustryAreas
+//--------------------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------------
+// 00-IndustryAreas
+//--------------------------------------------------------------------------------------------------------
 
 /**
  * Converts a NewChallenger object to Markdown with organized sections and tables.

@@ -1,9 +1,13 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import {
+  readIndustryHeadingsFromFile,
+  readIntroductionJsonFromFile,
+  writeMarkdownFileForIntroduction,
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { getAndWriteIntroductionsJson, readIntroductionJsonFromFile, writeIntroductionToMarkdownFile } from '@/scripts/industry-tariff-reports/02-introduction';
+import { getAndWriteIntroductionsJson } from '@/scripts/industry-tariff-reports/02-introduction';
 
 interface GenerateIntroductionRequest {
   date: string;
@@ -30,7 +34,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
     throw new Error('Introduction not found');
   }
 
-  await writeIntroductionToMarkdownFile(industry, introductions);
+  await writeMarkdownFileForIntroduction(industry, introductions);
 
   return getIndustryTariffReport(industry);
 }

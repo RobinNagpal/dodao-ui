@@ -1,6 +1,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ExecutiveSummaryActions from '@/components/industry-tariff/section-actions/ExecutiveSummaryActions';
-import { getMarkdownContentForExecutiveSummary } from '@/scripts/industry-tariff-reports/01-executive-summary';
+
+import { getMarkdownContentForExecutiveSummary } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';

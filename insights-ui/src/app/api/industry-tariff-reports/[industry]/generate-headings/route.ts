@@ -1,5 +1,5 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { readIndustryHeadingsFromFile, writeIndustryHeadingsToMarkdownFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { readIndustryHeadingsFromFile, writeMarkdownFileForIndustryAreas } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -17,7 +17,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   const headings = await readIndustryHeadingsFromFile(industry);
   if (!headings) throw new Error(`Headings not found for industry: ${industry}`);
 
-  await writeIndustryHeadingsToMarkdownFile(industry, headings);
+  await writeMarkdownFileForIndustryAreas(industry, headings);
 
   return getIndustryTariffReport(industry);
 }
