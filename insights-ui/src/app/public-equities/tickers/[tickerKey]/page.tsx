@@ -1,10 +1,10 @@
-import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import RadarChart from '@/components/visualizations/RadarChart';
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import {
   FullCriterionEvaluation,
   FullNestedTickerReport,
+  LinkedinProfile,
   PerformanceChecklistItem,
   SpiderGraphForTicker,
   SpiderGraphPie,
@@ -14,7 +14,6 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
-import TickerActionsDropdown from './TickerActionsDropdown';
 import { Metadata } from 'next';
 import { parseMarkdown } from '@/util/parse-markdown';
 import SpiderChartFlyoutMenu from './SpiderChartFlyoutMenu';
@@ -128,18 +127,12 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   const spiderGraphScorePercentage = getSpiderGraphScorePercentage(spiderGraph);
   const { border } = getGraphColor(spiderGraphScorePercentage);
   const aboutTicker = safeParseJsonString(tickerReport.tickerInfo);
+  const managementTeam = (tickerReport.managementTeam as LinkedinProfile[]) || [];
 
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="mx-auto max-w-7xl px-6 lg:px-8 text-color lg:text-center">
-        {/* Private Ellipsis */}
-        <div className="flex justify-end">
-          <PrivateWrapper>
-            <TickerActionsDropdown tickerKey={tickerKey} />
-          </PrivateWrapper>
-        </div>
-
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none text-left">
             <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl">
@@ -163,7 +156,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
               <div className="lg:flex lg:flex-auto lg:justify-center relative">
                 <div className="lg:absolute lg:top-10 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
                   <div className="w-full max-w-lg mx-auto relative">
-                    <div className="absolute top-10 right-0 flex space-x-2">
+                    <div className="absolute top-20 right-0 flex space-x-2">
                       <div className="text-2xl font-bold -z-10" style={{ color: border }}>
                         {spiderGraphScorePercentage.toFixed(0)}%
                       </div>
@@ -277,6 +270,28 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
             ))}
         </div>
 
+        {/* Management Team */}
+        {managementTeam.length > 0 && (
+          <div className="my-8">
+            <div className="font-semibold text-xl text-left my-8">{tickerKey}&apos;s Management Team</div>
+            <div className="mx-auto">
+              <ul role="list" className="flex flex-wrap justify-center gap-10">
+                {managementTeam.map((member) => (
+                  <li key={member.fullName} className="flex flex-col items-center">
+                    <img
+                      alt={member.fullName}
+                      src={member.profilePicUrl != null ? member.profilePicUrl : '/dummy-avatar.svg'}
+                      className="mx-auto size-32 rounded-full"
+                    />
+                    <h3 className="mt-6 text-base/7 font-semibold tracking-tight">{member.fullName}</h3>
+                    <p className="text-sm/6 text-center max-w-xs whitespace-normal break-words">{member.occupation}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+
         {/* Further info section */}
         <div className="font-semibold text-xl text-left my-8">More Info About {tickerKey}</div>
         <div className="flex flex-col space-y-2">
@@ -309,7 +324,7 @@ function InfoBlock({ heading, content, IconComponent, IconClasses }: InfoBlockPr
         <IconComponent className={IconClasses ?? 'size-5 mr-2'} />
         <div className="font-semibold my-2">{heading}</div>
       </div>
-      <div className="px-4">{content}</div>
+      <div className="markdown-body px-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(content) }} />
     </div>
   );
 }
