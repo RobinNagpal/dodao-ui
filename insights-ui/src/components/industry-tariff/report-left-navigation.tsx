@@ -15,7 +15,7 @@ interface BookNavigationProps {
   industryId: string;
 }
 
-export default function BookNavigation({ report, industryId }: BookNavigationProps) {
+export default function ReportLeftNavigation({ report, industryId }: BookNavigationProps) {
   const pathname = usePathname();
 
   console.log('pathname', pathname);
@@ -83,12 +83,11 @@ export default function BookNavigation({ report, industryId }: BookNavigationPro
           currentPath={pathname}
           isActive={isActive(`/industry-tariff-report/${industryId}/evaluate-industry-areas`)}
         >
-          {report.industryAreaHeadings?.areas?.flatMap((heading, index) => {
+          {report.industryAreas?.areas?.flatMap((heading, index) => {
             return heading.subAreas.map((subHeading, subIndex) => {
               const indexInArray = index * getNumberOfSubHeadings(industryId) + subIndex;
               const evaluated = report?.evaluateIndustryAreas?.[indexInArray];
-
-              const title = evaluated?.title || index + '-' + subIndex;
+              const title = evaluated?.title || subHeading.title || index + '-' + subIndex;
               return (
                 <NavItem
                   key={index + '-' + subIndex}

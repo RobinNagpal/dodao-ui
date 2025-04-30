@@ -1,4 +1,4 @@
-import { getLlmResponse } from '@/scripts/llm-utils';
+import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { IndustryAreasWrapper, IndustryAreaSection } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { uploadFileToS3, getJsonFromS3 } from '@/scripts/report-file-utils';
@@ -22,15 +22,10 @@ function getIndustryAreaPrompt(industry: string, headings: IndustryAreasWrapper)
   
   # Follow the below instructions:
   - Add 5-6 paragraphs that explain how the given areas divide in the industry into various sub-areas which cover
+  - Explain how the ${industry} sub-areas are connected to each other and how they are related to the main headings.
+  - Give a detailed insightful explanation of the sub-areas and how they are related to the main headings in around 1500 words
   
-  # For output content:
-  - Cite the latest figures and embed hyperlinks to sources.
-  - Include hyperlinks/citations in the content where ever possible in the markdown format.
-  - Dont forget to include hyperlinks/citations in the content where ever possible.
-  - Avoid LaTeX, italics, or KaTeX formatting, or   character for space
-  - Use only headings and subheadings, bold, bullets, points, tables for formatting the content.
-  - Use markdown format for output.
-  - All amounts, dollar values, or figures should be wrapped in backticks.
+  ${outputInstructions}
 
   # Headings and Subheadings
   ${JSON.stringify(headings, null, 2)}

@@ -1,4 +1,4 @@
-import { IndustryAreasWrapper, IndustryAreas } from '@/scripts/industry-tariff-reports/tariff-types';
+import { IndustryAreasWrapper, IndustryArea } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getLlmResponse } from '@/scripts/llm-utils';
 import { getJsonFromS3, uploadFileToS3 } from '@/scripts/report-file-utils';
 import { z, ZodObject } from 'zod';
@@ -69,7 +69,7 @@ export async function getAndWriteIndustryHeadings(industry: string) {
 }
 
 function generateMarkdownContent(industry: string, headings: IndustryAreasWrapper): string {
-  const contentForHeadings = (heading: IndustryAreas) => {
+  const contentForHeadings = (heading: IndustryArea) => {
     return (
       `## ${heading.title}\n${heading.oneLineSummary}\n\n` +
       `${heading.subAreas

@@ -126,14 +126,14 @@ Description: ${area.oneLineSummary}
 # Subsector - ${subArea.title}
 Description: ${subArea.oneLineSummary}
 
+# Output Instructions:
+${outputInstructions}
+
 # Tariff Updates: 
 ${JSON.stringify(tariffUpdates)}
 
 # Date: 
 ${date}
-
-# Output Instructions:
-${outputInstructions}
 
 The analysis should be only for the ${subArea.title} sector. 
 Do not include any data from other headings or subheadings as they will be covered separately.

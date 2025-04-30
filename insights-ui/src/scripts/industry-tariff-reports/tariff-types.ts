@@ -16,14 +16,14 @@ export interface IndustrySubArea {
   companies: PublicCompany[];
 }
 
-export interface IndustryAreas {
+export interface IndustryArea {
   title: string;
   oneLineSummary: string;
   subAreas: IndustrySubArea[];
 }
 
 export interface IndustryAreasWrapper {
-  areas: IndustryAreas[];
+  areas: IndustryArea[];
 }
 
 // 01-executive-summary.ts
@@ -197,12 +197,12 @@ export interface FinalConclusion {
 // Tariff updates for a specific industry
 
 export interface IndustryTariffReport {
-  industryAreaHeadings?: IndustryAreasWrapper;
+  industryAreas?: IndustryAreasWrapper;
   executiveSummary?: ExecutiveSummary;
   introduction?: Introduction;
   tariffUpdates?: TariffUpdatesForIndustry;
   understandIndustry?: UnderstandIndustry;
-  industryAreas?: IndustryAreaSection;
+  industryAreasSections?: IndustryAreaSection;
   evaluateIndustryAreas?: EvaluateIndustryArea[];
   finalConclusion?: FinalConclusion;
 }

@@ -3,7 +3,7 @@ import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-a
 import { establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-markdown';
 
 import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { EvaluateIndustryContent, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { EvaluateIndustryContent, IndustryArea, IndustrySubArea, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
@@ -23,6 +23,9 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
   if (reportResponse.ok) {
     report = await reportResponse.json();
   }
+
+  const area: IndustryArea | undefined = report?.industryAreas?.areas?.[headingIndex];
+  const subArea: IndustrySubArea | undefined = area?.subAreas?.[subHeadingIndex];
 
   const evaluateIndustryArea = report?.evaluateIndustryAreas?.[indexInArray];
 
@@ -60,7 +63,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
     <div>
       {/* Title and Overall Actions */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold heading-color">{evaluateIndustryArea?.title || 'Industry Area Evaluation'}</h1>
+        <h1 className="text-2xl font-bold heading-color">{evaluateIndustryArea?.title || subArea?.title || 'Industry Area Evaluation'}</h1>
         <PrivateWrapper>
           <EvaluateIndustryAreasActions
             industryId={industryId}
