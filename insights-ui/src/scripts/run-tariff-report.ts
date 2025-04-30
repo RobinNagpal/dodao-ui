@@ -1,8 +1,4 @@
-import {
-  getAndWriteIndustryHeadings,
-  readIndustryHeadingsFromFile,
-  writeIndustryHeadingsToMarkdownFile,
-} from '@/scripts/industry-tariff-reports/00-industry-main-headings';
+import { getAndWriteIndustryHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import {
   getExecutiveSummaryAndSaveToFile,
   readExecutiveSummaryFromFile,
@@ -39,6 +35,7 @@ import {
   getPositiveImpactsOfEvaluatedAreas,
   getSummariesOfEvaluatedAreas,
 } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
+import { readIndustryHeadingsFromFile, writeIndustryHeadingsToMarkdownFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import * as dotenv from 'dotenv';
 

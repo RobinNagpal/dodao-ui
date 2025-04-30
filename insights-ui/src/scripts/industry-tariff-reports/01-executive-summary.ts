@@ -65,7 +65,7 @@ async function getExecutiveSummary(
   return response;
 }
 
-function getS3Key(industry: string, fileName: string): string {
+function getS3KeyForExecutiveSummary(industry: string, fileName: string): string {
   return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/01-executive-summary/${fileName}`;
 }
 
@@ -78,17 +78,17 @@ export async function getExecutiveSummaryAndSaveToFile(
   const executiveSummary = await getExecutiveSummary(industry, headings, tariffUpdates, tariffSummaries);
 
   // Upload JSON to S3
-  const jsonKey = getS3Key(industry, 'executive-summary.json');
+  const jsonKey = getS3KeyForExecutiveSummary(industry, 'executive-summary.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(executiveSummary, null, 2)), jsonKey, 'application/json');
 
   // Generate and upload markdown
   const markdownContent = getMarkdownContentForExecutiveSummary(executiveSummary);
-  const markdownKey = getS3Key(industry, 'executive-summary.md');
+  const markdownKey = getS3KeyForExecutiveSummary(industry, 'executive-summary.md');
   await uploadFileToS3(new TextEncoder().encode(markdownContent), markdownKey, 'text/markdown');
 }
 
 export async function readExecutiveSummaryFromFile(industry: string): Promise<ExecutiveSummary | undefined> {
-  const key = getS3Key(industry, 'executive-summary.json');
+  const key = getS3KeyForExecutiveSummary(industry, 'executive-summary.json');
   return await getJsonFromS3<ExecutiveSummary>(key);
 }
 
@@ -99,6 +99,6 @@ export function getMarkdownContentForExecutiveSummary(executiveSummary: Executiv
 
 export async function writeExecutiveSummaryToMarkdownFile(industry: string, executiveSummary: ExecutiveSummary) {
   const markdownContent = getMarkdownContentForExecutiveSummary(executiveSummary);
-  const key = getS3Key(industry, 'executive-summary.md');
+  const key = getS3KeyForExecutiveSummary(industry, 'executive-summary.md');
   await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }

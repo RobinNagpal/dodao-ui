@@ -1,4 +1,3 @@
-import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import { readExecutiveSummaryFromFile } from '@/scripts/industry-tariff-reports/01-executive-summary';
 import { readIntroductionJsonFromFile } from '@/scripts/industry-tariff-reports/02-introduction';
 import { readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
@@ -6,6 +5,7 @@ import { readUnderstandIndustryJsonFromFile } from '@/scripts/industry-tariff-re
 import { readIndustryAreaSectionFromFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
 import { readEvaluateIndustryAreaJsonFromFile } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 import { readFinalConclusionFromFile } from '@/scripts/industry-tariff-reports/07-final-conclusion';
+import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import {
   EvaluateIndustryArea,
   IndustryAreasWrapper,

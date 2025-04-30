@@ -1,4 +1,4 @@
-import { challengerToMarkdown, establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-markdown';
+import { challengerToMarkdown, establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { getJsonFromS3, uploadFileToS3 } from '@/scripts/report-file-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';

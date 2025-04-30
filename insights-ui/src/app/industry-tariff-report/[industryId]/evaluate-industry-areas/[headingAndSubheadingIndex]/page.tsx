@@ -1,6 +1,6 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-actions/EvaluateIndustryAreasActions';
-import { establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-markdown';
+import { establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 
 import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { EvaluateIndustryContent, IndustryArea, IndustrySubArea, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';

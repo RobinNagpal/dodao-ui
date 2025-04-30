@@ -1,4 +1,25 @@
-import { EstablishedPlayer, NewChallenger } from '@/scripts/industry-tariff-reports/tariff-types';
+import { EstablishedPlayer, IndustryArea, IndustryAreasWrapper, NewChallenger } from '@/scripts/industry-tariff-reports/tariff-types';
+
+//--------------------------------------------------------------------------------------------------------
+// 00-IndustryAreas
+//--------------------------------------------------------------------------------------------------------
+export function generateMarkdownContent(industryId: string, industryAreasWrapper: IndustryAreasWrapper): string {
+  const contentForHeadings = (heading: IndustryArea) => {
+    return (
+      `## ${heading.title}\n${heading.oneLineSummary}\n\n` +
+      `${heading.subAreas
+        .map(
+          (subHeading) =>
+            `### ${subHeading.title}\n${subHeading.oneLineSummary}\n\n${subHeading.companies
+              .map((company) => `${company.name} (${company.ticker})`)
+              .join(', ')}`
+        )
+        .join('\n\n')}`
+    );
+  };
+
+  return `# ${industryId} Areas\n\n` + industryAreasWrapper.areas.map((heading) => contentForHeadings(heading)).join('\n\n\n') + `\n\n\n`;
+}
 
 /**
  * Converts a NewChallenger object to Markdown with organized sections and tables.
