@@ -90,14 +90,11 @@ const getTeamLinkedInProfilesForTicker = async (req: NextRequest, { params }: { 
   return updatedTicker;
 };
 
-export function snakeToCamel(s: string): string {
+function snakeToCamel(s: string): string {
   return s.replace(/_([a-z])/g, (_, chr) => chr.toUpperCase());
 }
 
-/**
- * Recursively walk an object/array, converting all keys from snake_case to camelCase.
- */
-export function keysToCamel<T>(input: any): T {
+function keysToCamel<T>(input: any): T {
   if (Array.isArray(input)) {
     return input.map((item) => keysToCamel(item)) as any;
   } else if (input !== null && typeof input === 'object') {
