@@ -1,0 +1,21 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+type: object
+additionalProperties: false
+properties:
+  members:
+    type: array
+    description: "Array of REIT leadership member names and positions"
+    items:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "Name of the member"
+        position:
+          type: string
+          description: "Position of the member"
+      required:
+        - name
+        - position
+required:
+  - members

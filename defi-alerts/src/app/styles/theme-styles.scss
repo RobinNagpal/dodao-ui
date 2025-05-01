@@ -1,0 +1,61 @@
+/* Text colors */
+.text-theme-primary {
+    color: var(--theme-primary);
+  }
+  .text-theme-secondary {
+    color: var(--theme-secondary);
+  }
+  .text-theme-muted {
+    color: var(--theme-muted);
+  }
+  .text-theme-light {
+    color: var(--theme-light);
+  }
+  
+  /* Background colors */
+  .bg-theme-primary {
+    background-color: var(--theme-bg-primary);
+  }
+  .bg-theme-secondary {
+    background-color: var(--theme-bg-secondary);
+  }
+  .bg-theme-muted {
+    background-color: var(--theme-bg-muted);
+  }
+  .bg-theme-dark {
+    background-color: var(--theme-bg-dark);
+  }
+  
+  /* Border colors */
+  .border-theme-primary {
+    border-color: var(--theme-border-primary);
+  }
+  .border-theme-secondary {
+    border-color: var(--theme-border-secondary);
+  }
+  
+  /* Component-specific classes */
+  .card-theme {
+    background-color: var(--theme-card-bg);
+    border-color: var(--theme-card-border);
+  }
+  .button-theme-primary {
+    background-color: var(--theme-button-primary);
+    color: var(--theme-button-text);
+  }
+  .button-theme-primary:hover {
+    background-color: var(--theme-button-primary-hover);
+  }
+  .input-theme {
+    border-color: var(--theme-input-border);
+  }
+  .input-theme:focus {
+    border-color: var(--theme-input-focus);
+    outline-color: var(--theme-input-focus);
+  }
+  
+  /* Gradient backgrounds */
+  .bg-theme-gradient {
+    background-image: linear-gradient(to bottom right, var(--theme-bg-primary), var(--theme-bg-secondary));
+  }
+  

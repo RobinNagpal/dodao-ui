@@ -73,3 +73,18 @@ export interface Latest10QInfoResponse {
   filingDate: string;
   priceAtPeriodEnd: number;
 }
+
+export interface LinkedinProfile {
+  [key: string]: any;
+  publicIdentifier: string;
+  profilePicUrl: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  headline: string;
+  occupation: string;
+  summary: string;
+  experiences: Record<string, any>[];
+  educations: Record<string, any>[];
+  certifications: Record<string, any>[];
+}
