@@ -17,6 +17,7 @@ import {
   IndustryAreasWrapper,
   IndustrySubArea,
   ReportCover,
+  TariffReportSeoDetails,
   TariffUpdatesForIndustry,
   UnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -228,6 +229,10 @@ export async function writeJsonFileForEvaluateSubIndustryArea(
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(result, null, 2)), jsonKey, 'application/json');
 }
 
+//--------------------------------------------------------------------------------------------------------
+// 07-Final Conclusion
+//--------------------------------------------------------------------------------------------------------
+
 export function getS3KeyForFinalConclusion(industry: string, fileName: string): string {
   return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/07-final-conclusion/${fileName}`;
 }
@@ -246,4 +251,21 @@ export async function writeMarkdownFileForFinalConclusion(industry: string, fina
   const markdownContent = getMarkdownContentForFinalConclusion(finalConclusion);
   const key = getS3KeyForFinalConclusion(industry, 'final-conclusion.md');
   await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
+}
+
+//--------------------------------------------------------------------------------------------------------
+// 08-SEO Details
+//--------------------------------------------------------------------------------------------------------
+export function getS3KeyForSeoDetails(industry: string, fileName: string): string {
+  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/08-seo-details/${fileName}`;
+}
+
+export async function writeJsonFileForSeoDetails(industry: string, seoDetails: TariffReportSeoDetails) {
+  const jsonKey = getS3KeyForSeoDetails(industry, 'seo-details.json');
+  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(seoDetails, null, 2)), jsonKey, 'application/json');
+}
+
+export async function readSeoDetailsFromFile(industry: string): Promise<TariffReportSeoDetails | undefined> {
+  const key = getS3KeyForSeoDetails(industry, 'seo-details.json');
+  return await getJsonFromS3<TariffReportSeoDetails>(key);
 }

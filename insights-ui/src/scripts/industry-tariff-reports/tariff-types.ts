@@ -208,13 +208,13 @@ export interface PageSeoDetails {
 }
 
 export interface TariffReportSeoDetails {
-  reportCoverSeoDetails: PageSeoDetails;
-  executiveSummarySeoDetails: PageSeoDetails;
-  tariffUpdatesSeoDetails: PageSeoDetails;
-  understandIndustrySeoDetails: PageSeoDetails;
-  industryAreasSeoDetails: PageSeoDetails;
-  evaluateIndustryAreasSeoDetails: PageSeoDetails[];
-  finalConclusionSeoDetails: PageSeoDetails;
+  reportCoverSeoDetails?: PageSeoDetails;
+  executiveSummarySeoDetails?: PageSeoDetails;
+  tariffUpdatesSeoDetails?: PageSeoDetails;
+  understandIndustrySeoDetails?: PageSeoDetails;
+  industryAreasSeoDetails?: PageSeoDetails;
+  evaluateIndustryAreasSeoDetails?: PageSeoDetails[];
+  finalConclusionSeoDetails?: PageSeoDetails;
 }
 
 export interface IndustryTariffReport {
