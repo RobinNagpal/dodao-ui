@@ -17,7 +17,7 @@ interface TickerTeamInfo {
   members: SingleMemberInfo[];
 }
 
-const getTeamLinkedInProfilesForTicker = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> => {
+const saveTeamLinkedInProfilesForTicker = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> => {
   const { tickerKey } = await params;
 
   const existingTicker = await prisma.ticker.findUnique({
@@ -106,4 +106,96 @@ function keysToCamel<T>(input: any): T {
   return input as T;
 }
 
-export const POST = withErrorHandlingV2<Ticker>(getTeamLinkedInProfilesForTicker);
+interface DeleteMemberBody {
+  publicIdentifier: string;
+}
+
+const deleteTeamMember = async (req: NextRequest, { params }: { params: { tickerKey: string } }): Promise<Ticker> => {
+  const { tickerKey } = params;
+  const body = (await req.json()) as DeleteMemberBody;
+  const { publicIdentifier } = body;
+
+  // 1. Fetch existing ticker
+  const existingTicker = await prisma.ticker.findUnique({
+    where: { tickerKey },
+  });
+
+  if (!existingTicker) {
+    throw new Error(`Ticker not found for key: ${tickerKey}`);
+  }
+
+  // 2. Filter out the member to delete
+  const oldTeam = (existingTicker.managementTeam as LinkedinProfile[]) || [];
+  const newTeam = oldTeam.filter((m) => m.publicIdentifier !== publicIdentifier);
+
+  const updatedTicker = await prisma.ticker.update({
+    where: {
+      spaceId_tickerKey: {
+        spaceId: KoalaGainsSpaceId,
+        tickerKey,
+      },
+    },
+    data: {
+      managementTeam: newTeam,
+    },
+  });
+
+  return updatedTicker;
+};
+
+interface AddMemberBody {
+  name: string;
+  position: string;
+}
+
+const addTeamMember = async (req: NextRequest, { params }: { params: { tickerKey: string } }): Promise<Ticker> => {
+  const { tickerKey } = params;
+  const { name, position } = (await req.json()) as AddMemberBody;
+
+  const existingTicker = await prisma.ticker.findUnique({
+    where: { tickerKey },
+  });
+  if (!existingTicker) {
+    throw new Error(`Ticker not found for key: ${tickerKey}`);
+  }
+
+  const pythonBackendBaseUrl = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || 'https://ai-insights.dodao.io';
+  const endpoint = `${pythonBackendBaseUrl}/api/public-equities/US/get-linkedIn-profile`;
+
+  const resp = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name,
+      position,
+      company_name: existingTicker.companyName,
+    }),
+  });
+  const payload = await resp.json();
+
+  if (!resp.ok || !payload.data) {
+    throw new Error(`Could not find LinkedIn profile for "${name}" at "${endpoint}"`);
+  }
+
+  const newProfile = keysToCamel<LinkedinProfile>(payload.data);
+
+  const oldTeam = Array.isArray(existingTicker.managementTeam) ? (existingTicker.managementTeam as LinkedinProfile[]) : [];
+  const updatedTeam = [...oldTeam, newProfile];
+
+  const updatedTicker = await prisma.ticker.update({
+    where: {
+      spaceId_tickerKey: {
+        spaceId: KoalaGainsSpaceId,
+        tickerKey,
+      },
+    },
+    data: {
+      managementTeam: updatedTeam,
+    },
+  });
+  return updatedTicker;
+};
+
+export const POST = withErrorHandlingV2<Ticker>(saveTeamLinkedInProfilesForTicker);
+export const DELETE = withErrorHandlingV2<Ticker>(deleteTeamMember);
+export const PUT = withErrorHandlingV2<Ticker>(addTeamMember);
