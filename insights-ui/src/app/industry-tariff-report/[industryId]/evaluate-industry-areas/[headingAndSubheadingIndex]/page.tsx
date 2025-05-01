@@ -6,6 +6,80 @@ import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff
 import { EvaluateIndustryContent, IndustryArea, IndustrySubArea, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: Promise<{ industryId: string; headingAndSubheadingIndex: string }> }): Promise<Metadata> {
+  const { industryId, headingAndSubheadingIndex } = await params;
+  const [headingString, subHeadingString] = headingAndSubheadingIndex.split('-');
+
+  const headingIndex = Number.parseInt(headingString, 10);
+  const subHeadingIndex = Number.parseInt(subHeadingString, 10);
+
+  // Fetch the report data
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
+  let report: IndustryTariffReport | null = null;
+
+  if (reportResponse.ok) {
+    report = await reportResponse.json();
+  }
+
+  if (!report) {
+    return {
+      title: 'Industry Area Evaluation | Tariff Report',
+      description: 'Information about industry area impacts from tariff changes',
+    };
+  }
+
+  // Get industry area information
+  const area: IndustryArea | undefined = report?.industryAreas?.areas?.[headingIndex];
+  const subArea: IndustrySubArea | undefined = area?.subAreas?.[subHeadingIndex];
+  const indexInArray = headingIndex * getNumberOfSubHeadings(industryId) + subHeadingIndex;
+  const evaluateIndustryArea = report?.evaluateIndustryAreas?.[indexInArray];
+
+  // Get the SEO details specific to this industry area
+  const areaKey = `${headingIndex}-${subHeadingIndex}`;
+  const seoDetails = report?.reportSeoDetails?.evaluateIndustryAreasSeoDetails?.[areaKey];
+
+  // Create a title that includes the area name
+  const areaTitle = evaluateIndustryArea?.title || subArea?.title || 'Industry Area';
+  const seoTitle = seoDetails?.title || `${areaTitle} Analysis | Tariff Impact Evaluation`;
+  const seoDescription =
+    seoDetails?.shortDescription ||
+    `Detailed analysis of ${areaTitle} including established players, new challengers, and tariff impacts on this industry segment.`;
+  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}/evaluate-industry-areas/${headingAndSubheadingIndex}`;
+
+  // Create keywords from SEO details or fallback to generic ones
+  const keywords = seoDetails?.keywords || [
+    areaTitle,
+    'tariff analysis',
+    'industry evaluation',
+    'established players',
+    'new challengers',
+    'tariff impacts',
+    'KoalaGains',
+  ];
+
+  return {
+    title: seoTitle,
+    description: seoDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: seoTitle,
+      description: seoDescription,
+      url: canonicalUrl,
+      siteName: 'KoalaGains',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seoTitle,
+      description: seoDescription,
+    },
+    keywords: keywords,
+  };
+}
 
 export default async function EvaluateIndustryAreaPage({ params }: { params: Promise<{ industryId: string; headingAndSubheadingIndex: string }> }) {
   const { industryId, headingAndSubheadingIndex } = await params;
