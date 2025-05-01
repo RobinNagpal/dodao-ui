@@ -36,7 +36,7 @@ export default function FinalConclusionActions({ industryId, sectionKey }: Final
   });
 
   const handleRegenerate = async () => {
-    await postData(`${getBaseUrl()}/api/industry-tariff-reports/generate-final-conclusion`, {
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-final-conclusion`, {
       industry: industryId,
       sectionKey: sectionKey,
     });

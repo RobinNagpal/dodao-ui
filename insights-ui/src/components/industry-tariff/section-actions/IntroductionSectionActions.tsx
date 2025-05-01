@@ -29,7 +29,7 @@ export default function IntroductionSectionActions({ industryId, sectionKey, sec
   });
 
   const handleRegenerate = async () => {
-    await postData(`${getBaseUrl()}/api/industry-tariff-reports/generate-introduction`, {
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-introduction`, {
       industry: industryId,
       date: new Date().toISOString().split('T')[0],
       sectionKey: sectionKey,
