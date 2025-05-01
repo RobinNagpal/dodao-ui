@@ -103,6 +103,11 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
 
   const evaluateIndustryArea = report?.evaluateIndustryAreas?.[indexInArray];
 
+  // Check if SEO data exists for this area
+  const areaKey = `${headingIndex}-${subHeadingIndex}`;
+  const seoDetails = report?.reportSeoDetails?.evaluateIndustryAreasSeoDetails?.[areaKey];
+  const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
+
   // Function to render section with header and actions
   const renderSection = (
     title: string,
@@ -135,6 +140,19 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
 
   return (
     <div>
+      {/* SEO Warning Banner for Admins */}
+      {isSeoMissing && (
+        <PrivateWrapper>
+          <div className="my-8 p-3 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex items-center">
+                <span className="font-medium">SEO metadata is missing for this page</span>
+              </div>
+            </div>
+          </div>
+        </PrivateWrapper>
+      )}
+
       {/* Title and Overall Actions */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold heading-color">{evaluateIndustryArea?.title || subArea?.title || 'Industry Area Evaluation'}</h1>
