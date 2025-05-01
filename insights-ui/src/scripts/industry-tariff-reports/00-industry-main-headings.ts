@@ -1,3 +1,4 @@
+import { getDefinitionByIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { writeJsonAndMarkdownFilesForIndustryAreas } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryAreasWrapper } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getLlmResponse } from '@/scripts/llm-utils';
@@ -26,15 +27,16 @@ export const IndustryHeadingsSchema: ZodObject<any> = z.object({
   areas: z.array(IndustryHeadingSchema).describe('Array of main headings.'),
 });
 
-function getMainIndustryPrompt(industry: string) {
+function getMainIndustryPrompt(industryId: string) {
+  const definition = getDefinitionByIndustryId(industryId);
   const prompt: string = `
-  As an investor I want to learn everything about ${industry} sub-industry(GICS). 
+  As an investor I want to learn everything about ${industryId} sub-industry(GICS). 
   
   Give me the information based on the following rules:
   - I want to divide the industry into four main  areas, with three sub areas under each of them.
   - The Downstream areas should come at the end, then the Midstream areas and then the Upstream areas first.
   - I want to make sure the whole industry is covered and there is no overlap between the areas.
-  - Tell me the top 4 areas and 3 subareas under each that I should know.
+  - Tell me the top ${definition.headingsCount} areas and ${definition.subHeadingsCount} subareas under each that I should know.
   - There should be almost no overlap between the headings and subheadings, or subheadings of different headings.
   
   Also under each subheading give me the name and tickers of each 
@@ -46,10 +48,10 @@ function getMainIndustryPrompt(industry: string) {
   return prompt;
 }
 
-export async function getAndWriteIndustryHeadings(industry: string) {
-  const headings = await getLlmResponse<IndustryAreasWrapper>(getMainIndustryPrompt(industry), IndustryHeadingsSchema);
+export async function getAndWriteIndustryHeadings(industryId: string) {
+  const headings = await getLlmResponse<IndustryAreasWrapper>(getMainIndustryPrompt(industryId), IndustryHeadingsSchema);
   console.log(JSON.stringify(headings, null, 2));
 
   // Upload JSON to S3
-  await writeJsonAndMarkdownFilesForIndustryAreas(industry, headings);
+  await writeJsonAndMarkdownFilesForIndustryAreas(industryId, headings);
 }

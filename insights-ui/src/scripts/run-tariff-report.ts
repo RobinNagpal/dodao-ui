@@ -1,6 +1,5 @@
 import { getAndWriteIndustryHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-reports/01-executive-summary';
-import { getAndWriteIntroductionsJson } from '@/scripts/industry-tariff-reports/02-introduction';
 import { getTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { getAndWriteUnderstandIndustryJson } from '@/scripts/industry-tariff-reports/04-understand-industry';
 import { getAndWriteIndustryAreaSectionToJsonFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
@@ -17,7 +16,6 @@ import {
   readFinalConclusionFromFile,
   readIndustryAreaSectionFromFile,
   readIndustryHeadingsFromFile,
-  readIntroductionJsonFromFile,
   readTariffUpdatesFromFile,
   readUnderstandIndustryJsonFromFile,
   writeMarkdownFileForEvaluateSubIndustryArea,
@@ -26,7 +24,6 @@ import {
   writeMarkdownFileForIndustryAreas,
   writeMarkdownFileForIndustryAreaSections,
   writeMarkdownFileForIndustryTariffs,
-  writeMarkdownFileForIntroduction,
   writeMarkdownFileForUnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -39,7 +36,6 @@ dotenv.config();
  */
 export enum ReportType {
   HEADINGS = 'HEADINGS',
-  INTRODUCTION = 'INTRODUCTION',
   UNDERSTAND_INDUSTRY = 'UNDERSTAND_INDUSTRY',
   TARIFF_UPDATES = 'TARIFF_UPDATES',
   INDUSTRY_AREA_SECTION = 'INDUSTRY_AREA_SECTION',
@@ -72,13 +68,6 @@ export async function doIt(
     case ReportType.HEADINGS:
       await getAndWriteIndustryHeadings(industry);
       await writeMarkdownFileForIndustryAreas(industry, headings);
-      break;
-
-    case ReportType.INTRODUCTION:
-      await getAndWriteIntroductionsJson(industry, date, headings);
-      const introductions = await readIntroductionJsonFromFile(industry);
-      if (!introductions) throw new Error('Introductions not found');
-      await writeMarkdownFileForIntroduction(industry, introductions);
       break;
 
     case ReportType.UNDERSTAND_INDUSTRY:

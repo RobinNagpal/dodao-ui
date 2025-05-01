@@ -8,7 +8,6 @@ import {
   IndustryArea,
   IndustryAreaSection,
   IndustryAreasWrapper,
-  Introduction,
   NewChallenger,
   TariffUpdatesForIndustry,
   UnderstandIndustry,
@@ -42,23 +41,6 @@ export function generateMarkdownContent(industryId: string, industryAreasWrapper
 
 export function getMarkdownContentForExecutiveSummary(executiveSummary: ExecutiveSummary) {
   const markdownContent = `# Executive Summary\n\n` + `${executiveSummary.executiveSummary}\n`;
-  return markdownContent;
-}
-
-//--------------------------------------------------------------------------------------------------------
-// 02-Introduction
-//--------------------------------------------------------------------------------------------------------
-
-export function getMarkdownContentForIntroduction(introduction: Introduction) {
-  const markdownContent =
-    `# Introduction\n\n` +
-    `## ${introduction.aboutSector.title}\n${introduction.aboutSector.aboutSector}\n\n` +
-    `## ${introduction.aboutConsumption.title}\n${introduction.aboutConsumption.aboutConsumption}\n\n` +
-    `## ${introduction.pastGrowth.title}\n${introduction.pastGrowth.aboutGrowth}\n\n` +
-    `## ${introduction.futureGrowth.title}\n${introduction.futureGrowth.aboutGrowth}\n\n` +
-    `## ${introduction.usProduction.title}\n${introduction.usProduction.aboutProduction}\n\n` +
-    `## Country Specific Imports\n` +
-    `${introduction.countrySpecificImports.map((importInfo) => `### ${importInfo.title}\n${importInfo.aboutImport}`).join('\n\n')}\n`;
   return markdownContent;
 }
 

@@ -6,7 +6,6 @@ import {
   getMarkdownContentForFinalConclusion,
   getMarkdownContentForIndustryAreas,
   getMarkdownContentForIndustryTariffs,
-  getMarkdownContentForIntroduction,
   getMarkdownContentForUnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import {
@@ -16,7 +15,6 @@ import {
   IndustryAreaSection,
   IndustryAreasWrapper,
   IndustrySubArea,
-  Introduction,
   TariffUpdatesForIndustry,
   UnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -78,29 +76,6 @@ export async function writeMarkdownFileForExecutiveSummary(industry: string, exe
   const markdownContent = getMarkdownContentForExecutiveSummary(executiveSummary);
   const key = getS3KeyForExecutiveSummary(industry, 'executive-summary.md');
   await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
-}
-
-//--------------------------------------------------------------------------------------------------------
-// 02-Introduction
-//--------------------------------------------------------------------------------------------------------
-export function getS3KeyForIntroduction(industry: string, fileName: string): string {
-  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/02-introduction/${fileName}`;
-}
-
-export async function writeMarkdownFileForIntroduction(industry: string, introduction: Introduction) {
-  const markdownContent = getMarkdownContentForIntroduction(introduction);
-  const key = getS3KeyForIntroduction(industry, 'introduction.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
-}
-
-export async function writeJsonFileForIntroduction(industry: string, introduction: Introduction) {
-  const jsonKey = getS3KeyForIntroduction(industry, 'introduction.json');
-  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(introduction, null, 2)), jsonKey, 'application/json');
-}
-
-export async function readIntroductionJsonFromFile(industry: string): Promise<Introduction | undefined> {
-  const key = getS3KeyForIntroduction(industry, 'introduction.json');
-  return await getJsonFromS3<Introduction>(key);
 }
 
 //--------------------------------------------------------------------------------------------------------
