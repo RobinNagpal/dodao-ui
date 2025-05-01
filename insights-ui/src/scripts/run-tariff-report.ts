@@ -29,25 +29,10 @@ import {
   writeMarkdownFileForReportCover,
   writeMarkdownFileForUnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import { TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { ReportType, TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
-
-/**
- * Types of report sections supported by this script.
- */
-export enum ReportType {
-  HEADINGS = 'HEADINGS',
-  UNDERSTAND_INDUSTRY = 'UNDERSTAND_INDUSTRY',
-  TARIFF_UPDATES = 'TARIFF_UPDATES',
-  INDUSTRY_AREA_SECTION = 'INDUSTRY_AREA_SECTION',
-  EVALUATE_INDUSTRY_AREA = 'EVALUATE_INDUSTRY_AREA',
-  REPORT_COVER = 'REPORT_COVER',
-  EXECUTIVE_SUMMARY = 'EXECUTIVE_SUMMARY',
-  FINAL_CONCLUSION = 'FINAL_CONCLUSION',
-  ALL = 'ALL',
-}
 
 export async function doIt(
   reportType: ReportType,
