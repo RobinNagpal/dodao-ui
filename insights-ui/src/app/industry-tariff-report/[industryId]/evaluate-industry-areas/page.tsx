@@ -1,4 +1,4 @@
-import { getNumberOfHeadings, getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';

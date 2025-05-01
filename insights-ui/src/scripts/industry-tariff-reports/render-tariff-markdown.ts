@@ -9,10 +9,18 @@ import {
   IndustryAreaSection,
   IndustryAreasWrapper,
   NewChallenger,
+  ReportCover,
   TariffUpdatesForIndustry,
   UnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
 import { recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
+
+//--------------------------------------------------------------------------------------------------------
+// 01-ReportCover
+//--------------------------------------------------------------------------------------------------------
+export function getMarkdownContentForReportCover(reportCover: ReportCover) {
+  return recursivelyCleanOpenAiUrls(reportCover.reportCoverContent);
+}
 
 //--------------------------------------------------------------------------------------------------------
 // 00-IndustryAreas
@@ -32,7 +40,8 @@ export function generateMarkdownContent(industryId: string, industryAreasWrapper
     );
   };
 
-  return `# ${industryId} Areas\n\n` + industryAreasWrapper.areas.map((heading) => contentForHeadings(heading)).join('\n\n\n') + `\n\n\n`;
+  const content = `# ${industryId} Areas\n\n` + industryAreasWrapper.areas.map((heading) => contentForHeadings(heading)).join('\n\n\n') + `\n\n\n`;
+  return recursivelyCleanOpenAiUrls(content);
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -41,7 +50,7 @@ export function generateMarkdownContent(industryId: string, industryAreasWrapper
 
 export function getMarkdownContentForExecutiveSummary(executiveSummary: ExecutiveSummary) {
   const markdownContent = `# Executive Summary\n\n` + `${executiveSummary.executiveSummary}\n`;
-  return markdownContent;
+  return recursivelyCleanOpenAiUrls(markdownContent);
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -66,7 +75,7 @@ export function getMarkdownContentForIndustryTariffs(industry: string, tariffUpd
     `# Tariff Updates for ${industry}\n\n` +
     `${tariffUpdates.countrySpecificTariffs.map((country) => `##${country.countryName}\n\n${getMarkdownContentForCountryTariffs(country)}`).join('\n\n')}\n`;
 
-  return markdownContent;
+  return recursivelyCleanOpenAiUrls(markdownContent);
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -77,7 +86,7 @@ export function getMarkdownContentForUnderstandIndustry(understandIndustry: Unde
   const markdownContent =
     `# ${understandIndustry.title}\n\n` +
     `${understandIndustry.sections.map((section) => `## ${section.title}\n${section.paragraphs.join('\n\n')}`).join('\n\n')}\n`;
-  return markdownContent;
+  return recursivelyCleanOpenAiUrls(markdownContent);
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -86,7 +95,7 @@ export function getMarkdownContentForUnderstandIndustry(understandIndustry: Unde
 
 export function getMarkdownContentForIndustryAreas(industryAreaSection: IndustryAreaSection) {
   const markdownContent = `# ${industryAreaSection.title}\n\n${industryAreaSection.industryAreas}`;
-  return markdownContent;
+  return recursivelyCleanOpenAiUrls(markdownContent);
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -174,7 +183,8 @@ export function establishedPlayerToMarkdown(player: EstablishedPlayer): string {
 
   const footer = `#### Tariffs & Competitors\n\n` + `- Tariff Impact: ${player.impactOfTariffs}\n\n` + `- Competitors: ${player.competitors}\n\n`;
 
-  return header + productsSection + performanceSection + managementSection + footer;
+  const content = header + productsSection + performanceSection + managementSection + footer;
+  return recursivelyCleanOpenAiUrls(content);
 }
 
 export function getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea: EvaluateIndustryArea) {
@@ -226,7 +236,7 @@ export function getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea: 
 
   /* write file */
   const markdownContent = md.join('\n\n');
-  return markdownContent;
+  return recursivelyCleanOpenAiUrls(markdownContent);
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -243,5 +253,5 @@ export function getMarkdownContentForFinalConclusion(finalConclusion: FinalConcl
     `${finalConclusion.negativeImpacts.negativeImpacts}\n\n` +
     `## Final Statements\n` +
     `${finalConclusion.finalStatements}\n`;
-  return markdownContent;
+  return recursivelyCleanOpenAiUrls(markdownContent);
 }

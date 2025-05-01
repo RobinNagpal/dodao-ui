@@ -118,7 +118,7 @@ export function recursivelyCleanOpenAiUrls(data: any): any {
 export async function getLlmResponse<T extends Record<string, any>>(
   prompt: string,
   schema: ZodObject<any>,
-  model: 'o4-mini' | 'gpt-4o-search-preview' = 'o4-mini',
+  model: 'o4-mini' | 'gpt-4o-search-preview' | 'gpt-4o-mini' = 'o4-mini',
   maxRetries = 3,
   initialDelay = 1000
 ): Promise<T> {

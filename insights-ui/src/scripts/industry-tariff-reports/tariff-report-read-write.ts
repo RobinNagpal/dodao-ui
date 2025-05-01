@@ -6,6 +6,7 @@ import {
   getMarkdownContentForFinalConclusion,
   getMarkdownContentForIndustryAreas,
   getMarkdownContentForIndustryTariffs,
+  getMarkdownContentForReportCover,
   getMarkdownContentForUnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import {
@@ -15,11 +16,40 @@ import {
   IndustryAreaSection,
   IndustryAreasWrapper,
   IndustrySubArea,
+  ReportCover,
   TariffUpdatesForIndustry,
   UnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getJsonFromS3, uploadFileToS3 } from '@/scripts/report-file-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
+
+//--------------------------------------------------------------------------------------------------------
+// 00-ReportCover
+//--------------------------------------------------------------------------------------------------------
+export function getS3KeyForReportCover(industry: string, fileName: string): string {
+  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/01-report-cover/${fileName}`;
+}
+
+export async function writeJsonFileForReportCover(industry: string, reportCover: ReportCover) {
+  const jsonKey = getS3KeyForReportCover(industry, 'report-cover.json');
+  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(reportCover, null, 2)), jsonKey, 'application/json');
+}
+
+export async function writeJsonAndMarkdownFilesForReportCover(industry: string, reportCover: ReportCover) {
+  await writeJsonFileForReportCover(industry, reportCover);
+  await writeMarkdownFileForReportCover(industry, reportCover);
+}
+
+export async function readReportCoverFromFile(industry: string): Promise<ReportCover | undefined> {
+  const key = getS3KeyForReportCover(industry, 'report-cover.json');
+  return await getJsonFromS3<ReportCover>(key);
+}
+
+export async function writeMarkdownFileForReportCover(industry: string, reportCover: ReportCover) {
+  const markdownContent = getMarkdownContentForReportCover(reportCover);
+  const key = getS3KeyForReportCover(industry, 'report-cover.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
+}
 
 //--------------------------------------------------------------------------------------------------------
 // 00-IndustryAreas

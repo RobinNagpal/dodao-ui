@@ -1,7 +1,9 @@
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import ExecutiveSummaryActions from '@/components/industry-tariff/section-actions/ExecutiveSummaryActions';
+import ReportCoverActions from '@/components/industry-tariff/section-actions/ReportCoverActions';
+import { getMarkdownContentForReportCover } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
+import type { IndustryTariffReport, ReportCover } from '@/scripts/industry-tariff-reports/tariff-types';
+import { parseMarkdown } from '@/util/parse-markdown';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export default async function IndustryTariffReportPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
@@ -23,21 +25,22 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
     );
   }
 
+  const reportCover: ReportCover | undefined = report?.reportCover;
+  const markdownContent = reportCover && getMarkdownContentForReportCover(reportCover);
   return (
     <div>
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-3xl font-bold">{report?.reportCover?.title || 'Tariff report for ' + industryId}</h1>
         <PrivateWrapper>
-          <ExecutiveSummaryActions industryId={industryId} />
+          <ReportCoverActions industryId={industryId} />
         </PrivateWrapper>
       </div>
-
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4 heading-color">Report Overview</h2>
-        <p>
-          This report provides a comprehensive analysis of tariff impacts on this industry. Navigate through the sections using the sidebar to explore different
-          aspects of the report.
-        </p>
-      </div>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: (markdownContent && parseMarkdown(markdownContent)) || 'No content available',
+        }}
+        className="markdown-body"
+      />
     </div>
   );
 }
