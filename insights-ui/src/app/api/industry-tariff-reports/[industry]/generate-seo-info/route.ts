@@ -10,7 +10,6 @@ import {
   generateUnderstandIndustrySeo,
 } from '@/scripts/industry-tariff-reports/08-report-seo-info';
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { readIndustryHeadingsFromFile, readSeoDetailsFromFile, writeJsonFileForSeoDetails } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport, PageSeoDetails, ReportType, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -26,16 +25,16 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
     throw new Error('Industry is required');
   }
 
-  // Get the parameters from the request
-  const { searchParams } = new URL(req.url);
-  const sectionParam = searchParams.get('section') || ReportType.ALL;
+  // Get the parameters from the request body
+  const requestBody = await req.json();
+  const sectionParam = requestBody.section || ReportType.ALL;
 
   // Get heading and subheading indices if provided
-  const headingIndexParam = searchParams.get('headingIndex');
-  const subHeadingIndexParam = searchParams.get('subHeadingIndex');
+  const headingIndexParam = requestBody.headingIndex;
+  const subHeadingIndexParam = requestBody.subHeadingIndex;
 
-  const headingIndex = headingIndexParam ? parseInt(headingIndexParam, 10) : undefined;
-  const subHeadingIndex = subHeadingIndexParam ? parseInt(subHeadingIndexParam, 10) : undefined;
+  const headingIndex = headingIndexParam !== undefined ? parseInt(headingIndexParam.toString(), 10) : undefined;
+  const subHeadingIndex = subHeadingIndexParam !== undefined ? parseInt(subHeadingIndexParam.toString(), 10) : undefined;
 
   // Validate that the section parameter is a valid ReportType
   if (!VALID_SECTION_VALUES.includes(sectionParam as ReportType)) {
