@@ -38,7 +38,7 @@ async function generateSeoDetailsForSection(industry: string, sectionName: strin
     ${JSON.stringify(sectionContent, null, 2)}
   `;
 
-  return await getLlmResponse<PageSeoDetails>(prompt, PageSeoDetailsSchema);
+  return await getLlmResponse<PageSeoDetails>(prompt, PageSeoDetailsSchema, 'gpt-4o-mini');
 }
 
 // Generate SEO details for report cover
