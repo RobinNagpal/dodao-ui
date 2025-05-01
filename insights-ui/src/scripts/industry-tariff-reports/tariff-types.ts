@@ -199,7 +199,6 @@ export interface FinalConclusion {
 export interface IndustryTariffReport {
   industryAreas?: IndustryAreasWrapper;
   executiveSummary?: ExecutiveSummary;
-  introduction?: Introduction;
   tariffUpdates?: TariffUpdatesForIndustry;
   understandIndustry?: UnderstandIndustry;
   industryAreasSections?: IndustryAreaSection;

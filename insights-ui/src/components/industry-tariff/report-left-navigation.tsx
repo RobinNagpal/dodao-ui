@@ -42,15 +42,6 @@ export default function ReportLeftNavigation({ report, industryId }: BookNavigat
         />
 
         <NavSection
-          title="Introduction"
-          section="introduction"
-          isExpanded={isSectionExpanded('introduction')}
-          reportId={industryId}
-          currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${industryId}/introduction`)}
-        />
-
-        <NavSection
           title="Tariff Updates"
           section="tariff-updates"
           isExpanded={isSectionExpanded('tariff-updates')}

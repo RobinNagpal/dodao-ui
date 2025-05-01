@@ -4,7 +4,6 @@ import {
   readFinalConclusionFromFile,
   readIndustryAreaSectionFromFile,
   readIndustryHeadingsFromFile,
-  readIntroductionJsonFromFile,
   readTariffUpdatesFromFile,
   readUnderstandIndustryJsonFromFile,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
@@ -17,7 +16,6 @@ import {
 } from '@/scripts/industry-tariff-reports/tariff-types';
 
 export async function getIndustryTariffReport(industry: string): Promise<IndustryTariffReport> {
-  const introduction = await readIntroductionJsonFromFile(industry);
   const executiveSummary = await readExecutiveSummaryFromFile(industry);
   const understandIndustry = await readUnderstandIndustryJsonFromFile(industry);
   const finalConclusion = await readFinalConclusionFromFile(industry);
@@ -46,7 +44,6 @@ export async function getIndustryTariffReport(industry: string): Promise<Industr
     industryAreasSections: industryAreas,
     tariffUpdates,
     understandIndustry,
-    introduction,
   };
 }
 
