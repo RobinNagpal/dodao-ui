@@ -201,15 +201,32 @@ export interface ReportCover {
   reportCoverContent: string;
 }
 
+export interface PageSeoDetails {
+  title: string;
+  shortDescription: string;
+  keywords: string[];
+}
+
+export interface TariffReportSeoDetails {
+  reportCoverSeoDetails: PageSeoDetails;
+  executiveSummarySeoDetails: PageSeoDetails;
+  tariffUpdatesSeoDetails: PageSeoDetails;
+  understandIndustrySeoDetails: PageSeoDetails;
+  industryAreasSeoDetails: PageSeoDetails;
+  evaluateIndustryAreasSeoDetails: PageSeoDetails[];
+  finalConclusionSeoDetails: PageSeoDetails;
+}
+
 export interface IndustryTariffReport {
-  reportCover?: ReportCover;
   industryAreas?: IndustryAreasWrapper;
+  reportCover?: ReportCover;
   executiveSummary?: ExecutiveSummary;
   tariffUpdates?: TariffUpdatesForIndustry;
   understandIndustry?: UnderstandIndustry;
   industryAreasSections?: IndustryAreaSection;
   evaluateIndustryAreas?: EvaluateIndustryArea[];
   finalConclusion?: FinalConclusion;
+  reportSeoDetails?: TariffReportSeoDetails;
 }
 
 export enum EvaluateIndustryContent {
