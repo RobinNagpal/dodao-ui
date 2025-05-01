@@ -1,4 +1,5 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { fetchTariffReports, TariffIndustryDefinition, TariffReport } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ChevronRight, FileText } from 'lucide-react';
@@ -34,28 +35,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-interface TariffReport {
-  industryId: string;
-  title: string;
-  oneLiner: string;
-  updatedAt: string;
-}
-
-// Function to fetch all tariff reports
-function fetchTariffReports(): TariffReport[] {
-  return [
-    {
-      industryId: 'plastic',
-      title: 'Impact of Tariffs on Plastic Industry',
-      oneLiner: 'A comprehensive analysis of how tariffs affect the plastic industry, including supply chain disruptions and cost implications.',
-      updatedAt: 'May 1, 2025',
-    },
-  ];
-}
-
 export default async function ReportsPage() {
   // Fetch tariff reports
-  const tariffReports: TariffReport[] = await fetchTariffReports();
+  const tariffReports: TariffIndustryDefinition[] = fetchTariffReports();
 
   // Set up breadcrumbs
   const breadcrumbs: BreadcrumbsOjbect[] = [
@@ -104,10 +86,10 @@ export default async function ReportsPage() {
                       </div>
 
                       <Link href={`/industry-tariff-report/${report.industryId}`} className="block mt-2 group">
-                        <h3 className="text-xl font-semibold group-hover:text-primary-color transition-colors">{report.title}</h3>
+                        <h3 className="text-xl font-semibold group-hover:text-primary-color transition-colors">{report.reportTitle}</h3>
                       </Link>
 
-                      <p className="mt-3 text-muted-foreground line-clamp-3">{report.oneLiner}</p>
+                      <p className="mt-3 text-muted-foreground line-clamp-3">{report.reportOneLiner}</p>
                     </div>
 
                     <div className="block-bg-color border-t border-color p-4">

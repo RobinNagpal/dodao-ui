@@ -1,6 +1,9 @@
 export interface TariffIndustryDefinition {
   name: string;
   industryId: string;
+  reportTitle: string;
+  reportOneLiner: string;
+  updatedAt: string;
   headingsCount: number;
   subHeadingsCount: number;
   establishedPlayersCount: number;
@@ -12,6 +15,9 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
   Plastics: {
     name: 'Plastics',
     industryId: 'plastic',
+    reportTitle: 'Impact of Tariffs on Plastic Industry',
+    reportOneLiner: 'A comprehensive analysis of how tariffs affect the plastic industry, including supply chain disruptions and cost implications.',
+    updatedAt: 'May 1, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -21,6 +27,9 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
   Toys: {
     name: 'Toys',
     industryId: 'toys',
+    reportTitle: 'Impact of Tariffs on Toy Industry',
+    reportOneLiner: 'A detailed examination of how tariffs influence the toy industry, including shifts in manufacturing and pricing strategies.',
+    updatedAt: 'May 1, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -30,6 +39,9 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
   Aluminium: {
     name: 'Aluminium',
     industryId: 'aluminium',
+    reportTitle: 'Impact of Tariffs on Aluminium Industry',
+    reportOneLiner: 'An in-depth analysis of how tariffs affect the aluminium industry, including market dynamics and competitive landscape.',
+    updatedAt: 'May 1, 2025',
     headingsCount: 4,
     subHeadingsCount: 3,
     establishedPlayersCount: 3,
@@ -39,6 +51,9 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
   Automobiles: {
     name: 'Automobiles',
     industryId: 'automobiles',
+    reportTitle: 'Impact of Tariffs on Automobile Industry',
+    reportOneLiner: 'A comprehensive overview of how tariffs impact the automobile industry, focusing on supply chain changes and cost structures.',
+    updatedAt: 'May 1, 2025',
     headingsCount: 4,
     subHeadingsCount: 3,
     establishedPlayersCount: 3,
@@ -64,4 +79,15 @@ export function getDefinitionByIndustryId(industryId: string): TariffIndustryDef
   }
 
   return industryDefinition[1];
+}
+
+export interface TariffReport {
+  industryId: string;
+  title: string;
+  oneLiner: string;
+  updatedAt: string;
+}
+
+export function fetchTariffReports(): TariffIndustryDefinition[] {
+  return [getDefinitionByIndustryId('plastic')];
 }
