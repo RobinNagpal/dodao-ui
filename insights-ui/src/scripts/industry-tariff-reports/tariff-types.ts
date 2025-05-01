@@ -213,7 +213,7 @@ export interface TariffReportSeoDetails {
   tariffUpdatesSeoDetails?: PageSeoDetails;
   understandIndustrySeoDetails?: PageSeoDetails;
   industryAreasSeoDetails?: PageSeoDetails;
-  evaluateIndustryAreasSeoDetails?: PageSeoDetails[];
+  evaluateIndustryAreasSeoDetails?: Record<string, PageSeoDetails>;
   finalConclusionSeoDetails?: PageSeoDetails;
 }
 

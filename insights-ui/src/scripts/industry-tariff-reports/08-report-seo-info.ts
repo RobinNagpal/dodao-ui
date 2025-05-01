@@ -1,7 +1,10 @@
+import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import {
   readExecutiveSummaryFromFile,
   readFinalConclusionFromFile,
   readIndustryAreaSectionFromFile,
+  readIndustryHeadingsFromFile,
   readReportCoverFromFile,
   readTariffUpdatesFromFile,
   readUnderstandIndustryJsonFromFile,
@@ -79,16 +82,102 @@ export async function generateIndustryAreasSeo(industry: string): Promise<PageSe
 }
 
 // Generate SEO details for evaluate industry areas
-export async function generateEvaluateIndustryAreasSeo(industry: string, evaluateIndustryAreas: EvaluateIndustryArea[]): Promise<PageSeoDetails[]> {
-  const seoDetails: PageSeoDetails[] = [];
+export async function generateEvaluateIndustryAreasSeo(
+  industry: string,
+  evaluateIndustryAreas: EvaluateIndustryArea[]
+): Promise<Record<string, PageSeoDetails>> {
+  const seoDetails: Record<string, PageSeoDetails> = {};
 
-  for (const area of evaluateIndustryAreas) {
-    // For individual areas, we use a combination of the report type and the area title
+  // Get headings to map areas to their indices
+  const headings = await readIndustryHeadingsFromFile(industry);
+  if (!headings) {
+    console.error(`Headings not found for industry: ${industry}`);
+    return seoDetails;
+  }
+
+  // Create a map of area titles to their heading-subheading indices
+  const areaToIndicesMap = new Map<string, string>();
+
+  // Build the map by iterating through all headings and subheadings
+  headings.areas.forEach((heading, headingIndex) => {
+    heading.subAreas.forEach((subArea, subHeadingIndex) => {
+      // Create the key in format headingIndex-subHeadingIndex
+      const key = `${headingIndex}-${subHeadingIndex}`;
+      areaToIndicesMap.set(subArea.title.toLowerCase(), key);
+    });
+  });
+
+  // Calculate the number of subheadings per heading for array index calculation
+  const numSubHeadings = getNumberOfSubHeadings(industry);
+
+  // Process each area to generate SEO details
+  for (let i = 0; i < evaluateIndustryAreas.length; i++) {
+    const area = evaluateIndustryAreas[i];
+
+    // Generate SEO details for this area
     const seoDetail = await generateSeoDetailsForSection(industry, `${ReportType.EVALUATE_INDUSTRY_AREA}: ${area.title}`, area);
-    seoDetails.push(seoDetail);
+
+    // Try to find the key by matching the area title
+    let key = '';
+
+    // First attempt: direct lookup by normalized title
+    const normalizedTitle = area.title.toLowerCase();
+    for (const [title, indexKey] of areaToIndicesMap.entries()) {
+      if (normalizedTitle.includes(title) || title.includes(normalizedTitle)) {
+        key = indexKey;
+        break;
+      }
+    }
+
+    // Second attempt: calculate the key from the array index
+    if (!key && numSubHeadings > 0) {
+      // Calculate the headingIndex and subHeadingIndex from the array index
+      const headingIndex = Math.floor(i / numSubHeadings);
+      const subHeadingIndex = i % numSubHeadings;
+      key = `${headingIndex}-${subHeadingIndex}`;
+    }
+
+    // Store the SEO details with the key
+    if (key) {
+      seoDetails[key] = seoDetail;
+      console.log(`Generated SEO details for ${area.title} with key: ${key}`);
+    } else {
+      // Fallback: use a title-based key if we can't find a proper key
+      const fallbackKey = `title-${normalizedTitle.replace(/\s+/g, '-')}`;
+      seoDetails[fallbackKey] = seoDetail;
+      console.warn(`Could not find index for area: ${area.title}, using fallback key: ${fallbackKey}`);
+    }
   }
 
   return seoDetails;
+}
+
+// Generate SEO details for a single evaluate industry area by index
+export async function generateSingleEvaluateIndustryAreaSeo(
+  industry: string,
+  headingIndex: number,
+  subHeadingIndex: number
+): Promise<PageSeoDetails | undefined> {
+  // Get the report to access the evaluate industry area
+  const report = await getIndustryTariffReport(industry);
+
+  // Get the total number of subheadings per heading to calculate the index
+  const numSubHeadings = getNumberOfSubHeadings(industry);
+
+  // Calculate the index in the evaluateIndustryAreas array
+  const indexInArray = headingIndex * numSubHeadings + subHeadingIndex;
+
+  // Get the evaluate industry area from the report
+  const evaluateIndustryArea = report.evaluateIndustryAreas?.[indexInArray];
+
+  if (!evaluateIndustryArea) {
+    console.error(`Evaluate industry area not found at index ${indexInArray} for industry: ${industry}`);
+    console.error(`Heading index: ${headingIndex}, subheading index: ${subHeadingIndex}`);
+    return undefined;
+  }
+
+  // Generate SEO details for the single area
+  return await generateSeoDetailsForSection(industry, `${ReportType.EVALUATE_INDUSTRY_AREA}: ${evaluateIndustryArea.title}`, evaluateIndustryArea);
 }
 
 // Generate SEO details for final conclusion
