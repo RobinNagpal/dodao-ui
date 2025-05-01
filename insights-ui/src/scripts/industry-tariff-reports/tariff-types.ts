@@ -196,7 +196,13 @@ export interface FinalConclusion {
 
 // Tariff updates for a specific industry
 
+export interface ReportCover {
+  title: string;
+  reportCover: string;
+}
+
 export interface IndustryTariffReport {
+  reportCover?: ReportCover;
   industryAreas?: IndustryAreasWrapper;
   executiveSummary?: ExecutiveSummary;
   tariffUpdates?: TariffUpdatesForIndustry;

@@ -1,5 +1,6 @@
 import { getAndWriteIndustryHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
-import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-reports/01-executive-summary';
+import { getReportCoverAndSaveToFile } from '@/scripts/industry-tariff-reports/01-industry-cover';
+import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-reports/02-executive-summary';
 import { getTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { getAndWriteUnderstandIndustryJson } from '@/scripts/industry-tariff-reports/04-understand-industry';
 import { getAndWriteIndustryAreaSectionToJsonFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
@@ -16,6 +17,7 @@ import {
   readFinalConclusionFromFile,
   readIndustryAreaSectionFromFile,
   readIndustryHeadingsFromFile,
+  readReportCoverFromFile,
   readTariffUpdatesFromFile,
   readUnderstandIndustryJsonFromFile,
   writeMarkdownFileForEvaluateSubIndustryArea,
@@ -24,6 +26,7 @@ import {
   writeMarkdownFileForIndustryAreas,
   writeMarkdownFileForIndustryAreaSections,
   writeMarkdownFileForIndustryTariffs,
+  writeMarkdownFileForReportCover,
   writeMarkdownFileForUnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -40,6 +43,7 @@ export enum ReportType {
   TARIFF_UPDATES = 'TARIFF_UPDATES',
   INDUSTRY_AREA_SECTION = 'INDUSTRY_AREA_SECTION',
   EVALUATE_INDUSTRY_AREA = 'EVALUATE_INDUSTRY_AREA',
+  REPORT_COVER = 'REPORT_COVER',
   EXECUTIVE_SUMMARY = 'EXECUTIVE_SUMMARY',
   FINAL_CONCLUSION = 'FINAL_CONCLUSION',
   ALL = 'ALL',
@@ -110,6 +114,19 @@ export async function doIt(
       const execSummary = await readExecutiveSummaryFromFile(industry);
       if (!execSummary) throw new Error('Executive summary not found');
       await writeMarkdownFileForExecutiveSummary(industry, execSummary);
+      break;
+
+    case ReportType.REPORT_COVER:
+      const tariffUpd = await readTariffUpdatesFromFile(industry);
+      const summ = await getSummariesOfEvaluatedAreas(industry, headings);
+      if (!tariffUpdates) throw new Error('Tariff updates not found');
+      const executiveSummary = await readExecutiveSummaryFromFile(industry);
+      if (!executiveSummary) throw new Error('Executive summary not found');
+      if (!tariffUpd) throw new Error('Tariff updates not found');
+      await getReportCoverAndSaveToFile(industry, headings, executiveSummary.executiveSummary, tariffUpd, summ);
+      const reportCover = await readReportCoverFromFile(industry);
+      if (!reportCover) throw new Error('Report cover not found');
+      await writeMarkdownFileForReportCover(industry, reportCover);
       break;
 
     case ReportType.FINAL_CONCLUSION:

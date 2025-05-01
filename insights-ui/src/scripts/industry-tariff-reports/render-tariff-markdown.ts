@@ -9,10 +9,19 @@ import {
   IndustryAreaSection,
   IndustryAreasWrapper,
   NewChallenger,
+  ReportCover,
   TariffUpdatesForIndustry,
   UnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
 import { recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
+
+//--------------------------------------------------------------------------------------------------------
+// 01-ReportCover
+//--------------------------------------------------------------------------------------------------------
+export function getMarkdownContentForReportCover(reportCover: ReportCover) {
+  const markdownContent = `# ${reportCover.title}\n\n` + `${reportCover.firstParagraph}\n\n` + `${reportCover.secondParagraph}\n`;
+  return markdownContent;
+}
 
 //--------------------------------------------------------------------------------------------------------
 // 00-IndustryAreas
