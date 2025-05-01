@@ -23,7 +23,7 @@ export default function ReportCoverActions({ industryId }: ReportCoverActionsPro
   const { postData, loading: isRegenerating } = usePostData<any, any>({
     successMessage: 'Report cover regenerated successfully!',
     errorMessage: 'Failed to regenerate report cover. Please try again.',
-    redirectPath: `/industry-tariff-report/${industryId}/report-cover`,
+    redirectPath: `/industry-tariff-report/${industryId}`,
   });
 
   const handleRegenerate = async () => {

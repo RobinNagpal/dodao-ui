@@ -123,7 +123,7 @@ export async function doIt(
       const executiveSummary = await readExecutiveSummaryFromFile(industry);
       if (!executiveSummary) throw new Error('Executive summary not found');
       if (!tariffUpd) throw new Error('Tariff updates not found');
-      await getReportCoverAndSaveToFile(industry, headings, executiveSummary.executiveSummary, tariffUpd, summ);
+      await getReportCoverAndSaveToFile(industry, headings, executiveSummary, tariffUpd, summ);
       const reportCover = await readReportCoverFromFile(industry);
       if (!reportCover) throw new Error('Report cover not found');
       await writeMarkdownFileForReportCover(industry, reportCover);

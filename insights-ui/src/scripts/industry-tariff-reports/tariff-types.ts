@@ -198,7 +198,7 @@ export interface FinalConclusion {
 
 export interface ReportCover {
   title: string;
-  reportCover: string;
+  reportCoverContent: string;
 }
 
 export interface IndustryTariffReport {
