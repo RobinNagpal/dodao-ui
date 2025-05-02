@@ -1,5 +1,5 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { fetchTariffReports, TariffIndustryDefinition, TariffReport } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { fetchTariffReports, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ChevronRight, FileText } from 'lucide-react';
