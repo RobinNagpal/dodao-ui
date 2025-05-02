@@ -167,7 +167,8 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
   }
 
   // For each industry report
-  for (const industryId of tariffReports) {
+  for (const industry of tariffReports) {
+    const industryId = industry.industryId;
     // Main report page
     urls.push({
       url: `/industry-tariff-report/${industryId}`,
