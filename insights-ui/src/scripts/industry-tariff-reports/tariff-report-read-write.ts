@@ -1,4 +1,3 @@
-import { industryHeadingsFileName } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import {
   generateMarkdownContent,
   getMarkdownContentForEvaluateIndustryArea,
@@ -55,6 +54,8 @@ export async function writeMarkdownFileForReportCover(industry: string, reportCo
 //--------------------------------------------------------------------------------------------------------
 // 00-IndustryAreas
 //--------------------------------------------------------------------------------------------------------
+
+export const industryHeadingsFileName = 'industry-headings.json';
 
 function getS3KeyForIndustryAreas(industry: string, fileName: string): string {
   return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/${fileName}`;

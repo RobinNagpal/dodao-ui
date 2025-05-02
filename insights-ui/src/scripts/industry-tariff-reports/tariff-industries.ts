@@ -65,7 +65,20 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
     newChallengersCount: 3,
-    companiesToIgnore: [],
+    companiesToIgnore: [
+      'Canoo Inc. (GOEVQ)',
+      'Arrival SA (ARVL)',
+      'Lordstown Motors Corp. (RIDE)',
+      'Faraday Future Intelligent Electric Inc. (FFAI)',
+      'Fisker Inc. (FSR)',
+      'Workhorse Group Inc. (Ticker: WKHS)',
+      'Hyzon Motors Inc. (Ticker: HYZN)',
+      'Nikola Corporation (Ticker: NKLA)',
+      'Proterra Inc. (Ticker: PTRA)',
+      'Lightning eMotors, Inc. (Ticker: ZEV)',
+      'ElectraMeccanica Vehicles Corp. (Ticker: SOLO)',
+      'Slate Auto (Ticker: SLTE)',
+    ],
   },
 };
 

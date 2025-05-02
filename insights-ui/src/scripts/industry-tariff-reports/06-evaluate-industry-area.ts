@@ -7,11 +7,8 @@ import {
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { uploadFileToS3 } from '@/scripts/report-file-utils';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { z } from 'zod';
-import { generateChartUrls } from '../chart-utils';
 import {
-  ChartEntityType,
   EstablishedPlayer,
   EstablishedPlayerRef,
   EvaluateIndustryArea,
@@ -335,6 +332,9 @@ Find the *New Challengers* in the ${subAreaInfo} sector **but output only** each
 - The companies should have unique edge over established players which creates probability of huge success in the future.
 - Make sure to select the best of the best new players and they not be old established players.
 - Ignore challengers like ${tariffIndustry.companiesToIgnore.join(', ')} as they no longer active.
+- Make sure the new challenger is not in the established players list i.e. ${establishedPlayers
+    .map((ep) => `${ep.companyName} (${ep.companyTicker})`)
+    .join(', ')}
 - Make sure the company is not bankrupt or not active.
 
 Do not include any data from other areas or sub-areas as they will be covered separately.
@@ -669,148 +669,6 @@ export async function regenerateEvaluateIndustryAreaJson(
 
   // Generate and upload updated markdown
   await writeMarkdownFileForEvaluateSubIndustryArea(tariffIndustry.industryId, industryArea, industryAreasWrapper, result);
-}
-
-/**
- * Generic function – regenerates *just* the charts for a specific entity
- * without touching the underlying descriptive text.
- */
-export async function regenerateCharts(
-  industry: TariffIndustryDefinition,
-  industryArea: IndustrySubArea,
-  headings: IndustryAreasWrapper,
-  entityType: ChartEntityType,
-  entityIndex = 0
-): Promise<void> {
-  const report = await readEvaluateSubIndustryAreaJsonFromFile(industry.industryId, industryArea, headings);
-
-  if (!report) {
-    return;
-  }
-
-  switch (entityType) {
-    case ChartEntityType.NEW_CHALLENGER: {
-      const chall = report.newChallengersDetails[entityIndex];
-      chall.chartUrls = await generateChartUrls(
-        JSON.stringify(chall, null, 2),
-        chartsPrefix({
-          industry: industry.industryId,
-          industryArea: industryArea.title,
-          reportSection: 'new-challenger',
-          reportSubSection: chall.companyName,
-        })
-      );
-      break;
-    }
-    case ChartEntityType.ESTABLISHED_PLAYER: {
-      const pl = report.establishedPlayerDetails[entityIndex];
-      pl.chartUrls = await generateChartUrls(
-        JSON.stringify(pl, null, 2),
-        chartsPrefix({
-          industry: industry.industryId,
-          industryArea: industryArea.title,
-          reportSection: 'established-player',
-          reportSubSection: pl.companyName,
-        })
-      );
-      break;
-    }
-    case ChartEntityType.HEADWINDS: {
-      report.headwindsAndTailwinds.headwindChartUrls = await generateChartUrls(
-        report.headwindsAndTailwinds.headwinds.join('\n'),
-        chartsPrefix({
-          industry: industry.industryId,
-          industryArea: industryArea.title,
-          reportSection: 'headwinds',
-          reportSubSection: 'headwinds',
-        })
-      );
-      break;
-    }
-    case ChartEntityType.TAILWINDS: {
-      report.headwindsAndTailwinds.tailwindChartUrls = await generateChartUrls(
-        report.headwindsAndTailwinds.tailwinds.join('\n'),
-        chartsPrefix({
-          industry: industry.industryId,
-          industryArea: industryArea.title,
-          reportSection: 'tailwinds',
-          reportSubSection: 'tailwinds',
-        })
-      );
-      break;
-    }
-    case ChartEntityType.POSITIVE_IMPACT: {
-      const pos = report.positiveTariffImpactOnCompanyType[entityIndex];
-      pos.chartUrls = await generateChartUrls(
-        `${pos.companyType}\n${pos.impact}\n${pos.reasoning}`,
-        chartsPrefix({
-          industry: industry.industryId,
-          industryArea: industryArea.title,
-          reportSection: 'positive-impact',
-          reportSubSection: pos.companyType,
-        })
-      );
-      break;
-    }
-    case ChartEntityType.NEGATIVE_IMPACT: {
-      const neg = report.negativeTariffImpactOnCompanyType[entityIndex];
-      neg.chartUrls = await generateChartUrls(
-        `${neg.companyType}\n${neg.impact}\n${neg.reasoning}`,
-        chartsPrefix({
-          industry: industry.industryId,
-          industryArea: industryArea.title,
-          reportSection: 'negative-impact',
-          reportSubSection: neg.companyType,
-        })
-      );
-      break;
-    }
-    case ChartEntityType.SUMMARY: {
-      report.tariffImpactSummaryChartUrls = await generateChartUrls(
-        report.tariffImpactSummary,
-        chartsPrefix({
-          industry: industry.industryId,
-          industryArea: industryArea.title,
-          reportSection: 'summary',
-          reportSubSection: 'summary',
-        })
-      );
-      break;
-    }
-  }
-
-  // Persist modified JSON
-  const jsonKey = getS3KeyForSubIndustryArea(industry.industryId, industryArea, headings, '.json');
-  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(report, null, 2)), jsonKey, 'application/json');
-}
-
-// ---------------------------------------------------------------------------
-// ─── 7. MARKDOWN WRITER UPDATE (only snippet – now embeds images) ────────────
-// ---------------------------------------------------------------------------
-function writeImg(url: string) {
-  return `![chart](${url})`; // simple helper
-}
-
-function getMarkdownFilePath(industry: string, industryArea: IndustrySubArea, headings: IndustryAreasWrapper) {
-  return getS3KeyForSubIndustryArea(industry, industryArea, headings, '.md');
-}
-
-// ---------------------------------------------------------------------------
-// ─── 4. HELPERS: PATH BUILDERS ──────────────────────────────────────────────
-// ---------------------------------------------------------------------------
-
-function chartsPrefix({
-  industry,
-  industryArea,
-  reportSection,
-  reportSubSection,
-}: {
-  industry: string;
-  industryArea: string;
-  reportSection: string;
-  reportSubSection: string;
-}): string {
-  return [slugify(industry), slugify(industryArea), slugify(reportSection), slugify(reportSubSection)].join('/');
 }
 
 /** Upload binary blob to S3 & return public https URL */

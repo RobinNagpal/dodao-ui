@@ -109,7 +109,9 @@ function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headi
   1. Know the changes to the tariffs for that area and sub-area and ${country} by the Trump Government.
   2. I want to know the exact change. Mention the numerical figures as much as possible. 
   
- 
+  Make sure to follow the output instructions below and include all the details in the output.
+
+  
   # Industry Areas
   ${JSON.stringify(headings, null, 2)}
   
