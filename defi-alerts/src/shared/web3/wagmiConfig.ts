@@ -14,8 +14,6 @@ import {
   unichain,
 } from "wagmi/chains";
 
-import { INFURA } from "@/shared/consts/constant";
-
 export const supportedChains: readonly [Chain, ...Chain[]] = [
   sepolia,
   mainnet,

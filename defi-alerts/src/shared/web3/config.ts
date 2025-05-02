@@ -33,16 +33,16 @@ export const NetworksNames: Networks =
         // [sepolia.id]: 'Sepolia',
       }
     : {
-        // [mainnet.id]: "Ethereum",
-        // [optimism.id]: "Optimism",
-        // [polygon.id]: "Polygon",
-        // [arbitrum.id]: "Arbitrum",
-        // [base.id]: "Base",
-        // [scroll.id]: "Scroll",
-        // [mantle.id]: "Mantle",
-        // [ronin.id]: "Ronin",
+        [mainnet.id]: "Ethereum",
+        [optimism.id]: "Optimism",
+        [polygon.id]: "Polygon",
+        [arbitrum.id]: "Arbitrum",
+        [base.id]: "Base",
+        [scroll.id]: "Scroll",
+        [mantle.id]: "Mantle",
+        [ronin.id]: "Ronin",
         [linea.id]: "Linea",
-        // [unichain.id]: "Unichain",
+        [unichain.id]: "Unichain",
         // [sepolia.id]: 'Sepolia',
       };
 
@@ -95,7 +95,7 @@ export const BULKER_ADDRESS: Record<
     USDT: "0x59e242D352ae13166B4987aE5c990C232f7f7CD6",
   },
   [arbitrum.id]: {
-    USDCe: "0xbde8f31d2ddda895264e27dd990fab3dc87b372d",
+    "USDC.e": "0xbde8f31d2ddda895264e27dd990fab3dc87b372d",
     USDC: "0xbde8f31d2ddda895264e27dd990fab3dc87b372d",
     ETH: "0xbde8f31d2ddda895264e27dd990fab3dc87b372d",
     USDT: "0xbde8f31d2ddda895264e27dd990fab3dc87b372d",
@@ -129,7 +129,7 @@ export const TOKEN_SYMBOLS: TOKEN_SYMBOLS_TYPE = {
     "0x2943ac1216979aD8dB76D9147F64E61adc126e96": "ETH",
   },
   [arbitrum.id]: {
-    "0xa5edbdd9646f8dff606d7448e414884c7d905dca": "USDCe",
+    "0xa5edbdd9646f8dff606d7448e414884c7d905dca": "USDC.e",
     "0x9c4ec768c28520b50860ea7a15bd7213a9ff58bf": "USDC",
     "0x6f7d514bbd4aff3bcd1140b7344b32f063dee486": "ETH",
     "0xd98be00b5d27fc98112bde293e487f8d4ca57d07": "USDT",
@@ -164,49 +164,6 @@ export const TOKEN_SYMBOLS: TOKEN_SYMBOLS_TYPE = {
   },
 };
 
-export const MARKET_ADDRESSES_HOME: MARKET_ADDRESSES_TYPE = {
-  [arbitrum.id]: {
-    USDC: {
-      address: "0x9c4ec768c28520b50860ea7a15bd7213a9ff58bf",
-      methods: methods,
-    },
-    ETH: {
-      address: "0x6f7d514bbd4aff3bcd1140b7344b32f063dee486",
-      methods: methods,
-    },
-    USDT: {
-      address: "0xd98be00b5d27fc98112bde293e487f8d4ca57d07",
-      methods: methods,
-    },
-  },
-  [mainnet.id]: {
-    USDC: {
-      address: "0xc3d688b66703497daa19211eedff47f25384cdc3",
-      methods: methods,
-    },
-    ETH: {
-      address: "0xa17581a9e3356d9a858b789d68b4d866e593ae94",
-      methods: methods,
-    },
-    USDT: {
-      address: "0x3afdc9bca9213a35503b077a6072f3d0d5ab0840",
-      methods: methods,
-    },
-  },
-  [base.id]: {
-    USDC: {
-      address: "0xb125e6687d4313864e53df431d5425969c15eb2f",
-      methods: methods,
-    },
-  },
-  [polygon.id]: {
-    "USDC.e": {
-      address: "0xf25212e676d1f7f89cd72ffee66158f541246445",
-      methods: methods,
-    },
-  },
-};
-
 export const MARKET_ADDRESSES: MARKET_ADDRESSES_TYPE = {
   [sepolia.id]: {
     USDC: {
@@ -219,7 +176,7 @@ export const MARKET_ADDRESSES: MARKET_ADDRESSES_TYPE = {
     },
   },
   [arbitrum.id]: {
-    USDCe: {
+    "USDC.e": {
       address: "0xa5edbdd9646f8dff606d7448e414884c7d905dca",
       methods: methods,
     },
@@ -281,6 +238,10 @@ export const MARKET_ADDRESSES: MARKET_ADDRESSES_TYPE = {
     },
     ETH: {
       address: "0x46e6b214b524310239732d51387075e0e70970bf",
+      methods: methods,
+    },
+    USDS: {
+      address: "0x2c776041CCFe903071AF44aa147368a9c8EEA518",
       methods: methods,
     },
   },

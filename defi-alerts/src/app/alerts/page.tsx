@@ -334,7 +334,7 @@ export default function AlertsPage() {
                             ))}
                           </div>
                           <div className="flex flex-wrap gap-1 mt-1">
-                            {alert.selectedMarkets.map((market) => (
+                            {alert.selectedAssets.map((market) => (
                               <span
                                 key={market}
                                 className="text-xs text-theme-primary font-medium"

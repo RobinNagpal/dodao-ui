@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// schema.prisma
 
 generator client {
   provider = "prisma-client-js"
@@ -26,10 +22,11 @@ enum SeverityLevel {
 }
 
 enum NotificationFrequency {
-  IMMEDIATE
+  AT_MOST_ONCE_PER_3_HOURS
   AT_MOST_ONCE_PER_6_HOURS
   AT_MOST_ONCE_PER_12_HOURS
   AT_MOST_ONCE_PER_DAY
+  AT_MOST_ONCE_PER_WEEK
 }
 
 enum AlertCategory {
@@ -61,6 +58,24 @@ model User {
   alerts Alert[]
 }
 
+model Chain {
+  chainId      Int                       @id
+  name         String
+  assets       Asset[]
+  alerts       Alert[]                   @relation("AlertChains")
+  lendingRates LendingAndBorrowingRate[]
+}
+
+model Asset {
+  id           String                    @id @default(cuid())
+  chain        Chain                     @relation(fields: [chainId], references: [chainId])
+  chainId      Int
+  symbol       String
+  address      String
+  alerts       Alert[]                   @relation("AlertAssets")
+  lendingRates LendingAndBorrowingRate[]
+}
+
 model Alert {
   id                    String                @id @default(cuid())
   user                  User?                 @relation(fields: [userId], references: [id])
@@ -69,8 +84,8 @@ model Alert {
   actionType            AlertActionType
   isComparison          Boolean               @default(false)
   walletAddress         String?
-  selectedChains        String[]
-  selectedMarkets       String[]
+  selectedChains        Chain[]               @relation("AlertChains")
+  selectedAssets        Asset[]               @relation("AlertAssets")
   compareProtocols      String[]
   notificationFrequency NotificationFrequency
   conditions            AlertCondition[]
@@ -98,4 +113,30 @@ model DeliveryChannel {
   channelType DeliveryChannelType
   email       String?
   webhookUrl  String?
+}
+
+model LendingAndBorrowingRate {
+  id           String   @id @default(cuid())
+  protocolName String
+  chain        Chain    @relation(fields: [chainId], references: [chainId])
+  chainId      Int
+  asset        Asset    @relation(fields: [assetId], references: [id])
+  assetId      String
+  netEarnAPY   Float
+  netBorrowAPY Float
+  recordedAt   DateTime @default(now())
+}
+
+model AlertNotification {
+  id                String            @id @default(cuid())
+  alertId           String
+  alertConditionIds String[]
+  SentNotification  SentNotification?
+}
+
+model SentNotification {
+  id                  String            @id @default(cuid())
+  alertNotificationId String            @unique
+  alertNotification   AlertNotification @relation(fields: [alertNotificationId], references: [id])
+  sentAt              DateTime          @default(now())
 }

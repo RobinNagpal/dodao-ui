@@ -98,11 +98,9 @@ export function useCompoundMarketsAprs(): () => Promise<CompoundMarketApr[]> {
               res[1].result as bigint,
             ]);
 
-            console.log(
-              `Fetching APRs for ${NetworksNames[chainId]} ${asset} (${address})`
-            );
-            console.log(priceFeedId);
-            console.log(utilization);
+            // console.log(
+            //   `Fetching APRs for ${NetworksNames[chainId]} ${asset} (${address})`
+            // );
 
             // 2) fetch rates, totals, speeds, AND the market’s own price
             const [
@@ -152,16 +150,6 @@ export function useCompoundMarketsAprs(): () => Promise<CompoundMarketApr[]> {
                 },
               ] as const,
             }).then((res) => res.map((r) => r.result as bigint));
-
-            console.log(decimalsResult);
-            console.log(baseIndexScaleResult);
-            console.log(sRate);
-            console.log(bRate);
-            console.log(totSup);
-            console.log(totBor);
-            console.log(supSpd);
-            console.log(borSpd);
-            console.log(tokenPriceMantissa);
 
             const baseIndexScale = Number(baseIndexScaleResult);
 
@@ -218,8 +206,8 @@ export function useCompoundMarketsAprs(): () => Promise<CompoundMarketApr[]> {
               borrowApr,
               supplyCompRewardApr,
               borrowCompRewardApr,
-              netEarnAPY: supplyApr + supplyCompRewardApr,
-              netBorrowAPY: borrowApr - borrowCompRewardApr,
+              netEarnAPY: +(supplyApr + supplyCompRewardApr).toFixed(2),
+              netBorrowAPY: +(borrowApr - borrowCompRewardApr).toFixed(2),
             };
           })
         );

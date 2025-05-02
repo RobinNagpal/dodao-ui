@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
         actionType,
         walletAddress,
         selectedChains,
-        selectedMarkets,
+        selectedAssets: selectedMarkets,
         compareProtocols,
         notificationFrequency,
         conditions: {

@@ -46,7 +46,7 @@ export default function CompareCompoundPage() {
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([]);
   const [notificationFrequency, setNotificationFrequency] =
-    useState<NotificationFrequency>("IMMEDIATE");
+    useState<NotificationFrequency>("AT_MOST_ONCE_PER_3_HOURS");
 
   const [thresholds, setThresholds] = useState<GeneralComparisonRow[]>([
     {
@@ -55,7 +55,7 @@ export default function CompareCompoundPage() {
       market: "",
       threshold: "",
       severity: "NONE",
-      frequency: "IMMEDIATE",
+      frequency: "AT_MOST_ONCE_PER_3_HOURS",
     },
   ]);
 
@@ -87,7 +87,7 @@ export default function CompareCompoundPage() {
         market: "",
         threshold: "",
         severity: "NONE",
-        frequency: "IMMEDIATE",
+        frequency: "AT_MOST_ONCE_PER_3_HOURS",
       },
     ]);
 
@@ -332,46 +332,54 @@ export default function CompareCompoundPage() {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              {["Ethereum", "Arbitrum", "Optimism", "Polygon", "Base"].map(
-                (c) => (
+              {[
+                "Ethereum",
+                "Optimism",
+                "Arbitrum",
+                "Polygon",
+                "Base",
+                "Unichain",
+                "Ronin",
+                "Mantle",
+                "Scroll",
+              ].map((c) => (
+                <div
+                  key={c}
+                  onClick={() => toggleChain(c)}
+                  className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
+                    selectedChains.includes(c)
+                      ? "border-primary bg-theme-bg-muted"
+                      : "border-theme-border-primary"
+                  }`}
+                >
                   <div
-                    key={c}
-                    onClick={() => toggleChain(c)}
-                    className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
+                    className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
                       selectedChains.includes(c)
-                        ? "border-primary bg-theme-bg-muted"
-                        : "border-theme-border-primary"
+                        ? "bg-primary border-primary"
+                        : "border-theme-border-secondary"
                     }`}
                   >
-                    <div
-                      className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
-                        selectedChains.includes(c)
-                          ? "bg-primary border-primary"
-                          : "border-theme-border-secondary"
-                      }`}
-                    >
-                      {selectedChains.includes(c) && (
-                        <svg
-                          width="10"
-                          height="8"
-                          viewBox="0 0 10 8"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M9 1L3.5 6.5L1 4"
-                            stroke="white"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      )}
-                    </div>
-                    <span className="text-theme-primary">{c}</span>
+                    {selectedChains.includes(c) && (
+                      <svg
+                        width="10"
+                        height="8"
+                        viewBox="0 0 10 8"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9 1L3.5 6.5L1 4"
+                          stroke="white"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
                   </div>
-                )
-              )}
+                  <span className="text-theme-primary">{c}</span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -385,7 +393,18 @@ export default function CompareCompoundPage() {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              {["USDC", "WBTC", "USDT", "ETH", "USDS"].map((m) => (
+              {[
+                "USDC",
+                "USDS",
+                "USDT",
+                "ETH",
+                "WETH",
+                "wstETH",
+                "USDe",
+                "USDC.e",
+                "USDbC",
+                "AERO",
+              ].map((m) => (
                 <div
                   key={m}
                   onClick={() => toggleMarket(m)}

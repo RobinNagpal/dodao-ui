@@ -48,22 +48,22 @@ export default function PersonalizedMarketAlertPage() {
 
   // 1) supply rows
   const defaultSupply: SupplyRow = {
-    chain: "Ethereum",
-    market: "ETH",
+    chain: "Polygon",
+    market: "USDT",
     rate: "7.8%",
     conditionType: "APR_RISE_ABOVE",
     threshold: "",
     severity: "NONE",
-    frequency: "IMMEDIATE",
+    frequency: "AT_MOST_ONCE_PER_3_HOURS",
   };
   const secondSupply: SupplyRow = {
-    chain: "Solana",
-    market: "SOL",
+    chain: "Polygon",
+    market: "USDC.e",
     rate: "6.2%",
-    conditionType: "APR_RISE_ABOVE",
+    conditionType: "APR_FALLS_BELOW",
     threshold: "",
     severity: "NONE",
-    frequency: "IMMEDIATE",
+    frequency: "AT_MOST_ONCE_PER_3_HOURS",
   };
   const [supplyRows, setSupplyRows] = useState<SupplyRow[]>([
     defaultSupply,
@@ -78,12 +78,12 @@ export default function PersonalizedMarketAlertPage() {
   // 2) one borrow row
   const defaultBorrow: BorrowRow = {
     chain: "Base",
-    market: "DAI",
+    market: "ETH",
     rate: "3.8%",
     conditionType: "APR_FALLS_BELOW",
     threshold: "",
     severity: "NONE",
-    frequency: "IMMEDIATE",
+    frequency: "AT_MOST_ONCE_PER_3_HOURS",
   };
 
   const [borrowRows, setBorrowRows] = useState<BorrowRow[]>([

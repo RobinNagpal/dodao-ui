@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
         actionType,
         isComparison: true,
         selectedChains,
-        selectedMarkets,
+        selectedAssets: selectedMarkets,
         compareProtocols,
         notificationFrequency,
         conditions: {
