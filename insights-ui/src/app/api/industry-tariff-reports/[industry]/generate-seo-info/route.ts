@@ -10,6 +10,7 @@ import {
   generateUnderstandIndustrySeo,
 } from '@/scripts/industry-tariff-reports/08-report-seo-info';
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
+import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { readIndustryHeadingsFromFile, readSeoDetailsFromFile, writeJsonFileForSeoDetails } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport, PageSeoDetails, ReportType, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -18,7 +19,7 @@ import { NextRequest } from 'next/server';
 // Valid sections are all enum values from ReportType
 const VALID_SECTION_VALUES = Object.values(ReportType);
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: TariffIndustryId }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
 
   if (!industry) {

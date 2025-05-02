@@ -2,13 +2,17 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-actions/EvaluateIndustryAreasActions';
 import { establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 
-import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { EvaluateIndustryContent, IndustryArea, IndustrySubArea, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 
-export async function generateMetadata({ params }: { params: Promise<{ industryId: string; headingAndSubheadingIndex: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ industryId: TariffIndustryId; headingAndSubheadingIndex: string }>;
+}): Promise<Metadata> {
   const { industryId, headingAndSubheadingIndex } = await params;
   const [headingString, subHeadingString] = headingAndSubheadingIndex.split('-');
 
@@ -81,7 +85,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   };
 }
 
-export default async function EvaluateIndustryAreaPage({ params }: { params: Promise<{ industryId: string; headingAndSubheadingIndex: string }> }) {
+export default async function EvaluateIndustryAreaPage({ params }: { params: Promise<{ industryId: TariffIndustryId; headingAndSubheadingIndex: string }> }) {
   const { industryId, headingAndSubheadingIndex } = await params;
   const [headingString, subHeadingString] = headingAndSubheadingIndex.split('-');
 

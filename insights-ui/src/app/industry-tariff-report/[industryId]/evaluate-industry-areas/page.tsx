@@ -1,11 +1,11 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ industryId: TariffIndustryId }> }): Promise<Metadata> {
   const { industryId } = await params;
 
   // Fetch the report data
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   };
 }
 
-export default async function EvaluateIndustryAreasPage({ params }: { params: Promise<{ industryId: string }> }) {
+export default async function EvaluateIndustryAreasPage({ params }: { params: Promise<{ industryId: TariffIndustryId }> }) {
   const { industryId } = await params;
 
   // Fetch the report data
