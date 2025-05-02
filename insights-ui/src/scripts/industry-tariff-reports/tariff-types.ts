@@ -1,9 +1,3 @@
-export interface TariffReportIndustry {
-  industryId: string;
-  companiesToIgnore: string[];
-  asOfDate: string;
-}
-
 // 00-industry-main-headings.ts
 interface PublicCompany {
   name: string;

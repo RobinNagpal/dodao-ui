@@ -1,6 +1,13 @@
+export enum TariffIndustryId {
+  plastic = 'plastic',
+  toys = 'toys',
+  aluminium = 'aluminium',
+  automobiles = 'automobiles',
+}
+
 export interface TariffIndustryDefinition {
   name: string;
-  industryId: string;
+  industryId: TariffIndustryId;
   reportTitle: string;
   reportOneLiner: string;
   updatedAt: string;
@@ -14,7 +21,7 @@ export interface TariffIndustryDefinition {
 export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
   Plastics: {
     name: 'Plastics',
-    industryId: 'plastic',
+    industryId: TariffIndustryId.plastic,
     reportTitle: 'Impact of Tariffs on Plastic Industry',
     reportOneLiner: 'A comprehensive analysis of how tariffs affect the plastic industry, including supply chain disruptions and cost implications.',
     updatedAt: 'May 1, 2025',
@@ -26,7 +33,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
   },
   Toys: {
     name: 'Toys',
-    industryId: 'toys',
+    industryId: TariffIndustryId.toys,
     reportTitle: 'Impact of Tariffs on Toy Industry',
     reportOneLiner: 'A detailed examination of how tariffs influence the toy industry, including shifts in manufacturing and pricing strategies.',
     updatedAt: 'May 1, 2025',
@@ -38,39 +45,39 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
   },
   Aluminium: {
     name: 'Aluminium',
-    industryId: 'aluminium',
+    industryId: TariffIndustryId.aluminium,
     reportTitle: 'Impact of Tariffs on Aluminium Industry',
     reportOneLiner: 'An in-depth analysis of how tariffs affect the aluminium industry, including market dynamics and competitive landscape.',
     updatedAt: 'May 1, 2025',
-    headingsCount: 4,
-    subHeadingsCount: 3,
+    headingsCount: 3,
+    subHeadingsCount: 2,
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
   },
   Automobiles: {
     name: 'Automobiles',
-    industryId: 'automobiles',
+    industryId: TariffIndustryId.automobiles,
     reportTitle: 'Impact of Tariffs on Automobile Industry',
     reportOneLiner: 'A comprehensive overview of how tariffs impact the automobile industry, focusing on supply chain changes and cost structures.',
     updatedAt: 'May 1, 2025',
-    headingsCount: 4,
-    subHeadingsCount: 3,
+    headingsCount: 3,
+    subHeadingsCount: 2,
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
   },
 };
 
-export function getNumberOfHeadings(industryId: string): number {
-  return getDefinitionByIndustryId(industryId).headingsCount;
+export function getNumberOfHeadings(industryId: TariffIndustryId): number {
+  return getTariffIndustryDefinitionById(industryId).headingsCount;
 }
 
-export function getNumberOfSubHeadings(industryId: string): number {
-  return getDefinitionByIndustryId(industryId).subHeadingsCount;
+export function getNumberOfSubHeadings(industryId: TariffIndustryId): number {
+  return getTariffIndustryDefinitionById(industryId).subHeadingsCount;
 }
 
-export function getDefinitionByIndustryId(industryId: string): TariffIndustryDefinition {
+export function getTariffIndustryDefinitionById(industryId: TariffIndustryId): TariffIndustryDefinition {
   const industryDefinition = Object.entries(TariffIndustries).find((k, v) => {
     return k[1].industryId === industryId.toLowerCase();
   });
@@ -81,13 +88,6 @@ export function getDefinitionByIndustryId(industryId: string): TariffIndustryDef
   return industryDefinition[1];
 }
 
-export interface TariffReport {
-  industryId: string;
-  title: string;
-  oneLiner: string;
-  updatedAt: string;
-}
-
 export function fetchTariffReports(): TariffIndustryDefinition[] {
-  return [getDefinitionByIndustryId('plastic')];
+  return [getTariffIndustryDefinitionById(TariffIndustryId.plastic), getTariffIndustryDefinitionById(TariffIndustryId.automobiles)];
 }

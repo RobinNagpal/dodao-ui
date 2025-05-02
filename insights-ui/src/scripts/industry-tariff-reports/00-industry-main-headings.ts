@@ -1,4 +1,4 @@
-import { getDefinitionByIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { writeJsonAndMarkdownFilesForIndustryAreas } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryAreasWrapper } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getLlmResponse } from '@/scripts/llm-utils';
@@ -27,8 +27,8 @@ export const IndustryHeadingsSchema: ZodObject<any> = z.object({
   areas: z.array(IndustryHeadingSchema).describe('Array of main headings.'),
 });
 
-function getMainIndustryPrompt(industryId: string) {
-  const definition = getDefinitionByIndustryId(industryId);
+function getMainIndustryPrompt(industryId: TariffIndustryId) {
+  const definition = getTariffIndustryDefinitionById(industryId);
   const prompt: string = `
   As an investor I want to learn everything about ${industryId} sub-industry(GICS). 
   
@@ -48,7 +48,7 @@ function getMainIndustryPrompt(industryId: string) {
   return prompt;
 }
 
-export async function getAndWriteIndustryHeadings(industryId: string) {
+export async function getAndWriteIndustryHeadings(industryId: TariffIndustryId) {
   const headings = await getLlmResponse<IndustryAreasWrapper>(getMainIndustryPrompt(industryId), IndustryHeadingsSchema);
   console.log(JSON.stringify(headings, null, 2));
 

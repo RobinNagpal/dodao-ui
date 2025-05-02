@@ -1,14 +1,20 @@
 import ReportLeftNavigation from '@/components/industry-tariff/report-left-navigation';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type React from 'react';
 
-export default async function IndustryTariffReportLayout({ children, params }: { children: React.ReactNode; params: Promise<{ industryId: string }> }) {
-  const paa = await params;
-  const { industryId } = paa;
+export default async function IndustryTariffReportLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ industryId: TariffIndustryId }>;
+}) {
+  const { industryId } = await params;
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
   let report: IndustryTariffReport | null = null;
 

@@ -1,4 +1,4 @@
-import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import {
   readExecutiveSummaryFromFile,
@@ -83,7 +83,7 @@ export async function generateIndustryAreasSeo(industry: string): Promise<PageSe
 
 // Generate SEO details for evaluate industry areas
 export async function generateEvaluateIndustryAreasSeo(
-  industry: string,
+  industry: TariffIndustryId,
   evaluateIndustryAreas: EvaluateIndustryArea[]
 ): Promise<Record<string, PageSeoDetails>> {
   const seoDetails: Record<string, PageSeoDetails> = {};
@@ -154,7 +154,7 @@ export async function generateEvaluateIndustryAreasSeo(
 
 // Generate SEO details for a single evaluate industry area by index
 export async function generateSingleEvaluateIndustryAreaSeo(
-  industry: string,
+  industry: TariffIndustryId,
   headingIndex: number,
   subHeadingIndex: number
 ): Promise<PageSeoDetails | undefined> {
@@ -181,7 +181,7 @@ export async function generateSingleEvaluateIndustryAreaSeo(
 }
 
 // Generate SEO details for final conclusion
-export async function generateFinalConclusionSeo(industry: string): Promise<PageSeoDetails | undefined> {
+export async function generateFinalConclusionSeo(industry: TariffIndustryId): Promise<PageSeoDetails | undefined> {
   const finalConclusion = await readFinalConclusionFromFile(industry);
   if (!finalConclusion) return undefined;
 
@@ -189,7 +189,7 @@ export async function generateFinalConclusionSeo(industry: string): Promise<Page
 }
 
 // Generate SEO details for all sections and save them progressively
-export async function generateAndSaveAllSeoDetails(industry: string, tariffReport: IndustryTariffReport): Promise<TariffReportSeoDetails> {
+export async function generateAndSaveAllSeoDetails(industry: TariffIndustryId, tariffReport: IndustryTariffReport): Promise<TariffReportSeoDetails> {
   const seoDetails: TariffReportSeoDetails = {};
 
   // Generate and save SEO details for report cover

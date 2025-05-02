@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 
-import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { ChevronDown, ChevronRight, ChevronUp, FileText, Folder } from 'lucide-react';
 
@@ -12,7 +12,7 @@ import type React from 'react';
 
 interface BookNavigationProps {
   report: IndustryTariffReport;
-  industryId: string;
+  industryId: TariffIndustryId;
 }
 
 export default function ReportLeftNavigation({ report, industryId }: BookNavigationProps) {

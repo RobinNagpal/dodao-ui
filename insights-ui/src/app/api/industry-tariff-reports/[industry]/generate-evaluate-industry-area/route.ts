@@ -1,12 +1,12 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { getDefinitionByIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import {
   readEvaluateSubIndustryAreaJsonFromFile,
   readIndustryHeadingsFromFile,
   readTariffUpdatesFromFile,
   writeMarkdownFileForEvaluateSubIndustryArea,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import { EvaluateIndustryContent, IndustryTariffReport, TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { EvaluateIndustryContent, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { getAndWriteEvaluateIndustryAreaJson, regenerateEvaluateIndustryAreaJson } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
@@ -21,34 +21,29 @@ export interface GenerateEvaluateIndustryAreaRequest {
   establishedPlayerTicker?: string;
 }
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
-  const { industry } = await params;
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: TariffIndustryId }> }): Promise<IndustryTariffReport> {
+  const { industry: industryId } = await params;
   const request = (await req.json()) as GenerateEvaluateIndustryAreaRequest;
   const { date, headingIndex, subHeadingIndex, sectionType = EvaluateIndustryContent.ALL, challengerTicker, establishedPlayerTicker } = request;
 
-  if (!industry || !date || headingIndex === undefined || subHeadingIndex === undefined) {
+  if (!industryId || !date || headingIndex === undefined || subHeadingIndex === undefined) {
     throw new Error('Industry, date, headingIndex, and subHeadingIndex are required');
   }
 
-  // Create tariff report industry object
-  const tariffIndustry: TariffReportIndustry = {
-    industryId: industry,
-    companiesToIgnore: getDefinitionByIndustryId(industry).companiesToIgnore,
-    asOfDate: date,
-  };
-
   // Get dependencies
-  const headings = await readIndustryHeadingsFromFile(industry);
-  if (!headings) throw new Error(`Headings not found for industry: ${industry}`);
+  const headings = await readIndustryHeadingsFromFile(industryId);
+  if (!headings) throw new Error(`Headings not found for industry: ${industryId}`);
 
-  const tariff = await readTariffUpdatesFromFile(industry);
+  const tariff = await readTariffUpdatesFromFile(industryId);
   const area = headings.areas[headingIndex].subAreas[subHeadingIndex];
 
   if (!tariff) {
     throw new Error('Tariff updates not found');
   }
 
-  console.log(`Generating evaluation for ${industry} - ${area} - ${sectionType} - ${headingIndex} - ${subHeadingIndex}`);
+  const tariffIndustry = getTariffIndustryDefinitionById(industryId);
+
+  console.log(`Generating evaluation for ${industryId} - ${area} - ${sectionType} - ${headingIndex} - ${subHeadingIndex}`);
   // Generate the evaluation based on section type
   if (sectionType === EvaluateIndustryContent.ALL) {
     await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date);
@@ -60,11 +55,11 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
     await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType);
   }
 
-  const evaluated = await readEvaluateSubIndustryAreaJsonFromFile(industry, area, headings);
+  const evaluated = await readEvaluateSubIndustryAreaJsonFromFile(industryId, area, headings);
   if (evaluated) {
-    await writeMarkdownFileForEvaluateSubIndustryArea(industry, area, headings, evaluated);
+    await writeMarkdownFileForEvaluateSubIndustryArea(industryId, area, headings, evaluated);
   }
-  return getIndustryTariffReport(industry);
+  return getIndustryTariffReport(industryId);
 }
 
 export const POST = withErrorHandlingV2<IndustryTariffReport>(postHandler);

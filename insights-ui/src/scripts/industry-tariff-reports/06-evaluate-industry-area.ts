@@ -1,3 +1,4 @@
+import { TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
 import {
   getS3KeyForSubIndustryArea,
   readEvaluateSubIndustryAreaJsonFromFile,
@@ -22,7 +23,6 @@ import {
   NewChallenger,
   NewChallengerRef,
   PositiveTariffImpactOnCompanyType,
-  TariffReportIndustry,
   TariffUpdatesForIndustry,
 } from './tariff-types';
 
@@ -169,7 +169,7 @@ const EstablishedPlayerListSchema = z.object({
  * Get detailed information for a single established player
  */
 async function getEstablishedPlayerDetails(
-  tariffIndustry: TariffReportIndustry,
+  tariffIndustry: TariffIndustryDefinition,
   areas: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   subArea: IndustrySubArea,
@@ -200,7 +200,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${s
   return await getLlmResponse<EstablishedPlayer>(detailPrompt, EstablishedPlayerSchema, 'gpt-4o-search-preview');
 }
 
-function getSubAreaInfoString(subArea: IndustrySubArea, areas: IndustryAreasWrapper, tariffIndustry: TariffReportIndustry) {
+function getSubAreaInfoString(subArea: IndustrySubArea, areas: IndustryAreasWrapper, tariffIndustry: TariffIndustryDefinition) {
   const area = areas.areas.find((a) => a.subAreas.some((s) => s.title === subArea.title));
   if (!area) {
     throw new Error(`Area not found for subArea: ${subArea.title}`);
@@ -214,7 +214,7 @@ function getSubAreaInfoString(subArea: IndustrySubArea, areas: IndustryAreasWrap
  * Get established players using a two-step approach for better results
  */
 async function getEstablishedPlayers(
-  tariffIndustry: TariffReportIndustry,
+  tariffIndustry: TariffIndustryDefinition,
   areas: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   subArea: IndustrySubArea,
@@ -276,7 +276,7 @@ const NewChallengerListSchema = z.object({
  * Get detailed information for a single new challenger
  */
 async function getNewChallengerDetails(
-  tariffIndustry: TariffReportIndustry,
+  tariffIndustry: TariffIndustryDefinition,
   areas: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   industry: IndustrySubArea,
@@ -315,7 +315,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${s
  * Get new challengers using a two-step approach for better results
  */
 async function getNewChallengers(
-  tariffIndustry: TariffReportIndustry,
+  tariffIndustry: TariffIndustryDefinition,
   areas: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   subArea: IndustrySubArea,
@@ -368,7 +368,7 @@ ${JSON.stringify(areas, null, 2)}
  * Get headwinds and tailwinds analysis
  */
 async function getHeadwindsAndTailwinds(
-  tariffIndustry: TariffReportIndustry,
+  tariffIndustry: TariffIndustryDefinition,
   areas: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   subArea: IndustrySubArea,
@@ -474,7 +474,7 @@ async function getTariffImpactSummary(
 }
 
 export async function getAndWriteEvaluateIndustryAreaJson(
-  tariffIndustry: TariffReportIndustry,
+  tariffIndustry: TariffIndustryDefinition,
   industryArea: IndustrySubArea,
   industryAreasWrapper: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
@@ -555,7 +555,7 @@ export async function getAndWriteEvaluateIndustryAreaJson(
 }
 
 export async function regenerateEvaluateIndustryAreaJson(
-  tariffIndustry: TariffReportIndustry,
+  tariffIndustry: TariffIndustryDefinition,
   industryArea: IndustrySubArea,
   industryAreasWrapper: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
@@ -676,7 +676,7 @@ export async function regenerateEvaluateIndustryAreaJson(
  * without touching the underlying descriptive text.
  */
 export async function regenerateCharts(
-  industry: TariffReportIndustry,
+  industry: TariffIndustryDefinition,
   industryArea: IndustrySubArea,
   headings: IndustryAreasWrapper,
   entityType: ChartEntityType,
