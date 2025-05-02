@@ -8,16 +8,16 @@ import {
   readSeoDetailsFromFile,
   readTariffUpdatesFromFile,
   readUnderstandIndustryJsonFromFile,
-  } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-  import {
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import {
   EvaluateIndustryArea,
   IndustryAreasWrapper,
   IndustryTariffReport,
   NegativeTariffImpactOnCompanyType,
   PositiveTariffImpactOnCompanyType,
-  } from '@/scripts/industry-tariff-reports/tariff-types';
-  
-  export async function getIndustryTariffReport(industry: string): Promise<IndustryTariffReport> {
+} from '@/scripts/industry-tariff-reports/tariff-types';
+
+export async function getIndustryTariffReport(industry: string): Promise<IndustryTariffReport> {
   const reportCover = await readReportCoverFromFile(industry);
   const executiveSummary = await readExecutiveSummaryFromFile(industry);
   const understandIndustry = await readUnderstandIndustryJsonFromFile(industry);
@@ -26,11 +26,11 @@ import {
   const industryAreas = await readIndustryAreaSectionFromFile(industry);
   const tariffUpdates = await readTariffUpdatesFromFile(industry);
   const reportSeoDetails = await readSeoDetailsFromFile(industry);
-  
+
   const evaluateIndustryAreas: EvaluateIndustryArea[] = [];
   const headings = industryAreaHeadings?.areas;
   if (!headings) throw new Error(`Headings not found for industry: ${industry}`);
-  
+
   for (const evaluateIndustryArea of headings) {
     for (const subHeading of evaluateIndustryArea.subAreas) {
       const evaluateIndustryAreaData = await readEvaluateSubIndustryAreaJsonFromFile(industry, subHeading, industryAreaHeadings);
@@ -39,7 +39,7 @@ import {
       }
     }
   }
-  
+
   return {
     reportCover: reportCover,
     evaluateIndustryAreas: evaluateIndustryAreas,

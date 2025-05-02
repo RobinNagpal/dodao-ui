@@ -37,18 +37,11 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}/tariff-updates`;
 
   // Get countries affected to use in keywords
-  const countries = report.tariffUpdates?.countrySpecificTariffs.map(tariff => tariff.countryName) || [];
-  
+  const countries = report.tariffUpdates?.countrySpecificTariffs.map((tariff) => tariff.countryName) || [];
+
   // Create keywords from SEO details or fallback to generic ones
-  const keywords = seoDetails?.keywords || [
-    industryName,
-    'tariff updates',
-    'trade agreements',
-    'import tariffs',
-    'export tariffs',
-    ...countries,
-    'KoalaGains',
-  ].slice(0, 10); // Limit to 10 keywords
+  const keywords =
+    seoDetails?.keywords || [industryName, 'tariff updates', 'trade agreements', 'import tariffs', 'export tariffs', ...countries, 'KoalaGains'].slice(0, 10); // Limit to 10 keywords
 
   return {
     title: seoTitle,

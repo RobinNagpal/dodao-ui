@@ -35,14 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}/evaluate-industry-areas`;
 
   // Create keywords from SEO details or fallback to generic ones
-  const keywords = seoDetails?.keywords || [
-    industryName,
-    'industry areas',
-    'market segments',
-    'tariff impact',
-    'sector analysis',
-    'KoalaGains',
-  ];
+  const keywords = seoDetails?.keywords || [industryName, 'industry areas', 'market segments', 'tariff impact', 'sector analysis', 'KoalaGains'];
 
   return {
     title: seoTitle,

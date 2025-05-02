@@ -32,19 +32,11 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   const industryName = report.executiveSummary?.title || 'Industry';
   const seoTitle = seoDetails?.title || `${industryName} Executive Summary | Tariff Impact Analysis`;
   const seoDescription =
-    seoDetails?.shortDescription ||
-    `Executive summary of the ${industryName} tariff report, including key impacts, market trends, and industry outlook.`;
+    seoDetails?.shortDescription || `Executive summary of the ${industryName} tariff report, including key impacts, market trends, and industry outlook.`;
   const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}/executive-summary`;
 
   // Create keywords from SEO details or fallback to generic ones
-  const keywords = seoDetails?.keywords || [
-    industryName,
-    'executive summary',
-    'tariff analysis',
-    'industry overview',
-    'market impacts',
-    'KoalaGains',
-  ];
+  const keywords = seoDetails?.keywords || [industryName, 'executive summary', 'tariff analysis', 'industry overview', 'market impacts', 'KoalaGains'];
 
   return {
     title: seoTitle,
