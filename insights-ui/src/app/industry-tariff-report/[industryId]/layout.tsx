@@ -4,48 +4,7 @@ import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tar
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import type { Metadata } from 'next';
 import type React from 'react';
-
-export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
-  const { industryId } = await params;
-
-  // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
-  let reportData: IndustryTariffReport | null = null;
-
-  if (reportResponse.ok) {
-    reportData = await reportResponse.json();
-  }
-
-  // Extract industry name or use report ID as fallback
-  const industryName = reportData?.executiveSummary?.title || `Industry Report ${industryId}`;
-  const shortDescription = `Comprehensive tariff analysis for ${industryName}. Explore industry insights, tariff impacts, and company evaluations.`;
-  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}`;
-
-  const dynamicKeywords = [industryName, 'tariff analysis', 'industry report', 'tariff impacts', 'industry evaluation', 'KoalaGains'];
-
-  return {
-    title: `${industryName} | Tariff Report | KoalaGains`,
-    description: shortDescription,
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    openGraph: {
-      title: `${industryName} | Tariff Report | KoalaGains`,
-      description: shortDescription,
-      url: canonicalUrl,
-      siteName: 'KoalaGains',
-      type: 'article',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${industryName} | Tariff Report | KoalaGains`,
-      description: shortDescription,
-    },
-    keywords: dynamicKeywords,
-  };
-}
 
 export default async function IndustryTariffReportLayout({ children, params }: { children: React.ReactNode; params: Promise<{ industryId: string }> }) {
   const paa = await params;

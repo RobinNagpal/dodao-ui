@@ -1,6 +1,6 @@
 'use client';
 
-import { EvaluateIndustryContent } from '@/scripts/industry-tariff-reports/tariff-types';
+import { EvaluateIndustryContent, ReportType } from '@/scripts/industry-tariff-reports/tariff-types';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import EllipsisDropdown, { type EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -29,15 +29,23 @@ export default function EvaluateIndustryAreasActions({
 }: EvaluateIndustryAreasActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
+  const [showGenerateSeoModal, setShowGenerateSeoModal] = useState(false);
 
   const actions: EllipsisDropdownItem[] = [
     { key: 'regenerate', label: `Regenerate ${sectionName}` },
     { key: 'edit', label: `Edit ${sectionName}` },
+    { key: 'generate-seo', label: `Generate SEO for ${sectionName}` },
   ];
 
   const { postData, loading: isRegenerating } = usePostData<any, any>({
     successMessage: `${sectionName} regenerated successfully!`,
     errorMessage: `Failed to regenerate ${sectionName}. Please try again.`,
+    redirectPath: `/industry-tariff-report/${industryId}/evaluate-industry-areas/${headingIndex}-${subHeadingIndex}`,
+  });
+
+  const { postData: generateSeo, loading: isGeneratingSeo } = usePostData<any, any>({
+    successMessage: `SEO for ${sectionName} generated successfully!`,
+    errorMessage: `Failed to generate SEO for ${sectionName}. Please try again.`,
     redirectPath: `/industry-tariff-report/${industryId}/evaluate-industry-areas/${headingIndex}-${subHeadingIndex}`,
   });
 
@@ -55,6 +63,18 @@ export default function EvaluateIndustryAreasActions({
     setShowRegenerateModal(false);
   };
 
+  const handleGenerateSeo = async () => {
+    // Send data as JSON body instead of URL parameters
+    const request = {
+      section: ReportType.EVALUATE_INDUSTRY_AREA,
+      headingIndex,
+      subHeadingIndex,
+    };
+    await generateSeo(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-seo-info`, request);
+    router.refresh();
+    setShowGenerateSeoModal(false);
+  };
+
   return (
     <>
       <EllipsisDropdown
@@ -64,6 +84,8 @@ export default function EvaluateIndustryAreasActions({
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
             router.push(`/industry-tariff-report/${industryId}/edit/evaluate-industry-areas/${headingIndex}-${subHeadingIndex}`);
+          } else if (key === 'generate-seo') {
+            setShowGenerateSeoModal(true);
           }
         }}
       />
@@ -75,6 +97,17 @@ export default function EvaluateIndustryAreasActions({
           title={`Regenerate ${sectionName}`}
           confirmationText={`Are you sure you want to regenerate the ${sectionName.toLowerCase()}? This will replace the current content.`}
           confirming={isRegenerating}
+          askForTextInput={false}
+        />
+      )}
+      {showGenerateSeoModal && (
+        <ConfirmationModal
+          open={showGenerateSeoModal}
+          onClose={() => setShowGenerateSeoModal(false)}
+          onConfirm={handleGenerateSeo}
+          title={`Generate SEO for ${sectionName}`}
+          confirmationText={`Are you sure you want to generate SEO metadata for the ${sectionName.toLowerCase()}?`}
+          confirming={isGeneratingSeo}
           askForTextInput={false}
         />
       )}
