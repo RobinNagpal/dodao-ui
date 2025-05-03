@@ -88,8 +88,8 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
   const markdownContent = reportCover && getMarkdownContentForReportCover(reportCover);
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold">{report?.reportCover?.title || 'Tariff report for ' + industryId}</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold">{report?.reportCover?.title || 'Tariff report for ' + industryId}</h1>
         <PrivateWrapper>
           <ReportCoverActions industryId={industryId} />
         </PrivateWrapper>
@@ -98,7 +98,7 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
       {/* SEO Warning Banner for Admins */}
       {isSeoMissing && (
         <PrivateWrapper>
-          <div className="my-8 p-3 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
+          <div className="my-6 sm:my-8 p-3 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex items-center">
                 <span className="font-medium">SEO metadata is missing for this page</span>
