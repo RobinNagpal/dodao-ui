@@ -1,3 +1,4 @@
+import MobileNavToggle from '@/components/industry-tariff/mobile-nav-toggle';
 import ReportLeftNavigation from '@/components/industry-tariff/report-left-navigation';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
@@ -53,15 +54,22 @@ export default async function IndustryTariffReportLayout({
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="mx-auto text-color">
         <div className="mx-auto">
+          {/* Mobile navigation toggle - only visible on small screens */}
+          <div className="block lg:hidden sticky top-0 z-10 bg-background p-4">
+            <MobileNavToggle report={report} industryId={industryId} />
+          </div>
+
           {/* Book UI with Navigation and Content */}
           <div className="flex min-h-[calc(100vh-10rem)] overflow-hidden rounded-lg border border-color background-color shadow-lg">
-            {/* Left side - Book spine/navigation */}
-            <ReportLeftNavigation report={report} industryId={industryId} />
+            {/* Left side - Book spine/navigation - hidden on mobile */}
+            <div className="hidden lg:block">
+              <ReportLeftNavigation report={report} industryId={industryId} />
+            </div>
 
             {/* Right side - Book content */}
-            <div className="flex-1 bg-background p-8">
+            <div className="flex-1 bg-background p-4 sm:p-6 lg:p-8">
               <div className="mx-auto max-w-4xl">
-                <div className="relative min-h-[calc(100vh-10rem)] rounded-lg block-bg-color p-8 shadow-md">
+                <div className="relative min-h-[calc(100vh-10rem)] rounded-lg block-bg-color p-4 sm:p-6 lg:p-8 shadow-md">
                   {/* Page corner fold effect */}
                   <div className="absolute right-0 top-0 h-12 w-12 bg-muted/20">
                     <div className="absolute right-0 top-0 h-0 w-0 border-l-[48px] border-b-[48px] border-l-transparent border-b-[var(--block-bg)]"></div>
