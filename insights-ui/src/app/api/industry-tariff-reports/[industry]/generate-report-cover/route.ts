@@ -1,10 +1,12 @@
+import { getReportCoverAndSaveToFile } from '@/scripts/industry-tariff-reports/01-industry-cover';
 import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-reports/02-executive-summary';
 import { getIndustryTariffReport, getSummariesOfEvaluatedAreas } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import {
   readExecutiveSummaryFromFile,
   readIndustryHeadingsFromFile,
+  readReportCoverFromFile,
   readTariffUpdatesFromFile,
-  writeMarkdownFileForExecutiveSummary,
+  writeMarkdownFileForReportCover,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -17,7 +19,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
     throw new Error('Industry is required');
   }
 
-  // Get dependencies
   const headings = await readIndustryHeadingsFromFile(industry);
   if (!headings) throw new Error(`Headings not found for industry: ${industry}`);
 
@@ -27,16 +28,19 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   const summaries = await getSummariesOfEvaluatedAreas(industry, headings);
 
   // Generate the executive summary
-  if (!tariffUpdates) {
-    throw new Error('Tariff updates not found');
-  }
+  if (!tariffUpdates) throw new Error('Tariff updates not found');
 
-  await getExecutiveSummaryAndSaveToFile(industry, headings, tariffUpdates, summaries);
-  const execSummary = await readExecutiveSummaryFromFile(industry);
-  if (!execSummary) {
-    throw new Error('Executive summary not found');
+  const executiveSummary = await readExecutiveSummaryFromFile(industry);
+  if (!executiveSummary) throw new Error('Executive summary not found');
+
+  // Generate the report cover
+  await getReportCoverAndSaveToFile(industry, headings, executiveSummary, tariffUpdates, summaries);
+
+  const reportCover = await readReportCoverFromFile(industry);
+  if (!reportCover) {
+    throw new Error('Report cover not found');
   }
-  await writeMarkdownFileForExecutiveSummary(industry, execSummary);
+  await writeMarkdownFileForReportCover(industry, reportCover);
 
   return getIndustryTariffReport(industry);
 }

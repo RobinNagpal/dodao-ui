@@ -1,7 +1,64 @@
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import ExecutiveSummaryActions from '@/components/industry-tariff/section-actions/ExecutiveSummaryActions';
+import ReportCoverActions from '@/components/industry-tariff/section-actions/ReportCoverActions';
+import { getMarkdownContentForReportCover } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
+import type { IndustryTariffReport, ReportCover } from '@/scripts/industry-tariff-reports/tariff-types';
+import { parseMarkdown } from '@/util/parse-markdown';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
+  const { industryId } = await params;
+
+  // Fetch the report data
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
+  let report: IndustryTariffReport | null = null;
+
+  if (reportResponse.ok) {
+    report = await reportResponse.json();
+  }
+
+  if (!report) {
+    return {
+      title: 'Industry Tariff Report',
+      description: 'Comprehensive analysis of tariff impacts on industry',
+    };
+  }
+
+  // Get the SEO details specific to the report cover
+  const seoDetails = report.reportSeoDetails?.reportCoverSeoDetails;
+
+  // Create a title that includes the industry name
+  const industryName = report.executiveSummary?.title || 'Industry';
+  const seoTitle = seoDetails?.title || `${industryName} Tariff Report | Comprehensive Analysis`;
+  const seoDescription =
+    seoDetails?.shortDescription ||
+    `Comprehensive analysis of tariff impacts on the ${industryName} industry, including market trends, company impacts, and strategic implications.`;
+  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}`;
+
+  // Create keywords from SEO details or fallback to generic ones
+  const keywords = seoDetails?.keywords || [industryName, 'tariff report', 'tariff impact', 'industry analysis', 'market trends', 'trade policy', 'KoalaGains'];
+
+  return {
+    title: seoTitle,
+    description: seoDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: seoTitle,
+      description: seoDescription,
+      url: canonicalUrl,
+      siteName: 'KoalaGains',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seoTitle,
+      description: seoDescription,
+    },
+    keywords: keywords,
+  };
+}
 
 export default async function IndustryTariffReportPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
@@ -23,21 +80,40 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
     );
   }
 
+  // Check if SEO data exists for this page
+  const seoDetails = report.reportSeoDetails?.reportCoverSeoDetails;
+  const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
+
+  const reportCover: ReportCover | undefined = report?.reportCover;
+  const markdownContent = reportCover && getMarkdownContentForReportCover(reportCover);
   return (
     <div>
-      <div className="flex justify-end mb-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold">{report?.reportCover?.title || 'Tariff report for ' + industryId}</h1>
         <PrivateWrapper>
-          <ExecutiveSummaryActions industryId={industryId} />
+          <ReportCoverActions industryId={industryId} />
         </PrivateWrapper>
       </div>
 
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4 heading-color">Report Overview</h2>
-        <p>
-          This report provides a comprehensive analysis of tariff impacts on this industry. Navigate through the sections using the sidebar to explore different
-          aspects of the report.
-        </p>
-      </div>
+      {/* SEO Warning Banner for Admins */}
+      {isSeoMissing && (
+        <PrivateWrapper>
+          <div className="my-6 sm:my-8 p-3 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex items-center">
+                <span className="font-medium">SEO metadata is missing for this page</span>
+              </div>
+            </div>
+          </div>
+        </PrivateWrapper>
+      )}
+
+      <div
+        dangerouslySetInnerHTML={{
+          __html: (markdownContent && parseMarkdown(markdownContent)) || 'No content available',
+        }}
+        className="markdown-body"
+      />
     </div>
   );
 }

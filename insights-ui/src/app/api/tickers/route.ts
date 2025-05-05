@@ -10,6 +10,9 @@ import { NextRequest } from 'next/server';
 
 async function getHandler(): Promise<Ticker[]> {
   const tickers = await prisma.ticker.findMany({
+    where: {
+      spaceId: KoalaGainsSpaceId,
+    },
     orderBy: {
       createdAt: 'asc',
     },

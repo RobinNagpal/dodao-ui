@@ -2,12 +2,90 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-actions/EvaluateIndustryAreasActions';
 import { establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 
-import { getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { EvaluateIndustryContent, IndustryArea, IndustrySubArea, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Metadata } from 'next';
 
-export default async function EvaluateIndustryAreaPage({ params }: { params: Promise<{ industryId: string; headingAndSubheadingIndex: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ industryId: TariffIndustryId; headingAndSubheadingIndex: string }>;
+}): Promise<Metadata> {
+  const { industryId, headingAndSubheadingIndex } = await params;
+  const [headingString, subHeadingString] = headingAndSubheadingIndex.split('-');
+
+  const headingIndex = Number.parseInt(headingString, 10);
+  const subHeadingIndex = Number.parseInt(subHeadingString, 10);
+
+  // Fetch the report data
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
+  let report: IndustryTariffReport | null = null;
+
+  if (reportResponse.ok) {
+    report = await reportResponse.json();
+  }
+
+  if (!report) {
+    return {
+      title: 'Industry Area Evaluation | Tariff Report',
+      description: 'Information about industry area impacts from tariff changes',
+    };
+  }
+
+  // Get industry area information
+  const area: IndustryArea | undefined = report?.industryAreas?.areas?.[headingIndex];
+  const subArea: IndustrySubArea | undefined = area?.subAreas?.[subHeadingIndex];
+  const indexInArray = headingIndex * getNumberOfSubHeadings(industryId) + subHeadingIndex;
+  const evaluateIndustryArea = report?.evaluateIndustryAreas?.[indexInArray];
+
+  // Get the SEO details specific to this industry area
+  const areaKey = `${headingIndex}-${subHeadingIndex}`;
+  const seoDetails = report?.reportSeoDetails?.evaluateIndustryAreasSeoDetails?.[areaKey];
+
+  // Create a title that includes the area name
+  const areaTitle = evaluateIndustryArea?.title || subArea?.title || 'Industry Area';
+  const seoTitle = seoDetails?.title || `${areaTitle} Analysis | Tariff Impact Evaluation`;
+  const seoDescription =
+    seoDetails?.shortDescription ||
+    `Detailed analysis of ${areaTitle} including established players, new challengers, and tariff impacts on this industry segment.`;
+  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}/evaluate-industry-areas/${headingAndSubheadingIndex}`;
+
+  // Create keywords from SEO details or fallback to generic ones
+  const keywords = seoDetails?.keywords || [
+    areaTitle,
+    'tariff analysis',
+    'industry evaluation',
+    'established players',
+    'new challengers',
+    'tariff impacts',
+    'KoalaGains',
+  ];
+
+  return {
+    title: seoTitle,
+    description: seoDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: seoTitle,
+      description: seoDescription,
+      url: canonicalUrl,
+      siteName: 'KoalaGains',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seoTitle,
+      description: seoDescription,
+    },
+    keywords: keywords,
+  };
+}
+
+export default async function EvaluateIndustryAreaPage({ params }: { params: Promise<{ industryId: TariffIndustryId; headingAndSubheadingIndex: string }> }) {
   const { industryId, headingAndSubheadingIndex } = await params;
   const [headingString, subHeadingString] = headingAndSubheadingIndex.split('-');
 
@@ -28,6 +106,11 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
   const subArea: IndustrySubArea | undefined = area?.subAreas?.[subHeadingIndex];
 
   const evaluateIndustryArea = report?.evaluateIndustryAreas?.[indexInArray];
+
+  // Check if SEO data exists for this area
+  const areaKey = `${headingIndex}-${subHeadingIndex}`;
+  const seoDetails = report?.reportSeoDetails?.evaluateIndustryAreasSeoDetails?.[areaKey];
+  const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
 
   // Function to render section with header and actions
   const renderSection = (
@@ -61,6 +144,19 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
 
   return (
     <div>
+      {/* SEO Warning Banner for Admins */}
+      {isSeoMissing && (
+        <PrivateWrapper>
+          <div className="my-8 p-3 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex items-center">
+                <span className="font-medium">SEO metadata is missing for this page</span>
+              </div>
+            </div>
+          </div>
+        </PrivateWrapper>
+      )}
+
       {/* Title and Overall Actions */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold heading-color">{evaluateIndustryArea?.title || subArea?.title || 'Industry Area Evaluation'}</h1>

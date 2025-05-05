@@ -1,34 +1,32 @@
-import { getDefinitionByIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { writeJsonAndMarkdownFilesForIndustryAreas } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryAreasWrapper } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getLlmResponse } from '@/scripts/llm-utils';
 import { z, ZodObject } from 'zod';
-
-export const industryHeadingsFileName = 'industry-headings.json';
 
 export const PublicCompanySchema = z.object({
   name: z.string().describe('Name of the public company.'),
   ticker: z.string().describe('Ticker symbol of the public company.'),
 });
 
-export const IndustrySubHeadingSchema = z.object({
-  title: z.string().describe('Subheading title'),
-  oneLineSummary: z.string().describe('One line summary of the subheading.'),
+export const IndustrySubAreaSchema = z.object({
+  title: z.string().describe('Subarea title'),
+  oneLineSummary: z.string().describe('One line summary of the subarea.'),
   companies: z.array(PublicCompanySchema).describe('This is the id of the html element to which the hyperlink points'),
 });
 
-export const IndustryHeadingSchema = z.object({
-  title: z.string().describe('Title of the one of the main headings.'),
-  oneLineSummary: z.string().describe('One line summary of the heading.'),
-  subAreas: z.array(IndustrySubHeadingSchema).describe('Array of subheadings under the main heading.'),
+export const IndustryAreaSchema = z.object({
+  title: z.string().describe('Title of the one of the main areas.'),
+  oneLineSummary: z.string().describe('One line summary of the area.'),
+  subAreas: z.array(IndustrySubAreaSchema).describe('Array of subareas under the main area.'),
 });
 
-export const IndustryHeadingsSchema: ZodObject<any> = z.object({
-  areas: z.array(IndustryHeadingSchema).describe('Array of main headings.'),
+export const IndustryAreasSchema: ZodObject<any> = z.object({
+  areas: z.array(IndustryAreaSchema).describe('Array of main areas.'),
 });
 
-function getMainIndustryPrompt(industryId: string) {
-  const definition = getDefinitionByIndustryId(industryId);
+function getMainIndustryPrompt(industryId: TariffIndustryId) {
+  const definition = getTariffIndustryDefinitionById(industryId);
   const prompt: string = `
   As an investor I want to learn everything about ${industryId} sub-industry(GICS). 
   
@@ -37,21 +35,23 @@ function getMainIndustryPrompt(industryId: string) {
   - The Downstream areas should come at the end, then the Midstream areas and then the Upstream areas first.
   - I want to make sure the whole industry is covered and there is no overlap between the areas.
   - Tell me the top ${definition.headingsCount} areas and ${definition.subHeadingsCount} subareas under each that I should know.
-  - There should be almost no overlap between the headings and subheadings, or subheadings of different headings.
+  - Number of areas should be ${definition.headingsCount} 
+  - Number of subareas under each area should be ${definition.subHeadingsCount}.
+  - There should be almost no overlap between the areas and subareas.
   
-  Also under each subheading give me the name and tickers of each 
+  Also under each subAreas give me the name and tickers of each 
   of the us public company that belongs under it.
 
-  I dont want any thing like common industry introduction or metrics or other things to be in the headings or subheadings
+  I dont want any thing like common industry introduction or metrics or other things to be in the areas or subareas.
   `;
 
   return prompt;
 }
 
-export async function getAndWriteIndustryHeadings(industryId: string) {
-  const headings = await getLlmResponse<IndustryAreasWrapper>(getMainIndustryPrompt(industryId), IndustryHeadingsSchema);
-  console.log(JSON.stringify(headings, null, 2));
+export async function getAndWriteIndustryHeadings(industryId: TariffIndustryId) {
+  const areas = await getLlmResponse<IndustryAreasWrapper>(getMainIndustryPrompt(industryId), IndustryAreasSchema);
+  console.log(JSON.stringify(areas, null, 2));
 
   // Upload JSON to S3
-  await writeJsonAndMarkdownFilesForIndustryAreas(industryId, headings);
+  await writeJsonAndMarkdownFilesForIndustryAreas(industryId, areas);
 }

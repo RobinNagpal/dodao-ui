@@ -1,9 +1,3 @@
-export interface TariffReportIndustry {
-  industryId: string;
-  companiesToIgnore: string[];
-  asOfDate: string;
-}
-
 // 00-industry-main-headings.ts
 interface PublicCompany {
   name: string;
@@ -196,14 +190,37 @@ export interface FinalConclusion {
 
 // Tariff updates for a specific industry
 
+export interface ReportCover {
+  title: string;
+  reportCoverContent: string;
+}
+
+export interface PageSeoDetails {
+  title: string;
+  shortDescription: string;
+  keywords: string[];
+}
+
+export interface TariffReportSeoDetails {
+  reportCoverSeoDetails?: PageSeoDetails;
+  executiveSummarySeoDetails?: PageSeoDetails;
+  tariffUpdatesSeoDetails?: PageSeoDetails;
+  understandIndustrySeoDetails?: PageSeoDetails;
+  industryAreasSeoDetails?: PageSeoDetails;
+  evaluateIndustryAreasSeoDetails?: Record<string, PageSeoDetails>;
+  finalConclusionSeoDetails?: PageSeoDetails;
+}
+
 export interface IndustryTariffReport {
   industryAreas?: IndustryAreasWrapper;
+  reportCover?: ReportCover;
   executiveSummary?: ExecutiveSummary;
   tariffUpdates?: TariffUpdatesForIndustry;
   understandIndustry?: UnderstandIndustry;
   industryAreasSections?: IndustryAreaSection;
   evaluateIndustryAreas?: EvaluateIndustryArea[];
   finalConclusion?: FinalConclusion;
+  reportSeoDetails?: TariffReportSeoDetails;
 }
 
 export enum EvaluateIndustryContent {
@@ -225,4 +242,19 @@ export enum ChartEntityType {
   POSITIVE_IMPACT = 'POSITIVE_IMPACT',
   NEGATIVE_IMPACT = 'NEGATIVE_IMPACT',
   SUMMARY = 'SUMMARY',
+}
+
+/**
+ * Types of report sections supported by this script.
+ */
+export enum ReportType {
+  HEADINGS = 'HEADINGS',
+  UNDERSTAND_INDUSTRY = 'UNDERSTAND_INDUSTRY',
+  TARIFF_UPDATES = 'TARIFF_UPDATES',
+  INDUSTRY_AREA_SECTION = 'INDUSTRY_AREA_SECTION',
+  EVALUATE_INDUSTRY_AREA = 'EVALUATE_INDUSTRY_AREA',
+  REPORT_COVER = 'REPORT_COVER',
+  EXECUTIVE_SUMMARY = 'EXECUTIVE_SUMMARY',
+  FINAL_CONCLUSION = 'FINAL_CONCLUSION',
+  ALL = 'ALL',
 }

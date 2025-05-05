@@ -1,9 +1,65 @@
-import { getNumberOfHeadings, getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
-export default async function EvaluateIndustryAreasPage({ params }: { params: Promise<{ industryId: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ industryId: TariffIndustryId }> }): Promise<Metadata> {
+  const { industryId } = await params;
+
+  // Fetch the report data
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
+  let report: IndustryTariffReport | null = null;
+
+  if (reportResponse.ok) {
+    report = await reportResponse.json();
+  }
+
+  if (!report) {
+    return {
+      title: 'Industry Areas | Tariff Report',
+      description: 'Evaluation of industry areas affected by tariff changes',
+    };
+  }
+
+  // Get the SEO details specific to industry areas
+  const seoDetails = report.reportSeoDetails?.industryAreasSeoDetails;
+
+  // Create a title that includes the industry name
+  const industryName = report.executiveSummary?.title || 'Industry';
+  const seoTitle = seoDetails?.title || `${industryName} Industry Areas | Tariff Impact Analysis`;
+  const seoDescription =
+    seoDetails?.shortDescription ||
+    `Comprehensive analysis of key ${industryName} industry areas, examining how tariff changes affect different market segments.`;
+  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}/evaluate-industry-areas`;
+
+  // Create keywords from SEO details or fallback to generic ones
+  const keywords = seoDetails?.keywords || [industryName, 'industry areas', 'market segments', 'tariff impact', 'sector analysis', 'KoalaGains'];
+
+  return {
+    title: seoTitle,
+    description: seoDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: seoTitle,
+      description: seoDescription,
+      url: canonicalUrl,
+      siteName: 'KoalaGains',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seoTitle,
+      description: seoDescription,
+    },
+    keywords: keywords,
+  };
+}
+
+export default async function EvaluateIndustryAreasPage({ params }: { params: Promise<{ industryId: TariffIndustryId }> }) {
   const { industryId } = await params;
 
   // Fetch the report data
@@ -24,9 +80,26 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
     return <div>No industry area headings found</div>;
   }
 
+  // Check if SEO data exists for this page
+  const seoDetails = report.reportSeoDetails?.industryAreasSeoDetails;
+  const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
+
   return (
     <div className="space-y-8">
       <h1 className="text-2xl font-bold mb-6 heading-color">Evaluate Industry Areas</h1>
+
+      {/* SEO Warning Banner for Admins */}
+      {isSeoMissing && (
+        <PrivateWrapper>
+          <div className="my-8 p-3 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex items-center">
+                <span className="font-medium">SEO metadata is missing for this page</span>
+              </div>
+            </div>
+          </div>
+        </PrivateWrapper>
+      )}
 
       {industryAreas.areas.map((heading, index) => (
         <div key={`heading-${index}`} className="mb-6">

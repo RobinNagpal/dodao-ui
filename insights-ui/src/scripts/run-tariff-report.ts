@@ -1,5 +1,6 @@
 import { getAndWriteIndustryHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
-import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-reports/01-executive-summary';
+import { getReportCoverAndSaveToFile } from '@/scripts/industry-tariff-reports/01-industry-cover';
+import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-reports/02-executive-summary';
 import { getTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { getAndWriteUnderstandIndustryJson } from '@/scripts/industry-tariff-reports/04-understand-industry';
 import { getAndWriteIndustryAreaSectionToJsonFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
@@ -10,12 +11,14 @@ import {
   getPositiveImpactsOfEvaluatedAreas,
   getSummariesOfEvaluatedAreas,
 } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
+import { getTariffIndustryDefinitionById, TariffIndustryDefinition, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import {
   readEvaluateSubIndustryAreaJsonFromFile,
   readExecutiveSummaryFromFile,
   readFinalConclusionFromFile,
   readIndustryAreaSectionFromFile,
   readIndustryHeadingsFromFile,
+  readReportCoverFromFile,
   readTariffUpdatesFromFile,
   readUnderstandIndustryJsonFromFile,
   writeMarkdownFileForEvaluateSubIndustryArea,
@@ -24,30 +27,17 @@ import {
   writeMarkdownFileForIndustryAreas,
   writeMarkdownFileForIndustryAreaSections,
   writeMarkdownFileForIndustryTariffs,
+  writeMarkdownFileForReportCover,
   writeMarkdownFileForUnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import { TariffReportIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { ReportType } from '@/scripts/industry-tariff-reports/tariff-types';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-/**
- * Types of report sections supported by this script.
- */
-export enum ReportType {
-  HEADINGS = 'HEADINGS',
-  UNDERSTAND_INDUSTRY = 'UNDERSTAND_INDUSTRY',
-  TARIFF_UPDATES = 'TARIFF_UPDATES',
-  INDUSTRY_AREA_SECTION = 'INDUSTRY_AREA_SECTION',
-  EVALUATE_INDUSTRY_AREA = 'EVALUATE_INDUSTRY_AREA',
-  EXECUTIVE_SUMMARY = 'EXECUTIVE_SUMMARY',
-  FINAL_CONCLUSION = 'FINAL_CONCLUSION',
-  ALL = 'ALL',
-}
-
 export async function doIt(
   reportType: ReportType,
-  tariffIndustry: TariffReportIndustry,
+  tariffIndustry: TariffIndustryDefinition,
   evaluationReportToGenerate: {
     headingIndex: number;
     subHeadingIndex: number;
@@ -56,72 +46,85 @@ export async function doIt(
     subHeadingIndex: 0,
   }
 ) {
-  const industry = tariffIndustry.industryId;
-  const date = tariffIndustry.asOfDate;
+  const industryId = tariffIndustry.industryId;
+  const date = 'May 2, 2025'; // TODO: Update this to be dynamic
   // Pre-read common dependencies
 
-  await getAndWriteIndustryHeadings(industry);
-  const headings = await readIndustryHeadingsFromFile(industry);
+  await getAndWriteIndustryHeadings(industryId);
+  const headings = await readIndustryHeadingsFromFile(industryId);
   if (!headings) throw new Error('Headings not found');
 
   switch (reportType) {
     case ReportType.HEADINGS:
-      await getAndWriteIndustryHeadings(industry);
-      await writeMarkdownFileForIndustryAreas(industry, headings);
+      await getAndWriteIndustryHeadings(industryId);
+      await writeMarkdownFileForIndustryAreas(industryId, headings);
       break;
 
     case ReportType.UNDERSTAND_INDUSTRY:
-      await getAndWriteUnderstandIndustryJson(industry, headings);
-      const understandIndustry = await readUnderstandIndustryJsonFromFile(industry);
+      await getAndWriteUnderstandIndustryJson(industryId, headings);
+      const understandIndustry = await readUnderstandIndustryJsonFromFile(industryId);
       if (!understandIndustry) throw new Error('Understand industry section not found');
-      await writeMarkdownFileForUnderstandIndustry(industry, understandIndustry);
+      await writeMarkdownFileForUnderstandIndustry(industryId, understandIndustry);
       break;
 
     case ReportType.TARIFF_UPDATES:
-      await getTariffUpdatesForIndustryAndSaveToFile(industry, date, headings);
-      const tariffUpdatesForIndustry = await readTariffUpdatesFromFile(industry);
+      await getTariffUpdatesForIndustryAndSaveToFile(industryId, date, headings);
+      const tariffUpdatesForIndustry = await readTariffUpdatesFromFile(industryId);
       if (!tariffUpdatesForIndustry) throw new Error('Tariff updates not found');
-      await writeMarkdownFileForIndustryTariffs(industry, tariffUpdatesForIndustry);
+      await writeMarkdownFileForIndustryTariffs(industryId, tariffUpdatesForIndustry);
       break;
 
     case ReportType.INDUSTRY_AREA_SECTION:
-      await getAndWriteIndustryAreaSectionToJsonFile(industry, headings);
-      const industryAreaSection = await readIndustryAreaSectionFromFile(industry);
+      await getAndWriteIndustryAreaSectionToJsonFile(industryId, headings);
+      const industryAreaSection = await readIndustryAreaSectionFromFile(industryId);
       if (!industryAreaSection) throw new Error('Industry area section not found');
-      await writeMarkdownFileForIndustryAreaSections(industry, industryAreaSection);
+      await writeMarkdownFileForIndustryAreaSections(industryId, industryAreaSection);
       break;
 
     case ReportType.EVALUATE_INDUSTRY_AREA:
-      const tariff = await readTariffUpdatesFromFile(industry);
+      const tariff = await readTariffUpdatesFromFile(industryId);
       const { headingIndex, subHeadingIndex } = evaluationReportToGenerate;
       const firstArea = headings.areas[headingIndex].subAreas[subHeadingIndex];
       await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, firstArea, headings, tariff!, date);
-      const evaluated = await readEvaluateSubIndustryAreaJsonFromFile(industry, firstArea, headings);
+      const evaluated = await readEvaluateSubIndustryAreaJsonFromFile(industryId, firstArea, headings);
       if (evaluated) {
-        await writeMarkdownFileForEvaluateSubIndustryArea(industry, firstArea, headings, evaluated);
+        await writeMarkdownFileForEvaluateSubIndustryArea(industryId, firstArea, headings, evaluated);
       }
       break;
 
     case ReportType.EXECUTIVE_SUMMARY:
-      const tariffUpdates = await readTariffUpdatesFromFile(industry);
-      const summaries = await getSummariesOfEvaluatedAreas(industry, headings);
+      const tariffUpdates = await readTariffUpdatesFromFile(industryId);
+      const summaries = await getSummariesOfEvaluatedAreas(industryId, headings);
       if (!tariffUpdates) throw new Error('Tariff updates not found');
-      await getExecutiveSummaryAndSaveToFile(industry, headings, tariffUpdates, summaries);
-      const execSummary = await readExecutiveSummaryFromFile(industry);
+      await getExecutiveSummaryAndSaveToFile(industryId, headings, tariffUpdates, summaries);
+      const execSummary = await readExecutiveSummaryFromFile(industryId);
       if (!execSummary) throw new Error('Executive summary not found');
-      await writeMarkdownFileForExecutiveSummary(industry, execSummary);
+      await writeMarkdownFileForExecutiveSummary(industryId, execSummary);
+      break;
+
+    case ReportType.REPORT_COVER:
+      const tariffUpd = await readTariffUpdatesFromFile(industryId);
+      const summ = await getSummariesOfEvaluatedAreas(industryId, headings);
+      if (!tariffUpdates) throw new Error('Tariff updates not found');
+      const executiveSummary = await readExecutiveSummaryFromFile(industryId);
+      if (!executiveSummary) throw new Error('Executive summary not found');
+      if (!tariffUpd) throw new Error('Tariff updates not found');
+      await getReportCoverAndSaveToFile(industryId, headings, executiveSummary, tariffUpd, summ);
+      const reportCover = await readReportCoverFromFile(industryId);
+      if (!reportCover) throw new Error('Report cover not found');
+      await writeMarkdownFileForReportCover(industryId, reportCover);
       break;
 
     case ReportType.FINAL_CONCLUSION:
-      const tariffs = await readTariffUpdatesFromFile(industry);
+      const tariffs = await readTariffUpdatesFromFile(industryId);
       if (!tariffs) throw new Error('Tariff updates not found');
-      const summariesAll = await getSummariesOfEvaluatedAreas(industry, headings);
-      const positiveImpacts = await getPositiveImpactsOfEvaluatedAreas(industry, headings);
-      const negativeImpacts = await getNegativeImpactsOfEvaluatedAreas(industry, headings);
-      await getFinalConclusionAndSaveToFile(industry, headings, tariffs, summariesAll, positiveImpacts, negativeImpacts);
-      const conclusion = await readFinalConclusionFromFile(industry);
+      const summariesAll = await getSummariesOfEvaluatedAreas(industryId, headings);
+      const positiveImpacts = await getPositiveImpactsOfEvaluatedAreas(industryId, headings);
+      const negativeImpacts = await getNegativeImpactsOfEvaluatedAreas(industryId, headings);
+      await getFinalConclusionAndSaveToFile(industryId, headings, tariffs, summariesAll, positiveImpacts, negativeImpacts);
+      const conclusion = await readFinalConclusionFromFile(industryId);
       if (!conclusion) throw new Error('Final conclusion not found');
-      await writeMarkdownFileForFinalConclusion(industry, conclusion);
+      await writeMarkdownFileForFinalConclusion(industryId, conclusion);
       break;
 
     case ReportType.ALL:
@@ -130,17 +133,13 @@ export async function doIt(
       for (const type of Object.values(ReportType)) {
         if (type === ReportType.ALL) continue;
         // @ts-ignore
-        await doIt(type, industry, date);
+        await doIt(type, industryId, date);
       }
       break;
   }
 }
 
-const industry: TariffReportIndustry = {
-  industryId: 'Plastic',
-  companiesToIgnore: ['Pactiv Evergreen Inc', 'Danimer Scientific(DNMR)', 'Zymergen Inc (ZY)', 'Amyris, Inc.'],
-  asOfDate: 'April 28, 2025',
-};
+const industry = getTariffIndustryDefinitionById(TariffIndustryId.automobiles);
 
 // Example usage:
 doIt(ReportType.HEADINGS, industry, {

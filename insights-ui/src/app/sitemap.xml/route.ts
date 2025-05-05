@@ -1,3 +1,4 @@
+import { fetchTariffReports, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { ReportType } from '@/types/project/project';
 import { getPostsData } from '@/util/blog-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -146,6 +147,89 @@ async function generateBlogUrls(): Promise<SiteMapUrl[]> {
   return urls;
 }
 
+// Fetch all tariff report IDs
+
+// Generate URLs for tariff reports and their sections
+async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
+  const urls: SiteMapUrl[] = [];
+  const tariffReports: TariffIndustryDefinition[] = fetchTariffReports();
+
+  // Main reports page
+  urls.push({
+    url: '/reports',
+    changefreq: 'daily',
+    priority: 0.8,
+  });
+
+  if (tariffReports.length === 0) {
+    console.warn('No tariff reports found for the sitemap.');
+    return urls;
+  }
+
+  // For each industry report
+  for (const industry of tariffReports) {
+    const industryId = industry.industryId;
+    // Main report page
+    urls.push({
+      url: `/industry-tariff-report/${industryId}`,
+      changefreq: 'weekly',
+      priority: 0.8,
+    });
+
+    // Standard report sections based on navigation structure
+    const reportSections = ['executive-summary', 'tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
+
+    // Add URLs for each section
+    for (const section of reportSections) {
+      urls.push({
+        url: `/industry-tariff-report/${industryId}/${section}`,
+        changefreq: 'weekly',
+        priority: 0.7,
+      });
+    }
+
+    // Try to fetch report data to get evaluate-industry-areas sub-sections
+    try {
+      const baseUrl = getBaseUrl();
+      const reportResponse = await fetch(`${baseUrl}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
+
+      if (reportResponse.ok) {
+        const report = await reportResponse.json();
+
+        // Add the main evaluate-industry-areas section
+        urls.push({
+          url: `/industry-tariff-report/${industryId}/evaluate-industry-areas`,
+          changefreq: 'weekly',
+          priority: 0.7,
+        });
+
+        // Add sub-areas if they exist
+        if (report.industryAreas?.areas) {
+          report.industryAreas.areas.forEach((heading: any, index: number) => {
+            heading.subAreas.forEach((_: any, subIndex: number) => {
+              urls.push({
+                url: `/industry-tariff-report/${industryId}/evaluate-industry-areas/${index}-${subIndex}`,
+                changefreq: 'weekly',
+                priority: 0.6,
+              });
+            });
+          });
+        }
+      }
+    } catch (error) {
+      console.error(`Error processing evaluate-industry-areas for ${industryId}:`, error);
+      // If we can't fetch the detailed structure, add a generic URL for the section
+      urls.push({
+        url: `/industry-tariff-report/${industryId}/evaluate-industry-areas`,
+        changefreq: 'weekly',
+        priority: 0.7,
+      });
+    }
+  }
+
+  return urls;
+}
+
 async function generateSitemapUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
 
@@ -162,14 +246,18 @@ async function generateSitemapUrls(): Promise<SiteMapUrl[]> {
     }
   );
 
-  const crowdFundingUrls = await generateCrowdFundingUrls();
+  // Add all URL collections
+  const [crowdFundingUrls, tickerUrls, blogUrls, tariffReportUrls] = await Promise.all([
+    generateCrowdFundingUrls(),
+    generateTickerUrls(),
+    generateBlogUrls(),
+    generateTariffReportUrls(), // Add tariff report URLs
+  ]);
+
   urls.push(...crowdFundingUrls);
-
-  const tickerUrls = await generateTickerUrls();
   urls.push(...tickerUrls);
-
-  const blogUrls = await generateBlogUrls();
   urls.push(...blogUrls);
+  urls.push(...tariffReportUrls); // Include the tariff report URLs
 
   return urls;
 }

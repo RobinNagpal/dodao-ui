@@ -8,43 +8,35 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
-export interface IndustryAreasActionsProps {
+export interface ReportCoverActionsProps {
   industryId: string;
-  areaIndex?: number;
-  areaTitle?: string;
 }
 
-export default function IndustryAreasActions({ industryId, areaIndex, areaTitle }: IndustryAreasActionsProps) {
+export default function ReportCoverActions({ industryId }: ReportCoverActionsProps) {
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
   const [showGenerateSeoModal, setShowGenerateSeoModal] = useState(false);
 
-  const sectionName = areaTitle || 'Industry Areas';
-
   const actions: EllipsisDropdownItem[] = [
-    { key: 'regenerate', label: `Regenerate ${sectionName}` },
-    { key: 'edit', label: `Edit ${sectionName}` },
-    { key: 'generate-seo', label: `Generate SEO for ${sectionName}` },
+    { key: 'regenerate', label: 'Regenerate Cover' },
+    { key: 'edit', label: 'Edit Cover' },
+    { key: 'generate-seo', label: 'Generate SEO for Cover' },
   ];
 
   const { postData, loading: isRegenerating } = usePostData<any, any>({
-    successMessage: `${sectionName} regenerated successfully!`,
-    errorMessage: `Failed to regenerate ${sectionName}. Please try again.`,
-    redirectPath: `/industry-tariff-report/${industryId}/industry-areas`,
+    successMessage: 'Report cover regenerated successfully!',
+    errorMessage: 'Failed to regenerate report cover. Please try again.',
+    redirectPath: `/industry-tariff-report/${industryId}`,
   });
 
   const { postData: generateSeo, loading: isGeneratingSeo } = usePostData<any, any>({
-    successMessage: `SEO for ${sectionName} generated successfully!`,
-    errorMessage: `Failed to generate SEO for ${sectionName}. Please try again.`,
-    redirectPath: `/industry-tariff-report/${industryId}/industry-areas`,
+    successMessage: 'SEO for report cover generated successfully!',
+    errorMessage: 'Failed to generate SEO for report cover. Please try again.',
+    redirectPath: `/industry-tariff-report/${industryId}`,
   });
 
   const handleRegenerate = async () => {
-    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-industry-areas`, {
-      industry: industryId,
-      areaIndex: areaIndex,
-      areaTitle: areaTitle,
-    });
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-report-cover`, {});
     router.refresh();
     setShowRegenerateModal(false);
   };
@@ -52,7 +44,7 @@ export default function IndustryAreasActions({ industryId, areaIndex, areaTitle 
   const handleGenerateSeo = async () => {
     // Send data as JSON body
     const request = {
-      section: ReportType.INDUSTRY_AREA_SECTION,
+      section: ReportType.REPORT_COVER,
     };
     await generateSeo(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-seo-info`, request);
     router.refresh();
@@ -67,11 +59,7 @@ export default function IndustryAreasActions({ industryId, areaIndex, areaTitle 
           if (key === 'regenerate') {
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
-            if (areaIndex !== undefined) {
-              router.push(`/industry-tariff-report/${industryId}/edit/industry-areas/${areaIndex}`);
-            } else {
-              router.push(`/industry-tariff-report/${industryId}/edit/industry-areas`);
-            }
+            router.push(`/industry-tariff-report/${industryId}/edit/report-cover`);
           } else if (key === 'generate-seo') {
             setShowGenerateSeoModal(true);
           }
@@ -82,8 +70,8 @@ export default function IndustryAreasActions({ industryId, areaIndex, areaTitle 
           open={showRegenerateModal}
           onClose={() => setShowRegenerateModal(false)}
           onConfirm={handleRegenerate}
-          title={`Regenerate ${sectionName}`}
-          confirmationText={`Are you sure you want to regenerate the ${sectionName.toLowerCase()}? This will replace the current content.`}
+          title="Regenerate Report Cover"
+          confirmationText="Are you sure you want to regenerate the report cover? This will replace the current content."
           confirming={isRegenerating}
           askForTextInput={false}
         />
@@ -93,8 +81,8 @@ export default function IndustryAreasActions({ industryId, areaIndex, areaTitle 
           open={showGenerateSeoModal}
           onClose={() => setShowGenerateSeoModal(false)}
           onConfirm={handleGenerateSeo}
-          title={`Generate SEO for ${sectionName}`}
-          confirmationText={`Are you sure you want to generate SEO metadata for the ${sectionName.toLowerCase()}?`}
+          title="Generate SEO for Report Cover"
+          confirmationText="Are you sure you want to generate SEO metadata for the report cover?"
           confirming={isGeneratingSeo}
           askForTextInput={false}
         />
