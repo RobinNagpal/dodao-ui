@@ -367,6 +367,7 @@ model Latest10QInfo {
 
   ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
 
+  @@unique([spaceId, tickerKey])
   @@map("latest_10q_infos")
 }
 

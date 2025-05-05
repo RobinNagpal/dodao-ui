@@ -82,22 +82,28 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
           <DebugTickerNews report={tickerReport} onPostUpdate={onPostUpdate} />
           <h1 className="mt-8 font-bold text-xl">Latest 10Q Info</h1>
           {tickerReport.latest10QInfo ? (
-            <div className="border-b border-gray-100 text-left">
-              <dl className="divide-y text-color">
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium">Reporting Period</dt>
-                  <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{tickerReport.latest10QInfo.periodOfReport}</dd>
-                </div>
-                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm/6 font-medium">SEC 10Q Filing Link</dt>
-                  <a href={tickerReport.latest10QInfo.filingUrl} target="_blank" className="link-color mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
-                    {tickerReport.latest10QInfo.filingUrl}
-                  </a>
-                </div>
-              </dl>
+            <div>
+              <div className="flex justify-between items-center mb-4">
+                <div className="text-lg">10Q Information</div>
+                <PopulateLatest10QInfoButton tickerKey={ticker} onSuccess={onPostUpdate} isRepopulate={true} />
+              </div>
+              <div className="border-b border-gray-100 text-left">
+                <dl className="divide-y text-color">
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm/6 font-medium">Reporting Period</dt>
+                    <dd className="mt-1 text-sm/6 sm:col-span-2 sm:mt-0">{tickerReport.latest10QInfo.periodOfReport}</dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm/6 font-medium">SEC 10Q Filing Link</dt>
+                    <a href={tickerReport.latest10QInfo.filingUrl} target="_blank" className="link-color mt-1 text-sm/6 sm:col-span-2 sm:mt-0">
+                      {tickerReport.latest10QInfo.filingUrl}
+                    </a>
+                  </div>
+                </dl>
+              </div>
             </div>
           ) : (
-            <PopulateLatest10QInfoButton tickerKey={ticker} />
+            <PopulateLatest10QInfoButton tickerKey={ticker} onSuccess={onPostUpdate} />
           )}
 
           <div className="my-8">

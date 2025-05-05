@@ -27,8 +27,20 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ tic
 
   const latest10QInfoData = latest10qInfo.data as Latest10QInfoResponse;
 
-  await prisma.latest10QInfo.create({
-    data: {
+  await prisma.latest10QInfo.upsert({
+    where: {
+      spaceId_tickerKey: {
+        spaceId: KoalaGainsSpaceId,
+        tickerKey: tickerKey,
+      },
+    },
+    update: {
+      filingUrl: latest10QInfoData.filingUrl,
+      periodOfReport: latest10QInfoData.periodOfReport,
+      filingDate: latest10QInfoData.filingDate,
+      priceAtPeriodEnd: latest10QInfoData.priceAtPeriodEnd,
+    },
+    create: {
       tickerKey,
       spaceId: KoalaGainsSpaceId,
       filingUrl: latest10QInfoData.filingUrl,
