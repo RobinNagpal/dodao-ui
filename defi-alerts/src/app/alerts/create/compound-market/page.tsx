@@ -298,7 +298,6 @@ export default function CompoundMarketAlertPage() {
                 "USDS",
                 "USDT",
                 "ETH",
-                "WETH",
                 "wstETH",
                 "USDe",
                 "USDC.e",

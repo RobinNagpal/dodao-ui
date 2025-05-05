@@ -16,7 +16,6 @@ export type Names = Record<string, SupportedChainId>;
 
 export type ConfigTypes = {
   address: Address;
-  methods: string[];
 };
 
 export type MARKET_ADDRESSES_TYPE = Record<

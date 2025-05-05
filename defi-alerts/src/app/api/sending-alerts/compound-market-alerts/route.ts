@@ -1,4 +1,3 @@
-// src/app/api/compound-market-alerts/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { useCompoundMarketsAprs } from "@/utils/getCompoundAPR";
 import {
@@ -7,8 +6,7 @@ import {
   NotificationFrequency,
   AlertActionType,
 } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/prisma";
 
 // map frequency enum → milliseconds
 const frequencyToMs: Record<NotificationFrequency, number> = {

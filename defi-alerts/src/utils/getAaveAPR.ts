@@ -70,6 +70,7 @@ export function useAaveAprs(): () => Promise<MarketApr[]> {
         chainId,
         chainName,
         asset: c.symbol,
+        assetAddress: c.tokenAddress,
         netEarnAPY: parseFloat(apy.supplyAPY),
         netBorrowAPY: parseFloat(apy.variableBorrowAPY),
       };

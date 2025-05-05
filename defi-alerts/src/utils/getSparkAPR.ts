@@ -67,6 +67,7 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
         chainId,
         chainName,
         asset: c.symbol,
+        assetAddress: c.tokenAddress,
         netEarnAPY: parseFloat(apy.supplyAPY),
         netBorrowAPY: parseFloat(apy.variableBorrowAPY),
       };
@@ -75,7 +76,6 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
 
   return async () => {
     const chains = Object.keys(SPARK_DATA_PROVIDER).map((id) => Number(id));
-    console.log("Fetching Spark APRs for chains:", chains);
     const res = await Promise.all(chains.map(fetchChain));
     return res.flat();
   };
