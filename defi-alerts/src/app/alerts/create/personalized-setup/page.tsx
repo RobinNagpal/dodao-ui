@@ -23,7 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNotificationContext } from "@dodao/web-core/ui/contexts/NotificationContext";
-import { isAddress } from "ethers";
+import { utils } from "ethers";
 
 export default function PersonalizedSetupPage() {
   const router = useRouter();
@@ -40,7 +40,7 @@ export default function PersonalizedSetupPage() {
       return;
     }
 
-    if (!isAddress(walletAddress.trim())) {
+    if (!utils.isAddress(walletAddress.trim())) {
       showNotification({
         type: "error",
         heading: "Invalid Address",

@@ -100,7 +100,7 @@ export default function CompoundMarketAlertPage() {
       deliveryChannels: channels.map((c) => ({
         type: c.channelType,
         email: c.channelType === "EMAIL" ? c.email : undefined,
-        url: c.channelType === "WEBHOOK" ? c.webhookUrl : undefined,
+        webhookUrl: c.channelType === "WEBHOOK" ? c.webhookUrl : undefined,
       })),
     };
 
@@ -233,46 +233,54 @@ export default function CompoundMarketAlertPage() {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              {["Ethereum", "Arbitrum", "Optimism", "Polygon", "Base"].map(
-                (chain) => (
+              {[
+                "Ethereum",
+                "Optimism",
+                "Arbitrum",
+                "Polygon",
+                "Base",
+                "Unichain",
+                "Ronin",
+                "Mantle",
+                "Scroll",
+              ].map((chain) => (
+                <div
+                  key={chain}
+                  onClick={() => toggleChain(chain)}
+                  className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
+                    selectedChains.includes(chain)
+                      ? "border-primary bg-theme-bg-muted"
+                      : "border-theme-border-primary"
+                  }`}
+                >
                   <div
-                    key={chain}
-                    onClick={() => toggleChain(chain)}
-                    className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
+                    className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
                       selectedChains.includes(chain)
-                        ? "border-primary bg-theme-bg-muted"
-                        : "border-theme-border-primary"
+                        ? "bg-primary border-primary"
+                        : "border-theme-border-secondary"
                     }`}
                   >
-                    <div
-                      className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
-                        selectedChains.includes(chain)
-                          ? "bg-primary border-primary"
-                          : "border-theme-border-secondary"
-                      }`}
-                    >
-                      {selectedChains.includes(chain) && (
-                        <svg
-                          width="10"
-                          height="8"
-                          viewBox="0 0 10 8"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M9 1L3.5 6.5L1 4"
-                            stroke="white"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      )}
-                    </div>
-                    <span className="text-theme-primary">{chain}</span>
+                    {selectedChains.includes(chain) && (
+                      <svg
+                        width="10"
+                        height="8"
+                        viewBox="0 0 10 8"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9 1L3.5 6.5L1 4"
+                          stroke="white"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
                   </div>
-                )
-              )}
+                  <span className="text-theme-primary">{chain}</span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -285,7 +293,17 @@ export default function CompoundMarketAlertPage() {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              {["USDC", "Wrapped BTC", "USDT", "ETH", "USDS"].map((market) => (
+              {[
+                "USDC",
+                "USDS",
+                "USDT",
+                "ETH",
+                "wstETH",
+                "USDe",
+                "USDC.e",
+                "USDbC",
+                "AERO",
+              ].map((market) => (
                 <div
                   key={market}
                   onClick={() => toggleMarket(market)}

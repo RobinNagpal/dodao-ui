@@ -8,10 +8,11 @@ export type ConditionType =
 export type SeverityLevel = "NONE" | "LOW" | "MEDIUM" | "HIGH";
 
 export type NotificationFrequency =
-  | "IMMEDIATE"
+  | "AT_MOST_ONCE_PER_3_HOURS"
   | "AT_MOST_ONCE_PER_6_HOURS"
   | "AT_MOST_ONCE_PER_12_HOURS"
-  | "AT_MOST_ONCE_PER_DAY";
+  | "AT_MOST_ONCE_PER_DAY"
+  | "AT_MOST_ONCE_PER_WEEK";
 
 export type DeliveryChannelType = "EMAIL" | "WEBHOOK";
 
@@ -75,10 +76,11 @@ export const frequencyOptions: {
   label: string;
   value: NotificationFrequency;
 }[] = [
-  { label: "Immediate", value: "IMMEDIATE" },
+  { label: "Every 3 h", value: "AT_MOST_ONCE_PER_3_HOURS" },
   { label: "Every 6 h", value: "AT_MOST_ONCE_PER_6_HOURS" },
   { label: "Every 12 h", value: "AT_MOST_ONCE_PER_12_HOURS" },
   { label: "Daily", value: "AT_MOST_ONCE_PER_DAY" },
+  { label: "Weekly", value: "AT_MOST_ONCE_PER_WEEK" },
 ];
 
 export interface Alert {
@@ -88,7 +90,7 @@ export interface Alert {
   isComparison: boolean;
   walletAddress?: string;
   selectedChains: string[];
-  selectedMarkets: string[];
+  selectedAssets: string[];
   compareProtocols: string[];
   notificationFrequency: NotificationFrequency;
   status: AlertStatus;
