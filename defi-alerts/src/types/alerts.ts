@@ -8,6 +8,7 @@ export type ConditionType =
 export type SeverityLevel = "NONE" | "LOW" | "MEDIUM" | "HIGH";
 
 export type NotificationFrequency =
+  | "ONCE_PER_ALERT"
   | "AT_MOST_ONCE_PER_3_HOURS"
   | "AT_MOST_ONCE_PER_6_HOURS"
   | "AT_MOST_ONCE_PER_12_HOURS"
@@ -76,6 +77,7 @@ export const frequencyOptions: {
   label: string;
   value: NotificationFrequency;
 }[] = [
+  { label: "Once per alert condition", value: "ONCE_PER_ALERT" },
   { label: "Every 3 h", value: "AT_MOST_ONCE_PER_3_HOURS" },
   { label: "Every 6 h", value: "AT_MOST_ONCE_PER_6_HOURS" },
   { label: "Every 12 h", value: "AT_MOST_ONCE_PER_12_HOURS" },

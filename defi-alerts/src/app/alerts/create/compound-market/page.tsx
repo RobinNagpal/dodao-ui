@@ -46,7 +46,7 @@ export default function CompoundMarketAlertPage() {
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([]);
   const [notificationFrequency, setNotificationFrequency] =
-    useState<string>("IMMEDIATE");
+    useState<string>("ONCE_PER_ALERT");
 
   const [conditions, setConditions] = useState<Condition[]>([
     { conditionType: "APR_RISE_ABOVE", thresholdValue: "", severity: "NONE" },
