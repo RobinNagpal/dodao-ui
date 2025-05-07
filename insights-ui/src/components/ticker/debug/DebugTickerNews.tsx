@@ -39,7 +39,7 @@ export default function DebugTickerNews({ report, onPostUpdate }: DebugTickerNew
     <div className="mt-8">
       {TickerNewsError && <div className="text-red-500">{TickerNewsError}</div>}
       <PrivateWrapper>
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end">
           <Button loading={TickerNewsLoading} primary variant="contained" onClick={() => setShowConfirmModal(true)} disabled={TickerNewsLoading}>
             Repopulate Ticker News
           </Button>

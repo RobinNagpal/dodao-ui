@@ -98,6 +98,10 @@ export interface SaveTickerNewsRequest {
   tickerNews: string;
 }
 
+export interface SaveTickerBusinessModelRequest {
+  tickerBusinessModel: string;
+}
+
 export interface SaveMgtTeamAssessmentRequest {
   managementTeamAssessment: string;
 }
