@@ -50,7 +50,7 @@ export default function PersonalizedComparisonPage() {
     {
       platform: "Aave",
       chain: "Ethereum",
-      market: "DAI",
+      market: "wstETH",
       rate: "7.7%",
       threshold: "0.5",
       severity: "NONE",
@@ -63,7 +63,7 @@ export default function PersonalizedComparisonPage() {
     {
       platform: "Spark",
       chain: "Base",
-      market: "ETH",
+      market: "AERO",
       rate: "3.2%",
       threshold: "0.5",
       severity: "NONE",
@@ -292,7 +292,7 @@ export default function PersonalizedComparisonPage() {
                           )
                         }
                       >
-                        <SelectTrigger className="w-[140px]">
+                        <SelectTrigger className="w-[150px]">
                           <SelectValue placeholder="Select frequency" />
                         </SelectTrigger>
                         <SelectContent>
@@ -393,7 +393,7 @@ export default function PersonalizedComparisonPage() {
                           )
                         }
                       >
-                        <SelectTrigger className="w-[140px]">
+                        <SelectTrigger className="w-[150px]">
                           <SelectValue placeholder="Select frequency" />
                         </SelectTrigger>
                         <SelectContent>
