@@ -94,6 +94,7 @@ model Alert {
   deliveryChannels      DeliveryChannel[]
   createdAt             DateTime              @default(now())
   updatedAt             DateTime              @updatedAt
+  AlertNotification     AlertNotification[]
 }
 
 model AlertCondition {
@@ -130,6 +131,7 @@ model LendingAndBorrowingRate {
 
 model AlertNotification {
   id                String            @id @default(cuid())
+  alert             Alert             @relation(fields: [alertId], references: [id])
   alertId           String
   alertConditionIds String[]
   SentNotification  SentNotification?
