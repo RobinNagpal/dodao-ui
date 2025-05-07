@@ -12,6 +12,10 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import Input from '@dodao/web-core/components/core/input/Input';
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import Accordion from '@dodao/web-core/utils/accordion/Accordion';
+import { safeParseJsonString } from '@/util/safe-parse-json-string';
+import TickerMgtTeamAssessmentButton from './TickerMgtButton';
 
 interface DeleteMemberBody {
   publicIdentifier: string;
@@ -30,11 +34,28 @@ export interface DebugManagementTeamProps {
 export default function DebugManagementTeam({ report, onPostUpdate }: DebugManagementTeamProps) {
   const ticker = report.tickerKey;
   const managementTeam = (report.managementTeam as LinkedinProfile[]) || [];
+  const tickerMgtTeamAssessment = safeParseJsonString(report.tickerInfo).managementTeamAssessment ?? '';
 
   const [selectedPublicId, setSelectedPublicId] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [formData, setFormData] = useState<AddMemberBody>({ name: '', position: '' });
+
+  const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
+  const [showRegenerateConfirmModal, setShowRegenerateConfirmModal] = useState(false);
+
+  const {
+    postData: regenerateMgtTeamAssessment,
+    loading: TickerMgtTeamAssessmentLoading,
+    error: TickerMgtTeamAssessmentError,
+  } = usePostData<string, {}>({
+    errorMessage: 'Failed to repopulate ticker management team assessment.',
+  });
+
+  const handleRegenerateMgtTeamAssessment = async () => {
+    await regenerateMgtTeamAssessment(`${getBaseUrl()}/api/tickers/${ticker}/ticker-mgt-team-assessment`);
+    await onPostUpdate();
+  };
 
   const { postData, loading, error } = usePostData<Ticker, {}>({
     errorMessage: 'Failed to populate management team.',
@@ -141,6 +162,52 @@ export default function DebugManagementTeam({ report, onPostUpdate }: DebugManag
           <Button primary variant="contained" loading={loading} onClick={() => handlePopulateManagementTeam()}>
             Populate Management Team
           </Button>
+        )}
+      </div>
+      <div className="mt-8">
+        {TickerMgtTeamAssessmentError && <div className="text-red-500">{TickerMgtTeamAssessmentError}</div>}
+        <PrivateWrapper>
+          <div className="flex justify-end mb-4">
+            <Button
+              loading={TickerMgtTeamAssessmentLoading}
+              primary
+              variant="contained"
+              onClick={() => setShowRegenerateConfirmModal(true)}
+              disabled={TickerMgtTeamAssessmentLoading}
+            >
+              Repopulate Mgt Team Assessment
+            </Button>
+          </div>
+        </PrivateWrapper>
+        <Accordion
+          label={'Ticker Mgt Team Assessment'}
+          isOpen={selectedCriterionAccordian === `ticker_mgt`}
+          onClick={() => setSelectedCriterionAccordian(selectedCriterionAccordian === `ticker_mgt` ? null : `ticker_mgt`)}
+        >
+          <div className="mt-4">
+            <TickerMgtTeamAssessmentButton
+              tickerKey={ticker}
+              tickerMgtTeamAssessmentContent={JSON.stringify(tickerMgtTeamAssessment, null, 2) || undefined}
+              onUpdate={onPostUpdate}
+            />
+            <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs">
+              {tickerMgtTeamAssessment ? JSON.stringify(tickerMgtTeamAssessment, null, 2) : 'Not populated yet'}
+            </pre>
+          </div>
+        </Accordion>
+        {showRegenerateConfirmModal && (
+          <ConfirmationModal
+            open={showRegenerateConfirmModal}
+            onClose={() => setShowRegenerateConfirmModal(false)}
+            onConfirm={async () => {
+              await handleRegenerateMgtTeamAssessment();
+              setShowRegenerateConfirmModal(false);
+            }}
+            title="Repopulate Ticker Mgt Team Assessment"
+            confirmationText="Are you sure you want to repopulate the Mgt Team Assessment?"
+            askForTextInput={true}
+            confirming={TickerMgtTeamAssessmentLoading}
+          />
         )}
       </div>
     </div>

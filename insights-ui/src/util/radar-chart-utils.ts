@@ -69,15 +69,16 @@ export const AlternateRingBackgroundPlugin: Plugin = {
 };
 
 interface GraphColor {
+  lighterBackground: string;
   background: string;
   border: string;
 }
 
 const THRESHOLDS = [
-  { min: 0, max: 20, color: { background: 'rgba(255, 0,   0,   0.7)', border: 'rgba(255, 0,   0,   1)' } }, // red
-  { min: 20, max: 50, color: { background: 'rgba(255, 165, 0,   0.7)', border: 'rgba(255, 165, 0,   1)' } }, // orange
-  { min: 50, max: 80, color: { background: 'rgba(255, 240, 0,   0.7)', border: 'rgba(255, 240, 0,   1)' } }, // yellow
-  { min: 80, max: 100, color: { background: 'rgba(0,   255, 0,   0.7)', border: 'rgba(0,   255, 0,   1)' } }, // green
+  { min: 0, max: 20, color: { lighterBackground: 'rgba(255, 0, 0, 0.3)', background: 'rgba(255, 0, 0, 0.7)', border: 'rgba(255, 0, 0, 1)' } }, // red
+  { min: 20, max: 50, color: { lighterBackground: 'rgba(255, 165, 0, 0.3)', background: 'rgba(255, 165, 0, 0.7)', border: 'rgba(255, 165, 0, 1)' } }, // orange
+  { min: 50, max: 80, color: { lighterBackground: 'rgba(255, 240, 0, 0.3)', background: 'rgba(255, 240, 0, 0.7)', border: 'rgba(255, 240, 0, 1)' } }, // yellow
+  { min: 80, max: 100, color: { lighterBackground: 'rgba(0, 255, 0, 0.3)', background: 'rgba(0, 255, 0, 0.7)', border: 'rgba(0, 255, 0, 1)' } }, // green
 ] as const;
 
 export const getSpiderGraphScorePercentage = (data: SpiderGraph | SpiderGraphForTicker): number => {

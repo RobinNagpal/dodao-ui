@@ -216,14 +216,14 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         </div>
 
         {/* Reports Section */}
-        <div className="font-semibold text-xl text-left my-8">Analysis Reports</div>
-        <div className="mx-auto mt-12 text-left">
+        <div className="font-semibold text-xl text-left my-6">Analysis Reports</div>
+        <div className="mx-auto text-left">
           <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-8 md:max-w-none md:grid-cols-2">
             {industryGroupCriteria?.criteria?.map((criterion) => {
               const report = reportMap.get(criterion.key);
               return (
                 <div key={criterion.key} className="relative text-left block-bg-color p-4 rounded-xl">
-                  <dt className="my-2">
+                  <dt className="mt-2 mb-5">
                     <div className="flex items-center font-semibold">
                       <span className="text-lg">📄</span>
                       <div className="ml-2 text-xl">{criterion.name}</div>
@@ -252,11 +252,11 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         </div>
 
         {/* News section */}
-        <div className="font-semibold text-xl text-left my-8">News</div>
+        <div className="font-semibold text-xl text-left my-6">News</div>
         <TickerNewsSection articles={aboutTicker.tickerNews?.articles ?? []} />
 
         {/* Competitive Edge */}
-        <div className="font-semibold text-xl text-left my-8">{tickerKey}&apos;s Competitive Edge</div>
+        <div className="font-semibold text-xl text-left my-6">{tickerKey}&apos;s Competitive Edge</div>
         <div className="text-left block-bg-color p-4 rounded-lg">
           <div className="font-semibold my-2">Competitive Edge of {tickerKey} over its peers:</div>
           {aboutTicker.competitiveEdge &&
@@ -272,8 +272,8 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
         {/* Management Team */}
         {managementTeam.length > 0 && (
-          <div className="my-8">
-            <div className="font-semibold text-xl text-left my-8">{tickerKey}&apos;s Management Team</div>
+          <div className="mb-8">
+            <div className="font-semibold text-xl text-left my-6">{tickerKey}&apos;s Management Team</div>
             <div className="mx-auto">
               <ul role="list" className="flex flex-wrap justify-center gap-10">
                 {managementTeam.map((member) => (
@@ -294,11 +294,22 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                 ))}
               </ul>
             </div>
+            <div className="w-full text-left p-4 my-5 block-bg-color rounded-xl flex">
+              <span>
+                <InformationCircleIcon className="size-5 inline mr-2" title="Latest News" />
+              </span>
+              <div>
+                <span
+                  className="markdown-body"
+                  dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.managementTeamAssessment ?? 'Not yet populated') }}
+                />
+              </div>
+            </div>
           </div>
         )}
 
         {/* Further info section */}
-        <div className="font-semibold text-xl text-left my-8">More Info About {tickerKey}</div>
+        <div className="font-semibold text-xl text-left my-6">More Info About {tickerKey}</div>
         <div className="flex flex-col space-y-2">
           <InfoBlock heading="Business Model" content={aboutTicker.businessModel} IconComponent={BriefcaseIcon} />
 

@@ -67,6 +67,10 @@ export interface FullNestedTickerReport extends Ticker {
   evaluationsOfLatest10Q: Array<FullCriterionEvaluation>;
 }
 
+export interface PartialNestedTickerReport extends Ticker {
+  evaluationsOfLatest10Q: Array<FullCriterionEvaluation>;
+}
+
 export interface Latest10QInfoResponse {
   filingUrl: string;
   periodOfReport: string;

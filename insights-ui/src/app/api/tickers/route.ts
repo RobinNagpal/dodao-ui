@@ -13,6 +13,17 @@ async function getHandler(): Promise<Ticker[]> {
     where: {
       spaceId: KoalaGainsSpaceId,
     },
+    include: {
+      evaluationsOfLatest10Q: {
+        include: {
+          performanceChecklistEvaluation: {
+            include: {
+              performanceChecklistItems: true,
+            },
+          },
+        },
+      },
+    },
     orderBy: {
       createdAt: 'asc',
     },
