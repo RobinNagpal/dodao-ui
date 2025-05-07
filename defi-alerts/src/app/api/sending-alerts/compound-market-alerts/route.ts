@@ -1,7 +1,7 @@
+// src/app/api/sending-alerts/compound-market-alerts/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { useCompoundMarketsAprs } from "@/utils/getCompoundAPR";
 import {
-  PrismaClient,
   DeliveryChannelType,
   NotificationFrequency,
   AlertActionType,
@@ -10,6 +10,7 @@ import { prisma } from "@/prisma";
 
 // map frequency enum → milliseconds
 const frequencyToMs: Record<NotificationFrequency, number> = {
+  ONCE_PER_ALERT: 0,
   AT_MOST_ONCE_PER_3_HOURS: 3 * 60 * 60 * 1000,
   AT_MOST_ONCE_PER_6_HOURS: 6 * 60 * 60 * 1000,
   AT_MOST_ONCE_PER_12_HOURS: 12 * 60 * 60 * 1000,
@@ -18,31 +19,36 @@ const frequencyToMs: Record<NotificationFrequency, number> = {
 };
 
 export async function GET(request: NextRequest) {
-  // 1) Fetch APRs from Compound
+  // 1) Fetch the latest Compound APRs
   const aprs = await useCompoundMarketsAprs()();
 
-  // 2) Persist for tracing
+  // 2) Persist the snapshot
   await prisma.lendingAndBorrowingRate.createMany({
     data: aprs.map((m) => ({
       protocolName: "Compound",
-      chain: m.chainName,
-      asset: m.asset,
+      chainId: m.chainId,
+      assetChainId_address: `${m.chainId}_${m.assetAddress.toLowerCase()}`,
       netEarnAPY: m.netEarnAPY,
       netBorrowAPY: m.netBorrowAPY,
     })),
   });
 
-  // 3) Load active alerts
+  // 3) Load all active, non-comparison alerts *with* their relations
   const alerts = await prisma.alert.findMany({
     where: { isComparison: false, status: "ACTIVE" },
-    include: { conditions: true, deliveryChannels: true },
+    include: {
+      selectedChains: true,
+      selectedAssets: true,
+      conditions: true,
+      deliveryChannels: true,
+    },
   });
 
   let totalSent = 0;
 
   for (const alert of alerts) {
-    // collect raw condition IDs + payload-safe groups
-    const rawIds = new Set<string>();
+    // --- Gather all APR hits per (chain, asset) ---
+    const rawHitConditionIds = new Set<string>();
     const groups: Array<{
       chain: string;
       asset: string;
@@ -50,15 +56,35 @@ export async function GET(request: NextRequest) {
       conditions: Array<{
         type: string;
         threshold: number | { low: number; high: number };
+        id: string;
       }>;
     }> = [];
 
-    // evaluate each (chain, asset)
-    for (const chainName of alert.selectedChains) {
-      for (const asset of alert.selectedAssets) {
-        // pull the single latest stored APR
+    // (A) Pre‑fetch sent condition IDs if ONCE_PER_ALERT
+    let previouslySent = new Set<string>();
+    if (alert.notificationFrequency === "ONCE_PER_ALERT") {
+      const past = await prisma.alertNotification.findMany({
+        where: { alertId: alert.id },
+        select: { alertConditionIds: true },
+      });
+      for (const pn of past) {
+        pn.alertConditionIds.forEach((cid) => previouslySent.add(cid));
+      }
+    }
+
+    // (B) Loop through each chain/asset pair
+    for (const chainObj of alert.selectedChains) {
+      for (const assetObj of alert.selectedAssets) {
+        const chainName = chainObj.name;
+        const assetSym = assetObj.symbol;
+
+        // get the latest APR record
         const market = await prisma.lendingAndBorrowingRate.findFirst({
-          where: { protocolName: "Compound", chain: chainName, asset },
+          where: {
+            protocolName: "Compound",
+            chainId: chainObj.chainId,
+            assetChainId_address: assetObj.chainId_address,
+          },
           orderBy: { recordedAt: "desc" },
         });
         if (!market) continue;
@@ -68,36 +94,40 @@ export async function GET(request: NextRequest) {
             ? market.netEarnAPY
             : market.netBorrowAPY;
 
-        // find all matching conditions
-        const hits = alert.conditions.filter((cond) => {
-          switch (cond.conditionType) {
+        // filter conditions that fire right now
+        let hits = alert.conditions.filter((c) => {
+          switch (c.conditionType) {
             case "APR_RISE_ABOVE":
-              return aprValue > (cond.thresholdValue ?? 0);
+              return aprValue > (c.thresholdValue ?? 0);
             case "APR_FALLS_BELOW":
-              return aprValue < (cond.thresholdValue ?? 0);
+              return aprValue < (c.thresholdValue ?? Infinity);
             case "APR_OUTSIDE_RANGE":
               return (
-                cond.thresholdValueLow! != null &&
-                cond.thresholdValueHigh! != null &&
-                (aprValue < cond.thresholdValueLow! ||
-                  aprValue > cond.thresholdValueHigh!)
+                aprValue < (c.thresholdValueLow ?? -Infinity) ||
+                aprValue > (c.thresholdValueHigh ?? Infinity)
               );
             default:
               return false;
           }
         });
 
+        // for ONCE_PER_ALERT, drop any condition already sent
+        if (alert.notificationFrequency === "ONCE_PER_ALERT") {
+          hits = hits.filter((c) => !previouslySent.has(c.id));
+        }
+
         if (!hits.length) continue;
 
-        // collect raw IDs
-        hits.forEach((c) => rawIds.add(c.id));
+        // collect IDs
+        hits.forEach((c) => rawHitConditionIds.add(c.id));
 
-        // build payload-safe object
+        // collect IDs and build payload
         groups.push({
           chain: chainName,
-          asset,
+          asset: assetSym,
           currentRate: aprValue,
           conditions: hits.map((c) => ({
+            id: c.id,
             type: c.conditionType,
             threshold:
               c.conditionType === "APR_OUTSIDE_RANGE"
@@ -110,17 +140,20 @@ export async function GET(request: NextRequest) {
 
     if (!groups.length) continue;
 
-    const last = await prisma.sentNotification.findFirst({
-      where: {
-        alertNotification: { alertId: alert.id },
-      },
-      orderBy: { sentAt: "desc" },
-    });
-    const elapsed = last ? Date.now() - last.sentAt.getTime() : Infinity;
-    const window = frequencyToMs[alert.notificationFrequency];
-    if (elapsed < window) continue;
+    // (C) Time‑window guard for non‑ONCE_PER_ALERT frequencies
+    if (alert.notificationFrequency !== "ONCE_PER_ALERT") {
+      const last = await prisma.sentNotification.findFirst({
+        where: { alertNotification: { alertId: alert.id } },
+        orderBy: { sentAt: "desc" },
+      });
+      const elapsed = last ? Date.now() - last.sentAt.getTime() : Infinity;
+      const window = frequencyToMs[alert.notificationFrequency];
+      if (elapsed < window) {
+        continue;
+      }
+    }
 
-    // 5) send one payload to *every* delivery channel
+    // 4) Broadcast the payload
     const payload = {
       alert: "Compound Market Alert",
       alertType: alert.actionType,
@@ -130,9 +163,9 @@ export async function GET(request: NextRequest) {
 
     for (const ch of alert.deliveryChannels) {
       const dest =
-        ch.channelType === DeliveryChannelType.EMAIL
-          ? ch.email!
-          : ch.webhookUrl!;
+        ch.channelType === DeliveryChannelType.WEBHOOK
+          ? ch.webhookUrl!
+          : ch.email!;
 
       if (ch.channelType === DeliveryChannelType.WEBHOOK) {
         await fetch(dest, {
@@ -141,14 +174,15 @@ export async function GET(request: NextRequest) {
           body: JSON.stringify(payload),
         });
       } else {
-        console.log(`Email to ${dest}:`, JSON.stringify(payload));
+        console.log(`(email) to ${dest}:`, payload);
       }
     }
 
+    // 5) Record *exactly* which condition IDs were sent in this batch
     await prisma.alertNotification.create({
       data: {
         alertId: alert.id,
-        alertConditionIds: Array.from(rawIds),
+        alertConditionIds: Array.from(rawHitConditionIds),
         SentNotification: { create: {} },
       },
     });

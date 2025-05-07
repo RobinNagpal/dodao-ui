@@ -54,7 +54,7 @@ export default function PersonalizedMarketAlertPage() {
     conditionType: "APR_RISE_ABOVE",
     threshold: "",
     severity: "NONE",
-    frequency: "AT_MOST_ONCE_PER_3_HOURS",
+    frequency: "ONCE_PER_ALERT",
   };
   const secondSupply: SupplyRow = {
     chain: "Polygon",
@@ -63,7 +63,7 @@ export default function PersonalizedMarketAlertPage() {
     conditionType: "APR_FALLS_BELOW",
     threshold: "",
     severity: "NONE",
-    frequency: "AT_MOST_ONCE_PER_3_HOURS",
+    frequency: "ONCE_PER_ALERT",
   };
   const [supplyRows, setSupplyRows] = useState<SupplyRow[]>([
     defaultSupply,
@@ -83,7 +83,7 @@ export default function PersonalizedMarketAlertPage() {
     conditionType: "APR_FALLS_BELOW",
     threshold: "",
     severity: "NONE",
-    frequency: "AT_MOST_ONCE_PER_3_HOURS",
+    frequency: "ONCE_PER_ALERT",
   };
 
   const [borrowRows, setBorrowRows] = useState<BorrowRow[]>([
@@ -289,7 +289,7 @@ export default function PersonalizedMarketAlertPage() {
                           )
                         }
                       >
-                        <SelectTrigger className="w-[180px]">
+                        <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select condition" />
                         </SelectTrigger>
                         <SelectContent>
@@ -443,7 +443,7 @@ export default function PersonalizedMarketAlertPage() {
                           )
                         }
                       >
-                        <SelectTrigger className="w-[180px]">
+                        <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select condition" />
                         </SelectTrigger>
                         <SelectContent>

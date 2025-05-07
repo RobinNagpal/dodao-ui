@@ -46,7 +46,7 @@ export default function CompareCompoundPage() {
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([]);
   const [notificationFrequency, setNotificationFrequency] =
-    useState<NotificationFrequency>("AT_MOST_ONCE_PER_3_HOURS");
+    useState<NotificationFrequency>("ONCE_PER_ALERT");
 
   const [thresholds, setThresholds] = useState<GeneralComparisonRow[]>([
     {
@@ -55,7 +55,7 @@ export default function CompareCompoundPage() {
       market: "",
       threshold: "",
       severity: "NONE",
-      frequency: "AT_MOST_ONCE_PER_3_HOURS",
+      frequency: "ONCE_PER_ALERT",
     },
   ]);
 
@@ -87,7 +87,7 @@ export default function CompareCompoundPage() {
         market: "",
         threshold: "",
         severity: "NONE",
-        frequency: "AT_MOST_ONCE_PER_3_HOURS",
+        frequency: "ONCE_PER_ALERT",
       },
     ]);
 
@@ -398,7 +398,6 @@ export default function CompareCompoundPage() {
                 "USDS",
                 "USDT",
                 "ETH",
-                "WETH",
                 "wstETH",
                 "USDe",
                 "USDC.e",
