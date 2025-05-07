@@ -1,0 +1,19 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+type: object
+additionalProperties: false
+properties:
+  businessModel:
+    type: string
+    description: "Describe how this REIT generates income, including its property types, lease structure (e.g., net leases, gross leases), capital-allocation approach, operating model and revenue drivers."
+  uniqueness:
+    type: string
+    description: "Explain what differentiates this REIT from others in the same sector—such as niche property focus, ESG initiatives, proprietary data analytics, or specialized management expertise."
+  competitiveEdge:
+    type: array
+    description: "List of key competitive advantages (complete sentences) versus peers. Analyze how the REIT’s scale, portfolio quality, geographic footprint, tenant mix, financing strategy, or operational efficiencies give it an advantage versus its closest competitors."
+    items:
+      type: string
+required:
+  - businessModel
+  - uniqueness
+  - competitiveEdge

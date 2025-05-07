@@ -3,12 +3,12 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { SaveTickerInfoRequest } from '@/types/public-equity/ticker-request-response';
+import { SaveMgtTeamAssessmentRequest } from '@/types/public-equity/ticker-request-response';
 import { invokePrompt } from '@/util/run-prompt';
 import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-today-date';
 import { safeParseJsonString } from '@/util/safe-parse-json-string';
 
-async function saveTickerInfo(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
+async function saveTickerMgtTeamAssessment(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
   const { tickerKey } = await params;
 
   const existingTicker = await prisma.ticker.findUnique({
@@ -18,7 +18,6 @@ async function saveTickerInfo(req: NextRequest, { params }: { params: Promise<{ 
   if (!existingTicker) {
     throw new Error(`Ticker not found for key: ${tickerKey}`);
   }
-
   const inputJson = {
     tickerKey: existingTicker.tickerKey,
     companyName: existingTicker.companyName,
@@ -26,20 +25,11 @@ async function saveTickerInfo(req: NextRequest, { params }: { params: Promise<{ 
     referenceDate: getTodayDateAsMonthDDYYYYFormat(),
   };
 
-  const aboutTickerString = await invokePrompt('US/public-equities/real-estate/equity-reits/ticker-info', inputJson);
+  const mgtTeamAssessmentString = await invokePrompt('US/public-equities/real-estate/equity-reits/ticker-team-assessment', inputJson);
 
-  const aboutObj = JSON.parse(aboutTickerString);
-  const existingInfoObj = safeParseJsonString(existingTicker.tickerInfo);
+  const infoObj = safeParseJsonString(existingTicker.tickerInfo);
 
-  // Define which keys to preserve
-  const preservedKeys = ['tickerNews', 'managementTeamAssessment', 'businessModel'] as const;
-
-  for (const key of preservedKeys) {
-    const value = existingInfoObj[key];
-    if (value !== undefined) {
-      aboutObj[key] = value;
-    }
-  }
+  infoObj.managementTeamAssessment = JSON.parse(mgtTeamAssessmentString);
 
   const updatedTicker = await prisma.ticker.update({
     where: {
@@ -49,26 +39,39 @@ async function saveTickerInfo(req: NextRequest, { params }: { params: Promise<{ 
       },
     },
     data: {
-      tickerInfo: JSON.stringify(aboutObj),
+      tickerInfo: JSON.stringify(infoObj),
     },
   });
 
   return updatedTicker;
 }
 
-async function upsertTickerInfo(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
+async function upsertTickerNews(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
   const { tickerKey } = await params;
-  const { tickerInfo }: SaveTickerInfoRequest = await req.json();
+  const { managementTeamAssessment }: SaveMgtTeamAssessmentRequest = await req.json();
 
   const existingTicker = await prisma.ticker.findUnique({
-    where: { tickerKey },
+    where: {
+      spaceId_tickerKey: {
+        spaceId: KoalaGainsSpaceId,
+        tickerKey,
+      },
+    },
   });
-
   if (!existingTicker) {
     throw new Error(`Ticker not found for key: ${tickerKey}`);
   }
 
-  const newCriteriaMatches = await prisma.ticker.update({
+  let infoObj: Record<string, any>;
+  if (existingTicker.tickerInfo) {
+    infoObj = JSON.parse(existingTicker.tickerInfo);
+  } else {
+    infoObj = {};
+  }
+
+  infoObj.managementTeamAssessment = JSON.parse(managementTeamAssessment);
+
+  const updatedTicker = await prisma.ticker.update({
     where: {
       spaceId_tickerKey: {
         spaceId: KoalaGainsSpaceId,
@@ -76,12 +79,12 @@ async function upsertTickerInfo(req: NextRequest, { params }: { params: Promise<
       },
     },
     data: {
-      tickerInfo: tickerInfo,
+      tickerInfo: JSON.stringify(infoObj),
     },
   });
 
-  return newCriteriaMatches;
+  return updatedTicker;
 }
 
-export const PUT = withErrorHandlingV2<Ticker>(upsertTickerInfo);
-export const POST = withErrorHandlingV2<Ticker>(saveTickerInfo);
+export const PUT = withErrorHandlingV2<Ticker>(upsertTickerNews);
+export const POST = withErrorHandlingV2<Ticker>(saveTickerMgtTeamAssessment);

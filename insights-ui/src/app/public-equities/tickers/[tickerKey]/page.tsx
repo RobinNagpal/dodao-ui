@@ -29,7 +29,9 @@ import {
   DocumentCurrencyDollarIcon,
   InformationCircleIcon,
   MagnifyingGlassIcon,
+  PresentationChartLineIcon,
   ScaleIcon,
+  SparklesIcon,
 } from '@heroicons/react/20/solid';
 import { getGraphColor, getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import { safeParseJsonString } from '@/util/safe-parse-json-string';
@@ -215,15 +217,33 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           </div>
         </div>
 
+        {/* Business Model Section */}
+        <div className="font-semibold text-xl text-left my-6">Business Model & Competitive Edge</div>
+        <div className="w-full py-2 text-left block-bg-color rounded-xl flex flex-col">
+          <InfoBlock heading="Business Model" content={aboutTicker.businessModel.businessModel} IconComponent={BriefcaseIcon} />
+          <InfoBlock heading="Uniqueness" content={aboutTicker.businessModel.uniqueness} IconComponent={SparklesIcon} />
+          <InfoBlock heading="Competitive Edge" IconComponent={PresentationChartLineIcon}>
+            {aboutTicker.businessModel.competitiveEdge &&
+              aboutTicker.businessModel.competitiveEdge.map((ce: string, i: number) => (
+                <div key={i + '_competitiveEdge'} className="w-full text-left px-4 block-bg-color rounded-xl flex">
+                  <span>
+                    <CheckIcon className="size-5 inline mr-2" />
+                  </span>
+                  <div>{ce}</div>
+                </div>
+              ))}
+          </InfoBlock>
+        </div>
+
         {/* Reports Section */}
-        <div className="font-semibold text-xl text-left my-8">Analysis Reports</div>
-        <div className="mx-auto mt-12 text-left">
+        <div className="font-semibold text-xl text-left my-6">Analysis Reports</div>
+        <div className="mx-auto text-left">
           <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-8 md:max-w-none md:grid-cols-2">
             {industryGroupCriteria?.criteria?.map((criterion) => {
               const report = reportMap.get(criterion.key);
               return (
                 <div key={criterion.key} className="relative text-left block-bg-color p-4 rounded-xl">
-                  <dt className="my-2">
+                  <dt className="mt-2 mb-5">
                     <div className="flex items-center font-semibold">
                       <span className="text-lg">📄</span>
                       <div className="ml-2 text-xl">{criterion.name}</div>
@@ -252,28 +272,13 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         </div>
 
         {/* News section */}
-        <div className="font-semibold text-xl text-left my-8">News</div>
+        <div className="font-semibold text-xl text-left my-6">News</div>
         <TickerNewsSection articles={aboutTicker.tickerNews?.articles ?? []} />
-
-        {/* Competitive Edge */}
-        <div className="font-semibold text-xl text-left my-8">{tickerKey}&apos;s Competitive Edge</div>
-        <div className="text-left block-bg-color p-4 rounded-lg">
-          <div className="font-semibold my-2">Competitive Edge of {tickerKey} over its peers:</div>
-          {aboutTicker.competitiveEdge &&
-            aboutTicker.competitiveEdge.map((ce: string, i: number) => (
-              <div key={i + '_competitiveEdge'} className="w-full text-left px-4 block-bg-color rounded-xl flex">
-                <span>
-                  <CheckIcon className="size-5 inline mr-2" />
-                </span>
-                <div>{ce}</div>
-              </div>
-            ))}
-        </div>
 
         {/* Management Team */}
         {managementTeam.length > 0 && (
-          <div className="my-8">
-            <div className="font-semibold text-xl text-left my-8">{tickerKey}&apos;s Management Team</div>
+          <div className="mb-8">
+            <div className="font-semibold text-xl text-left my-6">{tickerKey}&apos;s Management Team</div>
             <div className="mx-auto">
               <ul role="list" className="flex flex-wrap justify-center gap-10">
                 {managementTeam.map((member) => (
@@ -294,14 +299,23 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                 ))}
               </ul>
             </div>
+            <div className="w-full text-left p-4 my-5 block-bg-color rounded-xl flex">
+              <span>
+                <InformationCircleIcon className="size-5 inline mr-2" />
+              </span>
+              <div>
+                <span
+                  className="markdown-body"
+                  dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.managementTeamAssessment.message ?? 'Not yet populated') }}
+                />
+              </div>
+            </div>
           </div>
         )}
 
         {/* Further info section */}
-        <div className="font-semibold text-xl text-left my-8">More Info About {tickerKey}</div>
+        <div className="font-semibold text-xl text-left my-6">More Info About {tickerKey}</div>
         <div className="flex flex-col space-y-2">
-          <InfoBlock heading="Business Model" content={aboutTicker.businessModel} IconComponent={BriefcaseIcon} />
-
           <InfoBlock heading="Dividend Profile" content={aboutTicker.dividendProfile} IconComponent={DivideIcon} />
 
           <InfoBlock heading="5-Year Outlook" content={aboutTicker.outlook} IconComponent={MagnifyingGlassIcon} />
@@ -317,19 +331,32 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
 interface InfoBlockProps {
   heading: string;
-  content: string;
+  content?: string;
   IconComponent: React.ComponentType<{ className?: string }>;
   IconClasses?: string;
+  children?: React.ReactNode;
 }
 
-function InfoBlock({ heading, content, IconComponent, IconClasses }: InfoBlockProps): JSX.Element {
+function InfoBlock({ heading, content, children, IconComponent, IconClasses }: InfoBlockProps): JSX.Element {
   return (
-    <div className="text-left block-bg-color p-4 rounded-lg">
+    <div className="text-left block-bg-color px-4 py-2 rounded-lg">
       <div className="flex items-center justify-start">
-        <IconComponent className={IconClasses ?? 'size-5 mr-2'} />
+        <IconComponent className={IconClasses ?? 'h-5 w-5 mr-2'} />
         <div className="font-semibold my-2">{heading}</div>
       </div>
-      <div className="markdown-body px-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(content ?? 'Not yet populated') }} />
+
+      <div className="px-4">
+        {children ? (
+          children
+        ) : (
+          <div
+            className="markdown-body"
+            dangerouslySetInnerHTML={{
+              __html: parseMarkdown(content ?? 'Not yet populated'),
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }

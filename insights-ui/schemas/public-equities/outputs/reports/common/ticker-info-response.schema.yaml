@@ -31,17 +31,9 @@ properties:
       - industryGroup
       - industry
       - subIndustry
-  businessModel:
-    type: string
-    description: "Description of the REIT’s core operating model and revenue drivers"
   dividendProfile:
     type: string
     description: "Narrative description of the dividend policy and recent payout history"
-  competitiveEdge:
-    type: array
-    description: "List of key competitive advantages versus peers"
-    items:
-      type: string
   comparables:
     type: array
     description: "Array of comparable REITs with key metrics and comparison comments"
@@ -88,9 +80,7 @@ properties:
 required:
   - yearsSinceIpo
   - gicsClassification
-  - businessModel
   - dividendProfile
-  - competitiveEdge
   - comparables
   - latestNews
   - outlook
