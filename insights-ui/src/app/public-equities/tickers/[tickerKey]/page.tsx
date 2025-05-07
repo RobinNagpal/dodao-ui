@@ -301,7 +301,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
               <div>
                 <span
                   className="markdown-body"
-                  dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.managementTeamAssessment ?? 'Not yet populated') }}
+                  dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.managementTeamAssessment.message ?? 'Not yet populated') }}
                 />
               </div>
             </div>
