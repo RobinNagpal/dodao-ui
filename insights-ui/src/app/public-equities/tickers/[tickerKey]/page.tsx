@@ -337,7 +337,7 @@ interface InfoBlockProps {
   children?: React.ReactNode;
 }
 
-export function InfoBlock({ heading, content, children, IconComponent, IconClasses }: InfoBlockProps): JSX.Element {
+function InfoBlock({ heading, content, children, IconComponent, IconClasses }: InfoBlockProps): JSX.Element {
   return (
     <div className="text-left block-bg-color px-4 py-2 rounded-lg">
       <div className="flex items-center justify-start">
