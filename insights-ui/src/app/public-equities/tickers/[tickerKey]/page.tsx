@@ -33,6 +33,7 @@ import {
   PresentationChartLineIcon,
   ScaleIcon,
   SparklesIcon,
+  UserGroupIcon,
 } from '@heroicons/react/20/solid';
 import { getGraphColor, getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import { safeParseJsonString } from '@/util/safe-parse-json-string';
@@ -220,6 +221,13 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
           <div className="flex items-center justify-start space-x-2">
             <span className="block-bg-color rounded-full p-2">
+              <UserGroupIcon className="size-5" title="Occupancy Rate" />
+            </span>
+            <div>{aboutTicker.occupancyRate ?? 'N/A'}</div>
+          </div>
+
+          <div className="flex items-center justify-start space-x-2">
+            <span className="block-bg-color rounded-full p-2">
               <ScaleIcon className="size-5" title="Valuation" />
             </span>
             <div>{aboutTicker.valuation ?? 'N/A'}</div>
@@ -257,7 +265,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
         {/* Financials Section */}
         <div className="font-semibold text-xl text-left my-6">Financials</div>
-        <div className="flex flex-col-reverse lg:flex-row max-h-[25vh] gap-5">
+        <div className="flex flex-col-reverse lg:flex-row lg:max-h-[25vh] gap-5">
           <div className="w-full md:w-1/2">
             <div className="h-full block-bg-color rounded-lg overflow-auto">
               <div className="inline-block min-w-full p-1 align-middle">
