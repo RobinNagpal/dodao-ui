@@ -7,27 +7,33 @@ export default function PerformanceChecklistEvaluation({ criterionEvaluation }: 
       {criterionEvaluation?.performanceChecklistEvaluation?.performanceChecklistItems?.length ? (
         <ul className="list-disc mt-2">
           {criterionEvaluation.performanceChecklistEvaluation.performanceChecklistItems.map((item, index) => (
-            <div key={index + '_performance_checklist_' + criterionEvaluation.criterionKey} className="mb-3">
-              <li className="flex items-start">
+            <div key={index + '_performance_checklist_' + criterionEvaluation.criterionKey} className="mb-5">
+              <li className="flex items-start mb-2">
                 <span className="mr-2">{item.score === 1 ? '✅' : '❌'}</span>
                 <span className="font-bold">{item.checklistItem}</span>
               </li>
-              <li className="text-sm flex gap-1">
-                <span className="font-bold whitespace-nowrap">One-line Explanation: </span>
-                <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.oneLinerExplanation) }} />
-              </li>
-              <li className="text-sm flex gap-1">
-                <span className="font-bold whitespace-nowrap">Information Used: </span>
-                <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.informationUsed) }} />
-              </li>
-              <li className="text-sm flex gap-1">
-                <span className="font-bold whitespace-nowrap">Detailed Explanation: </span>
-                <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.detailedExplanation) }} />
-              </li>
-              <li className="text-sm flex gap-1">
-                <span className="font-bold whitespace-nowrap">Evaluation Logic: </span>
-                <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.evaluationLogic) }} />
-              </li>
+
+              <div className="grid grid-cols-1 gap-y-2">
+                <div className="pl-6">
+                  <div className="font-bold text-sm">One-line Explanation:</div>
+                  <div className="text-sm markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.oneLinerExplanation) }} />
+                </div>
+
+                <div className="pl-6">
+                  <div className="font-bold text-sm">Information Used:</div>
+                  <div className="text-sm markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.informationUsed) }} />
+                </div>
+
+                <div className="pl-6">
+                  <div className="font-bold text-sm">Detailed Explanation:</div>
+                  <div className="text-sm markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.detailedExplanation) }} />
+                </div>
+
+                <div className="pl-6">
+                  <div className="font-bold text-sm">Evaluation Logic:</div>
+                  <div className="text-sm markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(item.evaluationLogic) }} />
+                </div>
+              </div>
             </div>
           ))}
         </ul>
