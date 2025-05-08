@@ -18,6 +18,8 @@ import PopulateLatest10QInfoButton from '@/app/public-equities/tickers/[tickerKe
 import DebugTickerNews from '@/components/ticker/debug/DebugTickerNews';
 import DebugManagementTeam from '@/components/ticker/debug/DebugManagementTeam';
 import DebugTickerBusinessModel from '@/components/ticker/debug/DebugTickerBusinessModel';
+import DebugTickerFinancials from '@/components/ticker/debug/DebugTickerFinancials';
+import DebugTickerDividends from '@/components/ticker/debug/DebugTickerFinancials';
 
 export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
   // New state for section-specific regeneration confirmation
@@ -80,8 +82,10 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
           <DebugTickerInfo report={tickerReport} onPostUpdate={onPostUpdate} />
           <DebugTickerNews report={tickerReport} onPostUpdate={onPostUpdate} />
           <DebugTickerBusinessModel report={tickerReport} onPostUpdate={onPostUpdate} />
+          <DebugTickerFinancials report={tickerReport} onPostUpdate={onPostUpdate} />
+          <DebugTickerDividends report={tickerReport} onPostUpdate={onPostUpdate} />
           {tickerReport.latest10QInfo ? (
-            <div>
+            <div className="my-8">
               <div className="flex justify-between items-center mb-4">
                 <div className="text-lg">Latest 10Q Information</div>
                 <PopulateLatest10QInfoButton tickerKey={ticker} onSuccess={onPostUpdate} isRepopulate={true} />

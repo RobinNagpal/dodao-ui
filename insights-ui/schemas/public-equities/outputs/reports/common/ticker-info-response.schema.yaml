@@ -11,6 +11,9 @@ properties:
   valuation:
     type: string
     description: "Categorize the REIT as Overvalued/Undervalued/Fairly Valued or N/A if could not determine"
+  occupancyRate:
+    type: string
+    description: "Occupancy rate % of the REIT or N/A if could not find"
   yearsSinceIpo:
     type: string
     description: "Number of years since the IPO, as a string (e.g. '0.6 years')"
@@ -78,6 +81,10 @@ properties:
     type: string
     description: "Key tailwinds supporting the REIT"
 required:
+  - reitInfo
+  - reitWebsiteUrl
+  - valuation
+  - occupancyRate
   - yearsSinceIpo
   - gicsClassification
   - dividendProfile

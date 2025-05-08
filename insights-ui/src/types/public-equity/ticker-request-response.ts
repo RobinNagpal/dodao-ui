@@ -102,6 +102,10 @@ export interface SaveTickerBusinessModelRequest {
   tickerBusinessModel: string;
 }
 
+export interface SaveTickerFinancialsRequest {
+  tickerFinancials: string;
+}
+
 export interface SaveMgtTeamAssessmentRequest {
   managementTeamAssessment: string;
 }

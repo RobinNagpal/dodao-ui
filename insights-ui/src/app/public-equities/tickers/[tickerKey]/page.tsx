@@ -27,15 +27,18 @@ import {
   CheckIcon,
   DivideIcon,
   DocumentCurrencyDollarIcon,
+  ExclamationTriangleIcon,
   InformationCircleIcon,
   MagnifyingGlassIcon,
   PresentationChartLineIcon,
   ScaleIcon,
   SparklesIcon,
+  UserGroupIcon,
 } from '@heroicons/react/20/solid';
 import { getGraphColor, getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import { safeParseJsonString } from '@/util/safe-parse-json-string';
 import TickerNewsSection from './TickerNewsSection';
+import { getDateAsDDMonthYYYYFormat, getTimeAgo } from '@/util/get-date';
 
 export async function generateMetadata({ params }: { params: Promise<{ tickerKey: string }> }): Promise<Metadata> {
   const { tickerKey } = await params;
@@ -131,6 +134,23 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   const aboutTicker = safeParseJsonString(tickerReport.tickerInfo);
   const managementTeam = (tickerReport.managementTeam as LinkedinProfile[]) || [];
 
+  const lastYearFFO = aboutTicker.financials?.ffoPerShare.ffoPerShareLastYear ?? 0;
+  const currentYearFFO = aboutTicker.financials?.ffoPerShare.ffoPerShareCurrentYear ?? 0;
+
+  // avoid division by zero
+  const deltaPct = lastYearFFO !== 0 ? ((currentYearFFO - lastYearFFO) / lastYearFFO) * 100 : currentYearFFO;
+
+  // format it with a +/− and two decimals
+  const sign = deltaPct > 0 ? '+' : '';
+  const ffoYoYChange = `${sign}${deltaPct.toFixed(2)}`;
+
+  const priceToFFO =
+    tickerReport.evaluationsOfLatest10Q
+      ?.find((r) => r.criterionKey === 'operations_expense_management')
+      ?.importantMetricsEvaluation.metrics.find((m) => m.metricKey === 'price_to_ffo')?.value ?? 'N/A';
+
+  const dividends = aboutTicker.dividends?.dividends.results ?? [];
+
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -201,6 +221,13 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
           <div className="flex items-center justify-start space-x-2">
             <span className="block-bg-color rounded-full p-2">
+              <UserGroupIcon className="size-5" title="Occupancy Rate" />
+            </span>
+            <div>{aboutTicker.occupancyRate ?? 'N/A'}</div>
+          </div>
+
+          <div className="flex items-center justify-start space-x-2">
+            <span className="block-bg-color rounded-full p-2">
               <ScaleIcon className="size-5" title="Valuation" />
             </span>
             <div>{aboutTicker.valuation ?? 'N/A'}</div>
@@ -220,11 +247,11 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         {/* Business Model Section */}
         <div className="font-semibold text-xl text-left my-6">Business Model & Competitive Edge</div>
         <div className="w-full py-2 text-left block-bg-color rounded-xl flex flex-col">
-          <InfoBlock heading="Business Model" content={aboutTicker.businessModel.businessModel} IconComponent={BriefcaseIcon} />
-          <InfoBlock heading="Uniqueness" content={aboutTicker.businessModel.uniqueness} IconComponent={SparklesIcon} />
+          <InfoBlock heading="Business Model" content={aboutTicker.businessModel?.businessModel} IconComponent={BriefcaseIcon} />
+          <InfoBlock heading="Uniqueness" content={aboutTicker.businessModel?.uniqueness} IconComponent={SparklesIcon} />
           <InfoBlock heading="Competitive Edge" IconComponent={PresentationChartLineIcon}>
-            {aboutTicker.businessModel.competitiveEdge &&
-              aboutTicker.businessModel.competitiveEdge.map((ce: string, i: number) => (
+            {aboutTicker.businessModel?.competitiveEdge &&
+              aboutTicker.businessModel?.competitiveEdge.map((ce: string, i: number) => (
                 <div key={i + '_competitiveEdge'} className="w-full text-left px-4 block-bg-color rounded-xl flex">
                   <span>
                     <CheckIcon className="size-5 inline mr-2" />
@@ -233,6 +260,100 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                 </div>
               ))}
           </InfoBlock>
+          <InfoBlock heading="Potential Risks" content={aboutTicker.businessModel?.risks} IconComponent={ExclamationTriangleIcon} />
+        </div>
+
+        {/* Financials Section */}
+        <div className="font-semibold text-xl text-left my-6">Financials</div>
+        <div className="flex flex-col-reverse lg:flex-row lg:max-h-[25vh] gap-5">
+          <div className="w-full md:w-1/2">
+            <div className="h-full block-bg-color rounded-lg overflow-auto">
+              <div className="inline-block min-w-full p-1 align-middle">
+                <table className="min-w-full divide-y divide-gray-500">
+                  <thead>
+                    <tr className="text-center text-sm font-semibold sticky top-0 block-bg-color">
+                      <th scope="col" className="px-2 py-3.5">
+                        Ex Dividend
+                      </th>
+                      <th scope="col" className="px-2 py-3.5">
+                        Payment
+                      </th>
+                      <th scope="col" className="px-2 py-3.5">
+                        Dividend
+                      </th>
+                      <th scope="col" className="px-2 py-3.5">
+                        Diff
+                      </th>
+                      <th scope="col" className="px-2 py-3.5">
+                        Status
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-500">
+                    {dividends.map((tx: any, idx: number) => {
+                      const currentAmt = parseFloat(tx.cash_amount);
+                      // “previous” in time is the next element in the array
+                      const nextTx = idx < dividends.length - 1 ? dividends[idx + 1] : null;
+                      const nextAmt = nextTx ? parseFloat(nextTx.cash_amount) : null;
+
+                      const diffPct = nextAmt && nextAmt !== 0 ? ((currentAmt - nextAmt) / nextAmt) * 100 : null;
+
+                      const diffDisplay = diffPct !== null ? `${diffPct > 0 ? '+' : ''}${diffPct.toFixed(1)}%` : '–';
+
+                      const status = getDividendStatus(tx.ex_dividend_date, tx.pay_date);
+
+                      return (
+                        <tr key={tx.id} className="text-center text-sm">
+                          <td className="p-2">
+                            <div>{getDateAsDDMonthYYYYFormat(tx.ex_dividend_date)}</div>
+                            <div className="text-sm text-gray-500">{getTimeAgo(tx.ex_dividend_date)}</div>
+                          </td>
+                          <td className="p-22font-medium">
+                            <div>{getDateAsDDMonthYYYYFormat(tx.pay_date)}</div>
+                            <div className="text-sm text-gray-500">{getTimeAgo(tx.pay_date)}</div>
+                          </td>
+                          <td className="p-2">${tx.cash_amount}</td>
+                          <td className="p-2">
+                            <span
+                              className={
+                                diffPct != null && diffPct > 0 ? 'text-green-600 font-medium' : diffPct != null && diffPct < 0 ? 'text-red-600 font-medium' : ''
+                              }
+                            >
+                              {diffDisplay}
+                            </span>
+                          </td>
+                          <td className="p-2">
+                            <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full text-color ${getStatusClasses(status)}`}>{status}</span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full md:w-1/2 px-4">
+            <div className="grid grid-cols-2 grid-rows-2 gap-4 overflow-auto text-left">
+              <div className="border-l-2 border-color pl-6 py-4">
+                <div className="font-semibold text-3xl mb-2">{priceToFFO}</div>
+                <div>Price To FFO</div>
+              </div>
+              <div className="border-l-2 border-color pl-6 py-4">
+                <div className="font-semibold text-3xl mb-2">{aboutTicker.financials?.priceToBook ?? 'N/A'} x</div>
+                <div>Price To Book (P/B)</div>
+              </div>
+              <div className="border-l-2 border-color pl-6 py-4">
+                <div className="font-semibold text-3xl mb-2">{aboutTicker.financials?.averageDividendYield ?? 'N/A'} %</div>
+                <div>Average Dividend Yield</div>
+              </div>
+              <div className="border-l-2 border-color pl-6 py-4">
+                <div className="font-semibold text-3xl mb-2">{ffoYoYChange} %</div>
+                <div>{lastYearFFO !== 0 ? 'FFO/share 1yr Diff' : 'FFO/share'}</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Reports Section */}
@@ -359,4 +480,34 @@ function InfoBlock({ heading, content, children, IconComponent, IconClasses }: I
       </div>
     </div>
   );
+}
+
+function getDividendStatus(exDateStr: string, payDateStr: string): 'Announced' | 'Unpaid' | 'Paid' | 'Unknown' {
+  const now = new Date();
+  const exDate = new Date(exDateStr);
+  const payDate = new Date(payDateStr);
+
+  if (exDate > now && payDate > now) {
+    return 'Announced';
+  }
+  if (exDate <= now && payDate > now) {
+    return 'Unpaid';
+  }
+  if (exDate <= now && payDate <= now) {
+    return 'Paid';
+  }
+  return 'Unknown';
+}
+
+function getStatusClasses(status: string) {
+  switch (status) {
+    case 'Paid':
+      return 'bg-green-600';
+    case 'Announced':
+      return 'bg-cyan-600';
+    case 'Unpaid':
+      return 'bg-yellow-100';
+    default:
+      return 'bg-gray-100';
+  }
 }
