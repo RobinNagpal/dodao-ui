@@ -5,7 +5,7 @@ import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { SaveTickerInfoRequest } from '@/types/public-equity/ticker-request-response';
 import { invokePrompt } from '@/util/run-prompt';
-import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-today-date';
+import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { safeParseJsonString } from '@/util/safe-parse-json-string';
 
 async function saveTickerInfo(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
@@ -32,7 +32,7 @@ async function saveTickerInfo(req: NextRequest, { params }: { params: Promise<{ 
   const existingInfoObj = safeParseJsonString(existingTicker.tickerInfo);
 
   // Define which keys to preserve
-  const preservedKeys = ['tickerNews', 'managementTeamAssessment', 'businessModel'] as const;
+  const preservedKeys = ['tickerNews', 'managementTeamAssessment', 'businessModel', 'financials', 'dividends'] as const;
 
   for (const key of preservedKeys) {
     const value = existingInfoObj[key];

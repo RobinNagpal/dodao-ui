@@ -5,7 +5,7 @@ import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { SaveTickerNewsRequest } from '@/types/public-equity/ticker-request-response';
 import { invokePrompt } from '@/util/run-prompt';
-import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-today-date';
+import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { safeParseJsonString } from '@/util/safe-parse-json-string';
 
 async function saveTickerNews(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
