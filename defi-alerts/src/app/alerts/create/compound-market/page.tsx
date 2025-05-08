@@ -115,7 +115,7 @@ export default function CompoundMarketAlertPage() {
       if (!res.ok) {
         showNotification({
           type: "error",
-          heading: "Couldn’t create alert",
+          heading: "Couldn't create alert",
           message: json.error || "Unknown server error",
         });
         return;
@@ -143,28 +143,28 @@ export default function CompoundMarketAlertPage() {
       <nav className="flex items-center text-sm mb-6">
         <Link
           href="/"
-          className="text-theme-muted hover-text-slate-900 flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <Home size={14} />
           <span>Home</span>
         </Link>
-        <ChevronRight size={14} className="mx-2 text-slate-400" />
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
         <Link
           href="/alerts"
-          className="text-theme-muted hover-text-slate-900 flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <Bell size={14} />
           <span>Alerts</span>
         </Link>
-        <ChevronRight size={14} className="mx-2 text-slate-400" />
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
         <Link
           href="/alerts/create"
-          className="text-theme-muted hover-text-slate-900 flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <TrendingUp size={14} />
           <span>Create Alert</span>
         </Link>
-        <ChevronRight size={14} className="mx-2 text-slate-400" />
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
         <span className="text-theme-primary font-medium">Compound Market</span>
       </nav>
 
@@ -178,7 +178,7 @@ export default function CompoundMarketAlertPage() {
       </div>
 
       {/* Alert Type */}
-      <Card className="mb-6 border-theme-border-primary">
+      <Card className="mb-6 border-theme-primary bg-block">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Alert Type
@@ -213,7 +213,7 @@ export default function CompoundMarketAlertPage() {
       </Card>
 
       {/* Market Selection */}
-      <Card className="mb-6 border-theme-border-primary">
+      <Card className="mb-6 border-theme-primary bg-block">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Market Selection
@@ -249,15 +249,15 @@ export default function CompoundMarketAlertPage() {
                   onClick={() => toggleChain(chain)}
                   className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
                     selectedChains.includes(chain)
-                      ? "border-primary bg-theme-bg-muted"
-                      : "border-theme-border-primary"
+                      ? "border-primary bg-theme-secondary"
+                      : "border-theme-primary"
                   }`}
                 >
                   <div
                     className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
                       selectedChains.includes(chain)
                         ? "bg-primary border-primary"
-                        : "border-theme-border-secondary"
+                        : "border-theme-primary"
                     }`}
                   >
                     {selectedChains.includes(chain) && (
@@ -309,15 +309,15 @@ export default function CompoundMarketAlertPage() {
                   onClick={() => toggleMarket(market)}
                   className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
                     selectedMarkets.includes(market)
-                      ? "border-primary bg-theme-bg-muted"
-                      : "border-theme-border-primary"
+                      ? "border-primary bg-theme-secondary"
+                      : "border-theme-primary"
                   }`}
                 >
                   <div
                     className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
                       selectedMarkets.includes(market)
                         ? "bg-primary border-primary"
-                        : "border-theme-border-secondary"
+                        : "border-theme-primary"
                     }`}
                   >
                     {selectedMarkets.includes(market) && (
@@ -347,7 +347,7 @@ export default function CompoundMarketAlertPage() {
       </Card>
 
       {/* Condition Settings */}
-      <Card className="mb-6 border-theme-border-primary">
+      <Card className="mb-6 border-theme-primary bg-block">
         <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Condition Settings
@@ -361,7 +361,7 @@ export default function CompoundMarketAlertPage() {
                 { conditionType: "APR_RISE_ABOVE", severity: "NONE" },
               ])
             }
-            className="text-theme-primary border-theme-border-primary"
+            className="text-theme-primary border-theme-primary"
           >
             <Plus size={16} className="mr-1" /> Add Condition
           </Button>
@@ -375,7 +375,7 @@ export default function CompoundMarketAlertPage() {
           {conditions.map((cond, i) => (
             <div
               key={i}
-              className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-theme-border-primary pt-4"
+              className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-theme-primary pt-4"
             >
               <div className="col-span-1 flex items-center text-theme-muted">
                 <Badge
@@ -430,7 +430,7 @@ export default function CompoundMarketAlertPage() {
                     onChange={(e) =>
                       updateCondition(i, "thresholdLow", e.target.value)
                     }
-                    className="border-theme-border-primary"
+                    className="border-theme-primary"
                   />
                   <Input
                     type="text"
@@ -439,7 +439,7 @@ export default function CompoundMarketAlertPage() {
                     onChange={(e) =>
                       updateCondition(i, "thresholdHigh", e.target.value)
                     }
-                    className="border-theme-border-primary"
+                    className="border-theme-primary"
                   />
                   <span className="text-theme-muted">%</span>
                 </div>
@@ -452,7 +452,7 @@ export default function CompoundMarketAlertPage() {
                     onChange={(e) =>
                       updateCondition(i, "thresholdValue", e.target.value)
                     }
-                    className="border-theme-border-primary"
+                    className="border-theme-primary"
                   />
                   <span className="ml-2 text-theme-muted">%</span>
                 </div>
@@ -505,7 +505,7 @@ export default function CompoundMarketAlertPage() {
           <div className="mt-6">
             <Label
               htmlFor="frequency"
-              className="block text-sm font-medium mb-2"
+              className="block text-sm font-medium mb-2 text-theme-primary"
             >
               Notification Frequency
             </Label>
@@ -535,7 +535,7 @@ export default function CompoundMarketAlertPage() {
       </Card>
 
       {/* Delivery Channel Settings */}
-      <Card className="mb-6 border-theme-border-primary">
+      <Card className="mb-6 border-theme-primary bg-block">
         <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Delivery Channel Settings
@@ -544,7 +544,7 @@ export default function CompoundMarketAlertPage() {
             variant="outline"
             size="sm"
             onClick={addChannel}
-            className="text-theme-primary border-theme-border-primary"
+            className="text-theme-primary border-theme-primary"
           >
             <Plus size={16} className="mr-1" /> Add Channel
           </Button>
@@ -581,7 +581,7 @@ export default function CompoundMarketAlertPage() {
                   placeholder="you@example.com"
                   value={ch.email || ""}
                   onChange={(e) => updateChannel(i, "email", e.target.value)}
-                  className="flex-1 border-theme-border-primary"
+                  className="flex-1 border-theme-primary"
                 />
               ) : (
                 <Input
@@ -591,7 +591,7 @@ export default function CompoundMarketAlertPage() {
                   onChange={(e) =>
                     updateChannel(i, "webhookUrl", e.target.value)
                   }
-                  className="flex-1 border-theme-border-primary"
+                  className="flex-1 border-theme-primary"
                 />
               )}
 
@@ -615,7 +615,7 @@ export default function CompoundMarketAlertPage() {
         <Button
           variant="outline"
           onClick={() => router.push("/alerts/create")}
-          className="border-theme-border-primary text-theme-primary"
+          className="border"
         >
           <ArrowLeft size={16} className="mr-2" /> Back
         </Button>
@@ -623,7 +623,7 @@ export default function CompoundMarketAlertPage() {
         <div className="space-x-4">
           <Button
             onClick={handleCreateAlert}
-            className="bg-primary text-white hover-bg-slate-800"
+            className="border text-primary-color"
           >
             Create Alert
           </Button>
