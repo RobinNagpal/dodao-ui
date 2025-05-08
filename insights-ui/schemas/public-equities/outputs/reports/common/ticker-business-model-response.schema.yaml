@@ -13,7 +13,11 @@ properties:
     description: "List of key competitive advantages (complete sentences) versus peers. Analyze how the REIT’s scale, portfolio quality, geographic footprint, tenant mix, financing strategy, or operational efficiencies give it an advantage versus its closest competitors."
     items:
       type: string
+  risks:
+    type: string
+    description: "Identify potential flaws or risks in the REIT’s business model or operations—market, financial, operational, regulatory or ESG-related—and explain their possible impact."
 required:
   - businessModel
   - uniqueness
   - competitiveEdge
+  - risks

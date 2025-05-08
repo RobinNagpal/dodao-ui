@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { LinkedinProfile } from '@/types/public-equity/ticker-report-types';
-import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-today-date';
+import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { invokePrompt } from '@/util/run-prompt';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';

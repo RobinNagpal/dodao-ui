@@ -14,6 +14,11 @@ export const gpt4OSearchModel = new ChatOpenAI({
   model: 'gpt-4o-search-preview',
 });
 
+export const gpt4oMiniSearchModel = new ChatOpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+  model: 'gpt-4o-mini-search-preview',
+});
+
 export const outputInstructions =
   '' +
   `#  For output content:
@@ -118,7 +123,7 @@ export function recursivelyCleanOpenAiUrls(data: any): any {
 export async function getLlmResponse<T extends Record<string, any>>(
   prompt: string,
   schema: ZodObject<any>,
-  model: 'o4-mini' | 'gpt-4o-search-preview' | 'gpt-4o-mini' = 'o4-mini',
+  model: 'o4-mini' | 'gpt-4o-search-preview' | 'gpt-4o-mini-search-preview' | 'gpt-4o-mini' = 'o4-mini',
   maxRetries = 3,
   initialDelay = 1000
 ): Promise<T> {
@@ -128,9 +133,9 @@ export async function getLlmResponse<T extends Record<string, any>>(
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const openai = new OpenAI({});
-      if (model === 'gpt-4o-search-preview') {
+      if (model === 'gpt-4o-search-preview' || model === 'gpt-4o-mini-search-preview') {
         const response = await openai.beta.chat.completions.parse({
-          model: 'gpt-4o-search-preview',
+          model: model,
           web_search_options: {},
           messages: [
             {
