@@ -6,53 +6,55 @@ import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import TickerFinancialsButton from './TickerFinancialsButton';
 import { safeParseJsonString } from '@/util/safe-parse-json-string';
 
-export interface DebugTickerDividendsProps {
+export interface DebugTickerFinancialsProps {
   report: FullNestedTickerReport;
   onPostUpdate: () => Promise<void>;
 }
 
-export default function DebugTickerDividends({ report, onPostUpdate }: DebugTickerDividendsProps) {
+export default function DebugTickerFinancials({ report, onPostUpdate }: DebugTickerFinancialsProps) {
   const ticker = report.tickerKey;
 
-  const tickerDividends = safeParseJsonString(report.tickerInfo).dividends ?? '';
+  const tickerFinancials = safeParseJsonString(report.tickerInfo).financials ?? '';
 
   const [selectedCriterionAccordian, setSelectedCriterionAccordian] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const {
-    postData: regenerateTickerDividends,
-    loading: TickerDividendsLoading,
-    error: TickerDividendsError,
+    postData: regenerateTickerFinancials,
+    loading: TickerFinancialsLoading,
+    error: TickerFinancialsError,
   } = usePostData<string, {}>({
-    errorMessage: 'Failed to repopulate ticker dividends.',
+    errorMessage: 'Failed to repopulate ticker financials.',
   });
 
-  const handleRegenerateTickerDividends = async () => {
-    await regenerateTickerDividends(`${getBaseUrl()}/api/tickers/${ticker}/ticker-dividends`);
+  const handleRegenerateTickerFinancials = async () => {
+    await regenerateTickerFinancials(`${getBaseUrl()}/api/tickers/${ticker}/ticker-financials`);
     await onPostUpdate();
   };
 
   return (
     <div className="mt-8">
-      {TickerDividendsError && <div className="text-red-500">{TickerDividendsError}</div>}
+      {TickerFinancialsError && <div className="text-red-500">{TickerFinancialsError}</div>}
       <PrivateWrapper>
         <div className="flex justify-end">
-          <Button loading={TickerDividendsLoading} primary variant="contained" onClick={() => setShowConfirmModal(true)} disabled={TickerDividendsLoading}>
-            Repopulate Ticker Dividends
+          <Button loading={TickerFinancialsLoading} primary variant="contained" onClick={() => setShowConfirmModal(true)} disabled={TickerFinancialsLoading}>
+            Repopulate Ticker Financials
           </Button>
         </div>
       </PrivateWrapper>
-      <h1 className="mb-8 font-bold text-xl">Ticker Dividends</h1>
+      <h1 className="mb-8 font-bold text-xl">Ticker Financials</h1>
       <Accordion
-        label={'Ticker Dividends'}
-        isOpen={selectedCriterionAccordian === `ticker_dividends`}
-        onClick={() => setSelectedCriterionAccordian(selectedCriterionAccordian === `ticker_dividends` ? null : `ticker_dividends`)}
+        label={'Ticker Financials'}
+        isOpen={selectedCriterionAccordian === `ticker_financials`}
+        onClick={() => setSelectedCriterionAccordian(selectedCriterionAccordian === `ticker_financials` ? null : `ticker_financials`)}
       >
         <div className="mt-4">
+          <TickerFinancialsButton tickerKey={ticker} tickerFinancialsContent={JSON.stringify(tickerFinancials, null, 2) || undefined} onUpdate={onPostUpdate} />
           <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs">
-            {tickerDividends ? JSON.stringify(tickerDividends, null, 2) : 'Not populated yet'}
+            {tickerFinancials ? JSON.stringify(tickerFinancials, null, 2) : 'Not populated yet'}
           </pre>
         </div>
       </Accordion>
@@ -61,13 +63,13 @@ export default function DebugTickerDividends({ report, onPostUpdate }: DebugTick
           open={showConfirmModal}
           onClose={() => setShowConfirmModal(false)}
           onConfirm={async () => {
-            await handleRegenerateTickerDividends();
+            await handleRegenerateTickerFinancials();
             setShowConfirmModal(false);
           }}
-          title="Repopulate Ticker Dividends"
-          confirmationText="Are you sure you want to repopulate the ticker dividends?"
+          title="Repopulate Ticker Financials"
+          confirmationText="Are you sure you want to repopulate the ticker financials?"
           askForTextInput={true}
-          confirming={TickerDividendsLoading}
+          confirming={TickerFinancialsLoading}
         />
       )}
     </div>
