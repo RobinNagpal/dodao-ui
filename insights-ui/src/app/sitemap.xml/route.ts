@@ -240,7 +240,7 @@ async function generateSitemapUrls(): Promise<SiteMapUrl[]> {
       priority: 1.0,
     },
     {
-      url: '/custom-reports',
+      url: '/reports',
       changefreq: 'daily',
       priority: 0.8,
     }

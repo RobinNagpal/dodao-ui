@@ -32,12 +32,12 @@ async function getTickersResponse(): Promise<PartialNestedTickerReport[]> {
 
 const breadcrumbs: BreadcrumbsOjbect[] = [
   {
-    name: 'Custom Reports',
-    href: `/custom-reports`,
+    name: 'Reports',
+    href: `/reports`,
     current: false,
   },
   {
-    name: 'Tickers',
+    name: 'REIT Reports',
     href: `/public-equities/tickers`,
     current: true,
   },

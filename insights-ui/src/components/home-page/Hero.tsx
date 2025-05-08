@@ -44,17 +44,14 @@ export function Hero() {
               Create highly accurate reports with data, stats, figures, references, and charts at 1/100 the cost. Any use case, minimal setup time.
             </p>
             <div className="mt-8 flex gap-4">
-              <Link
-                href="/custom-reports"
-                className="inline-flex items-center rounded-md bg-indigo-600 px-5 py-3 text-sm font-medium text-white hover:bg-indigo-500"
-              >
-                Explore Platform
+              <Link href="/reports" className="inline-flex items-center rounded-md bg-indigo-600 px-5 py-3 text-sm font-medium text-white hover:bg-indigo-500">
+                See Examples
               </Link>
               <a
                 href="#contact"
                 className="inline-flex items-center rounded-md border border-indigo-600 px-5 py-3 text-sm font-medium text-indigo-300 hover:text-white hover:bg-indigo-600"
               >
-                See Examples
+                Contact Us
               </a>
             </div>
           </div>

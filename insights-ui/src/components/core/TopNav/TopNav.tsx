@@ -11,7 +11,7 @@ import { getAuthKey } from '@/util/auth/authKey';
 const navigation = [
   { name: 'Crowdfunding Reports', href: '/crowd-funding', newTab: false },
   { name: 'REIT Reports', href: '/public-equities/tickers', newTab: false },
-  { name: 'Tariff Reports', href: '/reports', newTab: false },
+  { name: 'Tariff Reports', href: '/tariff-reports', newTab: false },
   { name: 'Blogs', href: '/blogs', newTab: true },
   { name: 'Docs', href: 'https://docs.koalagains.com', newTab: true },
 ];
