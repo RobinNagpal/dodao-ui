@@ -100,7 +100,7 @@ export default async function TickerReportsPage() {
                 </div>
                 <h3 className="text-xl font-medium mb-2">Ticker Reports</h3>
                 <p className="text-muted-foreground px-6">
-                  We're putting the finishing touches on our Ticker Reports. Be among the first to gain access to these powerful analytical tools.
+                  We are putting the finishing touches on our Ticker Reports. Be among the first to gain access to these powerful analytical tools.
                 </p>
                 <Link
                   href="/reports"
