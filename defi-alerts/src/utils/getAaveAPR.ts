@@ -11,6 +11,7 @@ export type MarketApr = {
   chainId: number;
   chainName: string;
   asset: string;
+  assetAddress: string;
   netEarnAPY: number;
   netBorrowAPY: number;
 };

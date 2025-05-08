@@ -1,4 +1,3 @@
-// src/app/api/sending-alerts/compound-market-alerts/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { useCompoundMarketsAprs } from "@/utils/getCompoundAPR";
 import {
@@ -56,7 +55,6 @@ export async function GET(request: NextRequest) {
       conditions: Array<{
         type: string;
         threshold: number | { low: number; high: number };
-        id: string;
       }>;
     }> = [];
 
@@ -127,7 +125,6 @@ export async function GET(request: NextRequest) {
           asset: assetSym,
           currentRate: aprValue,
           conditions: hits.map((c) => ({
-            id: c.id,
             type: c.conditionType,
             threshold:
               c.conditionType === "APR_OUTSIDE_RANGE"
@@ -156,7 +153,11 @@ export async function GET(request: NextRequest) {
     // 4) Broadcast the payload
     const payload = {
       alert: "Compound Market Alert",
+      alertCategory: alert.category,
       alertType: alert.actionType,
+      ...(alert.category === "PERSONALIZED" && {
+        walletAddress: alert.walletAddress,
+      }),
       triggered: groups,
       timestamp: new Date().toISOString(),
     };

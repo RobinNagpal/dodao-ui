@@ -51,7 +51,7 @@ export default function PersonalizedComparisonPage() {
       platform: "Aave",
       chain: "Ethereum",
       market: "wstETH",
-      rate: "7.7%",
+      rate: "0.09%",
       threshold: "0.5",
       severity: "NONE",
       frequency: "AT_MOST_ONCE_PER_DAY",
@@ -62,9 +62,9 @@ export default function PersonalizedComparisonPage() {
   const [borrowRows, setBorrowRows] = useState<ComparisonRow[]>([
     {
       platform: "Spark",
-      chain: "Base",
-      market: "AERO",
-      rate: "3.2%",
+      chain: "Ethereum",
+      market: "ETH",
+      rate: "2.09%",
       threshold: "0.5",
       severity: "NONE",
       frequency: "AT_MOST_ONCE_PER_DAY",
