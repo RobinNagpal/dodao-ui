@@ -12,7 +12,7 @@ import Image from 'next/image';
 
 const features = [
   {
-    name: 'Automated Financial Reports. ',
+    name: 'Automated Reports. ',
     description:
       'Generate comprehensive reports using AI-driven automation that provides in-depth analysis of balance sheets, income statements, and cash flow statements.',
     icon: DocumentChartBarIcon,
