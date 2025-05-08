@@ -3,6 +3,6 @@ import { marked } from 'marked';
 
 const renderer = getMarkedRenderer();
 
-export function parseMarkdown(text: string) {
-  return marked.parse(text, { renderer });
+export function parseMarkdown(text?: string) {
+  return text ? marked.parse(text, { renderer }) : '';
 }
