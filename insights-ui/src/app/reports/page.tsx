@@ -1,123 +1,76 @@
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { fetchTariffReports, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { ChevronRight, FileText } from 'lucide-react';
-import { Metadata } from 'next';
 import Link from 'next/link';
+import { CurrencyDollarIcon, HomeIcon } from '@heroicons/react/20/solid';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { Metadata } from 'next';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = 'Reports | KoalaGains';
-  const description = 'Comprehensive collection of tariff and ticker reports. Explore industry insights, tariff impacts, and company evaluations.';
-  const canonicalUrl = 'https://koalagains.com/reports';
+export const metadata: Metadata = {
+  title: 'Custom Reports | KoalaGains',
+  description: 'Generate quick, data-driven reports on crowdfunding projects and REITs. KoalaGains helps investors make informed decisions faster.',
+  alternates: {
+    canonical: 'https://koalagains.com/custom-reports',
+  },
+};
 
-  const keywords = ['tariff reports', 'industry analysis', 'ticker reports', 'financial analysis', 'industry evaluation', 'tariff impacts', 'KoalaGains'];
+const breadcrumbs: BreadcrumbsOjbect[] = [
+  {
+    name: 'Custom Reports',
+    href: `/custom-reports`,
+    current: true,
+  },
+];
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    openGraph: {
-      title,
-      description,
-      url: canonicalUrl,
-      siteName: 'KoalaGains',
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
-    keywords,
-  };
-}
+const reports = [
+  {
+    title: 'Crowdfunding Reports',
+    description:
+      'Get structured insights on crowdfunding projects, highlighting risks, returns, and strengths. Visual spider graphs provide a clear snapshot of investment potential.',
+    link: '/crowd-funding',
+    icon: CurrencyDollarIcon,
+  },
+  {
+    title: 'Specific REITS Reports',
+    description: 'Analyze REITs with key metrics like debt, market positioning, efficiency, and rental income, ensuring smarter investment decisions.',
+    link: '/public-equities/tickers',
+    icon: HomeIcon,
+  },
+];
 
-export default async function ReportsPage() {
-  // Fetch tariff reports
-  const tariffReports: TariffIndustryDefinition[] = fetchTariffReports();
-
-  // Set up breadcrumbs
-  const breadcrumbs: BreadcrumbsOjbect[] = [
-    {
-      name: 'Reports',
-      href: '/reports',
-      current: true,
-    },
-  ];
-
+export default function Page() {
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color">
-        <div className="mx-auto">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-6">Reports</h1>
-
-          {/* Tariff Reports Section */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-6 border-b border-color pb-2">Industry Tariff Reports</h2>
-            <p className="mb-6 text-muted-foreground">
-              Comprehensive analyses of tariff impacts across various industries. These reports provide deep insights into how tariff policies affect industry
-              dynamics, supply chains, and future outlook.
+      <div className="background-color py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:text-center">
+            <p className="mt-2 text-4xl font-semibold tracking-tight heading-color sm:text-5xl lg:text-balance">Smarter Investment Insights</p>
+            <p className="mt-6 text-lg/8 text-color">
+              KoalaGains simplifies investment research with quick, data-driven reports on crowdfunding projects and REITs, helping investors make informed
+              decisions faster.
             </p>
-
-            {tariffReports.length === 0 ? (
-              <div className="text-center py-12 background-color rounded-lg shadow-sm border border-color">
-                <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
-                <h3 className="mt-4 text-lg font-medium">No tariff reports available</h3>
-                <p className="mt-2 text-sm text-muted-foreground">Tariff reports will appear here once they are created.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {tariffReports.map((report) => (
-                  <div
-                    key={report.industryId}
-                    className="flex flex-col overflow-hidden rounded-lg shadow-lg border border-color hover:shadow-xl transition-all duration-300"
-                  >
-                    <div className="flex-1 background-color p-6">
-                      <div className="flex items-center text-xs font-medium mb-3">
-                        <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
-                          Tariff Report
-                        </span>
-                        {report.updatedAt && <span className="ml-2 text-muted-foreground">Updated {report.updatedAt}</span>}
+          </div>
+          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+              {reports.map((report, index) => {
+                const Icon = report.icon;
+                return (
+                  <div key={index} className="relative pl-9">
+                    <dt className="text-base/7 font-semibold heading-color">
+                      <div className="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg primary-color">
+                        <report.icon aria-hidden="true" className="absolute left-1 top-1 h-5 w-5 text-indigo-500" />
                       </div>
-
-                      <Link href={`/industry-tariff-report/${report.industryId}`} className="block mt-2 group">
-                        <h3 className="text-xl font-semibold group-hover:text-primary-color transition-colors">{report.reportTitle}</h3>
-                      </Link>
-
-                      <p className="mt-3 text-muted-foreground line-clamp-3">{report.reportOneLiner}</p>
-                    </div>
-
-                    <div className="block-bg-color border-t border-color p-4">
-                      <Link href={`/industry-tariff-report/${report.industryId}`} className="group flex items-center text-sm font-medium primary-color">
-                        View full report
-                        <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </Link>
-                    </div>
+                      {report.title}
+                    </dt>
+                    <dd className="mt-2 text-base/7 text-color">{report.description}</dd>
+                    <Link href={report.link} className="mt-2 inline-block text-sm font-medium link-color">
+                      See More &rarr;
+                    </Link>
                   </div>
-                ))}
-              </div>
-            )}
-          </section>
-
-          {/* Ticker Reports Section - Future Implementation */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-6 border-b border-color pb-2">Ticker Reports</h2>
-            <p className="mb-6 text-muted-foreground">
-              Detailed analyses of individual financial instruments. Ticker reports will provide comprehensive insights into company performance, market
-              positioning, and investment opportunities.
-            </p>
-
-            <div className="text-center py-12 background-color rounded-lg shadow-sm border border-color">
-              <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
-              <h3 className="mt-4 text-lg font-medium">Coming Soon</h3>
-              <p className="mt-2 text-sm text-muted-foreground">Ticker reports are currently in development and will be available in the near future.</p>
-            </div>
-          </section>
+                );
+              })}
+            </dl>
+          </div>
         </div>
       </div>
     </PageWrapper>
