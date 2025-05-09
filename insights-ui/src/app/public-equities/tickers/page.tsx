@@ -39,6 +39,12 @@ function ScoreIndicator({ scorePercent, colors, size = 'md', className = '' }: S
     border: '#6b7280',
   };
 
+  // Grey colors for empty scores
+  const emptyScoreColors = {
+    lighterBackground: '#989797', // light grey
+    border: '#9ca3af', // medium grey
+  };
+
   // Safely determine if we have a valid score
   const hasValidScore = scorePercent !== null && scorePercent !== undefined && !isNaN(scorePercent) && isFinite(scorePercent);
 
@@ -55,11 +61,13 @@ function ScoreIndicator({ scorePercent, colors, size = 'md', className = '' }: S
     lg: 'w-10 h-10 text-base',
   };
 
-  // Ensure we have valid colors or use defaults
-  const safeColors = {
-    lighterBackground: colors?.lighterBackground && colors.lighterBackground !== 'undefined' ? colors.lighterBackground : defaultColors.lighterBackground,
-    border: colors?.border && colors.border !== 'undefined' ? colors.border : defaultColors.border,
-  };
+  // Choose colors based on whether we have a valid score
+  const displayColors = hasValidScore
+    ? {
+        lighterBackground: colors?.lighterBackground && colors.lighterBackground !== 'undefined' ? colors.lighterBackground : defaultColors.lighterBackground,
+        border: colors?.border && colors.border !== 'undefined' ? colors.border : defaultColors.border,
+      }
+    : emptyScoreColors;
 
   return (
     <Tooltip.Root delayDuration={300}>
@@ -67,9 +75,9 @@ function ScoreIndicator({ scorePercent, colors, size = 'md', className = '' }: S
         <div
           className={`${sizeClasses[size]} ${className} rounded-full flex items-center justify-center flex-shrink-0 font-medium shadow-sm transition-all duration-200 hover:ring-2 hover:ring-offset-2 hover:ring-offset-gray-100 dark:hover:ring-offset-gray-800`}
           style={{
-            backgroundColor: safeColors.lighterBackground,
-            color: safeColors.border,
-            border: `1px solid ${safeColors.border}`,
+            backgroundColor: displayColors.lighterBackground,
+            color: displayColors.border,
+            border: `1px solid ${displayColors.border}`,
           }}
         >
           <span className="text-center" style={{ fontSize: size === 'sm' ? '10px' : undefined }}>
