@@ -52,7 +52,7 @@ export function EmailForm({ onSubmit, initialEmail = "" }: EmailFormProps) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="name@example.com"
-            className="pl-10 border-theme-border-primary"
+            className="pl-10 border border-theme-primary focus-border-primary"
             required
             autoComplete="email"
           />
@@ -61,7 +61,7 @@ export function EmailForm({ onSubmit, initialEmail = "" }: EmailFormProps) {
 
       <Button
         type="submit"
-        className="w-full border text-primary-color"
+        className="w-full text-primary-text border border-transparent bg-primary-color hover-border-body"
         disabled={isSubmitting}
       >
         {isSubmitting ? "Sending..." : "Continue with Email"}

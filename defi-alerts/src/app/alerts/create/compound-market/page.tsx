@@ -178,7 +178,7 @@ export default function CompoundMarketAlertPage() {
       </div>
 
       {/* Alert Type */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Alert Type
@@ -191,29 +191,30 @@ export default function CompoundMarketAlertPage() {
 
           <RadioGroup
             value={alertType}
-            onValueChange={(value) =>
-              setAlertType(value as "borrow" | "supply")
-            }
+            onValueChange={(v) => setAlertType(v as "borrow" | "supply")}
             className="space-y-3"
           >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="borrow" id="borrow" />
-              <Label htmlFor="borrow" className="text-theme-primary">
-                Borrow Alert
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="supply" id="supply" />
-              <Label htmlFor="supply" className="text-theme-primary">
-                Supply Alert
-              </Label>
-            </div>
+            {["borrow", "supply"].map((opt) => (
+              <div key={opt} className="flex items-center space-x-2">
+                <RadioGroupItem
+                  value={opt}
+                  id={opt}
+                  className="h-4 w-4 border border-default rounded-full radio-checked"
+                />
+                <Label
+                  htmlFor={opt}
+                  className="text-theme-primary label-checked"
+                >
+                  {opt === "borrow" ? "Borrow Alert" : "Supply Alert"}
+                </Label>
+              </div>
+            ))}
           </RadioGroup>
         </CardContent>
       </Card>
 
       {/* Market Selection */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Market Selection
@@ -232,6 +233,7 @@ export default function CompoundMarketAlertPage() {
               Select one or more chains to monitor.
             </p>
 
+            {/* Chains */}
             <div className="flex flex-wrap gap-3">
               {[
                 "Ethereum",
@@ -243,117 +245,117 @@ export default function CompoundMarketAlertPage() {
                 "Ronin",
                 "Mantle",
                 "Scroll",
-              ].map((chain) => (
-                <div
-                  key={chain}
-                  onClick={() => toggleChain(chain)}
-                  className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
-                    selectedChains.includes(chain)
-                      ? "border-primary bg-theme-secondary"
-                      : "border-theme-primary"
-                  }`}
-                >
+              ].map((chain) => {
+                const isSel = selectedChains.includes(chain);
+
+                return (
                   <div
-                    className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
-                      selectedChains.includes(chain)
-                        ? "bg-primary border-primary"
-                        : "border-theme-primary"
+                    key={chain}
+                    onClick={() => toggleChain(chain)}
+                    className={`rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors border ${
+                      isSel ? "chip-selected" : "border-theme-primary"
                     }`}
                   >
-                    {selectedChains.includes(chain) && (
-                      <svg
-                        width="10"
-                        height="8"
-                        viewBox="0 0 10 8"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9 1L3.5 6.5L1 4"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    )}
+                    <div className="chip-checkbox w-4 h-4 rounded border mr-2 flex items-center justify-center">
+                      {isSel && (
+                        <svg
+                          width="10"
+                          height="8"
+                          viewBox="0 0 10 8"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9 1L3.5 6.5L1 4"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                    </div>
+
+                    <span className="text-theme-primary chip-label">
+                      {chain}
+                    </span>
                   </div>
-                  <span className="text-theme-primary">{chain}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
+          {/* Markets */}
           <div>
-            <h3 className="text-md font-medium mb-1 text-theme-primary">
-              Markets
-            </h3>
-            <p className="text-sm text-theme-muted mb-3">
-              Select one or more markets to monitor.
-            </p>
+            <div>
+              <h3 className="text-md font-medium mb-1 text-theme-primary">
+                Markets
+              </h3>
+              <p className="text-sm text-theme-muted mb-3">
+                Select one or more markets to monitor.
+              </p>
 
-            <div className="flex flex-wrap gap-3">
-              {[
-                "USDC",
-                "USDS",
-                "USDT",
-                "ETH",
-                "wstETH",
-                "USDe",
-                "USDC.e",
-                "USDbC",
-                "AERO",
-              ].map((market) => (
-                <div
-                  key={market}
-                  onClick={() => toggleMarket(market)}
-                  className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
-                    selectedMarkets.includes(market)
-                      ? "border-primary bg-theme-secondary"
-                      : "border-theme-primary"
-                  }`}
-                >
-                  <div
-                    className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
-                      selectedMarkets.includes(market)
-                        ? "bg-primary border-primary"
-                        : "border-theme-primary"
-                    }`}
-                  >
-                    {selectedMarkets.includes(market) && (
-                      <svg
-                        width="10"
-                        height="8"
-                        viewBox="0 0 10 8"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9 1L3.5 6.5L1 4"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    )}
-                  </div>
-                  <span className="text-theme-primary">{market}</span>
-                </div>
-              ))}
+              <div className="flex flex-wrap gap-3">
+                {[
+                  "USDC",
+                  "USDS",
+                  "USDT",
+                  "ETH",
+                  "wstETH",
+                  "USDe",
+                  "USDC.e",
+                  "USDbC",
+                  "AERO",
+                ].map((market) => {
+                  const isSel = selectedMarkets.includes(market);
+
+                  return (
+                    <div
+                      key={market}
+                      onClick={() => toggleMarket(market)}
+                      className={`rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors border ${
+                        isSel ? "chip-selected" : "border-theme-primary"
+                      }`}
+                    >
+                      <div className="chip-checkbox w-4 h-4 rounded border mr-2 flex items-center justify-center">
+                        {isSel && (
+                          <svg
+                            width="10"
+                            height="8"
+                            viewBox="0 0 10 8"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M9 1L3.5 6.5L1 4"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )}
+                      </div>
+
+                      <span className="text-theme-primary chip-label">
+                        {market}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Condition Settings */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Condition Settings
           </CardTitle>
           <Button
-            variant="outline"
             size="sm"
             onClick={() =>
               setConditions((cs) => [
@@ -361,7 +363,7 @@ export default function CompoundMarketAlertPage() {
                 { conditionType: "APR_RISE_ABOVE", severity: "NONE" },
               ])
             }
-            className="text-theme-primary border-theme-primary"
+            className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary"
           >
             <Plus size={16} className="mr-1" /> Add Condition
           </Button>
@@ -375,12 +377,12 @@ export default function CompoundMarketAlertPage() {
           {conditions.map((cond, i) => (
             <div
               key={i}
-              className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-theme-primary pt-4"
+              className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-primary-color pt-4"
             >
               <div className="col-span-1 flex items-center text-theme-muted">
                 <Badge
                   variant="outline"
-                  className="h-6 w-6 flex items-center justify-center p-0 rounded-full"
+                  className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color"
                 >
                   {i + 1}
                 </Badge>
@@ -403,19 +405,30 @@ export default function CompoundMarketAlertPage() {
                     )
                   }
                 >
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full hover-border-primary">
                     <SelectValue placeholder="Select condition type" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="APR_RISE_ABOVE">
-                      APR rises above threshold
-                    </SelectItem>
-                    <SelectItem value="APR_FALLS_BELOW">
-                      APR falls below threshold
-                    </SelectItem>
-                    <SelectItem value="APR_OUTSIDE_RANGE">
-                      APR is outside a range
-                    </SelectItem>
+                  <SelectContent className="bg-block">
+                    <div className="hover-border-primary hover-text-primary">
+                      <SelectItem
+                        value="APR_RISE_ABOVE"
+                        className="hover:text-primary-color"
+                      >
+                        APR rises above threshold
+                      </SelectItem>
+                    </div>
+
+                    <div className="hover-border-primary hover-text-primary">
+                      <SelectItem value="APR_FALLS_BELOW">
+                        APR falls below threshold
+                      </SelectItem>
+                    </div>
+
+                    <div className="hover-border-primary hover-text-primary">
+                      <SelectItem value="APR_OUTSIDE_RANGE">
+                        APR is outside a range
+                      </SelectItem>
+                    </div>
                   </SelectContent>
                 </Select>
               </div>
@@ -430,7 +443,7 @@ export default function CompoundMarketAlertPage() {
                     onChange={(e) =>
                       updateCondition(i, "thresholdLow", e.target.value)
                     }
-                    className="border-theme-primary"
+                    className="border-theme-primary focus-border-primary focus:outline-none transition-colors"
                   />
                   <Input
                     type="text"
@@ -439,7 +452,7 @@ export default function CompoundMarketAlertPage() {
                     onChange={(e) =>
                       updateCondition(i, "thresholdHigh", e.target.value)
                     }
-                    className="border-theme-primary"
+                    className="border-theme-primary focus-border-primary focus:outline-none transition-colors"
                   />
                   <span className="text-theme-muted">%</span>
                 </div>
@@ -452,7 +465,7 @@ export default function CompoundMarketAlertPage() {
                     onChange={(e) =>
                       updateCondition(i, "thresholdValue", e.target.value)
                     }
-                    className="border-theme-primary"
+                    className="border-theme-primary focus-border-primary focus:outline-none transition-colors"
                   />
                   <span className="ml-2 text-theme-muted">%</span>
                 </div>
@@ -472,14 +485,16 @@ export default function CompoundMarketAlertPage() {
                     )
                   }
                 >
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full hover-border-primary">
                     <SelectValue placeholder="Select severity" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-block">
                     {severityOptions.map((opt) => (
-                      <SelectItem key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </SelectItem>
+                      <div className="hover-border-primary hover-text-primary">
+                        <SelectItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </SelectItem>
+                      </div>
                     ))}
                   </SelectContent>
                 </Select>
@@ -515,14 +530,19 @@ export default function CompoundMarketAlertPage() {
                 setNotificationFrequency(value as NotificationFrequency)
               }
             >
-              <SelectTrigger className="w-full" id="frequency">
+              <SelectTrigger
+                className="w-full hover-border-primary"
+                id="frequency"
+              >
                 <SelectValue placeholder="Select frequency" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-block">
                 {frequencyOptions.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </SelectItem>
+                  <div className="hover-border-primary hover-text-primary">
+                    <SelectItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </SelectItem>
+                  </div>
                 ))}
               </SelectContent>
             </Select>
@@ -535,16 +555,15 @@ export default function CompoundMarketAlertPage() {
       </Card>
 
       {/* Delivery Channel Settings */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Delivery Channel Settings
           </CardTitle>
           <Button
-            variant="outline"
             size="sm"
             onClick={addChannel}
-            className="text-theme-primary border-theme-primary"
+            className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary"
           >
             <Plus size={16} className="mr-1" /> Add Channel
           </Button>
@@ -566,12 +585,16 @@ export default function CompoundMarketAlertPage() {
                   )
                 }
               >
-                <SelectTrigger className="w-[150px]">
+                <SelectTrigger className="w-[150px] hover-border-primary">
                   <SelectValue placeholder="Select channel" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="EMAIL">Email</SelectItem>
-                  <SelectItem value="WEBHOOK">Webhook</SelectItem>
+                <SelectContent className="bg-block">
+                  <div className="hover-border-primary hover-text-primary">
+                    <SelectItem value="EMAIL">Email</SelectItem>
+                  </div>
+                  <div className="hover-border-primary hover-text-primary">
+                    <SelectItem value="WEBHOOK">Webhook</SelectItem>
+                  </div>
                 </SelectContent>
               </Select>
 
@@ -581,7 +604,7 @@ export default function CompoundMarketAlertPage() {
                   placeholder="you@example.com"
                   value={ch.email || ""}
                   onChange={(e) => updateChannel(i, "email", e.target.value)}
-                  className="flex-1 border-theme-primary"
+                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                 />
               ) : (
                 <Input
@@ -591,7 +614,7 @@ export default function CompoundMarketAlertPage() {
                   onChange={(e) =>
                     updateChannel(i, "webhookUrl", e.target.value)
                   }
-                  className="flex-1 border-theme-primary"
+                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                 />
               )}
 
@@ -613,9 +636,8 @@ export default function CompoundMarketAlertPage() {
       {/* Action Buttons */}
       <div className="flex justify-between">
         <Button
-          variant="outline"
           onClick={() => router.push("/alerts/create")}
-          className="border"
+          className="border hover-border-primary"
         >
           <ArrowLeft size={16} className="mr-2" /> Back
         </Button>
@@ -623,7 +645,7 @@ export default function CompoundMarketAlertPage() {
         <div className="space-x-4">
           <Button
             onClick={handleCreateAlert}
-            className="border text-primary-color"
+            className="border text-primary-color hover-border-body"
           >
             Create Alert
           </Button>

@@ -641,7 +641,7 @@ export default function CompareCompoundPage() {
       <div className="flex justify-between">
         <Button
           onClick={() => router.push("/alerts/create")}
-          className="border"
+          className="border hover-border-primary"
         >
           <ArrowLeft size={16} className="mr-2" /> Back
         </Button>
@@ -649,7 +649,7 @@ export default function CompareCompoundPage() {
         <div className="space-x-4">
           <Button
             onClick={handleCreateAlert}
-            className="border text-primary-color"
+            className="border text-primary-color hover-border-body"
           >
             Create Alert
           </Button>

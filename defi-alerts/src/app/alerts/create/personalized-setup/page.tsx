@@ -129,7 +129,7 @@ export default function PersonalizedSetupPage() {
                   value={walletAddress}
                   onChange={(e) => setWalletAddress(e.target.value)}
                   placeholder="0x..."
-                  className="border-theme-primary"
+                  className="border-theme-primary focus-border-primary"
                 />
               </div>
             </div>
@@ -141,12 +141,15 @@ export default function PersonalizedSetupPage() {
       <div className="flex justify-between">
         <Button
           onClick={() => router.push("/alerts/create")}
-          className="border"
+          className="border hover-border-primary"
         >
           <ArrowLeft size={16} className="mr-2" /> Back
         </Button>
 
-        <Button onClick={handleNext} className="border text-primary-color">
+        <Button
+          onClick={handleNext}
+          className="border text-primary-color hover-border-body"
+        >
           Next <ArrowRight size={16} className="ml-2" />
         </Button>
       </div>

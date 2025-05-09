@@ -500,16 +500,15 @@ export default function PersonalizedComparisonPage() {
       {/* Action Buttons */}
       <div className="flex justify-between">
         <Button
-          variant="outline"
           onClick={() => router.push("/alerts/create")}
-          className="border"
+          className="border hover-border-primary"
         >
           <ArrowLeft size={16} className="mr-2" /> Back
         </Button>
 
         <Button
           onClick={handleCreateAlert}
-          className="border text-primary-color"
+          className="border text-primary-color hover-border-body"
         >
           Create Personalized Alerts
         </Button>

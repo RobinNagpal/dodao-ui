@@ -33,3 +33,51 @@
 
 /* Hover states */
 .hover-text-primary:hover { color: var(--primary-color); }
+.hover-border-primary:hover {
+  border-color: var(--primary-color);
+}
+.hover-border-body:hover {
+  border-color: var(--text-color);
+}
+
+/* Radio button styles */
+.radio-checked {
+  &[data-state="checked"] {
+    border-color: var(--primary-color);
+    color: var(--primary-color);  
+
+    + .label-checked {
+      color: var(--primary-color);
+    }
+  }
+}
+
+/* Chips (chain/market) */
+.chip-selected {
+  border-color: var(--primary-color);
+  color: var(--primary-color);       
+
+  .chip-checkbox {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+
+  .chip-label {
+    color: var(--primary-color);
+  }
+}
+
+.chip-checkbox svg path {
+  stroke: var(--primary-text-color) !important;
+}
+
+/* make any element’s border turn primary‐color on focus */
+.focus-border-primary {
+  transition: border-color 0.2s ease-in-out;
+  
+  &:focus {
+    border-color: var(--primary-color) !important;
+  }
+}
+
+

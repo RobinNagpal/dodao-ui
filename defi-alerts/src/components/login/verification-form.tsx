@@ -64,7 +64,7 @@ export function VerificationForm({
             value={verificationCode}
             onChange={(e) => setVerificationCode(e.target.value)}
             placeholder="Enter 6-digit code"
-            className="pl-10 tracking-wider font-mono border-theme-border-primary"
+            className="pl-10 tracking-wider font-mono border-theme-border-primary focus-border-primary"
             required
             autoComplete="one-time-code"
             maxLength={6}
@@ -74,7 +74,7 @@ export function VerificationForm({
 
       <Button
         type="submit"
-        className="w-full bg-primary-color text-primary-text hover:bg-primary-color/90"
+        className="w-full bg-primary-color text-primary-text border border-transparent hover-border-body"
         disabled={isSubmitting}
       >
         {isSubmitting ? "Verifying..." : "Sign In"}
@@ -82,7 +82,7 @@ export function VerificationForm({
 
       <Button
         type="button"
-        className="w-full border text-primary-color"
+        className="w-full border text-primary-color hover-border-body"
         onClick={onChangeEmail}
       >
         Use a different email
