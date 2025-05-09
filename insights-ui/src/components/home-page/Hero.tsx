@@ -6,11 +6,17 @@ import Link from 'next/link';
 function Testimonial() {
   return (
     <figure className="relative mx-auto max-w-md text-center lg:mx-0 lg:text-left">
+      <div className="flex justify-center text-indigo-400 lg:justify-start">
+        <StarRating />
+      </div>
       <blockquote className="mt-2">
         <p className="font-display text-xl font-medium text-white">
-          “Some people don’t like change, but you need to embrace change if the alternative is disaster”
+          “It is not the strongest of the species that survive, nor the most intelligent, but the one most responsive to change.”
         </p>
       </blockquote>
+      <figcaption className="mt-2 text-sm text-gray-400">
+        <strong className="font-semibold text-indigo-400 before:content-['—_']">Charles Darwin</strong>
+      </figcaption>
     </figure>
   );
 }
