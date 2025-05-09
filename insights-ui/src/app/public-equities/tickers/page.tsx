@@ -22,20 +22,31 @@ export const metadata: Metadata = {
 };
 
 interface ScoreIndicatorProps {
-  scorePercent: number | null | 'NaN';
-  colors: {
-    lighterBackground: string;
+  scorePercent: number | null | undefined;
+  colors?: {
+    lighterBackground?: string;
     background?: string;
-    border: string;
+    border?: string;
   };
   size?: 'sm' | 'md' | 'lg';
   className?: string;
 }
 
 function ScoreIndicator({ scorePercent, colors, size = 'md', className = '' }: ScoreIndicatorProps) {
-  // Calculate score out of 20 based on percentage
-  console.log(`Score percent: ${scorePercent}`);
-  const scoreOutOf20 = scorePercent !== null && scorePercent !== undefined && scorePercent !== 'NaN' ? Math.round((scorePercent / 100) * 20) : null;
+  // Default colors for fallback
+  const defaultColors = {
+    lighterBackground: '#f3f4f6',
+    border: '#6b7280',
+  };
+
+  // Safely determine if we have a valid score
+  const hasValidScore = scorePercent !== null && scorePercent !== undefined && !isNaN(scorePercent) && isFinite(scorePercent);
+
+  // Calculate score out of 20 based on percentage, with comprehensive validation
+  const scoreOutOf20 = hasValidScore ? Math.round((scorePercent / 100) * 20) : null;
+
+  // Format percentage for display with fallback
+  const formattedPercentage = hasValidScore ? `${Math.round(scorePercent)}%` : '-';
 
   // Determine sizing based on the size prop
   const sizeClasses = {
@@ -44,25 +55,31 @@ function ScoreIndicator({ scorePercent, colors, size = 'md', className = '' }: S
     lg: 'w-10 h-10 text-base',
   };
 
+  // Ensure we have valid colors or use defaults
+  const safeColors = {
+    lighterBackground: colors?.lighterBackground && colors.lighterBackground !== 'undefined' ? colors.lighterBackground : defaultColors.lighterBackground,
+    border: colors?.border && colors.border !== 'undefined' ? colors.border : defaultColors.border,
+  };
+
   return (
     <Tooltip.Root delayDuration={300}>
       <Tooltip.Trigger asChild>
         <div
           className={`${sizeClasses[size]} ${className} rounded-full flex items-center justify-center flex-shrink-0 font-medium shadow-sm transition-all duration-200 hover:ring-2 hover:ring-offset-2 hover:ring-offset-gray-100 dark:hover:ring-offset-gray-800`}
           style={{
-            backgroundColor: colors.lighterBackground || '#f3f4f6',
-            color: colors.border || '#6b7280',
-            border: `1px solid ${colors.border || 'transparent'}`,
+            backgroundColor: safeColors.lighterBackground,
+            color: safeColors.border,
+            border: `1px solid ${safeColors.border}`,
           }}
         >
           <span className="text-center" style={{ fontSize: size === 'sm' ? '10px' : undefined }}>
-            {scoreOutOf20 !== null && scoreOutOf20 !== undefined ? `${scoreOutOf20}/20` : '-'}
+            {hasValidScore && scoreOutOf20 !== null ? `${scoreOutOf20}/20` : '--'}
           </span>
         </div>
       </Tooltip.Trigger>
       <Tooltip.Portal>
         <Tooltip.Content className="bg-gray-800 text-white px-4 py-2.5 rounded-md text-xs shadow-md z-50 max-w-xs" sideOffset={5} avoidCollisions>
-          {scoreOutOf20 !== null ? `Performance Score: ${scoreOutOf20}/20 (${(scorePercent as number)?.toFixed(0)}%)` : 'No performance score available'}
+          {hasValidScore && scoreOutOf20 !== null ? `Performance Score: ${scoreOutOf20}/20 (${formattedPercentage})` : 'No performance score available'}
           <Tooltip.Arrow className="fill-gray-800" />
         </Tooltip.Content>
       </Tooltip.Portal>
@@ -177,7 +194,7 @@ export default async function AllTickersPage() {
                       {ticker.tickerKey}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 mt-1">
+                  <div className="flex items-center gap-2 mt-1 justify-between">
                     <div className="mt-2 text-xs text-color">
                       <p className="line-clamp-2 sm:line-clamp-1">{ticker.shortDescription || 'No description provided'}</p>
                     </div>
@@ -185,7 +202,7 @@ export default async function AllTickersPage() {
                       className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0"
                       style={{ backgroundColor: ticker.colors.lighterBackground, color: ticker.colors.border }}
                     >
-                      <ScoreIndicator scorePercent={ticker.scorePercent} colors={ticker.colors} size="lg" className="text-xs sm:text-sm" />
+                      <ScoreIndicator scorePercent={ticker.scorePercent} colors={ticker.colors} size="lg" className="text-xs sm:text-sm font-semibold" />
                     </div>
                   </div>
                 </div>
