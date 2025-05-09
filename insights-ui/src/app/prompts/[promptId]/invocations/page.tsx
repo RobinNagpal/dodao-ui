@@ -19,14 +19,18 @@ export default function PromptInvocationsListPage(): JSX.Element {
 
   useEffect(() => {
     const fetchInvocations = async () => {
-      const url = new URL(`${getBaseUrl()}/api/koala_gains/prompts/${params.promptId}/invocations`);
+      const baseUrl = getBaseUrl();
+      const path = `/api/koala_gains/prompts/${params.promptId}/invocations`;
+      const queryParams = showFailedOnly ? `?status=${PromptInvocationStatus.Failed}` : '';
 
-      if (showFailedOnly) {
-        url.searchParams.append('status', PromptInvocationStatus.Failed);
-      }
+      // If baseUrl exists, create a full URL; otherwise, use the path directly
+      const fetchUrl = baseUrl ? new URL(`${path}${queryParams}`, baseUrl).toString() : `${path}${queryParams}`;
 
       try {
-        const response = await fetch(url.toString());
+        const response = await fetch(fetchUrl);
+        if (!response.ok) {
+          throw new Error('Failed to fetch invocations');
+        }
         const data: InvocationWithPrompt[] = await response.json();
         setPromptInvocations(data);
       } catch (err) {

@@ -25,13 +25,14 @@ export default function PromptInvocationsListPage(): JSX.Element {
       setFetchError(null);
 
       try {
-        const url = new URL(`${getBaseUrl()}/api/koala_gains/invocations`);
+        const baseUrl = getBaseUrl();
+        const path = '/api/koala_gains/invocations';
+        const queryParams = showFailedOnly ? `?status=${PromptInvocationStatus.Failed}` : '';
 
-        if (showFailedOnly) {
-          url.searchParams.append('status', PromptInvocationStatus.Failed);
-        }
+        // If baseUrl exists, create a full URL; otherwise, use the path directly
+        const fetchUrl = baseUrl ? new URL(`${path}${queryParams}`, baseUrl).toString() : `${path}${queryParams}`;
 
-        const response = await fetch(url.toString(), { cache: 'no-cache' });
+        const response = await fetch(fetchUrl, { cache: 'no-cache' });
 
         if (!response.ok) {
           throw new Error('Failed to fetch invocations');
