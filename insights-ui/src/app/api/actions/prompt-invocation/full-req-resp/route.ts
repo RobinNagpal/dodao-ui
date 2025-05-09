@@ -125,7 +125,7 @@ async function postHandler(req: NextRequest): Promise<any> {
       modelName: model,
       prompt: finalPrompt,
       outputSchema,
-      maxRetries: 1,
+      maxRetries: 2,
     });
 
     const originalObject = {

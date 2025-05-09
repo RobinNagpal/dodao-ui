@@ -29,12 +29,6 @@ export async function getLLMResponse({ invocationId, llmProvider, modelName, pro
       const result = await structured.invoke(prompt);
       lastResult = result;
 
-      const valid = validate(result);
-      if (!valid) {
-        console.error('Schema validation errors:', validate.errors);
-        throw new Error(`Validation failed: ${JSON.stringify(validate.errors)}`);
-      }
-
       await prisma.promptInvocation.update({
         where: { id: invocationId },
         data: {
@@ -43,6 +37,13 @@ export async function getLLMResponse({ invocationId, llmProvider, modelName, pro
           updatedAt: new Date(),
         },
       });
+
+      const valid = validate(result);
+      if (!valid) {
+        console.error('Schema validation errors:', validate.errors);
+        throw new Error(`Validation failed: ${JSON.stringify(validate.errors)}`);
+      }
+
       return result;
     } catch (err: any) {
       const isLast = attempt === maxRetries;
