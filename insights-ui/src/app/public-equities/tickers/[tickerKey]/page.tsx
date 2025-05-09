@@ -256,7 +256,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                   <span>
                     <CheckIcon className="size-5 inline mr-2" />
                   </span>
-                  <div>{ce}</div>
+                  <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(ce ?? 'Not yet populated') }} />
                 </div>
               ))}
           </InfoBlock>

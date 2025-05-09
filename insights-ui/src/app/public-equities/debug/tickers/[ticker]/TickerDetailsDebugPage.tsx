@@ -19,7 +19,7 @@ import DebugTickerNews from '@/components/ticker/debug/DebugTickerNews';
 import DebugManagementTeam from '@/components/ticker/debug/DebugManagementTeam';
 import DebugTickerBusinessModel from '@/components/ticker/debug/DebugTickerBusinessModel';
 import DebugTickerFinancials from '@/components/ticker/debug/DebugTickerFinancials';
-import DebugTickerDividends from '@/components/ticker/debug/DebugTickerFinancials';
+import DebugTickerDividends from '@/components/ticker/debug/DebugTickerDividends';
 
 export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
   // New state for section-specific regeneration confirmation
