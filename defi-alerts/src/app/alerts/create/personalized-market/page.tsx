@@ -206,7 +206,7 @@ export default function PersonalizedMarketAlertPage() {
       <nav className="flex items-center text-sm mb-6">
         <Link
           href="/"
-          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <Home size={14} />
           <span>Home</span>
@@ -214,7 +214,7 @@ export default function PersonalizedMarketAlertPage() {
         <ChevronRight size={14} className="mx-2 text-theme-muted" />
         <Link
           href="/alerts"
-          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <Bell size={14} />
           <span>Alerts</span>
@@ -222,7 +222,7 @@ export default function PersonalizedMarketAlertPage() {
         <ChevronRight size={14} className="mx-2 text-theme-muted" />
         <Link
           href="/alerts/create"
-          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <TrendingUp size={14} />
           <span>Create Alert</span>
@@ -243,7 +243,7 @@ export default function PersonalizedMarketAlertPage() {
       </div>
 
       {/* Supply Positions */}
-      <Card className="mb-6 border-theme-border-primary">
+      <Card className="mb-6 border-theme-primary bg-block">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Supply Positions
@@ -257,13 +257,19 @@ export default function PersonalizedMarketAlertPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Chain</TableHead>
-                  <TableHead>Market</TableHead>
-                  <TableHead>Rate</TableHead>
-                  <TableHead>Condition</TableHead>
-                  <TableHead>Threshold</TableHead>
-                  <TableHead>Severity</TableHead>
-                  <TableHead>Frequency</TableHead>
+                  <TableHead className="text-theme-primary">Chain</TableHead>
+                  <TableHead className="text-theme-primary">Market</TableHead>
+                  <TableHead className="text-theme-primary">Rate</TableHead>
+                  <TableHead className="text-theme-primary">
+                    Condition
+                  </TableHead>
+                  <TableHead className="text-theme-primary">
+                    Threshold
+                  </TableHead>
+                  <TableHead className="text-theme-primary">Severity</TableHead>
+                  <TableHead className="text-theme-primary">
+                    Frequency
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -311,7 +317,7 @@ export default function PersonalizedMarketAlertPage() {
                             onChange={(e) =>
                               updateSupplyRow(i, "thresholdLow", e.target.value)
                             }
-                            className="w-20 border-theme-border-primary"
+                            className="w-20 border-theme-primary"
                           />
                           <Input
                             type="text"
@@ -324,7 +330,7 @@ export default function PersonalizedMarketAlertPage() {
                                 e.target.value
                               )
                             }
-                            className="w-20 border-theme-border-primary"
+                            className="w-20 border-theme-primary"
                           />
                           <span className="text-theme-muted">%</span>
                         </div>
@@ -336,7 +342,7 @@ export default function PersonalizedMarketAlertPage() {
                             onChange={(e) =>
                               updateSupplyRow(i, "threshold", e.target.value)
                             }
-                            className="w-20 border-theme-border-primary"
+                            className="w-20 border-theme-primary"
                           />
                           <span className="ml-2 text-theme-muted">%</span>
                         </div>
@@ -397,7 +403,7 @@ export default function PersonalizedMarketAlertPage() {
       </Card>
 
       {/* Borrow Position */}
-      <Card className="mb-6 border-theme-border-primary">
+      <Card className="mb-6 border-theme-primary bg-block">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Borrow Position
@@ -411,13 +417,19 @@ export default function PersonalizedMarketAlertPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Chain</TableHead>
-                  <TableHead>Market</TableHead>
-                  <TableHead>Rate</TableHead>
-                  <TableHead>Condition</TableHead>
-                  <TableHead>Threshold</TableHead>
-                  <TableHead>Severity</TableHead>
-                  <TableHead>Frequency</TableHead>
+                  <TableHead className="text-theme-primary">Chain</TableHead>
+                  <TableHead className="text-theme-primary">Market</TableHead>
+                  <TableHead className="text-theme-primary">Rate</TableHead>
+                  <TableHead className="text-theme-primary">
+                    Condition
+                  </TableHead>
+                  <TableHead className="text-theme-primary">
+                    Threshold
+                  </TableHead>
+                  <TableHead className="text-theme-primary">Severity</TableHead>
+                  <TableHead className="text-theme-primary">
+                    Frequency
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -465,7 +477,7 @@ export default function PersonalizedMarketAlertPage() {
                             onChange={(e) =>
                               updateBorrowRow(i, "thresholdLow", e.target.value)
                             }
-                            className="w-20 border-theme-border-primary"
+                            className="w-20 border-theme-primary"
                           />
                           <Input
                             type="text"
@@ -478,7 +490,7 @@ export default function PersonalizedMarketAlertPage() {
                                 e.target.value
                               )
                             }
-                            className="w-20 border-theme-border-primary"
+                            className="w-20 border-theme-primary"
                           />
                           <span className="text-theme-muted">%</span>
                         </div>
@@ -490,7 +502,7 @@ export default function PersonalizedMarketAlertPage() {
                             onChange={(e) =>
                               updateBorrowRow(i, "threshold", e.target.value)
                             }
-                            className="w-20 border-theme-border-primary"
+                            className="w-20 border-theme-primary"
                           />
                           <span className="ml-2 text-theme-muted">%</span>
                         </div>
@@ -551,7 +563,7 @@ export default function PersonalizedMarketAlertPage() {
       </Card>
 
       {/* Delivery Channels */}
-      <Card className="mb-6 border-theme-border-primary">
+      <Card className="mb-6 border-theme-primary bg-block">
         <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Delivery Channel Settings
@@ -560,7 +572,7 @@ export default function PersonalizedMarketAlertPage() {
             variant="outline"
             size="sm"
             onClick={addChannel}
-            className="text-theme-primary border-theme-border-primary"
+            className="text-theme-primary border-theme-primary"
           >
             <Plus size={16} className="mr-1" /> Add Channel
           </Button>
@@ -597,7 +609,7 @@ export default function PersonalizedMarketAlertPage() {
                   placeholder="you@example.com"
                   value={ch.email || ""}
                   onChange={(e) => updateChannel(i, "email", e.target.value)}
-                  className="flex-1 border-theme-border-primary"
+                  className="flex-1 border-theme-primary"
                 />
               ) : (
                 <Input
@@ -607,7 +619,7 @@ export default function PersonalizedMarketAlertPage() {
                   onChange={(e) =>
                     updateChannel(i, "webhookUrl", e.target.value)
                   }
-                  className="flex-1 border-theme-border-primary"
+                  className="flex-1 border-theme-primary"
                 />
               )}
 
@@ -629,16 +641,15 @@ export default function PersonalizedMarketAlertPage() {
       {/* Action Buttons */}
       <div className="flex justify-between">
         <Button
-          variant="outline"
           onClick={() => router.push("/alerts/create")}
-          className="border-theme-border-primary text-theme-primary"
+          className="border hover-border-primary"
         >
           <ArrowLeft size={16} className="mr-2" /> Back
         </Button>
 
         <Button
           onClick={handleCreateAlert}
-          className="bg-primary text-white hover-bg-slate-800"
+          className="border text-primary-color hover-border-body"
         >
           Create Personalized Alerts
         </Button>

@@ -45,20 +45,20 @@ export default function CreateAlertPage() {
       <nav className="flex items-center text-sm mb-6">
         <Link
           href="/"
-          className="text-theme-muted hover-text-slate-900 flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <Home size={14} />
           <span>Home</span>
         </Link>
-        <ChevronRight size={14} className="mx-2 text-slate-400" />
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
         <Link
           href="/alerts"
-          className="text-theme-muted hover-text-slate-900 flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <Bell size={14} />
           <span>Alerts</span>
         </Link>
-        <ChevronRight size={14} className="mx-2 text-slate-400" />
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
         <span className="text-theme-primary font-medium">Create Alert</span>
       </nav>
 
@@ -75,7 +75,7 @@ export default function CreateAlertPage() {
         {/* General Market Alerts */}
         <div className="space-y-4">
           <div className="flex items-center gap-2 mb-2">
-            <BarChart3 className="text-theme-secondary" />
+            <BarChart3 className="text-primary-color" />
             <h2 className="text-xl font-bold text-theme-primary">
               General Market Alerts
             </h2>
@@ -84,10 +84,10 @@ export default function CreateAlertPage() {
             Monitor any market or chain on Compound
           </p>
 
-          <Card className="overflow-hidden border-theme-primary transition-all hover:shadow-md">
-            <CardHeader className="bg-theme-bg-secondary pb-3">
+          <Card className="overflow-hidden border-theme-primary transition-all hover:shadow-md bg-block">
+            <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-lg text-theme-primary">
-                <TrendingUp size={18} className="text-theme-secondary" />
+                <TrendingUp size={18} className="text-primary-color" />
                 Compound Alerts
               </CardTitle>
               <CardDescription className="text-theme-muted">
@@ -96,11 +96,17 @@ export default function CreateAlertPage() {
             </CardHeader>
             <CardContent className="pt-4">
               <div className="flex items-center gap-2 text-sm text-theme-secondary mb-2">
-                <Badge variant="outline" className="bg-theme-bg-primary">
-                  Supply APY
+                <Badge
+                  variant="outline"
+                  className="border border-primary-color text-primary-color"
+                >
+                  Supply APR
                 </Badge>
-                <Badge variant="outline" className="bg-theme-bg-primary">
-                  Borrow APY
+                <Badge
+                  variant="outline"
+                  className="border border-primary-color text-primary-color"
+                >
+                  Borrow APR
                 </Badge>
               </div>
               <p className="text-sm text-theme-muted">
@@ -108,10 +114,9 @@ export default function CreateAlertPage() {
                 when they cross your thresholds.
               </p>
             </CardContent>
-            <CardFooter className="border-t border-theme-border-primary bg-theme-bg-secondary flex justify-end py-3">
+            <CardFooter className="border-t border-theme-primary flex justify-end py-3">
               <Button
-                variant="ghost"
-                className="text-theme-secondary hover-text-slate-900 hover-bg-slate-100 gap-1"
+                className="text-primary-color gap-1"
                 onClick={() => handleSelectAlertType("general", "compound")}
               >
                 Select <ArrowRight size={16} />
@@ -119,10 +124,10 @@ export default function CreateAlertPage() {
             </CardFooter>
           </Card>
 
-          <Card className="overflow-hidden border-theme-primary transition-all hover:shadow-md">
-            <CardHeader className="bg-theme-bg-secondary pb-3">
+          <Card className="overflow-hidden border-theme-primary bg-block transition-all hover:shadow-md">
+            <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-lg text-theme-primary">
-                <ArrowUpRight size={18} className="text-theme-secondary" />
+                <ArrowUpRight size={18} className="text-primary-color" />
                 When Compound Outperforms
               </CardTitle>
               <CardDescription className="text-theme-muted">
@@ -132,13 +137,22 @@ export default function CreateAlertPage() {
             </CardHeader>
             <CardContent className="pt-4">
               <div className="flex items-center gap-2 text-sm text-theme-secondary mb-2">
-                <Badge variant="outline" className="bg-theme-bg-primary">
+                <Badge
+                  variant="outline"
+                  className="border border-primary-color text-primary-color"
+                >
                   Aave
                 </Badge>
-                <Badge variant="outline" className="bg-theme-bg-primary">
+                <Badge
+                  variant="outline"
+                  className="border border-primary-color text-primary-color"
+                >
                   Morpho
                 </Badge>
-                <Badge variant="outline" className="bg-theme-bg-primary">
+                <Badge
+                  variant="outline"
+                  className="border border-primary-color text-primary-color"
+                >
                   Spark
                 </Badge>
               </div>
@@ -147,10 +161,9 @@ export default function CreateAlertPage() {
                 Compound offers better rates.
               </p>
             </CardContent>
-            <CardFooter className="border-t border-theme-border-primary bg-theme-bg-secondary flex justify-end py-3">
+            <CardFooter className="border-t border-theme-primary flex justify-end py-3">
               <Button
-                variant="ghost"
-                className="text-theme-secondary hover-text-slate-900 hover-bg-slate-100 gap-1"
+                className="text-primary-color gap-1"
                 onClick={() => handleSelectAlertType("general", "outperforms")}
               >
                 Select <ArrowRight size={16} />
@@ -162,7 +175,7 @@ export default function CreateAlertPage() {
         {/* Your Personalized Alerts */}
         <div className="space-y-4">
           <div className="flex items-center gap-2 mb-2">
-            <Wallet className="text-theme-secondary" />
+            <Wallet className="text-primary-color" />
             <h2 className="text-xl font-bold text-theme-primary">
               Your Personalized Alerts
             </h2>
@@ -171,10 +184,10 @@ export default function CreateAlertPage() {
             Monitor markets based on your wallet activity and positions
           </p>
 
-          <Card className="overflow-hidden border-theme-primary transition-all hover:shadow-md">
-            <CardHeader className="bg-theme-bg-secondary pb-3">
+          <Card className="overflow-hidden border-theme-primary bg-block transition-all hover:shadow-md">
+            <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-lg text-theme-primary">
-                <LineChart size={18} className="text-theme-secondary" />
+                <LineChart size={18} className="text-primary-color" />
                 Compound Alerts
               </CardTitle>
               <CardDescription className="text-theme-muted">
@@ -183,10 +196,16 @@ export default function CreateAlertPage() {
             </CardHeader>
             <CardContent className="pt-4">
               <div className="flex items-center gap-2 text-sm text-theme-secondary mb-2">
-                <Badge variant="outline" className="bg-theme-bg-primary">
+                <Badge
+                  variant="outline"
+                  className="border border-primary-color text-primary-color"
+                >
                   Your Supplies
                 </Badge>
-                <Badge variant="outline" className="bg-theme-bg-primary">
+                <Badge
+                  variant="outline"
+                  className="border border-primary-color text-primary-color"
+                >
                   Your Borrows
                 </Badge>
               </div>
@@ -195,10 +214,9 @@ export default function CreateAlertPage() {
                 get personalized alerts.
               </p>
             </CardContent>
-            <CardFooter className="border-t border-theme-border-primary bg-theme-bg-secondary flex justify-end py-3">
+            <CardFooter className="border-t border-theme-primary flex justify-end py-3">
               <Button
-                variant="ghost"
-                className="text-theme-secondary hover-text-slate-900 hover-bg-slate-100 gap-1"
+                className="text-primary-color gap-1"
                 onClick={() =>
                   handleSelectAlertType("personalized", "compound")
                 }
@@ -208,10 +226,10 @@ export default function CreateAlertPage() {
             </CardFooter>
           </Card>
 
-          <Card className="overflow-hidden border-theme-primary transition-all hover:shadow-md">
-            <CardHeader className="bg-theme-bg-secondary pb-3">
+          <Card className="overflow-hidden border-theme-primary bg-block transition-all hover:shadow-md">
+            <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-lg text-theme-primary">
-                <TrendingUp size={18} className="text-theme-secondary" />
+                <TrendingUp size={18} className="text-primary-color" />
                 When Compound Outperforms
               </CardTitle>
               <CardDescription className="text-theme-muted">
@@ -220,10 +238,16 @@ export default function CreateAlertPage() {
             </CardHeader>
             <CardContent className="pt-4">
               <div className="flex items-center gap-2 text-sm text-theme-secondary mb-2">
-                <Badge variant="outline" className="bg-theme-bg-primary">
+                <Badge
+                  variant="outline"
+                  className="border border-primary-color text-primary-color"
+                >
                   Better Rates
                 </Badge>
-                <Badge variant="outline" className="bg-theme-bg-primary">
+                <Badge
+                  variant="outline"
+                  className="border border-primary-color text-primary-color"
+                >
                   Lower Fees
                 </Badge>
               </div>
@@ -232,10 +256,9 @@ export default function CreateAlertPage() {
                 you could benefit from switching.
               </p>
             </CardContent>
-            <CardFooter className="border-t border-theme-border-primary bg-theme-bg-secondary flex justify-end py-3">
+            <CardFooter className="border-t border-theme-primary bg-block flex justify-end py-3">
               <Button
-                variant="ghost"
-                className="text-theme-secondary hover-text-slate-900 hover-bg-slate-100 gap-1"
+                className="text-primary-color gap-1"
                 onClick={() =>
                   handleSelectAlertType("personalized", "outperforms")
                 }

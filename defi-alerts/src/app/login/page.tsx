@@ -71,15 +71,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-theme-gradient p-4">
+    <div className="flex min-h-screen items-center justify-center bg-theme-primary p-4">
       <div className="w-full max-w-md">
-        <Card className="border-theme-primary shadow-lg">
+        <Card className="border-theme-primary bg-theme-secondary shadow-lg">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-center text-2xl font-bold">
-              DeFi Alerts
+            <CardTitle className="text-center text-2xl font-bold text-theme-primary">
+              DeFi Alerts for Compound
             </CardTitle>
             <CardDescription className="text-center text-theme-muted">
-              Monitor and receive alerts for DeFi markets
+              Monitor and receive alerts for Compound markets
             </CardDescription>
           </CardHeader>
           <CardContent>
