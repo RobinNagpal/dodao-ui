@@ -85,14 +85,26 @@ export const frequencyOptions: {
   { label: "Weekly", value: "AT_MOST_ONCE_PER_WEEK" },
 ];
 
+export interface Chain {
+  chainId: number;
+  name: string;
+}
+
+export interface Asset {
+  chainId_address: string;
+  chainId: number;
+  symbol: string;
+  address: string;
+}
+
 export interface Alert {
   id: string;
   category: "GENERAL" | "PERSONALIZED";
   actionType: "SUPPLY" | "BORROW";
   isComparison: boolean;
   walletAddress?: string;
-  selectedChains: string[];
-  selectedAssets: string[];
+  selectedChains: Chain[];
+  selectedAssets: Asset[];
   compareProtocols: string[];
   notificationFrequency: NotificationFrequency;
   status: AlertStatus;

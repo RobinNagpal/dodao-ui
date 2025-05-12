@@ -201,7 +201,7 @@ export default function PersonalizedMarketAlertPage() {
   };
 
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-8">
+    <div className="container max-w-6xl mx-auto px-2 py-8">
       {/* Breadcrumb */}
       <nav className="flex items-center text-sm mb-6">
         <Link
@@ -228,7 +228,7 @@ export default function PersonalizedMarketAlertPage() {
           <span>Create Alert</span>
         </Link>
         <ChevronRight size={14} className="mx-2 text-theme-muted" />
-        <span className="text-theme-primary font-medium">
+        <span className="text-primary-color font-medium">
           Personalized Market Alert
         </span>
       </nav>

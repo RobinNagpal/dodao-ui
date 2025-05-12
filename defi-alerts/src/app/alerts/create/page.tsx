@@ -40,7 +40,7 @@ export default function CreateAlertPage() {
   };
 
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-8">
+    <div className="container max-w-6xl mx-auto px-2 py-8">
       {/* Breadcrumb */}
       <nav className="flex items-center text-sm mb-6">
         <Link
@@ -59,7 +59,7 @@ export default function CreateAlertPage() {
           <span>Alerts</span>
         </Link>
         <ChevronRight size={14} className="mx-2 text-theme-muted" />
-        <span className="text-theme-primary font-medium">Create Alert</span>
+        <span className="text-primary-color font-medium">Create Alert</span>
       </nav>
 
       <div className="mb-8">
@@ -116,7 +116,7 @@ export default function CreateAlertPage() {
             </CardContent>
             <CardFooter className="border-t border-theme-primary flex justify-end py-3">
               <Button
-                className="text-primary-color gap-1"
+                className="text-primary-color gap-1 hover-text-color"
                 onClick={() => handleSelectAlertType("general", "compound")}
               >
                 Select <ArrowRight size={16} />
@@ -163,7 +163,7 @@ export default function CreateAlertPage() {
             </CardContent>
             <CardFooter className="border-t border-theme-primary flex justify-end py-3">
               <Button
-                className="text-primary-color gap-1"
+                className="text-primary-color gap-1 hover-text-color"
                 onClick={() => handleSelectAlertType("general", "outperforms")}
               >
                 Select <ArrowRight size={16} />
@@ -216,7 +216,7 @@ export default function CreateAlertPage() {
             </CardContent>
             <CardFooter className="border-t border-theme-primary flex justify-end py-3">
               <Button
-                className="text-primary-color gap-1"
+                className="text-primary-color gap-1 hover-text-color"
                 onClick={() =>
                   handleSelectAlertType("personalized", "compound")
                 }
@@ -258,7 +258,7 @@ export default function CreateAlertPage() {
             </CardContent>
             <CardFooter className="border-t border-theme-primary bg-block flex justify-end py-3">
               <Button
-                className="text-primary-color gap-1"
+                className="text-primary-color gap-1 hover-text-color"
                 onClick={() =>
                   handleSelectAlertType("personalized", "outperforms")
                 }
