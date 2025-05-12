@@ -44,7 +44,7 @@ export default function PersonalizedSetupPage() {
       showNotification({
         type: "error",
         heading: "Invalid Address",
-        message: "That doesn’t look like a valid ETH address.",
+        message: "That doesn't look like a valid ETH address.",
       });
       return;
     }
@@ -69,7 +69,7 @@ export default function PersonalizedSetupPage() {
       <nav className="flex items-center text-sm mb-6">
         <Link
           href="/"
-          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <Home size={14} />
           <span>Home</span>
@@ -77,7 +77,7 @@ export default function PersonalizedSetupPage() {
         <ChevronRight size={14} className="mx-2 text-theme-muted" />
         <Link
           href="/alerts"
-          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <Bell size={14} />
           <span>Alerts</span>
@@ -85,7 +85,7 @@ export default function PersonalizedSetupPage() {
         <ChevronRight size={14} className="mx-2 text-theme-muted" />
         <Link
           href="/alerts/create"
-          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <TrendingUp size={14} />
           <span>Create Alert</span>
@@ -105,7 +105,7 @@ export default function PersonalizedSetupPage() {
         </p>
       </div>
 
-      <Card className="mb-6 border-theme-border-primary">
+      <Card className="mb-6 border-theme-primary bg-block">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg text-theme-primary">
             Enter Your Wallet Address
@@ -122,14 +122,14 @@ export default function PersonalizedSetupPage() {
                 Wallet Address
               </Label>
               <div className="flex items-center">
-                <Wallet className="mr-2 h-4 w-4 text-theme-muted" />
+                <Wallet className="mr-2 h-4 w-4 text-primary-color" />
                 <Input
                   id="walletAddress"
                   type="text"
                   value={walletAddress}
                   onChange={(e) => setWalletAddress(e.target.value)}
                   placeholder="0x..."
-                  className="border-theme-border-primary"
+                  className="border-theme-primary focus-border-primary"
                 />
               </div>
             </div>
@@ -140,16 +140,15 @@ export default function PersonalizedSetupPage() {
       {/* Action Buttons */}
       <div className="flex justify-between">
         <Button
-          variant="outline"
           onClick={() => router.push("/alerts/create")}
-          className="border-theme-border-primary text-theme-primary"
+          className="border hover-border-primary"
         >
           <ArrowLeft size={16} className="mr-2" /> Back
         </Button>
 
         <Button
           onClick={handleNext}
-          className="bg-primary text-white hover-bg-slate-800"
+          className="border text-primary-color hover-border-body"
         >
           Next <ArrowRight size={16} className="ml-2" />
         </Button>
