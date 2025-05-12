@@ -243,7 +243,7 @@ export default function PersonalizedMarketAlertPage() {
       </div>
 
       {/* Supply Positions */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Supply Positions
@@ -256,7 +256,7 @@ export default function PersonalizedMarketAlertPage() {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
+                <TableRow className="border-primary-color">
                   <TableHead className="text-theme-primary">Chain</TableHead>
                   <TableHead className="text-theme-primary">Market</TableHead>
                   <TableHead className="text-theme-primary">Rate</TableHead>
@@ -274,7 +274,7 @@ export default function PersonalizedMarketAlertPage() {
               </TableHeader>
               <TableBody>
                 {supplyRows.map((r, i) => (
-                  <TableRow key={i}>
+                  <TableRow key={i} className="border-primary-color">
                     <TableCell className="text-theme-primary">
                       {r.chain}
                     </TableCell>
@@ -295,14 +295,19 @@ export default function PersonalizedMarketAlertPage() {
                           )
                         }
                       >
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger className="w-full hover-border-primary">
                           <SelectValue placeholder="Select condition" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-block">
                           {conditionOptions.map((opt) => (
-                            <SelectItem key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </SelectItem>
+                            <div
+                              key={opt.value}
+                              className="hover-border-primary hover-text-primary"
+                            >
+                              <SelectItem value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            </div>
                           ))}
                         </SelectContent>
                       </Select>
@@ -317,7 +322,7 @@ export default function PersonalizedMarketAlertPage() {
                             onChange={(e) =>
                               updateSupplyRow(i, "thresholdLow", e.target.value)
                             }
-                            className="w-20 border-theme-primary"
+                            className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                           />
                           <Input
                             type="text"
@@ -330,7 +335,7 @@ export default function PersonalizedMarketAlertPage() {
                                 e.target.value
                               )
                             }
-                            className="w-20 border-theme-primary"
+                            className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                           />
                           <span className="text-theme-muted">%</span>
                         </div>
@@ -338,11 +343,12 @@ export default function PersonalizedMarketAlertPage() {
                         <div className="flex items-center">
                           <Input
                             type="text"
+                            placeholder="Value"
                             value={r.threshold || ""}
                             onChange={(e) =>
                               updateSupplyRow(i, "threshold", e.target.value)
                             }
-                            className="w-20 border-theme-primary"
+                            className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                           />
                           <span className="ml-2 text-theme-muted">%</span>
                         </div>
@@ -359,14 +365,19 @@ export default function PersonalizedMarketAlertPage() {
                           )
                         }
                       >
-                        <SelectTrigger className="w-[120px]">
+                        <SelectTrigger className="w-[120px] hover-border-primary">
                           <SelectValue placeholder="Select severity" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-block">
                           {severityOptions.map((opt) => (
-                            <SelectItem key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </SelectItem>
+                            <div
+                              key={opt.value}
+                              className="hover-border-primary hover-text-primary"
+                            >
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            </div>
                           ))}
                         </SelectContent>
                       </Select>
@@ -382,14 +393,19 @@ export default function PersonalizedMarketAlertPage() {
                           )
                         }
                       >
-                        <SelectTrigger className="w-[140px]">
+                        <SelectTrigger className="w-[140px] hover-border-primary">
                           <SelectValue placeholder="Select frequency" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-block">
                           {frequencyOptions.map((f) => (
-                            <SelectItem key={f.value} value={f.value}>
-                              {f.label}
-                            </SelectItem>
+                            <div
+                              key={f.value}
+                              className="hover-border-primary hover-text-primary"
+                            >
+                              <SelectItem key={f.value} value={f.value}>
+                                {f.label}
+                              </SelectItem>
+                            </div>
                           ))}
                         </SelectContent>
                       </Select>
@@ -403,7 +419,7 @@ export default function PersonalizedMarketAlertPage() {
       </Card>
 
       {/* Borrow Position */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Borrow Position
@@ -416,7 +432,7 @@ export default function PersonalizedMarketAlertPage() {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
+                <TableRow className="border-primary-color">
                   <TableHead className="text-theme-primary">Chain</TableHead>
                   <TableHead className="text-theme-primary">Market</TableHead>
                   <TableHead className="text-theme-primary">Rate</TableHead>
@@ -434,7 +450,7 @@ export default function PersonalizedMarketAlertPage() {
               </TableHeader>
               <TableBody>
                 {borrowRows.map((r, i) => (
-                  <TableRow key={i}>
+                  <TableRow key={i} className="border-primary-color">
                     <TableCell className="text-theme-primary">
                       {r.chain}
                     </TableCell>
@@ -455,14 +471,19 @@ export default function PersonalizedMarketAlertPage() {
                           )
                         }
                       >
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger className="w-full hover-border-primary">
                           <SelectValue placeholder="Select condition" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-block">
                           {conditionOptions.map((opt) => (
-                            <SelectItem key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </SelectItem>
+                            <div
+                              key={opt.value}
+                              className="hover-border-primary hover-text-primary"
+                            >
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            </div>
                           ))}
                         </SelectContent>
                       </Select>
@@ -477,7 +498,7 @@ export default function PersonalizedMarketAlertPage() {
                             onChange={(e) =>
                               updateBorrowRow(i, "thresholdLow", e.target.value)
                             }
-                            className="w-20 border-theme-primary"
+                            className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                           />
                           <Input
                             type="text"
@@ -490,7 +511,7 @@ export default function PersonalizedMarketAlertPage() {
                                 e.target.value
                               )
                             }
-                            className="w-20 border-theme-primary"
+                            className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                           />
                           <span className="text-theme-muted">%</span>
                         </div>
@@ -498,11 +519,12 @@ export default function PersonalizedMarketAlertPage() {
                         <div className="flex items-center">
                           <Input
                             type="text"
+                            placeholder="Value"
                             value={r.threshold || ""}
                             onChange={(e) =>
                               updateBorrowRow(i, "threshold", e.target.value)
                             }
-                            className="w-20 border-theme-primary"
+                            className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                           />
                           <span className="ml-2 text-theme-muted">%</span>
                         </div>
@@ -519,14 +541,19 @@ export default function PersonalizedMarketAlertPage() {
                           )
                         }
                       >
-                        <SelectTrigger className="w-[120px]">
+                        <SelectTrigger className="w-[120px] hover-border-primary">
                           <SelectValue placeholder="Select severity" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-block">
                           {severityOptions.map((opt) => (
-                            <SelectItem key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </SelectItem>
+                            <div
+                              key={opt.value}
+                              className="hover-border-primary hover-text-primary"
+                            >
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            </div>
                           ))}
                         </SelectContent>
                       </Select>
@@ -542,14 +569,19 @@ export default function PersonalizedMarketAlertPage() {
                           )
                         }
                       >
-                        <SelectTrigger className="w-[140px]">
+                        <SelectTrigger className="w-[140px] hover-border-primary">
                           <SelectValue placeholder="Select frequency" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-block">
                           {frequencyOptions.map((f) => (
-                            <SelectItem key={f.value} value={f.value}>
-                              {f.label}
-                            </SelectItem>
+                            <div
+                              key={f.value}
+                              className="hover-border-primary hover-text-primary"
+                            >
+                              <SelectItem key={f.value} value={f.value}>
+                                {f.label}
+                              </SelectItem>
+                            </div>
                           ))}
                         </SelectContent>
                       </Select>
@@ -563,16 +595,15 @@ export default function PersonalizedMarketAlertPage() {
       </Card>
 
       {/* Delivery Channels */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Delivery Channel Settings
           </CardTitle>
           <Button
-            variant="outline"
             size="sm"
             onClick={addChannel}
-            className="text-theme-primary border-theme-primary"
+            className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary"
           >
             <Plus size={16} className="mr-1" /> Add Channel
           </Button>
@@ -594,12 +625,16 @@ export default function PersonalizedMarketAlertPage() {
                   )
                 }
               >
-                <SelectTrigger className="w-[150px]">
+                <SelectTrigger className="w-[150px] hover-border-primary">
                   <SelectValue placeholder="Select channel" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="EMAIL">Email</SelectItem>
-                  <SelectItem value="WEBHOOK">Webhook</SelectItem>
+                <SelectContent className="bg-block">
+                  <div className="hover-border-primary hover-text-primary">
+                    <SelectItem value="EMAIL">Email</SelectItem>
+                  </div>
+                  <div className="hover-border-primary hover-text-primary">
+                    <SelectItem value="WEBHOOK">Webhook</SelectItem>
+                  </div>
                 </SelectContent>
               </Select>
 
@@ -609,7 +644,7 @@ export default function PersonalizedMarketAlertPage() {
                   placeholder="you@example.com"
                   value={ch.email || ""}
                   onChange={(e) => updateChannel(i, "email", e.target.value)}
-                  className="flex-1 border-theme-primary"
+                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                 />
               ) : (
                 <Input
@@ -619,7 +654,7 @@ export default function PersonalizedMarketAlertPage() {
                   onChange={(e) =>
                     updateChannel(i, "webhookUrl", e.target.value)
                   }
-                  className="flex-1 border-theme-primary"
+                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                 />
               )}
 

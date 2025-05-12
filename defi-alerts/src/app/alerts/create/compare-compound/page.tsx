@@ -225,7 +225,7 @@ export default function CompareCompoundPage() {
       </div>
 
       {/* Alert Type */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Alert Type
@@ -241,17 +241,31 @@ export default function CompareCompoundPage() {
             onValueChange={(value) =>
               setAlertType(value as "supply" | "borrow")
             }
-            className="space-y-3"
+            className="space-y-2"
           >
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="supply" id="supply" />
-              <Label htmlFor="supply" className="text-theme-primary">
+              <RadioGroupItem
+                value="supply"
+                id="supply"
+                className="h-4 w-4 border border-default rounded-full radio-checked"
+              />
+              <Label
+                htmlFor="supply"
+                className="text-theme-primary label-checked"
+              >
                 Supply Comparison (Alert when Compound offers higher rates)
               </Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="borrow" id="borrow" />
-              <Label htmlFor="borrow" className="text-theme-primary">
+              <RadioGroupItem
+                value="borrow"
+                id="borrow"
+                className="h-4 w-4 border border-default rounded-full radio-checked"
+              />
+              <Label
+                htmlFor="borrow"
+                className="text-theme-primary label-checked"
+              >
                 Borrow Comparison (Alert when Compound offers lower rates)
               </Label>
             </div>
@@ -260,7 +274,8 @@ export default function CompareCompoundPage() {
       </Card>
 
       {/* Platforms / Chains / Markets */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      {/* Platforms / Chains / Markets */}
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Market Selection
@@ -271,6 +286,7 @@ export default function CompareCompoundPage() {
             Select the platforms to compare with and the markets you want to
             monitor.
           </p>
+
           {/* Platforms */}
           <div className="mb-6">
             <h3 className="text-md font-medium mb-1 text-theme-primary">
@@ -281,44 +297,40 @@ export default function CompareCompoundPage() {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              {["Aave", "Morpho", "Spark"].map((p) => (
-                <div
-                  key={p}
-                  onClick={() => togglePlatform(p)}
-                  className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
-                    selectedPlatforms.includes(p)
-                      ? "border-primary bg-theme-secondary"
-                      : "border-theme-primary"
-                  }`}
-                >
+              {["Aave", "Morpho", "Spark"].map((p) => {
+                const isSel = selectedPlatforms.includes(p);
+
+                return (
                   <div
-                    className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
-                      selectedPlatforms.includes(p)
-                        ? "bg-primary border-primary"
-                        : "border-theme-primary"
+                    key={p}
+                    onClick={() => togglePlatform(p)}
+                    className={`rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors border ${
+                      isSel ? "chip-selected" : "border-theme-primary"
                     }`}
                   >
-                    {selectedPlatforms.includes(p) && (
-                      <svg
-                        width="10"
-                        height="8"
-                        viewBox="0 0 10 8"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9 1L3.5 6.5L1 4"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    )}
+                    <div className="chip-checkbox w-4 h-4 rounded border mr-2 flex items-center justify-center">
+                      {isSel && (
+                        <svg
+                          width="10"
+                          height="8"
+                          viewBox="0 0 10 8"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9 1L3.5 6.5L1 4"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                    <span className="text-theme-primary chip-label">{p}</span>
                   </div>
-                  <span className="text-theme-primary">{p}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -342,44 +354,41 @@ export default function CompareCompoundPage() {
                 "Ronin",
                 "Mantle",
                 "Scroll",
-              ].map((c) => (
-                <div
-                  key={c}
-                  onClick={() => toggleChain(c)}
-                  className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
-                    selectedChains.includes(c)
-                      ? "border-primary bg-theme-secondary"
-                      : "border-theme-primary"
-                  }`}
-                >
+              ].map((c) => {
+                const isSel = selectedChains.includes(c);
+
+                return (
                   <div
-                    className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
-                      selectedChains.includes(c)
-                        ? "bg-primary border-primary"
-                        : "border-theme-primary"
+                    key={c}
+                    onClick={() => toggleChain(c)}
+                    className={`rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors border ${
+                      isSel ? "chip-selected" : "border-theme-primary"
                     }`}
                   >
-                    {selectedChains.includes(c) && (
-                      <svg
-                        width="10"
-                        height="8"
-                        viewBox="0 0 10 8"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9 1L3.5 6.5L1 4"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    )}
+                    <div className="chip-checkbox w-4 h-4 rounded border mr-2 flex items-center justify-center">
+                      {isSel && (
+                        <svg
+                          width="10"
+                          height="8"
+                          viewBox="0 0 10 8"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9 1L3.5 6.5L1 4"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                    </div>
+
+                    <span className="text-theme-primary chip-label">{c}</span>
                   </div>
-                  <span className="text-theme-primary">{c}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -403,60 +412,56 @@ export default function CompareCompoundPage() {
                 "USDC.e",
                 "USDbC",
                 "AERO",
-              ].map((m) => (
-                <div
-                  key={m}
-                  onClick={() => toggleMarket(m)}
-                  className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
-                    selectedMarkets.includes(m)
-                      ? "border-primary bg-theme-secondary"
-                      : "border-theme-primary"
-                  }`}
-                >
+              ].map((m) => {
+                const isSel = selectedMarkets.includes(m);
+
+                return (
                   <div
-                    className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
-                      selectedMarkets.includes(m)
-                        ? "bg-primary border-primary"
-                        : "border-theme-primary"
+                    key={m}
+                    onClick={() => toggleMarket(m)}
+                    className={`rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors border ${
+                      isSel ? "chip-selected" : "border-theme-primary"
                     }`}
                   >
-                    {selectedMarkets.includes(m) && (
-                      <svg
-                        width="10"
-                        height="8"
-                        viewBox="0 0 10 8"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9 1L3.5 6.5L1 4"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    )}
+                    <div className="chip-checkbox w-4 h-4 rounded border mr-2 flex items-center justify-center">
+                      {isSel && (
+                        <svg
+                          width="10"
+                          height="8"
+                          viewBox="0 0 10 8"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9 1L3.5 6.5L1 4"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      )}
+                    </div>
+
+                    <span className="text-theme-primary chip-label">{m}</span>
                   </div>
-                  <span className="text-theme-primary">{m}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Thresholds */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Rate Difference Thresholds
           </CardTitle>
           <Button
-            variant="outline"
             size="sm"
             onClick={addThreshold}
-            className="text-theme-primary border-theme-primary"
+            className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary"
           >
             <Plus size={16} className="mr-1" /> Add Threshold
           </Button>
@@ -471,12 +476,12 @@ export default function CompareCompoundPage() {
           {thresholds.map((th, i) => (
             <div
               key={i}
-              className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-theme-primary pt-4"
+              className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-primary-color pt-4"
             >
               <div className="col-span-1 flex items-center text-theme-muted">
                 <Badge
                   variant="outline"
-                  className="h-6 w-6 flex items-center justify-center p-0 rounded-full"
+                  className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color"
                 >
                   {i + 1}
                 </Badge>
@@ -489,7 +494,7 @@ export default function CompareCompoundPage() {
                   onChange={(e) =>
                     updateThreshold(i, "threshold", e.target.value)
                   }
-                  className="w-20 border-theme-primary"
+                  className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                   placeholder="0.5"
                 />
                 <span className="ml-2 text-theme-muted">% APR</span>
@@ -502,14 +507,19 @@ export default function CompareCompoundPage() {
                     updateThreshold(i, "severity", value as SeverityLevel)
                   }
                 >
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full hover-border-primary">
                     <SelectValue placeholder="Select severity" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-block">
                     {severityOptions.map((opt) => (
-                      <SelectItem key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </SelectItem>
+                      <div
+                        key={opt.value}
+                        className="hover-border-primary hover-text-primary"
+                      >
+                        <SelectItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </SelectItem>
+                      </div>
                     ))}
                   </SelectContent>
                 </Select>
@@ -542,14 +552,19 @@ export default function CompareCompoundPage() {
                 setNotificationFrequency(value as NotificationFrequency)
               }
             >
-              <SelectTrigger className="w-full" id="frequency">
+              <SelectTrigger
+                className="w-full hover-border-primary"
+                id="frequency"
+              >
                 <SelectValue placeholder="Select frequency" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-block">
                 {frequencyOptions.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </SelectItem>
+                  <div className="hover-border-primary hover-text-primary">
+                    <SelectItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </SelectItem>
+                  </div>
                 ))}
               </SelectContent>
             </Select>
@@ -562,16 +577,15 @@ export default function CompareCompoundPage() {
       </Card>
 
       {/* Delivery Channel Settings */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Delivery Channel Settings
           </CardTitle>
           <Button
-            variant="outline"
             size="sm"
             onClick={addChannel}
-            className="text-theme-primary border-theme-primary"
+            className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary"
           >
             <Plus size={16} className="mr-1" /> Add Channel
           </Button>
@@ -593,12 +607,16 @@ export default function CompareCompoundPage() {
                   )
                 }
               >
-                <SelectTrigger className="w-[150px]">
+                <SelectTrigger className="w-[150px] hover-border-primary">
                   <SelectValue placeholder="Select channel" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="EMAIL">Email</SelectItem>
-                  <SelectItem value="WEBHOOK">Webhook</SelectItem>
+                <SelectContent className="bg-block">
+                  <div className="hover-border-primary hover-text-primary">
+                    <SelectItem value="EMAIL">Email</SelectItem>
+                  </div>
+                  <div className="hover-border-primary hover-text-primary">
+                    <SelectItem value="WEBHOOK">Webhook</SelectItem>
+                  </div>
                 </SelectContent>
               </Select>
 
@@ -608,7 +626,7 @@ export default function CompareCompoundPage() {
                   placeholder="you@example.com"
                   value={ch.email || ""}
                   onChange={(e) => updateChannel(i, "email", e.target.value)}
-                  className="flex-1 border-theme-primary"
+                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                 />
               ) : (
                 <Input
@@ -618,7 +636,7 @@ export default function CompareCompoundPage() {
                   onChange={(e) =>
                     updateChannel(i, "webhookUrl", e.target.value)
                   }
-                  className="flex-1 border-theme-primary"
+                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                 />
               )}
 

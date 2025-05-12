@@ -192,7 +192,7 @@ export default function CompoundMarketAlertPage() {
           <RadioGroup
             value={alertType}
             onValueChange={(v) => setAlertType(v as "borrow" | "supply")}
-            className="space-y-3"
+            className="space-y-2"
           >
             {["borrow", "supply"].map((opt) => (
               <div key={opt} className="flex items-center space-x-2">
@@ -490,10 +490,11 @@ export default function CompoundMarketAlertPage() {
                   </SelectTrigger>
                   <SelectContent className="bg-block">
                     {severityOptions.map((opt) => (
-                      <div className="hover-border-primary hover-text-primary">
-                        <SelectItem key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </SelectItem>
+                      <div
+                        key={opt.value}
+                        className="hover-border-primary hover-text-primary"
+                      >
+                        <SelectItem value={opt.value}>{opt.label}</SelectItem>
                       </div>
                     ))}
                   </SelectContent>

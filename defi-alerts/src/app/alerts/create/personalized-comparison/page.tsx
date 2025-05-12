@@ -52,7 +52,7 @@ export default function PersonalizedComparisonPage() {
       chain: "Ethereum",
       market: "wstETH",
       rate: "0.09%",
-      threshold: "0.5",
+      threshold: "",
       severity: "NONE",
       frequency: "AT_MOST_ONCE_PER_DAY",
     },
@@ -65,7 +65,7 @@ export default function PersonalizedComparisonPage() {
       chain: "Ethereum",
       market: "ETH",
       rate: "2.09%",
-      threshold: "0.5",
+      threshold: "",
       severity: "NONE",
       frequency: "AT_MOST_ONCE_PER_DAY",
     },
@@ -212,7 +212,7 @@ export default function PersonalizedComparisonPage() {
       </div>
 
       {/* Supply Table */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Supply Positions
@@ -225,7 +225,7 @@ export default function PersonalizedComparisonPage() {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
+                <TableRow className="border-primary-color">
                   <TableHead className="text-theme-primary">Platform</TableHead>
                   <TableHead className="text-theme-primary">Chain</TableHead>
                   <TableHead className="text-theme-primary">Market</TableHead>
@@ -241,7 +241,7 @@ export default function PersonalizedComparisonPage() {
               </TableHeader>
               <TableBody>
                 {supplyRows.map((r, i) => (
-                  <TableRow key={i}>
+                  <TableRow key={i} className="border-primary-color">
                     <TableCell className="text-theme-primary">
                       {r.platform}
                     </TableCell>
@@ -257,8 +257,9 @@ export default function PersonalizedComparisonPage() {
                     <TableCell>
                       <div className="flex items-center">
                         <Input
-                          className="w-20 border-theme-primary"
+                          className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                           value={r.threshold}
+                          placeholder="0.5"
                           onChange={(e) =>
                             updateSupply(i, "threshold", e.target.value)
                           }
@@ -273,14 +274,19 @@ export default function PersonalizedComparisonPage() {
                           updateSupply(i, "severity", value as any)
                         }
                       >
-                        <SelectTrigger className="w-[140px]">
+                        <SelectTrigger className="w-[140px] hover-border-primary">
                           <SelectValue placeholder="Select severity" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-block">
                           {severityOptions.map((opt) => (
-                            <SelectItem key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </SelectItem>
+                            <div
+                              key={opt.value}
+                              className="hover-border-primary hover-text-primary"
+                            >
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            </div>
                           ))}
                         </SelectContent>
                       </Select>
@@ -296,14 +302,19 @@ export default function PersonalizedComparisonPage() {
                           )
                         }
                       >
-                        <SelectTrigger className="w-[150px]">
+                        <SelectTrigger className="w-[150px] hover-border-primary">
                           <SelectValue placeholder="Select frequency" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-block">
                           {frequencyOptions.map((f) => (
-                            <SelectItem key={f.value} value={f.value}>
-                              {f.label}
-                            </SelectItem>
+                            <div
+                              key={f.value}
+                              className="hover-border-primary hover-text-primary"
+                            >
+                              <SelectItem key={f.value} value={f.value}>
+                                {f.label}
+                              </SelectItem>
+                            </div>
                           ))}
                         </SelectContent>
                       </Select>
@@ -317,7 +328,7 @@ export default function PersonalizedComparisonPage() {
       </Card>
 
       {/* Borrow Table */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Borrow Positions
@@ -330,7 +341,7 @@ export default function PersonalizedComparisonPage() {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
+                <TableRow className="border-primary-color">
                   <TableHead className="text-theme-primary">Platform</TableHead>
                   <TableHead className="text-theme-primary">Chain</TableHead>
                   <TableHead className="text-theme-primary">Market</TableHead>
@@ -346,7 +357,7 @@ export default function PersonalizedComparisonPage() {
               </TableHeader>
               <TableBody>
                 {borrowRows.map((r, i) => (
-                  <TableRow key={i}>
+                  <TableRow key={i} className="border-primary-color">
                     <TableCell className="text-theme-primary">
                       {r.platform}
                     </TableCell>
@@ -362,8 +373,9 @@ export default function PersonalizedComparisonPage() {
                     <TableCell>
                       <div className="flex items-center">
                         <Input
-                          className="w-20 border-theme-primary"
+                          className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                           value={r.threshold}
+                          placeholder="0.5"
                           onChange={(e) =>
                             updateBorrow(i, "threshold", e.target.value)
                           }
@@ -378,14 +390,19 @@ export default function PersonalizedComparisonPage() {
                           updateBorrow(i, "severity", value as any)
                         }
                       >
-                        <SelectTrigger className="w-[140px]">
+                        <SelectTrigger className="w-[140px] hover-border-primary">
                           <SelectValue placeholder="Select severity" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-block">
                           {severityOptions.map((opt) => (
-                            <SelectItem key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </SelectItem>
+                            <div
+                              key={opt.value}
+                              className="hover-border-primary hover-text-primary"
+                            >
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            </div>
                           ))}
                         </SelectContent>
                       </Select>
@@ -401,14 +418,19 @@ export default function PersonalizedComparisonPage() {
                           )
                         }
                       >
-                        <SelectTrigger className="w-[150px]">
+                        <SelectTrigger className="w-[150px] hover-border-primary">
                           <SelectValue placeholder="Select frequency" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-block">
                           {frequencyOptions.map((f) => (
-                            <SelectItem key={f.value} value={f.value}>
-                              {f.label}
-                            </SelectItem>
+                            <div
+                              key={f.value}
+                              className="hover-border-primary hover-text-primary"
+                            >
+                              <SelectItem key={f.value} value={f.value}>
+                                {f.label}
+                              </SelectItem>
+                            </div>
                           ))}
                         </SelectContent>
                       </Select>
@@ -422,16 +444,15 @@ export default function PersonalizedComparisonPage() {
       </Card>
 
       {/* Delivery Channels */}
-      <Card className="mb-6 border-theme-primary bg-block">
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Delivery Channel Settings
           </CardTitle>
           <Button
-            variant="outline"
             size="sm"
             onClick={addChannel}
-            className="text-theme-primary border-theme-primary"
+            className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary"
           >
             <Plus size={16} className="mr-1" /> Add Channel
           </Button>
@@ -453,12 +474,16 @@ export default function PersonalizedComparisonPage() {
                   )
                 }
               >
-                <SelectTrigger className="w-[150px]">
+                <SelectTrigger className="w-[150px] hover-border-primary">
                   <SelectValue placeholder="Select channel" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="EMAIL">Email</SelectItem>
-                  <SelectItem value="WEBHOOK">Webhook</SelectItem>
+                <SelectContent className="bg-block">
+                  <div className="hover-border-primary hover-text-primary">
+                    <SelectItem value="EMAIL">Email</SelectItem>
+                  </div>
+                  <div className="hover-border-primary hover-text-primary">
+                    <SelectItem value="WEBHOOK">Webhook</SelectItem>
+                  </div>
                 </SelectContent>
               </Select>
 
@@ -468,7 +493,7 @@ export default function PersonalizedComparisonPage() {
                   placeholder="you@example.com"
                   value={ch.email || ""}
                   onChange={(e) => updateChannel(i, "email", e.target.value)}
-                  className="flex-1 border-theme-primary"
+                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                 />
               ) : (
                 <Input
@@ -478,7 +503,7 @@ export default function PersonalizedComparisonPage() {
                   onChange={(e) =>
                     updateChannel(i, "webhookUrl", e.target.value)
                   }
-                  className="flex-1 border-theme-primary"
+                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
                 />
               )}
 
