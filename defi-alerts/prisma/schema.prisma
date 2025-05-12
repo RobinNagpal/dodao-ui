@@ -137,6 +137,10 @@ model AlertNotification {
   SentNotification  SentNotification?
 }
 
+// add one more field here on top model
+// matchedConditionIds String[]
+// we can see to change it later to show history if we want to
+
 model SentNotification {
   id                  String            @id @default(cuid())
   alertNotificationId String            @unique

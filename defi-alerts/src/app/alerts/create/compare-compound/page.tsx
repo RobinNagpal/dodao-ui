@@ -32,7 +32,7 @@ import {
   type SeverityLevel,
   frequencyOptions,
   severityOptions,
-  GeneralComparisonRow,
+  type GeneralComparisonRow,
 } from "@/types/alerts";
 import { useNotificationContext } from "@dodao/web-core/ui/contexts/NotificationContext";
 
@@ -157,10 +157,10 @@ export default function CompareCompoundPage() {
       const json = await res.json();
 
       if (!res.ok) {
-        // show backend’s error message
+        // show backend's error message
         showNotification({
           type: "error",
-          heading: "Couldn’t create comparison alert",
+          heading: "Couldn't create comparison alert",
           message: json.error || "Unknown server error",
         });
         return;
@@ -170,7 +170,7 @@ export default function CompareCompoundPage() {
       showNotification({
         type: "success",
         heading: "Alert created 🎉",
-        message: "You’ll now be notified when Compound beats other rates.",
+        message: "You'll now be notified when Compound beats other rates.",
       });
       router.push("/alerts");
     } catch (err: any) {
@@ -189,7 +189,7 @@ export default function CompareCompoundPage() {
       <nav className="flex items-center text-sm mb-6">
         <Link
           href="/"
-          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <Home size={14} />
           <span>Home</span>
@@ -197,7 +197,7 @@ export default function CompareCompoundPage() {
         <ChevronRight size={14} className="mx-2 text-theme-muted" />
         <Link
           href="/alerts"
-          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <Bell size={14} />
           <span>Alerts</span>
@@ -205,7 +205,7 @@ export default function CompareCompoundPage() {
         <ChevronRight size={14} className="mx-2 text-theme-muted" />
         <Link
           href="/alerts/create"
-          className="text-theme-muted hover-text-theme-primary flex items-center gap-1"
+          className="text-theme-muted hover-text-primary flex items-center gap-1"
         >
           <TrendingUp size={14} />
           <span>Create Alert</span>
@@ -225,7 +225,7 @@ export default function CompareCompoundPage() {
       </div>
 
       {/* Alert Type */}
-      <Card className="mb-6 border-theme-border-primary">
+      <Card className="mb-6 border-theme-primary bg-block">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Alert Type
@@ -260,7 +260,7 @@ export default function CompareCompoundPage() {
       </Card>
 
       {/* Platforms / Chains / Markets */}
-      <Card className="mb-6 border-theme-border-primary">
+      <Card className="mb-6 border-theme-primary bg-block">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">
             Market Selection
@@ -287,15 +287,15 @@ export default function CompareCompoundPage() {
                   onClick={() => togglePlatform(p)}
                   className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
                     selectedPlatforms.includes(p)
-                      ? "border-primary bg-theme-bg-muted"
-                      : "border-theme-border-primary"
+                      ? "border-primary bg-theme-secondary"
+                      : "border-theme-primary"
                   }`}
                 >
                   <div
                     className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
                       selectedPlatforms.includes(p)
                         ? "bg-primary border-primary"
-                        : "border-theme-border-secondary"
+                        : "border-theme-primary"
                     }`}
                   >
                     {selectedPlatforms.includes(p) && (
@@ -348,15 +348,15 @@ export default function CompareCompoundPage() {
                   onClick={() => toggleChain(c)}
                   className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
                     selectedChains.includes(c)
-                      ? "border-primary bg-theme-bg-muted"
-                      : "border-theme-border-primary"
+                      ? "border-primary bg-theme-secondary"
+                      : "border-theme-primary"
                   }`}
                 >
                   <div
                     className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
                       selectedChains.includes(c)
                         ? "bg-primary border-primary"
-                        : "border-theme-border-secondary"
+                        : "border-theme-primary"
                     }`}
                   >
                     {selectedChains.includes(c) && (
@@ -409,15 +409,15 @@ export default function CompareCompoundPage() {
                   onClick={() => toggleMarket(m)}
                   className={`border rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors ${
                     selectedMarkets.includes(m)
-                      ? "border-primary bg-theme-bg-muted"
-                      : "border-theme-border-primary"
+                      ? "border-primary bg-theme-secondary"
+                      : "border-theme-primary"
                   }`}
                 >
                   <div
                     className={`w-4 h-4 rounded border mr-2 flex items-center justify-center ${
                       selectedMarkets.includes(m)
                         ? "bg-primary border-primary"
-                        : "border-theme-border-secondary"
+                        : "border-theme-primary"
                     }`}
                   >
                     {selectedMarkets.includes(m) && (
@@ -447,7 +447,7 @@ export default function CompareCompoundPage() {
       </Card>
 
       {/* Thresholds */}
-      <Card className="mb-6 border-theme-border-primary">
+      <Card className="mb-6 border-theme-primary bg-block">
         <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Rate Difference Thresholds
@@ -456,7 +456,7 @@ export default function CompareCompoundPage() {
             variant="outline"
             size="sm"
             onClick={addThreshold}
-            className="text-theme-primary border-theme-border-primary"
+            className="text-theme-primary border-theme-primary"
           >
             <Plus size={16} className="mr-1" /> Add Threshold
           </Button>
@@ -471,7 +471,7 @@ export default function CompareCompoundPage() {
           {thresholds.map((th, i) => (
             <div
               key={i}
-              className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-theme-border-primary pt-4"
+              className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-theme-primary pt-4"
             >
               <div className="col-span-1 flex items-center text-theme-muted">
                 <Badge
@@ -489,7 +489,7 @@ export default function CompareCompoundPage() {
                   onChange={(e) =>
                     updateThreshold(i, "threshold", e.target.value)
                   }
-                  className="w-20 border-theme-border-primary"
+                  className="w-20 border-theme-primary"
                   placeholder="0.5"
                 />
                 <span className="ml-2 text-theme-muted">% APR</span>
@@ -532,7 +532,7 @@ export default function CompareCompoundPage() {
           <div className="mt-6">
             <Label
               htmlFor="frequency"
-              className="block text-sm font-medium mb-2"
+              className="block text-sm font-medium mb-2 text-theme-primary"
             >
               Notification Frequency
             </Label>
@@ -562,7 +562,7 @@ export default function CompareCompoundPage() {
       </Card>
 
       {/* Delivery Channel Settings */}
-      <Card className="mb-6 border-theme-border-primary">
+      <Card className="mb-6 border-theme-primary bg-block">
         <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">
             Delivery Channel Settings
@@ -571,7 +571,7 @@ export default function CompareCompoundPage() {
             variant="outline"
             size="sm"
             onClick={addChannel}
-            className="text-theme-primary border-theme-border-primary"
+            className="text-theme-primary border-theme-primary"
           >
             <Plus size={16} className="mr-1" /> Add Channel
           </Button>
@@ -608,7 +608,7 @@ export default function CompareCompoundPage() {
                   placeholder="you@example.com"
                   value={ch.email || ""}
                   onChange={(e) => updateChannel(i, "email", e.target.value)}
-                  className="flex-1 border-theme-border-primary"
+                  className="flex-1 border-theme-primary"
                 />
               ) : (
                 <Input
@@ -618,7 +618,7 @@ export default function CompareCompoundPage() {
                   onChange={(e) =>
                     updateChannel(i, "webhookUrl", e.target.value)
                   }
-                  className="flex-1 border-theme-border-primary"
+                  className="flex-1 border-theme-primary"
                 />
               )}
 
@@ -640,9 +640,8 @@ export default function CompareCompoundPage() {
       {/* Action Buttons */}
       <div className="flex justify-between">
         <Button
-          variant="outline"
           onClick={() => router.push("/alerts/create")}
-          className="border-theme-border-primary text-theme-primary"
+          className="border hover-border-primary"
         >
           <ArrowLeft size={16} className="mr-2" /> Back
         </Button>
@@ -650,7 +649,7 @@ export default function CompareCompoundPage() {
         <div className="space-x-4">
           <Button
             onClick={handleCreateAlert}
-            className="bg-primary text-white hover-bg-slate-800"
+            className="border text-primary-color hover-border-body"
           >
             Create Alert
           </Button>
