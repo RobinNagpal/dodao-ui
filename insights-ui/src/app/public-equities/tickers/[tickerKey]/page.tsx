@@ -43,7 +43,7 @@ import { getDateAsDDMonthYYYYFormat, getTimeAgo } from '@/util/get-date';
 export async function generateMetadata({ params }: { params: Promise<{ tickerKey: string }> }): Promise<Metadata> {
   const { tickerKey } = await params;
 
-  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
+  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?page=tickerDetailsPage`, { cache: 'no-cache' });
   let tickerData: FullNestedTickerReport | null = null;
 
   if (tickerResponse.ok) {
@@ -95,7 +95,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   );
 
   const industryGroupCriteria: IndustryGroupCriteriaDefinition = (await criteriaResponse.json()) as IndustryGroupCriteriaDefinition;
-  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
+  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?page=tickerDetailsPage`, { cache: 'no-cache' });
 
   const tickerReport = (await tickerResponse.json()) as FullNestedTickerReport;
   const breadcrumbs: BreadcrumbsOjbect[] = [

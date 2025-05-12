@@ -10,7 +10,7 @@ import EditTickerView from '@/components/ticker/EditTickerView';
 export default async function Page({ params }: { params: Promise<{ tickerKey: string }> }) {
   const { tickerKey } = await params;
 
-  const response = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`);
+  const response = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?page=tickerEditPage`);
   const ticker = (await response.json()) as Ticker;
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {

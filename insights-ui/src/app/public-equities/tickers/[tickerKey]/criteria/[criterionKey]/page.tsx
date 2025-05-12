@@ -15,7 +15,7 @@ import { formatKey } from '@/util/format-key';
 export async function generateMetadata({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }): Promise<Metadata> {
   const { tickerKey, criterionKey } = await params;
 
-  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
+  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?page=criteriaDetailsPage`, { cache: 'no-cache' });
   let tickerData: FullNestedTickerReport | null = null;
 
   if (tickerResponse.ok) {
@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: { params: Promise<{ tickerKey
 export default async function CriterionDetailsPage({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }) {
   const { tickerKey, criterionKey } = await params;
 
-  const response = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
+  const response = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?page=criteriaDetailsPage`, { cache: 'no-cache' });
   const tickerReport = (await response.json()) as FullNestedTickerReport;
 
   const criteriaResponse = await fetch(
