@@ -81,4 +81,62 @@
   }
 }
 
+.text-color {
+  color: var(--text-color);
+}
+
+.heading-color {
+  color: var(--heading-color);
+}
+
+.primary-text-color {
+  color: var(--primary-color);
+}
+
+.primary-color {
+  color: var(--primary-color);
+}
+
+.primary-text-color {
+  color: var(--primary-text-color);
+}
+
+.link-color {
+  color: var(--link-color);
+}
+
+.background-color {
+  background-color: var(--bg-color);
+}
+
+.block-bg-color {
+  background-color: var(--block-bg);
+}
+
+.block-bg-color:hover {
+  background-color: var(--block-bg);
+}
+
+.border-color {
+  border-color: var(--border-color);
+}
+
+.divider-bg {
+  background-color: var(--border-color);
+}
+.bg-primary-text {
+  background-color: var(--primary-text-color);
+}
+
+.bg-primary-color {
+  background-color: var(--primary-color);
+}
+.ring-border {
+  /* When used in conjunction with Tailwind’s ring-1, this sets the ring color */
+  --tw-ring-color: var(--border-color);
+}
+
+.border-primary-color {
+  border-color: var(--primary-color);
+}
 

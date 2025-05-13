@@ -6,11 +6,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   type Alert,
-  type Condition,
   type Channel,
+  type Condition,
   severityOptions,
   frequencyOptions,
 } from "@/types/alerts";
+import { AlertCondition } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -42,7 +43,18 @@ import {
   Plus,
   TrendingDown,
   TrendingUp,
+  Info,
 } from "lucide-react";
+import getBaseUrl from "@dodao/web-core/utils/api/getBaseURL";
+import FullPageLoader from "@dodao/web-core/components/core/loaders/FullPageLoading";
+import ConfirmationModal from "@dodao/web-core/components/app/Modal/ConfirmationModal";
+import { useDeleteData } from "@dodao/web-core/ui/hooks/fetch/useDeleteData";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 // Alert summary component
 const AlertSummaryCard = ({
@@ -78,6 +90,7 @@ const AlertSummaryCard = ({
 
 export default function AlertsPage() {
   const router = useRouter();
+  const baseUrl = getBaseUrl();
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [filteredAlerts, setFilteredAlerts] = useState<Alert[]>([]);
   const [activeTab, setActiveTab] = useState("all");
@@ -85,6 +98,18 @@ export default function AlertsPage() {
   const [chainFilter, setChainFilter] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [alertToDelete, setAlertToDelete] = useState<string | null>(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const { loading: deleting, deleteData: deleteAlert } = useDeleteData<
+    { id: string },
+    null
+  >({
+    successMessage: "Alert deleted successfully",
+    errorMessage: "Failed to delete alert",
+    redirectPath: undefined,
+  });
 
   const userId =
     typeof window !== "undefined" ? localStorage.getItem("userId") : null;
@@ -96,7 +121,7 @@ export default function AlertsPage() {
     }
 
     setIsLoading(true);
-    fetch(`/api/alerts?userId=${userId}`)
+    fetch(`${baseUrl}/api/alerts?userId=${userId}`)
       .then((r) => {
         if (!r.ok) {
           throw new Error(`Error fetching alerts: ${r.status}`);
@@ -162,7 +187,7 @@ export default function AlertsPage() {
     setFilteredAlerts(result);
   }, [activeTab, actionTypeFilter, chainFilter, alerts]);
 
-  const severityLabel = (s: Condition) =>
+  const severityLabel = (s: AlertCondition) =>
     severityOptions.find((o) => o.value === s.severity)?.label || "-";
 
   const freqLabel = (f: string) =>
@@ -205,6 +230,17 @@ export default function AlertsPage() {
     }
   };
 
+  // Format condition threshold values based on condition type
+  const formatThresholdValue = (condition: AlertCondition) => {
+    if (condition.conditionType === "APR_OUTSIDE_RANGE") {
+      return condition.thresholdValueLow && condition.thresholdValueHigh
+        ? `${condition.thresholdValueLow}–${condition.thresholdValueHigh}%`
+        : "-";
+    } else {
+      return condition.thresholdValue ? `${condition.thresholdValue}%` : "-";
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-2 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
@@ -218,9 +254,9 @@ export default function AlertsPage() {
         </div>
         <Button
           onClick={() => router.push("/alerts/create")}
-          className="mt-4 md:mt-0 bg-primary-color text-primary-text hover-border-body"
+          className="mt-4 md:mt-0 bg-primary-color text-primary-text border border-transparent hover-border-body"
         >
-          <Plus size={16} className="mr-2" /> Create Alert
+          <Plus size={16} className="mr-1" /> Create Alert
         </Button>
       </div>
 
@@ -251,7 +287,7 @@ export default function AlertsPage() {
                   : ""
               }
             >
-              General Alerts
+              General
             </TabsTrigger>
             <TabsTrigger
               value="personalized"
@@ -261,7 +297,7 @@ export default function AlertsPage() {
                   : ""
               }
             >
-              Personalized Alerts
+              Personalized
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -304,54 +340,63 @@ export default function AlertsPage() {
             <SelectTrigger className="w-full md:w-[180px] border-theme-border-primary">
               <SelectValue placeholder="All Chains" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Chains</SelectItem>
+            <SelectContent className="bg-block">
+              <div className="hover-border-primary hover-text-primary">
+                <SelectItem value="all">All Chains</SelectItem>
+              </div>
               {uniqueChains.map((chain) => (
-                <SelectItem key={chain} value={chain.toLowerCase()}>
-                  {chain}
-                </SelectItem>
+                <div
+                  key={chain}
+                  className="hover-border-primary hover-text-primary"
+                >
+                  <SelectItem key={chain} value={chain.toLowerCase()}>
+                    {chain}
+                  </SelectItem>
+                </div>
               ))}
             </SelectContent>
           </Select>
         </div>
       </div>
 
-      {/* Summary cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <AlertSummaryCard
-          title="Total Alerts"
-          count={totalAlerts}
-          marketAlerts={totalAlerts}
-          icon={<Bell size={18} />}
-          className="border-l-4 border-l-primary-color"
-        />
-        <AlertSummaryCard
-          title="Supply Alerts"
-          count={supplyAlerts}
-          marketAlerts={supplyAlerts}
-          icon={<TrendingUp size={18} />}
-          className="border-l-4 border-l-primary-color"
-        />
-        <AlertSummaryCard
-          title="Borrow Alerts"
-          count={borrowAlerts}
-          marketAlerts={borrowAlerts}
-          icon={<TrendingDown size={18} />}
-          className="border-l-4 border-l-primary-color"
-        />
-        <AlertSummaryCard
-          title="Personalized Alerts"
-          count={personalizedAlerts}
-          marketAlerts={personalizedAlerts}
-          icon={<Bell size={18} />}
-          className="border-l-4 border-l-primary-color"
-        />
-      </div>
-
       {/* Loading state */}
       {isLoading && (
-        <div className="flex justify-center items-center h-40">
-          <div className="text-theme-muted">Loading alerts...</div>
+        <div className="flex justify-center items-center">
+          <FullPageLoader />
+        </div>
+      )}
+
+      {/* Summary cards */}
+      {!isLoading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <AlertSummaryCard
+            title="Total Alerts"
+            count={totalAlerts}
+            marketAlerts={totalAlerts}
+            icon={<Bell size={18} className="text-primary-color" />}
+            className="border-l-4 border-primary-color bg-block"
+          />
+          <AlertSummaryCard
+            title="Supply Alerts"
+            count={supplyAlerts}
+            marketAlerts={supplyAlerts}
+            icon={<TrendingUp size={18} className="text-primary-color" />}
+            className="border-l-4 border-primary-color bg-block"
+          />
+          <AlertSummaryCard
+            title="Borrow Alerts"
+            count={borrowAlerts}
+            marketAlerts={borrowAlerts}
+            icon={<TrendingDown size={18} className="text-primary-color" />}
+            className="border-l-4 border-primary-color bg-block"
+          />
+          <AlertSummaryCard
+            title="Personalized Alerts"
+            count={personalizedAlerts}
+            marketAlerts={personalizedAlerts}
+            icon={<Bell size={18} className="text-primary-color" />}
+            className="border-l-4 border-primary-color bg-block"
+          />
         </div>
       )}
 
@@ -364,11 +409,11 @@ export default function AlertsPage() {
 
       {/* Alerts table */}
       {!isLoading && !error && (
-        <div className="bg-theme-bg-secondary rounded-md border border-theme-border-primary overflow-hidden">
+        <div className="rounded-md border border-primary-color overflow-hidden bg-block">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
+                <TableRow className="border-primary-color">
                   <TableHead className="w-[120px]">Alert Type</TableHead>
                   <TableHead className="w-[200px]">Chain/Market</TableHead>
                   <TableHead className="w-[180px]">Conditions</TableHead>
@@ -386,9 +431,12 @@ export default function AlertsPage() {
                     const chan = alert.deliveryChannels[0] as
                       | Channel
                       | undefined;
+                    const hasMultipleConditions = alert.conditions.length > 1;
+                    const hasMultipleChannels =
+                      alert.deliveryChannels.length > 1;
 
                     return (
-                      <TableRow key={alert.id}>
+                      <TableRow key={alert.id} className="border-primary-color">
                         <TableCell className="font-medium">
                           <div className="flex flex-col">
                             <span className="text-theme-primary">
@@ -396,7 +444,7 @@ export default function AlertsPage() {
                                 alert.actionType.slice(1).toLowerCase()}
                             </span>
                             {alert.category === "PERSONALIZED" && (
-                              <span className="text-xs text-purple-600">
+                              <span className="text-xs text-primary-color">
                                 Personalized
                               </span>
                             )}
@@ -410,7 +458,7 @@ export default function AlertsPage() {
                                 <Badge
                                   key={chain.chainId}
                                   variant="outline"
-                                  className="bg-theme-bg-muted"
+                                  className="border border-primary-color"
                                 >
                                   {chain.name}
                                 </Badge>
@@ -435,15 +483,48 @@ export default function AlertsPage() {
                               <Badge
                                 className={`${getSeverityColor(cond.severity)}`}
                               >
-                                {severityLabel(cond)}
+                                {severityLabel(cond as any)}
                               </Badge>
                               <span className="text-xs text-theme-muted">
-                                {cond.thresholdValue
-                                  ? `${cond.thresholdValue}%`
-                                  : cond.thresholdLow && cond.thresholdHigh
-                                  ? `${cond.thresholdLow}–${cond.thresholdHigh}%`
-                                  : "-"}
+                                {formatThresholdValue(cond as any)}
                               </span>
+                              {hasMultipleConditions && (
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <Button
+                                        size="icon"
+                                        className="h-5 w-5 p-0 hover-text-primary"
+                                      >
+                                        <Info size={14} />
+                                        <span className="sr-only">
+                                          View all conditions
+                                        </span>
+                                      </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
+                                      <div className="space-y-2">
+                                        <h4 className="font-medium text-primary-color">
+                                          All Conditions
+                                        </h4>
+                                        <ul className="space-y-1">
+                                          {alert.conditions.map((c, i) => (
+                                            <li
+                                              key={i}
+                                              className="text-xs text-theme-muted"
+                                            >
+                                              <span className="font-medium">
+                                                {severityLabel(c as any)}:
+                                              </span>{" "}
+                                              {formatThresholdValue(c as any)}
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                              )}
                             </div>
                           ) : (
                             <span className="text-xs text-theme-muted">
@@ -461,9 +542,58 @@ export default function AlertsPage() {
                         <TableCell>
                           {chan ? (
                             <div className="flex flex-col">
-                              <span className="text-xs font-medium text-theme-primary">
-                                {chan.channelType}
-                              </span>
+                              <div className="flex items-center">
+                                <span className="text-xs font-medium text-theme-primary">
+                                  {chan.channelType}
+                                </span>
+                                {hasMultipleChannels && (
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Button
+                                          size="icon"
+                                          className="h-5 w-5 p-0 hover-text-primary ml-2"
+                                        >
+                                          <Info size={14} />
+                                          <span className="sr-only">
+                                            View all channels
+                                          </span>
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
+                                        <div className="space-y-2">
+                                          <h4 className="font-medium text-primary-color">
+                                            All Delivery Channels
+                                          </h4>
+                                          <ul className="space-y-1">
+                                            {alert.deliveryChannels.map(
+                                              (c, i) => (
+                                                <li
+                                                  key={i}
+                                                  className="text-xs text-theme-muted"
+                                                >
+                                                  <span className="font-medium">
+                                                    {c.channelType
+                                                      .charAt(0)
+                                                      .toUpperCase() +
+                                                      c.channelType
+                                                        .slice(1)
+                                                        .toLowerCase()}
+                                                    :
+                                                  </span>{" "}
+                                                  {c.channelType === "EMAIL"
+                                                    ? c.email
+                                                    : c.webhookUrl}
+                                                </li>
+                                              )
+                                            )}
+                                          </ul>
+                                        </div>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                )}
+                              </div>
                               <span className="text-xs text-theme-muted truncate max-w-[180px]">
                                 {chan.channelType === "EMAIL"
                                   ? chan.email
@@ -494,43 +624,40 @@ export default function AlertsPage() {
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0"
-                              >
+                              <Button className="h-8 w-8 p-0 hover-text-primary">
                                 <span className="sr-only">Open menu</span>
-                                <ChevronDown className="h-4 w-4" />
+                                <ChevronDown className="ml-4 h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem
-                                className="text-theme-primary cursor-pointer"
-                                onClick={() =>
-                                  router.push(`/alerts/edit/${alert.id}`)
-                                }
-                              >
-                                Edit
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="text-theme-primary cursor-pointer"
-                                onClick={() =>
-                                  router.push(`/alerts/history/${alert.id}`)
-                                }
-                              >
-                                History
-                              </DropdownMenuItem>
+                            <DropdownMenuContent
+                              align="end"
+                              className="bg-block"
+                            >
+                              <div className="hover-border-primary hover-text-primary">
+                                <DropdownMenuItem
+                                  className="text-theme-primary cursor-pointer"
+                                  onClick={() =>
+                                    router.push(`/alerts/edit/${alert.id}`)
+                                  }
+                                >
+                                  Edit
+                                </DropdownMenuItem>
+                              </div>
+                              <div className="hover-border-primary hover-text-primary">
+                                <DropdownMenuItem
+                                  className="text-theme-primary cursor-pointer"
+                                  onClick={() =>
+                                    router.push(`/alerts/history/${alert.id}`)
+                                  }
+                                >
+                                  History
+                                </DropdownMenuItem>
+                              </div>
                               <DropdownMenuItem
                                 className="text-red-600 cursor-pointer"
                                 onClick={() => {
-                                  if (
-                                    confirm(
-                                      "Are you sure you want to delete this alert?"
-                                    )
-                                  ) {
-                                    // Delete logic here
-                                    console.log("Deleting alert", alert.id);
-                                  }
+                                  setAlertToDelete(alert.id);
+                                  setShowConfirmModal(true);
                                 }}
                               >
                                 Delete
@@ -561,6 +688,28 @@ export default function AlertsPage() {
                 )}
               </TableBody>
             </Table>
+            {showConfirmModal && alertToDelete && (
+              <ConfirmationModal
+                open={showConfirmModal}
+                showSemiTransparentBg={true}
+                onClose={() => {
+                  setShowConfirmModal(false);
+                  setAlertToDelete(null);
+                }}
+                onConfirm={async () => {
+                  await deleteAlert(`${baseUrl}/api/alerts/${alertToDelete}`);
+                  setAlerts((prev) =>
+                    prev.filter((a) => a.id !== alertToDelete)
+                  );
+                  setShowConfirmModal(false);
+                  setAlertToDelete(null);
+                }}
+                title="Delete Alert"
+                confirmationText="Are you sure you want to delete this alert?"
+                confirming={deleting}
+                askForTextInput={false}
+              />
+            )}
           </div>
         </div>
       )}
