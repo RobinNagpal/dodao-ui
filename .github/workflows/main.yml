@@ -23,7 +23,7 @@ jobs:
       shared_web_core_changed: ${{ steps.filter.outputs.shared_web_core }}
       academy_ui_changed: ${{ steps.filter.outputs.academy_ui }}
       base_ui_changed: ${{ steps.filter.outputs.base_ui }}
-      rubrics_ui_changed: ${{ steps.filter.outputs.rubrics_ui }}
+      defi_alerts_changed: ${{ steps.filter.outputs.defi_alerts }}
       insights_ui_changed: ${{ steps.filter.outputs.insights_ui }}
     steps:
       - uses: actions/checkout@v2
@@ -38,8 +38,8 @@ jobs:
               - 'academy-ui/**'
             base_ui:
               - 'base-ui/**'
-            rubrics_ui:
-              - 'rubrics-ui/**'
+            defi_alerts:
+              - 'defi-alerts/**'
             insights_ui:
               - 'insights-ui/**'
 
@@ -117,10 +117,10 @@ jobs:
       - name: Base UI - NEXT Build
         run: cd base-ui && yarn build
 
-  rubrics_ui_job:
+  defi_alerts_job:
     runs-on: ubuntu-latest
     needs: determine-changed-paths
-    if: ${{ needs.determine-changed-paths.outputs.rubrics_ui_changed == 'true' || needs.determine-changed-paths.outputs.shared_web_core_changed == 'true' }}
+    if: ${{ needs.determine-changed-paths.outputs.defi_alerts_changed == 'true' || needs.determine-changed-paths.outputs.shared_web_core_changed == 'true' }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -139,20 +139,20 @@ jobs:
       - name: Shared Web Core - Run Prettier
         run: cd shared/web-core && yarn prettier-check
 
-      - name: Rubrics UI - Install dependencies
-        run: cd rubrics-ui && yarn
+      - name: DeFi Alerts - Install dependencies
+        run: cd defi-alerts && yarn
 
-      - name: Rubrics UI - Run ESLint
-        run: cd rubrics-ui && yarn lint
+      - name: DeFi Alerts - Run ESLint
+        run: cd defi-alerts && yarn lint
 
-      - name: Rubrics UI - Run Prettier
-        run: cd rubrics-ui && yarn prettier-check
+      - name: DeFi Alerts - Run Prettier
+        run: cd defi-alerts && yarn prettier-check
 
-      - name: Rubrics UI - TSC
-        run: cd rubrics-ui && yarn compile
+      - name: DeFi Alerts - TSC
+        run: cd defi-alerts && yarn compile
 
-      - name: Rubrics UI - NEXT Build
-        run: cd rubrics-ui && yarn build
+      - name: DeFi Alerts - Build
+        run: cd defi-alerts && yarn build
 
   insights_ui_job:
     runs-on: ubuntu-latest
