@@ -13,6 +13,8 @@ export async function GET(request: NextRequest) {
     include: {
       conditions: true,
       deliveryChannels: true,
+      selectedChains: true,
+      selectedAssets: true,
     },
     orderBy: { createdAt: "desc" },
   });

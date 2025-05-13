@@ -138,7 +138,7 @@ export default function CompoundMarketAlertPage() {
   };
 
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-8">
+    <div className="container max-w-6xl mx-auto px-2 py-8">
       {/* Breadcrumb */}
       <nav className="flex items-center text-sm mb-6">
         <Link
@@ -165,7 +165,7 @@ export default function CompoundMarketAlertPage() {
           <span>Create Alert</span>
         </Link>
         <ChevronRight size={14} className="mx-2 text-theme-muted" />
-        <span className="text-theme-primary font-medium">Compound Market</span>
+        <span className="text-primary-color font-medium">Compound Market</span>
       </nav>
 
       <div className="mb-8">
@@ -192,7 +192,7 @@ export default function CompoundMarketAlertPage() {
           <RadioGroup
             value={alertType}
             onValueChange={(v) => setAlertType(v as "borrow" | "supply")}
-            className="space-y-3"
+            className="space-y-2"
           >
             {["borrow", "supply"].map((opt) => (
               <div key={opt} className="flex items-center space-x-2">
@@ -490,10 +490,11 @@ export default function CompoundMarketAlertPage() {
                   </SelectTrigger>
                   <SelectContent className="bg-block">
                     {severityOptions.map((opt) => (
-                      <div className="hover-border-primary hover-text-primary">
-                        <SelectItem key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </SelectItem>
+                      <div
+                        key={opt.value}
+                        className="hover-border-primary hover-text-primary"
+                      >
+                        <SelectItem value={opt.value}>{opt.label}</SelectItem>
                       </div>
                     ))}
                   </SelectContent>
@@ -538,7 +539,10 @@ export default function CompoundMarketAlertPage() {
               </SelectTrigger>
               <SelectContent className="bg-block">
                 {frequencyOptions.map((opt) => (
-                  <div className="hover-border-primary hover-text-primary">
+                  <div
+                    key={opt.value}
+                    className="hover-border-primary hover-text-primary"
+                  >
                     <SelectItem key={opt.value} value={opt.value}>
                       {opt.label}
                     </SelectItem>

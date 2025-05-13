@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import {
   type Alert,
   type Condition,
-  type Channel,
   severityOptions,
   frequencyOptions,
 } from "@/types/alerts";
@@ -42,19 +41,20 @@ import {
   Plus,
   TrendingDown,
   TrendingUp,
+  ArrowLeftRight,
 } from "lucide-react";
 
 // Alert summary component
 const AlertSummaryCard = ({
   title,
   count,
-  marketAlerts,
+  comparisonAlerts,
   icon,
   className,
 }: {
   title: string;
   count: number;
-  marketAlerts: number;
+  comparisonAlerts: number;
   icon: React.ReactNode;
   className?: string;
 }) => (
@@ -70,13 +70,13 @@ const AlertSummaryCard = ({
         <span className="text-2xl font-bold text-theme-primary">{count}</span>
       </div>
       <div className="text-sm text-theme-muted">
-        {marketAlerts} market alerts
+        {comparisonAlerts} comparison alerts
       </div>
     </CardContent>
   </Card>
 );
 
-export default function AlertsPage() {
+export default function CompareCompoundPage() {
   const router = useRouter();
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [filteredAlerts, setFilteredAlerts] = useState<Alert[]>([]);
@@ -104,16 +104,17 @@ export default function AlertsPage() {
         return r.json();
       })
       .then((data) => {
-        // Filter out comparison alerts
-        const nonComparisonAlerts = data.filter(
-          (alert: Alert) => !alert.isComparison
+        // Filter to only show comparison alerts
+        const comparisonAlerts = data.filter(
+          (alert: Alert) => alert.isComparison
         );
 
         // Ensure every alert has the required properties
-        const processedAlerts = nonComparisonAlerts.map((alert: Alert) => ({
+        const processedAlerts = comparisonAlerts.map((alert: Alert) => ({
           ...alert,
           selectedChains: alert.selectedChains || [],
           selectedAssets: alert.selectedAssets || [],
+          compareProtocols: alert.compareProtocols || [],
           conditions: alert.conditions || [],
           deliveryChannels: alert.deliveryChannels || [],
         }));
@@ -124,7 +125,7 @@ export default function AlertsPage() {
       })
       .catch((err) => {
         console.error("Error fetching alerts:", err);
-        setError("Failed to load alerts. Please try again later.");
+        setError("Failed to load comparison alerts. Please try again later.");
       })
       .finally(() => {
         setIsLoading(false);
@@ -210,17 +211,17 @@ export default function AlertsPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold mb-2 text-theme-primary">
-            Market Alerts
+            Comparison Alerts
           </h1>
           <p className="text-theme-muted">
-            Monitor market rates and get notified when conditions are met.
+            Monitor when Compound outperforms other DeFi platforms.
           </p>
         </div>
         <Button
-          onClick={() => router.push("/alerts/create")}
+          onClick={() => router.push("/alerts/create/compare-compound")}
           className="mt-4 md:mt-0 bg-primary-color text-primary-text hover-border-body"
         >
-          <Plus size={16} className="mr-2" /> Create Alert
+          <Plus size={16} className="mr-2" /> Create Comparison Alert
         </Button>
       </div>
 
@@ -241,7 +242,7 @@ export default function AlertsPage() {
                   : ""
               }
             >
-              All Alerts
+              All Comparisons
             </TabsTrigger>
             <TabsTrigger
               value="general"
@@ -251,7 +252,7 @@ export default function AlertsPage() {
                   : ""
               }
             >
-              General Alerts
+              General
             </TabsTrigger>
             <TabsTrigger
               value="personalized"
@@ -261,7 +262,7 @@ export default function AlertsPage() {
                   : ""
               }
             >
-              Personalized Alerts
+              Personalized
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -281,7 +282,7 @@ export default function AlertsPage() {
                   : "border-theme-border-primary text-theme-primary hover-border-primary"
               }
             >
-              <TrendingDown size={16} className="mr-2" /> Borrow Alerts
+              <TrendingDown size={16} className="mr-2" /> Borrow Rates
             </Button>
             <Button
               variant={actionTypeFilter === "supply" ? "default" : "outline"}
@@ -296,7 +297,7 @@ export default function AlertsPage() {
                   : "border-theme-border-primary text-theme-primary hover-border-primary"
               }
             >
-              <TrendingUp size={16} className="mr-2" /> Supply Alerts
+              <TrendingUp size={16} className="mr-2" /> Supply Rates
             </Button>
           </div>
 
@@ -319,30 +320,30 @@ export default function AlertsPage() {
       {/* Summary cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <AlertSummaryCard
-          title="Total Alerts"
+          title="Total Comparisons"
           count={totalAlerts}
-          marketAlerts={totalAlerts}
-          icon={<Bell size={18} />}
+          comparisonAlerts={totalAlerts}
+          icon={<ArrowLeftRight size={18} />}
           className="border-l-4 border-l-primary-color"
         />
         <AlertSummaryCard
-          title="Supply Alerts"
+          title="Supply Comparisons"
           count={supplyAlerts}
-          marketAlerts={supplyAlerts}
+          comparisonAlerts={supplyAlerts}
           icon={<TrendingUp size={18} />}
           className="border-l-4 border-l-primary-color"
         />
         <AlertSummaryCard
-          title="Borrow Alerts"
+          title="Borrow Comparisons"
           count={borrowAlerts}
-          marketAlerts={borrowAlerts}
+          comparisonAlerts={borrowAlerts}
           icon={<TrendingDown size={18} />}
           className="border-l-4 border-l-primary-color"
         />
         <AlertSummaryCard
-          title="Personalized Alerts"
+          title="Personalized"
           count={personalizedAlerts}
-          marketAlerts={personalizedAlerts}
+          comparisonAlerts={personalizedAlerts}
           icon={<Bell size={18} />}
           className="border-l-4 border-l-primary-color"
         />
@@ -351,7 +352,7 @@ export default function AlertsPage() {
       {/* Loading state */}
       {isLoading && (
         <div className="flex justify-center items-center h-40">
-          <div className="text-theme-muted">Loading alerts...</div>
+          <div className="text-theme-muted">Loading comparison alerts...</div>
         </div>
       )}
 
@@ -370,10 +371,10 @@ export default function AlertsPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[120px]">Alert Type</TableHead>
-                  <TableHead className="w-[200px]">Chain/Market</TableHead>
-                  <TableHead className="w-[180px]">Conditions</TableHead>
+                  <TableHead className="w-[180px]">Chain/Market</TableHead>
+                  <TableHead className="w-[180px]">Compare With</TableHead>
+                  <TableHead className="w-[150px]">Conditions</TableHead>
                   <TableHead className="w-[150px]">Frequency</TableHead>
-                  <TableHead className="w-[200px]">Delivery Channel</TableHead>
                   <TableHead className="w-[100px]">Status</TableHead>
                   <TableHead className="w-[120px]">Actions</TableHead>
                 </TableRow>
@@ -383,9 +384,6 @@ export default function AlertsPage() {
                   filteredAlerts.map((alert) => {
                     // For simplicity pick first condition & channel
                     const cond = alert.conditions[0] as Condition | undefined;
-                    const chan = alert.deliveryChannels[0] as
-                      | Channel
-                      | undefined;
 
                     return (
                       <TableRow key={alert.id}>
@@ -430,6 +428,22 @@ export default function AlertsPage() {
                         </TableCell>
 
                         <TableCell>
+                          <div className="flex flex-wrap gap-1">
+                            {(alert.compareProtocols || []).map(
+                              (protocol, index) => (
+                                <Badge
+                                  key={index}
+                                  variant="outline"
+                                  className="bg-theme-bg-muted text-theme-primary"
+                                >
+                                  {protocol}
+                                </Badge>
+                              )
+                            )}
+                          </div>
+                        </TableCell>
+
+                        <TableCell>
                           {cond ? (
                             <div className="flex items-center gap-2">
                               <Badge
@@ -456,25 +470,6 @@ export default function AlertsPage() {
                           <span className="text-theme-primary">
                             {freqLabel(alert.notificationFrequency)}
                           </span>
-                        </TableCell>
-
-                        <TableCell>
-                          {chan ? (
-                            <div className="flex flex-col">
-                              <span className="text-xs font-medium text-theme-primary">
-                                {chan.channelType}
-                              </span>
-                              <span className="text-xs text-theme-muted truncate max-w-[180px]">
-                                {chan.channelType === "EMAIL"
-                                  ? chan.email
-                                  : chan.webhookUrl}
-                              </span>
-                            </div>
-                          ) : (
-                            <span className="text-xs text-theme-muted">
-                              Not set
-                            </span>
-                          )}
                         </TableCell>
 
                         <TableCell>
@@ -545,15 +540,17 @@ export default function AlertsPage() {
                   <TableRow>
                     <TableCell colSpan={7} className="h-24 text-center">
                       <div className="flex flex-col items-center justify-center text-theme-muted">
-                        <Bell size={24} className="mb-2" />
-                        <p>No alerts found</p>
+                        <ArrowLeftRight size={24} className="mb-2" />
+                        <p>No comparison alerts found</p>
                         <Button
                           variant="outline"
                           size="sm"
                           className="mt-2 border-theme-border-primary text-theme-primary hover-border-primary"
-                          onClick={() => router.push("/alerts/create")}
+                          onClick={() =>
+                            router.push("/alerts/create/compare-compound")
+                          }
                         >
-                          Create your first alert
+                          Create your first comparison alert
                         </Button>
                       </div>
                     </TableCell>

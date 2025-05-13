@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.scss";
 import { NotificationProvider } from "@dodao/web-core/ui/contexts/NotificationContext";
 import { NotificationWrapper } from "@dodao/web-core/components/layout/NotificationWrapper";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
         <NotificationProvider>
           <>
             <NotificationWrapper />
+            <Navbar />
             {children}
           </>
         </NotificationProvider>
