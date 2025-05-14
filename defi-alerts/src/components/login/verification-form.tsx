@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import type React from "react";
+import type React from 'react';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { KeyRound } from "lucide-react";
-import { useNotificationContext } from "@dodao/web-core/ui/contexts/NotificationContext";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { KeyRound } from 'lucide-react';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 interface VerificationFormProps {
   email: string;
@@ -15,12 +15,8 @@ interface VerificationFormProps {
   onChangeEmail: () => void;
 }
 
-export function VerificationForm({
-  email,
-  onSubmit,
-  onChangeEmail,
-}: VerificationFormProps) {
-  const [verificationCode, setVerificationCode] = useState("");
+export function VerificationForm({ email, onSubmit, onChangeEmail }: VerificationFormProps) {
+  const [verificationCode, setVerificationCode] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { showNotification } = useNotificationContext();
 
@@ -32,8 +28,8 @@ export function VerificationForm({
 
     if (errorMessage) {
       showNotification({
-        type: "error",
-        heading: "Invalid code",
+        type: 'error',
+        heading: 'Invalid code',
         message: errorMessage,
       });
     }
@@ -44,9 +40,7 @@ export function VerificationForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="mb-4 text-center">
-        <p className="text-sm text-theme-muted">
-          We’ve sent a verification code to
-        </p>
+        <p className="text-sm text-theme-muted">We’ve sent a verification code to</p>
         <p className="font-medium text-theme-primary">{email}</p>
       </div>
 
@@ -72,19 +66,11 @@ export function VerificationForm({
         </div>
       </div>
 
-      <Button
-        type="submit"
-        className="w-full bg-primary-color text-primary-text border border-transparent hover-border-body"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Verifying..." : "Sign In"}
+      <Button type="submit" className="w-full bg-primary-color text-primary-text border border-transparent hover-border-body" disabled={isSubmitting}>
+        {isSubmitting ? 'Verifying...' : 'Sign In'}
       </Button>
 
-      <Button
-        type="button"
-        className="w-full border text-primary-color hover-border-body"
-        onClick={onChangeEmail}
-      >
+      <Button type="button" className="w-full border text-primary-color hover-border-body" onClick={onChangeEmail}>
         Use a different email
       </Button>
     </form>

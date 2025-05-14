@@ -1,15 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/prisma";
-import {
-  AlertCategory,
-  AlertActionType,
-  NotificationFrequency,
-  ConditionType,
-  SeverityLevel,
-  DeliveryChannelType,
-} from "@prisma/client";
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/prisma';
+import { AlertCategory, AlertActionType, NotificationFrequency, ConditionType, SeverityLevel, DeliveryChannelType } from '@prisma/client';
 
-import { CHAINS, MARKETS } from "@/shared/web3/config";
+import { CHAINS, MARKETS } from '@/shared/web3/config';
 
 interface PersonalizedComparisonRequest {
   email: string;
@@ -62,16 +55,13 @@ export async function POST(request: NextRequest) {
       !conditions.length ||
       !deliveryChannels.length
     ) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     // fetch user
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // map chains → Prisma connect
@@ -86,10 +76,8 @@ export async function POST(request: NextRequest) {
       const cfg = CHAINS.find((c) => c.name === chainName)!;
       return selectedMarkets
         .map((uiSymbol) => {
-          const symbol = uiSymbol === "ETH" ? "WETH" : uiSymbol;
-          const m = MARKETS.find(
-            (m) => m.chainId === cfg.chainId && m.symbol === symbol
-          );
+          const symbol = uiSymbol === 'ETH' ? 'WETH' : uiSymbol;
+          const m = MARKETS.find((m) => m.chainId === cfg.chainId && m.symbol === symbol);
           if (!m) return null;
           return {
             chainId_address: `${m.chainId}_${m.baseAssetAddress.toLowerCase()}`,
@@ -101,8 +89,7 @@ export async function POST(request: NextRequest) {
     if (!assetConnect.length) {
       return NextResponse.json(
         {
-          error:
-            "No valid market–chain combos found. Please adjust your selection.",
+          error: 'No valid market–chain combos found. Please adjust your selection.',
         },
         { status: 400 }
       );
@@ -130,8 +117,8 @@ export async function POST(request: NextRequest) {
         deliveryChannels: {
           create: deliveryChannels.map((d) => ({
             channelType: d.type,
-            email: d.type === "EMAIL" ? d.email : undefined,
-            webhookUrl: d.type === "WEBHOOK" ? d.webhookUrl : undefined,
+            email: d.type === 'EMAIL' ? d.email : undefined,
+            webhookUrl: d.type === 'WEBHOOK' ? d.webhookUrl : undefined,
           })),
         },
       },
@@ -139,7 +126,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true, alertId: alert.id });
   } catch (err: any) {
-    console.error("[personalized-comparison route] error:", err);
+    console.error('[personalized-comparison route] error:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import type React from "react";
+import type React from 'react';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { AtSign } from "lucide-react";
-import { useNotificationContext } from "@dodao/web-core/ui/contexts/NotificationContext";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { AtSign } from 'lucide-react';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 interface EmailFormProps {
   onSubmit: (email: string) => Promise<string | null | undefined>;
   initialEmail?: string;
 }
 
-export function EmailForm({ onSubmit, initialEmail = "" }: EmailFormProps) {
+export function EmailForm({ onSubmit, initialEmail = '' }: EmailFormProps) {
   const [email, setEmail] = useState(initialEmail);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { showNotification } = useNotificationContext();
@@ -27,8 +27,8 @@ export function EmailForm({ onSubmit, initialEmail = "" }: EmailFormProps) {
 
     if (errorMessage) {
       showNotification({
-        type: "error",
-        heading: "Request failed",
+        type: 'error',
+        heading: 'Request failed',
         message: errorMessage,
       });
     }
@@ -59,12 +59,8 @@ export function EmailForm({ onSubmit, initialEmail = "" }: EmailFormProps) {
         </div>
       </div>
 
-      <Button
-        type="submit"
-        className="w-full text-primary-text border border-transparent bg-primary-color hover-border-body"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Sending..." : "Continue with Email"}
+      <Button type="submit" className="w-full text-primary-text border border-transparent bg-primary-color hover-border-body" disabled={isSubmitting}>
+        {isSubmitting ? 'Sending...' : 'Continue with Email'}
       </Button>
     </form>
   );

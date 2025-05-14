@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import type { ReactNode } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface AlertSummaryCardProps {
   title: string;
@@ -10,14 +10,7 @@ interface AlertSummaryCardProps {
   className?: string;
 }
 
-export function AlertSummaryCard({
-  title,
-  count,
-  marketAlerts,
-  comparisonAlerts,
-  icon,
-  className,
-}: AlertSummaryCardProps) {
+export function AlertSummaryCard({ title, count, marketAlerts, comparisonAlerts, icon, className }: AlertSummaryCardProps) {
   return (
     <Card className={`border-theme-border-primary ${className}`}>
       <CardContent className="p-6">
@@ -30,9 +23,7 @@ export function AlertSummaryCard({
         </div>
         <div className="text-sm text-theme-muted">
           {marketAlerts} market alerts
-          {comparisonAlerts !== undefined && (
-            <span className="ml-2">{comparisonAlerts} comparison alerts</span>
-          )}
+          {comparisonAlerts !== undefined && <span className="ml-2">{comparisonAlerts} comparison alerts</span>}
         </div>
       </CardContent>
     </Card>

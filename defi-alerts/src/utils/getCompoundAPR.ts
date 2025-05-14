@@ -1,18 +1,11 @@
-import { formatUnits } from "viem";
-import { multicall } from "@wagmi/core";
-import type { Config } from "@wagmi/core";
+import { formatUnits } from 'viem';
+import { multicall } from '@wagmi/core';
+import type { Config } from '@wagmi/core';
 
-import { CometABI } from "@/shared/web3/abi/CometABI";
-import { TokenABI } from "@/shared/web3/abi/TokenABI";
-import {
-  COMP_MAIN_COMET_ADDRESS,
-  COMP_MAIN_PRICE_FEE,
-  ETH_MAIN_PRICE_FEE,
-  wstETH_MAIN_PRICE_FEE,
-  MARKETS,
-  CHAINS,
-} from "@/shared/web3/config";
-import { useDefaultConfig } from "@/shared/web3/wagmiConfig";
+import { CometABI } from '@/shared/web3/abi/CometABI';
+import { TokenABI } from '@/shared/web3/abi/TokenABI';
+import { COMP_MAIN_COMET_ADDRESS, COMP_MAIN_PRICE_FEE, ETH_MAIN_PRICE_FEE, wstETH_MAIN_PRICE_FEE, MARKETS, CHAINS } from '@/shared/web3/config';
+import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
 
 export type CompoundMarketApr = {
   chainId: number;
@@ -44,19 +37,19 @@ async function getPrices(config: Config): Promise<{
       {
         address: COMP_MAIN_COMET_ADDRESS,
         abi: TokenABI,
-        functionName: "getPrice",
+        functionName: 'getPrice',
         args: [COMP_MAIN_PRICE_FEE],
       },
       {
         address: COMP_MAIN_COMET_ADDRESS,
         abi: TokenABI,
-        functionName: "getPrice",
+        functionName: 'getPrice',
         args: [ETH_MAIN_PRICE_FEE],
       },
       {
         address: COMP_MAIN_COMET_ADDRESS,
         abi: TokenABI,
-        functionName: "getPrice",
+        functionName: 'getPrice',
         args: [wstETH_MAIN_PRICE_FEE],
       },
     ] as const,
@@ -74,60 +67,44 @@ export function useCompoundMarketsAprs(): () => Promise<CompoundMarketApr[]> {
 
     const aprs = await Promise.all(
       MARKETS.map(async (market) => {
-        const {
-          chainId,
-          symbol: asset,
-          cometAddress: address,
-          baseAssetAddress: assetAddress,
-        } = market;
-        const chainName =
-          CHAINS.find((c) => c.chainId === chainId)?.name ?? "Unknown";
+        const { chainId, symbol: asset, cometAddress: address, baseAssetAddress: assetAddress } = market;
+        const chainName = CHAINS.find((c) => c.chainId === chainId)?.name ?? 'Unknown';
 
         // 1) fetch priceFeedId & utilization
         const [priceFeedId, utilization] = await multicall(config, {
           chainId,
           contracts: [
-            { address, abi: CometABI, functionName: "baseTokenPriceFeed" },
-            { address, abi: CometABI, functionName: "getUtilization" },
+            { address, abi: CometABI, functionName: 'baseTokenPriceFeed' },
+            { address, abi: CometABI, functionName: 'getUtilization' },
           ] as const,
         }).then((res) => [res[0].result as string, res[1].result as bigint]);
 
         // 2) fetch rates, totals, speeds, AND the market’s own price
-        const [
-          decimalsResult,
-          baseIndexScaleResult,
-          sRate,
-          bRate,
-          totSup,
-          totBor,
-          supSpd,
-          borSpd,
-          tokenPriceMantissa,
-        ] = await multicall(config, {
+        const [decimalsResult, baseIndexScaleResult, sRate, bRate, totSup, totBor, supSpd, borSpd, tokenPriceMantissa] = await multicall(config, {
           chainId,
           contracts: [
-            { address, abi: CometABI, functionName: "decimals" },
-            { address, abi: CometABI, functionName: "baseIndexScale" },
+            { address, abi: CometABI, functionName: 'decimals' },
+            { address, abi: CometABI, functionName: 'baseIndexScale' },
             {
               address,
               abi: CometABI,
-              functionName: "getSupplyRate",
+              functionName: 'getSupplyRate',
               args: [utilization as bigint],
             },
             {
               address,
               abi: CometABI,
-              functionName: "getBorrowRate",
+              functionName: 'getBorrowRate',
               args: [utilization as bigint],
             },
-            { address, abi: CometABI, functionName: "totalSupply" },
-            { address, abi: CometABI, functionName: "totalBorrow" },
-            { address, abi: CometABI, functionName: "baseTrackingSupplySpeed" },
-            { address, abi: CometABI, functionName: "baseTrackingBorrowSpeed" },
+            { address, abi: CometABI, functionName: 'totalSupply' },
+            { address, abi: CometABI, functionName: 'totalBorrow' },
+            { address, abi: CometABI, functionName: 'baseTrackingSupplySpeed' },
+            { address, abi: CometABI, functionName: 'baseTrackingBorrowSpeed' },
             {
               address,
               abi: CometABI,
-              functionName: "getPrice",
+              functionName: 'getPrice',
               args: [priceFeedId as `0x${string}`],
             },
           ] as const,
@@ -138,46 +115,30 @@ export function useCompoundMarketsAprs(): () => Promise<CompoundMarketApr[]> {
         // 3) normalize all bigints to decimals
         const supplyRateDecimal = Number(formatUnits(sRate, BASE_DECIMALS));
         const borrowRateDecimal = Number(formatUnits(bRate, BASE_DECIMALS));
-        const totalSupplyDecimal = Number(
-          formatUnits(totSup, Number(decimalsResult))
-        );
-        const totalBorrowDecimal = Number(
-          formatUnits(totBor, Number(decimalsResult))
-        );
+        const totalSupplyDecimal = Number(formatUnits(totSup, Number(decimalsResult)));
+        const totalBorrowDecimal = Number(formatUnits(totBor, Number(decimalsResult)));
         const baseTrackingSupplySpeed = Number(supSpd || BigInt(0));
         const baseTrackingBorrowSpeed = Number(borSpd || BigInt(0));
 
-        const compToSuppliersPerDay =
-          (baseTrackingSupplySpeed / baseIndexScale) * SECONDS_PER_DAY;
-        const compToBorrowersPerDay =
-          (baseTrackingBorrowSpeed / baseIndexScale) * SECONDS_PER_DAY;
+        const compToSuppliersPerDay = (baseTrackingSupplySpeed / baseIndexScale) * SECONDS_PER_DAY;
+        const compToBorrowersPerDay = (baseTrackingBorrowSpeed / baseIndexScale) * SECONDS_PER_DAY;
 
         // 4) pick the right USD price for this asset
         const tokenUsd =
-          asset === "WETH"
+          asset === 'WETH'
             ? Number(formatUnits(ethPrice, priceFeedMantissa))
-            : asset === "wstETH"
+            : asset === 'wstETH'
             ? Number(formatUnits(wstEthPrice, priceFeedMantissa))
             : Number(formatUnits(tokenPriceMantissa, priceFeedMantissa));
 
         const compUsd = Number(formatUnits(compPrice, priceFeedMantissa));
 
         // 5) compute APRs
-        const supplyApr =
-          supplyRateDecimal * SECONDS_PER_DAY * DAYS_IN_YEAR * 100;
-        const borrowApr =
-          borrowRateDecimal * SECONDS_PER_DAY * DAYS_IN_YEAR * 100;
+        const supplyApr = supplyRateDecimal * SECONDS_PER_DAY * DAYS_IN_YEAR * 100;
+        const borrowApr = borrowRateDecimal * SECONDS_PER_DAY * DAYS_IN_YEAR * 100;
 
-        const supplyCompRewardApr =
-          ((compUsd * compToSuppliersPerDay) /
-            (totalSupplyDecimal * tokenUsd)) *
-          DAYS_IN_YEAR *
-          100;
-        const borrowCompRewardApr =
-          ((compUsd * compToBorrowersPerDay) /
-            (totalBorrowDecimal * tokenUsd)) *
-          DAYS_IN_YEAR *
-          100;
+        const supplyCompRewardApr = ((compUsd * compToSuppliersPerDay) / (totalSupplyDecimal * tokenUsd)) * DAYS_IN_YEAR * 100;
+        const borrowCompRewardApr = ((compUsd * compToBorrowersPerDay) / (totalBorrowDecimal * tokenUsd)) * DAYS_IN_YEAR * 100;
 
         return {
           chainId,

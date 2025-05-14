@@ -2,9 +2,7 @@
 
 export const PoolAbi_Arbitrum = [
   {
-    inputs: [
-      { internalType: 'contract IPoolAddressesProvider', name: 'provider', type: 'address' },
-    ],
+    inputs: [{ internalType: 'contract IPoolAddressesProvider', name: 'provider', type: 'address' }],
     stateMutability: 'nonpayable',
     type: 'constructor',
   },
@@ -659,9 +657,7 @@ export const PoolAbi_Arbitrum = [
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'contract IPoolAddressesProvider', name: 'provider', type: 'address' },
-    ],
+    inputs: [{ internalType: 'contract IPoolAddressesProvider', name: 'provider', type: 'address' }],
     name: 'initialize',
     outputs: [],
     stateMutability: 'nonpayable',
