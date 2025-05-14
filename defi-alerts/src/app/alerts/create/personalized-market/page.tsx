@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -15,8 +15,14 @@ import { type SupplyRow, type BorrowRow, type Channel, severityOptions, frequenc
 export default function PersonalizedMarketAlertPage() {
   const router = useRouter();
   const baseUrl = getBaseUrl();
-  const email = localStorage.getItem('email')!;
-  const walletAddress = localStorage.getItem('walletAddress')!;
+
+  const [email, setEmail] = useState<string>('');
+  const [walletAddress, setWalletAddress] = useState<string>('');
+
+  useEffect(() => {
+    setEmail(localStorage.getItem('email') ?? '');
+    setWalletAddress(localStorage.getItem('walletAddress') ?? '');
+  }, []);
 
   // 1) supply rows
   const defaultSupply: SupplyRow = {
