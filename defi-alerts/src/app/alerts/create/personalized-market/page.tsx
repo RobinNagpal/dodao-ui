@@ -70,7 +70,11 @@ export default function PersonalizedMarketAlertPage() {
     secondSupply,
   ]);
 
-  const updateSupplyRow = (idx: number, field: keyof SupplyRow, val: any) =>
+  const updateSupplyRow = <K extends keyof SupplyRow>(
+    idx: number,
+    field: K,
+    val: SupplyRow[K]
+  ) =>
     setSupplyRows((s) =>
       s.map((r, i) => (i === idx ? { ...r, [field]: val } : r))
     );
@@ -90,7 +94,11 @@ export default function PersonalizedMarketAlertPage() {
     { ...defaultBorrow },
   ]);
 
-  const updateBorrowRow = (idx: number, field: keyof BorrowRow, val: any) =>
+  const updateBorrowRow = <K extends keyof BorrowRow>(
+    idx: number,
+    field: K,
+    val: BorrowRow[K]
+  ) =>
     setBorrowRows((s) =>
       s.map((r, i) => (i === idx ? { ...r, [field]: val } : r))
     );
@@ -101,7 +109,11 @@ export default function PersonalizedMarketAlertPage() {
   ]);
   const addChannel = () =>
     setChannels((c) => [...c, { channelType: "EMAIL", email: "" }]);
-  const updateChannel = (idx: number, field: keyof Channel, val: any) =>
+  const updateChannel = <K extends keyof Channel>(
+    idx: number,
+    field: K,
+    val: Channel[K]
+  ) =>
     setChannels((c) =>
       c.map((ch, i) => (i === idx ? { ...ch, [field]: val } : ch))
     );

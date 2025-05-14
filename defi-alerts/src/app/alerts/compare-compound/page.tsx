@@ -6,10 +6,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   type Alert,
-  type Condition,
   severityOptions,
   frequencyOptions,
   Channel,
+  Condition,
+  PrismaCondition,
 } from "@/types/alerts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -52,7 +53,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { AlertCondition } from "@prisma/client";
 import FullPageLoader from "@dodao/web-core/components/core/loaders/FullPageLoading";
 import ConfirmationModal from "@dodao/web-core/components/app/Modal/ConfirmationModal";
 import { useDeleteData } from "@dodao/web-core/ui/hooks/fetch/useDeleteData";
@@ -189,7 +189,7 @@ export default function CompareCompoundPage() {
     setFilteredAlerts(result);
   }, [activeTab, actionTypeFilter, chainFilter, alerts]);
 
-  const severityLabel = (s: Condition) =>
+  const severityLabel = (s: PrismaCondition) =>
     severityOptions.find((o) => o.value === s.severity)?.label || "-";
 
   const freqLabel = (f: string) =>
@@ -233,7 +233,7 @@ export default function CompareCompoundPage() {
   };
 
   // Format condition threshold values based on condition type
-  const formatThresholdValue = (condition: AlertCondition) => {
+  const formatThresholdValue = (condition: PrismaCondition) => {
     if (condition.conditionType === "APR_OUTSIDE_RANGE") {
       return condition.thresholdValueLow && condition.thresholdValueHigh
         ? `${condition.thresholdValueLow}–${condition.thresholdValueHigh}%`
@@ -501,10 +501,10 @@ export default function CompareCompoundPage() {
                               <Badge
                                 className={`${getSeverityColor(cond.severity)}`}
                               >
-                                {severityLabel(cond)}
+                                {severityLabel(cond as PrismaCondition)}
                               </Badge>
                               <span className="text-xs text-theme-muted">
-                                {formatThresholdValue(cond as any)}
+                                {formatThresholdValue(cond as PrismaCondition)}
                               </span>
                               {hasMultipleConditions && (
                                 <TooltipProvider>
@@ -532,9 +532,14 @@ export default function CompareCompoundPage() {
                                               className="text-xs text-theme-muted"
                                             >
                                               <span className="font-medium">
-                                                {severityLabel(c as any)}:
+                                                {severityLabel(
+                                                  c as PrismaCondition
+                                                )}
+                                                :
                                               </span>{" "}
-                                              {formatThresholdValue(c as any)}
+                                              {formatThresholdValue(
+                                                c as PrismaCondition
+                                              )}
                                             </li>
                                           ))}
                                         </ul>

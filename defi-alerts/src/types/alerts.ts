@@ -33,6 +33,14 @@ export interface Condition {
   thresholdHigh?: string;
 }
 
+export interface PrismaCondition {
+  conditionType: ConditionType;
+  severity: SeverityLevel;
+  thresholdValue?: string;
+  thresholdValueLow?: string;
+  thresholdValueHigh?: string;
+}
+
 export interface SupplyRow {
   chain: string;
   market: string;

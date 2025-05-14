@@ -37,6 +37,7 @@ import {
   type NotificationFrequency,
   severityOptions,
   frequencyOptions,
+  SeverityLevel,
 } from "@/types/alerts";
 
 export default function PersonalizedComparisonPage() {
@@ -76,21 +77,33 @@ export default function PersonalizedComparisonPage() {
     { channelType: "EMAIL", email: "" },
   ]);
 
-  const updateSupply = (i: number, f: keyof ComparisonRow, v: any) =>
+  const updateSupply = <K extends keyof ComparisonRow>(
+    i: number,
+    field: K,
+    value: ComparisonRow[K]
+  ) =>
     setSupplyRows((rows) =>
-      rows.map((r, idx) => (idx === i ? { ...r, [f]: v } : r))
+      rows.map((r, idx) => (idx === i ? { ...r, [field]: value } : r))
     );
 
-  const updateBorrow = (i: number, f: keyof ComparisonRow, v: any) =>
+  const updateBorrow = <K extends keyof ComparisonRow>(
+    i: number,
+    field: K,
+    value: ComparisonRow[K]
+  ) =>
     setBorrowRows((rows) =>
-      rows.map((r, idx) => (idx === i ? { ...r, [f]: v } : r))
+      rows.map((r, idx) => (idx === i ? { ...r, [field]: value } : r))
     );
 
   const addChannel = () =>
     setChannels((chs) => [...chs, { channelType: "EMAIL", email: "" }]);
-  const updateChannel = (i: number, f: keyof Channel, v: any) =>
+  const updateChannel = <K extends keyof Channel>(
+    i: number,
+    field: K,
+    value: Channel[K]
+  ) =>
     setChannels((chs) =>
-      chs.map((c, idx) => (idx === i ? { ...c, [f]: v } : c))
+      chs.map((c, idx) => (idx === i ? { ...c, [field]: value } : c))
     );
   const removeChannel = (i: number) =>
     setChannels((chs) => chs.filter((_, idx) => idx !== i));
@@ -271,7 +284,7 @@ export default function PersonalizedComparisonPage() {
                       <Select
                         value={r.severity}
                         onValueChange={(value) =>
-                          updateSupply(i, "severity", value as any)
+                          updateSupply(i, "severity", value as SeverityLevel)
                         }
                       >
                         <SelectTrigger className="w-[140px] hover-border-primary">
@@ -387,7 +400,7 @@ export default function PersonalizedComparisonPage() {
                       <Select
                         value={r.severity}
                         onValueChange={(value) =>
-                          updateBorrow(i, "severity", value as any)
+                          updateBorrow(i, "severity", value as SeverityLevel)
                         }
                       >
                         <SelectTrigger className="w-[140px] hover-border-primary">

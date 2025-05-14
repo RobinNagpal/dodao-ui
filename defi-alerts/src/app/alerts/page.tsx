@@ -7,11 +7,10 @@ import { useRouter } from "next/navigation";
 import {
   type Alert,
   type Channel,
-  type Condition,
+  type PrismaCondition,
   severityOptions,
   frequencyOptions,
 } from "@/types/alerts";
-import { AlertCondition } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -187,7 +186,7 @@ export default function AlertsPage() {
     setFilteredAlerts(result);
   }, [activeTab, actionTypeFilter, chainFilter, alerts]);
 
-  const severityLabel = (s: AlertCondition) =>
+  const severityLabel = (s: PrismaCondition) =>
     severityOptions.find((o) => o.value === s.severity)?.label || "-";
 
   const freqLabel = (f: string) =>
@@ -231,7 +230,7 @@ export default function AlertsPage() {
   };
 
   // Format condition threshold values based on condition type
-  const formatThresholdValue = (condition: AlertCondition) => {
+  const formatThresholdValue = (condition: PrismaCondition) => {
     if (condition.conditionType === "APR_OUTSIDE_RANGE") {
       return condition.thresholdValueLow && condition.thresholdValueHigh
         ? `${condition.thresholdValueLow}–${condition.thresholdValueHigh}%`
@@ -427,7 +426,9 @@ export default function AlertsPage() {
                 {filteredAlerts.length > 0 ? (
                   filteredAlerts.map((alert) => {
                     // For simplicity pick first condition & channel
-                    const cond = alert.conditions[0] as Condition | undefined;
+                    const cond = alert.conditions[0] as
+                      | PrismaCondition
+                      | undefined;
                     const chan = alert.deliveryChannels[0] as
                       | Channel
                       | undefined;
@@ -483,10 +484,10 @@ export default function AlertsPage() {
                               <Badge
                                 className={`${getSeverityColor(cond.severity)}`}
                               >
-                                {severityLabel(cond as any)}
+                                {severityLabel(cond as PrismaCondition)}
                               </Badge>
                               <span className="text-xs text-theme-muted">
-                                {formatThresholdValue(cond as any)}
+                                {formatThresholdValue(cond as PrismaCondition)}
                               </span>
                               {hasMultipleConditions && (
                                 <TooltipProvider>
@@ -514,9 +515,14 @@ export default function AlertsPage() {
                                               className="text-xs text-theme-muted"
                                             >
                                               <span className="font-medium">
-                                                {severityLabel(c as any)}:
+                                                {severityLabel(
+                                                  c as PrismaCondition
+                                                )}
+                                                :
                                               </span>{" "}
-                                              {formatThresholdValue(c as any)}
+                                              {formatThresholdValue(
+                                                c as PrismaCondition
+                                              )}
                                             </li>
                                           ))}
                                         </ul>
