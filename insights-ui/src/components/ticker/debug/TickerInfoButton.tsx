@@ -1,8 +1,10 @@
-import MarkdownEditor from '@/components/Markdown/MarkdownEditor';
+'use client';
+
+import RawJsonEditModal from '@/components/prompts/RawJsonEditModal';
+import SampleJsonEditModal from '@/components/prompts/SampleJsonEditModal';
 import { SaveTickerInfoRequest } from '@/types/public-equity/ticker-request-response';
-import { parseMarkdown } from '@/util/parse-markdown';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
@@ -13,13 +15,9 @@ export interface TickerInfoButtonProps {
   onUpdate: () => Promise<void>;
 }
 
-export default function TickerInfoButton({ tickerKey, tickerInfoContent: tickerInfoContentRaw, onUpdate }: TickerInfoButtonProps) {
-  const [showTickerInfoModal, setShowTickerInfoModal] = useState(false);
-  const [tickerInfoContent, setTickerInfoContent] = useState(tickerInfoContentRaw);
-  const [showPreview, setShowPreview] = useState(false);
-  const getMarkdownContent = (content?: string) => {
-    return content ? parseMarkdown(content) : 'No Information';
-  };
+export default function TickerInfoButton({ tickerKey, tickerInfoContent, onUpdate }: TickerInfoButtonProps) {
+  const [showSampleJsonModal, setShowSampleJsonModal] = useState(false);
+  const [showRawJsonModal, setShowRawJsonModal] = useState(false);
 
   const {
     putData: saveTickerInfo,
@@ -31,54 +29,41 @@ export default function TickerInfoButton({ tickerKey, tickerInfoContent: tickerI
     redirectPath: ``,
   });
 
-  const handleSaveTickerInfo = async () => {
+  const handleSaveTickerInfo = async (jsonString: string) => {
     await saveTickerInfo(`${getBaseUrl()}/api/tickers/${tickerKey}/ticker-info`, {
-      tickerInfo: tickerInfoContent ?? '',
+      tickerInfo: jsonString ?? '',
     });
     await onUpdate();
+    setShowRawJsonModal(false);
+    setShowSampleJsonModal(false);
   };
 
   return (
-    <div>
-      <div className="flex justify-end">
-        <Button primary onClick={() => setShowTickerInfoModal(true)}>
-          Upsert Ticker Info
-        </Button>
+    <div className="flex justify-end my-5">
+      <div>
+        <span className="text-sm text-gray-500">Visual Editor:</span>
+        <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleJsonModal(true)} />
+        <span className="text-sm text-gray-500 ml-2">Raw JSON:</span>
+        <IconButton iconName={IconTypes.Edit} onClick={() => setShowRawJsonModal(true)} />
       </div>
-      <FullPageModal open={showTickerInfoModal} onClose={() => setShowTickerInfoModal(false)} title={''}>
-        <div className="min-h-[70vh]">
-          <div className="flex justify-around items-center">
-            <div>Ticker Info</div>
-            <Button primary onClick={() => setShowPreview(!showPreview)}>
-              {showPreview ? 'Editor' : 'Preview'}
-            </Button>
-            <Button loading={tickerInfoLoading} primary variant="contained" onClick={() => handleSaveTickerInfo()} disabled={tickerInfoLoading}>
-              Save Ticker Info
-            </Button>
-          </div>
-          <div>{tickerInfoError && <div className="text-red-500">{tickerInfoError}</div>}</div>
-          <hr className="m-5" />
-          <div className="max-h-[80vh] w-full text-left">
-            {showPreview ? (
-              <div className="p-5 h-full">
-                <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(tickerInfoContent) }} />
-              </div>
-            ) : (
-              <div className="p-5">
-                <MarkdownEditor
-                  label={``}
-                  modelValue={tickerInfoContent}
-                  placeholder="Event content"
-                  onUpdate={(value) => setTickerInfoContent(value || '')}
-                  objectId={'ticker-info'}
-                  maxHeight={'70vh'}
-                  className="mt-4"
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      </FullPageModal>
+      {showSampleJsonModal && (
+        <SampleJsonEditModal
+          open={showSampleJsonModal}
+          onClose={() => setShowSampleJsonModal(false)}
+          title="Ticker Info JSON"
+          sampleJson={tickerInfoContent || ''}
+          onSave={(jsonString) => handleSaveTickerInfo(jsonString)}
+        />
+      )}
+      {showRawJsonModal && (
+        <RawJsonEditModal
+          open={showRawJsonModal}
+          onClose={() => setShowRawJsonModal(false)}
+          title="Ticker Info JSON"
+          sampleJson={tickerInfoContent}
+          onSave={(jsonString) => handleSaveTickerInfo(jsonString)}
+        />
+      )}
     </div>
   );
 }

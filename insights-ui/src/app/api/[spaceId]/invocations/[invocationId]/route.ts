@@ -7,8 +7,8 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 // GET /api/[spaceId]/prompts/[promptId]/invocations/[invocationId]
 export type FullPromptInvocationResponse = PromptInvocation & { prompt: Prompt };
 
-async function getInvocation(req: NextRequest, context: { params: { spaceId: string; invocationId: string } }) {
-  const { spaceId, invocationId } = context.params;
+async function getInvocation(req: NextRequest, context: { params: Promise<{ spaceId: string; invocationId: string }> }) {
+  const { spaceId, invocationId } = await context.params;
 
   const invocation = await prisma.promptInvocation.findFirstOrThrow({
     where: {

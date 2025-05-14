@@ -1,5 +1,19 @@
+$schema: "http://json-schema.org/draft-07/schema#"
 type: object
+additionalProperties: false
 properties:
+  reitInfo:
+    type: string
+    description: "Important REIT info other than the given short description of the company"
+  reitWebsiteUrl:
+    type: string
+    description: "Main Website Url of the REIT"
+  valuation:
+    type: string
+    description: "Categorize the REIT as Overvalued/Undervalued/Fairly Valued or N/A if could not determine"
+  occupancyRate:
+    type: string
+    description: "Occupancy rate % of the REIT or N/A if could not find"
   yearsSinceIpo:
     type: string
     description: "Number of years since the IPO, as a string (e.g. '0.6 years')"
@@ -20,17 +34,9 @@ properties:
       - industryGroup
       - industry
       - subIndustry
-  businessModel:
-    type: string
-    description: "Description of the REIT’s core operating model and revenue drivers"
   dividendProfile:
     type: string
     description: "Narrative description of the dividend policy and recent payout history"
-  competitiveEdge:
-    type: array
-    description: "List of key competitive advantages versus peers"
-    items:
-      type: string
   comparables:
     type: array
     description: "Array of comparable REITs with key metrics and comparison comments"
@@ -75,11 +81,13 @@ properties:
     type: string
     description: "Key tailwinds supporting the REIT"
 required:
+  - reitInfo
+  - reitWebsiteUrl
+  - valuation
+  - occupancyRate
   - yearsSinceIpo
   - gicsClassification
-  - businessModel
   - dividendProfile
-  - competitiveEdge
   - comparables
   - latestNews
   - outlook

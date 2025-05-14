@@ -32,5 +32,5 @@ export function ViewCriterionReportItem({ criterionKey, report, industryGroupCri
     return <CriterionReportDonutChart content={content} />;
   }
 
-  return <div className="markdown-body text-md" dangerouslySetInnerHTML={{ __html: getMarkdownContent(content) }} />;
+  return <div className="markdown-body text-md overflow-x-auto" dangerouslySetInnerHTML={{ __html: getMarkdownContent(content) }} />;
 }

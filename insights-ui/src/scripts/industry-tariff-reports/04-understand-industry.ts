@@ -1,9 +1,7 @@
-import { getLlmResponse } from './llm-utils';
-import { IndustryAreaHeadings } from './00-industry-main-headings';
-import fs from 'fs';
-import path from 'path';
-import { z, ZodObject } from 'zod';
-import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
+import { writeJsonFileForUnderstandIndustry, writeMarkdownFileForUnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { IndustryAreasWrapper, UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { getLlmResponse } from '@/scripts/llm-utils';
+import { z } from 'zod';
 
 const IndustrySectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific part of the article.'),
@@ -30,15 +28,7 @@ const UnderstandIndustrySchema = z.object({
     ),
 });
 
-interface UnderstandIndustry {
-  title: string;
-  sections: {
-    title: string;
-    paragraphs: string[];
-  }[];
-}
-
-function getUnderstandIndustryPrompt(industry: string, headings: IndustryAreaHeadings) {
+function getUnderstandIndustryPrompt(industry: string, headings: IndustryAreasWrapper) {
   const prompt = `
 I want to understand the ${industry} industry in depth. Give me a very detailed article with:
 - Exactly **6 Headings** and **2–3 small paragraphs** under each heading
@@ -51,7 +41,7 @@ I want to understand the ${industry} industry in depth. Give me a very detailed 
 # Important Headings Below
 
 ### 1. Product & Innovation
-> *(Inside‑out view of what’s made, why it sells, and how it evolves)*
+> *(Inside‑out view of what's made, why it sells, and how it evolves)*
 - **Definition & Scope**: core product, add‑ons, bundles, segmentation (technology, end‑use, premium vs. commodity)
 - **Features & Performance**: key specs, quality standards, certifications, customer KPIs (speed, durability, efficiency)
 - **R&D, Tech Stack & Pipeline**: incumbent R&D spend, emerging variants, digitalization (IoT, AI, robotics), disruptive innovations
@@ -62,7 +52,7 @@ I want to understand the ${industry} industry in depth. Give me a very detailed 
 - **Market Size & Segmentation**: TAM, SAM; by geography, vertical, customer size, demographics
 - **Growth & Trends**: historical growth rates, 1–5 year forecasts, macro drivers (economic, regulatory, social), micro trends (tech adoption, consumer preferences)
 - **Buyer Personas & Process**: decision‑makers vs. users vs. influencers, purchase criteria, timelines, procurement cycles
-- **Competitive Dynamics**: number/size of players, market shares, business models, revenue streams, SWOT, Porter’s Five Forces
+- **Competitive Dynamics**: number/size of players, market shares, business models, revenue streams, SWOT, Porter's Five Forces
 - **Voice‑of‑Customer & Partners**: NPS, surveys, sentiment; suppliers, distributors, OEMs, NGOs
 
 ### 3. Supply Chain & Operations
@@ -115,49 +105,15 @@ ${JSON.stringify(headings, null, 2)}
   return prompt;
 }
 
-export async function getUnderstandIndustry(industry: string, headings: IndustryAreaHeadings) {
+export async function getUnderstandIndustry(industry: string, headings: IndustryAreasWrapper) {
   console.log('Invoking LLM for understanding industry');
   return await getLlmResponse<UnderstandIndustry>(getUnderstandIndustryPrompt(industry, headings), UnderstandIndustrySchema);
 }
 
-function getJsonFilePath(industry: string): string {
-  const fileName = `understand-industry.json`;
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '04-understand-industry');
-  addDirectoryIfNotPresent(dirPath);
-  const jsonFilePath = path.join(dirPath, fileName);
-  return jsonFilePath;
-}
-
-export async function getAndWriteUnderstandIndustryJson(industry: string, headings: IndustryAreaHeadings) {
+export async function getAndWriteUnderstandIndustryJson(industry: string, headings: IndustryAreasWrapper) {
   const understandIndustry = await getUnderstandIndustry(industry, headings);
   console.log('Understand Industry:', understandIndustry);
 
-  const filePath = getJsonFilePath(industry);
-  fs.writeFileSync(filePath, JSON.stringify(understandIndustry, null, 2), {
-    encoding: 'utf-8',
-  });
-}
-
-export function readUnderstandIndustryJsonFromFile(industry: string) {
-  const filePath = getJsonFilePath(industry);
-  if (!fs.existsSync(filePath)) {
-    throw new Error(`File not found: ${filePath}`);
-  }
-  // Read the file contents and convert to string
-  const contents: string = fs.readFileSync(filePath, 'utf-8').toString();
-  // Parse the JSON data
-  const understandIndustry: UnderstandIndustry = JSON.parse(contents);
-  return understandIndustry;
-}
-
-export function writeUnderstandIndustryToMarkdownFile(industry: string, understandIndustry: UnderstandIndustry) {
-  const filePath = getJsonFilePath(industry).replace('.json', '.md');
-
-  const markdownContent =
-    `# ${understandIndustry.title}\n\n` +
-    `${understandIndustry.sections.map((section) => `## ${section.title}\n${section.paragraphs.join('\n\n')}`).join('\n\n')}\n`;
-
-  fs.writeFileSync(filePath, markdownContent, {
-    encoding: 'utf-8',
-  });
+  await writeJsonFileForUnderstandIndustry(industry, understandIndustry);
+  await writeMarkdownFileForUnderstandIndustry(industry, understandIndustry);
 }

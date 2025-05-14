@@ -1,19 +1,28 @@
+$schema: "http://json-schema.org/draft-07/schema#"
 type: object
+additionalProperties: false
 properties:
   metricKey:
     type: string
+    description: "key that must be same as the key from the metrics definition array"
   checklistItem:
     type: string
+    description: "name of the item that must be same as the name from the metrics definition array"
   oneLinerExplanation:
     type: string
+    description: "one liner explanation of the item"
   informationUsed:
     type: string
+    description: "all the information that has been used to get the score for the item"
   detailedExplanation:
     type: string
+    description: "a detailed interpretation of the score"
   evaluationLogic:
     type: string
+    description: "evaluation criteria that was used to give the final score"
   score:
     type: number
+    description: "binary score"
 required:
   - metricKey
   - checklistItem

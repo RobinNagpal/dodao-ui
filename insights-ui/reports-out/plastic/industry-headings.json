@@ -1,0 +1,188 @@
+{
+  "headings": [
+    {
+      "title": "Feedstock & Raw Material Sourcing",
+      "oneLineSummary": "Overview of the sourcing and preparation of primary feedstocks for plastic manufacturing.",
+      "subHeadings": [
+        {
+          "title": "Monomer Production",
+          "oneLineSummary": "Production of fundamental monomers like ethylene and propylene from petrochemical feedstocks.",
+          "companies": [
+            {
+              "name": "ExxonMobil Chemical",
+              "ticker": "XOM"
+            },
+            {
+              "name": "Chevron",
+              "ticker": "CVX"
+            }
+          ]
+        },
+        {
+          "title": "Additive & Masterbatch Compounding",
+          "oneLineSummary": "Formulation of concentrated additive blends to modify polymer properties at scale.",
+          "companies": [
+            {
+              "name": "Avient Corporation",
+              "ticker": "AVNT"
+            }
+          ]
+        },
+        {
+          "title": "Bio‑based Polymer Precursors",
+          "oneLineSummary": "Development of renewable, bio‑derived chemicals used as sustainable alternatives to petrochemical monomers.",
+          "companies": [
+            {
+              "name": "Danimer Scientific",
+              "ticker": "DNMR"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Resin & Polymer Manufacturing",
+      "oneLineSummary": "Bulk polymer production techniques for creating commodity plastic resins.",
+      "subHeadings": [
+        {
+          "title": "High‑Density Polyethylene",
+          "oneLineSummary": "Production of HDPE resins for durable applications like containers and piping.",
+          "companies": [
+            {
+              "name": "LyondellBasell",
+              "ticker": "LYB"
+            },
+            {
+              "name": "Westlake Chemical",
+              "ticker": "WLK"
+            }
+          ]
+        },
+        {
+          "title": "Polypropylene",
+          "oneLineSummary": "Manufacturing of polypropylene homopolymers and copolymers for a wide range of consumer products.",
+          "companies": [
+            {
+              "name": "LyondellBasell",
+              "ticker": "LYB"
+            },
+            {
+              "name": "Occidental Petroleum (OxyChem)",
+              "ticker": "OXY"
+            }
+          ]
+        },
+        {
+          "title": "Polyvinyl Chloride",
+          "oneLineSummary": "Synthesis of PVC resin used in building materials, medical devices, and tubing.",
+          "companies": [
+            {
+              "name": "Westlake Chemical",
+              "ticker": "WLK"
+            },
+            {
+              "name": "Occidental Petroleum (OxyChem)",
+              "ticker": "OXY"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Plastic Packaging Solutions",
+      "oneLineSummary": "Processes and products for converting plastics into packaging formats across industries.",
+      "subHeadings": [
+        {
+          "title": "Flexible Packaging Films",
+          "oneLineSummary": "Production of thin plastic films for pouches, wraps, and laminates in consumer packaging.",
+          "companies": [
+            {
+              "name": "Sealed Air",
+              "ticker": "SEE"
+            },
+            {
+              "name": "Amcor",
+              "ticker": "AMCR"
+            }
+          ]
+        },
+        {
+          "title": "Rigid Container Solutions",
+          "oneLineSummary": "Manufacturing of hard plastic containers like bottles, jars, and tubs via injection and blow molding.",
+          "companies": [
+            {
+              "name": "Berry Global",
+              "ticker": "BERY"
+            },
+            {
+              "name": "Owens-Illinois",
+              "ticker": "OI"
+            }
+          ]
+        },
+        {
+          "title": "Protective & Foam Packaging",
+          "oneLineSummary": "Design and production of foam‑based materials for cushioning and insulation in shipping.",
+          "companies": [
+            {
+              "name": "Sonoco",
+              "ticker": "SON"
+            },
+            {
+              "name": "Sealed Air",
+              "ticker": "SEE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Specialty & Engineered Polymer Applications",
+      "oneLineSummary": "High‑performance and niche polymer materials for advanced applications.",
+      "subHeadings": [
+        {
+          "title": "Engineering Plastics & Composites",
+          "oneLineSummary": "Production of high‑strength polymers and reinforced composites used in automotive and aerospace components.",
+          "companies": [
+            {
+              "name": "DuPont",
+              "ticker": "DD"
+            },
+            {
+              "name": "Celanese",
+              "ticker": "CE"
+            }
+          ]
+        },
+        {
+          "title": "Specialty Films & Coatings",
+          "oneLineSummary": "Development of functional films, adhesives, and surface coatings for industrial and consumer goods.",
+          "companies": [
+            {
+              "name": "3M",
+              "ticker": "MMM"
+            },
+            {
+              "name": "PPG Industries",
+              "ticker": "PPG"
+            }
+          ]
+        },
+        {
+          "title": "Healthcare Packaging & Components",
+          "oneLineSummary": "Manufacturing of sterile, precision polymer containers and components for medical and pharmaceutical use.",
+          "companies": [
+            {
+              "name": "West Pharmaceutical Services",
+              "ticker": "WST"
+            },
+            {
+              "name": "Teleflex",
+              "ticker": "TFX"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

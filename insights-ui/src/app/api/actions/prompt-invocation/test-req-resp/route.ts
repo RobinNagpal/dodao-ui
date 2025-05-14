@@ -117,7 +117,10 @@ async function postHandler(req: NextRequest): Promise<TestPromptInvocationRespon
     }
 
     const originalResponse = {
+      request: request,
+      prompt: finalPrompt,
       response: result,
+      invocationId: invocation.id,
     };
 
     // If the prompt record contains a transformation patch, apply it.

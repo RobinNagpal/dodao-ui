@@ -2,13 +2,32 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { Latest10QInfoResponse } from '@/types/public-equity/ticker-report-types';
 import { TickerCreateRequest } from '@/types/public-equity/ticker-request-response';
+import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
+import { invokePrompt } from '@/util/run-prompt';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { getTickerInfo } from './[tickerKey]/ticker-info/getTickerInfo';
 
 async function getHandler(): Promise<Ticker[]> {
-  const tickers = await prisma.ticker.findMany();
+  const tickers = await prisma.ticker.findMany({
+    where: {
+      spaceId: KoalaGainsSpaceId,
+    },
+    include: {
+      evaluationsOfLatest10Q: {
+        include: {
+          performanceChecklistEvaluation: {
+            include: {
+              performanceChecklistItems: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'asc',
+    },
+  });
   return tickers;
 }
 
@@ -65,7 +84,14 @@ async function postHandler(req: NextRequest): Promise<Ticker> {
     },
   });
 
-  const aboutTickerString = await getTickerInfo(newTicker);
+  const inputJson = {
+    tickerKey: newTicker.tickerKey,
+    companyName: newTicker.companyName,
+    shortDescription: newTicker.shortDescription,
+    referenceDate: getTodayDateAsMonthDDYYYYFormat(),
+  };
+
+  const aboutTickerString = await invokePrompt('US/public-equities/real-estate/equity-reits/ticker-info', inputJson);
 
   const updatedTicker = await prisma.ticker.update({
     where: {

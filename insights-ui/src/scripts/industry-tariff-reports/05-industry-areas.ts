@@ -1,9 +1,7 @@
-import { IndustryAreaHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
-import { getLlmResponse } from '@/scripts/industry-tariff-reports/llm-utils';
-import fs from 'fs';
-import path from 'path';
+import { writeJsonFileForIndustryAreaSections, writeMarkdownFileForIndustryAreaSections } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { IndustryAreaSection, IndustryAreasWrapper } from '@/scripts/industry-tariff-reports/tariff-types';
+import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
-import { addDirectoryIfNotPresent, reportsOutDir } from '../reportFileUtils';
 
 const IndustryAreaSectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses various industry areas.'),
@@ -15,12 +13,7 @@ const IndustryAreaSectionSchema = z.object({
     ),
 });
 
-interface IndustryAreaSection {
-  title: string;
-  industryAreas: string;
-}
-
-function getIndustryAreaPrompt(industry: string, headings: IndustryAreaHeadings) {
+function getIndustryAreaPrompt(industry: string, headings: IndustryAreasWrapper) {
   const prompt = `
   I want to explain to the investors how following headings and subheadings divide the ${industry} industry into nice 
   areas so that they cover the whole of the industry. In some of the next sections I will be discussing each of these
@@ -29,15 +22,10 @@ function getIndustryAreaPrompt(industry: string, headings: IndustryAreaHeadings)
   
   # Follow the below instructions:
   - Add 5-6 paragraphs that explain how the given areas divide in the industry into various sub-areas which cover
+  - Explain how the ${industry} sub-areas are connected to each other and how they are related to the main headings.
+  - Give a detailed insightful explanation of the sub-areas and how they are related to the main headings in around 1500 words
   
-  # For output content:
-  - Cite the latest figures and embed hyperlinks to sources.
-  - Include hyperlinks/citations in the content where ever possible in the markdown format.
-  - Dont forget to include hyperlinks/citations in the content where ever possible.
-  - Avoid LaTeX, italics, or KaTeX formatting, or   character for space
-  - Use only headings and subheadings, bold, bullets, points, tables for formatting the content.
-  - Use markdown format for output.
-  - All amounts, dollar values, or figures should be wrapped in backticks.
+  ${outputInstructions}
 
   # Headings and Subheadings
   ${JSON.stringify(headings, null, 2)}
@@ -46,36 +34,15 @@ function getIndustryAreaPrompt(industry: string, headings: IndustryAreaHeadings)
   return prompt;
 }
 
-async function getIndustryAreaSection(industry: string, headings: IndustryAreaHeadings): Promise<IndustryAreaSection> {
+async function getIndustryAreaSection(industry: string, headings: IndustryAreasWrapper): Promise<IndustryAreaSection> {
   const prompt = getIndustryAreaPrompt(industry, headings);
   const response = await getLlmResponse<IndustryAreaSection>(prompt, IndustryAreaSectionSchema);
   return response;
 }
 
-function getIndustryAreaJsonFilePath(industry: string): string {
-  const fileName = `industry-area.json`;
-  const dirPath = path.join(reportsOutDir, industry.toLowerCase(), '05-industry-areas');
-  addDirectoryIfNotPresent(dirPath);
-  const jsonFilePath = path.join(dirPath, fileName);
-  return jsonFilePath;
-}
-
-export async function getAndWriteIndustryAreaSectionToJsonFile(industry: string, headings: IndustryAreaHeadings): Promise<void> {
+export async function getAndWriteIndustryAreaSectionToJsonFile(industry: string, headings: IndustryAreasWrapper): Promise<void> {
   const industryAreaSection = await getIndustryAreaSection(industry, headings);
-  const filePath = getIndustryAreaJsonFilePath(industry);
-  fs.writeFileSync(filePath, JSON.stringify(industryAreaSection, null, 2));
-}
 
-export function readIndustryAreaSectionFromFile(industry: string): IndustryAreaSection {
-  const filePath = getIndustryAreaJsonFilePath(industry);
-  const data = fs.readFileSync(filePath, 'utf-8');
-  return JSON.parse(data) as IndustryAreaSection;
-}
-
-export function writeIndustryAreaSectionToMarkdownFile(industry: string, industryAreaSection: IndustryAreaSection): void {
-  const filePath = getIndustryAreaJsonFilePath(industry).replace('.json', '.md');
-  const markdownContent = `# ${industryAreaSection.title}\n\n${industryAreaSection.industryAreas}`;
-  fs.writeFileSync(filePath, markdownContent, {
-    encoding: 'utf-8',
-  });
+  await writeJsonFileForIndustryAreaSections(industry, industryAreaSection);
+  await writeMarkdownFileForIndustryAreaSections(industry, industryAreaSection);
 }

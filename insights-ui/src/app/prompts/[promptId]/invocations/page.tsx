@@ -1,7 +1,8 @@
 'use client';
 
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { Prompt, PromptInvocation } from '@prisma/client';
+import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
+import { Prompt, PromptInvocation, PromptInvocationStatus } from '@prisma/client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -10,21 +11,45 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 interface InvocationWithPrompt extends PromptInvocation {
   prompt: Prompt;
 }
+
 export default function PromptInvocationsListPage(): JSX.Element {
   const [promptInvocations, setPromptInvocations] = useState<InvocationWithPrompt[]>([]);
+  const [showFailedOnly, setShowFailedOnly] = useState<boolean>(false);
   const params = useParams() as { promptId?: string };
 
   useEffect(() => {
-    fetch(`${getBaseUrl()}/api/koala_gains/prompts/${params.promptId}/invocations`)
-      .then((res) => res.json())
-      .then((data: InvocationWithPrompt[]) => setPromptInvocations(data))
-      .catch((err) => console.error(err));
-  }, []);
+    const fetchInvocations = async () => {
+      const baseUrl = getBaseUrl();
+      const path = `/api/koala_gains/prompts/${params.promptId}/invocations`;
+      const queryParams = showFailedOnly ? `?status=${PromptInvocationStatus.Failed}` : '';
+
+      // If baseUrl exists, create a full URL; otherwise, use the path directly
+      const fetchUrl = baseUrl ? new URL(`${path}${queryParams}`, baseUrl).toString() : `${path}${queryParams}`;
+
+      try {
+        const response = await fetch(fetchUrl);
+        if (!response.ok) {
+          throw new Error('Failed to fetch invocations');
+        }
+        const data: InvocationWithPrompt[] = await response.json();
+        setPromptInvocations(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchInvocations();
+  }, [params.promptId, showFailedOnly]);
 
   return (
     <PageWrapper>
       <div className="p-4 text-color">
-        <h1 className="text-2xl heading-color mb-4">All Invocations</h1>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl heading-color">All Invocations</h1>
+          <div>
+            <ToggleWithIcon label="Show Failed Only" enabled={showFailedOnly} setEnabled={setShowFailedOnly} onClickOnLabel={true} />
+          </div>
+        </div>
         <table className="mt-4 w-full border border-color">
           <thead className="block-bg-color">
             <tr>
@@ -39,7 +64,10 @@ export default function PromptInvocationsListPage(): JSX.Element {
           </thead>
           <tbody>
             {promptInvocations.map((invocation) => (
-              <tr key={invocation.id} className="border border-color">
+              <tr
+                key={invocation.id}
+                className={`border border-color ${invocation.status === PromptInvocationStatus.Failed ? 'bg-red-100 dark:bg-red-900/30' : ''}`}
+              >
                 <td className="p-2 border border-color">{invocation.prompt.name}</td>
                 <td className="p-2 border border-color">{invocation.prompt.key.replace('US/public-equities/real-estate/equity-reits/', 'equity-reits - ')}</td>
                 <td className="p-2 border border-color">{new Date(invocation.updatedAt).toLocaleString()}</td>

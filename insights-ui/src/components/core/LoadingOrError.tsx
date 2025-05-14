@@ -2,7 +2,7 @@ import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoad
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 
 export interface LoadingOrErrorProps {
-  error: string | undefined;
+  error: string | undefined | null;
   loading: boolean;
 }
 export default function LoadingOrError({ loading, error }: LoadingOrErrorProps) {

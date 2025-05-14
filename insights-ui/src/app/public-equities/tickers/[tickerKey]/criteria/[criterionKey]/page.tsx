@@ -15,7 +15,7 @@ import { formatKey } from '@/util/format-key';
 export async function generateMetadata({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }): Promise<Metadata> {
   const { tickerKey, criterionKey } = await params;
 
-  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
+  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?page=criteriaDetailsPage`, { cache: 'no-cache' });
   let tickerData: FullNestedTickerReport | null = null;
 
   if (tickerResponse.ok) {
@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: { params: Promise<{ tickerKey
 export default async function CriterionDetailsPage({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }) {
   const { tickerKey, criterionKey } = await params;
 
-  const response = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
+  const response = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?page=criteriaDetailsPage`, { cache: 'no-cache' });
   const tickerReport = (await response.json()) as FullNestedTickerReport;
 
   const criteriaResponse = await fetch(
@@ -103,39 +103,48 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
             <CriterionActionsDropdown tickerKey={tickerKey} criterionKey={criterionKey} />
           </PrivateWrapper>
         </div>
-        <div className="text-center text-color my-5">
-          <h1 className="font-semibold leading-6 text-2xl">Ticker: {tickerKey}</h1>
-          <div className="my-5">Criterion: {formatKey(criterionEvaluation.criterionKey)}</div>
-        </div>
+        {criterionEvaluation ? (
+          <>
+            <div className="text-center text-color my-5">
+              <h1 className="font-semibold leading-6 text-2xl">Ticker: {tickerKey}</h1>
+              <div className="my-5">Criterion: {formatKey(criterionEvaluation.criterionKey)}</div>
+            </div>
 
-        <div className="block-bg-color p-8">
-          <div className="overflow-x-auto">
-            {/* Performance Checklist Section */}
-            <h3 className="text-lg font-semibold mt-6 mb-4">Performance Checklist</h3>
-            <PerformanceChecklistEvaluation criterionEvaluation={criterionEvaluation} />
+            <div className="block-bg-color p-8">
+              <div className="overflow-x-auto">
+                {/* Performance Checklist Section */}
+                <h3 className="text-lg font-semibold mt-6 mb-4">Performance Checklist</h3>
+                <PerformanceChecklistEvaluation criterionEvaluation={criterionEvaluation} />
 
-            <h3 className="text-lg font-semibold mt-6 mb-4">Important Metrics</h3>
-            <ImportantMetricsReport criterionEvaluation={criterionEvaluation} />
-            {/* Reports Section */}
-            {criterionEvaluation.reports.length > 0 && (
-              <>
-                <h3 className="text-lg font-semibold mt-6 mb-4">Reports</h3>
-                {selectedCriterion.reports.map((reportDefinition) => {
-                  const report = criterionEvaluation.reports.find((report) => report.reportKey === reportDefinition.key);
-                  return (
-                    <ReportSection
-                      key={reportDefinition.key}
-                      reportDefinition={reportDefinition}
-                      report={report}
-                      criterionKey={criterionKey}
-                      industryGroupCriteria={industryGroupCriteria}
-                    />
-                  );
-                })}
-              </>
-            )}
+                <h3 className="text-lg font-semibold mt-6 mb-4">Important Metrics</h3>
+                <ImportantMetricsReport criterionEvaluation={criterionEvaluation} />
+                {/* Reports Section */}
+                {criterionEvaluation.reports.length > 0 && (
+                  <>
+                    <h3 className="text-lg font-semibold mt-6 mb-4">Reports</h3>
+                    {selectedCriterion.reports.map((reportDefinition) => {
+                      const report = criterionEvaluation.reports.find((report) => report.reportKey === reportDefinition.key);
+                      return (
+                        <ReportSection
+                          key={reportDefinition.key}
+                          reportDefinition={reportDefinition}
+                          report={report}
+                          criterionKey={criterionKey}
+                          industryGroupCriteria={industryGroupCriteria}
+                        />
+                      );
+                    })}
+                  </>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div>
+            <h1 className="text-2xl heading-color">No data available</h1>
+            <p className="text-lg text-color">The selected criterion does not have any evaluations or reports available.</p>
           </div>
-        </div>
+        )}
       </div>
     </PageWrapper>
   );

@@ -28,7 +28,8 @@ model Ticker {
   latest10QFinancialStatements String?  @map("latest_10q_financial_statements")
   companyName                  String   @default("Unknown Company") @map("company_name")
   shortDescription             String   @default("No description provided") @map("short_description")
-  tickerInfo                 String?  @map("ticker_info")
+  tickerInfo                   String?  @map("ticker_info")
+  managementTeam               Json?    @map("management_team")
 
   evaluationsOfLatest10Q         CriterionEvaluation[]
   secFilings                     SecFiling[]
@@ -39,7 +40,7 @@ model Ticker {
   PerformanceChecklistItem       PerformanceChecklistItem[]
   CriterionMatch                 CriterionMatch[]
   criteriaMatchesOfLatest10Q     CriteriaMatchesOfLatest10Q?
-  latest10QInfo                  Latest10QInfo? 
+  latest10QInfo                  Latest10QInfo?
   // latest10QInformation           Latest10QInformation?            @relation(fields: [latest10QInformationId], references: [id])
 
   @@unique([spaceId, tickerKey])
@@ -200,18 +201,18 @@ model PerformanceChecklistEvaluation {
 }
 
 model PerformanceChecklistItem {
-  id                               String @id @default(uuid())
+  id                               String  @id @default(uuid())
   metricKey                        String? @map("metric_key")
-  checklistItem                    String @map("checklist_item")
-  oneLinerExplanation              String @map("one_liner_explanation")
-  informationUsed                  String @map("information_used")
-  detailedExplanation              String @map("detailed_explanation")
-  evaluationLogic                  String @map("evaluation_logic")
-  score                            Float  @map("score")
-  tickerKey                        String @map("ticker_key")
-  criterionKey                     String @map("criterion_key")
-  performanceChecklistEvaluationId String @map("performance_checklist_evaluation_id")
-  spaceId                          String @default("koala_gains") @map("space_id")
+  checklistItem                    String  @map("checklist_item")
+  oneLinerExplanation              String  @map("one_liner_explanation")
+  informationUsed                  String  @map("information_used")
+  detailedExplanation              String  @map("detailed_explanation")
+  evaluationLogic                  String  @map("evaluation_logic")
+  score                            Float   @map("score")
+  tickerKey                        String  @map("ticker_key")
+  criterionKey                     String  @map("criterion_key")
+  performanceChecklistEvaluationId String  @map("performance_checklist_evaluation_id")
+  spaceId                          String  @default("koala_gains") @map("space_id")
 
   performanceChecklistEvaluation PerformanceChecklistEvaluation @relation(fields: [performanceChecklistEvaluationId], references: [id])
   ticker                         Ticker                         @relation(fields: [tickerKey], references: [tickerKey])
@@ -311,11 +312,36 @@ enum PromptInvocationStatus {
 }
 
 model PromptInvocation {
+  id                 String                 @id @default(uuid())
+  spaceId            String                 @map("space_id")
+  promptId           String                 @map("prompt_id")
+  promptVersionId    String                 @map("prompt_version_id")
+  inputJson          Json?                  @map("input_json") @db.JsonB
+  outputJson         Json?                  @map("output_json") @db.JsonB
+  transformedJson    Json?                  @map("transformed_json") @db.JsonB
+  status             PromptInvocationStatus @map("status")
+  error              String?                @map("error")
+  createdAt          DateTime               @default(now()) @map("created_at")
+  updatedAt          DateTime               @updatedAt @map("updated_at")
+  createdBy          String                 @map("created_by")
+  updatedBy          String                 @map("updated_by")
+  bodyToAppend       String?                @map("body_to_append")
+  llmProvider        String                 @map("llm_provider")
+  model              String                 @map("model")
+  promptRequestToLlm String?                @map("prompt_request_to_llm")
+  prompt             Prompt                 @relation(fields: [promptId], references: [id])
+  promptVersion      PromptVersion          @relation(fields: [promptVersionId], references: [id])
+
+  @@map("prompt_invocations")
+}
+
+model TestPromptInvocation {
   id              String                 @id @default(uuid())
   spaceId         String                 @map("space_id")
   promptId        String                 @map("prompt_id")
-  promptVersionId String                 @map("prompt_version_id")
+  promptTemplate  String                 @map("prompt_template")
   inputJson       Json?                  @map("input_json") @db.JsonB
+  bodyToAppend    String?                @map("body_to_append")
   outputJson      Json?                  @map("output_json") @db.JsonB
   transformedJson Json?                  @map("transformed_json") @db.JsonB
   status          PromptInvocationStatus @map("status")
@@ -324,48 +350,24 @@ model PromptInvocation {
   updatedAt       DateTime               @updatedAt @map("updated_at")
   createdBy       String                 @map("created_by")
   updatedBy       String                 @map("updated_by")
-  bodyToAppend    String?                @map("body_to_append")
   llmProvider     String                 @map("llm_provider")
   model           String                 @map("model")
-
-  prompt        Prompt        @relation(fields: [promptId], references: [id])
-  promptVersion PromptVersion @relation(fields: [promptVersionId], references: [id])
-
-  @@map("prompt_invocations")
-}
-
-model TestPromptInvocation {
-  id               String                 @id @default(uuid())
-  spaceId          String                 @map("space_id")
-  promptId         String                 @map("prompt_id")
-  promptTemplate   String                 @map("prompt_template")
-  inputJson        Json?                  @map("input_json") @db.JsonB
-  bodyToAppend     String?                @map("body_to_append")
-  outputJson       Json?                   @map("output_json") @db.JsonB
-  transformedJson  Json?                  @map("transformed_json") @db.JsonB
-  status           PromptInvocationStatus @map("status")
-  error            String?                @map("error")
-  createdAt        DateTime               @default(now()) @map("created_at")
-  updatedAt        DateTime               @updatedAt @map("updated_at")
-  createdBy        String                 @map("created_by")
-  updatedBy        String                 @map("updated_by")
-  llmProvider      String                 @map("llm_provider")
-  model            String                 @map("model")
 
   @@map("test_prompt_invocations")
 }
 
 model Latest10QInfo {
-  id              String   @id @default(uuid())
-  spaceId         String   @default("koala_gains") @map("space_id")
-  tickerKey       String   @unique @map("ticker_key")
-  filingUrl       String   @map("filing_url")
-  periodOfReport  String   @map("period_of_report")
-  filingDate      String   @map("filing_date")
-  priceAtPeriodEnd      Float     @map("price_at_period_end")
-  
-  ticker          Ticker   @relation(fields: [tickerKey], references: [tickerKey])
+  id               String @id @default(uuid())
+  spaceId          String @default("koala_gains") @map("space_id")
+  tickerKey        String @unique @map("ticker_key")
+  filingUrl        String @map("filing_url")
+  periodOfReport   String @map("period_of_report")
+  filingDate       String @map("filing_date")
+  priceAtPeriodEnd Float  @map("price_at_period_end")
 
+  ticker Ticker @relation(fields: [tickerKey], references: [tickerKey])
+
+  @@unique([spaceId, tickerKey])
   @@map("latest_10q_infos")
 }
 

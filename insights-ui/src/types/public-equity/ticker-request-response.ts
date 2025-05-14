@@ -94,6 +94,22 @@ export interface SaveTickerInfoRequest {
   tickerInfo: string;
 }
 
+export interface SaveTickerNewsRequest {
+  tickerNews: string;
+}
+
+export interface SaveTickerBusinessModelRequest {
+  tickerBusinessModel: string;
+}
+
+export interface SaveTickerFinancialsRequest {
+  tickerFinancials: string;
+}
+
+export interface SaveMgtTeamAssessmentRequest {
+  managementTeamAssessment: string;
+}
+
 export interface CriterionMatchTextItem {
   criterion_key: string;
   relevant_text: string;

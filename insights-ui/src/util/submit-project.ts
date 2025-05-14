@@ -2,7 +2,7 @@ import { ProjectSubmissionData } from '@/types/project/project';
 import { getAuthKey } from './auth/authKey';
 
 export async function submitProject(projectDetails: ProjectSubmissionData): Promise<{ success: boolean; message: string }> {
-  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || '';
+  const baseURL = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || 'https://ai-insights.dodao.io';
   try {
     const response = await fetch(`${baseURL}/api/submit`, {
       method: 'POST',

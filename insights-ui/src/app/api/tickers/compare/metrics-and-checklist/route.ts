@@ -8,7 +8,9 @@ async function getHandler(): Promise<TickerCompareMetricsAndChecklist[]> {
     where: {
       spaceId: KoalaGainsSpaceId,
     },
-    take: 20,
+    orderBy: {
+      createdAt: 'asc',
+    },
     select: {
       tickerKey: true,
       sectorId: true,

@@ -1,5 +1,4 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { FullNestedTickerReport } from '@/types/public-equity/ticker-report-types';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -7,8 +6,8 @@ import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
-import { parseMarkdown } from '@/util/parse-markdown';
 import TickerInfoButton from './TickerInfoButton';
+import { safeParseJsonString } from '@/util/safe-parse-json-string';
 
 export interface DebugTickerInfoProps {
   report: FullNestedTickerReport;
@@ -38,7 +37,7 @@ export default function DebugTickerInfo({ report, onPostUpdate }: DebugTickerInf
     <div className="mt-8">
       {TickerInfoError && <div className="text-red-500">{TickerInfoError}</div>}
       <PrivateWrapper>
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end">
           <Button loading={TickerInfoLoading} primary variant="contained" onClick={() => setShowConfirmModal(true)} disabled={TickerInfoLoading}>
             Repopulate Ticker Info
           </Button>
@@ -51,8 +50,10 @@ export default function DebugTickerInfo({ report, onPostUpdate }: DebugTickerInf
         onClick={() => setSelectedCriterionAccordian(selectedCriterionAccordian === `ticker_info` ? null : `ticker_info`)}
       >
         <div className="mt-4">
-          <TickerInfoButton tickerKey={ticker} tickerInfoContent={report?.tickerInfo || undefined} onUpdate={onPostUpdate} />
-          <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.tickerInfo ?? 'Not populated yet') }} />
+          <TickerInfoButton tickerKey={ticker} tickerInfoContent={report.tickerInfo || undefined} onUpdate={onPostUpdate} />
+          <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs">
+            {report.tickerInfo ? JSON.stringify(safeParseJsonString(report.tickerInfo), null, 2) : 'Not populated yet'}
+          </pre>
         </div>
       </Accordion>
       {showConfirmModal && (

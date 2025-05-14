@@ -10,6 +10,7 @@ import jsonpatch from 'jsonpatch';
 import { NextRequest } from 'next/server';
 import path from 'path';
 import { PromptInvocationStatus } from '.prisma/client';
+import { getLLMResponse } from '@/util/get-llm-response';
 
 export interface PromptInvocationRequest {
   spaceId?: string;
@@ -93,6 +94,16 @@ async function postHandler(req: NextRequest): Promise<any> {
     const compiledTemplate = Handlebars.compile(templateContent);
     const finalPrompt = bodyToAppend ? `${compiledTemplate(inputJson || {})}\n\n\n${bodyToAppend}` : compiledTemplate(inputJson || {});
 
+    await prisma.promptInvocation.update({
+      where: {
+        id: invocation.id,
+      },
+      data: {
+        promptRequestToLlm: finalPrompt,
+        updatedAt: new Date(),
+      },
+    });
+
     // Choose LLM based on llmProvider. Currently, only "openai" is supported.
     let llm: ChatOpenAI | undefined;
     if (llmProvider.toLowerCase() === 'openai') {
@@ -108,26 +119,14 @@ async function postHandler(req: NextRequest): Promise<any> {
 
     const outputSchema = await $RefParser.dereference(outputSchemaPath);
 
-    const modelWithStructure = llm.withStructuredOutput(outputSchema);
-    const result = await modelWithStructure.invoke(finalPrompt);
-    console.log(`Result: ${JSON.stringify(result)}`);
-    if (result) {
-      await prisma.promptInvocation.update({
-        where: {
-          id: invocation.id,
-        },
-        data: {
-          outputJson: JSON.stringify(result),
-          updatedAt: new Date(),
-          status: PromptInvocationStatus.Completed,
-        },
-      });
-    }
-    const { valid: validOutput, errors: outputErrors } = validateData(outputSchema, result);
-
-    if (!validOutput) {
-      throw new Error(`Output validation failed: ${JSON.stringify(outputErrors)}`);
-    }
+    const result = await getLLMResponse({
+      invocationId: invocation.id,
+      llmProvider,
+      modelName: model,
+      prompt: finalPrompt,
+      outputSchema,
+      maxRetries: 2,
+    });
 
     const originalObject = {
       request: request,
@@ -161,16 +160,13 @@ async function postHandler(req: NextRequest): Promise<any> {
     }
   } catch (e) {
     await prisma.promptInvocation.update({
-      where: {
-        id: invocation.id,
-      },
+      where: { id: invocation.id },
       data: {
         status: PromptInvocationStatus.Failed,
         error: (e as any)?.message,
         updatedAt: new Date(),
       },
     });
-
     throw e;
   }
 }
@@ -180,10 +176,6 @@ function validateData(schema: object, data: unknown): { valid: boolean; errors?:
   const validate = ajv.compile(schema);
   const valid = validate(data);
   return { valid: !!valid, errors: validate.errors || [] };
-}
-
-function removeNullBytes(str: string) {
-  return str.replace(/\0/g, '');
 }
 
 export const POST = withErrorHandlingV2<any>(postHandler);

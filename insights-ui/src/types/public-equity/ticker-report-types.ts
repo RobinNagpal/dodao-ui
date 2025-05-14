@@ -67,9 +67,28 @@ export interface FullNestedTickerReport extends Ticker {
   evaluationsOfLatest10Q: Array<FullCriterionEvaluation>;
 }
 
+export interface PartialNestedTickerReport extends Ticker {
+  evaluationsOfLatest10Q: Array<FullCriterionEvaluation>;
+}
+
 export interface Latest10QInfoResponse {
   filingUrl: string;
   periodOfReport: string;
   filingDate: string;
   priceAtPeriodEnd: number;
+}
+
+export interface LinkedinProfile {
+  [key: string]: any;
+  publicIdentifier: string;
+  profilePicUrl: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  headline: string;
+  occupation: string;
+  summary: string;
+  experiences: Record<string, any>[];
+  educations: Record<string, any>[];
+  certifications: Record<string, any>[];
 }

@@ -10,8 +10,8 @@ interface UpdatePromptVersionRequest {
 }
 
 // GET /api/[spaceId]/prompts/[promptId]/versions/[version]
-async function getPromptVersion(req: NextRequest, context: { params: { spaceId: string; promptId: string; version: string } }) {
-  const { spaceId, promptId, version } = context.params;
+async function getPromptVersion(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string; version: string }> }) {
+  const { spaceId, promptId, version } = await context.params;
   const intVersion = parseInt(version, 10);
 
   const record = await prisma.promptVersion.findUniqueOrThrow({
@@ -38,8 +38,8 @@ async function updatePromptVersion(req: NextRequest, context: { params: Promise<
 }
 
 // DELETE /api/[spaceId]/prompts/[promptId]/versions/[version]
-async function deletePromptVersion(req: NextRequest, context: { params: { spaceId: string; promptId: string; version: string } }) {
-  const { spaceId, promptId, version } = context.params;
+async function deletePromptVersion(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string; version: string }> }) {
+  const { spaceId, promptId, version } = await context.params;
   const intVersion = parseInt(version, 10);
 
   const del = await prisma.promptVersion.delete({

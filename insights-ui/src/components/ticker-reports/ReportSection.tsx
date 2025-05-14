@@ -10,7 +10,9 @@ interface ReportSectionProps {
 }
 
 export function ReportSection({ reportDefinition, report, criterionKey, industryGroupCriteria }: ReportSectionProps) {
-  const headingPortion = <h2 className="text-lg font-semibold">{reportDefinition.key.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}</h2>;
+  const headingPortion = (
+    <h2 className="text-lg font-semibold my-2">{reportDefinition.key.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}</h2>
+  );
 
   if (!report) {
     return (

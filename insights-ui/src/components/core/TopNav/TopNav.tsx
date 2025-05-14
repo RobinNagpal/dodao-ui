@@ -11,9 +11,9 @@ import { getAuthKey } from '@/util/auth/authKey';
 const navigation = [
   { name: 'Crowdfunding Reports', href: '/crowd-funding', newTab: false },
   { name: 'REIT Reports', href: '/public-equities/tickers', newTab: false },
-  { name: 'Blog', href: '/blogs', newTab: true },
+  { name: 'Tariff Reports', href: '/tariff-reports', newTab: false },
+  { name: 'Blogs', href: '/blogs', newTab: true },
   { name: 'Docs', href: 'https://docs.koalagains.com', newTab: true },
-  { name: 'AI Agents', href: 'https://langflow.dodao.io', newTab: true },
 ];
 
 export default function TopNav() {
