@@ -551,7 +551,7 @@ export default function CompoundMarketAlertPage() {
               </SelectContent>
             </Select>
             <p className="text-sm text-theme-muted mt-4">
-              This limits how often you'll receive notifications for this alert,
+              This limits how often you’ll receive notifications for this alert,
               regardless of how many thresholds are triggered.
             </p>
           </div>

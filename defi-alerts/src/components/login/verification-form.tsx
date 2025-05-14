@@ -45,7 +45,7 @@ export function VerificationForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="mb-4 text-center">
         <p className="text-sm text-theme-muted">
-          We've sent a verification code to
+          We’ve sent a verification code to
         </p>
         <p className="font-medium text-theme-primary">{email}</p>
       </div>
