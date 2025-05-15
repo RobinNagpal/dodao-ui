@@ -117,32 +117,9 @@ export interface ReserveData {
   variableBorrowRate: string;
 }
 
-export type ReserveDataTuple = [
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  number,
-];
+export type ReserveDataTuple = [bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, number];
 
-export type UserReserveDataTuple = [
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  bigint,
-  boolean,
-];
+export type UserReserveDataTuple = [bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, boolean];
 
 export type UserAccountData = [bigint, bigint, bigint, bigint, bigint, bigint];
 

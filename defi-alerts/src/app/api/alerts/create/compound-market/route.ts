@@ -1,14 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/prisma";
-import {
-  AlertActionType,
-  NotificationFrequency,
-  ConditionType,
-  SeverityLevel,
-  DeliveryChannelType,
-} from "@prisma/client";
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/prisma';
+import { AlertActionType, NotificationFrequency, ConditionType, SeverityLevel, DeliveryChannelType } from '@prisma/client';
 
-import { CHAINS, MARKETS } from "@/shared/web3/config";
+import { CHAINS, MARKETS } from '@/shared/web3/config';
 
 type Payload = {
   email: string;
@@ -32,15 +26,7 @@ type Payload = {
 
 export async function POST(request: NextRequest) {
   try {
-    const {
-      email,
-      actionType,
-      selectedChains,
-      selectedMarkets,
-      notificationFrequency,
-      conditions,
-      deliveryChannels,
-    } = (await request.json()) as Payload;
+    const { email, actionType, selectedChains, selectedMarkets, notificationFrequency, conditions, deliveryChannels } = (await request.json()) as Payload;
 
     if (
       !email ||
@@ -55,16 +41,13 @@ export async function POST(request: NextRequest) {
       !Array.isArray(deliveryChannels) ||
       deliveryChannels.length === 0
     ) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     // 1. Look up the user
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // 2. Map chain *names* to prisma connect objects
@@ -81,11 +64,9 @@ export async function POST(request: NextRequest) {
       const chainCfg = CHAINS.find((c) => c.name === chainName)!;
       return selectedMarkets
         .map((uiSymbol) => {
-          const symbol = uiSymbol === "ETH" ? "WETH" : uiSymbol;
+          const symbol = uiSymbol === 'ETH' ? 'WETH' : uiSymbol;
           // find that market on this chain
-          const m = MARKETS.find(
-            (m) => m.symbol === symbol && m.chainId === chainCfg.chainId
-          );
+          const m = MARKETS.find((m) => m.symbol === symbol && m.chainId === chainCfg.chainId);
           if (!m) {
             // no valid market on this chain → skip
             return null;
@@ -101,8 +82,7 @@ export async function POST(request: NextRequest) {
     if (assetConnect.length === 0) {
       return NextResponse.json(
         {
-          error:
-            "No valid markets found for your chain+asset selections. Please choose a supported combination.",
+          error: 'No valid markets found for your chain+asset selections. Please choose a supported combination.',
         },
         { status: 400 }
       );
@@ -112,7 +92,7 @@ export async function POST(request: NextRequest) {
     const alert = await prisma.alert.create({
       data: {
         user: { connect: { id: user.id } },
-        category: "GENERAL",
+        category: 'GENERAL',
         actionType,
         // now using relational connects:
         selectedChains: { connect: chainConnect },
@@ -122,26 +102,17 @@ export async function POST(request: NextRequest) {
         conditions: {
           create: conditions.map((c) => ({
             conditionType: c.type,
-            thresholdValue:
-              c.type !== "APR_OUTSIDE_RANGE" && c.value
-                ? parseFloat(c.value)
-                : undefined,
-            thresholdValueLow:
-              c.type === "APR_OUTSIDE_RANGE" && c.min
-                ? parseFloat(c.min)
-                : undefined,
-            thresholdValueHigh:
-              c.type === "APR_OUTSIDE_RANGE" && c.max
-                ? parseFloat(c.max)
-                : undefined,
+            thresholdValue: c.type !== 'APR_OUTSIDE_RANGE' && c.value ? parseFloat(c.value) : undefined,
+            thresholdValueLow: c.type === 'APR_OUTSIDE_RANGE' && c.min ? parseFloat(c.min) : undefined,
+            thresholdValueHigh: c.type === 'APR_OUTSIDE_RANGE' && c.max ? parseFloat(c.max) : undefined,
             severity: c.severity,
           })),
         },
         deliveryChannels: {
           create: deliveryChannels.map((d) => ({
             channelType: d.type,
-            email: d.type === "EMAIL" ? d.email : undefined,
-            webhookUrl: d.type === "WEBHOOK" ? d.webhookUrl : undefined,
+            email: d.type === 'EMAIL' ? d.email : undefined,
+            webhookUrl: d.type === 'WEBHOOK' ? d.webhookUrl : undefined,
           })),
         },
       },
@@ -149,7 +120,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true, alertId: alert.id });
   } catch (err: any) {
-    console.error("[compound-market route] error:", err);
+    console.error('[compound-market route] error:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

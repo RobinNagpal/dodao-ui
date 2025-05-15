@@ -1,11 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { useCompoundMarketsAprs } from "@/utils/getCompoundAPR";
-import {
-  DeliveryChannelType,
-  NotificationFrequency,
-  AlertActionType,
-} from "@prisma/client";
-import { prisma } from "@/prisma";
+import { NextRequest, NextResponse } from 'next/server';
+import { useCompoundMarketsAprs } from '@/utils/getCompoundAPR';
+import { DeliveryChannelType, NotificationFrequency, AlertActionType } from '@prisma/client';
+import { prisma } from '@/prisma';
 
 // map frequency enum → milliseconds
 const frequencyToMs: Record<NotificationFrequency, number> = {
@@ -24,7 +20,7 @@ export async function GET(request: NextRequest) {
   // 2) Persist the snapshot
   await prisma.lendingAndBorrowingRate.createMany({
     data: aprs.map((m) => ({
-      protocolName: "Compound",
+      protocolName: 'Compound',
       chainId: m.chainId,
       assetChainId_address: `${m.chainId}_${m.assetAddress.toLowerCase()}`,
       netEarnAPY: m.netEarnAPY,
@@ -34,7 +30,7 @@ export async function GET(request: NextRequest) {
 
   // 3) Load all active, non-comparison alerts *with* their relations
   const alerts = await prisma.alert.findMany({
-    where: { isComparison: false, status: "ACTIVE" },
+    where: { isComparison: false, status: 'ACTIVE' },
     include: {
       selectedChains: true,
       selectedAssets: true,
@@ -60,7 +56,7 @@ export async function GET(request: NextRequest) {
 
     // (A) Pre‑fetch sent condition IDs if ONCE_PER_ALERT
     let previouslySent = new Set<string>();
-    if (alert.notificationFrequency === "ONCE_PER_ALERT") {
+    if (alert.notificationFrequency === 'ONCE_PER_ALERT') {
       const past = await prisma.alertNotification.findMany({
         where: { alertId: alert.id },
         select: { alertConditionIds: true },
@@ -79,38 +75,32 @@ export async function GET(request: NextRequest) {
         // get the latest APR record
         const market = await prisma.lendingAndBorrowingRate.findFirst({
           where: {
-            protocolName: "Compound",
+            protocolName: 'Compound',
             chainId: chainObj.chainId,
             assetChainId_address: assetObj.chainId_address,
           },
-          orderBy: { recordedAt: "desc" },
+          orderBy: { recordedAt: 'desc' },
         });
         if (!market) continue;
 
-        const aprValue =
-          alert.actionType === AlertActionType.SUPPLY
-            ? market.netEarnAPY
-            : market.netBorrowAPY;
+        const aprValue = alert.actionType === AlertActionType.SUPPLY ? market.netEarnAPY : market.netBorrowAPY;
 
         // filter conditions that fire right now
         let hits = alert.conditions.filter((c) => {
           switch (c.conditionType) {
-            case "APR_RISE_ABOVE":
+            case 'APR_RISE_ABOVE':
               return aprValue > (c.thresholdValue ?? 0);
-            case "APR_FALLS_BELOW":
+            case 'APR_FALLS_BELOW':
               return aprValue < (c.thresholdValue ?? Infinity);
-            case "APR_OUTSIDE_RANGE":
-              return (
-                aprValue < (c.thresholdValueLow ?? -Infinity) ||
-                aprValue > (c.thresholdValueHigh ?? Infinity)
-              );
+            case 'APR_OUTSIDE_RANGE':
+              return aprValue < (c.thresholdValueLow ?? -Infinity) || aprValue > (c.thresholdValueHigh ?? Infinity);
             default:
               return false;
           }
         });
 
         // for ONCE_PER_ALERT, drop any condition already sent
-        if (alert.notificationFrequency === "ONCE_PER_ALERT") {
+        if (alert.notificationFrequency === 'ONCE_PER_ALERT') {
           hits = hits.filter((c) => !previouslySent.has(c.id));
         }
 
@@ -126,10 +116,7 @@ export async function GET(request: NextRequest) {
           currentRate: aprValue,
           conditions: hits.map((c) => ({
             type: c.conditionType,
-            threshold:
-              c.conditionType === "APR_OUTSIDE_RANGE"
-                ? { low: c.thresholdValueLow!, high: c.thresholdValueHigh! }
-                : c.thresholdValue!,
+            threshold: c.conditionType === 'APR_OUTSIDE_RANGE' ? { low: c.thresholdValueLow!, high: c.thresholdValueHigh! } : c.thresholdValue!,
           })),
         });
       }
@@ -138,10 +125,10 @@ export async function GET(request: NextRequest) {
     if (!groups.length) continue;
 
     // (C) Time‑window guard for non‑ONCE_PER_ALERT frequencies
-    if (alert.notificationFrequency !== "ONCE_PER_ALERT") {
+    if (alert.notificationFrequency !== 'ONCE_PER_ALERT') {
       const last = await prisma.sentNotification.findFirst({
         where: { alertNotification: { alertId: alert.id } },
-        orderBy: { sentAt: "desc" },
+        orderBy: { sentAt: 'desc' },
       });
       const elapsed = last ? Date.now() - last.sentAt.getTime() : Infinity;
       const window = frequencyToMs[alert.notificationFrequency];
@@ -152,10 +139,10 @@ export async function GET(request: NextRequest) {
 
     // 4) Broadcast the payload
     const payload = {
-      alert: "Compound Market Alert",
+      alert: 'Compound Market Alert',
       alertCategory: alert.category,
       alertType: alert.actionType,
-      ...(alert.category === "PERSONALIZED" && {
+      ...(alert.category === 'PERSONALIZED' && {
         walletAddress: alert.walletAddress,
       }),
       triggered: groups,
@@ -163,15 +150,12 @@ export async function GET(request: NextRequest) {
     };
 
     for (const ch of alert.deliveryChannels) {
-      const dest =
-        ch.channelType === DeliveryChannelType.WEBHOOK
-          ? ch.webhookUrl!
-          : ch.email!;
+      const dest = ch.channelType === DeliveryChannelType.WEBHOOK ? ch.webhookUrl! : ch.email!;
 
       if (ch.channelType === DeliveryChannelType.WEBHOOK) {
         await fetch(dest, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
       } else {

@@ -1,8 +1,6 @@
 export const StakingAbi_Spark_Eth = [
   {
-    inputs: [
-      { internalType: 'contract IPoolAddressesProvider', name: 'provider', type: 'address' },
-    ],
+    inputs: [{ internalType: 'contract IPoolAddressesProvider', name: 'provider', type: 'address' }],
     stateMutability: 'nonpayable',
     type: 'constructor',
   },
@@ -511,9 +509,7 @@ export const StakingAbi_Spark_Eth = [
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'contract IPoolAddressesProvider', name: 'provider', type: 'address' },
-    ],
+    inputs: [{ internalType: 'contract IPoolAddressesProvider', name: 'provider', type: 'address' }],
     name: 'initialize',
     outputs: [],
     stateMutability: 'nonpayable',
