@@ -69,12 +69,13 @@ async function generateCrowdFundingUrls(): Promise<SiteMapUrl[]> {
 async function getAllTickers(): Promise<string[]> {
   const baseUrl = getBaseUrl();
   try {
-    const response = await fetch(`${baseUrl}/api/tickers`, { cache: 'no-cache' });
+    // Use the new paginated API with a large page size to get all tickers for sitemap
+    const response = await fetch(`${baseUrl}/api/tickers?page=1&pageSize=1000`, { cache: 'no-cache' });
     if (!response.ok) {
       throw new Error(`Failed to fetch tickers: ${response.statusText}`);
     }
-    const tickersData = await response.json();
-    return tickersData.map((t: any) => t.tickerKey);
+    const data = await response.json();
+    return data.tickers.map((t: any) => t.tickerKey);
   } catch (error) {
     console.error('Error fetching tickers:', error);
     return [];

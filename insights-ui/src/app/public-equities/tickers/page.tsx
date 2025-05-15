@@ -10,6 +10,7 @@ import { PartialNestedTickerReport, SpiderGraphForTicker } from '@/types/public-
 import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { getGraphColor, getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import * as Tooltip from '@radix-ui/react-tooltip';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'REIT Tickers | KoalaGains',
@@ -95,13 +96,35 @@ function ScoreIndicator({ scorePercent, colors, size = 'md', className = '' }: S
   );
 }
 
-async function getTickersResponse(): Promise<PartialNestedTickerReport[]> {
+interface PaginatedTickersResponse {
+  tickers: PartialNestedTickerReport[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+async function getTickersResponse(page: number, pageSize: number): Promise<PaginatedTickersResponse> {
   try {
-    const response = await fetch(`${getBaseUrl()}/api/tickers`, { cache: 'no-cache' });
-    return await response.json();
+    const response = await fetch(`${getBaseUrl()}/api/tickers?page=${page}&pageSize=${pageSize}`, {
+      cache: 'no-cache',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch tickers: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data || { tickers: [], totalCount: 0, page, pageSize, totalPages: 0 };
   } catch (error) {
     console.error('Error fetching tickers:', error);
-    return [];
+    return {
+      tickers: [],
+      totalCount: 0,
+      page,
+      pageSize,
+      totalPages: 0,
+    };
   }
 }
 
@@ -125,8 +148,125 @@ export const viewport = {
   maximumScale: 1,
 };
 
-export default async function AllTickersPage() {
-  const tickers: PartialNestedTickerReport[] = await getTickersResponse();
+interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+}
+
+function Pagination({ currentPage, totalPages, baseUrl }: PaginationProps) {
+  // Generate page numbers to display with ellipsis for large ranges
+  const getPageNumbers = () => {
+    const pages = [];
+
+    // Always include first page
+    pages.push(1);
+
+    // Calculate range around current page
+    let startPage = Math.max(2, currentPage - 1);
+    let endPage = Math.min(totalPages - 1, currentPage + 1);
+
+    // Add ellipsis after page 1 if there's a gap
+    if (startPage > 2) {
+      pages.push('ellipsis-start');
+    }
+
+    // Add pages around current page
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    // Add ellipsis before last page if there's a gap
+    if (endPage < totalPages - 1) {
+      pages.push('ellipsis-end');
+    }
+
+    // Always include last page if it exists
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
+
+  const pageNumbers = getPageNumbers();
+
+  return (
+    <nav className="flex items-center justify-center mt-8 mb-4">
+      <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
+        {/* Previous Page Button */}
+        <Link
+          href={currentPage > 1 ? `${baseUrl}?page=${currentPage - 1}` : '#'}
+          className={`flex items-center rounded-md px-2 py-1.5 text-sm font-medium ${
+            currentPage === 1
+              ? 'pointer-events-none text-gray-400 dark:text-gray-600'
+              : 'link-color hover:bg-block-bg-color hover:ring-1 hover:ring-inset hover:ring-border'
+          }`}
+          aria-disabled={currentPage === 1}
+          tabIndex={currentPage === 1 ? -1 : undefined}
+        >
+          <ChevronLeft className="mr-1 h-4 w-4" />
+          <span className="hidden sm:inline">Previous</span>
+        </Link>
+
+        {/* Page Numbers - Only show on larger screens */}
+        <div className="hidden sm:flex items-center gap-1">
+          {pageNumbers.map((page, index) => {
+            if (page === 'ellipsis-start' || page === 'ellipsis-end') {
+              return (
+                <span key={`ellipsis-${index}`} className="px-2 py-1.5 text-sm text-gray-500">
+                  ...
+                </span>
+              );
+            }
+
+            return (
+              <Link
+                key={`page-${page}`}
+                href={`${baseUrl}?page=${page}`}
+                className={`rounded-md min-w-[32px] text-center px-2 py-1.5 text-sm font-medium ${
+                  currentPage === page
+                    ? 'bg-block-bg-color ring-1 ring-inset ring-border'
+                    : 'link-color hover:bg-block-bg-color hover:ring-1 hover:ring-inset hover:ring-border'
+                }`}
+                aria-current={currentPage === page ? 'page' : undefined}
+              >
+                {page}
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Page Indicator for Small Screens */}
+        <span className="sm:hidden px-2 py-1.5 text-sm font-medium">
+          {currentPage} / {totalPages}
+        </span>
+
+        {/* Next Page Button */}
+        <Link
+          href={currentPage < totalPages ? `${baseUrl}?page=${currentPage + 1}` : '#'}
+          className={`flex items-center rounded-md px-2 py-1.5 text-sm font-medium ${
+            currentPage === totalPages
+              ? 'pointer-events-none text-gray-400 dark:text-gray-600'
+              : 'link-color hover:bg-block-bg-color hover:ring-1 hover:ring-inset hover:ring-border'
+          }`}
+          aria-disabled={currentPage === totalPages}
+          tabIndex={currentPage === totalPages ? -1 : undefined}
+        >
+          <span className="hidden sm:inline">Next</span>
+          <ChevronRight className="ml-1 h-4 w-4" />
+        </Link>
+      </div>
+    </nav>
+  );
+}
+
+export default async function AllTickersPage({ searchParams }: { searchParams: { page?: string } }) {
+  const currentPage = searchParams.page ? parseInt(searchParams.page) : 1;
+  const pageSize = 20;
+
+  // Fetch paginated tickers directly from the API
+  const { tickers, totalPages } = await getTickersResponse(currentPage, pageSize);
 
   const criteriaResponse = await fetch(
     'https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json',
@@ -231,6 +371,8 @@ export default async function AllTickersPage() {
             ))
           )}
         </ul>
+
+        {totalPages > 1 && <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl="/public-equities/tickers" />}
       </PageWrapper>
     </Tooltip.Provider>
   );

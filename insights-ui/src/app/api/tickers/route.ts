@@ -6,9 +6,38 @@ import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { invokePrompt } from '@/util/run-prompt';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-async function getHandler(): Promise<Ticker[]> {
+// Define response interface for paginated tickers
+interface PaginatedTickersResponse {
+  tickers: Ticker[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+async function getHandler(req: NextRequest): Promise<PaginatedTickersResponse> {
+  // Extract pagination parameters from URL
+  const searchParams = req.nextUrl.searchParams;
+  const page = parseInt(searchParams.get('page') || '1');
+  const pageSize = parseInt(searchParams.get('pageSize') || '20');
+
+  // Ensure valid pagination parameters
+  const validPage = isNaN(page) || page < 1 ? 1 : page;
+  const validPageSize = isNaN(pageSize) || pageSize < 1 || pageSize > 100 ? 20 : pageSize;
+
+  // Calculate skip value for pagination
+  const skip = (validPage - 1) * validPageSize;
+
+  // First, get total count for pagination metadata
+  const totalCount = await prisma.ticker.count({
+    where: {
+      spaceId: KoalaGainsSpaceId,
+    },
+  });
+
+  // Then fetch paginated tickers
   const tickers = await prisma.ticker.findMany({
     where: {
       spaceId: KoalaGainsSpaceId,
@@ -27,8 +56,20 @@ async function getHandler(): Promise<Ticker[]> {
     orderBy: {
       createdAt: 'asc',
     },
+    skip,
+    take: validPageSize,
   });
-  return tickers;
+
+  // Calculate total pages
+  const totalPages = Math.ceil(totalCount / validPageSize);
+
+  return {
+    tickers,
+    totalCount,
+    page: validPage,
+    pageSize: validPageSize,
+    totalPages,
+  };
 }
 
 async function postHandler(req: NextRequest): Promise<Ticker> {
@@ -108,5 +149,5 @@ async function postHandler(req: NextRequest): Promise<Ticker> {
   return updatedTicker;
 }
 
-export const GET = withErrorHandlingV2<Ticker[]>(getHandler);
+export const GET = withErrorHandlingV2<PaginatedTickersResponse>(getHandler);
 export const POST = withErrorHandlingV2<Ticker>(postHandler);
