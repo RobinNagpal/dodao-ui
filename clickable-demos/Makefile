@@ -16,3 +16,19 @@ upload-clickable-demo-dependencies-to-dev:
 
 create-migration:
 	yarn prisma migrate dev --create-only
+
+
+# Download all files from S3 to your local comp-files/ folder
+download-clickable-demo-compound:
+	aws s3 cp \
+	  s3://dodao-prod-public-assets/academy/compound-eth-1/ClickableDemos/compound/ \
+	  comp-files/ \
+	  --recursive
+
+# Upload all files from your local comp-files/ folder back up to S3
+upload-clickable-demo-compound-to-prod:
+	aws s3 cp \
+	  comp-files/ \
+	  s3://dodao-prod-public-assets/academy/compound-eth-1/ClickableDemos/compound/ \
+	  --recursive \
+	  --acl public-read
