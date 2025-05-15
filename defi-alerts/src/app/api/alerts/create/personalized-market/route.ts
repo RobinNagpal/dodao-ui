@@ -1,15 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/prisma";
-import {
-  AlertCategory,
-  AlertActionType,
-  NotificationFrequency,
-  ConditionType,
-  SeverityLevel,
-  DeliveryChannelType,
-} from "@prisma/client";
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/prisma';
+import { AlertCategory, AlertActionType, NotificationFrequency, ConditionType, SeverityLevel, DeliveryChannelType } from '@prisma/client';
 
-import { CHAINS, MARKETS } from "@/shared/web3/config";
+import { CHAINS, MARKETS } from '@/shared/web3/config';
 
 interface AlertRequestBody {
   email: string;
@@ -62,16 +55,13 @@ export async function POST(request: NextRequest) {
       !conditions.length ||
       !deliveryChannels.length
     ) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     // Fetch or 404
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // 1) Map chain names → { chainId }
@@ -87,10 +77,8 @@ export async function POST(request: NextRequest) {
       return selectedMarkets
         .map((uiSymbol) => {
           // “ETH” on UI → symbol “WETH”
-          const symbol = uiSymbol === "ETH" ? "WETH" : uiSymbol;
-          const m = MARKETS.find(
-            (m) => m.chainId === cfg.chainId && m.symbol === symbol
-          );
+          const symbol = uiSymbol === 'ETH' ? 'WETH' : uiSymbol;
+          const m = MARKETS.find((m) => m.chainId === cfg.chainId && m.symbol === symbol);
           if (!m) {
             return null;
           }
@@ -126,8 +114,8 @@ export async function POST(request: NextRequest) {
         deliveryChannels: {
           create: deliveryChannels.map((d) => ({
             channelType: d.type,
-            email: d.type === "EMAIL" ? d.email : undefined,
-            webhookUrl: d.type === "WEBHOOK" ? d.webhookUrl : undefined,
+            email: d.type === 'EMAIL' ? d.email : undefined,
+            webhookUrl: d.type === 'WEBHOOK' ? d.webhookUrl : undefined,
           })),
         },
       },
@@ -135,7 +123,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true, alertId: alert.id });
   } catch (err: any) {
-    console.error("[personalized-market route] error:", err);
+    console.error('[personalized-market route] error:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

@@ -11,12 +11,22 @@ export interface ConfirmationModalProps {
   confirming?: boolean;
   confirmationText: string;
   askForTextInput: boolean;
+  showSemiTransparentBg?: boolean;
 }
 
-export default function ConfirmationModal({ open, onClose, onConfirm, confirmationText, confirming, title, askForTextInput }: ConfirmationModalProps) {
+export default function ConfirmationModal({
+  open,
+  onClose,
+  onConfirm,
+  confirmationText,
+  confirming,
+  title,
+  askForTextInput,
+  showSemiTransparentBg,
+}: ConfirmationModalProps) {
   const [confirmInputText, setConfirmInputText] = useState('');
   return (
-    <SingleSectionModal open={open} onClose={onClose} title={title}>
+    <SingleSectionModal open={open} onClose={onClose} title={title} showSemiTransparentBg={showSemiTransparentBg}>
       <div className="p-4">
         <p className="my-4">{confirmationText}</p>
         {askForTextInput && (

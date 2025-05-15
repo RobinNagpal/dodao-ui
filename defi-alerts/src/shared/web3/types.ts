@@ -1,31 +1,22 @@
-import { Address } from "viem";
-import { usePublicClient } from "wagmi";
-import { Chain } from "wagmi/chains";
+import { Address } from 'viem';
+import { usePublicClient } from 'wagmi';
+import { Chain } from 'wagmi/chains';
 
-import { ContractsName } from "./chainConfig";
-import { supportedChainsId } from "./wagmiConfig";
+import { ContractsName } from './chainConfig';
+import { supportedChainsId } from './wagmiConfig';
 
 export type SupportedChainId = (typeof supportedChainsId)[number];
 
 export type Networks = Record<SupportedChainId, string>;
-export type NetworksNative = Record<
-  SupportedChainId,
-  { name: string; symbol: string; decimals: number }
->;
+export type NetworksNative = Record<SupportedChainId, { name: string; symbol: string; decimals: number }>;
 export type Names = Record<string, SupportedChainId>;
 
 export type ConfigTypes = {
   address: Address;
 };
 
-export type MARKET_ADDRESSES_TYPE = Record<
-  SupportedChainId,
-  { [key: string]: ConfigTypes }
->;
-export type TOKEN_SYMBOLS_TYPE = Record<
-  SupportedChainId,
-  { [key: string]: string }
->;
+export type MARKET_ADDRESSES_TYPE = Record<SupportedChainId, { [key: string]: ConfigTypes }>;
+export type TOKEN_SYMBOLS_TYPE = Record<SupportedChainId, { [key: string]: string }>;
 
 export type HomePageDataType = {
   chainId: SupportedChainId;
@@ -144,10 +135,7 @@ export type CompTotalData = {
 
 export type Filters = { name: string; active: boolean; value: number };
 
-export type Tokens = Record<
-  SupportedChainId,
-  { [key: string]: ConfigTypesSupply }
->;
+export type Tokens = Record<SupportedChainId, { [key: string]: ConfigTypesSupply }>;
 
 export type ContractsNameType = keyof typeof ContractsName;
 
@@ -155,7 +143,7 @@ export type ContractByChainId = Record<SupportedChainId, ContractConfig>;
 
 export type SortConfigType = {
   key: keyof TableData;
-  direction: "ascending" | "descending";
+  direction: 'ascending' | 'descending';
 } | null;
 
 export type GetRateType = {

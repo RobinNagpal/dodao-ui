@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import LoginPage from "./login/page";
-import { isLoggedIn } from "@/lib/auth";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import LoginPage from './login/page';
+import { isLoggedIn } from '@/lib/auth';
 
 export default function Page() {
   const router = useRouter();
@@ -11,7 +11,7 @@ export default function Page() {
 
   useEffect(() => {
     if (isLoggedIn()) {
-      router.replace("/alerts");
+      router.replace('/alerts');
     } else {
       setReady(true);
     }

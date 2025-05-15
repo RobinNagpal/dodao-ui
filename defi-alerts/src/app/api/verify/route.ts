@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/prisma";
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/prisma';
 
 export async function POST(request: NextRequest) {
   const { code, userId } = await request.json();
-  if (code !== "12345" || !userId) {
-    return NextResponse.json({ error: "Invalid" }, { status: 401 });
+  if (code !== '12345' || !userId) {
+    return NextResponse.json({ error: 'Invalid' }, { status: 401 });
   }
 
   // e.g. mark lastVerifiedAt

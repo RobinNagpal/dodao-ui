@@ -1,15 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/prisma";
-import {
-  AlertCategory,
-  AlertActionType,
-  NotificationFrequency,
-  ConditionType,
-  SeverityLevel,
-  DeliveryChannelType,
-} from "@prisma/client";
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/prisma';
+import { AlertCategory, AlertActionType, NotificationFrequency, ConditionType, SeverityLevel, DeliveryChannelType } from '@prisma/client';
 
-import { CHAINS, MARKETS } from "@/shared/web3/config";
+import { CHAINS, MARKETS } from '@/shared/web3/config';
 
 interface CompareCompoundRequest {
   email: string;
@@ -59,16 +52,13 @@ export async function POST(request: NextRequest) {
       !conditions.length ||
       !deliveryChannels.length
     ) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     // Fetch user
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Map chains → Prisma connect
@@ -83,10 +73,8 @@ export async function POST(request: NextRequest) {
       const cfg = CHAINS.find((c) => c.name === chainName)!;
       return selectedMarkets
         .map((uiSymbol) => {
-          const symbol = uiSymbol === "ETH" ? "WETH" : uiSymbol;
-          const m = MARKETS.find(
-            (m) => m.chainId === cfg.chainId && m.symbol === symbol
-          );
+          const symbol = uiSymbol === 'ETH' ? 'WETH' : uiSymbol;
+          const m = MARKETS.find((m) => m.chainId === cfg.chainId && m.symbol === symbol);
           if (!m) return null;
           return {
             chainId_address: `${m.chainId}_${m.baseAssetAddress.toLowerCase()}`,
@@ -98,8 +86,7 @@ export async function POST(request: NextRequest) {
     if (!assetConnect.length) {
       return NextResponse.json(
         {
-          error:
-            "No valid markets found for those chains/markets. Please adjust your selection.",
+          error: 'No valid markets found for those chains/markets. Please adjust your selection.',
         },
         { status: 400 }
       );
@@ -126,8 +113,8 @@ export async function POST(request: NextRequest) {
         deliveryChannels: {
           create: deliveryChannels.map((d) => ({
             channelType: d.type,
-            email: d.type === "EMAIL" ? d.email : undefined,
-            webhookUrl: d.type === "WEBHOOK" ? d.webhookUrl : undefined,
+            email: d.type === 'EMAIL' ? d.email : undefined,
+            webhookUrl: d.type === 'WEBHOOK' ? d.webhookUrl : undefined,
           })),
         },
       },
@@ -135,7 +122,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true, alertId: alert.id });
   } catch (err: any) {
-    console.error("[compare-compound route] error:", err);
+    console.error('[compare-compound route] error:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

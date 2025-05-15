@@ -1,11 +1,11 @@
-import { multicall, type Config } from "@wagmi/core";
-import type { Address } from "viem";
-import { useDefaultConfig } from "@/shared/web3/wagmiConfig";
-import { SPARK_DATA_PROVIDER } from "@/shared/migrator/spark/config";
-import { Pool_Abi_DataProvider } from "@/shared/migrator/spark/abi/Pool_Abi_DataProvider";
-import type { Collateral } from "@/shared/migrator/types";
-import { calculateAaveAPY } from "./calculateAaveAPR";
-import { calculateAaveAPR } from "./calculateAaveAPY";
+import { multicall, type Config } from '@wagmi/core';
+import type { Address } from 'viem';
+import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
+import { SPARK_DATA_PROVIDER } from '@/shared/migrator/spark/config';
+import { Pool_Abi_DataProvider } from '@/shared/migrator/spark/abi/Pool_Abi_DataProvider';
+import type { Collateral } from '@/shared/migrator/types';
+import { calculateAaveAPY } from './calculateAaveAPR';
+import { calculateAaveAPR } from './calculateAaveAPY';
 
 export type MarketApr = {
   chainId: number;
@@ -32,7 +32,7 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
         {
           address: provider,
           abi: Pool_Abi_DataProvider,
-          functionName: "getAllReservesTokens",
+          functionName: 'getAllReservesTokens',
         },
       ],
     });
@@ -43,7 +43,7 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
     const calls = collaterals.map((c) => ({
       address: provider,
       abi: Pool_Abi_DataProvider,
-      functionName: "getReserveData",
+      functionName: 'getReserveData',
       args: [c.tokenAddress],
     }));
 
@@ -62,8 +62,7 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
         ],
       })[0];
       const apy = calculateAaveAPY([apr])[0];
-      const chainName =
-        config.chains.find((x) => x.id === chainId)?.name || "Unknown";
+      const chainName = config.chains.find((x) => x.id === chainId)?.name || 'Unknown';
       return {
         chainId,
         chainName,
