@@ -30,7 +30,7 @@ const steps = [
 const TechnicalArchitecture = () => {
   return (
     <section id="architecture" className="py-24 bg-[#1e202d]">
-      <div className="container mx-auto px-4">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-6">
         <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">Technical Architecture</h2>
         <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-12">
           Our platform is built with scalability and reliability at its core, designed to handle the unique challenges of DeFi data.

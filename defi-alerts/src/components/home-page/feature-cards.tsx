@@ -26,7 +26,7 @@ const features = [
 const FeatureCards = () => {
   return (
     <section id="features" className="py-24 bg-[#0D131A]">
-      <div className="container mx-auto px-4">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-6">
         <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">What We Built</h2>
         <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-12">
           Our platform provides comprehensive DeFi alerting solutions with enterprise-grade reliability and flexibility.
