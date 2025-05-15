@@ -1,5 +1,4 @@
 import { Bell, Layers, Zap, Wallet } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const features = [
   {
@@ -26,24 +25,24 @@ const features = [
 
 const FeatureCards = () => {
   return (
-    <section id="features" className="py-24 bg-background">
+    <section id="features" className="py-24 bg-[#0D131A]">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-4">What We Built</h2>
-        <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
+        <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">What We Built</h2>
+        <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-12">
           Our platform provides comprehensive DeFi alerting solutions with enterprise-grade reliability and flexibility.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
-            <Card key={index} className="border border-border hover:shadow-md transition-shadow">
-              <CardHeader className="pb-2">
-                <feature.icon className="h-12 w-12 p-2 rounded-md bg-primary/10 text-primary mb-2" />
-                <CardTitle>{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">{feature.description}</CardDescription>
-              </CardContent>
-            </Card>
+            <div key={index} className="bg-[#1e202d] rounded-lg border border-[#d1d5da] hover:shadow-md transition-shadow">
+              <div className="p-6 pb-2">
+                <feature.icon className="h-12 w-12 p-2 rounded-md bg-[#00AD79]/10 text-[#00AD79] mb-2" />
+                <h3 className="text-xl font-semibold text-[#f1f1f3]">{feature.title}</h3>
+              </div>
+              <div className="px-6 pb-6">
+                <p className="text-base text-[#f1f1f3]/80">{feature.description}</p>
+              </div>
+            </div>
           ))}
         </div>
       </div>

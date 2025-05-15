@@ -1,12 +1,4 @@
-// defi-alerts/src/components/home-page/why-defi-alerts.tsx
 import { TrendingUp, Layers, Clock, Wallet } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-
-const BG_MUTED = 'hsl(240_4.8%_95.9%/0.5)'; // --muted/50
-const FG_MUTED = 'hsl(240_3.8%_46.1%)'; // --muted-foreground
-const PRIMARY = 'hsl(270_50%_40%)'; // --primary
-const PRIMARY_10 = 'hsl(270_50%_40%/0.1)';
-const BORDER = 'hsl(240_5.9%_90%)';
 
 const reasons = [
   {
@@ -30,36 +22,39 @@ const reasons = [
   {
     title: 'Personal Portfolio Tracking',
     description:
-      "Your wallet isn't static. Alerts auto-track your positions, so you can adjust supply/borrow limits or rebalance whenever your thresholds are hit.",
+      "Your wallet isn't static. Alerts auto–track your positions, so you can adjust supply/borrow limits or rebalance whenever your thresholds are hit.",
     icon: Wallet,
   },
 ];
 
-const WhyDefiAlerts = () => (
-  <section id="why-alerts" className={`py-24 bg-[${BG_MUTED}]`}>
-    <div className="container mx-auto px-4">
-      <h2 className="mb-4 text-center text-3xl font-bold">Why DeFi Alerts Matter</h2>
+const WhyDefiAlerts = () => {
+  return (
+    <section id="why-alerts" className="py-24 bg-[#1e202d]">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">Why DeFi Alerts Matter</h2>
+        <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-12">
+          DeFi interest rates swing up and down all day long—and new markets launch every week. Without alerts, users can miss the best times to supply or
+          borrow. Here’s why every protocol and user needs a real-time alert system:
+        </p>
 
-      <p className={`mx-auto mb-12 max-w-2xl text-center text-[${FG_MUTED}]`}>
-        DeFi interest rates swing up and down all day long—and new markets launch every week. Without alerts, users can miss the best times to supply or borrow.
-        Here’s why every protocol and user needs a real-time alert system:
-      </p>
-
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        {reasons.map(({ title, description, icon: Icon }, i) => (
-          <Card key={i} className={`transition-shadow hover:shadow-md border border-[${BORDER}]`}>
-            <CardHeader className="pb-2">
-              <Icon className={`mb-2 h-12 w-12 rounded-md p-2 bg-[${PRIMARY_10}] text-[${PRIMARY}]`} />
-              <CardTitle>{title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="text-base">{description}</CardDescription>
-            </CardContent>
-          </Card>
-        ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {reasons.map((reason, index) => (
+            <div key={index} className="bg-[#0D131A] rounded-lg border border-[#d1d5da] p-6 hover:shadow-md transition-shadow">
+              <div className="pb-2">
+                <div className="h-12 w-12 p-2 rounded-md bg-[#00AD79]/10 text-[#00AD79] mb-2">
+                  <reason.icon className="h-8 w-8" />
+                </div>
+                <h3 className="text-xl font-semibold text-[#f1f1f3]">{reason.title}</h3>
+              </div>
+              <div>
+                <p className="text-base text-[#f1f1f3]/80">{reason.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default WhyDefiAlerts;

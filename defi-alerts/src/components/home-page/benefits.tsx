@@ -1,4 +1,3 @@
-// defi-alerts/src/components/home-page/benefits.tsx
 import { Shield, Puzzle, Rocket, Clock } from 'lucide-react';
 
 const benefits = [
@@ -26,26 +25,19 @@ const benefits = [
 
 const Benefits = () => {
   return (
-    /* bg-background → hsl(0 0% 100%) */
-    <section id="benefits" className="py-24 bg-[hsl(0_0%_100%)]">
+    <section id="benefits" className="py-24 bg-[#0D131A]">
       <div className="container mx-auto px-4">
-        <h2 className="mb-4 text-center text-3xl font-bold">Why Partner With Us</h2>
+        <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">Why Partner With Us</h2>
+        <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-12">We bring technical excellence and deep DeFi knowledge to every partnership.</p>
 
-        {/* muted-foreground → hsl(240 3.8% 46.1%) */}
-        <p className="mx-auto mb-12 max-w-2xl text-center text-[hsl(240_3.8%_46.1%)]">
-          We bring technical excellence and deep DeFi knowledge to every partnership.
-        </p>
-
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {benefits.map(({ title, description, icon: Icon }, i) => (
-            <div key={i} className="flex flex-col items-center text-center">
-              {/* bg-primary/10 → primary with 10 % opacity */}
-              <div className="mb-4 rounded-full p-3 bg-[hsl(270_50%_40%/0.1)]">
-                {/* text-primary → primary */}
-                <Icon className="h-8 w-8 text-[hsl(270_50%_40%)]" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {benefits.map((benefit, index) => (
+            <div key={index} className="flex flex-col items-center text-center">
+              <div className="mb-4 p-3 rounded-full bg-[#00AD79]/10">
+                <benefit.icon className="h-8 w-8 text-[#00AD79]" />
               </div>
-              <h3 className="mb-2 text-xl font-semibold">{title}</h3>
-              <p className="text-[hsl(240_3.8%_46.1%)]">{description}</p>
+              <h3 className="text-xl font-semibold mb-2 text-[#f1f1f3]">{benefit.title}</h3>
+              <p className="text-[#f1f1f3]/80">{benefit.description}</p>
             </div>
           ))}
         </div>

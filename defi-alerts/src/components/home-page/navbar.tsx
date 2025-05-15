@@ -1,20 +1,16 @@
-// defi-alerts/src/components/home-page/navbar.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
-const BG_95 = 'hsl(0_0%_100%/0.95)'; // 95 % opacity white
-const BG_60 = 'hsl(0_0%_100%/0.60)'; // 60 % opacity white
-const BORDER = 'hsl(240_5.9%_90%)';
-const PRIMARY = 'hsl(270_50%_40%)';
-const FG = 'hsl(240_10%_3.9%)';
-
-export default function Navbar() {
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const navLinks = [
     { name: 'Why Alerts', href: '#why-alerts' },
@@ -27,72 +23,102 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const current = navLinks
-        .map((l) => l.href.slice(1))
-        .find((id) => {
-          const el = document.getElementById(id);
-          if (!el) return false;
-          const { top, bottom } = el.getBoundingClientRect();
-          return top <= 100 && bottom >= 100;
-        });
-      setActiveSection(current || '');
-    };
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+      const sections = navLinks.map((link) => link.href.substring(1));
 
-  const baseLink = `text-sm font-medium transition-colors hover:text-[${PRIMARY}]`;
+      const currentSection = sections.find((section) => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+
+      setActiveSection(currentSection || '');
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial position
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [navLinks]);
 
   return (
-    <header
-      className={`sticky top-0 z-50 w-full border-b backdrop-blur
-        bg-[${BG_95}] border-[${BORDER}]
-        supports-[backdrop-filter]:bg-[${BG_60}]`}
-    >
-      <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold">DeFiAlerts</span>
-        </Link>
+    <header className="sticky top-0 z-50 w-full border-b border-[#d1d5da] bg-[#0D131A]/95 backdrop-blur supports-[backdrop-filter]:bg-[#0D131A]/60">
+      <div className="container mx-auto px-4 flex h-16 items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center space-x-2">
+            <span className="font-bold text-xl text-[#f1f1f3]">DeFiAlerts</span>
+          </Link>
+        </div>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-6 md:flex">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
-            <Link key={link.name} href={link.href} className={`${baseLink} ${activeSection === link.href.slice(1) ? `text-[${PRIMARY}] font-semibold` : ''}`}>
+            <Link
+              key={link.name}
+              href={link.href}
+              className={`text-sm font-medium transition-colors hover:text-[#00AD79] ${
+                activeSection === link.href.substring(1) ? 'text-[#00AD79] font-semibold' : 'text-[#f1f1f3]'
+              }`}
+            >
               {link.name}
             </Link>
           ))}
-          <Button asChild>
-            <Link href="#contact">Contact Us</Link>
-          </Button>
+          <button
+            className="bg-[#00AD79] hover:bg-[#00AD79]/90 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors"
+            onClick={() => {
+              const contactSection = document.getElementById('contact');
+              if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
+            Contact Us
+          </button>
         </nav>
 
-        {/* Mobile menu button */}
-        <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        {/* Mobile Menu Button */}
+        <button className="md:hidden text-[#f1f1f3]" onClick={toggleMenu} aria-label="Toggle Menu">
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile nav */}
+      {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="container border-t py-4 md:hidden border-[hsl(240_5.9%_90%)]">
+        <div className="md:hidden container mx-auto px-4 py-4 border-t border-[#d1d5da]">
           <nav className="flex flex-col space-y-4">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
+                className={`text-sm font-medium transition-colors hover:text-[#00AD79] ${
+                  activeSection === link.href.substring(1) ? 'text-[#00AD79] font-semibold' : 'text-[#f1f1f3]'
+                }`}
                 onClick={() => setIsMenuOpen(false)}
-                className={`${baseLink} ${activeSection === link.href.slice(1) ? `text-[${PRIMARY}] font-semibold` : ''}`}
               >
                 {link.name}
               </Link>
             ))}
-            <Button asChild onClick={() => setIsMenuOpen(false)}>
-              <Link href="#contact">Contact Us</Link>
-            </Button>
+            <button
+              className="bg-[#00AD79] hover:bg-[#00AD79]/90 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors w-fit"
+              onClick={() => {
+                setIsMenuOpen(false);
+                const contactSection = document.getElementById('contact');
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+            >
+              Contact Us
+            </button>
           </nav>
         </div>
       )}
     </header>
   );
-}
+};
+
+export default Navbar;
