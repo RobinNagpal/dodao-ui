@@ -4,7 +4,7 @@ import Link from 'next/link';
 const CaseStudy = () => {
   return (
     <section id="case-study" className="py-24 bg-[#1e202d]">
-      <div className="container mx-auto px-4">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-6">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6 text-[#f1f1f3]">Case Study Teaser</h2>
           <p className="text-xl mb-8 text-[#f1f1f3]">See how we drove 99.9% uptime for Compound Alerts.</p>
