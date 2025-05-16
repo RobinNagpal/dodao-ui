@@ -261,8 +261,9 @@ function Pagination({ currentPage, totalPages, baseUrl }: PaginationProps) {
   );
 }
 
-export default async function AllTickersPage({ searchParams }: { searchParams: { page?: string } }) {
-  const currentPage = searchParams.page ? parseInt(searchParams.page) : 1;
+export default async function AllTickersPage(props: { searchParams: Promise<{ page?: string }> }) {
+  const { page } = await props.searchParams;
+  const currentPage = page ? parseInt(page) : 1;
   const pageSize = 20;
 
   // Fetch paginated tickers directly from the API
