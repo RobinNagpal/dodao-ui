@@ -154,7 +154,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 text-color lg:text-center">
+      <div className="mx-auto max-w-7xl px-3 sm:px-4 lg:px-8 text-color lg:text-center">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none text-left">
             <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl">
@@ -193,7 +193,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         </div>
 
         {/* Icons row */}
-        <div className="my-8 flex items-center justify-center lg:justify-start space-x-8">
+        <div className="my-4 sm:my-6 lg:my-8 flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-3 lg:gap-4">
           <div className="flex items-center justify-start space-x-2">
             <span className="block-bg-color rounded-full p-2">
               <CalendarIcon className="size-5" title="Years Since IPO" />
@@ -235,7 +235,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         </div>
 
         {/* Latest News block */}
-        <div className="w-full text-left p-4 block-bg-color rounded-xl flex">
+        <div className="w-full text-left p-2 sm:p-3 md:p-4 block-bg-color rounded-xl flex">
           <span>
             <InformationCircleIcon className="size-5 inline mr-2" title="Latest News" />
           </span>
@@ -252,7 +252,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           <InfoBlock heading="Competitive Edge" IconComponent={PresentationChartLineIcon}>
             {aboutTicker.businessModel?.competitiveEdge &&
               aboutTicker.businessModel?.competitiveEdge.map((ce: string, i: number) => (
-                <div key={i + '_competitiveEdge'} className="w-full text-left px-4 block-bg-color rounded-xl flex">
+                <div key={i + '_competitiveEdge'} className="w-full text-left px-2 sm:px-3 md:px-4 block-bg-color rounded-xl flex">
                   <span>
                     <CheckIcon className="size-5 inline mr-2" />
                   </span>
@@ -264,7 +264,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         </div>
 
         {/* Financials Section */}
-        <div className="font-semibold text-xl text-left my-6">Financials</div>
+        <div className="font-semibold text-xl text-left my-4 sm:my-5 md:my-6">Financials</div>
         <div className="flex flex-col-reverse lg:flex-row lg:max-h-[25vh] gap-5">
           <div className="w-full md:w-1/2">
             <div className="h-full block-bg-color rounded-lg overflow-auto">
@@ -357,13 +357,13 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         </div>
 
         {/* Reports Section */}
-        <div className="font-semibold text-xl text-left my-6">Analysis Reports</div>
+        <div className="font-semibold text-xl text-left my-4 sm:my-5 md:my-6">Analysis Reports</div>
         <div className="mx-auto text-left">
-          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-8 md:max-w-none md:grid-cols-2">
+          <dl className="grid max-w-xl grid-cols-1 gap-x-4 gap-y-4 sm:gap-x-6 sm:gap-y-6 md:gap-x-8 md:gap-y-8 md:max-w-none md:grid-cols-2">
             {industryGroupCriteria?.criteria?.map((criterion) => {
               const report = reportMap.get(criterion.key);
               return (
-                <div key={criterion.key} className="relative text-left block-bg-color p-4 rounded-xl">
+                <div key={criterion.key} className="relative text-left block-bg-color p-2 sm:p-3 md:p-4 rounded-xl">
                   <dt className="mt-2 mb-5">
                     <div className="flex items-center font-semibold">
                       <span className="text-lg">📄</span>
@@ -399,7 +399,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         {/* Management Team */}
         {managementTeam.length > 0 && (
           <div className="mb-8">
-            <div className="font-semibold text-xl text-left my-6">{tickerKey}&apos;s Management Team</div>
+            <div className="font-semibold text-xl text-left my-4 sm:my-5 md:my-6">{tickerKey}&apos;s Management Team</div>
             <div className="mx-auto">
               <ul role="list" className="flex flex-wrap justify-center gap-10">
                 {managementTeam.map((member) => (
@@ -435,7 +435,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         )}
 
         {/* Further info section */}
-        <div className="font-semibold text-xl text-left my-6">More Info About {tickerKey}</div>
+        <div className="font-semibold text-xl text-left my-4 sm:my-5 md:my-6">More Info About {tickerKey}</div>
         <div className="flex flex-col space-y-2">
           <InfoBlock heading="Dividend Profile" content={aboutTicker.dividendProfile} IconComponent={DivideIcon} />
 
@@ -460,13 +460,13 @@ interface InfoBlockProps {
 
 function InfoBlock({ heading, content, children, IconComponent, IconClasses }: InfoBlockProps): JSX.Element {
   return (
-    <div className="text-left block-bg-color px-4 py-2 rounded-lg">
+    <div className="text-left block-bg-color px-2 sm:px-3 md:px-4 py-2 rounded-lg">
       <div className="flex items-center justify-start">
-        <IconComponent className={IconClasses ?? 'h-5 w-5 mr-2'} />
-        <div className="font-semibold my-2">{heading}</div>
+        <IconComponent className={IconClasses ?? 'h-5 w-5 mr-1.5 sm:mr-2'} />
+        <div className="font-semibold my-1 sm:my-2">{heading}</div>
       </div>
 
-      <div className="px-4">
+      <div className="px-2 sm:px-3 md:px-4">
         {children ? (
           children
         ) : (
