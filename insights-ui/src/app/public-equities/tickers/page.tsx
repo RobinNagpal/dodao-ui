@@ -337,15 +337,17 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ pa
             tickersWithScores.map((ticker) => (
               <li key={ticker.tickerKey} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-5">
                 <div className="min-w-0 w-full">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className="text-sm font-semibold heading-color">{ticker.companyName || 'Unknown Company'}</p>
-                    <p className="whitespace-nowrap rounded-md px-1.5 py-1 text-xs font-medium ring-1 ring-inset ring-border primary-text-color">
-                      {ticker.tickerKey}
-                    </p>
-                  </div>
+                  <Link href={`/public-equities/tickers/${ticker.tickerKey}`}>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="text-sm font-semibold heading-color">{ticker.companyName || 'Unknown Company'}</p>
+                      <p className="whitespace-nowrap rounded-md px-1.5 py-1 text-xs font-medium ring-1 ring-inset ring-border primary-text-color">
+                        {ticker.tickerKey}
+                      </p>
+                    </div>
+                  </Link>
                   <div className="flex items-center gap-2 mt-1 justify-between">
                     <div className="mt-2 text-xs text-color">
-                      <p className="line-clamp-2 sm:line-clamp-1">{ticker.shortDescription || 'No description provided'}</p>
+                      <p className="line-clamp-2 sm:line-clamp-none">{ticker.shortDescription || 'No description provided'}</p>
                     </div>
                     <div
                       className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0"
