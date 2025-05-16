@@ -193,54 +193,54 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         </div>
 
         {/* Icons row */}
-        <div className="my-4 sm:my-6 lg:my-8 flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-3 lg:gap-4">
-          <div className="flex items-center justify-start space-x-2">
-            <span className="block-bg-color rounded-full p-2">
-              <CalendarIcon className="size-5" title="Years Since IPO" />
+        <div className="my-4 sm:my-6 lg:my-8 grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-3 lg:gap-4">
+          <div className="flex items-center justify-start space-x-1 sm:space-x-2">
+            <span className="block-bg-color rounded-full p-1 sm:p-1.5">
+              <CalendarIcon className="size-3.5 sm:size-4" title="Years Since IPO" />
             </span>
-            <div>{aboutTicker.yearsSinceIpo}</div>
+            <div className="text-sm sm:text-base">{aboutTicker.yearsSinceIpo}</div>
           </div>
 
-          <div className="flex items-center justify-start space-x-2">
-            <span className="block-bg-color rounded-full p-2">
-              <BuildingOfficeIcon className="size-5" title="REIT Type" />
+          <div className="flex items-center justify-start space-x-1 sm:space-x-2">
+            <span className="block-bg-color rounded-full p-1 sm:p-1.5">
+              <BuildingOfficeIcon className="size-3.5 sm:size-4" title="REIT Type" />
             </span>
-            <div>{aboutTicker.gicsClassification?.subIndustry ?? 'N/A'}</div>
+            <div className="text-sm sm:text-base truncate">{aboutTicker.gicsClassification?.subIndustry ?? 'N/A'}</div>
           </div>
 
-          <div className="flex items-center justify-start space-x-2">
-            <span className="block-bg-color rounded-full p-2">
-              <DocumentCurrencyDollarIcon className="size-5" title="SEC Latest 10Q Filing" />
+          <div className="flex items-center justify-start space-x-1 sm:space-x-2">
+            <span className="block-bg-color rounded-full p-1 sm:p-1.5">
+              <DocumentCurrencyDollarIcon className="size-3.5 sm:size-4" title="SEC Latest 10Q Filing" />
             </span>
-            <div>
+            <div className="text-sm sm:text-base">
               <a href={tickerReport.latest10QInfo?.filingUrl} target="_blank" className="hover:underline link-color">
                 SEC 10Q
               </a>
             </div>
           </div>
 
-          <div className="flex items-center justify-start space-x-2">
-            <span className="block-bg-color rounded-full p-2">
-              <UserGroupIcon className="size-5" title="Occupancy Rate" />
+          <div className="flex items-center justify-start space-x-1 sm:space-x-2">
+            <span className="block-bg-color rounded-full p-1 sm:p-1.5">
+              <UserGroupIcon className="size-3.5 sm:size-4" title="Occupancy Rate" />
             </span>
-            <div>{aboutTicker.occupancyRate ?? 'N/A'}</div>
+            <div className="text-sm sm:text-base">{aboutTicker.occupancyRate ?? 'N/A'}</div>
           </div>
 
-          <div className="flex items-center justify-start space-x-2">
-            <span className="block-bg-color rounded-full p-2">
-              <ScaleIcon className="size-5" title="Valuation" />
+          <div className="flex items-center justify-start space-x-1 sm:space-x-2">
+            <span className="block-bg-color rounded-full p-1 sm:p-1.5">
+              <ScaleIcon className="size-3.5 sm:size-4" title="Valuation" />
             </span>
-            <div>{aboutTicker.valuation ?? 'N/A'}</div>
+            <div className="text-sm sm:text-base">{aboutTicker.valuation ?? 'N/A'}</div>
           </div>
         </div>
 
         {/* Latest News block */}
-        <div className="w-full text-left p-2 sm:p-3 md:p-4 block-bg-color rounded-xl flex">
-          <span>
-            <InformationCircleIcon className="size-5 inline mr-2" title="Latest News" />
-          </span>
-          <div>
-            <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.latestNews ?? 'Not yet populated') }} />
+        <div className="w-full text-left p-2 sm:p-3 md:p-4 block-bg-color rounded-xl">
+          <div className="flex items-start">
+            <InformationCircleIcon className="size-4 sm:size-5 flex-shrink-0 mt-1 mr-1.5 sm:mr-2" title="Latest News" />
+            <div className="min-w-0 flex-1">
+              <span className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.latestNews ?? 'Not yet populated') }} />
+            </div>
           </div>
         </div>
 
@@ -336,21 +336,21 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
           <div className="w-full md:w-1/2 px-4">
             <div className="grid grid-cols-2 grid-rows-2 gap-4 overflow-auto text-left">
-              <div className="border-l-2 border-color pl-6 py-4">
-                <div className="font-semibold text-3xl mb-2">{priceToFFO}</div>
-                <div>Price To FFO</div>
+              <div className="border-l-2 border-color pl-3 sm:pl-4 md:pl-6 py-2 sm:py-3 md:py-4">
+                <div className="font-semibold text-xl sm:text-2xl md:text-3xl mb-1 sm:mb-2">{priceToFFO}</div>
+                <div className="text-sm sm:text-base">Price To FFO</div>
               </div>
-              <div className="border-l-2 border-color pl-6 py-4">
-                <div className="font-semibold text-3xl mb-2">{aboutTicker.financials?.priceToBook ?? 'N/A'} x</div>
-                <div>Price To Book (P/B)</div>
+              <div className="border-l-2 border-color pl-3 sm:pl-4 md:pl-6 py-2 sm:py-3 md:py-4">
+                <div className="font-semibold text-xl sm:text-2xl md:text-3xl mb-1 sm:mb-2">{aboutTicker.financials?.priceToBook ?? 'N/A'} x</div>
+                <div className="text-sm sm:text-base">Price To Book (P/B)</div>
               </div>
-              <div className="border-l-2 border-color pl-6 py-4">
-                <div className="font-semibold text-3xl mb-2">{aboutTicker.financials?.averageDividendYield ?? 'N/A'} %</div>
-                <div>Average Dividend Yield</div>
+              <div className="border-l-2 border-color pl-3 sm:pl-4 md:pl-6 py-2 sm:py-3 md:py-4">
+                <div className="font-semibold text-xl sm:text-2xl md:text-3xl mb-1 sm:mb-2">{aboutTicker.financials?.averageDividendYield ?? 'N/A'} %</div>
+                <div className="text-sm sm:text-base">Average Dividend Yield</div>
               </div>
-              <div className="border-l-2 border-color pl-6 py-4">
-                <div className="font-semibold text-3xl mb-2">{ffoYoYChange} %</div>
-                <div>{lastYearFFO !== 0 ? 'FFO/share 1yr Diff' : 'FFO/share'}</div>
+              <div className="border-l-2 border-color pl-3 sm:pl-4 md:pl-6 py-2 sm:py-3 md:py-4">
+                <div className="font-semibold text-xl sm:text-2xl md:text-3xl mb-1 sm:mb-2">{ffoYoYChange} %</div>
+                <div className="text-sm sm:text-base">{lastYearFFO !== 0 ? 'FFO/share 1yr Diff' : 'FFO/share'}</div>
               </div>
             </div>
           </div>
@@ -420,15 +420,15 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                 ))}
               </ul>
             </div>
-            <div className="w-full text-left p-4 my-5 block-bg-color rounded-xl flex">
-              <span>
-                <InformationCircleIcon className="size-5 inline mr-2" />
-              </span>
-              <div>
-                <span
-                  className="markdown-body"
-                  dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.managementTeamAssessment?.message ?? 'Not yet populated') }}
-                />
+            <div className="w-full text-left p-2 sm:p-3 md:p-4 my-3 sm:my-4 md:my-5 block-bg-color rounded-xl">
+              <div className="flex items-start">
+                <InformationCircleIcon className="size-4 sm:size-5 flex-shrink-0 mt-1 mr-1.5 sm:mr-2" />
+                <div className="min-w-0 flex-1">
+                  <span
+                    className="markdown-body"
+                    dangerouslySetInnerHTML={{ __html: parseMarkdown(aboutTicker.managementTeamAssessment?.message ?? 'Not yet populated') }}
+                  />
+                </div>
               </div>
             </div>
           </div>
