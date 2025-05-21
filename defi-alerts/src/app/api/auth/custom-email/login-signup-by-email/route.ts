@@ -1,14 +1,27 @@
-import { createHash } from '@dodao/web-core/api/auth/createHash';
-import { withErrorHandling } from '@/app/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
-import { User } from 'next-auth/core/types';
-import { headers } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
+import { createHash } from '@dodao/web-core/api/auth/createHash';
 import { defaultNormalizer, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
-import { LoginSignupByEmailRequestBody } from '@/types/request/LoginSignupByEmailRequest';
+import { Contexts } from '@dodao/web-core/utils/constants/constants';
+import { headers } from 'next/headers';
+import { NextRequest } from 'next/server';
 
-const createUser = async (user: User & { email: string }, spaceId: string) => {
+export interface LoginSignupByEmailRequestBody {
+  spaceId: string;
+  email: string;
+  context: Contexts;
+}
+
+export interface LoginSignupByEmailResponse {
+  // Empty response as the function returns an empty object
+}
+
+export interface ErrorResponse {
+  error: string;
+}
+
+const createUser = async (user: { email: string }, spaceId: string) => {
   console.log('######### signIn - Creating new user #########');
   const upsertedUser = await prisma.user.upsert({
     create: {
@@ -50,7 +63,7 @@ const createUser = async (user: User & { email: string }, spaceId: string) => {
  * and sending it to the user's e-mail (with the help of a DB adapter).
  * At the end, it returns a redirect to the `verify-request` page.
  */
-async function postHandler(req: NextRequest) {
+async function postHandler(req: NextRequest): Promise<LoginSignupByEmailResponse> {
   const reqBody = (await req.json()) as LoginSignupByEmailRequestBody;
   const { spaceId, email, context } = reqBody;
 
@@ -106,7 +119,7 @@ async function postHandler(req: NextRequest) {
   };
   await prisma.verificationToken.create({ data });
 
-  return NextResponse.json({});
+  return {};
 }
 
-export const POST = withErrorHandling(postHandler);
+export const POST = withErrorHandlingV2<LoginSignupByEmailResponse>(postHandler);
