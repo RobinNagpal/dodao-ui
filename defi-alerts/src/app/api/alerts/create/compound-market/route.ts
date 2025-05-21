@@ -5,7 +5,7 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 
 import { CHAINS, MARKETS } from '@/shared/web3/config';
 
-type Payload = {
+export interface CreateAlertPayload {
   email: string;
   actionType: AlertActionType;
   selectedChains: string[];
@@ -23,21 +23,18 @@ type Payload = {
     email?: string;
     webhookUrl?: string;
   }>;
-};
+}
 
 // Define response interface for alert creation
-interface AlertCreationResponse {
+export interface AlertCreationResponse {
   ok: boolean;
   alertId: string;
 }
 
 async function postHandler(request: NextRequest): Promise<AlertCreationResponse> {
-  const { email, actionType, selectedChains, selectedMarkets, notificationFrequency, conditions, deliveryChannels } = (await request.json()) as Payload;
+  const { email, actionType, selectedChains, selectedMarkets, notificationFrequency, conditions, deliveryChannels } =
+    (await request.json()) as CreateAlertPayload;
 
-  // Validate required fields
-  if (!email) {
-    throw new Error('Missing required field: email');
-  }
   if (!actionType) {
     throw new Error('Missing required field: actionType');
   }

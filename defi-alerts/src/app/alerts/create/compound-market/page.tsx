@@ -22,11 +22,27 @@ import {
   frequencyOptions,
 } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import {
+  AlertActionType,
+  NotificationFrequency as PrismaNotificationFrequency,
+  ConditionType as PrismaConditionType,
+  SeverityLevel as PrismaSeverityLevel,
+  DeliveryChannelType,
+  Alert,
+} from '@prisma/client';
+import { AlertCreationResponse, CreateAlertPayload } from '@/app/api/alerts/create/compound-market/route';
 
 export default function CompoundMarketAlertPage() {
   const router = useRouter();
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
+
+  const { postData, loading: isSubmitting } = usePostData<AlertCreationResponse, CreateAlertPayload>({
+    successMessage: 'Your market alert was saved successfully.',
+    errorMessage: "Couldn't create alert",
+    redirectPath: '/alerts',
+  });
 
   const [alertType, setAlertType] = useState<'borrow' | 'supply'>('borrow');
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
@@ -218,62 +234,31 @@ export default function CompoundMarketAlertPage() {
     }
 
     const email = localStorage.getItem('email')!;
-    const payload = {
-      email,
-      actionType: alertType.toUpperCase(),
+    const payload: CreateAlertPayload = {
+      email: 'robin@dodao.io',
+      actionType: alertType.toUpperCase() as AlertActionType,
       selectedChains,
       selectedMarkets,
-      notificationFrequency,
+      notificationFrequency: notificationFrequency as PrismaNotificationFrequency,
       conditions: conditions.map((c) => ({
-        type: c.conditionType as ConditionType,
+        type: c.conditionType as PrismaConditionType,
         value: c.thresholdValue,
         min: c.thresholdLow,
         max: c.thresholdHigh,
-        severity: c.severity as SeverityLevel,
+        severity: c.severity as PrismaSeverityLevel,
       })),
       deliveryChannels: channels.map((c) => ({
-        type: c.channelType,
+        type: c.channelType as DeliveryChannelType,
         email: c.channelType === 'EMAIL' ? c.email : undefined,
         webhookUrl: c.channelType === 'WEBHOOK' ? c.webhookUrl : undefined,
       })),
     };
 
-    try {
-      const res = await fetch(`${baseUrl}/api/alerts/create/compound-market`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const json = await res.json();
-
-      if (!res.ok) {
-        showNotification({
-          type: 'error',
-          heading: "Couldn't create alert",
-          message: json.error || 'Unknown server error',
-        });
-        return;
-      }
-
-      showNotification({
-        type: 'success',
-        heading: 'Alert created',
-        message: 'Your market alert was saved successfully.',
-      });
-      router.push('/alerts');
-    } catch (err: any) {
-      console.error('Error creating alert:', err);
-      showNotification({
-        type: 'error',
-        heading: 'Network Error',
-        message: err.message || 'Please try again.',
-      });
-    }
+    await postData(`${baseUrl}/api/alerts/create/compound-market`, payload);
   };
 
   return (
     <div className="container max-w-6xl mx-auto px-2 py-8">
-      {/* Breadcrumb */}
       <nav className="flex items-center text-sm mb-6">
         <Link href="/" className="text-theme-muted hover-text-primary flex items-center gap-1">
           <Home size={14} />
@@ -298,11 +283,11 @@ export default function CompoundMarketAlertPage() {
         <p className="text-theme-muted">Configure a new market alert with your preferred settings.</p>
       </div>
 
-      {/* Alert Type */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1">
           <CardTitle className="text-lg text-theme-primary">Alert Type</CardTitle>
         </CardHeader>
+
         <CardContent>
           <p className="text-sm text-theme-muted mb-4">Choose the type of alert you want to create.</p>
 
@@ -666,8 +651,8 @@ export default function CompoundMarketAlertPage() {
         </Button>
 
         <div className="space-x-4">
-          <Button onClick={handleCreateAlert} className="border text-primary-color hover-border-body">
-            Create Alert
+          <Button onClick={handleCreateAlert} className="border text-primary-color hover-border-body" disabled={isSubmitting}>
+            {isSubmitting ? 'Creating...' : 'Create Alert'}
           </Button>
         </div>
       </div>
