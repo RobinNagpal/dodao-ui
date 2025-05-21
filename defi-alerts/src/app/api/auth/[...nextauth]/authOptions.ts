@@ -26,7 +26,7 @@ export const authOptions: AuthOptions = getAuthOptions(
     callbacks: getPrismaCallbacks({
       user: p.user,
       verificationToken: p.verificationToken,
-      space: p.space,
+      space: p.space as any,
     }) as AuthOptions['callbacks'],
   }
 );
