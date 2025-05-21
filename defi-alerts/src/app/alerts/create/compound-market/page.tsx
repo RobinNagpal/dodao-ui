@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { ChevronRight, Home, Bell, TrendingUp, Plus, X, ArrowLeft } from 'lucide-react';
+import { ChevronRight, Home, Bell, TrendingUp, Plus, X, ArrowLeft, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -37,6 +37,88 @@ export default function CompoundMarketAlertPage() {
 
   const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
 
+  // Validation errors
+  const [errors, setErrors] = useState<{
+    chains?: string;
+    markets?: string;
+    conditions?: string[];
+    channels?: string[];
+  }>({});
+
+  // Clear validation errors when user makes changes
+  useEffect(() => {
+    if (selectedChains.length > 0 && errors.chains) {
+      setErrors((prev) => ({ ...prev, chains: undefined }));
+    }
+  }, [selectedChains, errors.chains]);
+
+  useEffect(() => {
+    if (selectedMarkets.length > 0 && errors.markets) {
+      setErrors((prev) => ({ ...prev, markets: undefined }));
+    }
+  }, [selectedMarkets, errors.markets]);
+
+  useEffect(() => {
+    if (errors.conditions) {
+      const newConditionErrors = [...errors.conditions];
+      let hasChanges = false;
+
+      conditions.forEach((cond, index) => {
+        if (cond.conditionType === 'APR_OUTSIDE_RANGE') {
+          if (cond.thresholdLow && cond.thresholdHigh && !isNaN(Number(cond.thresholdLow)) && !isNaN(Number(cond.thresholdHigh)) && newConditionErrors[index]) {
+            newConditionErrors[index] = '';
+            hasChanges = true;
+          }
+        } else {
+          if (cond.thresholdValue && !isNaN(Number(cond.thresholdValue)) && newConditionErrors[index]) {
+            newConditionErrors[index] = '';
+            hasChanges = true;
+          }
+        }
+      });
+
+      if (hasChanges) {
+        if (newConditionErrors.every((err) => !err)) {
+          setErrors((prev) => ({ ...prev, conditions: undefined }));
+        } else {
+          setErrors((prev) => ({ ...prev, conditions: newConditionErrors }));
+        }
+      }
+    }
+  }, [conditions, errors.conditions]);
+
+  useEffect(() => {
+    if (errors.channels) {
+      const newChannelErrors = [...errors.channels];
+      let hasChanges = false;
+
+      channels.forEach((channel, index) => {
+        if (channel.channelType === 'EMAIL') {
+          if (channel.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(channel.email) && newChannelErrors[index]) {
+            newChannelErrors[index] = '';
+            hasChanges = true;
+          }
+        } else if (channel.channelType === 'WEBHOOK') {
+          if (channel.webhookUrl && newChannelErrors[index]) {
+            try {
+              new URL(channel.webhookUrl);
+              newChannelErrors[index] = '';
+              hasChanges = true;
+            } catch {}
+          }
+        }
+      });
+
+      if (hasChanges) {
+        if (newChannelErrors.every((err) => !err)) {
+          setErrors((prev) => ({ ...prev, channels: undefined }));
+        } else {
+          setErrors((prev) => ({ ...prev, channels: newChannelErrors }));
+        }
+      }
+    }
+  }, [channels, errors.channels]);
+
   const toggleChain = (chain: string) => setSelectedChains((cs) => (cs.includes(chain) ? cs.filter((c) => c !== chain) : [...cs, chain]));
 
   const toggleMarket = (market: string) => setSelectedMarkets((ms) => (ms.includes(market) ? ms.filter((m) => m !== market) : [...ms, market]));
@@ -50,7 +132,91 @@ export default function CompoundMarketAlertPage() {
 
   const removeChannel = (i: number) => setChannels((ch) => ch.filter((_, idx) => idx !== i));
 
+  // Validate form before submission
+  const validateForm = () => {
+    const newErrors: {
+      chains?: string;
+      markets?: string;
+      conditions?: string[];
+      channels?: string[];
+    } = {};
+
+    // Validate chains
+    if (selectedChains.length === 0) {
+      newErrors.chains = 'Please select at least one chain';
+    }
+
+    // Validate markets
+    if (selectedMarkets.length === 0) {
+      newErrors.markets = 'Please select at least one market';
+    }
+
+    // Validate conditions
+    const conditionErrors: string[] = [];
+    conditions.forEach((cond, index) => {
+      if (cond.conditionType === 'APR_OUTSIDE_RANGE') {
+        if (!cond.thresholdLow || !cond.thresholdHigh) {
+          conditionErrors[index] = 'Both min and max thresholds are required';
+        } else if (isNaN(Number(cond.thresholdLow)) || isNaN(Number(cond.thresholdHigh))) {
+          conditionErrors[index] = 'Min and max thresholds must be valid numbers';
+        }
+      } else {
+        if (!cond.thresholdValue) {
+          conditionErrors[index] = 'Threshold value is required';
+        } else if (isNaN(Number(cond.thresholdValue))) {
+          conditionErrors[index] = 'Threshold value must be a valid number';
+        }
+      }
+    });
+
+    if (conditionErrors.some((error) => error)) {
+      newErrors.conditions = conditionErrors;
+    }
+
+    // Validate channels
+    const channelErrors: string[] = [];
+    channels.forEach((channel, index) => {
+      if (channel.channelType === 'EMAIL') {
+        if (!channel.email) {
+          channelErrors[index] = 'Email address is required';
+        } else {
+          const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRx.test(channel.email)) {
+            channelErrors[index] = 'Invalid email address';
+          }
+        }
+      } else if (channel.channelType === 'WEBHOOK') {
+        if (!channel.webhookUrl) {
+          channelErrors[index] = 'Webhook URL is required';
+        } else {
+          try {
+            new URL(channel.webhookUrl);
+          } catch {
+            channelErrors[index] = 'Invalid webhook URL';
+          }
+        }
+      }
+    });
+
+    if (channelErrors.some((error) => error)) {
+      newErrors.channels = channelErrors;
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleCreateAlert = async () => {
+    // Validate form before submission
+    if (!validateForm()) {
+      showNotification({
+        type: 'error',
+        heading: 'Validation Error',
+        message: 'Please fix the errors in the form before submitting',
+      });
+      return;
+    }
+
     const email = localStorage.getItem('email')!;
     const payload = {
       email,
@@ -176,7 +342,7 @@ export default function CompoundMarketAlertPage() {
                     onClick={() => toggleChain(chain)}
                     className={`rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors border ${
                       isSel ? 'chip-selected' : 'border-theme-primary'
-                    }`}
+                    } ${errors.chains ? 'border-red-500' : ''}`}
                   >
                     <div className="chip-checkbox w-4 h-4 rounded border mr-2 flex items-center justify-center">
                       {isSel && (
@@ -191,6 +357,12 @@ export default function CompoundMarketAlertPage() {
                 );
               })}
             </div>
+            {errors.chains && (
+              <div className="mt-2 flex items-center text-red-500 text-sm">
+                <AlertCircle size={16} className="mr-1" />
+                <span>{errors.chains}</span>
+              </div>
+            )}
           </div>
 
           {/* Markets */}
@@ -209,7 +381,7 @@ export default function CompoundMarketAlertPage() {
                       onClick={() => toggleMarket(market)}
                       className={`rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors border ${
                         isSel ? 'chip-selected' : 'border-theme-primary'
-                      }`}
+                      } ${errors.markets ? 'border-red-500' : ''}`}
                     >
                       <div className="chip-checkbox w-4 h-4 rounded border mr-2 flex items-center justify-center">
                         {isSel && (
@@ -224,6 +396,12 @@ export default function CompoundMarketAlertPage() {
                   );
                 })}
               </div>
+              {errors.markets && (
+                <div className="mt-2 flex items-center text-red-500 text-sm">
+                  <AlertCircle size={16} className="mr-1" />
+                  <span>{errors.markets}</span>
+                </div>
+              )}
             </div>
           </div>
         </CardContent>
@@ -293,33 +471,55 @@ export default function CompoundMarketAlertPage() {
 
               {/* Thresholds */}
               {cond.conditionType === 'APR_OUTSIDE_RANGE' ? (
-                <div className="col-span-3 flex items-center space-x-2">
-                  <Input
-                    type="text"
-                    placeholder="Min"
-                    value={cond.thresholdLow || ''}
-                    onChange={(e) => updateCondition(i, 'thresholdLow', e.target.value)}
-                    className="border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                  />
-                  <Input
-                    type="text"
-                    placeholder="Max"
-                    value={cond.thresholdHigh || ''}
-                    onChange={(e) => updateCondition(i, 'thresholdHigh', e.target.value)}
-                    className="border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                  />
-                  <span className="text-theme-muted">%</span>
+                <div className="col-span-3 flex flex-col">
+                  <div className="flex items-center space-x-2">
+                    <Input
+                      type="text"
+                      placeholder="Min"
+                      value={cond.thresholdLow || ''}
+                      onChange={(e) => updateCondition(i, 'thresholdLow', e.target.value)}
+                      className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                        errors.conditions && errors.conditions[i] ? 'border-red-500' : ''
+                      }`}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Max"
+                      value={cond.thresholdHigh || ''}
+                      onChange={(e) => updateCondition(i, 'thresholdHigh', e.target.value)}
+                      className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                        errors.conditions && errors.conditions[i] ? 'border-red-500' : ''
+                      }`}
+                    />
+                    <span className="text-theme-muted">%</span>
+                  </div>
+                  {errors.conditions && errors.conditions[i] && (
+                    <div className="mt-1 flex items-center text-red-500 text-sm">
+                      <AlertCircle size={14} className="mr-1" />
+                      <span>{errors.conditions[i]}</span>
+                    </div>
+                  )}
                 </div>
               ) : (
-                <div className="col-span-3 flex items-center">
-                  <Input
-                    type="text"
-                    placeholder="Value"
-                    value={cond.thresholdValue || ''}
-                    onChange={(e) => updateCondition(i, 'thresholdValue', e.target.value)}
-                    className="border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                  />
-                  <span className="ml-2 text-theme-muted">%</span>
+                <div className="col-span-3 flex flex-col">
+                  <div className="flex items-center">
+                    <Input
+                      type="text"
+                      placeholder="Value"
+                      value={cond.thresholdValue || ''}
+                      onChange={(e) => updateCondition(i, 'thresholdValue', e.target.value)}
+                      className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                        errors.conditions && errors.conditions[i] ? 'border-red-500' : ''
+                      }`}
+                    />
+                    <span className="ml-2 text-theme-muted">%</span>
+                  </div>
+                  {errors.conditions && errors.conditions[i] && (
+                    <div className="mt-1 flex items-center text-red-500 text-sm">
+                      <AlertCircle size={14} className="mr-1" />
+                      <span>{errors.conditions[i]}</span>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -409,23 +609,45 @@ export default function CompoundMarketAlertPage() {
                 </SelectContent>
               </Select>
 
-              {ch.channelType === 'EMAIL' ? (
-                <Input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={ch.email || ''}
-                  onChange={(e) => updateChannel(i, 'email', e.target.value)}
-                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                />
-              ) : (
-                <Input
-                  type="url"
-                  placeholder="https://webhook.site/..."
-                  value={ch.webhookUrl || ''}
-                  onChange={(e) => updateChannel(i, 'webhookUrl', e.target.value)}
-                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                />
-              )}
+              <div className="flex-1 flex flex-col">
+                {ch.channelType === 'EMAIL' ? (
+                  <>
+                    <Input
+                      type="email"
+                      placeholder="you@example.com"
+                      value={ch.email || ''}
+                      onChange={(e) => updateChannel(i, 'email', e.target.value)}
+                      className={`flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                        errors.channels && errors.channels[i] ? 'border-red-500' : ''
+                      }`}
+                    />
+                    {errors.channels && errors.channels[i] && (
+                      <div className="mt-1 flex items-center text-red-500 text-sm">
+                        <AlertCircle size={14} className="mr-1" />
+                        <span>{errors.channels[i]}</span>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Input
+                      type="url"
+                      placeholder="https://webhook.site/..."
+                      value={ch.webhookUrl || ''}
+                      onChange={(e) => updateChannel(i, 'webhookUrl', e.target.value)}
+                      className={`flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                        errors.channels && errors.channels[i] ? 'border-red-500' : ''
+                      }`}
+                    />
+                    {errors.channels && errors.channels[i] && (
+                      <div className="mt-1 flex items-center text-red-500 text-sm">
+                        <AlertCircle size={14} className="mr-1" />
+                        <span>{errors.channels[i]}</span>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
 
               {channels.length > 1 && (
                 <Button variant="ghost" size="icon" onClick={() => removeChannel(i)} className="text-red-500 h-8 w-8">
