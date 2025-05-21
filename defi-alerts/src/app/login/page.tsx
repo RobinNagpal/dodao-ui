@@ -1,5 +1,6 @@
 'use client';
 
+import { getAlertsSpaceIdClientSide } from '@/utils/getAlertsSpaceIdClientSide';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -21,6 +22,7 @@ interface LoginResponse {
 interface VerificationRequest {
   code: string;
   userId: string | null;
+  spaceId: string;
 }
 
 interface VerificationResponse {
@@ -68,6 +70,7 @@ export default function LoginPage() {
       const response = await postVerification(`${baseUrl}/api/verify`, {
         code: verificationCode,
         userId,
+        spaceId: await getAlertsSpaceIdClientSide(),
       });
 
       if (response) {
