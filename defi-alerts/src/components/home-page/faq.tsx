@@ -5,14 +5,44 @@ import { ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
-    question: 'How do I onboard my protocol?',
+    question: 'What types of alerts can I create?',
     answer:
-      'Our onboarding process is streamlined for DeFi teams. We start with a technical discovery call, followed by API integration and customization of your alert parameters. Most protocols are fully onboarded within 2 weeks, with dedicated support throughout the process.',
+      'Our system supports various alert types including market-wide opportunities (APY changes, liquidity mining campaigns, new incentives), position health monitoring (liquidation risk, out-of-range positions), idle funds detection, and comparative yield alerts. You can set precise thresholds with decimal precision (e.g., 0.01%) and use various comparison operators (>, <, ≥, ≤, outside range).',
   },
   {
-    question: 'Can I self-host?',
+    question: 'Which chains and protocols are supported?',
     answer:
-      'Yes, we offer both cloud-hosted and self-hosted deployment options. Our self-hosted solution gives you complete control over your data while still benefiting from our regular updates and security patches. We provide comprehensive documentation and support for self-hosted deployments.',
+      'We support any EVM or non-EVM chain, L2, side-chain, or roll-up. This includes Ethereum, Polygon, Base, Optimism, Arbitrum, Solana, and more. We cover lending protocols, DEXes/AMMs, perpetuals markets, vaults, restaking platforms, liquid staking, money markets, and bridges.',
+  },
+  {
+    question: 'How do users get notified?',
+    answer:
+      'Users can receive notifications through multiple channels: Email, SMS, Push, Telegram, Discord, Slack, Webhook, Matrix, PagerDuty, or custom callback URLs. They can control frequency (real-time, batched digest), set severity levels (Info/Warning/Critical), and customize delivery preferences for each alert type.',
+  },
+  {
+    question: 'How does portfolio discovery work?',
+    answer:
+      'Users can connect their wallet via SIWE (Sign-In With Ethereum) for automatic discovery of all active positions across protocols and chains. We support cross-chain address aliasing (same EOA on multiple chains) and multi-wallet portfolios. Users can also manually add positions by transaction hash or position ID.',
+  },
+  {
+    question: 'What developer tools are available?',
+    answer:
+      'We offer REST/GraphQL APIs for alert management, a webhook specification with HMAC-SHA256 signature verification and retry policies, and SDKs for TypeScript, Python, and Rust. Developers can use our JSON/YAML schema for bulk import/export of alert definitions. We also provide sample recipes for building auto-rebalance bots.',
+  },
+  {
+    question: 'What are your scalability and performance metrics?',
+    answer:
+      'Our system is designed to handle 1M+ active users, 100M+ active alerts, and process 10k+ events/second. We guarantee < 300ms p95 rule evaluation latency and 99.9% delivery success rate. Our architecture uses stateless microservices with horizontal scaling for maximum resilience.',
+  },
+  {
+    question: 'How do you ensure data privacy and security?',
+    answer:
+      'We follow SOC 2 Type II standards with all secrets stored in HSM. Sensitive data like email addresses and phone numbers are encrypted at rest. We support full GDPR compliance with right-to-be-forgotten flows. Wallet signatures are never stored. Our systems include comprehensive audit logs and access controls.',
+  },
+  {
+    question: 'How can I onboard my protocol or integrate with my application?',
+    answer:
+      'Our onboarding process is streamlined for DeFi teams. We start with a technical discovery call, followed by API integration and customization of your alert parameters. Most protocols are fully onboarded within 2 weeks, with dedicated support throughout the process. For applications, our API and webhook system provides simple integration points.',
   },
 ];
 

@@ -1,29 +1,41 @@
-import { Database, Cpu, Send, BarChart } from 'lucide-react';
+import { Database, Cpu, Send, BarChart, Clock } from 'lucide-react';
 
 const steps = [
   {
-    title: 'Data Ingestion',
-    description: 'On-chain RPC or third-party indexers.',
+    title: 'Event Ingest Layer',
+    description: 'Indexers, RPC, subgraphs, APIs',
     icon: Database,
-    detail: 'Our system continuously monitors on-chain data across multiple blockchains, processing millions of data points in real-time.',
+    detail:
+      'Collects data from multiple sources including on-chain RPC nodes, The Graph subgraphs, third-party indexers, and off-chain APIs for maximum coverage.',
+    metrics: '< 60 sec evaluation time',
   },
   {
-    title: 'Condition Engine',
-    description: 'Customizable rules, severity levels.',
+    title: 'Real-Time Rule Engine',
+    description: 'User rules, templates, conditions',
     icon: Cpu,
-    detail: 'Advanced rule engine allows for complex conditions with boolean logic, thresholds, and time-based triggers.',
+    detail: 'Advanced rule processing system evaluates complex conditions with boolean logic, decimal precision thresholds, and comparison operators.',
+    metrics: '< 300ms p95 rule evaluation',
   },
   {
-    title: 'Delivery Pipeline',
-    description: 'Queueing, retries, multi-channel.',
+    title: 'Notification Dispatcher',
+    description: 'Multi-channel delivery, retry logic',
     icon: Send,
-    detail: 'Reliable delivery system that ensures notifications reach users through their preferred channels.',
+    detail: 'Routes alerts to user-specified channels (Email, SMS, Push, Telegram, Discord, Slack, Webhook) with configurable frequency and severity levels.',
+    metrics: '99.9% delivery success',
   },
   {
-    title: 'Dashboard & Reporting',
-    description: 'Audit logs, historical alerts.',
+    title: 'Alert Router & User Database',
+    description: 'Configuration management, portfolios',
+    icon: Clock,
+    detail: 'Central system for managing user preferences, alert configurations, and portfolio tracking across multiple wallets and chains.',
+    metrics: 'Support for 1M+ active users',
+  },
+  {
+    title: 'Analytics & Monitoring',
+    description: 'Delivery logs, performance metrics',
     icon: BarChart,
-    detail: 'Users can manage their alerts through the dashboard—viewing, editing, deleting, and tracking alert history with ease.',
+    detail: 'Comprehensive observability with structured logs, Prometheus metrics, and OpenTelemetry traces for system health monitoring and user insights.',
+    metrics: 'Actionable KPIs & SLO tracking',
   },
 ];
 
@@ -31,9 +43,12 @@ const TechnicalArchitecture = () => {
   return (
     <section id="architecture" className="py-24 bg-[#1e202d]">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">Technical Architecture</h2>
-        <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-12">
-          Our platform is built with scalability and reliability at its core, designed to handle the unique challenges of DeFi data.
+        <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">System Architecture</h2>
+        <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-6">
+          Our stateless microservice architecture is built for horizontal scaling, high availability, and real-time performance.
+        </p>
+        <p className="text-[#00AD79] text-center text-sm font-mono mb-12">
+          Redis pub/sub • Postgres • BigQuery/Snowflake • Kubernetes • Prometheus • OpenTelemetry
         </p>
 
         <div className="relative max-w-4xl mx-auto">
@@ -45,7 +60,8 @@ const TechnicalArchitecture = () => {
               <div key={index} className="flex flex-col md:flex-row items-center gap-6">
                 <div className={`md:w-1/2 ${index % 2 === 0 ? 'md:text-right md:order-first' : 'md:order-last'}`}>
                   <h3 className="text-xl font-semibold mb-2 text-[#f1f1f3]">{step.title}</h3>
-                  <p className="text-[#f1f1f3]/80">{step.description}</p>
+                  <p className="text-[#f1f1f3]/80 mb-2">{step.description}</p>
+                  <span className="inline-block bg-[#00AD79]/10 text-[#00AD79] text-xs px-2 py-1 rounded-full">{step.metrics}</span>
                 </div>
 
                 <div className="relative z-10 flex items-center justify-center w-16 h-16 rounded-full bg-[#0D131A] border-4 border-[#00AD79]/20">
