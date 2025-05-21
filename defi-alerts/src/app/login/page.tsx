@@ -3,9 +3,29 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { EmailForm } from '@/components/login/email-form';
 import { VerificationForm } from '@/components/login/verification-form';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
+// Define types for login request and response
+interface LoginRequest {
+  email: string;
+}
+
+interface LoginResponse {
+  userId: string;
+}
+
+// Define types for verification request and response
+interface VerificationRequest {
+  code: string;
+  userId: string | null;
+}
+
+interface VerificationResponse {
+  success: boolean;
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -13,23 +33,29 @@ export default function LoginPage() {
   const router = useRouter();
   const baseUrl = getBaseUrl();
 
+  // Initialize usePostData hook for login
+  const { postData: postLogin, loading: loginLoading } = usePostData<LoginResponse, LoginRequest>({
+    errorMessage: 'Failed to send verification code. Please try again.',
+  });
+
+  // Initialize usePostData hook for verification
+  const { postData: postVerification, loading: verificationLoading } = usePostData<VerificationResponse, VerificationRequest>({
+    errorMessage: 'Incorrect code. Please try again.',
+    redirectPath: '/alerts',
+  });
+
   const handleEmailSubmit = async (submittedEmail: string) => {
     try {
-      const res = await fetch(`${baseUrl}/api/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: submittedEmail }),
-      });
+      const response = await postLogin(`/api/auth/custom-email/login-signup-by-email`, { email: submittedEmail });
 
-      if (!res.ok) {
-        throw new Error('Failed to send verification code');
+      if (response) {
+        localStorage.setItem('email', submittedEmail);
+        localStorage.setItem('userId', response.userId);
+        setEmail(submittedEmail);
+        setStep(2);
+        return null;
       }
-
-      const { userId } = await res.json();
-      localStorage.setItem('email', submittedEmail);
-      localStorage.setItem('userId', userId);
-      setEmail(submittedEmail);
-      setStep(2);
+      return 'Error sending verification code. Please try again.';
     } catch (err) {
       console.error(err);
       return 'Error sending verification code. Please try again.';
@@ -39,19 +65,16 @@ export default function LoginPage() {
   const handleVerificationSubmit = async (verificationCode: string) => {
     try {
       const userId = localStorage.getItem('userId');
-      const res = await fetch(`${baseUrl}/api/verify`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: verificationCode, userId }),
+      const response = await postVerification(`${baseUrl}/api/verify`, {
+        code: verificationCode,
+        userId,
       });
 
-      if (!res.ok) {
-        throw new Error('Invalid verification code');
+      if (response) {
+        localStorage.setItem('isLoggedIn', 'true');
+        return null;
       }
-
-      localStorage.setItem('isLoggedIn', 'true');
-      router.push('/alerts');
-      return null;
+      return 'Incorrect code. Please try again.';
     } catch (err) {
       console.error(err);
       return 'Incorrect code. Please try again.';
