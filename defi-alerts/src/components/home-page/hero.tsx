@@ -7,7 +7,7 @@ const Hero = () => {
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#1e202d]/20 to-[#1e202d]/10 -z-10" />
 
-      <div className="container mx-auto px-4">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-[#f1f1f3]">Optimize Every DeFi Position</h1>
