@@ -111,7 +111,7 @@ export interface Alert {
   compareProtocols: string[];
   notificationFrequency: NotificationFrequency;
   status: AlertStatus;
-  conditions: Condition[];
+  conditions: PrismaCondition[];
   deliveryChannels: Channel[];
   createdAt: string;
   updatedAt: string;

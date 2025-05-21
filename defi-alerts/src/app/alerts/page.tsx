@@ -488,7 +488,7 @@ export default function AlertsPage() {
                   <TableRow>
                     <TableCell colSpan={7} className="h-24 text-center">
                       <div className="flex flex-col items-center justify-center text-theme-muted">
-                        <Bell size={24} className="mb-2" />
+                        <Bell size={24} className="mb-2 text-primary-color" />
                         <p>No alerts found</p>
                         <Button
                           variant="outline"

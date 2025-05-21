@@ -457,13 +457,13 @@ export default function CompareCompoundPage() {
                   <TableRow>
                     <TableCell colSpan={7} className="h-24 text-center">
                       <div className="flex flex-col items-center justify-center text-theme-muted">
-                        <ArrowLeftRight size={24} className="mb-2" />
+                        <ArrowLeftRight size={24} className="mb-2 text-primary-color" />
                         <p>No comparison alerts found</p>
                         <Button
                           variant="outline"
                           size="sm"
                           className="mt-2 border-theme-border-primary text-theme-primary hover-border-primary"
-                          onClick={() => router.push('/alerts/create/compare-compound')}
+                          onClick={() => router.push('/alerts/create')}
                         >
                           Create your first comparison alert
                         </Button>

@@ -44,6 +44,35 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    for (const c of conditions) {
+      if (c.type === ConditionType.APR_OUTSIDE_RANGE) {
+        // require both min & max
+        if (!c.min || !c.max) return NextResponse.json({ error: 'Both min and max thresholds are required for range conditions.' }, { status: 400 });
+        if (isNaN(Number(c.min)) || isNaN(Number(c.max))) return NextResponse.json({ error: 'Min and max thresholds must be valid numbers.' }, { status: 400 });
+      } else {
+        // single‐value conditions
+        if (!c.value) return NextResponse.json({ error: 'A threshold value is required for all other condition types.' }, { status: 400 });
+        if (isNaN(Number(c.value))) return NextResponse.json({ error: 'Threshold values must be valid numbers.' }, { status: 400 });
+      }
+    }
+
+    // 3) **New:** deep‐validation of each delivery channel
+    for (const d of deliveryChannels) {
+      if (d.type === DeliveryChannelType.EMAIL) {
+        if (!d.email) return NextResponse.json({ error: 'An email address is required for Email channels.' }, { status: 400 });
+        // simple regex check
+        const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRx.test(d.email)) return NextResponse.json({ error: `Invalid email address: ${d.email}` }, { status: 400 });
+      } else if (d.type === DeliveryChannelType.WEBHOOK) {
+        if (!d.webhookUrl) return NextResponse.json({ error: 'A webhook URL is required for Webhook channels.' }, { status: 400 });
+        try {
+          new URL(d.webhookUrl);
+        } catch {
+          return NextResponse.json({ error: `Invalid webhook URL: ${d.webhookUrl}` }, { status: 400 });
+        }
+      }
+    }
+
     // 1. Look up the user
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
