@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { EmailForm } from '@/components/login/email-form';
-import { VerificationForm } from '@/components/login/verification-form';
+import { EmailSentMessage } from '@/components/login/email-sent-message';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 // Define types for login request and response
@@ -34,13 +34,13 @@ interface VerificationResponse {
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
-  const [step, setStep] = useState<1 | 2>(1); // 1 for email, 2 for code
+  const [step, setStep] = useState<1 | 2>(1); // 1 for email form, 2 for email sent message
   const router = useRouter();
   const baseUrl = getBaseUrl();
 
   // Initialize usePostData hook for login
   const { postData: postLogin, loading: loginLoading } = usePostData<LoginResponse, LoginRequest>({
-    errorMessage: 'Failed to send verification code. Please try again.',
+    errorMessage: 'Failed to send login email. Please try again.',
   });
 
   // Initialize usePostData hook for verification
@@ -65,10 +65,10 @@ export default function LoginPage() {
         setStep(2);
         return null;
       }
-      return 'Error sending verification code. Please try again.';
+      return 'Error sending login email. Please try again.';
     } catch (err) {
       console.error(err);
-      return 'Error sending verification code. Please try again.';
+      return 'Error sending login email. Please try again.';
     }
   };
 
@@ -110,7 +110,7 @@ export default function LoginPage() {
             {step === 1 ? (
               <EmailForm onSubmit={handleEmailSubmit} initialEmail={email} />
             ) : (
-              <VerificationForm email={email} onSubmit={handleVerificationSubmit} onChangeEmail={handleUseAnotherEmail} />
+              <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} />
             )}
           </CardContent>
         </Card>
