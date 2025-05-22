@@ -4,7 +4,6 @@ import { getPrismaCallbacks } from '@dodao/web-core/utils/auth/prismaCallbacks';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
 import { AuthOptions } from 'next-auth';
-import { authorizeCrypto } from './authorizeCrypto';
 
 const p = new PrismaClient();
 
@@ -21,7 +20,7 @@ export const authOptions: AuthOptions = getAuthOptions(
       },
     },
   },
-  authorizeCrypto,
+  () => Promise.resolve(null),
   {
     callbacks: getPrismaCallbacks({
       user: p.user,
