@@ -6,6 +6,7 @@ import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants'
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import { headers } from 'next/headers';
 import { NextRequest } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface LoginSignupByEmailRequestBody {
   spaceId: string;
@@ -75,7 +76,7 @@ async function postHandler(req: NextRequest): Promise<LoginSignupByEmailResponse
 
   const userEmail = defaultNormalizer(email);
 
-  const defaultUser = { id: crypto.randomUUID(), email: userEmail, emailVerified: null };
+  const defaultUser = { id: uuidv4(), email: userEmail, emailVerified: null };
 
   // We do this because we want to allow to login on TidbitsHub only using the email. If a user create a space
   // and then comes back to login via Tidbits hub, this flow will be invoked.
