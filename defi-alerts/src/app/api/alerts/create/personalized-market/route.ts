@@ -6,6 +6,7 @@ import { CHAINS, MARKETS } from '@/shared/web3/config';
 
 interface AlertRequestBody {
   email: string;
+  spaceId: string;
   walletAddress: string;
   category: AlertCategory;
   actionType: AlertActionType;
@@ -32,6 +33,7 @@ export async function POST(request: NextRequest) {
     const body = (await request.json()) as AlertRequestBody;
     const {
       email,
+      spaceId,
       walletAddress,
       category,
       actionType,
@@ -46,6 +48,7 @@ export async function POST(request: NextRequest) {
     // Basic validation
     if (
       !email ||
+      !spaceId ||
       !walletAddress ||
       !category ||
       !actionType ||
@@ -59,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Fetch or 404
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email_spaceId: { email, spaceId } } });
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }

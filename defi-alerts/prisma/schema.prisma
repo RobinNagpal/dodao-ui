@@ -4,6 +4,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator json {
+  provider  = "prisma-json-types-generator"
+  namespace = "PrismaJson"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -53,88 +58,188 @@ enum AlertStatus {
   PAUSED
 }
 
+model CryptoLoginNonce {
+  userId  String   @unique @map("user_id")
+  nonce   String
+  expires DateTime
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("crypto_login_nonce")
+}
+
 model User {
-  id     String  @id @default(cuid())
-  email  String? @unique
-  alerts Alert[]
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  publicAddress String?   @map("public_address")
+  phoneNumber   String?   @map("phone_number")
+
+  spaceId      String @map("space_id")
+  username     String @map("username")
+  authProvider String @map("auth_provider")
+
+  accounts         Account[]
+  sessions         Session[]
+  cryptoLoginNonce CryptoLoginNonce?
+  Alert            Alert[]
+
+  @@unique([publicAddress, spaceId])
+  @@unique([username, spaceId])
+  @@unique([email, spaceId])
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @map("refresh_token")
+  access_token      String? @map("access_token")
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Space {
+  id               String   @id @db.VarChar(64)
+  verified         Boolean  @default(false)
+  createdAt        DateTime @default(now()) @map("created_at")
+  creator          String   @db.VarChar(64)
+  name             String   @db.VarChar(255)
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  avatar           String?  @db.VarChar(255)
+  /// [UsernameAndName]
+  adminUsernamesV1 Json[]   @map("admin_usernames_v1") @db.JsonB
+  domains          String[] @default([])
+  /// [AuthSettings]
+  authSettings     Json     @default("{}") @map("auth_settings") @db.Json
+  features         String[]
+
+  /// [ThemeColors]
+  themeColors Json? @map("theme_colors") @db.Json
+
+  @@map("spaces")
 }
 
 model Chain {
-  chainId      Int                       @id
+  chainId      Int                       @id @map("chain_id")
   name         String
   assets       Asset[]
   alerts       Alert[]                   @relation("AlertChains")
   lendingRates LendingAndBorrowingRate[]
+
+  @@map("chains")
 }
 
 model Asset {
-  chainId_address String                    @id
-  chainId         Int
+  chainId_address String                    @id @map("chain_id_address")
+  chainId         Int                       @map("chain_id")
   chain           Chain                     @relation(fields: [chainId], references: [chainId])
-  symbol          String
-  address         String
+  symbol          String                    @map("symbol")
+  address         String                    @map("address")
   alerts          Alert[]                   @relation("AlertAssets")
   lendingRates    LendingAndBorrowingRate[]
+
+  @@map("assets")
 }
 
 model Alert {
   id                    String                @id @default(cuid())
   user                  User?                 @relation(fields: [userId], references: [id])
-  userId                String?
-  category              AlertCategory
-  actionType            AlertActionType
-  isComparison          Boolean               @default(false)
-  walletAddress         String?
+  userId                String?               @map("user_id")
+  category              AlertCategory         @map("category")
+  actionType            AlertActionType       @map("action_type")
+  isComparison          Boolean               @default(false) @map("is_comparison")
+  walletAddress         String?               @map("wallet_address")
   selectedChains        Chain[]               @relation("AlertChains")
   selectedAssets        Asset[]               @relation("AlertAssets")
-  compareProtocols      String[]
-  notificationFrequency NotificationFrequency
+  compareProtocols      String[]              @map("compare_protocols")
+  notificationFrequency NotificationFrequency @map("notification_frequency")
   conditions            AlertCondition[]
-  status                AlertStatus           @default(ACTIVE)
+  status                AlertStatus           @default(ACTIVE) @map("status")
   deliveryChannels      DeliveryChannel[]
-  createdAt             DateTime              @default(now())
-  updatedAt             DateTime              @updatedAt
+  createdAt             DateTime              @default(now()) @map("created_at")
+  updatedAt             DateTime              @updatedAt @map("updated_at")
   AlertNotification     AlertNotification[]
+
+  @@map("alerts")
 }
 
 model AlertCondition {
   id                 String        @id @default(cuid())
   alert              Alert         @relation(fields: [alertId], references: [id])
-  alertId            String
-  conditionType      ConditionType
-  thresholdValue     Float?
-  thresholdValueLow  Float?
-  thresholdValueHigh Float?
-  severity           SeverityLevel
+  alertId            String        @map("alert_id")
+  conditionType      ConditionType @map("condition_type")
+  thresholdValue     Float?        @map("threshold_value")
+  thresholdValueLow  Float?        @map("threshold_value_low")
+  thresholdValueHigh Float?        @map("threshold_value_high")
+  severity           SeverityLevel @map("severity")
+
+  @@map("alert_conditions")
 }
 
 model DeliveryChannel {
   id          String              @id @default(cuid())
   alert       Alert               @relation(fields: [alertId], references: [id])
-  alertId     String
-  channelType DeliveryChannelType
-  email       String?
-  webhookUrl  String?
+  alertId     String              @map("alert_id")
+  channelType DeliveryChannelType @map("channel_type")
+  email       String?             @map("email")
+  webhookUrl  String?             @map("webhook_url")
+
+  @@map("delivery_channels")
 }
 
 model LendingAndBorrowingRate {
   id                   String   @id @default(cuid())
-  protocolName         String
+  protocolName         String   @map("protocol_name")
   chain                Chain    @relation(fields: [chainId], references: [chainId])
-  chainId              Int
-  assetChainId_address String
+  chainId              Int      @map("chain_id")
+  assetChainId_address String   @map("asset_chain_id_address")
   asset                Asset    @relation(fields: [assetChainId_address], references: [chainId_address])
-  netEarnAPY           Float
-  netBorrowAPY         Float
-  recordedAt           DateTime @default(now())
+  netEarnAPY           Float    @map("net_earn_apy")
+  netBorrowAPY         Float    @map("net_borrow_apy")
+  recordedAt           DateTime @default(now()) @map("recorded_at")
+
+  @@map("lending_and_borrowing_rates")
 }
 
 model AlertNotification {
   id                String            @id @default(cuid())
   alert             Alert             @relation(fields: [alertId], references: [id])
-  alertId           String
-  alertConditionIds String[]
+  alertId           String            @map("alert_id")
+  alertConditionIds String[]          @map("alert_condition_ids")
   SentNotification  SentNotification?
+
+  @@map("alert_notifications")
 }
 
 // add one more field here on top model
@@ -143,7 +248,9 @@ model AlertNotification {
 
 model SentNotification {
   id                  String            @id @default(cuid())
-  alertNotificationId String            @unique
+  alertNotificationId String            @unique @map("alert_notification_id")
   alertNotification   AlertNotification @relation(fields: [alertNotificationId], references: [id])
-  sentAt              DateTime          @default(now())
+  sentAt              DateTime          @default(now()) @map("sent_at")
+
+  @@map("sent_notifications")
 }

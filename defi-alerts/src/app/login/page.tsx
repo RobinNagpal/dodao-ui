@@ -1,57 +1,91 @@
 'use client';
 
+import { getAlertsSpaceIdClientSide } from '@/utils/getAlertsSpaceIdClientSide';
+import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { EmailForm } from '@/components/login/email-form';
-import { VerificationForm } from '@/components/login/verification-form';
+import { EmailSentMessage } from '@/components/login/email-sent-message';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
+// Define types for login request and response
+interface LoginRequest {
+  email: string;
+  spaceId: string;
+  context: string;
+}
+
+interface LoginResponse {
+  userId: string;
+}
+
+// Define types for verification request and response
+interface VerificationRequest {
+  code: string;
+  userId: string | null;
+  spaceId: string;
+}
+
+interface VerificationResponse {
+  success: boolean;
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
-  const [step, setStep] = useState<1 | 2>(1); // 1 for email, 2 for code
+  const [step, setStep] = useState<1 | 2>(1); // 1 for email form, 2 for email sent message
   const router = useRouter();
   const baseUrl = getBaseUrl();
 
+  // Initialize usePostData hook for login
+  const { postData: postLogin, loading: loginLoading } = usePostData<LoginResponse, LoginRequest>({
+    errorMessage: 'Failed to send login email. Please try again.',
+  });
+
+  // Initialize usePostData hook for verification
+  const { postData: postVerification, loading: verificationLoading } = usePostData<VerificationResponse, VerificationRequest>({
+    errorMessage: 'Incorrect code. Please try again.',
+    redirectPath: '/alerts',
+  });
+
   const handleEmailSubmit = async (submittedEmail: string) => {
     try {
-      const res = await fetch(`${baseUrl}/api/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: submittedEmail }),
+      const spaceId = await getAlertsSpaceIdClientSide();
+      const response = await postLogin(`/api/auth/custom-email/login-signup-by-email`, {
+        email: submittedEmail,
+        spaceId: spaceId,
+        context: Contexts.loginAndRedirectToHome,
       });
 
-      if (!res.ok) {
-        throw new Error('Failed to send verification code');
+      if (response) {
+        localStorage.setItem('email', submittedEmail);
+        localStorage.setItem('userId', response.userId);
+        setEmail(submittedEmail);
+        setStep(2);
+        return null;
       }
-
-      const { userId } = await res.json();
-      localStorage.setItem('email', submittedEmail);
-      localStorage.setItem('userId', userId);
-      setEmail(submittedEmail);
-      setStep(2);
+      return 'Error sending login email. Please try again.';
     } catch (err) {
       console.error(err);
-      return 'Error sending verification code. Please try again.';
+      return 'Error sending login email. Please try again.';
     }
   };
 
   const handleVerificationSubmit = async (verificationCode: string) => {
     try {
       const userId = localStorage.getItem('userId');
-      const res = await fetch(`${baseUrl}/api/verify`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: verificationCode, userId }),
+      const response = await postVerification(`${baseUrl}/api/verify`, {
+        code: verificationCode,
+        userId,
+        spaceId: await getAlertsSpaceIdClientSide(),
       });
 
-      if (!res.ok) {
-        throw new Error('Invalid verification code');
+      if (response) {
+        localStorage.setItem('isLoggedIn', 'true');
+        return null;
       }
-
-      localStorage.setItem('isLoggedIn', 'true');
-      router.push('/alerts');
-      return null;
+      return 'Incorrect code. Please try again.';
     } catch (err) {
       console.error(err);
       return 'Incorrect code. Please try again.';
@@ -76,7 +110,7 @@ export default function LoginPage() {
             {step === 1 ? (
               <EmailForm onSubmit={handleEmailSubmit} initialEmail={email} />
             ) : (
-              <VerificationForm email={email} onSubmit={handleVerificationSubmit} onChangeEmail={handleUseAnotherEmail} />
+              <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} />
             )}
           </CardContent>
         </Card>

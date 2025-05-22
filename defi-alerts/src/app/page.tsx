@@ -6,9 +6,13 @@ export default async function Page() {
   const reqHeaders = await headers();
   const host = reqHeaders.get('host')?.split(':')?.[0];
 
-  console.log('host', host);
+  if (host === 'defialerts.xyz' || host === 'www.defialerts.xyz' || host === 'defialerts-localhost.xyz') {
+    return <Home />;
+  }
+
   if (host === 'compound.defialerts-localhost.xyz' || host === 'compound.defialerts.xyz') {
     return <AlertsPage />;
   }
+
   return <Home />;
 }

@@ -6,6 +6,7 @@ import { CHAINS, MARKETS } from '@/shared/web3/config';
 
 interface PersonalizedComparisonRequest {
   email: string;
+  spaceId: string;
   walletAddress: string;
   category: AlertCategory;
   actionType: AlertActionType;
@@ -30,6 +31,7 @@ export async function POST(request: NextRequest) {
   try {
     const {
       email,
+      spaceId,
       walletAddress,
       category,
       actionType,
@@ -45,6 +47,7 @@ export async function POST(request: NextRequest) {
     // basic validation
     if (
       !email ||
+      !spaceId ||
       !walletAddress ||
       !category ||
       !actionType ||
@@ -59,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     // fetch user
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email_spaceId: { email, spaceId } } });
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
