@@ -17,6 +17,7 @@ import {
   type SeverityLevel,
   severityOptions,
 } from '@/types/alerts';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -39,6 +40,7 @@ export default function CompoundMarketAlertPage() {
   const { showNotification } = useNotificationContext();
   const { data: session } = useSession();
 
+  const user = session?.user! as DoDaoJwtTokenPayload;
   const { postData, loading: isSubmitting } = usePostData<AlertCreationResponse, CreateCompoundAlertPayload>({
     successMessage: 'Your market alert was saved successfully.',
     errorMessage: "Couldn't create alert",
@@ -53,6 +55,13 @@ export default function CompoundMarketAlertPage() {
   const [conditions, setConditions] = useState<Condition[]>([{ conditionType: 'APR_RISE_ABOVE', thresholdValue: '', severity: 'NONE' }]);
 
   const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
+
+  // Initialize email field with username when component mounts
+  useEffect(() => {
+    if (user?.username) {
+      setChannels((ch) => ch.map((channel) => (channel.channelType === 'EMAIL' ? { ...channel, email: user.username } : channel)));
+    }
+  }, [user?.username]);
 
   // Validation errors
   const [errors, setErrors] = useState<{
@@ -74,6 +83,13 @@ export default function CompoundMarketAlertPage() {
       setErrors((prev) => ({ ...prev, markets: undefined }));
     }
   }, [selectedMarkets, errors.markets]);
+
+  // Populate email field with username when channel type is EMAIL
+  useEffect(() => {
+    if (user?.username) {
+      setChannels((ch) => ch.map((channel) => (channel.channelType === 'EMAIL' ? { ...channel, email: user.username } : channel)));
+    }
+  }, [channels.map((c) => c.channelType).join(','), user?.username]);
 
   useEffect(() => {
     if (errors.conditions) {
@@ -143,7 +159,7 @@ export default function CompoundMarketAlertPage() {
   const updateCondition = (i: number, field: keyof Condition, val: string) =>
     setConditions((cs) => cs.map((c, idx) => (idx === i ? { ...c, [field]: val } : c)));
 
-  const addChannel = () => setChannels((ch) => [...ch, { channelType: 'EMAIL', email: '' }]);
+  const addChannel = () => setChannels((ch) => [...ch, { channelType: 'EMAIL', email: user?.username || '' }]);
 
   const updateChannel = (i: number, field: keyof Channel, val: string) => setChannels((ch) => ch.map((c, idx) => (idx === i ? { ...c, [field]: val } : c)));
 
@@ -598,7 +614,15 @@ export default function CompoundMarketAlertPage() {
 
           {channels.map((ch, i) => (
             <div key={i} className="mb-4 flex items-center gap-4">
-              <Select value={ch.channelType} onValueChange={(value) => updateChannel(i, 'channelType', value as Channel['channelType'])}>
+              <Select
+                value={ch.channelType}
+                onValueChange={(value) => {
+                  updateChannel(i, 'channelType', value as Channel['channelType']);
+                  if (value === 'EMAIL' && user?.username) {
+                    updateChannel(i, 'email', user.username);
+                  }
+                }}
+              >
                 <SelectTrigger className="w-[150px] hover-border-primary">
                   <SelectValue placeholder="Select channel" />
                 </SelectTrigger>
@@ -620,9 +644,10 @@ export default function CompoundMarketAlertPage() {
                       placeholder="you@example.com"
                       value={ch.email || ''}
                       onChange={(e) => updateChannel(i, 'email', e.target.value)}
+                      readOnly={true}
                       className={`flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
                         errors.channels && errors.channels[i] ? 'border-red-500' : ''
-                      }`}
+                      } ${ch.channelType === 'EMAIL' ? 'bg-block' : ''}`}
                     />
                     {errors.channels && errors.channels[i] && (
                       <div className="mt-1 flex items-center text-red-500 text-sm">
