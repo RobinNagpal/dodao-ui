@@ -65,6 +65,7 @@ const createUser = async (user: { email: string }, spaceId: string) => {
  */
 async function postHandler(req: NextRequest): Promise<LoginSignupByEmailResponse> {
   const reqBody = (await req.json()) as LoginSignupByEmailRequestBody;
+  console.log('login-signup-by-email - reqBody - ', JSON.stringify(reqBody, null, 2));
   const { spaceId, email, context } = reqBody;
 
   console.log('######### send-verification - POST #########');

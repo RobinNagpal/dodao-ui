@@ -1,6 +1,7 @@
 'use client';
 
 import { getAlertsSpaceIdClientSide } from '@/utils/getAlertsSpaceIdClientSide';
+import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -12,6 +13,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 // Define types for login request and response
 interface LoginRequest {
   email: string;
+  spaceId: string;
+  context: string;
 }
 
 interface LoginResponse {
@@ -48,7 +51,12 @@ export default function LoginPage() {
 
   const handleEmailSubmit = async (submittedEmail: string) => {
     try {
-      const response = await postLogin(`/api/auth/custom-email/login-signup-by-email`, { email: submittedEmail });
+      const spaceId = await getAlertsSpaceIdClientSide();
+      const response = await postLogin(`/api/auth/custom-email/login-signup-by-email`, {
+        email: submittedEmail,
+        spaceId: spaceId,
+        context: Contexts.loginAndRedirectToHome,
+      });
 
       if (response) {
         localStorage.setItem('email', submittedEmail);

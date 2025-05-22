@@ -1,3 +1,5 @@
+import { prisma } from '@/prisma';
+import { Space } from '@prisma/client';
 import { headers } from 'next/headers';
 
 export async function getAlertsSpaceIdServerSide(): Promise<string> {
@@ -17,4 +19,11 @@ export async function getAlertsSpaceIdServerSide(): Promise<string> {
   }
 
   return 'compound';
+}
+
+export async function getAlertsSpaceServerSide(): Promise<Space> {
+  const spaceId = await getAlertsSpaceIdServerSide();
+  return prisma.space.findFirstOrThrow({
+    where: { id: spaceId },
+  });
 }
