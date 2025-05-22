@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
-import { AlertActionType, NotificationFrequency, ConditionType, SeverityLevel, DeliveryChannelType, Alert } from '@prisma/client';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { AlertActionType, NotificationFrequency, ConditionType, SeverityLevel, DeliveryChannelType, Alert, User } from '@prisma/client';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 import { CHAINS, MARKETS } from '@/shared/web3/config';
 
 export interface CreateAlertPayload {
   email: string;
+  spaceId: string;
   actionType: AlertActionType;
   selectedChains: string[];
   selectedMarkets: string[];
@@ -31,8 +32,8 @@ export interface AlertCreationResponse {
   alertId: string;
 }
 
-async function postHandler(request: NextRequest): Promise<AlertCreationResponse> {
-  const { email, actionType, selectedChains, selectedMarkets, notificationFrequency, conditions, deliveryChannels } =
+async function postHandler(request: NextRequest, username: string): Promise<AlertCreationResponse> {
+  const { actionType, spaceId, selectedChains, selectedMarkets, notificationFrequency, conditions, deliveryChannels } =
     (await request.json()) as CreateAlertPayload;
 
   if (!actionType) {
@@ -98,12 +99,6 @@ async function postHandler(request: NextRequest): Promise<AlertCreationResponse>
     }
   }
 
-  // 1. Look up the user
-  const user = await prisma.user.findUnique({ where: { email_spaceId: { email, spaceId: 'compound' } } });
-  if (!user) {
-    throw new Error('User not found');
-  }
-
   // 2. Map chain *names* to prisma connect objects
   const chainConnect = selectedChains.map((chainName) => {
     const cfg = CHAINS.find((c) => c.name === chainName);
@@ -140,7 +135,14 @@ async function postHandler(request: NextRequest): Promise<AlertCreationResponse>
   // 4. Create the alert
   const alert = await prisma.alert.create({
     data: {
-      user: { connect: { id: user.id } },
+      user: {
+        connect: {
+          username_spaceId: {
+            username,
+            spaceId,
+          },
+        },
+      },
       category: 'GENERAL',
       actionType,
       // now using relational connects:
@@ -170,4 +172,4 @@ async function postHandler(request: NextRequest): Promise<AlertCreationResponse>
   return { ok: true, alertId: alert.id };
 }
 
-export const POST = withErrorHandlingV2<AlertCreationResponse>(postHandler);
+export const POST = withLoggedInUser<AlertCreationResponse>(postHandler);
