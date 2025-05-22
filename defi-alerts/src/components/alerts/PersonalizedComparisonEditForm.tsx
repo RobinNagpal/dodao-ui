@@ -9,84 +9,82 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 import {
-  type BorrowRow,
-  type SupplyRow,
   type Channel,
   severityOptions,
   frequencyOptions,
-  type ConditionType,
   type Alert,
   type SeverityLevel,
   type NotificationFrequency,
+  type ComparisonRow,
 } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
 
-interface PersonalizedMarketEditFormProps {
+interface PersonalizedComparisonEditFormProps {
   alert: Alert;
   alertId: string;
 }
 
-export default function PersonalizedMarketEditForm({ alert, alertId }: PersonalizedMarketEditFormProps) {
+export default function PersonalizedComparisonEditForm({ alert, alertId }: PersonalizedComparisonEditFormProps) {
   const router = useRouter();
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
 
   const { putData, loading: isSubmitting } = usePutData<Alert, any>({
-    successMessage: 'Your personalized alert was updated successfully.',
-    errorMessage: "Couldn't update personalized alert",
-    redirectPath: '/alerts',
+    successMessage: 'Your comparison alert was updated successfully.',
+    errorMessage: "Couldn't update comparison alert",
+    redirectPath: '/alerts/compare-compound',
   });
 
-  const [email, setEmail] = useState<string>('');
-  const [walletAddress, setWalletAddress] = useState<string>('');
   const [actionType, setActionType] = useState<'SUPPLY' | 'BORROW'>('SUPPLY');
   const [status, setStatus] = useState<'ACTIVE' | 'PAUSED'>('ACTIVE');
+  const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
+  const [walletAddress, setWalletAddress] = useState<string>('');
 
-  // For the specific alert we're editing
-  const [singleRow, setSingleRow] = useState<SupplyRow | BorrowRow>({
+  // For the specific row we're editing
+  const [row, setRow] = useState<ComparisonRow>({
+    platform: '',
     chain: '',
     market: '',
     rate: '0%',
-    conditionType: 'APR_RISE_ABOVE',
     threshold: '',
-    severity: 'NONE' as SeverityLevel,
-    frequency: 'ONCE_PER_ALERT' as NotificationFrequency,
+    severity: 'NONE',
+    frequency: 'AT_MOST_ONCE_PER_DAY',
   });
 
-  const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
+  // Validation errors
+  const [errors, setErrors] = useState<{
+    threshold?: string;
+    channels?: string[];
+  }>({});
 
   // Initialize form with alert data
   useEffect(() => {
     if (!alert) return;
 
-    setEmail(localStorage.getItem('email') ?? '');
-    setActionType(alert.actionType);
-    setStatus(alert.status);
+    setActionType(alert.actionType as 'SUPPLY' | 'BORROW');
+    setStatus(alert.status as 'ACTIVE' | 'PAUSED');
     setWalletAddress(alert.walletAddress || '');
 
-    // Set up the single row for editing
+    // Set up the comparison row for editing
     const chain = alert.selectedChains?.[0]?.name || '';
     const market = alert.selectedAssets?.[0]?.symbol || '';
+    const platform = alert.compareProtocols?.[0] || '';
     const condition = alert.conditions?.[0] || {
-      conditionType: 'APR_RISE_ABOVE',
+      conditionType: 'RATE_DIFF_ABOVE',
       severity: 'NONE',
       thresholdValue: '',
-      thresholdValueLow: '',
-      thresholdValueHigh: '',
     };
 
-    setSingleRow({
+    setRow({
+      platform,
       chain,
       market,
       rate: '0%', // We don't have actual rates from the alert data
-      conditionType: condition.conditionType as ConditionType,
       threshold: condition.thresholdValue?.toString() || '',
-      thresholdLow: condition.thresholdValueLow?.toString() || '',
-      thresholdHigh: condition.thresholdValueHigh?.toString() || '',
       severity: condition.severity as SeverityLevel,
       frequency: alert.notificationFrequency as NotificationFrequency,
     });
@@ -104,25 +102,92 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
   }, [alert]);
 
   // Update row functions
-  const updateRow = <K extends keyof (SupplyRow | BorrowRow)>(field: K, val: (SupplyRow | BorrowRow)[K]) => {
-    setSingleRow((prev) => ({ ...prev, [field]: val }));
+  const updateRow = <K extends keyof ComparisonRow>(field: K, val: ComparisonRow[K]) => {
+    setRow((prev) => ({ ...prev, [field]: val }));
+
+    // Clear validation errors
+    if (field === 'threshold' && errors.threshold) {
+      setErrors((prev) => ({ ...prev, threshold: undefined }));
+    }
   };
 
   // Channel functions
   const addChannel = () => setChannels((c) => [...c, { channelType: 'EMAIL', email: '' }]);
-  const updateChannel = <K extends keyof Channel>(idx: number, field: K, val: Channel[K]) =>
+
+  const updateChannel = <K extends keyof Channel>(idx: number, field: K, val: Channel[K]) => {
     setChannels((c) => c.map((ch, i) => (i === idx ? { ...ch, [field]: val } : ch)));
+
+    // Clear validation errors
+    if (errors.channels && errors.channels[idx]) {
+      const newErrors = [...errors.channels];
+      newErrors[idx] = '';
+
+      if (newErrors.every((err) => !err)) {
+        setErrors((prev) => ({ ...prev, channels: undefined }));
+      } else {
+        setErrors((prev) => ({ ...prev, channels: newErrors }));
+      }
+    }
+  };
+
   const removeChannel = (idx: number) => setChannels((c) => c.filter((_, i) => i !== idx));
 
-  // Options
-  const conditionOptions = [
-    { label: 'APR rises above threshold', value: 'APR_RISE_ABOVE' },
-    { label: 'APR falls below threshold', value: 'APR_FALLS_BELOW' },
-    { label: 'APR is outside a range', value: 'APR_OUTSIDE_RANGE' },
-  ] as const;
+  // Validate form
+  const validateForm = () => {
+    const newErrors: {
+      threshold?: string;
+      channels?: string[];
+    } = {};
+
+    // Validate threshold
+    if (!row.threshold || isNaN(Number(row.threshold))) {
+      newErrors.threshold = 'Threshold must be a valid number';
+    }
+
+    // Validate channels
+    const channelErrors: string[] = [];
+    channels.forEach((channel, index) => {
+      if (channel.channelType === 'EMAIL') {
+        if (!channel.email) {
+          channelErrors[index] = 'Email address is required';
+        } else {
+          const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRx.test(channel.email)) {
+            channelErrors[index] = 'Invalid email address';
+          }
+        }
+      } else if (channel.channelType === 'WEBHOOK') {
+        if (!channel.webhookUrl) {
+          channelErrors[index] = 'Webhook URL is required';
+        } else {
+          try {
+            new URL(channel.webhookUrl);
+          } catch {
+            channelErrors[index] = 'Invalid webhook URL';
+          }
+        }
+      }
+    });
+
+    if (channelErrors.some((error) => error)) {
+      newErrors.channels = channelErrors;
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   // Submit
   const handleUpdateAlert = async () => {
+    if (!validateForm()) {
+      showNotification({
+        type: 'error',
+        heading: 'Validation Error',
+        message: 'Please fix the errors in the form before submitting',
+      });
+      return;
+    }
+
     // Get the original chain and market - don't allow changes
     const chainId = alert.selectedChains?.[0]?.chainId || 0;
     const chainConnect = [{ chainId }];
@@ -133,30 +198,21 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
         chainId_address: `${asset.chainId}_${asset.address.toLowerCase()}`,
       })) || [];
 
-    // Build condition based on type
-    let condition;
-    if (singleRow.conditionType === 'APR_OUTSIDE_RANGE') {
-      condition = {
-        conditionType: singleRow.conditionType,
-        thresholdValueLow: singleRow.thresholdLow,
-        thresholdValueHigh: singleRow.thresholdHigh,
-        severity: singleRow.severity,
-      };
-    } else {
-      condition = {
-        conditionType: singleRow.conditionType,
-        thresholdValue: singleRow.threshold,
-        severity: singleRow.severity,
-      };
-    }
-
     const payload = {
       actionType,
       walletAddress,
-      notificationFrequency: singleRow.frequency,
+      notificationFrequency: row.frequency,
       selectedChains: chainConnect,
       selectedAssets: assetConnect,
-      conditions: [condition],
+      compareProtocols: [row.platform], // Keep the original platform
+      isComparison: true, // Ensure this remains a comparison alert
+      conditions: [
+        {
+          conditionType: actionType === 'SUPPLY' ? 'RATE_DIFF_ABOVE' : 'RATE_DIFF_BELOW',
+          thresholdValue: row.threshold,
+          severity: row.severity,
+        },
+      ],
       deliveryChannels: channels.map((c) => ({
         channelType: c.channelType,
         email: c.channelType === 'EMAIL' ? c.email : undefined,
@@ -171,8 +227,8 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-theme-primary">Edit Personalized Market Alert</h1>
-        <p className="text-theme-muted">Update your personalized alert for {actionType === 'SUPPLY' ? 'supply' : 'borrow'} positions.</p>
+        <h1 className="text-3xl font-bold mb-2 text-theme-primary">Edit Personalized Comparison Alert</h1>
+        <p className="text-theme-muted">Update your comparison alert for {actionType === 'SUPPLY' ? 'supply' : 'borrow'} positions.</p>
       </div>
 
       {/* Alert Status */}
@@ -200,77 +256,51 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
         </CardContent>
       </Card>
 
-      {/* Position Settings */}
+      {/* Comparison Settings */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1">
-          <CardTitle className="text-lg text-theme-primary">{actionType === 'SUPPLY' ? 'Supply' : 'Borrow'} Position</CardTitle>
+          <CardTitle className="text-lg text-theme-primary">{actionType === 'SUPPLY' ? 'Supply' : 'Borrow'} Comparison</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-theme-muted mb-4">Update alert conditions for your {actionType.toLowerCase()} position.</p>
+          <p className="text-sm text-theme-muted mb-4">
+            Update alert conditions for comparing Compound with {row.platform} for {actionType.toLowerCase()} rates.
+          </p>
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="border-primary-color">
+                  <TableHead className="text-theme-primary">Platform</TableHead>
                   <TableHead className="text-theme-primary">Chain</TableHead>
                   <TableHead className="text-theme-primary">Market</TableHead>
-                  <TableHead className="text-theme-primary">Condition</TableHead>
-                  <TableHead className="text-theme-primary">Threshold</TableHead>
+                  <TableHead className="text-theme-primary">Alert Me If {actionType === 'SUPPLY' ? 'Higher' : 'Lower'} By</TableHead>
                   <TableHead className="text-theme-primary">Severity</TableHead>
                   <TableHead className="text-theme-primary">Frequency</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 <TableRow className="border-primary-color">
-                  <TableCell className="text-theme-primary">{singleRow.chain}</TableCell>
-                  <TableCell className="text-theme-primary">{singleRow.market}</TableCell>
+                  <TableCell className="text-theme-primary">{row.platform}</TableCell>
+                  <TableCell className="text-theme-primary">{row.chain}</TableCell>
+                  <TableCell className="text-theme-primary">{row.market}</TableCell>
                   <TableCell>
-                    <Select value={singleRow.conditionType} onValueChange={(value) => updateRow('conditionType', value as ConditionType)}>
-                      <SelectTrigger className="w-full hover-border-primary">
-                        <SelectValue placeholder="Select condition" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-block">
-                        {conditionOptions.map((opt) => (
-                          <div key={opt.value} className="hover-border-primary hover-text-primary">
-                            <SelectItem value={opt.value}>{opt.label}</SelectItem>
-                          </div>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    {singleRow.conditionType === 'APR_OUTSIDE_RANGE' ? (
-                      <div className="flex items-center space-x-2">
-                        <Input
-                          type="text"
-                          placeholder="Min"
-                          value={singleRow.thresholdLow || ''}
-                          onChange={(e) => updateRow('thresholdLow', e.target.value)}
-                          className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                        />
-                        <Input
-                          type="text"
-                          placeholder="Max"
-                          value={singleRow.thresholdHigh || ''}
-                          onChange={(e) => updateRow('thresholdHigh', e.target.value)}
-                          className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                        />
-                        <span className="text-theme-muted">%</span>
-                      </div>
-                    ) : (
+                    <div className="flex flex-col">
                       <div className="flex items-center">
                         <Input
                           type="text"
                           placeholder="Value"
-                          value={singleRow.threshold || ''}
+                          value={row.threshold}
                           onChange={(e) => updateRow('threshold', e.target.value)}
-                          className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
+                          className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                            errors.threshold ? 'border-red-500' : ''
+                          }`}
                         />
-                        <span className="ml-2 text-theme-muted">%</span>
+                        <span className="ml-2 text-theme-muted">% APR</span>
                       </div>
-                    )}
+                      {errors.threshold && <div className="mt-1 text-red-500 text-sm">{errors.threshold}</div>}
+                    </div>
                   </TableCell>
                   <TableCell>
-                    <Select value={singleRow.severity} onValueChange={(value) => updateRow('severity', value as SeverityLevel)}>
+                    <Select value={row.severity} onValueChange={(value) => updateRow('severity', value as SeverityLevel)}>
                       <SelectTrigger className="w-[120px] hover-border-primary">
                         <SelectValue placeholder="Select severity" />
                       </SelectTrigger>
@@ -284,7 +314,7 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
                     </Select>
                   </TableCell>
                   <TableCell>
-                    <Select value={singleRow.frequency} onValueChange={(value) => updateRow('frequency', value as NotificationFrequency)}>
+                    <Select value={row.frequency} onValueChange={(value) => updateRow('frequency', value as NotificationFrequency)}>
                       <SelectTrigger className="w-[140px] hover-border-primary">
                         <SelectValue placeholder="Select frequency" />
                       </SelectTrigger>
@@ -332,21 +362,31 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
               </Select>
 
               {ch.channelType === 'EMAIL' ? (
-                <Input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={ch.email || ''}
-                  onChange={(e) => updateChannel(i, 'email', e.target.value)}
-                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                />
+                <div className="flex-1 flex flex-col">
+                  <Input
+                    type="email"
+                    placeholder="you@example.com"
+                    value={ch.email || ''}
+                    onChange={(e) => updateChannel(i, 'email', e.target.value)}
+                    className={`flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                      errors.channels && errors.channels[i] ? 'border-red-500' : ''
+                    }`}
+                  />
+                  {errors.channels && errors.channels[i] && <div className="mt-1 text-red-500 text-sm">{errors.channels[i]}</div>}
+                </div>
               ) : (
-                <Input
-                  type="url"
-                  placeholder="https://webhook.site/..."
-                  value={ch.webhookUrl || ''}
-                  onChange={(e) => updateChannel(i, 'webhookUrl', e.target.value)}
-                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                />
+                <div className="flex-1 flex flex-col">
+                  <Input
+                    type="url"
+                    placeholder="https://webhook.site/..."
+                    value={ch.webhookUrl || ''}
+                    onChange={(e) => updateChannel(i, 'webhookUrl', e.target.value)}
+                    className={`flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                      errors.channels && errors.channels[i] ? 'border-red-500' : ''
+                    }`}
+                  />
+                  {errors.channels && errors.channels[i] && <div className="mt-1 text-red-500 text-sm">{errors.channels[i]}</div>}
+                </div>
               )}
 
               {channels.length > 1 && (
@@ -361,7 +401,7 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
 
       {/* Action Buttons */}
       <div className="flex justify-between">
-        <Button onClick={() => router.push('/alerts')} className="border hover-border-primary">
+        <Button onClick={() => router.push('/alerts/compare-compound')} className="border hover-border-primary">
           <ArrowLeft size={16} className="mr-2" /> Back to Alerts
         </Button>
 

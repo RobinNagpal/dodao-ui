@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { ChevronRight, Home, Bell, Edit } from 'lucide-react';
 import PersonalizedMarketEditForm from '@/components/alerts/PersonalizedMarketEditForm';
 import CompoundMarketEditForm from '@/components/alerts/CompoundMarketEditForm';
+import PersonalizedComparisonEditForm from '@/components/alerts/PersonalizedComparisonEditForm';
+import CompoundComparisonEditForm from '@/components/alerts/CompoundComparisonEditForm';
 
 export default async function AlertEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -32,11 +34,21 @@ export default async function AlertEditPage({ params }: { params: Promise<{ id: 
         </span>
       </nav>
 
-      {/* Render the appropriate component based on alert category */}
+      {/* Render the appropriate component based on alert category and comparison flag */}
       {alert && alert.category === 'PERSONALIZED' ? (
-        <PersonalizedMarketEditForm alert={alert} alertId={id} />
+        alert.isComparison ? (
+          <PersonalizedComparisonEditForm alert={alert} alertId={id} />
+        ) : (
+          <PersonalizedMarketEditForm alert={alert} alertId={id} />
+        )
+      ) : alert && alert.category === 'GENERAL' ? (
+        alert.isComparison ? (
+          <CompoundComparisonEditForm alert={alert} alertId={id} />
+        ) : (
+          <CompoundMarketEditForm alert={alert} alertId={id} />
+        )
       ) : (
-        <CompoundMarketEditForm alert={alert} alertId={id} />
+        <div className="text-theme-primary">Loading alert data...</div>
       )}
     </div>
   );

@@ -67,7 +67,8 @@ export default function AlertsPage() {
     redirectPath: undefined,
   });
 
-  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+  // const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+  const userId = 'cmazjnqsd0000kqhc3c4c4t39';
 
   useEffect(() => {
     if (!userId) {
