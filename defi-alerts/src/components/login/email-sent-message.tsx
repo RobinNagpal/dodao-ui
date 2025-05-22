@@ -17,21 +17,15 @@ export function EmailSentMessage({ email, onChangeEmail }: EmailSentMessageProps
         </div>
         <h3 className="text-xl font-semibold text-theme-primary">Check your email</h3>
       </div>
-      
+
       <div className="text-center space-y-2">
         <p className="text-sm text-theme-muted">
-          We've sent an email to <span className="font-medium text-theme-primary">{email}</span> with a link to sign in.
+          We have sent an email to <span className="font-medium text-theme-primary">{email}</span> with a link to sign in.
         </p>
-        <p className="text-sm text-theme-muted">
-          Please check your inbox and click on the link to complete your login.
-        </p>
+        <p className="text-sm text-theme-muted">Please check your inbox and click on the link to complete your login.</p>
       </div>
-      
-      <Button 
-        type="button" 
-        className="w-full border text-primary-color hover-border-body" 
-        onClick={onChangeEmail}
-      >
+
+      <Button type="button" className="w-full border text-primary-color hover-border-body" onClick={onChangeEmail}>
         Use a different email
       </Button>
     </div>
