@@ -99,6 +99,12 @@ async function postHandler(request: NextRequest, username: string): Promise<Aler
     }
   }
 
+  // 1. Look up the user
+  const user = await prisma.user.findUnique({ where: { email_spaceId: { email, spaceId: 'default-alerts-space' } } });
+  if (!user) {
+    throw new Error('User not found');
+  }
+
   // 2. Map chain *names* to prisma connect objects
   const chainConnect = selectedChains.map((chainName) => {
     const cfg = CHAINS.find((c) => c.name === chainName);

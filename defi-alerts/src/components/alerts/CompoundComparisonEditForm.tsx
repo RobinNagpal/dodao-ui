@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { ChevronRight, Home, Bell, TrendingUp, Plus, X, ArrowLeft, AlertCircle } from 'lucide-react';
+import { Plus, X, ArrowLeft, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,29 +11,42 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { type Channel, type NotificationFrequency, type SeverityLevel, frequencyOptions, severityOptions, type GeneralComparisonRow } from '@/types/alerts';
+import {
+  type Channel,
+  type Alert,
+  type SeverityLevel,
+  type NotificationFrequency,
+  severityOptions,
+  frequencyOptions,
+  type GeneralComparisonRow,
+} from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { CompareCompoundAlertPayload, CompareCompoundAlertResponse } from '@/app/api/alerts/create/compare-compound/route';
-import { AlertActionType, AlertCategory, ConditionType, DeliveryChannelType, SeverityLevel as PrismaSeverityLevel } from '@prisma/client';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 
-export default function CompareCompoundPage() {
+interface CompoundComparisonEditFormProps {
+  alert: Alert;
+  alertId: string;
+}
+
+export default function CompoundComparisonEditForm({ alert, alertId }: CompoundComparisonEditFormProps) {
   const router = useRouter();
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
 
-  const { postData, loading: isSubmitting } = usePostData<CompareCompoundAlertResponse, CompareCompoundAlertPayload>({
-    successMessage: "You'll now be notified when Compound beats other rates.",
-    errorMessage: "Couldn't create comparison alert",
+  const { putData, loading: isSubmitting } = usePutData<Alert, any>({
+    successMessage: 'Your comparison alert was updated successfully.',
+    errorMessage: "Couldn't update comparison alert",
     redirectPath: '/alerts/compare-compound',
   });
 
   const [alertType, setAlertType] = useState<'supply' | 'borrow'>('supply');
+  const [status, setStatus] = useState<'ACTIVE' | 'PAUSED'>('ACTIVE');
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([]);
   const [notificationFrequency, setNotificationFrequency] = useState<NotificationFrequency>('ONCE_PER_ALERT');
 
+  // For thresholds
   const [thresholds, setThresholds] = useState<GeneralComparisonRow[]>([
     {
       platform: '',
@@ -57,7 +69,59 @@ export default function CompareCompoundPage() {
     channels?: string[];
   }>({});
 
-  // toggles
+  // Initialize form with alert data
+  useEffect(() => {
+    if (!alert) return;
+
+    // Set alert type
+    setAlertType(alert.actionType.toLowerCase() as 'supply' | 'borrow');
+    setStatus(alert.status as 'ACTIVE' | 'PAUSED');
+
+    // Set selected platforms
+    if (alert.compareProtocols?.length) {
+      setSelectedPlatforms(alert.compareProtocols);
+    }
+
+    // Set selected chains
+    if (alert.selectedChains?.length) {
+      setSelectedChains(alert.selectedChains.map((chain) => chain.name));
+    }
+
+    // Set selected markets
+    if (alert.selectedAssets?.length) {
+      setSelectedMarkets(alert.selectedAssets.map((asset) => (asset.symbol === 'WETH' ? 'ETH' : asset.symbol)));
+    }
+
+    // Set notification frequency
+    setNotificationFrequency(alert.notificationFrequency as NotificationFrequency);
+
+    // Set thresholds
+    if (alert.conditions?.length) {
+      setThresholds(
+        alert.conditions.map((c) => ({
+          platform: alert.compareProtocols?.[0] || '',
+          chain: alert.selectedChains?.[0]?.name || '',
+          market: alert.selectedAssets?.[0]?.symbol || '',
+          threshold: c.thresholdValue?.toString() || '',
+          severity: c.severity as SeverityLevel,
+          frequency: alert.notificationFrequency as NotificationFrequency,
+        }))
+      );
+    }
+
+    // Set channels
+    if (alert.deliveryChannels?.length) {
+      setChannels(
+        alert.deliveryChannels.map((c) => ({
+          channelType: c.channelType,
+          email: c.email || '',
+          webhookUrl: c.webhookUrl || '',
+        }))
+      );
+    }
+  }, [alert]);
+
+  // Toggle functions
   const togglePlatform = (p: string) => {
     setSelectedPlatforms((ps) => (ps.includes(p) ? ps.filter((x) => x !== p) : [...ps, p]));
     if (errors.platforms) {
@@ -79,7 +143,7 @@ export default function CompareCompoundPage() {
     }
   };
 
-  // threshold handlers
+  // Threshold functions
   const addThreshold = () =>
     setThresholds((ts) => [
       ...ts,
@@ -96,7 +160,7 @@ export default function CompareCompoundPage() {
   const updateThreshold = (idx: number, field: keyof GeneralComparisonRow, val: string) => {
     setThresholds((ts) => ts.map((t, i) => (i === idx ? { ...t, [field]: val } : t)));
 
-    // Clear validation error for this threshold if it exists
+    // Clear validation error if it exists
     if (errors.thresholds && errors.thresholds[idx]) {
       const newThresholdErrors = [...errors.thresholds];
       newThresholdErrors[idx] = '';
@@ -111,19 +175,19 @@ export default function CompareCompoundPage() {
 
   const removeThreshold = (idx: number) => setThresholds((ts) => ts.filter((_, i) => i !== idx));
 
-  // channel handlers
+  // Channel functions
   const addChannel = () => setChannels((ch) => [...ch, { channelType: 'EMAIL', email: '' }]);
 
-  const updateChannel = (idx: number, field: keyof Channel, val: string) => {
+  const updateChannel = <K extends keyof Channel>(idx: number, field: K, val: Channel[K]) => {
     setChannels((ch) => ch.map((c, i) => (i === idx ? { ...c, [field]: val } : c)));
 
-    // Clear validation error for this channel if it exists
+    // Clear validation error if it exists
     if (errors.channels && errors.channels[idx]) {
       const newChannelErrors = [...errors.channels];
 
-      if (field === 'email' && val && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+      if (field === 'email' && typeof val === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
         newChannelErrors[idx] = '';
-      } else if (field === 'webhookUrl' && val) {
+      } else if (field === 'webhookUrl' && typeof val === 'string') {
         try {
           new URL(val);
           newChannelErrors[idx] = '';
@@ -140,6 +204,7 @@ export default function CompareCompoundPage() {
 
   const removeChannel = (idx: number) => setChannels((ch) => ch.filter((_, i) => i !== idx));
 
+  // Validate form
   const validateForm = () => {
     const newErrors: {
       platforms?: string;
@@ -164,8 +229,8 @@ export default function CompareCompoundPage() {
 
     // Validate thresholds
     const thresholdErrors: string[] = [];
-    thresholds.forEach((t, index) => {
-      if (!t.threshold || isNaN(Number(t.threshold))) {
+    thresholds.forEach((threshold, index) => {
+      if (!threshold.threshold || isNaN(Number(threshold.threshold))) {
         thresholdErrors[index] = 'Threshold must be a valid number';
       }
     });
@@ -207,7 +272,8 @@ export default function CompareCompoundPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleCreateAlert = async () => {
+  // Submit function
+  const handleUpdateAlert = async () => {
     if (!validateForm()) {
       showNotification({
         type: 'error',
@@ -217,55 +283,69 @@ export default function CompareCompoundPage() {
       return;
     }
 
-    const payload: CompareCompoundAlertPayload = {
-      email: 'test@example.com',
-      category: 'GENERAL' as AlertCategory,
-      actionType: alertType.toUpperCase() as AlertActionType,
+    // Get the selected chains and assets
+    const chainConnects = selectedChains
+      .map((name) => {
+        // Find the matching chain from the original alert
+        const chain = alert.selectedChains?.find((c) => c.name === name);
+        if (chain) {
+          return { chainId: chain.chainId };
+        }
+        return null;
+      })
+      .filter(Boolean) as { chainId: number }[];
+
+    // Asset connections based on selected chains and markets
+    const assetConnects = selectedChains.flatMap((chainName) => {
+      // Find the matching chain
+      const chain = alert.selectedChains?.find((c) => c.name === chainName);
+      if (!chain) return [];
+
+      return selectedMarkets
+        .map((marketSymbol) => {
+          // Find the matching asset
+          const symbol = marketSymbol === 'ETH' ? 'WETH' : marketSymbol;
+          const asset = alert.selectedAssets?.find((a) => a.chainId === chain.chainId && a.symbol === symbol);
+          if (!asset) return null;
+
+          return {
+            chainId_address: `${asset.chainId}_${asset.address.toLowerCase()}`,
+          };
+        })
+        .filter(Boolean);
+    });
+
+    // Prepare conditions from thresholds
+    const conditions = thresholds.map((threshold) => ({
+      conditionType: alertType === 'supply' ? 'RATE_DIFF_ABOVE' : 'RATE_DIFF_BELOW',
+      thresholdValue: threshold.threshold,
+      severity: threshold.severity,
+    }));
+
+    const payload = {
+      actionType: alertType.toUpperCase(),
+      status,
       isComparison: true,
-      selectedChains,
-      selectedMarkets,
-      compareProtocols: selectedPlatforms,
       notificationFrequency,
-      conditions: thresholds.map((t) => ({
-        type: alertType === 'supply' ? ('RATE_DIFF_ABOVE' as ConditionType) : ('RATE_DIFF_BELOW' as ConditionType),
-        value: t.threshold,
-        severity: t.severity as PrismaSeverityLevel,
-      })),
+      selectedChains: chainConnects,
+      selectedAssets: assetConnects,
+      compareProtocols: selectedPlatforms,
+      conditions,
       deliveryChannels: channels.map((c) => ({
-        type: c.channelType as DeliveryChannelType,
+        channelType: c.channelType,
         email: c.channelType === 'EMAIL' ? c.email : undefined,
         webhookUrl: c.channelType === 'WEBHOOK' ? c.webhookUrl : undefined,
       })),
     };
 
-    await postData(`${baseUrl}/api/alerts/create/compare-compound`, payload);
+    await putData(`${baseUrl}/api/alerts/${alertId}`, payload);
   };
 
   return (
-    <div className="container max-w-6xl mx-auto px-2 py-8">
-      {/* Breadcrumb */}
-      <nav className="flex items-center text-sm mb-6">
-        <Link href="/" className="text-theme-muted hover-text-primary flex items-center gap-1">
-          <Home size={14} />
-          <span>Home</span>
-        </Link>
-        <ChevronRight size={14} className="mx-2 text-theme-muted" />
-        <Link href="/alerts" className="text-theme-muted hover-text-primary flex items-center gap-1">
-          <Bell size={14} />
-          <span>Alerts</span>
-        </Link>
-        <ChevronRight size={14} className="mx-2 text-theme-muted" />
-        <Link href="/alerts/create" className="text-theme-muted hover-text-primary flex items-center gap-1">
-          <TrendingUp size={14} />
-          <span>Create Alert</span>
-        </Link>
-        <ChevronRight size={14} className="mx-2 text-theme-muted" />
-        <span className="text-primary-color font-medium">Compare Compound</span>
-      </nav>
-
+    <>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-1 text-theme-primary">Compare Compound Rates</h1>
-        <p className="text-theme-muted">Set up alerts to monitor when Compound offers better rates than other DeFi platforms.</p>
+        <h1 className="text-3xl font-bold mb-2 text-theme-primary">Edit Compound Comparison Alert</h1>
+        <p className="text-theme-muted">Update your comparison alert settings to monitor when Compound beats other DeFi platforms.</p>
       </div>
 
       {/* Alert Type */}
@@ -276,7 +356,7 @@ export default function CompareCompoundPage() {
         <CardContent>
           <p className="text-sm text-theme-muted mb-4">Choose the type of alert you want to create.</p>
 
-          <RadioGroup value={alertType} onValueChange={(value) => setAlertType(value as 'supply' | 'borrow')} className="space-y-2">
+          <RadioGroup value={alertType} onValueChange={(v) => setAlertType(v as 'supply' | 'borrow')} className="space-y-2">
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="supply" id="supply" className="h-4 w-4 border border-default rounded-full radio-checked" />
               <Label htmlFor="supply" className="text-theme-primary label-checked">
@@ -287,6 +367,31 @@ export default function CompareCompoundPage() {
               <RadioGroupItem value="borrow" id="borrow" className="h-4 w-4 border border-default rounded-full radio-checked" />
               <Label htmlFor="borrow" className="text-theme-primary label-checked">
                 Borrow Comparison (Alert when Compound offers lower rates)
+              </Label>
+            </div>
+          </RadioGroup>
+        </CardContent>
+      </Card>
+
+      {/* Alert Status */}
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">Alert Status</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">Enable or disable this alert.</p>
+
+          <RadioGroup value={status} onValueChange={(v) => setStatus(v as 'ACTIVE' | 'PAUSED')} className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="ACTIVE" id="active" className="h-4 w-4 border border-default rounded-full radio-checked" />
+              <Label htmlFor="active" className="text-theme-primary label-checked">
+                Active
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="PAUSED" id="paused" className="h-4 w-4 border border-default rounded-full radio-checked" />
+              <Label htmlFor="paused" className="text-theme-primary label-checked">
+                Paused
               </Label>
             </div>
           </RadioGroup>
@@ -362,7 +467,6 @@ export default function CompareCompoundPage() {
                         </svg>
                       )}
                     </div>
-
                     <span className="text-theme-primary chip-label">{c}</span>
                   </div>
                 );
@@ -400,7 +504,6 @@ export default function CompareCompoundPage() {
                         </svg>
                       )}
                     </div>
-
                     <span className="text-theme-primary chip-label">{m}</span>
                   </div>
                 );
@@ -459,16 +562,14 @@ export default function CompareCompoundPage() {
               </div>
 
               <div className="col-span-5">
-                <Select value={th.severity} onValueChange={(value) => updateThreshold(i, 'severity', value as SeverityLevel)}>
+                <Select value={th.severity} onValueChange={(value) => updateThreshold(i, 'severity', value)}>
                   <SelectTrigger className="w-full hover-border-primary">
                     <SelectValue placeholder="Select severity" />
                   </SelectTrigger>
                   <SelectContent className="bg-block">
                     {severityOptions.map((opt) => (
                       <div key={opt.value} className="hover-border-primary hover-text-primary">
-                        <SelectItem key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </SelectItem>
+                        <SelectItem value={opt.value}>{opt.label}</SelectItem>
                       </div>
                     ))}
                   </SelectContent>
@@ -495,9 +596,7 @@ export default function CompareCompoundPage() {
               <SelectContent className="bg-block">
                 {frequencyOptions.map((opt) => (
                   <div key={opt.value} className="hover-border-primary hover-text-primary">
-                    <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </SelectItem>
+                    <SelectItem value={opt.value}>{opt.label}</SelectItem>
                   </div>
                 ))}
               </SelectContent>
@@ -509,7 +608,7 @@ export default function CompareCompoundPage() {
         </CardContent>
       </Card>
 
-      {/* Delivery Channel Settings */}
+      {/* Delivery Channels */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1 flex flex-row items-center justify-between">
           <CardTitle className="text-lg text-theme-primary">Delivery Channel Settings</CardTitle>
@@ -547,12 +646,7 @@ export default function CompareCompoundPage() {
                       errors.channels && errors.channels[i] ? 'border-red-500' : ''
                     }`}
                   />
-                  {errors.channels && errors.channels[i] && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={14} className="mr-1" />
-                      <span>{errors.channels[i]}</span>
-                    </div>
-                  )}
+                  {errors.channels && errors.channels[i] && <div className="mt-1 text-red-500 text-sm">{errors.channels[i]}</div>}
                 </div>
               ) : (
                 <div className="flex-1 flex flex-col">
@@ -565,12 +659,7 @@ export default function CompareCompoundPage() {
                       errors.channels && errors.channels[i] ? 'border-red-500' : ''
                     }`}
                   />
-                  {errors.channels && errors.channels[i] && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={14} className="mr-1" />
-                      <span>{errors.channels[i]}</span>
-                    </div>
-                  )}
+                  {errors.channels && errors.channels[i] && <div className="mt-1 text-red-500 text-sm">{errors.channels[i]}</div>}
                 </div>
               )}
 
@@ -586,16 +675,16 @@ export default function CompareCompoundPage() {
 
       {/* Action Buttons */}
       <div className="flex justify-between">
-        <Button onClick={() => router.push('/alerts/create')} className="border hover-border-primary">
-          <ArrowLeft size={16} className="mr-2" /> Back
+        <Button onClick={() => router.push('/alerts/compare-compound')} className="border hover-border-primary">
+          <ArrowLeft size={16} className="mr-2" /> Back to Alerts
         </Button>
 
         <div className="space-x-4">
-          <Button onClick={handleCreateAlert} className="border text-primary-color hover-border-body" disabled={isSubmitting}>
-            {isSubmitting ? 'Creating...' : 'Create Alert'}
+          <Button onClick={handleUpdateAlert} className="border text-primary-color hover-border-body" disabled={isSubmitting}>
+            {isSubmitting ? 'Updating...' : 'Update Alert'}
           </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
