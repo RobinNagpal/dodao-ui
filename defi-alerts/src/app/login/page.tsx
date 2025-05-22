@@ -72,26 +72,6 @@ export default function LoginPage() {
     }
   };
 
-  const handleVerificationSubmit = async (verificationCode: string) => {
-    try {
-      const userId = localStorage.getItem('userId');
-      const response = await postVerification(`${baseUrl}/api/verify`, {
-        code: verificationCode,
-        userId,
-        spaceId: await getAlertsSpaceIdClientSide(),
-      });
-
-      if (response) {
-        localStorage.setItem('isLoggedIn', 'true');
-        return null;
-      }
-      return 'Incorrect code. Please try again.';
-    } catch (err) {
-      console.error(err);
-      return 'Incorrect code. Please try again.';
-    }
-  };
-
   const handleUseAnotherEmail = () => {
     localStorage.removeItem('email');
     localStorage.removeItem('userId');
