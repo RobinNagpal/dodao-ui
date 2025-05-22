@@ -1,4 +1,4 @@
-export async function getAlertsSpaceIdClientSide(): Promise<string> {
+export function getAlertsSpaceIdClientSide(): string {
   if (typeof window === 'undefined') return 'compound';
 
   const host = window.location.host.split(':')[0];

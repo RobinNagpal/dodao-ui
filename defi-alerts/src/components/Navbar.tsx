@@ -1,5 +1,8 @@
 'use client';
 
+import { getAlertsSpaceIdClientSide } from '@/utils/getAlertsSpaceIdClientSide';
+import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -8,9 +11,16 @@ import { usePathname } from 'next/navigation';
 export default function Navbar() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const { data: session } = useSession();
+
+  console.log(`session`, session);
   if (pathname === '/login' || pathname === '/') {
     return null;
   }
+
+  const spaceId = getAlertsSpaceIdClientSide();
+  const { logout } = useAuth(spaceId);
 
   return (
     <header className="bg-theme-primary border-b">

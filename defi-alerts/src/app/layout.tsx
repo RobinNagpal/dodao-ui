@@ -1,9 +1,11 @@
+import Navbar from '@/components/Navbar';
+import SessionProvider from '@/providers/SessionProvider';
+import { NotificationWrapper } from '@dodao/web-core/components/layout/NotificationWrapper';
+import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
 import type { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.scss';
-import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { NotificationWrapper } from '@dodao/web-core/components/layout/NotificationWrapper';
-import Navbar from '@/components/Navbar';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -20,21 +22,26 @@ export const metadata: Metadata = {
   description: 'DeFi Alerts',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession();
+
   return (
     <html lang="en">
       <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
-        <NotificationProvider>
-          <>
-            <NotificationWrapper />
-            <Navbar />
-            {children}
-          </>
-        </NotificationProvider>
+        <SessionProvider session={session}>
+          <NotificationProvider>
+            <>
+              <NotificationWrapper />
+              <Navbar />
+              {children}
+              {children}
+            </>
+          </NotificationProvider>
+        </SessionProvider>
       </body>
     </html>
   );
