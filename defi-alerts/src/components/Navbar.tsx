@@ -1,16 +1,35 @@
 'use client';
 
+import { getAlertsSpaceIdClientSide } from '@/utils/getAlertsSpaceIdClientSide';
+import { useAuth } from '@dodao/web-core/ui/auth/useAuth';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { Plus } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  if (pathname === '/login' || pathname === '/') {
+
+  const { data: session } = useSession();
+  const spaceId = getAlertsSpaceIdClientSide();
+  const { logout } = useAuth(spaceId);
+  const isLoggedIn = !!session;
+
+  if (pathname === '/login' || (pathname === '/' && !session?.user)) {
     return null;
   }
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  const handleCreateAlert = () => {
+    router.push('/alerts/create');
+  };
 
   return (
     <header className="bg-theme-primary border-b">
@@ -38,11 +57,28 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Login button stays on the right */}
-        <div className="hidden lg:flex">
-          <a href="/login" className="px-4 py-2 text-sm bg-primary-color text-primary-text border border-transparent rounded-lg hover-border-body">
-            Login <span aria-hidden="true">&rarr;</span>
-          </a>
+        {/* Right side buttons */}
+        <div className="hidden lg:flex lg:items-center lg:gap-x-4">
+          {isLoggedIn ? (
+            <>
+              <button
+                onClick={handleCreateAlert}
+                className="px-4 py-2 text-sm bg-primary-color text-primary-text border border-transparent rounded-lg hover-border-body"
+              >
+                <Plus size={16} className="inline mr-1" /> Create Alert
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 text-sm border border-primary-color text-theme-primary rounded-lg hover-bg-primary-color hover-text-primary-text"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <a href="/login" className="px-4 py-2 text-sm bg-primary-color text-primary-text border border-transparent rounded-lg hover-border-body">
+              Login <span aria-hidden="true">&rarr;</span>
+            </a>
+          )}
         </div>
 
         {/* Mobile menu button */}
@@ -78,9 +114,23 @@ export default function Navbar() {
             <a href="/alerts/history" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">
               History
             </a>
-            <a href="/login" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">
-              Log in
-            </a>
+            {isLoggedIn ? (
+              <>
+                <button
+                  onClick={handleCreateAlert}
+                  className="w-full text-left block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50"
+                >
+                  <Plus size={16} className="inline mr-1" /> Create Alert
+                </button>
+                <button onClick={handleLogout} className="w-full text-left block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <a href="/login" className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">
+                Log in
+              </a>
+            )}
           </div>
         </DialogPanel>
       </Dialog>

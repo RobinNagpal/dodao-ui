@@ -173,12 +173,6 @@ export default function AlertsPage() {
           <h1 className="text-3xl font-bold mb-2 text-theme-primary">Market Alerts</h1>
           <p className="text-theme-muted">Monitor market rates and get notified when conditions are met.</p>
         </div>
-        <Button
-          onClick={() => router.push('/alerts/create')}
-          className="mt-4 md:mt-0 bg-primary-color text-primary-text border border-transparent hover-border-body"
-        >
-          <Plus size={16} className="mr-1" /> Create Alert
-        </Button>
       </div>
 
       {/* Filter tabs */}

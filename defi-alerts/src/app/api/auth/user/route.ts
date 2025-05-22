@@ -74,7 +74,7 @@ async function postHandler(request: NextRequest): Promise<UserCreationResponse> 
     data: {
       email: userData.email,
       spaceId: spaceId,
-      username: userData.username,
+      username: userData.email,
       authProvider: 'Email',
     },
   });

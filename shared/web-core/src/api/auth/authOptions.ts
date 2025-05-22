@@ -1,4 +1,5 @@
 import { createHash } from '@dodao/web-core/api/auth/createHash';
+import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { DoDaoJwtTokenPayload, Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
 import { PrismaUserAdapter, PrismaVerificationTokenAdapter } from '@dodao/web-core/types/prisma/prismaAdapters';
@@ -61,73 +62,172 @@ export function getAuthOptions(
           req: Pick<RequestInternal, 'body' | 'query' | 'headers' | 'method'>
         ) {
           console.log('authorize - credentials', credentials);
+          console.log('[authOptions] Attempting to find verification token');
 
-          const verificationToken = await p.verificationToken.findFirstOrThrow({
-            where: { token: await createHash(`${credentials?.token}${process.env.EMAIL_TOKEN_SECRET!}`) },
-          });
-          console.log('verificationToken', verificationToken);
-
-          if (!verificationToken) {
+          let verificationToken;
+          try {
+            verificationToken = await p.verificationToken.findFirstOrThrow({
+              where: { token: await createHash(`${credentials?.token}${process.env.EMAIL_TOKEN_SECRET!}`) },
+            });
+            console.log('verificationToken', verificationToken);
+            console.log('[authOptions] Verification token found successfully');
+          } catch (error) {
+            await logError('Failed to find verification token', { token: credentials?.token }, error as Error, credentials?.spaceId);
             console.error('Verification token not found - ', credentials?.token);
             return null;
           }
 
-          await p.verificationToken.delete({
-            where: { token: await createHash(`${credentials?.token}${process.env.EMAIL_TOKEN_SECRET!}`) },
-          });
+          if (!verificationToken) {
+            await logError('Verification token not found after successful query', { token: credentials?.token }, null, credentials?.spaceId);
+            console.error('Verification token not found - ', credentials?.token);
+            return null;
+          }
+
+          console.log('[authOptions] Deleting verification token');
+          try {
+            await p.verificationToken.delete({
+              where: { token: await createHash(`${credentials?.token}${process.env.EMAIL_TOKEN_SECRET!}`) },
+            });
+            console.log('[authOptions] Verification token deleted successfully');
+          } catch (error) {
+            await logError('Failed to delete verification token', { token: credentials?.token }, error as Error, credentials?.spaceId);
+          }
 
           const expired = verificationToken.expires.valueOf() < Date.now();
 
           console.log('expired', expired, verificationToken.expires.valueOf(), Date.now());
-          if (expired) return null;
+          console.log(`[authOptions] Token expiration check: ${expired ? 'Token expired' : 'Token valid'}`);
+
+          if (expired) {
+            await logError(
+              'Token expired',
+              {
+                tokenExpiry: verificationToken.expires.valueOf(),
+                currentTime: Date.now(),
+                identifier: verificationToken.identifier,
+              },
+              null,
+              credentials?.spaceId
+            );
+            return null;
+          }
 
           // We do this because we want to allow to login on TidbitsHub only using the email. If a user create a space
           // and then comes back to login via Tidbits hub, this flow will be invoked.
-          const user =
-            credentials?.spaceId === PredefinedSpaces.TIDBITS_HUB
-              ? await p.user.findFirst({
-                  where: {
+          console.log(`[authOptions] Looking for user with email ${verificationToken.identifier} in space ${credentials?.spaceId}`);
+
+          let user;
+          try {
+            if (credentials?.spaceId === PredefinedSpaces.TIDBITS_HUB) {
+              console.log('[authOptions] Searching in TIDBITS_HUB space');
+              user = await p.user.findFirst({
+                where: {
+                  email: verificationToken.identifier,
+                },
+              });
+              console.log('[authOptions] User search in TIDBITS_HUB completed');
+            } else {
+              console.log(`[authOptions] Searching in specific space: ${credentials?.spaceId}`);
+              user = await p.user.findUnique({
+                where: {
+                  email_spaceId: {
                     email: verificationToken.identifier,
+                    spaceId: credentials?.spaceId!,
                   },
-                })
-              : await p.user.findUnique({
-                  where: {
-                    email_spaceId: {
-                      email: verificationToken.identifier,
-                      spaceId: credentials?.spaceId!,
-                    },
-                  },
-                });
+                },
+              });
+              console.log('[authOptions] User search in specific space completed');
+            }
+          } catch (error) {
+            await logError(
+              'Failed to find user',
+              {
+                email: verificationToken.identifier,
+                spaceId: credentials?.spaceId,
+              },
+              error as Error,
+              credentials?.spaceId
+            );
+          }
 
           console.log('user - user', user);
-          if (!user) {
-            const user = await p.user.findFirst({
-              where: {
-                email: verificationToken.identifier,
-              },
-            });
+          console.log(`[authOptions] User found: ${user ? 'Yes' : 'No'}`);
 
-            if (!user) {
+          if (!user) {
+            console.log('[authOptions] User not found in specified space, trying to find in any space');
+            let globalUser;
+            try {
+              globalUser = await p.user.findFirst({
+                where: {
+                  email: verificationToken.identifier,
+                },
+              });
+              console.log(`[authOptions] Global user search result: ${globalUser ? 'Found' : 'Not found'}`);
+            } catch (error) {
+              await logError(
+                'Failed to find user globally',
+                {
+                  email: verificationToken.identifier,
+                },
+                error as Error,
+                credentials?.spaceId
+              );
+            }
+
+            if (!globalUser) {
+              await logError(
+                'User not found',
+                {
+                  email: verificationToken.identifier,
+                  spaceId: credentials?.spaceId,
+                },
+                null,
+                credentials?.spaceId
+              );
               console.error('User not found - ', verificationToken.identifier);
               return null;
             }
 
-            console.warn('User found but not in the space. Creating a new one - ', user);
-            await p.user.create({
-              data: {
-                email: verificationToken.identifier,
-                username: verificationToken.identifier,
-                name: user.name,
-                authProvider: 'custom-email',
-                spaceId: credentials?.spaceId!,
-              },
-            });
+            console.warn('User found but not in the space. Creating a new one - ', globalUser);
+            console.log(`[authOptions] Creating new user in space ${credentials?.spaceId}`);
 
-            return {
-              id: user.id,
-              name: user.name,
-              username: user.name,
-            };
+            try {
+              const newUser = await p.user.create({
+                data: {
+                  email: verificationToken.identifier,
+                  username: verificationToken.identifier,
+                  name: globalUser.name,
+                  authProvider: 'custom-email',
+                  spaceId: credentials?.spaceId!,
+                },
+              });
+
+              console.log(`[authOptions] User created successfully with ID: ${newUser.id}`);
+
+              return {
+                id: globalUser.id,
+                name: globalUser.name,
+                username: globalUser.name,
+              };
+            } catch (error) {
+              await logError(
+                'Failed to create user',
+                {
+                  email: verificationToken.identifier,
+                  spaceId: credentials?.spaceId,
+                  authProvider: 'custom-email',
+                },
+                error as Error,
+                credentials?.spaceId
+              );
+
+              // Still return the global user info to allow login
+              return {
+                id: globalUser.id,
+                name: globalUser.name,
+                username: globalUser.name,
+              };
+            }
           } else {
             return {
               id: user.id,
@@ -144,21 +244,45 @@ export function getAuthOptions(
         credentials: {},
         authorize: async (credentials, req) => {
           console.log('req', req.query);
+          console.log('[authOptions] Near Wallet Auth - Processing authorization request');
+
           const accountId = req.query?.accountId || '';
           const spaceId = req.query?.spaceId || '';
-          const user = await p.user.upsert({
-            where: { publicAddress_spaceId: { publicAddress: accountId, spaceId } },
-            create: {
-              publicAddress: accountId,
-              username: accountId,
-              name: accountId,
-              authProvider: 'near',
-              spaceId,
-            },
-            update: {},
-          });
-          console.log('user', user);
-          return Promise.resolve(user);
+
+          console.log(`[authOptions] Near Wallet Auth - Account ID: ${accountId}, Space ID: ${spaceId}`);
+
+          try {
+            console.log('[authOptions] Near Wallet Auth - Upserting user');
+            const user = await p.user.upsert({
+              where: { publicAddress_spaceId: { publicAddress: accountId, spaceId } },
+              create: {
+                publicAddress: accountId,
+                username: accountId,
+                name: accountId,
+                authProvider: 'near',
+                spaceId,
+              },
+              update: {},
+            });
+
+            console.log(`[authOptions] Near Wallet Auth - User upserted successfully with ID: ${user.id}`);
+            console.log('user', user);
+
+            return Promise.resolve(user);
+          } catch (error) {
+            await logError(
+              'Failed to upsert user with Near Wallet Auth',
+              {
+                accountId,
+                spaceId,
+                authProvider: 'near',
+              },
+              error as Error,
+              spaceId
+            );
+
+            return Promise.reject(error);
+          }
         },
       },
       DiscordProvider({
@@ -210,17 +334,33 @@ export function getAuthOptions(
     callbacks: {
       async session(params): Promise<Session> {
         const { session, user, token } = params;
+        console.log('[authOptions] Session callback - Processing session');
 
         let userInfo: any = {};
         if (token.sub) {
-          const dbUser: User | null = await p.user.findUnique({
-            where: { id: token.sub },
-          });
-          if (dbUser) {
-            userInfo.username = dbUser.username;
-            userInfo.authProvider = dbUser.authProvider;
-            userInfo.spaceId = dbUser.spaceId;
-            userInfo.id = dbUser.id;
+          console.log(`[authOptions] Session callback - Looking up user with ID: ${token.sub}`);
+          try {
+            const dbUser: User | null = await p.user.findUnique({
+              where: { id: token.sub },
+            });
+
+            if (dbUser) {
+              console.log(`[authOptions] Session callback - User found: ${dbUser.username}`);
+              userInfo.username = dbUser.username;
+              userInfo.authProvider = dbUser.authProvider;
+              userInfo.spaceId = dbUser.spaceId;
+              userInfo.id = dbUser.id;
+            } else {
+              console.log(`[authOptions] Session callback - No user found with ID: ${token.sub}`);
+            }
+          } catch (error) {
+            await logError(
+              'Failed to find user in session callback',
+              {
+                userId: token.sub,
+              },
+              error as Error
+            );
           }
         }
         const doDaoJwtTokenPayload: DoDaoJwtTokenPayload = {
@@ -239,19 +379,35 @@ export function getAuthOptions(
 
       jwt: async (params) => {
         const { token, user, account, profile, isNewUser } = params;
+        console.log('[authOptions] JWT callback - Processing JWT token');
 
         if (token.sub) {
-          const dbUser: User | null = await p.user.findUnique({
-            where: { id: token.sub },
-          });
+          console.log(`[authOptions] JWT callback - Looking up user with ID: ${token.sub}`);
+          try {
+            const dbUser: User | null = await p.user.findUnique({
+              where: { id: token.sub },
+            });
 
-          if (dbUser) {
-            token.spaceId = dbUser.spaceId;
-            token.username = dbUser.username;
-            token.authProvider = dbUser.authProvider;
-            token.accountId = dbUser.id;
+            if (dbUser) {
+              console.log(`[authOptions] JWT callback - User found: ${dbUser.username}`);
+              token.spaceId = dbUser.spaceId;
+              token.username = dbUser.username;
+              token.authProvider = dbUser.authProvider;
+              token.accountId = dbUser.id;
+            } else {
+              console.log(`[authOptions] JWT callback - No user found with ID: ${token.sub}`);
+            }
+          } catch (error) {
+            await logError(
+              'Failed to find user in JWT callback',
+              {
+                userId: token.sub,
+              },
+              error as Error
+            );
           }
         }
+        console.log('[authOptions] JWT callback - Returning token');
         return token;
       },
       ...(overrides?.callbacks || {}),
@@ -263,13 +419,16 @@ export function getAuthOptions(
     },
     logger: {
       error(code, metadata) {
-        console.error(code, metadata);
+        console.error('[authOptions] NextAuth error:', code, metadata);
+        logError(`NextAuth error: ${code}`, metadata || {}).catch((err) => {
+          console.error('[authOptions] Failed to log NextAuth error:', err);
+        });
       },
       warn(code) {
-        console.warn(code);
+        console.warn('[authOptions] NextAuth warning:', code);
       },
       debug(code, metadata) {
-        console.debug(code, metadata);
+        console.debug('[authOptions] NextAuth debug:', code, metadata);
       },
     },
     cookies: {
