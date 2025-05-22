@@ -29,9 +29,9 @@ export default function LoginTokenVerificationPage({ space }: CallbackPageProps)
 
   const searchParams = useSearchParams();
   const context = searchParams.get('context');
-  console.log('[LoginTokenVerificationPage] Search params retrieved:', { 
-    context, 
-    allParams: Object.fromEntries([...searchParams.entries()]) 
+  console.log('[LoginTokenVerificationPage] Search params retrieved:', {
+    context,
+    allParams: Object.fromEntries([...searchParams.entries()]),
   });
 
   useEffect(() => {
@@ -57,11 +57,11 @@ export default function LoginTokenVerificationPage({ space }: CallbackPageProps)
         console.log('[LoginTokenVerificationPage] Attempting to sign in with token');
         // Attempt to sign in
         try {
-          console.log('[LoginTokenVerificationPage] Calling signIn with params:', { 
-            provider: 'custom-email', 
+          console.log('[LoginTokenVerificationPage] Calling signIn with params:', {
+            provider: 'custom-email',
             redirect: false,
             callbackUrl: fullCallbackUrl,
-            spaceId: space.id
+            spaceId: space.id,
           });
 
           const result = await signIn('custom-email', {
@@ -87,10 +87,10 @@ export default function LoginTokenVerificationPage({ space }: CallbackPageProps)
           } else {
             // Handle sign-in failure (e.g., invalid token) as needed
             console.error('[LoginTokenVerificationPage] Failed to sign in', result);
-            console.log('[LoginTokenVerificationPage] Sign-in failed with result:', { 
-              ok: result?.ok, 
-              url: result?.url, 
-              error: result?.error 
+            console.log('[LoginTokenVerificationPage] Sign-in failed with result:', {
+              ok: result?.ok,
+              url: result?.url,
+              error: result?.error,
             });
             // Redirect to an error page or display an error message
           }

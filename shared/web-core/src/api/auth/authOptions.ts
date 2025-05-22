@@ -99,11 +99,16 @@ export function getAuthOptions(
           console.log(`[authOptions] Token expiration check: ${expired ? 'Token expired' : 'Token valid'}`);
 
           if (expired) {
-            await logError('Token expired', { 
-              tokenExpiry: verificationToken.expires.valueOf(), 
-              currentTime: Date.now(),
-              identifier: verificationToken.identifier
-            }, null, credentials?.spaceId);
+            await logError(
+              'Token expired',
+              {
+                tokenExpiry: verificationToken.expires.valueOf(),
+                currentTime: Date.now(),
+                identifier: verificationToken.identifier,
+              },
+              null,
+              credentials?.spaceId
+            );
             return null;
           }
 
@@ -134,10 +139,15 @@ export function getAuthOptions(
               console.log('[authOptions] User search in specific space completed');
             }
           } catch (error) {
-            await logError('Failed to find user', { 
-              email: verificationToken.identifier, 
-              spaceId: credentials?.spaceId 
-            }, error as Error, credentials?.spaceId);
+            await logError(
+              'Failed to find user',
+              {
+                email: verificationToken.identifier,
+                spaceId: credentials?.spaceId,
+              },
+              error as Error,
+              credentials?.spaceId
+            );
           }
 
           console.log('user - user', user);
@@ -154,16 +164,26 @@ export function getAuthOptions(
               });
               console.log(`[authOptions] Global user search result: ${globalUser ? 'Found' : 'Not found'}`);
             } catch (error) {
-              await logError('Failed to find user globally', { 
-                email: verificationToken.identifier 
-              }, error as Error, credentials?.spaceId);
+              await logError(
+                'Failed to find user globally',
+                {
+                  email: verificationToken.identifier,
+                },
+                error as Error,
+                credentials?.spaceId
+              );
             }
 
             if (!globalUser) {
-              await logError('User not found', { 
-                email: verificationToken.identifier,
-                spaceId: credentials?.spaceId
-              }, null, credentials?.spaceId);
+              await logError(
+                'User not found',
+                {
+                  email: verificationToken.identifier,
+                  spaceId: credentials?.spaceId,
+                },
+                null,
+                credentials?.spaceId
+              );
               console.error('User not found - ', verificationToken.identifier);
               return null;
             }
@@ -190,11 +210,16 @@ export function getAuthOptions(
                 username: globalUser.name,
               };
             } catch (error) {
-              await logError('Failed to create user', { 
-                email: verificationToken.identifier,
-                spaceId: credentials?.spaceId,
-                authProvider: 'custom-email'
-              }, error as Error, credentials?.spaceId);
+              await logError(
+                'Failed to create user',
+                {
+                  email: verificationToken.identifier,
+                  spaceId: credentials?.spaceId,
+                  authProvider: 'custom-email',
+                },
+                error as Error,
+                credentials?.spaceId
+              );
 
               // Still return the global user info to allow login
               return {
@@ -245,11 +270,16 @@ export function getAuthOptions(
 
             return Promise.resolve(user);
           } catch (error) {
-            await logError('Failed to upsert user with Near Wallet Auth', { 
-              accountId,
-              spaceId,
-              authProvider: 'near'
-            }, error as Error, spaceId);
+            await logError(
+              'Failed to upsert user with Near Wallet Auth',
+              {
+                accountId,
+                spaceId,
+                authProvider: 'near',
+              },
+              error as Error,
+              spaceId
+            );
 
             return Promise.reject(error);
           }
@@ -324,9 +354,13 @@ export function getAuthOptions(
               console.log(`[authOptions] Session callback - No user found with ID: ${token.sub}`);
             }
           } catch (error) {
-            await logError('Failed to find user in session callback', { 
-              userId: token.sub 
-            }, error as Error);
+            await logError(
+              'Failed to find user in session callback',
+              {
+                userId: token.sub,
+              },
+              error as Error
+            );
           }
         }
         const doDaoJwtTokenPayload: DoDaoJwtTokenPayload = {
@@ -364,9 +398,13 @@ export function getAuthOptions(
               console.log(`[authOptions] JWT callback - No user found with ID: ${token.sub}`);
             }
           } catch (error) {
-            await logError('Failed to find user in JWT callback', { 
-              userId: token.sub 
-            }, error as Error);
+            await logError(
+              'Failed to find user in JWT callback',
+              {
+                userId: token.sub,
+              },
+              error as Error
+            );
           }
         }
         console.log('[authOptions] JWT callback - Returning token');
@@ -382,7 +420,7 @@ export function getAuthOptions(
     logger: {
       error(code, metadata) {
         console.error('[authOptions] NextAuth error:', code, metadata);
-        logError(`NextAuth error: ${code}`, metadata || {}).catch(err => {
+        logError(`NextAuth error: ${code}`, metadata || {}).catch((err) => {
           console.error('[authOptions] Failed to log NextAuth error:', err);
         });
       },

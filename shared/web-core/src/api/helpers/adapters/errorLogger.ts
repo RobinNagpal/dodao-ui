@@ -16,19 +16,23 @@ export async function logError(
     spaceId,
     blockchain,
     errorName: e?.name,
-    errorMessage: e?.message
+    errorMessage: e?.message,
   });
 
   // Always log the error to console, even if it's going to be ignored for Discord
   console.error(
     '[errorLogger] Error details:',
     e,
-    JSON.stringify({
-      spaceId,
-      blockchain,
-      message,
-      params,
-    }, null, 2)
+    JSON.stringify(
+      {
+        spaceId,
+        blockchain,
+        message,
+        params,
+      },
+      null,
+      2
+    )
   );
 
   // Only skip posting to Discord if the error should be ignored
@@ -53,7 +57,7 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
     errorName: typeof e === 'object' ? (e as Error).name : 'N/A',
     errorMessage: typeof e === 'object' ? (e as Error).message : e,
     requestUrl: req.url,
-    requestMethod: req.method
+    requestMethod: req.method,
   });
 
   // Always log the error to console
@@ -115,7 +119,7 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
 function shouldIgnoreError(e: Error | string) {
   console.log('[errorLogger] shouldIgnoreError checking error:', {
     type: typeof e,
-    value: typeof e === 'string' ? e.substring(0, 100) : (e as Error).message?.substring(0, 100)
+    value: typeof e === 'string' ? e.substring(0, 100) : (e as Error).message?.substring(0, 100),
   });
 
   if (typeof e === 'string' && e.includes(staticPageGenerationError)) {
@@ -145,7 +149,7 @@ async function postErrorOnDiscord(e: Error | null, spaceId: string | null, block
     errorMessage: e?.message?.substring(0, 100),
     spaceId,
     blockchain,
-    messagePreview: message?.substring(0, 100) + (message?.length > 100 ? '...' : '')
+    messagePreview: message?.substring(0, 100) + (message?.length > 100 ? '...' : ''),
   });
 
   console.log('[errorLogger] Preparing Discord embed data');
