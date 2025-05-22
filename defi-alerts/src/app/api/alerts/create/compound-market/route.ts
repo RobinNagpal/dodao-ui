@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { AlertActionType, NotificationFrequency, ConditionType, SeverityLevel, DeliveryChannelType, Alert, User } from '@prisma/client';
-import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { UserContext, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 import { CHAINS, MARKETS } from '@/shared/web3/config';
 
-export interface CreateAlertPayload {
-  email: string;
-  spaceId: string;
+export interface CreateCompoundAlertPayload {
   actionType: AlertActionType;
   selectedChains: string[];
   selectedMarkets: string[];
@@ -32,9 +30,10 @@ export interface AlertCreationResponse {
   alertId: string;
 }
 
-async function postHandler(request: NextRequest, username: string): Promise<AlertCreationResponse> {
-  const { actionType, spaceId, selectedChains, selectedMarkets, notificationFrequency, conditions, deliveryChannels } =
-    (await request.json()) as CreateAlertPayload;
+async function postHandler(request: NextRequest, userContext: UserContext): Promise<AlertCreationResponse> {
+  const { username, spaceId } = userContext;
+  const { actionType, selectedChains, selectedMarkets, notificationFrequency, conditions, deliveryChannels } =
+    (await request.json()) as CreateCompoundAlertPayload;
 
   if (!actionType) {
     throw new Error('Missing required field: actionType');
@@ -100,7 +99,7 @@ async function postHandler(request: NextRequest, username: string): Promise<Aler
   }
 
   // 1. Look up the user
-  const user = await prisma.user.findUnique({ where: { email_spaceId: { email, spaceId: 'default-alerts-space' } } });
+  const user = await prisma.user.findUnique({ where: { username_spaceId: { username, spaceId } } });
   if (!user) {
     throw new Error('User not found');
   }

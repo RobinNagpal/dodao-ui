@@ -1,3 +1,4 @@
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextResponse, NextRequest } from 'next/server';
 import { logError, logErrorRequest } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { ErrorResponse, RedirectResponse } from '@dodao/web-core/types/errors/ErrorResponse';
@@ -81,8 +82,11 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
   };
 }
 
-type HandlerWithUser<T> = (req: NextRequest, username: string) => Promise<T>;
-type HandlerWithUserAndParams<T> = (req: NextRequest, username: string, dynamic: { params: any }) => Promise<T>;
+export interface UserContext extends DoDaoJwtTokenPayload {}
+
+type HandlerWithUser<T> = (req: NextRequest, userContext: UserContext) => Promise<T>;
+
+type HandlerWithUserAndParams<T> = (req: NextRequest, userContext: UserContext, dynamic: { params: any }) => Promise<T>;
 
 export function withLoggedInUser<T>(handler: HandlerWithUser<T> | HandlerWithUserAndParams<T>): Handler<T> {
   return async (req: NextRequest, dynamic: { params: any }): Promise<NextResponse<T | ErrorResponse | RedirectResponse>> => {
@@ -102,8 +106,8 @@ export function withLoggedInUser<T>(handler: HandlerWithUser<T> | HandlerWithUse
         return NextResponse.redirect(new URL('/login', req.url), { status: 307 });
       }
 
-      console.log('[withLoggedInUser] User found, executing handler function');
-      const result = await handler(req, decodedJwt.username, dynamic);
+      console.log('[withLoggedInUser] User found, executing handler function for user:', decodedJwt.username);
+      const result = await handler(req, decodedJwt, dynamic);
       console.log('[withLoggedInUser] Handler executed successfully, returning JSON response with status 200');
       return NextResponse.json(result, { status: 200 });
     } catch (error) {
