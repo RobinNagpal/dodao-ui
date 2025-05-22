@@ -1,3 +1,4 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import Navbar from '@/components/Navbar';
 import SessionProvider from '@/providers/SessionProvider';
 import { NotificationWrapper } from '@dodao/web-core/components/layout/NotificationWrapper';
@@ -29,7 +30,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   // Redirect to login if not logged in
   if (!session) {
