@@ -99,7 +99,7 @@ async function postHandler(request: NextRequest): Promise<AlertCreationResponse>
   }
 
   // 1. Look up the user
-  const user = await prisma.user.findUnique({ where: { email_spaceId: { email, spaceId: 'compound' } } });
+  const user = await prisma.user.findUnique({ where: { email_spaceId: { email, spaceId: 'default-alerts-space' } } });
   if (!user) {
     throw new Error('User not found');
   }

@@ -21,6 +21,9 @@ import {
   type NotificationFrequency,
 } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 interface PersonalizedMarketEditFormProps {
   alert: Alert;
@@ -31,6 +34,12 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
   const router = useRouter();
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
+
+  const { putData, loading: isSubmitting } = usePutData<Alert, any>({
+    successMessage: 'Your personalized alert was updated successfully.',
+    errorMessage: "Couldn't update personalized alert",
+    redirectPath: '/alerts',
+  });
 
   const [email, setEmail] = useState<string>('');
   const [walletAddress, setWalletAddress] = useState<string>('');
@@ -114,28 +123,15 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
 
   // Submit
   const handleUpdateAlert = async () => {
-    // Map chain and asset to the format expected by the API
-    const chainId =
-      singleRow.chain === 'Ethereum'
-        ? 1
-        : singleRow.chain === 'Optimism'
-        ? 10
-        : singleRow.chain === 'Arbitrum'
-        ? 42161
-        : singleRow.chain === 'Polygon'
-        ? 137
-        : singleRow.chain === 'Base'
-        ? 8453
-        : singleRow.chain === 'Mantle'
-        ? 5000
-        : singleRow.chain === 'Scroll'
-        ? 534352
-        : 0;
-
+    // Get the original chain and market - don't allow changes
+    const chainId = alert.selectedChains?.[0]?.chainId || 0;
     const chainConnect = [{ chainId }];
 
-    // Simplified asset connect
-    const assetConnect = [{ chainId_address: `${chainId}_${singleRow.market.toLowerCase()}` }];
+    // Use the original asset connection
+    const assetConnect =
+      alert.selectedAssets?.map((asset) => ({
+        chainId_address: `${asset.chainId}_${asset.address.toLowerCase()}`,
+      })) || [];
 
     // Build condition based on type
     let condition;
@@ -169,33 +165,7 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
       status,
     };
 
-    try {
-      const res = await fetch(`${baseUrl}/api/alerts/${alertId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || 'Failed to update alert');
-      }
-
-      showNotification({
-        type: 'success',
-        heading: 'Alert updated',
-        message: 'Your personalized alert was updated successfully.',
-      });
-
-      router.push('/alerts');
-    } catch (err: any) {
-      console.error('Error updating alert:', err);
-      showNotification({
-        type: 'error',
-        heading: 'Error',
-        message: err.message || 'Failed to update alert',
-      });
-    }
+    await putData(`${baseUrl}/api/alerts/${alertId}`, payload);
   };
 
   return (
@@ -205,23 +175,6 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
         <p className="text-theme-muted">Update your personalized alert for {actionType === 'SUPPLY' ? 'supply' : 'borrow'} positions.</p>
       </div>
 
-      {/* Wallet Address */}
-      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
-        <CardHeader className="pb-1">
-          <CardTitle className="text-lg text-theme-primary">Wallet Address</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-theme-muted mb-4">The wallet address associated with this personalized alert.</p>
-          <Input
-            type="text"
-            placeholder="0x..."
-            value={walletAddress}
-            onChange={(e) => setWalletAddress(e.target.value)}
-            className="border-theme-primary focus-border-primary focus:outline-none transition-colors"
-          />
-        </CardContent>
-      </Card>
-
       {/* Alert Status */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
         <CardHeader className="pb-1">
@@ -229,19 +182,21 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
         </CardHeader>
         <CardContent>
           <p className="text-sm text-theme-muted mb-4">Enable or disable this alert.</p>
-          <Select value={status} onValueChange={(value) => setStatus(value as 'ACTIVE' | 'PAUSED')}>
-            <SelectTrigger className="w-full hover-border-primary">
-              <SelectValue placeholder="Select status" />
-            </SelectTrigger>
-            <SelectContent className="bg-block">
-              <div className="hover-border-primary hover-text-primary">
-                <SelectItem value="ACTIVE">Active</SelectItem>
-              </div>
-              <div className="hover-border-primary hover-text-primary">
-                <SelectItem value="PAUSED">Paused</SelectItem>
-              </div>
-            </SelectContent>
-          </Select>
+
+          <RadioGroup value={status} onValueChange={(v) => setStatus(v as 'ACTIVE' | 'PAUSED')} className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="ACTIVE" id="active" className="h-4 w-4 border border-default rounded-full radio-checked" />
+              <Label htmlFor="active" className="text-theme-primary label-checked">
+                Active
+              </Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="PAUSED" id="paused" className="h-4 w-4 border border-default rounded-full radio-checked" />
+              <Label htmlFor="paused" className="text-theme-primary label-checked">
+                Paused
+              </Label>
+            </div>
+          </RadioGroup>
         </CardContent>
       </Card>
 
@@ -266,34 +221,8 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
               </TableHeader>
               <TableBody>
                 <TableRow className="border-primary-color">
-                  <TableCell className="text-theme-primary">
-                    <Select value={singleRow.chain} onValueChange={(value) => updateRow('chain', value)}>
-                      <SelectTrigger className="w-full hover-border-primary">
-                        <SelectValue placeholder="Select chain" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-block">
-                        {['Ethereum', 'Optimism', 'Arbitrum', 'Polygon', 'Base', 'Mantle', 'Scroll'].map((chain) => (
-                          <div key={chain} className="hover-border-primary hover-text-primary">
-                            <SelectItem value={chain}>{chain}</SelectItem>
-                          </div>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell className="text-theme-primary">
-                    <Select value={singleRow.market} onValueChange={(value) => updateRow('market', value)}>
-                      <SelectTrigger className="w-full hover-border-primary">
-                        <SelectValue placeholder="Select market" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-block">
-                        {['USDC', 'USDS', 'USDT', 'ETH', 'wstETH', 'USDe', 'USDC.e', 'USDbC', 'AERO'].map((market) => (
-                          <div key={market} className="hover-border-primary hover-text-primary">
-                            <SelectItem value={market}>{market}</SelectItem>
-                          </div>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
+                  <TableCell className="text-theme-primary">{singleRow.chain}</TableCell>
+                  <TableCell className="text-theme-primary">{singleRow.market}</TableCell>
                   <TableCell>
                     <Select value={singleRow.conditionType} onValueChange={(value) => updateRow('conditionType', value as ConditionType)}>
                       <SelectTrigger className="w-full hover-border-primary">
@@ -436,8 +365,8 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
           <ArrowLeft size={16} className="mr-2" /> Back to Alerts
         </Button>
 
-        <Button onClick={handleUpdateAlert} className="border text-primary-color hover-border-body">
-          Update Alert
+        <Button onClick={handleUpdateAlert} className="border text-primary-color hover-border-body" disabled={isSubmitting}>
+          {isSubmitting ? 'Updating...' : 'Update Alert'}
         </Button>
       </div>
     </>

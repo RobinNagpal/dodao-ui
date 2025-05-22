@@ -22,6 +22,7 @@ import {
   type Alert,
 } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { CHAINS, MARKETS } from '@/shared/web3/config';
 
 interface CompoundMarketEditFormProps {
@@ -33,6 +34,12 @@ export default function CompoundMarketEditForm({ alert, alertId }: CompoundMarke
   const router = useRouter();
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
+
+  const { putData, loading: isSubmitting } = usePutData<Alert, any>({
+    successMessage: 'Your market alert was updated successfully.',
+    errorMessage: "Couldn't update alert",
+    redirectPath: '/alerts',
+  });
 
   const [alertType, setAlertType] = useState<'borrow' | 'supply'>('borrow');
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
@@ -169,7 +176,7 @@ export default function CompoundMarketEditForm({ alert, alertId }: CompoundMarke
       showNotification({
         type: 'error',
         heading: 'No Valid Markets',
-        message: 'Your selected chains + markets combination isn’t supported.',
+        message: "Your selected chains + markets combination isn't supported.",
       });
       return;
     }
@@ -179,13 +186,6 @@ export default function CompoundMarketEditForm({ alert, alertId }: CompoundMarke
       notificationFrequency,
       selectedChains: chainConnect,
       selectedAssets: assetConnect,
-      // conditions: conditions.map((c) => ({
-      //   conditionType: c.conditionType,
-      //   thresholdValue: c.thresholdValue,
-      //   thresholdValueLow: c.thresholdLow,
-      //   thresholdValueHigh: c.thresholdHigh,
-      //   severity: c.severity,
-      // })),
       conditions: conditions.map((c) => {
         if (c.conditionType === 'APR_OUTSIDE_RANGE') {
           return {
@@ -213,32 +213,7 @@ export default function CompoundMarketEditForm({ alert, alertId }: CompoundMarke
       status,
     };
 
-    try {
-      const res = await fetch(`${baseUrl}/api/alerts/${alertId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || 'Failed to update alert');
-      }
-
-      showNotification({
-        type: 'success',
-        heading: 'Alert updated',
-        message: 'Your market alert was updated successfully.',
-      });
-      router.push('/alerts');
-    } catch (err: any) {
-      console.error('Error updating alert:', err);
-      showNotification({
-        type: 'error',
-        heading: 'Error',
-        message: err.message || 'Failed to update alert',
-      });
-    }
+    await putData(`${baseUrl}/api/alerts/${alertId}`, payload);
   };
 
   return (
@@ -517,7 +492,7 @@ export default function CompoundMarketEditForm({ alert, alertId }: CompoundMarke
               </SelectContent>
             </Select>
             <p className="text-sm text-theme-muted mt-4">
-              This limits how often you’ll receive notifications for this alert, regardless of how many thresholds are triggered.
+              This limits how often you'll receive notifications for this alert, regardless of how many thresholds are triggered.
             </p>
           </div>
         </CardContent>
@@ -585,8 +560,8 @@ export default function CompoundMarketEditForm({ alert, alertId }: CompoundMarke
         </Button>
 
         <div className="space-x-4">
-          <Button onClick={handleUpdateAlert} className="border text-primary-color hover-border-body">
-            Update Alert
+          <Button onClick={handleUpdateAlert} className="border text-primary-color hover-border-body" disabled={isSubmitting}>
+            {isSubmitting ? 'Updating...' : 'Update Alert'}
           </Button>
         </div>
       </div>

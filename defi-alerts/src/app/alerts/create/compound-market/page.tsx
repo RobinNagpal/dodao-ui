@@ -235,7 +235,7 @@ export default function CompoundMarketAlertPage() {
 
     const email = localStorage.getItem('email')!;
     const payload: CreateAlertPayload = {
-      email: 'robin@dodao.io',
+      email: 'test@example.com',
       actionType: alertType.toUpperCase() as AlertActionType,
       selectedChains,
       selectedMarkets,
