@@ -75,7 +75,7 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
   console.log('[errorLogger] Preparing request data for Discord');
   let jsonBody = '';
   try {
-    jsonBody = JSON.stringify(await req.json());
+    jsonBody = JSON.stringify(req.json());
     console.log('[errorLogger] Successfully parsed request body');
   } catch (parseError) {
     console.log('[errorLogger] Failed to parse request body:', parseError);

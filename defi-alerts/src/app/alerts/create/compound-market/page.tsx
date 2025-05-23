@@ -1,44 +1,47 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { ChevronRight, Home, Bell, TrendingUp, Plus, X, ArrowLeft, AlertCircle } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { AlertCreationResponse, CreateCompoundAlertPayload } from '@/app/api/alerts/create/compound-market/route';
 import { Badge } from '@/components/ui/badge';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
-  type Condition,
   type Channel,
+  type Condition,
   type ConditionType,
-  type SeverityLevel,
-  type NotificationFrequency,
-  severityOptions,
   frequencyOptions,
+  type NotificationFrequency,
+  type SeverityLevel,
+  severityOptions,
 } from '@/types/alerts';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import {
   AlertActionType,
-  NotificationFrequency as PrismaNotificationFrequency,
   ConditionType as PrismaConditionType,
-  SeverityLevel as PrismaSeverityLevel,
   DeliveryChannelType,
-  Alert,
+  NotificationFrequency as PrismaNotificationFrequency,
+  SeverityLevel as PrismaSeverityLevel,
 } from '@prisma/client';
-import { AlertCreationResponse, CreateAlertPayload } from '@/app/api/alerts/create/compound-market/route';
+import { AlertCircle, ArrowLeft, Bell, ChevronRight, Home, Plus, TrendingUp, X } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function CompoundMarketAlertPage() {
   const router = useRouter();
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
+  const { data: session } = useSession();
 
-  const { postData, loading: isSubmitting } = usePostData<AlertCreationResponse, CreateAlertPayload>({
+  const user = session?.user! as DoDaoJwtTokenPayload;
+  const { postData, loading: isSubmitting } = usePostData<AlertCreationResponse, CreateCompoundAlertPayload>({
     successMessage: 'Your market alert was saved successfully.',
     errorMessage: "Couldn't create alert",
     redirectPath: '/alerts',
@@ -52,6 +55,13 @@ export default function CompoundMarketAlertPage() {
   const [conditions, setConditions] = useState<Condition[]>([{ conditionType: 'APR_RISE_ABOVE', thresholdValue: '', severity: 'NONE' }]);
 
   const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
+
+  // Initialize email field with username when component mounts
+  useEffect(() => {
+    if (user?.username) {
+      setChannels((ch) => ch.map((channel) => (channel.channelType === 'EMAIL' ? { ...channel, email: user.username } : channel)));
+    }
+  }, [user?.username]);
 
   // Validation errors
   const [errors, setErrors] = useState<{
@@ -73,6 +83,13 @@ export default function CompoundMarketAlertPage() {
       setErrors((prev) => ({ ...prev, markets: undefined }));
     }
   }, [selectedMarkets, errors.markets]);
+
+  // Populate email field with username when channel type is EMAIL
+  useEffect(() => {
+    if (user?.username) {
+      setChannels((ch) => ch.map((channel) => (channel.channelType === 'EMAIL' ? { ...channel, email: user.username } : channel)));
+    }
+  }, [channels.map((c) => c.channelType).join(','), user?.username]);
 
   useEffect(() => {
     if (errors.conditions) {
@@ -142,7 +159,7 @@ export default function CompoundMarketAlertPage() {
   const updateCondition = (i: number, field: keyof Condition, val: string) =>
     setConditions((cs) => cs.map((c, idx) => (idx === i ? { ...c, [field]: val } : c)));
 
-  const addChannel = () => setChannels((ch) => [...ch, { channelType: 'EMAIL', email: '' }]);
+  const addChannel = () => setChannels((ch) => [...ch, { channelType: 'EMAIL', email: user?.username || '' }]);
 
   const updateChannel = (i: number, field: keyof Channel, val: string) => setChannels((ch) => ch.map((c, idx) => (idx === i ? { ...c, [field]: val } : c)));
 
@@ -223,6 +240,17 @@ export default function CompoundMarketAlertPage() {
   };
 
   const handleCreateAlert = async () => {
+    const user = session?.user;
+    if (!user) {
+      showNotification({
+        type: 'error',
+        heading: 'Session Error',
+        message: 'Session expired. Please log in again.',
+      });
+      router.push('/login');
+      return;
+    }
+
     // Validate form before submission
     if (!validateForm()) {
       showNotification({
@@ -233,9 +261,7 @@ export default function CompoundMarketAlertPage() {
       return;
     }
 
-    const email = localStorage.getItem('email')!;
-    const payload: CreateAlertPayload = {
-      email: 'test@example.com',
+    const payload: CreateCompoundAlertPayload = {
       actionType: alertType.toUpperCase() as AlertActionType,
       selectedChains,
       selectedMarkets,
@@ -256,6 +282,14 @@ export default function CompoundMarketAlertPage() {
 
     await postData(`${baseUrl}/api/alerts/create/compound-market`, payload);
   };
+
+  if (!session) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg text-theme-muted">Please log in to create an alert.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container max-w-6xl mx-auto px-2 py-8">
@@ -580,7 +614,15 @@ export default function CompoundMarketAlertPage() {
 
           {channels.map((ch, i) => (
             <div key={i} className="mb-4 flex items-center gap-4">
-              <Select value={ch.channelType} onValueChange={(value) => updateChannel(i, 'channelType', value as Channel['channelType'])}>
+              <Select
+                value={ch.channelType}
+                onValueChange={(value) => {
+                  updateChannel(i, 'channelType', value as Channel['channelType']);
+                  if (value === 'EMAIL' && user?.username) {
+                    updateChannel(i, 'email', user.username);
+                  }
+                }}
+              >
                 <SelectTrigger className="w-[150px] hover-border-primary">
                   <SelectValue placeholder="Select channel" />
                 </SelectTrigger>
@@ -602,9 +644,10 @@ export default function CompoundMarketAlertPage() {
                       placeholder="you@example.com"
                       value={ch.email || ''}
                       onChange={(e) => updateChannel(i, 'email', e.target.value)}
+                      readOnly={true}
                       className={`flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
                         errors.channels && errors.channels[i] ? 'border-red-500' : ''
-                      }`}
+                      } ${ch.channelType === 'EMAIL' ? 'bg-block' : ''}`}
                     />
                     {errors.channels && errors.channels[i] && (
                       <div className="mt-1 flex items-center text-red-500 text-sm">
