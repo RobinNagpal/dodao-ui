@@ -78,11 +78,7 @@ export default function AlertsPage() {
     data: alertsData,
     loading: isLoading,
     error: fetchError,
-  } = useFetchData<Alert[]>(
-    userId ? `${baseUrl}/api/alerts?userId=${userId}` : '',
-    { skipInitialFetch: !userId },
-    'Failed to load alerts. Please try again later.'
-  );
+  } = useFetchData<Alert[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !userId }, 'Failed to load alerts. Please try again later.');
 
   // Process alerts data
   // Update filtered alerts when alerts data changes or filters change
