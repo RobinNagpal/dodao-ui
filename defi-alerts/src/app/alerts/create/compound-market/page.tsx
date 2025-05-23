@@ -1,5 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import { DoDaoJwtTokenPayload, DoDAOSession } from '@dodao/web-core/types/auth/Session';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { getServerSession } from 'next-auth';
 import CreateCompoundMarketPage from './CreateCompoundMarketPage';
 
