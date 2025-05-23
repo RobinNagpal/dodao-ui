@@ -294,7 +294,6 @@ export default function PersonalizedMarketAlertPage() {
     // Create and submit supply alerts
     for (const row of supplyRows) {
       const payload: CreatePersonalizedAlertPayload = {
-        email: 'test@example.com',
         walletAddress: walletAddress,
         category: 'PERSONALIZED' as AlertCategory,
         actionType: 'SUPPLY' as AlertActionType,
@@ -329,7 +328,6 @@ export default function PersonalizedMarketAlertPage() {
     // Create and submit borrow alerts
     for (const row of borrowRows) {
       const payload: CreatePersonalizedAlertPayload = {
-        email: 'test@example.com',
         walletAddress: walletAddress,
         category: 'PERSONALIZED' as AlertCategory,
         actionType: 'BORROW' as AlertActionType,

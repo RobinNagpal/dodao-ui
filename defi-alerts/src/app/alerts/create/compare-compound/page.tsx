@@ -218,7 +218,6 @@ export default function CompareCompoundPage() {
     }
 
     const payload: CompareCompoundAlertPayload = {
-      email: 'test@example.com',
       category: 'GENERAL' as AlertCategory,
       actionType: alertType.toUpperCase() as AlertActionType,
       isComparison: true,
