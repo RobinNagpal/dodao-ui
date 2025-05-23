@@ -10,6 +10,8 @@ export interface Session extends NextAuthSession {
   isSuperAdminOfDoDAO?: boolean;
 }
 
+export type DoDAOSession = Session;
+
 export interface DoDaoJwtTokenPayload {
   spaceId: string;
   userId: string;
