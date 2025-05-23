@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import type React from 'react';
 
 import { useEffect, useState } from 'react';
@@ -18,6 +19,7 @@ import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoad
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 
 // Alert summary component
 const AlertSummaryCard = ({
@@ -48,6 +50,9 @@ const AlertSummaryCard = ({
 );
 
 export default function AlertsPage() {
+  const { data } = useSession();
+  const session = data as DoDAOSession;
+
   const router = useRouter();
   const baseUrl = getBaseUrl();
   const [alerts, setAlerts] = useState<Alert[]>([]);
@@ -68,7 +73,7 @@ export default function AlertsPage() {
   });
 
   // const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
-  const userId = 'cmazjnqsd0000kqhc3c4c4t39';
+  const userId = session.userId;
 
   useEffect(() => {
     if (!userId) {
