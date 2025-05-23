@@ -1,12 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { Alert } from '@prisma/client';
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const userId = searchParams.get('userId');
-  if (!userId) {
-    return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
-  }
+// Define the return type for the alerts query
+export type AlertsResponse = (Alert & {
+  conditions: any[];
+  deliveryChannels: any[];
+  selectedChains: any[];
+  selectedAssets: any[];
+})[];
+
+async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<AlertsResponse> {
+  const { userId } = userContext;
 
   const alerts = await prisma.alert.findMany({
     where: { userId },
@@ -19,5 +26,7 @@ export async function GET(request: NextRequest) {
     orderBy: { createdAt: 'desc' },
   });
 
-  return NextResponse.json(alerts);
+  return alerts;
 }
+
+export const GET = withLoggedInUser<AlertsResponse>(getHandler);

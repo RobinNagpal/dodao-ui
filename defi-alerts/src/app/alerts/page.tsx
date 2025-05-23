@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import type React from 'react';
 
 import { useEffect, useState } from 'react';
@@ -17,7 +18,9 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 
 // Alert summary component
 const AlertSummaryCard = ({
@@ -48,18 +51,18 @@ const AlertSummaryCard = ({
 );
 
 export default function AlertsPage() {
+  const { data } = useSession();
+  const session = data as DoDAOSession;
+
   const router = useRouter();
   const baseUrl = getBaseUrl();
-  const [alerts, setAlerts] = useState<Alert[]>([]);
   const [filteredAlerts, setFilteredAlerts] = useState<Alert[]>([]);
   const [activeTab, setActiveTab] = useState('all');
   const [actionTypeFilter, setActionTypeFilter] = useState('all');
   const [chainFilter, setChainFilter] = useState('all');
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
   const [alertToDelete, setAlertToDelete] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [uniqueChains, setUniqueChains] = useState<string[]>([]);
 
   const { loading: deleting, deleteData: deleteAlert } = useDeleteData<{ id: string }, null>({
     successMessage: 'Alert deleted successfully',
@@ -68,49 +71,30 @@ export default function AlertsPage() {
   });
 
   // const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
-  const userId = 'cmazjnqsd0000kqhc3c4c4t39';
+  const userId = session.userId;
 
+  // Use useFetchData hook to fetch alerts
+  const {
+    data: alertsData,
+    loading: isLoading,
+    error: fetchError,
+  } = useFetchData<Alert[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !userId }, 'Failed to load alerts. Please try again later.');
+
+  // Process alerts data
+  // Update filtered alerts when alerts data changes or filters change
   useEffect(() => {
-    if (!userId) {
-      setIsLoading(false);
-      return;
-    }
+    const alerts = alertsData
+      ? alertsData
+          .filter((alert: Alert) => !alert.isComparison)
+          .map((alert: Alert) => ({
+            ...alert,
+            selectedChains: alert.selectedChains || [],
+            selectedAssets: alert.selectedAssets || [],
+            conditions: alert.conditions || [],
+            deliveryChannels: alert.deliveryChannels || [],
+          }))
+      : [];
 
-    setIsLoading(true);
-    fetch(`${baseUrl}/api/alerts?userId=${userId}`)
-      .then((r) => {
-        if (!r.ok) {
-          throw new Error(`Error fetching alerts: ${r.status}`);
-        }
-        return r.json();
-      })
-      .then((data) => {
-        // Filter out comparison alerts
-        const nonComparisonAlerts = data.filter((alert: Alert) => !alert.isComparison);
-
-        // Ensure every alert has the required properties
-        const processedAlerts = nonComparisonAlerts.map((alert: Alert) => ({
-          ...alert,
-          selectedChains: alert.selectedChains || [],
-          selectedAssets: alert.selectedAssets || [],
-          conditions: alert.conditions || [],
-          deliveryChannels: alert.deliveryChannels || [],
-        }));
-
-        setAlerts(processedAlerts);
-        setFilteredAlerts(processedAlerts);
-        setError(null);
-      })
-      .catch((err) => {
-        console.error('Error fetching alerts:', err);
-        setError('Failed to load alerts. Please try again later.');
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [userId]);
-
-  useEffect(() => {
     let result = [...alerts];
 
     // Apply category filter
@@ -128,8 +112,12 @@ export default function AlertsPage() {
       result = result.filter((alert) => (alert.selectedChains || []).some((chain) => chain.name.toLowerCase() === chainFilter.toLowerCase()));
     }
 
+    console.log(`Filtered alerts: ${result.length} :`, result);
     setFilteredAlerts(result);
-  }, [activeTab, actionTypeFilter, chainFilter, alerts]);
+
+    console.log(`Unique chains: ${result.flatMap((alert) => (alert.selectedChains || []).map((chain) => chain.name))}`);
+    setUniqueChains(Array.from(new Set(alerts.flatMap((alert) => (alert.selectedChains || []).map((chain) => chain.name)).filter(Boolean))));
+  }, [activeTab, actionTypeFilter, chainFilter, alertsData]);
 
   const severityLabel = (s: PrismaCondition) => severityOptions.find((o) => o.value === s.severity)?.label || '-';
 
@@ -140,9 +128,6 @@ export default function AlertsPage() {
   const supplyAlerts = filteredAlerts.filter((a) => a.actionType === 'SUPPLY').length;
   const borrowAlerts = filteredAlerts.filter((a) => a.actionType === 'BORROW').length;
   const personalizedAlerts = filteredAlerts.filter((a) => a.category === 'PERSONALIZED').length;
-
-  // Get unique chains for filter
-  const uniqueChains = Array.from(new Set(alerts.flatMap((alert) => (alert.selectedChains || []).map((chain) => chain.name)).filter(Boolean)));
 
   // Get severity badge color
   const getSeverityColor = (severity: string) => {
@@ -293,14 +278,14 @@ export default function AlertsPage() {
       )}
 
       {/* Error state */}
-      {error && (
+      {fetchError && (
         <div className="flex justify-center items-center h-40">
-          <div className="text-red-500">{error}</div>
+          <div className="text-red-500">{fetchError}</div>
         </div>
       )}
 
       {/* Alerts table */}
-      {!isLoading && !error && (
+      {!isLoading && !fetchError && (
         <div className="rounded-md border border-primary-color overflow-hidden bg-block">
           <div className="overflow-x-auto">
             <Table>
@@ -509,7 +494,6 @@ export default function AlertsPage() {
                 }}
                 onConfirm={async () => {
                   await deleteAlert(`${baseUrl}/api/alerts/${alertToDelete}`);
-                  setAlerts((prev) => prev.filter((a) => a.id !== alertToDelete));
                   setShowConfirmModal(false);
                   setAlertToDelete(null);
                 }}
