@@ -211,7 +211,6 @@ export default function PersonalizedComparisonPage() {
     // supply comparisons → RATE_DIFF_ABOVE
     for (const row of supplyRows) {
       const payload: PersonalizedComparisonAlertPayload = {
-        email: 'test@example.com',
         walletAddress,
         category: 'PERSONALIZED' as AlertCategory,
         actionType: 'SUPPLY' as AlertActionType,
@@ -240,7 +239,6 @@ export default function PersonalizedComparisonPage() {
     // borrow comparisons → RATE_DIFF_BELOW
     for (const row of borrowRows) {
       const payload: PersonalizedComparisonAlertPayload = {
-        email: 'test@example.com',
         walletAddress,
         category: 'PERSONALIZED' as AlertCategory,
         actionType: 'BORROW' as AlertActionType,

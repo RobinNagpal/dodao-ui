@@ -494,7 +494,6 @@ export default function AlertsPage() {
                 }}
                 onConfirm={async () => {
                   await deleteAlert(`${baseUrl}/api/alerts/${alertToDelete}`);
-                  setAlerts((prev) => prev.filter((a) => a.id !== alertToDelete));
                   setShowConfirmModal(false);
                   setAlertToDelete(null);
                 }}
