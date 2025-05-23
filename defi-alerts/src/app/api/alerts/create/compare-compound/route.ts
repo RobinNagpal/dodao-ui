@@ -37,17 +37,17 @@ async function postHandler(request: NextRequest): Promise<CompareCompoundAlertRe
   const { email, category, actionType, isComparison, selectedChains, selectedMarkets, compareProtocols, notificationFrequency, conditions, deliveryChannels } =
     (await request.json()) as CompareCompoundAlertPayload;
 
-  console.log('[CompareCompoundAlert] Request payload:', { 
+  console.log('[CompareCompoundAlert] Request payload:', {
     email,
-    category, 
-    actionType, 
+    category,
+    actionType,
     isComparison,
-    selectedChains, 
+    selectedChains,
     selectedMarkets,
     compareProtocols,
-    notificationFrequency, 
-    conditionsCount: conditions.length, 
-    deliveryChannelsCount: deliveryChannels.length 
+    notificationFrequency,
+    conditionsCount: conditions.length,
+    deliveryChannelsCount: deliveryChannels.length,
   });
 
   // Basic validation
