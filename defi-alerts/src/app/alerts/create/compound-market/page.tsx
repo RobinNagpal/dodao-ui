@@ -28,11 +28,12 @@ import {
   NotificationFrequency as PrismaNotificationFrequency,
   SeverityLevel as PrismaSeverityLevel,
 } from '@prisma/client';
-import { AlertCircle, ArrowLeft, Bell, ChevronRight, Home, Plus, TrendingUp, X } from 'lucide-react';
+import { AlertCircle, ArrowLeft, Bell, ChevronRight, Home, Info, Plus, TrendingUp, X } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function CompoundMarketAlertPage() {
   const router = useRouter();
@@ -441,6 +442,25 @@ export default function CompoundMarketAlertPage() {
         <CardContent>
           <p className="text-sm text-theme-muted mb-4">Define when you want to be alerted about market changes.</p>
 
+          {/* Condition Type Explanations */}
+          <div className="mb-6 p-4 bg-theme-secondary rounded-lg border border-theme-primary">
+            <h4 className="text-sm font-medium text-theme-primary mb-3">Available Condition Types:</h4>
+            <div className="space-y-2 text-sm text-theme-muted">
+              <div className="flex items-start gap-2">
+                <span className="text-primary-color font-medium min-w-[140px]">Rise Above:</span>
+                <span>Alert when APR exceeds your threshold (e.g., alert when APR goes above 5%)</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-primary-color font-medium min-w-[140px]">Fall Below:</span>
+                <span>Alert when APR drops under your threshold (e.g., alert when APR goes below 2%)</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-primary-color font-medium min-w-[140px]">Outside Range:</span>
+                <span>Alert when APR moves outside your specified range (e.g., alert when APR is below 2% or above 6%)</span>
+              </div>
+            </div>
+          </div>
+
           {/* Conditions List */}
           {conditions.map((cond, i) => (
             <div key={i} className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-primary-color pt-4">
@@ -451,7 +471,7 @@ export default function CompoundMarketAlertPage() {
               </div>
 
               {/* Type */}
-              <div className="col-span-4">
+              <div className="col-span-3">
                 <Select
                   value={cond.conditionType}
                   onValueChange={(value) =>
@@ -490,7 +510,7 @@ export default function CompoundMarketAlertPage() {
 
               {/* Thresholds */}
               {cond.conditionType === 'APR_OUTSIDE_RANGE' ? (
-                <div className="col-span-3 flex flex-col">
+                <div className="col-span-4 flex flex-col">
                   <div className="flex items-center space-x-2">
                     <Input
                       type="text"
@@ -510,7 +530,7 @@ export default function CompoundMarketAlertPage() {
                         errors.conditions && errors.conditions[i] ? 'border-red-500' : ''
                       }`}
                     />
-                    <span className="text-theme-muted">%</span>
+                    <span className="text-theme-muted whitespace-nowrap flex-shrink-0">% APR</span>
                   </div>
                   {errors.conditions && errors.conditions[i] && (
                     <div className="mt-1 flex items-center text-red-500 text-sm">
@@ -520,18 +540,24 @@ export default function CompoundMarketAlertPage() {
                   )}
                 </div>
               ) : (
-                <div className="col-span-3 flex flex-col">
+                <div className="col-span-4 flex flex-col">
                   <div className="flex items-center">
                     <Input
                       type="text"
-                      placeholder="Value"
+                      placeholder={
+                        cond.conditionType === 'APR_RISE_ABOVE'
+                          ? 'Threshold (e.g., 5.0)'
+                          : cond.conditionType === 'APR_FALLS_BELOW'
+                          ? 'Threshold (e.g., 2.0)'
+                          : 'Threshold value'
+                      }
                       value={cond.thresholdValue || ''}
                       onChange={(e) => updateCondition(i, 'thresholdValue', e.target.value)}
                       className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
                         errors.conditions && errors.conditions[i] ? 'border-red-500' : ''
                       }`}
                     />
-                    <span className="ml-2 text-theme-muted">%</span>
+                    <span className="ml-2 text-theme-muted whitespace-nowrap flex-shrink-0">% APR</span>
                   </div>
                   {errors.conditions && errors.conditions[i] && (
                     <div className="mt-1 flex items-center text-red-500 text-sm">
@@ -543,13 +569,13 @@ export default function CompoundMarketAlertPage() {
               )}
 
               {/* Severity */}
-              <div className="col-span-3">
+              <div className="col-span-3 flex items-center">
                 <Select
-                  value={cond.severity}
+                  value={cond.severity === 'NONE' ? undefined : cond.severity}
                   onValueChange={(value) => setConditions((cs) => cs.map((c, idx) => (idx === i ? { ...c, severity: value as SeverityLevel } : c)))}
                 >
                   <SelectTrigger className="w-full hover-border-primary">
-                    <SelectValue placeholder="Select severity" />
+                    <SelectValue placeholder="Severity Level" />
                   </SelectTrigger>
                   <SelectContent className="bg-block">
                     {severityOptions.map((opt) => (
@@ -559,6 +585,21 @@ export default function CompoundMarketAlertPage() {
                     ))}
                   </SelectContent>
                 </Select>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button size="icon" className="h-8 w-8 p-0 ml-1 hover-text-primary">
+                        <Info size={16} />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
+                      <p className="text-sm">
+                        Severity level is used for visual indication only. It helps you categorize alerts by importance but doesn’t affect notification delivery
+                        or priority.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
 
               {/* Remove */}
