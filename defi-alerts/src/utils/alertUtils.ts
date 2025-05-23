@@ -18,10 +18,7 @@ export interface BaseDeliveryChannel {
 }
 
 // Validate required fields
-export function validateRequiredFields(
-  fields: Record<string, any>,
-  requiredFields: string[]
-): void {
+export function validateRequiredFields(fields: Record<string, any>, requiredFields: string[]): void {
   for (const field of requiredFields) {
     if (!fields[field]) {
       throw new Error(`Missing required field: ${field}`);
@@ -30,10 +27,7 @@ export function validateRequiredFields(
 }
 
 // Validate array fields
-export function validateArrayFields(
-  fields: Record<string, any>,
-  arrayFields: string[]
-): void {
+export function validateArrayFields(fields: Record<string, any>, arrayFields: string[]): void {
   for (const field of arrayFields) {
     if (!Array.isArray(fields[field]) || fields[field].length === 0) {
       throw new Error(`Missing required field: ${field} must be a non-empty array`);

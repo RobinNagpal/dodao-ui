@@ -3,7 +3,17 @@ import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withEr
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { AlertActionType, ConditionType, DeliveryChannelType, NotificationFrequency, SeverityLevel } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { BaseAlertCondition, BaseDeliveryChannel, getUser, mapChainsToPrismaConnect, mapMarketsToPrismaConnect, validateArrayFields, validateConditions, validateDeliveryChannels, validateRequiredFields } from '@/utils/alertUtils';
+import {
+  BaseAlertCondition,
+  BaseDeliveryChannel,
+  getUser,
+  mapChainsToPrismaConnect,
+  mapMarketsToPrismaConnect,
+  validateArrayFields,
+  validateConditions,
+  validateDeliveryChannels,
+  validateRequiredFields,
+} from '@/utils/alertUtils';
 
 export interface CreateCompoundAlertPayload {
   actionType: AlertActionType;
@@ -48,17 +58,16 @@ async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPaylo
 
   // Validate required fields
   console.log('[CompoundMarketAlert] Validating required fields');
-  validateRequiredFields(
-    { actionType, notificationFrequency },
-    ['actionType', 'notificationFrequency']
-  );
+  validateRequiredFields({ actionType, notificationFrequency }, ['actionType', 'notificationFrequency']);
 
   // Validate array fields
   console.log('[CompoundMarketAlert] Validating array fields');
-  validateArrayFields(
-    { selectedChains, selectedMarkets, conditions, deliveryChannels },
-    ['selectedChains', 'selectedMarkets', 'conditions', 'deliveryChannels']
-  );
+  validateArrayFields({ selectedChains, selectedMarkets, conditions, deliveryChannels }, [
+    'selectedChains',
+    'selectedMarkets',
+    'conditions',
+    'deliveryChannels',
+  ]);
 
   // Validate conditions
   console.log('[CompoundMarketAlert] Validating conditions');

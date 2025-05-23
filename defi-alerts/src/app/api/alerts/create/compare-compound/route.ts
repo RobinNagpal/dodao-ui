@@ -3,7 +3,17 @@ import { prisma } from '@/prisma';
 import { AlertCategory, AlertActionType, NotificationFrequency, ConditionType, SeverityLevel, DeliveryChannelType, Alert } from '@prisma/client';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { BaseAlertCondition, BaseDeliveryChannel, getUser, mapChainsToPrismaConnect, mapMarketsToPrismaConnect, validateArrayFields, validateConditions, validateDeliveryChannels, validateRequiredFields } from '@/utils/alertUtils';
+import {
+  BaseAlertCondition,
+  BaseDeliveryChannel,
+  getUser,
+  mapChainsToPrismaConnect,
+  mapMarketsToPrismaConnect,
+  validateArrayFields,
+  validateConditions,
+  validateDeliveryChannels,
+  validateRequiredFields,
+} from '@/utils/alertUtils';
 
 export interface CompareCompoundAlertPayload {
   category: AlertCategory;
@@ -60,17 +70,17 @@ async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPaylo
 
   // Validate required fields
   console.log('[CompareCompoundAlert] Validating required fields');
-  validateRequiredFields(
-    { category, actionType, notificationFrequency },
-    ['category', 'actionType', 'notificationFrequency']
-  );
+  validateRequiredFields({ category, actionType, notificationFrequency }, ['category', 'actionType', 'notificationFrequency']);
 
   // Validate array fields
   console.log('[CompareCompoundAlert] Validating array fields');
-  validateArrayFields(
-    { selectedChains, selectedMarkets, compareProtocols, conditions, deliveryChannels },
-    ['selectedChains', 'selectedMarkets', 'compareProtocols', 'conditions', 'deliveryChannels']
-  );
+  validateArrayFields({ selectedChains, selectedMarkets, compareProtocols, conditions, deliveryChannels }, [
+    'selectedChains',
+    'selectedMarkets',
+    'compareProtocols',
+    'conditions',
+    'deliveryChannels',
+  ]);
   console.log('[CompareCompoundAlert] Basic validation passed');
 
   // Validate conditions
