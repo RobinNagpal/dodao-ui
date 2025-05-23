@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { AlertCategory, AlertActionType, NotificationFrequency, ConditionType, SeverityLevel, DeliveryChannelType } from '@prisma/client';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 
 import { CHAINS, MARKETS } from '@/shared/web3/config';
 
 export interface PersonalizedComparisonAlertPayload {
-  email: string;
   walletAddress: string;
   category: AlertCategory;
   actionType: AlertActionType;
@@ -32,9 +32,11 @@ export interface PersonalizedComparisonAlertResponse {
   alertId: string;
 }
 
-async function postHandler(request: NextRequest): Promise<PersonalizedComparisonAlertResponse> {
+async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<PersonalizedComparisonAlertResponse> {
+  console.log('[PersonalizedComparisonAlert] Starting postHandler with user:', { username: userContext.username, spaceId: userContext.spaceId });
+
+  const { username, spaceId } = userContext;
   const {
-    email,
     walletAddress,
     category,
     actionType,
@@ -48,9 +50,6 @@ async function postHandler(request: NextRequest): Promise<PersonalizedComparison
   } = (await request.json()) as PersonalizedComparisonAlertPayload;
 
   // Basic validation
-  if (!email) {
-    throw new Error('Missing required field: email');
-  }
   if (!walletAddress) {
     throw new Error('Missing required field: walletAddress');
   }
@@ -113,10 +112,13 @@ async function postHandler(request: NextRequest): Promise<PersonalizedComparison
   }
 
   // Fetch user
-  const user = await prisma.user.findUnique({ where: { email_spaceId: { email, spaceId: 'default-alerts-space' } } });
+  console.log('[PersonalizedComparisonAlert] Looking up user in database', { username, spaceId });
+  const user = await prisma.user.findUnique({ where: { username_spaceId: { username, spaceId } } });
   if (!user) {
+    console.log('[PersonalizedComparisonAlert] User not found in database', { username, spaceId });
     throw new Error('User not found');
   }
+  console.log('[PersonalizedComparisonAlert] User found successfully', { userId: user.id });
 
   // Map chains → Prisma connect
   const chainConnect = selectedChains.map((name) => {
@@ -176,4 +178,4 @@ async function postHandler(request: NextRequest): Promise<PersonalizedComparison
   return { ok: true, alertId: alert.id };
 }
 
-export const POST = withErrorHandlingV2<PersonalizedComparisonAlertResponse>(postHandler);
+export const POST = withLoggedInUser<PersonalizedComparisonAlertResponse>(postHandler);

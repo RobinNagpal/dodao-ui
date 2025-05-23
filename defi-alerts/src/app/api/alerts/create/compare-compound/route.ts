@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { AlertCategory, AlertActionType, NotificationFrequency, ConditionType, SeverityLevel, DeliveryChannelType, Alert } from '@prisma/client';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 
 import { CHAINS, MARKETS } from '@/shared/web3/config';
 
 export interface CompareCompoundAlertPayload {
-  email: string;
   category: AlertCategory;
   actionType: AlertActionType;
   isComparison: boolean;
@@ -31,14 +31,16 @@ export interface CompareCompoundAlertResponse {
   alertId: string;
 }
 
-async function postHandler(request: NextRequest): Promise<CompareCompoundAlertResponse> {
-  console.log('[CompareCompoundAlert] Starting postHandler');
+async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CompareCompoundAlertResponse> {
+  console.log('[CompareCompoundAlert] Starting postHandler with user:', { username: userContext.username, spaceId: userContext.spaceId });
 
-  const { email, category, actionType, isComparison, selectedChains, selectedMarkets, compareProtocols, notificationFrequency, conditions, deliveryChannels } =
+  const { username, spaceId } = userContext;
+  const { category, actionType, isComparison, selectedChains, selectedMarkets, compareProtocols, notificationFrequency, conditions, deliveryChannels } =
     (await request.json()) as CompareCompoundAlertPayload;
 
   console.log('[CompareCompoundAlert] Request payload:', {
-    email,
+    username,
+    spaceId,
     category,
     actionType,
     isComparison,
@@ -52,10 +54,6 @@ async function postHandler(request: NextRequest): Promise<CompareCompoundAlertRe
 
   // Basic validation
   console.log('[CompareCompoundAlert] Performing basic validation');
-  if (!email) {
-    console.log('[CompareCompoundAlert] Validation error: Missing email');
-    throw new Error('Missing required field: email');
-  }
   if (!isComparison) {
     console.log('[CompareCompoundAlert] Validation error: isComparison must be true');
     throw new Error('Missing required field: isComparison must be true for comparison alerts');
@@ -130,10 +128,10 @@ async function postHandler(request: NextRequest): Promise<CompareCompoundAlertRe
   console.log('[CompareCompoundAlert] All delivery channels validated successfully');
 
   // Fetch user
-  console.log('[CompareCompoundAlert] Looking up user in database', { email, spaceId: 'default-alerts-space' });
-  const user = await prisma.user.findUnique({ where: { email_spaceId: { email, spaceId: 'default-alerts-space' } } });
+  console.log('[CompareCompoundAlert] Looking up user in database', { username, spaceId });
+  const user = await prisma.user.findUnique({ where: { username_spaceId: { username, spaceId } } });
   if (!user) {
-    console.log('[CompareCompoundAlert] User not found in database', { email });
+    console.log('[CompareCompoundAlert] User not found in database', { username, spaceId });
     throw new Error('User not found');
   }
   console.log('[CompareCompoundAlert] User found successfully', { userId: user.id });
@@ -214,4 +212,4 @@ async function postHandler(request: NextRequest): Promise<CompareCompoundAlertRe
   }
 }
 
-export const POST = withErrorHandlingV2<CompareCompoundAlertResponse>(postHandler);
+export const POST = withLoggedInUser<CompareCompoundAlertResponse>(postHandler);

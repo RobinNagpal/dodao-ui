@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
 import { AlertCategory, AlertActionType, NotificationFrequency, ConditionType, SeverityLevel, DeliveryChannelType } from '@prisma/client';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 
 import { CHAINS, MARKETS } from '@/shared/web3/config';
 
 export interface CreatePersonalizedAlertPayload {
-  email: string;
   walletAddress: string;
   category: AlertCategory;
   actionType: AlertActionType;
@@ -33,14 +33,14 @@ export interface PersonalizedAlertCreationResponse {
   alertId: string;
 }
 
-async function postHandler(request: NextRequest): Promise<PersonalizedAlertCreationResponse> {
-  const { email, walletAddress, category, actionType, selectedChains, selectedMarkets, compareProtocols, notificationFrequency, conditions, deliveryChannels } =
+async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<PersonalizedAlertCreationResponse> {
+  console.log('[PersonalizedMarketAlert] Starting postHandler with user:', { username: userContext.username, spaceId: userContext.spaceId });
+
+  const { username, spaceId } = userContext;
+  const { walletAddress, category, actionType, selectedChains, selectedMarkets, compareProtocols, notificationFrequency, conditions, deliveryChannels } =
     (await request.json()) as CreatePersonalizedAlertPayload;
 
   // Basic validation
-  if (!email) {
-    throw new Error('Missing required field: email');
-  }
   if (!walletAddress) {
     throw new Error('Missing required field: walletAddress');
   }
@@ -111,10 +111,13 @@ async function postHandler(request: NextRequest): Promise<PersonalizedAlertCreat
   }
 
   // Fetch user
-  const user = await prisma.user.findUnique({ where: { email_spaceId: { email, spaceId: 'default-alerts-space' } } });
+  console.log('[PersonalizedMarketAlert] Looking up user in database', { username, spaceId });
+  const user = await prisma.user.findUnique({ where: { username_spaceId: { username, spaceId } } });
   if (!user) {
+    console.log('[PersonalizedMarketAlert] User not found in database', { username, spaceId });
     throw new Error('User not found');
   }
+  console.log('[PersonalizedMarketAlert] User found successfully', { userId: user.id });
 
   // 1) Map chain names → { chainId }
   const chainConnect = selectedChains.map((chainName) => {
@@ -180,4 +183,4 @@ async function postHandler(request: NextRequest): Promise<PersonalizedAlertCreat
   return { ok: true, alertId: alert.id };
 }
 
-export const POST = withErrorHandlingV2<PersonalizedAlertCreationResponse>(postHandler);
+export const POST = withLoggedInUser<PersonalizedAlertCreationResponse>(postHandler);
