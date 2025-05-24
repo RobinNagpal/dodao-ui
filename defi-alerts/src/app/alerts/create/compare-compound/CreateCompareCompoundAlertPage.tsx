@@ -55,11 +55,12 @@ export default function CreateCompareCompoundAlertPage({ session }: CompareCompo
   }, [session?.username]);
 
   // Populate email field with username when channel type is EMAIL
+  const channelTypes = channels.map((c) => c.channelType).join(',');
   useEffect(() => {
     if (session?.username) {
       setChannels((ch) => ch.map((channel) => (channel.channelType === 'EMAIL' ? { ...channel, email: session.username } : channel)));
     }
-  }, [channels.map((c) => c.channelType).join(','), session?.username]);
+  }, [channelTypes, session?.username]);
 
   // Validation errors
   const [errors, setErrors] = useState<{
