@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AlertCircle, Info, Plus, X } from 'lucide-react';
-import { type Condition, type ConditionType, type SeverityLevel, severityOptions } from '@/types/alerts';
+import { type Condition, type ConditionType, NotificationFrequency, type SeverityLevel, severityOptions } from '@/types/alerts';
 import { NotificationFrequencySection } from './';
 
 interface ConditionSettingsCardProps {
@@ -16,7 +16,7 @@ interface ConditionSettingsCardProps {
   updateCondition: (idx: number, field: keyof Condition, val: string) => void;
   removeCondition: (idx: number) => void;
   notificationFrequency: string;
-  setNotificationFrequency: (frequency: string) => void;
+  setNotificationFrequency: (frequency: NotificationFrequency) => void;
   errors: {
     conditions?: string[];
   };
@@ -207,7 +207,10 @@ export default function ConditionSettingsCard({
         ))}
 
         {/* Notification Frequency */}
-        <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
+        <NotificationFrequencySection
+          notificationFrequency={notificationFrequency as NotificationFrequency}
+          setNotificationFrequency={setNotificationFrequency}
+        />
       </CardContent>
     </Card>
   );

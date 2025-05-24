@@ -37,7 +37,7 @@ export default function CreateCompoundMarketPage({ session }: CreateCompoundMark
   const [alertType, setAlertType] = useState<'borrow' | 'supply'>('borrow');
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([]);
-  const [notificationFrequency, setNotificationFrequency] = useState<string>('ONCE_PER_ALERT');
+  const [notificationFrequency, setNotificationFrequency] = useState<NotificationFrequency>('ONCE_PER_ALERT');
 
   const [conditions, setConditions] = useState<Condition[]>([{ conditionType: 'APR_RISE_ABOVE', thresholdValue: '', severity: 'NONE' }]);
 
