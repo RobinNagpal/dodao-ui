@@ -11,13 +11,7 @@ import { CompareCompoundAlertPayload, CompareCompoundAlertResponse } from '@/app
 import { AlertActionType, AlertCategory, ConditionType, DeliveryChannelType, SeverityLevel as PrismaSeverityLevel } from '@prisma/client';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { 
-  AlertBreadcrumb, 
-  AlertTypeCard, 
-  MarketSelectionCard, 
-  CompareThresholdCard, 
-  DeliveryChannelsCard 
-} from '@/components/alerts';
+import { AlertBreadcrumb, AlertTypeCard, MarketSelectionCard, CompareThresholdCard, DeliveryChannelsCard } from '@/components/alerts';
 
 export interface CompareCompoundPageProps {
   session: DoDAOSession;
@@ -289,9 +283,9 @@ export default function CreateCompareCompoundAlertPage({ session }: CompareCompo
       </div>
 
       {/* Alert Type */}
-      <AlertTypeCard 
-        alertType={alertType} 
-        setAlertType={setAlertType} 
+      <AlertTypeCard
+        alertType={alertType}
+        setAlertType={setAlertType}
         supplyLabel="Supply Comparison (Alert when Compound offers higher rates)"
         borrowLabel="Borrow Comparison (Alert when Compound offers lower rates)"
       />

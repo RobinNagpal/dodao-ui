@@ -19,14 +19,7 @@ interface DeliveryChannelsCardProps {
   session?: DoDAOSession;
 }
 
-export default function DeliveryChannelsCard({
-  channels,
-  addChannel,
-  updateChannel,
-  removeChannel,
-  errors,
-  session
-}: DeliveryChannelsCardProps) {
+export default function DeliveryChannelsCard({ channels, addChannel, updateChannel, removeChannel, errors, session }: DeliveryChannelsCardProps) {
   return (
     <Card className="mb-6 border-theme-primary bg-block border-primary-color">
       <CardHeader className="pb-1 flex flex-row items-center justify-between">

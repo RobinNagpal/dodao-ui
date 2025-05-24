@@ -7,17 +7,17 @@ import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { AlertActionType, ConditionType as PrismaConditionType, DeliveryChannelType, NotificationFrequency as PrismaNotificationFrequency, SeverityLevel as PrismaSeverityLevel } from '@prisma/client';
+import {
+  AlertActionType,
+  ConditionType as PrismaConditionType,
+  DeliveryChannelType,
+  NotificationFrequency as PrismaNotificationFrequency,
+  SeverityLevel as PrismaSeverityLevel,
+} from '@prisma/client';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { 
-  AlertBreadcrumb, 
-  AlertTypeCard, 
-  MarketSelectionCard, 
-  ConditionSettingsCard, 
-  DeliveryChannelsCard 
-} from '@/components/alerts';
+import { AlertBreadcrumb, AlertTypeCard, MarketSelectionCard, ConditionSettingsCard, DeliveryChannelsCard } from '@/components/alerts';
 
 export interface CreateCompoundMarketPageProps {
   session: DoDAOSession;
@@ -293,10 +293,7 @@ export default function CreateCompoundMarketPage({ session }: CreateCompoundMark
       </div>
 
       {/* Alert Type */}
-      <AlertTypeCard 
-        alertType={alertType} 
-        setAlertType={setAlertType} 
-      />
+      <AlertTypeCard alertType={alertType} setAlertType={setAlertType} />
 
       {/* Market Selection */}
       <MarketSelectionCard

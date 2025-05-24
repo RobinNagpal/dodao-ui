@@ -29,7 +29,7 @@ export default function ConditionSettingsCard({
   removeCondition,
   notificationFrequency,
   setNotificationFrequency,
-  errors
+  errors,
 }: ConditionSettingsCardProps) {
   // Get contextual message for condition type
   const getConditionMessage = (conditionType: ConditionType) => {
@@ -49,18 +49,14 @@ export default function ConditionSettingsCard({
     <Card className="mb-6 border-theme-primary bg-block border-primary-color">
       <CardHeader className="pb-1 flex flex-row items-center justify-between">
         <CardTitle className="text-lg text-theme-primary">Condition Settings</CardTitle>
-        <Button
-          size="sm"
-          onClick={addCondition}
-          className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary"
-        >
+        <Button size="sm" onClick={addCondition} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
           <Plus size={16} className="mr-1" /> Add Condition
         </Button>
       </CardHeader>
       <CardContent>
         <p className="text-sm text-theme-muted mb-4">
-          Define when you want to be alerted about market changes. You will receive an alert if <strong>any</strong> of the following conditions are met for
-          any of the selected markets.
+          Define when you want to be alerted about market changes. You will receive an alert if <strong>any</strong> of the following conditions are met for any
+          of the selected markets.
         </p>
 
         {/* Conditions List */}
@@ -83,12 +79,7 @@ export default function ConditionSettingsCard({
 
                 {/* Type */}
                 <div className="col-span-3">
-                  <Select
-                    value={cond.conditionType}
-                    onValueChange={(value) =>
-                      updateCondition(i, 'conditionType', value as ConditionType)
-                    }
-                  >
+                  <Select value={cond.conditionType} onValueChange={(value) => updateCondition(i, 'conditionType', value as ConditionType)}>
                     <SelectTrigger className="w-full hover-border-primary">
                       <SelectValue placeholder="Select condition type" />
                     </SelectTrigger>
@@ -206,12 +197,7 @@ export default function ConditionSettingsCard({
 
                 {/* Remove */}
                 {conditions.length > 1 && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeCondition(i)}
-                    className="col-span-1 text-red-500 h-8 w-8"
-                  >
+                  <Button variant="ghost" size="icon" onClick={() => removeCondition(i)} className="col-span-1 text-red-500 h-8 w-8">
                     <X size={16} />
                   </Button>
                 )}
@@ -221,10 +207,7 @@ export default function ConditionSettingsCard({
         ))}
 
         {/* Notification Frequency */}
-        <NotificationFrequencySection 
-          notificationFrequency={notificationFrequency} 
-          setNotificationFrequency={setNotificationFrequency} 
-        />
+        <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
       </CardContent>
     </Card>
   );

@@ -13,7 +13,7 @@ interface NotificationFrequencySectionProps {
 export default function NotificationFrequencySection({
   notificationFrequency,
   setNotificationFrequency,
-  description = "This limits how often you'll receive notifications for this alert, regardless of how many thresholds are triggered."
+  description = "This limits how often you'll receive notifications for this alert, regardless of how many thresholds are triggered.",
 }: NotificationFrequencySectionProps) {
   return (
     <div className="mt-6">

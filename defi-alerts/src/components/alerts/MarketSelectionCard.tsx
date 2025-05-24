@@ -29,8 +29,8 @@ export default function MarketSelectionCard({
   togglePlatform,
   errors,
   showPlatforms = false,
-  title = "Market Selection",
-  description = "Select the chains and markets you want to monitor."
+  title = 'Market Selection',
+  description = 'Select the chains and markets you want to monitor.',
 }: MarketSelectionCardProps) {
   const chains = ['Ethereum', 'Optimism', 'Arbitrum', 'Polygon', 'Base', 'Unichain', 'Ronin', 'Mantle', 'Scroll'];
   const markets = ['USDC', 'USDS', 'USDT', 'ETH', 'wstETH', 'USDe', 'USDC.e', 'USDbC', 'AERO'];

@@ -11,12 +11,7 @@ interface AlertTypeCardProps {
   borrowLabel?: string;
 }
 
-export default function AlertTypeCard({ 
-  alertType, 
-  setAlertType,
-  supplyLabel = 'Supply Alert',
-  borrowLabel = 'Borrow Alert'
-}: AlertTypeCardProps) {
+export default function AlertTypeCard({ alertType, setAlertType, supplyLabel = 'Supply Alert', borrowLabel = 'Borrow Alert' }: AlertTypeCardProps) {
   return (
     <Card className="mb-6 border-theme-primary bg-block border-primary-color">
       <CardHeader className="pb-1">
