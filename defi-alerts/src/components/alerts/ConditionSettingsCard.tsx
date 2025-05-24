@@ -187,7 +187,7 @@ export default function ConditionSettingsCard({
                       </TooltipTrigger>
                       <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
                         <p className="text-sm">
-                          Severity level is used for visual indication only. It helps you categorize alerts by importance but doesn't affect notification
+                          Severity level is used for visual indication only. It helps you categorize alerts by importance but does not affect notification
                           delivery or priority.
                         </p>
                       </TooltipContent>
