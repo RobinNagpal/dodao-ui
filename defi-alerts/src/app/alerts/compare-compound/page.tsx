@@ -80,7 +80,6 @@ export default function CompareCompoundPage() {
     error: fetchError,
   } = useFetchData<Alert[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !userId }, 'Failed to load comparison alerts. Please try again later.');
 
-
   useEffect(() => {
     if (!alertsData) return;
 
@@ -128,12 +127,15 @@ export default function CompareCompoundPage() {
   const personalizedAlerts = filteredAlerts.filter((a) => a.category === 'PERSONALIZED').length;
 
   // Get unique chains for filter
-  const uniqueChains = alertsData 
-    ? Array.from(new Set(alertsData
-        .filter((alert: Alert) => alert.isComparison)
-        .flatMap((alert) => (alert.selectedChains || [])
-        .map((chain) => chain.name))
-        .filter(Boolean)))
+  const uniqueChains = alertsData
+    ? Array.from(
+        new Set(
+          alertsData
+            .filter((alert: Alert) => alert.isComparison)
+            .flatMap((alert) => (alert.selectedChains || []).map((chain) => chain.name))
+            .filter(Boolean)
+        )
+      )
     : [];
 
   // Get severity badge color
