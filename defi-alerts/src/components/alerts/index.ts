@@ -7,3 +7,4 @@ export { default as NotificationFrequencySection } from './NotificationFrequency
 export { default as CompareThresholdCard } from './CompareThresholdCard';
 export { default as ConditionSettingsCard } from './ConditionSettingsCard';
 export { default as PositionSettingsCard } from './PositionSettingsCard';
+export { default as PersonalizedPositionCard } from './PersonalizedPositionCard';
