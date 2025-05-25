@@ -6,3 +6,4 @@ export { default as DeliveryChannelsCard } from './DeliveryChannelsCard';
 export { default as NotificationFrequencySection } from './NotificationFrequencySection';
 export { default as CompareThresholdCard } from './CompareThresholdCard';
 export { default as ConditionSettingsCard } from './ConditionSettingsCard';
+export { default as PositionSettingsCard } from './PositionSettingsCard';
