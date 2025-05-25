@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Plus, X, ArrowLeft, AlertCircle } from 'lucide-react';
-import { AlertBreadcrumb, PositionSettingsCard } from '@/components/alerts';
+import { ChevronRight, Home, Bell, TrendingUp, Plus, X, ArrowLeft, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -363,7 +363,24 @@ export default function PersonalizedMarketAlertPage() {
   return (
     <div className="container max-w-6xl mx-auto px-2 py-8">
       {/* Breadcrumb */}
-      <AlertBreadcrumb currentPage="Personalized Market Alert" />
+      <nav className="flex items-center text-sm mb-6">
+        <Link href="/" className="text-theme-muted hover-text-primary flex items-center gap-1">
+          <Home size={14} />
+          <span>Home</span>
+        </Link>
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <Link href="/alerts" className="text-theme-muted hover-text-primary flex items-center gap-1">
+          <Bell size={14} />
+          <span>Alerts</span>
+        </Link>
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <Link href="/alerts/create" className="text-theme-muted hover-text-primary flex items-center gap-1">
+          <TrendingUp size={14} />
+          <span>Create Alert</span>
+        </Link>
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <span className="text-primary-color font-medium">Personalized Market Alert</span>
+      </nav>
 
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2 text-theme-primary">Create Personalized Market Alert</h1>
@@ -371,24 +388,254 @@ export default function PersonalizedMarketAlertPage() {
       </div>
 
       {/* Supply Positions */}
-      <PositionSettingsCard
-        title="Supply Positions"
-        description="Set alert conditions for each of your supply positions."
-        rows={supplyRows}
-        updateRow={updateSupplyRow}
-        errors={{ conditions: errors.supplyConditions }}
-        conditionOptions={conditionOptions}
-      />
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">Supply Positions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">Set alert conditions for each of your supply positions.</p>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-primary-color">
+                  <TableHead className="text-theme-primary">Chain</TableHead>
+                  <TableHead className="text-theme-primary">Market</TableHead>
+                  <TableHead className="text-theme-primary">Rate</TableHead>
+                  <TableHead className="text-theme-primary">Condition</TableHead>
+                  <TableHead className="text-theme-primary">Threshold</TableHead>
+                  <TableHead className="text-theme-primary">Severity</TableHead>
+                  <TableHead className="text-theme-primary">Frequency</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {supplyRows.map((r, i) => (
+                  <TableRow key={i} className="border-primary-color">
+                    <TableCell className="text-theme-primary">{r.chain}</TableCell>
+                    <TableCell className="text-theme-primary">{r.market}</TableCell>
+                    <TableCell className="text-theme-primary">{r.rate}</TableCell>
+                    <TableCell>
+                      <Select value={r.conditionType} onValueChange={(value) => updateSupplyRow(i, 'conditionType', value as ConditionType)}>
+                        <SelectTrigger className="w-full hover-border-primary">
+                          <SelectValue placeholder="Select condition" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-block">
+                          {conditionOptions.map((opt) => (
+                            <div key={opt.value} className="hover-border-primary hover-text-primary">
+                              <SelectItem value={opt.value}>{opt.label}</SelectItem>
+                            </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      {r.conditionType === 'APR_OUTSIDE_RANGE' ? (
+                        <div className="flex items-center space-x-2">
+                          <Input
+                            type="text"
+                            placeholder="Min"
+                            value={r.thresholdLow || ''}
+                            onChange={(e) => updateSupplyRow(i, 'thresholdLow', e.target.value)}
+                            className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                              errors.supplyConditions && errors.supplyConditions[i] ? 'border-red-500' : ''
+                            }`}
+                          />
+                          <Input
+                            type="text"
+                            placeholder="Max"
+                            value={r.thresholdHigh || ''}
+                            onChange={(e) => updateSupplyRow(i, 'thresholdHigh', e.target.value)}
+                            className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                              errors.supplyConditions && errors.supplyConditions[i] ? 'border-red-500' : ''
+                            }`}
+                          />
+                          <span className="text-theme-muted">%</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center">
+                          <Input
+                            type="text"
+                            placeholder="Value"
+                            value={r.threshold || ''}
+                            onChange={(e) => updateSupplyRow(i, 'threshold', e.target.value)}
+                            className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                              errors.supplyConditions && errors.supplyConditions[i] ? 'border-red-500' : ''
+                            }`}
+                          />
+                          <span className="ml-2 text-theme-muted">%</span>
+                        </div>
+                      )}
+                      {errors.supplyConditions && errors.supplyConditions[i] && (
+                        <div className="mt-1 flex items-center text-red-500 text-sm">
+                          <AlertCircle size={14} className="mr-1" />
+                          <span>{errors.supplyConditions[i]}</span>
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Select value={r.severity} onValueChange={(value) => updateSupplyRow(i, 'severity', value as SupplyRow['severity'])}>
+                        <SelectTrigger className="w-[120px] hover-border-primary">
+                          <SelectValue placeholder="Select severity" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-block">
+                          {severityOptions.map((opt) => (
+                            <div key={opt.value} className="hover-border-primary hover-text-primary">
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Select value={r.frequency} onValueChange={(value) => updateSupplyRow(i, 'frequency', value as SupplyRow['frequency'])}>
+                        <SelectTrigger className="w-[140px] hover-border-primary">
+                          <SelectValue placeholder="Select frequency" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-block">
+                          {frequencyOptions.map((f) => (
+                            <div key={f.value} className="hover-border-primary hover-text-primary">
+                              <SelectItem key={f.value} value={f.value}>
+                                {f.label}
+                              </SelectItem>
+                            </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Borrow Position */}
-      <PositionSettingsCard
-        title="Borrow Position"
-        description="Set alert conditions for each of your borrow positions."
-        rows={borrowRows}
-        updateRow={updateBorrowRow}
-        errors={{ conditions: errors.borrowConditions }}
-        conditionOptions={conditionOptions}
-      />
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">Borrow Position</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">Set alert conditions for each of your borrow positions.</p>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-primary-color">
+                  <TableHead className="text-theme-primary">Chain</TableHead>
+                  <TableHead className="text-theme-primary">Market</TableHead>
+                  <TableHead className="text-theme-primary">Rate</TableHead>
+                  <TableHead className="text-theme-primary">Condition</TableHead>
+                  <TableHead className="text-theme-primary">Threshold</TableHead>
+                  <TableHead className="text-theme-primary">Severity</TableHead>
+                  <TableHead className="text-theme-primary">Frequency</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {borrowRows.map((r, i) => (
+                  <TableRow key={i} className="border-primary-color">
+                    <TableCell className="text-theme-primary">{r.chain}</TableCell>
+                    <TableCell className="text-theme-primary">{r.market}</TableCell>
+                    <TableCell className="text-theme-primary">{r.rate}</TableCell>
+                    <TableCell>
+                      <Select value={r.conditionType} onValueChange={(value) => updateBorrowRow(i, 'conditionType', value as ConditionType)}>
+                        <SelectTrigger className="w-full hover-border-primary">
+                          <SelectValue placeholder="Select condition" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-block">
+                          {conditionOptions.map((opt) => (
+                            <div key={opt.value} className="hover-border-primary hover-text-primary">
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      {r.conditionType === 'APR_OUTSIDE_RANGE' ? (
+                        <div className="flex items-center space-x-2">
+                          <Input
+                            type="text"
+                            placeholder="Min"
+                            value={r.thresholdLow || ''}
+                            onChange={(e) => updateBorrowRow(i, 'thresholdLow', e.target.value)}
+                            className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                              errors.borrowConditions && errors.borrowConditions[i] ? 'border-red-500' : ''
+                            }`}
+                          />
+                          <Input
+                            type="text"
+                            placeholder="Max"
+                            value={r.thresholdHigh || ''}
+                            onChange={(e) => updateBorrowRow(i, 'thresholdHigh', e.target.value)}
+                            className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                              errors.borrowConditions && errors.borrowConditions[i] ? 'border-red-500' : ''
+                            }`}
+                          />
+                          <span className="text-theme-muted">%</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center">
+                          <Input
+                            type="text"
+                            placeholder="Value"
+                            value={r.threshold || ''}
+                            onChange={(e) => updateBorrowRow(i, 'threshold', e.target.value)}
+                            className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                              errors.borrowConditions && errors.borrowConditions[i] ? 'border-red-500' : ''
+                            }`}
+                          />
+                          <span className="ml-2 text-theme-muted">%</span>
+                        </div>
+                      )}
+                      {errors.borrowConditions && errors.borrowConditions[i] && (
+                        <div className="mt-1 flex items-center text-red-500 text-sm">
+                          <AlertCircle size={14} className="mr-1" />
+                          <span>{errors.borrowConditions[i]}</span>
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Select value={r.severity} onValueChange={(value) => updateBorrowRow(i, 'severity', value as BorrowRow['severity'])}>
+                        <SelectTrigger className="w-[120px] hover-border-primary">
+                          <SelectValue placeholder="Select severity" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-block">
+                          {severityOptions.map((opt) => (
+                            <div key={opt.value} className="hover-border-primary hover-text-primary">
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Select value={r.frequency} onValueChange={(value) => updateBorrowRow(i, 'frequency', value as BorrowRow['frequency'])}>
+                        <SelectTrigger className="w-[140px] hover-border-primary">
+                          <SelectValue placeholder="Select frequency" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-block">
+                          {frequencyOptions.map((f) => (
+                            <div key={f.value} className="hover-border-primary hover-text-primary">
+                              <SelectItem key={f.value} value={f.value}>
+                                {f.label}
+                              </SelectItem>
+                            </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Delivery Channels */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">

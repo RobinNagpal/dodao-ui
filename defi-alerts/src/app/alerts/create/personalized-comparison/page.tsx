@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Plus, X, ArrowLeft, AlertCircle } from 'lucide-react';
-import { AlertBreadcrumb, PositionSettingsCard } from '@/components/alerts';
+import { ChevronRight, Home, Bell, TrendingUp, Plus, X, ArrowLeft, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { type ComparisonRow, type Channel, type NotificationFrequency, severityOptions, frequencyOptions, SeverityLevel } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -267,34 +268,201 @@ export default function PersonalizedComparisonPage() {
   return (
     <div className="container max-w-6xl mx-auto px-2 py-8">
       {/* Breadcrumb */}
-      <AlertBreadcrumb currentPage="Personalized Comparison Alert" />
+      <nav className="flex items-center text-sm mb-6">
+        <Link href="/" className="text-theme-muted hover-text-primary flex items-center gap-1">
+          <Home size={14} />
+          <span>Home</span>
+        </Link>
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <Link href="/alerts" className="text-theme-muted hover-text-primary flex items-center gap-1">
+          <Bell size={14} />
+          <span>Alerts</span>
+        </Link>
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <Link href="/alerts/create" className="text-theme-muted hover-text-primary flex items-center gap-1">
+          <TrendingUp size={14} />
+          <span>Create Alert</span>
+        </Link>
+        <ChevronRight size={14} className="mx-2 text-theme-muted" />
+        <span className="text-primary-color font-medium">Personalized Comparison Alert</span>
+      </nav>
 
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2 text-theme-primary">Get Alerts When Compound Beats Your Other Rates</h1>
         <p className="text-theme-muted">Stay updated when Compound outperforms Aave, Spark, or Morpho on any of your positions.</p>
       </div>
 
-      {/* Supply Positions */}
-      <PositionSettingsCard
-        title="Supply Positions"
-        description="Set alert conditions for each of your supply positions."
-        rows={supplyRows}
-        updateRow={updateSupply}
-        errors={{ supplyThresholds: errors.supplyThresholds }}
-        isComparisonCard={true}
-        thresholdLabel="Alert Me If Higher By"
-      />
+      {/* Supply Table */}
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">Supply Positions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">Set alert conditions for each of your supply positions.</p>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-primary-color">
+                  <TableHead className="text-theme-primary">Platform</TableHead>
+                  <TableHead className="text-theme-primary">Chain</TableHead>
+                  <TableHead className="text-theme-primary">Market</TableHead>
+                  <TableHead className="text-theme-primary">Rate</TableHead>
+                  <TableHead className="text-theme-primary">Alert Me If Higher By</TableHead>
+                  <TableHead className="text-theme-primary">Severity</TableHead>
+                  <TableHead className="text-theme-primary">Frequency</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {supplyRows.map((r, i) => (
+                  <TableRow key={i} className="border-primary-color">
+                    <TableCell className="text-theme-primary">{r.platform}</TableCell>
+                    <TableCell className="text-theme-primary">{r.chain}</TableCell>
+                    <TableCell className="text-theme-primary">{r.market}</TableCell>
+                    <TableCell className="text-theme-primary">{r.rate}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center">
+                        <Input
+                          className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                            errors.supplyThresholds && errors.supplyThresholds[i] ? 'border-red-500' : ''
+                          }`}
+                          value={r.threshold}
+                          placeholder="0.5"
+                          onChange={(e) => updateSupply(i, 'threshold', e.target.value)}
+                        />
+                        <span className="ml-2 text-theme-muted">% APR</span>
+                      </div>
+                      {errors.supplyThresholds && errors.supplyThresholds[i] && (
+                        <div className="mt-1 flex items-center text-red-500 text-sm">
+                          <AlertCircle size={14} className="mr-1" />
+                          <span>{errors.supplyThresholds[i]}</span>
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Select value={r.severity} onValueChange={(value) => updateSupply(i, 'severity', value as SeverityLevel)}>
+                        <SelectTrigger className="w-[140px] hover-border-primary">
+                          <SelectValue placeholder="Select severity" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-block">
+                          {severityOptions.map((opt) => (
+                            <div key={opt.value} className="hover-border-primary hover-text-primary">
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Select value={r.frequency} onValueChange={(value) => updateSupply(i, 'frequency', value as NotificationFrequency)}>
+                        <SelectTrigger className="w-[150px] hover-border-primary">
+                          <SelectValue placeholder="Select frequency" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-block">
+                          {frequencyOptions.map((f) => (
+                            <div key={f.value} className="hover-border-primary hover-text-primary">
+                              <SelectItem key={f.value} value={f.value}>
+                                {f.label}
+                              </SelectItem>
+                            </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
 
-      {/* Borrow Positions */}
-      <PositionSettingsCard
-        title="Borrow Positions"
-        description="Set alert conditions for each of your borrow positions."
-        rows={borrowRows}
-        updateRow={updateBorrow}
-        errors={{ borrowThresholds: errors.borrowThresholds }}
-        isComparisonCard={true}
-        thresholdLabel="Alert Me If Lower By"
-      />
+      {/* Borrow Table */}
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">Borrow Positions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-theme-muted mb-4">Set alert conditions for each of your borrow positions.</p>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-primary-color">
+                  <TableHead className="text-theme-primary">Platform</TableHead>
+                  <TableHead className="text-theme-primary">Chain</TableHead>
+                  <TableHead className="text-theme-primary">Market</TableHead>
+                  <TableHead className="text-theme-primary">Rate</TableHead>
+                  <TableHead className="text-theme-primary">Alert Me If Lower By </TableHead>
+                  <TableHead className="text-theme-primary">Severity</TableHead>
+                  <TableHead className="text-theme-primary">Frequency</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {borrowRows.map((r, i) => (
+                  <TableRow key={i} className="border-primary-color">
+                    <TableCell className="text-theme-primary">{r.platform}</TableCell>
+                    <TableCell className="text-theme-primary">{r.chain}</TableCell>
+                    <TableCell className="text-theme-primary">{r.market}</TableCell>
+                    <TableCell className="text-theme-primary">{r.rate}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center">
+                        <Input
+                          className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                            errors.borrowThresholds && errors.borrowThresholds[i] ? 'border-red-500' : ''
+                          }`}
+                          value={r.threshold}
+                          placeholder="0.5"
+                          onChange={(e) => updateBorrow(i, 'threshold', e.target.value)}
+                        />
+                        <span className="ml-2 text-theme-muted">% APR</span>
+                      </div>
+                      {errors.borrowThresholds && errors.borrowThresholds[i] && (
+                        <div className="mt-1 flex items-center text-red-500 text-sm">
+                          <AlertCircle size={14} className="mr-1" />
+                          <span>{errors.borrowThresholds[i]}</span>
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Select value={r.severity} onValueChange={(value) => updateBorrow(i, 'severity', value as SeverityLevel)}>
+                        <SelectTrigger className="w-[140px] hover-border-primary">
+                          <SelectValue placeholder="Select severity" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-block">
+                          {severityOptions.map((opt) => (
+                            <div key={opt.value} className="hover-border-primary hover-text-primary">
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Select value={r.frequency} onValueChange={(value) => updateBorrow(i, 'frequency', value as NotificationFrequency)}>
+                        <SelectTrigger className="w-[150px] hover-border-primary">
+                          <SelectValue placeholder="Select frequency" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-block">
+                          {frequencyOptions.map((f) => (
+                            <div key={f.value} className="hover-border-primary hover-text-primary">
+                              <SelectItem key={f.value} value={f.value}>
+                                {f.label}
+                              </SelectItem>
+                            </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Delivery Channels */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
