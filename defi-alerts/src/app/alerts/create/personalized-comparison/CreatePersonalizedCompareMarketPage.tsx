@@ -113,8 +113,9 @@ export default function CreatePersonalizedCompareAlertPage({ session }: CompareC
     }));
 
     // Clear validation error if it exists
-    if (errors[positionId]?.channels && errors[positionId].channels[idx]) {
-      const newChannelErrors = [...errors[positionId].channels];
+    const channelErrors = errors[positionId]?.channels;
+    if (channelErrors && channelErrors[idx]) {
+      const newChannelErrors = [...channelErrors];
 
       if (field === 'email' && typeof val === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
         newChannelErrors[idx] = '';
