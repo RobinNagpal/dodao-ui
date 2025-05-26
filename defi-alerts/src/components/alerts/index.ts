@@ -4,7 +4,6 @@ import MarketSelectionCard from './MarketSelectionCard';
 import ConditionSettingsCard from './ConditionSettingsCard';
 import DeliveryChannelsCard from './DeliveryChannelsCard';
 import NotificationFrequencySection from './NotificationFrequencySection';
-import PersonalizedPositionCard from './PersonalizedPositionCard';
 import CreateAlertModals from './CreateAlertModals';
 import AlertPageWrapper from './AlertPageWrapper';
 import CompareThresholdCard from './CompareThresholdCard';
@@ -19,7 +18,6 @@ export {
   ConditionSettingsCard,
   DeliveryChannelsCard,
   NotificationFrequencySection,
-  PersonalizedPositionCard,
   CreateAlertModals,
   CompareThresholdCard,
   PositionSettingsCard,

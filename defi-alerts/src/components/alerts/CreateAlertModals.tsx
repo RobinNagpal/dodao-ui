@@ -15,7 +15,6 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, AlertCircle, Info, X } from 'lucide-react';
 import { AlertTypeCard, MarketSelectionCard, ConditionSettingsCard, DeliveryChannelsCard, NotificationFrequencySection } from '@/components/alerts';
 import { type Channel, type ConditionType, type NotificationFrequency, type SeverityLevel, severityOptions } from '@/types/alerts';
-import { type PersonalizedPosition } from '@/components/alerts/PersonalizedPositionCard';
 import {
   AlertCategory,
   AlertActionType,
@@ -27,6 +26,25 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { utils } from 'ethers';
+import { AlertCreationResponse, CreateCompoundAlertPayload } from '@/app/api/alerts/create/compound-market/route';
+import { CreatePersonalizedAlertPayload, PersonalizedAlertCreationResponse } from '@/app/api/alerts/create/personalized-market/route';
+
+export interface PersonalizedPosition {
+  id: string;
+  chain: string;
+  market: string;
+  rate: string;
+  actionType: 'SUPPLY' | 'BORROW';
+  notificationFrequency: NotificationFrequency;
+  conditions: Array<{
+    id: string;
+    conditionType: ConditionType;
+    severity: SeverityLevel;
+    thresholdValue?: string;
+    thresholdLow?: string;
+    thresholdHigh?: string;
+  }>;
+}
 
 interface CreateAlertModalsProps {
   isOpen: boolean;
@@ -207,13 +225,13 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   });
 
   // Post data hooks
-  const { postData: postMarketAlert, loading: creatingMarketAlert } = usePostData<any, any>({
+  const { postData: postMarketAlert, loading: creatingMarketAlert } = usePostData<AlertCreationResponse, CreateCompoundAlertPayload>({
     successMessage: 'Market alert created successfully',
     errorMessage: 'Failed to create market alert',
     redirectPath: '/alerts',
   });
 
-  const { postData: postPositionAlert, loading: creatingPositionAlert } = usePostData<any, any>({
+  const { postData: postPositionAlert, loading: creatingPositionAlert } = usePostData<PersonalizedAlertCreationResponse, CreatePersonalizedAlertPayload>({
     successMessage: 'Personalized alert created successfully',
     errorMessage: 'Failed to create personalized alert',
     redirectPath: '/alerts',
@@ -465,30 +483,30 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     }
 
     // Prepare the payload
-    const payload = {
+    const payload: CreatePersonalizedAlertPayload = {
       walletAddress: selectedPosition.walletAddress,
-      category: 'PERSONALIZED',
-      actionType: selectedPosition.actionType,
+      category: 'PERSONALIZED' as AlertCategory,
+      actionType: selectedPosition.actionType as AlertActionType,
       selectedChains: [selectedPosition.chain],
       selectedMarkets: [selectedPosition.market],
       compareProtocols: [],
-      notificationFrequency: selectedPosition.notificationFrequency,
+      notificationFrequency: selectedPosition.notificationFrequency as NotificationFrequency,
       conditions: selectedPosition.conditions.map((condition) =>
         condition.conditionType === 'APR_OUTSIDE_RANGE'
           ? {
-              type: condition.conditionType,
+              type: condition.conditionType as PrismaConditionType,
               min: condition.thresholdLow,
               max: condition.thresholdHigh,
-              severity: condition.severity,
+              severity: condition.severity as SeverityLevel,
             }
           : {
-              type: condition.conditionType,
+              type: condition.conditionType as PrismaConditionType,
               value: condition.thresholdValue,
-              severity: condition.severity,
+              severity: condition.severity as SeverityLevel,
             }
       ),
       deliveryChannels: (positionChannels[selectedPosition.id] || []).map((c) => ({
-        type: c.channelType,
+        type: c.channelType as DeliveryChannelType,
         email: c.channelType === 'EMAIL' ? c.email : undefined,
         webhookUrl: c.channelType === 'WEBHOOK' ? c.webhookUrl : undefined,
       })),
@@ -586,20 +604,20 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     }
 
     // Prepare the payload
-    const payload = {
-      actionType: alertType.toUpperCase(),
+    const payload: CreateCompoundAlertPayload = {
+      actionType: alertType.toUpperCase() as AlertActionType,
       selectedChains,
       selectedMarkets,
-      notificationFrequency,
+      notificationFrequency: notificationFrequency as PrismaNotificationFrequency,
       conditions: conditions.map((c) => ({
-        type: c.conditionType,
+        type: c.conditionType as PrismaConditionType,
         value: c.thresholdValue,
         min: c.thresholdLow,
         max: c.thresholdHigh,
-        severity: c.severity,
+        severity: c.severity as PrismaSeverityLevel,
       })),
       deliveryChannels: channels.map((c) => ({
-        type: c.channelType,
+        type: c.channelType as DeliveryChannelType,
         email: c.channelType === 'EMAIL' ? c.email : undefined,
         webhookUrl: c.channelType === 'WEBHOOK' ? c.webhookUrl : undefined,
       })),
