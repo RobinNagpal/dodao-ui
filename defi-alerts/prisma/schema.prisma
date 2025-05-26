@@ -75,6 +75,7 @@ model User {
   image         String?
   publicAddress String?   @map("public_address")
   phoneNumber   String?   @map("phone_number")
+  walletAddress String[]  @default([]) @map("wallet_address")
 
   spaceId      String @map("space_id")
   username     String @map("username")

@@ -1,11 +1,27 @@
-export { default as AlertPageWrapper } from './AlertPageWrapper';
-export { default as AlertBreadcrumb } from './AlertBreadcrumb';
-export { default as AlertTypeCard } from './AlertTypeCard';
-export { default as MarketSelectionCard } from './MarketSelectionCard';
-export { default as DeliveryChannelsCard } from './DeliveryChannelsCard';
-export { default as NotificationFrequencySection } from './NotificationFrequencySection';
-export { default as CompareThresholdCard } from './CompareThresholdCard';
-export { default as ConditionSettingsCard } from './ConditionSettingsCard';
-export { default as PositionSettingsCard } from './PositionSettingsCard';
-export { default as PersonalizedPositionCard } from './PersonalizedPositionCard';
-export { default as PersonalizedComparisonPositionCard } from './PersonalizedComparisonPositionCard';
+import AlertBreadcrumb from './AlertBreadcrumb';
+import AlertTypeCard from './AlertTypeCard';
+import MarketSelectionCard from './MarketSelectionCard';
+import ConditionSettingsCard from './ConditionSettingsCard';
+import DeliveryChannelsCard from './DeliveryChannelsCard';
+import NotificationFrequencySection from './NotificationFrequencySection';
+import PersonalizedPositionCard from './PersonalizedPositionCard';
+import CreateAlertModals from './CreateAlertModals';
+import AlertPageWrapper from './AlertPageWrapper';
+import CompareThresholdCard from './CompareThresholdCard';
+import PositionSettingsCard from './PositionSettingsCard';
+import PersonalizedComparisonPositionCard from './PersonalizedComparisonPositionCard';
+
+export {
+  AlertPageWrapper,
+  AlertBreadcrumb,
+  AlertTypeCard,
+  MarketSelectionCard,
+  ConditionSettingsCard,
+  DeliveryChannelsCard,
+  NotificationFrequencySection,
+  PersonalizedPositionCard,
+  CreateAlertModals,
+  CompareThresholdCard,
+  PositionSettingsCard,
+  PersonalizedComparisonPositionCard,
+};
