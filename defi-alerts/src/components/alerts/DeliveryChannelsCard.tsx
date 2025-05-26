@@ -13,13 +13,13 @@ interface DeliveryChannelsCardProps {
   addChannel: () => void;
   updateChannel: (idx: number, field: keyof Channel, val: string) => void;
   removeChannel: (idx: number) => void;
-  errors: {
+  errors?: {
     channels?: string[];
   };
   session?: DoDAOSession;
 }
 
-export default function DeliveryChannelsCard({ channels, addChannel, updateChannel, removeChannel, errors, session }: DeliveryChannelsCardProps) {
+export default function DeliveryChannelsCard({ channels, addChannel, updateChannel, removeChannel, errors = {}, session }: DeliveryChannelsCardProps) {
   return (
     <Card className="mb-6 border-theme-primary bg-block border-primary-color">
       <CardHeader className="pb-1 flex flex-row items-center justify-between">
@@ -64,10 +64,10 @@ export default function DeliveryChannelsCard({ channels, addChannel, updateChann
                   onChange={(e) => updateChannel(i, 'email', e.target.value)}
                   readOnly={true}
                   className={`flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                    errors.channels && errors.channels[i] ? 'border-red-500' : ''
+                    errors?.channels && errors.channels[i] ? 'border-red-500' : ''
                   } ${ch.channelType === 'EMAIL' ? 'bg-block' : ''}`}
                 />
-                {errors.channels && errors.channels[i] && (
+                {errors?.channels && errors.channels[i] && (
                   <div className="mt-1 flex items-center text-red-500 text-sm">
                     <AlertCircle size={14} className="mr-1" />
                     <span>{errors.channels[i]}</span>
@@ -82,10 +82,10 @@ export default function DeliveryChannelsCard({ channels, addChannel, updateChann
                   value={ch.webhookUrl || ''}
                   onChange={(e) => updateChannel(i, 'webhookUrl', e.target.value)}
                   className={`flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                    errors.channels && errors.channels[i] ? 'border-red-500' : ''
+                    errors?.channels && errors.channels[i] ? 'border-red-500' : ''
                   }`}
                 />
-                {errors.channels && errors.channels[i] && (
+                {errors?.channels && errors.channels[i] && (
                   <div className="mt-1 flex items-center text-red-500 text-sm">
                     <AlertCircle size={14} className="mr-1" />
                     <span>{errors.channels[i]}</span>

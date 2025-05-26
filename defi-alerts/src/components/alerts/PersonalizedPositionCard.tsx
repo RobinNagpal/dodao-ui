@@ -1,15 +1,15 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AlertCircle, Info, Plus, X } from 'lucide-react';
-import { type ConditionType, type SeverityLevel, severityOptions, type NotificationFrequency } from '@/types/alerts';
-import { NotificationFrequencySection } from './';
+import { type ConditionType, type SeverityLevel, severityOptions, type NotificationFrequency, Channel } from '@/types/alerts';
+import { NotificationFrequencySection, DeliveryChannelsCard } from './';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 
 export interface PersonalizedPosition {
   id: string;
@@ -31,12 +31,31 @@ export interface PersonalizedPosition {
 interface PersonalizedPositionCardProps {
   position: PersonalizedPosition;
   updatePosition: (positionId: string, updates: Partial<PersonalizedPosition>) => void;
+  onCreateAlert: (positionId: string) => void;
+  isSubmitting: boolean;
   errors?: {
     conditions?: string[];
+    channels?: string[];
   };
+  channels: Channel[];
+  updateChannel: (idx: number, field: keyof Channel, val: string) => void;
+  addChannel: () => void;
+  removeChannel: (idx: number) => void;
+  session: DoDAOSession;
 }
 
-export default function PersonalizedPositionCard({ position, updatePosition, errors }: PersonalizedPositionCardProps) {
+export default function PersonalizedPositionCard({
+  position,
+  updatePosition,
+  errors,
+  onCreateAlert,
+  isSubmitting,
+  channels,
+  addChannel,
+  updateChannel,
+  removeChannel,
+  session,
+}: PersonalizedPositionCardProps) {
   const addCondition = () => {
     const newCondition = {
       id: `condition-${Date.now()}`,
@@ -93,11 +112,16 @@ export default function PersonalizedPositionCard({ position, updatePosition, err
                 <p className="text-sm text-theme-muted">Current APR: {position.rate}</p>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <Badge variant="secondary" className="text-xs">
-                {position.conditions.length} condition{position.conditions.length !== 1 ? 's' : ''}
-              </Badge>
-            </div>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                onCreateAlert(position.id);
+              }}
+              className="border text-primary-color hover-border-body"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Creating...' : 'Create Alert'}
+            </Button>
           </div>
         </AccordionTrigger>
 
@@ -263,6 +287,18 @@ export default function PersonalizedPositionCard({ position, updatePosition, err
 
             {/* Notification Frequency */}
             <NotificationFrequencySection notificationFrequency={position.notificationFrequency} setNotificationFrequency={updateNotificationFrequency} />
+
+            {/* Delivery Channel Settings */}
+            <div className="mt-8">
+              <DeliveryChannelsCard
+                channels={channels}
+                addChannel={addChannel}
+                updateChannel={updateChannel}
+                removeChannel={removeChannel}
+                errors={{ channels: errors?.channels }}
+                session={session}
+              />
+            </div>
           </div>
         </AccordionContent>
       </AccordionItem>

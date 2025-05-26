@@ -12,7 +12,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { PersonalizedComparisonAlertPayload, PersonalizedComparisonAlertResponse } from '@/app/api/alerts/create/personalized-comparison/route';
 import { AlertActionType, AlertCategory, ConditionType, DeliveryChannelType, SeverityLevel as PrismaSeverityLevel } from '@prisma/client';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
-import { AlertBreadcrumb, DeliveryChannelsCard } from '@/components/alerts';
+import { AlertBreadcrumb } from '@/components/alerts';
 
 export interface CompareCompoundPageProps {
   session: DoDAOSession;
@@ -22,6 +22,7 @@ export default function CreatePersonalizedCompareAlertPage({ session }: CompareC
   const router = useRouter();
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
+  const [currentSubmittingPosition, setCurrentSubmittingPosition] = useState<string | null>(null);
 
   const { postData, loading: isSubmitting } = usePostData<PersonalizedComparisonAlertResponse, PersonalizedComparisonAlertPayload>({
     successMessage: "You'll now be notified when Compound compares favorably with other platforms.",
@@ -30,13 +31,6 @@ export default function CreatePersonalizedCompareAlertPage({ session }: CompareC
   });
 
   const [walletAddress, setWalletAddress] = useState<string>('');
-
-  useEffect(() => {
-    if (session?.username) {
-      setChannels((ch) => ch.map((channel) => (channel.channelType === 'EMAIL' ? { ...channel, email: session.username } : channel)));
-    }
-    setWalletAddress(localStorage.getItem('walletAddress') ?? '');
-  }, [session?.username]);
 
   // Initialize positions with hardcoded data
   const [positions, setPositions] = useState<PersonalizedComparisonPosition[]>([
@@ -76,42 +70,88 @@ export default function CreatePersonalizedCompareAlertPage({ session }: CompareC
     },
   ]);
 
-  // Delivery channels
-  const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
+  // Initialize channels for each position
+  const [positionChannels, setPositionChannels] = useState<{ [positionId: string]: Channel[] }>({});
+
+  useEffect(() => {
+    if (session?.username) {
+      const updatedChannels = { ...positionChannels };
+      positions.forEach((position) => {
+        if (!updatedChannels[position.id]) {
+          updatedChannels[position.id] = [{ channelType: 'EMAIL', email: session.username }];
+        } else {
+          updatedChannels[position.id] = updatedChannels[position.id].map((channel) =>
+            channel.channelType === 'EMAIL' ? { ...channel, email: session.username } : channel
+          );
+        }
+      });
+      setPositionChannels(updatedChannels);
+    }
+    setWalletAddress(localStorage.getItem('walletAddress') ?? '');
+  }, [session?.username, positions]);
 
   // Validation errors
   const [errors, setErrors] = useState<{
-    positions?: { [positionId: string]: { conditions?: string[] } };
-    channels?: string[];
+    [positionId: string]: {
+      conditions?: string[];
+      channels?: string[];
+    };
   }>({});
 
-  const addChannel = () => setChannels((chs) => [...chs, { channelType: 'EMAIL', email: '' }]);
+  // Channel management functions for each position
+  const addChannel = (positionId: string) => {
+    setPositionChannels((prev) => ({
+      ...prev,
+      [positionId]: [...(prev[positionId] || []), { channelType: 'EMAIL', email: session?.username || '' }],
+    }));
+  };
 
-  const updateChannel = <K extends keyof Channel>(i: number, field: K, value: Channel[K]) => {
-    setChannels((chs) => chs.map((c, idx) => (idx === i ? { ...c, [field]: value } : c)));
+  const updateChannel = (positionId: string, idx: number, field: keyof Channel, val: string) => {
+    setPositionChannels((prev) => ({
+      ...prev,
+      [positionId]: (prev[positionId] || []).map((ch, i) => (i === idx ? { ...ch, [field]: val } : ch)),
+    }));
 
     // Clear validation error if it exists
-    if (errors.channels && errors.channels[i]) {
-      const newChannelErrors = [...errors.channels];
+    if (errors[positionId]?.channels && errors[positionId].channels[idx]) {
+      const newChannelErrors = [...errors[positionId].channels];
 
-      if (field === 'email' && typeof value === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        newChannelErrors[i] = '';
-      } else if (field === 'webhookUrl' && typeof value === 'string') {
+      if (field === 'email' && typeof val === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+        newChannelErrors[idx] = '';
+      } else if (field === 'webhookUrl' && typeof val === 'string') {
         try {
-          new URL(value);
-          newChannelErrors[i] = '';
+          new URL(val);
+          newChannelErrors[idx] = '';
         } catch {}
       }
 
       if (newChannelErrors.every((err) => !err)) {
-        setErrors((prev) => ({ ...prev, channels: undefined }));
+        setErrors((prev) => {
+          const updated = { ...prev };
+          delete updated[positionId].channels;
+          if (Object.keys(updated[positionId]).length === 0) {
+            delete updated[positionId];
+          }
+          return updated;
+        });
       } else {
-        setErrors((prev) => ({ ...prev, channels: newChannelErrors }));
+        setErrors((prev) => ({
+          ...prev,
+          [positionId]: {
+            ...prev[positionId],
+            channels: newChannelErrors,
+          },
+        }));
       }
     }
   };
 
-  const removeChannel = (i: number) => setChannels((chs) => chs.filter((_, idx) => idx !== i));
+  const removeChannel = (positionId: string, idx: number) => {
+    setPositionChannels((prev) => ({
+      ...prev,
+      [positionId]: (prev[positionId] || []).filter((_, i) => i !== idx),
+    }));
+  };
 
   // Update position function
   const updatePosition = (positionId: string, updates: Partial<PersonalizedComparisonPosition>) => {
@@ -120,101 +160,112 @@ export default function CreatePersonalizedCompareAlertPage({ session }: CompareC
 
   // Clear validation errors when user makes changes
   useEffect(() => {
-    if (errors.positions) {
-      const newPositionErrors = { ...errors.positions };
-      let hasChanges = false;
+    positions.forEach((position) => {
+      if (errors[position.id]?.conditions) {
+        const newConditionErrors = [...errors[position.id].conditions!];
+        let hasChanges = false;
 
-      positions.forEach((position) => {
-        if (newPositionErrors[position.id]?.conditions) {
-          const newConditionErrors = [...newPositionErrors[position.id].conditions!];
-
-          position.conditions.forEach((condition, index) => {
-            if (condition.thresholdValue && !isNaN(Number(condition.thresholdValue)) && newConditionErrors[index]) {
-              newConditionErrors[index] = '';
-              hasChanges = true;
-            }
-          });
-
-          if (hasChanges) {
-            if (newConditionErrors.every((err) => !err)) {
-              delete newPositionErrors[position.id];
-            } else {
-              newPositionErrors[position.id] = { conditions: newConditionErrors };
-            }
-          }
-        }
-      });
-
-      if (hasChanges) {
-        if (Object.keys(newPositionErrors).length === 0) {
-          setErrors((prev) => ({ ...prev, positions: undefined }));
-        } else {
-          setErrors((prev) => ({ ...prev, positions: newPositionErrors }));
-        }
-      }
-    }
-  }, [positions, errors.positions]);
-
-  useEffect(() => {
-    if (errors.channels) {
-      const newChannelErrors = [...errors.channels];
-      let hasChanges = false;
-
-      channels.forEach((channel, index) => {
-        if (channel.channelType === 'EMAIL') {
-          if (channel.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(channel.email) && newChannelErrors[index]) {
-            newChannelErrors[index] = '';
+        position.conditions.forEach((condition, index) => {
+          if (condition.thresholdValue && !isNaN(Number(condition.thresholdValue)) && newConditionErrors[index]) {
+            newConditionErrors[index] = '';
             hasChanges = true;
           }
-        } else if (channel.channelType === 'WEBHOOK') {
-          if (channel.webhookUrl && newChannelErrors[index]) {
-            try {
-              new URL(channel.webhookUrl);
-              newChannelErrors[index] = '';
-              hasChanges = true;
-            } catch {}
+        });
+
+        if (hasChanges) {
+          if (newConditionErrors.every((err) => !err)) {
+            setErrors((prev) => {
+              const updated = { ...prev };
+              delete updated[position.id].conditions;
+              if (Object.keys(updated[position.id]).length === 0) {
+                delete updated[position.id];
+              }
+              return updated;
+            });
+          } else {
+            setErrors((prev) => ({
+              ...prev,
+              [position.id]: {
+                ...prev[position.id],
+                conditions: newConditionErrors,
+              },
+            }));
           }
         }
-      });
+      }
+    });
+  }, [positions, errors]);
 
-      if (hasChanges) {
-        if (newChannelErrors.every((err) => !err)) {
-          setErrors((prev) => ({ ...prev, channels: undefined }));
-        } else {
-          setErrors((prev) => ({ ...prev, channels: newChannelErrors }));
+  useEffect(() => {
+    Object.entries(positionChannels).forEach(([positionId, channels]) => {
+      if (errors[positionId]?.channels) {
+        const newChannelErrors = [...errors[positionId].channels!];
+        let hasChanges = false;
+
+        channels.forEach((channel, index) => {
+          if (channel.channelType === 'EMAIL') {
+            if (channel.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(channel.email) && newChannelErrors[index]) {
+              newChannelErrors[index] = '';
+              hasChanges = true;
+            }
+          } else if (channel.channelType === 'WEBHOOK') {
+            if (channel.webhookUrl && newChannelErrors[index]) {
+              try {
+                new URL(channel.webhookUrl);
+                newChannelErrors[index] = '';
+                hasChanges = true;
+              } catch {}
+            }
+          }
+        });
+
+        if (hasChanges) {
+          if (newChannelErrors.every((err) => !err)) {
+            setErrors((prev) => {
+              const updated = { ...prev };
+              delete updated[positionId].channels;
+              if (Object.keys(updated[positionId]).length === 0) {
+                delete updated[positionId];
+              }
+              return updated;
+            });
+          } else {
+            setErrors((prev) => ({
+              ...prev,
+              [positionId]: {
+                ...prev[positionId],
+                channels: newChannelErrors,
+              },
+            }));
+          }
         }
       }
-    }
-  }, [channels, errors.channels]);
+    });
+  }, [positionChannels, errors]);
 
-  // Validate form before submission
-  const validateForm = () => {
-    const newErrors: {
-      positions?: { [positionId: string]: { conditions?: string[] } };
+  // Validate single position
+  const validatePosition = (positionId: string): boolean => {
+    const position = positions.find((p) => p.id === positionId);
+    if (!position) return false;
+
+    const channels = positionChannels[positionId] || [];
+    const positionErrors: {
+      conditions?: string[];
       channels?: string[];
     } = {};
 
     // Validate position conditions
-    const positionErrors: { [positionId: string]: { conditions?: string[] } } = {};
-
-    positions.forEach((position) => {
-      const conditionErrors: string[] = [];
-
-      position.conditions.forEach((condition, index) => {
-        if (!condition.thresholdValue) {
-          conditionErrors[index] = 'Threshold value is required';
-        } else if (isNaN(Number(condition.thresholdValue))) {
-          conditionErrors[index] = 'Threshold value must be a valid number';
-        }
-      });
-
-      if (conditionErrors.some((error) => error)) {
-        positionErrors[position.id] = { conditions: conditionErrors };
+    const conditionErrors: string[] = [];
+    position.conditions.forEach((condition, index) => {
+      if (!condition.thresholdValue) {
+        conditionErrors[index] = 'Threshold value is required';
+      } else if (isNaN(Number(condition.thresholdValue))) {
+        conditionErrors[index] = 'Threshold value must be a valid number';
       }
     });
 
-    if (Object.keys(positionErrors).length > 0) {
-      newErrors.positions = positionErrors;
+    if (conditionErrors.some((error) => error)) {
+      positionErrors.conditions = conditionErrors;
     }
 
     // Validate channels
@@ -243,49 +294,65 @@ export default function CreatePersonalizedCompareAlertPage({ session }: CompareC
     });
 
     if (channelErrors.some((error) => error)) {
-      newErrors.channels = channelErrors;
+      positionErrors.channels = channelErrors;
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    setErrors((prev) => ({
+      ...prev,
+      [positionId]: positionErrors,
+    }));
+
+    return Object.keys(positionErrors).length === 0;
   };
 
-  // submit: create alerts for each position
-  const handleCreateAlert = async () => {
-    // Validate form before submission
-    if (!validateForm()) {
+  // Create alert for a single position
+  const handleCreateAlert = async (positionId: string) => {
+    const position = positions.find((p) => p.id === positionId);
+    if (!position) return;
+
+    // Validate position before submission
+    if (!validatePosition(positionId)) {
       showNotification({
         type: 'error',
         heading: 'Validation Error',
-        message: 'Please fix the errors in the form before submitting',
+        message: 'Please fix the errors before submitting',
       });
       return;
     }
 
-    // Create and submit alerts for each position
-    for (const position of positions) {
-      const payload: PersonalizedComparisonAlertPayload = {
-        walletAddress: walletAddress,
-        category: 'PERSONALIZED' as AlertCategory,
-        actionType: position.actionType as AlertActionType,
-        isComparison: true,
-        selectedChains: [position.chain],
-        selectedMarkets: [position.market],
-        compareProtocols: [position.platform],
-        notificationFrequency: position.notificationFrequency as NotificationFrequency,
-        conditions: position.conditions.map((condition) => ({
-          type: condition.conditionType as ConditionType,
-          value: condition.thresholdValue!,
-          severity: condition.severity as PrismaSeverityLevel,
-        })),
-        deliveryChannels: channels.map((c) => ({
-          type: c.channelType as DeliveryChannelType,
-          email: c.channelType === 'EMAIL' ? c.email : undefined,
-          webhookUrl: c.channelType === 'WEBHOOK' ? c.webhookUrl : undefined,
-        })),
-      };
+    setCurrentSubmittingPosition(positionId);
 
+    const channels = positionChannels[positionId] || [];
+    const payload: PersonalizedComparisonAlertPayload = {
+      walletAddress: walletAddress,
+      category: 'PERSONALIZED' as AlertCategory,
+      actionType: position.actionType as AlertActionType,
+      isComparison: true,
+      selectedChains: [position.chain],
+      selectedMarkets: [position.market],
+      compareProtocols: [position.platform],
+      notificationFrequency: position.notificationFrequency as NotificationFrequency,
+      conditions: position.conditions.map((condition) => ({
+        type: condition.conditionType as ConditionType,
+        value: condition.thresholdValue!,
+        severity: condition.severity as PrismaSeverityLevel,
+      })),
+      deliveryChannels: channels.map((c) => ({
+        type: c.channelType as DeliveryChannelType,
+        email: c.channelType === 'EMAIL' ? c.email : undefined,
+        webhookUrl: c.channelType === 'WEBHOOK' ? c.webhookUrl : undefined,
+      })),
+    };
+
+    try {
       await postData(`${baseUrl}/api/alerts/create/personalized-comparison`, payload);
+      showNotification({
+        type: 'success',
+        heading: 'Alert Created',
+        message: `Alert for ${position.market} on ${position.chain} vs ${position.platform} has been created.`,
+      });
+    } finally {
+      setCurrentSubmittingPosition(null);
     }
   };
 
@@ -321,7 +388,14 @@ export default function CreatePersonalizedCompareAlertPage({ session }: CompareC
               key={position.id}
               position={position}
               updatePosition={updatePosition}
-              errors={errors.positions?.[position.id]}
+              errors={errors[position.id]}
+              onCreateAlert={handleCreateAlert}
+              isSubmitting={isSubmitting && currentSubmittingPosition === position.id}
+              channels={positionChannels[position.id] || []}
+              addChannel={() => addChannel(position.id)}
+              updateChannel={(idx, field, val) => updateChannel(position.id, idx, field, val)}
+              removeChannel={(idx) => removeChannel(position.id, idx)}
+              session={session}
             />
           ))}
         </div>
@@ -337,30 +411,23 @@ export default function CreatePersonalizedCompareAlertPage({ session }: CompareC
               key={position.id}
               position={position}
               updatePosition={updatePosition}
-              errors={errors.positions?.[position.id]}
+              errors={errors[position.id]}
+              onCreateAlert={handleCreateAlert}
+              isSubmitting={isSubmitting && currentSubmittingPosition === position.id}
+              channels={positionChannels[position.id] || []}
+              addChannel={() => addChannel(position.id)}
+              updateChannel={(idx, field, val) => updateChannel(position.id, idx, field, val)}
+              removeChannel={(idx) => removeChannel(position.id, idx)}
+              session={session}
             />
           ))}
         </div>
       )}
 
-      {/* Delivery Channels */}
-      <DeliveryChannelsCard
-        channels={channels}
-        addChannel={addChannel}
-        updateChannel={updateChannel}
-        removeChannel={removeChannel}
-        errors={errors}
-        session={session}
-      />
-
-      {/* Action Buttons */}
-      <div className="flex justify-between">
+      {/* Back button */}
+      <div className="flex justify-start">
         <Button onClick={() => router.push('/alerts/create')} className="border hover-border-primary">
           <ArrowLeft size={16} className="mr-2" /> Back
-        </Button>
-
-        <Button onClick={handleCreateAlert} className="border text-primary-color hover-border-body" disabled={isSubmitting}>
-          {isSubmitting ? 'Creating...' : 'Create Personalized Alerts'}
         </Button>
       </div>
     </div>
