@@ -32,6 +32,15 @@ export default function CompareThresholdCard({
   errors,
   alertType,
 }: CompareThresholdCardProps) {
+  // Get contextual message for comparison logic
+  const getComparisonMessage = (alertType: 'supply' | 'borrow') => {
+    if (alertType === 'supply') {
+      return `Example: If Aave offers 6.5% APR and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches 7.7% (Aave rate + your threshold)`;
+    } else {
+      return `Example: If Aave charges 4.0% APR and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to 3.5% (Aave rate - your threshold)`;
+    }
+  };
+
   return (
     <Card className="mb-6 border-theme-primary bg-block border-primary-color">
       <CardHeader className="pb-1 flex flex-row items-center justify-between">
@@ -42,8 +51,16 @@ export default function CompareThresholdCard({
       </CardHeader>
       <CardContent>
         <p className="text-sm text-theme-muted mb-4">
-          {alertType === 'supply' ? 'Notify when Compound supply APR > other APR by threshold.' : 'Notify when Compound borrow APR < other APR by threshold.'}
+          Set the minimum rate difference required to trigger an alert. You’ll be notified when Compound becomes competitively better by your specified
+          threshold.
         </p>
+
+        {/* Single Contextual Message for the alert type */}
+        <div className="mb-6 p-3 bg-theme-secondary rounded-lg border border-theme-primary">
+          <p className="text-sm text-theme-muted">
+            <span className="text-primary-color font-medium">How thresholds work:</span> {getComparisonMessage(alertType)}
+          </p>
+        </div>
 
         {thresholds.map((th, i) => (
           <div key={i} className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-primary-color pt-4">
@@ -59,12 +76,12 @@ export default function CompareThresholdCard({
                   type="text"
                   value={th.threshold}
                   onChange={(e) => updateThreshold(i, 'threshold', e.target.value)}
-                  className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                  className={`w-22 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
                     errors.thresholds && errors.thresholds[i] ? 'border-red-500' : ''
                   }`}
-                  placeholder="0.5"
+                  placeholder={alertType === 'supply' ? 'Threshold (e.g., 1.2)' : 'Threshold (e.g., 0.5)'}
                 />
-                <span className="ml-2 text-theme-muted">% APR</span>
+                <span className="ml-2 text-theme-muted">APR difference</span>
               </div>
               {errors.thresholds && errors.thresholds[i] && (
                 <div className="mt-1 flex items-center text-red-500 text-sm">
@@ -75,9 +92,12 @@ export default function CompareThresholdCard({
             </div>
 
             <div className="col-span-5">
-              <Select value={th.severity} onValueChange={(value) => updateThreshold(i, 'severity', value as SeverityLevel)}>
+              <Select
+                value={th.severity === 'NONE' ? undefined : th.severity}
+                onValueChange={(value) => updateThreshold(i, 'severity', value as SeverityLevel)}
+              >
                 <SelectTrigger className="w-full hover-border-primary">
-                  <SelectValue placeholder="Select severity" />
+                  <SelectValue placeholder="Severity Level" />
                 </SelectTrigger>
                 <SelectContent className="bg-block">
                   {severityOptions.map((opt) => (

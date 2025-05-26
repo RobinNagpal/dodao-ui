@@ -9,8 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { type ComparisonRow, type Channel, type NotificationFrequency, severityOptions, frequencyOptions, SeverityLevel } from '@/types/alerts';
+import { type Channel, type NotificationFrequency, severityOptions, SeverityLevel } from '@/types/alerts';
+import PersonalizedComparisonPositionCard, { type PersonalizedComparisonPosition } from '@/components/alerts/PersonalizedComparisonPositionCard';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { PersonalizedComparisonAlertPayload, PersonalizedComparisonAlertResponse } from '@/app/api/alerts/create/personalized-comparison/route';
@@ -35,73 +35,52 @@ export default function PersonalizedComparisonPage() {
     setWalletAddress(localStorage.getItem('walletAddress') ?? '');
   }, []);
 
-  // 1) dynamic supply comparisons
-  const [supplyRows, setSupplyRows] = useState<ComparisonRow[]>([
+  // Initialize positions with hardcoded data
+  const [positions, setPositions] = useState<PersonalizedComparisonPosition[]>([
     {
+      id: 'supply-1',
       platform: 'Aave',
       chain: 'Ethereum',
       market: 'wstETH',
       rate: '0.09%',
-      threshold: '',
-      severity: 'NONE',
-      frequency: 'AT_MOST_ONCE_PER_DAY',
+      actionType: 'SUPPLY',
+      notificationFrequency: 'AT_MOST_ONCE_PER_DAY',
+      conditions: [
+        {
+          id: 'condition-1',
+          conditionType: 'RATE_DIFF_ABOVE',
+          severity: 'NONE',
+          thresholdValue: '',
+        },
+      ],
     },
-  ]);
-
-  // 2) dynamic borrow comparisons
-  const [borrowRows, setBorrowRows] = useState<ComparisonRow[]>([
     {
+      id: 'borrow-1',
       platform: 'Spark',
       chain: 'Ethereum',
       market: 'ETH',
       rate: '2.09%',
-      threshold: '',
-      severity: 'NONE',
-      frequency: 'AT_MOST_ONCE_PER_DAY',
+      actionType: 'BORROW',
+      notificationFrequency: 'AT_MOST_ONCE_PER_DAY',
+      conditions: [
+        {
+          id: 'condition-2',
+          conditionType: 'RATE_DIFF_BELOW',
+          severity: 'NONE',
+          thresholdValue: '',
+        },
+      ],
     },
   ]);
 
-  // 3) channels
+  // Delivery channels
   const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
 
   // Validation errors
   const [errors, setErrors] = useState<{
-    supplyThresholds?: string[];
-    borrowThresholds?: string[];
+    positions?: { [positionId: string]: { conditions?: string[] } };
     channels?: string[];
   }>({});
-
-  const updateSupply = <K extends keyof ComparisonRow>(i: number, field: K, value: ComparisonRow[K]) => {
-    setSupplyRows((rows) => rows.map((r, idx) => (idx === i ? { ...r, [field]: value } : r)));
-
-    // Clear validation error if it exists
-    if (errors.supplyThresholds && errors.supplyThresholds[i]) {
-      const newSupplyErrors = [...errors.supplyThresholds];
-      newSupplyErrors[i] = '';
-
-      if (newSupplyErrors.every((err) => !err)) {
-        setErrors((prev) => ({ ...prev, supplyThresholds: undefined }));
-      } else {
-        setErrors((prev) => ({ ...prev, supplyThresholds: newSupplyErrors }));
-      }
-    }
-  };
-
-  const updateBorrow = <K extends keyof ComparisonRow>(i: number, field: K, value: ComparisonRow[K]) => {
-    setBorrowRows((rows) => rows.map((r, idx) => (idx === i ? { ...r, [field]: value } : r)));
-
-    // Clear validation error if it exists
-    if (errors.borrowThresholds && errors.borrowThresholds[i]) {
-      const newBorrowErrors = [...errors.borrowThresholds];
-      newBorrowErrors[i] = '';
-
-      if (newBorrowErrors.every((err) => !err)) {
-        setErrors((prev) => ({ ...prev, borrowThresholds: undefined }));
-      } else {
-        setErrors((prev) => ({ ...prev, borrowThresholds: newBorrowErrors }));
-      }
-    }
-  };
 
   const addChannel = () => setChannels((chs) => [...chs, { channelType: 'EMAIL', email: '' }]);
 
@@ -131,36 +110,108 @@ export default function PersonalizedComparisonPage() {
 
   const removeChannel = (i: number) => setChannels((chs) => chs.filter((_, idx) => idx !== i));
 
+  // Update position function
+  const updatePosition = (positionId: string, updates: Partial<PersonalizedComparisonPosition>) => {
+    setPositions((positions) => positions.map((pos) => (pos.id === positionId ? { ...pos, ...updates } : pos)));
+  };
+
+  // Clear validation errors when user makes changes
+  useEffect(() => {
+    if (errors.positions) {
+      const newPositionErrors = { ...errors.positions };
+      let hasChanges = false;
+
+      positions.forEach((position) => {
+        if (newPositionErrors[position.id]?.conditions) {
+          const newConditionErrors = [...newPositionErrors[position.id].conditions!];
+
+          position.conditions.forEach((condition, index) => {
+            if (condition.thresholdValue && !isNaN(Number(condition.thresholdValue)) && newConditionErrors[index]) {
+              newConditionErrors[index] = '';
+              hasChanges = true;
+            }
+          });
+
+          if (hasChanges) {
+            if (newConditionErrors.every((err) => !err)) {
+              delete newPositionErrors[position.id];
+            } else {
+              newPositionErrors[position.id] = { conditions: newConditionErrors };
+            }
+          }
+        }
+      });
+
+      if (hasChanges) {
+        if (Object.keys(newPositionErrors).length === 0) {
+          setErrors((prev) => ({ ...prev, positions: undefined }));
+        } else {
+          setErrors((prev) => ({ ...prev, positions: newPositionErrors }));
+        }
+      }
+    }
+  }, [positions, errors.positions]);
+
+  useEffect(() => {
+    if (errors.channels) {
+      const newChannelErrors = [...errors.channels];
+      let hasChanges = false;
+
+      channels.forEach((channel, index) => {
+        if (channel.channelType === 'EMAIL') {
+          if (channel.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(channel.email) && newChannelErrors[index]) {
+            newChannelErrors[index] = '';
+            hasChanges = true;
+          }
+        } else if (channel.channelType === 'WEBHOOK') {
+          if (channel.webhookUrl && newChannelErrors[index]) {
+            try {
+              new URL(channel.webhookUrl);
+              newChannelErrors[index] = '';
+              hasChanges = true;
+            } catch {}
+          }
+        }
+      });
+
+      if (hasChanges) {
+        if (newChannelErrors.every((err) => !err)) {
+          setErrors((prev) => ({ ...prev, channels: undefined }));
+        } else {
+          setErrors((prev) => ({ ...prev, channels: newChannelErrors }));
+        }
+      }
+    }
+  }, [channels, errors.channels]);
+
   // Validate form before submission
   const validateForm = () => {
     const newErrors: {
-      supplyThresholds?: string[];
-      borrowThresholds?: string[];
+      positions?: { [positionId: string]: { conditions?: string[] } };
       channels?: string[];
     } = {};
 
-    // Validate supply thresholds
-    const supplyThresholdErrors: string[] = [];
-    supplyRows.forEach((row, index) => {
-      if (!row.threshold || isNaN(Number(row.threshold))) {
-        supplyThresholdErrors[index] = 'Threshold must be a valid number';
+    // Validate position conditions
+    const positionErrors: { [positionId: string]: { conditions?: string[] } } = {};
+
+    positions.forEach((position) => {
+      const conditionErrors: string[] = [];
+
+      position.conditions.forEach((condition, index) => {
+        if (!condition.thresholdValue) {
+          conditionErrors[index] = 'Threshold value is required';
+        } else if (isNaN(Number(condition.thresholdValue))) {
+          conditionErrors[index] = 'Threshold value must be a valid number';
+        }
+      });
+
+      if (conditionErrors.some((error) => error)) {
+        positionErrors[position.id] = { conditions: conditionErrors };
       }
     });
 
-    if (supplyThresholdErrors.some((error) => error)) {
-      newErrors.supplyThresholds = supplyThresholdErrors;
-    }
-
-    // Validate borrow thresholds
-    const borrowThresholdErrors: string[] = [];
-    borrowRows.forEach((row, index) => {
-      if (!row.threshold || isNaN(Number(row.threshold))) {
-        borrowThresholdErrors[index] = 'Threshold must be a valid number';
-      }
-    });
-
-    if (borrowThresholdErrors.some((error) => error)) {
-      newErrors.borrowThresholds = borrowThresholdErrors;
+    if (Object.keys(positionErrors).length > 0) {
+      newErrors.positions = positionErrors;
     }
 
     // Validate channels
@@ -196,7 +247,7 @@ export default function PersonalizedComparisonPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // submit: two batches of calls
+  // submit: create alerts for each position
   const handleCreateAlert = async () => {
     // Validate form before submission
     if (!validateForm()) {
@@ -208,52 +259,22 @@ export default function PersonalizedComparisonPage() {
       return;
     }
 
-    // supply comparisons → RATE_DIFF_ABOVE
-    for (const row of supplyRows) {
+    // Create and submit alerts for each position
+    for (const position of positions) {
       const payload: PersonalizedComparisonAlertPayload = {
-        walletAddress,
+        walletAddress: walletAddress,
         category: 'PERSONALIZED' as AlertCategory,
-        actionType: 'SUPPLY' as AlertActionType,
+        actionType: position.actionType as AlertActionType,
         isComparison: true,
-        selectedChains: [row.chain],
-        selectedMarkets: [row.market],
-        compareProtocols: [row.platform],
-        notificationFrequency: row.frequency as NotificationFrequency,
-        conditions: [
-          {
-            type: 'RATE_DIFF_ABOVE' as ConditionType,
-            value: row.threshold,
-            severity: row.severity as PrismaSeverityLevel,
-          },
-        ],
-        deliveryChannels: channels.map((c) => ({
-          type: c.channelType as DeliveryChannelType,
-          email: c.channelType === 'EMAIL' ? c.email : undefined,
-          webhookUrl: c.channelType === 'WEBHOOK' ? c.webhookUrl : undefined,
+        selectedChains: [position.chain],
+        selectedMarkets: [position.market],
+        compareProtocols: [position.platform],
+        notificationFrequency: position.notificationFrequency as NotificationFrequency,
+        conditions: position.conditions.map((condition) => ({
+          type: condition.conditionType as ConditionType,
+          value: condition.thresholdValue!,
+          severity: condition.severity as PrismaSeverityLevel,
         })),
-      };
-
-      await postData(`${baseUrl}/api/alerts/create/personalized-comparison`, payload);
-    }
-
-    // borrow comparisons → RATE_DIFF_BELOW
-    for (const row of borrowRows) {
-      const payload: PersonalizedComparisonAlertPayload = {
-        walletAddress,
-        category: 'PERSONALIZED' as AlertCategory,
-        actionType: 'BORROW' as AlertActionType,
-        isComparison: true,
-        selectedChains: [row.chain],
-        selectedMarkets: [row.market],
-        compareProtocols: [row.platform],
-        notificationFrequency: row.frequency as NotificationFrequency,
-        conditions: [
-          {
-            type: 'RATE_DIFF_BELOW' as ConditionType,
-            value: row.threshold,
-            severity: row.severity as PrismaSeverityLevel,
-          },
-        ],
         deliveryChannels: channels.map((c) => ({
           type: c.channelType as DeliveryChannelType,
           email: c.channelType === 'EMAIL' ? c.email : undefined,
@@ -264,6 +285,10 @@ export default function PersonalizedComparisonPage() {
       await postData(`${baseUrl}/api/alerts/create/personalized-comparison`, payload);
     }
   };
+
+  // Group positions by action type
+  const supplyPositions = positions.filter((pos) => pos.actionType === 'SUPPLY');
+  const borrowPositions = positions.filter((pos) => pos.actionType === 'BORROW');
 
   return (
     <div className="container max-w-6xl mx-auto px-2 py-8">
@@ -292,177 +317,37 @@ export default function PersonalizedComparisonPage() {
         <p className="text-theme-muted">Stay updated when Compound outperforms Aave, Spark, or Morpho on any of your positions.</p>
       </div>
 
-      {/* Supply Table */}
-      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
-        <CardHeader className="pb-1">
-          <CardTitle className="text-lg text-theme-primary">Supply Positions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-theme-muted mb-4">Set alert conditions for each of your supply positions.</p>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="border-primary-color">
-                  <TableHead className="text-theme-primary">Platform</TableHead>
-                  <TableHead className="text-theme-primary">Chain</TableHead>
-                  <TableHead className="text-theme-primary">Market</TableHead>
-                  <TableHead className="text-theme-primary">Rate</TableHead>
-                  <TableHead className="text-theme-primary">Alert Me If Higher By</TableHead>
-                  <TableHead className="text-theme-primary">Severity</TableHead>
-                  <TableHead className="text-theme-primary">Frequency</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {supplyRows.map((r, i) => (
-                  <TableRow key={i} className="border-primary-color">
-                    <TableCell className="text-theme-primary">{r.platform}</TableCell>
-                    <TableCell className="text-theme-primary">{r.chain}</TableCell>
-                    <TableCell className="text-theme-primary">{r.market}</TableCell>
-                    <TableCell className="text-theme-primary">{r.rate}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center">
-                        <Input
-                          className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                            errors.supplyThresholds && errors.supplyThresholds[i] ? 'border-red-500' : ''
-                          }`}
-                          value={r.threshold}
-                          placeholder="0.5"
-                          onChange={(e) => updateSupply(i, 'threshold', e.target.value)}
-                        />
-                        <span className="ml-2 text-theme-muted">% APR</span>
-                      </div>
-                      {errors.supplyThresholds && errors.supplyThresholds[i] && (
-                        <div className="mt-1 flex items-center text-red-500 text-sm">
-                          <AlertCircle size={14} className="mr-1" />
-                          <span>{errors.supplyThresholds[i]}</span>
-                        </div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Select value={r.severity} onValueChange={(value) => updateSupply(i, 'severity', value as SeverityLevel)}>
-                        <SelectTrigger className="w-[140px] hover-border-primary">
-                          <SelectValue placeholder="Select severity" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-block">
-                          {severityOptions.map((opt) => (
-                            <div key={opt.value} className="hover-border-primary hover-text-primary">
-                              <SelectItem key={opt.value} value={opt.value}>
-                                {opt.label}
-                              </SelectItem>
-                            </div>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
-                    <TableCell>
-                      <Select value={r.frequency} onValueChange={(value) => updateSupply(i, 'frequency', value as NotificationFrequency)}>
-                        <SelectTrigger className="w-[150px] hover-border-primary">
-                          <SelectValue placeholder="Select frequency" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-block">
-                          {frequencyOptions.map((f) => (
-                            <div key={f.value} className="hover-border-primary hover-text-primary">
-                              <SelectItem key={f.value} value={f.value}>
-                                {f.label}
-                              </SelectItem>
-                            </div>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Supply Positions */}
+      {supplyPositions.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-2 text-theme-primary">Supply Positions</h2>
+          <p className="text-sm text-theme-muted mb-6">Set alert conditions for each of your supply positions.</p>
+          {supplyPositions.map((position) => (
+            <PersonalizedComparisonPositionCard
+              key={position.id}
+              position={position}
+              updatePosition={updatePosition}
+              errors={errors.positions?.[position.id]}
+            />
+          ))}
+        </div>
+      )}
 
-      {/* Borrow Table */}
-      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
-        <CardHeader className="pb-1">
-          <CardTitle className="text-lg text-theme-primary">Borrow Positions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-theme-muted mb-4">Set alert conditions for each of your borrow positions.</p>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="border-primary-color">
-                  <TableHead className="text-theme-primary">Platform</TableHead>
-                  <TableHead className="text-theme-primary">Chain</TableHead>
-                  <TableHead className="text-theme-primary">Market</TableHead>
-                  <TableHead className="text-theme-primary">Rate</TableHead>
-                  <TableHead className="text-theme-primary">Alert Me If Lower By </TableHead>
-                  <TableHead className="text-theme-primary">Severity</TableHead>
-                  <TableHead className="text-theme-primary">Frequency</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {borrowRows.map((r, i) => (
-                  <TableRow key={i} className="border-primary-color">
-                    <TableCell className="text-theme-primary">{r.platform}</TableCell>
-                    <TableCell className="text-theme-primary">{r.chain}</TableCell>
-                    <TableCell className="text-theme-primary">{r.market}</TableCell>
-                    <TableCell className="text-theme-primary">{r.rate}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center">
-                        <Input
-                          className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                            errors.borrowThresholds && errors.borrowThresholds[i] ? 'border-red-500' : ''
-                          }`}
-                          value={r.threshold}
-                          placeholder="0.5"
-                          onChange={(e) => updateBorrow(i, 'threshold', e.target.value)}
-                        />
-                        <span className="ml-2 text-theme-muted">% APR</span>
-                      </div>
-                      {errors.borrowThresholds && errors.borrowThresholds[i] && (
-                        <div className="mt-1 flex items-center text-red-500 text-sm">
-                          <AlertCircle size={14} className="mr-1" />
-                          <span>{errors.borrowThresholds[i]}</span>
-                        </div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Select value={r.severity} onValueChange={(value) => updateBorrow(i, 'severity', value as SeverityLevel)}>
-                        <SelectTrigger className="w-[140px] hover-border-primary">
-                          <SelectValue placeholder="Select severity" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-block">
-                          {severityOptions.map((opt) => (
-                            <div key={opt.value} className="hover-border-primary hover-text-primary">
-                              <SelectItem key={opt.value} value={opt.value}>
-                                {opt.label}
-                              </SelectItem>
-                            </div>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
-                    <TableCell>
-                      <Select value={r.frequency} onValueChange={(value) => updateBorrow(i, 'frequency', value as NotificationFrequency)}>
-                        <SelectTrigger className="w-[150px] hover-border-primary">
-                          <SelectValue placeholder="Select frequency" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-block">
-                          {frequencyOptions.map((f) => (
-                            <div key={f.value} className="hover-border-primary hover-text-primary">
-                              <SelectItem key={f.value} value={f.value}>
-                                {f.label}
-                              </SelectItem>
-                            </div>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Borrow Positions */}
+      {borrowPositions.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-2 text-theme-primary">Borrow Positions</h2>
+          <p className="text-sm text-theme-muted mb-6">Set alert conditions for each of your borrow positions.</p>
+          {borrowPositions.map((position) => (
+            <PersonalizedComparisonPositionCard
+              key={position.id}
+              position={position}
+              updatePosition={updatePosition}
+              errors={errors.positions?.[position.id]}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Delivery Channels */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
