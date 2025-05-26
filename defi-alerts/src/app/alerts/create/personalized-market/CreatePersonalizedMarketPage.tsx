@@ -396,11 +396,6 @@ export default function CreatePersonalizedMarketPage({ session }: CreatePersonal
 
     try {
       await postData(`${baseUrl}/api/alerts/create/personalized-market`, payload);
-      showNotification({
-        type: 'success',
-        heading: 'Alert Created',
-        message: `Alert for ${position.market} on ${position.chain} has been created.`,
-      });
     } finally {
       setCurrentSubmittingPosition(null);
     }

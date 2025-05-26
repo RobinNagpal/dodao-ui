@@ -112,16 +112,7 @@ export default function PersonalizedPositionCard({
                 <p className="text-sm text-theme-muted">Current APR: {position.rate}</p>
               </div>
             </div>
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                onCreateAlert(position.id);
-              }}
-              className="border text-primary-color hover-border-body"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Creating...' : 'Create Alert'}
-            </Button>
+            <span className="text-primary-color">Configure Alert</span>
           </div>
         </AccordionTrigger>
 
@@ -298,6 +289,13 @@ export default function PersonalizedPositionCard({
                 errors={{ channels: errors?.channels }}
                 session={session}
               />
+            </div>
+
+            {/* Create Alert Button */}
+            <div className="mt-6 flex justify-end">
+              <Button onClick={() => onCreateAlert(position.id)} className="border text-primary-color hover-border-body" disabled={isSubmitting}>
+                {isSubmitting ? 'Creating...' : 'Create Personalized Alert'}
+              </Button>
             </div>
           </div>
         </AccordionContent>

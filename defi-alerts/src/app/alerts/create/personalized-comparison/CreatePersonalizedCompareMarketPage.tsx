@@ -346,11 +346,6 @@ export default function CreatePersonalizedCompareAlertPage({ session }: CompareC
 
     try {
       await postData(`${baseUrl}/api/alerts/create/personalized-comparison`, payload);
-      showNotification({
-        type: 'success',
-        heading: 'Alert Created',
-        message: `Alert for ${position.market} on ${position.chain} vs ${position.platform} has been created.`,
-      });
     } finally {
       setCurrentSubmittingPosition(null);
     }
