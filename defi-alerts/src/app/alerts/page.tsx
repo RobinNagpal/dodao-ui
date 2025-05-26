@@ -21,6 +21,7 @@ import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
+import CreateAlertModals from '@/components/alerts/CreateAlertModals';
 
 // Alert summary component
 const AlertSummaryCard = ({
@@ -63,6 +64,9 @@ export default function AlertsPage() {
   const [alertToDelete, setAlertToDelete] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [uniqueChains, setUniqueChains] = useState<string[]>([]);
+
+  // Modal state
+  const [showCreateAlertModal, setShowCreateAlertModal] = useState(false);
 
   const { loading: deleting, deleteData: deleteAlert } = useDeleteData<{ id: string }, null>({
     successMessage: 'Alert deleted successfully',
@@ -112,10 +116,8 @@ export default function AlertsPage() {
       result = result.filter((alert) => (alert.selectedChains || []).some((chain) => chain.name.toLowerCase() === chainFilter.toLowerCase()));
     }
 
-    console.log(`Filtered alerts: ${result.length} :`, result);
     setFilteredAlerts(result);
 
-    console.log(`Unique chains: ${result.flatMap((alert) => (alert.selectedChains || []).map((chain) => chain.name))}`);
     setUniqueChains(Array.from(new Set(alerts.flatMap((alert) => (alert.selectedChains || []).map((chain) => chain.name)).filter(Boolean))));
   }, [activeTab, actionTypeFilter, chainFilter, alertsData]);
 
@@ -159,6 +161,13 @@ export default function AlertsPage() {
           <h1 className="text-3xl font-bold mb-2 text-theme-primary">Market Alerts</h1>
           <p className="text-theme-muted">Monitor market rates and get notified when conditions are met.</p>
         </div>
+
+        <Button
+          onClick={() => setShowCreateAlertModal(true)}
+          className="mt-4 md:mt-0 px-4 py-2 text-sm bg-primary-color text-primary-text border border-transparent rounded-lg hover-border-body"
+        >
+          <Plus size={16} className="inline mr-1" /> Create Alert
+        </Button>
       </div>
 
       {/* Filter tabs */}
@@ -474,7 +483,7 @@ export default function AlertsPage() {
                           variant="outline"
                           size="sm"
                           className="mt-2 border-theme-border-primary text-theme-primary hover-border-primary"
-                          onClick={() => router.push('/alerts/create')}
+                          onClick={() => setShowCreateAlertModal(true)}
                         >
                           Create your first alert
                         </Button>
@@ -506,6 +515,9 @@ export default function AlertsPage() {
           </div>
         </div>
       )}
+
+      {/* Create Alert Modals */}
+      <CreateAlertModals isOpen={showCreateAlertModal} onClose={() => setShowCreateAlertModal(false)} />
     </div>
   );
 }
