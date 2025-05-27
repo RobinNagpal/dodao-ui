@@ -28,6 +28,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { utils } from 'ethers';
 import { AlertCreationResponse, CreateCompoundAlertPayload } from '@/app/api/alerts/create/compound-market/route';
 import { CreatePersonalizedAlertPayload, PersonalizedAlertCreationResponse } from '@/app/api/alerts/create/personalized-market/route';
+import { useCompoundUserPositions } from '@/utils/getUserPositions';
 
 export interface PersonalizedPosition {
   id: string;
@@ -52,7 +53,7 @@ interface CreateAlertModalsProps {
 }
 
 // Extended PersonalizedPosition type to include wallet address
-interface WalletPosition extends PersonalizedPosition {
+export interface WalletPosition extends PersonalizedPosition {
   walletAddress: string;
 }
 
@@ -76,6 +77,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   const router = useRouter();
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
+  const fetchPositions = useCompoundUserPositions();
 
   // Modal state
   const [currentModal, setCurrentModal] = useState<'initial' | 'monitorMarkets' | 'positions' | 'configurePosition' | 'addWallet'>('initial');
@@ -111,95 +113,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   );
 
   // All hardcoded positions with wallet addresses
-  const [allPositions, setAllPositions] = useState<WalletPosition[]>([
-    // Wallet 1 positions - 0x1234...
-    {
-      id: 'supply-1',
-      walletAddress: '0x1234567890abcdef1234567890abcdef12345678',
-      chain: 'Polygon',
-      market: 'USDT',
-      rate: '7.8%',
-      actionType: 'SUPPLY',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-1',
-          conditionType: 'APR_RISE_ABOVE',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-    {
-      id: 'supply-2',
-      walletAddress: '0x1234567890abcdef1234567890abcdef12345678',
-      chain: 'Polygon',
-      market: 'USDC.e',
-      rate: '6.2%',
-      actionType: 'SUPPLY',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-2',
-          conditionType: 'APR_FALLS_BELOW',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-    {
-      id: 'borrow-1',
-      walletAddress: '0x1234567890abcdef1234567890abcdef12345678',
-      chain: 'Base',
-      market: 'ETH',
-      rate: '3.8%',
-      actionType: 'BORROW',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-3',
-          conditionType: 'APR_FALLS_BELOW',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-    // Wallet 2 positions - 0x5678...
-    {
-      id: 'supply-3',
-      walletAddress: '0x5678901234abcdef5678901234abcdef56789012',
-      chain: 'Ethereum',
-      market: 'ETH',
-      rate: '5.2%',
-      actionType: 'SUPPLY',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-4',
-          conditionType: 'APR_RISE_ABOVE',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-    {
-      id: 'borrow-2',
-      walletAddress: '0x5678901234abcdef5678901234abcdef56789012',
-      chain: 'Ethereum',
-      market: 'USDC',
-      rate: '4.1%',
-      actionType: 'BORROW',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-5',
-          conditionType: 'APR_FALLS_BELOW',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-  ]);
+  const [allPositions, setAllPositions] = useState<WalletPosition[]>([]);
 
   // Filtered positions based on current wallet address and existing alerts
   const [filteredPositions, setFilteredPositions] = useState<WalletPosition[]>([]);
@@ -246,13 +160,28 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   // Set initial modal state based on wallet addresses
   useEffect(() => {
     if (isOpen && walletData) {
-      const userWallets = walletData.walletAddresses || [];
+      const userWallets = walletData.walletAddresses ?? [];
 
       setWalletAddresses(userWallets);
       setCurrentWalletAddress(userWallets[0]);
       setCurrentModal('positions');
     }
   }, [isOpen, walletData]);
+
+  useEffect(() => {
+    if (walletAddresses.length != 0) {
+      (async () => {
+        try {
+          console.log('Fetching user positions for wallets:', walletAddresses);
+          const result = await fetchPositions(walletAddresses);
+          console.log('Fetched positions:', result);
+          setAllPositions(result);
+        } catch (err) {
+          console.error('Error fetching user positions', err);
+        }
+      })();
+    }
+  }, [walletAddresses]);
 
   // Filter positions based on current wallet address and existing alerts
   useEffect(() => {
@@ -840,7 +769,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
                                 selectPosition(position);
                               }}
                             >
-                              Add
+                              Add Alert
                             </Button>
                           </div>
                         ))}
@@ -873,7 +802,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
                                 selectPosition(position);
                               }}
                             >
-                              Add
+                              Add Alert
                             </Button>
                           </div>
                         ))}
