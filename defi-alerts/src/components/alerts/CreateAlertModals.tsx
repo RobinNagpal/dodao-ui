@@ -112,8 +112,8 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     'Failed to load wallet addresses'
   );
 
-  // All hardcoded positions with wallet addresses
   const [allPositions, setAllPositions] = useState<WalletPosition[]>([]);
+  const [walletPositionsLoading, setWalletPositionsLoading] = useState(true);
 
   // Filtered positions based on current wallet address and existing alerts
   const [filteredPositions, setFilteredPositions] = useState<WalletPosition[]>([]);
@@ -169,7 +169,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   }, [isOpen, walletData]);
 
   useEffect(() => {
-    if (walletAddresses.length != 0) {
+    if (walletAddresses.length != 0 && allPositions.length === 0) {
       (async () => {
         try {
           console.log('Fetching user positions for wallets:', walletAddresses);
@@ -178,6 +178,8 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
           setAllPositions(result);
         } catch (err) {
           console.error('Error fetching user positions', err);
+        } finally {
+          setWalletPositionsLoading(false);
         }
       })();
     }
@@ -733,7 +735,11 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
                 <span className="text-theme-primary">Wallet address - {formatWalletAddress(currentWalletAddress)}</span>
               </div>
 
-              {!walletHasPositions ? (
+              {walletPositionsLoading ? (
+                <div className="p-6 text-center">
+                  <p className="text-theme-muted">Loading...</p>
+                </div>
+              ) : !walletHasPositions ? (
                 <div className="p-6 text-center">
                   <p className="text-theme-muted">No active positions found for this wallet address</p>
                 </div>
@@ -756,7 +762,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
                             onClick={() => selectPosition(position)}
                           >
                             <div>
-                              <span className="text-theme-primary">Positions {position.id.split('-')[1]}</span>
+                              <span className="text-theme-primary">Position # {position.id.split('-')[1]}</span>
                               <div className="text-sm text-theme-muted">
                                 {position.market} on {position.chain} - Current APR: {position.rate}
                               </div>
@@ -789,7 +795,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
                             onClick={() => selectPosition(position)}
                           >
                             <div>
-                              <span className="text-theme-primary">Positions {position.id.split('-')[1]}</span>
+                              <span className="text-theme-primary">Position # {position.id.split('-')[1]}</span>
                               <div className="text-sm text-theme-muted">
                                 {position.market} on {position.chain} - Current APR: {position.rate}
                               </div>
