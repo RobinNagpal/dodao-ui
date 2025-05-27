@@ -23,7 +23,7 @@ import {
 } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
-import { CHAINS, MARKETS } from '@/shared/web3/config';
+import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
 
 interface CompoundMarketEditFormProps {
   alert: Alert;
@@ -165,7 +165,7 @@ export default function CompoundMarketEditForm({ alert, alertId }: CompoundMarke
       return selectedMarkets
         .map((uiSym) => {
           const symbol = uiSym === 'ETH' ? 'WETH' : uiSym;
-          const m = MARKETS.find((m) => m.chainId === chainCfg.chainId && m.symbol === symbol);
+          const m = COMPOUND_MARKETS.find((m) => m.chainId === chainCfg.chainId && m.symbol === symbol);
           if (!m) return null;
           return { chainId_address: `${m.chainId}_${m.baseAssetAddress.toLowerCase()}` };
         })

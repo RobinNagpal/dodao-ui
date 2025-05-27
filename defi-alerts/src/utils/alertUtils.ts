@@ -1,4 +1,4 @@
-import { CHAINS, MARKETS } from '@/shared/web3/config';
+import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
 import { AlertActionType, ConditionType, DeliveryChannelType, NotificationFrequency, SeverityLevel } from '@prisma/client';
 import { prisma } from '@/prisma';
 
@@ -127,7 +127,7 @@ export function mapMarketsToPrismaConnect(selectedChains: string[], selectedMark
       .map((uiSymbol) => {
         const symbol = uiSymbol === 'ETH' ? 'WETH' : uiSymbol;
         // find that market on this chain
-        const m = MARKETS.find((m) => m.symbol === symbol && m.chainId === chainCfg.chainId);
+        const m = COMPOUND_MARKETS.find((m) => m.symbol === symbol && m.chainId === chainCfg.chainId);
         if (!m) {
           // no valid market on this chain → skip
           console.log('[AlertUtils] No valid market found for chain and symbol', { chainName, symbol });

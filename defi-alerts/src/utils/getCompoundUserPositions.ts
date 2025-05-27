@@ -2,7 +2,7 @@
 import { multicall } from '@wagmi/core';
 import type { Config } from '@wagmi/core';
 import { CometABI } from '@/shared/web3/abi/CometABI';
-import { MARKETS, CHAINS } from '@/shared/web3/config';
+import { COMPOUND_MARKETS, CHAINS } from '@/shared/web3/config';
 import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
 import { useCompoundMarketsAprs, CompoundMarketApr } from './getCompoundAPR';
 import { Address } from 'viem';
@@ -21,13 +21,13 @@ export function useCompoundUserPositions(): (wallets: string[]) => Promise<Walle
         let supplyCount = 0;
         let borrowCount = 0;
 
-        // 3) Group your MARKETS by chainId
-        const marketsByChain = MARKETS.reduce<Record<number, typeof MARKETS>>((acc, m) => {
+        // Group your COMPOUND_MARKETS by chainId
+        const marketsByChain = COMPOUND_MARKETS.reduce<Record<number, typeof COMPOUND_MARKETS>>((acc, m) => {
           (acc[m.chainId] ||= []).push(m);
           return acc;
         }, {});
 
-        // 4) For each chain, do one multicall for all its markets
+        // For each chain, do one multicall for all its markets
         await Promise.all(
           Object.entries(marketsByChain).map(async ([chainIdStr, markets]) => {
             const chainId = Number(chainIdStr);
@@ -51,7 +51,7 @@ export function useCompoundUserPositions(): (wallets: string[]) => Promise<Walle
               return;
             }
 
-            // 5) Walk through each result in the order of markets[]
+            // Walk through each result in the order of markets[]
             rawResults.forEach((res, idx) => {
               const [principal, , , assetsIn] = res.result as [bigint, bigint, bigint, number, number];
               if (principal === BigInt(0) && assetsIn === 0) return;
@@ -73,7 +73,13 @@ export function useCompoundUserPositions(): (wallets: string[]) => Promise<Walle
                 rate,
                 actionType,
                 notificationFrequency: 'ONCE_PER_ALERT',
-                conditions: [],
+                conditions: [
+                  {
+                    id: 'condition-1',
+                    conditionType: 'APR_RISE_ABOVE',
+                    severity: 'NONE',
+                  },
+                ],
               });
             });
           })

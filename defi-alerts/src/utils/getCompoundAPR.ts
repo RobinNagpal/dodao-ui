@@ -5,7 +5,7 @@ import type { Config } from '@wagmi/core';
 
 import { CometABI } from '@/shared/web3/abi/CometABI';
 import { TokenABI } from '@/shared/web3/abi/TokenABI';
-import { COMP_MAIN_COMET_ADDRESS, COMP_MAIN_PRICE_FEE, ETH_MAIN_PRICE_FEE, wstETH_MAIN_PRICE_FEE, MARKETS, CHAINS } from '@/shared/web3/config';
+import { COMP_MAIN_COMET_ADDRESS, COMP_MAIN_PRICE_FEE, ETH_MAIN_PRICE_FEE, wstETH_MAIN_PRICE_FEE, COMPOUND_MARKETS, CHAINS } from '@/shared/web3/config';
 import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
 
 export type CompoundMarketApr = {
@@ -50,7 +50,7 @@ export function useCompoundMarketsAprs(): () => Promise<CompoundMarketApr[]> {
     const { compPrice, ethPrice, wstEthPrice } = await getPrices(config);
 
     // 2) Group markets by chain so we can batch each chain’s markets
-    const marketsByChain = MARKETS.reduce<Record<number, typeof MARKETS>>((acc, m) => {
+    const marketsByChain = COMPOUND_MARKETS.reduce<Record<number, typeof COMPOUND_MARKETS>>((acc, m) => {
       (acc[m.chainId] ||= []).push(m);
       return acc;
     }, {});
