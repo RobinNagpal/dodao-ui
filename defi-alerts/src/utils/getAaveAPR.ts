@@ -1,4 +1,3 @@
-// src/shared/web3/hooks/useAaveAprs.ts
 import { multicall, type Config } from '@wagmi/core';
 import type { Address } from 'viem';
 import { useDefaultConfig } from '@/shared/web3/wagmiConfig';

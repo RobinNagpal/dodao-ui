@@ -24,17 +24,19 @@ async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPaylo
     throw new Error('User not found');
   }
 
-  const existingWallets = user.walletAddress || [];
-  if (!existingWallets.includes(body.walletAddress)) {
-    await prisma.user.update({
-      where: { id: userId },
-      data: {
-        walletAddress: {
-          push: body.walletAddress,
-        },
-      },
-    });
+  const existing = (user.walletAddress || []).map((w) => w.toLowerCase());
+  if (existing.includes(body.walletAddress.toLowerCase())) {
+    throw new Error('Wallet Already Added');
   }
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: {
+      walletAddress: {
+        push: body.walletAddress,
+      },
+    },
+  });
 
   return { success: true };
 }

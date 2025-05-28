@@ -22,6 +22,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import CreateAlertModals from '@/components/alerts/CreateAlertModals';
+import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 
 // Alert summary component
 const AlertSummaryCard = ({
@@ -82,6 +83,7 @@ export default function AlertsPage() {
     data: alertsData,
     loading: isLoading,
     error: fetchError,
+    reFetchData,
   } = useFetchData<Alert[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !userId }, 'Failed to load alerts. Please try again later.');
 
   // Process alerts data
@@ -152,6 +154,11 @@ export default function AlertsPage() {
     } else {
       return condition.thresholdValue ? `${condition.thresholdValue}%` : '-';
     }
+  };
+
+  const handleModalClose = async () => {
+    setShowCreateAlertModal(false);
+    await reFetchData();
   };
 
   return (
@@ -302,6 +309,7 @@ export default function AlertsPage() {
                 <TableRow className="border-primary-color">
                   <TableHead className="w-[120px]">Alert Type</TableHead>
                   <TableHead className="w-[200px]">Chain/Market</TableHead>
+                  <TableHead className="w-[200px]">Wallet Address</TableHead>
                   <TableHead className="w-[180px]">Conditions</TableHead>
                   <TableHead className="w-[150px]">Frequency</TableHead>
                   <TableHead className="w-[200px]">Delivery Channel</TableHead>
@@ -343,6 +351,12 @@ export default function AlertsPage() {
                                 </span>
                               ))}
                             </div>
+                          </div>
+                        </TableCell>
+
+                        <TableCell className="font-medium">
+                          <div className="flex flex-col">
+                            <span className="text-theme-primary">{alert.walletAddress ? formatWalletAddress(alert.walletAddress) : ''}</span>
                           </div>
                         </TableCell>
 
@@ -517,7 +531,7 @@ export default function AlertsPage() {
       )}
 
       {/* Create Alert Modals */}
-      <CreateAlertModals isOpen={showCreateAlertModal} onClose={() => setShowCreateAlertModal(false)} />
+      <CreateAlertModals isOpen={showCreateAlertModal} onClose={handleModalClose} />
     </div>
   );
 }

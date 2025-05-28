@@ -1,64 +1,62 @@
 import { multicall, type Config } from '@wagmi/core';
 import type { Address } from 'viem';
 import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
-import { AAVE_CONFIG_POOL_CONTRACT } from '@/shared/migrator/aave/config';
-import { PoolDataAddressAbi_Arbitrum } from '@/shared/migrator/aave/abi/PoolDataAddressAbi_Arbitrum';
-import { useAaveAprs, MarketApr } from './getAaveAPR';
+import { SPARK_DATA_PROVIDER } from '@/shared/migrator/spark/config';
+import { Pool_Abi_DataProvider } from '@/shared/migrator/spark/abi/Pool_Abi_DataProvider';
+import { useSparkAprs, MarketApr } from './getSparkAPR';
 import { COMPOUND_MARKETS } from '@/shared/web3/config';
 import { WalletComparisonPosition } from '@/components/alerts/CreateComparisonModals';
 
-/** Helper to pick the first provider address from the config */
-const flattenProvider = (addrOrObj: Address | Record<string, Address>): Address => (typeof addrOrObj === 'string' ? addrOrObj : Object.values(addrOrObj)[0]);
-
-export function useAaveUserPositions(): (wallets: string[]) => Promise<WalletComparisonPosition[]> {
+export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletComparisonPosition[]> {
   const config: Config = useDefaultConfig;
-  const fetchAprs = useAaveAprs();
+  const fetchAprs = useSparkAprs();
+
+  // helper to pick provider
+  const flattenProvider = (addrOrObj: Address | Record<string, Address>): Address => (typeof addrOrObj === 'string' ? addrOrObj : Object.values(addrOrObj)[0]);
 
   return async (wallets: string[]) => {
-    // 1) get Aave APRs for every market
+    // 1) fetch filtered Spark APRs
     const aprs: MarketApr[] = await fetchAprs();
 
-    // 2) build a set of allowed assetAddresses per chain from your COMPOUND_MARKETS
-    const allowedByChain: Record<number, Set<string>> = {};
+    // 2) build allowed set per chain
+    const allowed: Record<number, Set<string>> = {};
     COMPOUND_MARKETS.forEach((m) => {
-      const chainSet = (allowedByChain[m.chainId] ??= new Set<string>());
-      chainSet.add(m.baseAssetAddress.toLowerCase());
+      const s = (allowed[m.chainId] ??= new Set<string>());
+      s.add(m.baseAssetAddress.toLowerCase());
     });
 
-    // 3) filter APRs down to only those assets present in Compound
-    const filteredAprs = aprs.filter((a) => allowedByChain[a.chainId]?.has(a.assetAddress.toLowerCase()));
-
-    // 4) group the filtered APRs by chainId
-    const aprsByChain = filteredAprs.reduce<Record<number, MarketApr[]>>((acc, apr) => {
-      (acc[apr.chainId] ||= []).push(apr);
+    // 3) filter APRs & group by chain
+    const filteredAprs = aprs.filter((a) => allowed[a.chainId]?.has(a.assetAddress.toLowerCase()));
+    const aprsByChain = filteredAprs.reduce<Record<number, MarketApr[]>>((acc, a) => {
+      (acc[a.chainId] ||= []).push(a);
       return acc;
     }, {});
 
     const positions: WalletComparisonPosition[] = [];
 
-    // 5) for each wallet, reset counters & fetch each chain in parallel
+    // 4) for each wallet, fetch all chains in parallel
     await Promise.all(
       wallets.map(async (wallet) => {
-        let supplyCount = 0;
-        let borrowCount = 0;
+        let supplyCount = 0,
+          borrowCount = 0;
 
         await Promise.all(
           Object.entries(aprsByChain).map(async ([chainIdStr, markets]) => {
             const chainId = Number(chainIdStr);
             const chainName = config.chains.find((c) => c.id === chainId)?.name ?? 'Unknown';
 
-            // 6) find the Aave provider contract for this chain
-            const providerAddr = flattenProvider(AAVE_CONFIG_POOL_CONTRACT[chainId] ?? {});
-            if (!providerAddr) return;
+            const provider = flattenProvider(SPARK_DATA_PROVIDER[chainId] ?? {});
+            if (!provider) return;
 
-            // 7) batch-multicall getUserReserveData for each filtered market
+            // 5) batch getUserReserveData for each market
             const calls = markets.map((m) => ({
-              address: providerAddr,
-              abi: PoolDataAddressAbi_Arbitrum,
+              address: provider,
+              abi: Pool_Abi_DataProvider,
               functionName: 'getUserReserveData' as const,
               args: [m.assetAddress as Address, wallet as Address],
             }));
 
+            // let raw: { result: any }[]
             let raw;
             try {
               raw = await multicall(config, {
@@ -66,41 +64,39 @@ export function useAaveUserPositions(): (wallets: string[]) => Promise<WalletCom
                 contracts: calls,
               });
             } catch (e) {
-              console.error(`Aave userReserveData multicall failed for wallet ${wallet} on chain ${chainId}`, e);
+              console.error(`Spark getUserReserveData failed for ${wallet} @ chain ${chainId}`);
               return;
             }
 
-            // 8) parse and push positions only for active ones
+            // 6) parse & push only active positions
             raw.forEach((r, idx) => {
-              const userData = r.result as readonly [
+              const data = r.result as readonly [
                 bigint, // currentATokenBalance
                 bigint, // currentStableDebt
                 bigint, // currentVariableDebt
-                bigint, // liquidityRate
                 bigint, // principalStableDebt
                 bigint, // scaledVariableDebt
                 bigint, // stableBorrowRate
+                bigint, // liquidityRate
                 number, // stableRateLastUpdated
                 boolean // usageAsCollateralEnabled
               ];
-              const [supBal, stableDebt, varDebt] = userData;
-
-              // skip if no supply & no borrow
+              const [supBal, stDebt, varDebt] = data;
               const hasSupply = supBal > BigInt(0);
-              const hasBorrow = stableDebt + varDebt > BigInt(0);
+              const hasBorrow = stDebt + varDebt > BigInt(0);
               if (!hasSupply && !hasBorrow) return;
 
               const market = markets[idx];
-              const aprObj = aprs.find((a) => a.chainId === chainId && a.assetAddress.toLowerCase() === market.assetAddress.toLowerCase());
+              const aprObj = aprs.find((x) => x.chainId === chainId && x.assetAddress.toLowerCase() === market.assetAddress.toLowerCase());
               const actionType: 'SUPPLY' | 'BORROW' = hasSupply ? 'SUPPLY' : 'BORROW';
 
-              const id = actionType === 'SUPPLY' ? `supply-${++supplyCount}-aave` : `borrow-${++borrowCount}-aave`;
+              const id = actionType === 'SUPPLY' ? `supply-${++supplyCount}-spark` : `borrow-${++borrowCount}-spark`;
 
               const rate = aprObj ? (actionType === 'SUPPLY' ? `${aprObj.netEarnAPY.toFixed(2)}%` : `${aprObj.netBorrowAPY.toFixed(2)}%`) : '0%';
 
               positions.push({
                 id,
-                platform: 'Aave',
+                platform: 'Spark',
                 walletAddress: wallet,
                 chain: chainName,
                 market: market.asset === 'WETH' ? 'ETH' : market.asset,
