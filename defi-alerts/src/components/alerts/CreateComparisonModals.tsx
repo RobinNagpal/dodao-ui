@@ -35,6 +35,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { utils } from 'ethers';
 import { CompareCompoundAlertPayload, CompareCompoundAlertResponse } from '@/app/api/alerts/create/compare-compound/route';
 import { PersonalizedComparisonAlertPayload, PersonalizedComparisonAlertResponse } from '@/app/api/alerts/create/personalized-comparison/route';
+import { useAaveUserPositions } from '@/utils/getAaveUserPositions';
+import { useSparkUserPositions } from '@/utils/getSparkUserPositions';
+import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 
 export interface PersonalizedComparisonPosition {
   id: string;
@@ -59,7 +62,7 @@ interface CreateComparisonModalsProps {
 }
 
 // Extended PersonalizedComparisonPosition type to include wallet address
-interface WalletComparisonPosition extends PersonalizedComparisonPosition {
+export interface WalletComparisonPosition extends PersonalizedComparisonPosition {
   walletAddress: string;
 }
 
@@ -69,6 +72,8 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
   const router = useRouter();
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
+  const fetchAavePositions = useAaveUserPositions();
+  const fetchSparkPositions = useSparkUserPositions();
 
   // Modal state
   const [currentModal, setCurrentModal] = useState<'initial' | 'generalComparison' | 'personalizedPositions' | 'configurePosition' | 'addWallet'>('initial');
@@ -109,83 +114,8 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     error: walletError,
   } = useFetchData<{ walletAddresses: string[] }>(`${baseUrl}/api/user/wallet/get`, { skipInitialFetch: !isOpen }, 'Failed to load wallet addresses');
 
-  // All hardcoded comparison positions with wallet addresses
-  const [allComparisonPositions, setAllComparisonPositions] = useState<WalletComparisonPosition[]>([
-    // Wallet 1 positions - 0x1234...
-    {
-      id: 'compare-supply-1',
-      walletAddress: '0x1234567890abcdef1234567890abcdef12345678',
-      platform: 'Aave',
-      chain: 'Ethereum',
-      market: 'WETH',
-      rate: '4.29%',
-      actionType: 'SUPPLY',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-1',
-          conditionType: 'RATE_DIFF_ABOVE',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-    {
-      id: 'compare-borrow-1',
-      walletAddress: '0x1234567890abcdef1234567890abcdef12345678',
-      platform: 'Spark',
-      chain: 'Ethereum',
-      market: 'USDC',
-      rate: '2.19%',
-      actionType: 'BORROW',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-2',
-          conditionType: 'RATE_DIFF_BELOW',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-    // Wallet 2 positions - 0x5678...
-    {
-      id: 'compare-supply-2',
-      walletAddress: '0x5678901234abcdef5678901234abcdef56789012',
-      platform: 'Morpho',
-      chain: 'Base',
-      market: 'ETH',
-      rate: '5.12%',
-      actionType: 'SUPPLY',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-3',
-          conditionType: 'RATE_DIFF_ABOVE',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-    {
-      id: 'compare-borrow-2',
-      walletAddress: '0x5678901234abcdef5678901234abcdef56789012',
-      platform: 'Aave',
-      chain: 'Polygon',
-      market: 'USDT',
-      rate: '3.45%',
-      actionType: 'BORROW',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-4',
-          conditionType: 'RATE_DIFF_BELOW',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-  ]);
+  const [allComparisonPositions, setAllComparisonPositions] = useState<WalletComparisonPosition[]>([]);
+  const [comparisonLoading, setComparisonLoading] = useState(false);
 
   // Filtered positions based on current wallet address and existing alerts
   const [filteredComparisonPositions, setFilteredComparisonPositions] = useState<WalletComparisonPosition[]>([]);
@@ -227,12 +157,6 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     redirectPath: '/alerts/compare-compound',
   });
 
-  // Format a wallet address for display
-  const formatWalletAddress = (address: string) => {
-    if (!address) return '';
-    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-  };
-
   // Set initial modal state based on wallet addresses
   useEffect(() => {
     if (isOpen && walletData) {
@@ -243,6 +167,29 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
       setCurrentModal('personalizedPositions');
     }
   }, [isOpen, walletData]);
+
+  useEffect(() => {
+    if (walletAddresses.length === 0 || allComparisonPositions.length > 0) {
+      return;
+    }
+
+    setComparisonLoading(true);
+    setAllComparisonPositions([]);
+
+    (async () => {
+      try {
+        // fetch both protocols in parallel
+        const [aave, spark] = await Promise.all([fetchAavePositions(walletAddresses), fetchSparkPositions(walletAddresses)]);
+
+        // merge into one array
+        setAllComparisonPositions([...aave, ...spark]);
+      } catch (err) {
+        console.error('Error fetching comparison positions', err);
+      } finally {
+        setComparisonLoading(false);
+      }
+    })();
+  }, [walletAddresses]);
 
   // Filter positions based on current wallet address and existing alerts
   useEffect(() => {
@@ -628,7 +575,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     <>
       {/* Initial Modal - No Wallet Addresses */}
       <Dialog open={isOpen && currentModal === 'initial'} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-md bg-theme-bg-secondary border border-primary-color">
+        <DialogContent className="sm:max-w-md bg-theme-bg-secondary border border-primary-color background-color">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-theme-primary">Create Comparison Alert</DialogTitle>
           </DialogHeader>
@@ -668,7 +615,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
 
       {/* Add Wallet Modal */}
       <Dialog open={isOpen && currentModal === 'addWallet'} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-md bg-theme-bg-secondary border border-primary-color">
+        <DialogContent className="sm:max-w-md bg-theme-bg-secondary border border-primary-color background-color">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-theme-primary">Add Wallet Address</DialogTitle>
           </DialogHeader>
@@ -699,7 +646,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
 
       {/* General Comparison Modal */}
       <Dialog open={isOpen && currentModal === 'generalComparison'} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color">
+        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-theme-primary">Create General Comparison Alert</DialogTitle>
           </DialogHeader>
@@ -762,7 +709,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
 
       {/* Personalized Positions Modal */}
       <Dialog open={isOpen && currentModal === 'personalizedPositions'} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color">
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-theme-primary">Select Position to Compare</DialogTitle>
           </DialogHeader>
@@ -803,32 +750,40 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
                 <span className="text-theme-primary">Wallet address - {formatWalletAddress(currentWalletAddress)}</span>
               </div>
 
-              {!walletHasPositions ? (
+              {walletAddresses.length === 0 ? (
                 <div className="p-6 text-center">
-                  <p className="text-theme-muted">No active positions found for this wallet address on other platforms</p>
+                  <p className="text-theme-muted">No Wallet Address Added</p>
+                </div>
+              ) : comparisonLoading ? (
+                <div className="p-6 text-center">
+                  <p className="text-theme-muted">Loading...</p>
+                </div>
+              ) : !walletHasPositions ? (
+                <div className="p-6 text-center">
+                  <p className="text-theme-muted">No active positions found for this wallet address</p>
                 </div>
               ) : filteredComparisonPositions.length === 0 ? (
                 <div className="p-6 text-center">
-                  <p className="text-theme-muted">All comparison positions for this wallet already have alerts configured</p>
+                  <p className="text-theme-muted">All positions for this wallet already have alerts configured</p>
                 </div>
               ) : (
                 <>
                   {/* Supply Positions */}
                   {filteredComparisonPositions.filter((p) => p.actionType === 'SUPPLY').length > 0 && (
                     <div className="mb-4">
-                      <h3 className="text-lg font-semibold mb-2 text-theme-primary">Supply Positions to Compare</h3>
+                      <h3 className="text-lg font-semibold my-2 text-primary-color">Supply Positions to Compare</h3>
                       {filteredComparisonPositions
                         .filter((p) => p.actionType === 'SUPPLY')
-                        .map((position) => (
+                        .map((position, idx) => (
                           <div
                             key={position.id}
                             className="flex items-center justify-between p-3 border-b border-primary-color cursor-pointer hover:bg-theme-bg-muted"
                             onClick={() => selectPosition(position)}
                           >
                             <div>
-                              <span className="text-theme-primary">Position {position.id.split('-')[2]}</span>
+                              <span className="text-theme-primary">Position # {idx + 1}</span>
                               <div className="text-sm text-theme-muted">
-                                {position.market} on {position.chain} vs {position.platform} - Current {position.platform} APR: {position.rate}
+                                {position.market} on {position.chain} vs {position.platform} - Current {position.platform} APY: {position.rate}
                               </div>
                             </div>
                             <Button
@@ -849,19 +804,19 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
                   {/* Borrow Positions */}
                   {filteredComparisonPositions.filter((p) => p.actionType === 'BORROW').length > 0 && (
                     <div>
-                      <h3 className="text-lg font-semibold mb-2 text-theme-primary">Borrow Positions to Compare</h3>
+                      <h3 className="text-lg font-semibold my-2 text-primary-color">Borrow Positions to Compare</h3>
                       {filteredComparisonPositions
                         .filter((p) => p.actionType === 'BORROW')
-                        .map((position) => (
+                        .map((position, idx) => (
                           <div
                             key={position.id}
                             className="flex items-center justify-between p-3 border-b border-primary-color cursor-pointer hover:bg-theme-bg-muted"
                             onClick={() => selectPosition(position)}
                           >
                             <div>
-                              <span className="text-theme-primary">Position {position.id.split('-')[2]}</span>
+                              <span className="text-theme-primary">Position # {idx + 1}</span>
                               <div className="text-sm text-theme-muted">
-                                {position.market} on {position.chain} vs {position.platform} - Current {position.platform} APR: {position.rate}
+                                {position.market} on {position.chain} vs {position.platform} - Current {position.platform} APY: {position.rate}
                               </div>
                             </div>
                             <Button
@@ -883,7 +838,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
             </div>
           </div>
 
-          <div className="pt-4 border-t border-primary-color">
+          <div className="pt-4 border-primary-color">
             <p className="text-theme-primary mb-4">I want to monitor various chains and markets to be alerted when Compound outperforms other platforms</p>
 
             <Button
@@ -898,7 +853,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
 
       {/* Configure Position Modal */}
       <Dialog open={isOpen && currentModal === 'configurePosition' && !!selectedPosition} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color">
+        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-theme-primary">
               Configure Comparison Alert for {selectedPosition?.market} on {selectedPosition?.chain} vs {selectedPosition?.platform}
@@ -914,7 +869,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
                   </Badge>
                   <div>
                     <span className="text-theme-primary">
-                      Current {selectedPosition.platform} APR: {selectedPosition.rate}
+                      Current {selectedPosition.platform} APY: {selectedPosition.rate}
                     </span>
                   </div>
                 </div>
@@ -981,7 +936,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
                                   errors[selectedPosition.id]?.conditions && errors[selectedPosition.id].conditions[index] ? 'border-red-500' : ''
                                 }`}
                               />
-                              <span className="ml-2 text-theme-muted whitespace-nowrap flex-shrink-0">APR difference</span>
+                              <span className="ml-2 text-theme-muted whitespace-nowrap flex-shrink-0">APY difference</span>
                             </div>
                             {errors[selectedPosition.id]?.conditions && errors[selectedPosition.id].conditions[index] && (
                               <div className="mt-1 flex items-center text-red-500 text-sm">

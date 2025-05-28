@@ -28,6 +28,7 @@ import { utils } from 'ethers';
 import { AlertCreationResponse, CreateCompoundAlertPayload } from '@/app/api/alerts/create/compound-market/route';
 import { CreatePersonalizedAlertPayload, PersonalizedAlertCreationResponse } from '@/app/api/alerts/create/personalized-market/route';
 import { useCompoundUserPositions } from '@/utils/getCompoundUserPositions';
+import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 
 export interface PersonalizedPosition {
   id: string;
@@ -126,11 +127,15 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   }>({});
 
   // Post data for adding a wallet address
-  const { postData: postWalletAddress, loading: addingWallet } = usePostData<any, { walletAddress: string }>({
+  const {
+    postData: postWalletAddress,
+    loading: addingWallet,
+    error: addWalletError,
+  } = usePostData<any, { walletAddress: string }>({
     successMessage: 'Wallet address added successfully',
     errorMessage: 'Failed to add wallet address',
-    redirectPath: undefined,
   });
+  const [addWalletModalError, setAddWalletModalError] = useState('');
 
   // Post data hooks
   const { postData: postMarketAlert, loading: creatingMarketAlert } = usePostData<AlertCreationResponse, CreateCompoundAlertPayload>({
@@ -145,12 +150,6 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     redirectPath: '/alerts',
   });
 
-  // Format a wallet address for display
-  const formatWalletAddress = (address: string) => {
-    if (!address) return '';
-    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-  };
-
   // Set initial modal state based on wallet addresses
   useEffect(() => {
     if (isOpen && walletData) {
@@ -163,22 +162,25 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   }, [isOpen, walletData]);
 
   useEffect(() => {
-    if (walletAddresses.length != 0 && allPositions.length === 0) {
-      setWalletPositionsLoading(true);
-
-      (async () => {
-        try {
-          console.log('Fetching user positions for wallets:', walletAddresses);
-          const result = await fetchPositions(walletAddresses);
-          console.log('Fetched positions:', result);
-          setAllPositions(result);
-        } catch (err) {
-          console.error('Error fetching user positions', err);
-        } finally {
-          setWalletPositionsLoading(false);
-        }
-      })();
+    if (walletAddresses.length === 0 || allPositions.length > 0) {
+      return;
     }
+
+    setWalletPositionsLoading(true);
+    setAllPositions([]);
+
+    (async () => {
+      try {
+        console.log('Fetching user positions for wallets:', walletAddresses);
+        const result = await fetchPositions(walletAddresses);
+        console.log('Fetched positions:', result);
+        setAllPositions(result);
+      } catch (err) {
+        console.error('Error fetching user positions', err);
+      } finally {
+        setWalletPositionsLoading(false);
+      }
+    })();
   }, [walletAddresses]);
 
   // Filter positions based on current wallet address and existing alerts
@@ -247,13 +249,10 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   // Handle adding a new wallet address
   const handleAddWallet = async () => {
     if (!utils.isAddress(newWalletAddress.trim())) {
-      showNotification({
-        type: 'error',
-        heading: 'Validation Error',
-        message: 'Please enter a wallet address',
-      });
+      setAddWalletModalError('Invalid Wallet Address');
       return;
     }
+    setAddWalletModalError('');
 
     const success = await postWalletAddress(`${baseUrl}/api/user/wallet`, { walletAddress: newWalletAddress });
 
@@ -289,6 +288,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   // Switch to add wallet modal
   const handleSwitchToAddWallet = () => {
     setNewWalletAddress('');
+    setAddWalletModalError('');
     setCurrentModal('addWallet');
   };
 
@@ -628,7 +628,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
           </DialogHeader>
 
           <div className="py-4">
-            <p className="text-theme-primary mb-4">Enter a wallet address to monitor positions from this wallet</p>
+            <p className="text-theme-primary mb-4">Enter a wallet address to monitor its positions</p>
 
             <div className="flex gap-2">
               <Input
@@ -641,6 +641,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
                 Add +
               </Button>
             </div>
+            <p className="text-red-500 text-sm p-2">{addWalletModalError || addWalletError}</p>
           </div>
 
           <DialogFooter>
@@ -772,17 +773,17 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
                   {/* Supply Positions */}
                   {filteredPositions.filter((p) => p.actionType === 'SUPPLY').length > 0 && (
                     <div className="mb-4">
-                      <h3 className="text-lg font-semibold mb-2 text-theme-primary">Supply Positions</h3>
+                      <h3 className="text-lg font-semibold my-2 text-primary-color">Supply Positions</h3>
                       {filteredPositions
                         .filter((p) => p.actionType === 'SUPPLY')
-                        .map((position) => (
+                        .map((position, idx) => (
                           <div
                             key={position.id}
                             className="flex items-center justify-between p-3 border-b border-primary-color cursor-pointer hover:bg-theme-bg-muted"
                             onClick={() => selectPosition(position)}
                           >
                             <div>
-                              <span className="text-theme-primary">Position # {position.id.split('-')[1]}</span>
+                              <span className="text-theme-primary">Position # {idx + 1}</span>
                               <div className="text-sm text-theme-muted">
                                 {position.market} on {position.chain} - Current APR: {position.rate}
                               </div>
@@ -805,17 +806,17 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
                   {/* Borrow Positions */}
                   {filteredPositions.filter((p) => p.actionType === 'BORROW').length > 0 && (
                     <div>
-                      <h3 className="text-lg font-semibold mb-2 text-theme-primary">Borrow Positions</h3>
+                      <h3 className="text-lg font-semibold my-2 text-primary-color">Borrow Positions</h3>
                       {filteredPositions
                         .filter((p) => p.actionType === 'BORROW')
-                        .map((position) => (
+                        .map((position, idx) => (
                           <div
                             key={position.id}
                             className="flex items-center justify-between p-3 border-b border-primary-color cursor-pointer hover:bg-theme-bg-muted"
                             onClick={() => selectPosition(position)}
                           >
                             <div>
-                              <span className="text-theme-primary">Position # {position.id.split('-')[1]}</span>
+                              <span className="text-theme-primary">Position # {idx + 1}</span>
                               <div className="text-sm text-theme-muted">
                                 {position.market} on {position.chain} - Current APR: {position.rate}
                               </div>
