@@ -5,8 +5,8 @@ import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
 import { AAVE_CONFIG_POOL_CONTRACT } from '@/shared/migrator/aave/config';
 import { PoolDataAddressAbi_Arbitrum } from '@/shared/migrator/aave/abi/PoolDataAddressAbi_Arbitrum';
 import type { FlattenedAddresses, Collateral } from '@/shared/migrator/types';
-import { calculateAaveAPY } from './calculateAaveAPY';
-import { calculateAaveAPR } from './calculateAaveAPR';
+import { calculateAaveAPR } from 'src/utils/calculateAaveAPR';
+import { calculateAaveAPY1 } from 'src/utils/calculateAaveAPY1';
 import { COMPOUND_MARKETS } from '@/shared/web3/config';
 
 // ——— retry helper with exponential backoff ———
@@ -112,7 +112,7 @@ export function useAaveAprs(): () => Promise<MarketApr[]> {
     return filtered.map((c, i) => {
       const d = results[i];
       // compute Aave APR & APY
-      const aprData = calculateAaveAPY({
+      const aprData = calculateAaveAPR({
         reserveDataArray: [
           {
             asset: c.tokenAddress as Address,
@@ -122,7 +122,7 @@ export function useAaveAprs(): () => Promise<MarketApr[]> {
           },
         ],
       })[0];
-      const apyData = calculateAaveAPR([aprData])[0];
+      const apyData = calculateAaveAPY1([aprData])[0];
 
       // find the matching compound symbol
       const compoundEntry = compoundForChain.find((m) => m.baseAssetAddress.toLowerCase() === c.tokenAddress.toLowerCase());

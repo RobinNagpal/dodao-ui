@@ -4,8 +4,8 @@ import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
 import { SPARK_DATA_PROVIDER } from '@/shared/migrator/spark/config';
 import { Pool_Abi_DataProvider } from '@/shared/migrator/spark/abi/Pool_Abi_DataProvider';
 import type { Collateral } from '@/shared/migrator/types';
-import { calculateAaveAPY } from './calculateAaveAPR';
-import { calculateAaveAPR } from './calculateAaveAPY';
+import { calculateAaveAPY } from './calculateAaveAPY';
+import { calculateAaveAPR } from './calculateAaveAPR';
 
 export type MarketApr = {
   chainId: number;
