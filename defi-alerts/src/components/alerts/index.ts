@@ -5,6 +5,7 @@ import ConditionSettingsCard from './ConditionSettingsCard';
 import DeliveryChannelsCard from './DeliveryChannelsCard';
 import NotificationFrequencySection from './NotificationFrequencySection';
 import CreateAlertModals from './CreateAlertModals';
+import CreateComparisonModals from './CreateComparisonModals';
 import AlertPageWrapper from './AlertPageWrapper';
 import CompareThresholdCard from './CompareThresholdCard';
 import PositionSettingsCard from './PositionSettingsCard';
@@ -19,6 +20,7 @@ export {
   DeliveryChannelsCard,
   NotificationFrequencySection,
   CreateAlertModals,
+  CreateComparisonModals,
   CompareThresholdCard,
   PositionSettingsCard,
   PersonalizedComparisonPositionCard,

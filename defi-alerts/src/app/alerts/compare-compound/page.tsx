@@ -21,6 +21,7 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
+import { CreateComparisonModals } from '@/components/alerts';
 
 // Alert summary component
 const AlertSummaryCard = ({
@@ -63,6 +64,7 @@ export default function CompareCompoundPage() {
 
   const [alertToDelete, setAlertToDelete] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showCreateComparisonModal, setShowCreateComparisonModal] = useState(false);
 
   const { loading: deleting, deleteData: deleteAlert } = useDeleteData<{ id: string }, null>({
     successMessage: 'Alert deleted successfully',
@@ -169,10 +171,10 @@ export default function CompareCompoundPage() {
           <p className="text-theme-muted">Monitor when Compound outperforms other DeFi platforms.</p>
         </div>
         <Button
-          onClick={() => router.push('/alerts/create')}
+          onClick={() => setShowCreateComparisonModal(true)}
           className="mt-4 md:mt-0 bg-primary-color text-primary-text border border-transparent hover-border-body"
         >
-          <Plus size={16} className="mr-1" /> Create Alert
+          <Plus size={16} className="mr-1" /> Create Comparison Alert
         </Button>
       </div>
 
@@ -457,7 +459,7 @@ export default function CompareCompoundPage() {
                           variant="outline"
                           size="sm"
                           className="mt-2 border-theme-border-primary text-theme-primary hover-border-primary"
-                          onClick={() => router.push('/alerts/create')}
+                          onClick={() => setShowCreateComparisonModal(true)}
                         >
                           Create your first comparison alert
                         </Button>
@@ -489,6 +491,9 @@ export default function CompareCompoundPage() {
           </div>
         </div>
       )}
+
+      {/* Create Comparison Alert Modal */}
+      <CreateComparisonModals isOpen={showCreateComparisonModal} onClose={() => setShowCreateComparisonModal(false)} />
     </div>
   );
 }
