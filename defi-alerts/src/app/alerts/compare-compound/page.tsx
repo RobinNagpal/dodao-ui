@@ -22,6 +22,7 @@ import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { CreateComparisonModals } from '@/components/alerts';
+import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 
 // Alert summary component
 const AlertSummaryCard = ({
@@ -80,6 +81,7 @@ export default function CompareCompoundPage() {
     data: alertsData,
     loading: isLoading,
     error: fetchError,
+    reFetchData,
   } = useFetchData<Alert[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !userId }, 'Failed to load comparison alerts. Please try again later.');
 
   useEffect(() => {
@@ -161,6 +163,11 @@ export default function CompareCompoundPage() {
     } else {
       return condition.thresholdValue ? `${condition.thresholdValue}%` : '-';
     }
+  };
+
+  const handleModalClose = async () => {
+    setShowCreateComparisonModal(false);
+    await reFetchData();
   };
 
   return (
@@ -310,6 +317,7 @@ export default function CompareCompoundPage() {
                 <TableRow className="border-primary-color">
                   <TableHead className="w-[120px]">Alert Type</TableHead>
                   <TableHead className="w-[180px]">Chain/Market</TableHead>
+                  <TableHead className="w-[180px]">Wallet Address</TableHead>
                   <TableHead className="w-[180px]">Compare With</TableHead>
                   <TableHead className="w-[150px]">Conditions</TableHead>
                   <TableHead className="w-[150px]">Frequency</TableHead>
@@ -351,6 +359,12 @@ export default function CompareCompoundPage() {
                                 </span>
                               ))}
                             </div>
+                          </div>
+                        </TableCell>
+
+                        <TableCell className="font-medium">
+                          <div className="flex flex-col">
+                            <span className="text-theme-primary">{alert.walletAddress ? formatWalletAddress(alert.walletAddress) : ''}</span>
                           </div>
                         </TableCell>
 
@@ -493,7 +507,7 @@ export default function CompareCompoundPage() {
       )}
 
       {/* Create Comparison Alert Modal */}
-      <CreateComparisonModals isOpen={showCreateComparisonModal} onClose={() => setShowCreateComparisonModal(false)} />
+      <CreateComparisonModals isOpen={showCreateComparisonModal} onClose={handleModalClose} />
     </div>
   );
 }
