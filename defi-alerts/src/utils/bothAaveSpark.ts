@@ -11,8 +11,8 @@ import { Pool_Abi_DataProvider } from '@/shared/migrator/spark/abi/Pool_Abi_Data
 
 import type { FlattenedAddresses, Collateral } from '@/shared/migrator/types';
 
-import { calculateAaveAPY } from './calculateAaveAPR';
-import { calculateAaveAPR } from './calculateAaveAPY';
+import { calculateAaveAPY } from './calculateAaveAPY';
+import { calculateAaveAPR } from './calculateAaveAPR';
 
 export type MarketApr = {
   chainId: number;

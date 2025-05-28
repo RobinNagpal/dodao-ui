@@ -1,14 +1,15 @@
-import { AssetRates, ReserveData } from '@/shared/migrator/types';
+import { APYData, AssetRates } from '@/shared/migrator/types';
 
-export const calculateAaveAPR = ({ reserveDataArray }: { reserveDataArray: ReserveData[] }): AssetRates[] => {
-  return reserveDataArray.map((reserve) => {
-    const parseRate = (rate: string) => ((Number(rate) / 10 ** 27) * 100).toFixed(2);
+export const calculateAaveAPY = (aprDataArray: AssetRates[]): APYData[] => {
+  const calculateAPR = (apr: string) => {
+    const aprValue = Number(apr) / 100;
+    return ((Math.pow(1 + aprValue / 365, 365) - 1) * 100).toFixed(2);
+  };
 
-    return {
-      asset: reserve.asset,
-      supplyAPR: parseRate(reserve.liquidityRate),
-      stableBorrowAPR: parseRate(reserve.stableBorrowRate),
-      variableBorrowAPR: parseRate(reserve.variableBorrowRate),
-    };
-  });
+  return aprDataArray.map((data) => ({
+    asset: data.asset,
+    supplyAPY: calculateAPR(data.supplyAPR),
+    stableBorrowAPY: calculateAPR(data.stableBorrowAPR),
+    variableBorrowAPY: calculateAPR(data.variableBorrowAPR),
+  }));
 };

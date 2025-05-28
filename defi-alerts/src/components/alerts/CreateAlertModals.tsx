@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
@@ -28,6 +27,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { utils } from 'ethers';
 import { AlertCreationResponse, CreateCompoundAlertPayload } from '@/app/api/alerts/create/compound-market/route';
 import { CreatePersonalizedAlertPayload, PersonalizedAlertCreationResponse } from '@/app/api/alerts/create/personalized-market/route';
+import { useCompoundUserPositions } from '@/utils/getCompoundUserPositions';
 
 export interface PersonalizedPosition {
   id: string;
@@ -52,7 +52,7 @@ interface CreateAlertModalsProps {
 }
 
 // Extended PersonalizedPosition type to include wallet address
-interface WalletPosition extends PersonalizedPosition {
+export interface WalletPosition extends PersonalizedPosition {
   walletAddress: string;
 }
 
@@ -73,16 +73,16 @@ const getConditionMessage = (conditionType: ConditionType) => {
 export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModalsProps) {
   const { data } = useSession();
   const session = data as DoDAOSession;
-  const router = useRouter();
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
+  const fetchPositions = useCompoundUserPositions();
 
   // Modal state
   const [currentModal, setCurrentModal] = useState<'initial' | 'monitorMarkets' | 'positions' | 'configurePosition' | 'addWallet'>('initial');
   const [newWalletAddress, setNewWalletAddress] = useState<string>('');
   const [walletAddresses, setWalletAddresses] = useState<string[]>([]);
   const [currentWalletAddress, setCurrentWalletAddress] = useState<string>('');
-  const [walletHasPositions, setWalletHasPositions] = useState<boolean>(true);
+  const [walletHasPositions, setWalletHasPositions] = useState<boolean>(false);
 
   // Monitor markets state
   const [alertType, setAlertType] = useState<'borrow' | 'supply'>('borrow');
@@ -104,102 +104,10 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     data: walletData,
     loading: loadingWallets,
     error: walletError,
-  } = useFetchData<{ walletAddresses: string[] }>(
-    `${baseUrl}/api/user/wallet/get`,
-    { skipInitialFetch: !isOpen || !session?.userId },
-    'Failed to load wallet addresses'
-  );
+  } = useFetchData<{ walletAddresses: string[] }>(`${baseUrl}/api/user/wallet/get`, { skipInitialFetch: !isOpen }, 'Failed to load wallet addresses');
 
-  // All hardcoded positions with wallet addresses
-  const [allPositions, setAllPositions] = useState<WalletPosition[]>([
-    // Wallet 1 positions - 0x1234...
-    {
-      id: 'supply-1',
-      walletAddress: '0x1234567890abcdef1234567890abcdef12345678',
-      chain: 'Polygon',
-      market: 'USDT',
-      rate: '7.8%',
-      actionType: 'SUPPLY',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-1',
-          conditionType: 'APR_RISE_ABOVE',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-    {
-      id: 'supply-2',
-      walletAddress: '0x1234567890abcdef1234567890abcdef12345678',
-      chain: 'Polygon',
-      market: 'USDC.e',
-      rate: '6.2%',
-      actionType: 'SUPPLY',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-2',
-          conditionType: 'APR_FALLS_BELOW',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-    {
-      id: 'borrow-1',
-      walletAddress: '0x1234567890abcdef1234567890abcdef12345678',
-      chain: 'Base',
-      market: 'ETH',
-      rate: '3.8%',
-      actionType: 'BORROW',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-3',
-          conditionType: 'APR_FALLS_BELOW',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-    // Wallet 2 positions - 0x5678...
-    {
-      id: 'supply-3',
-      walletAddress: '0x5678901234abcdef5678901234abcdef56789012',
-      chain: 'Ethereum',
-      market: 'ETH',
-      rate: '5.2%',
-      actionType: 'SUPPLY',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-4',
-          conditionType: 'APR_RISE_ABOVE',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-    {
-      id: 'borrow-2',
-      walletAddress: '0x5678901234abcdef5678901234abcdef56789012',
-      chain: 'Ethereum',
-      market: 'USDC',
-      rate: '4.1%',
-      actionType: 'BORROW',
-      notificationFrequency: 'ONCE_PER_ALERT',
-      conditions: [
-        {
-          id: 'condition-5',
-          conditionType: 'APR_FALLS_BELOW',
-          severity: 'NONE',
-          thresholdValue: '',
-        },
-      ],
-    },
-  ]);
+  const [allPositions, setAllPositions] = useState<WalletPosition[]>([]);
+  const [walletPositionsLoading, setWalletPositionsLoading] = useState(false);
 
   // Filtered positions based on current wallet address and existing alerts
   const [filteredPositions, setFilteredPositions] = useState<WalletPosition[]>([]);
@@ -246,13 +154,32 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   // Set initial modal state based on wallet addresses
   useEffect(() => {
     if (isOpen && walletData) {
-      const userWallets = walletData.walletAddresses || [];
+      const userWallets = walletData.walletAddresses ?? [];
 
       setWalletAddresses(userWallets);
       setCurrentWalletAddress(userWallets[0]);
       setCurrentModal('positions');
     }
   }, [isOpen, walletData]);
+
+  useEffect(() => {
+    if (walletAddresses.length != 0 && allPositions.length === 0) {
+      setWalletPositionsLoading(true);
+
+      (async () => {
+        try {
+          console.log('Fetching user positions for wallets:', walletAddresses);
+          const result = await fetchPositions(walletAddresses);
+          console.log('Fetched positions:', result);
+          setAllPositions(result);
+        } catch (err) {
+          console.error('Error fetching user positions', err);
+        } finally {
+          setWalletPositionsLoading(false);
+        }
+      })();
+    }
+  }, [walletAddresses]);
 
   // Filter positions based on current wallet address and existing alerts
   useEffect(() => {
@@ -331,13 +258,31 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     const success = await postWalletAddress(`${baseUrl}/api/user/wallet`, { walletAddress: newWalletAddress });
 
     if (success) {
-      // Update local state
       setWalletAddresses((prev) => [...prev, newWalletAddress]);
       setCurrentWalletAddress(newWalletAddress);
+      setWalletPositionsLoading(true);
       setCurrentModal('positions');
       setNewWalletAddress('');
 
       setWalletHasPositions(false);
+      try {
+        console.log('Fetching user positions for wallet:', newWalletAddress);
+        const newPositions = await fetchPositions([newWalletAddress]);
+        console.log('Fetched positions:', newPositions);
+
+        setAllPositions((prev) => [...prev, ...newPositions]);
+
+        setWalletHasPositions((prevHas) => prevHas || newPositions.length > 0);
+      } catch (err) {
+        console.error('Error fetching user positions', err);
+        showNotification({
+          type: 'error',
+          heading: 'Fetch Error',
+          message: 'Could not load positions for that wallet.',
+        });
+      } finally {
+        setWalletPositionsLoading(false);
+      }
     }
   };
 
@@ -635,7 +580,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     <>
       {/* Initial Modal - No Wallet Addresses */}
       <Dialog open={isOpen && currentModal === 'initial'} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-md bg-theme-bg-secondary border border-primary-color">
+        <DialogContent className="sm:max-w-md bg-theme-bg-secondary border border-primary-color background-color">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-theme-primary">Create Alert</DialogTitle>
           </DialogHeader>
@@ -677,7 +622,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
 
       {/* Add Wallet Modal */}
       <Dialog open={isOpen && currentModal === 'addWallet'} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-md bg-theme-bg-secondary border border-primary-color">
+        <DialogContent className="sm:max-w-md bg-theme-bg-secondary border border-primary-color background-color">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-theme-primary">Add Wallet Address</DialogTitle>
           </DialogHeader>
@@ -708,7 +653,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
 
       {/* Monitor Markets Modal */}
       <Dialog open={isOpen && currentModal === 'monitorMarkets'} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color">
+        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-theme-primary">Create Market Alert</DialogTitle>
           </DialogHeader>
@@ -761,7 +706,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
 
       {/* Positions Modal */}
       <Dialog open={isOpen && currentModal === 'positions'} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color">
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-theme-primary">Select Position to Monitor</DialogTitle>
           </DialogHeader>
@@ -800,11 +745,21 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
             )}
 
             <div className="mb-4">
-              <div className="flex items-center p-2 border-b border-primary-color">
-                <span className="text-theme-primary">Wallet address - {formatWalletAddress(currentWalletAddress)}</span>
-              </div>
+              {walletAddresses.length > 0 && (
+                <div className="flex items-center p-2 border-b border-primary-color">
+                  <span className="text-theme-primary">Wallet address - {formatWalletAddress(currentWalletAddress)}</span>
+                </div>
+              )}
 
-              {!walletHasPositions ? (
+              {walletAddresses.length === 0 ? (
+                <div className="p-6 text-center">
+                  <p className="text-theme-muted">No Wallet Address Added</p>
+                </div>
+              ) : walletPositionsLoading ? (
+                <div className="p-6 text-center">
+                  <p className="text-theme-muted">Loading...</p>
+                </div>
+              ) : !walletHasPositions ? (
                 <div className="p-6 text-center">
                   <p className="text-theme-muted">No active positions found for this wallet address</p>
                 </div>
@@ -827,7 +782,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
                             onClick={() => selectPosition(position)}
                           >
                             <div>
-                              <span className="text-theme-primary">Positions {position.id.split('-')[1]}</span>
+                              <span className="text-theme-primary">Position # {position.id.split('-')[1]}</span>
                               <div className="text-sm text-theme-muted">
                                 {position.market} on {position.chain} - Current APR: {position.rate}
                               </div>
@@ -840,7 +795,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
                                 selectPosition(position);
                               }}
                             >
-                              Add
+                              Add Alert
                             </Button>
                           </div>
                         ))}
@@ -860,7 +815,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
                             onClick={() => selectPosition(position)}
                           >
                             <div>
-                              <span className="text-theme-primary">Positions {position.id.split('-')[1]}</span>
+                              <span className="text-theme-primary">Position # {position.id.split('-')[1]}</span>
                               <div className="text-sm text-theme-muted">
                                 {position.market} on {position.chain} - Current APR: {position.rate}
                               </div>
@@ -873,7 +828,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
                                 selectPosition(position);
                               }}
                             >
-                              Add
+                              Add Alert
                             </Button>
                           </div>
                         ))}
@@ -884,7 +839,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
             </div>
           </div>
 
-          <div className="pt-4 border-t border-primary-color">
+          <div className="pt-4 border-primary-color">
             <p className="text-theme-primary mb-4">I want to monitor various chains and markets to be alerted about the opportunities</p>
 
             <Button
@@ -899,7 +854,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
 
       {/* Configure Position Modal */}
       <Dialog open={isOpen && currentModal === 'configurePosition' && !!selectedPosition} onOpenChange={handleClose}>
-        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color">
+        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-theme-primary">
               Configure Alert for {selectedPosition?.market} on {selectedPosition?.chain}
