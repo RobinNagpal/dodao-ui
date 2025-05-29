@@ -13,32 +13,11 @@ import AddWalletModal from '../modals/AddWalletModal';
 import MonitorMarketsModal from '../modals/MonitorMarketsModal';
 import PositionsModal from '../modals/PositionsModal';
 import ConfigurePositionModal from '../modals/ConfigurePositionModal';
-
-export interface PersonalizedPosition {
-  id: string;
-  chain: string;
-  market: string;
-  rate: string;
-  actionType: 'SUPPLY' | 'BORROW';
-  notificationFrequency: NotificationFrequency;
-  conditions: Array<{
-    id: string;
-    conditionType: ConditionType;
-    severity: SeverityLevel;
-    thresholdValue?: string;
-    thresholdLow?: string;
-    thresholdHigh?: string;
-  }>;
-}
+import { WalletPosition } from '../modals/types';
 
 interface CreateAlertModalsProps {
   isOpen: boolean;
   onClose: () => void;
-}
-
-// Extended PersonalizedPosition type to include wallet address
-export interface WalletPosition extends PersonalizedPosition {
-  walletAddress: string;
 }
 
 export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModalsProps) {
@@ -191,7 +170,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     setCurrentModal('configurePosition');
   };
 
-  const updatePosition = (positionId: string, updates: Partial<PersonalizedPosition>) => {
+  const updatePosition = (positionId: string, updates: Partial<WalletPosition>) => {
     if (selectedPosition && selectedPosition.id === positionId) {
       setSelectedPosition({ ...selectedPosition, ...updates } as WalletPosition);
     }
@@ -229,6 +208,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     <>
       <InitialModal
         isOpen={isOpen && currentModal === 'initial'}
+        modalType="GENERAL"
         handleClose={handleClose}
         onWalletAdded={handleWalletAdded}
         onSwitchToMonitor={() => setCurrentModal('monitorMarkets')}
@@ -243,6 +223,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
 
       <MonitorMarketsModal
         isOpen={isOpen && currentModal === 'monitorMarkets'}
+        modalType="GENERAL"
         handleClose={handleClose}
         channels={channels}
         setChannels={setChannels}
@@ -251,8 +232,9 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
         onSwitchModal={() => (walletAddresses.length > 0 ? setCurrentModal('positions') : setCurrentModal('initial'))}
       />
 
-      <PositionsModal
+      <PositionsModal<WalletPosition>
         isOpen={isOpen && currentModal === 'positions'}
+        modalType="GENERAL"
         handleClose={handleClose}
         walletAddresses={walletAddresses}
         walletHasPositions={walletHasPositions}
@@ -265,8 +247,9 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
         onSwitchToMonitor={() => setCurrentModal('monitorMarkets')}
       />
 
-      <ConfigurePositionModal
+      <ConfigurePositionModal<WalletPosition>
         isOpen={isOpen && currentModal === 'configurePosition'}
+        modalType="GENERAL"
         selectedPosition={selectedPosition}
         handleClose={handleClose}
         updatePosition={updatePosition}

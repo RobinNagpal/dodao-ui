@@ -11,12 +11,13 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 interface InitialModalProps {
   isOpen: boolean;
+  modalType: 'GENERAL' | 'COMPARISON';
   handleClose: () => void;
   onWalletAdded: (newAddr: string) => void;
   onSwitchToMonitor: () => void;
 }
 
-export default function InitialModal({ isOpen, handleClose, onWalletAdded, onSwitchToMonitor }: InitialModalProps) {
+export default function InitialModal({ isOpen, modalType, handleClose, onWalletAdded, onSwitchToMonitor }: InitialModalProps) {
   const [newWalletAddress, setNewWalletAddress] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const baseUrl = getBaseUrl();
@@ -55,7 +56,7 @@ export default function InitialModal({ isOpen, handleClose, onWalletAdded, onSwi
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md bg-theme-bg-secondary border border-primary-color background-color">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-theme-primary">Create Alert</DialogTitle>
+          <DialogTitle className="text-2xl font-bold text-theme-primary">{modalType === 'GENERAL' ? 'Create Alert' : 'Create Comparison Alert'}</DialogTitle>
         </DialogHeader>
 
         <div className="py-4">
@@ -63,7 +64,9 @@ export default function InitialModal({ isOpen, handleClose, onWalletAdded, onSwi
 
           <div className="mb-6 p-4 border border-primary-color rounded-lg">
             <p className="text-theme-primary mb-4">
-              I want to monitor only my positions i.e. know when borrow or supply rates change corresponding to my open positions
+              {modalType === 'GENERAL'
+                ? 'I want to monitor only my positions i.e. know when borrow or supply rates change corresponding to my open positions'
+                : 'I want to know when compound offers better rates for my positions on other protocols'}
             </p>
 
             <div className="flex gap-2">
@@ -81,13 +84,17 @@ export default function InitialModal({ isOpen, handleClose, onWalletAdded, onSwi
           </div>
 
           <div className="p-4 border border-primary-color rounded-lg">
-            <p className="text-theme-primary mb-4">I want to monitor various chains and markets to be alerted about the opportunities</p>
+            <p className="text-theme-primary mb-4">
+              {modalType === 'GENERAL'
+                ? 'I want to monitor various chains and markets to be alerted about the opportunities'
+                : 'I want to monitor various chains and markets to be alerted when Compound outperforms other platforms'}
+            </p>
 
             <Button
               onClick={onSwitchToMonitor}
               className="bg-transparent border border-primary-color text-primary-color hover:bg-primary-color hover:text-primary-text"
             >
-              Monitor Markets
+              {modalType === 'GENERAL' ? 'Monitor Markets' : 'Monitor Compound vs Others'}
             </Button>
           </div>
         </div>
