@@ -3,7 +3,51 @@ import { prisma } from '@/prisma';
 import { useCompoundMarketsAprs } from '@/utils/getCompoundAPR';
 import { useAaveAprs } from '@/utils/getAaveAPR';
 import { useSparkAprs } from '@/utils/getSparkAPR';
-import { DeliveryChannelType, NotificationFrequency, AlertActionType, ConditionType } from '@prisma/client';
+import { DeliveryChannelType, NotificationFrequency, AlertActionType, ConditionType, Alert } from '@prisma/client';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+
+// Types
+interface CompareCompoundResponse {
+  success: boolean;
+  triggeredNotifications: number;
+}
+
+interface ProtocolMarket {
+  chainId: string;
+  asset: string;
+  assetAddress: string;
+  netEarnAPY: number;
+  netBorrowAPY: number;
+}
+
+interface AssetData {
+  chainId_address: string;
+  chainId: string;
+  symbol: string;
+  address: string;
+}
+
+interface NotificationGroup {
+  chain: string;
+  asset: string;
+  protocol: string;
+  compoundRate: number;
+  protocolRate: number;
+  diff: number;
+  condition: { 
+    type: ConditionType; 
+    threshold: number 
+  };
+}
+
+interface NotificationPayload {
+  alert: string;
+  alertCategory: string;
+  alertType: AlertActionType;
+  walletAddress?: string;
+  triggered: NotificationGroup[];
+  timestamp: string;
+}
 
 // map NotificationFrequency → cooldown in milliseconds
 const frequencyToMs: Record<NotificationFrequency, number> = {
@@ -15,14 +59,20 @@ const frequencyToMs: Record<NotificationFrequency, number> = {
   AT_MOST_ONCE_PER_WEEK: 7 * 24 * 60 * 60 * 1000,
 };
 
-export async function GET(request: NextRequest) {
-  // 1) Fetch APRs from all protocols
-  const [compound, aave, spark] = await Promise.all([useCompoundMarketsAprs()(), useAaveAprs()(), useSparkAprs()()]);
+/**
+ * Fetches APRs from all protocols and processes them
+ */
+async function fetchAndProcessProtocolAPRs() {
+  const [compound, aave, spark] = await Promise.all([
+    useCompoundMarketsAprs()(), 
+    useAaveAprs()(), 
+    useSparkAprs()()
+  ]);
 
   // Build a set of keys for active Compound markets only
   const compoundKeys = new Set(compound.map((m) => `${m.chainId}_${m.assetAddress.toLowerCase()}`));
 
-  // 1a) Upsert only those assets that exist in Compound markets
+  // Process Compound assets
   const compoundAssets = compound.map((m) => ({
     chainId_address: `${m.chainId}_${m.assetAddress.toLowerCase()}`,
     chainId: m.chainId,
@@ -30,7 +80,7 @@ export async function GET(request: NextRequest) {
     address: m.assetAddress.toLowerCase(),
   }));
 
-  // Filter Aave and Spark to include only keys present in Compound
+  // Filter Aave assets to include only keys present in Compound
   const aaveAssets = aave
     .filter((m) => compoundKeys.has(`${m.chainId}_${m.assetAddress.toLowerCase()}`))
     .map((m) => ({
@@ -40,6 +90,7 @@ export async function GET(request: NextRequest) {
       address: m.assetAddress.toLowerCase(),
     }));
 
+  // Filter Spark assets to include only keys present in Compound
   const sparkAssets = spark
     .filter((m) => compoundKeys.has(`${m.chainId}_${m.assetAddress.toLowerCase()}`))
     .map((m) => ({
@@ -49,14 +100,40 @@ export async function GET(request: NextRequest) {
       address: m.assetAddress.toLowerCase(),
     }));
 
-  const uniqueAssets = Array.from(new Map([...compoundAssets, ...aaveAssets, ...sparkAssets].map((a) => [a.chainId_address, a])).values());
+  return {
+    compound,
+    aave,
+    spark,
+    compoundKeys,
+    compoundAssets,
+    aaveAssets,
+    sparkAssets
+  };
+}
+
+/**
+ * Persists unique assets to the database
+ */
+async function persistAssets(compoundAssets: AssetData[], aaveAssets: AssetData[], sparkAssets: AssetData[]) {
+  const uniqueAssets = Array.from(
+    new Map([...compoundAssets, ...aaveAssets, ...sparkAssets].map((a) => [a.chainId_address, a])).values()
+  );
 
   await prisma.asset.createMany({
     data: uniqueAssets,
     skipDuplicates: true,
   });
+}
 
-  // 1b) Persist raw APR snapshots for debugging
+/**
+ * Persists APR snapshots for all protocols
+ */
+async function persistAPRSnapshots(
+  compound: ProtocolMarket[], 
+  aave: ProtocolMarket[], 
+  spark: ProtocolMarket[], 
+  compoundKeys: Set<string>
+) {
   await prisma.lendingAndBorrowingRate.createMany({
     data: [
       ...compound.map((m) => ({
@@ -86,9 +163,13 @@ export async function GET(request: NextRequest) {
         })),
     ],
   });
+}
 
-  // 2) Load comparison alerts
-  const alerts = await prisma.alert.findMany({
+/**
+ * Loads active comparison alerts
+ */
+async function loadComparisonAlerts() {
+  return prisma.alert.findMany({
     where: { isComparison: true, status: 'ACTIVE' },
     include: {
       selectedChains: true,
@@ -97,145 +178,213 @@ export async function GET(request: NextRequest) {
       deliveryChannels: true,
     },
   });
+}
 
-  let totalSent = 0;
+/**
+ * Checks if an alert should be processed based on its notification frequency
+ */
+async function shouldProcessAlert(alert: Alert & { 
+  selectedChains: any[]; 
+  selectedAssets: any[]; 
+  conditions: any[]; 
+  deliveryChannels: any[] 
+}) {
+  // For ONCE_PER_ALERT, get previously sent condition IDs
+  const previouslySent = new Set<string>();
+  if (alert.notificationFrequency === 'ONCE_PER_ALERT') {
+    const past = await prisma.alertNotification.findMany({
+      where: { alertId: alert.id },
+      select: { alertConditionIds: true },
+    });
+    past.forEach((p) => p.alertConditionIds.forEach((id) => previouslySent.add(id)));
+  }
 
-  for (const alert of alerts) {
-    // A) ONCE_PER_ALERT de-duplication
-    const previouslySent = new Set<string>();
-    if (alert.notificationFrequency === 'ONCE_PER_ALERT') {
-      const past = await prisma.alertNotification.findMany({
-        where: { alertId: alert.id },
-        select: { alertConditionIds: true },
-      });
-      past.forEach((p) => p.alertConditionIds.forEach((id) => previouslySent.add(id)));
-    }
-
-    // B) Cooldown check for other frequencies
-    let elapsed = Infinity;
+  // For other frequencies, check cooldown period
+  let shouldProcess = true;
+  if (alert.notificationFrequency !== 'ONCE_PER_ALERT') {
     const windowMs = frequencyToMs[alert.notificationFrequency];
-    if (alert.notificationFrequency !== 'ONCE_PER_ALERT') {
-      const last = await prisma.sentNotification.findFirst({
-        where: { alertNotification: { alertId: alert.id } },
-        orderBy: { sentAt: 'desc' },
+    const last = await prisma.sentNotification.findFirst({
+      where: { alertNotification: { alertId: alert.id } },
+      orderBy: { sentAt: 'desc' },
+    });
+    const elapsed = last ? Date.now() - last.sentAt.getTime() : Infinity;
+    shouldProcess = elapsed >= windowMs;
+  }
+
+  return { shouldProcess, previouslySent };
+}
+
+/**
+ * Evaluates conditions for an alert and creates notification groups
+ */
+async function evaluateConditions(
+  alert: Alert & { 
+    selectedChains: any[]; 
+    selectedAssets: any[]; 
+    conditions: any[]; 
+    deliveryChannels: any[] 
+  }, 
+  previouslySent: Set<string>
+) {
+  const hitIds = new Set<string>();
+  const groups: NotificationGroup[] = [];
+
+  for (const chainObj of alert.selectedChains) {
+    for (const assetObj of alert.selectedAssets) {
+      const key = `${chainObj.chainId}_${assetObj.address.toLowerCase()}`;
+
+      // fetch latest Compound APR
+      const compM = await prisma.lendingAndBorrowingRate.findFirst({
+        where: {
+          protocolName: { equals: 'Compound', mode: 'insensitive' },
+          chainId: chainObj.chainId,
+          assetChainId_address: key,
+        },
+        orderBy: { recordedAt: 'desc' },
       });
-      elapsed = last ? Date.now() - last.sentAt.getTime() : Infinity;
-    }
-    if (alert.notificationFrequency !== 'ONCE_PER_ALERT' && elapsed < windowMs) continue;
+      if (!compM) continue;
 
-    // C) Evaluate each chain/asset/protocol
-    const hitIds = new Set<string>();
-    const groups: Array<{
-      chain: string;
-      asset: string;
-      protocol: string;
-      compoundRate: number;
-      protocolRate: number;
-      diff: number;
-      condition: { type: ConditionType; threshold: number };
-    }> = [];
-
-    for (const chainObj of alert.selectedChains) {
-      for (const assetObj of alert.selectedAssets) {
-        const key = `${chainObj.chainId}_${assetObj.address.toLowerCase()}`;
-
-        // fetch latest Compound APR
-        const compM = await prisma.lendingAndBorrowingRate.findFirst({
+      // compare against each protocol
+      for (const proto of alert.compareProtocols) {
+        const otherM = await prisma.lendingAndBorrowingRate.findFirst({
           where: {
-            protocolName: { equals: 'Compound', mode: 'insensitive' },
+            protocolName: { equals: proto, mode: 'insensitive' },
             chainId: chainObj.chainId,
             assetChainId_address: key,
           },
           orderBy: { recordedAt: 'desc' },
         });
-        if (!compM) continue;
+        if (!otherM) continue;
 
-        // compare against each protocol
-        for (const proto of alert.compareProtocols) {
-          const otherM = await prisma.lendingAndBorrowingRate.findFirst({
-            where: {
-              protocolName: { equals: proto, mode: 'insensitive' },
-              chainId: chainObj.chainId,
-              assetChainId_address: key,
-            },
-            orderBy: { recordedAt: 'desc' },
-          });
-          if (!otherM) continue;
+        const compRate = alert.actionType === AlertActionType.SUPPLY ? compM.netEarnAPY : compM.netBorrowAPY;
+        const otherRate = alert.actionType === AlertActionType.SUPPLY ? otherM.netEarnAPY : otherM.netBorrowAPY;
 
-          const compRate = alert.actionType === AlertActionType.SUPPLY ? compM.netEarnAPY : compM.netBorrowAPY;
-          const otherRate = alert.actionType === AlertActionType.SUPPLY ? otherM.netEarnAPY : otherM.netBorrowAPY;
+        // compute diff
+        const diff = alert.actionType === AlertActionType.SUPPLY 
+          ? compM.netEarnAPY - otherM.netEarnAPY 
+          : otherM.netBorrowAPY - compM.netBorrowAPY;
 
-          // compute diff
-          const diff = alert.actionType === AlertActionType.SUPPLY ? compM.netEarnAPY - otherM.netEarnAPY : otherM.netBorrowAPY - compM.netBorrowAPY;
+        // check each RATE_DIFF condition
+        for (const c of alert.conditions) {
+          if (
+            (c.conditionType === ConditionType.RATE_DIFF_ABOVE && diff > (c.thresholdValue ?? 0)) ||
+            (c.conditionType === ConditionType.RATE_DIFF_BELOW && diff > (c.thresholdValue ?? 0))
+          ) {
+            if (alert.notificationFrequency === 'ONCE_PER_ALERT' && previouslySent.has(c.id)) continue;
 
-          // check each RATE_DIFF condition
-          for (const c of alert.conditions) {
-            if (
-              (c.conditionType === ConditionType.RATE_DIFF_ABOVE && diff > (c.thresholdValue ?? 0)) ||
-              (c.conditionType === ConditionType.RATE_DIFF_BELOW && diff > (c.thresholdValue ?? 0))
-            ) {
-              if (alert.notificationFrequency === 'ONCE_PER_ALERT' && previouslySent.has(c.id)) continue;
-
-              hitIds.add(c.id);
-              groups.push({
-                chain: chainObj.name,
-                asset: assetObj.symbol,
-                protocol: proto,
-                compoundRate: +compRate.toFixed(2),
-                protocolRate: +otherRate.toFixed(2),
-                diff: +diff.toFixed(2),
-                condition: {
-                  type: c.conditionType,
-                  threshold: c.thresholdValue!,
-                },
-              });
-            }
+            hitIds.add(c.id);
+            groups.push({
+              chain: chainObj.name,
+              asset: assetObj.symbol,
+              protocol: proto,
+              compoundRate: +compRate.toFixed(2),
+              protocolRate: +otherRate.toFixed(2),
+              diff: +diff.toFixed(2),
+              condition: {
+                type: c.conditionType,
+                threshold: c.thresholdValue!,
+              },
+            });
           }
         }
       }
     }
+  }
 
+  return { hitIds, groups };
+}
+
+/**
+ * Creates and sends notifications for triggered conditions
+ */
+async function sendNotifications(
+  alert: Alert & { 
+    selectedChains: any[]; 
+    selectedAssets: any[]; 
+    conditions: any[]; 
+    deliveryChannels: any[] 
+  }, 
+  groups: NotificationGroup[]
+) {
+  const payload: NotificationPayload = {
+    alert: 'Compound vs. Other Protocol Comparison',
+    alertCategory: alert.category,
+    alertType: alert.actionType,
+    ...(alert.category === 'PERSONALIZED' && {
+      walletAddress: alert.walletAddress,
+    }),
+    triggered: groups,
+    timestamp: new Date().toISOString(),
+  };
+
+  for (const ch of alert.deliveryChannels) {
+    const dest = ch.channelType === DeliveryChannelType.WEBHOOK ? ch.webhookUrl! : ch.email!;
+    if (ch.channelType === DeliveryChannelType.WEBHOOK) {
+      await fetch(dest, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } else {
+      console.log(`(email) to ${dest}:`, payload);
+    }
+  }
+}
+
+/**
+ * Logs notification to the database
+ */
+async function logNotification(alertId: string, hitIds: Set<string>) {
+  await prisma.alertNotification.create({
+    data: {
+      alertId: alertId,
+      alertConditionIds: Array.from(hitIds),
+      SentNotification: { create: {} },
+    },
+  });
+}
+
+/**
+ * Main handler function for the API route
+ */
+async function compareCompoundHandler(request: NextRequest): Promise<CompareCompoundResponse> {
+  // 1) Fetch and process APRs from all protocols
+  const { compound, aave, spark, compoundKeys, compoundAssets, aaveAssets, sparkAssets } = 
+    await fetchAndProcessProtocolAPRs();
+
+  // 2) Persist assets and APR snapshots
+  await persistAssets(compoundAssets, aaveAssets, sparkAssets);
+  await persistAPRSnapshots(compound, aave, spark, compoundKeys);
+
+  // 3) Load comparison alerts
+  const alerts = await loadComparisonAlerts();
+
+  // 4) Process each alert
+  let totalSent = 0;
+
+  for (const alert of alerts) {
+    // Check if alert should be processed
+    const { shouldProcess, previouslySent } = await shouldProcessAlert(alert);
+    if (!shouldProcess) continue;
+
+    // Evaluate conditions and create notification groups
+    const { hitIds, groups } = await evaluateConditions(alert, previouslySent);
     if (groups.length === 0) continue;
 
-    // D) Broadcast
-    const payload = {
-      alert: 'Compound vs. Other Protocol Comparison',
-      alertCategory: alert.category,
-      alertType: alert.actionType,
-      ...(alert.category === 'PERSONALIZED' && {
-        walletAddress: alert.walletAddress,
-      }),
-      triggered: groups,
-      timestamp: new Date().toISOString(),
-    };
+    // Send notifications
+    await sendNotifications(alert, groups);
 
-    for (const ch of alert.deliveryChannels) {
-      const dest = ch.channelType === DeliveryChannelType.WEBHOOK ? ch.webhookUrl! : ch.email!;
-      if (ch.channelType === DeliveryChannelType.WEBHOOK) {
-        await fetch(dest, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-      } else {
-        console.log(`(email) to ${dest}:`, payload);
-      }
-    }
-
-    // E) Log
-    await prisma.alertNotification.create({
-      data: {
-        alertId: alert.id,
-        alertConditionIds: Array.from(hitIds),
-        SentNotification: { create: {} },
-      },
-    });
+    // Log notification
+    await logNotification(alert.id, hitIds);
 
     totalSent++;
   }
 
-  return NextResponse.json({
+  // 5) Return response
+  return {
     success: true,
     triggeredNotifications: totalSent,
-  });
+  };
 }
+
+export const GET = withErrorHandlingV2<CompareCompoundResponse>(compareCompoundHandler);
