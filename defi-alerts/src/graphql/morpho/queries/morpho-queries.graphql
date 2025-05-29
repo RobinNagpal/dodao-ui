@@ -1,17 +1,6 @@
-query GetVaultPositions($chainId: Int!, $address: String!) {
+query GetMorphoVaultPositions($chainId: Int!, $address: String!) {
   userByAddress(chainId: $chainId, address: $address) {
     address
-    marketPositions {
-      market {
-        uniqueKey
-      }
-      state {
-        borrowAssets
-        borrowAssetsUsd
-        supplyAssets
-        supplyAssetsUsd
-      }
-    }
     vaultPositions {
       vault {
         address

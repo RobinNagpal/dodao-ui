@@ -3568,30 +3568,19 @@ export enum WarningLevel {
   Yellow = 'YELLOW'
 }
 
-export type GetVaultPositionsQueryVariables = Exact<{
+export type GetMorphoVaultPositionsQueryVariables = Exact<{
   chainId: Scalars['Int'];
   address: Scalars['String'];
 }>;
 
 
-export type GetVaultPositionsQuery = { __typename?: 'Query', userByAddress: { __typename?: 'User', address: any, marketPositions: Array<{ __typename?: 'MarketPosition', market: { __typename?: 'Market', uniqueKey: any }, state?: { __typename?: 'MarketPositionState', borrowAssets?: any | null, borrowAssetsUsd?: number | null, supplyAssets?: any | null, supplyAssetsUsd?: number | null } | null }>, vaultPositions: Array<{ __typename?: 'VaultPosition', vault: { __typename?: 'Vault', address: any, name: string }, state?: { __typename?: 'VaultPositionState', assets?: any | null, assetsUsd?: number | null, shares: any } | null }>, transactions: Array<{ __typename?: 'Transaction', hash: any, timestamp: any, type: TransactionType }> } };
+export type GetMorphoVaultPositionsQuery = { __typename?: 'Query', userByAddress: { __typename?: 'User', address: any, vaultPositions: Array<{ __typename?: 'VaultPosition', vault: { __typename?: 'Vault', address: any, name: string }, state?: { __typename?: 'VaultPositionState', assets?: any | null, assetsUsd?: number | null, shares: any } | null }>, transactions: Array<{ __typename?: 'Transaction', hash: any, timestamp: any, type: TransactionType }> } };
 
 
-export const GetVaultPositionsDocument = gql`
-    query GetVaultPositions($chainId: Int!, $address: String!) {
+export const GetMorphoVaultPositionsDocument = gql`
+    query GetMorphoVaultPositions($chainId: Int!, $address: String!) {
   userByAddress(chainId: $chainId, address: $address) {
     address
-    marketPositions {
-      market {
-        uniqueKey
-      }
-      state {
-        borrowAssets
-        borrowAssetsUsd
-        supplyAssets
-        supplyAssetsUsd
-      }
-    }
     vaultPositions {
       vault {
         address
@@ -3613,33 +3602,33 @@ export const GetVaultPositionsDocument = gql`
     `;
 
 /**
- * __useGetVaultPositionsQuery__
+ * __useGetMorphoVaultPositionsQuery__
  *
- * To run a query within a React component, call `useGetVaultPositionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetVaultPositionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetMorphoVaultPositionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMorphoVaultPositionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetVaultPositionsQuery({
+ * const { data, loading, error } = useGetMorphoVaultPositionsQuery({
  *   variables: {
  *      chainId: // value for 'chainId'
  *      address: // value for 'address'
  *   },
  * });
  */
-export function useGetVaultPositionsQuery(baseOptions: Apollo.QueryHookOptions<GetVaultPositionsQuery, GetVaultPositionsQueryVariables>) {
+export function useGetMorphoVaultPositionsQuery(baseOptions: Apollo.QueryHookOptions<GetMorphoVaultPositionsQuery, GetMorphoVaultPositionsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetVaultPositionsQuery, GetVaultPositionsQueryVariables>(GetVaultPositionsDocument, options);
+        return Apollo.useQuery<GetMorphoVaultPositionsQuery, GetMorphoVaultPositionsQueryVariables>(GetMorphoVaultPositionsDocument, options);
       }
-export function useGetVaultPositionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVaultPositionsQuery, GetVaultPositionsQueryVariables>) {
+export function useGetMorphoVaultPositionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMorphoVaultPositionsQuery, GetMorphoVaultPositionsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetVaultPositionsQuery, GetVaultPositionsQueryVariables>(GetVaultPositionsDocument, options);
+          return Apollo.useLazyQuery<GetMorphoVaultPositionsQuery, GetMorphoVaultPositionsQueryVariables>(GetMorphoVaultPositionsDocument, options);
         }
-export type GetVaultPositionsQueryHookResult = ReturnType<typeof useGetVaultPositionsQuery>;
-export type GetVaultPositionsLazyQueryHookResult = ReturnType<typeof useGetVaultPositionsLazyQuery>;
-export type GetVaultPositionsQueryResult = Apollo.QueryResult<GetVaultPositionsQuery, GetVaultPositionsQueryVariables>;
-export function refetchGetVaultPositionsQuery(variables: GetVaultPositionsQueryVariables) {
-      return { query: GetVaultPositionsDocument, variables: variables }
+export type GetMorphoVaultPositionsQueryHookResult = ReturnType<typeof useGetMorphoVaultPositionsQuery>;
+export type GetMorphoVaultPositionsLazyQueryHookResult = ReturnType<typeof useGetMorphoVaultPositionsLazyQuery>;
+export type GetMorphoVaultPositionsQueryResult = Apollo.QueryResult<GetMorphoVaultPositionsQuery, GetMorphoVaultPositionsQueryVariables>;
+export function refetchGetMorphoVaultPositionsQuery(variables: GetMorphoVaultPositionsQueryVariables) {
+      return { query: GetMorphoVaultPositionsDocument, variables: variables }
     }

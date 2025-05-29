@@ -11,6 +11,7 @@ import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';
 import { useNavigationEvent } from '@dodao/web-core/utils/analytics/useNavigationEvent';
 import { getAuthenticatedApolloClient } from '@dodao/web-core/utils/apolloClient';
 import { setDoDAOTokenInLocalStorage } from '@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage';
+import CustomApolloProvider from 'defi-alerts/src/providers/ApolloProvider';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect, useMemo } from 'react';
 import ReactGA from 'react-ga4';
@@ -60,7 +61,9 @@ export function ChildLayout({
   return (
     <Web3ReactProviderWrapper>
       <SessionProvider session={session}>
-        <BasePage space={space!}>{children}</BasePage>
+        <CustomApolloProvider>
+          <BasePage space={space!}>{children}</BasePage>
+        </CustomApolloProvider>
       </SessionProvider>
       <NotificationWrapper />
     </Web3ReactProviderWrapper>
