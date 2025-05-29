@@ -1,0 +1,31 @@
+overwrite: true
+schema: 'src/graphql/morpho/schema.graphql'
+documents: 'src/graphql/morpho/**/*.graphql'
+generates:
+  src/graphql/morpho/generated/generated-types.ts:
+    config:
+#      preResolveTypes: true
+      withHooks: true
+      withMutationFn: true
+      withRefetchFn: true
+#      withResultType: true
+#      flattenGeneratedTypes: true
+#      flattenGeneratedTypesIncludeFragments: true
+#      flattenHoistedTypes: true
+      declarationKind:
+        union: type
+        type: interface
+        input: interface
+        scalar: interface
+        arguments: interface
+        interface: interface
+#      includeDirectives: true
+#      commentDescriptions: true
+#      flattenTypes: true
+
+
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+#      - 'typescript-type-graphql'

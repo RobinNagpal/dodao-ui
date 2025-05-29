@@ -10,12 +10,16 @@
     "lint": "next lint",
     "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
     "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
-    "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'"
+    "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'",
+    "graphql:generate": "graphql-codegen --config src/graphql/morpho/codegen.yml"
   },
   "engines": {
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.12",
+    "graphql": "^16.8.1",
+    "graphql-tag": "^2.12.6",
     "@radix-ui/react-accordion": "^1.2.10",
     "@radix-ui/react-dropdown-menu": "^2.1.12",
     "@radix-ui/react-label": "^2.1.4",
@@ -45,6 +49,13 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^3.3.1",
+    "@graphql-codegen/introspection": "^3.0.1",
+    "@graphql-codegen/schema-ast": "^3.0.1",
+    "@graphql-codegen/typescript": "^3.0.4",
+    "@graphql-codegen/typescript-operations": "^3.0.4",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
+    "@graphql-codegen/typescript-type-graphql": "^2.3.6",
     "@eslint/eslintrc": "^3",
     "@shadcn/ui": "^0.0.4",
     "@types/node": "18.16.3",

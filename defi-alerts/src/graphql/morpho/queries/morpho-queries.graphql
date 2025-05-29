@@ -1,0 +1,21 @@
+query GetMorphoVaultPositions($chainId: Int!, $address: String!) {
+  userByAddress(chainId: $chainId, address: $address) {
+    address
+    vaultPositions {
+      vault {
+        address
+        name
+      }
+      state {
+        assets
+        assetsUsd
+        shares
+      }
+    }
+    transactions {
+      hash
+      timestamp
+      type
+    }
+  }
+}
