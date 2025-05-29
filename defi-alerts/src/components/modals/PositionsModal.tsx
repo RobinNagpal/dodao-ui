@@ -1,27 +1,28 @@
-// src/components/alerts/modals/PositionsModal.tsx
 'use client';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
-import type { WalletPosition } from '@/components/alerts/CreateAlertModals';
+import { BasePosition, WalletComparisonPosition } from './types';
 
-interface PositionsModalProps {
+type PositionsModalProps<T extends BasePosition> = {
   isOpen: boolean;
   handleClose: () => void;
   walletAddresses: string[];
   walletHasPositions: boolean;
-  filteredPositions: WalletPosition[];
   walletPositionsLoading: boolean;
   currentWalletAddress: string;
-  setCurrentWalletAddress: (currentWalletAddress: string) => void;
-  selectPosition: (position: WalletPosition) => void;
+  setCurrentWalletAddress: (s: string) => void;
   onSwitchToAddWallet: () => void;
   onSwitchToMonitor: () => void;
-}
+  modalType: 'GENERAL' | 'COMPARISON';
+  filteredPositions: T[];
+  selectPosition: (p: T) => void;
+};
 
-export default function PositionsModal({
+export default function PositionsModal<T extends BasePosition>({
   isOpen,
+  modalType,
   handleClose,
   walletAddresses,
   walletHasPositions,
@@ -32,12 +33,14 @@ export default function PositionsModal({
   selectPosition,
   onSwitchToAddWallet,
   onSwitchToMonitor,
-}: PositionsModalProps) {
+}: PositionsModalProps<T>) {
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-theme-primary">Select Position to Monitor</DialogTitle>
+          <DialogTitle className="text-2xl font-bold text-theme-primary">
+            {modalType === 'GENERAL' ? 'Select Position to Monitor' : 'Select Position to Compare'}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="py-4">
@@ -45,7 +48,9 @@ export default function PositionsModal({
             {walletAddresses.length === 1 ? 'One Wallet Address Exists' : `${walletAddresses.length} Wallet Addresses Exist`}
           </h2>
           <p className="text-theme-primary mb-4">
-            I want to monitor only my positions i.e. know when borrow or supply rates change corresponding to my open positions
+            {modalType === 'GENERAL'
+              ? 'I want to monitor only my positions i.e. know when borrow or supply rates change corresponding to my open positions'
+              : 'I want to know when compound offers better rates for my positions on other protocols'}
           </p>
 
           <div className="mb-4 flex justify-end">
@@ -98,11 +103,18 @@ export default function PositionsModal({
               </div>
             ) : (
               <>
-                {/* Supply Positions */}
-                <PositionList positions={filteredPositions.filter((p) => p.actionType === 'SUPPLY')} actionType="SUPPLY" selectPosition={selectPosition} />
-
-                {/* Borrow Positions */}
-                <PositionList positions={filteredPositions.filter((p) => p.actionType === 'BORROW')} actionType="BORROW" selectPosition={selectPosition} />
+                <PositionList<T>
+                  modalType={modalType}
+                  positions={filteredPositions.filter((p) => p.actionType === 'SUPPLY')}
+                  actionType="SUPPLY"
+                  selectPosition={selectPosition}
+                />
+                <PositionList<T>
+                  modalType={modalType}
+                  positions={filteredPositions.filter((p) => p.actionType === 'BORROW')}
+                  actionType="BORROW"
+                  selectPosition={selectPosition}
+                />
               </>
             )}
           </div>
@@ -122,14 +134,14 @@ export default function PositionsModal({
     </Dialog>
   );
 }
-
-interface PositionListProps {
-  positions: WalletPosition[];
+interface PositionListProps<T> {
+  modalType: 'GENERAL' | 'COMPARISON';
+  positions: T[];
   actionType: 'SUPPLY' | 'BORROW';
-  selectPosition: (pos: WalletPosition) => void;
+  selectPosition: (p: T) => void;
 }
 
-function PositionList({ positions, actionType, selectPosition }: PositionListProps) {
+function PositionList<T extends BasePosition>({ modalType, positions, actionType, selectPosition }: PositionListProps<T>) {
   if (positions.length === 0) return null;
 
   const title = actionType === 'SUPPLY' ? 'Supply Positions' : 'Borrow Positions';
@@ -146,7 +158,9 @@ function PositionList({ positions, actionType, selectPosition }: PositionListPro
           <div>
             <span className="text-theme-primary">Position # {idx + 1}</span>
             <div className="text-sm text-theme-muted">
-              {position.market} on {position.chain} – Current APR: {position.rate}
+              {position.market} on {position.chain}
+              {modalType === 'COMPARISON' ? ` vs ${(position as unknown as WalletComparisonPosition).platform}` : ''} – Current{' '}
+              {modalType === 'GENERAL' ? 'APR' : 'APY'}: {position.rate}
             </div>
           </div>
           <Button

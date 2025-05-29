@@ -5,7 +5,7 @@ import { AAVE_CONFIG_POOL_CONTRACT } from '@/shared/migrator/aave/config';
 import { PoolDataAddressAbi_Arbitrum } from '@/shared/migrator/aave/abi/PoolDataAddressAbi_Arbitrum';
 import { useAaveAprs, MarketApr } from './getAaveAPR';
 import { COMPOUND_MARKETS } from '@/shared/web3/config';
-import { WalletComparisonPosition } from '@/components/alerts/CreateComparisonModals';
+import { WalletComparisonPosition } from '@/components/modals/types';
 
 /** Helper to pick the first provider address from the config */
 const flattenProvider = (addrOrObj: Address | Record<string, Address>): Address => (typeof addrOrObj === 'string' ? addrOrObj : Object.values(addrOrObj)[0]);
