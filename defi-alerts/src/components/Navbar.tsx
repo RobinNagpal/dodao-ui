@@ -33,7 +33,7 @@ export default function Navbar() {
 
   return (
     <header className="bg-theme-primary border-b">
-      <nav className="mx-5 flex max-w-6xl items-center justify-between py-4">
+      <nav className="flex max-w-6xl items-center justify-between py-4 mx-4 xl:mx-auto">
         <div className="flex lg:flex-1 lg:items-center lg:gap-x-12">
           <Link href="/alerts" className="-m-1.5 p-1.5">
             <span className="sr-only">Defi Alerts for Compound</span>

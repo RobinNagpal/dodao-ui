@@ -6,7 +6,7 @@ import { COMPOUND_MARKETS, CHAINS } from '@/shared/web3/config';
 import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
 import { useCompoundMarketsAprs, CompoundMarketApr } from './getCompoundAPR';
 import { Address } from 'viem';
-import { WalletPosition } from '@/components/alerts/CreateAlertModals';
+import { WalletPosition } from '@/components/modals/types';
 
 export function useCompoundUserPositions(): (wallets: string[]) => Promise<WalletPosition[]> {
   const config: Config = useDefaultConfig;
