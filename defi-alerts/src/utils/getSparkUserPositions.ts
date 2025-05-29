@@ -5,7 +5,7 @@ import { SPARK_DATA_PROVIDER } from '@/shared/migrator/spark/config';
 import { Pool_Abi_DataProvider } from '@/shared/migrator/spark/abi/Pool_Abi_DataProvider';
 import { useSparkAprs, MarketApr } from './getSparkAPR';
 import { COMPOUND_MARKETS } from '@/shared/web3/config';
-import { WalletComparisonPosition } from '@/components/alerts/CreateComparisonModals';
+import { WalletComparisonPosition } from '@/components/modals/types';
 
 export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletComparisonPosition[]> {
   const config: Config = useDefaultConfig;
