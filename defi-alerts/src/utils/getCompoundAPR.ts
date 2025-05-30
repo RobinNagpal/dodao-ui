@@ -1,5 +1,4 @@
-// src/shared/web3/hooks/useCompoundMarketsAprs.ts
-import { formatUnits } from 'viem';
+import { Address, formatUnits } from 'viem';
 import { multicall } from '@wagmi/core';
 import type { Config } from '@wagmi/core';
 
@@ -63,12 +62,12 @@ export function useCompoundMarketsAprs(): () => Promise<CompoundMarketApr[]> {
 
         // 3a) Batch call `baseTokenPriceFeed` and `getUtilization` for all markets
         const feedCalls = markets.map((m) => ({
-          address: m.cometAddress,
+          address: m.cometAddress.toLowerCase() as Address,
           abi: CometABI,
           functionName: 'baseTokenPriceFeed' as const,
         }));
         const utilCalls = markets.map((m) => ({
-          address: m.cometAddress,
+          address: m.cometAddress.toLowerCase() as Address,
           abi: CometABI,
           functionName: 'getUtilization' as const,
         }));
@@ -87,15 +86,15 @@ export function useCompoundMarketsAprs(): () => Promise<CompoundMarketApr[]> {
         const detailedCalls = markets.flatMap(
           (m, i) =>
             [
-              { address: m.cometAddress, abi: CometABI, functionName: 'decimals' as const },
-              { address: m.cometAddress, abi: CometABI, functionName: 'baseIndexScale' as const },
-              { address: m.cometAddress, abi: CometABI, functionName: 'getSupplyRate' as const, args: [utils[i]] },
-              { address: m.cometAddress, abi: CometABI, functionName: 'getBorrowRate' as const, args: [utils[i]] },
-              { address: m.cometAddress, abi: CometABI, functionName: 'totalSupply' as const },
-              { address: m.cometAddress, abi: CometABI, functionName: 'totalBorrow' as const },
-              { address: m.cometAddress, abi: CometABI, functionName: 'baseTrackingSupplySpeed' as const },
-              { address: m.cometAddress, abi: CometABI, functionName: 'baseTrackingBorrowSpeed' as const },
-              { address: m.cometAddress, abi: CometABI, functionName: 'getPrice' as const, args: [feedIds[i]] },
+              { address: m.cometAddress.toLowerCase() as Address, abi: CometABI, functionName: 'decimals' as const },
+              { address: m.cometAddress.toLowerCase() as Address, abi: CometABI, functionName: 'baseIndexScale' as const },
+              { address: m.cometAddress.toLowerCase() as Address, abi: CometABI, functionName: 'getSupplyRate' as const, args: [utils[i]] },
+              { address: m.cometAddress.toLowerCase() as Address, abi: CometABI, functionName: 'getBorrowRate' as const, args: [utils[i]] },
+              { address: m.cometAddress.toLowerCase() as Address, abi: CometABI, functionName: 'totalSupply' as const },
+              { address: m.cometAddress.toLowerCase() as Address, abi: CometABI, functionName: 'totalBorrow' as const },
+              { address: m.cometAddress.toLowerCase() as Address, abi: CometABI, functionName: 'baseTrackingSupplySpeed' as const },
+              { address: m.cometAddress.toLowerCase() as Address, abi: CometABI, functionName: 'baseTrackingBorrowSpeed' as const },
+              { address: m.cometAddress.toLowerCase() as Address, abi: CometABI, functionName: 'getPrice' as const, args: [feedIds[i]] },
             ] as const
         );
 

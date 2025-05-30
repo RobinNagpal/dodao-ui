@@ -124,7 +124,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     const existingAlerts = Array.isArray(alertsData) ? alertsData : [];
     const positionsWithoutAlerts = walletPositions.filter((position) => {
       // Check if there's already an alert for this position
-      const normalizedMarket = position.market === 'ETH' ? 'WETH' : position.market;
+      const normalizedMarket = position.assetSymbol === 'ETH' ? 'WETH' : position.assetSymbol;
       return !existingAlerts.some(
         (alert) =>
           alert.walletAddress === position.walletAddress &&

@@ -4,7 +4,7 @@ import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
 import { AAVE_CONFIG_POOL_CONTRACT } from '@/shared/migrator/aave/config';
 import { PoolDataAddressAbi_Arbitrum } from '@/shared/migrator/aave/abi/PoolDataAddressAbi_Arbitrum';
 import { useAaveAprs, MarketApr } from './getAaveAPR';
-import { COMPOUND_MARKETS } from '@/shared/web3/config';
+import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
 import { WalletComparisonPosition } from '@/components/modals/types';
 
 /** Helper to pick the first provider address from the config */
@@ -45,7 +45,7 @@ export function useAaveUserPositions(): (wallets: string[]) => Promise<WalletCom
         await Promise.all(
           Object.entries(aprsByChain).map(async ([chainIdStr, markets]) => {
             const chainId = Number(chainIdStr);
-            const chainName = config.chains.find((c) => c.id === chainId)?.name ?? 'Unknown';
+            const chainName = CHAINS.find((c) => c.chainId === chainId)?.name ?? 'Unknown';
 
             // 6) find the Aave provider contract for this chain
             const providerAddr = flattenProvider(AAVE_CONFIG_POOL_CONTRACT[chainId] ?? {});
@@ -103,7 +103,8 @@ export function useAaveUserPositions(): (wallets: string[]) => Promise<WalletCom
                 platform: 'AAVE',
                 walletAddress: wallet,
                 chain: chainName,
-                market: market.asset === 'WETH' ? 'ETH' : market.asset,
+                assetSymbol: market.asset === 'WETH' ? 'ETH' : market.asset,
+                assetAddress: market.assetAddress,
                 rate,
                 actionType,
                 notificationFrequency: 'ONCE_PER_ALERT',

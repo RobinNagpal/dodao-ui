@@ -7,7 +7,8 @@ export interface BasePosition {
   id: string;
   walletAddress: string;
   chain: string;
-  market: string;
+  assetSymbol: string;
+  assetAddress: string;
   rate: string;
   actionType: ActionType;
   notificationFrequency: NotificationFrequency;
