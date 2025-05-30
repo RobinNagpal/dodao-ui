@@ -13,7 +13,7 @@ interface CompareCompoundResponse {
 }
 
 interface ProtocolMarket {
-  chainId: string;
+  chainId: number;
   asset: string;
   assetAddress: string;
   netEarnAPY: number;
@@ -22,13 +22,13 @@ interface ProtocolMarket {
 
 interface AssetData {
   chainId_address: string;
-  chainId: string;
+  chainId: number;
   symbol: string;
   address: string;
 }
 
 interface NotificationGroup {
-  chain: string;
+  chain: number;
   asset: string;
   protocol: string;
   compoundRate: number;
@@ -44,7 +44,7 @@ interface NotificationPayload {
   alert: string;
   alertCategory: string;
   alertType: AlertActionType;
-  walletAddress?: string;
+  walletAddress?: string | null;
   triggered: NotificationGroup[];
   timestamp: string;
 }

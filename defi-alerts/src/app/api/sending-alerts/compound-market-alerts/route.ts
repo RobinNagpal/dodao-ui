@@ -11,7 +11,7 @@ interface CompoundMarketResponse {
 }
 
 interface MarketData {
-  chainId: string;
+  chainId: number;
   asset: string;
   assetAddress: string;
   netEarnAPY: number;
@@ -19,7 +19,7 @@ interface MarketData {
 }
 
 interface NotificationGroup {
-  chain: string;
+  chain: number;
   asset: string;
   currentRate: number;
   conditions: Array<{
@@ -32,7 +32,7 @@ interface NotificationPayload {
   alert: string;
   alertCategory: string;
   alertType: AlertActionType;
-  walletAddress?: string;
+  walletAddress?: string | null;
   triggered: NotificationGroup[];
   timestamp: string;
 }
