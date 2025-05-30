@@ -121,13 +121,10 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
           })[0];
           const apyData = calculateAaveAPY([aprData])[0];
 
-          // find the matching symbol from Compound
-          const compEntry = compoundForChain.find((m) => m.baseAssetAddress.toLowerCase() === c.tokenAddress.toLowerCase());
-
           return {
             chainId,
             chainName,
-            asset: compEntry?.symbol ?? c.symbol,
+            asset: c.symbol,
             assetAddress: c.tokenAddress,
             netEarnAPY: parseFloat(apyData.supplyAPY),
             netBorrowAPY: parseFloat(apyData.variableBorrowAPY),

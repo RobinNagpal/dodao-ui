@@ -159,7 +159,7 @@ function PositionList<T extends BasePosition>({ modalType, positions, actionType
             <span className="text-theme-primary">Position # {idx + 1}</span>
             <div className="text-sm text-theme-muted">
               {position.market} on {position.chain}
-              {modalType === 'COMPARISON' ? ` vs ${(position as unknown as WalletComparisonPosition).platform}` : ''} – Current{' '}
+              {modalType === 'COMPARISON' ? ` - ${(position as unknown as WalletComparisonPosition).platform}` : ''} – Current{' '}
               {modalType === 'GENERAL' ? 'APR' : 'APY'}: {position.rate}
             </div>
           </div>

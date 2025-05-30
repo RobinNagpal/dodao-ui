@@ -123,13 +123,10 @@ export function useAaveAprs(): () => Promise<MarketApr[]> {
       })[0];
       const apyData = calculateAaveAPY([aprData])[0];
 
-      // find the matching compound symbol
-      const compoundEntry = compoundForChain.find((m) => m.baseAssetAddress.toLowerCase() === c.tokenAddress.toLowerCase());
-
       return {
         chainId,
         chainName,
-        asset: compoundEntry?.symbol ?? c.symbol,
+        asset: c.symbol,
         assetAddress: c.tokenAddress,
         netEarnAPY: parseFloat(apyData.supplyAPY),
         netBorrowAPY: parseFloat(apyData.variableBorrowAPY),

@@ -346,7 +346,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-theme-primary">
             Configure Alert for {selectedPosition?.market} on {selectedPosition?.chain}
-            {modalType === 'COMPARISON' ? ` vs ${(selectedPosition as unknown as WalletComparisonPosition)?.platform}` : ''}
+            {modalType === 'COMPARISON' ? ` - ${(selectedPosition as unknown as WalletComparisonPosition)?.platform}` : ''}
           </DialogTitle>
         </DialogHeader>
 
