@@ -108,7 +108,7 @@ export default function PersonalizedComparisonPositionCard({
               </Badge>
               <div className="text-left">
                 <div className="text-lg font-semibold text-theme-primary">
-                  {position.market} on {position.chain} vs {position.platform}
+                  {position.market} on {position.chain} - {position.platform}
                 </div>
                 <p className="text-sm text-theme-muted">
                   Current {position.platform} APR: {position.rate}
