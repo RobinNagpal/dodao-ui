@@ -133,7 +133,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     const existingAlerts = Array.isArray(alertsData) ? alertsData : [];
     const positionsWithoutAlerts = walletPositions.filter((position) => {
       // Check if there's already a comparison alert for this position
-      const normalizedMarket = position.market === 'ETH' ? 'WETH' : position.market;
+      const normalizedMarket = position.assetSymbol === 'ETH' ? 'WETH' : position.assetSymbol;
       return !existingAlerts.some(
         (alert) =>
           alert.isComparison &&
