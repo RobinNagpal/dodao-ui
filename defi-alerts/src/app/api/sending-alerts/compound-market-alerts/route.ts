@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { useCompoundMarketsAprs } from '@/utils/getCompoundAPR';
-import { DeliveryChannelType, NotificationFrequency, AlertActionType, Alert, ConditionType } from '@prisma/client';
 import { prisma } from '@/prisma';
+import { useCompoundMarketsAprs as getCompoundMarketsAprs } from '@/utils/getCompoundAPR';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { Alert, AlertActionType, DeliveryChannelType, NotificationFrequency } from '@prisma/client';
+import { NextRequest } from 'next/server';
 
 // Types
 interface CompoundMarketResponse {
@@ -51,7 +51,7 @@ const frequencyToMs: Record<NotificationFrequency, number> = {
  * Fetches the latest Compound APRs
  */
 async function fetchCompoundAPRs(): Promise<MarketData[]> {
-  return useCompoundMarketsAprs()();
+  return getCompoundMarketsAprs()();
 }
 
 /**

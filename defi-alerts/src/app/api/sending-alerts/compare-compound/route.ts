@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/prisma';
-import { useCompoundMarketsAprs } from '@/utils/getCompoundAPR';
-import { useAaveAprs } from '@/utils/getAaveAPR';
-import { useSparkAprs } from '@/utils/getSparkAPR';
-import { DeliveryChannelType, NotificationFrequency, AlertActionType, ConditionType, Alert } from '@prisma/client';
+import { useAaveAprs as getAaveAprs } from '@/utils/getAaveAPR';
+import { useCompoundMarketsAprs as getCompoundMarketsAprs } from '@/utils/getCompoundAPR';
+import { useSparkAprs as getSparkAprs } from '@/utils/getSparkAPR';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { Alert, AlertActionType, ConditionType, DeliveryChannelType, NotificationFrequency } from '@prisma/client';
+import { NextRequest } from 'next/server';
 
 // Types
 interface CompareCompoundResponse {
@@ -63,7 +63,7 @@ const frequencyToMs: Record<NotificationFrequency, number> = {
  * Fetches APRs from all protocols and processes them
  */
 async function fetchAndProcessProtocolAPRs() {
-  const [compound, aave, spark] = await Promise.all([useCompoundMarketsAprs()(), useAaveAprs()(), useSparkAprs()()]);
+  const [compound, aave, spark] = await Promise.all([getCompoundMarketsAprs()(), getAaveAprs()(), getSparkAprs()()]);
 
   // Build a set of keys for active Compound markets only
   const compoundKeys = new Set(compound.map((m) => `${m.chainId}_${m.assetAddress.toLowerCase()}`));
