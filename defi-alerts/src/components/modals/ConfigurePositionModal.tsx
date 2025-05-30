@@ -342,7 +342,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
+      <DialogContent className="sm:max-w-2xl md:max-w-3xl lg:max-w-6xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-theme-primary">
             Configure Alert for {selectedPosition?.assetSymbol} on {selectedPosition?.chain}
