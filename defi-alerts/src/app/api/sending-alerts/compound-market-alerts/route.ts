@@ -87,12 +87,14 @@ async function loadAlerts() {
 /**
  * Gets previously sent condition IDs for an alert
  */
-async function getPreviouslySentConditions(alert: Alert & { 
-  selectedChains: any[]; 
-  selectedAssets: any[]; 
-  conditions: any[]; 
-  deliveryChannels: any[] 
-}): Promise<Set<string>> {
+async function getPreviouslySentConditions(
+  alert: Alert & {
+    selectedChains: any[];
+    selectedAssets: any[];
+    conditions: any[];
+    deliveryChannels: any[];
+  }
+): Promise<Set<string>> {
   const previouslySent = new Set<string>();
   if (alert.notificationFrequency === 'ONCE_PER_ALERT') {
     const past = await prisma.alertNotification.findMany({
@@ -109,14 +111,17 @@ async function getPreviouslySentConditions(alert: Alert & {
 /**
  * Checks if an alert should be processed based on its notification frequency
  */
-async function shouldProcessAlert(alert: Alert & { 
-  selectedChains: any[]; 
-  selectedAssets: any[]; 
-  conditions: any[]; 
-  deliveryChannels: any[] 
-}, groups: NotificationGroup[]): Promise<boolean> {
+async function shouldProcessAlert(
+  alert: Alert & {
+    selectedChains: any[];
+    selectedAssets: any[];
+    conditions: any[];
+    deliveryChannels: any[];
+  },
+  groups: NotificationGroup[]
+): Promise<boolean> {
   if (groups.length === 0) return false;
-  
+
   if (alert.notificationFrequency !== 'ONCE_PER_ALERT') {
     const last = await prisma.sentNotification.findFirst({
       where: { alertNotification: { alertId: alert.id } },
@@ -128,7 +133,7 @@ async function shouldProcessAlert(alert: Alert & {
       return false;
     }
   }
-  
+
   return true;
 }
 
@@ -136,12 +141,12 @@ async function shouldProcessAlert(alert: Alert & {
  * Evaluates conditions for an alert and creates notification groups
  */
 async function evaluateConditions(
-  alert: Alert & { 
-    selectedChains: any[]; 
-    selectedAssets: any[]; 
-    conditions: any[]; 
-    deliveryChannels: any[] 
-  }, 
+  alert: Alert & {
+    selectedChains: any[];
+    selectedAssets: any[];
+    conditions: any[];
+    deliveryChannels: any[];
+  },
   previouslySent: Set<string>
 ): Promise<{ hitIds: Set<string>; groups: NotificationGroup[] }> {
   const hitIds = new Set<string>();
@@ -209,12 +214,12 @@ async function evaluateConditions(
  * Creates and sends notifications for triggered conditions
  */
 async function sendNotifications(
-  alert: Alert & { 
-    selectedChains: any[]; 
-    selectedAssets: any[]; 
-    conditions: any[]; 
-    deliveryChannels: any[] 
-  }, 
+  alert: Alert & {
+    selectedChains: any[];
+    selectedAssets: any[];
+    conditions: any[];
+    deliveryChannels: any[];
+  },
   groups: NotificationGroup[]
 ): Promise<void> {
   const payload: NotificationPayload = {
@@ -274,19 +279,19 @@ async function compoundMarketAlertsHandler(request: NextRequest): Promise<Compou
   for (const alert of alerts) {
     // Get previously sent condition IDs
     const previouslySent = await getPreviouslySentConditions(alert);
-    
+
     // Evaluate conditions and create notification groups
     const { hitIds, groups } = await evaluateConditions(alert, previouslySent);
-    
+
     // Check if alert should be processed
-    if (!await shouldProcessAlert(alert, groups)) continue;
-    
+    if (!(await shouldProcessAlert(alert, groups))) continue;
+
     // Send notifications
     await sendNotifications(alert, groups);
-    
+
     // Log notification
     await logNotification(alert.id, hitIds);
-    
+
     totalSent++;
   }
 

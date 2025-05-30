@@ -34,9 +34,9 @@ interface NotificationGroup {
   compoundRate: number;
   protocolRate: number;
   diff: number;
-  condition: { 
-    type: ConditionType; 
-    threshold: number 
+  condition: {
+    type: ConditionType;
+    threshold: number;
   };
 }
 
@@ -63,11 +63,7 @@ const frequencyToMs: Record<NotificationFrequency, number> = {
  * Fetches APRs from all protocols and processes them
  */
 async function fetchAndProcessProtocolAPRs() {
-  const [compound, aave, spark] = await Promise.all([
-    useCompoundMarketsAprs()(), 
-    useAaveAprs()(), 
-    useSparkAprs()()
-  ]);
+  const [compound, aave, spark] = await Promise.all([useCompoundMarketsAprs()(), useAaveAprs()(), useSparkAprs()()]);
 
   // Build a set of keys for active Compound markets only
   const compoundKeys = new Set(compound.map((m) => `${m.chainId}_${m.assetAddress.toLowerCase()}`));
@@ -107,7 +103,7 @@ async function fetchAndProcessProtocolAPRs() {
     compoundKeys,
     compoundAssets,
     aaveAssets,
-    sparkAssets
+    sparkAssets,
   };
 }
 
@@ -115,9 +111,7 @@ async function fetchAndProcessProtocolAPRs() {
  * Persists unique assets to the database
  */
 async function persistAssets(compoundAssets: AssetData[], aaveAssets: AssetData[], sparkAssets: AssetData[]) {
-  const uniqueAssets = Array.from(
-    new Map([...compoundAssets, ...aaveAssets, ...sparkAssets].map((a) => [a.chainId_address, a])).values()
-  );
+  const uniqueAssets = Array.from(new Map([...compoundAssets, ...aaveAssets, ...sparkAssets].map((a) => [a.chainId_address, a])).values());
 
   await prisma.asset.createMany({
     data: uniqueAssets,
@@ -128,12 +122,7 @@ async function persistAssets(compoundAssets: AssetData[], aaveAssets: AssetData[
 /**
  * Persists APR snapshots for all protocols
  */
-async function persistAPRSnapshots(
-  compound: ProtocolMarket[], 
-  aave: ProtocolMarket[], 
-  spark: ProtocolMarket[], 
-  compoundKeys: Set<string>
-) {
+async function persistAPRSnapshots(compound: ProtocolMarket[], aave: ProtocolMarket[], spark: ProtocolMarket[], compoundKeys: Set<string>) {
   await prisma.lendingAndBorrowingRate.createMany({
     data: [
       ...compound.map((m) => ({
@@ -183,12 +172,14 @@ async function loadComparisonAlerts() {
 /**
  * Checks if an alert should be processed based on its notification frequency
  */
-async function shouldProcessAlert(alert: Alert & { 
-  selectedChains: any[]; 
-  selectedAssets: any[]; 
-  conditions: any[]; 
-  deliveryChannels: any[] 
-}) {
+async function shouldProcessAlert(
+  alert: Alert & {
+    selectedChains: any[];
+    selectedAssets: any[];
+    conditions: any[];
+    deliveryChannels: any[];
+  }
+) {
   // For ONCE_PER_ALERT, get previously sent condition IDs
   const previouslySent = new Set<string>();
   if (alert.notificationFrequency === 'ONCE_PER_ALERT') {
@@ -218,12 +209,12 @@ async function shouldProcessAlert(alert: Alert & {
  * Evaluates conditions for an alert and creates notification groups
  */
 async function evaluateConditions(
-  alert: Alert & { 
-    selectedChains: any[]; 
-    selectedAssets: any[]; 
-    conditions: any[]; 
-    deliveryChannels: any[] 
-  }, 
+  alert: Alert & {
+    selectedChains: any[];
+    selectedAssets: any[];
+    conditions: any[];
+    deliveryChannels: any[];
+  },
   previouslySent: Set<string>
 ) {
   const hitIds = new Set<string>();
@@ -260,9 +251,7 @@ async function evaluateConditions(
         const otherRate = alert.actionType === AlertActionType.SUPPLY ? otherM.netEarnAPY : otherM.netBorrowAPY;
 
         // compute diff
-        const diff = alert.actionType === AlertActionType.SUPPLY 
-          ? compM.netEarnAPY - otherM.netEarnAPY 
-          : otherM.netBorrowAPY - compM.netBorrowAPY;
+        const diff = alert.actionType === AlertActionType.SUPPLY ? compM.netEarnAPY - otherM.netEarnAPY : otherM.netBorrowAPY - compM.netBorrowAPY;
 
         // check each RATE_DIFF condition
         for (const c of alert.conditions) {
@@ -298,12 +287,12 @@ async function evaluateConditions(
  * Creates and sends notifications for triggered conditions
  */
 async function sendNotifications(
-  alert: Alert & { 
-    selectedChains: any[]; 
-    selectedAssets: any[]; 
-    conditions: any[]; 
-    deliveryChannels: any[] 
-  }, 
+  alert: Alert & {
+    selectedChains: any[];
+    selectedAssets: any[];
+    conditions: any[];
+    deliveryChannels: any[];
+  },
   groups: NotificationGroup[]
 ) {
   const payload: NotificationPayload = {
@@ -349,8 +338,7 @@ async function logNotification(alertId: string, hitIds: Set<string>) {
  */
 async function compareCompoundHandler(request: NextRequest): Promise<CompareCompoundResponse> {
   // 1) Fetch and process APRs from all protocols
-  const { compound, aave, spark, compoundKeys, compoundAssets, aaveAssets, sparkAssets } = 
-    await fetchAndProcessProtocolAPRs();
+  const { compound, aave, spark, compoundKeys, compoundAssets, aaveAssets, sparkAssets } = await fetchAndProcessProtocolAPRs();
 
   // 2) Persist assets and APR snapshots
   await persistAssets(compoundAssets, aaveAssets, sparkAssets);
