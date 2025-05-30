@@ -9,6 +9,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { type Channel } from '@/types/alerts';
 import { useAaveUserPositions } from '@/utils/getAaveUserPositions';
 import { useSparkUserPositions } from '@/utils/getSparkUserPositions';
+import { useMorphoUserPositions } from '@/utils/geMorphoUserPositions';
 import InitialModal from '../modals/InitialModal';
 import AddWalletModal from '../modals/AddWalletModal';
 import MonitorMarketsModal from '../modals/MonitorMarketsModal';
@@ -28,6 +29,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
   const { showNotification } = useNotificationContext();
   const fetchAavePositions = useAaveUserPositions();
   const fetchSparkPositions = useSparkUserPositions();
+  const fetchMorphoPositions = useMorphoUserPositions();
 
   // Modal state
   const [currentModal, setCurrentModal] = useState<'initial' | 'generalComparison' | 'personalizedPositions' | 'configurePosition' | 'addWallet'>('initial');
@@ -93,10 +95,14 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     (async () => {
       try {
         // fetch both protocols in parallel
-        const [aave, spark] = await Promise.all([fetchAavePositions(walletAddresses), fetchSparkPositions(walletAddresses)]);
+        const [aave, spark, morpho] = await Promise.all([
+          fetchAavePositions(walletAddresses),
+          fetchSparkPositions(walletAddresses),
+          fetchMorphoPositions(walletAddresses),
+        ]);
 
         // merge into one array
-        setAllComparisonPositions([...aave, ...spark]);
+        setAllComparisonPositions([...aave, ...spark, ...morpho]);
       } catch (err) {
         console.error('Error fetching comparison positions', err);
       } finally {
@@ -127,7 +133,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     const existingAlerts = Array.isArray(alertsData) ? alertsData : [];
     const positionsWithoutAlerts = walletPositions.filter((position) => {
       // Check if there's already a comparison alert for this position
-      const normalizedMarket = position.market === 'ETH' ? 'WETH' : position.market;
+      const normalizedMarket = position.assetSymbol === 'ETH' ? 'WETH' : position.assetSymbol;
       return !existingAlerts.some(
         (alert) =>
           alert.isComparison &&
@@ -177,10 +183,14 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     setWalletHasPositions(false);
 
     try {
-      const [aave, spark] = await Promise.all([fetchAavePositions(walletAddresses), fetchSparkPositions(walletAddresses)]);
+      const [aave, spark, morpho] = await Promise.all([
+        fetchAavePositions(walletAddresses),
+        fetchSparkPositions(walletAddresses),
+        fetchMorphoPositions(walletAddresses),
+      ]);
 
       // merge into one array
-      setAllComparisonPositions([...aave, ...spark]);
+      setAllComparisonPositions([...aave, ...spark, ...morpho]);
 
       setWalletHasPositions((prevHas) => prevHas || allComparisonPositions.length > 0);
     } catch (err) {

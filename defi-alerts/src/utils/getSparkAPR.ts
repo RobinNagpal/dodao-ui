@@ -6,7 +6,7 @@ import { Pool_Abi_DataProvider } from '@/shared/migrator/spark/abi/Pool_Abi_Data
 import type { Collateral } from '@/shared/migrator/types';
 import { calculateAaveAPR } from './calculateAaveAPR';
 import { calculateAaveAPY } from './calculateAaveAPY';
-import { COMPOUND_MARKETS } from '@/shared/web3/config'; // your Compound list
+import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
 
 // — retry helper with exponential backoff —
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -106,7 +106,8 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
         }
 
         // 4) compute APR/APY for each filtered reserve
-        const chainName = config.chains.find((x) => x.id === chainId)?.name ?? 'Unknown';
+        const chainName = CHAINS.find((c) => c.chainId === chainId)?.name ?? 'Unknown';
+
         return filtered.map((c, i) => {
           const d = results[i];
           const aprData = calculateAaveAPR({
@@ -121,13 +122,10 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
           })[0];
           const apyData = calculateAaveAPY([aprData])[0];
 
-          // find the matching symbol from Compound
-          const compEntry = compoundForChain.find((m) => m.baseAssetAddress.toLowerCase() === c.tokenAddress.toLowerCase());
-
           return {
             chainId,
             chainName,
-            asset: compEntry?.symbol ?? c.symbol,
+            asset: c.symbol,
             assetAddress: c.tokenAddress,
             netEarnAPY: parseFloat(apyData.supplyAPY),
             netBorrowAPY: parseFloat(apyData.variableBorrowAPY),

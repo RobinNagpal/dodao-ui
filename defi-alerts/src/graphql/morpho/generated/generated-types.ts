@@ -3574,28 +3574,35 @@ export type GetMorphoVaultPositionsQueryVariables = Exact<{
 }>;
 
 
-export type GetMorphoVaultPositionsQuery = { __typename?: 'Query', userByAddress: { __typename?: 'User', address: any, vaultPositions: Array<{ __typename?: 'VaultPosition', vault: { __typename?: 'Vault', address: any, name: string }, state?: { __typename?: 'VaultPositionState', assets?: any | null, assetsUsd?: number | null, shares: any } | null }>, transactions: Array<{ __typename?: 'Transaction', hash: any, timestamp: any, type: TransactionType }> } };
+export type GetMorphoVaultPositionsQuery = { __typename?: 'Query', userByAddress: { __typename?: 'User', address: any, marketPositions: Array<{ __typename?: 'MarketPosition', market: { __typename?: 'Market', id: string, dailyApys?: { __typename?: 'MarketApyAggregates', supplyApy?: number | null, borrowApy?: number | null, netSupplyApy?: number | null, netBorrowApy?: number | null } | null, loanAsset: { __typename?: 'Asset', address: any, symbol: string }, collateralAsset?: { __typename?: 'Asset', address: any, symbol: string } | null }, state?: { __typename?: 'MarketPositionState', borrowAssets?: any | null, supplyAssets?: any | null } | null }> } };
 
 
 export const GetMorphoVaultPositionsDocument = gql`
     query GetMorphoVaultPositions($chainId: Int!, $address: String!) {
-  userByAddress(chainId: $chainId, address: $address) {
+  userByAddress(address: $address, chainId: $chainId) {
     address
-    vaultPositions {
-      vault {
-        address
-        name
+    marketPositions {
+      market {
+        id
+        dailyApys {
+          supplyApy
+          borrowApy
+          netSupplyApy
+          netBorrowApy
+        }
+        loanAsset {
+          address
+          symbol
+        }
+        collateralAsset {
+          address
+          symbol
+        }
       }
       state {
-        assets
-        assetsUsd
-        shares
+        borrowAssets
+        supplyAssets
       }
-    }
-    transactions {
-      hash
-      timestamp
-      type
     }
   }
 }

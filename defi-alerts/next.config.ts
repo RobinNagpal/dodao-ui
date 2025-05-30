@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
     // importing them explicitly
     includePaths: ["./src"],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        port: '',
+        pathname: '/trustwallet/assets/master/blockchains/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

@@ -1,7 +1,3 @@
-// src/shared/web3/hooks/useCompoundUserPositions.ts
-import { useGetMorphoVaultPositionsQuery } from '@/graphql/morpho/generated/generated-types';
-import MorphoClient from '@/graphql/morpho/morpho-client';
-import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { multicall } from '@wagmi/core';
 import type { Config } from '@wagmi/core';
 import { CometABI } from '@/shared/web3/abi/CometABI';
@@ -15,20 +11,9 @@ export function useCompoundUserPositions(): (wallets: string[]) => Promise<Walle
   const config: Config = useDefaultConfig;
   const fetchAprs = useCompoundMarketsAprs();
 
-  const { refetch } = useGetMorphoVaultPositionsQuery({
-    client: MorphoClient,
-    skip: true,
-    fetchPolicy: 'no-cache',
-  });
   return async (wallets: string[]) => {
     const aprs: CompoundMarketApr[] = await fetchAprs();
     const positions: WalletPosition[] = [];
-    const data = await refetch({
-      chainId: 1,
-      address: '0xB4fb31E7B1471A8e52dD1e962A281a732EaD59c1',
-    });
-
-    console.log(data);
 
     await Promise.all(
       wallets.map(async (wallet) => {
@@ -50,7 +35,7 @@ export function useCompoundUserPositions(): (wallets: string[]) => Promise<Walle
             const contracts = markets.map(
               (market) =>
                 ({
-                  address: market.cometAddress,
+                  address: market.cometAddress.toLowerCase() as Address,
                   abi: CometABI,
                   functionName: 'userBasic',
                   args: [wallet as Address],
@@ -83,7 +68,8 @@ export function useCompoundUserPositions(): (wallets: string[]) => Promise<Walle
                 id,
                 walletAddress: wallet,
                 chain: chainName,
-                market: market.symbol === 'WETH' ? 'ETH' : market.symbol,
+                assetSymbol: market.symbol === 'WETH' ? 'ETH' : market.symbol,
+                assetAddress: market.baseAssetAddress,
                 rate,
                 actionType,
                 notificationFrequency: 'ONCE_PER_ALERT',
