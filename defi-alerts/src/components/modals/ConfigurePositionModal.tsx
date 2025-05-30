@@ -209,7 +209,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
       category: 'PERSONALIZED' as AlertCategory,
       actionType: selectedPosition.actionType as AlertActionType,
       selectedChains: [selectedPosition.chain],
-      selectedMarkets: [selectedPosition.market],
+      selectedMarkets: [selectedPosition.assetSymbol],
       compareProtocols: [],
       notificationFrequency: selectedPosition.notificationFrequency as NotificationFrequency,
       conditions: selectedPosition.conditions.map((condition) =>
@@ -318,7 +318,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
       actionType: selectedPosition.actionType as AlertActionType,
       isComparison: true,
       selectedChains: [selectedPosition.chain],
-      selectedMarkets: [selectedPosition.market],
+      selectedMarkets: [selectedPosition.assetSymbol],
       compareProtocols: [(selectedPosition as unknown as WalletComparisonPosition).platform],
       notificationFrequency: selectedPosition.notificationFrequency as NotificationFrequency,
       conditions: selectedPosition.conditions.map((condition) => ({
@@ -345,7 +345,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
       <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-theme-primary">
-            Configure Alert for {selectedPosition?.market} on {selectedPosition?.chain}
+            Configure Alert for {selectedPosition?.assetSymbol} on {selectedPosition?.chain}
             {modalType === 'COMPARISON' ? ` - ${(selectedPosition as unknown as WalletComparisonPosition)?.platform}` : ''}
           </DialogTitle>
         </DialogHeader>

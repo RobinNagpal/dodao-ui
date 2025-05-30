@@ -35,7 +35,7 @@ export function useCompoundUserPositions(): (wallets: string[]) => Promise<Walle
             const contracts = markets.map(
               (market) =>
                 ({
-                  address: market.cometAddress,
+                  address: market.cometAddress.toLowerCase() as Address,
                   abi: CometABI,
                   functionName: 'userBasic',
                   args: [wallet as Address],
@@ -68,7 +68,8 @@ export function useCompoundUserPositions(): (wallets: string[]) => Promise<Walle
                 id,
                 walletAddress: wallet,
                 chain: chainName,
-                market: market.symbol === 'WETH' ? 'ETH' : market.symbol,
+                assetSymbol: market.symbol === 'WETH' ? 'ETH' : market.symbol,
+                assetAddress: market.baseAssetAddress,
                 rate,
                 actionType,
                 notificationFrequency: 'ONCE_PER_ALERT',

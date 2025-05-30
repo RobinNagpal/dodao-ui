@@ -4,7 +4,7 @@ import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
 import { SPARK_DATA_PROVIDER } from '@/shared/migrator/spark/config';
 import { Pool_Abi_DataProvider } from '@/shared/migrator/spark/abi/Pool_Abi_DataProvider';
 import { useSparkAprs, MarketApr } from './getSparkAPR';
-import { COMPOUND_MARKETS } from '@/shared/web3/config';
+import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
 import { WalletComparisonPosition } from '@/components/modals/types';
 
 export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletComparisonPosition[]> {
@@ -43,7 +43,7 @@ export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletCo
         await Promise.all(
           Object.entries(aprsByChain).map(async ([chainIdStr, markets]) => {
             const chainId = Number(chainIdStr);
-            const chainName = config.chains.find((c) => c.id === chainId)?.name ?? 'Unknown';
+            const chainName = CHAINS.find((c) => c.chainId === chainId)?.name ?? 'Unknown';
 
             const provider = flattenProvider(SPARK_DATA_PROVIDER[chainId] ?? {});
             if (!provider) return;
@@ -96,10 +96,11 @@ export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletCo
 
               positions.push({
                 id,
-                platform: 'Spark',
+                platform: 'SPARK',
                 walletAddress: wallet,
                 chain: chainName,
-                market: market.asset === 'WETH' ? 'ETH' : market.asset,
+                assetSymbol: market.asset === 'WETH' ? 'ETH' : market.asset,
+                assetAddress: market.assetAddress,
                 rate,
                 actionType,
                 notificationFrequency: 'ONCE_PER_ALERT',

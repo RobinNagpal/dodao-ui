@@ -6,7 +6,7 @@ import { PoolDataAddressAbi_Arbitrum } from '@/shared/migrator/aave/abi/PoolData
 import type { FlattenedAddresses, Collateral } from '@/shared/migrator/types';
 import { calculateAaveAPR } from './calculateAaveAPR';
 import { calculateAaveAPY } from './calculateAaveAPY';
-import { COMPOUND_MARKETS } from '@/shared/web3/config';
+import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
 
 // ——— retry helper with exponential backoff ———
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -107,7 +107,8 @@ export function useAaveAprs(): () => Promise<MarketApr[]> {
     }
 
     // 5) map into your APR objects
-    const chainName = config.chains.find((x) => x.id === chainId)?.name ?? 'Unknown';
+    const chainName = CHAINS.find((c) => c.chainId === chainId)?.name ?? 'Unknown';
+
     return filtered.map((c, i) => {
       const d = results[i];
       // compute Aave APR & APY
