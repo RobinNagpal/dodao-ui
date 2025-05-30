@@ -96,7 +96,7 @@ export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletCo
 
               positions.push({
                 id,
-                platform: 'Spark',
+                platform: 'SPARK',
                 walletAddress: wallet,
                 chain: chainName,
                 market: market.asset === 'WETH' ? 'ETH' : market.asset,

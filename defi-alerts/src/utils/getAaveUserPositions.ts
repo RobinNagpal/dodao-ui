@@ -100,7 +100,7 @@ export function useAaveUserPositions(): (wallets: string[]) => Promise<WalletCom
 
               positions.push({
                 id,
-                platform: 'Aave',
+                platform: 'AAVE',
                 walletAddress: wallet,
                 chain: chainName,
                 market: market.asset === 'WETH' ? 'ETH' : market.asset,

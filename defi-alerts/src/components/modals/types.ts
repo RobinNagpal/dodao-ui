@@ -1,6 +1,7 @@
 import { type ConditionType, type NotificationFrequency, type SeverityLevel } from '@/types/alerts';
 
 export type ActionType = 'SUPPLY' | 'BORROW';
+export type PlatformType = 'AAVE' | 'SPARK' | 'MORPHO';
 
 export interface BasePosition {
   id: string;
@@ -23,5 +24,5 @@ export interface BasePosition {
 export interface WalletPosition extends BasePosition {}
 
 export interface WalletComparisonPosition extends BasePosition {
-  platform: string;
+  platform: PlatformType;
 }

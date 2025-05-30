@@ -68,7 +68,7 @@ export function useMorphoUserPositions(): (wallets: string[]) => Promise<WalletC
 
             positions.push({
               id: idTag,
-              platform: 'Morpho',
+              platform: 'MORPHO',
               walletAddress: wallet,
               chain: chainName,
               market: symbol,

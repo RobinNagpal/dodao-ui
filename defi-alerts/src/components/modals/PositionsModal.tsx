@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { BasePosition, WalletComparisonPosition } from './types';
+import Image from 'next/image';
 
 type PositionsModalProps<T extends BasePosition> = {
   isOpen: boolean;
@@ -150,19 +151,25 @@ function PositionList<T extends BasePosition>({ modalType, positions, actionType
     <div className="mb-4">
       <h3 className="text-lg font-semibold my-2 text-primary-color">{title}</h3>
       {positions.map((position, idx) => (
-        <div
-          key={position.id}
-          className="flex items-center justify-between p-3 border-b border-primary-color cursor-pointer hover:bg-theme-bg-muted"
-          onClick={() => selectPosition(position)}
-        >
-          <div>
-            <span className="text-theme-primary">Position # {idx + 1}</span>
-            <div className="text-sm text-theme-muted">
-              {position.market} on {position.chain}
-              {modalType === 'COMPARISON' ? ` - ${(position as unknown as WalletComparisonPosition).platform}` : ''} – Current{' '}
-              {modalType === 'GENERAL' ? 'APR' : 'APY'}: {position.rate}
+        <div key={position.id} className="flex items-center justify-between gap-x-2 p-3 border-b border-primary-color cursor-pointer hover:bg-theme-bg-muted">
+          <div className="flex gap-x-2 items-center">
+            {modalType === 'COMPARISON' && (
+              <>
+                {(position as unknown as WalletComparisonPosition).platform === 'AAVE' && <Image src="/aave1.svg" alt="Aave logo" width={30} height={15} />}
+                {(position as unknown as WalletComparisonPosition).platform === 'SPARK' && <Image src="/spark.svg" alt="Spark logo" width={30} height={15} />}
+                {(position as unknown as WalletComparisonPosition).platform === 'MORPHO' && <Image src="/morpho1.svg" alt="Morpho logo" width={30} height={15} />}
+              </>
+            )}
+            <div>
+              <span className="text-theme-primary">Position # {idx + 1}</span>
+              <div className="text-sm text-theme-muted">
+                {position.market} on {position.chain}
+                {modalType === 'COMPARISON' ? ` - ${(position as unknown as WalletComparisonPosition).platform}` : ''} – Current{' '}
+                {modalType === 'GENERAL' ? 'APR' : 'APY'}: {position.rate}
+              </div>
             </div>
           </div>
+
           <Button
             size="sm"
             className="bg-primary-color text-primary-text"
