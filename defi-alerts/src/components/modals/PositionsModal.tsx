@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { BasePosition, WalletComparisonPosition } from './types';
 import Image from 'next/image';
+import { useState } from 'react';
 
 type PositionsModalProps<T extends BasePosition> = {
   isOpen: boolean;
@@ -142,6 +143,67 @@ interface PositionListProps<T> {
   selectPosition: (p: T) => void;
 }
 
+// Platform Image component with error handling
+function PlatformImage({ platform }: { platform: string }) {
+  const [imageError, setImageError] = useState(false);
+
+  let imageUrl = '';
+  if (platform === 'AAVE') imageUrl = '/aave1.svg';
+  else if (platform === 'SPARK') imageUrl = '/spark.svg';
+  else if (platform === 'MORPHO') imageUrl = '/morpho1.svg';
+
+  if (imageError) {
+    // Fallback to a colored div with the first letter of the platform
+    return (
+      <div 
+        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
+        style={{ width: '20px', height: '20px', fontSize: '10px' }}
+      >
+        {platform.charAt(0)}
+      </div>
+    );
+  }
+
+  return (
+    <Image
+      src={imageUrl}
+      alt={`${platform} logo`}
+      width={20}
+      height={20}
+      onError={() => setImageError(true)}
+    />
+  );
+}
+
+// Asset Image component with error handling
+function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
+  const [imageError, setImageError] = useState(false);
+
+  const imageUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain.toLowerCase()}/assets/${assetAddress}/logo.png`;
+
+  if (imageError) {
+    // Fallback to a colored div with the first letter of the token symbol
+    return (
+      <div 
+        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
+        style={{ width: '20px', height: '20px', fontSize: '10px' }}
+      >
+        {assetSymbol.charAt(0)}
+      </div>
+    );
+  }
+
+  return (
+    <Image
+      src={imageUrl}
+      alt={assetSymbol}
+      width={20}
+      height={20}
+      onError={() => setImageError(true)}
+    />
+  );
+}
+
 function PositionList<T extends BasePosition>({ modalType, positions, actionType, selectPosition }: PositionListProps<T>) {
   if (positions.length === 0) return null;
 
@@ -154,24 +216,15 @@ function PositionList<T extends BasePosition>({ modalType, positions, actionType
         <div key={position.id} className="flex items-center justify-between gap-x-2 p-3 border-b border-primary-color hover:bg-theme-bg-muted">
           <div className="flex gap-x-2 items-center">
             {modalType === 'COMPARISON' && (
-              <>
-                {(position as unknown as WalletComparisonPosition).platform === 'AAVE' && <Image src="/aave1.svg" alt="Aave logo" width={30} height={15} />}
-                {(position as unknown as WalletComparisonPosition).platform === 'SPARK' && <Image src="/spark.svg" alt="Spark logo" width={30} height={15} />}
-                {(position as unknown as WalletComparisonPosition).platform === 'MORPHO' && (
-                  <Image src="/morpho1.svg" alt="Morpho logo" width={30} height={15} />
-                )}
-              </>
+              <PlatformImage platform={(position as unknown as WalletComparisonPosition).platform} />
             )}
             <div>
               <span className="text-theme-primary">Position # {idx + 1}</span>
               <div className="flex gap-x-2">
-                <Image
-                  src={`https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${position.chain.toLowerCase()}/assets/${
-                    position.assetAddress
-                  }/logo.png`}
-                  alt={position.assetSymbol}
-                  width={20}
-                  height={20}
+                <AssetImage 
+                  chain={position.chain}
+                  assetAddress={position.assetAddress}
+                  assetSymbol={position.assetSymbol}
                 />
                 <div className="text-sm text-theme-muted">
                   {position.assetSymbol} on {position.chain}
