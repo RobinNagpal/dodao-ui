@@ -7,6 +7,7 @@ import { BasePosition, WalletComparisonPosition } from './types';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Plus } from 'lucide-react';
 
 type PositionsModalProps<T extends BasePosition> = {
   isOpen: boolean;
@@ -58,7 +59,7 @@ export default function PositionsModal<T extends BasePosition>({
 
           <div className="mb-4 flex justify-end">
             <Button onClick={onSwitchToAddWallet} className="bg-primary-color text-primary-text">
-              Add wallet+
+              <Plus size={20} className="mr-2" /> Add wallet
             </Button>
           </div>
 
@@ -156,7 +157,7 @@ function PlatformImage({ platform }: { platform: string }) {
   if (imageError) {
     // Fallback to a colored div with the first letter of the platform
     return (
-      <div 
+      <div
         className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
         style={{ width: '20px', height: '20px', fontSize: '10px' }}
       >
@@ -165,15 +166,7 @@ function PlatformImage({ platform }: { platform: string }) {
     );
   }
 
-  return (
-    <Image
-      src={imageUrl}
-      alt={`${platform} logo`}
-      width={20}
-      height={20}
-      onError={() => setImageError(true)}
-    />
-  );
+  return <Image src={imageUrl} alt={`${platform} logo`} width={20} height={20} onError={() => setImageError(true)} />;
 }
 
 // Asset Image component with error handling
@@ -185,7 +178,7 @@ function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; asset
   if (imageError) {
     // Fallback to a colored div with the first letter of the token symbol
     return (
-      <div 
+      <div
         className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
         style={{ width: '20px', height: '20px', fontSize: '10px' }}
       >
@@ -194,15 +187,7 @@ function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; asset
     );
   }
 
-  return (
-    <Image
-      src={imageUrl}
-      alt={assetSymbol}
-      width={20}
-      height={20}
-      onError={() => setImageError(true)}
-    />
-  );
+  return <Image src={imageUrl} alt={assetSymbol} width={20} height={20} onError={() => setImageError(true)} />;
 }
 
 function PositionList<T extends BasePosition>({ modalType, positions, actionType, selectPosition }: PositionListProps<T>) {
@@ -217,21 +202,16 @@ function PositionList<T extends BasePosition>({ modalType, positions, actionType
       {positions.map((position, idx) => (
         <div key={position.id} className="flex items-center justify-between gap-x-2 p-3 border-b border-primary-color hover:bg-theme-bg-muted">
           <div className="flex gap-x-2 items-center">
-            {modalType === 'COMPARISON' && (
-              <PlatformImage platform={(position as unknown as WalletComparisonPosition).platform} />
-            )}
             <div>
-              <span className="text-theme-primary">Position # {idx + 1}</span>
+              <div className="flex items-center gap-x-2">
+                {modalType === 'COMPARISON' && <PlatformImage platform={(position as unknown as WalletComparisonPosition).platform} />}
+                {modalType === 'COMPARISON' ? `${(position as unknown as WalletComparisonPosition).platform} - ` : ''}
+                <span className="text-theme-primary">Position # {idx + 1}</span>
+              </div>
               <div className="flex gap-x-2">
-                <AssetImage 
-                  chain={position.chain}
-                  assetAddress={position.assetAddress}
-                  assetSymbol={position.assetSymbol}
-                />
+                <AssetImage chain={position.chain} assetAddress={position.assetAddress} assetSymbol={position.assetSymbol} />
                 <div className="text-sm text-theme-muted">
-                  {position.assetSymbol} on {position.chain}
-                  {modalType === 'COMPARISON' ? ` - ${(position as unknown as WalletComparisonPosition).platform}` : ''} – Current{' '}
-                  {modalType === 'GENERAL' ? 'APR' : 'APY'}: {position.rate}
+                  {position.assetSymbol} on {position.chain}– Current {modalType === 'GENERAL' ? 'APR' : 'APY'}: {position.rate}
                 </div>
               </div>
             </div>
