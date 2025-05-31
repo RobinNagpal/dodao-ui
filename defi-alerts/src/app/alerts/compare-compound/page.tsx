@@ -3,7 +3,7 @@
 import { AlertActionsCell, AssetsCell, ChainsCell, ConditionsCell, CreateComparisonModals, PlatformsCell } from '@/components/alerts';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import ChainSelect from '@/components/alerts/core/ChainSelect';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { type Alert, Channel, frequencyOptions } from '@/types/alerts';
@@ -175,23 +175,7 @@ export default function CompareCompoundPage() {
             </Button>
           </div>
 
-          <Select onValueChange={setChainFilter} defaultValue="all">
-            <SelectTrigger className="w-full md:w-[180px] border-theme-border-primary">
-              <SelectValue placeholder="All Chains" />
-            </SelectTrigger>
-            <SelectContent className="bg-block">
-              <div className="hover-border-primary hover-text-primary">
-                <SelectItem value="all">All Chains</SelectItem>
-              </div>
-              {uniqueChains.map((chain) => (
-                <div key={chain} className="hover-border-primary hover-text-primary">
-                  <SelectItem key={chain} value={chain.toLowerCase()}>
-                    {chain}
-                  </SelectItem>
-                </div>
-              ))}
-            </SelectContent>
-          </Select>
+          <ChainSelect onValueChange={setChainFilter} defaultValue="all" chains={uniqueChains} />
         </div>
       </div>
 
