@@ -1,18 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import { type Channel } from '@/types/alerts';
+import { useCompoundUserPositions } from '@/utils/getCompoundUserPositions';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { type Channel, type ConditionType, type NotificationFrequency, type SeverityLevel } from '@/types/alerts';
-import { useCompoundUserPositions } from '@/utils/getCompoundUserPositions';
-import InitialModal from '../modals/InitialModal';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 import AddWalletModal from '../modals/AddWalletModal';
+import ConfigurePositionModal from '../modals/ConfigurePositionModal';
+import InitialModal from '../modals/InitialModal';
 import MonitorMarketsModal from '../modals/MonitorMarketsModal';
 import PositionsModal from '../modals/PositionsModal';
-import ConfigurePositionModal from '../modals/ConfigurePositionModal';
 import { WalletPosition } from '../modals/types';
 
 interface CreateAlertModalsProps {
@@ -120,21 +120,27 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
 
     setWalletHasPositions(true);
 
-    // Filter out positions that already have alerts
+    // Mark positions that already have alerts instead of filtering them out
     const existingAlerts = Array.isArray(alertsData) ? alertsData : [];
-    const positionsWithoutAlerts = walletPositions.filter((position) => {
+    const positionsWithAlertInfo = walletPositions.map((position) => {
       // Check if there's already an alert for this position
       const normalizedMarket = position.assetSymbol === 'ETH' ? 'WETH' : position.assetSymbol;
-      return !existingAlerts.some(
+      const existingAlert = existingAlerts.find(
         (alert) =>
           alert.walletAddress === position.walletAddress &&
           alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
           alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
           alert.actionType === position.actionType
       );
+
+      return {
+        ...position,
+        hasExistingAlert: !!existingAlert,
+        alertId: existingAlert?.id,
+      };
     });
 
-    setFilteredPositions(positionsWithoutAlerts);
+    setFilteredPositions(positionsWithAlertInfo);
   }, [currentWalletAddress, alertsData, allPositions]);
 
   // Initialize email field with username when component mounts

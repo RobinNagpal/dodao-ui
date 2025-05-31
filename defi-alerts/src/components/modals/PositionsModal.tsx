@@ -6,6 +6,7 @@ import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { BasePosition, WalletComparisonPosition } from './types';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type PositionsModalProps<T extends BasePosition> = {
   isOpen: boolean;
@@ -101,7 +102,7 @@ export default function PositionsModal<T extends BasePosition>({
               </div>
             ) : filteredPositions.length === 0 ? (
               <div className="p-6 text-center">
-                <p className="text-theme-muted">All positions for this wallet already have alerts configured</p>
+                <p className="text-theme-muted">No positions found for this wallet</p>
               </div>
             ) : (
               <>
@@ -205,6 +206,7 @@ function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; asset
 }
 
 function PositionList<T extends BasePosition>({ modalType, positions, actionType, selectPosition }: PositionListProps<T>) {
+  const router = useRouter();
   if (positions.length === 0) return null;
 
   const title = actionType === 'SUPPLY' ? 'Supply Positions' : 'Borrow Positions';
@@ -235,16 +237,29 @@ function PositionList<T extends BasePosition>({ modalType, positions, actionType
             </div>
           </div>
 
-          <Button
-            size="sm"
-            className="bg-primary-color text-primary-text"
-            onClick={(e) => {
-              e.stopPropagation();
-              selectPosition(position);
-            }}
-          >
-            Add Alert
-          </Button>
+          {position.hasExistingAlert ? (
+            <Button
+              size="sm"
+              className="bg-primary-color text-primary-text"
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/alerts/edit/${position.alertId}`);
+              }}
+            >
+              Edit
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              className="bg-primary-color text-primary-text"
+              onClick={(e) => {
+                e.stopPropagation();
+                selectPosition(position);
+              }}
+            >
+              Add Alert
+            </Button>
+          )}
         </div>
       ))}
     </div>
