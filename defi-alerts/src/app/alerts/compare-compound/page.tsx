@@ -7,8 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { type Alert, Channel, Condition, frequencyOptions, PrismaCondition, severityOptions } from '@/types/alerts';
+import { type Alert, Channel, frequencyOptions, PrismaCondition, severityOptions } from '@/types/alerts';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
@@ -16,7 +15,7 @@ import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { ArrowLeftRight, ChevronDown, Info, Plus, TrendingDown, TrendingUp } from 'lucide-react';
+import { ArrowLeftRight, ChevronDown, Plus, TrendingDown, TrendingUp } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -304,10 +303,8 @@ export default function CompareCompoundPage() {
               <TableBody>
                 {filteredAlerts.length > 0 ? (
                   filteredAlerts.map((alert) => {
-                    // For simplicity pick first condition & channel
-                    const cond = alert.conditions[0] as Condition | undefined;
+                    // Pick first channel for simplicity
                     const chan = alert.deliveryChannels[0] as Channel | undefined;
-                    const hasMultipleConditions = alert.conditions.length > 1;
                     const hasMultipleChannels = alert.deliveryChannels.length > 1;
 
                     return (
@@ -362,39 +359,16 @@ export default function CompareCompoundPage() {
                         </TableCell>
 
                         <TableCell>
-                          {cond ? (
-                            <div className="flex items-center gap-2">
-                              <Badge className={`${getSeverityColor(cond.severity)}`}>{severityLabel(cond as PrismaCondition)}</Badge>
-                              <span className="text-xs text-theme-muted">{formatThresholdValue(cond as PrismaCondition)}</span>
-                              {hasMultipleConditions && (
-                                <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <Button size="icon" className="h-5 w-5 p-0 hover-text-primary">
-                                        <Info size={14} />
-                                        <span className="sr-only">View all conditions</span>
-                                      </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
-                                      <div className="space-y-2">
-                                        <h4 className="font-medium text-primary-color">All Conditions</h4>
-                                        <ul className="space-y-1">
-                                          {alert.conditions.map((c, i) => (
-                                            <li key={i} className="text-xs text-theme-muted">
-                                              <span className="font-medium">{severityLabel(c as PrismaCondition)}:</span>{' '}
-                                              {formatThresholdValue(c as PrismaCondition)}
-                                            </li>
-                                          ))}
-                                        </ul>
-                                      </div>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              )}
-                            </div>
-                          ) : (
-                            <span className="text-xs text-theme-muted">None</span>
-                          )}
+                          <div className="flex flex-col gap-2">
+                            {alert.conditions.map((condition, index) => (
+                              <div key={index} className="flex items-center gap-2 mb-1">
+                                {condition.severity !== 'NONE' && (
+                                  <Badge className={`${getSeverityColor(condition.severity)}`}>{severityLabel(condition as PrismaCondition)}</Badge>
+                                )}
+                                <span className="text-xs text-theme-muted">{formatThresholdValue(condition as PrismaCondition)}</span>
+                              </div>
+                            ))}
+                          </div>
                         </TableCell>
 
                         <TableCell>
