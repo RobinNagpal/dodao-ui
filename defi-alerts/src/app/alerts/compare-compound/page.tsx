@@ -1,9 +1,8 @@
 'use client';
 
-import { AssetsCell, ChainsCell, ConditionsCell, CreateComparisonModals, PlatformsCell } from '@/components/alerts';
+import { AlertActionsCell, AssetsCell, ChainsCell, ConditionsCell, CreateComparisonModals, PlatformsCell } from '@/components/alerts';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -15,7 +14,7 @@ import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { ArrowLeftRight, ChevronDown, Plus, TrendingDown, TrendingUp } from 'lucide-react';
+import { ArrowLeftRight, Plus, TrendingDown, TrendingUp } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
@@ -282,35 +281,7 @@ export default function CompareCompoundPage() {
                         </TableCell>
 
                         <TableCell>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button className="h-8 w-8 p-0 hover-text-primary">
-                                <span className="sr-only">Open menu</span>
-                                <ChevronDown className="ml-4 h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="bg-block">
-                              <div className="hover-border-primary hover-text-primary">
-                                <DropdownMenuItem className="text-theme-primary cursor-pointer" onClick={() => router.push(`/alerts/edit/${alert.id}`)}>
-                                  Edit
-                                </DropdownMenuItem>
-                              </div>
-                              <div className="hover-border-primary hover-text-primary">
-                                <DropdownMenuItem className="text-theme-primary cursor-pointer" onClick={() => router.push(`/alerts/history/${alert.id}`)}>
-                                  History
-                                </DropdownMenuItem>
-                              </div>
-                              <DropdownMenuItem
-                                className="text-red-600 cursor-pointer"
-                                onClick={() => {
-                                  setAlertToDelete(alert.id);
-                                  setShowConfirmModal(true);
-                                }}
-                              >
-                                Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                          <AlertActionsCell alert={alert} router={router} setAlertToDelete={setAlertToDelete} setShowConfirmModal={setShowConfirmModal} />
                         </TableCell>
                       </TableRow>
                     );
