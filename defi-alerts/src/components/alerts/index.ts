@@ -1,15 +1,19 @@
 import AlertBreadcrumb from './AlertBreadcrumb';
+import AlertPageWrapper from './AlertPageWrapper';
 import AlertTypeCard from './AlertTypeCard';
-import MarketSelectionCard from './MarketSelectionCard';
+import CompareThresholdCard from './CompareThresholdCard';
 import ConditionSettingsCard from './ConditionSettingsCard';
-import DeliveryChannelsCard from './DeliveryChannelsCard';
-import NotificationFrequencySection from './NotificationFrequencySection';
+import AssetsCell from './core/AssetsCell';
+import ChainsCell from './core/ChainsCell';
+import ConditionsCell from './core/ConditionsCell';
+import PlatformsCell from './core/PlatformsCell';
 import CreateAlertModals from './CreateAlertModals';
 import CreateComparisonModals from './CreateComparisonModals';
-import AlertPageWrapper from './AlertPageWrapper';
-import CompareThresholdCard from './CompareThresholdCard';
-import PositionSettingsCard from './PositionSettingsCard';
+import DeliveryChannelsCard from './DeliveryChannelsCard';
+import MarketSelectionCard from './MarketSelectionCard';
+import NotificationFrequencySection from './NotificationFrequencySection';
 import PersonalizedComparisonPositionCard from './PersonalizedComparisonPositionCard';
+import PositionSettingsCard from './PositionSettingsCard';
 
 export {
   AlertPageWrapper,
@@ -24,4 +28,8 @@ export {
   CompareThresholdCard,
   PositionSettingsCard,
   PersonalizedComparisonPositionCard,
+  ConditionsCell,
+  ChainsCell,
+  AssetsCell,
+  PlatformsCell,
 };

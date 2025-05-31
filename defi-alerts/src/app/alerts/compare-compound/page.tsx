@@ -1,13 +1,13 @@
 'use client';
 
-import { CreateComparisonModals } from '@/components/alerts';
+import { AssetsCell, ChainsCell, ConditionsCell, CreateComparisonModals, PlatformsCell } from '@/components/alerts';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { type Alert, Channel, frequencyOptions, PrismaCondition, severityOptions } from '@/types/alerts';
+import { type Alert, Channel, frequencyOptions } from '@/types/alerts';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
@@ -17,55 +17,9 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowLeftRight, ChevronDown, Plus, TrendingDown, TrendingUp } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
 import { useEffect, useState } from 'react';
-
-// Platform Image component with error handling
-function PlatformImage({ platform }: { platform: string }) {
-  const [imageError, setImageError] = useState(false);
-
-  let imageUrl = '';
-  if (platform === 'AAVE') imageUrl = '/aave1.svg';
-  else if (platform === 'SPARK') imageUrl = '/spark.svg';
-  else if (platform === 'MORPHO') imageUrl = '/morpho1.svg';
-
-  if (imageError) {
-    // Fallback to a colored div with the first letter of the platform
-    return (
-      <div
-        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
-        style={{ width: '20px', height: '20px', fontSize: '10px' }}
-      >
-        {platform.charAt(0)}
-      </div>
-    );
-  }
-
-  return <Image src={imageUrl} alt={`${platform} logo`} width={20} height={20} onError={() => setImageError(true)} />;
-}
-
-// Asset Image component with error handling
-function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
-  const [imageError, setImageError] = useState(false);
-
-  const imageUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain.toLowerCase()}/assets/${assetAddress}/logo.png`;
-
-  if (imageError) {
-    // Fallback to a colored div with the first letter of the token symbol
-    return (
-      <div
-        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
-        style={{ width: '20px', height: '20px', fontSize: '10px' }}
-      >
-        {assetSymbol.charAt(0)}
-      </div>
-    );
-  }
-
-  return <Image src={imageUrl} alt={assetSymbol} width={20} height={20} onError={() => setImageError(true)} />;
-}
 
 export default function CompareCompoundPage() {
   const { data } = useSession();
@@ -135,8 +89,6 @@ export default function CompareCompoundPage() {
     setFilteredAlerts(result);
   }, [alertsData, activeTab, actionTypeFilter, chainFilter]);
 
-  const severityLabel = (s: PrismaCondition) => severityOptions.find((o) => o.value === s.severity)?.label || '-';
-
   const freqLabel = (f: string) => frequencyOptions.find((o) => o.value === f)?.label || f;
 
   // Get unique chains for filter
@@ -151,29 +103,6 @@ export default function CompareCompoundPage() {
       )
     : [];
 
-  // Get severity badge color
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'HIGH':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'MEDIUM':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'LOW':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      default:
-        return 'bg-theme-bg-muted text-theme-muted border-theme-border-primary';
-    }
-  };
-
-  // Format condition threshold values based on condition type
-  const formatThresholdValue = (condition: PrismaCondition) => {
-    if (condition.conditionType === 'APR_OUTSIDE_RANGE') {
-      return condition.thresholdValueLow && condition.thresholdValueHigh ? `${condition.thresholdValueLow}–${condition.thresholdValueHigh}%` : '-';
-    } else {
-      return condition.thresholdValue ? `${condition.thresholdValue}%` : '-';
-    }
-  };
-
   const handleModalClose = async () => {
     setShowCreateComparisonModal(false);
     await reFetchData();
@@ -183,7 +112,7 @@ export default function CompareCompoundPage() {
     <div className="max-w-7xl mx-auto px-2 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold mb-2 text-theme-primary">Comparison Alerts</h1>
+          <h1 className="text-3xl font-bold mb-2 text-theme-primary">Compound vs Others</h1>
           <p className="text-theme-muted">Monitor when Compound outperforms other DeFi platforms.</p>
         </div>
         <Button
@@ -204,7 +133,7 @@ export default function CompareCompoundPage() {
                 activeTab === 'all' ? 'bg-primary-color text-primary-text data-[state=active]:bg-primary-color data-[state=active]:text-primary-text' : ''
               }
             >
-              All Comparisons
+              All Alerts
             </TabsTrigger>
             <TabsTrigger
               value="general"
@@ -212,7 +141,7 @@ export default function CompareCompoundPage() {
                 activeTab === 'general' ? 'bg-primary-color text-primary-text data-[state=active]:bg-primary-color data-[state=active]:text-primary-text' : ''
               }
             >
-              General
+              Market Alerts
             </TabsTrigger>
             <TabsTrigger
               value="personalized"
@@ -222,7 +151,7 @@ export default function CompareCompoundPage() {
                   : ''
               }
             >
-              Personalized
+              Position Alerts
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -318,26 +247,8 @@ export default function CompareCompoundPage() {
 
                         <TableCell>
                           <div className="flex flex-col">
-                            <div className="flex flex-wrap gap-1">
-                              {(alert.selectedChains || []).map((chain) => (
-                                <Badge key={chain.chainId} variant="outline" className="border border-primary-color flex items-center gap-1">
-                                  {/* We don't have platform info for chains, so we can't use PlatformImage here */}
-                                  {chain.name}
-                                </Badge>
-                              ))}
-                            </div>
-                            <div className="flex flex-wrap gap-1 mt-1">
-                              {(alert.selectedAssets || []).map((asset) => (
-                                <span key={asset.chainId_address} className="text-xs text-theme-primary font-medium flex items-center gap-1">
-                                  <AssetImage
-                                    chain={alert.selectedChains.find((c) => c.chainId === asset.chainId)?.name || ''}
-                                    assetAddress={asset.address}
-                                    assetSymbol={asset.symbol}
-                                  />
-                                  {asset.symbol}
-                                </span>
-                              ))}
-                            </div>
+                            <ChainsCell chains={alert.selectedChains || []} />
+                            <AssetsCell assets={alert.selectedAssets || []} chains={alert.selectedChains} />
                           </div>
                         </TableCell>
 
@@ -348,27 +259,11 @@ export default function CompareCompoundPage() {
                         </TableCell>
 
                         <TableCell>
-                          <div className="flex flex-wrap gap-1">
-                            {(alert.compareProtocols || []).map((protocol, index) => (
-                              <Badge key={index} variant="outline" className="border border-primary-color flex items-center gap-1">
-                                <PlatformImage platform={protocol} />
-                                {protocol}
-                              </Badge>
-                            ))}
-                          </div>
+                          <PlatformsCell platforms={alert.compareProtocols || []} />
                         </TableCell>
 
                         <TableCell>
-                          <div className="flex flex-col gap-2">
-                            {alert.conditions.map((condition, index) => (
-                              <div key={index} className="flex items-center gap-2 mb-1">
-                                {condition.severity !== 'NONE' && (
-                                  <Badge className={`${getSeverityColor(condition.severity)}`}>{severityLabel(condition as PrismaCondition)}</Badge>
-                                )}
-                                <span className="text-xs text-theme-muted">{formatThresholdValue(condition as PrismaCondition)}</span>
-                              </div>
-                            ))}
-                          </div>
+                          <ConditionsCell conditions={alert.conditions} />
                         </TableCell>
 
                         <TableCell>
