@@ -1,13 +1,14 @@
+'use client';
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { ChevronDown } from 'lucide-react';
 import { Alert } from '@/types/alerts';
-import { AppRouterInstance } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface AlertActionsCellProps {
   alert: Alert;
-  router: AppRouterInstance;
   setAlertToDelete: (id: string) => void;
   setShowConfirmModal: (show: boolean) => void;
 }
@@ -15,7 +16,8 @@ interface AlertActionsCellProps {
 /**
  * Component for displaying alert actions in a dropdown menu
  */
-const AlertActionsCell: React.FC<AlertActionsCellProps> = ({ alert, router, setAlertToDelete, setShowConfirmModal }) => {
+const AlertActionsCell: React.FC<AlertActionsCellProps> = ({ alert, setAlertToDelete, setShowConfirmModal }) => {
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

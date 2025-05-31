@@ -16,7 +16,6 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowLeftRight, Plus, TrendingDown, TrendingUp } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -24,7 +23,6 @@ export default function CompareCompoundPage() {
   const { data } = useSession();
   const session = data as DoDAOSession;
 
-  const router = useRouter();
   const baseUrl = getBaseUrl();
   const [filteredAlerts, setFilteredAlerts] = useState<Alert[]>([]);
   const [activeTab, setActiveTab] = useState('all');
@@ -281,7 +279,7 @@ export default function CompareCompoundPage() {
                         </TableCell>
 
                         <TableCell>
-                          <AlertActionsCell alert={alert} router={router} setAlertToDelete={setAlertToDelete} setShowConfirmModal={setShowConfirmModal} />
+                          <AlertActionsCell alert={alert} setAlertToDelete={setAlertToDelete} setShowConfirmModal={setShowConfirmModal} />
                         </TableCell>
                       </TableRow>
                     );
