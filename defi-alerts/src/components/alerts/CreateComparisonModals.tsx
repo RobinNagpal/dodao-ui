@@ -1,5 +1,6 @@
 'use client';
 
+import { AlertResponse } from '@/app/api/alerts/route';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
@@ -44,7 +45,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     data: alertsData,
     loading: alertsLoading,
     error: alertsError,
-  } = useFetchData<any[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !session?.userId }, 'Failed to load alerts');
+  } = useFetchData<AlertResponse[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !session?.userId }, 'Failed to load alerts');
 
   // Fetch user's wallet addresses
   const {
@@ -111,9 +112,9 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     })();
   }, [walletAddresses]);
 
-  // Filter positions based on current wallet address and existing alerts
+  // Filter positions based on current wallet address
   useEffect(() => {
-    if (!currentWalletAddress || !alertsData) {
+    if (!currentWalletAddress) {
       setFilteredComparisonPositions([]);
       return;
     }
@@ -128,25 +129,8 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     }
 
     setWalletHasPositions(true);
-
-    // Filter out positions that already have comparison alerts
-    const existingAlerts = Array.isArray(alertsData) ? alertsData : [];
-    const positionsWithoutAlerts = walletPositions.filter((position) => {
-      // Check if there's already a comparison alert for this position
-      const normalizedMarket = position.assetSymbol === 'ETH' ? 'WETH' : position.assetSymbol;
-      return !existingAlerts.some(
-        (alert) =>
-          alert.isComparison &&
-          alert.walletAddress === position.walletAddress &&
-          alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
-          alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
-          alert.actionType === position.actionType &&
-          alert.compareProtocols?.includes(position.platform)
-      );
-    });
-
-    setFilteredComparisonPositions(positionsWithoutAlerts);
-  }, [currentWalletAddress, alertsData, allComparisonPositions]);
+    setFilteredComparisonPositions(walletPositions);
+  }, [currentWalletAddress, allComparisonPositions]);
 
   // Initialize email field with username when component mounts
   useEffect(() => {
@@ -258,6 +242,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
         selectPosition={selectPosition}
         onSwitchToAddWallet={() => setCurrentModal('addWallet')}
         onSwitchToMonitor={() => setCurrentModal('generalComparison')}
+        alerts={alertsData}
       />
 
       <ConfigurePositionModal<WalletComparisonPosition>

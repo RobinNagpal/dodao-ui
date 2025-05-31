@@ -1,5 +1,6 @@
 'use client';
 
+import { AlertResponse } from '@/app/api/alerts/route';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
@@ -22,6 +23,7 @@ type PositionsModalProps<T extends BasePosition> = {
   modalType: 'GENERAL' | 'COMPARISON';
   filteredPositions: T[];
   selectPosition: (p: T) => void;
+  alerts?: AlertResponse[];
 };
 
 export default function PositionsModal<T extends BasePosition>({
@@ -37,7 +39,68 @@ export default function PositionsModal<T extends BasePosition>({
   selectPosition,
   onSwitchToAddWallet,
   onSwitchToMonitor,
+  alerts = new Array<AlertResponse>(),
 }: PositionsModalProps<T>) {
+  // Function to check if a position has an existing alert
+  const hasExistingAlert = (position: T) => {
+    if (!alerts || alerts.length === 0) return false;
+
+    // Normalize ETH to WETH for comparison
+    const normalizedMarket = position.assetSymbol === 'ETH' ? 'WETH' : position.assetSymbol;
+
+    if (modalType === 'GENERAL') {
+      // For general alerts, check if there's an alert for this position
+      return alerts.some(
+        (alert: AlertResponse) =>
+          alert.walletAddress === position.walletAddress &&
+          alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
+          alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
+          alert.actionType === position.actionType
+      );
+    } else {
+      // For comparison alerts, check if there's a comparison alert for this position
+      return alerts.some(
+        (alert) =>
+          alert.isComparison &&
+          alert.walletAddress === position.walletAddress &&
+          alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
+          alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
+          alert.actionType === position.actionType &&
+          (position as any).platform &&
+          alert.compareProtocols?.includes((position as any).platform)
+      );
+    }
+  };
+
+  // Function to get the alert ID for a position
+  const getAlertId = (position: T) => {
+    if (!alerts || alerts.length === 0) return undefined;
+
+    const normalizedMarket = position.assetSymbol === 'ETH' ? 'WETH' : position.assetSymbol;
+
+    if (modalType === 'GENERAL') {
+      const existingAlert = alerts.find(
+        (alert) =>
+          alert.walletAddress === position.walletAddress &&
+          alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
+          alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
+          alert.actionType === position.actionType
+      );
+      return existingAlert?.id;
+    } else {
+      const existingAlert = alerts.find(
+        (alert) =>
+          alert.isComparison &&
+          alert.walletAddress === position.walletAddress &&
+          alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
+          alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
+          alert.actionType === position.actionType &&
+          (position as any).platform &&
+          alert.compareProtocols?.includes((position as any).platform)
+      );
+      return existingAlert?.id;
+    }
+  };
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-2xl md:max-w-3xl lg:max-w-6xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
@@ -112,12 +175,16 @@ export default function PositionsModal<T extends BasePosition>({
                   positions={filteredPositions.filter((p) => p.actionType === 'SUPPLY')}
                   actionType="SUPPLY"
                   selectPosition={selectPosition}
+                  hasExistingAlert={hasExistingAlert}
+                  getAlertId={getAlertId}
                 />
                 <PositionList<T>
                   modalType={modalType}
                   positions={filteredPositions.filter((p) => p.actionType === 'BORROW')}
                   actionType="BORROW"
                   selectPosition={selectPosition}
+                  hasExistingAlert={hasExistingAlert}
+                  getAlertId={getAlertId}
                 />
               </>
             )}
@@ -143,6 +210,8 @@ interface PositionListProps<T> {
   positions: T[];
   actionType: 'SUPPLY' | 'BORROW';
   selectPosition: (p: T) => void;
+  hasExistingAlert: (p: T) => boolean;
+  getAlertId: (p: T) => string | undefined;
 }
 
 // Platform Image component with error handling
@@ -190,7 +259,7 @@ function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; asset
   return <Image src={imageUrl} alt={assetSymbol} width={20} height={20} onError={() => setImageError(true)} />;
 }
 
-function PositionList<T extends BasePosition>({ modalType, positions, actionType, selectPosition }: PositionListProps<T>) {
+function PositionList<T extends BasePosition>({ modalType, positions, actionType, selectPosition, hasExistingAlert, getAlertId }: PositionListProps<T>) {
   const router = useRouter();
   if (positions.length === 0) return null;
 
@@ -217,13 +286,16 @@ function PositionList<T extends BasePosition>({ modalType, positions, actionType
             </div>
           </div>
 
-          {position.hasExistingAlert ? (
+          {hasExistingAlert(position) ? (
             <Button
               size="sm"
               className="bg-primary-color text-primary-text"
               onClick={(e) => {
                 e.stopPropagation();
-                router.push(`/alerts/edit/${position.alertId}`);
+                const alertId = getAlertId(position);
+                if (alertId) {
+                  router.push(`/alerts/edit/${alertId}`);
+                }
               }}
             >
               Edit
