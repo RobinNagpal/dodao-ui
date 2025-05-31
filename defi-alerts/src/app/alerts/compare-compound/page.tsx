@@ -1,29 +1,27 @@
 'use client';
 
-import type React from 'react';
-
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { type Alert, severityOptions, frequencyOptions, Channel, Condition, PrismaCondition } from '@/types/alerts';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CreateComparisonModals } from '@/components/alerts';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Bell, ChevronDown, Plus, TrendingDown, TrendingUp, ArrowLeftRight, Info } from 'lucide-react';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import { type Alert, Channel, Condition, frequencyOptions, PrismaCondition, severityOptions } from '@/types/alerts';
+import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
-import { CreateComparisonModals } from '@/components/alerts';
-import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { ArrowLeftRight, ChevronDown, Info, Plus, TrendingDown, TrendingUp } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 // Platform Image component with error handling
 function PlatformImage({ platform }: { platform: string }) {
@@ -141,12 +139,6 @@ export default function CompareCompoundPage() {
   const severityLabel = (s: PrismaCondition) => severityOptions.find((o) => o.value === s.severity)?.label || '-';
 
   const freqLabel = (f: string) => frequencyOptions.find((o) => o.value === f)?.label || f;
-
-  // Calculate summary counts
-  const totalAlerts = filteredAlerts.length;
-  const supplyAlerts = filteredAlerts.filter((a) => a.actionType === 'SUPPLY').length;
-  const borrowAlerts = filteredAlerts.filter((a) => a.actionType === 'BORROW').length;
-  const personalizedAlerts = filteredAlerts.filter((a) => a.category === 'PERSONALIZED').length;
 
   // Get unique chains for filter
   const uniqueChains = alertsData
