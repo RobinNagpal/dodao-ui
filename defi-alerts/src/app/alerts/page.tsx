@@ -1,56 +1,26 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
-import type React from 'react';
-
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { type Alert, type Channel, type PrismaCondition, severityOptions, frequencyOptions } from '@/types/alerts';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import CreateAlertModals from '@/components/alerts/CreateAlertModals';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Bell, ChevronDown, Plus, TrendingDown, TrendingUp, Info } from 'lucide-react';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { type Alert, type Channel, frequencyOptions, type PrismaCondition, severityOptions } from '@/types/alerts';
+import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
-import CreateAlertModals from '@/components/alerts/CreateAlertModals';
-import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
-
-// Alert summary component
-const AlertSummaryCard = ({
-  title,
-  count,
-  marketAlerts,
-  icon,
-  className,
-}: {
-  title: string;
-  count: number;
-  marketAlerts: number;
-  icon: React.ReactNode;
-  className?: string;
-}) => (
-  <Card className={`border-theme-border-primary bg-theme-bg-secondary ${className}`}>
-    <CardContent className="p-6">
-      <div className="flex justify-between items-center mb-2">
-        <h3 className="text-lg font-medium text-theme-primary flex items-center gap-2">
-          {icon}
-          {title}
-        </h3>
-        <span className="text-2xl font-bold text-theme-primary">{count}</span>
-      </div>
-      <div className="text-sm text-theme-muted">{marketAlerts} market alerts</div>
-    </CardContent>
-  </Card>
-);
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Bell, ChevronDown, Info, Plus, TrendingDown, TrendingUp } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 export default function AlertsPage() {
   const { data } = useSession();
@@ -195,7 +165,7 @@ export default function AlertsPage() {
                 activeTab === 'general' ? 'bg-primary-color text-primary-text data-[state=active]:bg-primary-color data-[state=active]:text-primary-text' : ''
               }
             >
-              General
+              Market Alerts
             </TabsTrigger>
             <TabsTrigger
               value="personalized"
@@ -205,7 +175,7 @@ export default function AlertsPage() {
                   : ''
               }
             >
-              Personalized
+              Position Alerts
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -256,40 +226,6 @@ export default function AlertsPage() {
       {isLoading && (
         <div className="flex justify-center items-center">
           <FullPageLoader />
-        </div>
-      )}
-
-      {/* Summary cards */}
-      {!isLoading && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <AlertSummaryCard
-            title="Total Alerts"
-            count={totalAlerts}
-            marketAlerts={totalAlerts}
-            icon={<Bell size={18} className="text-primary-color" />}
-            className="border-l-4 border-primary-color bg-block"
-          />
-          <AlertSummaryCard
-            title="Supply Alerts"
-            count={supplyAlerts}
-            marketAlerts={supplyAlerts}
-            icon={<TrendingUp size={18} className="text-primary-color" />}
-            className="border-l-4 border-primary-color bg-block"
-          />
-          <AlertSummaryCard
-            title="Borrow Alerts"
-            count={borrowAlerts}
-            marketAlerts={borrowAlerts}
-            icon={<TrendingDown size={18} className="text-primary-color" />}
-            className="border-l-4 border-primary-color bg-block"
-          />
-          <AlertSummaryCard
-            title="Personalized Alerts"
-            count={personalizedAlerts}
-            marketAlerts={personalizedAlerts}
-            icon={<Bell size={18} className="text-primary-color" />}
-            className="border-l-4 border-primary-color bg-block"
-          />
         </div>
       )}
 

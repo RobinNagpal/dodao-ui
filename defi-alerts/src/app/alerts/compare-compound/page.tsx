@@ -24,34 +24,6 @@ import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { CreateComparisonModals } from '@/components/alerts';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 
-// Alert summary component
-const AlertSummaryCard = ({
-  title,
-  count,
-  comparisonAlerts,
-  icon,
-  className,
-}: {
-  title: string;
-  count: number;
-  comparisonAlerts: number;
-  icon: React.ReactNode;
-  className?: string;
-}) => (
-  <Card className={`border-theme-border-primary bg-theme-bg-secondary ${className}`}>
-    <CardContent className="p-6">
-      <div className="flex justify-between items-center mb-2">
-        <h3 className="text-lg font-medium text-theme-primary flex items-center gap-2">
-          {icon}
-          {title}
-        </h3>
-        <span className="text-2xl font-bold text-theme-primary">{count}</span>
-      </div>
-      <div className="text-sm text-theme-muted">{comparisonAlerts} comparison alerts</div>
-    </CardContent>
-  </Card>
-);
-
 export default function CompareCompoundPage() {
   const { data } = useSession();
   const session = data as DoDAOSession;
@@ -264,40 +236,6 @@ export default function CompareCompoundPage() {
       {isLoading && (
         <div className="flex justify-center items-center">
           <FullPageLoader />
-        </div>
-      )}
-
-      {/* Summary cards */}
-      {!isLoading && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <AlertSummaryCard
-            title="Total Comparisons"
-            count={totalAlerts}
-            comparisonAlerts={totalAlerts}
-            icon={<ArrowLeftRight size={18} className="text-primary-color" />}
-            className="border-l-4 border-primary-color bg-block"
-          />
-          <AlertSummaryCard
-            title="Supply Comparisons"
-            count={supplyAlerts}
-            comparisonAlerts={supplyAlerts}
-            icon={<TrendingUp size={18} className="text-primary-color" />}
-            className="border-l-4 border-primary-color bg-block"
-          />
-          <AlertSummaryCard
-            title="Borrow Comparisons"
-            count={borrowAlerts}
-            comparisonAlerts={borrowAlerts}
-            icon={<TrendingDown size={18} className="text-primary-color" />}
-            className="border-l-4 border-primary-color bg-block"
-          />
-          <AlertSummaryCard
-            title="Personalized"
-            count={personalizedAlerts}
-            comparisonAlerts={personalizedAlerts}
-            icon={<Bell size={18} className="text-primary-color" />}
-            className="border-l-4 border-primary-color bg-block"
-          />
         </div>
       )}
 
