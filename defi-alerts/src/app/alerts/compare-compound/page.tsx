@@ -340,10 +340,10 @@ export default function CompareCompoundPage() {
                             <div className="flex flex-wrap gap-1 mt-1">
                               {(alert.selectedAssets || []).map((asset) => (
                                 <span key={asset.chainId_address} className="text-xs text-theme-primary font-medium flex items-center gap-1">
-                                  <AssetImage 
-                                    chain={alert.selectedChains.find(c => c.chainId === asset.chainId)?.name || ''} 
-                                    assetAddress={asset.address} 
-                                    assetSymbol={asset.symbol} 
+                                  <AssetImage
+                                    chain={alert.selectedChains.find((c) => c.chainId === asset.chainId)?.name || ''}
+                                    assetAddress={asset.address}
+                                    assetSymbol={asset.symbol}
                                   />
                                   {asset.symbol}
                                 </span>

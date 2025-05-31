@@ -192,7 +192,12 @@ export default function PersonalizedComparisonPositionCard({
                 </div>
 
                 {position.conditions.length > 1 && (
-                  <Button variant="ghost" size="icon" onClick={() => removeCondition(cond.id)} className="col-span-1 text-red-500 h-10 w-10 flex items-center justify-center">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => removeCondition(cond.id)}
+                    className="col-span-1 text-red-500 h-10 w-10 flex items-center justify-center"
+                  >
                     <X size={20} />
                   </Button>
                 )}
