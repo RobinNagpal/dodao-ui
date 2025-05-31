@@ -19,8 +19,30 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Bell, ChevronDown, Info, Plus, TrendingDown, TrendingUp } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import type React from 'react';
 import { useEffect, useState } from 'react';
+
+// Asset Image component with error handling
+function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
+  const [imageError, setImageError] = useState(false);
+
+  const imageUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain.toLowerCase()}/assets/${assetAddress}/logo.png`;
+
+  if (imageError) {
+    // Fallback to a colored div with the first letter of the token symbol
+    return (
+      <div
+        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
+        style={{ width: '20px', height: '20px', fontSize: '10px' }}
+      >
+        {assetSymbol.charAt(0)}
+      </div>
+    );
+  }
+
+  return <Image src={imageUrl} alt={assetSymbol} width={20} height={20} onError={() => setImageError(true)} />;
+}
 
 export default function AlertsPage() {
   const { data } = useSession();
@@ -275,14 +297,20 @@ export default function AlertsPage() {
                           <div className="flex flex-col">
                             <div className="flex flex-wrap gap-1">
                               {(alert.selectedChains || []).map((chain) => (
-                                <Badge key={chain.chainId} variant="outline" className="border border-primary-color">
+                                <Badge key={chain.chainId} variant="outline" className="border border-primary-color flex items-center gap-1">
+                                  {/* We don't have platform info for chains, so we can't use PlatformImage here */}
                                   {chain.name}
                                 </Badge>
                               ))}
                             </div>
                             <div className="flex flex-wrap gap-1 mt-1">
                               {(alert.selectedAssets || []).map((asset) => (
-                                <span key={asset.chainId_address} className="text-xs text-theme-primary font-medium">
+                                <span key={asset.chainId_address} className="text-xs text-theme-primary font-medium flex items-center gap-1">
+                                  <AssetImage
+                                    chain={alert.selectedChains.find((c) => c.chainId === asset.chainId)?.name || ''}
+                                    assetAddress={asset.address}
+                                    assetSymbol={asset.symbol}
+                                  />
                                   {asset.symbol}
                                 </span>
                               ))}
