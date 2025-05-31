@@ -8,7 +8,7 @@ import {
   BaseDeliveryChannel,
   getUser,
   mapChainsToPrismaConnect,
-  mapMarketsToPrismaConnect,
+  mapMarketsByAddressToPrismaConnect,
   validateArrayFields,
   validateConditions,
   validateDeliveryChannels,
@@ -90,8 +90,8 @@ async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPaylo
   // Map chains → Prisma connect
   const chainConnect = mapChainsToPrismaConnect(selectedChains);
 
-  // Map markets → Prisma connect
-  const assetConnect = mapMarketsToPrismaConnect(selectedChains, selectedMarkets);
+  // Map markets → Prisma connect using asset addresses
+  const assetConnect = mapMarketsByAddressToPrismaConnect(selectedChains, selectedMarkets);
 
   // Create alert
   const alert = await prisma.alert.create({

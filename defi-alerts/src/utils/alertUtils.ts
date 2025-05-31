@@ -149,3 +149,36 @@ export function mapMarketsToPrismaConnect(selectedChains: string[], selectedMark
 
   return assetConnect;
 }
+
+// Map markets to Prisma connect objects using asset addresses instead of symbols
+export function mapMarketsByAddressToPrismaConnect(selectedChains: string[], selectedMarkets: string[]) {
+  console.log('[AlertUtils] Building asset connect objects by address', { selectedChains, selectedMarkets });
+  const assetConnect = selectedChains.flatMap((chainName) => {
+    const chainCfg = CHAINS.find((c) => c.name === chainName)!;
+    return selectedMarkets
+      .map((assetAddress) => {
+        // Convert address to lowercase for comparison
+        const normalizedAddress = assetAddress.toLowerCase();
+        // find that market on this chain by comparing baseAssetAddress
+        const m = COMPOUND_MARKETS.find((m) => m.baseAssetAddress.toLowerCase() === normalizedAddress && m.chainId === chainCfg.chainId);
+        if (!m) {
+          // no valid market on this chain → skip
+          console.log('[AlertUtils] No valid market found for chain and address', { chainName, assetAddress });
+          return null;
+        }
+        // Prisma PK is "<chainId>_<baseAssetAddress>"
+        return {
+          chainId_address: `${m.chainId}_${m.baseAssetAddress.toLowerCase()}`,
+        };
+      })
+      .filter((x): x is { chainId_address: string } => x !== null);
+  });
+  console.log('[AlertUtils] Asset connect objects built by address', { assetConnectCount: assetConnect.length });
+
+  if (assetConnect.length === 0) {
+    console.log('[AlertUtils] No valid markets found for chain+asset address selections');
+    throw new Error('No valid markets found for your chain+asset address selections. Please choose a supported combination.');
+  }
+
+  return assetConnect;
+}
