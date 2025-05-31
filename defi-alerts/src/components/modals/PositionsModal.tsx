@@ -1,10 +1,14 @@
 'use client';
 
+import { AlertResponse } from '@/app/api/alerts/route';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { BasePosition, WalletComparisonPosition } from './types';
 import Image from 'next/image';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Plus } from 'lucide-react';
 
 type PositionsModalProps<T extends BasePosition> = {
   isOpen: boolean;
@@ -19,6 +23,7 @@ type PositionsModalProps<T extends BasePosition> = {
   modalType: 'GENERAL' | 'COMPARISON';
   filteredPositions: T[];
   selectPosition: (p: T) => void;
+  alerts?: AlertResponse[];
 };
 
 export default function PositionsModal<T extends BasePosition>({
@@ -34,10 +39,71 @@ export default function PositionsModal<T extends BasePosition>({
   selectPosition,
   onSwitchToAddWallet,
   onSwitchToMonitor,
+  alerts = new Array<AlertResponse>(),
 }: PositionsModalProps<T>) {
+  // Function to check if a position has an existing alert
+  const hasExistingAlert = (position: T) => {
+    if (!alerts || alerts.length === 0) return false;
+
+    // Normalize ETH to WETH for comparison
+    const normalizedMarket = position.assetSymbol === 'ETH' ? 'WETH' : position.assetSymbol;
+
+    if (modalType === 'GENERAL') {
+      // For general alerts, check if there's an alert for this position
+      return alerts.some(
+        (alert: AlertResponse) =>
+          alert.walletAddress === position.walletAddress &&
+          alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
+          alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
+          alert.actionType === position.actionType
+      );
+    } else {
+      // For comparison alerts, check if there's a comparison alert for this position
+      return alerts.some(
+        (alert) =>
+          alert.isComparison &&
+          alert.walletAddress === position.walletAddress &&
+          alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
+          alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
+          alert.actionType === position.actionType &&
+          (position as any).platform &&
+          alert.compareProtocols?.includes((position as any).platform)
+      );
+    }
+  };
+
+  // Function to get the alert ID for a position
+  const getAlertId = (position: T) => {
+    if (!alerts || alerts.length === 0) return undefined;
+
+    const normalizedMarket = position.assetSymbol === 'ETH' ? 'WETH' : position.assetSymbol;
+
+    if (modalType === 'GENERAL') {
+      const existingAlert = alerts.find(
+        (alert) =>
+          alert.walletAddress === position.walletAddress &&
+          alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
+          alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
+          alert.actionType === position.actionType
+      );
+      return existingAlert?.id;
+    } else {
+      const existingAlert = alerts.find(
+        (alert) =>
+          alert.isComparison &&
+          alert.walletAddress === position.walletAddress &&
+          alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
+          alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
+          alert.actionType === position.actionType &&
+          (position as any).platform &&
+          alert.compareProtocols?.includes((position as any).platform)
+      );
+      return existingAlert?.id;
+    }
+  };
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
+      <DialogContent className="sm:max-w-2xl md:max-w-3xl lg:max-w-6xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-theme-primary">
             {modalType === 'GENERAL' ? 'Select Position to Monitor' : 'Select Position to Compare'}
@@ -56,7 +122,7 @@ export default function PositionsModal<T extends BasePosition>({
 
           <div className="mb-4 flex justify-end">
             <Button onClick={onSwitchToAddWallet} className="bg-primary-color text-primary-text">
-              Add wallet+
+              <Plus size={20} className="mr-2" /> Add wallet
             </Button>
           </div>
 
@@ -100,7 +166,7 @@ export default function PositionsModal<T extends BasePosition>({
               </div>
             ) : filteredPositions.length === 0 ? (
               <div className="p-6 text-center">
-                <p className="text-theme-muted">All positions for this wallet already have alerts configured</p>
+                <p className="text-theme-muted">No positions found for this wallet</p>
               </div>
             ) : (
               <>
@@ -109,12 +175,16 @@ export default function PositionsModal<T extends BasePosition>({
                   positions={filteredPositions.filter((p) => p.actionType === 'SUPPLY')}
                   actionType="SUPPLY"
                   selectPosition={selectPosition}
+                  hasExistingAlert={hasExistingAlert}
+                  getAlertId={getAlertId}
                 />
                 <PositionList<T>
                   modalType={modalType}
                   positions={filteredPositions.filter((p) => p.actionType === 'BORROW')}
                   actionType="BORROW"
                   selectPosition={selectPosition}
+                  hasExistingAlert={hasExistingAlert}
+                  getAlertId={getAlertId}
                 />
               </>
             )}
@@ -140,9 +210,57 @@ interface PositionListProps<T> {
   positions: T[];
   actionType: 'SUPPLY' | 'BORROW';
   selectPosition: (p: T) => void;
+  hasExistingAlert: (p: T) => boolean;
+  getAlertId: (p: T) => string | undefined;
 }
 
-function PositionList<T extends BasePosition>({ modalType, positions, actionType, selectPosition }: PositionListProps<T>) {
+// Platform Image component with error handling
+function PlatformImage({ platform }: { platform: string }) {
+  const [imageError, setImageError] = useState(false);
+
+  let imageUrl = '';
+  if (platform === 'AAVE') imageUrl = '/aave1.svg';
+  else if (platform === 'SPARK') imageUrl = '/spark.svg';
+  else if (platform === 'MORPHO') imageUrl = '/morpho1.svg';
+
+  if (imageError) {
+    // Fallback to a colored div with the first letter of the platform
+    return (
+      <div
+        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
+        style={{ width: '20px', height: '20px', fontSize: '10px' }}
+      >
+        {platform.charAt(0)}
+      </div>
+    );
+  }
+
+  return <Image src={imageUrl} alt={`${platform} logo`} width={20} height={20} onError={() => setImageError(true)} />;
+}
+
+// Asset Image component with error handling
+function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
+  const [imageError, setImageError] = useState(false);
+
+  const imageUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain.toLowerCase()}/assets/${assetAddress}/logo.png`;
+
+  if (imageError) {
+    // Fallback to a colored div with the first letter of the token symbol
+    return (
+      <div
+        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
+        style={{ width: '20px', height: '20px', fontSize: '10px' }}
+      >
+        {assetSymbol.charAt(0)}
+      </div>
+    );
+  }
+
+  return <Image src={imageUrl} alt={assetSymbol} width={20} height={20} onError={() => setImageError(true)} />;
+}
+
+function PositionList<T extends BasePosition>({ modalType, positions, actionType, selectPosition, hasExistingAlert, getAlertId }: PositionListProps<T>) {
+  const router = useRouter();
   if (positions.length === 0) return null;
 
   const title = actionType === 'SUPPLY' ? 'Supply Positions' : 'Borrow Positions';
@@ -153,45 +271,47 @@ function PositionList<T extends BasePosition>({ modalType, positions, actionType
       {positions.map((position, idx) => (
         <div key={position.id} className="flex items-center justify-between gap-x-2 p-3 border-b border-primary-color hover:bg-theme-bg-muted">
           <div className="flex gap-x-2 items-center">
-            {modalType === 'COMPARISON' && (
-              <>
-                {(position as unknown as WalletComparisonPosition).platform === 'AAVE' && <Image src="/aave1.svg" alt="Aave logo" width={30} height={15} />}
-                {(position as unknown as WalletComparisonPosition).platform === 'SPARK' && <Image src="/spark.svg" alt="Spark logo" width={30} height={15} />}
-                {(position as unknown as WalletComparisonPosition).platform === 'MORPHO' && (
-                  <Image src="/morpho1.svg" alt="Morpho logo" width={30} height={15} />
-                )}
-              </>
-            )}
             <div>
-              <span className="text-theme-primary">Position # {idx + 1}</span>
+              <div className="flex items-center gap-x-2">
+                {modalType === 'COMPARISON' && <PlatformImage platform={(position as unknown as WalletComparisonPosition).platform} />}
+                {modalType === 'COMPARISON' ? `${(position as unknown as WalletComparisonPosition).platform} - ` : ''}
+                <span className="text-theme-primary">Position # {idx + 1}</span>
+              </div>
               <div className="flex gap-x-2">
-                <Image
-                  src={`https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${position.chain.toLowerCase()}/assets/${
-                    position.assetAddress
-                  }/logo.png`}
-                  alt={position.assetSymbol}
-                  width={20}
-                  height={20}
-                />
+                <AssetImage chain={position.chain} assetAddress={position.assetAddress} assetSymbol={position.assetSymbol} />
                 <div className="text-sm text-theme-muted">
-                  {position.assetSymbol} on {position.chain}
-                  {modalType === 'COMPARISON' ? ` - ${(position as unknown as WalletComparisonPosition).platform}` : ''} – Current{' '}
-                  {modalType === 'GENERAL' ? 'APR' : 'APY'}: {position.rate}
+                  {position.assetSymbol} on {position.chain}– Current {modalType === 'GENERAL' ? 'APR' : 'APY'}: {position.rate}
                 </div>
               </div>
             </div>
           </div>
 
-          <Button
-            size="sm"
-            className="bg-primary-color text-primary-text"
-            onClick={(e) => {
-              e.stopPropagation();
-              selectPosition(position);
-            }}
-          >
-            Add Alert
-          </Button>
+          {hasExistingAlert(position) ? (
+            <Button
+              size="sm"
+              className="bg-primary-color text-primary-text"
+              onClick={(e) => {
+                e.stopPropagation();
+                const alertId = getAlertId(position);
+                if (alertId) {
+                  router.push(`/alerts/edit/${alertId}`);
+                }
+              }}
+            >
+              Edit
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              className="bg-primary-color text-primary-text"
+              onClick={(e) => {
+                e.stopPropagation();
+                selectPosition(position);
+              }}
+            >
+              Add Alert
+            </Button>
+          )}
         </div>
       ))}
     </div>

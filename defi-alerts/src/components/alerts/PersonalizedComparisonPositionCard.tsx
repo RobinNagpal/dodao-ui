@@ -125,7 +125,7 @@ export default function PersonalizedComparisonPositionCard({
             <div className="flex items-center justify-between mb-2">
               <h4 className="text-lg font-medium text-theme-primary">Rate Difference Thresholds</h4>
               <Button size="sm" onClick={addCondition} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
-                <Plus size={16} className="mr-1" /> Add Threshold
+                <Plus size={20} className="mr-1" /> Add Threshold
               </Button>
             </div>
 
@@ -144,8 +144,8 @@ export default function PersonalizedComparisonPositionCard({
             {/* Thresholds List */}
             {position.conditions.map((cond, i) => (
               <div key={cond.id} className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-primary-color pt-4">
-                <div className="col-span-1 flex items-center text-theme-muted">
-                  <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
+                <div className="col-span-1 flex items-center justify-center text-theme-muted">
+                  <Badge variant="outline" className="h-8 w-8 flex items-center justify-center p-0 rounded-full text-primary-color">
                     {i + 1}
                   </Badge>
                 </div>
@@ -165,7 +165,7 @@ export default function PersonalizedComparisonPositionCard({
                   </div>
                   {errors?.conditions && errors.conditions[i] && (
                     <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={14} className="mr-1" />
+                      <AlertCircle size={20} className="mr-2 flex-shrink-0" />
                       <span>{errors.conditions[i]}</span>
                     </div>
                   )}
@@ -192,8 +192,13 @@ export default function PersonalizedComparisonPositionCard({
                 </div>
 
                 {position.conditions.length > 1 && (
-                  <Button variant="ghost" size="icon" onClick={() => removeCondition(cond.id)} className="col-span-1 text-red-500 h-8 w-8">
-                    <X size={16} />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => removeCondition(cond.id)}
+                    className="col-span-1 text-red-500 h-10 w-10 flex items-center justify-center"
+                  >
+                    <X size={20} />
                   </Button>
                 )}
               </div>

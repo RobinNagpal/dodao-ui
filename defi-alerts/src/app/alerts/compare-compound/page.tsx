@@ -23,34 +23,52 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { CreateComparisonModals } from '@/components/alerts';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
+import Image from 'next/image';
 
-// Alert summary component
-const AlertSummaryCard = ({
-  title,
-  count,
-  comparisonAlerts,
-  icon,
-  className,
-}: {
-  title: string;
-  count: number;
-  comparisonAlerts: number;
-  icon: React.ReactNode;
-  className?: string;
-}) => (
-  <Card className={`border-theme-border-primary bg-theme-bg-secondary ${className}`}>
-    <CardContent className="p-6">
-      <div className="flex justify-between items-center mb-2">
-        <h3 className="text-lg font-medium text-theme-primary flex items-center gap-2">
-          {icon}
-          {title}
-        </h3>
-        <span className="text-2xl font-bold text-theme-primary">{count}</span>
+// Platform Image component with error handling
+function PlatformImage({ platform }: { platform: string }) {
+  const [imageError, setImageError] = useState(false);
+
+  let imageUrl = '';
+  if (platform === 'AAVE') imageUrl = '/aave1.svg';
+  else if (platform === 'SPARK') imageUrl = '/spark.svg';
+  else if (platform === 'MORPHO') imageUrl = '/morpho1.svg';
+
+  if (imageError) {
+    // Fallback to a colored div with the first letter of the platform
+    return (
+      <div
+        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
+        style={{ width: '20px', height: '20px', fontSize: '10px' }}
+      >
+        {platform.charAt(0)}
       </div>
-      <div className="text-sm text-theme-muted">{comparisonAlerts} comparison alerts</div>
-    </CardContent>
-  </Card>
-);
+    );
+  }
+
+  return <Image src={imageUrl} alt={`${platform} logo`} width={20} height={20} onError={() => setImageError(true)} />;
+}
+
+// Asset Image component with error handling
+function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
+  const [imageError, setImageError] = useState(false);
+
+  const imageUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain.toLowerCase()}/assets/${assetAddress}/logo.png`;
+
+  if (imageError) {
+    // Fallback to a colored div with the first letter of the token symbol
+    return (
+      <div
+        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
+        style={{ width: '20px', height: '20px', fontSize: '10px' }}
+      >
+        {assetSymbol.charAt(0)}
+      </div>
+    );
+  }
+
+  return <Image src={imageUrl} alt={assetSymbol} width={20} height={20} onError={() => setImageError(true)} />;
+}
 
 export default function CompareCompoundPage() {
   const { data } = useSession();
@@ -267,40 +285,6 @@ export default function CompareCompoundPage() {
         </div>
       )}
 
-      {/* Summary cards */}
-      {!isLoading && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <AlertSummaryCard
-            title="Total Comparisons"
-            count={totalAlerts}
-            comparisonAlerts={totalAlerts}
-            icon={<ArrowLeftRight size={18} className="text-primary-color" />}
-            className="border-l-4 border-primary-color bg-block"
-          />
-          <AlertSummaryCard
-            title="Supply Comparisons"
-            count={supplyAlerts}
-            comparisonAlerts={supplyAlerts}
-            icon={<TrendingUp size={18} className="text-primary-color" />}
-            className="border-l-4 border-primary-color bg-block"
-          />
-          <AlertSummaryCard
-            title="Borrow Comparisons"
-            count={borrowAlerts}
-            comparisonAlerts={borrowAlerts}
-            icon={<TrendingDown size={18} className="text-primary-color" />}
-            className="border-l-4 border-primary-color bg-block"
-          />
-          <AlertSummaryCard
-            title="Personalized"
-            count={personalizedAlerts}
-            comparisonAlerts={personalizedAlerts}
-            icon={<Bell size={18} className="text-primary-color" />}
-            className="border-l-4 border-primary-color bg-block"
-          />
-        </div>
-      )}
-
       {/* Error state */}
       {fetchError && (
         <div className="flex justify-center items-center h-40">
@@ -347,14 +331,20 @@ export default function CompareCompoundPage() {
                           <div className="flex flex-col">
                             <div className="flex flex-wrap gap-1">
                               {(alert.selectedChains || []).map((chain) => (
-                                <Badge key={chain.chainId} variant="outline" className="border border-primary-color">
+                                <Badge key={chain.chainId} variant="outline" className="border border-primary-color flex items-center gap-1">
+                                  {/* We don't have platform info for chains, so we can't use PlatformImage here */}
                                   {chain.name}
                                 </Badge>
                               ))}
                             </div>
                             <div className="flex flex-wrap gap-1 mt-1">
                               {(alert.selectedAssets || []).map((asset) => (
-                                <span key={asset.chainId_address} className="text-xs text-theme-primary font-medium">
+                                <span key={asset.chainId_address} className="text-xs text-theme-primary font-medium flex items-center gap-1">
+                                  <AssetImage
+                                    chain={alert.selectedChains.find((c) => c.chainId === asset.chainId)?.name || ''}
+                                    assetAddress={asset.address}
+                                    assetSymbol={asset.symbol}
+                                  />
                                   {asset.symbol}
                                 </span>
                               ))}
@@ -371,7 +361,8 @@ export default function CompareCompoundPage() {
                         <TableCell>
                           <div className="flex flex-wrap gap-1">
                             {(alert.compareProtocols || []).map((protocol, index) => (
-                              <Badge key={index} variant="outline" className="border border-primary-color">
+                              <Badge key={index} variant="outline" className="border border-primary-color flex items-center gap-1">
+                                <PlatformImage platform={protocol} />
                                 {protocol}
                               </Badge>
                             ))}
