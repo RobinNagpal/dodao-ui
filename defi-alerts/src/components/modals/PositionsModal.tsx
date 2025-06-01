@@ -1,6 +1,7 @@
 'use client';
 
 import { AlertResponse } from '@/app/api/alerts/route';
+import { ChainImage } from '@/components/alerts/core/ChainImage';
 import { PlatformImage } from '@/components/alerts/core/PlatformImage';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -234,8 +235,10 @@ function PositionList<T extends BasePosition>({ modalType, positions, actionType
               </div>
               <div className="flex gap-x-2">
                 <AssetImage chain={position.chain} assetAddress={position.assetAddress} assetSymbol={position.assetSymbol} />
-                <div className="text-sm text-theme-muted">
-                  {position.assetSymbol} on {position.chain}– Current {modalType === 'GENERAL' ? 'APR' : 'APY'}: {position.rate}
+                <div className="text-sm text-theme-muted flex">
+                  <span className="mr-2">{position.assetSymbol} on </span>
+                  <ChainImage chain={position.chain} />
+                  <span className="ml-2 mr-1">({position.chain})</span>– Current {modalType === 'GENERAL' ? 'APR' : 'APY'}: {position.rate}
                 </div>
               </div>
             </div>

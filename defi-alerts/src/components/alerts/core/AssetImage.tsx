@@ -12,6 +12,7 @@ export function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string
   const imageUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain.toLowerCase()}/assets/${assetAddress}/logo.png`;
 
   if (imageError) {
+    console.log(`Got error loading image for ${assetSymbol} on ${chain} chain with address ${assetAddress}. URL: ${imageUrl}`);
     // Fallback to a colored div with the first letter of the token symbol
     return (
       <div
