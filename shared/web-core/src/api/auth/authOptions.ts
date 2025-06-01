@@ -32,6 +32,8 @@ export function getAuthOptions(
   } | null>,
   overrides?: Partial<AuthOptions>
 ): AuthOptions {
+  const cookieDomain = process.env.VERCEL_ENV === 'production' ? process.env.COOKIE_DOMAIN || '.tidbitshub.org' : undefined;
+  console.log('[authOptions] cookieDomain', cookieDomain);
   const authOptions: AuthOptions = {
     // Setting error and signin pages to our /auth custom page
     pages: {
@@ -237,54 +239,6 @@ export function getAuthOptions(
           }
         },
       }),
-      {
-        id: 'near',
-        name: 'Near Wallet Auth',
-        type: 'credentials',
-        credentials: {},
-        authorize: async (credentials, req) => {
-          console.log('req', req.query);
-          console.log('[authOptions] Near Wallet Auth - Processing authorization request');
-
-          const accountId = req.query?.accountId || '';
-          const spaceId = req.query?.spaceId || '';
-
-          console.log(`[authOptions] Near Wallet Auth - Account ID: ${accountId}, Space ID: ${spaceId}`);
-
-          try {
-            console.log('[authOptions] Near Wallet Auth - Upserting user');
-            const user = await p.user.upsert({
-              where: { publicAddress_spaceId: { publicAddress: accountId, spaceId } },
-              create: {
-                publicAddress: accountId,
-                username: accountId,
-                name: accountId,
-                authProvider: 'near',
-                spaceId,
-              },
-              update: {},
-            });
-
-            console.log(`[authOptions] Near Wallet Auth - User upserted successfully with ID: ${user.id}`);
-            console.log('user', user);
-
-            return Promise.resolve(user);
-          } catch (error) {
-            await logError(
-              'Failed to upsert user with Near Wallet Auth',
-              {
-                accountId,
-                spaceId,
-                authProvider: 'near',
-              },
-              error as Error,
-              spaceId
-            );
-
-            return Promise.reject(error);
-          }
-        },
-      },
       DiscordProvider({
         clientId: process.env.DISCORD_CLIENT_ID!,
         clientSecret: process.env.DISCORD_CLIENT_SECRET!,
@@ -369,6 +323,7 @@ export function getAuthOptions(
           username: userInfo.username,
           accountId: userInfo.id,
         };
+        console.log('[authOptions] Session callback - Returning session');
         return {
           userId: userInfo.id,
           ...session,
@@ -439,7 +394,7 @@ export function getAuthOptions(
           secure: process.env.VERCEL_ENV === 'production' ? true : false,
           path: '/',
           sameSite: 'lax',
-          domain: process.env.VERCEL_ENV === 'production' ? '.tidbitshub.org' : undefined,
+          domain: cookieDomain,
         },
       },
     },

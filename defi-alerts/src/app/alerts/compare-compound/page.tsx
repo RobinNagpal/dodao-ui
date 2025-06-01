@@ -214,8 +214,6 @@ export default function CompareCompoundPage() {
                 {filteredAlerts.length > 0 ? (
                   filteredAlerts.map((alert) => {
                     // Pick first channel for simplicity
-                    const chan = alert.deliveryChannels[0] as Channel | undefined;
-                    const hasMultipleChannels = alert.deliveryChannels.length > 1;
 
                     return (
                       <TableRow key={alert.id} className="border-primary-color">
