@@ -1,5 +1,6 @@
 'use client';
 
+import { AlertActionsCell, AssetsCell, ChainsCell, ConditionsCell, PlatformsCell } from '@/components/alerts';
 import CreateAlertModals from '@/components/alerts/CreateAlertModals';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -294,28 +295,8 @@ export default function AlertsPage() {
                         </TableCell>
 
                         <TableCell>
-                          <div className="flex flex-col">
-                            <div className="flex flex-wrap gap-1">
-                              {(alert.selectedChains || []).map((chain) => (
-                                <Badge key={chain.chainId} variant="outline" className="border border-primary-color flex items-center gap-1">
-                                  {/* We don't have platform info for chains, so we can't use PlatformImage here */}
-                                  {chain.name}
-                                </Badge>
-                              ))}
-                            </div>
-                            <div className="flex flex-wrap gap-1 mt-1">
-                              {(alert.selectedAssets || []).map((asset) => (
-                                <span key={asset.chainId_address} className="text-xs text-theme-primary font-medium flex items-center gap-1">
-                                  <AssetImage
-                                    chain={alert.selectedChains.find((c) => c.chainId === asset.chainId)?.name || ''}
-                                    assetAddress={asset.address}
-                                    assetSymbol={asset.symbol}
-                                  />
-                                  {asset.symbol}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
+                          <ChainsCell chains={alert.selectedChains || []} />
+                          <AssetsCell assets={alert.selectedAssets || []} chains={alert.selectedChains} />
                         </TableCell>
 
                         <TableCell className="font-medium">
@@ -325,39 +306,7 @@ export default function AlertsPage() {
                         </TableCell>
 
                         <TableCell>
-                          {cond ? (
-                            <div className="flex items-center gap-2">
-                              <Badge className={`${getSeverityColor(cond.severity)}`}>{severityLabel(cond as PrismaCondition)}</Badge>
-                              <span className="text-xs text-theme-muted">{formatThresholdValue(cond as PrismaCondition)}</span>
-                              {hasMultipleConditions && (
-                                <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <Button size="icon" className="h-5 w-5 p-0 hover-text-primary">
-                                        <Info size={14} />
-                                        <span className="sr-only">View all conditions</span>
-                                      </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
-                                      <div className="space-y-2">
-                                        <h4 className="font-medium text-primary-color">All Conditions</h4>
-                                        <ul className="space-y-1">
-                                          {alert.conditions.map((c, i) => (
-                                            <li key={i} className="text-xs text-theme-muted">
-                                              <span className="font-medium">{severityLabel(c as PrismaCondition)}:</span>{' '}
-                                              {formatThresholdValue(c as PrismaCondition)}
-                                            </li>
-                                          ))}
-                                        </ul>
-                                      </div>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              )}
-                            </div>
-                          ) : (
-                            <span className="text-xs text-theme-muted">None</span>
-                          )}
+                          <ConditionsCell conditions={alert.conditions} />
                         </TableCell>
 
                         <TableCell>
@@ -418,35 +367,7 @@ export default function AlertsPage() {
                         </TableCell>
 
                         <TableCell>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button className="h-8 w-8 p-0 hover-text-primary">
-                                <span className="sr-only">Open menu</span>
-                                <ChevronDown className="ml-4 h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="bg-block">
-                              <div className="hover-border-primary hover-text-primary">
-                                <DropdownMenuItem className="text-theme-primary cursor-pointer" onClick={() => router.push(`/alerts/edit/${alert.id}`)}>
-                                  Edit
-                                </DropdownMenuItem>
-                              </div>
-                              <div className="hover-border-primary hover-text-primary">
-                                <DropdownMenuItem className="text-theme-primary cursor-pointer" onClick={() => router.push(`/alerts/history/${alert.id}`)}>
-                                  History
-                                </DropdownMenuItem>
-                              </div>
-                              <DropdownMenuItem
-                                className="text-red-600 cursor-pointer"
-                                onClick={() => {
-                                  setAlertToDelete(alert.id);
-                                  setShowConfirmModal(true);
-                                }}
-                              >
-                                Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                          <AlertActionsCell alert={alert} setAlertToDelete={setAlertToDelete} setShowConfirmModal={setShowConfirmModal} />
                         </TableCell>
                       </TableRow>
                     );
