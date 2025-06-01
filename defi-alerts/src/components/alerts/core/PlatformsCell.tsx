@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
+'use client';
+
 import { Badge } from '@/components/ui/badge';
+import React from 'react';
 import { PlatformImage } from './PlatformImage';
 
 interface PlatformsCellProps {
