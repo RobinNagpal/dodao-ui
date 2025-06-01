@@ -1,80 +1,28 @@
 'use client';
 
-import type React from 'react';
-
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { type Alert, severityOptions, frequencyOptions, Channel, Condition, PrismaCondition } from '@/types/alerts';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AlertActionsCell, AssetsCell, ChainsCell, ConditionsCell, CreateComparisonModals, PlatformsCell } from '@/components/alerts';
 import { Badge } from '@/components/ui/badge';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Bell, ChevronDown, Plus, TrendingDown, TrendingUp, ArrowLeftRight, Info } from 'lucide-react';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import { Button } from '@/components/ui/button';
+import ChainSelect from '@/components/alerts/core/ChainSelect';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { type Alert, Channel, frequencyOptions } from '@/types/alerts';
+import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
-import { CreateComparisonModals } from '@/components/alerts';
-import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
-import Image from 'next/image';
-
-// Platform Image component with error handling
-function PlatformImage({ platform }: { platform: string }) {
-  const [imageError, setImageError] = useState(false);
-
-  let imageUrl = '';
-  if (platform === 'AAVE') imageUrl = '/aave1.svg';
-  else if (platform === 'SPARK') imageUrl = '/spark.svg';
-  else if (platform === 'MORPHO') imageUrl = '/morpho1.svg';
-
-  if (imageError) {
-    // Fallback to a colored div with the first letter of the platform
-    return (
-      <div
-        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
-        style={{ width: '20px', height: '20px', fontSize: '10px' }}
-      >
-        {platform.charAt(0)}
-      </div>
-    );
-  }
-
-  return <Image src={imageUrl} alt={`${platform} logo`} width={20} height={20} onError={() => setImageError(true)} />;
-}
-
-// Asset Image component with error handling
-function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
-  const [imageError, setImageError] = useState(false);
-
-  const imageUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain.toLowerCase()}/assets/${assetAddress}/logo.png`;
-
-  if (imageError) {
-    // Fallback to a colored div with the first letter of the token symbol
-    return (
-      <div
-        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
-        style={{ width: '20px', height: '20px', fontSize: '10px' }}
-      >
-        {assetSymbol.charAt(0)}
-      </div>
-    );
-  }
-
-  return <Image src={imageUrl} alt={assetSymbol} width={20} height={20} onError={() => setImageError(true)} />;
-}
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { ArrowLeftRight, Plus, TrendingDown, TrendingUp } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 export default function CompareCompoundPage() {
   const { data } = useSession();
   const session = data as DoDAOSession;
 
-  const router = useRouter();
   const baseUrl = getBaseUrl();
   const [filteredAlerts, setFilteredAlerts] = useState<Alert[]>([]);
   const [activeTab, setActiveTab] = useState('all');
@@ -138,15 +86,7 @@ export default function CompareCompoundPage() {
     setFilteredAlerts(result);
   }, [alertsData, activeTab, actionTypeFilter, chainFilter]);
 
-  const severityLabel = (s: PrismaCondition) => severityOptions.find((o) => o.value === s.severity)?.label || '-';
-
   const freqLabel = (f: string) => frequencyOptions.find((o) => o.value === f)?.label || f;
-
-  // Calculate summary counts
-  const totalAlerts = filteredAlerts.length;
-  const supplyAlerts = filteredAlerts.filter((a) => a.actionType === 'SUPPLY').length;
-  const borrowAlerts = filteredAlerts.filter((a) => a.actionType === 'BORROW').length;
-  const personalizedAlerts = filteredAlerts.filter((a) => a.category === 'PERSONALIZED').length;
 
   // Get unique chains for filter
   const uniqueChains = alertsData
@@ -160,29 +100,6 @@ export default function CompareCompoundPage() {
       )
     : [];
 
-  // Get severity badge color
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'HIGH':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'MEDIUM':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'LOW':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      default:
-        return 'bg-theme-bg-muted text-theme-muted border-theme-border-primary';
-    }
-  };
-
-  // Format condition threshold values based on condition type
-  const formatThresholdValue = (condition: PrismaCondition) => {
-    if (condition.conditionType === 'APR_OUTSIDE_RANGE') {
-      return condition.thresholdValueLow && condition.thresholdValueHigh ? `${condition.thresholdValueLow}–${condition.thresholdValueHigh}%` : '-';
-    } else {
-      return condition.thresholdValue ? `${condition.thresholdValue}%` : '-';
-    }
-  };
-
   const handleModalClose = async () => {
     setShowCreateComparisonModal(false);
     await reFetchData();
@@ -192,7 +109,7 @@ export default function CompareCompoundPage() {
     <div className="max-w-7xl mx-auto px-2 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold mb-2 text-theme-primary">Comparison Alerts</h1>
+          <h1 className="text-3xl font-bold mb-2 text-theme-primary">Compound vs Others</h1>
           <p className="text-theme-muted">Monitor when Compound outperforms other DeFi platforms.</p>
         </div>
         <Button
@@ -213,7 +130,7 @@ export default function CompareCompoundPage() {
                 activeTab === 'all' ? 'bg-primary-color text-primary-text data-[state=active]:bg-primary-color data-[state=active]:text-primary-text' : ''
               }
             >
-              All Comparisons
+              All Alerts
             </TabsTrigger>
             <TabsTrigger
               value="general"
@@ -221,7 +138,7 @@ export default function CompareCompoundPage() {
                 activeTab === 'general' ? 'bg-primary-color text-primary-text data-[state=active]:bg-primary-color data-[state=active]:text-primary-text' : ''
               }
             >
-              General
+              Market Alerts
             </TabsTrigger>
             <TabsTrigger
               value="personalized"
@@ -231,7 +148,7 @@ export default function CompareCompoundPage() {
                   : ''
               }
             >
-              Personalized
+              Position Alerts
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -258,23 +175,7 @@ export default function CompareCompoundPage() {
             </Button>
           </div>
 
-          <Select onValueChange={setChainFilter} defaultValue="all">
-            <SelectTrigger className="w-full md:w-[180px] border-theme-border-primary">
-              <SelectValue placeholder="All Chains" />
-            </SelectTrigger>
-            <SelectContent className="bg-block">
-              <div className="hover-border-primary hover-text-primary">
-                <SelectItem value="all">All Chains</SelectItem>
-              </div>
-              {uniqueChains.map((chain) => (
-                <div key={chain} className="hover-border-primary hover-text-primary">
-                  <SelectItem key={chain} value={chain.toLowerCase()}>
-                    {chain}
-                  </SelectItem>
-                </div>
-              ))}
-            </SelectContent>
-          </Select>
+          <ChainSelect onValueChange={setChainFilter} defaultValue="all" chains={uniqueChains} />
         </div>
       </div>
 
@@ -312,11 +213,7 @@ export default function CompareCompoundPage() {
               <TableBody>
                 {filteredAlerts.length > 0 ? (
                   filteredAlerts.map((alert) => {
-                    // For simplicity pick first condition & channel
-                    const cond = alert.conditions[0] as Condition | undefined;
-                    const chan = alert.deliveryChannels[0] as Channel | undefined;
-                    const hasMultipleConditions = alert.conditions.length > 1;
-                    const hasMultipleChannels = alert.deliveryChannels.length > 1;
+                    // Pick first channel for simplicity
 
                     return (
                       <TableRow key={alert.id} className="border-primary-color">
@@ -329,26 +226,8 @@ export default function CompareCompoundPage() {
 
                         <TableCell>
                           <div className="flex flex-col">
-                            <div className="flex flex-wrap gap-1">
-                              {(alert.selectedChains || []).map((chain) => (
-                                <Badge key={chain.chainId} variant="outline" className="border border-primary-color flex items-center gap-1">
-                                  {/* We don't have platform info for chains, so we can't use PlatformImage here */}
-                                  {chain.name}
-                                </Badge>
-                              ))}
-                            </div>
-                            <div className="flex flex-wrap gap-1 mt-1">
-                              {(alert.selectedAssets || []).map((asset) => (
-                                <span key={asset.chainId_address} className="text-xs text-theme-primary font-medium flex items-center gap-1">
-                                  <AssetImage
-                                    chain={alert.selectedChains.find((c) => c.chainId === asset.chainId)?.name || ''}
-                                    assetAddress={asset.address}
-                                    assetSymbol={asset.symbol}
-                                  />
-                                  {asset.symbol}
-                                </span>
-                              ))}
-                            </div>
+                            <ChainsCell chains={alert.selectedChains || []} />
+                            <AssetsCell assets={alert.selectedAssets || []} chains={alert.selectedChains} />
                           </div>
                         </TableCell>
 
@@ -359,50 +238,11 @@ export default function CompareCompoundPage() {
                         </TableCell>
 
                         <TableCell>
-                          <div className="flex flex-wrap gap-1">
-                            {(alert.compareProtocols || []).map((protocol, index) => (
-                              <Badge key={index} variant="outline" className="border border-primary-color flex items-center gap-1">
-                                <PlatformImage platform={protocol} />
-                                {protocol}
-                              </Badge>
-                            ))}
-                          </div>
+                          <PlatformsCell platforms={alert.compareProtocols || []} />
                         </TableCell>
 
                         <TableCell>
-                          {cond ? (
-                            <div className="flex items-center gap-2">
-                              <Badge className={`${getSeverityColor(cond.severity)}`}>{severityLabel(cond as PrismaCondition)}</Badge>
-                              <span className="text-xs text-theme-muted">{formatThresholdValue(cond as PrismaCondition)}</span>
-                              {hasMultipleConditions && (
-                                <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <Button size="icon" className="h-5 w-5 p-0 hover-text-primary">
-                                        <Info size={14} />
-                                        <span className="sr-only">View all conditions</span>
-                                      </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
-                                      <div className="space-y-2">
-                                        <h4 className="font-medium text-primary-color">All Conditions</h4>
-                                        <ul className="space-y-1">
-                                          {alert.conditions.map((c, i) => (
-                                            <li key={i} className="text-xs text-theme-muted">
-                                              <span className="font-medium">{severityLabel(c as PrismaCondition)}:</span>{' '}
-                                              {formatThresholdValue(c as PrismaCondition)}
-                                            </li>
-                                          ))}
-                                        </ul>
-                                      </div>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              )}
-                            </div>
-                          ) : (
-                            <span className="text-xs text-theme-muted">None</span>
-                          )}
+                          <ConditionsCell conditions={alert.conditions} />
                         </TableCell>
 
                         <TableCell>
@@ -421,35 +261,7 @@ export default function CompareCompoundPage() {
                         </TableCell>
 
                         <TableCell>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button className="h-8 w-8 p-0 hover-text-primary">
-                                <span className="sr-only">Open menu</span>
-                                <ChevronDown className="ml-4 h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="bg-block">
-                              <div className="hover-border-primary hover-text-primary">
-                                <DropdownMenuItem className="text-theme-primary cursor-pointer" onClick={() => router.push(`/alerts/edit/${alert.id}`)}>
-                                  Edit
-                                </DropdownMenuItem>
-                              </div>
-                              <div className="hover-border-primary hover-text-primary">
-                                <DropdownMenuItem className="text-theme-primary cursor-pointer" onClick={() => router.push(`/alerts/history/${alert.id}`)}>
-                                  History
-                                </DropdownMenuItem>
-                              </div>
-                              <DropdownMenuItem
-                                className="text-red-600 cursor-pointer"
-                                onClick={() => {
-                                  setAlertToDelete(alert.id);
-                                  setShowConfirmModal(true);
-                                }}
-                              >
-                                Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                          <AlertActionsCell alert={alert} setAlertToDelete={setAlertToDelete} setShowConfirmModal={setShowConfirmModal} />
                         </TableCell>
                       </TableRow>
                     );

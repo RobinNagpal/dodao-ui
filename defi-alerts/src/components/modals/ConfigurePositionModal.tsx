@@ -209,7 +209,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
       category: 'PERSONALIZED' as AlertCategory,
       actionType: selectedPosition.actionType as AlertActionType,
       selectedChains: [selectedPosition.chain],
-      selectedMarkets: [selectedPosition.assetSymbol],
+      selectedMarkets: [selectedPosition.assetAddress],
       compareProtocols: [],
       notificationFrequency: selectedPosition.notificationFrequency as NotificationFrequency,
       conditions: selectedPosition.conditions.map((condition) =>
@@ -318,7 +318,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
       actionType: selectedPosition.actionType as AlertActionType,
       isComparison: true,
       selectedChains: [selectedPosition.chain],
-      selectedMarkets: [selectedPosition.assetSymbol],
+      selectedMarkets: [selectedPosition.assetAddress],
       compareProtocols: [(selectedPosition as unknown as WalletComparisonPosition).platform],
       notificationFrequency: selectedPosition.notificationFrequency as NotificationFrequency,
       conditions: selectedPosition.conditions.map((condition) => ({
