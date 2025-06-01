@@ -1,10 +1,12 @@
 'use client';
 
-import { AssetImage } from '@/components/alerts/core/AssetImage';
+import AlertActionsCell from '@/components/alerts/core/AlertActionsCell';
+import AssetsCell from '@/components/alerts/core/AssetsCell';
+import ChainsCell from '@/components/alerts/core/ChainsCell';
+import ConditionsCell from '@/components/alerts/core/ConditionsCell';
 import CreateAlertModals from '@/components/alerts/CreateAlertModals';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -17,9 +19,8 @@ import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Bell, ChevronDown, Info, Plus, TrendingDown, TrendingUp } from 'lucide-react';
+import { Bell, Info, Plus, TrendingDown, TrendingUp } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -27,7 +28,6 @@ export default function AlertsPage() {
   const { data } = useSession();
   const session = data as DoDAOSession;
 
-  const router = useRouter();
   const baseUrl = getBaseUrl();
   const [filteredAlerts, setFilteredAlerts] = useState<Alert[]>([]);
   const [activeTab, setActiveTab] = useState('all');
