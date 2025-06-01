@@ -1,9 +1,6 @@
 'use client';
 
-import AlertActionsCell from '@/components/alerts/core/AlertActionsCell';
-import AssetsCell from '@/components/alerts/core/AssetsCell';
-import ChainsCell from '@/components/alerts/core/ChainsCell';
-import ConditionsCell from '@/components/alerts/core/ConditionsCell';
+import { AlertActionsCell, AssetsCell, ChainsCell, ConditionsCell } from '@/components/alerts';
 import CreateAlertModals from '@/components/alerts/CreateAlertModals';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

@@ -18,7 +18,7 @@ async function fetchSymbol(chainName: string, tokenAddress: string): Promise<str
   const cacheKey = `${chainNameLower}:${tokenAddress}`;
 
   if (symbolCache[cacheKey]) {
-    return symbolCache[cacheKey];
+    return symbolCache[cacheKey]!;
   }
 
   symbolCache[cacheKey] = (async () => {
@@ -35,7 +35,7 @@ async function fetchSymbol(chainName: string, tokenAddress: string): Promise<str
     }
   })();
 
-  return symbolCache[cacheKey];
+  return symbolCache[cacheKey]!;
 }
 
 export function useAaveUserPositions(): (wallets: string[]) => Promise<WalletComparisonPosition[]> {
