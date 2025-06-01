@@ -1,14 +1,14 @@
 'use client';
 
 import { AlertResponse } from '@/app/api/alerts/route';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { PlatformImage } from '@/components/alerts/core/PlatformImage';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
-import { BasePosition, WalletComparisonPosition } from './types';
-import Image from 'next/image';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Plus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { AssetImage } from '../alerts/core/AssetImage';
+import { BasePosition, WalletComparisonPosition } from './types';
 
 type PositionsModalProps<T extends BasePosition> = {
   isOpen: boolean;
@@ -212,51 +212,6 @@ interface PositionListProps<T> {
   selectPosition: (p: T) => void;
   hasExistingAlert: (p: T) => boolean;
   getAlertId: (p: T) => string | undefined;
-}
-
-// Platform Image component with error handling
-function PlatformImage({ platform }: { platform: string }) {
-  const [imageError, setImageError] = useState(false);
-
-  let imageUrl = '';
-  if (platform === 'AAVE') imageUrl = '/aave1.svg';
-  else if (platform === 'SPARK') imageUrl = '/spark.svg';
-  else if (platform === 'MORPHO') imageUrl = '/morpho1.svg';
-
-  if (imageError) {
-    // Fallback to a colored div with the first letter of the platform
-    return (
-      <div
-        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
-        style={{ width: '20px', height: '20px', fontSize: '10px' }}
-      >
-        {platform.charAt(0)}
-      </div>
-    );
-  }
-
-  return <Image src={imageUrl} alt={`${platform} logo`} width={20} height={20} onError={() => setImageError(true)} />;
-}
-
-// Asset Image component with error handling
-function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
-  const [imageError, setImageError] = useState(false);
-
-  const imageUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain.toLowerCase()}/assets/${assetAddress}/logo.png`;
-
-  if (imageError) {
-    // Fallback to a colored div with the first letter of the token symbol
-    return (
-      <div
-        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
-        style={{ width: '20px', height: '20px', fontSize: '10px' }}
-      >
-        {assetSymbol.charAt(0)}
-      </div>
-    );
-  }
-
-  return <Image src={imageUrl} alt={assetSymbol} width={20} height={20} onError={() => setImageError(true)} />;
 }
 
 function PositionList<T extends BasePosition>({ modalType, positions, actionType, selectPosition, hasExistingAlert, getAlertId }: PositionListProps<T>) {
