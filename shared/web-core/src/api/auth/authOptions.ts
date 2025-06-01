@@ -32,6 +32,8 @@ export function getAuthOptions(
   } | null>,
   overrides?: Partial<AuthOptions>
 ): AuthOptions {
+  const cookieDomain = process.env.VERCEL_ENV === 'production' ? process.env.COOKIE_DOMAIN || '.tidbitshub.org' : undefined;
+  console.log('[authOptions] cookieDomain', cookieDomain);
   const authOptions: AuthOptions = {
     // Setting error and signin pages to our /auth custom page
     pages: {
@@ -392,7 +394,7 @@ export function getAuthOptions(
           secure: process.env.VERCEL_ENV === 'production' ? true : false,
           path: '/',
           sameSite: 'lax',
-          domain: process.env.VERCEL_ENV === 'production' ? '.tidbitshub.org' : undefined,
+          domain: cookieDomain,
         },
       },
     },
