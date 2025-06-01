@@ -1,5 +1,6 @@
 'use client';
 
+import { AssetImage } from '@/components/alerts/core/AssetImage';
 import CreateAlertModals from '@/components/alerts/CreateAlertModals';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -19,30 +20,8 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Bell, ChevronDown, Info, Plus, TrendingDown, TrendingUp } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import type React from 'react';
 import { useEffect, useState } from 'react';
-
-// Asset Image component with error handling
-function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
-  const [imageError, setImageError] = useState(false);
-
-  const imageUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain.toLowerCase()}/assets/${assetAddress}/logo.png`;
-
-  if (imageError) {
-    // Fallback to a colored div with the first letter of the token symbol
-    return (
-      <div
-        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
-        style={{ width: '20px', height: '20px', fontSize: '10px' }}
-      >
-        {assetSymbol.charAt(0)}
-      </div>
-    );
-  }
-
-  return <Image src={imageUrl} alt={assetSymbol} width={20} height={20} onError={() => setImageError(true)} />;
-}
 
 export default function AlertsPage() {
   const { data } = useSession();

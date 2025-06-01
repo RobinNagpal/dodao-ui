@@ -6,122 +6,154 @@ import { PoolDataAddressAbi_Arbitrum } from '@/shared/migrator/aave/abi/PoolData
 import { useAaveAprs, MarketApr } from './getAaveAPR';
 import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
 import { WalletComparisonPosition } from '@/components/modals/types';
+import { useCallback } from 'react';
 
 /** Helper to pick the first provider address from the config */
 const flattenProvider = (addrOrObj: Address | Record<string, Address>): Address => (typeof addrOrObj === 'string' ? addrOrObj : Object.values(addrOrObj)[0]);
+
+const symbolCache: Record<string, Promise<string> | undefined> = {};
+async function fetchSymbol(chainName: string, tokenAddress: string): Promise<string> {
+  if (chainName === 'Unknown') return 'Unknown';
+  const chainNameLower = chainName.toLowerCase();
+  const cacheKey = `${chainNameLower}:${tokenAddress}`;
+
+  if (symbolCache[cacheKey]) {
+    return symbolCache[cacheKey];
+  }
+
+  symbolCache[cacheKey] = (async () => {
+    try {
+      const url = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chainNameLower}/assets/${tokenAddress}/info.json`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        return 'Unknown';
+      }
+      const infoJson = (await response.json()) as { symbol?: string };
+      return infoJson.symbol ?? 'Unknown';
+    } catch {
+      return 'Unknown';
+    }
+  })();
+
+  return symbolCache[cacheKey];
+}
 
 export function useAaveUserPositions(): (wallets: string[]) => Promise<WalletComparisonPosition[]> {
   const config: Config = useDefaultConfig;
   const fetchAprs = useAaveAprs();
 
-  return async (wallets: string[]) => {
-    // 1) get Aave APRs for every market
-    const aprs: MarketApr[] = await fetchAprs();
+  return useCallback(
+    async (wallets: string[]) => {
+      const aprs: MarketApr[] = await fetchAprs();
 
-    // 2) build a set of allowed assetAddresses per chain from your COMPOUND_MARKETS
-    const allowedByChain: Record<number, Set<string>> = {};
-    COMPOUND_MARKETS.forEach((m) => {
-      const chainSet = (allowedByChain[m.chainId] ??= new Set<string>());
-      chainSet.add(m.baseAssetAddress.toLowerCase());
-    });
+      // group the filtered APRs by chainId
+      const aprsByChain = aprs.reduce<Record<number, MarketApr[]>>((acc, apr) => {
+        (acc[apr.chainId] ||= []).push(apr);
+        return acc;
+      }, {});
 
-    // 3) filter APRs down to only those assets present in Compound
-    const filteredAprs = aprs.filter((a) => allowedByChain[a.chainId]?.has(a.assetAddress.toLowerCase()));
+      const positions: WalletComparisonPosition[] = [];
+      const aprIndex: Record<number, Record<string, MarketApr>> = {};
+      aprs.forEach((a) => {
+        const key = a.assetAddress.toLowerCase();
+        (aprIndex[a.chainId] ||= {})[key] = a;
+      });
 
-    // 4) group the filtered APRs by chainId
-    const aprsByChain = filteredAprs.reduce<Record<number, MarketApr[]>>((acc, apr) => {
-      (acc[apr.chainId] ||= []).push(apr);
-      return acc;
-    }, {});
+      // 5) for each wallet, reset counters & fetch each chain in parallel
+      await Promise.all(
+        wallets.map(async (wallet) => {
+          let supplyCount = 0;
+          let borrowCount = 0;
 
-    const positions: WalletComparisonPosition[] = [];
+          await Promise.all(
+            Object.entries(aprsByChain).map(async ([chainIdStr, markets]) => {
+              const chainId = Number(chainIdStr);
+              const chainName = CHAINS.find((c) => c.chainId === chainId)?.name ?? 'Unknown';
 
-    // 5) for each wallet, reset counters & fetch each chain in parallel
-    await Promise.all(
-      wallets.map(async (wallet) => {
-        let supplyCount = 0;
-        let borrowCount = 0;
+              // 6) find the Aave provider contract for this chain
+              const providerAddr = flattenProvider(AAVE_CONFIG_POOL_CONTRACT[chainId] ?? {});
+              if (!providerAddr) return;
 
-        await Promise.all(
-          Object.entries(aprsByChain).map(async ([chainIdStr, markets]) => {
-            const chainId = Number(chainIdStr);
-            const chainName = CHAINS.find((c) => c.chainId === chainId)?.name ?? 'Unknown';
+              // 7) batch-multicall getUserReserveData for each filtered market
+              const calls = markets.map((m) => ({
+                address: providerAddr,
+                abi: PoolDataAddressAbi_Arbitrum,
+                functionName: 'getUserReserveData' as const,
+                args: [m.assetAddress as Address, wallet as Address],
+              }));
 
-            // 6) find the Aave provider contract for this chain
-            const providerAddr = flattenProvider(AAVE_CONFIG_POOL_CONTRACT[chainId] ?? {});
-            if (!providerAddr) return;
+              let raw;
+              try {
+                raw = await multicall(config, {
+                  chainId,
+                  contracts: calls,
+                });
+              } catch (e) {
+                console.error(`Aave userReserveData multicall failed for wallet ${wallet} on chain ${chainId}`, e);
+                return;
+              }
 
-            // 7) batch-multicall getUserReserveData for each filtered market
-            const calls = markets.map((m) => ({
-              address: providerAddr,
-              abi: PoolDataAddressAbi_Arbitrum,
-              functionName: 'getUserReserveData' as const,
-              args: [m.assetAddress as Address, wallet as Address],
-            }));
+              const compoundForChain = COMPOUND_MARKETS.filter((m) => m.chainId === chainId);
 
-            let raw;
-            try {
-              raw = await multicall(config, {
-                chainId,
-                contracts: calls,
-              });
-            } catch (e) {
-              console.error(`Aave userReserveData multicall failed for wallet ${wallet} on chain ${chainId}`, e);
-              return;
-            }
+              // 8) parse and push positions only for active ones
+              for (let idx = 0; idx < raw.length; idx++) {
+                const userData = raw[idx].result as readonly [
+                  bigint, // currentATokenBalance
+                  bigint, // currentStableDebt
+                  bigint, // currentVariableDebt
+                  bigint, // liquidityRate
+                  bigint, // principalStableDebt
+                  bigint, // scaledVariableDebt
+                  bigint, // stableBorrowRate
+                  number, // stableRateLastUpdated
+                  boolean // usageAsCollateralEnabled
+                ];
+                const [supBal, stableDebt, varDebt] = userData;
 
-            // 8) parse and push positions only for active ones
-            raw.forEach((r, idx) => {
-              const userData = r.result as readonly [
-                bigint, // currentATokenBalance
-                bigint, // currentStableDebt
-                bigint, // currentVariableDebt
-                bigint, // liquidityRate
-                bigint, // principalStableDebt
-                bigint, // scaledVariableDebt
-                bigint, // stableBorrowRate
-                number, // stableRateLastUpdated
-                boolean // usageAsCollateralEnabled
-              ];
-              const [supBal, stableDebt, varDebt] = userData;
+                // skip if no supply & no borrow
+                const hasSupply = supBal > BigInt(0);
+                const hasBorrow = stableDebt + varDebt > BigInt(0);
+                if (!hasSupply && !hasBorrow) return;
 
-              // skip if no supply & no borrow
-              const hasSupply = supBal > BigInt(0);
-              const hasBorrow = stableDebt + varDebt > BigInt(0);
-              if (!hasSupply && !hasBorrow) return;
+                const market = markets[idx];
 
-              const market = markets[idx];
-              const aprObj = aprs.find((a) => a.chainId === chainId && a.assetAddress.toLowerCase() === market.assetAddress.toLowerCase());
-              const actionType: 'SUPPLY' | 'BORROW' = hasSupply ? 'SUPPLY' : 'BORROW';
+                const hasMatchingMarket = compoundForChain.some((m) => m.baseAssetAddress.toLowerCase() === market.assetAddress.toLowerCase());
 
-              const id = actionType === 'SUPPLY' ? `supply-${++supplyCount}-aave` : `borrow-${++borrowCount}-aave`;
+                const aprObj = aprIndex[chainId]?.[market.assetAddress.toLowerCase()];
+                const actionType: 'SUPPLY' | 'BORROW' = hasSupply ? 'SUPPLY' : 'BORROW';
 
-              const rate = aprObj ? (actionType === 'SUPPLY' ? `${aprObj.netEarnAPY.toFixed(2)}%` : `${aprObj.netBorrowAPY.toFixed(2)}%`) : '0%';
+                const id = actionType === 'SUPPLY' ? `supply-${++supplyCount}-aave` : `borrow-${++borrowCount}-aave`;
 
-              positions.push({
-                id,
-                platform: 'AAVE',
-                walletAddress: wallet,
-                chain: chainName,
-                assetSymbol: market.asset === 'WETH' ? 'ETH' : market.asset,
-                assetAddress: market.assetAddress,
-                rate,
-                actionType,
-                notificationFrequency: 'ONCE_PER_ALERT',
-                conditions: [
-                  {
-                    id: 'condition-1',
-                    conditionType: 'APR_RISE_ABOVE',
-                    severity: 'NONE',
-                  },
-                ],
-              });
-            });
-          })
-        );
-      })
-    );
+                const rate = aprObj ? (actionType === 'SUPPLY' ? `${aprObj.netEarnAPY.toFixed(2)}%` : `${aprObj.netBorrowAPY.toFixed(2)}%`) : '0%';
+                let assetSymbol = market.asset !== 'Unknown' ? market.asset : await fetchSymbol(chainName, market.assetAddress);
 
-    return positions;
-  };
+                positions.push({
+                  id,
+                  platform: 'AAVE',
+                  walletAddress: wallet,
+                  chain: chainName,
+                  assetSymbol: assetSymbol,
+                  assetAddress: market.assetAddress,
+                  rate,
+                  actionType,
+                  disable: !hasMatchingMarket,
+                  notificationFrequency: 'ONCE_PER_ALERT',
+                  conditions: [
+                    {
+                      id: 'condition-1',
+                      conditionType: 'APR_RISE_ABOVE',
+                      severity: 'NONE',
+                    },
+                  ],
+                });
+              }
+            })
+          );
+        })
+      );
+
+      return positions;
+    },
+    [config, fetchAprs]
+  );
 }

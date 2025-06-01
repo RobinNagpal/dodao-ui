@@ -36,7 +36,7 @@ export default function MarketSelectionCard({
 }: MarketSelectionCardProps) {
   const chains = ['Ethereum', 'Optimism', 'Arbitrum', 'Polygon', 'Base', 'Unichain', 'Ronin', 'Mantle', 'Scroll'];
   const markets = ['USDC', 'USDS', 'USDT', 'ETH', 'wstETH', 'USDe', 'USDC.e', 'USDbC', 'AERO'];
-  const platforms = ['Aave', 'Morpho', 'Spark'];
+  const platforms = ['Aave', 'Spark'];
 
   return (
     <Card className="mb-6 border-theme-primary bg-block border-primary-color">

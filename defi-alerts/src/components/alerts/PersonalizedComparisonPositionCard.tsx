@@ -9,6 +9,7 @@ import { type ConditionType, type SeverityLevel, severityOptions, type Notificat
 import { NotificationFrequencySection, DeliveryChannelsCard } from './';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
+import { toSentenceCase } from '@/utils/getSentenceCase';
 
 export interface PersonalizedComparisonPosition {
   id: string;
@@ -85,15 +86,17 @@ export default function PersonalizedComparisonPositionCard({
   // Get contextual message for comparison logic
   const getComparisonMessage = (actionType: 'SUPPLY' | 'BORROW') => {
     if (actionType === 'SUPPLY') {
-      return `Example: If ${position.platform} offers ${position.rate} APR and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches ${(
-        parseFloat(position.rate.replace('%', '')) + 1.2
-      ).toFixed(1)}% (${position.platform} rate + your threshold)`;
+      return `Example: If ${toSentenceCase(position.platform)} offers ${
+        position.rate
+      } APR and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches ${(parseFloat(position.rate.replace('%', '')) + 1.2).toFixed(
+        1
+      )}% (${toSentenceCase(position.platform)} rate + your threshold)`;
     } else {
-      return `Example: If ${position.platform} charges ${
+      return `Example: If ${toSentenceCase(position.platform)} charges ${
         position.rate
       } APR and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to ${(parseFloat(position.rate.replace('%', '')) - 0.5).toFixed(
         1
-      )}% (${position.platform} rate - your threshold)`;
+      )}% (${toSentenceCase(position.platform)} rate - your threshold)`;
     }
   };
 
@@ -108,10 +111,10 @@ export default function PersonalizedComparisonPositionCard({
               </Badge>
               <div className="text-left">
                 <div className="text-lg font-semibold text-theme-primary">
-                  {position.market} on {position.chain} - {position.platform}
+                  {position.market} on {position.chain} - {toSentenceCase(position.platform)}
                 </div>
                 <p className="text-sm text-theme-muted">
-                  Current {position.platform} APR: {position.rate}
+                  Current {toSentenceCase(position.platform)} APR: {position.rate}
                 </p>
               </div>
             </div>

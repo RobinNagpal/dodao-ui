@@ -674,7 +674,7 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
       </Card>
 
       {/* Action Buttons */}
-      <div className="flex justify-between">
+      <div className="flex justify-end gap-x-5">
         <Button onClick={() => router.push('/alerts/compare-compound')} className="border hover-border-primary">
           <ArrowLeft size={16} className="mr-2" /> Back to Alerts
         </Button>

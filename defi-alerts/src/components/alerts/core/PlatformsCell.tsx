@@ -3,6 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import React from 'react';
 import { PlatformImage } from './PlatformImage';
+import { toSentenceCase } from '@/utils/getSentenceCase';
 
 interface PlatformsCellProps {
   platforms: string[];
@@ -17,7 +18,7 @@ const PlatformsCell: React.FC<PlatformsCellProps> = ({ platforms }) => {
       {platforms.map((platform, index) => (
         <Badge key={index} variant="outline" className="border border-primary-color flex items-center gap-1">
           <PlatformImage platform={platform} />
-          {platform}
+          {toSentenceCase(platform)}
         </Badge>
       ))}
     </div>
