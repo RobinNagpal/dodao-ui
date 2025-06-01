@@ -1,28 +1,29 @@
 'use client';
 
-import { ChainImage } from '@/components/alerts/core/ChainImage';
+import { AssetImage } from '@/components/alerts/core/AssetImage';
+import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
 import React from 'react';
 import { AlertCircle } from 'lucide-react';
 
-interface ChainSelectionProps {
-  selectedChains: string[];
-  toggleChain: (chain: string) => void;
-  chains?: string[];
+interface MarketSelectionProps {
+  selectedMarkets: string[];
+  toggleMarket: (market: string) => void;
+  markets?: string[];
   error?: string;
   title?: string;
   description?: string;
 }
 
 /**
- * A reusable component for selecting multiple chains with checkboxes
+ * A reusable component for selecting multiple markets with checkboxes
  */
-const ChainSelection: React.FC<ChainSelectionProps> = ({
-  selectedChains,
-  toggleChain,
-  chains = ['Ethereum', 'Optimism', 'Arbitrum', 'Polygon', 'Base', 'Unichain', 'Ronin', 'Mantle', 'Scroll'],
+const MarketSelection: React.FC<MarketSelectionProps> = ({
+  selectedMarkets,
+  toggleMarket,
+  markets = ['USDC', 'USDS', 'USDT', 'ETH', 'wstETH', 'USDe', 'USDC.e', 'USDbC', 'AERO'],
   error,
-  title = 'Chains',
-  description = 'Select one or more chains to monitor.',
+  title = 'Markets',
+  description = 'Select one or more markets to monitor.',
 }) => {
   return (
     <div className="mb-6">
@@ -30,13 +31,16 @@ const ChainSelection: React.FC<ChainSelectionProps> = ({
       <p className="text-sm text-theme-muted mb-3">{description}</p>
 
       <div className="flex flex-wrap gap-3">
-        {chains.map((c) => {
-          const isSel = selectedChains.includes(c);
+        {markets.map((m) => {
+          const maket = COMPOUND_MARKETS.find((c) => c.symbol.toLowerCase() === m.toLowerCase());
+          const assetAddress = maket?.baseAssetAddress;
+          const chain = maket && CHAINS.find((c) => c.chainId === maket?.chainId);
+          const isSel = selectedMarkets.includes(m);
 
           return (
             <div
-              key={c}
-              onClick={() => toggleChain(c)}
+              key={m}
+              onClick={() => toggleMarket(m)}
               className={`rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors border ${isSel ? 'chip-selected' : 'border-theme-primary'} ${
                 error ? 'border-red-500' : ''
               }`}
@@ -48,10 +52,12 @@ const ChainSelection: React.FC<ChainSelectionProps> = ({
                   </svg>
                 )}
               </div>
-              <span className="mr-2">
-                <ChainImage chain={c.toLowerCase()} />
-              </span>
-              <span className="text-theme-primary chip-label">{c}</span>
+              {assetAddress && chain && (
+                <span className="mr-2">
+                  <AssetImage chain={chain.name.toLowerCase()} assetAddress={assetAddress} assetSymbol={m} />
+                </span>
+              )}
+              <span className="text-theme-primary chip-label">{m}</span>
             </div>
           );
         })}
@@ -66,4 +72,4 @@ const ChainSelection: React.FC<ChainSelectionProps> = ({
   );
 };
 
-export default ChainSelection;
+export default MarketSelection;
