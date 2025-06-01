@@ -1,4 +1,5 @@
 import { AssetImage } from '@/components/alerts/core/AssetImage';
+import { COMPOUND_MARKETS } from '@/shared/web3/config';
 import { Asset, Chain } from '@/types/alerts';
 import React from 'react';
 
@@ -13,12 +14,19 @@ interface AssetsCellProps {
 const AssetsCell: React.FC<AssetsCellProps> = ({ assets, chains }) => {
   return (
     <div className="flex flex-wrap gap-1 mt-1">
-      {assets.map((asset) => (
-        <span key={asset.chainId_address} className="text-xs text-theme-primary font-medium flex items-center gap-1">
-          <AssetImage chain={chains.find((c) => c.chainId === asset.chainId)?.name || ''} assetAddress={asset.address} assetSymbol={asset.symbol} />
-          {asset.symbol}
-        </span>
-      ))}
+      {assets.map((asset) => {
+        const market = COMPOUND_MARKETS.find((c) => c.symbol.toLowerCase() === asset.symbol.toLowerCase());
+        return (
+          <span key={asset.chainId_address} className="text-xs text-theme-primary font-medium flex items-center gap-1">
+            <AssetImage
+              chain={chains.find((c) => c.chainId === asset.chainId)?.name || ''}
+              assetAddress={market?.baseAssetAddress || asset.address}
+              assetSymbol={asset.symbol}
+            />
+            {asset.symbol}
+          </span>
+        );
+      })}
     </div>
   );
 };
