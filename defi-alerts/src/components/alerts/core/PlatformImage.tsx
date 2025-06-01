@@ -6,9 +6,9 @@ export function PlatformImage({ platform }: { platform: string }) {
   const [imageError, setImageError] = useState(false);
 
   let imageUrl = '';
-  if (platform === 'AAVE') imageUrl = '/aave1.svg';
-  else if (platform === 'SPARK') imageUrl = '/spark.svg';
-  else if (platform === 'MORPHO') imageUrl = '/morpho1.svg';
+  if (platform.toUpperCase() === 'AAVE') imageUrl = '/aave1.svg';
+  else if (platform.toUpperCase() === 'SPARK') imageUrl = '/spark.svg';
+  else if (platform.toUpperCase() === 'MORPHO') imageUrl = '/morpho1.svg';
 
   if (imageError) {
     // Fallback to a colored div with the first letter of the platform
@@ -20,6 +20,11 @@ export function PlatformImage({ platform }: { platform: string }) {
         {platform.charAt(0)}
       </div>
     );
+  }
+
+  if (!imageUrl) {
+    console.log(`Got error loading image for platform ${platform}.`);
+    return null;
   }
 
   return <Image src={imageUrl} alt={`${platform} logo`} width={20} height={20} onError={() => setImageError(true)} />;
