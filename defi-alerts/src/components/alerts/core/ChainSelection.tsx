@@ -36,9 +36,9 @@ const ChainSelection: React.FC<ChainSelectionProps> = ({
             <div
               key={c}
               onClick={() => toggleChain(c)}
-              className={`rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors border ${
-                isSel ? 'chip-selected' : 'border-theme-primary'
-              } ${error ? 'border-red-500' : ''}`}
+              className={`rounded-md px-3 py-2 flex items-center cursor-pointer transition-colors border ${isSel ? 'chip-selected' : 'border-theme-primary'} ${
+                error ? 'border-red-500' : ''
+              }`}
             >
               <div className="chip-checkbox w-4 h-4 rounded border mr-2 flex items-center justify-center">
                 {isSel && (

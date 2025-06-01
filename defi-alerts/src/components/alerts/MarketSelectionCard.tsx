@@ -47,21 +47,11 @@ export default function MarketSelectionCard({
         <p className="text-sm text-theme-muted mb-4">{description}</p>
 
         {showPlatforms && togglePlatform && (
-          <PlatformSelection
-            selectedPlatforms={selectedPlatforms}
-            togglePlatform={togglePlatform}
-            platforms={platforms}
-            error={errors.platforms}
-          />
+          <PlatformSelection selectedPlatforms={selectedPlatforms} togglePlatform={togglePlatform} platforms={platforms} error={errors.platforms} />
         )}
 
         {/* Chains */}
-        <ChainSelection
-          selectedChains={selectedChains}
-          toggleChain={toggleChain}
-          chains={chains}
-          error={errors.chains}
-        />
+        <ChainSelection selectedChains={selectedChains} toggleChain={toggleChain} chains={chains} error={errors.chains} />
 
         {/* Markets */}
         <div>
