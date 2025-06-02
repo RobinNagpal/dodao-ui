@@ -118,8 +118,8 @@ export default function PositionsModal<T extends BasePosition>({
           </h2>
           <p className="text-theme-primary mb-4">
             {modalType === 'GENERAL'
-              ? 'I want to monitor only my positions i.e. know when borrow or supply rates change corresponding to my open positions'
-              : 'I want to know when compound offers better rates for my positions on other protocols'}
+              ? 'Monitor change in Supply/Borrow rates for your open Compound positions.'
+              : 'Monitor when Compound offers better rates for your positions on other lending-borrowing platforms.'}
           </p>
 
           <div className="mb-4 flex justify-end">
@@ -164,11 +164,19 @@ export default function PositionsModal<T extends BasePosition>({
               </div>
             ) : !walletHasPositions ? (
               <div className="p-6 text-center">
-                <p className="text-theme-muted">No active positions found for this wallet address</p>
+                <p className="text-theme-muted">
+                  {modalType === 'GENERAL'
+                    ? 'No active positions found for this wallet address'
+                    : 'No active positions found for this wallet address on any of the supported platforms'}
+                </p>
               </div>
             ) : filteredPositions.length === 0 ? (
               <div className="p-6 text-center">
-                <p className="text-theme-muted">No positions found for this wallet</p>
+                <p className="text-theme-muted">
+                  {modalType === 'GENERAL'
+                    ? 'No positions found for this wallet address'
+                    : 'No positions found for this wallet address on any of the supported platforms'}
+                </p>
               </div>
             ) : (
               <>
@@ -194,7 +202,7 @@ export default function PositionsModal<T extends BasePosition>({
         </div>
 
         <div className="pt-4 border-primary-color">
-          <p className="text-theme-primary mb-4">I want to monitor various chains and markets to be alerted about the opportunities</p>
+          <p className="text-theme-primary mb-4">Monitor various chains and markets to be alerted about the opportunities</p>
 
           <Button
             onClick={onSwitchToMonitor}

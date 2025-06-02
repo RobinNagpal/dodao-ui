@@ -18,6 +18,7 @@ import { ArrowLeftRight, Plus, TrendingDown, TrendingUp } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import type React from 'react';
 import { useEffect, useState } from 'react';
+import { toSentenceCase } from '@/utils/getSentenceCase';
 
 export default function CompareCompoundPage() {
   const { data } = useSession();
@@ -110,7 +111,10 @@ export default function CompareCompoundPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold mb-2 text-theme-primary">Compound vs Others</h1>
-          <p className="text-theme-muted">Monitor when Compound outperforms other DeFi platforms.</p>
+          <p className="text-theme-muted">
+            Monitor Compound&apos;s performance and see when it outperforms other Lending-Borrowing DeFi platforms—generally or for a specific wallet—by
+            creating your own custom alerts.
+          </p>
         </div>
         <Button
           onClick={() => setShowCreateComparisonModal(true)}
@@ -122,7 +126,7 @@ export default function CompareCompoundPage() {
 
       {/* Filter tabs */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <Tabs defaultValue="all" value={activeTab} className="w-full md:w-auto" onValueChange={setActiveTab}>
+        {/* <Tabs defaultValue="all" value={activeTab} className="w-full md:w-auto" onValueChange={setActiveTab}>
           <TabsList className="grid grid-cols-3 w-full md:w-[400px] bg-theme-bg-secondary">
             <TabsTrigger
               value="all"
@@ -151,7 +155,8 @@ export default function CompareCompoundPage() {
               Position Alerts
             </TabsTrigger>
           </TabsList>
-        </Tabs>
+        </Tabs> */}
+        <div></div>
 
         <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
           <div className="flex gap-2">
@@ -200,10 +205,8 @@ export default function CompareCompoundPage() {
             <Table>
               <TableHeader>
                 <TableRow className="border-primary-color">
-                  <TableHead className="w-[120px]">Alert Type</TableHead>
+                  <TableHead className="w-[120px]">Alert</TableHead>
                   <TableHead className="w-[180px]">Chain/Market</TableHead>
-                  <TableHead className="w-[180px]">Wallet Address</TableHead>
-                  <TableHead className="w-[180px]">Compare With</TableHead>
                   <TableHead className="w-[150px]">Conditions</TableHead>
                   <TableHead className="w-[150px]">Frequency</TableHead>
                   <TableHead className="w-[100px]">Status</TableHead>
@@ -219,8 +222,13 @@ export default function CompareCompoundPage() {
                       <TableRow key={alert.id} className="border-primary-color">
                         <TableCell className="font-medium">
                           <div className="flex flex-col">
-                            <span className="text-theme-primary">{alert.actionType.charAt(0) + alert.actionType.slice(1).toLowerCase()}</span>
-                            {alert.category === 'PERSONALIZED' && <span className="text-xs text-primary-color">Personalized</span>}
+                            <span className="text-theme-primary">{toSentenceCase(alert.actionType)}</span>
+                            {alert.category === 'PERSONALIZED' && (
+                              <span className="text-xs text-primary-color">{formatWalletAddress(alert.walletAddress!)}</span>
+                            )}
+                            <span>
+                              <PlatformsCell platforms={alert.compareProtocols || []} />
+                            </span>
                           </div>
                         </TableCell>
 
@@ -229,16 +237,6 @@ export default function CompareCompoundPage() {
                             <ChainsCell chains={alert.selectedChains || []} />
                             <AssetsCell assets={alert.selectedAssets || []} chains={alert.selectedChains} />
                           </div>
-                        </TableCell>
-
-                        <TableCell className="font-medium">
-                          <div className="flex flex-col">
-                            <span className="text-theme-primary">{alert.walletAddress ? formatWalletAddress(alert.walletAddress) : ''}</span>
-                          </div>
-                        </TableCell>
-
-                        <TableCell>
-                          <PlatformsCell platforms={alert.compareProtocols || []} />
                         </TableCell>
 
                         <TableCell>

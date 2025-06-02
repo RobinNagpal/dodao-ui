@@ -4,11 +4,9 @@ import { AlertCategory, AlertActionType, NotificationFrequency, ConditionType, S
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import {
-  BaseAlertCondition,
-  BaseDeliveryChannel,
   getUser,
   mapChainsToPrismaConnect,
-  mapMarketsToPrismaConnect,
+  mapMarketsByAddressToPrismaConnect,
   validateArrayFields,
   validateConditions,
   validateDeliveryChannels,
@@ -78,7 +76,7 @@ async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPaylo
   const chainConnect = mapChainsToPrismaConnect(selectedChains);
 
   // 2) Map each selectedMarkets → Asset PK via chain+symbol
-  const assetConnect = mapMarketsToPrismaConnect(selectedChains, selectedMarkets);
+  const assetConnect = mapMarketsByAddressToPrismaConnect(selectedChains, selectedMarkets);
 
   // 3) Create the personalized alert
   const alert = await prisma.alert.create({

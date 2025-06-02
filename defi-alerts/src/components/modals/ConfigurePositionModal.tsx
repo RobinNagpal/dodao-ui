@@ -399,7 +399,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
 
                 <p className="text-sm text-theme-muted mb-4">
                   {modalType === 'GENERAL'
-                    ? 'Define when you want to be alerted about changes to this position. You will receive an alert if <strong>any</strong> of the following conditions are met.'
+                    ? 'Define when you want to be alerted about changes to this position. You will receive an alert if any of the following conditions are met.'
                     : 'Set the minimum rate difference required to trigger an alert. You’ll be notified when Compound becomes competitively better by your specified threshold.'}
                 </p>
 

@@ -10,6 +10,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { type Alert, type Channel, frequencyOptions, type PrismaCondition, severityOptions } from '@/types/alerts';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
+import { toSentenceCase } from '@/utils/getSentenceCase';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
@@ -133,8 +134,10 @@ export default function AlertsPage() {
     <div className="max-w-7xl mx-auto px-2 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold mb-2 text-theme-primary">Market Alerts</h1>
-          <p className="text-theme-muted">Monitor market rates and get notified when conditions are met.</p>
+          <h1 className="text-3xl font-bold mb-2 text-theme-primary">Compound Alerts</h1>
+          <p className="text-theme-muted">
+            Monitor Compound&apos;s market rates—generally or for a specific wallet—and receive notifications based on your custom alert settings.
+          </p>
         </div>
 
         <Button
@@ -147,7 +150,7 @@ export default function AlertsPage() {
 
       {/* Filter tabs */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <Tabs defaultValue="all" value={activeTab} className="w-full md:w-auto" onValueChange={setActiveTab}>
+        {/* <Tabs defaultValue="all" value={activeTab} className="w-full md:w-auto" onValueChange={setActiveTab}>
           <TabsList className="grid grid-cols-3 w-full md:w-[400px] bg-theme-bg-secondary">
             <TabsTrigger
               value="all"
@@ -176,7 +179,8 @@ export default function AlertsPage() {
               Position Alerts
             </TabsTrigger>
           </TabsList>
-        </Tabs>
+        </Tabs> */}
+        <div></div>
 
         <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
           <div className="flex gap-2">
@@ -241,9 +245,8 @@ export default function AlertsPage() {
             <Table>
               <TableHeader>
                 <TableRow className="border-primary-color">
-                  <TableHead className="w-[120px]">Alert Type</TableHead>
+                  <TableHead className="w-[120px]">Alert</TableHead>
                   <TableHead className="w-[200px]">Chain/Market</TableHead>
-                  <TableHead className="w-[200px]">Wallet Address</TableHead>
                   <TableHead className="w-[180px]">Conditions</TableHead>
                   <TableHead className="w-[150px]">Frequency</TableHead>
                   <TableHead className="w-[200px]">Delivery Channel</TableHead>
@@ -255,29 +258,23 @@ export default function AlertsPage() {
                 {filteredAlerts.length > 0 ? (
                   filteredAlerts.map((alert) => {
                     // For simplicity pick first condition & channel
-                    const cond = alert.conditions[0] as PrismaCondition | undefined;
                     const chan = alert.deliveryChannels[0] as Channel | undefined;
-                    const hasMultipleConditions = alert.conditions.length > 1;
                     const hasMultipleChannels = alert.deliveryChannels.length > 1;
 
                     return (
                       <TableRow key={alert.id} className="border-primary-color">
                         <TableCell className="font-medium">
                           <div className="flex flex-col">
-                            <span className="text-theme-primary">{alert.actionType.charAt(0) + alert.actionType.slice(1).toLowerCase()}</span>
-                            {alert.category === 'PERSONALIZED' && <span className="text-xs text-primary-color">Personalized</span>}
+                            <span className="text-theme-primary">{toSentenceCase(alert.actionType)}</span>
+                            {alert.category === 'PERSONALIZED' && (
+                              <span className="text-xs text-primary-color">{formatWalletAddress(alert.walletAddress!)}</span>
+                            )}
                           </div>
                         </TableCell>
 
                         <TableCell>
                           <ChainsCell chains={alert.selectedChains || []} />
                           <AssetsCell assets={alert.selectedAssets || []} chains={alert.selectedChains} />
-                        </TableCell>
-
-                        <TableCell className="font-medium">
-                          <div className="flex flex-col">
-                            <span className="text-theme-primary">{alert.walletAddress ? formatWalletAddress(alert.walletAddress) : ''}</span>
-                          </div>
                         </TableCell>
 
                         <TableCell>
