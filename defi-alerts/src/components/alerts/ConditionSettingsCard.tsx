@@ -55,8 +55,8 @@ export default function ConditionSettingsCard({
       </CardHeader>
       <CardContent>
         <p className="text-sm text-theme-muted mb-4">
-          Define when you want to be alerted about market changes. You will receive an alert if any of the following conditions are met for any of the selected
-          markets.
+          Define the conditions when you want to be alerted about market changes. You will receive an alert through the selected channel if any of the set
+          conditions are met for any of the selected markets.
         </p>
 
         {/* Conditions List */}
