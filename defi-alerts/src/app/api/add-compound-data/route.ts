@@ -16,15 +16,15 @@ export async function POST() {
 
     await Promise.all(
       COMPOUND_MARKETS.map(async ({ chainId, symbol, baseAssetAddress }: MarketConfig) => {
-        const compositeId = `${chainId}_${baseAssetAddress}`;
+        const compositeId = `${chainId}_${baseAssetAddress.toLowerCase()}`;
         await prisma.asset.upsert({
           where: { chainId_address: compositeId },
-          update: { symbol, address: baseAssetAddress },
+          update: { symbol, address: baseAssetAddress.toLowerCase() },
           create: {
             chainId_address: compositeId,
             chainId,
             symbol,
-            address: baseAssetAddress,
+            address: baseAssetAddress.toLowerCase(),
           },
         });
       })
