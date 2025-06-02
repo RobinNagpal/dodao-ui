@@ -360,7 +360,7 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
       </Card>
 
       {/* Action Buttons */}
-      <div className="flex justify-between">
+      <div className="flex justify-end gap-x-5">
         <Button onClick={() => router.push('/alerts')} className="border hover-border-primary">
           <ArrowLeft size={16} className="mr-2" /> Back to Alerts
         </Button>

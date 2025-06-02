@@ -18,6 +18,7 @@ import { AlertCategory, AlertActionType, ConditionType as PrismaConditionType, D
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BasePosition, WalletComparisonPosition } from './types';
 import { PersonalizedComparisonAlertPayload, PersonalizedComparisonAlertResponse } from '@/app/api/alerts/create/personalized-comparison/route';
+import { toSentenceCase } from '@/utils/getSentenceCase';
 
 interface ConfigurePositionProps<T extends BasePosition> {
   isOpen: boolean;
@@ -84,15 +85,17 @@ export default function ConfigurePositionModal<T extends BasePosition>({
   // Get contextual message for condition type
   const getComparisonMessage = (position: WalletComparisonPosition) => {
     if (position.actionType === 'SUPPLY') {
-      return `Example: If ${position.platform} offers ${position.rate} APR and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches ${(
-        parseFloat(position.rate.replace('%', '')) + 1.2
-      ).toFixed(1)}% (${position.platform} rate + your threshold)`;
+      return `Example: If ${toSentenceCase(position.platform)} offers ${
+        position.rate
+      } APR and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches ${(parseFloat(position.rate.replace('%', '')) + 1.2).toFixed(
+        1
+      )}% (${toSentenceCase(position.platform)} rate + your threshold)`;
     } else {
-      return `Example: If ${position.platform} charges ${
+      return `Example: If ${toSentenceCase(position.platform)} charges ${
         position.rate
       } APR and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to ${(parseFloat(position.rate.replace('%', '')) - 0.5).toFixed(
         1
-      )}% (${position.platform} rate - your threshold)`;
+      )}% (${toSentenceCase(position.platform)} rate - your threshold)`;
     }
   };
 
@@ -346,7 +349,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-theme-primary">
             Configure Alert for {selectedPosition?.assetSymbol} on {selectedPosition?.chain}
-            {modalType === 'COMPARISON' ? ` - ${(selectedPosition as unknown as WalletComparisonPosition)?.platform}` : ''}
+            {modalType === 'COMPARISON' ? ` - ${toSentenceCase((selectedPosition as unknown as WalletComparisonPosition)?.platform)}` : ''}
           </DialogTitle>
         </DialogHeader>
 

@@ -1,10 +1,9 @@
 'use client';
 
-import { AlertActionsCell, AssetsCell, ChainsCell, ConditionsCell, PlatformsCell } from '@/components/alerts';
+import { AlertActionsCell, AssetsCell, ChainsCell, ConditionsCell } from '@/components/alerts';
 import CreateAlertModals from '@/components/alerts/CreateAlertModals';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -17,39 +16,15 @@ import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Bell, ChevronDown, Info, Plus, TrendingDown, TrendingUp } from 'lucide-react';
+import { Bell, Info, Plus, TrendingDown, TrendingUp } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import type React from 'react';
 import { useEffect, useState } from 'react';
-
-// Asset Image component with error handling
-function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
-  const [imageError, setImageError] = useState(false);
-
-  const imageUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain.toLowerCase()}/assets/${assetAddress}/logo.png`;
-
-  if (imageError) {
-    // Fallback to a colored div with the first letter of the token symbol
-    return (
-      <div
-        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
-        style={{ width: '20px', height: '20px', fontSize: '10px' }}
-      >
-        {assetSymbol.charAt(0)}
-      </div>
-    );
-  }
-
-  return <Image src={imageUrl} alt={assetSymbol} width={20} height={20} onError={() => setImageError(true)} />;
-}
 
 export default function AlertsPage() {
   const { data } = useSession();
   const session = data as DoDAOSession;
 
-  const router = useRouter();
   const baseUrl = getBaseUrl();
   const [filteredAlerts, setFilteredAlerts] = useState<Alert[]>([]);
   const [activeTab, setActiveTab] = useState('all');

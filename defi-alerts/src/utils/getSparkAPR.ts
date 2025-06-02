@@ -7,6 +7,7 @@ import type { Collateral } from '@/shared/migrator/types';
 import { calculateAaveAPR } from './calculateAaveAPR';
 import { calculateAaveAPY } from './calculateAaveAPY';
 import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
+import { useCallback } from 'react';
 
 // — retry helper with exponential backoff —
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -41,8 +42,13 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
 
   // pick the provider address (might be string or object)
   const flattenProvider = (addrOrObj: Address | Record<string, Address>): Address => (typeof addrOrObj === 'string' ? addrOrObj : Object.values(addrOrObj)[0]);
+  const SYMBOL_BY_ASSET: Record<string, string> = COMPOUND_MARKETS.reduce((acc, m) => {
+    // normalize to lowercase so lookups are case-insensitive
+    acc[m.baseAssetAddress.toLowerCase()] = m.symbol;
+    return acc;
+  }, {} as Record<string, string>);
 
-  return async () => {
+  return useCallback(async () => {
     const chains = Object.keys(SPARK_DATA_PROVIDER).map((id) => Number(id));
 
     const perChainAprs = await Promise.all(
@@ -50,7 +56,6 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
         const provider = flattenProvider(SPARK_DATA_PROVIDER[chainId] ?? {});
         if (!provider) return [];
 
-        // 1) get all Spark reserves
         let collaterals: Collateral[];
         try {
           const [res] = await retry(() =>
@@ -71,14 +76,7 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
         }
         if (!collaterals.length) return [];
 
-        // 2) filter to only those in COMPOUND_MARKETS
-        const compoundForChain = COMPOUND_MARKETS.filter((m) => m.chainId === chainId);
-        const compoundSet = new Set(compoundForChain.map((m) => m.baseAssetAddress.toLowerCase()));
-        const filtered = collaterals.filter((c) => compoundSet.has(c.tokenAddress.toLowerCase()));
-        if (!filtered.length) return [];
-
-        // 3) batch-fetch reserve data
-        const calls = filtered.map((c) => ({
+        const calls = collaterals.map((c) => ({
           address: provider,
           abi: Pool_Abi_DataProvider,
           functionName: 'getReserveData' as const,
@@ -105,10 +103,10 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
           return [];
         }
 
-        // 4) compute APR/APY for each filtered reserve
+        // compute APR/APY for each filtered reserve
         const chainName = CHAINS.find((c) => c.chainId === chainId)?.name ?? 'Unknown';
 
-        return filtered.map((c, i) => {
+        return collaterals.map((c, i) => {
           const d = results[i];
           const aprData = calculateAaveAPR({
             reserveDataArray: [
@@ -121,11 +119,12 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
             ],
           })[0];
           const apyData = calculateAaveAPY([aprData])[0];
+          const assetSymbol = SYMBOL_BY_ASSET[c.tokenAddress.toLowerCase()] ?? 'Unknown';
 
           return {
             chainId,
             chainName,
-            asset: c.symbol,
+            asset: assetSymbol === 'WETH' ? 'ETH' : assetSymbol,
             assetAddress: c.tokenAddress,
             netEarnAPY: parseFloat(apyData.supplyAPY),
             netBorrowAPY: parseFloat(apyData.variableBorrowAPY),
@@ -135,5 +134,5 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
     );
 
     return perChainAprs.flat();
-  };
+  }, [config]);
 }

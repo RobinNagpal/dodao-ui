@@ -15,14 +15,14 @@ export function ChainImage({ chain }: { chain: string }) {
     console.log(`Got error loading image for chain. URL: ${imageUrl}`);
     // Fallback to a colored div with the first letter of the token symbol
     return (
-      <div
+      <span
         className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
         style={{ width: '20px', height: '20px', fontSize: '10px' }}
       >
         {chain.charAt(0)}
-      </div>
+      </span>
     );
   }
 
-  return <Image src={imageUrl} alt={chain} width={20} height={20} onError={() => setImageError(true)} />;
+  return <Image src={imageUrl} alt={chain} width={20} height={20} onError={() => setImageError(true)} className="inline" />;
 }

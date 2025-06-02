@@ -11,6 +11,7 @@ export interface BasePosition {
   assetAddress: string;
   rate: string;
   actionType: ActionType;
+  disable?: boolean;
   notificationFrequency: NotificationFrequency;
   conditions: Array<{
     id: string;

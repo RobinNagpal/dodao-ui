@@ -15,6 +15,7 @@ import {
   severityOptions,
   frequencyOptions,
 } from '@/types/alerts';
+import { toSentenceCase } from '@/utils/getSentenceCase';
 
 interface PositionSettingsCardProps {
   title: string;
@@ -65,7 +66,7 @@ export default function PositionSettingsCard({
             <TableBody>
               {rows.map((r, i) => (
                 <TableRow key={i} className="border-primary-color">
-                  {isComparisonCard && <TableCell className="text-theme-primary">{(r as ComparisonRow).platform}</TableCell>}
+                  {isComparisonCard && <TableCell className="text-theme-primary">{toSentenceCase((r as ComparisonRow).platform)}</TableCell>}
                   <TableCell className="text-theme-primary">{r.chain}</TableCell>
                   <TableCell className="text-theme-primary">{r.market}</TableCell>
                   <TableCell className="text-theme-primary">{r.rate}</TableCell>

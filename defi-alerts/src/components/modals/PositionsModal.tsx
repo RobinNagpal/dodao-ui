@@ -10,6 +10,7 @@ import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { AssetImage } from '../alerts/core/AssetImage';
 import { BasePosition, WalletComparisonPosition } from './types';
+import { toSentenceCase } from '@/utils/getSentenceCase';
 
 type PositionsModalProps<T extends BasePosition> = {
   isOpen: boolean;
@@ -220,55 +221,62 @@ function PositionList<T extends BasePosition>({ modalType, positions, actionType
   if (positions.length === 0) return null;
 
   const title = actionType === 'SUPPLY' ? 'Supply Positions' : 'Borrow Positions';
+  const sortedPositions = [...positions].sort((a, b) => {
+    // false → 0, true → 1, so (0 - 1) = -1 means “a” (non-disabled) runs before “b” (disabled)
+    return Number(a.disable) - Number(b.disable);
+  });
 
   return (
     <div className="mb-4">
       <h3 className="text-lg font-semibold my-2 text-primary-color">{title}</h3>
-      {positions.map((position, idx) => (
+      {sortedPositions.map((position, idx) => (
         <div key={position.id} className="flex items-center justify-between gap-x-2 p-3 border-b border-primary-color hover:bg-theme-bg-muted">
-          <div className="flex gap-x-2 items-center">
-            <div>
-              <div className="flex items-center gap-x-2">
-                {modalType === 'COMPARISON' && <PlatformImage platform={(position as unknown as WalletComparisonPosition).platform} />}
-                {modalType === 'COMPARISON' ? `${(position as unknown as WalletComparisonPosition).platform} - ` : ''}
-                <span className="text-theme-primary">Position # {idx + 1}</span>
-              </div>
-              <div className="flex gap-x-2">
-                <AssetImage chain={position.chain} assetAddress={position.assetAddress} assetSymbol={position.assetSymbol} />
-                <div className="text-sm text-theme-muted flex">
-                  <span className="mr-2">{position.assetSymbol} on </span>
-                  <ChainImage chain={position.chain} />
-                  <span className="ml-2 mr-1">({position.chain})</span>– Current {modalType === 'GENERAL' ? 'APR' : 'APY'}: {position.rate}
-                </div>
-              </div>
+          <div className={`${position.disable ? 'text-gray-500' : 'text-theme-muted '}`}>
+            <div className="flex items-center gap-x-2">
+              {modalType === 'COMPARISON' && <PlatformImage platform={(position as unknown as WalletComparisonPosition).platform} />}
+              {modalType === 'COMPARISON' ? `${toSentenceCase((position as unknown as WalletComparisonPosition).platform)} - ` : ''}
+              <span className={`${position.disable ? 'text-gray-500' : 'text-theme-primary'}`}>Position # {idx + 1}</span>
+            </div>
+            <div className="">
+              <AssetImage chain={position.chain} assetAddress={position.assetAddress} assetSymbol={position.assetSymbol} />
+              <span className="mx-2">{position.assetSymbol} on </span>
+              <ChainImage chain={position.chain} />
+              <span className="ml-2 mr-1">({position.chain})</span>– Current {modalType === 'GENERAL' ? 'APR' : 'APY'}: {position.rate}
             </div>
           </div>
 
-          {hasExistingAlert(position) ? (
-            <Button
-              size="sm"
-              className="bg-primary-color text-primary-text"
-              onClick={(e) => {
-                e.stopPropagation();
-                const alertId = getAlertId(position);
-                if (alertId) {
-                  router.push(`/alerts/edit/${alertId}`);
-                }
-              }}
-            >
-              Edit
-            </Button>
-          ) : (
-            <Button
-              size="sm"
-              className="bg-primary-color text-primary-text"
-              onClick={(e) => {
-                e.stopPropagation();
-                selectPosition(position);
-              }}
-            >
-              Add Alert
-            </Button>
+          {position.disable && <div className="text-sm text-right">No corresponding Compound Market for this chain and asset</div>}
+
+          {!position.disable && (
+            <>
+              {hasExistingAlert(position) ? (
+                <Button
+                  size="sm"
+                  className="bg-primary-color text-primary-text"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const alertId = getAlertId(position);
+                    if (alertId) {
+                      router.push(`/alerts/edit/${alertId}`);
+                    }
+                  }}
+                >
+                  Edit
+                </Button>
+              ) : (
+                <Button
+                  size="sm"
+                  className="bg-primary-color text-primary-text"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    selectPosition(position);
+                  }}
+                  disabled={position.disable}
+                >
+                  Add Alert
+                </Button>
+              )}
+            </>
           )}
         </div>
       ))}

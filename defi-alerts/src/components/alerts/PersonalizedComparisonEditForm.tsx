@@ -22,6 +22,7 @@ import {
 } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
+import { toSentenceCase } from '@/utils/getSentenceCase';
 
 interface PersonalizedComparisonEditFormProps {
   alert: Alert;
@@ -263,7 +264,7 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
         </CardHeader>
         <CardContent>
           <p className="text-sm text-theme-muted mb-4">
-            Update alert conditions for comparing Compound with {row.platform} for {actionType.toLowerCase()} rates.
+            Update alert conditions for comparing Compound with {toSentenceCase(row.platform)} for {actionType.toLowerCase()} rates.
           </p>
           <div className="overflow-x-auto">
             <Table>
@@ -279,7 +280,7 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
               </TableHeader>
               <TableBody>
                 <TableRow className="border-primary-color">
-                  <TableCell className="text-theme-primary">{row.platform}</TableCell>
+                  <TableCell className="text-theme-primary">{toSentenceCase(row.platform)}</TableCell>
                   <TableCell className="text-theme-primary">{row.chain}</TableCell>
                   <TableCell className="text-theme-primary">{row.market}</TableCell>
                   <TableCell>
@@ -400,7 +401,7 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
       </Card>
 
       {/* Action Buttons */}
-      <div className="flex justify-between">
+      <div className="flex justify-end gap-x-5">
         <Button onClick={() => router.push('/alerts/compare-compound')} className="border hover-border-primary">
           <ArrowLeft size={16} className="mr-2" /> Back to Alerts
         </Button>
