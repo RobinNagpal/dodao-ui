@@ -7,7 +7,6 @@ import type { Collateral } from '@/shared/migrator/types';
 import { calculateAaveAPR } from './calculateAaveAPR';
 import { calculateAaveAPY } from './calculateAaveAPY';
 import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
-import { useCallback } from 'react';
 
 // — retry helper with exponential backoff —
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -48,7 +47,7 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
     return acc;
   }, {} as Record<string, string>);
 
-  return useCallback(async () => {
+  return async () => {
     const chains = Object.keys(SPARK_DATA_PROVIDER).map((id) => Number(id));
 
     const perChainAprs = await Promise.all(
@@ -134,5 +133,5 @@ export function useSparkAprs(): () => Promise<MarketApr[]> {
     );
 
     return perChainAprs.flat();
-  }, [config]);
+  };
 }
