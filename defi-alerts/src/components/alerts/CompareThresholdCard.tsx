@@ -35,9 +35,9 @@ export default function CompareThresholdCard({
   // Get contextual message for comparison logic
   const getComparisonMessage = (alertType: 'supply' | 'borrow') => {
     if (alertType === 'supply') {
-      return `Example: If Aave offers 6.5% APR and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches 7.7% (Aave rate + your threshold)`;
+      return `If Aave offers 6.5% APY and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches 7.7% (Aave rate + Your set threshold)`;
     } else {
-      return `Example: If Aave charges 4.0% APR and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to 3.5% (Aave rate - your threshold)`;
+      return `If Aave charges 4.0% APY and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to 3.5% (Aave rate - Your set threshold)`;
     }
   };
 

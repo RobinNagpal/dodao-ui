@@ -601,9 +601,7 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
                 ))}
               </SelectContent>
             </Select>
-            <p className="text-sm text-theme-muted mt-4">
-              This limits how often you’ll receive notifications for this alert, regardless of how many thresholds are triggered.
-            </p>
+            <p className="text-sm text-theme-muted mt-4">Note: This limits how often you’ll receive notifications for this alert.</p>
           </div>
         </CardContent>
       </Card>

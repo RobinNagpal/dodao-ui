@@ -358,7 +358,9 @@ export default function CompoundMarketEditForm({ alert, alertId }: CompoundMarke
           </Button>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-theme-muted mb-4">Define when you want to be alerted about market changes.</p>
+          <p className="text-sm text-theme-muted mb-4">
+            Define the conditions when you want to be alerted about market changes. You will receive an alert if any of the set conditions are met.
+          </p>
 
           {/* Conditions List */}
           {conditions.map((cond, i) => (
@@ -491,9 +493,7 @@ export default function CompoundMarketEditForm({ alert, alertId }: CompoundMarke
                 ))}
               </SelectContent>
             </Select>
-            <p className="text-sm text-theme-muted mt-4">
-              This limits how often you’ll receive notifications for this alert, regardless of how many thresholds are triggered.
-            </p>
+            <p className="text-sm text-theme-muted mt-4">Note: This limits how often you’ll receive notifications for this alert.</p>
           </div>
         </CardContent>
       </Card>

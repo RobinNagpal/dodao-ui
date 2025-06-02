@@ -72,9 +72,9 @@ export default function ConfigurePositionModal<T extends BasePosition>({
   const getConditionMessage = (conditionType: ConditionType) => {
     switch (conditionType) {
       case 'APR_RISE_ABOVE':
-        return 'Alert when APR exceeds your threshold (e.g., alert when APR goes above 5%)';
+        return 'Alert when APR exceeds your set threshold (e.g., alert when APR goes above 5%)';
       case 'APR_FALLS_BELOW':
-        return 'Alert when APR drops under your threshold (e.g., alert when APR goes below 2%)';
+        return 'Alert when APR drops under your set threshold (e.g., alert when APR goes below 2%)';
       case 'APR_OUTSIDE_RANGE':
         return 'Alert when APR moves outside your specified range (e.g., alert when APR is below 3% or above 6%)';
       default:
@@ -85,17 +85,17 @@ export default function ConfigurePositionModal<T extends BasePosition>({
   // Get contextual message for condition type
   const getComparisonMessage = (position: WalletComparisonPosition) => {
     if (position.actionType === 'SUPPLY') {
-      return `Example: If ${toSentenceCase(position.platform)} offers ${
+      return `If ${toSentenceCase(position.platform)} offers ${
         position.rate
-      } APR and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches ${(parseFloat(position.rate.replace('%', '')) + 1.2).toFixed(
+      } APY and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches ${(parseFloat(position.rate.replace('%', '')) + 1.2).toFixed(
         1
-      )}% (${toSentenceCase(position.platform)} rate + your threshold)`;
+      )}% (${toSentenceCase(position.platform)} rate + Your set threshold)`;
     } else {
-      return `Example: If ${toSentenceCase(position.platform)} charges ${
+      return `If ${toSentenceCase(position.platform)} charges ${
         position.rate
-      } APR and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to ${(parseFloat(position.rate.replace('%', '')) - 0.5).toFixed(
+      } APY and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to ${(parseFloat(position.rate.replace('%', '')) - 0.5).toFixed(
         1
-      )}% (${toSentenceCase(position.platform)} rate - your threshold)`;
+      )}% (${toSentenceCase(position.platform)} rate - Your set threshold)`;
     }
   };
 
@@ -362,7 +362,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
                 </Badge>
                 <div>
                   <span className="text-theme-primary">
-                    Current {modalType === 'GENERAL' ? 'APR' : `${(selectedPosition as unknown as WalletComparisonPosition).platform} APY`}:{' '}
+                    Current {modalType === 'GENERAL' ? 'APR' : `${toSentenceCase((selectedPosition as unknown as WalletComparisonPosition).platform)} APY`}:{' '}
                     {selectedPosition.rate}
                   </span>
                 </div>
@@ -399,8 +399,8 @@ export default function ConfigurePositionModal<T extends BasePosition>({
 
                 <p className="text-sm text-theme-muted mb-4">
                   {modalType === 'GENERAL'
-                    ? 'Define when you want to be alerted about changes to this position. You will receive an alert if <strong>any</strong> of the following conditions are met.'
-                    : 'Set the minimum rate difference required to trigger an alert. You’ll be notified when Compound becomes competitively better by your specified threshold.'}
+                    ? 'Define when you want to be alerted about changes to this position. You will receive an alert if any of the set conditions are met.'
+                    : 'Set the Rate Difference required to trigger an alert. You will receive an alert if any of the set conditions are met.'}
                 </p>
 
                 {modalType === 'COMPARISON' ? (
