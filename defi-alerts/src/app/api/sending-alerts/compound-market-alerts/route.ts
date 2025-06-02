@@ -1,5 +1,7 @@
 import { prisma } from '@/prisma';
 import { useCompoundMarketsAprs as getCompoundMarketsAprs } from '@/utils/getCompoundAPR';
+import { sendAlertNotificationEmail } from '@/app/api/sending-alerts/send-alert-notification';
+import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Alert, AlertActionType, DeliveryChannelType, NotificationFrequency } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -236,13 +238,42 @@ async function sendNotifications(
   for (const ch of alert.deliveryChannels) {
     const dest = ch.channelType === DeliveryChannelType.WEBHOOK ? ch.webhookUrl! : ch.email!;
     if (ch.channelType === DeliveryChannelType.WEBHOOK) {
-      await fetch(dest, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      try {
+        await fetch(dest, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } catch (error) {
+        console.error(`Error sending webhook notification to ${dest}:`, error);
+        await logError(
+          'Error sending webhook notification in compound-market-alerts',
+          {
+            alertId: alert.id,
+            webhookUrl: dest,
+            payload,
+          },
+          error as Error
+        );
+      }
     } else {
-      console.log(`(email) to ${dest}:`, payload);
+      try {
+        await sendAlertNotificationEmail({
+          email: dest,
+          payload,
+        });
+      } catch (error) {
+        console.error(`Error sending email notification to ${dest}:`, error);
+        await logError(
+          'Error sending email notification in compound-market-alerts',
+          {
+            alertId: alert.id,
+            email: dest,
+            payload,
+          },
+          error as Error
+        );
+      }
     }
   }
 }
