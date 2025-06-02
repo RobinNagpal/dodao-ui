@@ -15,6 +15,14 @@
     {
       "path": "/api/cron",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/sending-alerts/compare-compound",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/sending-alerts/compound-market-alerts",
+      "schedule": "0 * * * *"
     }
   ]
 }
