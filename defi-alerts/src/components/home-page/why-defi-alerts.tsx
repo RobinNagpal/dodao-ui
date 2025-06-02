@@ -22,7 +22,7 @@ const reasons = [
   {
     title: 'Personal Portfolio Tracking',
     description:
-      "Your wallet isn't static. Alerts auto–track your positions, so you can adjust supply/borrow limits or rebalance whenever your thresholds are hit.",
+      "Your wallet isn't static. Alerts auto–track your positions, so you can adjust supply/borrow limits or rebalance whenever your set thresholds are hit.",
     icon: Wallet,
   },
 ];

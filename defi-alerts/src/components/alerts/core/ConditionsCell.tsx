@@ -41,7 +41,8 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ conditions }) => {
       {conditions.map((condition, index) => (
         <div key={index} className="flex items-center gap-2 mb-1">
           {condition.severity !== 'NONE' && <Badge className={`${getSeverityColor(condition.severity)}`}>{severityLabel(condition)}</Badge>}
-          <span className="text-xs text-theme-muted">{formatThresholdValue(condition)}</span>
+          <span className="font-semibold text-theme-muted">{formatThresholdValue(condition)}</span>
+          <span className="font-semibold text-theme-muted">{condition.conditionType}</span>
         </div>
       ))}
     </div>

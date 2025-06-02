@@ -108,108 +108,115 @@ export default function PositionsModal<T extends BasePosition>({
       <DialogContent className="sm:max-w-2xl md:max-w-3xl lg:max-w-6xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-theme-primary">
-            {modalType === 'GENERAL' ? 'Select Position to Monitor' : 'Select Position to Compare'}
+            {modalType === 'GENERAL' ? 'Create Compound Alerts' : 'Create Compound Vs Others Alerts'}
           </DialogTitle>
         </DialogHeader>
 
-        <div className="py-4">
-          <h2 className="text-xl font-semibold mb-2 text-primary-color">
-            {walletAddresses.length === 1 ? 'One Wallet Address Exists' : `${walletAddresses.length} Wallet Addresses Exist`}
-          </h2>
-          <p className="text-theme-primary mb-4">
-            {modalType === 'GENERAL'
-              ? 'Monitor change in Supply/Borrow rates for your open Compound positions.'
-              : 'Monitor when Compound offers better rates for your positions on other lending-borrowing platforms.'}
-          </p>
+        <div className="p-5 bg-theme-secondary rounded-lg border border-primary-color">
+          <div className="text-xl font-semibold">General Alert</div>
+          <div className="border-primary-color flex items-center gap-x-2">
+            <p className="text-theme-primary">Monitor various chains and markets to be alerted about the opportunities</p>
 
-          <div className="mb-4 flex justify-end">
-            <Button onClick={onSwitchToAddWallet} className="bg-primary-color text-primary-text">
-              <Plus size={20} className="mr-2" /> Add wallet
+            <Button
+              onClick={onSwitchToMonitor}
+              className="bg-transparent border border-primary-color text-primary-color hover:bg-primary-color hover:text-primary-text"
+            >
+              Monitor Markets
             </Button>
           </div>
-
-          {/* Wallet Selector */}
-          {walletAddresses.length > 1 && (
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold mb-2 text-theme-primary">Your Wallets</h3>
-              <div className="flex flex-wrap gap-2">
-                {walletAddresses.map((wallet) => (
-                  <Button
-                    key={wallet}
-                    variant={wallet === currentWalletAddress ? 'default' : 'outline'}
-                    onClick={() => setCurrentWalletAddress(wallet)}
-                    className={wallet === currentWalletAddress ? 'bg-primary-color text-primary-text' : 'text-theme-primary'}
-                  >
-                    {formatWalletAddress(wallet)}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="mb-4">
-            {walletAddresses.length > 0 && (
-              <div className="flex items-center p-2 border-b border-primary-color">
-                <span className="text-theme-primary">Wallet address - {formatWalletAddress(currentWalletAddress)}</span>
-              </div>
-            )}
-
-            {walletAddresses.length === 0 ? (
-              <div className="p-6 text-center">
-                <p className="text-theme-muted">No Wallet Address Added</p>
-              </div>
-            ) : walletPositionsLoading ? (
-              <div className="p-6 text-center">
-                <p className="text-theme-muted">Loading...</p>
-              </div>
-            ) : !walletHasPositions ? (
-              <div className="p-6 text-center">
-                <p className="text-theme-muted">
-                  {modalType === 'GENERAL'
-                    ? 'No active positions found for this wallet address'
-                    : 'No active positions found for this wallet address on any of the supported platforms'}
-                </p>
-              </div>
-            ) : filteredPositions.length === 0 ? (
-              <div className="p-6 text-center">
-                <p className="text-theme-muted">
-                  {modalType === 'GENERAL'
-                    ? 'No positions found for this wallet address'
-                    : 'No positions found for this wallet address on any of the supported platforms'}
-                </p>
-              </div>
-            ) : (
-              <>
-                <PositionList<T>
-                  modalType={modalType}
-                  positions={filteredPositions.filter((p) => p.actionType === 'SUPPLY')}
-                  actionType="SUPPLY"
-                  selectPosition={selectPosition}
-                  hasExistingAlert={hasExistingAlert}
-                  getAlertId={getAlertId}
-                />
-                <PositionList<T>
-                  modalType={modalType}
-                  positions={filteredPositions.filter((p) => p.actionType === 'BORROW')}
-                  actionType="BORROW"
-                  selectPosition={selectPosition}
-                  hasExistingAlert={hasExistingAlert}
-                  getAlertId={getAlertId}
-                />
-              </>
-            )}
-          </div>
         </div>
+        <hr></hr>
 
-        <div className="pt-4 border-primary-color">
-          <p className="text-theme-primary mb-4">Monitor various chains and markets to be alerted about the opportunities</p>
+        <div className="p-5 bg-theme-secondary rounded-lg border border-primary-color">
+          <div className="text-xl font-semibold">Position Based Alert</div>
+          <div className="py-4">
+            <p className="font-semibold mb-2 text-primary-color">
+              {walletAddresses.length === 1 ? 'One Wallet Address Exists' : `${walletAddresses.length} Wallet Addresses Exist`}
+            </p>
+            <p className="text-theme-primary mb-4">
+              {modalType === 'GENERAL'
+                ? 'Monitor change in Supply/Borrow rates for your open Compound positions.'
+                : 'Monitor when Compound offers better rates for your positions on other lending-borrowing platforms.'}
+            </p>
 
-          <Button
-            onClick={onSwitchToMonitor}
-            className="bg-transparent border border-primary-color text-primary-color hover:bg-primary-color hover:text-primary-text"
-          >
-            Monitor Markets
-          </Button>
+            <div className="flex justify-end">
+              <Button onClick={onSwitchToAddWallet} className="bg-primary-color text-primary-text">
+                <Plus size={20} className="mr-2" /> Add wallet
+              </Button>
+            </div>
+
+            {/* Wallet Selector */}
+            {walletAddresses.length > 1 && (
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold mb-2 text-theme-primary">Your Wallets</h3>
+                <div className="flex flex-wrap gap-2">
+                  {walletAddresses.map((wallet) => (
+                    <Button
+                      key={wallet}
+                      variant={wallet === currentWalletAddress ? 'default' : 'outline'}
+                      onClick={() => setCurrentWalletAddress(wallet)}
+                      className={wallet === currentWalletAddress ? 'bg-primary-color text-primary-text' : 'text-theme-primary'}
+                    >
+                      {formatWalletAddress(wallet)}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="mb-4">
+              {walletAddresses.length > 0 && (
+                <div className="flex items-center p-2 border-b border-primary-color">
+                  <span className="text-theme-primary">Wallet address - {formatWalletAddress(currentWalletAddress)}</span>
+                </div>
+              )}
+
+              {walletAddresses.length === 0 ? (
+                <div className="p-6 text-center">
+                  <p className="text-theme-muted">No Wallet Address Added</p>
+                </div>
+              ) : walletPositionsLoading ? (
+                <div className="p-6 text-center">
+                  <p className="text-theme-muted">Loading...</p>
+                </div>
+              ) : !walletHasPositions ? (
+                <div className="p-6 text-center">
+                  <p className="text-theme-muted">
+                    {modalType === 'GENERAL'
+                      ? 'No active positions found for this wallet address'
+                      : 'No active positions found for this wallet address on any of the supported platforms'}
+                  </p>
+                </div>
+              ) : filteredPositions.length === 0 ? (
+                <div className="p-6 text-center">
+                  <p className="text-theme-muted">
+                    {modalType === 'GENERAL'
+                      ? 'No positions found for this wallet address'
+                      : 'No positions found for this wallet address on any of the supported platforms'}
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <PositionList<T>
+                    modalType={modalType}
+                    positions={filteredPositions.filter((p) => p.actionType === 'SUPPLY')}
+                    actionType="SUPPLY"
+                    selectPosition={selectPosition}
+                    hasExistingAlert={hasExistingAlert}
+                    getAlertId={getAlertId}
+                  />
+                  <PositionList<T>
+                    modalType={modalType}
+                    positions={filteredPositions.filter((p) => p.actionType === 'BORROW')}
+                    actionType="BORROW"
+                    selectPosition={selectPosition}
+                    hasExistingAlert={hasExistingAlert}
+                    getAlertId={getAlertId}
+                  />
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

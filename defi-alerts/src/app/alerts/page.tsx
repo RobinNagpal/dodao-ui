@@ -247,7 +247,7 @@ export default function AlertsPage() {
                 <TableRow className="border-primary-color">
                   <TableHead className="w-[120px]">Alert</TableHead>
                   <TableHead className="w-[200px]">Chain/Market</TableHead>
-                  <TableHead className="w-[180px]">Conditions</TableHead>
+                  <TableHead className="w-[180px]">Condition</TableHead>
                   <TableHead className="w-[150px]">Frequency</TableHead>
                   <TableHead className="w-[200px]">Delivery Channel</TableHead>
                   <TableHead className="w-[100px]">Status</TableHead>
@@ -266,8 +266,10 @@ export default function AlertsPage() {
                         <TableCell className="font-medium">
                           <div className="flex flex-col">
                             <span className="text-theme-primary">{toSentenceCase(alert.actionType)}</span>
-                            {alert.category === 'PERSONALIZED' && (
+                            {alert.category === 'PERSONALIZED' ? (
                               <span className="text-xs text-primary-color">{formatWalletAddress(alert.walletAddress!)}</span>
+                            ) : (
+                              <span className="text-xs text-primary-color">General</span>
                             )}
                           </div>
                         </TableCell>

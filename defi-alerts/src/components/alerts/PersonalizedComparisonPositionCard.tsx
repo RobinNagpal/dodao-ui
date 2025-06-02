@@ -86,17 +86,17 @@ export default function PersonalizedComparisonPositionCard({
   // Get contextual message for comparison logic
   const getComparisonMessage = (actionType: 'SUPPLY' | 'BORROW') => {
     if (actionType === 'SUPPLY') {
-      return `Example: If ${toSentenceCase(position.platform)} offers ${
+      return `If ${toSentenceCase(position.platform)} offers ${
         position.rate
-      } APR and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches ${(parseFloat(position.rate.replace('%', '')) + 1.2).toFixed(
+      } APY and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches ${(parseFloat(position.rate.replace('%', '')) + 1.2).toFixed(
         1
-      )}% (${toSentenceCase(position.platform)} rate + your threshold)`;
+      )}% (${toSentenceCase(position.platform)} rate + Your set threshold)`;
     } else {
-      return `Example: If ${toSentenceCase(position.platform)} charges ${
+      return `If ${toSentenceCase(position.platform)} charges ${
         position.rate
-      } APR and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to ${(parseFloat(position.rate.replace('%', '')) - 0.5).toFixed(
+      } APY and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to ${(parseFloat(position.rate.replace('%', '')) - 0.5).toFixed(
         1
-      )}% (${toSentenceCase(position.platform)} rate - your threshold)`;
+      )}% (${toSentenceCase(position.platform)} rate - Your set threshold)`;
     }
   };
 

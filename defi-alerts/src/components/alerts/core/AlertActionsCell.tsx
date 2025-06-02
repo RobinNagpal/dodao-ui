@@ -3,7 +3,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { ChevronDown } from 'lucide-react';
+import { EllipsisVertical } from 'lucide-react';
 import { Alert } from '@/types/alerts';
 import { useRouter } from 'next/navigation';
 
@@ -23,7 +23,7 @@ const AlertActionsCell: React.FC<AlertActionsCellProps> = ({ alert, setAlertToDe
       <DropdownMenuTrigger asChild>
         <Button className="h-8 w-8 p-0 hover-text-primary">
           <span className="sr-only">Open menu</span>
-          <ChevronDown className="ml-4 h-4 w-4" />
+          <EllipsisVertical className="ml-4 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-block">

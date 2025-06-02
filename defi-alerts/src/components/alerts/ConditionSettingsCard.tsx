@@ -35,9 +35,9 @@ export default function ConditionSettingsCard({
   const getConditionMessage = (conditionType: ConditionType) => {
     switch (conditionType) {
       case 'APR_RISE_ABOVE':
-        return 'Alert when APR exceeds your threshold (e.g., alert when APR goes above 5%)';
+        return 'Alert when APR exceeds your set threshold (e.g., alert when APR goes above 5%)';
       case 'APR_FALLS_BELOW':
-        return 'Alert when APR drops under your threshold (e.g., alert when APR goes below 2%)';
+        return 'Alert when APR drops under your set threshold (e.g., alert when APR goes below 2%)';
       case 'APR_OUTSIDE_RANGE':
         return 'Alert when APR moves outside your specified range (e.g., alert when APR is below 3% or above 6%)';
       default:

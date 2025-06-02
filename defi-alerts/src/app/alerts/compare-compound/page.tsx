@@ -207,7 +207,7 @@ export default function CompareCompoundPage() {
                 <TableRow className="border-primary-color">
                   <TableHead className="w-[120px]">Alert</TableHead>
                   <TableHead className="w-[180px]">Chain/Market</TableHead>
-                  <TableHead className="w-[150px]">Conditions</TableHead>
+                  <TableHead className="w-[150px]">Condition</TableHead>
                   <TableHead className="w-[150px]">Frequency</TableHead>
                   <TableHead className="w-[100px]">Status</TableHead>
                   <TableHead className="w-[120px]">Actions</TableHead>
@@ -223,8 +223,10 @@ export default function CompareCompoundPage() {
                         <TableCell className="font-medium">
                           <div className="flex flex-col">
                             <span className="text-theme-primary">{toSentenceCase(alert.actionType)}</span>
-                            {alert.category === 'PERSONALIZED' && (
+                            {alert.category === 'PERSONALIZED' ? (
                               <span className="text-xs text-primary-color">{formatWalletAddress(alert.walletAddress!)}</span>
+                            ) : (
+                              <span className="text-xs text-primary-color">General</span>
                             )}
                             <span>
                               <PlatformsCell platforms={alert.compareProtocols || []} />
