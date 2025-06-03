@@ -218,7 +218,7 @@ export default function AlertsPage() {
                           <span className="text-theme-primary">{freqLabel(alert.notificationFrequency)}</span>
                         </TableCell>
 
-                        <TableCell>
+                        <TableCell className="flex items-center justify-center">
                           <DeliveryChannelCell deliveryChannels={alert.deliveryChannels} />
                         </TableCell>
 
