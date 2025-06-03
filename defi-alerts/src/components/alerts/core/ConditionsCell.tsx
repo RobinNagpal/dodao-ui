@@ -2,19 +2,27 @@ import { PlatformImage } from '@/components/alerts/core/PlatformImage';
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { type Alert, PrismaCondition, severityOptions } from '@/types/alerts';
+import { Alert as PrismaAlert, AlertCondition, Asset, Chain, DeliveryChannel } from '@prisma/client';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Info } from 'lucide-react';
 
 interface ConditionsCellProps {
-  alert: Alert;
+  alert:
+    | Alert
+    | (PrismaAlert & {
+        conditions: AlertCondition[];
+        deliveryChannels: DeliveryChannel[];
+        selectedChains: Chain[];
+        selectedAssets: Asset[];
+      });
 }
 
 /**
  * Component for displaying alert conditions in a table cell
  */
 const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
-  const conditions: PrismaCondition[] = alert.conditions;
+  const conditions: (PrismaCondition | AlertCondition)[] = alert.conditions;
   // Get severity badge color
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -30,12 +38,12 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
   };
 
   // Format condition threshold values based on condition type
-  const formatThresholdValue = (condition: PrismaCondition) => {
+  const formatThresholdValue = (condition: PrismaCondition | AlertCondition) => {
     if (condition.conditionType === 'APR_OUTSIDE_RANGE') {
       if (condition.thresholdValueLow && condition.thresholdValueHigh) {
         try {
-          const lowValue = parseFloat(condition.thresholdValueLow);
-          const highValue = parseFloat(condition.thresholdValueHigh);
+          const lowValue = typeof condition.thresholdValueLow === 'string' ? parseFloat(condition.thresholdValueLow) : condition.thresholdValueLow;
+          const highValue = typeof condition.thresholdValueHigh === 'string' ? parseFloat(condition.thresholdValueHigh) : condition.thresholdValueHigh;
 
           if (!isNaN(lowValue) && !isNaN(highValue)) {
             return `${lowValue.toFixed(2)}–${highValue.toFixed(2)}`;
@@ -51,7 +59,7 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
     } else {
       if (condition.thresholdValue) {
         try {
-          const value = parseFloat(condition.thresholdValue);
+          const value = typeof condition.thresholdValue === 'string' ? parseFloat(condition.thresholdValue) : condition.thresholdValue;
 
           if (!isNaN(value)) {
             return value.toFixed(2);
@@ -68,8 +76,8 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
   };
 
   // Get severity label
-  const severityLabel = (condition: PrismaCondition) => severityOptions.find((o) => o.value === condition.severity)?.label || '-';
-  const getConditionMessage = (alert: Alert, condition: PrismaCondition) => {
+  const severityLabel = (condition: PrismaCondition | AlertCondition) => severityOptions.find((o) => o.value === condition.severity)?.label || '-';
+  const getConditionMessage = (alert: Alert | PrismaAlert, condition: PrismaCondition | AlertCondition) => {
     if (alert.isComparison) {
       switch (condition.conditionType) {
         case 'APR_RISE_ABOVE':

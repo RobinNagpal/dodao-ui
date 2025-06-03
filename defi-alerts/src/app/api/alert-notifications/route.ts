@@ -13,6 +13,7 @@ export type AlertNotificationResponse = AlertNotification & {
     selectedAssets: Asset[];
   };
   SentNotification: SentNotification | null;
+  triggeredConditions: AlertCondition[];
 };
 
 async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<AlertNotificationResponse[]> {
@@ -43,7 +44,18 @@ async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
     },
   });
 
-  return alertNotifications;
+  // Add triggeredConditions to each notification
+  const notificationsWithTriggeredConditions = alertNotifications.map((notification) => {
+    // Filter the alert's conditions to get only those whose IDs are in the alertConditionIds array
+    const triggeredConditions = notification.alert.conditions.filter((condition) => notification.alertConditionIds.includes(condition.id));
+
+    return {
+      ...notification,
+      triggeredConditions,
+    };
+  });
+
+  return notificationsWithTriggeredConditions;
 }
 
 export const GET = withLoggedInUser<AlertNotificationResponse[]>(getHandler);

@@ -1,6 +1,7 @@
 'use client';
 
 import { AlertNotificationResponse } from '@/app/api/alert-notifications/route';
+import { ConditionsCell } from '@/components/alerts';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
@@ -11,6 +12,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Bell } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import type React from 'react';
 
 export default function AlertNotificationsPage() {
   const { data } = useSession();
@@ -86,6 +88,7 @@ export default function AlertNotificationsPage() {
                 <TableRow className="border-primary-color">
                   <TableHead className="w-[150px] text-center">Alert Type</TableHead>
                   <TableHead className="w-[200px] text-center">Chain/Asset</TableHead>
+                  <TableHead className="w-[250px] text-center">All Alert Condition</TableHead>
                   <TableHead className="w-[250px] text-center">Triggered Condition</TableHead>
                   <TableHead className="w-[150px] text-center">Severity</TableHead>
                   <TableHead className="w-[200px] text-center">Sent At</TableHead>
@@ -94,8 +97,8 @@ export default function AlertNotificationsPage() {
               <TableBody>
                 {alertNotificationsData && alertNotificationsData.length > 0 ? (
                   alertNotificationsData.map((notification) => {
-                    // Find triggered conditions
-                    const triggeredConditions = notification.alert.conditions.filter((condition) => notification.alertConditionIds.includes(condition.id));
+                    // Use the triggeredConditions field from the API response
+                    const { triggeredConditions } = notification;
 
                     const sentAt = notification?.SentNotification?.sentAt;
                     return (
@@ -126,14 +129,11 @@ export default function AlertNotificationsPage() {
                           </div>
                         </TableCell>
 
-                        <TableCell className="text-center">
-                          <div className="flex flex-col">
-                            {triggeredConditions.map((condition, index) => (
-                              <span key={index} className="text-theme-primary">
-                                {getConditionDescription(condition)}
-                              </span>
-                            ))}
-                          </div>
+                        <TableCell className="text-left">
+                          <ConditionsCell alert={notification.alert} />
+                        </TableCell>
+                        <TableCell className="text-left">
+                          <ConditionsCell alert={{ ...notification.alert, conditions: triggeredConditions }} />
                         </TableCell>
 
                         <TableCell className="text-center">

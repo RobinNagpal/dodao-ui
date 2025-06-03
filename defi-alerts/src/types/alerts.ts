@@ -105,7 +105,7 @@ export interface Alert {
   category: 'GENERAL' | 'PERSONALIZED';
   actionType: 'SUPPLY' | 'BORROW';
   isComparison: boolean;
-  walletAddress?: string;
+  walletAddress?: string | null;
   selectedChains: Chain[];
   selectedAssets: Asset[];
   compareProtocols: string[];
