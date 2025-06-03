@@ -1,24 +1,21 @@
 'use client';
 
+import { DeliveryChannelsCard, NotificationFrequencySection, PositionConditionEditor } from '@/components/alerts';
 import { MarketConditionType } from '@/components/alerts/PositionConditionEditor';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Plus, X, ArrowLeft, AlertCircle } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { NotificationFrequencySection, DeliveryChannelsCard, PositionConditionEditor } from '@/components/alerts';
-import { type Condition, type Channel, type ConditionType, type SeverityLevel, type NotificationFrequency, severityOptions, type Alert } from '@/types/alerts';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
+import { type Alert, type Channel, type Condition, type NotificationFrequency, type SeverityLevel } from '@/types/alerts';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
-import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { AlertCircle, ArrowLeft } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface CompoundMarketEditFormProps {
   alert: Alert;

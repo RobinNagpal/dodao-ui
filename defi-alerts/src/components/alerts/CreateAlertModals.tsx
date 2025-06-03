@@ -202,7 +202,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
 
       <MonitorMarketsModal
         isOpen={isOpen && currentModal === 'monitorMarkets'}
-        modalType="GENERAL"
+        modalType="MARKET"
         handleClose={handleClose}
         channels={channels}
         setChannels={setChannels}

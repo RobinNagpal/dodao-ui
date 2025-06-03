@@ -51,7 +51,9 @@ export default function CompareThresholdCard({
           )}
           addCondition={addThreshold}
           updateCondition={(id, field, value) => {
+            console.log(id, field, value);
             const index = parseInt(id.split('-')[1]);
+            console.log(index);
             updateThreshold(index, field as keyof GeneralComparisonRow, value);
           }}
           removeCondition={(id) => {

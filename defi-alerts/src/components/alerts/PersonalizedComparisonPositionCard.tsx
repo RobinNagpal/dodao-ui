@@ -84,23 +84,6 @@ export default function PersonalizedComparisonPositionCard({
     updatePosition(position.id, { notificationFrequency: frequency });
   };
 
-  // Get contextual message for comparison logic
-  const getComparisonMessage = (actionType: 'SUPPLY' | 'BORROW') => {
-    if (actionType === 'SUPPLY') {
-      return `If ${toSentenceCase(position.platform)} offers ${
-        position.rate
-      } APY and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches ${(parseFloat(position.rate.replace('%', '')) + 1.2).toFixed(
-        1
-      )}% (${toSentenceCase(position.platform)} rate + Your set threshold)`;
-    } else {
-      return `If ${toSentenceCase(position.platform)} charges ${
-        position.rate
-      } APY and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to ${(parseFloat(position.rate.replace('%', '')) - 0.5).toFixed(
-        1
-      )}% (${toSentenceCase(position.platform)} rate - Your set threshold)`;
-    }
-  };
-
   return (
     <Accordion type="single" collapsible className="mb-6">
       <AccordionItem value={position.id} className="border-theme-primary bg-block border-primary-color rounded-lg">

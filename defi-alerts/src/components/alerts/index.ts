@@ -2,7 +2,6 @@ import AlertBreadcrumb from './AlertBreadcrumb';
 import AlertPageWrapper from './AlertPageWrapper';
 import AlertTypeCard from './AlertTypeCard';
 import CompareThresholdCard from './CompareThresholdCard';
-import ConditionSettingsCard from './ConditionSettingsCard';
 import AlertActionsCell from './core/AlertActionsCell';
 import AssetsCell from './core/AssetsCell';
 import ChainsCell from './core/ChainsCell';
@@ -25,7 +24,6 @@ export {
   AlertBreadcrumb,
   AlertTypeCard,
   MarketSelectionCard,
-  ConditionSettingsCard,
   DeliveryChannelsCard,
   NotificationFrequencySection,
   CreateAlertModals,

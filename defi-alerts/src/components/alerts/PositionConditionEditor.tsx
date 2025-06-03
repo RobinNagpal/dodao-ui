@@ -134,7 +134,9 @@ export default function PositionConditionEditor({
         const thresholdExample = 1.2;
         const resultRate = (currentRateValue + thresholdExample).toFixed(1);
 
-        return `Alert when Compound's supply interest rate exceeds ${toSentenceCase(platformName)}'s rate by your threshold. Example: If ${toSentenceCase(platformName)} offers ${currentRate} and your threshold is 1.20, you'll be alerted when Compound reaches ${resultRate}.`;
+        return `Alert when Compound's supply interest rate exceeds ${toSentenceCase(platformName)}'s rate by your threshold. Example: If ${toSentenceCase(
+          platformName
+        )} offers ${currentRate} and your threshold is 1.20, you'll be alerted when Compound reaches ${resultRate}.`;
       }
       return 'Alert when Compound offers higher interest rates than other platforms by your specified threshold.';
     } else if (conditionType === 'RATE_DIFF_BELOW') {
@@ -143,7 +145,9 @@ export default function PositionConditionEditor({
         const thresholdExample = 0.5;
         const resultRate = (currentRateValue - thresholdExample).toFixed(1);
 
-        return `Alert when Compound's borrow interest rate is lower than ${toSentenceCase(platformName)}'s rate by your threshold. Example: If ${toSentenceCase(platformName)} charges ${currentRate} and your threshold is 0.50, you'll be alerted when Compound drops to ${resultRate}.`;
+        return `Alert when Compound's borrow interest rate is lower than ${toSentenceCase(platformName)}'s rate by your threshold. Example: If ${toSentenceCase(
+          platformName
+        )} charges ${currentRate} and your threshold is 0.50, you'll be alerted when Compound drops to ${resultRate}.`;
       }
       return 'Alert when Compound offers lower interest rates than other platforms by your specified threshold.';
     }
@@ -253,7 +257,11 @@ export default function PositionConditionEditor({
                               : 'Threshold value'
                           }
                           value={condition.thresholdValue || ''}
-                          onChange={(e) => updateCondition(condition.id, 'thresholdValue', e.target.value)}
+                          onChange={(e) => {
+                            console.log(`Comparison condition updated`, e);
+                            console.log(condition);
+                            updateCondition(condition.id, 'thresholdValue', e.target.value);
+                          }}
                           className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
                             errors?.conditions && errors.conditions[index] ? 'border-red-500' : ''
                           }`}
@@ -276,7 +284,10 @@ export default function PositionConditionEditor({
                     <Input
                       type="text"
                       value={condition.thresholdValue || ''}
-                      onChange={(e) => updateCondition(condition.id, 'thresholdValue', e.target.value)}
+                      onChange={(e) => {
+                        console.log(`Condition`, condition);
+                        updateCondition(condition.id, 'thresholdValue', e.target.value);
+                      }}
                       className={`w-40 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
                         errors?.conditions && errors.conditions[index] ? 'border-red-500' : ''
                       }`}
@@ -355,7 +366,8 @@ export default function PositionConditionEditor({
             {editorType === 'comparison' && (
               <div className="mt-2 px-3 py-2 ml-10">
                 <p className="text-sm text-theme-muted">
-                  <span className="text-primary-color font-medium">Condition {index + 1}:</span> {getComparisonConditionMessage(condition.conditionType as ComparisonConditionType)}
+                  <span className="text-primary-color font-medium">Condition {index + 1}:</span>{' '}
+                  {getComparisonConditionMessage(condition.conditionType as ComparisonConditionType)}
                 </p>
               </div>
             )}

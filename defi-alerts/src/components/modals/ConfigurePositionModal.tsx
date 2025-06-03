@@ -67,37 +67,6 @@ export default function ConfigurePositionModal<T extends BasePosition>({
 
   if (!selectedPosition) return null;
 
-  // Get contextual message for condition type
-  const getConditionMessage = (conditionType: ConditionType) => {
-    switch (conditionType) {
-      case 'APR_RISE_ABOVE':
-        return 'Alert when APR exceeds your set threshold (e.g., alert when APR goes above 5%)';
-      case 'APR_FALLS_BELOW':
-        return 'Alert when APR drops under your set threshold (e.g., alert when APR goes below 2%)';
-      case 'APR_OUTSIDE_RANGE':
-        return 'Alert when APR moves outside your specified range (e.g., alert when APR is below 3% or above 6%)';
-      default:
-        return 'Select a condition type to see its description';
-    }
-  };
-
-  // Get contextual message for condition type
-  const getComparisonMessage = (position: WalletComparisonPosition) => {
-    if (position.actionType === 'SUPPLY') {
-      return `If ${toSentenceCase(position.platform)} offers ${
-        position.rate
-      } supply rate and you set 1.2% threshold, you'll be alerted when Compound's supply rate reaches ${(
-        parseFloat(position.rate.replace('%', '')) + 1.2
-      ).toFixed(1)}%`;
-    } else {
-      return `If ${toSentenceCase(position.platform)} charges ${
-        position.rate
-      } borrow rate and you set 0.5% threshold, you'll be alerted when Compound's borrow rate drops to ${(
-        parseFloat(position.rate.replace('%', '')) - 0.5
-      ).toFixed(1)}%`;
-    }
-  };
-
   // Position channel functions
   const addPositionChannel = () => {
     if (!selectedPosition) return;
@@ -397,9 +366,13 @@ export default function ConfigurePositionModal<T extends BasePosition>({
                     } as Partial<T>);
                   }}
                   updateCondition={(id, field, value) => {
-                    updatePosition(selectedPosition.id, {
+                    console.log(`Updating condition ${id} with ${field} = ${value}`);
+                    const updates = {
                       conditions: selectedPosition.conditions.map((c) => (c.id === id ? { ...c, [field]: value } : c)),
-                    } as Partial<T>);
+                    } as Partial<T>;
+
+                    console.log(updates);
+                    updatePosition(selectedPosition.id, updates);
                   }}
                   removeCondition={(id) => {
                     updatePosition(selectedPosition.id, {
