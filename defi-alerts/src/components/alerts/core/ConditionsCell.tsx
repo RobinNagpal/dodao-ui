@@ -32,9 +32,38 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
   // Format condition threshold values based on condition type
   const formatThresholdValue = (condition: PrismaCondition) => {
     if (condition.conditionType === 'APR_OUTSIDE_RANGE') {
-      return condition.thresholdValueLow && condition.thresholdValueHigh ? `${condition.thresholdValueLow}–${condition.thresholdValueHigh}` : '-';
+      if (condition.thresholdValueLow && condition.thresholdValueHigh) {
+        try {
+          const lowValue = parseFloat(condition.thresholdValueLow);
+          const highValue = parseFloat(condition.thresholdValueHigh);
+
+          if (!isNaN(lowValue) && !isNaN(highValue)) {
+            return `${lowValue.toFixed(2)}–${highValue.toFixed(2)}`;
+          } else {
+            return `${condition.thresholdValueLow}–${condition.thresholdValueHigh}`;
+          }
+        } catch (error) {
+          return `${condition.thresholdValueLow}–${condition.thresholdValueHigh}`;
+        }
+      } else {
+        return '-';
+      }
     } else {
-      return condition.thresholdValue ? `${condition.thresholdValue}` : '-';
+      if (condition.thresholdValue) {
+        try {
+          const value = parseFloat(condition.thresholdValue);
+
+          if (!isNaN(value)) {
+            return value.toFixed(2);
+          } else {
+            return `${condition.thresholdValue}`;
+          }
+        } catch (error) {
+          return `${condition.thresholdValue}`;
+        }
+      } else {
+        return '-';
+      }
     }
   };
 
