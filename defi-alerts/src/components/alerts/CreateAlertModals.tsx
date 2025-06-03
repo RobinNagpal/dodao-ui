@@ -42,6 +42,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     data: alertsData,
     loading: alertsLoading,
     error: alertsError,
+    reFetchData: reFetchAlerts,
   } = useFetchData<AlertResponse[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !session?.userId }, 'Failed to load alerts');
 
   // Fetch user's wallet addresses
@@ -237,6 +238,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
         errors={errors}
         setErrors={setErrors}
         onSwitchToPositions={() => setCurrentModal('positions')}
+        onCreate={reFetchAlerts}
       />
     </>
   );

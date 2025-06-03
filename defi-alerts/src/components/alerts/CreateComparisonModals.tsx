@@ -45,6 +45,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     data: alertsData,
     loading: alertsLoading,
     error: alertsError,
+    reFetchData: reFetchAlerts,
   } = useFetchData<AlertResponse[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !session?.userId }, 'Failed to load alerts');
 
   // Fetch user's wallet addresses
@@ -250,6 +251,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
         errors={errors}
         setErrors={setErrors}
         onSwitchToPositions={() => setCurrentModal('personalizedPositions')}
+        onCreate={reFetchAlerts}
       />
     </>
   );

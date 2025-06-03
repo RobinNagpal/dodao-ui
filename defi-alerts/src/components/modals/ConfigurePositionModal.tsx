@@ -31,6 +31,7 @@ interface ConfigurePositionProps<T extends BasePosition> {
   errors: any;
   setErrors: (errors: any) => void;
   onSwitchToPositions: () => void;
+  onCreate: () => void;
 }
 
 export default function ConfigurePositionModal<T extends BasePosition>({
@@ -44,6 +45,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
   errors,
   setErrors,
   onSwitchToPositions,
+  onCreate,
 }: ConfigurePositionProps<T>) {
   const { data } = useSession();
   const session = data as DoDAOSession;
@@ -239,6 +241,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
     const success = await postPositionAlert(`${baseUrl}/api/alerts/create/personalized-market`, payload);
 
     if (success) {
+      onCreate();
       handleClose();
     }
   };
@@ -339,6 +342,7 @@ export default function ConfigurePositionModal<T extends BasePosition>({
     const success = await postPersonalizedComparisonAlert(`${baseUrl}/api/alerts/create/personalized-comparison`, payload);
 
     if (success) {
+      onCreate();
       handleClose();
     }
   };
