@@ -1,7 +1,10 @@
 import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
 
 // Simple client-side validation for market combinations
-export function validateMarketCombinations(selectedChains: string[], selectedMarkets: string[]): {
+export function validateMarketCombinations(
+  selectedChains: string[],
+  selectedMarkets: string[]
+): {
   isValid: boolean;
 } {
   if (selectedChains.length === 0 || selectedMarkets.length === 0) {
@@ -25,4 +28,3 @@ export function validateMarketCombinations(selectedChains: string[], selectedMar
 
   return { isValid: false };
 }
-
