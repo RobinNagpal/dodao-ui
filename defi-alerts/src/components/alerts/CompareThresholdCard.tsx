@@ -35,9 +35,9 @@ export default function CompareThresholdCard({
   // Get contextual message for comparison logic
   const getComparisonMessage = (alertType: 'supply' | 'borrow') => {
     if (alertType === 'supply') {
-      return `If Aave offers 6.5% APY and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches 7.7% (Aave rate + Your set threshold)`;
+      return `If Aave offers 6.5% supply rate and you set 1.2% threshold, you'll be alerted when Compound's supply rate reaches 7.7%`;
     } else {
-      return `If Aave charges 4.0% APY and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to 3.5% (Aave rate - Your set threshold)`;
+      return `If Aave charges 4.0% borrow rate and you set 0.5% threshold, you'll be alerted when Compound's borrow rate drops to 3.5%`;
     }
   };
 
@@ -50,20 +50,20 @@ export default function CompareThresholdCard({
         </Button>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-theme-muted mb-4">
+        <p className="text-sm text-theme-muted">
           Set the minimum rate difference required to trigger an alert. You’ll be notified when Compound becomes competitively better by your specified
           threshold.
         </p>
 
         {/* Single Contextual Message for the alert type */}
-        <div className="mb-6 p-3 bg-theme-secondary rounded-lg border border-theme-primary">
+        <div>
           <p className="text-sm text-theme-muted">
             <span className="text-primary-color font-medium">How thresholds work:</span> {getComparisonMessage(alertType)}
           </p>
         </div>
 
         {thresholds.map((th, i) => (
-          <div key={i} className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-primary-color pt-4">
+          <div key={i} className="grid grid-cols-12 gap-4 my-4 items-center">
             <div className="col-span-1 flex items-center text-theme-muted">
               <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
                 {i + 1}
@@ -118,6 +118,8 @@ export default function CompareThresholdCard({
             )}
           </div>
         ))}
+
+        <hr></hr>
 
         {/* Notification Frequency */}
         <NotificationFrequencySection

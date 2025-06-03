@@ -33,7 +33,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
   const fetchMorphoPositions = useMorphoUserPositions();
 
   // Modal state
-  const [currentModal, setCurrentModal] = useState<'initial' | 'generalComparison' | 'personalizedPositions' | 'configurePosition' | 'addWallet'>('initial');
+  const [currentModal, setCurrentModal] = useState<'generalComparison' | 'personalizedPositions' | 'configurePosition' | 'addWallet'>('personalizedPositions');
   const [walletAddresses, setWalletAddresses] = useState<string[]>([]);
   const [currentWalletAddress, setCurrentWalletAddress] = useState<string>('');
   const [walletHasPositions, setWalletHasPositions] = useState<boolean>(true);
@@ -45,6 +45,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     data: alertsData,
     loading: alertsLoading,
     error: alertsError,
+    reFetchData: reFetchAlerts,
   } = useFetchData<AlertResponse[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !session?.userId }, 'Failed to load alerts');
 
   // Fetch user's wallet addresses
@@ -103,7 +104,9 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
         ]);
 
         // merge into one array
-        setAllComparisonPositions([...aave, ...spark, ...morpho]);
+        const positions = [...aave, ...spark, ...morpho];
+        console.log('All Comparison positions: ', positions);
+        setAllComparisonPositions(positions);
       } catch (err) {
         console.error('Error fetching comparison positions', err);
       } finally {
@@ -154,7 +157,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
 
   // Handle close and reset
   const handleClose = () => {
-    setCurrentModal('initial');
+    setCurrentModal('personalizedPositions');
     setSelectedPosition(null);
     onClose();
   };
@@ -203,14 +206,6 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
 
   return (
     <>
-      <InitialModal
-        isOpen={isOpen && currentModal === 'initial'}
-        modalType="GENERAL"
-        handleClose={handleClose}
-        onWalletAdded={handleWalletAdded}
-        onSwitchToMonitor={() => setCurrentModal('generalComparison')}
-      />
-
       <AddWalletModal
         isOpen={isOpen && currentModal === 'addWallet'}
         handleClose={handleClose}
@@ -226,7 +221,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
         setChannels={setChannels}
         errors={errors}
         setErrors={setErrors}
-        onSwitchModal={() => (walletAddresses.length > 0 ? setCurrentModal('personalizedPositions') : setCurrentModal('initial'))}
+        onSwitchModal={() => setCurrentModal('personalizedPositions')}
       />
 
       <PositionsModal<WalletComparisonPosition>
@@ -256,6 +251,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
         errors={errors}
         setErrors={setErrors}
         onSwitchToPositions={() => setCurrentModal('personalizedPositions')}
+        onCreate={reFetchAlerts}
       />
     </>
   );
