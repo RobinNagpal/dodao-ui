@@ -7,6 +7,7 @@ import AlertActionsCell from './core/AlertActionsCell';
 import AssetsCell from './core/AssetsCell';
 import ChainsCell from './core/ChainsCell';
 import ConditionsCell from './core/ConditionsCell';
+import DeliveryChannelCell from './core/DeliveryChannelCell';
 import PlatformsCell from './core/PlatformsCell';
 import CreateAlertModals from './CreateAlertModals';
 import CreateComparisonModals from './CreateComparisonModals';
@@ -33,5 +34,6 @@ export {
   ConditionsCell,
   ChainsCell,
   AssetsCell,
+  DeliveryChannelCell,
   PlatformsCell,
 };
