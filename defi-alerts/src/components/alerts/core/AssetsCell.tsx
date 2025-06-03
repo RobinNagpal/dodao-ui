@@ -13,18 +13,18 @@ interface AssetsCellProps {
  */
 const AssetsCell: React.FC<AssetsCellProps> = ({ assets, chains }) => {
   return (
-    <div className="flex flex-wrap gap-1 mt-1">
+    <div className="flex gap-1 mt-1 justify-center">
       {assets.map((asset) => {
         const market = COMPOUND_MARKETS.find((c) => c.baseAssetAddress.toLowerCase() === asset.address.toLowerCase());
         return (
-          <span key={asset.chainId_address} className="text-xs text-theme-primary font-medium flex items-center gap-1">
+          <div key={asset.chainId_address} className="text-xs text-theme-primary font-medium flex items-center gap-1">
             <AssetImage
               chain={chains.find((c) => c.chainId === asset.chainId)?.name || ''}
               assetAddress={market?.baseAssetAddress || asset.address}
               assetSymbol={asset.symbol === 'WETH' ? 'ETH' : asset.symbol}
             />
             {asset.symbol === 'WETH' ? 'ETH' : asset.symbol}
-          </span>
+          </div>
         );
       })}
     </div>

@@ -185,7 +185,7 @@ export default function CompareCompoundPage() {
               <TableHeader>
                 <TableRow className="border-primary-color">
                   <TableHead className="w-[120px]">Alert</TableHead>
-                  <TableHead className="w-[180px]">Chain/Market</TableHead>
+                  <TableHead className="w-[180px] text-center">Chain/Market</TableHead>
                   <TableHead className="w-[150px]">Condition</TableHead>
                   <TableHead className="w-[150px]">Frequency</TableHead>
                   <TableHead className="w-[200px]">Delivery Channel</TableHead>

@@ -184,7 +184,7 @@ export default function AlertsPage() {
               <TableHeader>
                 <TableRow className="border-primary-color">
                   <TableHead className="w-[120px]">Alert</TableHead>
-                  <TableHead className="w-[200px]">Chain/Market</TableHead>
+                  <TableHead className="w-[200px] text-center">Chain/Market</TableHead>
                   <TableHead className="w-[180px]">Condition</TableHead>
                   <TableHead className="w-[150px]">Frequency</TableHead>
                   <TableHead className="w-[200px]">Delivery Channel</TableHead>
@@ -208,7 +208,7 @@ export default function AlertsPage() {
                           </div>
                         </TableCell>
 
-                        <TableCell>
+                        <TableCell className="text-center">
                           <ChainsCell chains={alert.selectedChains || []} />
                           <AssetsCell assets={alert.selectedAssets || []} chains={alert.selectedChains} />
                         </TableCell>

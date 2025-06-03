@@ -12,7 +12,7 @@ interface ChainsCellProps {
  */
 const ChainsCell: React.FC<ChainsCellProps> = ({ chains }) => {
   return (
-    <div className="flex flex-wrap gap-1">
+    <div className="flex gap-1 justify-center">
       {chains.map((chain) => (
         <Badge key={chain.chainId} variant="outline" className="border border-primary-color flex items-center gap-1">
           <ChainImage chain={chain.name} />
