@@ -1,12 +1,17 @@
 import { prisma } from '@/prisma';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { Alert, AlertNotification, SentNotification } from '@prisma/client';
+import { Alert, AlertCondition, AlertNotification, Asset, Chain, DeliveryChannel, SentNotification } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 // Define the return type for the alert notifications query
 export type AlertNotificationResponse = AlertNotification & {
-  alert: Alert;
+  alert: Alert & {
+    conditions: AlertCondition[];
+    deliveryChannels: DeliveryChannel[];
+    selectedChains: Chain[];
+    selectedAssets: Asset[];
+  };
   SentNotification: SentNotification | null;
 };
 
@@ -21,7 +26,14 @@ async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
       },
     },
     include: {
-      alert: true,
+      alert: {
+        include: {
+          selectedChains: true,
+          selectedAssets: true,
+          conditions: true,
+          deliveryChannels: true,
+        },
+      },
       SentNotification: true,
     },
     orderBy: {

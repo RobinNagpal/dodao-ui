@@ -31,7 +31,7 @@ export default function AlertNotificationsPage() {
   );
 
   // Format date for display
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: Date) => {
     const date = new Date(dateString);
     return date.toLocaleString();
   };
@@ -97,6 +97,7 @@ export default function AlertNotificationsPage() {
                     // Find triggered conditions
                     const triggeredConditions = notification.alert.conditions.filter((condition) => notification.alertConditionIds.includes(condition.id));
 
+                    const sentAt = notification?.SentNotification?.sentAt;
                     return (
                       <TableRow key={notification.id} className="border-primary-color">
                         <TableCell className="font-medium">
@@ -157,7 +158,7 @@ export default function AlertNotificationsPage() {
 
                         <TableCell className="text-center">
                           {notification.SentNotification ? (
-                            <span className="text-theme-primary">{formatDate(notification.SentNotification.sentAt)}</span>
+                            <span className="text-theme-primary">{sentAt ? formatDate(sentAt) : '-'}</span>
                           ) : (
                             <span className="text-theme-muted">Not sent</span>
                           )}
