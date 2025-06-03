@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 
@@ -7,7 +9,7 @@ interface DeleteAlertModalProps {
   baseUrl: string;
   deleting: boolean;
   onClose: () => void;
-  onDeleteSuccess: () => Promise<void>;
+  onDeleteSuccess: () => Promise<any>;
   deleteAlert: (url: string) => Promise<any>;
 }
 

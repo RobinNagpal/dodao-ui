@@ -1,5 +1,3 @@
-'use client';
-
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
