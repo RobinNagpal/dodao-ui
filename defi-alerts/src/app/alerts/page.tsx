@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertActionsCell, AssetsCell, ChainsCell, ConditionsCell } from '@/components/alerts';
+import { AlertActionsCell, AssetsCell, ChainsCell, ConditionsCell, DeleteAlertModal, DeliveryChannelCell } from '@/components/alerts';
 import AssetChainPairCell from '@/components/alerts/core/AssetChainPairCell';
 import CreateAlertModals from '@/components/alerts/CreateAlertModals';
 import { Badge } from '@/components/ui/badge';
@@ -9,10 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { type Alert, type Channel, frequencyOptions, type PrismaCondition, severityOptions } from '@/types/alerts';
+import { type Alert, frequencyOptions, type PrismaCondition, severityOptions } from '@/types/alerts';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { toSentenceCase } from '@/utils/getSentenceCase';
-import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
@@ -119,36 +118,6 @@ export default function AlertsPage() {
 
       {/* Filter tabs */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        {/* <Tabs defaultValue="all" value={activeTab} className="w-full md:w-auto" onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-3 w-full md:w-[400px] bg-theme-bg-secondary">
-            <TabsTrigger
-              value="all"
-              className={
-                activeTab === 'all' ? 'bg-primary-color text-primary-text data-[state=active]:bg-primary-color data-[state=active]:text-primary-text' : ''
-              }
-            >
-              All Alerts
-            </TabsTrigger>
-            <TabsTrigger
-              value="general"
-              className={
-                activeTab === 'general' ? 'bg-primary-color text-primary-text data-[state=active]:bg-primary-color data-[state=active]:text-primary-text' : ''
-              }
-            >
-              Market Alerts
-            </TabsTrigger>
-            <TabsTrigger
-              value="personalized"
-              className={
-                activeTab === 'personalized'
-                  ? 'bg-primary-color text-primary-text data-[state=active]:bg-primary-color data-[state=active]:text-primary-text'
-                  : ''
-              }
-            >
-              Position Alerts
-            </TabsTrigger>
-          </TabsList>
-        </Tabs> */}
         <div></div>
 
         <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
@@ -226,10 +195,6 @@ export default function AlertsPage() {
               <TableBody>
                 {filteredAlerts.length > 0 ? (
                   filteredAlerts.map((alert) => {
-                    // For simplicity pick first condition & channel
-                    const chan = alert.deliveryChannels[0] as Channel | undefined;
-                    const hasMultipleChannels = alert.deliveryChannels.length > 1;
-
                     return (
                       <TableRow key={alert.id} className="border-primary-color">
                         <TableCell className="font-medium">
@@ -248,53 +213,15 @@ export default function AlertsPage() {
                         </TableCell>
 
                         <TableCell className="flex items-center justify-center">
-                          <ConditionsCell conditions={alert.conditions} />
+                          <ConditionsCell alert={alert} />
                         </TableCell>
 
                         <TableCell className="text-center">
                           <span className="text-theme-primary">{freqLabel(alert.notificationFrequency)}</span>
                         </TableCell>
 
-                        <TableCell className="flex items-center justify-center text-center">
-                          {chan ? (
-                            <div className="flex flex-col text-left">
-                              <div className="flex items-center">
-                                <span className="text-xs font-medium text-theme-primary">{chan.channelType}</span>
-                                {hasMultipleChannels && (
-                                  <TooltipProvider>
-                                    <Tooltip>
-                                      <TooltipTrigger asChild>
-                                        <Button size="icon" className="h-5 w-5 p-0 hover-text-primary ml-2">
-                                          <Info size={14} />
-                                          <span className="sr-only">View all channels</span>
-                                        </Button>
-                                      </TooltipTrigger>
-                                      <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
-                                        <div className="space-y-2">
-                                          <h4 className="font-medium text-primary-color">All Delivery Channels</h4>
-                                          <ul className="space-y-1">
-                                            {alert.deliveryChannels.map((c, i) => (
-                                              <li key={i} className="text-xs text-theme-muted">
-                                                <span className="font-medium">
-                                                  {c.channelType.charAt(0).toUpperCase() + c.channelType.slice(1).toLowerCase()}:
-                                                </span>{' '}
-                                                {c.channelType === 'EMAIL' ? c.email : c.webhookUrl}
-                                              </li>
-                                            ))}
-                                          </ul>
-                                        </div>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
-                                )}
-                              </div>
-                              <span className="text-xs text-theme-muted truncate max-w-[180px]">
-                                {chan.channelType === 'EMAIL' ? chan.email : chan.webhookUrl}
-                              </span>
-                            </div>
-                          ) : (
-                            <span className="text-xs text-theme-muted">Not set</span>
-                          )}
+                        <TableCell>
+                          <DeliveryChannelCell deliveryChannels={alert.deliveryChannels} />
                         </TableCell>
 
                         <TableCell className="text-center">
@@ -334,26 +261,18 @@ export default function AlertsPage() {
                 )}
               </TableBody>
             </Table>
-            {showConfirmModal && alertToDelete && (
-              <ConfirmationModal
-                open={showConfirmModal}
-                showSemiTransparentBg={true}
-                onClose={() => {
-                  setShowConfirmModal(false);
-                  setAlertToDelete(null);
-                }}
-                onConfirm={async () => {
-                  await deleteAlert(`${baseUrl}/api/alerts/${alertToDelete}`);
-                  await reFetchData();
-                  setShowConfirmModal(false);
-                  setAlertToDelete(null);
-                }}
-                title="Delete Alert"
-                confirmationText="Are you sure you want to delete this alert?"
-                confirming={deleting}
-                askForTextInput={false}
-              />
-            )}
+            <DeleteAlertModal
+              open={showConfirmModal}
+              alertId={alertToDelete}
+              baseUrl={baseUrl}
+              deleting={deleting}
+              onClose={() => {
+                setShowConfirmModal(false);
+                setAlertToDelete(null);
+              }}
+              onDeleteSuccess={reFetchData}
+              deleteAlert={deleteAlert}
+            />
           </div>
         </div>
       )}

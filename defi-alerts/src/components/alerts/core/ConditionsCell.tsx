@@ -1,18 +1,20 @@
+import { PlatformImage } from '@/components/alerts/core/PlatformImage';
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
-import { PrismaCondition, severityOptions } from '@/types/alerts';
+import { type Alert, PrismaCondition, severityOptions } from '@/types/alerts';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Info } from 'lucide-react';
 
 interface ConditionsCellProps {
-  conditions: PrismaCondition[];
+  alert: Alert;
 }
 
 /**
  * Component for displaying alert conditions in a table cell
  */
-const ConditionsCell: React.FC<ConditionsCellProps> = ({ conditions }) => {
+const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
+  const conditions: PrismaCondition[] = alert.conditions;
   // Get severity badge color
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -30,26 +32,147 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ conditions }) => {
   // Format condition threshold values based on condition type
   const formatThresholdValue = (condition: PrismaCondition) => {
     if (condition.conditionType === 'APR_OUTSIDE_RANGE') {
-      return condition.thresholdValueLow && condition.thresholdValueHigh ? `${condition.thresholdValueLow}–${condition.thresholdValueHigh}%` : '-';
+      if (condition.thresholdValueLow && condition.thresholdValueHigh) {
+        try {
+          const lowValue = parseFloat(condition.thresholdValueLow);
+          const highValue = parseFloat(condition.thresholdValueHigh);
+
+          if (!isNaN(lowValue) && !isNaN(highValue)) {
+            return `${lowValue.toFixed(2)}–${highValue.toFixed(2)}`;
+          } else {
+            return `${condition.thresholdValueLow}–${condition.thresholdValueHigh}`;
+          }
+        } catch (error) {
+          return `${condition.thresholdValueLow}–${condition.thresholdValueHigh}`;
+        }
+      } else {
+        return '-';
+      }
     } else {
-      return condition.thresholdValue ? `${condition.thresholdValue}%` : '-';
+      if (condition.thresholdValue) {
+        try {
+          const value = parseFloat(condition.thresholdValue);
+
+          if (!isNaN(value)) {
+            return value.toFixed(2);
+          } else {
+            return `${condition.thresholdValue}`;
+          }
+        } catch (error) {
+          return `${condition.thresholdValue}`;
+        }
+      } else {
+        return '-';
+      }
     }
   };
 
   // Get severity label
   const severityLabel = (condition: PrismaCondition) => severityOptions.find((o) => o.value === condition.severity)?.label || '-';
-  const getConditionMessage = (condition: PrismaCondition) => {
-    switch (condition.conditionType) {
-      case 'APR_RISE_ABOVE':
-        return `Alert when APR exceeds ${formatThresholdValue(condition)}`;
-      case 'APR_FALLS_BELOW':
-        return `Alert when APR drops under ${formatThresholdValue(condition)}`;
-      case 'APR_OUTSIDE_RANGE':
-        return `Alert when APR moves outside ${formatThresholdValue(condition)}`;
-      case 'RATE_DIFF_ABOVE':
-        return `Alert when Rate Difference is above ${formatThresholdValue(condition)}`;
-      case 'RATE_DIFF_BELOW':
-        return `Alert when Rate Difference is below ${formatThresholdValue(condition)}`;
+  const getConditionMessage = (alert: Alert, condition: PrismaCondition) => {
+    if (alert.isComparison) {
+      switch (condition.conditionType) {
+        case 'APR_RISE_ABOVE':
+          return (
+            <span>
+              Alert when <PlatformImage platform={'compound'} /> APR exceeds APR of{' '}
+              {alert.compareProtocols.map((cp, index) => (
+                <span key={index}>
+                  <PlatformImage platform={cp} />
+                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
+                </span>
+              ))}{' '}
+              by {formatThresholdValue(condition)}
+            </span>
+          );
+        case 'APR_FALLS_BELOW':
+          return (
+            <span>
+              Alert when <PlatformImage platform={'compound'} /> APR drops below{' '}
+              {alert.compareProtocols.map((cp, index) => (
+                <span key={index}>
+                  <PlatformImage platform={cp} />
+                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
+                </span>
+              ))}{' '}
+              APR by {formatThresholdValue(condition)}
+            </span>
+          );
+        case 'APR_OUTSIDE_RANGE':
+          return (
+            <span>
+              Alert when <PlatformImage platform={'compound'} /> APR moves outside {formatThresholdValue(condition)} of{' '}
+              {alert.compareProtocols.map((cp, index) => (
+                <span key={index}>
+                  <PlatformImage platform={cp} />
+                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
+                </span>
+              ))}{' '}
+              APR
+            </span>
+          );
+        case 'RATE_DIFF_ABOVE':
+          return (
+            <span>
+              Alert when rate difference between <PlatformImage platform={'compound'} /> and{' '}
+              {alert.compareProtocols.map((cp, index) => (
+                <span key={index}>
+                  <PlatformImage platform={cp} />
+                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
+                </span>
+              ))}{' '}
+              is above {formatThresholdValue(condition)}
+            </span>
+          );
+        case 'RATE_DIFF_BELOW':
+          return (
+            <span>
+              Alert when rate difference between <PlatformImage platform={'compound'} /> and{' '}
+              {alert.compareProtocols.map((cp, index) => (
+                <span key={index}>
+                  <PlatformImage platform={cp} />
+                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
+                </span>
+              ))}{' '}
+              is below {formatThresholdValue(condition)}
+            </span>
+          );
+      }
+    } else {
+      const platform = alert.compareProtocols && alert.compareProtocols.length > 0 ? alert.compareProtocols[0] : 'compound';
+
+      switch (condition.conditionType) {
+        case 'APR_RISE_ABOVE':
+          return (
+            <span>
+              Alert when <PlatformImage platform={platform} /> APR rises above {formatThresholdValue(condition)}
+            </span>
+          );
+        case 'APR_FALLS_BELOW':
+          return (
+            <span>
+              Alert when <PlatformImage platform={platform} /> APR falls below {formatThresholdValue(condition)}
+            </span>
+          );
+        case 'APR_OUTSIDE_RANGE':
+          return (
+            <span>
+              Alert when <PlatformImage platform={platform} /> APR moves outside the range of {formatThresholdValue(condition)}
+            </span>
+          );
+        case 'RATE_DIFF_ABOVE':
+          return (
+            <span>
+              Alert when <PlatformImage platform={platform} /> rate difference is above {formatThresholdValue(condition)}
+            </span>
+          );
+        case 'RATE_DIFF_BELOW':
+          return (
+            <span>
+              Alert when <PlatformImage platform={platform} /> rate difference is below {formatThresholdValue(condition)}
+            </span>
+          );
+      }
     }
   };
 
@@ -57,30 +180,32 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ conditions }) => {
     <div className="flex flex-col gap-1">
       {conditions.map((condition, index) => (
         <div key={index} className="flex items-center gap-2 mb-1">
-          <span className="font-semibold text-theme-muted">{formatThresholdValue(condition)}</span>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button size="icon" className="h-5 w-5 p-0 hover-text-primary">
-                  <Info size={14} />
-                  <span className="sr-only">View all channels</span>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
-                <div className="space-y-2">
-                  <p>{getConditionMessage(condition)}</p>
-                  <div>
-                    Severity Level:&nbsp;
-                    {condition.severity === 'NONE' ? (
-                      <Badge className={`${getSeverityColor(condition.severity)}`}>None</Badge>
-                    ) : (
-                      <Badge className={`${getSeverityColor(condition.severity)}`}>{severityLabel(condition)}</Badge>
-                    )}
+          <span className="font-semibold text-theme-muted">
+            {getConditionMessage(alert, condition)}{' '}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button size="icon" className="h-5 w-5 hover:text-primary">
+                    <Info size={14} />
+                    <span className="sr-only">View all channels</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
+                  <div className="space-y-2">
+                    <p>{getConditionMessage(alert, condition)}</p>
+                    <div>
+                      Severity Level:&nbsp;
+                      {condition.severity === 'NONE' ? (
+                        <Badge className={`${getSeverityColor(condition.severity)}`}>None</Badge>
+                      ) : (
+                        <Badge className={`${getSeverityColor(condition.severity)}`}>{severityLabel(condition)}</Badge>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </span>
         </div>
       ))}
     </div>
