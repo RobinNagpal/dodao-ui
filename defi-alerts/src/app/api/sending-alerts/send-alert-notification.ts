@@ -1,3 +1,4 @@
+import { toSentenceCase } from '@/utils/getSentenceCase';
 import { SES } from '@aws-sdk/client-ses';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 
@@ -10,40 +11,44 @@ const ses = new SES({
  */
 const createAlertEmailBody = (payload: any) => {
   // Extract alert information
-  const { alert, alertCategory, alertType, triggered, timestamp } = payload;
+  const { alert, alertCategory, alertType, triggered, timestamp, walletAddress } = payload;
   const formattedDate = new Date(timestamp).toLocaleString();
+  const normalizedAlertCategory = toSentenceCase(alertCategory);
+  const normalizedAlertType = toSentenceCase(alertType);
 
   // Create HTML for triggered conditions
   const triggeredHtml = triggered
     .map((group: any) => {
-      const conditionsHtml = group.conditions
-        .map((condition: any) => {
-          let thresholdText = '';
-          if (typeof condition.threshold === 'object') {
-            thresholdText = `Range: Low ${condition.threshold.low}%, High ${condition.threshold.high}%`;
-          } else {
-            thresholdText = `${condition.threshold}%`;
-          }
+      // Extract the single condition object
+      const condition = group.condition;
 
-          return `
-        <div style="margin-bottom: 10px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
-          <p><strong>Condition Type:</strong> ${formatConditionType(condition.type)}</p>
-          <p><strong>Threshold:</strong> ${thresholdText}</p>
-        </div>
-      `;
-        })
-        .join('');
+      // Format the threshold text (either a range or a single percentage)
+      let thresholdText = '';
+      if (typeof condition.threshold === 'object') {
+        thresholdText = `Range: Low ${condition.threshold.low}%, High ${condition.threshold.high}%`;
+      } else {
+        thresholdText = `${condition.threshold}%`;
+      }
 
+      // Build the HTML for that one condition
+      const conditionHtml = `
+      <div style="margin-bottom: 10px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+        <p><strong>Condition Type:</strong> ${formatConditionType(condition.type)}</p>
+        <p><strong>Threshold:</strong> ${thresholdText}</p>
+      </div>
+    `;
+
+      // Build the HTML for the entire group (asset/chain + rates + single condition)
       return `
       <div style="margin-bottom: 20px; padding: 15px; background-color: #f0f4f8; border-radius: 8px; border-left: 4px solid #007bff;">
         <h3 style="margin-top: 0; color: #333;">Asset: ${group.asset} (Chain: ${group.chain})</h3>
-        <p><strong>Current Rate:</strong> ${group.currentRate}%</p>
+        ${group.currentRate ? `<p><strong>Current Rate:</strong> ${group.currentRate}%</p>` : ''}
         ${group.protocol ? `<p><strong>Compared Protocol:</strong> ${group.protocol}</p>` : ''}
         ${group.compoundRate ? `<p><strong>Compound Rate:</strong> ${group.compoundRate}%</p>` : ''}
         ${group.protocolRate ? `<p><strong>Protocol Rate:</strong> ${group.protocolRate}%</p>` : ''}
         ${group.diff ? `<p><strong>Difference:</strong> ${group.diff}%</p>` : ''}
-        <h4 style="margin-top: 15px; color: #555;">Triggered Conditions:</h4>
-        ${conditionsHtml}
+        <h4 style="margin-top: 15px; color: #555;">Triggered Condition:</h4>
+        ${conditionHtml}
       </div>
     `;
     })
@@ -86,14 +91,22 @@ const createAlertEmailBody = (payload: any) => {
               color: #555555;
           }
   
-          .alert-info {
-              background-color: #e8f4fd;
-              border-left: 4px solid #007bff;
-              padding: 15px;
-              margin-bottom: 20px;
-              border-radius: 5px;
+          .alert-summary {
+            background-color: #e8f4fd;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+            padding: 16px;
+            margin-bottom: 24px;
           }
-  
+          .alert-summary p {
+            margin: 4px 0;
+            font-size: 14px;
+            color: #333333;
+          }
+          .alert-summary strong {
+            color: #007bff;
+          }
+        
           .footer {
               font-size: 14px;
               color: #999999;
@@ -105,6 +118,18 @@ const createAlertEmailBody = (payload: any) => {
               cursor: pointer;
               text-decoration: underline;
           }
+              
+          .header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px;
+          }
+          .header h1 {
+            margin: 0;
+            font-size: 24px;
+            line-height: 28px;
+          }
       </style>
   </head>
   
@@ -114,16 +139,16 @@ const createAlertEmailBody = (payload: any) => {
               <h1>${alert}</h1>
           </div>
           <div class="content">
-              <div class="alert-info">
-                  <p><strong>Alert Category:</strong> ${alertCategory}</p>
-                  <p><strong>Alert Type:</strong> ${alertType}</p>
-                  <p><strong>Triggered At:</strong> ${formattedDate}</p>
+              <div class="alert-summary">
+                <p><strong>Alert Category:</strong> ${normalizedAlertCategory}</p>
+                <p><strong>Alert Type:</strong> ${normalizedAlertType}</p>
+                <p><strong>Triggered At:</strong> ${formattedDate}</p>
               </div>
-              
+                    
               <h2>Triggered Conditions</h2>
               ${triggeredHtml}
               
-              <p>Thank you for using our alert service.</p>
+              <p>Thank you for using our alert service. If you have any questions, feel free to reply to this email or <a href="mailto:support@dodao.io">contact support</a>.</p>
               <p>Best regards,<br>Dodao Support</p>
           </div>
           <div class="footer">
@@ -168,7 +193,8 @@ export const sendAlertNotificationEmail = async (params: { email: string; payloa
   try {
     const from = 'support@tidbitshub.org';
     console.log('Sending alert notification email to', email, 'from', from);
-
+    const emailBody = createAlertEmailBody(payload);
+    console.log('Email body: ', emailBody);
     // Sending email via AWS SES
     ses.sendEmail(
       {
@@ -180,7 +206,7 @@ export const sendAlertNotificationEmail = async (params: { email: string; payloa
           },
           Body: {
             Html: {
-              Data: createAlertEmailBody(payload),
+              Data: emailBody,
             },
           },
         },

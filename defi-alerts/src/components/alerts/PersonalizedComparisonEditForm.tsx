@@ -306,7 +306,7 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
           <p className="text-sm text-theme-muted">
             Set the Rate Difference required to trigger an alert. You will receive an alert if any of the set conditions are met.
           </p>
-          <div className="mt-2">
+          <div>
             <p className="text-sm text-theme-muted">
               <span className="text-primary-color font-medium">How thresholds work:</span> {getComparisonMessage()}
             </p>

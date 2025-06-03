@@ -329,13 +329,7 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
         <CardContent>
           {/* Render each condition */}
           {conditions.map((condition, index) => (
-            <div key={condition.id} className="mb-6">
-              <div className="mb-4 p-3 bg-theme-secondary rounded-lg border border-theme-primary">
-                <p className="text-sm text-theme-muted">
-                  <span className="text-primary-color font-medium">Condition {index + 1}:</span> {getConditionMessage(condition.conditionType)}
-                </p>
-              </div>
-
+            <div key={condition.id} className="my-2">
               <div className="grid grid-cols-12 gap-4 items-center">
                 <div className="col-span-1 flex items-center text-theme-muted">
                   <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
@@ -464,10 +458,16 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
                   </Button>
                 )}
               </div>
+
+              <div className="px-3 py-2">
+                <p className="text-sm text-theme-muted">
+                  <span className="text-primary-color font-medium">Condition {index + 1}:</span> {getConditionMessage(condition.conditionType)}
+                </p>
+              </div>
             </div>
           ))}
 
-          <hr className="my-6" />
+          <hr></hr>
 
           {/* Notification Frequency */}
           <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />

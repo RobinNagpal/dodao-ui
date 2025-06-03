@@ -596,7 +596,7 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
             </div>
           ))}
 
-          <hr className="my-6" />
+          <hr></hr>
 
           {/* Notification Frequency */}
           <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
