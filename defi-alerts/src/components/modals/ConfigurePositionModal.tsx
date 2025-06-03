@@ -1,11 +1,13 @@
 'use client';
 
+import { ComparisonCondition, MarketCondition } from '@/components/alerts/PositionConditionEditor';
+import { ComparisonPosition } from '@/components/alerts/PositionEditor';
 import { useSession } from 'next-auth/react';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { NotificationFrequencySection, DeliveryChannelsCard } from '@/components/alerts';
+import { NotificationFrequencySection, DeliveryChannelsCard, PositionConditionEditor } from '@/components/alerts';
 import { type Channel, type ConditionType, type NotificationFrequency, type SeverityLevel, severityOptions } from '@/types/alerts';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
@@ -373,262 +375,45 @@ export default function ConfigurePositionModal<T extends BasePosition>({
               </div>
 
               <div className="p-5 bg-theme-secondary rounded-lg border border-primary-color">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-lg font-medium text-theme-primary">{modalType === 'GENERAL' ? 'Condition Settings' : 'Rate Difference Thresholds'}</h4>
-                    <Button
-                      size="sm"
-                      onClick={() => {
-                        if (!selectedPosition) return;
-                        const conditionType =
-                          modalType === 'GENERAL'
-                            ? ('APR_RISE_ABOVE' as ConditionType)
-                            : selectedPosition.actionType === 'SUPPLY'
-                            ? ('RATE_DIFF_ABOVE' as ConditionType)
-                            : ('RATE_DIFF_BELOW' as ConditionType);
-                        const newCondition = {
-                          id: `condition-${Date.now()}`,
-                          conditionType: conditionType,
-                          severity: 'NONE' as SeverityLevel,
-                          thresholdValue: '',
-                        };
-                        updatePosition(selectedPosition.id, {
-                          conditions: [...selectedPosition.conditions, newCondition],
-                        } as Partial<T>);
-                      }}
-                      className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary"
-                    >
-                      <Plus size={16} className="mr-1" /> Add {modalType === 'GENERAL' ? 'Condition' : 'Threshold'}
-                    </Button>
-                  </div>
-
-                  <p className="text-sm text-theme-muted">
-                    {modalType === 'GENERAL'
-                      ? 'Define when you want to be alerted about changes to this position. You will receive an alert if any of the set conditions are met.'
-                      : 'Set the Rate Difference required to trigger an alert. You will receive an alert if any of the set conditions are met.'}
-                  </p>
-
-                  {modalType === 'COMPARISON' ? (
-                    <div>
-                      <p className="text-sm text-theme-muted">
-                        <span className="text-primary-color font-medium">How thresholds work:</span>{' '}
-                        {getComparisonMessage(selectedPosition as unknown as WalletComparisonPosition)}
-                      </p>
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-
-                  {/* Render each condition */}
-                  {selectedPosition.conditions.map((condition, index) => (
-                    <div key={condition.id} className="">
-                      <div className="my-4">
-                        <div className="grid grid-cols-12 gap-4 items-center">
-                          <div className="col-span-1 flex items-center text-theme-muted">
-                            <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
-                              {index + 1}
-                            </Badge>
-                          </div>
-
-                          {modalType === 'GENERAL' ? (
-                            <>
-                              <div className="col-span-3">
-                                <Select
-                                  value={condition.conditionType}
-                                  onValueChange={(value) =>
-                                    updatePosition(selectedPosition.id, {
-                                      conditions: selectedPosition.conditions.map((c, i) =>
-                                        i === index ? { ...c, conditionType: value as ConditionType } : c
-                                      ),
-                                    } as Partial<T>)
-                                  }
-                                >
-                                  <SelectTrigger className="w-full hover-border-primary">
-                                    <SelectValue placeholder="Select condition type" />
-                                  </SelectTrigger>
-                                  <SelectContent className="bg-block">
-                                    <div className="hover-border-primary hover-text-primary">
-                                      <SelectItem value="APR_RISE_ABOVE" className="hover:text-primary-color">
-                                        APR rises above threshold
-                                      </SelectItem>
-                                    </div>
-                                    <div className="hover-border-primary hover-text-primary">
-                                      <SelectItem value="APR_FALLS_BELOW">APR falls below threshold</SelectItem>
-                                    </div>
-                                    <div className="hover-border-primary hover-text-primary">
-                                      <SelectItem value="APR_OUTSIDE_RANGE">APR is outside a range</SelectItem>
-                                    </div>
-                                  </SelectContent>
-                                </Select>
-                              </div>
-
-                              {condition.conditionType === 'APR_OUTSIDE_RANGE' ? (
-                                <div className="col-span-4 flex flex-col">
-                                  <div className="flex items-center space-x-2">
-                                    <Input
-                                      type="text"
-                                      placeholder="Min (e.g., 3)"
-                                      value={condition.thresholdLow || ''}
-                                      onChange={(e) =>
-                                        updatePosition(selectedPosition.id, {
-                                          conditions: selectedPosition.conditions.map((c, i) => (i === index ? { ...c, thresholdLow: e.target.value } : c)),
-                                        } as Partial<T>)
-                                      }
-                                      className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                                        errors[selectedPosition.id]?.conditions && errors[selectedPosition.id].conditions[index] ? 'border-red-500' : ''
-                                      }`}
-                                    />
-                                    <Input
-                                      type="text"
-                                      placeholder="Max (e.g., 6)"
-                                      value={condition.thresholdHigh || ''}
-                                      onChange={(e) =>
-                                        updatePosition(selectedPosition.id, {
-                                          conditions: selectedPosition.conditions.map((c, i) => (i === index ? { ...c, thresholdHigh: e.target.value } : c)),
-                                        } as Partial<T>)
-                                      }
-                                      className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                                        errors[selectedPosition.id]?.conditions && errors[selectedPosition.id].conditions[index] ? 'border-red-500' : ''
-                                      }`}
-                                    />
-                                    <span className="text-theme-muted whitespace-nowrap flex-shrink-0">APR</span>
-                                  </div>
-                                  {errors[selectedPosition.id]?.conditions && errors[selectedPosition.id].conditions[index] && (
-                                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                                      <AlertCircle size={14} className="mr-1" />
-                                      <span>{errors[selectedPosition.id].conditions[index]}</span>
-                                    </div>
-                                  )}
-                                </div>
-                              ) : (
-                                <div className="col-span-4 flex flex-col">
-                                  <div className="flex items-center">
-                                    <Input
-                                      type="text"
-                                      placeholder={
-                                        condition.conditionType === 'APR_RISE_ABOVE'
-                                          ? 'Threshold (e.g., 5.0)'
-                                          : condition.conditionType === 'APR_FALLS_BELOW'
-                                          ? 'Threshold (e.g., 2.0)'
-                                          : 'Threshold value'
-                                      }
-                                      value={condition.thresholdValue || ''}
-                                      onChange={(e) =>
-                                        updatePosition(selectedPosition.id, {
-                                          conditions: selectedPosition.conditions.map((c, i) => (i === index ? { ...c, thresholdValue: e.target.value } : c)),
-                                        } as Partial<T>)
-                                      }
-                                      className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                                        errors[selectedPosition.id]?.conditions && errors[selectedPosition.id].conditions[index] ? 'border-red-500' : ''
-                                      }`}
-                                    />
-                                    <span className="ml-2 text-theme-muted whitespace-nowrap flex-shrink-0">APR</span>
-                                  </div>
-                                  {errors[selectedPosition.id]?.conditions && errors[selectedPosition.id].conditions[index] && (
-                                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                                      <AlertCircle size={14} className="mr-1" />
-                                      <span>{errors[selectedPosition.id].conditions[index]}</span>
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                            </>
-                          ) : (
-                            <div className="col-span-5 flex flex-col">
-                              <div className="flex items-center">
-                                <Input
-                                  type="text"
-                                  placeholder={selectedPosition.actionType === 'SUPPLY' ? 'Threshold (e.g., 1.2)' : 'Threshold (e.g., 0.5)'}
-                                  value={condition.thresholdValue || ''}
-                                  onChange={(e) =>
-                                    updatePosition(selectedPosition.id, {
-                                      conditions: selectedPosition.conditions.map((c, i) => (i === index ? { ...c, thresholdValue: e.target.value } : c)),
-                                    } as Partial<T>)
-                                  }
-                                  className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                                    errors[selectedPosition.id]?.conditions && errors[selectedPosition.id].conditions[index] ? 'border-red-500' : ''
-                                  }`}
-                                />
-                                <span className="ml-2 text-theme-muted whitespace-nowrap flex-shrink-0">Rate difference</span>
-                              </div>
-                              {errors[selectedPosition.id]?.conditions && errors[selectedPosition.id].conditions[index] && (
-                                <div className="mt-1 flex items-center text-red-500 text-sm">
-                                  <AlertCircle size={14} className="mr-1" />
-                                  <span>{errors[selectedPosition.id].conditions[index]}</span>
-                                </div>
-                              )}
-                            </div>
-                          )}
-
-                          {/* Severity */}
-                          <div className="col-span-3 flex items-center">
-                            <Select
-                              value={condition.severity === 'NONE' ? undefined : condition.severity}
-                              onValueChange={(value) =>
-                                updatePosition(selectedPosition.id, {
-                                  conditions: selectedPosition.conditions.map((c, i) => (i === index ? { ...c, severity: value as SeverityLevel } : c)),
-                                } as Partial<T>)
-                              }
-                            >
-                              <SelectTrigger className="w-full hover-border-primary">
-                                <SelectValue placeholder="Severity Level" />
-                              </SelectTrigger>
-                              <SelectContent className="bg-block">
-                                {severityOptions.map((opt) => (
-                                  <div key={opt.value} className="hover-border-primary hover-text-primary">
-                                    <SelectItem value={opt.value}>{opt.label}</SelectItem>
-                                  </div>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <Button size="icon" className="h-8 w-8 p-0 ml-1 hover-text-primary">
-                                    <Info size={16} />
-                                  </Button>
-                                </TooltipTrigger>
-                                <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
-                                  <p className="text-sm">
-                                    Severity level is used for visual indication only. It helps you categorize alerts by importance but does not affect
-                                    notification delivery or priority.
-                                  </p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          </div>
-
-                          {/* Remove */}
-                          {selectedPosition.conditions.length > 1 && (
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() =>
-                                updatePosition(selectedPosition.id, {
-                                  conditions: selectedPosition.conditions.filter((_, i) => i !== index),
-                                } as Partial<T>)
-                              }
-                              className="col-span-1 text-red-500 h-8 w-8"
-                            >
-                              <X size={16} />
-                            </Button>
-                          )}
-                        </div>
-
-                        {modalType === 'GENERAL' ? (
-                          <div className="px-3 py-2">
-                            <p className="text-sm text-theme-muted">
-                              <span className="text-primary-color font-medium">Condition {index + 1}:</span> {getConditionMessage(condition.conditionType)}
-                            </p>
-                          </div>
-                        ) : (
-                          <></>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <hr></hr>
+                <PositionConditionEditor
+                  editorType={modalType === 'GENERAL' ? 'market' : 'comparison'}
+                  actionType={selectedPosition.actionType}
+                  platformName={modalType === 'COMPARISON' ? (selectedPosition as unknown as WalletComparisonPosition).platform : undefined}
+                  currentRate={modalType === 'COMPARISON' ? (selectedPosition as unknown as WalletComparisonPosition).rate : undefined}
+                  conditions={
+                    modalType === 'COMPARISON' ? (selectedPosition.conditions as ComparisonCondition[]) : (selectedPosition.conditions as MarketCondition[])
+                  }
+                  addCondition={() => {
+                    if (!selectedPosition) return;
+                    const conditionType =
+                      modalType === 'GENERAL'
+                        ? ('APR_RISE_ABOVE' as ConditionType)
+                        : selectedPosition.actionType === 'SUPPLY'
+                        ? ('RATE_DIFF_ABOVE' as ConditionType)
+                        : ('RATE_DIFF_BELOW' as ConditionType);
+                    const newCondition = {
+                      id: `condition-${Date.now()}`,
+                      conditionType: conditionType,
+                      severity: 'NONE' as SeverityLevel,
+                      thresholdValue: '',
+                    };
+                    updatePosition(selectedPosition.id, {
+                      conditions: [...selectedPosition.conditions, newCondition],
+                    } as Partial<T>);
+                  }}
+                  updateCondition={(id, field, value) => {
+                    updatePosition(selectedPosition.id, {
+                      conditions: selectedPosition.conditions.map((c) => (c.id === id ? { ...c, [field]: value } : c)),
+                    } as Partial<T>);
+                  }}
+                  removeCondition={(id) => {
+                    updatePosition(selectedPosition.id, {
+                      conditions: selectedPosition.conditions.filter((c) => c.id !== id),
+                    } as Partial<T>);
+                  }}
+                  errors={errors[selectedPosition.id]}
+                />
+                <hr className="my-4"></hr>
                 <NotificationFrequencySection
                   notificationFrequency={selectedPosition.notificationFrequency}
                   setNotificationFrequency={(freq) => updatePosition(selectedPosition.id, { notificationFrequency: freq } as Partial<T>)}

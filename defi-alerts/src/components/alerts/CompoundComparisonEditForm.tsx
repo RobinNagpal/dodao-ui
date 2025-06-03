@@ -1,5 +1,6 @@
 'use client';
 
+import PositionConditionEditor from '@/components/alerts/PositionConditionEditor';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -532,73 +533,33 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
       </Card>
 
       {/* Thresholds */}
+      <PositionConditionEditor
+        editorType="comparison"
+        actionType={alertType === 'supply' ? 'SUPPLY' : 'BORROW'}
+        conditions={thresholds.map((th, i) => ({
+          id: `threshold-${i}`,
+          conditionType: alertType === 'supply' ? 'RATE_DIFF_ABOVE' : 'RATE_DIFF_BELOW',
+          severity: th.severity as SeverityLevel,
+          thresholdValue: th.threshold,
+        }))}
+        addCondition={addThreshold}
+        updateCondition={(id, field, value) => {
+          const index = parseInt(id.split('-')[1]);
+          updateThreshold(index, field as keyof GeneralComparisonRow, value);
+        }}
+        removeCondition={(id) => {
+          const index = parseInt(id.split('-')[1]);
+          removeThreshold(index);
+        }}
+        errors={{ conditions: errors.thresholds }}
+      />
+
+      {/* Notification Frequency */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
-        <CardHeader className="pb-1 flex flex-row items-center justify-between">
-          <CardTitle className="text-lg text-theme-primary">Rate Difference Thresholds</CardTitle>
-          <Button size="sm" onClick={addThreshold} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
-            <Plus size={16} className="mr-1" /> Add Threshold
-          </Button>
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">Notification Frequency</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-theme-muted mb-4">
-            {alertType === 'supply' ? 'Notify when Compound supply APR > other APR by threshold.' : 'Notify when Compound borrow APR < other APR by threshold.'}
-          </p>
-
-          {thresholds.map((th, i) => (
-            <div key={i} className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-primary-color pt-4">
-              <div className="col-span-1 flex items-center text-theme-muted">
-                <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
-                  {i + 1}
-                </Badge>
-              </div>
-
-              <div className="col-span-5 flex flex-col">
-                <div className="flex items-center">
-                  <Input
-                    type="text"
-                    value={th.threshold}
-                    onChange={(e) => updateThreshold(i, 'threshold', e.target.value)}
-                    className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                      errors.thresholds && errors.thresholds[i] ? 'border-red-500' : ''
-                    }`}
-                    placeholder="0.5"
-                  />
-                  <span className="ml-2 text-theme-muted">% APR</span>
-                </div>
-                {errors.thresholds && errors.thresholds[i] && (
-                  <div className="mt-1 flex items-center text-red-500 text-sm">
-                    <AlertCircle size={14} className="mr-1" />
-                    <span>{errors.thresholds[i]}</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="col-span-5">
-                <Select value={th.severity} onValueChange={(value) => updateThreshold(i, 'severity', value)}>
-                  <SelectTrigger className="w-full hover-border-primary">
-                    <SelectValue placeholder="Select severity" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-block">
-                    {severityOptions.map((opt) => (
-                      <div key={opt.value} className="hover-border-primary hover-text-primary">
-                        <SelectItem value={opt.value}>{opt.label}</SelectItem>
-                      </div>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {thresholds.length > 1 && (
-                <Button variant="ghost" size="icon" onClick={() => removeThreshold(i)} className="col-span-1 text-red-500 h-8 w-8">
-                  <X size={16} />
-                </Button>
-              )}
-            </div>
-          ))}
-
-          <hr className="my-6" />
-
-          {/* Notification Frequency */}
           <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
         </CardContent>
       </Card>
