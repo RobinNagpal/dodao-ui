@@ -301,6 +301,19 @@ export const COMPOUND_MARKETS: MarketConfig[] = [
     collaterals: ['0x8f187aa05619a017077f5308904739877ce9ea21', '0x4200000000000000000000000000000000000006'],
   },
   {
+    chainId: unichain.id,
+    symbol: 'WETH',
+    cometAddress: '0x6C987dDE50dB1dcDd32Cd4175778C2a291978E2a' as Address,
+    baseAssetAddress: '0x4200000000000000000000000000000000000006' as Address,
+    collaterals: [
+      '0xc02fE7317D4eb8753a02c35fe019786854A92001',
+      '0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7',
+      '0x2416092f143378750bb29b79eD961ab195CcEea5',
+      '0x8f187aa05619a017077f5308904739877ce9ea21',
+      '0x927B51f251480a681271180DA4de28D44EC4AfB8',
+    ],
+  },
+  {
     chainId: linea.id,
     symbol: 'USDC',
     cometAddress: '0x8D38A3d6B3c3B7d96D6536DA7Eef94A9d7dbC991' as Address,
