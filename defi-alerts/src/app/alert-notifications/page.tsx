@@ -1,7 +1,7 @@
 'use client';
 
 import { AlertNotificationResponse } from '@/app/api/alert-notifications/route';
-import { ConditionsCell } from '@/components/alerts';
+import { ConditionsCell, TriggerValuesCell } from '@/components/alerts';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
@@ -133,7 +133,11 @@ export default function AlertNotificationsPage() {
                           <ConditionsCell alert={notification.alert} />
                         </TableCell>
                         <TableCell className="text-left">
-                          <ConditionsCell alert={{ ...notification.alert, conditions: triggeredConditions }} />
+                          {notification.triggeredValues ? (
+                            <TriggerValuesCell triggerValues={notification.triggeredValues} />
+                          ) : (
+                            <ConditionsCell alert={{ ...notification.alert, conditions: triggeredConditions }} />
+                          )}
                         </TableCell>
 
                         <TableCell className="text-center">
