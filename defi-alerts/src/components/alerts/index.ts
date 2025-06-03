@@ -10,6 +10,7 @@ import ConditionsCell from './core/ConditionsCell';
 import DeleteAlertModal from './core/DeleteAlertModal';
 import DeliveryChannelCell from './core/DeliveryChannelCell';
 import PlatformsCell from './core/PlatformsCell';
+import TriggerValuesCell from './core/TriggerValuesCell';
 import CreateAlertModals from './CreateAlertModals';
 import CreateComparisonModals from './CreateComparisonModals';
 import DeliveryChannelsCard from './DeliveryChannelsCard';
@@ -38,4 +39,5 @@ export {
   DeleteAlertModal,
   DeliveryChannelCell,
   PlatformsCell,
+  TriggerValuesCell,
 };

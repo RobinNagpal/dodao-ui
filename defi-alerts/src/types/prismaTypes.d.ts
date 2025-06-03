@@ -1,3 +1,5 @@
+import { ConditionType, NotificationFrequency } from '@prisma/client';
+
 export interface AuthSettingsDto {
   enableLogin?: boolean;
   loginOptions?: string[];
@@ -19,10 +21,33 @@ export interface UsernameAndNameDto {
   nameOfTheUser: string;
 }
 
+export interface AlertTriggerValuesInterface {
+  chainName: string;
+  asset: string;
+  isComparison?: boolean;
+  protocol?: string;
+  compoundRate?: number;
+  protocolRate?: number;
+  diff?: number;
+  notificationFrequency: NotificationFrequency;
+  currentRate?: number;
+  condition: {
+    type: ConditionType;
+    threshold:
+      | number
+      | {
+          low: number;
+          high: number;
+        };
+    alertConditionId: string;
+  };
+}
+
 declare global {
   namespace PrismaJson {
     type AuthSettings = AuthSettingsDto;
     type ThemeColors = ThemeColorsDto;
     type UsernameAndName = UsernameAndNameDto;
+    type AlertTriggerValues = Array<AlertTriggerValuesInterface>;
   }
 }

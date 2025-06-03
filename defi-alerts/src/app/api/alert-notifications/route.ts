@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { Alert, AlertCondition, AlertNotification, Asset, Chain, DeliveryChannel, SentNotification } from '@prisma/client';
@@ -14,6 +15,8 @@ export type AlertNotificationResponse = AlertNotification & {
   };
   SentNotification: SentNotification | null;
   triggeredConditions: AlertCondition[];
+  // Include the triggeredValues field from the AlertNotification model
+  triggeredValues: AlertTriggerValuesInterface[] | null;
 };
 
 async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<AlertNotificationResponse[]> {
@@ -52,6 +55,8 @@ async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
     return {
       ...notification,
       triggeredConditions,
+      // Include the triggeredValues field from the notification
+      triggeredValues: notification.triggeredValues || null,
     };
   });
 
