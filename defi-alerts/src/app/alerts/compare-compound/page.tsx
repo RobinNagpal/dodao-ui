@@ -1,15 +1,23 @@
 'use client';
 
-import { AlertActionsCell, AssetsCell, ChainsCell, ConditionsCell, CreateComparisonModals, DeliveryChannelCell, PlatformsCell } from '@/components/alerts';
+import {
+  AlertActionsCell,
+  AssetsCell,
+  ChainsCell,
+  ConditionsCell,
+  CreateComparisonModals,
+  DeleteAlertModal,
+  DeliveryChannelCell,
+  PlatformsCell,
+} from '@/components/alerts';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import ChainSelect from '@/components/alerts/core/ChainSelect';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { type Alert, Channel, frequencyOptions } from '@/types/alerts';
+import { type Alert, frequencyOptions } from '@/types/alerts';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
-import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
@@ -260,26 +268,18 @@ export default function CompareCompoundPage() {
                 )}
               </TableBody>
             </Table>
-            {showConfirmModal && alertToDelete && (
-              <ConfirmationModal
-                open={showConfirmModal}
-                showSemiTransparentBg={true}
-                onClose={() => {
-                  setShowConfirmModal(false);
-                  setAlertToDelete(null);
-                }}
-                onConfirm={async () => {
-                  await deleteAlert(`${baseUrl}/api/alerts/${alertToDelete}`);
-                  await reFetchData();
-                  setShowConfirmModal(false);
-                  setAlertToDelete(null);
-                }}
-                title="Delete Alert"
-                confirmationText="Are you sure you want to delete this alert?"
-                confirming={deleting}
-                askForTextInput={false}
-              />
-            )}
+            <DeleteAlertModal
+              open={showConfirmModal}
+              alertId={alertToDelete}
+              baseUrl={baseUrl}
+              deleting={deleting}
+              onClose={() => {
+                setShowConfirmModal(false);
+                setAlertToDelete(null);
+              }}
+              onDeleteSuccess={reFetchData}
+              deleteAlert={deleteAlert}
+            />
           </div>
         </div>
       )}
