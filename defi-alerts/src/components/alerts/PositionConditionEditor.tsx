@@ -85,11 +85,11 @@ export default function PositionConditionEditor({
   const getMarketConditionMessage = (conditionType: ConditionType) => {
     switch (conditionType) {
       case 'APR_RISE_ABOVE':
-        return 'Alert when APR exceeds your set threshold (e.g., alert when APR goes above 5%)';
+        return 'Alert when interest rate rises above your set threshold (e.g., alert when interest rate goes above 5.00). Enter the absolute interest rate value.';
       case 'APR_FALLS_BELOW':
-        return 'Alert when APR drops under your set threshold (e.g., alert when APR goes below 2%)';
+        return 'Alert when interest rate falls below your set threshold (e.g., alert when interest rate goes below 2.00). Enter the absolute interest rate value.';
       case 'APR_OUTSIDE_RANGE':
-        return 'Alert when APR moves outside your specified range (e.g., alert when APR is below 3% or above 6%)';
+        return 'Alert when interest rate moves outside the range of your specified thresholds (e.g., alert when interest rate is below 3.00 or above 6.00). Enter the absolute interest rate values for both minimum and maximum.';
       default:
         return 'Select a condition type to see its description';
     }
@@ -99,29 +99,37 @@ export default function PositionConditionEditor({
   const getComparisonMessage = () => {
     if (actionType === 'SUPPLY') {
       if (platformName && currentRate) {
-        return `If ${toSentenceCase(
+        const currentRateValue = parseFloat(currentRate.replace('%', ''));
+        const thresholdExample = 1.2;
+        const resultRate = (currentRateValue + thresholdExample).toFixed(1);
+
+        return `Alert when interest rate difference between Compound and ${toSentenceCase(platformName)} is above your threshold. Example: If ${toSentenceCase(
           platformName
-        )} offers ${currentRate} APY and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches ${(
-          parseFloat(currentRate.replace('%', '')) + 1.2
-        ).toFixed(1)}% (${toSentenceCase(platformName)} rate + Your set threshold)`;
+        )} offers ${currentRate} interest rate and you set ${thresholdExample.toFixed(
+          1
+        )} threshold, you'll be alerted when Compound's supply interest rate reaches ${resultRate}. Enter the difference value you want to use as threshold, not the absolute rate.`;
       }
-      return 'Set a threshold to be alerted when Compound supply APR exceeds other platforms by that amount';
+      return 'Alert when interest rate difference between Compound and other platforms is above your threshold. Enter the difference value (e.g., 1.20), not the absolute rate.';
     } else {
       if (platformName && currentRate) {
-        return `If ${toSentenceCase(
+        const currentRateValue = parseFloat(currentRate.replace('%', ''));
+        const thresholdExample = 0.5;
+        const resultRate = (currentRateValue - thresholdExample).toFixed(1);
+
+        return `Alert when interest rate difference between Compound and ${toSentenceCase(platformName)} is below your threshold. Example: If ${toSentenceCase(
           platformName
-        )} charges ${currentRate} APY and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to ${(
-          parseFloat(currentRate.replace('%', '')) - 0.5
-        ).toFixed(1)}% (${toSentenceCase(platformName)} rate - Your set threshold)`;
+        )} charges ${currentRate} interest rate and you set ${thresholdExample.toFixed(
+          1
+        )} threshold, you'll be alerted when Compound's borrow interest rate drops to ${resultRate}. Enter the difference value you want to use as threshold, not the absolute rate.`;
       }
-      return 'Set a threshold to be alerted when Compound borrow APR is lower than other platforms by that amount';
+      return 'Alert when interest rate difference between Compound and other platforms is below your threshold. Enter the difference value (e.g., 0.50), not the absolute rate.';
     }
   };
 
   return (
     <Card className="mb-6 border-theme-primary bg-block border-primary-color">
       <CardHeader className="pb-1 flex flex-row items-center justify-between">
-        <CardTitle className="text-lg text-theme-primary">{editorType === 'market' ? 'Condition Settings' : 'Rate Difference Thresholds'}</CardTitle>
+        <CardTitle className="text-lg text-theme-primary">{editorType === 'market' ? 'Alert Conditions' : 'Rate Difference Alert Thresholds'}</CardTitle>
         <Button size="sm" onClick={addCondition} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
           <Plus size={16} className="mr-1" />
           {editorType === 'market' ? 'Add Condition' : 'Add Threshold'}
@@ -130,10 +138,10 @@ export default function PositionConditionEditor({
       <CardContent>
         <p className="text-sm text-theme-muted mb-4">
           {editorType === 'market'
-            ? 'Define when you want to be alerted about changes to this position. You will receive an alert if any of the set conditions are met.'
+            ? 'Define specific conditions that will trigger alerts for this position. You will be notified when any of these conditions are met. Enter absolute interest rate values (e.g., 5.00 for 5% interest rate).'
             : actionType === 'SUPPLY'
-            ? 'Notify when Compound supply APR > other APR by threshold.'
-            : 'Notify when Compound borrow APR < other APR by threshold.'}
+            ? 'Set thresholds to be alerted when Compound supply interest rate exceeds other platforms by your specified amount. Enter the difference value (e.g., 1.20 for 1.2% difference), not the absolute rate.'
+            : 'Set thresholds to be alerted when Compound borrow interest rate is lower than other platforms by your specified amount. Enter the difference value (e.g., 0.50 for 0.5% difference), not the absolute rate.'}
         </p>
 
         {/* Contextual message for comparison conditions */}
@@ -147,7 +155,7 @@ export default function PositionConditionEditor({
 
         {/* Render each condition */}
         {conditions.map((condition, index) => (
-          <div key={condition.id} className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-primary-color pt-4">
+          <div key={condition.id} className="grid grid-cols-12 gap-4 mb-4 border-t border-primary-color pt-4">
             <div className="col-span-1 flex items-center text-theme-muted">
               <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
                 {index + 1}
@@ -164,13 +172,13 @@ export default function PositionConditionEditor({
                     </SelectTrigger>
                     <SelectContent className="bg-block">
                       <div className="hover-border-primary hover-text-primary">
-                        <SelectItem value="APR_RISE_ABOVE">APR rises above threshold</SelectItem>
+                        <SelectItem value="APR_RISE_ABOVE">Alert when APR rises above threshold</SelectItem>
                       </div>
                       <div className="hover-border-primary hover-text-primary">
-                        <SelectItem value="APR_FALLS_BELOW">APR falls below threshold</SelectItem>
+                        <SelectItem value="APR_FALLS_BELOW">Alert when APR falls below threshold</SelectItem>
                       </div>
                       <div className="hover-border-primary hover-text-primary">
-                        <SelectItem value="APR_OUTSIDE_RANGE">APR is outside a range</SelectItem>
+                        <SelectItem value="APR_OUTSIDE_RANGE">Alert when APR moves outside a range</SelectItem>
                       </div>
                     </SelectContent>
                   </Select>
@@ -198,7 +206,7 @@ export default function PositionConditionEditor({
                           errors?.conditions && errors.conditions[index] ? 'border-red-500' : ''
                         }`}
                       />
-                      <span className="text-theme-muted whitespace-nowrap flex-shrink-0">APR</span>
+                      <span className="text-theme-muted whitespace-nowrap flex-shrink-0">interest rate</span>
                     </div>
                     {errors?.conditions && errors.conditions[index] && (
                       <div className="mt-1 flex items-center text-red-500 text-sm">
@@ -225,7 +233,7 @@ export default function PositionConditionEditor({
                           errors?.conditions && errors.conditions[index] ? 'border-red-500' : ''
                         }`}
                       />
-                      <span className="ml-2 text-theme-muted whitespace-nowrap flex-shrink-0">APR</span>
+                      <span className="ml-2 text-theme-muted whitespace-nowrap flex-shrink-0">interest rate</span>
                     </div>
                     {errors?.conditions && errors.conditions[index] && (
                       <div className="mt-1 flex items-center text-red-500 text-sm">
@@ -249,7 +257,7 @@ export default function PositionConditionEditor({
                     }`}
                     placeholder={actionType === 'SUPPLY' ? 'Threshold (e.g., 1.2)' : 'Threshold (e.g., 0.5)'}
                   />
-                  <span className="ml-2 text-theme-muted">% APR difference</span>
+                  <span className="ml-2 text-theme-muted">interest rate difference</span>
                 </div>
                 {errors?.conditions && errors.conditions[index] && (
                   <div className="mt-1 flex items-center text-red-500 text-sm">
