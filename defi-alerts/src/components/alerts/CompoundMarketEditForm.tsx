@@ -13,7 +13,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { NotificationFrequencySection, DeliveryChannelsCard } from '@/components/alerts';
+import { NotificationFrequencySection, DeliveryChannelsCard, PositionConditionEditor } from '@/components/alerts';
 import { type Condition, type Channel, type ConditionType, type SeverityLevel, type NotificationFrequency, severityOptions, type Alert } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
@@ -420,156 +420,34 @@ export default function CompoundMarketEditForm({ alert, alertId }: CompoundMarke
       </Card>
 
       {/* Condition Settings */}
+      <PositionConditionEditor
+        editorType="market"
+        conditions={conditions.map((cond, i) => ({
+          id: `condition-${i}`,
+          conditionType: cond.conditionType,
+          severity: cond.severity,
+          thresholdValue: cond.thresholdValue,
+          thresholdLow: cond.thresholdLow,
+          thresholdHigh: cond.thresholdHigh,
+        }))}
+        addCondition={() => setConditions((cs) => [...cs, { conditionType: 'APR_RISE_ABOVE', severity: 'NONE' }])}
+        updateCondition={(id, field, value) => {
+          const index = parseInt(id.split('-')[1]);
+          updateCondition(index, field as keyof Condition, value);
+        }}
+        removeCondition={(id) => {
+          const index = parseInt(id.split('-')[1]);
+          setConditions((cs) => cs.filter((_, idx) => idx !== index));
+        }}
+        errors={{ conditions: errors.conditions }}
+      />
+
+      {/* Notification Frequency */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
-        <CardHeader className="pb-1 flex flex-row items-center justify-between">
-          <CardTitle className="text-lg text-theme-primary">Condition Settings</CardTitle>
-          <Button
-            size="sm"
-            onClick={() => setConditions((cs) => [...cs, { conditionType: 'APR_RISE_ABOVE', severity: 'NONE' }])}
-            className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary"
-          >
-            <Plus size={16} className="mr-1" /> Add Condition
-          </Button>
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">Notification Frequency</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-theme-muted mb-4">
-            Define the conditions when you want to be alerted about market changes. You will receive an alert if any of the set conditions are met.
-          </p>
-
-          {/* Conditions List */}
-          {conditions.map((cond, i) => (
-            <div key={i} className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-primary-color pt-4">
-              <div className="col-span-1 flex items-center text-theme-muted">
-                <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
-                  {i + 1}
-                </Badge>
-              </div>
-
-              {/* Type */}
-              <div className="col-span-4">
-                <Select
-                  value={cond.conditionType}
-                  onValueChange={(value) =>
-                    setConditions((cs) =>
-                      cs.map((c, idx) =>
-                        idx === i
-                          ? {
-                              ...c,
-                              conditionType: value as ConditionType,
-                            }
-                          : c
-                      )
-                    )
-                  }
-                >
-                  <SelectTrigger className="w-full hover-border-primary">
-                    <SelectValue placeholder="Select condition type" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-block">
-                    <div className="hover-border-primary hover-text-primary">
-                      <SelectItem value="APR_RISE_ABOVE" className="hover:text-primary-color">
-                        APR rises above threshold
-                      </SelectItem>
-                    </div>
-
-                    <div className="hover-border-primary hover-text-primary">
-                      <SelectItem value="APR_FALLS_BELOW">APR falls below threshold</SelectItem>
-                    </div>
-
-                    <div className="hover-border-primary hover-text-primary">
-                      <SelectItem value="APR_OUTSIDE_RANGE">APR is outside a range</SelectItem>
-                    </div>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Thresholds */}
-              {cond.conditionType === 'APR_OUTSIDE_RANGE' ? (
-                <div className="col-span-3 flex items-center space-x-2">
-                  <Input
-                    type="text"
-                    placeholder="Min (e.g., 3)"
-                    value={cond.thresholdLow || ''}
-                    onChange={(e) => updateCondition(i, 'thresholdLow', e.target.value)}
-                    className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                      errors.conditions && errors.conditions[i] ? 'border-red-500' : ''
-                    }`}
-                  />
-                  <Input
-                    type="text"
-                    placeholder="Max (e.g., 6)"
-                    value={cond.thresholdHigh || ''}
-                    onChange={(e) => updateCondition(i, 'thresholdHigh', e.target.value)}
-                    className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                      errors.conditions && errors.conditions[i] ? 'border-red-500' : ''
-                    }`}
-                  />
-                  <span className="text-theme-muted">%</span>
-                </div>
-              ) : (
-                <div className="col-span-3 flex items-center">
-                  <Input
-                    type="text"
-                    placeholder={
-                      cond.conditionType === 'APR_RISE_ABOVE'
-                        ? 'Threshold (e.g., 5.0)'
-                        : cond.conditionType === 'APR_FALLS_BELOW'
-                        ? 'Threshold (e.g., 2.0)'
-                        : 'Threshold value'
-                    }
-                    value={cond.thresholdValue || ''}
-                    onChange={(e) => updateCondition(i, 'thresholdValue', e.target.value)}
-                    className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                      errors.conditions && errors.conditions[i] ? 'border-red-500' : ''
-                    }`}
-                  />
-                  <span className="ml-2 text-theme-muted">%</span>
-                </div>
-              )}
-
-              {/* Severity */}
-              <div className="col-span-3">
-                <Select
-                  value={cond.severity}
-                  onValueChange={(value) => setConditions((cs) => cs.map((c, idx) => (idx === i ? { ...c, severity: value as SeverityLevel } : c)))}
-                >
-                  <SelectTrigger className="w-full hover-border-primary">
-                    <SelectValue placeholder="Select severity" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-block">
-                    {severityOptions.map((opt) => (
-                      <div key={opt.value} className="hover-border-primary hover-text-primary">
-                        <SelectItem value={opt.value}>{opt.label}</SelectItem>
-                      </div>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Remove */}
-              {conditions.length > 1 && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setConditions((cs) => cs.filter((_, idx) => idx !== i))}
-                  className="col-span-1 text-red-500 h-8 w-8"
-                >
-                  <X size={16} />
-                </Button>
-              )}
-            </div>
-
-            // {errors.conditions && errors.conditions[i] && (
-            //   <div className="mt-2 flex items-center text-red-500 text-sm">
-            //     <AlertCircle size={16} className="mr-1" />
-            //     <span>{errors.conditions[i]}</span>
-            //   </div>
-            // )}
-          ))}
-
-          <hr className="my-6" />
-
-          {/* Notification Frequency */}
           <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
         </CardContent>
       </Card>

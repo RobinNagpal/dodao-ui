@@ -1,26 +1,21 @@
 'use client';
 
-import { ComparisonCondition, MarketCondition } from '@/components/alerts/PositionConditionEditor';
-import { ComparisonPosition } from '@/components/alerts/PositionEditor';
-import { useSession } from 'next-auth/react';
-import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { NotificationFrequencySection, DeliveryChannelsCard, PositionConditionEditor } from '@/components/alerts';
-import { type Channel, type ConditionType, type NotificationFrequency, type SeverityLevel, severityOptions } from '@/types/alerts';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Plus, AlertCircle, Info, X } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { CreatePersonalizedAlertPayload, PersonalizedAlertCreationResponse } from '@/app/api/alerts/create/personalized-market/route';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { AlertCategory, AlertActionType, ConditionType as PrismaConditionType, DeliveryChannelType } from '@prisma/client';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { BasePosition, WalletComparisonPosition } from './types';
 import { PersonalizedComparisonAlertPayload, PersonalizedComparisonAlertResponse } from '@/app/api/alerts/create/personalized-comparison/route';
+import { CreatePersonalizedAlertPayload, PersonalizedAlertCreationResponse } from '@/app/api/alerts/create/personalized-market/route';
+import { DeliveryChannelsCard, NotificationFrequencySection, PositionConditionEditor } from '@/components/alerts';
+import { ComparisonCondition, MarketCondition } from '@/components/alerts/PositionConditionEditor';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { type Channel, type ConditionType, type NotificationFrequency, type SeverityLevel } from '@/types/alerts';
 import { toSentenceCase } from '@/utils/getSentenceCase';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { AlertActionType, AlertCategory, ConditionType as PrismaConditionType, DeliveryChannelType } from '@prisma/client';
+import { useSession } from 'next-auth/react';
+import { BasePosition, WalletComparisonPosition } from './types';
 
 interface ConfigurePositionProps<T extends BasePosition> {
   isOpen: boolean;
