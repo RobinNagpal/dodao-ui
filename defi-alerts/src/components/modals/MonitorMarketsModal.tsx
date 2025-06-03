@@ -21,6 +21,8 @@ import {
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useState } from 'react';
 import { CompareCompoundAlertPayload, CompareCompoundAlertResponse } from '@/app/api/alerts/create/compare-compound/route';
+import { validateMarketCombinations } from '@/utils/clientValidationUtils';
+import { AlertCircle } from 'lucide-react';
 
 interface MonitorMarketsProps {
   isOpen: boolean;
@@ -45,6 +47,7 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
+  const [showValidationError, setShowValidationError] = useState(false);
   const [thresholds, setThresholds] = useState<GeneralComparisonRow[]>([
     {
       platform: '',
@@ -96,6 +99,9 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
       channels?: string[];
     } = {};
 
+    // Reset validation error display
+    setShowValidationError(false);
+
     // Validate chains
     if (selectedChains.length === 0) {
       newErrors.chains = 'Please select at least one chain';
@@ -104,6 +110,15 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
     // Validate markets
     if (selectedMarkets.length === 0) {
       newErrors.markets = 'Please select at least one market';
+    }
+
+    // Check if combinations are valid
+    if (selectedChains.length > 0 && selectedMarkets.length > 0) {
+      const validationResult = validateMarketCombinations(selectedChains, selectedMarkets);
+      if (!validationResult.isValid) {
+        setShowValidationError(true);
+        return false;
+      }
     }
 
     // Validate conditions
@@ -163,11 +178,6 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
 
   const handleCreateMarketAlert = async () => {
     if (!validateMarketAlert()) {
-      showNotification({
-        type: 'error',
-        heading: 'Validation Error',
-        message: 'Please fix the errors before submitting',
-      });
       return;
     }
 
@@ -208,6 +218,9 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
       channels?: string[];
     } = {};
 
+    // Reset validation error display
+    setShowValidationError(false);
+
     // Validate platforms
     if (selectedPlatforms.length === 0) {
       newErrors.platforms = 'Please select at least one platform to compare with';
@@ -221,6 +234,15 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
     // Validate markets
     if (selectedMarkets.length === 0) {
       newErrors.markets = 'Please select at least one market';
+    }
+
+    // Check if combinations are valid
+    if (selectedChains.length > 0 && selectedMarkets.length > 0) {
+      const validationResult = validateMarketCombinations(selectedChains, selectedMarkets);
+      if (!validationResult.isValid) {
+        setShowValidationError(true);
+        return false;
+      }
     }
 
     // Validate thresholds
@@ -270,11 +292,6 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
 
   const handleCreateGeneralComparisonAlert = async () => {
     if (!validateGeneralComparisonAlert()) {
-      showNotification({
-        type: 'error',
-        heading: 'Validation Error',
-        message: 'Please fix the errors before submitting',
-      });
       return;
     }
 
@@ -367,6 +384,19 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
             errors={errors}
             session={session}
           />
+
+          {/* Market Combination Validation Error */}
+          {showValidationError && (
+            <div className="mb-6 p-4 border border-primary-color bg-block rounded-md">
+              <div className="flex items-center text-red-600">
+                <AlertCircle size={16} className="mr-2" />
+                <span className="font-medium text-sm">Invalid Market Combinations</span>
+              </div>
+              <p className="text-sm text-red-600 mt-1">
+                The selected chains do not support the selected markets on Compound. Please choose different chains or markets that are available.
+              </p>
+            </div>
+          )}
         </div>
 
         <DialogFooter>
