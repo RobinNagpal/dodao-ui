@@ -127,36 +127,6 @@ export default function CompareCompoundPage() {
 
       {/* Filter tabs */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        {/* <Tabs defaultValue="all" value={activeTab} className="w-full md:w-auto" onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-3 w-full md:w-[400px] bg-theme-bg-secondary">
-            <TabsTrigger
-              value="all"
-              className={
-                activeTab === 'all' ? 'bg-primary-color text-primary-text data-[state=active]:bg-primary-color data-[state=active]:text-primary-text' : ''
-              }
-            >
-              All Alerts
-            </TabsTrigger>
-            <TabsTrigger
-              value="general"
-              className={
-                activeTab === 'general' ? 'bg-primary-color text-primary-text data-[state=active]:bg-primary-color data-[state=active]:text-primary-text' : ''
-              }
-            >
-              Market Alerts
-            </TabsTrigger>
-            <TabsTrigger
-              value="personalized"
-              className={
-                activeTab === 'personalized'
-                  ? 'bg-primary-color text-primary-text data-[state=active]:bg-primary-color data-[state=active]:text-primary-text'
-                  : ''
-              }
-            >
-              Position Alerts
-            </TabsTrigger>
-          </TabsList>
-        </Tabs> */}
         <div></div>
 
         <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
