@@ -1,6 +1,7 @@
 'use client';
 
 import { AlertActionsCell, AssetsCell, ChainsCell, ConditionsCell } from '@/components/alerts';
+import AssetChainPairCell from '@/components/alerts/core/AssetChainPairCell';
 import CreateAlertModals from '@/components/alerts/CreateAlertModals';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -41,7 +42,6 @@ export default function AlertsPage() {
   const { loading: deleting, deleteData: deleteAlert } = useDeleteData<{ id: string }, null>({
     successMessage: 'Alert deleted successfully',
     errorMessage: 'Failed to delete alert',
-    redirectPath: undefined,
   });
 
   // const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
@@ -214,13 +214,13 @@ export default function AlertsPage() {
             <Table>
               <TableHeader>
                 <TableRow className="border-primary-color">
-                  <TableHead className="w-[120px]">Alert</TableHead>
-                  <TableHead className="w-[200px]">Chain/Market</TableHead>
-                  <TableHead className="w-[180px]">Condition</TableHead>
-                  <TableHead className="w-[150px]">Frequency</TableHead>
-                  <TableHead className="w-[200px]">Delivery Channel</TableHead>
-                  <TableHead className="w-[100px]">Status</TableHead>
-                  <TableHead className="w-[120px]">Actions</TableHead>
+                  <TableHead className="w-[120px] text-center">Alert</TableHead>
+                  <TableHead className="w-[200px] text-center">Chain/Market</TableHead>
+                  <TableHead className="w-[180px] text-center">Condition</TableHead>
+                  <TableHead className="w-[150px] text-center">Frequency</TableHead>
+                  <TableHead className="w-[200px] text-center">Delivery Channel</TableHead>
+                  <TableHead className="w-[100px] text-center">Status</TableHead>
+                  <TableHead className="w-[120px] text-center">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -243,22 +243,21 @@ export default function AlertsPage() {
                           </div>
                         </TableCell>
 
-                        <TableCell>
-                          <ChainsCell chains={alert.selectedChains || []} />
-                          <AssetsCell assets={alert.selectedAssets || []} chains={alert.selectedChains} />
+                        <TableCell className="text-center">
+                          <AssetChainPairCell chains={alert.selectedChains || []} assets={alert.selectedAssets || []} />
                         </TableCell>
 
-                        <TableCell>
+                        <TableCell className="flex items-center justify-center">
                           <ConditionsCell conditions={alert.conditions} />
                         </TableCell>
 
-                        <TableCell>
+                        <TableCell className="text-center">
                           <span className="text-theme-primary">{freqLabel(alert.notificationFrequency)}</span>
                         </TableCell>
 
-                        <TableCell>
+                        <TableCell className="flex items-center justify-center text-center">
                           {chan ? (
-                            <div className="flex flex-col">
+                            <div className="flex flex-col text-left">
                               <div className="flex items-center">
                                 <span className="text-xs font-medium text-theme-primary">{chan.channelType}</span>
                                 {hasMultipleChannels && (
@@ -298,7 +297,7 @@ export default function AlertsPage() {
                           )}
                         </TableCell>
 
-                        <TableCell>
+                        <TableCell className="text-center">
                           <Badge
                             variant="outline"
                             className={
@@ -309,7 +308,7 @@ export default function AlertsPage() {
                           </Badge>
                         </TableCell>
 
-                        <TableCell>
+                        <TableCell className="text-center">
                           <AlertActionsCell alert={alert} setAlertToDelete={setAlertToDelete} setShowConfirmModal={setShowConfirmModal} />
                         </TableCell>
                       </TableRow>

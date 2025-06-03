@@ -61,15 +61,8 @@ export default function ConditionSettingsCard({
 
         {/* Conditions List */}
         {conditions.map((cond, i) => (
-          <div key={i} className="mb-6">
-            <div className="border-t border-primary-color pt-4">
-              {/* Contextual Message */}
-              <div className="mb-4 p-3 bg-theme-secondary rounded-lg border border-theme-primary">
-                <p className="text-sm text-theme-muted">
-                  <span className="text-primary-color font-medium">Condition {i + 1}:</span> {getConditionMessage(cond.conditionType)}
-                </p>
-              </div>
-
+          <div key={i} className="my-2">
+            <div className="">
               <div className="grid grid-cols-12 gap-4 items-center">
                 <div className="col-span-1 flex items-center text-theme-muted">
                   <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
@@ -202,9 +195,17 @@ export default function ConditionSettingsCard({
                   </Button>
                 )}
               </div>
+              {/* Contextual Message */}
+              <div className="px-3 py-2">
+                <p className="text-sm text-theme-muted">
+                  <span className="text-primary-color font-medium">Condition {i + 1}:</span> {getConditionMessage(cond.conditionType)}
+                </p>
+              </div>
             </div>
           </div>
         ))}
+
+        <hr></hr>
 
         {/* Notification Frequency */}
         <NotificationFrequencySection

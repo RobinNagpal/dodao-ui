@@ -29,7 +29,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   const fetchPositions = useCompoundUserPositions();
 
   // Modal state
-  const [currentModal, setCurrentModal] = useState<'initial' | 'monitorMarkets' | 'positions' | 'configurePosition' | 'addWallet'>('initial');
+  const [currentModal, setCurrentModal] = useState<'monitorMarkets' | 'positions' | 'configurePosition' | 'addWallet'>('positions');
   const [walletAddresses, setWalletAddresses] = useState<string[]>([]);
   const [currentWalletAddress, setCurrentWalletAddress] = useState<string>('');
   const [walletHasPositions, setWalletHasPositions] = useState<boolean>(false);
@@ -42,6 +42,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     data: alertsData,
     loading: alertsLoading,
     error: alertsError,
+    reFetchData: reFetchAlerts,
   } = useFetchData<AlertResponse[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !session?.userId }, 'Failed to load alerts');
 
   // Fetch user's wallet addresses
@@ -145,7 +146,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
 
   // Handle close and reset
   const handleClose = () => {
-    setCurrentModal('initial');
+    setCurrentModal('positions');
     setSelectedPosition(null);
     onClose();
   };
@@ -192,14 +193,6 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   // Render the appropriate modal based on current state
   return (
     <>
-      <InitialModal
-        isOpen={isOpen && currentModal === 'initial'}
-        modalType="GENERAL"
-        handleClose={handleClose}
-        onWalletAdded={handleWalletAdded}
-        onSwitchToMonitor={() => setCurrentModal('monitorMarkets')}
-      />
-
       <AddWalletModal
         isOpen={isOpen && currentModal === 'addWallet'}
         handleClose={handleClose}
@@ -215,7 +208,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
         setChannels={setChannels}
         errors={errors}
         setErrors={setErrors}
-        onSwitchModal={() => (walletAddresses.length > 0 ? setCurrentModal('positions') : setCurrentModal('initial'))}
+        onSwitchModal={() => setCurrentModal('positions')}
       />
 
       <PositionsModal<WalletPosition>
@@ -245,6 +238,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
         errors={errors}
         setErrors={setErrors}
         onSwitchToPositions={() => setCurrentModal('positions')}
+        onCreate={reFetchAlerts}
       />
     </>
   );

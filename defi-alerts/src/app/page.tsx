@@ -1,6 +1,6 @@
-import AlertsPage from '@/app/alerts/page';
 import Home from '@/components/home-page/home';
 import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export default async function Page() {
   const reqHeaders = await headers();
@@ -11,7 +11,7 @@ export default async function Page() {
   }
 
   if (host === 'compound.defialerts-localhost.xyz' || host === 'compound.defialerts.xyz') {
-    return <AlertsPage />;
+    redirect('/alerts');
   }
 
   return <Home />;

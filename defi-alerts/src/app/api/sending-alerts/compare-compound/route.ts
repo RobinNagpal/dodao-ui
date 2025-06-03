@@ -7,6 +7,7 @@ import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Alert, AlertActionType, ConditionType, DeliveryChannelType, NotificationFrequency } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { fetchMorphoPositionsForWallet } from '@/utils/fetchMorphoPositionsForWallet';
 
 // Types
 interface CompareCompoundResponse {
@@ -222,6 +223,11 @@ async function evaluateConditions(
   const hitIds = new Set<string>();
   const groups: NotificationGroup[] = [];
 
+  let morphoPositions: ReturnType<typeof fetchMorphoPositionsForWallet> extends Promise<infer U> ? U : never = [];
+  if (alert.walletAddress && alert.compareProtocols.some((p) => p.toLowerCase() === 'morpho')) {
+    morphoPositions = await fetchMorphoPositionsForWallet(alert.walletAddress);
+  }
+
   for (const chainObj of alert.selectedChains) {
     for (const assetObj of alert.selectedAssets) {
       const key = `${chainObj.chainId}_${assetObj.address.toLowerCase()}`;
@@ -239,27 +245,42 @@ async function evaluateConditions(
 
       // compare against each protocol
       for (const proto of alert.compareProtocols) {
-        const otherM = await prisma.lendingAndBorrowingRate.findFirst({
-          where: {
-            protocolName: { equals: proto, mode: 'insensitive' },
-            chainId: chainObj.chainId,
-            assetChainId_address: key,
-          },
-          orderBy: { recordedAt: 'desc' },
-        });
-        if (!otherM) continue;
+        let otherRate: number | null = null;
+        if (proto.toLowerCase() === 'morpho') {
+          const morphoMatch = morphoPositions.find(
+            (pos) =>
+              pos.chain.toLowerCase() === chainObj.name.toLowerCase() &&
+              pos.assetAddress.toLowerCase() === assetObj.address.toLowerCase() &&
+              pos.actionType === alert.actionType
+          );
+
+          if (!morphoMatch || morphoMatch.disable) {
+            continue;
+          }
+          otherRate = parseFloat(morphoMatch.rate.replace('%', ''));
+        } else {
+          const otherM = await prisma.lendingAndBorrowingRate.findFirst({
+            where: {
+              protocolName: { equals: proto, mode: 'insensitive' },
+              chainId: chainObj.chainId,
+              assetChainId_address: key,
+            },
+            orderBy: { recordedAt: 'desc' },
+          });
+          if (!otherM) {
+            continue;
+          }
+          otherRate = alert.actionType === AlertActionType.SUPPLY ? otherM.netEarnAPY : otherM.netBorrowAPY;
+        }
 
         const compRate = alert.actionType === AlertActionType.SUPPLY ? compM.netEarnAPY : compM.netBorrowAPY;
-        const otherRate = alert.actionType === AlertActionType.SUPPLY ? otherM.netEarnAPY : otherM.netBorrowAPY;
-
-        // compute diff
-        const diff = alert.actionType === AlertActionType.SUPPLY ? compM.netEarnAPY - otherM.netEarnAPY : otherM.netBorrowAPY - compM.netBorrowAPY;
+        const diff = alert.actionType === AlertActionType.SUPPLY ? compRate - otherRate : otherRate - compRate;
 
         // check each RATE_DIFF condition
         for (const c of alert.conditions) {
           if (
             (c.conditionType === ConditionType.RATE_DIFF_ABOVE && diff > (c.thresholdValue ?? 0)) ||
-            (c.conditionType === ConditionType.RATE_DIFF_BELOW && diff > (c.thresholdValue ?? 0))
+            (c.conditionType === ConditionType.RATE_DIFF_BELOW && diff < (c.thresholdValue ?? 0))
           ) {
             if (alert.notificationFrequency === 'ONCE_PER_ALERT' && previouslySent.has(c.id)) continue;
 
@@ -281,6 +302,7 @@ async function evaluateConditions(
       }
     }
   }
+  console.log('the groups: ', JSON.stringify(groups, null, 2));
 
   return { hitIds, groups };
 }
