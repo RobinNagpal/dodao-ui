@@ -1,3 +1,5 @@
+'use client';
+
 // Platform Image component with error handling
 import Image from 'next/image';
 import { useState } from 'react';
