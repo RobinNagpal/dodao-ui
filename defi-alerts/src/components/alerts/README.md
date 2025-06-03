@@ -46,50 +46,6 @@ import { type PositionCondition } from '@/components/alerts/PositionConditionEdi
 />
 ```
 
-### PositionEditor
-
-A wrapper component that can be used for both creating and editing positions. It uses the `PositionConditionEditor` component for condition editing.
-
-#### Features
-
-- Supports two modes: 'create' and 'edit'
-- Supports two position types: 'market' and 'comparison'
-- Handles validation for both conditions and channels
-- Provides a consistent UI for both market and comparison positions
-- Has strict typing with TypeScript interfaces
-
-#### Usage
-
-```tsx
-import { PositionEditor } from '@/components/alerts';
-import { type Position, type MarketPosition, type ComparisonPosition } from '@/components/alerts/PositionEditor';
-
-// For creating a market position
-<PositionEditor
-  mode="create"
-  positionType="market"
-  position={position}
-  updatePosition={updatePosition}
-  onSubmit={handleCreateAlert}
-  isSubmitting={isSubmitting}
-  session={session}
-  onBack={handleBack}
-/>
-
-// For editing a comparison position
-<PositionEditor
-  mode="edit"
-  positionType="comparison"
-  position={position}
-  alert={alert}
-  alertId={alertId}
-  onSubmit={handleUpdateAlert}
-  isSubmitting={isSubmitting}
-  session={session}
-  onBack={handleBack}
-/>
-```
-
 ## Integration
 
 These components can be used to replace the existing condition editing code in the various forms. For example:
@@ -98,7 +54,6 @@ These components can be used to replace the existing condition editing code in t
 2. In `CompoundComparisonEditForm.tsx`, replace the threshold editing code with `<PositionConditionEditor editorType="comparison" ... />`
 3. In `ConfigurePositionModal.tsx`, replace the condition editing code with `<PositionConditionEditor editorType="market" ... />` or `<PositionConditionEditor editorType="comparison" ... />` depending on the modal type
 
-Alternatively, you can use the `PositionEditor` component to replace the entire form in these files.
 
 ## Type Definitions
 

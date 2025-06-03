@@ -19,7 +19,6 @@ import NotificationFrequencySection from './NotificationFrequencySection';
 import PersonalizedComparisonPositionCard from './PersonalizedComparisonPositionCard';
 import PositionSettingsCard from './PositionSettingsCard';
 import PositionConditionEditor from './PositionConditionEditor';
-import PositionEditor from './PositionEditor';
 
 export {
   AlertPageWrapper,
@@ -43,5 +42,4 @@ export {
   PlatformsCell,
   TriggerValuesCell,
   PositionConditionEditor,
-  PositionEditor,
 };
