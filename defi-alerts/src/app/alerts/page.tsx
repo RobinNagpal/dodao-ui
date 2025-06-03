@@ -345,6 +345,7 @@ export default function AlertsPage() {
                 }}
                 onConfirm={async () => {
                   await deleteAlert(`${baseUrl}/api/alerts/${alertToDelete}`);
+                  await reFetchData();
                   setShowConfirmModal(false);
                   setAlertToDelete(null);
                 }}
