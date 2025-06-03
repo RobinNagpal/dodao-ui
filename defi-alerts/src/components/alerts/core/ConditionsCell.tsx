@@ -32,9 +32,9 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
   // Format condition threshold values based on condition type
   const formatThresholdValue = (condition: PrismaCondition) => {
     if (condition.conditionType === 'APR_OUTSIDE_RANGE') {
-      return condition.thresholdValueLow && condition.thresholdValueHigh ? `${condition.thresholdValueLow}–${condition.thresholdValueHigh}%` : '-';
+      return condition.thresholdValueLow && condition.thresholdValueHigh ? `${condition.thresholdValueLow}–${condition.thresholdValueHigh} APY` : '-';
     } else {
-      return condition.thresholdValue ? `${condition.thresholdValue}%` : '-';
+      return condition.thresholdValue ? `${condition.thresholdValue} APY` : '-';
     }
   };
 
@@ -46,38 +46,103 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
         case 'APR_RISE_ABOVE':
           return (
             <div>
-              Alert when <PlatformImage platform={'compound'} /> APR exceeds APY of{' '}
-              {alert.compareProtocols.map((cp) => (
-                <PlatformImage platform={cp} />
+              Alert when <PlatformImage platform={'compound'} /> APR exceeds APR of{' '}
+              {alert.compareProtocols.map((cp, index) => (
+                <span key={index}>
+                  <PlatformImage platform={cp} />
+                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
+                </span>
               ))}{' '}
-              by ${formatThresholdValue(condition)} APY
+              by {formatThresholdValue(condition)}
             </div>
           );
         case 'APR_FALLS_BELOW':
-          return <div>Alert when APR drops under ${formatThresholdValue(condition)}</div>;
+          return (
+            <div>
+              Alert when <PlatformImage platform={'compound'} /> APR drops below{' '}
+              {alert.compareProtocols.map((cp, index) => (
+                <span key={index}>
+                  <PlatformImage platform={cp} />
+                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
+                </span>
+              ))}{' '}
+              APR by {formatThresholdValue(condition)}
+            </div>
+          );
         case 'APR_OUTSIDE_RANGE':
-          return <div>Alert when APR moves outside ${formatThresholdValue(condition)}</div>;
+          return (
+            <div>
+              Alert when <PlatformImage platform={'compound'} /> APR moves outside {formatThresholdValue(condition)} of{' '}
+              {alert.compareProtocols.map((cp, index) => (
+                <span key={index}>
+                  <PlatformImage platform={cp} />
+                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
+                </span>
+              ))}{' '}
+              APR
+            </div>
+          );
         case 'RATE_DIFF_ABOVE':
-          return <div>Alert when Rate Difference is above ${formatThresholdValue(condition)}</div>;
+          return (
+            <div>
+              Alert when rate difference between <PlatformImage platform={'compound'} /> and{' '}
+              {alert.compareProtocols.map((cp, index) => (
+                <span key={index}>
+                  <PlatformImage platform={cp} />
+                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
+                </span>
+              ))}{' '}
+              is above {formatThresholdValue(condition)}
+            </div>
+          );
         case 'RATE_DIFF_BELOW':
-          return <div>Alert when Rate Difference is below ${formatThresholdValue(condition)}</div>;
+          return (
+            <div>
+              Alert when rate difference between <PlatformImage platform={'compound'} /> and{' '}
+              {alert.compareProtocols.map((cp, index) => (
+                <span key={index}>
+                  <PlatformImage platform={cp} />
+                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
+                </span>
+              ))}{' '}
+              is below {formatThresholdValue(condition)}
+            </div>
+          );
       }
     } else {
+      const platform = alert.compareProtocols && alert.compareProtocols.length > 0 ? alert.compareProtocols[0] : 'compound';
+
       switch (condition.conditionType) {
         case 'APR_RISE_ABOVE':
           return (
             <div>
-              Alert when <PlatformImage platform={'compound'} /> APR exceeds ${formatThresholdValue(condition)} APR
+              Alert when <PlatformImage platform={platform} /> APR rises above {formatThresholdValue(condition)}
             </div>
           );
         case 'APR_FALLS_BELOW':
-          return <div>Alert when APR drops under ${formatThresholdValue(condition)}</div>;
+          return (
+            <div>
+              Alert when <PlatformImage platform={platform} /> APR falls below {formatThresholdValue(condition)}
+            </div>
+          );
         case 'APR_OUTSIDE_RANGE':
-          return <div>Alert when APR moves outside ${formatThresholdValue(condition)}</div>;
+          return (
+            <div>
+              Alert when <PlatformImage platform={platform} /> APR moves outside the range of {formatThresholdValue(condition)}
+            </div>
+          );
         case 'RATE_DIFF_ABOVE':
-          return <div>Alert when Rate Difference is above ${formatThresholdValue(condition)}</div>;
+          return (
+            <div>
+              Alert when <PlatformImage platform={platform} /> rate difference is above {formatThresholdValue(condition)}
+            </div>
+          );
         case 'RATE_DIFF_BELOW':
-          return <div>Alert when Rate Difference is below ${formatThresholdValue(condition)}</div>;
+          return (
+            <div>
+              Alert when <PlatformImage platform={platform} /> rate difference is below {formatThresholdValue(condition)}
+            </div>
+          );
       }
     }
   };
@@ -98,7 +163,7 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
                   <div className="space-y-2">
-                    <p>{getConditionMessage(condition)}</p>
+                    <p>{getConditionMessage(alert, condition)}</p>
                     <div>
                       Severity Level:&nbsp;
                       {condition.severity === 'NONE' ? (
