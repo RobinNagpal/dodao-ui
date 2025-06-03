@@ -214,7 +214,7 @@ export default function AlertsPage() {
                         </TableCell>
 
                         <TableCell>
-                          <ConditionsCell conditions={alert.conditions} />
+                          <ConditionsCell alert={alert} />
                         </TableCell>
 
                         <TableCell>

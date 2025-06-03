@@ -220,7 +220,7 @@ export default function CompareCompoundPage() {
                         </TableCell>
 
                         <TableCell>
-                          <ConditionsCell conditions={alert.conditions} />
+                          <ConditionsCell alert={alert} />
                         </TableCell>
 
                         <TableCell>

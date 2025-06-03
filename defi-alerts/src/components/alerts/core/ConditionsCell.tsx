@@ -1,18 +1,19 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
-import { PrismaCondition, severityOptions } from '@/types/alerts';
+import { type Alert, PrismaCondition, severityOptions } from '@/types/alerts';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Info } from 'lucide-react';
 
 interface ConditionsCellProps {
-  conditions: PrismaCondition[];
+  alert: Alert;
 }
 
 /**
  * Component for displaying alert conditions in a table cell
  */
-const ConditionsCell: React.FC<ConditionsCellProps> = ({ conditions }) => {
+const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
+  const conditions: PrismaCondition[] = alert.conditions;
   // Get severity badge color
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -57,30 +58,32 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ conditions }) => {
     <div className="flex flex-col gap-1">
       {conditions.map((condition, index) => (
         <div key={index} className="flex items-center gap-2 mb-1">
-          <span className="font-semibold text-theme-muted">{formatThresholdValue(condition)}</span>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button size="icon" className="h-5 w-5 p-0 hover-text-primary">
-                  <Info size={14} />
-                  <span className="sr-only">View all channels</span>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
-                <div className="space-y-2">
-                  <p>{getConditionMessage(condition)}</p>
-                  <div>
-                    Severity Level:&nbsp;
-                    {condition.severity === 'NONE' ? (
-                      <Badge className={`${getSeverityColor(condition.severity)}`}>None</Badge>
-                    ) : (
-                      <Badge className={`${getSeverityColor(condition.severity)}`}>{severityLabel(condition)}</Badge>
-                    )}
+          <span className="font-semibold text-theme-muted">
+            {getConditionMessage(condition)}{' '}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button size="icon" className="h-5 w-5 p-0 pt-2hover-text-primary">
+                    <Info size={14} />
+                    <span className="sr-only">View all channels</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
+                  <div className="space-y-2">
+                    <p>{getConditionMessage(condition)}</p>
+                    <div>
+                      Severity Level:&nbsp;
+                      {condition.severity === 'NONE' ? (
+                        <Badge className={`${getSeverityColor(condition.severity)}`}>None</Badge>
+                      ) : (
+                        <Badge className={`${getSeverityColor(condition.severity)}`}>{severityLabel(condition)}</Badge>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </span>
         </div>
       ))}
     </div>
