@@ -155,170 +155,172 @@ export default function PositionConditionEditor({
 
         {/* Render each condition */}
         {conditions.map((condition, index) => (
-          <div key={condition.id} className="grid grid-cols-12 gap-4 mb-4 border-t border-primary-color pt-4">
-            <div className="col-span-1 flex items-center text-theme-muted">
-              <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
-                {index + 1}
-              </Badge>
-            </div>
+          <div key={condition.id} className="flex flex-col mb-4 border-t border-primary-color pt-4">
+            <div className="flex gap-4 items-center">
+              <div className="flex items-center text-theme-muted">
+                <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
+                  {index + 1}
+                </Badge>
+              </div>
 
-            {editorType === 'market' ? (
-              <>
-                {/* Market Condition Type */}
-                <div className="col-span-3">
-                  <Select value={condition.conditionType} onValueChange={(value) => updateCondition(condition.id, 'conditionType', value)}>
-                    <SelectTrigger className="w-full hover-border-primary">
-                      <SelectValue placeholder="Select condition type" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-block">
-                      <div className="hover-border-primary hover-text-primary">
-                        <SelectItem value="APR_RISE_ABOVE">Alert when APR rises above threshold</SelectItem>
-                      </div>
-                      <div className="hover-border-primary hover-text-primary">
-                        <SelectItem value="APR_FALLS_BELOW">Alert when APR falls below threshold</SelectItem>
-                      </div>
-                      <div className="hover-border-primary hover-text-primary">
-                        <SelectItem value="APR_OUTSIDE_RANGE">Alert when APR moves outside a range</SelectItem>
-                      </div>
-                    </SelectContent>
-                  </Select>
-                </div>
+              {editorType === 'market' ? (
+                <>
+                  {/* Market Condition Type */}
+                  <div className="w-64">
+                    <Select value={condition.conditionType} onValueChange={(value) => updateCondition(condition.id, 'conditionType', value)}>
+                      <SelectTrigger className="w-full hover-border-primary">
+                        <SelectValue placeholder="Select condition type" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-block">
+                        <div className="hover-border-primary hover-text-primary">
+                          <SelectItem value="APR_RISE_ABOVE">Alert when APR rises above threshold</SelectItem>
+                        </div>
+                        <div className="hover-border-primary hover-text-primary">
+                          <SelectItem value="APR_FALLS_BELOW">Alert when APR falls below threshold</SelectItem>
+                        </div>
+                        <div className="hover-border-primary hover-text-primary">
+                          <SelectItem value="APR_OUTSIDE_RANGE">Alert when APR moves outside a range</SelectItem>
+                        </div>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                {/* Market Condition Thresholds */}
-                {condition.conditionType === 'APR_OUTSIDE_RANGE' ? (
-                  <div className="col-span-4 flex flex-col">
-                    <div className="flex items-center space-x-2">
-                      <Input
-                        type="text"
-                        placeholder="Min (e.g., 3)"
-                        value={condition.thresholdLow || ''}
-                        onChange={(e) => updateCondition(condition.id, 'thresholdLow', e.target.value)}
-                        className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                          errors?.conditions && errors.conditions[index] ? 'border-red-500' : ''
-                        }`}
-                      />
-                      <Input
-                        type="text"
-                        placeholder="Max (e.g., 6)"
-                        value={condition.thresholdHigh || ''}
-                        onChange={(e) => updateCondition(condition.id, 'thresholdHigh', e.target.value)}
-                        className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                          errors?.conditions && errors.conditions[index] ? 'border-red-500' : ''
-                        }`}
-                      />
-                      <span className="text-theme-muted whitespace-nowrap flex-shrink-0">interest rate</span>
-                    </div>
-                    {errors?.conditions && errors.conditions[index] && (
-                      <div className="mt-1 flex items-center text-red-500 text-sm">
-                        <AlertCircle size={14} className="mr-1" />
-                        <span>{errors.conditions[index]}</span>
+                  {/* Market Condition Thresholds */}
+                  {condition.conditionType === 'APR_OUTSIDE_RANGE' ? (
+                    <div className="flex-1 flex flex-col">
+                      <div className="flex items-center space-x-2">
+                        <Input
+                          type="text"
+                          placeholder="Min (e.g., 3)"
+                          value={condition.thresholdLow || ''}
+                          onChange={(e) => updateCondition(condition.id, 'thresholdLow', e.target.value)}
+                          className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                            errors?.conditions && errors.conditions[index] ? 'border-red-500' : ''
+                          }`}
+                        />
+                        <Input
+                          type="text"
+                          placeholder="Max (e.g., 6)"
+                          value={condition.thresholdHigh || ''}
+                          onChange={(e) => updateCondition(condition.id, 'thresholdHigh', e.target.value)}
+                          className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                            errors?.conditions && errors.conditions[index] ? 'border-red-500' : ''
+                          }`}
+                        />
+                        <span className="text-theme-muted whitespace-nowrap flex-shrink-0">interest rate</span>
                       </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="col-span-4 flex flex-col">
-                    <div className="flex items-center">
-                      <Input
-                        type="text"
-                        placeholder={
-                          condition.conditionType === 'APR_RISE_ABOVE'
-                            ? 'Threshold (e.g., 5.0)'
-                            : condition.conditionType === 'APR_FALLS_BELOW'
-                            ? 'Threshold (e.g., 2.0)'
-                            : 'Threshold value'
-                        }
-                        value={condition.thresholdValue || ''}
-                        onChange={(e) => updateCondition(condition.id, 'thresholdValue', e.target.value)}
-                        className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                          errors?.conditions && errors.conditions[index] ? 'border-red-500' : ''
-                        }`}
-                      />
-                      <span className="ml-2 text-theme-muted whitespace-nowrap flex-shrink-0">interest rate</span>
+                      {errors?.conditions && errors.conditions[index] && (
+                        <div className="mt-1 flex items-center text-red-500 text-sm">
+                          <AlertCircle size={14} className="mr-1" />
+                          <span>{errors.conditions[index]}</span>
+                        </div>
+                      )}
                     </div>
-                    {errors?.conditions && errors.conditions[index] && (
-                      <div className="mt-1 flex items-center text-red-500 text-sm">
-                        <AlertCircle size={14} className="mr-1" />
-                        <span>{errors.conditions[index]}</span>
+                  ) : (
+                    <div className="flex-1 flex flex-col">
+                      <div className="flex items-center">
+                        <Input
+                          type="text"
+                          placeholder={
+                            condition.conditionType === 'APR_RISE_ABOVE'
+                              ? 'Threshold (e.g., 5.0)'
+                              : condition.conditionType === 'APR_FALLS_BELOW'
+                              ? 'Threshold (e.g., 2.0)'
+                              : 'Threshold value'
+                          }
+                          value={condition.thresholdValue || ''}
+                          onChange={(e) => updateCondition(condition.id, 'thresholdValue', e.target.value)}
+                          className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                            errors?.conditions && errors.conditions[index] ? 'border-red-500' : ''
+                          }`}
+                        />
+                        <span className="ml-2 text-theme-muted whitespace-nowrap flex-shrink-0">interest rate</span>
                       </div>
-                    )}
+                      {errors?.conditions && errors.conditions[index] && (
+                        <div className="mt-1 flex items-center text-red-500 text-sm">
+                          <AlertCircle size={14} className="mr-1" />
+                          <span>{errors.conditions[index]}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </>
+              ) : (
+                // Comparison Condition Threshold
+                <div className="flex-1 flex flex-col">
+                  <div className="flex items-center">
+                    <Input
+                      type="text"
+                      value={condition.thresholdValue || ''}
+                      onChange={(e) => updateCondition(condition.id, 'thresholdValue', e.target.value)}
+                      className={`w-40 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                        errors?.conditions && errors.conditions[index] ? 'border-red-500' : ''
+                      }`}
+                      placeholder={actionType === 'SUPPLY' ? 'Threshold (e.g., 1.2)' : 'Threshold (e.g., 0.5)'}
+                    />
+                    <span className="ml-2 text-theme-muted">interest rate difference</span>
                   </div>
-                )}
-              </>
-            ) : (
-              // Comparison Condition Threshold
-              <div className="col-span-5 flex flex-col">
-                <div className="flex items-center">
-                  <Input
-                    type="text"
-                    value={condition.thresholdValue || ''}
-                    onChange={(e) => updateCondition(condition.id, 'thresholdValue', e.target.value)}
-                    className={`w-22 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                      errors?.conditions && errors.conditions[index] ? 'border-red-500' : ''
-                    }`}
-                    placeholder={actionType === 'SUPPLY' ? 'Threshold (e.g., 1.2)' : 'Threshold (e.g., 0.5)'}
-                  />
-                  <span className="ml-2 text-theme-muted">interest rate difference</span>
+                  {errors?.conditions && errors.conditions[index] && (
+                    <div className="mt-1 flex items-center text-red-500 text-sm">
+                      <AlertCircle size={14} className="mr-1" />
+                      <span>{errors.conditions[index]}</span>
+                    </div>
+                  )}
                 </div>
-                {errors?.conditions && errors.conditions[index] && (
-                  <div className="mt-1 flex items-center text-red-500 text-sm">
-                    <AlertCircle size={14} className="mr-1" />
-                    <span>{errors.conditions[index]}</span>
-                  </div>
+              )}
+
+              {/* Severity for both types */}
+              <div className="w-64 flex-shrink-0">
+                <Select
+                  value={condition.severity === 'NONE' ? undefined : condition.severity}
+                  onValueChange={(value) => updateCondition(condition.id, 'severity', value as SeverityLevel)}
+                >
+                  <SelectTrigger className="w-full hover-border-primary">
+                    <SelectValue placeholder="Severity Level" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-block">
+                    {severityOptions.map((opt) => (
+                      <div key={opt.value} className="hover-border-primary hover-text-primary">
+                        <SelectItem value={opt.value}>{opt.label}</SelectItem>
+                      </div>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {editorType === 'market' && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button size="icon" className="h-8 w-8 p-0 ml-1 hover-text-primary">
+                          <Info size={16} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
+                        <p className="text-sm">
+                          Severity level is used for visual indication only. It helps you categorize alerts by importance but does not affect notification
+                          delivery or priority.
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 )}
               </div>
-            )}
 
-            {/* Severity for both types */}
-            <div className="col-span-5">
-              <Select
-                value={condition.severity === 'NONE' ? undefined : condition.severity}
-                onValueChange={(value) => updateCondition(condition.id, 'severity', value as SeverityLevel)}
-              >
-                <SelectTrigger className="w-full hover-border-primary">
-                  <SelectValue placeholder="Severity Level" />
-                </SelectTrigger>
-                <SelectContent className="bg-block">
-                  {severityOptions.map((opt) => (
-                    <div key={opt.value} className="hover-border-primary hover-text-primary">
-                      <SelectItem value={opt.value}>{opt.label}</SelectItem>
-                    </div>
-                  ))}
-                </SelectContent>
-              </Select>
-              {editorType === 'market' && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button size="icon" className="h-8 w-8 p-0 ml-1 hover-text-primary">
-                        <Info size={16} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
-                      <p className="text-sm">
-                        Severity level is used for visual indication only. It helps you categorize alerts by importance but does not affect notification
-                        delivery or priority.
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+              {/* Remove button for both types */}
+              {conditions.length > 1 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => removeCondition(condition.id)}
+                  className="text-red-500 h-10 w-10 flex items-center justify-center flex-shrink-0"
+                >
+                  <X size={20} />
+                </Button>
               )}
             </div>
 
-            {/* Remove button for both types */}
-            {conditions.length > 1 && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => removeCondition(condition.id)}
-                className="col-span-1 text-red-500 h-10 w-10 flex items-center justify-center"
-              >
-                <X size={20} />
-              </Button>
-            )}
-
             {/* Contextual message for market conditions */}
             {editorType === 'market' && (
-              <div className="col-span-11 col-start-2 px-3 py-2">
+              <div className="mt-2 px-3 py-2 ml-10">
                 <p className="text-sm text-theme-muted">
                   <span className="text-primary-color font-medium">Condition {index + 1}:</span> {getMarketConditionMessage(condition.conditionType)}
                 </p>
