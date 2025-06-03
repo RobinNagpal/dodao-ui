@@ -1,22 +1,13 @@
-// File: src/utils/morphoPositions.ts
-
 import { MORPHO_CHAIN_IDS } from '@/shared/migrator/morpho/config';
 import { COMPOUND_MARKETS, CHAINS } from '@/shared/web3/config';
 import type { WalletComparisonPosition } from '@/components/modals/types';
 import MorphoClient from '@/graphql/morpho/morpho-client';
-
-// Import the generated GraphQL document (the same one used by useGetMorphoVaultPositionsQuery)
 import {
   GetMorphoVaultPositionsDocument,
   GetMorphoVaultPositionsQuery,
   GetMorphoVaultPositionsQueryVariables,
 } from '@/graphql/morpho/generated/generated-types';
 
-/**
- * For a single wallet address, fetch Morpho positions across all chains in MORPHO_CHAIN_IDS,
- * and return a flat WalletComparisonPosition[] array. Identical logic as your hook did,
- * but now purely in Node/TS without React hooks.
- */
 export async function fetchMorphoPositionsForWallet(wallet: string): Promise<WalletComparisonPosition[]> {
   const positions: WalletComparisonPosition[] = [];
   let supplyCount = 0;
@@ -37,7 +28,6 @@ export async function fetchMorphoPositionsForWallet(wallet: string): Promise<Wal
       });
       data = result.data;
     } catch (err: any) {
-      // If it’s the “no results” error, skip. Otherwise, log and skip as well.
       const isEmptyError = err.name === 'ApolloError' && typeof err.message === 'string' && err.message.includes('No results matching given parameters');
       if (!isEmptyError) {
         console.error(`Morpho query failed on chain ${chainId} for wallet ${wallet}:`, err);
