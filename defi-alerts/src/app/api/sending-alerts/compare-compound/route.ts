@@ -245,7 +245,7 @@ async function evaluateConditions(
 
       // compare against each protocol
       for (const proto of alert.compareProtocols) {
-        let otherRateNumeric: number | null = null;
+        let otherRate: number | null = null;
         if (proto.toLowerCase() === 'morpho') {
           const morphoMatch = morphoPositions.find(
             (pos) =>
@@ -257,7 +257,7 @@ async function evaluateConditions(
           if (!morphoMatch || morphoMatch.disable) {
             continue;
           }
-          otherRateNumeric = parseFloat(morphoMatch.rate.replace('%', ''));
+          otherRate = parseFloat(morphoMatch.rate.replace('%', ''));
         } else {
           const otherM = await prisma.lendingAndBorrowingRate.findFirst({
             where: {
@@ -270,11 +270,11 @@ async function evaluateConditions(
           if (!otherM) {
             continue;
           }
-          otherRateNumeric = alert.actionType === AlertActionType.SUPPLY ? otherM.netEarnAPY : otherM.netBorrowAPY;
+          otherRate = alert.actionType === AlertActionType.SUPPLY ? otherM.netEarnAPY : otherM.netBorrowAPY;
         }
 
         const compRate = alert.actionType === AlertActionType.SUPPLY ? compM.netEarnAPY : compM.netBorrowAPY;
-        const diff = alert.actionType === AlertActionType.SUPPLY ? compRate - otherRateNumeric : otherRateNumeric - compRate;
+        const diff = alert.actionType === AlertActionType.SUPPLY ? compRate - otherRate : otherRate - compRate;
 
         // check each RATE_DIFF condition
         for (const c of alert.conditions) {
@@ -290,7 +290,7 @@ async function evaluateConditions(
               asset: assetObj.symbol,
               protocol: proto,
               compoundRate: +compRate.toFixed(2),
-              protocolRate: +otherRateNumeric.toFixed(2),
+              protocolRate: +otherRate.toFixed(2),
               diff: +diff.toFixed(2),
               condition: {
                 type: c.conditionType,
