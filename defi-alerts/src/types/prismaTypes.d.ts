@@ -24,6 +24,7 @@ export interface UsernameAndNameDto {
 export interface AlertTriggerValuesInterface {
   chainName: string;
   asset: string;
+  isComparison?: boolean;
   protocol?: string;
   compoundRate?: number;
   protocolRate?: number;

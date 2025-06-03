@@ -191,6 +191,7 @@ async function evaluateConditions(
         triggerValues.push({
           chainName: chainName,
           asset: assetSym,
+          isComparison: false,
           currentRate: aprValue,
           notificationFrequency: alert.notificationFrequency,
           condition: {

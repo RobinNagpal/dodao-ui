@@ -287,6 +287,7 @@ async function evaluateConditions(
             triggerValues.push({
               chainName: chainObj.name,
               asset: assetObj.symbol,
+              isComparison: true,
               protocol: proto,
               compoundRate: +compRate.toFixed(2),
               protocolRate: +otherRate.toFixed(2),
