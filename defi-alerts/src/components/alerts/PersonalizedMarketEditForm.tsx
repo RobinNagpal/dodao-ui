@@ -13,14 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { NotificationFrequencySection, DeliveryChannelsCard } from '@/components/alerts';
-import {
-  type Channel,
-  type ConditionType,
-  type Alert,
-  type SeverityLevel,
-  type NotificationFrequency,
-  severityOptions,
-} from '@/types/alerts';
+import { type Channel, type ConditionType, type Alert, type SeverityLevel, type NotificationFrequency, severityOptions } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -71,14 +64,15 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
     setNotificationFrequency(alert.notificationFrequency as NotificationFrequency);
 
     // Set up conditions
-    const alertConditions: Condition[] = alert.conditions?.map((condition, index) => ({
-      id: `condition-${index}`,
-      conditionType: condition.conditionType as ConditionType,
-      severity: condition.severity as SeverityLevel,
-      thresholdValue: condition.thresholdValue?.toString() || '',
-      thresholdLow: condition.thresholdValueLow?.toString() || '',
-      thresholdHigh: condition.thresholdValueHigh?.toString() || '',
-    })) || [];
+    const alertConditions: Condition[] =
+      alert.conditions?.map((condition, index) => ({
+        id: `condition-${index}`,
+        conditionType: condition.conditionType as ConditionType,
+        severity: condition.severity as SeverityLevel,
+        thresholdValue: condition.thresholdValue?.toString() || '',
+        thresholdLow: condition.thresholdValueLow?.toString() || '',
+        thresholdHigh: condition.thresholdValueHigh?.toString() || '',
+      })) || [];
 
     // Ensure at least one condition exists
     if (alertConditions.length === 0) {
@@ -130,9 +124,7 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
   };
 
   const updateCondition = (id: string, field: keyof Condition, value: string) => {
-    setConditions((prev) =>
-      prev.map((condition) => (condition.id === id ? { ...condition, [field]: value } : condition))
-    );
+    setConditions((prev) => prev.map((condition) => (condition.id === id ? { ...condition, [field]: value } : condition)));
   };
 
   const removeCondition = (id: string) => {
@@ -289,8 +281,7 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
             </div>
             <div>
               <span className="text-theme-primary">
-                Chain: {alert.selectedChains?.[0]?.name || 'Unknown'} | 
-                Market: {alert.selectedAssets?.[0]?.symbol || 'Unknown'}
+                Chain: {alert.selectedChains?.[0]?.name || 'Unknown'} | Market: {alert.selectedAssets?.[0]?.symbol || 'Unknown'}
               </span>
             </div>
           </div>
@@ -327,11 +318,7 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
         <CardHeader>
           <div className="flex items-center justify-between mb-2">
             <CardTitle className="text-lg text-theme-primary">Condition Settings</CardTitle>
-            <Button
-              size="sm"
-              onClick={addCondition}
-              className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary"
-            >
+            <Button size="sm" onClick={addCondition} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
               <Plus size={16} className="mr-1" /> Add Condition
             </Button>
           </div>
@@ -358,10 +345,7 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
 
                 {/* Condition Type */}
                 <div className="col-span-3">
-                  <Select
-                    value={condition.conditionType}
-                    onValueChange={(value) => updateCondition(condition.id, 'conditionType', value as ConditionType)}
-                  >
+                  <Select value={condition.conditionType} onValueChange={(value) => updateCondition(condition.id, 'conditionType', value as ConditionType)}>
                     <SelectTrigger className="w-full hover-border-primary">
                       <SelectValue placeholder="Select condition type" />
                     </SelectTrigger>
@@ -465,8 +449,8 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
                       </TooltipTrigger>
                       <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
                         <p className="text-sm">
-                          Severity level is used for visual indication only. It helps you categorize alerts by importance but does not affect
-                          notification delivery or priority.
+                          Severity level is used for visual indication only. It helps you categorize alerts by importance but does not affect notification
+                          delivery or priority.
                         </p>
                       </TooltipContent>
                     </Tooltip>
@@ -475,12 +459,7 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
 
                 {/* Remove */}
                 {conditions.length > 1 && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeCondition(condition.id)}
-                    className="col-span-1 text-red-500 h-8 w-8"
-                  >
+                  <Button variant="ghost" size="icon" onClick={() => removeCondition(condition.id)} className="col-span-1 text-red-500 h-8 w-8">
                     <X size={16} />
                   </Button>
                 )}
@@ -489,12 +468,9 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
           ))}
 
           <hr className="my-6" />
-          
+
           {/* Notification Frequency */}
-          <NotificationFrequencySection
-            notificationFrequency={notificationFrequency}
-            setNotificationFrequency={setNotificationFrequency}
-          />
+          <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
         </CardContent>
       </Card>
 

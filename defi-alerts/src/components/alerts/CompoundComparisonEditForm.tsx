@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Plus, X, ArrowLeft, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,17 +13,12 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import {
-  type Channel,
-  type Alert,
-  type SeverityLevel,
-  type NotificationFrequency,
-  severityOptions,
-  frequencyOptions,
-  type GeneralComparisonRow,
-} from '@/types/alerts';
+import { NotificationFrequencySection, DeliveryChannelsCard } from '@/components/alerts';
+import { type Channel, type Alert, type SeverityLevel, type NotificationFrequency, severityOptions, type GeneralComparisonRow } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
+import { validateMarketCombinations } from '@/utils/clientValidationUtils';
+import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
 
 interface CompoundComparisonEditFormProps {
   alert: Alert;
@@ -30,6 +27,8 @@ interface CompoundComparisonEditFormProps {
 
 export default function CompoundComparisonEditForm({ alert, alertId }: CompoundComparisonEditFormProps) {
   const router = useRouter();
+  const { data } = useSession();
+  const session = data as DoDAOSession;
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
 
@@ -58,7 +57,7 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
     },
   ]);
 
-  const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
+  const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: session?.username || '' }]);
 
   // Validation errors
   const [errors, setErrors] = useState<{
@@ -114,12 +113,12 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
       setChannels(
         alert.deliveryChannels.map((c) => ({
           channelType: c.channelType,
-          email: c.email || '',
+          email: c.email || session?.username || '',
           webhookUrl: c.webhookUrl || '',
         }))
       );
     }
-  }, [alert]);
+  }, [alert, session?.username]);
 
   // Toggle functions
   const togglePlatform = (p: string) => {
@@ -130,16 +129,38 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
   };
 
   const toggleChain = (c: string) => {
-    setSelectedChains((cs) => (cs.includes(c) ? cs.filter((x) => x !== c) : [...cs, c]));
+    const newChains = selectedChains.includes(c) ? selectedChains.filter((x) => x !== c) : [...selectedChains, c];
+    setSelectedChains(newChains);
+
+    // Clear chain validation error
     if (errors.chains) {
       setErrors((prev) => ({ ...prev, chains: undefined }));
+    }
+
+    // Validate market combinations when chains change
+    if (newChains.length > 0 && selectedMarkets.length > 0) {
+      const validation = validateMarketCombinations(newChains, selectedMarkets);
+      if (!validation.isValid && errors.markets) {
+        setErrors((prev) => ({ ...prev, markets: undefined }));
+      }
     }
   };
 
   const toggleMarket = (m: string) => {
-    setSelectedMarkets((ms) => (ms.includes(m) ? ms.filter((x) => x !== m) : [...ms, m]));
+    const newMarkets = selectedMarkets.includes(m) ? selectedMarkets.filter((x) => x !== m) : [...selectedMarkets, m];
+    setSelectedMarkets(newMarkets);
+
+    // Clear market validation error
     if (errors.markets) {
       setErrors((prev) => ({ ...prev, markets: undefined }));
+    }
+
+    // Validate market combinations when markets change
+    if (selectedChains.length > 0 && newMarkets.length > 0) {
+      const validation = validateMarketCombinations(selectedChains, newMarkets);
+      if (!validation.isValid && errors.markets) {
+        setErrors((prev) => ({ ...prev, markets: undefined }));
+      }
     }
   };
 
@@ -176,30 +197,10 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
   const removeThreshold = (idx: number) => setThresholds((ts) => ts.filter((_, i) => i !== idx));
 
   // Channel functions
-  const addChannel = () => setChannels((ch) => [...ch, { channelType: 'EMAIL', email: '' }]);
+  const addChannel = () => setChannels((ch) => [...ch, { channelType: 'EMAIL', email: session?.username || '' }]);
 
-  const updateChannel = <K extends keyof Channel>(idx: number, field: K, val: Channel[K]) => {
+  const updateChannel = (idx: number, field: keyof Channel, val: string) => {
     setChannels((ch) => ch.map((c, i) => (i === idx ? { ...c, [field]: val } : c)));
-
-    // Clear validation error if it exists
-    if (errors.channels && errors.channels[idx]) {
-      const newChannelErrors = [...errors.channels];
-
-      if (field === 'email' && typeof val === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
-        newChannelErrors[idx] = '';
-      } else if (field === 'webhookUrl' && typeof val === 'string') {
-        try {
-          new URL(val);
-          newChannelErrors[idx] = '';
-        } catch {}
-      }
-
-      if (newChannelErrors.every((err) => !err)) {
-        setErrors((prev) => ({ ...prev, channels: undefined }));
-      } else {
-        setErrors((prev) => ({ ...prev, channels: newChannelErrors }));
-      }
-    }
   };
 
   const removeChannel = (idx: number) => setChannels((ch) => ch.filter((_, i) => i !== idx));
@@ -225,6 +226,14 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
 
     if (selectedMarkets.length === 0) {
       newErrors.markets = 'Please select at least one market';
+    }
+
+    // Validate compound market combinations
+    if (selectedChains.length > 0 && selectedMarkets.length > 0) {
+      const validation = validateMarketCombinations(selectedChains, selectedMarkets);
+      if (!validation.isValid) {
+        newErrors.markets = 'Selected chain and market combination is not supported by Compound. Please choose a valid combination.';
+      }
     }
 
     // Validate thresholds
@@ -283,39 +292,33 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
       return;
     }
 
-    // Get the selected chains and assets
-    const chainConnects = selectedChains
-      .map((name) => {
-        // Find the matching chain from the original alert
-        const chain = alert.selectedChains?.find((c) => c.name === name);
-        if (chain) {
-          return { chainId: chain.chainId };
-        }
-        return null;
-      })
-      .filter(Boolean) as { chainId: number }[];
+    let chainConnect: { chainId: number }[];
+    try {
+      chainConnect = selectedChains.map((name) => {
+        const cfg = CHAINS.find((c) => c.name === name);
+        if (!cfg) throw new Error(`Unsupported chain: ${name}`);
+        return { chainId: cfg.chainId };
+      });
+    } catch (err: any) {
+      showNotification({ type: 'error', heading: 'Chain Error', message: err.message });
+      return;
+    }
 
-    // Asset connections based on selected chains and markets
-    const assetConnects = selectedChains.flatMap((chainName) => {
-      // Find the matching chain
-      const chain = alert.selectedChains?.find((c) => c.name === chainName);
-      if (!chain) return [];
-
+    // b) assets → [{ chainId_address }]
+    //    pair each selectedMarket with each chain
+    const assetConnect = selectedChains.flatMap((chainName) => {
+      const chainCfg = CHAINS.find((c) => c.name === chainName)!;
       return selectedMarkets
-        .map((marketSymbol) => {
-          // Find the matching asset
-          const symbol = marketSymbol === 'ETH' ? 'WETH' : marketSymbol;
-          const asset = alert.selectedAssets?.find((a) => a.chainId === chain.chainId && a.symbol === symbol);
-          if (!asset) return null;
-
-          return {
-            chainId_address: `${asset.chainId}_${asset.address.toLowerCase()}`,
-          };
+        .map((uiSym) => {
+          const symbol = uiSym === 'ETH' ? 'WETH' : uiSym;
+          const m = COMPOUND_MARKETS.find((m) => m.chainId === chainCfg.chainId && m.symbol === symbol);
+          if (!m) return null;
+          return { chainId_address: `${m.chainId}_${m.baseAssetAddress.toLowerCase()}` };
         })
-        .filter(Boolean);
+        .filter((x): x is { chainId_address: string } => x !== null);
     });
 
-    if (assetConnects.length === 0) {
+    if (assetConnect.length === 0) {
       showNotification({
         type: 'error',
         heading: 'No Valid Markets',
@@ -336,8 +339,8 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
       status,
       isComparison: true,
       notificationFrequency,
-      selectedChains: chainConnects,
-      selectedAssets: assetConnects,
+      selectedChains: chainConnect,
+      selectedAssets: assetConnect,
       compareProtocols: selectedPlatforms,
       conditions,
       deliveryChannels: channels.map((c) => ({
@@ -593,92 +596,22 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
             </div>
           ))}
 
+          <hr className="my-6" />
+
           {/* Notification Frequency */}
-          <div className="mt-6">
-            <Label htmlFor="frequency" className="block text-sm font-medium mb-2 text-theme-primary">
-              Notification Frequency
-            </Label>
-            <Select value={notificationFrequency} onValueChange={(value) => setNotificationFrequency(value as NotificationFrequency)}>
-              <SelectTrigger className="w-full hover-border-primary" id="frequency">
-                <SelectValue placeholder="Select frequency" />
-              </SelectTrigger>
-              <SelectContent className="bg-block">
-                {frequencyOptions.map((opt) => (
-                  <div key={opt.value} className="hover-border-primary hover-text-primary">
-                    <SelectItem value={opt.value}>{opt.label}</SelectItem>
-                  </div>
-                ))}
-              </SelectContent>
-            </Select>
-            <p className="text-sm text-theme-muted mt-4">Note: This limits how often you’ll receive notifications for this alert.</p>
-          </div>
+          <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
         </CardContent>
       </Card>
 
       {/* Delivery Channels */}
-      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
-        <CardHeader className="pb-1 flex flex-row items-center justify-between">
-          <CardTitle className="text-lg text-theme-primary">Delivery Channel Settings</CardTitle>
-          <Button size="sm" onClick={addChannel} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
-            <Plus size={16} className="mr-1" /> Add Channel
-          </Button>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-theme-muted mb-4">Choose how you want to receive your alerts.</p>
-
-          {channels.map((ch, i) => (
-            <div key={i} className="mb-4 flex items-center gap-4">
-              <Select value={ch.channelType} onValueChange={(value) => updateChannel(i, 'channelType', value as Channel['channelType'])}>
-                <SelectTrigger className="w-[150px] hover-border-primary">
-                  <SelectValue placeholder="Select channel" />
-                </SelectTrigger>
-                <SelectContent className="bg-block">
-                  <div className="hover-border-primary hover-text-primary">
-                    <SelectItem value="EMAIL">Email</SelectItem>
-                  </div>
-                  <div className="hover-border-primary hover-text-primary">
-                    <SelectItem value="WEBHOOK">Webhook</SelectItem>
-                  </div>
-                </SelectContent>
-              </Select>
-
-              {ch.channelType === 'EMAIL' ? (
-                <div className="flex-1 flex flex-col">
-                  <Input
-                    type="email"
-                    placeholder="you@example.com"
-                    value={ch.email || ''}
-                    onChange={(e) => updateChannel(i, 'email', e.target.value)}
-                    className={`flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                      errors.channels && errors.channels[i] ? 'border-red-500' : ''
-                    }`}
-                  />
-                  {errors.channels && errors.channels[i] && <div className="mt-1 text-red-500 text-sm">{errors.channels[i]}</div>}
-                </div>
-              ) : (
-                <div className="flex-1 flex flex-col">
-                  <Input
-                    type="url"
-                    placeholder="https://webhook.site/..."
-                    value={ch.webhookUrl || ''}
-                    onChange={(e) => updateChannel(i, 'webhookUrl', e.target.value)}
-                    className={`flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                      errors.channels && errors.channels[i] ? 'border-red-500' : ''
-                    }`}
-                  />
-                  {errors.channels && errors.channels[i] && <div className="mt-1 text-red-500 text-sm">{errors.channels[i]}</div>}
-                </div>
-              )}
-
-              {channels.length > 1 && (
-                <Button variant="ghost" size="icon" onClick={() => removeChannel(i)} className="text-red-500 h-8 w-8">
-                  <X size={16} />
-                </Button>
-              )}
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+      <DeliveryChannelsCard
+        channels={channels}
+        addChannel={addChannel}
+        updateChannel={updateChannel}
+        removeChannel={removeChannel}
+        errors={{ channels: errors.channels }}
+        session={session}
+      />
 
       {/* Action Buttons */}
       <div className="flex justify-end gap-x-5">

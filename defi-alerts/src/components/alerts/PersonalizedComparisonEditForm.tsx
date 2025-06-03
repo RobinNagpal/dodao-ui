@@ -15,13 +15,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { NotificationFrequencySection, DeliveryChannelsCard } from '@/components/alerts';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import {
-  type Channel,
-  type Alert,
-  type SeverityLevel,
-  type NotificationFrequency,
-  severityOptions,
-} from '@/types/alerts';
+import { type Channel, type Alert, type SeverityLevel, type NotificationFrequency, severityOptions } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { toSentenceCase } from '@/utils/getSentenceCase';
@@ -78,11 +72,12 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
     setPlatform(alert.compareProtocols?.[0] || '');
 
     // Set up conditions
-    const alertConditions: Condition[] = alert.conditions?.map((condition, index) => ({
-      id: `condition-${index}`,
-      severity: condition.severity as SeverityLevel,
-      thresholdValue: condition.thresholdValue?.toString() || '',
-    })) || [];
+    const alertConditions: Condition[] =
+      alert.conditions?.map((condition, index) => ({
+        id: `condition-${index}`,
+        severity: condition.severity as SeverityLevel,
+        thresholdValue: condition.thresholdValue?.toString() || '',
+      })) || [];
 
     // Ensure at least one condition exists
     if (alertConditions.length === 0) {
@@ -127,9 +122,7 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
   };
 
   const updateCondition = (id: string, field: keyof Condition, value: string) => {
-    setConditions((prev) =>
-      prev.map((condition) => (condition.id === id ? { ...condition, [field]: value } : condition))
-    );
+    setConditions((prev) => prev.map((condition) => (condition.id === id ? { ...condition, [field]: value } : condition)));
   };
 
   const removeCondition = (id: string) => {
@@ -306,11 +299,7 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
         <CardHeader>
           <div className="flex items-center justify-between mb-2">
             <CardTitle className="text-lg text-theme-primary">Rate Difference Thresholds</CardTitle>
-            <Button
-              size="sm"
-              onClick={addCondition}
-              className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary"
-            >
+            <Button size="sm" onClick={addCondition} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
               <Plus size={16} className="mr-1" /> Add Threshold
             </Button>
           </div>
@@ -382,8 +371,8 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
                       </TooltipTrigger>
                       <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
                         <p className="text-sm">
-                          Severity level is used for visual indication only. It helps you categorize alerts by importance but does not affect
-                          notification delivery or priority.
+                          Severity level is used for visual indication only. It helps you categorize alerts by importance but does not affect notification
+                          delivery or priority.
                         </p>
                       </TooltipContent>
                     </Tooltip>
@@ -392,12 +381,7 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
 
                 {/* Remove */}
                 {conditions.length > 1 && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeCondition(condition.id)}
-                    className="col-span-1 text-red-500 h-8 w-8"
-                  >
+                  <Button variant="ghost" size="icon" onClick={() => removeCondition(condition.id)} className="col-span-1 text-red-500 h-8 w-8">
                     <X size={16} />
                   </Button>
                 )}
@@ -406,12 +390,9 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
           ))}
 
           <hr className="my-6" />
-          
+
           {/* Notification Frequency */}
-          <NotificationFrequencySection
-            notificationFrequency={notificationFrequency}
-            setNotificationFrequency={setNotificationFrequency}
-          />
+          <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
         </CardContent>
       </Card>
 
