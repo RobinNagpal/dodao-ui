@@ -315,6 +315,15 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
         .filter(Boolean);
     });
 
+    if (assetConnects.length === 0) {
+      showNotification({
+        type: 'error',
+        heading: 'No Valid Markets',
+        message: "Your selected chains + markets combination isn't supported.",
+      });
+      return;
+    }
+
     // Prepare conditions from thresholds
     const conditions = thresholds.map((threshold) => ({
       conditionType: alertType === 'supply' ? 'RATE_DIFF_ABOVE' : 'RATE_DIFF_BELOW',
