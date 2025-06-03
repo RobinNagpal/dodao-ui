@@ -1,11 +1,23 @@
 import { prisma } from '@/prisma';
+import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 import { useAaveAprs as getAaveAprs } from '@/utils/getAaveAPR';
 import { useCompoundMarketsAprs as getCompoundMarketsAprs } from '@/utils/getCompoundAPR';
 import { useSparkAprs as getSparkAprs } from '@/utils/getSparkAPR';
 import { sendAlertNotificationEmail } from '@/app/api/sending-alerts/send-alert-notification';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { Alert, AlertActionType, ConditionType, DeliveryChannelType, NotificationFrequency } from '@prisma/client';
+import {
+  Alert,
+  AlertActionType,
+  AlertNotification,
+  Asset,
+  AlertCondition,
+  DeliveryChannel,
+  Chain,
+  ConditionType,
+  DeliveryChannelType,
+  NotificationFrequency,
+} from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { fetchMorphoPositionsForWallet } from '@/utils/fetchMorphoPositionsForWallet';
 
@@ -30,27 +42,12 @@ interface AssetData {
   address: string;
 }
 
-interface NotificationGroup {
-  chain: number;
-  asset: string;
-  protocol: string;
-  compoundRate: number;
-  protocolRate: number;
-  diff: number;
-  notificationFrequency: NotificationFrequency;
-  condition: {
-    type: ConditionType;
-    threshold: number;
-    alertConditionId: string;
-  };
-}
-
 interface NotificationPayload {
   alert: string;
   alertCategory: string;
   alertType: AlertActionType;
   walletAddress?: string | null;
-  triggered: NotificationGroup[];
+  triggered: AlertTriggerValuesInterface[];
   timestamp: string;
 }
 
@@ -211,19 +208,19 @@ async function shouldProcessAlert(
 }
 
 /**
- * Evaluates conditions for an alert and creates notification groups
+ * Evaluates conditions for an alert and creates notification triggerValues
  */
 async function evaluateConditions(
   alert: Alert & {
-    selectedChains: any[];
-    selectedAssets: any[];
-    conditions: any[];
-    deliveryChannels: any[];
+    selectedChains: Chain[];
+    selectedAssets: Asset[];
+    conditions: AlertCondition[];
+    deliveryChannels: DeliveryChannel[];
   },
   previouslySent: Set<string>
 ) {
   const hitIds = new Set<string>();
-  const groups: NotificationGroup[] = [];
+  const triggerValues: AlertTriggerValuesInterface[] = [];
 
   let morphoPositions: ReturnType<typeof fetchMorphoPositionsForWallet> extends Promise<infer U> ? U : never = [];
   if (alert.walletAddress && alert.compareProtocols.some((p) => p.toLowerCase() === 'morpho')) {
@@ -287,8 +284,8 @@ async function evaluateConditions(
             if (alert.notificationFrequency === 'ONCE_PER_ALERT' && previouslySent.has(c.id)) continue;
 
             hitIds.add(c.id);
-            groups.push({
-              chain: chainObj.name,
+            triggerValues.push({
+              chainName: chainObj.name,
               asset: assetObj.symbol,
               protocol: proto,
               compoundRate: +compRate.toFixed(2),
@@ -306,9 +303,9 @@ async function evaluateConditions(
       }
     }
   }
-  console.log('the groups: ', JSON.stringify(groups, null, 2));
+  console.log('the triggerValues: ', JSON.stringify(triggerValues, null, 2));
 
-  return { hitIds, groups };
+  return { hitIds, triggerValues: triggerValues };
 }
 
 /**
@@ -321,7 +318,7 @@ async function sendNotifications(
     conditions: any[];
     deliveryChannels: any[];
   },
-  groups: NotificationGroup[]
+  triggerValues: AlertTriggerValuesInterface[]
 ) {
   const payload: NotificationPayload = {
     alert: 'Compound vs. Other Protocol Comparison',
@@ -330,7 +327,7 @@ async function sendNotifications(
     ...(alert.category === 'PERSONALIZED' && {
       walletAddress: alert.walletAddress,
     }),
-    triggered: groups,
+    triggered: triggerValues,
     timestamp: new Date().toISOString(),
   };
 
@@ -380,12 +377,12 @@ async function sendNotifications(
 /**
  * Logs notification to the database
  */
-async function logNotification(alertId: string, hitIds: Set<string>, groups: NotificationGroup[]) {
+async function logNotification(alertId: string, hitIds: Set<string>, triggerValues: AlertTriggerValuesInterface[]) {
   await prisma.alertNotification.create({
     data: {
       alertId: alertId,
       alertConditionIds: Array.from(hitIds),
-      triggeredValues: groups,
+      triggeredValues: triggerValues,
       SentNotification: { create: {} },
     },
   });
@@ -413,15 +410,15 @@ async function compareCompoundHandler(request: NextRequest): Promise<CompareComp
     const { shouldProcess, previouslySent } = await shouldProcessAlert(alert);
     if (!shouldProcess) continue;
 
-    // Evaluate conditions and create notification groups
-    const { hitIds, groups } = await evaluateConditions(alert, previouslySent);
-    if (groups.length === 0) continue;
+    // Evaluate conditions and create notification triggerValues
+    const { hitIds, triggerValues } = await evaluateConditions(alert, previouslySent);
+    if (triggerValues.length === 0) continue;
 
     // Send notifications
-    await sendNotifications(alert, groups);
+    await sendNotifications(alert, triggerValues);
 
     // Log notification
-    await logNotification(alert.id, hitIds, groups);
+    await logNotification(alert.id, hitIds, triggerValues);
 
     totalSent++;
   }

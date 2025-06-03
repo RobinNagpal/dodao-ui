@@ -3,8 +3,9 @@ import { useCompoundMarketsAprs as getCompoundMarketsAprs } from '@/utils/getCom
 import { sendAlertNotificationEmail } from '@/app/api/sending-alerts/send-alert-notification';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { Alert, AlertActionType, DeliveryChannelType, NotificationFrequency } from '@prisma/client';
+import { Alert, AlertActionType, AlertCondition, Asset, Chain, DeliveryChannel, DeliveryChannelType, NotificationFrequency } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 
 // Types
 interface CompoundMarketResponse {
@@ -20,24 +21,12 @@ interface MarketData {
   netBorrowAPY: number;
 }
 
-interface NotificationGroup {
-  chain: number;
-  asset: string;
-  currentRate: number;
-  notificationFrequency: NotificationFrequency;
-  conditions: Array<{
-    type: string;
-    threshold: number | { low: number; high: number };
-    alertConditionId: string;
-  }>;
-}
-
 interface NotificationPayload {
   alert: string;
   alertCategory: string;
   alertType: AlertActionType;
   walletAddress?: string | null;
-  triggered: NotificationGroup[];
+  triggered: AlertTriggerValuesInterface[];
   timestamp: string;
 }
 
@@ -122,9 +111,9 @@ async function shouldProcessAlert(
     conditions: any[];
     deliveryChannels: any[];
   },
-  groups: NotificationGroup[]
+  triggerValues: AlertTriggerValuesInterface[]
 ): Promise<boolean> {
-  if (groups.length === 0) return false;
+  if (triggerValues.length === 0) return false;
 
   if (alert.notificationFrequency !== 'ONCE_PER_ALERT') {
     const last = await prisma.sentNotification.findFirst({
@@ -142,19 +131,19 @@ async function shouldProcessAlert(
 }
 
 /**
- * Evaluates conditions for an alert and creates notification groups
+ * Evaluates conditions for an alert and creates notification triggerValues
  */
 async function evaluateConditions(
   alert: Alert & {
-    selectedChains: any[];
-    selectedAssets: any[];
-    conditions: any[];
-    deliveryChannels: any[];
+    selectedChains: Chain[];
+    selectedAssets: Asset[];
+    conditions: AlertCondition[];
+    deliveryChannels: DeliveryChannel[];
   },
   previouslySent: Set<string>
-): Promise<{ hitIds: Set<string>; groups: NotificationGroup[] }> {
+): Promise<{ hitIds: Set<string>; triggerValues: AlertTriggerValuesInterface[] }> {
   const hitIds = new Set<string>();
-  const groups: NotificationGroup[] = [];
+  const triggerValues: AlertTriggerValuesInterface[] = [];
 
   for (const chainObj of alert.selectedChains) {
     for (const assetObj of alert.selectedAssets) {
@@ -175,7 +164,7 @@ async function evaluateConditions(
       const aprValue = alert.actionType === AlertActionType.SUPPLY ? market.netEarnAPY : market.netBorrowAPY;
 
       // filter conditions that fire right now
-      let hits = alert.conditions.filter((c) => {
+      let hits: AlertCondition[] = alert.conditions.filter((c) => {
         switch (c.conditionType) {
           case 'APR_RISE_ABOVE':
             return aprValue > (c.thresholdValue ?? 0);
@@ -198,22 +187,23 @@ async function evaluateConditions(
       // collect IDs
       hits.forEach((c) => hitIds.add(c.id));
 
-      // collect IDs and build payload
-      groups.push({
-        chain: chainName,
-        asset: assetSym,
-        currentRate: aprValue,
-        notificationFrequency: alert.notificationFrequency,
-        conditions: hits.map((c) => ({
-          type: c.conditionType,
-          threshold: c.conditionType === 'APR_OUTSIDE_RANGE' ? { low: c.thresholdValueLow!, high: c.thresholdValueHigh! } : c.thresholdValue!,
-          alertConditionId: c.id,
-        })),
+      hits.map((h) => {
+        triggerValues.push({
+          chainName: chainName,
+          asset: assetSym,
+          currentRate: aprValue,
+          notificationFrequency: alert.notificationFrequency,
+          condition: {
+            type: h.conditionType,
+            threshold: h.conditionType === 'APR_OUTSIDE_RANGE' ? { low: h.thresholdValueLow!, high: h.thresholdValueHigh! } : h.thresholdValue!,
+            alertConditionId: h.id,
+          },
+        });
       });
     }
   }
 
-  return { hitIds, groups };
+  return { hitIds, triggerValues: triggerValues };
 }
 
 /**
@@ -226,7 +216,7 @@ async function sendNotifications(
     conditions: any[];
     deliveryChannels: any[];
   },
-  groups: NotificationGroup[]
+  triggerValues: AlertTriggerValuesInterface[]
 ): Promise<void> {
   const payload: NotificationPayload = {
     alert: 'Compound Market Alert',
@@ -235,7 +225,7 @@ async function sendNotifications(
     ...(alert.category === 'PERSONALIZED' && {
       walletAddress: alert.walletAddress,
     }),
-    triggered: groups,
+    triggered: triggerValues,
     timestamp: new Date().toISOString(),
   };
 
@@ -285,12 +275,12 @@ async function sendNotifications(
 /**
  * Logs notification to the database
  */
-async function logNotification(alertId: string, hitIds: Set<string>, groups: NotificationGroup[]): Promise<void> {
+async function logNotification(alertId: string, hitIds: Set<string>, triggerValues: AlertTriggerValuesInterface[]): Promise<void> {
   await prisma.alertNotification.create({
     data: {
       alertId: alertId,
       alertConditionIds: Array.from(hitIds),
-      triggeredValues: groups,
+      triggeredValues: triggerValues,
       SentNotification: { create: {} },
     },
   });
@@ -316,17 +306,17 @@ async function compoundMarketAlertsHandler(request: NextRequest): Promise<Compou
     // Get previously sent condition IDs
     const previouslySent = await getPreviouslySentConditions(alert);
 
-    // Evaluate conditions and create notification groups
-    const { hitIds, groups } = await evaluateConditions(alert, previouslySent);
+    // Evaluate conditions and create notification triggerValues
+    const { hitIds, triggerValues } = await evaluateConditions(alert, previouslySent);
 
     // Check if alert should be processed
-    if (!(await shouldProcessAlert(alert, groups))) continue;
+    if (!(await shouldProcessAlert(alert, triggerValues))) continue;
 
     // Send notifications
-    await sendNotifications(alert, groups);
+    await sendNotifications(alert, triggerValues);
 
     // Log notification
-    await logNotification(alert.id, hitIds, groups);
+    await logNotification(alert.id, hitIds, triggerValues);
 
     totalSent++;
   }

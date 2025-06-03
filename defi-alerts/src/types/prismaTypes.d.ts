@@ -21,17 +21,23 @@ export interface UsernameAndNameDto {
   nameOfTheUser: string;
 }
 
-interface AlertTriggerValuesInterface {
-  chain: number;
+export interface AlertTriggerValuesInterface {
+  chainName: string;
   asset: string;
-  protocol: string;
-  compoundRate: number;
-  protocolRate: number;
-  diff: number;
+  protocol?: string;
+  compoundRate?: number;
+  protocolRate?: number;
+  diff?: number;
   notificationFrequency: NotificationFrequency;
+  currentRate?: number;
   condition: {
     type: ConditionType;
-    threshold: number;
+    threshold:
+      | number
+      | {
+          low: number;
+          high: number;
+        };
     alertConditionId: string;
   };
 }
