@@ -103,7 +103,9 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
         ]);
 
         // merge into one array
-        setAllComparisonPositions([...aave, ...spark, ...morpho]);
+        const positions = [...aave, ...spark, ...morpho];
+        console.log('All Comparison positions: ', positions);
+        setAllComparisonPositions(positions);
       } catch (err) {
         console.error('Error fetching comparison positions', err);
       } finally {
