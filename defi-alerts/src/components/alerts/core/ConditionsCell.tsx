@@ -32,9 +32,9 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
   // Format condition threshold values based on condition type
   const formatThresholdValue = (condition: PrismaCondition) => {
     if (condition.conditionType === 'APR_OUTSIDE_RANGE') {
-      return condition.thresholdValueLow && condition.thresholdValueHigh ? `${condition.thresholdValueLow}–${condition.thresholdValueHigh} APY` : '-';
+      return condition.thresholdValueLow && condition.thresholdValueHigh ? `${condition.thresholdValueLow}–${condition.thresholdValueHigh}` : '-';
     } else {
-      return condition.thresholdValue ? `${condition.thresholdValue} APY` : '-';
+      return condition.thresholdValue ? `${condition.thresholdValue}` : '-';
     }
   };
 
@@ -45,7 +45,7 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
       switch (condition.conditionType) {
         case 'APR_RISE_ABOVE':
           return (
-            <div>
+            <span>
               Alert when <PlatformImage platform={'compound'} /> APR exceeds APR of{' '}
               {alert.compareProtocols.map((cp, index) => (
                 <span key={index}>
@@ -54,11 +54,11 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
                 </span>
               ))}{' '}
               by {formatThresholdValue(condition)}
-            </div>
+            </span>
           );
         case 'APR_FALLS_BELOW':
           return (
-            <div>
+            <span>
               Alert when <PlatformImage platform={'compound'} /> APR drops below{' '}
               {alert.compareProtocols.map((cp, index) => (
                 <span key={index}>
@@ -67,11 +67,11 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
                 </span>
               ))}{' '}
               APR by {formatThresholdValue(condition)}
-            </div>
+            </span>
           );
         case 'APR_OUTSIDE_RANGE':
           return (
-            <div>
+            <span>
               Alert when <PlatformImage platform={'compound'} /> APR moves outside {formatThresholdValue(condition)} of{' '}
               {alert.compareProtocols.map((cp, index) => (
                 <span key={index}>
@@ -80,11 +80,11 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
                 </span>
               ))}{' '}
               APR
-            </div>
+            </span>
           );
         case 'RATE_DIFF_ABOVE':
           return (
-            <div>
+            <span>
               Alert when rate difference between <PlatformImage platform={'compound'} /> and{' '}
               {alert.compareProtocols.map((cp, index) => (
                 <span key={index}>
@@ -93,11 +93,11 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
                 </span>
               ))}{' '}
               is above {formatThresholdValue(condition)}
-            </div>
+            </span>
           );
         case 'RATE_DIFF_BELOW':
           return (
-            <div>
+            <span>
               Alert when rate difference between <PlatformImage platform={'compound'} /> and{' '}
               {alert.compareProtocols.map((cp, index) => (
                 <span key={index}>
@@ -106,7 +106,7 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
                 </span>
               ))}{' '}
               is below {formatThresholdValue(condition)}
-            </div>
+            </span>
           );
       }
     } else {
@@ -115,33 +115,33 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
       switch (condition.conditionType) {
         case 'APR_RISE_ABOVE':
           return (
-            <div>
+            <span>
               Alert when <PlatformImage platform={platform} /> APR rises above {formatThresholdValue(condition)}
-            </div>
+            </span>
           );
         case 'APR_FALLS_BELOW':
           return (
-            <div>
+            <span>
               Alert when <PlatformImage platform={platform} /> APR falls below {formatThresholdValue(condition)}
-            </div>
+            </span>
           );
         case 'APR_OUTSIDE_RANGE':
           return (
-            <div>
+            <span>
               Alert when <PlatformImage platform={platform} /> APR moves outside the range of {formatThresholdValue(condition)}
-            </div>
+            </span>
           );
         case 'RATE_DIFF_ABOVE':
           return (
-            <div>
+            <span>
               Alert when <PlatformImage platform={platform} /> rate difference is above {formatThresholdValue(condition)}
-            </div>
+            </span>
           );
         case 'RATE_DIFF_BELOW':
           return (
-            <div>
+            <span>
               Alert when <PlatformImage platform={platform} /> rate difference is below {formatThresholdValue(condition)}
-            </div>
+            </span>
           );
       }
     }
@@ -156,7 +156,7 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button size="icon" className="h-5 w-5 p-0 pt-2hover-text-primary">
+                  <Button size="icon" className="h-5 w-5 hover:text-primary">
                     <Info size={14} />
                     <span className="sr-only">View all channels</span>
                   </Button>
