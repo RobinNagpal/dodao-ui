@@ -92,38 +92,7 @@ export default function AlertsPage() {
     setUniqueChains(Array.from(new Set(alerts.flatMap((alert) => (alert.selectedChains || []).map((chain) => chain.name)).filter(Boolean))));
   }, [activeTab, actionTypeFilter, chainFilter, alertsData]);
 
-  const severityLabel = (s: PrismaCondition) => severityOptions.find((o) => o.value === s.severity)?.label || '-';
-
   const freqLabel = (f: string) => frequencyOptions.find((o) => o.value === f)?.label || f;
-
-  // Calculate summary counts
-  const totalAlerts = filteredAlerts.length;
-  const supplyAlerts = filteredAlerts.filter((a) => a.actionType === 'SUPPLY').length;
-  const borrowAlerts = filteredAlerts.filter((a) => a.actionType === 'BORROW').length;
-  const personalizedAlerts = filteredAlerts.filter((a) => a.category === 'PERSONALIZED').length;
-
-  // Get severity badge color
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'HIGH':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'MEDIUM':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'LOW':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      default:
-        return 'bg-theme-bg-muted text-theme-muted border-theme-border-primary';
-    }
-  };
-
-  // Format condition threshold values based on condition type
-  const formatThresholdValue = (condition: PrismaCondition) => {
-    if (condition.conditionType === 'APR_OUTSIDE_RANGE') {
-      return condition.thresholdValueLow && condition.thresholdValueHigh ? `${condition.thresholdValueLow}–${condition.thresholdValueHigh}%` : '-';
-    } else {
-      return condition.thresholdValue ? `${condition.thresholdValue}%` : '-';
-    }
-  };
 
   const handleModalClose = async () => {
     setShowCreateAlertModal(false);

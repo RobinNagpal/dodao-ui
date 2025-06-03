@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import ChainSelect from '@/components/alerts/core/ChainSelect';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { type Alert, Channel, frequencyOptions } from '@/types/alerts';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
@@ -14,7 +15,7 @@ import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { ArrowLeftRight, Plus, TrendingDown, TrendingUp } from 'lucide-react';
+import { ArrowLeftRight, Info, Plus, TrendingDown, TrendingUp } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import type React from 'react';
 import { useEffect, useState } from 'react';
@@ -209,6 +210,7 @@ export default function CompareCompoundPage() {
                   <TableHead className="w-[180px]">Chain/Market</TableHead>
                   <TableHead className="w-[150px]">Condition</TableHead>
                   <TableHead className="w-[150px]">Frequency</TableHead>
+                  <TableHead className="w-[200px]">Delivery Channel</TableHead>
                   <TableHead className="w-[100px]">Status</TableHead>
                   <TableHead className="w-[120px]">Actions</TableHead>
                 </TableRow>
@@ -217,7 +219,8 @@ export default function CompareCompoundPage() {
                 {filteredAlerts.length > 0 ? (
                   filteredAlerts.map((alert) => {
                     // Pick first channel for simplicity
-
+                    const chan = alert.deliveryChannels[0] as Channel | undefined;
+                    const hasMultipleChannels = alert.deliveryChannels.length > 1;
                     return (
                       <TableRow key={alert.id} className="border-primary-color">
                         <TableCell className="font-medium">
@@ -247,6 +250,48 @@ export default function CompareCompoundPage() {
 
                         <TableCell>
                           <span className="text-theme-primary">{freqLabel(alert.notificationFrequency)}</span>
+                        </TableCell>
+
+                        <TableCell>
+                          {chan ? (
+                            <div className="flex flex-col">
+                              <div className="flex items-center">
+                                <span className="text-xs font-medium text-theme-primary">{chan.channelType}</span>
+                                {hasMultipleChannels && (
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Button size="icon" className="h-5 w-5 p-0 hover-text-primary ml-2">
+                                          <Info size={14} />
+                                          <span className="sr-only">View all channels</span>
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
+                                        <div className="space-y-2">
+                                          <h4 className="font-medium text-primary-color">All Delivery Channels</h4>
+                                          <ul className="space-y-1">
+                                            {alert.deliveryChannels.map((c, i) => (
+                                              <li key={i} className="text-xs text-theme-muted">
+                                                <span className="font-medium">
+                                                  {c.channelType.charAt(0).toUpperCase() + c.channelType.slice(1).toLowerCase()}:
+                                                </span>{' '}
+                                                {c.channelType === 'EMAIL' ? c.email : c.webhookUrl}
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        </div>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                )}
+                              </div>
+                              <span className="text-xs text-theme-muted truncate max-w-[180px]">
+                                {chan.channelType === 'EMAIL' ? chan.email : chan.webhookUrl}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-xs text-theme-muted">Not set</span>
+                          )}
                         </TableCell>
 
                         <TableCell>
