@@ -2,24 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Plus, X, ArrowLeft } from 'lucide-react';
+import { Plus, X, ArrowLeft, AlertCircle, Info } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import {
-  type BorrowRow,
-  type SupplyRow,
-  type Channel,
-  severityOptions,
-  frequencyOptions,
-  type ConditionType,
-  type Alert,
-  type SeverityLevel,
-  type NotificationFrequency,
-} from '@/types/alerts';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { NotificationFrequencySection, DeliveryChannelsCard } from '@/components/alerts';
+import { type Channel, type ConditionType, type Alert, type SeverityLevel, type NotificationFrequency, severityOptions } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -30,8 +24,19 @@ interface PersonalizedMarketEditFormProps {
   alertId: string;
 }
 
+interface Condition {
+  id: string;
+  conditionType: ConditionType;
+  severity: SeverityLevel;
+  thresholdValue?: string;
+  thresholdLow?: string;
+  thresholdHigh?: string;
+}
+
 export default function PersonalizedMarketEditForm({ alert, alertId }: PersonalizedMarketEditFormProps) {
   const router = useRouter();
+  const { data } = useSession();
+  const session = data as DoDAOSession;
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
 
@@ -41,122 +46,208 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
     redirectPath: '/alerts',
   });
 
-  const [email, setEmail] = useState<string>('');
-  const [walletAddress, setWalletAddress] = useState<string>('');
   const [actionType, setActionType] = useState<'SUPPLY' | 'BORROW'>('SUPPLY');
   const [status, setStatus] = useState<'ACTIVE' | 'PAUSED'>('ACTIVE');
-
-  // For the specific alert we're editing
-  const [singleRow, setSingleRow] = useState<SupplyRow | BorrowRow>({
-    chain: '',
-    market: '',
-    rate: '0%',
-    conditionType: 'APR_RISE_ABOVE',
-    threshold: '',
-    severity: 'NONE' as SeverityLevel,
-    frequency: 'ONCE_PER_ALERT' as NotificationFrequency,
-  });
-
-  const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
+  const [walletAddress, setWalletAddress] = useState<string>('');
+  const [notificationFrequency, setNotificationFrequency] = useState<NotificationFrequency>('ONCE_PER_ALERT');
+  const [conditions, setConditions] = useState<Condition[]>([]);
+  const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: session?.username || '' }]);
+  const [errors, setErrors] = useState<{ conditions?: string[]; channels?: string[] }>({});
 
   // Initialize form with alert data
   useEffect(() => {
     if (!alert) return;
 
-    setEmail(localStorage.getItem('email') ?? '');
     setActionType(alert.actionType);
     setStatus(alert.status);
     setWalletAddress(alert.walletAddress || '');
+    setNotificationFrequency(alert.notificationFrequency as NotificationFrequency);
 
-    // Set up the single row for editing
-    const chain = alert.selectedChains?.[0]?.name || '';
-    const market = alert.selectedAssets?.[0]?.symbol || '';
-    const condition = alert.conditions?.[0] || {
-      conditionType: 'APR_RISE_ABOVE',
-      severity: 'NONE',
-      thresholdValue: '',
-      thresholdValueLow: '',
-      thresholdValueHigh: '',
-    };
+    // Set up conditions
+    const alertConditions: Condition[] =
+      alert.conditions?.map((condition, index) => ({
+        id: `condition-${index}`,
+        conditionType: condition.conditionType as ConditionType,
+        severity: condition.severity as SeverityLevel,
+        thresholdValue: condition.thresholdValue?.toString() || '',
+        thresholdLow: condition.thresholdValueLow?.toString() || '',
+        thresholdHigh: condition.thresholdValueHigh?.toString() || '',
+      })) || [];
 
-    setSingleRow({
-      chain,
-      market,
-      rate: '0%', // We don't have actual rates from the alert data
-      conditionType: condition.conditionType as ConditionType,
-      threshold: condition.thresholdValue?.toString() || '',
-      thresholdLow: condition.thresholdValueLow?.toString() || '',
-      thresholdHigh: condition.thresholdValueHigh?.toString() || '',
-      severity: condition.severity as SeverityLevel,
-      frequency: alert.notificationFrequency as NotificationFrequency,
-    });
+    // Ensure at least one condition exists
+    if (alertConditions.length === 0) {
+      alertConditions.push({
+        id: 'condition-1',
+        conditionType: 'APR_RISE_ABOVE',
+        severity: 'NONE',
+        thresholdValue: '',
+      });
+    }
+
+    setConditions(alertConditions);
 
     // Set channels
     if (alert.deliveryChannels?.length) {
       setChannels(
         alert.deliveryChannels.map((c) => ({
           channelType: c.channelType,
-          email: c.email || '',
+          email: c.email || session?.username || '',
           webhookUrl: c.webhookUrl || '',
         }))
       );
     }
-  }, [alert]);
+  }, [alert, session?.username]);
 
-  // Update row functions
-  const updateRow = <K extends keyof (SupplyRow | BorrowRow)>(field: K, val: (SupplyRow | BorrowRow)[K]) => {
-    setSingleRow((prev) => ({ ...prev, [field]: val }));
+  // Get contextual message for condition type
+  const getConditionMessage = (conditionType: ConditionType) => {
+    switch (conditionType) {
+      case 'APR_RISE_ABOVE':
+        return 'Alert when APR exceeds your set threshold (e.g., alert when APR goes above 5%)';
+      case 'APR_FALLS_BELOW':
+        return 'Alert when APR drops under your set threshold (e.g., alert when APR goes below 2%)';
+      case 'APR_OUTSIDE_RANGE':
+        return 'Alert when APR moves outside your specified range (e.g., alert when APR is below 3% or above 6%)';
+      default:
+        return 'Select a condition type to see its description';
+    }
+  };
+
+  // Condition functions
+  const addCondition = () => {
+    const newCondition: Condition = {
+      id: `condition-${Date.now()}`,
+      conditionType: 'APR_RISE_ABOVE',
+      severity: 'NONE',
+      thresholdValue: '',
+    };
+    setConditions((prev) => [...prev, newCondition]);
+  };
+
+  const updateCondition = (id: string, field: keyof Condition, value: string) => {
+    setConditions((prev) => prev.map((condition) => (condition.id === id ? { ...condition, [field]: value } : condition)));
+  };
+
+  const removeCondition = (id: string) => {
+    setConditions((prev) => prev.filter((condition) => condition.id !== id));
   };
 
   // Channel functions
-  const addChannel = () => setChannels((c) => [...c, { channelType: 'EMAIL', email: '' }]);
-  const updateChannel = <K extends keyof Channel>(idx: number, field: K, val: Channel[K]) =>
-    setChannels((c) => c.map((ch, i) => (i === idx ? { ...ch, [field]: val } : ch)));
-  const removeChannel = (idx: number) => setChannels((c) => c.filter((_, i) => i !== idx));
+  const addChannel = () => {
+    setChannels((prev) => [...prev, { channelType: 'EMAIL', email: session?.username || '' }]);
+  };
 
-  // Options
-  const conditionOptions = [
-    { label: 'APR rises above threshold', value: 'APR_RISE_ABOVE' },
-    { label: 'APR falls below threshold', value: 'APR_FALLS_BELOW' },
-    { label: 'APR is outside a range', value: 'APR_OUTSIDE_RANGE' },
-  ] as const;
+  const updateChannel = (idx: number, field: keyof Channel, val: string) => {
+    setChannels((prev) => prev.map((ch, i) => (i === idx ? { ...ch, [field]: val } : ch)));
+  };
+
+  const removeChannel = (idx: number) => {
+    setChannels((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  // Validation
+  const validateAlert = () => {
+    const newErrors: { conditions?: string[]; channels?: string[] } = {};
+
+    // Validate conditions
+    const conditionErrors: string[] = [];
+    conditions.forEach((condition, index) => {
+      if (condition.conditionType === 'APR_OUTSIDE_RANGE') {
+        if (!condition.thresholdLow || !condition.thresholdHigh) {
+          conditionErrors[index] = 'Both min and max thresholds are required';
+        } else if (isNaN(Number(condition.thresholdLow)) || isNaN(Number(condition.thresholdHigh))) {
+          conditionErrors[index] = 'Min and max thresholds must be valid numbers';
+        }
+      } else {
+        if (!condition.thresholdValue) {
+          conditionErrors[index] = 'Threshold value is required';
+        } else if (isNaN(Number(condition.thresholdValue))) {
+          conditionErrors[index] = 'Threshold value must be a valid number';
+        }
+      }
+    });
+
+    if (conditionErrors.some((error) => error)) {
+      newErrors.conditions = conditionErrors;
+    }
+
+    // Validate channels
+    const channelErrors: string[] = [];
+    channels.forEach((channel, index) => {
+      if (channel.channelType === 'EMAIL') {
+        if (!channel.email) {
+          channelErrors[index] = 'Email address is required';
+        } else {
+          const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRx.test(channel.email)) {
+            channelErrors[index] = 'Invalid email address';
+          }
+        }
+      } else if (channel.channelType === 'WEBHOOK') {
+        if (!channel.webhookUrl) {
+          channelErrors[index] = 'Webhook URL is required';
+        } else {
+          try {
+            new URL(channel.webhookUrl);
+          } catch {
+            channelErrors[index] = 'Invalid webhook URL';
+          }
+        }
+      }
+    });
+
+    if (channelErrors.some((error) => error)) {
+      newErrors.channels = channelErrors;
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   // Submit
   const handleUpdateAlert = async () => {
-    // Get the original chain and market - don't allow changes
+    if (!validateAlert()) {
+      showNotification({
+        type: 'error',
+        heading: 'Validation Error',
+        message: 'Please fix the errors before submitting',
+      });
+      return;
+    }
+
+    // Get the original chain and market connections
     const chainId = alert.selectedChains?.[0]?.chainId || 0;
     const chainConnect = [{ chainId }];
 
-    // Use the original asset connection
     const assetConnect =
       alert.selectedAssets?.map((asset) => ({
         chainId_address: `${asset.chainId}_${asset.address.toLowerCase()}`,
       })) || [];
 
-    // Build condition based on type
-    let condition;
-    if (singleRow.conditionType === 'APR_OUTSIDE_RANGE') {
-      condition = {
-        conditionType: singleRow.conditionType,
-        thresholdValueLow: singleRow.thresholdLow,
-        thresholdValueHigh: singleRow.thresholdHigh,
-        severity: singleRow.severity,
-      };
-    } else {
-      condition = {
-        conditionType: singleRow.conditionType,
-        thresholdValue: singleRow.threshold,
-        severity: singleRow.severity,
-      };
-    }
+    // Build conditions
+    const conditionsPayload = conditions.map((condition) => {
+      if (condition.conditionType === 'APR_OUTSIDE_RANGE') {
+        return {
+          conditionType: condition.conditionType,
+          thresholdValueLow: condition.thresholdLow,
+          thresholdValueHigh: condition.thresholdHigh,
+          severity: condition.severity,
+        };
+      } else {
+        return {
+          conditionType: condition.conditionType,
+          thresholdValue: condition.thresholdValue,
+          severity: condition.severity,
+        };
+      }
+    });
 
     const payload = {
       actionType,
       walletAddress,
-      notificationFrequency: singleRow.frequency,
+      notificationFrequency,
       selectedChains: chainConnect,
       selectedAssets: assetConnect,
-      conditions: [condition],
+      conditions: conditionsPayload,
       deliveryChannels: channels.map((c) => ({
         channelType: c.channelType,
         email: c.channelType === 'EMAIL' ? c.email : undefined,
@@ -174,6 +265,28 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
         <h1 className="text-3xl font-bold mb-2 text-theme-primary">Edit Personalized Market Alert</h1>
         <p className="text-theme-muted">Update your personalized alert for {actionType === 'SUPPLY' ? 'supply' : 'borrow'} positions.</p>
       </div>
+
+      {/* Wallet Address Display */}
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">Wallet Information</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center space-x-4">
+            <Badge variant="outline" className="text-primary-color border-primary-color">
+              {actionType}
+            </Badge>
+            <div>
+              <span className="text-theme-primary">Wallet Address: {walletAddress}</span>
+            </div>
+            <div>
+              <span className="text-theme-primary">
+                Chain: {alert.selectedChains?.[0]?.name || 'Unknown'} | Market: {alert.selectedAssets?.[0]?.symbol || 'Unknown'}
+              </span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Alert Status */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
@@ -200,164 +313,176 @@ export default function PersonalizedMarketEditForm({ alert, alertId }: Personali
         </CardContent>
       </Card>
 
-      {/* Position Settings */}
+      {/* Condition Settings */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
-        <CardHeader className="pb-1">
-          <CardTitle className="text-lg text-theme-primary">{actionType === 'SUPPLY' ? 'Supply' : 'Borrow'} Position</CardTitle>
+        <CardHeader>
+          <div className="flex items-center justify-between mb-2">
+            <CardTitle className="text-lg text-theme-primary">Condition Settings</CardTitle>
+            <Button size="sm" onClick={addCondition} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
+              <Plus size={16} className="mr-1" /> Add Condition
+            </Button>
+          </div>
+          <p className="text-sm text-theme-muted">
+            Define when you want to be alerted about changes to this position. You will receive an alert if any of the set conditions are met.
+          </p>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-theme-muted mb-4">Update alert conditions for your {actionType.toLowerCase()} position.</p>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="border-primary-color">
-                  <TableHead className="text-theme-primary">Chain</TableHead>
-                  <TableHead className="text-theme-primary">Market</TableHead>
-                  <TableHead className="text-theme-primary">Condition</TableHead>
-                  <TableHead className="text-theme-primary">Threshold</TableHead>
-                  <TableHead className="text-theme-primary">Severity</TableHead>
-                  <TableHead className="text-theme-primary">Frequency</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow className="border-primary-color">
-                  <TableCell className="text-theme-primary">{singleRow.chain}</TableCell>
-                  <TableCell className="text-theme-primary">{singleRow.market}</TableCell>
-                  <TableCell>
-                    <Select value={singleRow.conditionType} onValueChange={(value) => updateRow('conditionType', value as ConditionType)}>
-                      <SelectTrigger className="w-full hover-border-primary">
-                        <SelectValue placeholder="Select condition" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-block">
-                        {conditionOptions.map((opt) => (
-                          <div key={opt.value} className="hover-border-primary hover-text-primary">
-                            <SelectItem value={opt.value}>{opt.label}</SelectItem>
-                          </div>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    {singleRow.conditionType === 'APR_OUTSIDE_RANGE' ? (
-                      <div className="flex items-center space-x-2">
-                        <Input
-                          type="text"
-                          placeholder="Min"
-                          value={singleRow.thresholdLow || ''}
-                          onChange={(e) => updateRow('thresholdLow', e.target.value)}
-                          className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                        />
-                        <Input
-                          type="text"
-                          placeholder="Max"
-                          value={singleRow.thresholdHigh || ''}
-                          onChange={(e) => updateRow('thresholdHigh', e.target.value)}
-                          className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                        />
-                        <span className="text-theme-muted">%</span>
+          {/* Render each condition */}
+          {conditions.map((condition, index) => (
+            <div key={condition.id} className="mb-6">
+              <div className="mb-4 p-3 bg-theme-secondary rounded-lg border border-theme-primary">
+                <p className="text-sm text-theme-muted">
+                  <span className="text-primary-color font-medium">Condition {index + 1}:</span> {getConditionMessage(condition.conditionType)}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-12 gap-4 items-center">
+                <div className="col-span-1 flex items-center text-theme-muted">
+                  <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
+                    {index + 1}
+                  </Badge>
+                </div>
+
+                {/* Condition Type */}
+                <div className="col-span-3">
+                  <Select value={condition.conditionType} onValueChange={(value) => updateCondition(condition.id, 'conditionType', value as ConditionType)}>
+                    <SelectTrigger className="w-full hover-border-primary">
+                      <SelectValue placeholder="Select condition type" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-block">
+                      <div className="hover-border-primary hover-text-primary">
+                        <SelectItem value="APR_RISE_ABOVE">APR rises above threshold</SelectItem>
                       </div>
-                    ) : (
-                      <div className="flex items-center">
-                        <Input
-                          type="text"
-                          placeholder="Value"
-                          value={singleRow.threshold || ''}
-                          onChange={(e) => updateRow('threshold', e.target.value)}
-                          className="w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                        />
-                        <span className="ml-2 text-theme-muted">%</span>
+                      <div className="hover-border-primary hover-text-primary">
+                        <SelectItem value="APR_FALLS_BELOW">APR falls below threshold</SelectItem>
+                      </div>
+                      <div className="hover-border-primary hover-text-primary">
+                        <SelectItem value="APR_OUTSIDE_RANGE">APR is outside a range</SelectItem>
+                      </div>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Threshold Values */}
+                {condition.conditionType === 'APR_OUTSIDE_RANGE' ? (
+                  <div className="col-span-4 flex flex-col">
+                    <div className="flex items-center space-x-2">
+                      <Input
+                        type="text"
+                        placeholder="Min (e.g., 3)"
+                        value={condition.thresholdLow || ''}
+                        onChange={(e) => updateCondition(condition.id, 'thresholdLow', e.target.value)}
+                        className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                          errors.conditions && errors.conditions[index] ? 'border-red-500' : ''
+                        }`}
+                      />
+                      <Input
+                        type="text"
+                        placeholder="Max (e.g., 6)"
+                        value={condition.thresholdHigh || ''}
+                        onChange={(e) => updateCondition(condition.id, 'thresholdHigh', e.target.value)}
+                        className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                          errors.conditions && errors.conditions[index] ? 'border-red-500' : ''
+                        }`}
+                      />
+                      <span className="text-theme-muted whitespace-nowrap flex-shrink-0">APR</span>
+                    </div>
+                    {errors.conditions && errors.conditions[index] && (
+                      <div className="mt-1 flex items-center text-red-500 text-sm">
+                        <AlertCircle size={14} className="mr-1" />
+                        <span>{errors.conditions[index]}</span>
                       </div>
                     )}
-                  </TableCell>
-                  <TableCell>
-                    <Select value={singleRow.severity} onValueChange={(value) => updateRow('severity', value as SeverityLevel)}>
-                      <SelectTrigger className="w-[120px] hover-border-primary">
-                        <SelectValue placeholder="Select severity" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-block">
-                        {severityOptions.map((opt) => (
-                          <div key={opt.value} className="hover-border-primary hover-text-primary">
-                            <SelectItem value={opt.value}>{opt.label}</SelectItem>
-                          </div>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    <Select value={singleRow.frequency} onValueChange={(value) => updateRow('frequency', value as NotificationFrequency)}>
-                      <SelectTrigger className="w-[140px] hover-border-primary">
-                        <SelectValue placeholder="Select frequency" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-block">
-                        {frequencyOptions.map((f) => (
-                          <div key={f.value} className="hover-border-primary hover-text-primary">
-                            <SelectItem value={f.value}>{f.label}</SelectItem>
-                          </div>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
+                  </div>
+                ) : (
+                  <div className="col-span-4 flex flex-col">
+                    <div className="flex items-center">
+                      <Input
+                        type="text"
+                        placeholder={
+                          condition.conditionType === 'APR_RISE_ABOVE'
+                            ? 'Threshold (e.g., 5.0)'
+                            : condition.conditionType === 'APR_FALLS_BELOW'
+                            ? 'Threshold (e.g., 2.0)'
+                            : 'Threshold value'
+                        }
+                        value={condition.thresholdValue || ''}
+                        onChange={(e) => updateCondition(condition.id, 'thresholdValue', e.target.value)}
+                        className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                          errors.conditions && errors.conditions[index] ? 'border-red-500' : ''
+                        }`}
+                      />
+                      <span className="ml-2 text-theme-muted whitespace-nowrap flex-shrink-0">APR</span>
+                    </div>
+                    {errors.conditions && errors.conditions[index] && (
+                      <div className="mt-1 flex items-center text-red-500 text-sm">
+                        <AlertCircle size={14} className="mr-1" />
+                        <span>{errors.conditions[index]}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Severity */}
+                <div className="col-span-3 flex items-center">
+                  <Select
+                    value={condition.severity === 'NONE' ? undefined : condition.severity}
+                    onValueChange={(value) => updateCondition(condition.id, 'severity', value as SeverityLevel)}
+                  >
+                    <SelectTrigger className="w-full hover-border-primary">
+                      <SelectValue placeholder="Severity Level" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-block">
+                      {severityOptions.map((opt) => (
+                        <div key={opt.value} className="hover-border-primary hover-text-primary">
+                          <SelectItem value={opt.value}>{opt.label}</SelectItem>
+                        </div>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button size="icon" className="h-8 w-8 p-0 ml-1 hover-text-primary">
+                          <Info size={16} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
+                        <p className="text-sm">
+                          Severity level is used for visual indication only. It helps you categorize alerts by importance but does not affect notification
+                          delivery or priority.
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+
+                {/* Remove */}
+                {conditions.length > 1 && (
+                  <Button variant="ghost" size="icon" onClick={() => removeCondition(condition.id)} className="col-span-1 text-red-500 h-8 w-8">
+                    <X size={16} />
+                  </Button>
+                )}
+              </div>
+            </div>
+          ))}
+
+          <hr className="my-6" />
+
+          {/* Notification Frequency */}
+          <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
         </CardContent>
       </Card>
 
       {/* Delivery Channels */}
-      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
-        <CardHeader className="pb-1 flex flex-row items-center justify-between">
-          <CardTitle className="text-lg text-theme-primary">Delivery Channel Settings</CardTitle>
-          <Button size="sm" onClick={addChannel} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
-            <Plus size={16} className="mr-1" /> Add Channel
-          </Button>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-theme-muted mb-4">Choose how you want to receive your alerts.</p>
-
-          {channels.map((ch, i) => (
-            <div key={i} className="mb-4 flex items-center gap-4">
-              <Select value={ch.channelType} onValueChange={(value) => updateChannel(i, 'channelType', value as Channel['channelType'])}>
-                <SelectTrigger className="w-[150px] hover-border-primary">
-                  <SelectValue placeholder="Select channel" />
-                </SelectTrigger>
-                <SelectContent className="bg-block">
-                  <div className="hover-border-primary hover-text-primary">
-                    <SelectItem value="EMAIL">Email</SelectItem>
-                  </div>
-                  <div className="hover-border-primary hover-text-primary">
-                    <SelectItem value="WEBHOOK">Webhook</SelectItem>
-                  </div>
-                </SelectContent>
-              </Select>
-
-              {ch.channelType === 'EMAIL' ? (
-                <Input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={ch.email || ''}
-                  onChange={(e) => updateChannel(i, 'email', e.target.value)}
-                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                />
-              ) : (
-                <Input
-                  type="url"
-                  placeholder="https://webhook.site/..."
-                  value={ch.webhookUrl || ''}
-                  onChange={(e) => updateChannel(i, 'webhookUrl', e.target.value)}
-                  className="flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors"
-                />
-              )}
-
-              {channels.length > 1 && (
-                <Button variant="ghost" size="icon" onClick={() => removeChannel(i)} className="text-red-500 h-8 w-8">
-                  <X size={16} />
-                </Button>
-              )}
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+      <DeliveryChannelsCard
+        channels={channels}
+        addChannel={addChannel}
+        updateChannel={updateChannel}
+        removeChannel={removeChannel}
+        errors={{ channels: errors.channels }}
+        session={session}
+      />
 
       {/* Action Buttons */}
       <div className="flex justify-end gap-x-5">

@@ -2,24 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Plus, X, ArrowLeft } from 'lucide-react';
+import { Plus, X, ArrowLeft, AlertCircle, Info } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { NotificationFrequencySection, DeliveryChannelsCard } from '@/components/alerts';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import {
-  type Channel,
-  severityOptions,
-  frequencyOptions,
-  type Alert,
-  type SeverityLevel,
-  type NotificationFrequency,
-  type ComparisonRow,
-} from '@/types/alerts';
+import { type Channel, type Alert, type SeverityLevel, type NotificationFrequency, severityOptions } from '@/types/alerts';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { toSentenceCase } from '@/utils/getSentenceCase';
@@ -29,8 +25,16 @@ interface PersonalizedComparisonEditFormProps {
   alertId: string;
 }
 
+interface Condition {
+  id: string;
+  severity: SeverityLevel;
+  thresholdValue: string;
+}
+
 export default function PersonalizedComparisonEditForm({ alert, alertId }: PersonalizedComparisonEditFormProps) {
   const router = useRouter();
+  const { data } = useSession();
+  const session = data as DoDAOSession;
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
 
@@ -42,25 +46,16 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
 
   const [actionType, setActionType] = useState<'SUPPLY' | 'BORROW'>('SUPPLY');
   const [status, setStatus] = useState<'ACTIVE' | 'PAUSED'>('ACTIVE');
-  const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
   const [walletAddress, setWalletAddress] = useState<string>('');
+  const [notificationFrequency, setNotificationFrequency] = useState<NotificationFrequency>('ONCE_PER_ALERT');
+  const [conditions, setConditions] = useState<Condition[]>([]);
+  const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: session?.username || '' }]);
+  const [errors, setErrors] = useState<{ conditions?: string[]; channels?: string[] }>({});
 
-  // For the specific row we're editing
-  const [row, setRow] = useState<ComparisonRow>({
-    platform: '',
-    chain: '',
-    market: '',
-    rate: '0%',
-    threshold: '',
-    severity: 'NONE',
-    frequency: 'AT_MOST_ONCE_PER_DAY',
-  });
-
-  // Validation errors
-  const [errors, setErrors] = useState<{
-    threshold?: string;
-    channels?: string[];
-  }>({});
+  // Platform info from alert
+  const [platform, setPlatform] = useState<string>('');
+  const [chain, setChain] = useState<string>('');
+  const [market, setMarket] = useState<string>('');
 
   // Initialize form with alert data
   useEffect(() => {
@@ -69,80 +64,100 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
     setActionType(alert.actionType as 'SUPPLY' | 'BORROW');
     setStatus(alert.status as 'ACTIVE' | 'PAUSED');
     setWalletAddress(alert.walletAddress || '');
+    setNotificationFrequency(alert.notificationFrequency as NotificationFrequency);
 
-    // Set up the comparison row for editing
-    const chain = alert.selectedChains?.[0]?.name || '';
-    const market = alert.selectedAssets?.[0]?.symbol || '';
-    const platform = alert.compareProtocols?.[0] || '';
-    const condition = alert.conditions?.[0] || {
-      conditionType: 'RATE_DIFF_ABOVE',
-      severity: 'NONE',
-      thresholdValue: '',
-    };
+    // Set platform info
+    setChain(alert.selectedChains?.[0]?.name || '');
+    setMarket(alert.selectedAssets?.[0]?.symbol || '');
+    setPlatform(alert.compareProtocols?.[0] || '');
 
-    setRow({
-      platform,
-      chain,
-      market,
-      rate: '0%', // We don't have actual rates from the alert data
-      threshold: condition.thresholdValue?.toString() || '',
-      severity: condition.severity as SeverityLevel,
-      frequency: alert.notificationFrequency as NotificationFrequency,
-    });
+    // Set up conditions
+    const alertConditions: Condition[] =
+      alert.conditions?.map((condition, index) => ({
+        id: `condition-${index}`,
+        severity: condition.severity as SeverityLevel,
+        thresholdValue: condition.thresholdValue?.toString() || '',
+      })) || [];
+
+    // Ensure at least one condition exists
+    if (alertConditions.length === 0) {
+      alertConditions.push({
+        id: 'condition-1',
+        severity: 'NONE',
+        thresholdValue: '',
+      });
+    }
+
+    setConditions(alertConditions);
 
     // Set channels
     if (alert.deliveryChannels?.length) {
       setChannels(
         alert.deliveryChannels.map((c) => ({
           channelType: c.channelType,
-          email: c.email || '',
+          email: c.email || session?.username || '',
           webhookUrl: c.webhookUrl || '',
         }))
       );
     }
-  }, [alert]);
+  }, [alert, session?.username]);
 
-  // Update row functions
-  const updateRow = <K extends keyof ComparisonRow>(field: K, val: ComparisonRow[K]) => {
-    setRow((prev) => ({ ...prev, [field]: val }));
-
-    // Clear validation errors
-    if (field === 'threshold' && errors.threshold) {
-      setErrors((prev) => ({ ...prev, threshold: undefined }));
+  // Get contextual message for comparison logic
+  const getComparisonMessage = () => {
+    if (actionType === 'SUPPLY') {
+      return `If ${toSentenceCase(platform)} offers 4.2% supply rate and you set 1.2% threshold, you'll be alerted when Compound's supply rate reaches 5.4%`;
+    } else {
+      return `If ${toSentenceCase(platform)} charges 6.8% borrow rate and you set 0.5% threshold, you'll be alerted when Compound's borrow rate drops to 6.3%`;
     }
+  };
+
+  // Condition functions
+  const addCondition = () => {
+    const newCondition: Condition = {
+      id: `condition-${Date.now()}`,
+      severity: 'NONE',
+      thresholdValue: '',
+    };
+    setConditions((prev) => [...prev, newCondition]);
+  };
+
+  const updateCondition = (id: string, field: keyof Condition, value: string) => {
+    setConditions((prev) => prev.map((condition) => (condition.id === id ? { ...condition, [field]: value } : condition)));
+  };
+
+  const removeCondition = (id: string) => {
+    setConditions((prev) => prev.filter((condition) => condition.id !== id));
   };
 
   // Channel functions
-  const addChannel = () => setChannels((c) => [...c, { channelType: 'EMAIL', email: '' }]);
-
-  const updateChannel = <K extends keyof Channel>(idx: number, field: K, val: Channel[K]) => {
-    setChannels((c) => c.map((ch, i) => (i === idx ? { ...ch, [field]: val } : ch)));
-
-    // Clear validation errors
-    if (errors.channels && errors.channels[idx]) {
-      const newErrors = [...errors.channels];
-      newErrors[idx] = '';
-
-      if (newErrors.every((err) => !err)) {
-        setErrors((prev) => ({ ...prev, channels: undefined }));
-      } else {
-        setErrors((prev) => ({ ...prev, channels: newErrors }));
-      }
-    }
+  const addChannel = () => {
+    setChannels((prev) => [...prev, { channelType: 'EMAIL', email: session?.username || '' }]);
   };
 
-  const removeChannel = (idx: number) => setChannels((c) => c.filter((_, i) => i !== idx));
+  const updateChannel = (idx: number, field: keyof Channel, val: string) => {
+    setChannels((prev) => prev.map((ch, i) => (i === idx ? { ...ch, [field]: val } : ch)));
+  };
 
-  // Validate form
-  const validateForm = () => {
-    const newErrors: {
-      threshold?: string;
-      channels?: string[];
-    } = {};
+  const removeChannel = (idx: number) => {
+    setChannels((prev) => prev.filter((_, i) => i !== idx));
+  };
 
-    // Validate threshold
-    if (!row.threshold || isNaN(Number(row.threshold))) {
-      newErrors.threshold = 'Threshold must be a valid number';
+  // Validation
+  const validateAlert = () => {
+    const newErrors: { conditions?: string[]; channels?: string[] } = {};
+
+    // Validate conditions
+    const conditionErrors: string[] = [];
+    conditions.forEach((condition, index) => {
+      if (!condition.thresholdValue) {
+        conditionErrors[index] = 'Threshold value is required';
+      } else if (isNaN(Number(condition.thresholdValue))) {
+        conditionErrors[index] = 'Threshold value must be a valid number';
+      }
+    });
+
+    if (conditionErrors.some((error) => error)) {
+      newErrors.conditions = conditionErrors;
     }
 
     // Validate channels
@@ -180,40 +195,40 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
 
   // Submit
   const handleUpdateAlert = async () => {
-    if (!validateForm()) {
+    if (!validateAlert()) {
       showNotification({
         type: 'error',
         heading: 'Validation Error',
-        message: 'Please fix the errors in the form before submitting',
+        message: 'Please fix the errors before submitting',
       });
       return;
     }
 
-    // Get the original chain and market - don't allow changes
+    // Get the original chain and market connections
     const chainId = alert.selectedChains?.[0]?.chainId || 0;
     const chainConnect = [{ chainId }];
 
-    // Use the original asset connection
     const assetConnect =
       alert.selectedAssets?.map((asset) => ({
         chainId_address: `${asset.chainId}_${asset.address.toLowerCase()}`,
       })) || [];
 
+    // Build conditions
+    const conditionsPayload = conditions.map((condition) => ({
+      conditionType: actionType === 'SUPPLY' ? 'RATE_DIFF_ABOVE' : 'RATE_DIFF_BELOW',
+      thresholdValue: condition.thresholdValue,
+      severity: condition.severity,
+    }));
+
     const payload = {
       actionType,
       walletAddress,
-      notificationFrequency: row.frequency,
+      notificationFrequency,
       selectedChains: chainConnect,
       selectedAssets: assetConnect,
-      compareProtocols: [row.platform], // Keep the original platform
+      compareProtocols: [platform], // Keep the original platform
       isComparison: true, // Ensure this remains a comparison alert
-      conditions: [
-        {
-          conditionType: actionType === 'SUPPLY' ? 'RATE_DIFF_ABOVE' : 'RATE_DIFF_BELOW',
-          thresholdValue: row.threshold,
-          severity: row.severity,
-        },
-      ],
+      conditions: conditionsPayload,
       deliveryChannels: channels.map((c) => ({
         channelType: c.channelType,
         email: c.channelType === 'EMAIL' ? c.email : undefined,
@@ -231,6 +246,28 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
         <h1 className="text-3xl font-bold mb-2 text-theme-primary">Edit Personalized Comparison Alert</h1>
         <p className="text-theme-muted">Update your comparison alert for {actionType === 'SUPPLY' ? 'supply' : 'borrow'} positions.</p>
       </div>
+
+      {/* Wallet Address Display */}
+      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">Wallet Information</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center space-x-4">
+            <Badge variant="outline" className="text-primary-color border-primary-color">
+              {actionType}
+            </Badge>
+            <div>
+              <span className="text-theme-primary">Wallet Address: {walletAddress}</span>
+            </div>
+            <div>
+              <span className="text-theme-primary">
+                Chain: {chain} | Market: {market} | Platform: {toSentenceCase(platform)}
+              </span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Alert Status */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
@@ -257,148 +294,117 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
         </CardContent>
       </Card>
 
-      {/* Comparison Settings */}
+      {/* Rate Difference Thresholds */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
-        <CardHeader className="pb-1">
-          <CardTitle className="text-lg text-theme-primary">{actionType === 'SUPPLY' ? 'Supply' : 'Borrow'} Comparison</CardTitle>
+        <CardHeader>
+          <div className="flex items-center justify-between mb-2">
+            <CardTitle className="text-lg text-theme-primary">Rate Difference Thresholds</CardTitle>
+            <Button size="sm" onClick={addCondition} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
+              <Plus size={16} className="mr-1" /> Add Threshold
+            </Button>
+          </div>
+          <p className="text-sm text-theme-muted">
+            Set the Rate Difference required to trigger an alert. You will receive an alert if any of the set conditions are met.
+          </p>
+          <div className="mt-2">
+            <p className="text-sm text-theme-muted">
+              <span className="text-primary-color font-medium">How thresholds work:</span> {getComparisonMessage()}
+            </p>
+          </div>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-theme-muted mb-4">
-            Update alert conditions for comparing Compound with {toSentenceCase(row.platform)} for {actionType.toLowerCase()} rates.
-          </p>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="border-primary-color">
-                  <TableHead className="text-theme-primary">Platform</TableHead>
-                  <TableHead className="text-theme-primary">Chain</TableHead>
-                  <TableHead className="text-theme-primary">Market</TableHead>
-                  <TableHead className="text-theme-primary">Alert Me If {actionType === 'SUPPLY' ? 'Higher' : 'Lower'} By</TableHead>
-                  <TableHead className="text-theme-primary">Severity</TableHead>
-                  <TableHead className="text-theme-primary">Frequency</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow className="border-primary-color">
-                  <TableCell className="text-theme-primary">{toSentenceCase(row.platform)}</TableCell>
-                  <TableCell className="text-theme-primary">{row.chain}</TableCell>
-                  <TableCell className="text-theme-primary">{row.market}</TableCell>
-                  <TableCell>
-                    <div className="flex flex-col">
-                      <div className="flex items-center">
-                        <Input
-                          type="text"
-                          placeholder="Value"
-                          value={row.threshold}
-                          onChange={(e) => updateRow('threshold', e.target.value)}
-                          className={`w-20 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                            errors.threshold ? 'border-red-500' : ''
-                          }`}
-                        />
-                        <span className="ml-2 text-theme-muted">% APR</span>
-                      </div>
-                      {errors.threshold && <div className="mt-1 text-red-500 text-sm">{errors.threshold}</div>}
+          {/* Render each condition */}
+          {conditions.map((condition, index) => (
+            <div key={condition.id} className="mb-6">
+              <div className="grid grid-cols-12 gap-4 items-center">
+                <div className="col-span-1 flex items-center text-theme-muted">
+                  <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
+                    {index + 1}
+                  </Badge>
+                </div>
+
+                {/* Threshold Value */}
+                <div className="col-span-5 flex flex-col">
+                  <div className="flex items-center">
+                    <Input
+                      type="text"
+                      placeholder={actionType === 'SUPPLY' ? 'Threshold (e.g., 1.2)' : 'Threshold (e.g., 0.5)'}
+                      value={condition.thresholdValue || ''}
+                      onChange={(e) => updateCondition(condition.id, 'thresholdValue', e.target.value)}
+                      className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
+                        errors.conditions && errors.conditions[index] ? 'border-red-500' : ''
+                      }`}
+                    />
+                    <span className="ml-2 text-theme-muted whitespace-nowrap flex-shrink-0">Rate difference</span>
+                  </div>
+                  {errors.conditions && errors.conditions[index] && (
+                    <div className="mt-1 flex items-center text-red-500 text-sm">
+                      <AlertCircle size={14} className="mr-1" />
+                      <span>{errors.conditions[index]}</span>
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <Select value={row.severity} onValueChange={(value) => updateRow('severity', value as SeverityLevel)}>
-                      <SelectTrigger className="w-[120px] hover-border-primary">
-                        <SelectValue placeholder="Select severity" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-block">
-                        {severityOptions.map((opt) => (
-                          <div key={opt.value} className="hover-border-primary hover-text-primary">
-                            <SelectItem value={opt.value}>{opt.label}</SelectItem>
-                          </div>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    <Select value={row.frequency} onValueChange={(value) => updateRow('frequency', value as NotificationFrequency)}>
-                      <SelectTrigger className="w-[140px] hover-border-primary">
-                        <SelectValue placeholder="Select frequency" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-block">
-                        {frequencyOptions.map((f) => (
-                          <div key={f.value} className="hover-border-primary hover-text-primary">
-                            <SelectItem value={f.value}>{f.label}</SelectItem>
-                          </div>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
+                  )}
+                </div>
+
+                {/* Severity */}
+                <div className="col-span-5 flex items-center">
+                  <Select
+                    value={condition.severity === 'NONE' ? undefined : condition.severity}
+                    onValueChange={(value) => updateCondition(condition.id, 'severity', value as SeverityLevel)}
+                  >
+                    <SelectTrigger className="w-full hover-border-primary">
+                      <SelectValue placeholder="Severity Level" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-block">
+                      {severityOptions.map((opt) => (
+                        <div key={opt.value} className="hover-border-primary hover-text-primary">
+                          <SelectItem value={opt.value}>{opt.label}</SelectItem>
+                        </div>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button size="icon" className="h-8 w-8 p-0 ml-1 hover-text-primary">
+                          <Info size={16} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
+                        <p className="text-sm">
+                          Severity level is used for visual indication only. It helps you categorize alerts by importance but does not affect notification
+                          delivery or priority.
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+
+                {/* Remove */}
+                {conditions.length > 1 && (
+                  <Button variant="ghost" size="icon" onClick={() => removeCondition(condition.id)} className="col-span-1 text-red-500 h-8 w-8">
+                    <X size={16} />
+                  </Button>
+                )}
+              </div>
+            </div>
+          ))}
+
+          <hr className="my-6" />
+
+          {/* Notification Frequency */}
+          <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
         </CardContent>
       </Card>
 
       {/* Delivery Channels */}
-      <Card className="mb-6 border-theme-primary bg-block border-primary-color">
-        <CardHeader className="pb-1 flex flex-row items-center justify-between">
-          <CardTitle className="text-lg text-theme-primary">Delivery Channel Settings</CardTitle>
-          <Button size="sm" onClick={addChannel} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
-            <Plus size={16} className="mr-1" /> Add Channel
-          </Button>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-theme-muted mb-4">Choose how you want to receive your alerts.</p>
-
-          {channels.map((ch, i) => (
-            <div key={i} className="mb-4 flex items-center gap-4">
-              <Select value={ch.channelType} onValueChange={(value) => updateChannel(i, 'channelType', value as Channel['channelType'])}>
-                <SelectTrigger className="w-[150px] hover-border-primary">
-                  <SelectValue placeholder="Select channel" />
-                </SelectTrigger>
-                <SelectContent className="bg-block">
-                  <div className="hover-border-primary hover-text-primary">
-                    <SelectItem value="EMAIL">Email</SelectItem>
-                  </div>
-                  <div className="hover-border-primary hover-text-primary">
-                    <SelectItem value="WEBHOOK">Webhook</SelectItem>
-                  </div>
-                </SelectContent>
-              </Select>
-
-              {ch.channelType === 'EMAIL' ? (
-                <div className="flex-1 flex flex-col">
-                  <Input
-                    type="email"
-                    placeholder="you@example.com"
-                    value={ch.email || ''}
-                    onChange={(e) => updateChannel(i, 'email', e.target.value)}
-                    className={`flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                      errors.channels && errors.channels[i] ? 'border-red-500' : ''
-                    }`}
-                  />
-                  {errors.channels && errors.channels[i] && <div className="mt-1 text-red-500 text-sm">{errors.channels[i]}</div>}
-                </div>
-              ) : (
-                <div className="flex-1 flex flex-col">
-                  <Input
-                    type="url"
-                    placeholder="https://webhook.site/..."
-                    value={ch.webhookUrl || ''}
-                    onChange={(e) => updateChannel(i, 'webhookUrl', e.target.value)}
-                    className={`flex-1 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                      errors.channels && errors.channels[i] ? 'border-red-500' : ''
-                    }`}
-                  />
-                  {errors.channels && errors.channels[i] && <div className="mt-1 text-red-500 text-sm">{errors.channels[i]}</div>}
-                </div>
-              )}
-
-              {channels.length > 1 && (
-                <Button variant="ghost" size="icon" onClick={() => removeChannel(i)} className="text-red-500 h-8 w-8">
-                  <X size={16} />
-                </Button>
-              )}
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+      <DeliveryChannelsCard
+        channels={channels}
+        addChannel={addChannel}
+        updateChannel={updateChannel}
+        removeChannel={removeChannel}
+        errors={{ channels: errors.channels }}
+        session={session}
+      />
 
       {/* Action Buttons */}
       <div className="flex justify-end gap-x-5">
