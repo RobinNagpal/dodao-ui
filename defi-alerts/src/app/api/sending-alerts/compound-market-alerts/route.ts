@@ -24,9 +24,11 @@ interface NotificationGroup {
   chain: number;
   asset: string;
   currentRate: number;
+  notificationFrequency: NotificationFrequency;
   conditions: Array<{
     type: string;
     threshold: number | { low: number; high: number };
+    alertConditionId: string;
   }>;
 }
 
@@ -201,9 +203,11 @@ async function evaluateConditions(
         chain: chainName,
         asset: assetSym,
         currentRate: aprValue,
+        notificationFrequency: alert.notificationFrequency,
         conditions: hits.map((c) => ({
           type: c.conditionType,
           threshold: c.conditionType === 'APR_OUTSIDE_RANGE' ? { low: c.thresholdValueLow!, high: c.thresholdValueHigh! } : c.thresholdValue!,
+          alertConditionId: c.id,
         })),
       });
     }
@@ -281,11 +285,12 @@ async function sendNotifications(
 /**
  * Logs notification to the database
  */
-async function logNotification(alertId: string, hitIds: Set<string>): Promise<void> {
+async function logNotification(alertId: string, hitIds: Set<string>, groups: NotificationGroup[]): Promise<void> {
   await prisma.alertNotification.create({
     data: {
       alertId: alertId,
       alertConditionIds: Array.from(hitIds),
+      triggeredValues: groups,
       SentNotification: { create: {} },
     },
   });
@@ -321,7 +326,7 @@ async function compoundMarketAlertsHandler(request: NextRequest): Promise<Compou
     await sendNotifications(alert, groups);
 
     // Log notification
-    await logNotification(alert.id, hitIds);
+    await logNotification(alert.id, hitIds, groups);
 
     totalSent++;
   }

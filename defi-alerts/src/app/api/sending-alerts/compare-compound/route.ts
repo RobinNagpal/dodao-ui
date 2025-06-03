@@ -37,9 +37,11 @@ interface NotificationGroup {
   compoundRate: number;
   protocolRate: number;
   diff: number;
+  notificationFrequency: NotificationFrequency;
   condition: {
     type: ConditionType;
     threshold: number;
+    alertConditionId: string;
   };
 }
 
@@ -292,9 +294,11 @@ async function evaluateConditions(
               compoundRate: +compRate.toFixed(2),
               protocolRate: +otherRate.toFixed(2),
               diff: +diff.toFixed(2),
+              notificationFrequency: alert.notificationFrequency,
               condition: {
                 type: c.conditionType,
                 threshold: c.thresholdValue!,
+                alertConditionId: c.id,
               },
             });
           }
@@ -376,11 +380,12 @@ async function sendNotifications(
 /**
  * Logs notification to the database
  */
-async function logNotification(alertId: string, hitIds: Set<string>) {
+async function logNotification(alertId: string, hitIds: Set<string>, groups: NotificationGroup[]) {
   await prisma.alertNotification.create({
     data: {
       alertId: alertId,
       alertConditionIds: Array.from(hitIds),
+      triggeredValues: groups,
       SentNotification: { create: {} },
     },
   });
@@ -416,7 +421,7 @@ async function compareCompoundHandler(request: NextRequest): Promise<CompareComp
     await sendNotifications(alert, groups);
 
     // Log notification
-    await logNotification(alert.id, hitIds);
+    await logNotification(alert.id, hitIds, groups);
 
     totalSent++;
   }

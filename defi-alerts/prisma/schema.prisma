@@ -238,6 +238,8 @@ model AlertNotification {
   alert             Alert             @relation(fields: [alertId], references: [id])
   alertId           String            @map("alert_id")
   alertConditionIds String[]          @map("alert_condition_ids")
+  /// [AlertTriggerValues]
+  triggeredValues   Json?             @map("triggered_values") @db.JsonB
   SentNotification  SentNotification?
 
   @@map("alert_notifications")
