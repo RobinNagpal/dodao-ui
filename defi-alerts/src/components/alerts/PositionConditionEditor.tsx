@@ -126,6 +126,30 @@ export default function PositionConditionEditor({
     }
   };
 
+  // Get contextual message for specific comparison condition type
+  const getComparisonConditionMessage = (conditionType: ComparisonConditionType) => {
+    if (conditionType === 'RATE_DIFF_ABOVE') {
+      if (platformName && currentRate) {
+        const currentRateValue = parseFloat(currentRate.replace('%', ''));
+        const thresholdExample = 1.2;
+        const resultRate = (currentRateValue + thresholdExample).toFixed(1);
+
+        return `Alert when Compound's supply interest rate exceeds ${toSentenceCase(platformName)}'s rate by your threshold. Example: If ${toSentenceCase(platformName)} offers ${currentRate} and your threshold is 1.20, you'll be alerted when Compound reaches ${resultRate}.`;
+      }
+      return 'Alert when Compound offers higher interest rates than other platforms by your specified threshold.';
+    } else if (conditionType === 'RATE_DIFF_BELOW') {
+      if (platformName && currentRate) {
+        const currentRateValue = parseFloat(currentRate.replace('%', ''));
+        const thresholdExample = 0.5;
+        const resultRate = (currentRateValue - thresholdExample).toFixed(1);
+
+        return `Alert when Compound's borrow interest rate is lower than ${toSentenceCase(platformName)}'s rate by your threshold. Example: If ${toSentenceCase(platformName)} charges ${currentRate} and your threshold is 0.50, you'll be alerted when Compound drops to ${resultRate}.`;
+      }
+      return 'Alert when Compound offers lower interest rates than other platforms by your specified threshold.';
+    }
+    return '';
+  };
+
   return (
     <Card className="mb-6 border-theme-primary bg-block border-primary-color">
       <CardHeader className="pb-1 flex flex-row items-center justify-between">
@@ -323,6 +347,15 @@ export default function PositionConditionEditor({
               <div className="mt-2 px-3 py-2 ml-10">
                 <p className="text-sm text-theme-muted">
                   <span className="text-primary-color font-medium">Condition {index + 1}:</span> {getMarketConditionMessage(condition.conditionType)}
+                </p>
+              </div>
+            )}
+
+            {/* Contextual message for comparison conditions */}
+            {editorType === 'comparison' && (
+              <div className="mt-2 px-3 py-2 ml-10">
+                <p className="text-sm text-theme-muted">
+                  <span className="text-primary-color font-medium">Condition {index + 1}:</span> {getComparisonConditionMessage(condition.conditionType as ComparisonConditionType)}
                 </p>
               </div>
             )}
