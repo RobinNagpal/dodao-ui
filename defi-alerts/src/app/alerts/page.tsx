@@ -1,15 +1,13 @@
 'use client';
 
-import { AlertActionsCell, AssetsCell, ChainsCell, ConditionsCell, DeleteAlertModal, DeliveryChannelCell } from '@/components/alerts';
+import { AlertActionsCell, ConditionsCell, DeleteAlertModal, DeliveryChannelCell } from '@/components/alerts';
 import AssetChainPairCell from '@/components/alerts/core/AssetChainPairCell';
 import CreateAlertModals from '@/components/alerts/CreateAlertModals';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { type Alert, frequencyOptions, type PrismaCondition, severityOptions } from '@/types/alerts';
+import { type Alert, frequencyOptions } from '@/types/alerts';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { toSentenceCase } from '@/utils/getSentenceCase';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
@@ -17,7 +15,7 @@ import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Bell, Info, Plus, TrendingDown, TrendingUp } from 'lucide-react';
+import { Bell, Plus, TrendingDown, TrendingUp } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import type React from 'react';
 import { useEffect, useState } from 'react';
