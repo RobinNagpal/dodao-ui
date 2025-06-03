@@ -1,5 +1,6 @@
 'use client';
 
+import { MarketConditionType } from '@/components/alerts/PositionConditionEditor';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -424,7 +425,7 @@ export default function CompoundMarketEditForm({ alert, alertId }: CompoundMarke
         editorType="market"
         conditions={conditions.map((cond, i) => ({
           id: `condition-${i}`,
-          conditionType: cond.conditionType,
+          conditionType: cond.conditionType as MarketConditionType,
           severity: cond.severity,
           thresholdValue: cond.thresholdValue,
           thresholdLow: cond.thresholdLow,
