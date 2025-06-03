@@ -270,7 +270,7 @@ export default function PositionConditionEditor({
               )}
 
               {/* Severity for both types */}
-              <div className="w-64 flex-shrink-0">
+              <div className="w-64 flex-shrink-0 flex">
                 <Select
                   value={condition.severity === 'NONE' ? undefined : condition.severity}
                   onValueChange={(value) => updateCondition(condition.id, 'severity', value as SeverityLevel)}
