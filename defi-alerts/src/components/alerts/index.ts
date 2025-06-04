@@ -3,6 +3,7 @@ import AlertPageWrapper from './AlertPageWrapper';
 import AlertTypeCard from './AlertTypeCard';
 import CompareThresholdCard from './CompareThresholdCard';
 import AlertActionsCell from './core/AlertActionsCell';
+import StatusBadge from './core/StatusBadge';
 import AssetsCell from './core/AssetsCell';
 import ChainsCell from './core/ChainsCell';
 import ConditionsCell from './core/ConditionsCell';
@@ -32,6 +33,7 @@ export {
   PositionSettingsCard,
   PersonalizedComparisonPositionCard,
   AlertActionsCell,
+  StatusBadge,
   ConditionsCell,
   ChainsCell,
   AssetsCell,

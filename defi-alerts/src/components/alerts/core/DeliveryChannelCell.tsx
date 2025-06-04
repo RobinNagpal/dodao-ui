@@ -13,7 +13,7 @@ interface DeliveryChannelCellProps {
  * Component for displaying delivery channels in a table cell
  * @param isMini - When true, shows only icons with tooltip for details
  */
-const DeliveryChannelCell: React.FC<DeliveryChannelCellProps> = ({ deliveryChannels, isMini = false }) => {
+const DeliveryChannelCell: React.FC<DeliveryChannelCellProps> = ({ deliveryChannels, isMini = true }) => {
   if (!deliveryChannels || deliveryChannels.length === 0) {
     return <span className="text-xs text-theme-muted">Not set</span>;
   }

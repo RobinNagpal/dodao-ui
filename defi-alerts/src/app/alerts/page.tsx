@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertActionsCell, ConditionsCell, DeleteAlertModal, DeliveryChannelCell } from '@/components/alerts';
+import { AlertActionsCell, StatusBadge, ConditionsCell, DeleteAlertModal, DeliveryChannelCell } from '@/components/alerts';
 import AssetChainPairCell from '@/components/alerts/core/AssetChainPairCell';
 import CreateAlertModals from '@/components/alerts/CreateAlertModals';
 import { Badge } from '@/components/ui/badge';
@@ -201,20 +201,10 @@ export default function AlertsPage() {
                               <span className="text-xs text-primary-color">General</span>
                             )}
                           </div>
-                          <div>Frequency - {freqLabel(alert.notificationFrequency)}</div>
-                          <div>
-                            <DeliveryChannelCell deliveryChannels={alert.deliveryChannels} isMini={true} />
+                          <div className="flex items-center gap-2 mt-1 text-xs text-theme-muted">
+                            <DeliveryChannelCell deliveryChannels={alert.deliveryChannels} isMini={true} />- {freqLabel(alert.notificationFrequency)}
                           </div>
-                          <div>
-                            <Badge
-                              variant="outline"
-                              className={
-                                alert.status === 'ACTIVE' ? 'bg-green-100 text-green-800 border-green-200' : 'bg-yellow-100 text-yellow-800 border-yellow-200'
-                              }
-                            >
-                              {alert.status.charAt(0) + alert.status.slice(1).toLowerCase()}
-                            </Badge>
-                          </div>
+                          <StatusBadge status={alert.status} showOnlyInactive={true} />
                         </TableCell>
 
                         <TableCell className="text-left">
