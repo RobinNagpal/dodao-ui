@@ -1,11 +1,11 @@
 import { PlatformImage } from '@/components/alerts/core/PlatformImage';
-import React from 'react';
-import { Badge } from '@/components/ui/badge';
+import SeverityBadge from '@/components/alerts/SeverityBadge';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { type Alert, PrismaCondition, severityOptions } from '@/types/alerts';
 import { Alert as PrismaAlert, AlertCondition, Asset, Chain, DeliveryChannel } from '@prisma/client';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
 import { Info } from 'lucide-react';
+import React from 'react';
 
 interface ConditionsCellProps {
   alert:
@@ -23,19 +23,6 @@ interface ConditionsCellProps {
  */
 const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
   const conditions: (PrismaCondition | AlertCondition)[] = alert.conditions;
-  // Get severity badge color
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'HIGH':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'MEDIUM':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'LOW':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      default:
-        return 'bg-theme-bg-muted text-theme-muted border-theme-border-primary';
-    }
-  };
 
   // Format condition threshold values based on condition type
   const formatThresholdValue = (condition: PrismaCondition | AlertCondition) => {
@@ -76,7 +63,7 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
   };
 
   // Get severity label
-  const severityLabel = (condition: PrismaCondition | AlertCondition) => severityOptions.find((o) => o.value === condition.severity)?.label || '-';
+
   const getConditionMessage = (alert: Alert | PrismaAlert, condition: PrismaCondition | AlertCondition) => {
     if (alert.isComparison) {
       switch (condition.conditionType) {
@@ -189,7 +176,7 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
       {conditions.map((condition, index) => (
         <div key={index} className="flex items-center gap-2 mb-1">
           <span className="font-semibold text-theme-muted">
-            {getConditionMessage(alert, condition)}{' '}
+            <SeverityBadge severity={condition.severity}>{condition.severity}</SeverityBadge> {getConditionMessage(alert, condition)}{' '}
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -204,9 +191,9 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
                     <div>
                       Severity Level:&nbsp;
                       {condition.severity === 'NONE' ? (
-                        <Badge className={`${getSeverityColor(condition.severity)}`}>None</Badge>
+                        <SeverityBadge severity="NONE">None</SeverityBadge>
                       ) : (
-                        <Badge className={`${getSeverityColor(condition.severity)}`}>{severityLabel(condition)}</Badge>
+                        <SeverityBadge severity={condition.severity}>{condition.severity}</SeverityBadge>
                       )}
                     </div>
                   </div>

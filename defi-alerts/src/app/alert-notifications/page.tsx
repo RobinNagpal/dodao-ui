@@ -3,7 +3,7 @@
 import { AlertNotificationResponse } from '@/app/api/alert-notifications/route';
 import { ConditionsCell, TriggerValuesCell } from '@/components/alerts';
 import AssetChainPairCell from '@/components/alerts/core/AssetChainPairCell';
-import { Badge } from '@/components/ui/badge';
+import SeverityBadge from '@/components/alerts/SeverityBadge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { toSentenceCase } from '@/utils/getSentenceCase';
@@ -91,7 +91,6 @@ export default function AlertNotificationsPage() {
                   <TableHead className="w-[200px] text-center">Chain/Asset</TableHead>
                   <TableHead className="w-[250px] text-center">All Alert Condition</TableHead>
                   <TableHead className="w-[250px] text-center">Triggered Condition</TableHead>
-                  <TableHead className="w-[100px] text-center">Severity</TableHead>
                   <TableHead className="w-[100px] text-center">Sent At</TableHead>
                 </TableRow>
               </TableHeader>
@@ -128,29 +127,6 @@ export default function AlertNotificationsPage() {
                           ) : (
                             <ConditionsCell alert={{ ...notification.alert, conditions: triggeredConditions }} />
                           )}
-                        </TableCell>
-
-                        <TableCell className="text-center">
-                          {triggeredConditions.map((condition, index) => {
-                            const severity = condition.severity;
-                            return (
-                              <Badge
-                                key={index}
-                                variant="outline"
-                                className={
-                                  severity === 'HIGH'
-                                    ? 'bg-red-100 text-red-800 border-red-200'
-                                    : severity === 'MEDIUM'
-                                    ? 'bg-yellow-100 text-yellow-800 border-yellow-200'
-                                    : severity === 'LOW'
-                                    ? 'bg-green-100 text-green-800 border-green-200'
-                                    : 'bg-gray-100 text-gray-800 border-gray-200'
-                                }
-                              >
-                                {severity}
-                              </Badge>
-                            );
-                          })}
                         </TableCell>
 
                         <TableCell className="text-center">

@@ -1,6 +1,7 @@
 'use client';
 
 import { PlatformImage } from '@/components/alerts/core/PlatformImage';
+import SeverityBadge from '@/components/alerts/SeverityBadge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
@@ -115,7 +116,7 @@ const TriggerValuesCell: React.FC<TriggerValuesCellProps> = ({ triggerValues }) 
       {triggerValues.map((triggerValue, index) => (
         <div key={index} className="flex items-center gap-2 mb-1">
           <span className="font-semibold text-theme-muted">
-            {getTriggerValueMessage(triggerValue)}{' '}
+            {triggerValue.severity && <SeverityBadge severity={triggerValue.severity} />} {getTriggerValueMessage(triggerValue)}{' '}
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
