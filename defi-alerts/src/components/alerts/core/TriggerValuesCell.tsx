@@ -8,6 +8,7 @@ import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 import { NotificationFrequency } from '@prisma/client';
 import { Info } from 'lucide-react';
 import React from 'react';
+import CompareProtocols from '@/components/alerts/core/CompareProtocols';
 
 interface TriggerValuesCellProps {
   triggerValues: AlertTriggerValuesInterface[] | null;
@@ -44,23 +45,23 @@ const TriggerValuesCell: React.FC<TriggerValuesCellProps> = ({ triggerValues }) 
           return (
             <span>
               Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate is {actionType === 'SUPPLY' ? 'more(better earnings)' : 'more(higher cost)'} on{' '}
-              <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition.threshold)} compared to <PlatformImage platform={protocol || ''} />.
-              Current difference: {diff}
+              <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition.threshold)} compared to{' '}
+              <CompareProtocols protocols={protocol ? [protocol] : []} />. Current difference: {diff}
             </span>
           );
         case 'RATE_DIFF_BELOW':
           return (
             <span>
               Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate is {actionType === 'SUPPLY' ? 'less(worse earnings)' : 'less(better cost)'} on{' '}
-              <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition.threshold)} compared to <PlatformImage platform={protocol || ''} />.
-              Current difference: {diff}
+              <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition.threshold)} compared to{' '}
+              <CompareProtocols protocols={protocol ? [protocol] : []} />. Current difference: {diff}
             </span>
           );
         default:
           return (
             <span>
-              Comparison between <PlatformImage platform={'compound'} /> ({compoundRate}) and <PlatformImage platform={protocol || ''} /> ({protocolRate}) with
-              difference of {diff}
+              Comparison between <PlatformImage platform={'compound'} /> ({compoundRate}) and <CompareProtocols protocols={protocol ? [protocol] : []} /> (
+              {protocolRate}) with difference of {diff}
             </span>
           );
       }

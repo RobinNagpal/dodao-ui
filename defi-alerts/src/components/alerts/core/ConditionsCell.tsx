@@ -3,6 +3,7 @@ import SeverityBadge from '@/components/alerts/SeverityBadge';
 import { type Alert, PrismaCondition } from '@/types/alerts';
 import { Alert as PrismaAlert, AlertCondition, Asset, Chain, DeliveryChannel } from '@prisma/client';
 import React from 'react';
+import CompareProtocols from '@/components/alerts/core/CompareProtocols';
 
 interface ConditionsCellProps {
   alert:
@@ -69,66 +70,38 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
           return (
             <span>
               Alert when <PlatformImage platform={'compound'} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR exceeds APR of{' '}
-              {alert.compareProtocols.map((cp, index) => (
-                <span key={index}>
-                  <PlatformImage platform={cp} />
-                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
-                </span>
-              ))}{' '}
-              by {formatThresholdValue(condition)} {actionType === 'SUPPLY' ? '(better earning opportunity)' : '(higher cost)'}
+              <CompareProtocols protocols={alert.compareProtocols} /> by {formatThresholdValue(condition)}{' '}
+              {actionType === 'SUPPLY' ? '(better earning opportunity)' : '(higher cost)'}
             </span>
           );
         case 'APR_FALLS_BELOW':
           return (
             <span>
               Alert when <PlatformImage platform={'compound'} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR drops below{' '}
-              {alert.compareProtocols.map((cp, index) => (
-                <span key={index}>
-                  <PlatformImage platform={cp} />
-                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
-                </span>
-              ))}{' '}
-              APR by {formatThresholdValue(condition)} {actionType === 'SUPPLY' ? '(worse earning opportunity)' : '(better rate)'}
+              <CompareProtocols protocols={alert.compareProtocols} /> APR by {formatThresholdValue(condition)}{' '}
+              {actionType === 'SUPPLY' ? '(worse earning opportunity)' : '(better rate)'}
             </span>
           );
         case 'APR_OUTSIDE_RANGE':
           return (
             <span>
               Alert when <PlatformImage platform={'compound'} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR moves outside{' '}
-              {formatThresholdValue(condition)} of{' '}
-              {alert.compareProtocols.map((cp, index) => (
-                <span key={index}>
-                  <PlatformImage platform={cp} />
-                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
-                </span>
-              ))}{' '}
-              APR {actionType === 'SUPPLY' ? '(significant change in earning opportunity)' : '(significant change in borrowing cost)'}
+              {formatThresholdValue(condition)} of <CompareProtocols protocols={alert.compareProtocols} /> APR{' '}
+              {actionType === 'SUPPLY' ? '(significant change in earning opportunity)' : '(significant change in borrowing cost)'}
             </span>
           );
         case 'RATE_DIFF_ABOVE':
           return (
             <span>
               Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate is {actionType === 'SUPPLY' ? 'more(better earnings)' : 'more(higher cost)'} on{' '}
-              <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition)} compared to{' '}
-              {alert.compareProtocols.map((cp, index) => (
-                <span key={index}>
-                  <PlatformImage platform={cp} />
-                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
-                </span>
-              ))}
+              <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition)} compared to <CompareProtocols protocols={alert.compareProtocols} />
             </span>
           );
         case 'RATE_DIFF_BELOW':
           return (
             <span>
               Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate is {actionType === 'SUPPLY' ? 'less(worse earnings)' : 'less(better cost)'} on{' '}
-              <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition)} compared to{' '}
-              {alert.compareProtocols.map((cp, index) => (
-                <span key={index}>
-                  <PlatformImage platform={cp} />
-                  {index < alert.compareProtocols.length - 1 ? ', ' : ''}
-                </span>
-              ))}
+              <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition)} compared to <CompareProtocols protocols={alert.compareProtocols} />
             </span>
           );
       }
