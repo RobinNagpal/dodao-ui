@@ -98,8 +98,9 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
     setConditions((cs) => [...cs, newCondition]);
   };
   const removeCondition = (id: string) => {
-    const updatedConditions = conditions.filter((c) => c.id !== id);
-    setConditions(updatedConditions);
+    const filteredConditions = conditions.filter((c) => c.id !== id);
+    const withUpdatedIds = filteredConditions.map((c, idx) => ({ ...c, id: `${idx}-condition` }));
+    setConditions(withUpdatedIds);
   };
   const addChannel = () => setChannels((ch) => [...ch, { channelType: 'EMAIL', email: session?.username || '' }]);
   const updateChannel = (i: number, field: keyof Channel, val: string) => setChannels((ch) => ch.map((c, idx) => (idx === i ? { ...c, [field]: val } : c)));
@@ -272,18 +273,6 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
       }
     }
 
-    // Validate thresholds
-    const thresholdErrors: string[] = [];
-    thresholds.forEach((t, index) => {
-      if (!t.threshold || isNaN(Number(t.threshold))) {
-        thresholdErrors[index] = 'Threshold must be a valid number';
-      }
-    });
-
-    if (thresholdErrors.some((error) => error)) {
-      newErrors.thresholds = thresholdErrors;
-    }
-
     // Validate channels
     const channelErrors: string[] = [];
     channels.forEach((channel, index) => {
@@ -314,7 +303,11 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const isValid = Object.keys(newErrors).length === 0;
+    if (!isValid) {
+      console.log(`Errors: ${JSON.stringify(newErrors, null, 2)}`);
+    }
+    return isValid;
   };
 
   const handleCreateGeneralComparisonAlert = async () => {
@@ -363,8 +356,8 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
           <AlertTypeCard
             alertType={alertType}
             setAlertType={(alertType) => {
-              const newConditions = getEmptyCondition(conditions, alertType);
-              setConditions([newConditions]);
+              const newCondition = getEmptyCondition([], alertType);
+              setConditions([newCondition]);
               setAlertType(alertType);
             }}
             supplyLabel={modalType === 'COMPARISON' ? 'Supply Comparison (Alert when Compound offers higher rates)' : undefined}
