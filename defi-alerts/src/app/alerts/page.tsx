@@ -181,7 +181,7 @@ export default function AlertsPage() {
             <Table>
               <TableHeader>
                 <TableRow className="border-primary-color">
-                  <TableHead className="w-[220px] text-center">Alert</TableHead>
+                  <TableHead className="w-[150px] text-left">Alert</TableHead>
                   <TableHead className="w-[200px] text-left">Chain/Market</TableHead>
                   <TableHead className="w-[350px] text-center">Condition</TableHead>
                   <TableHead className="w-[100px] text-center">Actions</TableHead>
