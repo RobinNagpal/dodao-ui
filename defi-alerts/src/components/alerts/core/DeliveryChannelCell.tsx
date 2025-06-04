@@ -70,18 +70,11 @@ const DeliveryChannelCell: React.FC<DeliveryChannelCellProps> = ({ deliveryChann
         {deliveryChannels.map((channel, index) => (
           <div key={index} className="flex items-center p-2 rounded-md bg-theme-background hover:bg-theme-hover transition-colors">
             <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center mr-2 rounded-full bg-theme-primary/10">
-              {channel.channelType === 'EMAIL' ? 
-                <Mail size={14} className="text-theme-primary" /> : 
-                <Globe size={14} className="text-theme-primary" />
-              }
+              {channel.channelType === 'EMAIL' ? <Mail size={14} className="text-theme-primary" /> : <Globe size={14} className="text-theme-primary" />}
             </div>
             <div className="flex flex-col">
-              <span className="text-xs font-medium text-theme-primary">
-                {channel.channelType === 'EMAIL' ? 'Email' : 'Webhook'}
-              </span>
-              <span className="text-xs text-theme-muted truncate max-w-[180px]">
-                {channel.channelType === 'EMAIL' ? channel.email : channel.webhookUrl}
-              </span>
+              <span className="text-xs font-medium text-theme-primary">{channel.channelType === 'EMAIL' ? 'Email' : 'Webhook'}</span>
+              <span className="text-xs text-theme-muted truncate max-w-[180px]">{channel.channelType === 'EMAIL' ? channel.email : channel.webhookUrl}</span>
             </div>
           </div>
         ))}
