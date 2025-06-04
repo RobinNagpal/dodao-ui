@@ -180,18 +180,17 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
     ]);
 
   const updateThreshold = (idx: number, field: keyof GeneralComparisonRow | 'thresholdValue', val: string) => {
-
     setThresholds((ts) =>
-    ts.map((t, i) => {
-      if (i !== idx) return t;
+      ts.map((t, i) => {
+        if (i !== idx) return t;
 
-      if (field === 'thresholdValue') {
-        return { ...t, threshold: val };
-      }
+        if (field === 'thresholdValue') {
+          return { ...t, threshold: val };
+        }
 
-      return { ...t, [field]: val };
-    })
-  );
+        return { ...t, [field]: val };
+      })
+    );
 
     // Clear validation error if it exists
     if (errors.thresholds && errors.thresholds[idx]) {
