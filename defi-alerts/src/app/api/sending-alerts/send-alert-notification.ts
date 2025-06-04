@@ -47,25 +47,29 @@ const createAlertEmailBody = (payload: NotificationPayload): string => {
       // Get explanation message for why this alert is important
       const explanation = getAlertExplanation(condition.type, alertType, group.isComparison || false);
 
+      // Get severity colors based on severity level
+      const severityColors = getSeverityColors(group.severity || 'NONE');
+
       // Build the HTML for that one condition
       const conditionHtml = `
       <div style="margin-bottom: 10px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
         <p><strong>Condition Type:</strong> ${formatConditionType(condition.type)}</p>
         <p><strong>Threshold:</strong> ${thresholdText}</p>
-        ${explanation ? `<p><strong>What this means:</strong> ${explanation}</p>` : ''}
+        ${explanation ? `<p style="color: ${severityColors.textColor};"><strong>What this means:</strong> ${explanation}</p>` : ''}
+        ${group.severity && group.severity !== 'NONE' ? `<p><span style="display: inline-block; padding: 2px 8px; border-radius: 4px; background-color: ${severityColors.bgColor}; color: ${severityColors.textColor}; border: 1px solid ${severityColors.borderColor};">${group.severity}</span></p>` : ''}
       </div>
     `;
 
       // Build the HTML for the entire group (asset/chain + rates + single condition)
       return `
-      <div style="margin-bottom: 20px; padding: 15px; background-color: #f0f4f8; border-radius: 8px; border-left: 4px solid #007bff;">
+      <div style="margin-bottom: 20px; padding: 15px; background-color: ${severityColors.bgColor}; border-radius: 8px; border-left: 4px solid ${severityColors.textColor};">
         <h3 style="margin-top: 0; color: #333;">Asset: ${group.asset} (Chain: ${group.chainName})</h3>
         ${group.currentRate ? `<p><strong>Current Rate:</strong> ${group.currentRate}%</p>` : ''}
         ${group.protocol ? `<p><strong>Compared Protocol:</strong> ${group.protocol}</p>` : ''}
         ${group.compoundRate ? `<p><strong>Compound Rate:</strong> ${group.compoundRate}%</p>` : ''}
         ${group.protocolRate ? `<p><strong>Protocol Rate:</strong> ${group.protocolRate}%</p>` : ''}
         ${group.diff ? `<p><strong>Difference:</strong> ${group.diff}%</p>` : ''}
-        <h4 style="margin-top: 15px; color: #555;">Triggered Condition:</h4>
+        <h4 style="margin-top: 15px; color: ${severityColors.textColor};">Triggered Condition:</h4>
         ${conditionHtml}
       </div>
     `;
@@ -200,6 +204,39 @@ function formatConditionType(type: ConditionType): string {
       return 'Rate Difference Below';
     default:
       return type;
+  }
+}
+
+/**
+ * Returns colors for a given severity level
+ */
+function getSeverityColors(severity: string): { bgColor: string; textColor: string; borderColor: string } {
+  switch (severity) {
+    case 'HIGH':
+      return {
+        bgColor: '#fef2f2', // bg-red-100
+        textColor: '#991b1b', // text-red-800
+        borderColor: '#fecaca', // border-red-200
+      };
+    case 'MEDIUM':
+      return {
+        bgColor: '#fefce8', // bg-yellow-100
+        textColor: '#854d0e', // text-yellow-800
+        borderColor: '#fef08a', // border-yellow-200
+      };
+    case 'LOW':
+      return {
+        bgColor: '#f0fdf4', // bg-green-100
+        textColor: '#166534', // text-green-800
+        borderColor: '#bbf7d0', // border-green-200
+      };
+    case 'NONE':
+    default:
+      return {
+        bgColor: '#f3f4f6', // bg-gray-100
+        textColor: '#1f2937', // text-gray-800
+        borderColor: '#e5e7eb', // border-gray-200
+      };
   }
 }
 
