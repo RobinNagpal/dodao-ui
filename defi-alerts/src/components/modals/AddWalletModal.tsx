@@ -44,7 +44,7 @@ export default function AddWalletModal({ isOpen, handleClose, onSwitchToPosition
       return;
     }
     setErrorMsg('');
-    const success = await postWalletAddress(`${baseUrl}/api/user/wallet`, { walletAddress: newWalletAddress });
+    const success = await postWalletAddress(`${baseUrl}/api/user/wallet`, { walletAddress: addr });
 
     if (success) {
       onWalletAdded(addr);
