@@ -27,8 +27,8 @@ export function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string
     // Fallback to a colored div with the first letter of the token symbol
     return (
       <span
-        className="inline-flex items-center justify-center bg-primary-color text-primary-text rounded-full"
-        style={{ width: '20px', height: '20px', fontSize: '10px' }}
+        className="inline-flex items-center justify-center bg-white text-black rounded-full font-semibold"
+        style={{ width: '20px', height: '20px', fontSize: '12px' }}
       >
         {assetSymbol.charAt(0)}
       </span>
