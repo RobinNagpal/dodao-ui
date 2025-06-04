@@ -37,6 +37,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
   const [walletAddresses, setWalletAddresses] = useState<string[]>([]);
   const [currentWalletAddress, setCurrentWalletAddress] = useState<string>('');
   const [walletHasPositions, setWalletHasPositions] = useState<boolean>(true);
+  const [newlyAdded, setNewlyAdded] = useState(false);
 
   const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
 
@@ -87,7 +88,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
   }, [isOpen, walletData]);
 
   useEffect(() => {
-    if (walletAddresses.length === 0 || allComparisonPositions.length > 0) {
+    if (walletAddresses.length === 0 || allComparisonPositions.length > 0 || !newlyAdded) {
       return;
     }
 
@@ -163,6 +164,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
   };
 
   const handleWalletAdded = async (newWalletAddress: string) => {
+    setNewlyAdded(true);
     setWalletAddresses((prev) => [...prev, newWalletAddress]);
     setCurrentWalletAddress(newWalletAddress);
     setCurrentModal('personalizedPositions');
@@ -188,6 +190,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
         message: 'Could not load positions for that wallet.',
       });
     } finally {
+      setNewlyAdded(false);
       setComparisonLoading(false);
     }
   };
