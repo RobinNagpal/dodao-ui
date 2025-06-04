@@ -179,8 +179,19 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
       },
     ]);
 
-  const updateThreshold = (idx: number, field: keyof GeneralComparisonRow, val: string) => {
-    setThresholds((ts) => ts.map((t, i) => (i === idx ? { ...t, [field]: val } : t)));
+  const updateThreshold = (idx: number, field: keyof GeneralComparisonRow | 'thresholdValue', val: string) => {
+
+    setThresholds((ts) =>
+    ts.map((t, i) => {
+      if (i !== idx) return t;
+
+      if (field === 'thresholdValue') {
+        return { ...t, threshold: val };
+      }
+
+      return { ...t, [field]: val };
+    })
+  );
 
     // Clear validation error if it exists
     if (errors.thresholds && errors.thresholds[idx]) {
@@ -425,7 +436,7 @@ export default function CompoundComparisonEditForm({ alert, alertId }: CompoundC
             <p className="text-sm text-theme-muted mb-3">Select one or more platforms to compare Compound rates against.</p>
 
             <div className="flex flex-wrap gap-3">
-              {['Aave', 'Morpho', 'Spark'].map((p) => {
+              {['Aave', 'Spark'].map((p) => {
                 const isSel = selectedPlatforms.includes(p);
 
                 return (
