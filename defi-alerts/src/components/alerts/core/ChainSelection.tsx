@@ -49,7 +49,7 @@ const ChainSelection: React.FC<ChainSelectionProps> = ({
                 )}
               </div>
               <span className="mr-2">
-                <ChainImage chain={c.toLowerCase()} />
+                <ChainImage chain={c} />
               </span>
               <span className="text-theme-primary chip-label">{c}</span>
             </div>

@@ -95,6 +95,7 @@ export function useAaveUserPositions(): (wallets: string[]) => Promise<WalletCom
 
             // 8) parse and push positions only for active ones
             for (let idx = 0; idx < raw.length; idx++) {
+              if (!raw[idx].result) continue; // skip if no result
               const userData = raw[idx].result as readonly [
                 bigint, // currentATokenBalance
                 bigint, // currentStableDebt
@@ -111,7 +112,7 @@ export function useAaveUserPositions(): (wallets: string[]) => Promise<WalletCom
               // skip if no supply & no borrow
               const hasSupply = supBal > BigInt(0);
               const hasBorrow = stableDebt + varDebt > BigInt(0);
-              if (!hasSupply && !hasBorrow) return;
+              if (!hasSupply && !hasBorrow) continue;
 
               const market = markets[idx];
 
