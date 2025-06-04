@@ -184,12 +184,9 @@ export default function CompareCompoundPage() {
             <Table>
               <TableHeader>
                 <TableRow className="border-primary-color">
-                  <TableHead className="w-[120px] text-center">Alert</TableHead>
-                  <TableHead className="w-[180px] text-center">Chain/Market</TableHead>
-                  <TableHead className="w-[250px] text-center">Condition</TableHead>
-                  <TableHead className="w-[120px] text-center">Frequency</TableHead>
-                  <TableHead className="w-[170px] text-center">Delivery Channel</TableHead>
-                  <TableHead className="w-[100px] text-center">Status</TableHead>
+                  <TableHead className="w-[220px] text-center">Alert</TableHead>
+                  <TableHead className="w-[180px] text-left">Chain/Market</TableHead>
+                  <TableHead className="w-[350px] text-center">Condition</TableHead>
                   <TableHead className="w-[100px] text-center">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -210,6 +207,20 @@ export default function CompareCompoundPage() {
                               <PlatformsCell platforms={alert.compareProtocols || []} />
                             </span>
                           </div>
+                          <div>Frequency - {freqLabel(alert.notificationFrequency)}</div>
+                          <div>
+                            <DeliveryChannelCell deliveryChannels={alert.deliveryChannels} />
+                          </div>
+                          <div>
+                            <Badge
+                              variant="outline"
+                              className={
+                                alert.status === 'ACTIVE' ? 'bg-green-100 text-green-800 border-green-200' : 'bg-yellow-100 text-yellow-800 border-yellow-200'
+                              }
+                            >
+                              {alert.status.charAt(0) + alert.status.slice(1).toLowerCase()}
+                            </Badge>
+                          </div>
                         </TableCell>
 
                         <TableCell className="text-center">
@@ -218,25 +229,6 @@ export default function CompareCompoundPage() {
 
                         <TableCell className="flex items-center justify-center">
                           <ConditionsCell alert={alert} />
-                        </TableCell>
-
-                        <TableCell className="text-center">
-                          <span className="text-theme-primary">{freqLabel(alert.notificationFrequency)}</span>
-                        </TableCell>
-
-                        <TableCell className="flex items-center justify-center">
-                          <DeliveryChannelCell deliveryChannels={alert.deliveryChannels} />
-                        </TableCell>
-
-                        <TableCell className="text-center">
-                          <Badge
-                            variant="outline"
-                            className={
-                              alert.status === 'ACTIVE' ? 'bg-green-100 text-green-800 border-green-200' : 'bg-yellow-100 text-yellow-800 border-yellow-200'
-                            }
-                          >
-                            {alert.status.charAt(0) + alert.status.slice(1).toLowerCase()}
-                          </Badge>
                         </TableCell>
 
                         <TableCell className="text-center">

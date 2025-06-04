@@ -205,14 +205,16 @@ export default function AlertsPage() {
                           <div>
                             <DeliveryChannelCell deliveryChannels={alert.deliveryChannels} />
                           </div>
-                          <Badge
-                            variant="outline"
-                            className={
-                              alert.status === 'ACTIVE' ? 'bg-green-100 text-green-800 border-green-200' : 'bg-yellow-100 text-yellow-800 border-yellow-200'
-                            }
-                          >
-                            {alert.status.charAt(0) + alert.status.slice(1).toLowerCase()}
-                          </Badge>
+                          <div>
+                            <Badge
+                              variant="outline"
+                              className={
+                                alert.status === 'ACTIVE' ? 'bg-green-100 text-green-800 border-green-200' : 'bg-yellow-100 text-yellow-800 border-yellow-200'
+                              }
+                            >
+                              {alert.status.charAt(0) + alert.status.slice(1).toLowerCase()}
+                            </Badge>
+                          </div>
                         </TableCell>
 
                         <TableCell className="text-left">
