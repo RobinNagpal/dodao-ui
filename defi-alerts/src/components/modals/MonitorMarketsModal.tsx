@@ -1,32 +1,33 @@
 // src/components/alerts/modals/MonitorMarketsModal.tsx
 'use client';
 
-import { useSession } from 'next-auth/react';
-import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { AlertTypeCard, MarketSelectionCard, ConditionSettingsCard, DeliveryChannelsCard, CompareThresholdCard } from '@/components/alerts';
-import type { Channel, GeneralComparisonRow, NotificationFrequency } from '@/types/alerts';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { AlertCreationResponse, CreateCompoundAlertPayload } from '@/app/api/alerts/create/compound-market/route';
-import {
-  AlertCategory,
-  AlertActionType,
-  NotificationFrequency as PrismaNotificationFrequency,
-  ConditionType as PrismaConditionType,
-  SeverityLevel as PrismaSeverityLevel,
-  DeliveryChannelType,
-} from '@prisma/client';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { useState } from 'react';
 import { CompareCompoundAlertPayload, CompareCompoundAlertResponse } from '@/app/api/alerts/create/compare-compound/route';
+import { AlertCreationResponse, CreateCompoundAlertPayload } from '@/app/api/alerts/create/compound-market/route';
+import { AlertTypeCard, DeliveryChannelsCard, MarketSelectionCard, NotificationFrequencySection, PositionConditionEditor } from '@/components/alerts';
+import { ComparisonCondition, MarketCondition } from '@/components/alerts/PositionConditionEditor';
+import { getEmptyCondition } from '@/components/modals/utils/getEmptyCondition';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import type { Channel, GeneralComparisonRow, NotificationFrequency } from '@/types/alerts';
 import { validateMarketCombinations } from '@/utils/clientValidationUtils';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import {
+  AlertActionType,
+  AlertCategory,
+  ConditionType as PrismaConditionType,
+  DeliveryChannelType,
+  NotificationFrequency as PrismaNotificationFrequency,
+  SeverityLevel as PrismaSeverityLevel,
+} from '@prisma/client';
 import { AlertCircle } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useState } from 'react';
 
 interface MonitorMarketsProps {
   isOpen: boolean;
-  modalType: 'GENERAL' | 'COMPARISON';
+  modalType: 'MARKET' | 'COMPARISON';
   handleClose: () => void;
   channels: Channel[];
   setChannels: React.Dispatch<React.SetStateAction<Channel[]>>;
@@ -40,9 +41,7 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
   const session = data as DoDAOSession;
   const baseUrl = getBaseUrl();
 
-  const { showNotification } = useNotificationContext();
-
-  const [conditions, setConditions] = useState<any[]>([{ conditionType: 'APR_RISE_ABOVE', thresholdValue: '', severity: 'NONE' }]);
+  const [conditions, setConditions] = useState<(MarketCondition | ComparisonCondition)[]>([getEmptyCondition(modalType, [], 'borrow')]);
   const [notificationFrequency, setNotificationFrequency] = useState<NotificationFrequency>('ONCE_PER_ALERT');
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([]);
@@ -65,15 +64,26 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
   const toggleMarket = (market: string) => setSelectedMarkets((ms) => (ms.includes(market) ? ms.filter((m) => m !== market) : [...ms, market]));
   const togglePlatform = (platform: string) => setSelectedPlatforms((ps) => (ps.includes(platform) ? ps.filter((p) => p !== platform) : [...ps, platform]));
 
-  const addThreshold = () =>
-    setThresholds((ts) => [...ts, { platform: '', chain: '', market: '', threshold: '', severity: 'NONE', frequency: 'ONCE_PER_ALERT' }]);
-  const updateThreshold = (i: number, field: keyof GeneralComparisonRow, val: string) =>
-    setThresholds((ts) => ts.map((t, idx) => (idx === i ? { ...t, [field]: val } : t)));
-  const removeThreshold = (i: number) => setThresholds((ts) => ts.filter((_, idx) => idx !== i));
+  const updateCondition = (id: string, field: string, val: string) => {
+    const updatedConditions = conditions.map((c) => {
+      if (c.id === id) {
+        return { ...c, [field]: val };
+      } else {
+        return c;
+      }
+    });
+    setConditions(updatedConditions);
+  };
 
-  const updateCondition = (i: number, field: keyof any, val: string) => setConditions((cs) => cs.map((c, idx) => (idx === i ? { ...c, [field]: val } : c)));
-  const addCondition = () => setConditions((cs) => [...cs, { conditionType: 'APR_RISE_ABOVE', severity: 'NONE' }]);
-  const removeCondition = (i: number) => setConditions((cs) => cs.filter((_, idx) => idx !== i));
+  const addCondition = () => {
+    let newCondition = getEmptyCondition(modalType, conditions, alertType);
+    setConditions((cs) => [...cs, newCondition]);
+  };
+  const removeCondition = (id: string) => {
+    const filteredConditions = conditions.filter((c) => c.id !== id);
+    const withUpdatedIds = filteredConditions.map((c, idx) => ({ ...c, id: `${idx}-condition` }));
+    setConditions(withUpdatedIds);
+  };
   const addChannel = () => setChannels((ch) => [...ch, { channelType: 'EMAIL', email: session?.username || '' }]);
   const updateChannel = (i: number, field: keyof Channel, val: string) => setChannels((ch) => ch.map((c, idx) => (idx === i ? { ...c, [field]: val } : c)));
   const removeChannel = (i: number) => setChannels((ch) => ch.filter((_, idx) => idx !== i));
@@ -187,7 +197,7 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
       selectedChains,
       selectedMarkets,
       notificationFrequency: notificationFrequency as PrismaNotificationFrequency,
-      conditions: conditions.map((c) => ({
+      conditions: (conditions as MarketCondition[]).map((c) => ({
         type: c.conditionType as PrismaConditionType,
         value: c.thresholdValue,
         min: c.thresholdLow,
@@ -245,18 +255,6 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
       }
     }
 
-    // Validate thresholds
-    const thresholdErrors: string[] = [];
-    thresholds.forEach((t, index) => {
-      if (!t.threshold || isNaN(Number(t.threshold))) {
-        thresholdErrors[index] = 'Threshold must be a valid number';
-      }
-    });
-
-    if (thresholdErrors.some((error) => error)) {
-      newErrors.thresholds = thresholdErrors;
-    }
-
     // Validate channels
     const channelErrors: string[] = [];
     channels.forEach((channel, index) => {
@@ -287,7 +285,11 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const isValid = Object.keys(newErrors).length === 0;
+    if (!isValid) {
+      console.log(`Errors: ${JSON.stringify(newErrors, null, 2)}`);
+    }
+    return isValid;
   };
 
   const handleCreateGeneralComparisonAlert = async () => {
@@ -304,9 +306,9 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
       selectedMarkets,
       compareProtocols: selectedPlatforms,
       notificationFrequency,
-      conditions: thresholds.map((t) => ({
+      conditions: (conditions as ComparisonCondition[]).map((t) => ({
         type: alertType === 'supply' ? ('RATE_DIFF_ABOVE' as PrismaConditionType) : ('RATE_DIFF_BELOW' as PrismaConditionType),
-        value: t.threshold,
+        value: t.thresholdValue,
         severity: t.severity as PrismaSeverityLevel,
       })),
       deliveryChannels: channels.map((c) => ({
@@ -328,14 +330,18 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
       <DialogContent className="sm:max-w-2xl md:max-w-3xl lg:max-w-6xl max-h-[90vh] overflow-y-auto bg-theme-bg-secondary border border-primary-color background-color">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-theme-primary">
-            {modalType === 'GENERAL' ? 'Create Market Alert' : 'Create General Comparison Alert'}
+            {modalType === 'MARKET' ? 'Create Market Alert' : 'Create General Comparison Alert'}
           </DialogTitle>
         </DialogHeader>
 
         <div className="py-4">
           <AlertTypeCard
             alertType={alertType}
-            setAlertType={setAlertType}
+            setAlertType={(alertType) => {
+              const newCondition = getEmptyCondition(modalType, [], alertType);
+              setConditions([newCondition]);
+              setAlertType(alertType);
+            }}
             supplyLabel={modalType === 'COMPARISON' ? 'Supply Comparison (Alert when Compound offers higher rates)' : undefined}
             borrowLabel={modalType === 'COMPARISON' ? 'Borrow Comparison (Alert when Compound offers lower rates)' : undefined}
           />
@@ -353,29 +359,19 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
             description={modalType === 'COMPARISON' ? 'Select the platforms to compare with and the markets you want to monitor.' : ''}
           />
 
-          {modalType === 'GENERAL' ? (
-            <ConditionSettingsCard
-              conditions={conditions}
-              addCondition={addCondition}
-              updateCondition={updateCondition}
-              removeCondition={removeCondition}
-              notificationFrequency={notificationFrequency}
-              setNotificationFrequency={setNotificationFrequency}
-              errors={errors}
-            />
-          ) : (
-            <CompareThresholdCard
-              thresholds={thresholds}
-              addThreshold={addThreshold}
-              updateThreshold={updateThreshold}
-              removeThreshold={removeThreshold}
-              notificationFrequency={notificationFrequency}
-              setNotificationFrequency={setNotificationFrequency}
-              errors={errors}
-              alertType={alertType}
-            />
-          )}
+          <PositionConditionEditor
+            editorType={modalType === 'MARKET' ? 'market' : 'comparison'}
+            actionType={alertType === 'supply' ? 'SUPPLY' : 'BORROW'}
+            platformName={(selectedPlatforms?.length || 0) > 1 ? selectedPlatforms.join(', ') : selectedPlatforms?.[0] || ''}
+            conditions={conditions as ComparisonCondition[]}
+            addCondition={addCondition}
+            updateCondition={updateCondition}
+            removeCondition={removeCondition}
+            errors={errors}
+          />
 
+          {/* Notification Frequency */}
+          <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
           <DeliveryChannelsCard
             channels={channels}
             addChannel={addChannel}
@@ -405,16 +401,10 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
           </Button>
           <Button
             className="border text-primary-color hover-border-body"
-            onClick={modalType === 'GENERAL' ? handleCreateMarketAlert : handleCreateGeneralComparisonAlert}
-            disabled={modalType === 'GENERAL' ? creatingMarketAlert : creatingGeneralAlert}
+            onClick={modalType === 'MARKET' ? handleCreateMarketAlert : handleCreateGeneralComparisonAlert}
+            disabled={modalType === 'MARKET' ? creatingMarketAlert : creatingGeneralAlert}
           >
-            {modalType === 'GENERAL'
-              ? creatingMarketAlert
-                ? 'Creating...'
-                : 'Create Alert'
-              : creatingGeneralAlert
-              ? 'Creating...'
-              : 'Create Comparison Alert'}
+            {modalType === 'MARKET' ? (creatingMarketAlert ? 'Creating...' : 'Create Alert') : creatingGeneralAlert ? 'Creating...' : 'Create Comparison Alert'}
           </Button>
         </DialogFooter>
       </DialogContent>
