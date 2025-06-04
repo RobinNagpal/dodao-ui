@@ -2,6 +2,7 @@ import React from 'react';
 import { COMPOUND_MARKETS } from '@/shared/web3/config';
 import { ChainImage } from '@/components/alerts/core/ChainImage';
 import { AssetImage } from '@/components/alerts/core/AssetImage';
+import { MultipleAssetsImages } from '@/components/alerts/core/MultipleAssetsImages';
 import type { Asset, Chain } from '@/types/alerts';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
@@ -42,45 +43,32 @@ export default function AssetChainPairCell({ chains, assets }: AssetChainPairCel
           return null;
         }
 
-        // Build a comma-separated list of React nodes, each “AssetImage + symbol”
-        const assetItems = assetList.map((a, idx) => (
-          <React.Fragment key={`${chainName}-${a.address}-${idx}`}>
-            <AssetImage chain={chainName} assetAddress={a.address} assetSymbol={a.symbol} />
-            {a.symbol}
-          </React.Fragment>
-        ));
+        const hasMultipleAssets = assetList.length > 1;
 
-        const hasMultipleAssets = assets.length > 1;
+        // Convert assetList to the format expected by MultipleAssetsImages
+        const multipleAssetsProps = assetList.map((a) => ({
+          chain: chainName,
+          assetAddress: a.address,
+          assetSymbol: a.symbol,
+        }));
 
         return (
           <div key={chainName} className="p-2 flex items-center gap-2">
-            <div className="flex items-center gap-1 ml-2 text-xs text-theme-primary">
-              {assetItems[0]}
-              {hasMultipleAssets ? '...' : ''}
-            </div>
+            {hasMultipleAssets ? (
+              <div className="ml-2">
+                <MultipleAssetsImages assets={multipleAssetsProps} showTooltipIcon={false} />
+              </div>
+            ) : (
+              <div className="flex items-center gap-1 ml-2 text-xs text-theme-primary">
+                <AssetImage chain={chainName} assetAddress={assetList[0].address} assetSymbol={assetList[0].symbol} />
+                {assetList[0].symbol}
+              </div>
+            )}
             <div className="flex items-center gap-1">
               -
               <ChainImage chain={chainName} />
               <span>{chainName}</span>
             </div>
-            {hasMultipleAssets && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button size="icon" className="h-5 w-5 p-0 hover-text-primary ml-2">
-                      <Info size={14} />
-                      <span className="sr-only">View all channels</span>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-primary-color">All Assets</h4>
-                      <div className="flex items-center gap-1 ml-2 text-xs text-theme-primary">{assetItems}</div>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
           </div>
         );
       })}
