@@ -30,81 +30,72 @@ const TriggerValuesCell: React.FC<TriggerValuesCellProps> = ({ triggerValues }) 
     }
   };
 
-  // Format notification frequency for display
-  const formatNotificationFrequency = (frequency: NotificationFrequency) => {
-    switch (frequency) {
-      case 'ONCE_PER_ALERT':
-        return 'Once per alert';
-      case 'AT_MOST_ONCE_PER_3_HOURS':
-        return 'At most once per 3 hours';
-      case 'AT_MOST_ONCE_PER_6_HOURS':
-        return 'At most once per 6 hours';
-      case 'AT_MOST_ONCE_PER_12_HOURS':
-        return 'At most once per 12 hours';
-      case 'AT_MOST_ONCE_PER_DAY':
-        return 'At most once per day';
-      case 'AT_MOST_ONCE_PER_WEEK':
-        return 'At most once per week';
-      default:
-        return frequency;
-    }
-  };
-
   // Get trigger value message based on condition type and comparison flag
   const getTriggerValueMessage = (triggerValue: AlertTriggerValuesInterface) => {
     const { isComparison, condition, chainName, asset, currentRate, compoundRate, protocolRate, diff, protocol } = triggerValue;
+
+    // Determine if this is a supply or borrow action based on the condition
+    // Default to 'supply' if not specified
+    const actionType = triggerValue.condition.type.includes('SUPPLY') ? 'SUPPLY' : triggerValue.condition.type.includes('BORROW') ? 'BORROW' : 'SUPPLY';
 
     if (isComparison) {
       switch (condition.type) {
         case 'RATE_DIFF_ABOVE':
           return (
             <span>
-              Rate difference between <PlatformImage platform={'compound'} /> ({compoundRate}%) and <PlatformImage platform={protocol || ''} /> ({protocolRate}
-              %) is {diff}%, which is above the threshold of {formatThresholdValue(condition.threshold)}%
+              Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate is {actionType === 'SUPPLY' ? 'more(better earnings)' : 'more(higher cost)'} on{' '}
+              <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition.threshold)} compared to <PlatformImage platform={protocol || ''} />.
+              Current difference: {diff}
             </span>
           );
         case 'RATE_DIFF_BELOW':
           return (
             <span>
-              Rate difference between <PlatformImage platform={'compound'} /> ({compoundRate}%) and <PlatformImage platform={protocol || ''} /> ({protocolRate}
-              %) is {diff}%, which is below the threshold of {formatThresholdValue(condition.threshold)}%
+              Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate is {actionType === 'SUPPLY' ? 'less(worse earnings)' : 'less(better cost)'} on{' '}
+              <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition.threshold)} compared to <PlatformImage platform={protocol || ''} />.
+              Current difference: {diff}
             </span>
           );
         default:
           return (
             <span>
-              Comparison between <PlatformImage platform={'compound'} /> ({compoundRate}%) and <PlatformImage platform={protocol || ''} /> ({protocolRate}%)
-              with difference of {diff}%
+              Comparison between <PlatformImage platform={'compound'} /> ({compoundRate}) and <PlatformImage platform={protocol || ''} /> ({protocolRate}) with
+              difference of {diff}
             </span>
           );
       }
     } else {
+      const platform = protocol || 'compound';
+
       switch (condition.type) {
         case 'APR_RISE_ABOVE':
           return (
             <span>
-              <PlatformImage platform={'compound'} /> APR for {asset} on {chainName} is {currentRate}%, which is above the threshold of{' '}
-              {formatThresholdValue(condition.threshold)}
+              Alert when <PlatformImage platform={platform} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR rises above{' '}
+              {formatThresholdValue(condition.threshold)} {actionType === 'SUPPLY' ? '(better earning opportunity)' : '(higher borrowing cost)'}. Current rate:{' '}
+              {currentRate}
             </span>
           );
         case 'APR_FALLS_BELOW':
           return (
             <span>
-              <PlatformImage platform={'compound'} /> APR for {asset} on {chainName} is {currentRate}%, which is below the threshold of{' '}
-              {formatThresholdValue(condition.threshold)}
+              Alert when <PlatformImage platform={platform} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR falls below{' '}
+              {formatThresholdValue(condition.threshold)} {actionType === 'SUPPLY' ? '(worse earning opportunity)' : '(better borrowing rate)'}. Current rate:{' '}
+              {currentRate}
             </span>
           );
         case 'APR_OUTSIDE_RANGE':
           return (
             <span>
-              <PlatformImage platform={'compound'} /> APR for {asset} on {chainName} is {currentRate}%, which is outside the range of{' '}
-              {formatThresholdValue(condition.threshold)}
+              Alert when <PlatformImage platform={platform} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR moves outside the range of{' '}
+              {formatThresholdValue(condition.threshold)}{' '}
+              {actionType === 'SUPPLY' ? '(significant change in earning opportunity)' : '(significant change in borrowing cost)'}. Current rate: {currentRate}
             </span>
           );
         default:
           return (
             <span>
-              <PlatformImage platform={'compound'} /> APR for {asset} on {chainName} is {currentRate}%
+              <PlatformImage platform={platform} /> APR for {asset} on {chainName} is {currentRate}
             </span>
           );
       }
@@ -116,51 +107,7 @@ const TriggerValuesCell: React.FC<TriggerValuesCellProps> = ({ triggerValues }) 
       {triggerValues.map((triggerValue, index) => (
         <div key={index} className="flex items-center gap-2 mb-1">
           <span className="font-semibold text-theme-muted">
-            {triggerValue.severity && <SeverityBadge severity={triggerValue.severity} />} {getTriggerValueMessage(triggerValue)}{' '}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button size="icon" className="h-5 w-5 hover:text-primary">
-                    <Info size={14} />
-                    <span className="sr-only">View details</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
-                  <div className="space-y-2">
-                    <p>{getTriggerValueMessage(triggerValue)}</p>
-                    <div>
-                      <strong>Chain:</strong> {triggerValue.chainName}
-                    </div>
-                    <div>
-                      <strong>Asset:</strong> {triggerValue.asset}
-                    </div>
-                    {triggerValue.isComparison ? (
-                      <>
-                        <div>
-                          <strong>Protocol:</strong> {triggerValue.protocol}
-                        </div>
-                        <div>
-                          <strong>Compound Rate:</strong> {triggerValue.compoundRate}
-                        </div>
-                        <div>
-                          <strong>Protocol Rate:</strong> {triggerValue.protocolRate}
-                        </div>
-                        <div>
-                          <strong>Difference:</strong> {triggerValue.diff}
-                        </div>
-                      </>
-                    ) : (
-                      <div>
-                        <strong>Current Rate:</strong> {triggerValue.currentRate}
-                      </div>
-                    )}
-                    <div>
-                      <strong>Notification Frequency:</strong> {formatNotificationFrequency(triggerValue.notificationFrequency)}
-                    </div>
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            {getTriggerValueMessage(triggerValue)} {triggerValue.severity && <SeverityBadge severity={triggerValue.severity} />}
           </span>
         </div>
       ))}
