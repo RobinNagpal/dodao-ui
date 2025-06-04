@@ -279,7 +279,7 @@ async function evaluateConditions(
         for (const c of alert.conditions) {
           if (
             (c.conditionType === ConditionType.RATE_DIFF_ABOVE && diff > (c.thresholdValue ?? 0)) ||
-            (c.conditionType === ConditionType.RATE_DIFF_BELOW && diff < (c.thresholdValue ?? 0))
+            (c.conditionType === ConditionType.RATE_DIFF_BELOW && diff > (c.thresholdValue ?? 0))
           ) {
             if (alert.notificationFrequency === 'ONCE_PER_ALERT' && previouslySent.has(c.id)) continue;
 
