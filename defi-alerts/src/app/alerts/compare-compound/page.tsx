@@ -186,11 +186,11 @@ export default function CompareCompoundPage() {
                 <TableRow className="border-primary-color">
                   <TableHead className="w-[120px] text-center">Alert</TableHead>
                   <TableHead className="w-[180px] text-center">Chain/Market</TableHead>
-                  <TableHead className="w-[150px] text-center">Condition</TableHead>
-                  <TableHead className="w-[150px] text-center">Frequency</TableHead>
-                  <TableHead className="w-[200px] text-center">Delivery Channel</TableHead>
+                  <TableHead className="w-[250px] text-center">Condition</TableHead>
+                  <TableHead className="w-[120px] text-center">Frequency</TableHead>
+                  <TableHead className="w-[170px] text-center">Delivery Channel</TableHead>
                   <TableHead className="w-[100px] text-center">Status</TableHead>
-                  <TableHead className="w-[120px] text-center">Actions</TableHead>
+                  <TableHead className="w-[100px] text-center">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

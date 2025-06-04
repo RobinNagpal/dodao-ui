@@ -5,6 +5,7 @@ import { CompareCompoundAlertPayload, CompareCompoundAlertResponse } from '@/app
 import { AlertCreationResponse, CreateCompoundAlertPayload } from '@/app/api/alerts/create/compound-market/route';
 import { AlertTypeCard, DeliveryChannelsCard, MarketSelectionCard, NotificationFrequencySection, PositionConditionEditor } from '@/components/alerts';
 import { ComparisonCondition, MarketCondition } from '@/components/alerts/PositionConditionEditor';
+import { getEmptyCondition } from '@/components/modals/utils/getEmptyCondition';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import type { Channel, GeneralComparisonRow, NotificationFrequency } from '@/types/alerts';
@@ -40,26 +41,7 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
   const session = data as DoDAOSession;
   const baseUrl = getBaseUrl();
 
-  function getEmptyCondition(conditions: (MarketCondition | ComparisonCondition)[], alertType: 'supply' | 'borrow'): MarketCondition | ComparisonCondition {
-    const id = conditions.length + '-condition';
-    if (modalType === 'MARKET') {
-      return {
-        id: id,
-        conditionType: 'APR_OUTSIDE_RANGE',
-        thresholdLow: '',
-        thresholdHigh: '',
-        severity: 'NONE',
-      } as MarketCondition;
-    } else {
-      if (alertType === 'borrow') {
-        return { id: id, conditionType: 'RATE_DIFF_BELOW', thresholdValue: '', severity: 'NONE' } as ComparisonCondition;
-      } else {
-        return { id: id, conditionType: 'RATE_DIFF_ABOVE', thresholdValue: '', severity: 'NONE' } as ComparisonCondition;
-      }
-    }
-  }
-
-  const [conditions, setConditions] = useState<(MarketCondition | ComparisonCondition)[]>([getEmptyCondition([], 'borrow')]);
+  const [conditions, setConditions] = useState<(MarketCondition | ComparisonCondition)[]>([getEmptyCondition(modalType, [], 'borrow')]);
   const [notificationFrequency, setNotificationFrequency] = useState<NotificationFrequency>('ONCE_PER_ALERT');
   const [selectedChains, setSelectedChains] = useState<string[]>([]);
   const [selectedMarkets, setSelectedMarkets] = useState<string[]>([]);
@@ -94,7 +76,7 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
   };
 
   const addCondition = () => {
-    let newCondition = getEmptyCondition(conditions, alertType);
+    let newCondition = getEmptyCondition(modalType, conditions, alertType);
     setConditions((cs) => [...cs, newCondition]);
   };
   const removeCondition = (id: string) => {
@@ -356,7 +338,7 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
           <AlertTypeCard
             alertType={alertType}
             setAlertType={(alertType) => {
-              const newCondition = getEmptyCondition([], alertType);
+              const newCondition = getEmptyCondition(modalType, [], alertType);
               setConditions([newCondition]);
               setAlertType(alertType);
             }}
