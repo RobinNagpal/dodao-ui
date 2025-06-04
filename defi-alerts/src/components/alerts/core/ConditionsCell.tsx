@@ -111,29 +111,27 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
         case 'RATE_DIFF_ABOVE':
           return (
             <span>
-              Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate difference between <PlatformImage platform={'compound'} /> and{' '}
+              Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate is {actionType === 'SUPPLY' ? 'more(better earnings)' : 'more(higher cost)'} on{' '}
+              <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition)} compared to{' '}
               {alert.compareProtocols.map((cp, index) => (
                 <span key={index}>
                   <PlatformImage platform={cp} />
                   {index < alert.compareProtocols.length - 1 ? ', ' : ''}
                 </span>
-              ))}{' '}
-              is above {formatThresholdValue(condition)}{' '}
-              {actionType === 'SUPPLY' ? '(better earning opportunity on Compound)' : '(higher borrowing cost on Compound)'}
+              ))}
             </span>
           );
         case 'RATE_DIFF_BELOW':
           return (
             <span>
-              Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate difference between <PlatformImage platform={'compound'} /> and{' '}
+              Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate is {actionType === 'SUPPLY' ? 'less(worse earnings)' : 'less(better cost)'} on{' '}
+              <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition)} compared to{' '}
               {alert.compareProtocols.map((cp, index) => (
                 <span key={index}>
                   <PlatformImage platform={cp} />
                   {index < alert.compareProtocols.length - 1 ? ', ' : ''}
                 </span>
-              ))}{' '}
-              is below {formatThresholdValue(condition)}{' '}
-              {actionType === 'SUPPLY' ? '(worse earning opportunity on Compound)' : '(better borrowing rate on Compound)'}
+              ))}
             </span>
           );
       }
