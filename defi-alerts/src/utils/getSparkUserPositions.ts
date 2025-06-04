@@ -47,7 +47,7 @@ async function fetchUserReserveDataInBatches(
   markets: MarketApr[], // each MarketApr has `assetAddress`
   chunkSize = 10
 ): Promise<
-  | readonly ({
+  | readonly {
       result: readonly [
         bigint, // currentATokenBalance
         bigint, // currentStableDebt
@@ -59,7 +59,7 @@ async function fetchUserReserveDataInBatches(
         number, // stableRateLastUpdated
         boolean // usageAsCollateralEnabled
       ];
-    })[]
+    }[]
   | null
 > {
   // Build one multicall request per market
@@ -70,9 +70,9 @@ async function fetchUserReserveDataInBatches(
     args: [m.assetAddress as Address, wallet as Address],
   }));
 
-  const allResults: ({
+  const allResults: {
     result: readonly [bigint, bigint, bigint, bigint, bigint, bigint, bigint, number, boolean];
-  })[] = [];
+  }[] = [];
 
   for (let i = 0; i < calls.length; i += chunkSize) {
     const slice = calls.slice(i, i + chunkSize);
