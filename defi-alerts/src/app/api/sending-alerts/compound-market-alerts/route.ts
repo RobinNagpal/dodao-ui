@@ -142,7 +142,6 @@ async function evaluateConditions(
   },
   previouslySent: Set<string>
 ): Promise<AlertTriggerValuesInterface[]> {
-  const hitIds = new Set<string>();
   const triggerValues: AlertTriggerValuesInterface[] = [];
 
   for (const chainObj of alert.selectedChains) {
@@ -184,9 +183,6 @@ async function evaluateConditions(
 
       if (!hits.length) continue;
 
-      // collect IDs
-      hits.forEach((c) => hitIds.add(c.id));
-
       hits.map((h) => {
         triggerValues.push({
           chainName: chainName,
@@ -194,6 +190,7 @@ async function evaluateConditions(
           isComparison: false,
           currentRate: aprValue,
           notificationFrequency: alert.notificationFrequency,
+          severity: h.severity,
           condition: {
             type: h.conditionType,
             threshold: h.conditionType === 'APR_OUTSIDE_RANGE' ? { low: h.thresholdValueLow!, high: h.thresholdValueHigh! } : h.thresholdValue!,

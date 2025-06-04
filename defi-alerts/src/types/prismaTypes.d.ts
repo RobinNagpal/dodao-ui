@@ -1,4 +1,5 @@
 import { ConditionType, NotificationFrequency } from '@prisma/client';
+import { SeverityLevel } from '.prisma/client';
 
 export interface AuthSettingsDto {
   enableLogin?: boolean;
@@ -31,6 +32,7 @@ export interface AlertTriggerValuesInterface {
   diff?: number;
   notificationFrequency: NotificationFrequency;
   currentRate?: number;
+  severity?: SeverityLevel;
   condition: {
     type: ConditionType;
     threshold:

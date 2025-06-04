@@ -293,6 +293,7 @@ async function evaluateConditions(
               protocolRate: +otherRate.toFixed(2),
               diff: +diff.toFixed(2),
               notificationFrequency: alert.notificationFrequency,
+              severity: c.severity,
               condition: {
                 type: c.conditionType,
                 threshold: c.thresholdValue!,
