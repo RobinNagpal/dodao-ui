@@ -56,13 +56,19 @@ const createAlertEmailBody = (payload: NotificationPayload): string => {
         <p><strong>Condition Type:</strong> ${formatConditionType(condition.type)}</p>
         <p><strong>Threshold:</strong> ${thresholdText}</p>
         ${explanation ? `<p style="color: ${severityColors.textColor};"><strong>What this means:</strong> ${explanation}</p>` : ''}
-        ${group.severity && group.severity !== 'NONE' ? `<p><span style="display: inline-block; padding: 2px 8px; border-radius: 4px; background-color: ${severityColors.bgColor}; color: ${severityColors.textColor}; border: 1px solid ${severityColors.borderColor};">${group.severity}</span></p>` : ''}
+        ${
+          group.severity && group.severity !== 'NONE'
+            ? `<p><span style="display: inline-block; padding: 2px 8px; border-radius: 4px; background-color: ${severityColors.bgColor}; color: ${severityColors.textColor}; border: 1px solid ${severityColors.borderColor};">${group.severity}</span></p>`
+            : ''
+        }
       </div>
     `;
 
       // Build the HTML for the entire group (asset/chain + rates + single condition)
       return `
-      <div style="margin-bottom: 20px; padding: 15px; background-color: ${severityColors.bgColor}; border-radius: 8px; border-left: 4px solid ${severityColors.textColor};">
+      <div style="margin-bottom: 20px; padding: 15px; background-color: ${severityColors.bgColor}; border-radius: 8px; border-left: 4px solid ${
+        severityColors.textColor
+      };">
         <h3 style="margin-top: 0; color: #333;">Asset: ${group.asset} (Chain: ${group.chainName})</h3>
         ${group.currentRate ? `<p><strong>Current Rate:</strong> ${group.currentRate}%</p>` : ''}
         ${group.protocol ? `<p><strong>Compared Protocol:</strong> ${group.protocol}</p>` : ''}
@@ -172,7 +178,7 @@ const createAlertEmailBody = (payload: NotificationPayload): string => {
               ${triggeredHtml}
 
               <p>Thank you for using our alert service. If you have any questions, feel free to reply to this email or <a href="mailto:support@dodao.io">contact support</a>.</p>
-              <p>Best regards,<br>Dodao Support</p>
+              <p>Best regards,<br>DoDAO Support</p>
           </div>
           <div class="footer">
               <p>&copy; 
@@ -247,50 +253,30 @@ function getAlertExplanation(conditionType: ConditionType, actionType: AlertActi
   if (isComparison) {
     switch (conditionType) {
       case 'APR_RISE_ABOVE':
-        return actionType === 'SUPPLY' 
-          ? 'Compound offers better earning opportunity' 
-          : 'Compound has higher borrowing cost';
+        return actionType === 'SUPPLY' ? 'Compound offers better earning opportunity' : 'Compound has higher borrowing cost';
       case 'APR_FALLS_BELOW':
-        return actionType === 'SUPPLY' 
-          ? 'Compound offers worse earning opportunity' 
-          : 'Compound has better borrowing rate';
+        return actionType === 'SUPPLY' ? 'Compound offers worse earning opportunity' : 'Compound has better borrowing rate';
       case 'APR_OUTSIDE_RANGE':
-        return actionType === 'SUPPLY' 
-          ? 'Significant change in earning opportunity' 
-          : 'Significant change in borrowing cost';
+        return actionType === 'SUPPLY' ? 'Significant change in earning opportunity' : 'Significant change in borrowing cost';
       case 'RATE_DIFF_ABOVE':
-        return actionType === 'SUPPLY' 
-          ? 'Compound offers better earnings' 
-          : 'Compound has higher cost';
+        return actionType === 'SUPPLY' ? 'Compound offers better earnings' : 'Compound has higher cost';
       case 'RATE_DIFF_BELOW':
-        return actionType === 'SUPPLY' 
-          ? 'Compound offers worse earnings' 
-          : 'Compound has better cost';
+        return actionType === 'SUPPLY' ? 'Compound offers worse earnings' : 'Compound has better cost';
       default:
         return '';
     }
   } else {
     switch (conditionType) {
       case 'APR_RISE_ABOVE':
-        return actionType === 'SUPPLY' 
-          ? 'Better earning opportunity' 
-          : 'Higher borrowing cost';
+        return actionType === 'SUPPLY' ? 'Better earning opportunity' : 'Higher borrowing cost';
       case 'APR_FALLS_BELOW':
-        return actionType === 'SUPPLY' 
-          ? 'Worse earning opportunity' 
-          : 'Better borrowing rate';
+        return actionType === 'SUPPLY' ? 'Worse earning opportunity' : 'Better borrowing rate';
       case 'APR_OUTSIDE_RANGE':
-        return actionType === 'SUPPLY' 
-          ? 'Significant change in earning opportunity' 
-          : 'Significant change in borrowing cost';
+        return actionType === 'SUPPLY' ? 'Significant change in earning opportunity' : 'Significant change in borrowing cost';
       case 'RATE_DIFF_ABOVE':
-        return actionType === 'SUPPLY' 
-          ? 'Better earning opportunity' 
-          : 'Higher borrowing cost';
+        return actionType === 'SUPPLY' ? 'Better earning opportunity' : 'Higher borrowing cost';
       case 'RATE_DIFF_BELOW':
-        return actionType === 'SUPPLY' 
-          ? 'Worse earning opportunity' 
-          : 'Better borrowing rate';
+        return actionType === 'SUPPLY' ? 'Worse earning opportunity' : 'Better borrowing rate';
       default:
         return '';
     }
@@ -304,7 +290,7 @@ export const sendAlertNotificationEmail = async (params: { email: string; payloa
   const { email, payload, spaceId } = params;
 
   try {
-    const from = 'support@tidbitshub.org';
+    const from = 'support@dodao.io';
     console.log('Sending alert notification email to', email, 'from', from);
     const emailBody = createAlertEmailBody(payload);
     console.log('Email body: ', emailBody);
