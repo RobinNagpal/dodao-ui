@@ -181,10 +181,9 @@ export default function AlertsPage() {
             <Table>
               <TableHeader>
                 <TableRow className="border-primary-color">
-                  <TableHead className="w-[120px] text-center">Alert</TableHead>
-                  <TableHead className="w-[200px] text-center">Chain/Market</TableHead>
-                  <TableHead className="w-[250px] text-center">Condition</TableHead>
-                  <TableHead className="w-[100px] text-center">Status</TableHead>
+                  <TableHead className="w-[220px] text-center">Alert</TableHead>
+                  <TableHead className="w-[200px] text-left">Chain/Market</TableHead>
+                  <TableHead className="w-[350px] text-center">Condition</TableHead>
                   <TableHead className="w-[100px] text-center">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -206,17 +205,6 @@ export default function AlertsPage() {
                           <div>
                             <DeliveryChannelCell deliveryChannels={alert.deliveryChannels} />
                           </div>
-                        </TableCell>
-
-                        <TableCell className="text-center">
-                          <AssetChainPairCell chains={alert.selectedChains || []} assets={alert.selectedAssets || []} />
-                        </TableCell>
-
-                        <TableCell className="flex items-center justify-center">
-                          <ConditionsCell alert={alert} />
-                        </TableCell>
-
-                        <TableCell className="text-center">
                           <Badge
                             variant="outline"
                             className={
@@ -225,6 +213,14 @@ export default function AlertsPage() {
                           >
                             {alert.status.charAt(0) + alert.status.slice(1).toLowerCase()}
                           </Badge>
+                        </TableCell>
+
+                        <TableCell className="text-left">
+                          <AssetChainPairCell chains={alert.selectedChains || []} assets={alert.selectedAssets || []} />
+                        </TableCell>
+
+                        <TableCell className="flex items-center justify-center">
+                          <ConditionsCell alert={alert} />
                         </TableCell>
 
                         <TableCell className="text-center">
