@@ -200,6 +200,7 @@ async function evaluateConditions(
       });
     }
   }
+  console.log('the triggerValues: ', JSON.stringify(triggerValues, null, 2));
 
   return triggerValues;
 }
