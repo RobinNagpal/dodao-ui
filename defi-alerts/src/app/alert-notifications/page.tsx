@@ -131,23 +131,26 @@ export default function AlertNotificationsPage() {
                         </TableCell>
 
                         <TableCell className="text-center">
-                          {triggeredConditions.map((condition, index) => (
-                            <Badge
-                              key={index}
-                              variant="outline"
-                              className={
-                                condition.severity === 'HIGH'
-                                  ? 'bg-red-100 text-red-800 border-red-200'
-                                  : condition.severity === 'MEDIUM'
-                                  ? 'bg-yellow-100 text-yellow-800 border-yellow-200'
-                                  : condition.severity === 'LOW'
-                                  ? 'bg-green-100 text-green-800 border-green-200'
-                                  : 'bg-gray-100 text-gray-800 border-gray-200'
-                              }
-                            >
-                              {condition.severity}
-                            </Badge>
-                          ))}
+                          {triggeredConditions.map((condition, index) => {
+                            const severity = condition.severity;
+                            return (
+                              <Badge
+                                key={index}
+                                variant="outline"
+                                className={
+                                  severity === 'HIGH'
+                                    ? 'bg-red-100 text-red-800 border-red-200'
+                                    : severity === 'MEDIUM'
+                                    ? 'bg-yellow-100 text-yellow-800 border-yellow-200'
+                                    : severity === 'LOW'
+                                    ? 'bg-green-100 text-green-800 border-green-200'
+                                    : 'bg-gray-100 text-gray-800 border-gray-200'
+                                }
+                              >
+                                {severity}
+                              </Badge>
+                            );
+                          })}
                         </TableCell>
 
                         <TableCell className="text-center">

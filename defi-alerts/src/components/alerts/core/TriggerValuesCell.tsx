@@ -83,21 +83,21 @@ const TriggerValuesCell: React.FC<TriggerValuesCellProps> = ({ triggerValues }) 
           return (
             <span>
               <PlatformImage platform={'compound'} /> APR for {asset} on {chainName} is {currentRate}%, which is above the threshold of{' '}
-              {formatThresholdValue(condition.threshold)}%
+              {formatThresholdValue(condition.threshold)}
             </span>
           );
         case 'APR_FALLS_BELOW':
           return (
             <span>
               <PlatformImage platform={'compound'} /> APR for {asset} on {chainName} is {currentRate}%, which is below the threshold of{' '}
-              {formatThresholdValue(condition.threshold)}%
+              {formatThresholdValue(condition.threshold)}
             </span>
           );
         case 'APR_OUTSIDE_RANGE':
           return (
             <span>
               <PlatformImage platform={'compound'} /> APR for {asset} on {chainName} is {currentRate}%, which is outside the range of{' '}
-              {formatThresholdValue(condition.threshold)}%
+              {formatThresholdValue(condition.threshold)}
             </span>
           );
         default:
@@ -139,18 +139,18 @@ const TriggerValuesCell: React.FC<TriggerValuesCellProps> = ({ triggerValues }) 
                           <strong>Protocol:</strong> {triggerValue.protocol}
                         </div>
                         <div>
-                          <strong>Compound Rate:</strong> {triggerValue.compoundRate}%
+                          <strong>Compound Rate:</strong> {triggerValue.compoundRate}
                         </div>
                         <div>
-                          <strong>Protocol Rate:</strong> {triggerValue.protocolRate}%
+                          <strong>Protocol Rate:</strong> {triggerValue.protocolRate}
                         </div>
                         <div>
-                          <strong>Difference:</strong> {triggerValue.diff}%
+                          <strong>Difference:</strong> {triggerValue.diff}
                         </div>
                       </>
                     ) : (
                       <div>
-                        <strong>Current Rate:</strong> {triggerValue.currentRate}%
+                        <strong>Current Rate:</strong> {triggerValue.currentRate}
                       </div>
                     )}
                     <div>
