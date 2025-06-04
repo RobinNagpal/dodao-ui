@@ -20,7 +20,7 @@ interface MarketSelectionProps {
 const MarketSelection: React.FC<MarketSelectionProps> = ({
   selectedMarkets,
   toggleMarket,
-  markets = ['USDC', 'USDS', 'USDT', 'ETH', 'wstETH', 'USDe', 'USDC.e', 'USDbC', 'AERO'],
+  markets = ['USDC', 'USDS', 'USDT', 'WETH', 'wstETH', 'USDe', 'USDC.e', 'USDbC', 'AERO'],
   error,
   title = 'Markets',
   description = 'Select one or more markets to monitor.',
@@ -32,9 +32,9 @@ const MarketSelection: React.FC<MarketSelectionProps> = ({
 
       <div className="flex flex-wrap gap-3">
         {markets.map((m) => {
-          const maket = COMPOUND_MARKETS.find((c) => c.symbol.toLowerCase() === m.toLowerCase());
-          const assetAddress = maket?.baseAssetAddress;
-          const chain = maket && CHAINS.find((c) => c.chainId === maket?.chainId);
+          const market = COMPOUND_MARKETS.find((c) => c.symbol.toLowerCase() === m.toLowerCase());
+          const assetAddress = market?.baseAssetAddress;
+          const chain = market && CHAINS.find((c) => c.chainId === market?.chainId);
           const isSel = selectedMarkets.includes(m);
 
           return (
@@ -57,7 +57,7 @@ const MarketSelection: React.FC<MarketSelectionProps> = ({
                   <AssetImage chain={chain.name.toLowerCase()} assetAddress={assetAddress} assetSymbol={m} />
                 </span>
               )}
-              <span className="text-theme-primary chip-label">{m}</span>
+              <span className="text-theme-primary chip-label">{m === 'WETH' ? 'ETH' : m}</span>
             </div>
           );
         })}

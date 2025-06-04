@@ -115,19 +115,24 @@ async function shouldProcessAlert(
 ): Promise<boolean> {
   if (triggerValues.length === 0) return false;
 
-  if (alert.notificationFrequency !== 'ONCE_PER_ALERT') {
+  if (alert.notificationFrequency === 'ONCE_PER_ALERT') {
     const last = await prisma.sentNotification.findFirst({
       where: { alertNotification: { alertId: alert.id } },
       orderBy: { sentAt: 'desc' },
     });
-    const elapsed = last ? Date.now() - last.sentAt.getTime() : Infinity;
-    const window = frequencyToMs[alert.notificationFrequency];
-    if (elapsed < window) {
-      return false;
-    }
+    return !last; // send only if we’ve never sent before
   }
 
-  return true;
+  // For all other frequencies, check the time window
+  const last = await prisma.sentNotification.findFirst({
+    where: { alertNotification: { alertId: alert.id } },
+    orderBy: { sentAt: 'desc' },
+  });
+
+  const elapsed = last ? Date.now() - last.sentAt.getTime() : Infinity;
+  const windowMs = frequencyToMs[alert.notificationFrequency];
+
+  return elapsed >= windowMs;
 }
 
 /**

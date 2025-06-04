@@ -34,6 +34,68 @@ async function fetchSymbol(chainName: string, tokenAddress: string): Promise<str
   return symbolCache[cacheKey]!;
 }
 
+/**
+ * Batch‐fetch `getUserReserveData` for a given wallet + collateral list,
+ * using fixed-size chunks and `allowFailure: false`. If any chunk fails,
+ * we return `null` to signal “skip this batch entirely.”
+ */
+async function fetchUserReserveDataInBatches(
+  config: Config,
+  chainId: number,
+  provider: Address,
+  wallet: Address,
+  markets: MarketApr[], // each MarketApr has `assetAddress`
+  chunkSize = 10
+): Promise<
+  | readonly {
+      result: readonly [
+        bigint, // currentATokenBalance
+        bigint, // currentStableDebt
+        bigint, // currentVariableDebt
+        bigint, // principalStableDebt
+        bigint, // scaledVariableDebt
+        bigint, // stableBorrowRate
+        bigint, // liquidityRate
+        number, // stableRateLastUpdated
+        boolean // usageAsCollateralEnabled
+      ];
+    }[]
+  | null
+> {
+  // Build one multicall request per market
+  const calls = markets.map((m) => ({
+    address: provider,
+    abi: Pool_Abi_DataProvider,
+    functionName: 'getUserReserveData' as const,
+    args: [m.assetAddress as Address, wallet as Address],
+  }));
+
+  const allResults: {
+    result: readonly [bigint, bigint, bigint, bigint, bigint, bigint, bigint, number, boolean];
+  }[] = [];
+
+  for (let i = 0; i < calls.length; i += chunkSize) {
+    const slice = calls.slice(i, i + chunkSize);
+    try {
+      // `allowFailure: false` means ANY failure in this chunk throws
+      const batch = await multicall(config, {
+        chainId,
+        contracts: slice,
+        allowFailure: false,
+      });
+
+      // append each raw entry (wrapped in { result: [...] })
+      allResults.push(...batch.map((result) => ({ result })));
+    } catch (err) {
+      console.error(`Chunked multicall getUserReserveData failed on chain ${chainId}, wallet ${wallet}.`, err);
+      // bail out if any chunk fails
+      return null;
+    }
+  }
+
+  return allResults;
+}
+
 export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletComparisonPosition[]> {
   const config: Config = useDefaultConfig;
   const fetchAprs = useSparkAprs();
@@ -43,7 +105,6 @@ export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletCo
 
   return async (wallets: string[]) => {
     const aprs: MarketApr[] = await fetchAprs();
-
     const aprsByChain = aprs.reduce<Record<number, MarketApr[]>>((acc, a) => {
       (acc[a.chainId] ||= []).push(a);
       return acc;
@@ -60,8 +121,8 @@ export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletCo
     // 4) for each wallet, fetch all chains in parallel
     await Promise.all(
       wallets.map(async (wallet) => {
-        let supplyCount = 0,
-          borrowCount = 0;
+        let supplyCount = 0;
+        let borrowCount = 0;
 
         await Promise.all(
           Object.entries(aprsByChain).map(async ([chainIdStr, markets]) => {
@@ -71,23 +132,10 @@ export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletCo
             const provider = flattenProvider(SPARK_DATA_PROVIDER[chainId] ?? {});
             if (!provider) return;
 
-            // 5) batch getUserReserveData for each market
-            const calls = markets.map((m) => ({
-              address: provider,
-              abi: Pool_Abi_DataProvider,
-              functionName: 'getUserReserveData' as const,
-              args: [m.assetAddress as Address, wallet as Address],
-            }));
-
             // let raw: { result: any }[]
-            let raw;
-            try {
-              raw = await multicall(config, {
-                chainId,
-                contracts: calls,
-              });
-            } catch (e) {
-              console.error(`Spark getUserReserveData failed for ${wallet} @ chain ${chainId}`);
+            const raw = await fetchUserReserveDataInBatches(config, chainId, provider, wallet as Address, markets);
+            if (!raw) {
+              // entire batch failed for this chain+wallet: skip
               return;
             }
 
@@ -95,6 +143,7 @@ export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletCo
 
             // 6) parse & push only active positions
             for (let idx = 0; idx < raw.length; idx++) {
+              if (!raw[idx].result) continue; // skip if no result
               const data = raw[idx].result as readonly [
                 bigint, // currentATokenBalance
                 bigint, // currentStableDebt
@@ -109,7 +158,7 @@ export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletCo
               const [supBal, stDebt, varDebt] = data;
               const hasSupply = supBal > BigInt(0);
               const hasBorrow = stDebt + varDebt > BigInt(0);
-              if (!hasSupply && !hasBorrow) return;
+              if (!hasSupply && !hasBorrow) continue; // skip if no supply or borrow
 
               const market = markets[idx];
 
