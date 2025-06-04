@@ -54,7 +54,6 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
 
   const [allPositions, setAllPositions] = useState<WalletPosition[]>([]);
   const [walletPositionsLoading, setWalletPositionsLoading] = useState(false);
-  const [newlyAdded, setNewlyAdded] = useState(false);
 
   // Filtered positions based on current wallet address and existing alerts
   const [filteredPositions, setFilteredPositions] = useState<WalletPosition[]>([]);
@@ -84,7 +83,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   }, [isOpen, walletData]);
 
   useEffect(() => {
-    if (walletAddresses.length === 0 || allPositions.length > 0 || !newlyAdded) {
+    if (walletAddresses.length === 0 || allPositions.length > 0) {
       return;
     }
 
@@ -165,7 +164,6 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   };
 
   const handleWalletAdded = async (newWalletAddress: string) => {
-    setNewlyAdded(true);
     setWalletAddresses((prev) => [...prev, newWalletAddress]);
     setCurrentWalletAddress(newWalletAddress);
     setWalletPositionsLoading(true);
@@ -189,7 +187,6 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
       });
     } finally {
       setWalletPositionsLoading(false);
-      setNewlyAdded(false);
     }
   };
 

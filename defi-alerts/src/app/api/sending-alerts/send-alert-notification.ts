@@ -41,7 +41,7 @@ const createAlertEmailBody = (payload: any) => {
       // Build the HTML for the entire group (asset/chain + rates + single condition)
       return `
       <div style="margin-bottom: 20px; padding: 15px; background-color: #f0f4f8; border-radius: 8px; border-left: 4px solid #007bff;">
-        <h3 style="margin-top: 0; color: #333;">Asset: ${group.asset} (Chain: ${group.chain})</h3>
+        <h3 style="margin-top: 0; color: #333;">Asset: ${group.asset} (Chain: ${group.chainName})</h3>
         ${group.currentRate ? `<p><strong>Current Rate:</strong> ${group.currentRate}%</p>` : ''}
         ${group.protocol ? `<p><strong>Compared Protocol:</strong> ${group.protocol}</p>` : ''}
         ${group.compoundRate ? `<p><strong>Compound Rate:</strong> ${group.compoundRate}%</p>` : ''}
