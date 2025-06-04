@@ -184,8 +184,6 @@ export default function AlertsPage() {
                   <TableHead className="w-[120px] text-center">Alert</TableHead>
                   <TableHead className="w-[200px] text-center">Chain/Market</TableHead>
                   <TableHead className="w-[250px] text-center">Condition</TableHead>
-                  <TableHead className="w-[120px] text-center">Frequency</TableHead>
-                  <TableHead className="w-[170px] text-center">Delivery Channel</TableHead>
                   <TableHead className="w-[100px] text-center">Status</TableHead>
                   <TableHead className="w-[100px] text-center">Actions</TableHead>
                 </TableRow>
@@ -204,6 +202,10 @@ export default function AlertsPage() {
                               <span className="text-xs text-primary-color">General</span>
                             )}
                           </div>
+                          <div>Frequency - {freqLabel(alert.notificationFrequency)}</div>
+                          <div>
+                            <DeliveryChannelCell deliveryChannels={alert.deliveryChannels} />
+                          </div>
                         </TableCell>
 
                         <TableCell className="text-center">
@@ -212,14 +214,6 @@ export default function AlertsPage() {
 
                         <TableCell className="flex items-center justify-center">
                           <ConditionsCell alert={alert} />
-                        </TableCell>
-
-                        <TableCell className="text-center">
-                          <span className="text-theme-primary">{freqLabel(alert.notificationFrequency)}</span>
-                        </TableCell>
-
-                        <TableCell className="flex items-center justify-center">
-                          <DeliveryChannelCell deliveryChannels={alert.deliveryChannels} />
                         </TableCell>
 
                         <TableCell className="text-center">

@@ -65,71 +65,75 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
   // Get severity label
 
   const getConditionMessage = (alert: Alert | PrismaAlert, condition: PrismaCondition | AlertCondition) => {
+    const actionType = alert.actionType;
     if (alert.isComparison) {
       switch (condition.conditionType) {
         case 'APR_RISE_ABOVE':
           return (
             <span>
-              Alert when <PlatformImage platform={'compound'} /> APR exceeds APR of{' '}
+              Alert when <PlatformImage platform={'compound'} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR exceeds APR of{' '}
               {alert.compareProtocols.map((cp, index) => (
                 <span key={index}>
                   <PlatformImage platform={cp} />
                   {index < alert.compareProtocols.length - 1 ? ', ' : ''}
                 </span>
               ))}{' '}
-              by {formatThresholdValue(condition)}
+              by {formatThresholdValue(condition)} {actionType === 'SUPPLY' ? '(better earning opportunity)' : '(higher cost)'}
             </span>
           );
         case 'APR_FALLS_BELOW':
           return (
             <span>
-              Alert when <PlatformImage platform={'compound'} /> APR drops below{' '}
+              Alert when <PlatformImage platform={'compound'} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR drops below{' '}
               {alert.compareProtocols.map((cp, index) => (
                 <span key={index}>
                   <PlatformImage platform={cp} />
                   {index < alert.compareProtocols.length - 1 ? ', ' : ''}
                 </span>
               ))}{' '}
-              APR by {formatThresholdValue(condition)}
+              APR by {formatThresholdValue(condition)} {actionType === 'SUPPLY' ? '(worse earning opportunity)' : '(better rate)'}
             </span>
           );
         case 'APR_OUTSIDE_RANGE':
           return (
             <span>
-              Alert when <PlatformImage platform={'compound'} /> APR moves outside {formatThresholdValue(condition)} of{' '}
+              Alert when <PlatformImage platform={'compound'} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR moves outside{' '}
+              {formatThresholdValue(condition)} of{' '}
               {alert.compareProtocols.map((cp, index) => (
                 <span key={index}>
                   <PlatformImage platform={cp} />
                   {index < alert.compareProtocols.length - 1 ? ', ' : ''}
                 </span>
               ))}{' '}
-              APR
+              APR {actionType === 'SUPPLY' ? '(significant change in earning opportunity)' : '(significant change in borrowing cost)'}
             </span>
           );
         case 'RATE_DIFF_ABOVE':
           return (
             <span>
-              Alert when rate difference between <PlatformImage platform={'compound'} /> and{' '}
+              Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate difference between <PlatformImage platform={'compound'} /> and{' '}
               {alert.compareProtocols.map((cp, index) => (
                 <span key={index}>
                   <PlatformImage platform={cp} />
                   {index < alert.compareProtocols.length - 1 ? ', ' : ''}
                 </span>
               ))}{' '}
-              is above {formatThresholdValue(condition)}
+              is above {formatThresholdValue(condition)}{' '}
+              {actionType === 'SUPPLY' ? '(better earning opportunity on Compound)' : '(higher borrowing cost on Compound)'}
             </span>
           );
         case 'RATE_DIFF_BELOW':
           return (
             <span>
-              Alert when rate difference between <PlatformImage platform={'compound'} /> and{' '}
+              Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate difference between <PlatformImage platform={'compound'} /> and{' '}
               {alert.compareProtocols.map((cp, index) => (
                 <span key={index}>
                   <PlatformImage platform={cp} />
                   {index < alert.compareProtocols.length - 1 ? ', ' : ''}
                 </span>
               ))}{' '}
-              is below {formatThresholdValue(condition)}
+              is below {formatThresholdValue(condition)}{' '}
+              {actionType === 'SUPPLY' ? '(worse earning opportunity on Compound)' : '(better borrowing rate on Compound)'}
             </span>
           );
       }
@@ -140,31 +144,37 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
         case 'APR_RISE_ABOVE':
           return (
             <span>
-              Alert when <PlatformImage platform={platform} /> APR rises above {formatThresholdValue(condition)}
+              Alert when <PlatformImage platform={platform} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR rises above {formatThresholdValue(condition)}{' '}
+              {actionType === 'SUPPLY' ? '(better earning opportunity)' : '(higher borrowing cost)'}
             </span>
           );
         case 'APR_FALLS_BELOW':
           return (
             <span>
-              Alert when <PlatformImage platform={platform} /> APR falls below {formatThresholdValue(condition)}
+              Alert when <PlatformImage platform={platform} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR falls below {formatThresholdValue(condition)}{' '}
+              {actionType === 'SUPPLY' ? '(worse earning opportunity)' : '(better borrowing rate)'}
             </span>
           );
         case 'APR_OUTSIDE_RANGE':
           return (
             <span>
-              Alert when <PlatformImage platform={platform} /> APR moves outside the range of {formatThresholdValue(condition)}
+              Alert when <PlatformImage platform={platform} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR moves outside the range of{' '}
+              {formatThresholdValue(condition)}{' '}
+              {actionType === 'SUPPLY' ? '(significant change in earning opportunity)' : '(significant change in borrowing cost)'}
             </span>
           );
         case 'RATE_DIFF_ABOVE':
           return (
             <span>
-              Alert when <PlatformImage platform={platform} /> rate difference is above {formatThresholdValue(condition)}
+              Alert when <PlatformImage platform={platform} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate difference is above{' '}
+              {formatThresholdValue(condition)} {actionType === 'SUPPLY' ? '(better earning opportunity)' : '(higher borrowing cost)'}
             </span>
           );
         case 'RATE_DIFF_BELOW':
           return (
             <span>
-              Alert when <PlatformImage platform={platform} /> rate difference is below {formatThresholdValue(condition)}
+              Alert when <PlatformImage platform={platform} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate difference is below{' '}
+              {formatThresholdValue(condition)} {actionType === 'SUPPLY' ? '(worse earning opportunity)' : '(better borrowing rate)'}
             </span>
           );
       }
@@ -176,7 +186,7 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
       {conditions.map((condition, index) => (
         <div key={index} className="flex items-center gap-2 mb-1">
           <span className="font-semibold text-theme-muted">
-            <SeverityBadge severity={condition.severity}>{condition.severity}</SeverityBadge> {getConditionMessage(alert, condition)}{' '}
+            {getConditionMessage(alert, condition)} <SeverityBadge severity={condition.severity} showNone={false} />
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>

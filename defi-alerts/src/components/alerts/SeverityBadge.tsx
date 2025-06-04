@@ -7,13 +7,15 @@ interface SeverityBadgeProps {
   severity: SeverityLevel | string;
   className?: string;
   children?: React.ReactNode;
+  showNone?: boolean;
 }
 
 /**
  * A reusable component for displaying severity badges with appropriate styling
  */
-const SeverityBadge: React.FC<SeverityBadgeProps> = ({ severity, className = '', children }) => {
+const SeverityBadge: React.FC<SeverityBadgeProps> = ({ severity, className = '', children, showNone }) => {
   // Get severity badge color based on severity level
+  if (showNone === false && severity === 'NONE') return null;
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'HIGH':
