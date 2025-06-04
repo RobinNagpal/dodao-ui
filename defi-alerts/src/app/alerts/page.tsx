@@ -203,7 +203,7 @@ export default function AlertsPage() {
                           </div>
                           <div>Frequency - {freqLabel(alert.notificationFrequency)}</div>
                           <div>
-                            <DeliveryChannelCell deliveryChannels={alert.deliveryChannels} />
+                            <DeliveryChannelCell deliveryChannels={alert.deliveryChannels} isMini={true} />
                           </div>
                           <div>
                             <Badge
