@@ -141,7 +141,7 @@ async function evaluateConditions(
     deliveryChannels: DeliveryChannel[];
   },
   previouslySent: Set<string>
-): Promise<{ hitIds: Set<string>; triggerValues: AlertTriggerValuesInterface[] }> {
+): Promise<AlertTriggerValuesInterface[]> {
   const hitIds = new Set<string>();
   const triggerValues: AlertTriggerValuesInterface[] = [];
 
@@ -204,7 +204,7 @@ async function evaluateConditions(
     }
   }
 
-  return { hitIds, triggerValues: triggerValues };
+  return triggerValues;
 }
 
 /**
@@ -276,11 +276,11 @@ async function sendNotifications(
 /**
  * Logs notification to the database
  */
-async function logNotification(alertId: string, hitIds: Set<string>, triggerValues: AlertTriggerValuesInterface[]): Promise<void> {
+async function logNotification(alertId: string, triggerValues: AlertTriggerValuesInterface[]): Promise<void> {
   await prisma.alertNotification.create({
     data: {
       alertId: alertId,
-      alertConditionIds: Array.from(hitIds),
+      alertConditionIds: triggerValues.map((v) => v.condition.alertConditionId),
       triggeredValues: triggerValues,
       SentNotification: { create: {} },
     },
@@ -308,7 +308,7 @@ async function compoundMarketAlertsHandler(request: NextRequest): Promise<Compou
     const previouslySent = await getPreviouslySentConditions(alert);
 
     // Evaluate conditions and create notification triggerValues
-    const { hitIds, triggerValues } = await evaluateConditions(alert, previouslySent);
+    const triggerValues = await evaluateConditions(alert, previouslySent);
 
     // Check if alert should be processed
     if (!(await shouldProcessAlert(alert, triggerValues))) continue;
@@ -317,7 +317,7 @@ async function compoundMarketAlertsHandler(request: NextRequest): Promise<Compou
     await sendNotifications(alert, triggerValues);
 
     // Log notification
-    await logNotification(alert.id, hitIds, triggerValues);
+    await logNotification(alert.id, triggerValues);
 
     totalSent++;
   }

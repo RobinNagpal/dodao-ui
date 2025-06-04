@@ -218,7 +218,7 @@ async function evaluateConditions(
     deliveryChannels: DeliveryChannel[];
   },
   previouslySent: Set<string>
-) {
+): Promise<AlertTriggerValuesInterface[]> {
   const hitIds = new Set<string>();
   const triggerValues: AlertTriggerValuesInterface[] = [];
 
@@ -306,7 +306,7 @@ async function evaluateConditions(
   }
   console.log('the triggerValues: ', JSON.stringify(triggerValues, null, 2));
 
-  return { hitIds, triggerValues: triggerValues };
+  return triggerValues;
 }
 
 /**
@@ -378,11 +378,11 @@ async function sendNotifications(
 /**
  * Logs notification to the database
  */
-async function logNotification(alertId: string, hitIds: Set<string>, triggerValues: AlertTriggerValuesInterface[]) {
+async function logNotification(alertId: string, triggerValues: AlertTriggerValuesInterface[]) {
   await prisma.alertNotification.create({
     data: {
       alertId: alertId,
-      alertConditionIds: Array.from(hitIds),
+      alertConditionIds: triggerValues.map((v) => v.condition.alertConditionId),
       triggeredValues: triggerValues,
       SentNotification: { create: {} },
     },
@@ -412,14 +412,14 @@ async function compareCompoundHandler(request: NextRequest): Promise<CompareComp
     if (!shouldProcess) continue;
 
     // Evaluate conditions and create notification triggerValues
-    const { hitIds, triggerValues } = await evaluateConditions(alert, previouslySent);
+    const triggerValues = await evaluateConditions(alert, previouslySent);
     if (triggerValues.length === 0) continue;
 
     // Send notifications
     await sendNotifications(alert, triggerValues);
 
     // Log notification
-    await logNotification(alert.id, hitIds, triggerValues);
+    await logNotification(alert.id, triggerValues);
 
     totalSent++;
   }
