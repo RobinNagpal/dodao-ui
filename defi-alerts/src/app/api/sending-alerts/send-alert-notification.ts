@@ -1,6 +1,20 @@
 import { toSentenceCase } from '@/utils/getSentenceCase';
+import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 import { SES } from '@aws-sdk/client-ses';
+import { AlertActionType, ConditionType } from '@prisma/client';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
+
+/**
+ * Interface for the notification payload
+ */
+interface NotificationPayload {
+  alert: string;
+  alertCategory: string;
+  alertType: AlertActionType;
+  walletAddress?: string | null;
+  triggered: AlertTriggerValuesInterface[];
+  timestamp: string;
+}
 
 const ses = new SES({
   region: process.env.AWS_REGION,
@@ -9,7 +23,7 @@ const ses = new SES({
 /**
  * Creates an HTML email body for alert notifications
  */
-const createAlertEmailBody = (payload: any) => {
+const createAlertEmailBody = (payload: NotificationPayload): string => {
   // Extract alert information
   const { alert, alertCategory, alertType, triggered, timestamp, walletAddress } = payload;
   const formattedDate = new Date(timestamp).toLocaleString();
@@ -18,7 +32,7 @@ const createAlertEmailBody = (payload: any) => {
 
   // Create HTML for triggered conditions
   const triggeredHtml = triggered
-    .map((group: any) => {
+    .map((group: AlertTriggerValuesInterface) => {
       // Extract the single condition object
       const condition = group.condition;
 
@@ -30,11 +44,15 @@ const createAlertEmailBody = (payload: any) => {
         thresholdText = `${condition.threshold}%`;
       }
 
+      // Get explanation message for why this alert is important
+      const explanation = getAlertExplanation(condition.type, alertType, group.isComparison || false);
+
       // Build the HTML for that one condition
       const conditionHtml = `
       <div style="margin-bottom: 10px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
         <p><strong>Condition Type:</strong> ${formatConditionType(condition.type)}</p>
         <p><strong>Threshold:</strong> ${thresholdText}</p>
+        ${explanation ? `<p><strong>What this means:</strong> ${explanation}</p>` : ''}
       </div>
     `;
 
@@ -57,7 +75,7 @@ const createAlertEmailBody = (payload: any) => {
   return `
   <!DOCTYPE html>
   <html lang="en">
-  
+
   <head>
       <style>
           body {
@@ -67,7 +85,7 @@ const createAlertEmailBody = (payload: any) => {
               margin: 0;
               padding: 0;
           }
-  
+
           .container {
               width: 100%;
               max-width: 600px;
@@ -77,20 +95,20 @@ const createAlertEmailBody = (payload: any) => {
               border-radius: 8px;
               box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
           }
-  
+
           .header {
               text-align: center;
               padding: 10px 0;
               border-bottom: 1px solid #dddddd;
           }
-  
+
           .content {
               padding: 20px;
               font-size: 16px;
               line-height: 1.5;
               color: #555555;
           }
-  
+
           .alert-summary {
             background-color: #e8f4fd;
             border-left: 4px solid #007bff;
@@ -106,19 +124,19 @@ const createAlertEmailBody = (payload: any) => {
           .alert-summary strong {
             color: #007bff;
           }
-        
+
           .footer {
               font-size: 14px;
               color: #999999;
               text-align: center;
               margin-top: 30px;
           }
-          
+
           .link {
               cursor: pointer;
               text-decoration: underline;
           }
-              
+
           .header {
             background-color: #007bff;
             color: white;
@@ -132,7 +150,7 @@ const createAlertEmailBody = (payload: any) => {
           }
       </style>
   </head>
-  
+
   <body>
       <div class="container">
           <div class="header">
@@ -143,11 +161,12 @@ const createAlertEmailBody = (payload: any) => {
                 <p><strong>Alert Category:</strong> ${normalizedAlertCategory}</p>
                 <p><strong>Alert Type:</strong> ${normalizedAlertType}</p>
                 <p><strong>Triggered At:</strong> ${formattedDate}</p>
+                ${walletAddress ? `<p><strong>Wallet Address:</strong> ${walletAddress}</p>` : ''}
               </div>
-                    
+
               <h2>Triggered Conditions</h2>
               ${triggeredHtml}
-              
+
               <p>Thank you for using our alert service. If you have any questions, feel free to reply to this email or <a href="mailto:support@dodao.io">contact support</a>.</p>
               <p>Best regards,<br>Dodao Support</p>
           </div>
@@ -167,7 +186,7 @@ const createAlertEmailBody = (payload: any) => {
 /**
  * Formats condition type for better readability
  */
-function formatConditionType(type: string): string {
+function formatConditionType(type: ConditionType): string {
   switch (type) {
     case 'APR_RISE_ABOVE':
       return 'APR Rise Above';
@@ -185,9 +204,66 @@ function formatConditionType(type: string): string {
 }
 
 /**
+ * Generates an explanation message for why the alert is important
+ */
+function getAlertExplanation(conditionType: ConditionType, actionType: AlertActionType, isComparison: boolean): string {
+  if (isComparison) {
+    switch (conditionType) {
+      case 'APR_RISE_ABOVE':
+        return actionType === 'SUPPLY' 
+          ? 'Compound offers better earning opportunity' 
+          : 'Compound has higher borrowing cost';
+      case 'APR_FALLS_BELOW':
+        return actionType === 'SUPPLY' 
+          ? 'Compound offers worse earning opportunity' 
+          : 'Compound has better borrowing rate';
+      case 'APR_OUTSIDE_RANGE':
+        return actionType === 'SUPPLY' 
+          ? 'Significant change in earning opportunity' 
+          : 'Significant change in borrowing cost';
+      case 'RATE_DIFF_ABOVE':
+        return actionType === 'SUPPLY' 
+          ? 'Compound offers better earnings' 
+          : 'Compound has higher cost';
+      case 'RATE_DIFF_BELOW':
+        return actionType === 'SUPPLY' 
+          ? 'Compound offers worse earnings' 
+          : 'Compound has better cost';
+      default:
+        return '';
+    }
+  } else {
+    switch (conditionType) {
+      case 'APR_RISE_ABOVE':
+        return actionType === 'SUPPLY' 
+          ? 'Better earning opportunity' 
+          : 'Higher borrowing cost';
+      case 'APR_FALLS_BELOW':
+        return actionType === 'SUPPLY' 
+          ? 'Worse earning opportunity' 
+          : 'Better borrowing rate';
+      case 'APR_OUTSIDE_RANGE':
+        return actionType === 'SUPPLY' 
+          ? 'Significant change in earning opportunity' 
+          : 'Significant change in borrowing cost';
+      case 'RATE_DIFF_ABOVE':
+        return actionType === 'SUPPLY' 
+          ? 'Better earning opportunity' 
+          : 'Higher borrowing cost';
+      case 'RATE_DIFF_BELOW':
+        return actionType === 'SUPPLY' 
+          ? 'Worse earning opportunity' 
+          : 'Better borrowing rate';
+      default:
+        return '';
+    }
+  }
+}
+
+/**
  * Sends an alert notification email
  */
-export const sendAlertNotificationEmail = async (params: { email: string; payload: any; spaceId?: string }) => {
+export const sendAlertNotificationEmail = async (params: { email: string; payload: NotificationPayload; spaceId?: string }): Promise<void> => {
   const { email, payload, spaceId } = params;
 
   try {
