@@ -69,7 +69,7 @@ const TriggerValuesCell: React.FC<TriggerValuesCellProps> = ({ alert, triggerVal
               Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate is {actionType === 'BORROW' ? 'less(better cost)' : 'more(better earnings)'} on{' '}
               <PlatformImage platform={'compound'} /> by {formatThresholdValue(condition.threshold)} compared to{' '}
               <CompareProtocols protocols={protocol ? [protocol] : []} />
-              <AssetInfo triggerValue={triggerValue} />. Current difference: {diff}
+              <AssetInfo triggerValue={triggerValue} /> Current difference: {diff}
             </span>
           );
         default:
