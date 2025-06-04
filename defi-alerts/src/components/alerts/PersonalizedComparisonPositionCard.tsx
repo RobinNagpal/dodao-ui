@@ -1,12 +1,13 @@
 'use client';
 
+import { ComparisonCondition } from '@/components/alerts/PositionConditionEditor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AlertCircle, Plus, X } from 'lucide-react';
 import { type ConditionType, type SeverityLevel, severityOptions, type NotificationFrequency, Channel } from '@/types/alerts';
-import { NotificationFrequencySection, DeliveryChannelsCard } from './';
+import { NotificationFrequencySection, DeliveryChannelsCard, PositionConditionEditor } from './';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { toSentenceCase } from '@/utils/getSentenceCase';
@@ -83,23 +84,6 @@ export default function PersonalizedComparisonPositionCard({
     updatePosition(position.id, { notificationFrequency: frequency });
   };
 
-  // Get contextual message for comparison logic
-  const getComparisonMessage = (actionType: 'SUPPLY' | 'BORROW') => {
-    if (actionType === 'SUPPLY') {
-      return `If ${toSentenceCase(position.platform)} offers ${
-        position.rate
-      } APY and you set 1.2% threshold, you'll be alerted when Compound's supply APR reaches ${(parseFloat(position.rate.replace('%', '')) + 1.2).toFixed(
-        1
-      )}% (${toSentenceCase(position.platform)} rate + Your set threshold)`;
-    } else {
-      return `If ${toSentenceCase(position.platform)} charges ${
-        position.rate
-      } APY and you set 0.5% threshold, you'll be alerted when Compound's borrow APR drops to ${(parseFloat(position.rate.replace('%', '')) - 0.5).toFixed(
-        1
-      )}% (${toSentenceCase(position.platform)} rate - Your set threshold)`;
-    }
-  };
-
   return (
     <Accordion type="single" collapsible className="mb-6">
       <AccordionItem value={position.id} className="border-theme-primary bg-block border-primary-color rounded-lg">
@@ -124,88 +108,18 @@ export default function PersonalizedComparisonPositionCard({
 
         <AccordionContent className="px-6 pb-6">
           <div className="border-t border-theme-primary pt-4">
-            {/* Header with Add Threshold Button */}
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="text-lg font-medium text-theme-primary">Rate Difference Thresholds</h4>
-              <Button size="sm" onClick={addCondition} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
-                <Plus size={20} className="mr-1" /> Add Threshold
-              </Button>
-            </div>
-
-            <p className="text-sm text-theme-muted mb-4">
-              Set the minimum rate difference required to trigger an alert. You’ll be notified when Compound becomes competitively better by your specified
-              threshold.
-            </p>
-
-            {/* Single Contextual Message for the action type */}
-            <div className="mb-6 p-3 bg-theme-secondary rounded-lg border border-theme-primary">
-              <p className="text-sm text-theme-muted">
-                <span className="text-primary-color font-medium">How thresholds work:</span> {getComparisonMessage(position.actionType)}
-              </p>
-            </div>
-
-            {/* Thresholds List */}
-            {position.conditions.map((cond, i) => (
-              <div key={cond.id} className="grid grid-cols-12 gap-4 mb-4 items-center border-t border-primary-color pt-4">
-                <div className="col-span-1 flex items-center justify-center text-theme-muted">
-                  <Badge variant="outline" className="h-8 w-8 flex items-center justify-center p-0 rounded-full text-primary-color">
-                    {i + 1}
-                  </Badge>
-                </div>
-
-                <div className="col-span-5 flex flex-col">
-                  <div className="flex items-center">
-                    <Input
-                      type="text"
-                      value={cond.thresholdValue || ''}
-                      onChange={(e) => updateCondition(cond.id, 'thresholdValue', e.target.value)}
-                      className={`w-22 border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                        errors?.conditions && errors.conditions[i] ? 'border-red-500' : ''
-                      }`}
-                      placeholder={position.actionType === 'SUPPLY' ? 'Threshold (e.g., 1.2)' : 'Threshold (e.g., 0.5)'}
-                    />
-                    <span className="ml-2 text-theme-muted">APR difference</span>
-                  </div>
-                  {errors?.conditions && errors.conditions[i] && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={20} className="mr-2 flex-shrink-0" />
-                      <span>{errors.conditions[i]}</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="col-span-5">
-                  <Select
-                    value={cond.severity === 'NONE' ? undefined : cond.severity}
-                    onValueChange={(value) => updateCondition(cond.id, 'severity', value as SeverityLevel)}
-                  >
-                    <SelectTrigger className="w-full hover-border-primary">
-                      <SelectValue placeholder="Severity Level" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-block">
-                      {severityOptions.map((opt) => (
-                        <div key={opt.value} className="hover-border-primary hover-text-primary">
-                          <SelectItem key={opt.value} value={opt.value}>
-                            {opt.label}
-                          </SelectItem>
-                        </div>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {position.conditions.length > 1 && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeCondition(cond.id)}
-                    className="col-span-1 text-red-500 h-10 w-10 flex items-center justify-center"
-                  >
-                    <X size={20} />
-                  </Button>
-                )}
-              </div>
-            ))}
+            {/* Rate Difference Thresholds */}
+            <PositionConditionEditor
+              editorType="comparison"
+              actionType={position.actionType}
+              platformName={position.platform}
+              currentRate={position.rate}
+              conditions={position.conditions as ComparisonCondition[]}
+              addCondition={addCondition}
+              updateCondition={updateCondition}
+              removeCondition={removeCondition}
+              errors={errors}
+            />
 
             {/* Notification Frequency */}
             <NotificationFrequencySection notificationFrequency={position.notificationFrequency} setNotificationFrequency={updateNotificationFrequency} />

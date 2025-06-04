@@ -25,7 +25,72 @@ async function retry<T>(fn: () => Promise<T>, retries = 3, baseDelay = 500): Pro
   return fn();
 }
 
-// your return type
+// helper to normalize your provider addresses
+const flatten = (addrs: FlattenedAddresses | Address): Address[] => (typeof addrs === 'object' ? (Object.values(addrs) as Address[]) : [addrs]);
+
+// batch‐fetch reserveData in chunks to avoid gas‐limit errors
+async function fetchReserveDataInBatches(
+  config: Config,
+  chainId: number,
+  provider: Address,
+  collaterals: Collateral[]
+): Promise<
+  readonly [
+    bigint, // unbacked
+    bigint, // accruedToTreasuryScaled
+    bigint, // totalAToken
+    bigint, // totalStableDebt
+    bigint, // totalVariableDebt
+    bigint, // liquidityRate
+    bigint, // variableBorrowRate
+    bigint, // stableBorrowRate
+    bigint, // averageStableBorrowRate
+    bigint, // liquidityIndex
+    bigint, // variableBorrowIndex
+    number // lastUpdateTimestamp
+  ][]
+> {
+  const ABI = PoolDataAddressAbi_Arbitrum;
+  const chunkSize = 15; // adjust between 10–20 if needed
+  const allResults: [bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, number][] = [];
+
+  // build full list of “getReserveData” calls
+  const calls = collaterals.map((c) => ({
+    address: provider,
+    abi: ABI,
+    functionName: 'getReserveData' as const,
+    args: [c.tokenAddress],
+  }));
+
+  // run multicall in chunks
+  for (let i = 0; i < calls.length; i += chunkSize) {
+    const slice = calls.slice(i, i + chunkSize);
+    let batchResults: [bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, number][];
+    try {
+      batchResults = (await retry(() => multicall(config, { chainId, contracts: slice, allowFailure: false }))) as [
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        number
+      ][];
+    } catch {
+      // if a chunk fails, return whatever we already have
+      return allResults;
+    }
+    allResults.push(...batchResults.map((r) => [...r] as [bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint, number]));
+  }
+
+  return allResults;
+}
+
 export type MarketApr = {
   chainId: number;
   chainName: string;
@@ -35,18 +100,10 @@ export type MarketApr = {
   netBorrowAPY: number;
 };
 
-/**
- * Hook to fetch Aave APR/APY values **only** for markets
- * that also exist in your Compound config.
- */
 export function useAaveAprs(): () => Promise<MarketApr[]> {
   const config: Config = useDefaultConfig;
 
-  // helper to normalize your provider addresses
-  const flatten = (addrs: FlattenedAddresses | Address): Address[] => (typeof addrs === 'object' ? (Object.values(addrs) as Address[]) : [addrs]);
-
   const SYMBOL_BY_ASSET: Record<string, string> = COMPOUND_MARKETS.reduce((acc, m) => {
-    // normalize to lowercase so lookups are case-insensitive
     acc[m.baseAssetAddress.toLowerCase()] = m.symbol;
     return acc;
   }, {} as Record<string, string>);
@@ -76,39 +133,15 @@ export function useAaveAprs(): () => Promise<MarketApr[]> {
     }
     if (!collaterals.length) return [];
 
-    const calls = collaterals.map((c) => ({
-      address: provider,
-      abi: PoolDataAddressAbi_Arbitrum,
-      functionName: 'getReserveData' as const,
-      args: [c.tokenAddress],
-    }));
+    // fetch getReserveData in batches
+    const results = await fetchReserveDataInBatches(config, chainId, provider, collaterals);
+    if (!results.length) return [];
 
-    let results: (readonly [
-      bigint, // unbacked
-      bigint, // accruedToTreasuryScaled
-      bigint, // totalAToken
-      bigint, // totalStableDebt
-      bigint, // totalVariableDebt
-      bigint, // liquidityRate
-      bigint, // variableBorrowRate
-      bigint, // stableBorrowRate
-      bigint, // averageStableBorrowRate
-      bigint, // liquidityIndex
-      bigint, // variableBorrowIndex
-      number // lastUpdateTimestamp
-    ])[];
-    try {
-      results = await retry(() => multicall(config, { chainId, contracts: calls, allowFailure: false }));
-    } catch {
-      return [];
-    }
-
-    // 5) map into your APR objects
+    // map into your APR objects
     const chainName = CHAINS.find((c) => c.chainId === chainId)?.name ?? 'Unknown';
 
     return collaterals.map((c, i) => {
       const d = results[i];
-      // compute Aave APR & APY
       const aprData = calculateAaveAPR({
         reserveDataArray: [
           {
@@ -134,7 +167,6 @@ export function useAaveAprs(): () => Promise<MarketApr[]> {
   };
 
   return async () => {
-    // fetch each chain in parallel (with retries internally), then flatten
     const chains = Object.keys(AAVE_CONFIG_POOL_CONTRACT).map((id) => Number(id));
     const all = await Promise.all(chains.map((cid) => fetchChain(cid)));
     return all.flat();

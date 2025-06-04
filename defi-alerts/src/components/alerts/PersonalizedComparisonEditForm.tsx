@@ -1,24 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Plus, X, ArrowLeft, AlertCircle, Info } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { DeliveryChannelsCard, NotificationFrequencySection, PositionConditionEditor } from '@/components/alerts';
+import { ComparisonCondition } from '@/components/alerts/PositionConditionEditor';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { NotificationFrequencySection, DeliveryChannelsCard } from '@/components/alerts';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { type Channel, type Alert, type SeverityLevel, type NotificationFrequency, severityOptions } from '@/types/alerts';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { type Alert, type Channel, type NotificationFrequency, type SeverityLevel } from '@/types/alerts';
+import { toSentenceCase } from '@/utils/getSentenceCase';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
-import { toSentenceCase } from '@/utils/getSentenceCase';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { ArrowLeft } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface PersonalizedComparisonEditFormProps {
   alert: Alert;
@@ -121,7 +119,7 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
     setConditions((prev) => [...prev, newCondition]);
   };
 
-  const updateCondition = (id: string, field: keyof Condition, value: string) => {
+  const updateCondition = (id: string, field: keyof ComparisonCondition | string, value: string) => {
     setConditions((prev) => prev.map((condition) => (condition.id === id ? { ...condition, [field]: value } : condition)));
   };
 
@@ -295,103 +293,28 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
       </Card>
 
       {/* Rate Difference Thresholds */}
+      <PositionConditionEditor
+        editorType="comparison"
+        actionType={actionType}
+        platformName={platform}
+        conditions={conditions.map((cond) => ({
+          id: cond.id,
+          conditionType: actionType === 'SUPPLY' ? 'RATE_DIFF_ABOVE' : 'RATE_DIFF_BELOW',
+          severity: cond.severity,
+          thresholdValue: cond.thresholdValue,
+        }))}
+        addCondition={addCondition}
+        updateCondition={updateCondition}
+        removeCondition={removeCondition}
+        errors={{ conditions: errors.conditions }}
+      />
+
+      {/* Notification Frequency */}
       <Card className="mb-6 border-theme-primary bg-block border-primary-color">
-        <CardHeader>
-          <div className="flex items-center justify-between mb-2">
-            <CardTitle className="text-lg text-theme-primary">Rate Difference Thresholds</CardTitle>
-            <Button size="sm" onClick={addCondition} className="text-theme-primary border border-theme-primary hover-border-primary hover-text-primary">
-              <Plus size={16} className="mr-1" /> Add Threshold
-            </Button>
-          </div>
-          <p className="text-sm text-theme-muted">
-            Set the Rate Difference required to trigger an alert. You will receive an alert if any of the set conditions are met.
-          </p>
-          <div>
-            <p className="text-sm text-theme-muted">
-              <span className="text-primary-color font-medium">How thresholds work:</span> {getComparisonMessage()}
-            </p>
-          </div>
+        <CardHeader className="pb-1">
+          <CardTitle className="text-lg text-theme-primary">Notification Frequency</CardTitle>
         </CardHeader>
         <CardContent>
-          {/* Render each condition */}
-          {conditions.map((condition, index) => (
-            <div key={condition.id} className="mb-6">
-              <div className="grid grid-cols-12 gap-4 items-center">
-                <div className="col-span-1 flex items-center text-theme-muted">
-                  <Badge variant="outline" className="h-6 w-6 flex items-center justify-center p-0 rounded-full text-primary-color">
-                    {index + 1}
-                  </Badge>
-                </div>
-
-                {/* Threshold Value */}
-                <div className="col-span-5 flex flex-col">
-                  <div className="flex items-center">
-                    <Input
-                      type="text"
-                      placeholder={actionType === 'SUPPLY' ? 'Threshold (e.g., 1.2)' : 'Threshold (e.g., 0.5)'}
-                      value={condition.thresholdValue || ''}
-                      onChange={(e) => updateCondition(condition.id, 'thresholdValue', e.target.value)}
-                      className={`border-theme-primary focus-border-primary focus:outline-none transition-colors ${
-                        errors.conditions && errors.conditions[index] ? 'border-red-500' : ''
-                      }`}
-                    />
-                    <span className="ml-2 text-theme-muted whitespace-nowrap flex-shrink-0">Rate difference</span>
-                  </div>
-                  {errors.conditions && errors.conditions[index] && (
-                    <div className="mt-1 flex items-center text-red-500 text-sm">
-                      <AlertCircle size={14} className="mr-1" />
-                      <span>{errors.conditions[index]}</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Severity */}
-                <div className="col-span-5 flex items-center">
-                  <Select
-                    value={condition.severity === 'NONE' ? undefined : condition.severity}
-                    onValueChange={(value) => updateCondition(condition.id, 'severity', value as SeverityLevel)}
-                  >
-                    <SelectTrigger className="w-full hover-border-primary">
-                      <SelectValue placeholder="Severity Level" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-block">
-                      {severityOptions.map((opt) => (
-                        <div key={opt.value} className="hover-border-primary hover-text-primary">
-                          <SelectItem value={opt.value}>{opt.label}</SelectItem>
-                        </div>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button size="icon" className="h-8 w-8 p-0 ml-1 hover-text-primary">
-                          <Info size={16} />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
-                        <p className="text-sm">
-                          Severity level is used for visual indication only. It helps you categorize alerts by importance but does not affect notification
-                          delivery or priority.
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-
-                {/* Remove */}
-                {conditions.length > 1 && (
-                  <Button variant="ghost" size="icon" onClick={() => removeCondition(condition.id)} className="col-span-1 text-red-500 h-8 w-8">
-                    <X size={16} />
-                  </Button>
-                )}
-              </div>
-            </div>
-          ))}
-
-          <hr className="my-6" />
-
-          {/* Notification Frequency */}
           <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
         </CardContent>
       </Card>

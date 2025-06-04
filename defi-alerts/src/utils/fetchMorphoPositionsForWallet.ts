@@ -89,8 +89,8 @@ export async function fetchMorphoPositionsForWallet(wallet: string): Promise<Wal
         notificationFrequency: 'ONCE_PER_ALERT',
         conditions: [
           {
-            id: 'condition-1',
-            conditionType: 'APR_RISE_ABOVE',
+            id: '0-condition',
+            conditionType: action === 'SUPPLY' ? 'RATE_DIFF_ABOVE' : 'RATE_DIFF_BELOW',
             severity: 'NONE',
           },
         ],
