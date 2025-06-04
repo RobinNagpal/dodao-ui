@@ -2,6 +2,7 @@
 
 import { AlertNotificationResponse } from '@/app/api/alert-notifications/route';
 import { ConditionsCell, TriggerValuesCell } from '@/components/alerts';
+import AssetChainPairCell from '@/components/alerts/core/AssetChainPairCell';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
@@ -90,8 +91,8 @@ export default function AlertNotificationsPage() {
                   <TableHead className="w-[200px] text-center">Chain/Asset</TableHead>
                   <TableHead className="w-[250px] text-center">All Alert Condition</TableHead>
                   <TableHead className="w-[250px] text-center">Triggered Condition</TableHead>
-                  <TableHead className="w-[150px] text-center">Severity</TableHead>
-                  <TableHead className="w-[200px] text-center">Sent At</TableHead>
+                  <TableHead className="w-[100px] text-center">Severity</TableHead>
+                  <TableHead className="w-[100px] text-center">Sent At</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -115,18 +116,7 @@ export default function AlertNotificationsPage() {
                         </TableCell>
 
                         <TableCell className="text-center">
-                          <div className="flex flex-col items-center">
-                            {notification.alert.selectedChains.map((chain, index) => (
-                              <span key={index} className="text-theme-primary">
-                                {chain.name}
-                              </span>
-                            ))}
-                            {notification.alert.selectedAssets.map((asset, index) => (
-                              <span key={index} className="text-xs text-primary-color">
-                                {asset.symbol}
-                              </span>
-                            ))}
-                          </div>
+                          <AssetChainPairCell chains={notification.alert.selectedChains || []} assets={notification.alert.selectedAssets || []} />
                         </TableCell>
 
                         <TableCell className="text-left">
