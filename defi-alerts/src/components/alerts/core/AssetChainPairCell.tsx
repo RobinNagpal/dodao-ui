@@ -4,9 +4,6 @@ import { ChainImage } from '@/components/alerts/core/ChainImage';
 import { AssetImage } from '@/components/alerts/core/AssetImage';
 import { MultipleAssetsImages } from '@/components/alerts/core/MultipleAssetsImages';
 import type { Asset, Chain } from '@/types/alerts';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
-import { Info } from 'lucide-react';
 
 interface AssetChainPairCellProps {
   chains: Chain[];
@@ -14,27 +11,27 @@ interface AssetChainPairCellProps {
 }
 
 export default function AssetChainPairCell({ chains, assets }: AssetChainPairCellProps) {
-  const chainToAssets: Record<string, { symbol: string; address: string }[]> = {};
-
-  for (const chain of chains) {
-    chainToAssets[chain.name] = [];
+  const assetByAddress = new Map<string, { symbol: string; address: string }>();
+  for (const a of assets) {
+    assetByAddress.set(a.address.toLowerCase(), a);
   }
+  const chainToAssets = COMPOUND_MARKETS.reduce((acc, m) => {
+    const chain = chains.find((c) => c.chainId === m.chainId);
+    if (!chain) return acc;
 
-  for (const asset of assets) {
-    const assetAddrLC = asset.address.toLowerCase();
+    const addressLC = m.baseAssetAddress.toLowerCase();
+    const asset = assetByAddress.get(addressLC);
+    if (!asset) return acc;
 
-    for (const market of COMPOUND_MARKETS) {
-      if (market.baseAssetAddress.toLowerCase() !== assetAddrLC) continue;
-
-      const matchingChain = chains.find((c) => c.chainId === market.chainId);
-      if (!matchingChain) continue;
-
-      chainToAssets[matchingChain.name].push({
+    acc[chain.name] = acc[chain.name] || [];
+    if (!acc[chain.name].some((e) => e.address.toLowerCase() === addressLC)) {
+      acc[chain.name].push({
         symbol: asset.symbol === 'WETH' ? 'ETH' : asset.symbol,
-        address: market.baseAssetAddress,
+        address: asset.address,
       });
     }
-  }
+    return acc;
+  }, {} as Record<string, { symbol: string; address: string }[]>);
 
   return (
     <div className="flex flex-col gap-1">

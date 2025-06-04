@@ -1,4 +1,4 @@
-import { multicall, type Config } from '@wagmi/core';
+import { multicall, readContract, type Config } from '@wagmi/core';
 import type { Address } from 'viem';
 import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
 import { AAVE_CONFIG_POOL_CONTRACT } from '@/shared/migrator/aave/config';
@@ -11,7 +11,17 @@ import { WalletComparisonPosition } from '@/components/modals/types';
 const flattenProvider = (addrOrObj: Address | Record<string, Address>): Address => (typeof addrOrObj === 'string' ? addrOrObj : Object.values(addrOrObj)[0]);
 
 const symbolCache: Record<string, Promise<string> | undefined> = {};
-async function fetchSymbol(chainName: string, tokenAddress: string): Promise<string> {
+const ERC20_SYMBOL_ABI = [
+  {
+    constant: true,
+    inputs: [],
+    name: 'symbol',
+    outputs: [{ name: '', type: 'string' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+];
+async function fetchSymbol(chainName: string, tokenAddress: string, wagmiConfig: Config): Promise<string> {
   if (chainName === 'Unknown') return 'Unknown';
   const chainNameLower = chainName.toLowerCase();
   const cacheKey = `${chainNameLower}:${tokenAddress}`;
@@ -24,12 +34,30 @@ async function fetchSymbol(chainName: string, tokenAddress: string): Promise<str
     try {
       const url = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chainNameLower}/assets/${tokenAddress}/info.json`;
       const response = await fetch(url);
-      if (!response.ok) {
-        return 'Unknown';
+      if (response.ok) {
+        const infoJson = (await response.json()) as { symbol?: string };
+        if (infoJson.symbol && typeof infoJson.symbol === 'string') {
+          return infoJson.symbol;
+        }
       }
-      const infoJson = (await response.json()) as { symbol?: string };
-      return infoJson.symbol ?? 'Unknown';
+    } catch {}
+    const chainConfig = CHAINS.find((c) => c.name.toLowerCase() === chainNameLower);
+    if (!chainConfig) {
+      return 'Unknown';
+    }
+
+    try {
+      const onChainSymbol = (await readContract(wagmiConfig, {
+        address: tokenAddress as Address,
+        abi: ERC20_SYMBOL_ABI,
+        functionName: 'symbol',
+        args: [], // no arguments needed
+        chainId: chainConfig.chainId,
+      })) as string;
+      console.log(`Fetched symbol from Contract for ${tokenAddress} on ${chainName}: ${onChainSymbol}`);
+      return onChainSymbol ?? 'Unknown';
     } catch {
+      console.error(`Failed to fetch symbol from contract for ${tokenAddress} on ${chainName}`);
       return 'Unknown';
     }
   })();
@@ -124,7 +152,7 @@ export function useAaveUserPositions(): (wallets: string[]) => Promise<WalletCom
               const id = actionType === 'SUPPLY' ? `supply-${++supplyCount}-aave` : `borrow-${++borrowCount}-aave`;
 
               const rate = aprObj ? (actionType === 'SUPPLY' ? `${aprObj.netEarnAPY.toFixed(2)}%` : `${aprObj.netBorrowAPY.toFixed(2)}%`) : '0%';
-              let assetSymbol = market.asset !== 'Unknown' ? market.asset : await fetchSymbol(chainName, market.assetAddress);
+              let assetSymbol = market.asset !== 'Unknown' ? market.asset : await fetchSymbol(chainName, market.assetAddress, config);
 
               positions.push({
                 id,
