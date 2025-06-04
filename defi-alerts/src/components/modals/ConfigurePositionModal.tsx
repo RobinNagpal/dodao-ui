@@ -6,6 +6,7 @@ import { DeliveryChannelsCard, NotificationFrequencySection, PositionConditionEd
 import { ComparisonCondition, MarketCondition } from '@/components/alerts/PositionConditionEditor';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { type Channel, type ConditionType, type NotificationFrequency, type SeverityLevel } from '@/types/alerts';
 import { toSentenceCase } from '@/utils/getSentenceCase';
@@ -338,56 +339,54 @@ export default function ConfigurePositionModal<T extends BasePosition>({
                 </div>
               </div>
 
-              <div className="p-5 bg-theme-secondary rounded-lg border border-primary-color">
-                <PositionConditionEditor
-                  editorType={modalType === 'GENERAL' ? 'market' : 'comparison'}
-                  actionType={selectedPosition.actionType}
-                  platformName={modalType === 'COMPARISON' ? (selectedPosition as unknown as WalletComparisonPosition).platform : undefined}
-                  currentRate={modalType === 'COMPARISON' ? (selectedPosition as unknown as WalletComparisonPosition).rate : undefined}
-                  conditions={
-                    modalType === 'COMPARISON' ? (selectedPosition.conditions as ComparisonCondition[]) : (selectedPosition.conditions as MarketCondition[])
-                  }
-                  addCondition={() => {
-                    if (!selectedPosition) return;
-                    const conditionType =
-                      modalType === 'GENERAL'
-                        ? ('APR_RISE_ABOVE' as ConditionType)
-                        : selectedPosition.actionType === 'SUPPLY'
-                        ? ('RATE_DIFF_ABOVE' as ConditionType)
-                        : ('RATE_DIFF_BELOW' as ConditionType);
-                    const newCondition = {
-                      id: `condition-${Date.now()}`,
-                      conditionType: conditionType,
-                      severity: 'NONE' as SeverityLevel,
-                      thresholdValue: '',
-                    };
-                    updatePosition(selectedPosition.id, {
-                      conditions: [...selectedPosition.conditions, newCondition],
-                    } as Partial<T>);
-                  }}
-                  updateCondition={(id, field, value) => {
-                    console.log(`Updating condition ${id} with ${field} = ${value}`);
-                    const updates = {
-                      conditions: selectedPosition.conditions.map((c) => (c.id === id ? { ...c, [field]: value } : c)),
-                    } as Partial<T>;
+              <PositionConditionEditor
+                editorType={modalType === 'GENERAL' ? 'market' : 'comparison'}
+                actionType={selectedPosition.actionType}
+                platformName={modalType === 'COMPARISON' ? (selectedPosition as unknown as WalletComparisonPosition).platform : undefined}
+                currentRate={modalType === 'COMPARISON' ? (selectedPosition as unknown as WalletComparisonPosition).rate : undefined}
+                conditions={
+                  modalType === 'COMPARISON' ? (selectedPosition.conditions as ComparisonCondition[]) : (selectedPosition.conditions as MarketCondition[])
+                }
+                addCondition={() => {
+                  if (!selectedPosition) return;
+                  const conditionType =
+                    modalType === 'GENERAL'
+                      ? ('APR_RISE_ABOVE' as ConditionType)
+                      : selectedPosition.actionType === 'SUPPLY'
+                      ? ('RATE_DIFF_ABOVE' as ConditionType)
+                      : ('RATE_DIFF_BELOW' as ConditionType);
+                  const newCondition = {
+                    id: `condition-${Date.now()}`,
+                    conditionType: conditionType,
+                    severity: 'NONE' as SeverityLevel,
+                    thresholdValue: '',
+                  };
+                  updatePosition(selectedPosition.id, {
+                    conditions: [...selectedPosition.conditions, newCondition],
+                  } as Partial<T>);
+                }}
+                updateCondition={(id, field, value) => {
+                  console.log(`Updating condition ${id} with ${field} = ${value}`);
+                  const updates = {
+                    conditions: selectedPosition.conditions.map((c) => (c.id === id ? { ...c, [field]: value } : c)),
+                  } as Partial<T>;
 
-                    console.log(updates);
-                    updatePosition(selectedPosition.id, updates);
-                  }}
-                  removeCondition={(id) => {
-                    updatePosition(selectedPosition.id, {
-                      conditions: selectedPosition.conditions.filter((c) => c.id !== id),
-                    } as Partial<T>);
-                  }}
-                  errors={errors[selectedPosition.id]}
-                />
-                <hr className="my-4"></hr>
+                  console.log(updates);
+                  updatePosition(selectedPosition.id, updates);
+                }}
+                removeCondition={(id) => {
+                  updatePosition(selectedPosition.id, {
+                    conditions: selectedPosition.conditions.filter((c) => c.id !== id),
+                  } as Partial<T>);
+                }}
+                errors={errors[selectedPosition.id]}
+              />
+              <Card className="mt-8 p-4 border-theme-primary bg-block border-primary-color">
                 <NotificationFrequencySection
                   notificationFrequency={selectedPosition.notificationFrequency}
                   setNotificationFrequency={(freq) => updatePosition(selectedPosition.id, { notificationFrequency: freq } as Partial<T>)}
                 />
-              </div>
-
+              </Card>
               <div className="mt-8">
                 <DeliveryChannelsCard
                   channels={positionChannels[selectedPosition.id] || []}

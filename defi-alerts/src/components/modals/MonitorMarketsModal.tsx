@@ -7,6 +7,7 @@ import { AlertTypeCard, DeliveryChannelsCard, MarketSelectionCard, NotificationF
 import { ComparisonCondition, MarketCondition } from '@/components/alerts/PositionConditionEditor';
 import { getEmptyCondition } from '@/components/modals/utils/getEmptyCondition';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import type { Channel, GeneralComparisonRow, NotificationFrequency } from '@/types/alerts';
 import { validateMarketCombinations } from '@/utils/clientValidationUtils';
@@ -371,7 +372,9 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
           />
 
           {/* Notification Frequency */}
-          <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
+          <Card className="mb-6 p-4 border-theme-primary bg-block border-primary-color">
+            <NotificationFrequencySection notificationFrequency={notificationFrequency} setNotificationFrequency={setNotificationFrequency} />
+          </Card>
           <DeliveryChannelsCard
             channels={channels}
             addChannel={addChannel}
