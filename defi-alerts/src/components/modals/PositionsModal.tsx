@@ -276,7 +276,7 @@ function PositionList<T extends BasePosition>({ modalType, positions, actionType
                     }
                   }}
                 >
-                  Edit
+                  Edit Alert
                 </Button>
               ) : (
                 <Button
