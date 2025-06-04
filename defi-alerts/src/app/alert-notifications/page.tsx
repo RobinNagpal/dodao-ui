@@ -123,7 +123,7 @@ export default function AlertNotificationsPage() {
                         </TableCell>
                         <TableCell className="text-left">
                           {notification.triggeredValues ? (
-                            <TriggerValuesCell triggerValues={notification.triggeredValues} />
+                            <TriggerValuesCell alert={notification.alert} triggerValues={notification.triggeredValues} />
                           ) : (
                             <ConditionsCell alert={{ ...notification.alert, conditions: triggeredConditions }} />
                           )}

@@ -23,8 +23,11 @@ export interface UsernameAndNameDto {
 }
 
 export interface AlertTriggerValuesInterface {
+  chainId?: number;
   chainName: string;
+  assetSymbol?: string;
   asset: string;
+  assetAddress?: string;
   isComparison?: boolean;
   protocol?: string;
   compoundRate?: number;
