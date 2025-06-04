@@ -1,10 +1,7 @@
 import { PlatformImage } from '@/components/alerts/core/PlatformImage';
 import SeverityBadge from '@/components/alerts/SeverityBadge';
-import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { type Alert, PrismaCondition, severityOptions } from '@/types/alerts';
+import { type Alert, PrismaCondition } from '@/types/alerts';
 import { Alert as PrismaAlert, AlertCondition, Asset, Chain, DeliveryChannel } from '@prisma/client';
-import { Info } from 'lucide-react';
 import React from 'react';
 
 interface ConditionsCellProps {
@@ -185,29 +182,6 @@ const ConditionsCell: React.FC<ConditionsCellProps> = ({ alert }) => {
         <div key={index} className="flex items-center gap-2 mb-1">
           <span className="font-semibold text-theme-muted">
             {getConditionMessage(alert, condition)} <SeverityBadge severity={condition.severity} showNone={false} />
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button size="icon" className="h-5 w-5 hover:text-primary">
-                    <Info size={14} />
-                    <span className="sr-only">View all channels</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs bg-block p-3 border border-theme-primary">
-                  <div className="space-y-2">
-                    <p>{getConditionMessage(alert, condition)}</p>
-                    <div>
-                      Severity Level:&nbsp;
-                      {condition.severity === 'NONE' ? (
-                        <SeverityBadge severity="NONE">None</SeverityBadge>
-                      ) : (
-                        <SeverityBadge severity={condition.severity}>{condition.severity}</SeverityBadge>
-                      )}
-                    </div>
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
           </span>
         </div>
       ))}
