@@ -32,11 +32,6 @@ const AlertActionsCell: React.FC<AlertActionsCellProps> = ({ alert, setAlertToDe
             Edit
           </DropdownMenuItem>
         </div>
-        <div className="hover-border-primary hover-text-primary">
-          <DropdownMenuItem className="text-theme-primary cursor-pointer" onClick={() => router.push(`/alerts/history/${alert.id}`)}>
-            History
-          </DropdownMenuItem>
-        </div>
         <DropdownMenuItem
           className="text-red-600 cursor-pointer"
           onClick={() => {
