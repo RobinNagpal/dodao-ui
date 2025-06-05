@@ -21,6 +21,7 @@ export default function Navbar() {
   const tabs = [
     { name: 'Compound Alerts', href: '/alerts' },
     { name: 'Compound vs Others', href: '/alerts/compare-compound' },
+    { name: 'History', href: '/alert-notifications' },
   ];
 
   if (pathname === '/login' || (pathname === '/' && !session?.user)) {

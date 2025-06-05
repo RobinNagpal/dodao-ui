@@ -64,7 +64,7 @@ export default function AddWalletModal({ isOpen, handleClose, onSwitchToPosition
               placeholder="0x... (wallet address)"
               value={newWalletAddress}
               onChange={(e) => setNewWalletAddress(e.target.value)}
-              className="border-theme-primary"
+              className="border-theme-primary focus-border-primary focus:outline-none"
             />
             <Button onClick={handleAddWallet} className="bg-primary-color text-primary-text" disabled={addingWallet}>
               Add +

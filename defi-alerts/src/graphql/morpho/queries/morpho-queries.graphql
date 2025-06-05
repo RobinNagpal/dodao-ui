@@ -1,28 +1,40 @@
 query GetMorphoVaultPositions($chainId: Int!, $address: String!) {
   userByAddress(address: $address, chainId: $chainId) {
-    address
-    marketPositions {
-      market {
-        id
-        dailyApys {
-          supplyApy
-          borrowApy
-          netSupplyApy
-          netBorrowApy
+        marketPositions {
+          market {
+            id
+            state {
+              dailyNetBorrowApy
+            }
+            loanAsset {
+              address
+              symbol
+            }
+            collateralAsset {
+              address
+              symbol
+            }
+          }
+          state {
+            borrowAssets
+          }
         }
-        loanAsset {
-          address
-          symbol
+        vaultPositions {
+          state {
+            assets
+          }
+          vault {
+            state {
+              dailyNetApy
+            }
+            address
+            asset {
+              address
+              symbol
+            }
+            name
+          }
         }
-        collateralAsset {
-          address
-          symbol
-        }
-      }
-      state {
-        borrowAssets
-        supplyAssets
       }
     }
-  }
-}
+  

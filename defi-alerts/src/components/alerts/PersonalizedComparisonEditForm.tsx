@@ -219,6 +219,7 @@ export default function PersonalizedComparisonEditForm({ alert, alertId }: Perso
     }));
 
     const payload = {
+      id: actionType === 'BORROW' || platform === 'MORPHO' ? alert.marketId : undefined,
       actionType,
       walletAddress,
       notificationFrequency,

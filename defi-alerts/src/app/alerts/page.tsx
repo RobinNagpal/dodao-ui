@@ -207,11 +207,13 @@ export default function AlertsPage() {
                           <StatusBadge status={alert.status} showOnlyInactive={true} />
                         </TableCell>
 
-                        <TableCell className="text-left">
-                          <AssetChainPairCell chains={alert.selectedChains || []} assets={alert.selectedAssets || []} />
+                        <TableCell>
+                          <div className="flex items-center justify-center">
+                            <AssetChainPairCell chains={alert.selectedChains || []} assets={alert.selectedAssets || []} />
+                          </div>
                         </TableCell>
 
-                        <TableCell className="flex items-center justify-center">
+                        <TableCell>
                           <ConditionsCell alert={alert} />
                         </TableCell>
 

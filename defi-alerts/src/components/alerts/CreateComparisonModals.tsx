@@ -16,6 +16,8 @@ import MonitorMarketsModal from '../modals/MonitorMarketsModal';
 import PositionsModal from '../modals/PositionsModal';
 import ConfigurePositionModal from '../modals/ConfigurePositionModal';
 import { WalletComparisonPosition } from '../modals/types';
+import DeleteWalletModal from '../modals/DeleteWalletModal';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 
 interface CreateComparisonModalsProps {
   isOpen: boolean;
@@ -37,6 +39,10 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
   const [currentWalletAddress, setCurrentWalletAddress] = useState<string>('');
   const [walletHasPositions, setWalletHasPositions] = useState<boolean>(true);
 
+  // Delete wallet state
+  const [walletToDelete, setWalletToDelete] = useState<string | null>(null);
+  const [showDeleteWalletModal, setShowDeleteWalletModal] = useState(false);
+
   const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
 
   // Fetch existing alerts
@@ -52,7 +58,14 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     data: walletData,
     loading: loadingWallets,
     error: walletError,
+    reFetchData: reFetchWallets,
   } = useFetchData<{ walletAddresses: string[] }>(`${baseUrl}/api/user/wallet/get`, { skipInitialFetch: !isOpen }, 'Failed to load wallet addresses');
+
+  // Delete wallet hook
+  const { loading: deleting, deleteData: deleteWallet } = useDeleteData<{ success: boolean }, { walletAddress: string }>({
+    successMessage: 'Wallet address removed successfully',
+    errorMessage: 'Failed to remove wallet address',
+  });
 
   const [allComparisonPositions, setAllComparisonPositions] = useState<WalletComparisonPosition[]>([]);
   const [comparisonLoading, setComparisonLoading] = useState(false);
@@ -203,6 +216,29 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     }
   };
 
+  // Handle wallet deletion
+  const handleDeleteWallet = (walletAddress: string) => {
+    setWalletToDelete(walletAddress);
+    setShowDeleteWalletModal(true);
+    onClose();
+  };
+
+  const handleDeleteWalletSuccess = async () => {
+    if (walletToDelete) {
+      try {
+        // Close modal
+        setShowDeleteWalletModal(false);
+        setWalletToDelete(null);
+
+        await reFetchWallets();
+      } catch (error) {
+        console.error('Error handling wallet deletion success:', error);
+        setShowDeleteWalletModal(false);
+        setWalletToDelete(null);
+      }
+    }
+  };
+
   return (
     <>
       <AddWalletModal
@@ -236,6 +272,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
         selectPosition={selectPosition}
         onSwitchToAddWallet={() => setCurrentModal('addWallet')}
         onSwitchToMonitor={() => setCurrentModal('generalComparison')}
+        onDeleteWallet={handleDeleteWallet}
         alerts={alertsData}
       />
 
@@ -251,6 +288,19 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
         setErrors={setErrors}
         onSwitchToPositions={() => setCurrentModal('personalizedPositions')}
         onCreate={reFetchAlerts}
+      />
+
+      <DeleteWalletModal
+        open={showDeleteWalletModal}
+        walletAddress={walletToDelete}
+        baseUrl={baseUrl}
+        deleting={deleting}
+        onClose={() => {
+          setShowDeleteWalletModal(false);
+          setWalletToDelete(null);
+        }}
+        onDeleteSuccess={handleDeleteWalletSuccess}
+        deleteWallet={deleteWallet}
       />
     </>
   );

@@ -109,6 +109,7 @@ export interface Alert {
   actionType: 'SUPPLY' | 'BORROW';
   isComparison: boolean;
   walletAddress?: string | null;
+  marketId?: string | null;
   selectedChains: Chain[];
   selectedAssets: Asset[];
   compareProtocols: string[];

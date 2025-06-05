@@ -5,6 +5,7 @@ import { useCompoundUserPositions } from '@/utils/getCompoundUserPositions';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -13,6 +14,7 @@ import ConfigurePositionModal from '../modals/ConfigurePositionModal';
 import InitialModal from '../modals/InitialModal';
 import MonitorMarketsModal from '../modals/MonitorMarketsModal';
 import PositionsModal from '../modals/PositionsModal';
+import DeleteWalletModal from '../modals/DeleteWalletModal';
 import { WalletPosition } from '../modals/types';
 
 interface CreateAlertModalsProps {
@@ -33,6 +35,10 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
   const [currentWalletAddress, setCurrentWalletAddress] = useState<string>('');
   const [walletHasPositions, setWalletHasPositions] = useState<boolean>(false);
 
+  // Delete wallet state
+  const [walletToDelete, setWalletToDelete] = useState<string | null>(null);
+  const [showDeleteWalletModal, setShowDeleteWalletModal] = useState(false);
+
   // Monitor markets state
   const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
 
@@ -49,7 +55,14 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     data: walletData,
     loading: loadingWallets,
     error: walletError,
+    reFetchData: reFetchWallets,
   } = useFetchData<{ walletAddresses: string[] }>(`${baseUrl}/api/user/wallet/get`, { skipInitialFetch: !isOpen }, 'Failed to load wallet addresses');
+
+  // Delete wallet hook
+  const { loading: deleting, deleteData: deleteWallet } = useDeleteData<{ success: boolean }, { walletAddress: string }>({
+    successMessage: 'Wallet address removed successfully',
+    errorMessage: 'Failed to remove wallet address',
+  });
 
   const [allPositions, setAllPositions] = useState<WalletPosition[]>([]);
   const [walletPositionsLoading, setWalletPositionsLoading] = useState(false);
@@ -189,6 +202,29 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     }
   };
 
+  // Handle wallet deletion
+  const handleDeleteWallet = (walletAddress: string) => {
+    setWalletToDelete(walletAddress);
+    setShowDeleteWalletModal(true);
+    onClose();
+  };
+
+  const handleDeleteWalletSuccess = async () => {
+    if (walletToDelete) {
+      try {
+        // Close modal
+        setShowDeleteWalletModal(false);
+        setWalletToDelete(null);
+
+        await reFetchWallets();
+      } catch (error) {
+        console.error('Error handling wallet deletion success:', error);
+        setShowDeleteWalletModal(false);
+        setWalletToDelete(null);
+      }
+    }
+  };
+
   // Render the appropriate modal based on current state
   return (
     <>
@@ -223,6 +259,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
         selectPosition={selectPosition}
         onSwitchToAddWallet={() => setCurrentModal('addWallet')}
         onSwitchToMonitor={() => setCurrentModal('monitorMarkets')}
+        onDeleteWallet={handleDeleteWallet}
         alerts={alertsData}
       />
 
@@ -238,6 +275,19 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
         setErrors={setErrors}
         onSwitchToPositions={() => setCurrentModal('positions')}
         onCreate={reFetchAlerts}
+      />
+
+      <DeleteWalletModal
+        open={showDeleteWalletModal}
+        walletAddress={walletToDelete}
+        baseUrl={baseUrl}
+        deleting={deleting}
+        onClose={() => {
+          setShowDeleteWalletModal(false);
+          setWalletToDelete(null);
+        }}
+        onDeleteSuccess={handleDeleteWalletSuccess}
+        deleteWallet={deleteWallet}
       />
     </>
   );
