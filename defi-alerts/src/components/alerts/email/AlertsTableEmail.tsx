@@ -1,14 +1,14 @@
-import React from 'react';
-import { Alert } from '@prisma/client';
+import { AlertWithAllDetails } from '@/types/alerts';
 import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
-import TriggerValuesCellEmail from './TriggerValuesCellEmail';
-import { ChainImageEmail, AssetImageEmail } from '@/utils/emailRendering';
+import { AssetImageEmail, ChainImageEmail } from '@/utils/emailRendering';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { toSentenceCase } from '@/utils/getSentenceCase';
+import React from 'react';
+import TriggerValuesCellEmail from './TriggerValuesCellEmail';
 
 interface AlertsTableEmailProps {
   alerts: {
-    alert: Alert;
+    alert: AlertWithAllDetails;
     triggeredValues: AlertTriggerValuesInterface[];
   }[];
 }

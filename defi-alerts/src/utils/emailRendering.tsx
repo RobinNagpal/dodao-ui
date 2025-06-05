@@ -1,5 +1,6 @@
+import { AlertWithAllDetails } from '@/types/alerts';
 import React from 'react';
-import ReactDOMServer from 'react-dom/server';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { utils } from 'ethers';
 import { Alert } from '@prisma/client';
 import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
@@ -12,7 +13,7 @@ import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
  * Renders a React component to an HTML string
  */
 export function renderToHtml(component: React.ReactElement): string {
-  return ReactDOMServer.renderToStaticMarkup(component);
+  return renderToStaticMarkup(component);
 }
 
 /**
@@ -85,18 +86,7 @@ export function ChainImageEmail({ chain }: { chain: string }): JSX.Element {
     );
   }
 
-  return (
-    <img
-      src={imageUrl}
-      alt={chain}
-      width="20"
-      height="20"
-      style={{ display: 'inline', verticalAlign: 'middle' }}
-      onerror={`this.outerHTML='<span style="display:inline-flex;align-items:center;justify-content:center;background-color:#ffffff;color:#000000;border-radius:50%;font-weight:600;width:20px;height:20px;font-size:12px;vertical-align:middle">${chain.charAt(
-        0
-      )}</span>'`}
-    />
-  );
+  return <img src={imageUrl} alt={chain} width="20" height="20" style={{ display: 'inline', verticalAlign: 'middle' }} />;
 }
 
 /**
@@ -107,24 +97,13 @@ export function PlatformImageEmail({ platform }: { platform: string }): JSX.Elem
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://defi-alerts.dodao.io';
   const imageUrl = `${baseUrl}/${platform.toLowerCase()}.svg`;
 
-  return (
-    <img
-      src={imageUrl}
-      alt={`${platform} logo`}
-      width="20"
-      height="20"
-      style={{ display: 'inline', verticalAlign: 'middle' }}
-      onerror={`this.outerHTML='<span style="display:inline-flex;align-items:center;justify-content:center;background-color:#007bff;color:#ffffff;border-radius:50%;width:20px;height:20px;font-size:10px;vertical-align:middle">${platform.charAt(
-        0
-      )}</span>'`}
-    />
-  );
+  return <img src={imageUrl} alt={`${platform} logo`} width="20" height="20" style={{ display: 'inline', verticalAlign: 'middle' }} />;
 }
 
 /**
  * Renders an alerts table for email
  */
-export function renderAlertsTableForEmail(alertObject: Alert, triggeredValues: AlertTriggerValuesInterface[]): string {
+export function renderAlertsTableForEmail(alertObject: AlertWithAllDetails, triggeredValues: AlertTriggerValuesInterface[]): string {
   // Create a simple table with the alert information
   const tableHtml = `
     <table style="width:100%; border-collapse:collapse; margin-bottom:20px; border:1px solid #e5e7eb;">

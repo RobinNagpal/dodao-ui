@@ -4,19 +4,7 @@ import { SES } from '@aws-sdk/client-ses';
 import { AlertActionType, ConditionType, Alert } from '@prisma/client';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { renderAlertsTableForEmail } from '@/utils/emailRendering';
-
-/**
- * Interface for the notification payload
- */
-interface NotificationPayload {
-  alert: string;
-  alertCategory: string;
-  alertType: AlertActionType;
-  walletAddress?: string | null;
-  triggered: AlertTriggerValuesInterface[];
-  timestamp: string;
-  alertObject: Alert; // Full alert object for rendering
-}
+import { NotificationPayload } from '@/types/alerts';
 
 const ses = new SES({
   region: process.env.AWS_REGION,
