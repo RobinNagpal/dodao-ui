@@ -1,12 +1,12 @@
+import { sendAlertNotificationEmail } from '@/app/api/sending-alerts/send-alert-notification';
 import { prisma } from '@/prisma';
 import { AlertWithAllDetails, NotificationPayload } from '@/types/alerts';
+import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 import { useCompoundMarketsAprs as getCompoundMarketsAprs } from '@/utils/getCompoundAPR';
-import { sendAlertNotificationEmail } from '@/app/api/sending-alerts/send-alert-notification';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Alert, AlertActionType, AlertCondition, Asset, Chain, DeliveryChannel, DeliveryChannelType, NotificationFrequency } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 
 // Types
 interface CompoundMarketResponse {

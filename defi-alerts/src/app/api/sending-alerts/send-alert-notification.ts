@@ -1,9 +1,10 @@
-import { AlertsTableEmailProps, getStaticHTMLOfEmail } from '@/components/alerts/email/AlertsTableEmail';
+import AlertsTableEmail, { AlertsTableEmailProps } from './email/AlertsTableEmail';
 import { NotificationPayload } from '@/types/alerts';
 import { toSentenceCase } from '@/utils/getSentenceCase';
 import { SES } from '@aws-sdk/client-ses';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { AlertActionType, ConditionType } from '@prisma/client';
+import React from 'react';
 
 const ses = new SES({
   region: process.env.AWS_REGION,
@@ -12,7 +13,16 @@ const ses = new SES({
 /**
  * Creates an HTML email body for alert notifications
  */
-const createAlertEmailBody = (payload: NotificationPayload): string => {
+
+export default async function getStaticHTMLOfEmail(props: AlertsTableEmailProps): Promise<string> {
+  const element = React.createElement(AlertsTableEmail, props);
+  const ReactDOMServer = (await import('react-dom/server')).default;
+
+  const appString = ReactDOMServer.renderToStaticMarkup(element);
+  return appString;
+}
+
+const createAlertEmailBody = async (payload: NotificationPayload): Promise<string> => {
   // Extract alert information
   const { alert, alertObject, alertCategory, alertType, triggered, timestamp, walletAddress } = payload;
   const formattedDate = new Date(timestamp).toLocaleString();
@@ -21,7 +31,7 @@ const createAlertEmailBody = (payload: NotificationPayload): string => {
 
   // Generate the alerts table HTML using the renderAlertsTableForEmail function
   const props: AlertsTableEmailProps = { alerts: [{ alert: alertObject, triggeredValues: payload.triggered }] };
-  const alertsTableHtml = getStaticHTMLOfEmail(props);
+  const alertsTableHtml = await getStaticHTMLOfEmail(props);
 
   return `
   <!DOCTYPE html>
@@ -233,7 +243,7 @@ export const sendAlertNotificationEmail = async (params: { email: string; payloa
   try {
     const from = 'support@dodao.io';
     console.log('Sending alert notification email to', email, 'from', from);
-    const emailBody = createAlertEmailBody(payload);
+    const emailBody = await createAlertEmailBody(payload);
     console.log('Email body: ', emailBody);
     // Sending email via AWS SES
     ses.sendEmail(
