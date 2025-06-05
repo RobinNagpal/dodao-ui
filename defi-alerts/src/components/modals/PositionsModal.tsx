@@ -6,7 +6,7 @@ import { PlatformImage } from '@/components/alerts/core/PlatformImage';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
-import { Plus } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { AssetImage } from '../alerts/core/AssetImage';
 import { BasePosition, WalletComparisonPosition } from './types';
@@ -22,6 +22,7 @@ type PositionsModalProps<T extends BasePosition> = {
   setCurrentWalletAddress: (s: string) => void;
   onSwitchToAddWallet: () => void;
   onSwitchToMonitor: () => void;
+  onDeleteWallet: (walletAddress: string) => void;
   modalType: 'GENERAL' | 'COMPARISON';
   filteredPositions: T[];
   selectPosition: (p: T) => void;
@@ -41,6 +42,7 @@ export default function PositionsModal<T extends BasePosition>({
   selectPosition,
   onSwitchToAddWallet,
   onSwitchToMonitor,
+  onDeleteWallet,
   alerts = new Array<AlertResponse>(),
 }: PositionsModalProps<T>) {
   // Function to check if a position has an existing alert
@@ -166,8 +168,17 @@ export default function PositionsModal<T extends BasePosition>({
 
             <div className="mb-4">
               {walletAddresses.length > 0 && (
-                <div className="flex items-center p-2 border-b border-primary-color">
+                <div className="flex items-center justify-between p-2 border-b border-primary-color">
                   <span className="text-theme-primary">Wallet address - {formatWalletAddress(currentWalletAddress)}</span>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => onDeleteWallet(currentWalletAddress)}
+                    className="border-red-500 text-red-500 hover-border-body"
+                  >
+                    <Trash2 size={16} className="mr-1" />
+                    Remove
+                  </Button>
                 </div>
               )}
 
@@ -237,7 +248,7 @@ function PositionList<T extends BasePosition>({ modalType, positions, actionType
 
   const title = actionType === 'SUPPLY' ? 'Supply Positions' : 'Borrow Positions';
   const sortedPositions = [...positions].sort((a, b) => {
-    // false → 0, true → 1, so (0 - 1) = -1 means “a” (non-disabled) runs before “b” (disabled)
+    // false → 0, true → 1, so (0 - 1) = -1 means "a" (non-disabled) runs before "b" (disabled)
     return Number(a.disable) - Number(b.disable);
   });
 
