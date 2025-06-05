@@ -4,7 +4,8 @@ import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { toSentenceCase } from '@/utils/getSentenceCase';
 import { Asset, Chain } from '@prisma/client';
 import React from 'react';
-import TriggerValuesCellEmail, { AssetImageEmail, ChainImageEmail } from './TriggerValuesCellEmail';
+import TriggerValuesCellEmail from './TriggerValuesCellEmail';
+import { AssetImageEmail, ChainImageEmail } from '@/utils/emailRendering';
 
 export interface AlertsTableEmailProps {
   alert: AlertWithAllDetails;
