@@ -37,5 +37,5 @@ export function ChainImage({ chain }: { chain: string }) {
     );
   }
 
-  return <Image src={imageUrl} alt={chain} width={20} height={20} onError={() => setImageError(true)} className="inline" />;
+  return <Image src={imageUrl} alt={chain} width={20} height={20} onError={() => setImageError(true)} className="inline rounded-full" />;
 }
