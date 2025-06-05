@@ -1,11 +1,23 @@
 import React from 'react';
 import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 import { Alert } from '@prisma/client';
-import { AssetImageEmail, ChainImageEmail, PlatformImageEmail } from '@/utils/emailRendering';
+import { getAssetImageHtml, getChainImageHtml, getPlatformImageHtml } from '@/utils/emailRendering';
 
 interface TriggerValuesCellEmailProps {
   alert: Alert;
   triggerValues: AlertTriggerValuesInterface[] | null;
+}
+
+function AssetImageEmail({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
+  return <>{getAssetImageHtml(chain, assetAddress, assetSymbol)}</>;
+}
+
+function ChainImageEmail({ chain }: { chain: string }) {
+  return <>{getChainImageHtml(chain)}</>;
+}
+
+function PlatformImageEmail({ platform }: { platform: string }) {
+  return <>{getPlatformImageHtml(platform)}</>;
 }
 
 /**
