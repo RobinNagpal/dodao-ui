@@ -1,3 +1,4 @@
+import AlertsTableEmail, { AlertsTableEmailProps, getStaticHTMLOfEmail } from '@/components/alerts/email/AlertsTableEmail';
 import { toSentenceCase } from '@/utils/getSentenceCase';
 import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 import { SES } from '@aws-sdk/client-ses';
@@ -5,6 +6,10 @@ import { AlertActionType, ConditionType, Alert } from '@prisma/client';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { renderAlertsTableForEmail } from '@/utils/emailRendering';
 import { NotificationPayload } from '@/types/alerts';
+import ReactDOMServer from 'react-dom/server';
+import React from 'react';
+
+import { renderToStaticMarkup } from 'react-dom/server';
 
 const ses = new SES({
   region: process.env.AWS_REGION,
@@ -15,13 +20,14 @@ const ses = new SES({
  */
 const createAlertEmailBody = (payload: NotificationPayload): string => {
   // Extract alert information
-  const { alert, alertCategory, alertType, triggered, timestamp, walletAddress, alertObject } = payload;
+  const { alert, alertObject, alertCategory, alertType, triggered, timestamp, walletAddress } = payload;
   const formattedDate = new Date(timestamp).toLocaleString();
   const normalizedAlertCategory = toSentenceCase(alertCategory);
   const normalizedAlertType = toSentenceCase(alertType);
 
   // Generate the alerts table HTML using the renderAlertsTableForEmail function
-  const alertsTableHtml = renderAlertsTableForEmail(alertObject, triggered);
+  const props: AlertsTableEmailProps = { alerts: [{ alert: alertObject, triggeredValues: payload.triggered }] };
+  const alertsTableHtml = getStaticHTMLOfEmail(props);
 
   return `
   <!DOCTYPE html>

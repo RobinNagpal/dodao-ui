@@ -4,9 +4,10 @@ import { getAssetImageHtml, getChainImageHtml } from '@/utils/emailRendering';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { toSentenceCase } from '@/utils/getSentenceCase';
 import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import TriggerValuesCellEmail from './TriggerValuesCellEmail';
 
-interface AlertsTableEmailProps {
+export interface AlertsTableEmailProps {
   alerts: {
     alert: AlertWithAllDetails;
     triggeredValues: AlertTriggerValuesInterface[];
@@ -16,7 +17,12 @@ interface AlertsTableEmailProps {
 /**
  * Component for rendering a compact table of alerts for email
  */
-const AlertsTableEmail: React.FC<AlertsTableEmailProps> = ({ alerts }) => {
+
+export const getStaticHTMLOfEmail = (props: AlertsTableEmailProps): string => {
+  const appString = renderToStaticMarkup(<AlertsTableEmail {...props} />);
+  return appString;
+};
+function AlertsTableEmail({ alerts }: AlertsTableEmailProps) {
   if (!alerts || alerts.length === 0) {
     return <div style={{ color: '#666666' }}>No alerts available</div>;
   }
@@ -83,7 +89,7 @@ const AlertsTableEmail: React.FC<AlertsTableEmailProps> = ({ alerts }) => {
       </tbody>
     </table>
   );
-};
+}
 
 /**
  * Email-friendly version of AssetChainPairCell component
