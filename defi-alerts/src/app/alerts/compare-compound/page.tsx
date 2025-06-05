@@ -220,7 +220,7 @@ export default function CompareCompoundPage() {
                           </div>
                         </TableCell>
 
-                        <TableCell className="flex items-center justify-center">
+                        <TableCell>
                           <ConditionsCell alert={alert} />
                         </TableCell>
 

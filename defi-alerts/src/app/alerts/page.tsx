@@ -213,7 +213,7 @@ export default function AlertsPage() {
                           </div>
                         </TableCell>
 
-                        <TableCell className="flex items-center justify-center">
+                        <TableCell>
                           <ConditionsCell alert={alert} />
                         </TableCell>
 
