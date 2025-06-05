@@ -1,15 +1,9 @@
-import AlertsTableEmail, { AlertsTableEmailProps, getStaticHTMLOfEmail } from '@/components/alerts/email/AlertsTableEmail';
-import { toSentenceCase } from '@/utils/getSentenceCase';
-import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
-import { SES } from '@aws-sdk/client-ses';
-import { AlertActionType, ConditionType, Alert } from '@prisma/client';
-import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
-import { renderAlertsTableForEmail } from '@/utils/emailRendering';
+import { AlertsTableEmailProps, getStaticHTMLOfEmail } from '@/components/alerts/email/AlertsTableEmail';
 import { NotificationPayload } from '@/types/alerts';
-import ReactDOMServer from 'react-dom/server';
-import React from 'react';
-
-import { renderToStaticMarkup } from 'react-dom/server';
+import { toSentenceCase } from '@/utils/getSentenceCase';
+import { SES } from '@aws-sdk/client-ses';
+import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
+import { AlertActionType, ConditionType } from '@prisma/client';
 
 const ses = new SES({
   region: process.env.AWS_REGION,
