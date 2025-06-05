@@ -35,7 +35,7 @@ export function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string
     );
   }
 
-  return <Image src={imageUrlToUse} alt={assetSymbol} width={20} height={20} onError={() => setImageError(true)} className="inline" />;
+  return <Image src={imageUrlToUse} alt={assetSymbol} width={20} height={20} onError={() => setImageError(true)} className="inline rounded-full" />;
 }
 
 function getOverrideUrl(chain: string, checksummed: string): string | null {
