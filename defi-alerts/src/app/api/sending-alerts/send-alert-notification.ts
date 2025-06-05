@@ -29,8 +29,8 @@ const createAlertEmailBody = async (payload: NotificationPayload): Promise<strin
   const normalizedAlertCategory = toSentenceCase(alertCategory);
   const normalizedAlertType = toSentenceCase(alertType);
 
-  // Generate the alerts table HTML using the renderAlertsTableForEmail function
-  const props: AlertsTableEmailProps = { alerts: [{ alert: alertObject, triggeredValues: payload.triggered }] };
+  // Generate the alerts table HTML using the AlertsTableEmail component
+  const props: AlertsTableEmailProps = { alert: alertObject, triggeredValues: payload.triggered };
   const alertsTableHtml = await getStaticHTMLOfEmail(props);
 
   return `

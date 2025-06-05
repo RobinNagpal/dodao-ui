@@ -7,19 +7,18 @@ import React from 'react';
 import TriggerValuesCellEmail from './TriggerValuesCellEmail';
 
 export interface AlertsTableEmailProps {
-  alerts: {
-    alert: AlertWithAllDetails;
-    triggeredValues: AlertTriggerValuesInterface[];
-  }[];
+  alert: AlertWithAllDetails;
+  triggeredValues: AlertTriggerValuesInterface[];
 }
 
 /**
  * Component for rendering a compact table of alerts for email
+ * Shows common alert values at the top and each AlertTriggerValuesInterface as a separate row
  */
 
-function AlertsTableEmail({ alerts }: AlertsTableEmailProps) {
-  if (!alerts || alerts.length === 0) {
-    return <div style={{ color: '#666666' }}>No alerts available</div>;
+function AlertsTableEmail({ alert, triggeredValues }: AlertsTableEmailProps) {
+  if (!alert || !triggeredValues || triggeredValues.length === 0) {
+    return <div style={{ color: '#666666' }}>No alert data available</div>;
   }
 
   // Table styles
@@ -47,42 +46,76 @@ function AlertsTableEmail({ alerts }: AlertsTableEmailProps) {
     color: '#374151',
   };
 
-  return (
-    <table style={tableStyle}>
-      <thead>
-        <tr>
-          <th style={thStyle}>Alert Type</th>
-          <th style={thStyle}>Chain/Asset</th>
-          <th style={thStyle}>Triggered Condition</th>
-        </tr>
-      </thead>
-      <tbody>
-        {alerts.map((item, index) => {
-          const { alert, triggeredValues } = item;
+  // Alert info section styles
+  const alertInfoStyle = {
+    padding: '16px',
+    backgroundColor: '#f9fafb',
+    borderBottom: '2px solid #e5e7eb',
+    marginBottom: '16px',
+  };
 
-          return (
+  // Render the common alert information at the top
+  const alertInfoSection = (
+    <div style={alertInfoStyle}>
+      <div style={{ marginBottom: '12px' }}>
+        <span style={{ fontWeight: 600, fontSize: '16px', color: '#1f2937' }}>
+          {toSentenceCase(alert.actionType)} Alert
+        </span>
+        <span style={{ marginLeft: '8px', fontSize: '14px', color: '#6b7280' }}>
+          {alert.category === 'PERSONALIZED' ? formatWalletAddress(alert.walletAddress!) : 'General'}
+        </span>
+      </div>
+      <div>
+        <span style={{ fontWeight: 600, marginRight: '8px' }}>Assets/Chains:</span>
+        <AssetChainPairCellEmail chains={alert.selectedChains || []} assets={alert.selectedAssets || []} />
+      </div>
+    </div>
+  );
+
+  return (
+    <div>
+      {alertInfoSection}
+      <table style={tableStyle}>
+        <thead>
+          <tr>
+            <th style={thStyle}>Asset</th>
+            <th style={thStyle}>Chain</th>
+            <th style={thStyle}>Condition</th>
+          </tr>
+        </thead>
+        <tbody>
+          {triggeredValues.map((triggerValue, index) => (
             <tr key={index}>
               <td style={tdStyle}>
+                {triggerValue.asset && triggerValue.assetAddress && (
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span dangerouslySetInnerHTML={{ __html: getAssetImageHtml(
+                      triggerValue.chainName || 'ethereum',
+                      triggerValue.assetAddress,
+                      triggerValue.asset
+                    ) }} />
+                    <span style={{ marginLeft: '8px' }}>{triggerValue.asset}</span>
+                  </div>
+                )}
+              </td>
+              <td style={tdStyle}>
+                {triggerValue.chainName && (
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span dangerouslySetInnerHTML={{ __html: getChainImageHtml(triggerValue.chainName) }} />
+                    <span style={{ marginLeft: '8px' }}>{triggerValue.chainName}</span>
+                  </div>
+                )}
+              </td>
+              <td style={tdStyle}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ color: '#1f2937', fontWeight: 600 }}>{toSentenceCase(alert.actionType)}</span>
-                  {alert.category === 'PERSONALIZED' ? (
-                    <span style={{ fontSize: '12px', color: '#6b7280' }}>{formatWalletAddress(alert.walletAddress!)}</span>
-                  ) : (
-                    <span style={{ fontSize: '12px', color: '#6b7280' }}>General</span>
-                  )}
+                  <TriggerValuesCellEmail alert={alert} triggerValues={[triggerValue]} />
                 </div>
               </td>
-              <td style={tdStyle}>
-                <AssetChainPairCellEmail chains={alert.selectedChains || []} assets={alert.selectedAssets || []} />
-              </td>
-              <td style={tdStyle}>
-                <TriggerValuesCellEmail alert={alert} triggerValues={triggeredValues} />
-              </td>
             </tr>
-          );
-        })}
-      </tbody>
-    </table>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
