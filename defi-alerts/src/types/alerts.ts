@@ -1,3 +1,6 @@
+import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
+import { Alert as PrismaAlert, AlertActionType, AlertCondition, Chain as PrismaChain, DeliveryChannel } from '@prisma/client';
+
 export type ConditionType = 'APR_RISE_ABOVE' | 'APR_FALLS_BELOW' | 'APR_OUTSIDE_RANGE' | 'RATE_DIFF_ABOVE' | 'RATE_DIFF_BELOW';
 
 export type SeverityLevel = 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH';
@@ -115,4 +118,22 @@ export interface Alert {
   deliveryChannels: Channel[];
   createdAt: string;
   updatedAt: string;
+}
+
+// Define the return type for the alerts query
+export type AlertWithAllDetails = PrismaAlert & {
+  conditions: AlertCondition[];
+  deliveryChannels: DeliveryChannel[];
+  selectedChains: PrismaChain[];
+  selectedAssets: Asset[];
+};
+
+export interface NotificationPayload {
+  alert: string;
+  alertCategory: string;
+  alertType: AlertActionType;
+  walletAddress?: string | null;
+  triggered: AlertTriggerValuesInterface[];
+  timestamp: string;
+  alertObject: AlertWithAllDetails;
 }

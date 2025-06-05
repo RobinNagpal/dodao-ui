@@ -1,13 +1,12 @@
 'use client';
 
-import { AlertResponse } from '@/app/api/alerts/route';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { type Channel } from '@/types/alerts';
+import { AlertWithAllDetails, type Channel } from '@/types/alerts';
 import { useAaveUserPositions } from '@/utils/getAaveUserPositions';
 import { useSparkUserPositions } from '@/utils/getSparkUserPositions';
 import { useMorphoUserPositions } from '@/utils/geMorphoUserPositions';
@@ -46,7 +45,7 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
     loading: alertsLoading,
     error: alertsError,
     reFetchData: reFetchAlerts,
-  } = useFetchData<AlertResponse[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !session?.userId }, 'Failed to load alerts');
+  } = useFetchData<AlertWithAllDetails[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !session?.userId }, 'Failed to load alerts');
 
   // Fetch user's wallet addresses
   const {

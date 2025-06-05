@@ -1,7 +1,6 @@
 'use client';
 
-import { AlertResponse } from '@/app/api/alerts/route';
-import { type Channel } from '@/types/alerts';
+import { AlertWithAllDetails, type Channel } from '@/types/alerts';
 import { useCompoundUserPositions } from '@/utils/getCompoundUserPositions';
 import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
@@ -43,7 +42,7 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
     loading: alertsLoading,
     error: alertsError,
     reFetchData: reFetchAlerts,
-  } = useFetchData<AlertResponse[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !session?.userId }, 'Failed to load alerts');
+  } = useFetchData<AlertWithAllDetails[]>(`${baseUrl}/api/alerts`, { skipInitialFetch: !session?.userId }, 'Failed to load alerts');
 
   // Fetch user's wallet addresses
   const {

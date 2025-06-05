@@ -1,10 +1,10 @@
 'use client';
 
-import { AlertResponse } from '@/app/api/alerts/route';
 import { ChainImage } from '@/components/alerts/core/ChainImage';
 import { PlatformImage } from '@/components/alerts/core/PlatformImage';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { AlertWithAllDetails } from '@/types/alerts';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -25,7 +25,7 @@ type PositionsModalProps<T extends BasePosition> = {
   modalType: 'GENERAL' | 'COMPARISON';
   filteredPositions: T[];
   selectPosition: (p: T) => void;
-  alerts?: AlertResponse[];
+  alerts?: AlertWithAllDetails[];
 };
 
 export default function PositionsModal<T extends BasePosition>({
@@ -41,7 +41,7 @@ export default function PositionsModal<T extends BasePosition>({
   selectPosition,
   onSwitchToAddWallet,
   onSwitchToMonitor,
-  alerts = new Array<AlertResponse>(),
+  alerts = new Array<AlertWithAllDetails>(),
 }: PositionsModalProps<T>) {
   // Function to check if a position has an existing alert
   const hasExistingAlert = (position: T) => {
@@ -53,7 +53,7 @@ export default function PositionsModal<T extends BasePosition>({
     if (modalType === 'GENERAL') {
       // For general alerts, check if there's an alert for this position
       return alerts.some(
-        (alert: AlertResponse) =>
+        (alert: AlertWithAllDetails) =>
           alert.walletAddress === position.walletAddress &&
           alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
           alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
