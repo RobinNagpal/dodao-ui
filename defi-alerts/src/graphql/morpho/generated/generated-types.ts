@@ -3574,21 +3574,17 @@ export type GetMorphoVaultPositionsQueryVariables = Exact<{
 }>;
 
 
-export type GetMorphoVaultPositionsQuery = { __typename?: 'Query', userByAddress: { __typename?: 'User', address: any, marketPositions: Array<{ __typename?: 'MarketPosition', market: { __typename?: 'Market', id: string, dailyApys?: { __typename?: 'MarketApyAggregates', supplyApy?: number | null, borrowApy?: number | null, netSupplyApy?: number | null, netBorrowApy?: number | null } | null, loanAsset: { __typename?: 'Asset', address: any, symbol: string }, collateralAsset?: { __typename?: 'Asset', address: any, symbol: string } | null }, state?: { __typename?: 'MarketPositionState', borrowAssets?: any | null, supplyAssets?: any | null } | null }> } };
+export type GetMorphoVaultPositionsQuery = { __typename?: 'Query', userByAddress: { __typename?: 'User', marketPositions: Array<{ __typename?: 'MarketPosition', market: { __typename?: 'Market', id: string, state?: { __typename?: 'MarketState', dailyNetBorrowApy?: number | null } | null, loanAsset: { __typename?: 'Asset', address: any, symbol: string }, collateralAsset?: { __typename?: 'Asset', address: any, symbol: string } | null }, state?: { __typename?: 'MarketPositionState', borrowAssets?: any | null } | null }>, vaultPositions: Array<{ __typename?: 'VaultPosition', state?: { __typename?: 'VaultPositionState', assets?: any | null } | null, vault: { __typename?: 'Vault', address: any, name: string, state?: { __typename?: 'VaultState', dailyNetApy?: number | null } | null, asset: { __typename?: 'Asset', address: any, symbol: string } } }> } };
 
 
 export const GetMorphoVaultPositionsDocument = gql`
     query GetMorphoVaultPositions($chainId: Int!, $address: String!) {
   userByAddress(address: $address, chainId: $chainId) {
-    address
     marketPositions {
       market {
         id
-        dailyApys {
-          supplyApy
-          borrowApy
-          netSupplyApy
-          netBorrowApy
+        state {
+          dailyNetBorrowApy
         }
         loanAsset {
           address
@@ -3601,7 +3597,22 @@ export const GetMorphoVaultPositionsDocument = gql`
       }
       state {
         borrowAssets
-        supplyAssets
+      }
+    }
+    vaultPositions {
+      state {
+        assets
+      }
+      vault {
+        state {
+          dailyNetApy
+        }
+        address
+        asset {
+          address
+          symbol
+        }
+        name
       }
     }
   }

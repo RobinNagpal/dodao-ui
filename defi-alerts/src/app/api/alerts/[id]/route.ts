@@ -26,7 +26,17 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
 
 async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<Alert> {
   const { id } = await params;
-  const { actionType, selectedChains, selectedAssets, notificationFrequency, conditions, deliveryChannels, walletAddress, status } = await req.json();
+  const {
+    id: marketId,
+    actionType,
+    selectedChains,
+    selectedAssets,
+    notificationFrequency,
+    conditions,
+    deliveryChannels,
+    walletAddress,
+    status,
+  } = await req.json();
 
   // First, delete existing related records to avoid duplicates
   await prisma.alertCondition.deleteMany({
@@ -41,6 +51,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: 
   const updatedAlert = await prisma.alert.update({
     where: { id },
     data: {
+      marketId,
       actionType,
       status,
       walletAddress,
