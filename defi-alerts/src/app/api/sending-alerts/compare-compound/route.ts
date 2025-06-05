@@ -1,25 +1,25 @@
+import { sendAlertNotificationEmail } from '@/app/api/sending-alerts/send-alert-notification';
 import { prisma } from '@/prisma';
+import { AlertWithAllDetails, NotificationPayload } from '@/types/alerts';
 import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
+import { fetchMorphoPositionsForWallet } from '@/utils/fetchMorphoPositionsForWallet';
 import { useAaveAprs as getAaveAprs } from '@/utils/getAaveAPR';
 import { useCompoundMarketsAprs as getCompoundMarketsAprs } from '@/utils/getCompoundAPR';
 import { useSparkAprs as getSparkAprs } from '@/utils/getSparkAPR';
-import { sendAlertNotificationEmail } from '@/app/api/sending-alerts/send-alert-notification';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import {
   Alert,
   AlertActionType,
-  AlertNotification,
-  Asset,
   AlertCondition,
-  DeliveryChannel,
+  Asset,
   Chain,
   ConditionType,
+  DeliveryChannel,
   DeliveryChannelType,
   NotificationFrequency,
 } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { fetchMorphoPositionsForWallet } from '@/utils/fetchMorphoPositionsForWallet';
 
 // Types
 interface CompareCompoundResponse {
@@ -40,15 +40,6 @@ interface AssetData {
   chainId: number;
   symbol: string;
   address: string;
-}
-
-interface NotificationPayload {
-  alert: string;
-  alertCategory: string;
-  alertType: AlertActionType;
-  walletAddress?: string | null;
-  triggered: AlertTriggerValuesInterface[];
-  timestamp: string;
 }
 
 // map NotificationFrequency → cooldown in milliseconds
@@ -321,15 +312,7 @@ async function evaluateConditions(
 /**
  * Creates and sends notifications for triggered conditions
  */
-async function sendNotifications(
-  alert: Alert & {
-    selectedChains: any[];
-    selectedAssets: any[];
-    conditions: any[];
-    deliveryChannels: any[];
-  },
-  triggerValues: AlertTriggerValuesInterface[]
-) {
+async function sendNotifications(alert: AlertWithAllDetails, triggerValues: AlertTriggerValuesInterface[]) {
   const payload: NotificationPayload = {
     alert: 'Compound vs. Other Protocol Comparison',
     alertCategory: alert.category,
@@ -339,6 +322,7 @@ async function sendNotifications(
     }),
     triggered: triggerValues,
     timestamp: new Date().toISOString(),
+    alertObject: alert, // Add the full alert object for email rendering
   };
 
   for (const ch of alert.deliveryChannels) {

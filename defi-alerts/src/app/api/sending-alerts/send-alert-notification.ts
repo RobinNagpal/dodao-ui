@@ -1,20 +1,10 @@
+import AlertsTableEmail, { AlertsTableEmailProps } from './email/AlertsTableEmail';
+import { NotificationPayload } from '@/types/alerts';
 import { toSentenceCase } from '@/utils/getSentenceCase';
-import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 import { SES } from '@aws-sdk/client-ses';
-import { AlertActionType, ConditionType } from '@prisma/client';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
-
-/**
- * Interface for the notification payload
- */
-interface NotificationPayload {
-  alert: string;
-  alertCategory: string;
-  alertType: AlertActionType;
-  walletAddress?: string | null;
-  triggered: AlertTriggerValuesInterface[];
-  timestamp: string;
-}
+import { AlertActionType, ConditionType } from '@prisma/client';
+import React from 'react';
 
 const ses = new SES({
   region: process.env.AWS_REGION,
@@ -23,64 +13,25 @@ const ses = new SES({
 /**
  * Creates an HTML email body for alert notifications
  */
-const createAlertEmailBody = (payload: NotificationPayload): string => {
+
+export default async function getStaticHTMLOfEmail(props: AlertsTableEmailProps): Promise<string> {
+  const element = React.createElement(AlertsTableEmail, props);
+  const ReactDOMServer = (await import('react-dom/server')).default;
+
+  const appString = ReactDOMServer.renderToStaticMarkup(element);
+  return appString;
+}
+
+const createAlertEmailBody = async (payload: NotificationPayload): Promise<string> => {
   // Extract alert information
-  const { alert, alertCategory, alertType, triggered, timestamp, walletAddress } = payload;
+  const { alert, alertObject, alertCategory, alertType, triggered, timestamp, walletAddress } = payload;
   const formattedDate = new Date(timestamp).toLocaleString();
   const normalizedAlertCategory = toSentenceCase(alertCategory);
   const normalizedAlertType = toSentenceCase(alertType);
 
-  // Create HTML for triggered conditions
-  const triggeredHtml = triggered
-    .map((group: AlertTriggerValuesInterface) => {
-      // Extract the single condition object
-      const condition = group.condition;
-
-      // Format the threshold text (either a range or a single percentage)
-      let thresholdText = '';
-      if (typeof condition.threshold === 'object') {
-        thresholdText = `Range: Low ${condition.threshold.low}%, High ${condition.threshold.high}%`;
-      } else {
-        thresholdText = `${condition.threshold}%`;
-      }
-
-      // Get explanation message for why this alert is important
-      const explanation = getAlertExplanation(condition.type, alertType, group.isComparison || false);
-
-      // Get severity colors based on severity level
-      const severityColors = getSeverityColors(group.severity || 'NONE');
-
-      // Build the HTML for that one condition
-      const conditionHtml = `
-      <div style="margin-bottom: 10px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
-        <p><strong>Condition Type:</strong> ${formatConditionType(condition.type)}</p>
-        <p><strong>Threshold:</strong> ${thresholdText}</p>
-        ${explanation ? `<p style="color: ${severityColors.textColor};"><strong>What this means:</strong> ${explanation}</p>` : ''}
-        ${
-          group.severity && group.severity !== 'NONE'
-            ? `<p><span style="display: inline-block; padding: 2px 8px; border-radius: 4px; background-color: ${severityColors.bgColor}; color: ${severityColors.textColor}; border: 1px solid ${severityColors.borderColor};">${group.severity}</span></p>`
-            : ''
-        }
-      </div>
-    `;
-
-      // Build the HTML for the entire group (asset/chain + rates + single condition)
-      return `
-      <div style="margin-bottom: 20px; padding: 15px; background-color: ${severityColors.bgColor}; border-radius: 8px; border-left: 4px solid ${
-        severityColors.textColor
-      };">
-        <h3 style="margin-top: 0; color: #333;">Asset: ${group.asset} (Chain: ${group.chainName})</h3>
-        ${group.currentRate ? `<p><strong>Current Rate:</strong> ${group.currentRate}%</p>` : ''}
-        ${group.protocol ? `<p><strong>Compared Protocol:</strong> ${group.protocol}</p>` : ''}
-        ${group.compoundRate ? `<p><strong>Compound Rate:</strong> ${group.compoundRate}%</p>` : ''}
-        ${group.protocolRate ? `<p><strong>Protocol Rate:</strong> ${group.protocolRate}%</p>` : ''}
-        ${group.diff ? `<p><strong>Difference:</strong> ${group.diff}%</p>` : ''}
-        <h4 style="margin-top: 15px; color: ${severityColors.textColor};">Triggered Condition:</h4>
-        ${conditionHtml}
-      </div>
-    `;
-    })
-    .join('');
+  // Generate the alerts table HTML using the AlertsTableEmail component
+  const props: AlertsTableEmailProps = { alert: alertObject, triggeredValues: payload.triggered };
+  const alertsTableHtml = await getStaticHTMLOfEmail(props);
 
   return `
   <!DOCTYPE html>
@@ -174,8 +125,8 @@ const createAlertEmailBody = (payload: NotificationPayload): string => {
                 ${walletAddress ? `<p><strong>Wallet Address:</strong> ${walletAddress}</p>` : ''}
               </div>
 
-              <h2>Triggered Conditions</h2>
-              ${triggeredHtml}
+              <h2>Alert Details</h2>
+              ${alertsTableHtml}
 
               <p>Thank you for using our alert service. If you have any questions, feel free to reply to this email or <a href="mailto:support@dodao.io">contact support</a>.</p>
               <p>Best regards,<br>DoDAO Support</p>
@@ -292,7 +243,7 @@ export const sendAlertNotificationEmail = async (params: { email: string; payloa
   try {
     const from = 'support@dodao.io';
     console.log('Sending alert notification email to', email, 'from', from);
-    const emailBody = createAlertEmailBody(payload);
+    const emailBody = await createAlertEmailBody(payload);
     console.log('Email body: ', emailBody);
     // Sending email via AWS SES
     ses.sendEmail(

@@ -1,18 +1,10 @@
 import { prisma } from '@/prisma';
+import { AlertWithAllDetails } from '@/types/alerts';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { Alert, AlertCondition, Asset, Chain, DeliveryChannel } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
-// Define the return type for the alerts query
-export type AlertResponse = Alert & {
-  conditions: AlertCondition[];
-  deliveryChannels: DeliveryChannel[];
-  selectedChains: Chain[];
-  selectedAssets: Asset[];
-};
-
-async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<AlertResponse[]> {
+async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<AlertWithAllDetails[]> {
   const { userId } = userContext;
 
   const alerts = await prisma.alert.findMany({
@@ -32,4 +24,4 @@ async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
   return alerts;
 }
 
-export const GET = withLoggedInUser<AlertResponse[]>(getHandler);
+export const GET = withLoggedInUser<AlertWithAllDetails[]>(getHandler);

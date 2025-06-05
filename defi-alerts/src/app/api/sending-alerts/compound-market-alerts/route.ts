@@ -1,11 +1,12 @@
-import { prisma } from '@/prisma';
-import { useCompoundMarketsAprs as getCompoundMarketsAprs } from '@/utils/getCompoundAPR';
 import { sendAlertNotificationEmail } from '@/app/api/sending-alerts/send-alert-notification';
+import { prisma } from '@/prisma';
+import { AlertWithAllDetails, NotificationPayload } from '@/types/alerts';
+import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
+import { useCompoundMarketsAprs as getCompoundMarketsAprs } from '@/utils/getCompoundAPR';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Alert, AlertActionType, AlertCondition, Asset, Chain, DeliveryChannel, DeliveryChannelType, NotificationFrequency } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 
 // Types
 interface CompoundMarketResponse {
@@ -19,15 +20,6 @@ interface MarketData {
   assetAddress: string;
   netEarnAPY: number;
   netBorrowAPY: number;
-}
-
-interface NotificationPayload {
-  alert: string;
-  alertCategory: string;
-  alertType: AlertActionType;
-  walletAddress?: string | null;
-  triggered: AlertTriggerValuesInterface[];
-  timestamp: string;
 }
 
 // map frequency enum → milliseconds
@@ -220,15 +212,7 @@ async function evaluateConditions(
 /**
  * Creates and sends notifications for triggered conditions
  */
-async function sendNotifications(
-  alert: Alert & {
-    selectedChains: any[];
-    selectedAssets: any[];
-    conditions: any[];
-    deliveryChannels: any[];
-  },
-  triggerValues: AlertTriggerValuesInterface[]
-): Promise<void> {
+async function sendNotifications(alert: AlertWithAllDetails, triggerValues: AlertTriggerValuesInterface[]): Promise<void> {
   const payload: NotificationPayload = {
     alert: 'Compound Market Alert',
     alertCategory: alert.category,
@@ -238,6 +222,7 @@ async function sendNotifications(
     }),
     triggered: triggerValues,
     timestamp: new Date().toISOString(),
+    alertObject: alert, // Add the full alert object for email rendering
   };
 
   for (const ch of alert.deliveryChannels) {
