@@ -33,7 +33,10 @@ const DeleteWalletModal: React.FC<DeleteWalletModalProps> = ({ open, walletAddre
       onClose={onClose}
       onConfirm={handleConfirm}
       title="Delete Wallet Address"
-      confirmationText={`Are you sure you want to remove wallet address ${formatWalletAddress(walletAddress)} from your account?`}
+      confirmationText={`
+    Deleting ${formatWalletAddress(walletAddress)} will also remove all alerts tied to this address.
+    Are you sure you want to continue?
+  `}
       confirming={deleting}
       askForTextInput={false}
     />

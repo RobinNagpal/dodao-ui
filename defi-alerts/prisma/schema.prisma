@@ -182,6 +182,7 @@ model Alert {
   isComparison          Boolean               @default(false) @map("is_comparison")
   walletAddress         String?               @map("wallet_address")
   marketId              String?               @map("market_id")
+  archive               Boolean               @default(false) @map("archive")
   selectedChains        Chain[]               @relation("AlertChains")
   selectedAssets        Asset[]               @relation("AlertAssets")
   compareProtocols      String[]              @map("compare_protocols")

@@ -95,40 +95,12 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: 
 async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<Alert> {
   const { id } = await params;
 
-  // First, delete related records to ensure clean deletion
-  // Delete alert conditions
-  await prisma.alertCondition.deleteMany({
-    where: { alertId: id },
-  });
-
-  // Delete delivery channels
-  await prisma.deliveryChannel.deleteMany({
-    where: { alertId: id },
-  });
-
-  // Delete alert notifications and sent notifications
-  const alertNotifications = await prisma.alertNotification.findMany({
-    where: { alertId: id },
-    select: { id: true },
-  });
-
-  if (alertNotifications.length > 0) {
-    const notificationIds = alertNotifications.map((notification) => notification.id);
-
-    // Delete sent notifications related to the alert notifications
-    await prisma.sentNotification.deleteMany({
-      where: { alertNotificationId: { in: notificationIds } },
-    });
-
-    // Delete alert notifications
-    await prisma.alertNotification.deleteMany({
-      where: { id: { in: notificationIds } },
-    });
-  }
-
-  // Finally, delete the alert
-  const deletedAlert = await prisma.alert.delete({
+  // Archive the alert instead of deleting to preserve notification history
+  const archivedAlert = await prisma.alert.update({
     where: { id },
+    data: {
+      archive: true,
+    },
     include: {
       conditions: true,
       deliveryChannels: true,
@@ -137,7 +109,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
     },
   });
 
-  return deletedAlert;
+  return archivedAlert;
 }
 
 export const GET = withErrorHandlingV2<Alert>(getHandler);

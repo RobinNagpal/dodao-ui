@@ -16,7 +16,10 @@ async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
   const { userId } = userContext;
 
   const alerts = await prisma.alert.findMany({
-    where: { userId },
+    where: {
+      userId,
+      archive: false,
+    },
     include: {
       conditions: true,
       deliveryChannels: true,
