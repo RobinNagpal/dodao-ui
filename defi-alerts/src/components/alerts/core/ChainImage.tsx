@@ -29,8 +29,8 @@ export function ChainImage({ chain }: { chain: string }) {
     // Fallback to a colored div with the first letter of the token symbol
     return (
       <span
-        className="flex items-center justify-center bg-primary-color text-primary-text rounded-full"
-        style={{ width: '20px', height: '20px', fontSize: '10px' }}
+        className="flex items-center justify-center bg-white text-black rounded-full font-semibold"
+        style={{ width: '20px', height: '20px', fontSize: '12px' }}
       >
         {chain.charAt(0)}
       </span>
