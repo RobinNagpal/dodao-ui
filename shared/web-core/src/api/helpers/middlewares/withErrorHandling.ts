@@ -25,12 +25,12 @@ export function withErrorHandlingV1<T>(handler: Handler<T>): Handler<T> {
       return result;
     } catch (error) {
       const requestInfo = `host: ${req.nextUrl.host}, origin: ${req.nextUrl.origin}, url: ${req.url}, searchParams: ${req.nextUrl.searchParams.toString()}`;
+      console.error('[withErrorHandlingV1] Error stack:', (error as any).stack);
       console.error('[withErrorHandlingV1] Error caught:', error);
       console.error('[withErrorHandlingV1] Request info:', requestInfo);
       console.error('[withErrorHandlingV1] Request Params:', await dynamic.params);
       console.error('[withErrorHandlingV1] Error name:', (error as any).name);
       console.error('[withErrorHandlingV1] Error message:', (error as any).message);
-      console.error('[withErrorHandlingV1] Error stack:', (error as any).stack);
 
       const errorData = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
       const message = `${errorData}. Error occurred while processing the request ${requestInfo}`;
@@ -64,12 +64,12 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
       return NextResponse.json(result, { status: 200 });
     } catch (error) {
       const requestInfo = `host: ${req.nextUrl.host}, origin: ${req.nextUrl.origin}, url: ${req.url}, searchParams: ${req.nextUrl.searchParams.toString()}`;
+      console.error('[withErrorHandlingV2] Error stack:', (error as any).stack);
       console.error('[withErrorHandlingV2] Error caught:', error);
       console.error('[withErrorHandlingV2] Request info:', requestInfo);
       console.error('[withErrorHandlingV2] Request Params:', await dynamic.params);
       console.error('[withErrorHandlingV2] Error name:', (error as any).name);
       console.error('[withErrorHandlingV2] Error message:', (error as any).message);
-      console.error('[withErrorHandlingV2] Error stack:', (error as any).stack);
 
       const errorData = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
       const message = `${errorData}. Error occurred while processing the request ${requestInfo}`;
@@ -112,12 +112,12 @@ export function withLoggedInUser<T>(handler: HandlerWithUser<T> | HandlerWithUse
       return NextResponse.json(result, { status: 200 });
     } catch (error) {
       const requestInfo = `host: ${req.nextUrl.host}, origin: ${req.nextUrl.origin}, url: ${req.url}, searchParams: ${req.nextUrl.searchParams.toString()}`;
+      console.error('[withLoggedInUser] Error stack:', (error as any).stack);
       console.error('[withLoggedInUser] Error caught:', error);
       console.error('[withLoggedInUser] Request info:', requestInfo);
       console.error('[withLoggedInUser] Request Params:', await dynamic.params);
       console.error('[withLoggedInUser] Error name:', (error as any).name);
       console.error('[withLoggedInUser] Error message:', (error as any).message);
-      console.error('[withLoggedInUser] Error stack:', (error as any).stack);
 
       const errorData = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
       const message = `${errorData}. Error occurred while processing the request ${requestInfo}`;
