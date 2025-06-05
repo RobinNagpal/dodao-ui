@@ -116,7 +116,7 @@ export async function fetchMorphoPositionsForWallet(wallet: string): Promise<Wal
 
         // (b) build idTag & symbol for supply
         supplyCount += 1;
-        const idTag = `supply-${supplyCount}-morpho`;
+        const idTag = `supply-morpho-${vault.id}`;
         // symbol is just the vault asset symbol (no collateral side here)
         const symbol = `(${vault.asset.symbol === 'WETH' ? 'ETH' : vault.asset.symbol} - ${vault.name})`;
 

@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { AssetImage } from '../alerts/core/AssetImage';
 import { BasePosition, WalletComparisonPosition } from './types';
 import { toSentenceCase } from '@/utils/getSentenceCase';
+import { Asset, Chain } from '@/types/alerts';
 
 type PositionsModalProps<T extends BasePosition> = {
   isOpen: boolean;
@@ -49,16 +50,13 @@ export default function PositionsModal<T extends BasePosition>({
   const hasExistingAlert = (position: T) => {
     if (!alerts || alerts.length === 0) return false;
 
-    // Normalize ETH to WETH for comparison
-    const normalizedMarket = position.assetSymbol === 'ETH' ? 'WETH' : position.assetSymbol;
-
     if (modalType === 'GENERAL') {
       // For general alerts, check if there's an alert for this position
       return alerts.some(
         (alert: AlertResponse) =>
           alert.walletAddress === position.walletAddress &&
-          alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
-          alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
+          alert.selectedChains?.some((chain: Chain) => chain.name === position.chain) &&
+          alert.selectedAssets?.some((asset: Asset) => asset.address.toLowerCase() === position.assetAddress.toLowerCase()) &&
           alert.actionType === position.actionType
       );
     } else {
@@ -67,11 +65,12 @@ export default function PositionsModal<T extends BasePosition>({
         (alert) =>
           alert.isComparison &&
           alert.walletAddress === position.walletAddress &&
-          alert.selectedChains?.some((chain: any) => chain.name === position.chain) &&
-          alert.selectedAssets?.some((asset: any) => asset.symbol === normalizedMarket) &&
+          alert.selectedChains?.some((chain: Chain) => chain.name === position.chain) &&
+          alert.selectedAssets?.some((asset: Asset) => asset.address.toLowerCase() === position.assetAddress.toLowerCase()) &&
           alert.actionType === position.actionType &&
           (position as any).platform &&
-          alert.compareProtocols?.includes((position as any).platform)
+          alert.compareProtocols?.includes((position as any).platform) &&
+          ((position as any).platform === 'MORPHO' ? position.id === alert.marketId : true)
       );
     }
   };
