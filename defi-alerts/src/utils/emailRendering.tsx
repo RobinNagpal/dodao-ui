@@ -85,12 +85,11 @@ export function ChainImageEmail({ chain }: { chain: string }): JSX.Element {
  */
 export function PlatformImageEmail({ platform }: { platform: string }): JSX.Element {
   // For email, we need to use absolute URLs
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://defi-alerts.dodao.io';
-  const imageUrl = `${baseUrl}/${platform.toLowerCase()}.svg`;
+  const imageUrl = `https://www.defialerts.xyz/${platform.toLowerCase()}.svg`;
 
   // For server-side rendering, we can't use onError
   // Instead, we'll use a simple img tag and rely on server-side rendering
-  return <img src={imageUrl} alt={`${platform} logo`} width="20" height="20" style={{ display: 'inline', verticalAlign: 'middle' }} />;
+  return <img src={imageUrl} alt={`${platform}`} width="20" height="20" style={{ display: 'inline', verticalAlign: 'middle' }} />;
 }
 
 /**
