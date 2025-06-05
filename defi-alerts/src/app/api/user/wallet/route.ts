@@ -65,20 +65,29 @@ async function deleteHandler(request: NextRequest, userContext: DoDaoJwtTokenPay
   const currentWallets = user.walletAddress || [];
   const walletToDelete = body.walletAddress.toLowerCase();
 
-  // Check if wallet exists
   if (!currentWallets.some((w) => w.toLowerCase() === walletToDelete)) {
     throw new Error('Wallet address not found');
   }
 
-  // Remove the wallet address from the array
   const updatedWallets = currentWallets.filter((w) => w.toLowerCase() !== walletToDelete);
 
-  await prisma.user.update({
-    where: { id: userId },
-    data: {
-      walletAddress: updatedWallets,
-    },
-  });
+  await prisma.$transaction([
+    prisma.user.update({
+      where: { id: userId },
+      data: {
+        walletAddress: updatedWallets,
+      },
+    }),
+    prisma.alert.updateMany({
+      where: {
+        userId: userId,
+        walletAddress: body.walletAddress,
+      },
+      data: {
+        archive: true,
+      },
+    }),
+  ]);
 
   return { success: true };
 }

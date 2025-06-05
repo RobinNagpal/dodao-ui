@@ -67,7 +67,11 @@ async function persistAPRSnapshots(aprs: MarketData[]): Promise<void> {
  */
 async function loadAlerts() {
   return prisma.alert.findMany({
-    where: { isComparison: false, status: 'ACTIVE' },
+    where: {
+      isComparison: false,
+      status: 'ACTIVE',
+      archive: false,
+    },
     include: {
       selectedChains: true,
       selectedAssets: true,

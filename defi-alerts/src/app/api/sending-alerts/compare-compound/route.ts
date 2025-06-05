@@ -161,7 +161,11 @@ async function persistAPRSnapshots(compound: ProtocolMarket[], aave: ProtocolMar
  */
 async function loadComparisonAlerts() {
   return prisma.alert.findMany({
-    where: { isComparison: true, status: 'ACTIVE' },
+    where: {
+      isComparison: true,
+      status: 'ACTIVE',
+      archive: false,
+    },
     include: {
       selectedChains: true,
       selectedAssets: true,
