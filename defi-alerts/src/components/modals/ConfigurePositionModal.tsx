@@ -286,6 +286,10 @@ export default function ConfigurePositionModal<T extends BasePosition>({
 
     // Prepare the payload
     const payload: PersonalizedComparisonAlertPayload = {
+      id:
+        selectedPosition.actionType === 'BORROW' && (selectedPosition as unknown as WalletComparisonPosition).platform === 'MORPHO'
+          ? selectedPosition.id
+          : undefined,
       walletAddress: selectedPosition.walletAddress,
       category: 'PERSONALIZED' as AlertCategory,
       actionType: selectedPosition.actionType as AlertActionType,

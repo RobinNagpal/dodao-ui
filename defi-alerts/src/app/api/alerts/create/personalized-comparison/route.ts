@@ -16,6 +16,7 @@ import {
 } from '@/utils/alertUtils';
 
 export interface PersonalizedComparisonAlertPayload {
+  id?: string;
   walletAddress: string;
   category: AlertCategory;
   actionType: AlertActionType;
@@ -46,6 +47,7 @@ async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPaylo
 
   const { username, spaceId } = userContext;
   const {
+    id,
     walletAddress,
     category,
     actionType,
@@ -98,6 +100,7 @@ async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPaylo
     data: {
       user: { connect: { id: user.id } },
       walletAddress,
+      marketId: id,
       category,
       actionType,
       isComparison: true,
