@@ -32,7 +32,8 @@ export function withErrorHandlingV1<T>(handler: Handler<T>): Handler<T> {
       console.error('[withErrorHandlingV1] Error message:', (error as any).message);
       console.error('[withErrorHandlingV1] Error stack:', (error as any).stack);
 
-      const message = (error as any)?.response?.data + `. Error occurred while processing the request  ${requestInfo}`;
+      const errorData = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
+      const message = `${errorData}. Error occurred while processing the request ${requestInfo}`;
       console.log('[withErrorHandlingV1] Logging error to system');
       await logError(message, {}, error as any, null, null);
       await logErrorRequest(error as Error, req);
@@ -70,12 +71,13 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
       console.error('[withErrorHandlingV2] Error message:', (error as any).message);
       console.error('[withErrorHandlingV2] Error stack:', (error as any).stack);
 
-      const message = (error as any)?.response?.data + `. Error occurred while processing the request  ${requestInfo}`;
+      const errorData = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
+      const message = `${errorData}. Error occurred while processing the request ${requestInfo}`;
       console.log('[withErrorHandlingV2] Logging error to system');
       await logError(message, {}, error as any, null, null);
       await logErrorRequest(error as Error, req);
 
-      const userMessage = (error as any)?.response?.data || (error as any)?.message;
+      const userMessage = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
       console.log('[withErrorHandlingV2] Returning user-friendly error message with status 500:', userMessage);
       return NextResponse.json({ error: userMessage }, { status: 500 });
     }
@@ -117,12 +119,13 @@ export function withLoggedInUser<T>(handler: HandlerWithUser<T> | HandlerWithUse
       console.error('[withLoggedInUser] Error message:', (error as any).message);
       console.error('[withLoggedInUser] Error stack:', (error as any).stack);
 
-      const message = (error as any)?.response?.data + `. Error occurred while processing the request  ${requestInfo}`;
+      const errorData = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
+      const message = `${errorData}. Error occurred while processing the request ${requestInfo}`;
       console.log('[withLoggedInUser] Logging error to system');
       await logError(message, {}, error as any, null, null);
       await logErrorRequest(error as Error, req);
 
-      const userMessage = (error as any)?.response?.data || (error as any)?.message;
+      const userMessage = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
       console.log('[withLoggedInUser] Returning user-friendly error message with status 500:', userMessage);
       return NextResponse.json({ error: userMessage }, { status: 500 });
     }

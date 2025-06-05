@@ -4,7 +4,7 @@ import { Alert } from '@prisma/client';
 import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 
 /**
- * Utility functions for generating HTML strings for email templates
+ * Utility functions for rendering React components to HTML strings for emails
  */
 
 /**
@@ -28,7 +28,9 @@ export function getAssetImageHtml(chain: string, assetAddress: string, assetSymb
     return `<img src="${imageUrlToUse}" alt="${assetSymbol}" width="20" height="20" style="display:inline; vertical-align:middle;" />`;
   } catch (error) {
     // Fallback to a colored div with the first letter of the token symbol
-    return `<span style="display:inline-flex; align-items:center; justify-content:center; background-color:#ffffff; color:#000000; border-radius:50%; font-weight:600; width:20px; height:20px; font-size:12px; vertical-align:middle;">${assetSymbol.charAt(0)}</span>`;
+    return `<span style="display:inline-flex; align-items:center; justify-content:center; background-color:#ffffff; color:#000000; border-radius:50%; font-weight:600; width:20px; height:20px; font-size:12px; vertical-align:middle;">${assetSymbol.charAt(
+      0
+    )}</span>`;
   }
 }
 
@@ -46,7 +48,9 @@ export function getChainImageHtml(chain: string): string {
     </span>`;
   }
 
-  return `<img src="${imageUrl}" alt="${chain}" width="20" height="20" style="display:inline; vertical-align:middle;" onerror="this.outerHTML='<span style=\\"display:inline-flex;align-items:center;justify-content:center;background-color:#ffffff;color:#000000;border-radius:50%;font-weight:600;width:20px;height:20px;font-size:12px;vertical-align:middle\\">${chain.charAt(0)}</span>'" />`;
+  return `<img src="${imageUrl}" alt="${chain}" width="20" height="20" style="display:inline; vertical-align:middle;" onerror="this.outerHTML='<span style=\\"display:inline-flex;align-items:center;justify-content:center;background-color:#ffffff;color:#000000;border-radius:50%;font-weight:600;width:20px;height:20px;font-size:12px;vertical-align:middle\\">${chain.charAt(
+    0
+  )}</span>'" />`;
 }
 
 /**
@@ -57,7 +61,9 @@ export function getPlatformImageHtml(platform: string): string {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://defi-alerts.dodao.io';
   const imageUrl = `${baseUrl}/${platform.toLowerCase()}.svg`;
 
-  return `<img src="${imageUrl}" alt="${platform} logo" width="20" height="20" style="display:inline; vertical-align:middle;" onerror="this.outerHTML='<span style=\\"display:inline-flex;align-items:center;justify-content:center;background-color:#007bff;color:#ffffff;border-radius:50%;width:20px;height:20px;font-size:10px;vertical-align:middle\\">${platform.charAt(0)}</span>'" />`;
+  return `<img src="${imageUrl}" alt="${platform} logo" width="20" height="20" style="display:inline; vertical-align:middle;" onerror="this.outerHTML='<span style=\\"display:inline-flex;align-items:center;justify-content:center;background-color:#007bff;color:#ffffff;border-radius:50%;width:20px;height:20px;font-size:10px;vertical-align:middle\\">${platform.charAt(
+    0
+  )}</span>'" />`;
 }
 
 /**
