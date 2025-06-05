@@ -3574,7 +3574,7 @@ export type GetMorphoVaultPositionsQueryVariables = Exact<{
 }>;
 
 
-export type GetMorphoVaultPositionsQuery = { __typename?: 'Query', userByAddress: { __typename?: 'User', marketPositions: Array<{ __typename?: 'MarketPosition', market: { __typename?: 'Market', id: string, state?: { __typename?: 'MarketState', dailyNetBorrowApy?: number | null } | null, loanAsset: { __typename?: 'Asset', address: any, symbol: string }, collateralAsset?: { __typename?: 'Asset', address: any, symbol: string } | null }, state?: { __typename?: 'MarketPositionState', borrowAssets?: any | null } | null }>, vaultPositions: Array<{ __typename?: 'VaultPosition', state?: { __typename?: 'VaultPositionState', assets?: any | null } | null, vault: { __typename?: 'Vault', address: any, name: string, state?: { __typename?: 'VaultState', dailyNetApy?: number | null } | null, asset: { __typename?: 'Asset', address: any, symbol: string } } }> } };
+export type GetMorphoVaultPositionsQuery = { __typename?: 'Query', userByAddress: { __typename?: 'User', marketPositions: Array<{ __typename?: 'MarketPosition', market: { __typename?: 'Market', id: string, state?: { __typename?: 'MarketState', dailyNetBorrowApy?: number | null } | null, loanAsset: { __typename?: 'Asset', address: any, symbol: string }, collateralAsset?: { __typename?: 'Asset', address: any, symbol: string } | null }, state?: { __typename?: 'MarketPositionState', borrowAssets?: any | null } | null }>, vaultPositions: Array<{ __typename?: 'VaultPosition', state?: { __typename?: 'VaultPositionState', assets?: any | null } | null, vault: { __typename?: 'Vault', id: string, address: any, name: string, state?: { __typename?: 'VaultState', dailyNetApy?: number | null } | null, asset: { __typename?: 'Asset', address: any, symbol: string } } }> } };
 
 
 export const GetMorphoVaultPositionsDocument = gql`
@@ -3604,6 +3604,7 @@ export const GetMorphoVaultPositionsDocument = gql`
         assets
       }
       vault {
+        id
         state {
           dailyNetApy
         }

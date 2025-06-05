@@ -24,6 +24,7 @@ query GetMorphoVaultPositions($chainId: Int!, $address: String!) {
             assets
           }
           vault {
+            id
             state {
               dailyNetApy
             }

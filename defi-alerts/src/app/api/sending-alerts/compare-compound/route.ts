@@ -251,7 +251,7 @@ async function evaluateConditions(
               pos.chain.toLowerCase() === chainObj.name.toLowerCase() &&
               pos.assetAddress.toLowerCase() === assetObj.address.toLowerCase() &&
               pos.actionType === alert.actionType &&
-              (alert.actionType === 'BORROW' ? pos.id === alert.marketId : true)
+              pos.id === alert.marketId
           );
 
           if (!morphoMatch || morphoMatch.disable) {
