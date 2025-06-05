@@ -1,11 +1,10 @@
 import { AlertWithAllDetails } from '@/types/alerts';
 import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
-import { getAssetImageHtml, getChainImageHtml } from '@/utils/emailRendering';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { toSentenceCase } from '@/utils/getSentenceCase';
 import { Asset, Chain } from '@prisma/client';
 import React from 'react';
-import TriggerValuesCellEmail from './TriggerValuesCellEmail';
+import TriggerValuesCellEmail, { AssetImageEmail, ChainImageEmail } from './TriggerValuesCellEmail';
 
 export interface AlertsTableEmailProps {
   alert: AlertWithAllDetails;
@@ -88,11 +87,9 @@ function AlertsTableEmail({ alert, triggeredValues }: AlertsTableEmailProps) {
               <td style={tdStyle}>
                 {triggerValue.asset && triggerValue.assetAddress && (
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: getAssetImageHtml(triggerValue.chainName || 'ethereum', triggerValue.assetAddress, triggerValue.asset),
-                      }}
-                    />
+                    <span>
+                      <AssetImageEmail chain={triggerValue.chainName || 'ethereum'} assetAddress={triggerValue.assetAddress} assetSymbol={triggerValue.asset} />{' '}
+                    </span>
                     <span style={{ marginLeft: '8px' }}>{triggerValue.asset}</span>
                   </div>
                 )}
@@ -100,7 +97,9 @@ function AlertsTableEmail({ alert, triggeredValues }: AlertsTableEmailProps) {
               <td style={tdStyle}>
                 {triggerValue.chainName && (
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <span dangerouslySetInnerHTML={{ __html: getChainImageHtml(triggerValue.chainName) }} />
+                    <span>
+                      <ChainImageEmail chain={triggerValue.chainName} />
+                    </span>
                     <span style={{ marginLeft: '8px' }}>{triggerValue.chainName}</span>
                   </div>
                 )}
@@ -146,7 +145,11 @@ const AssetChainPairCellEmail = ({ chains, assets }: { chains: Chain[]; assets: 
             <React.Fragment key={index}>
               {asset.address && asset.symbol && (
                 <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-                  {getAssetImageHtml(getChain(asset.chainId)?.name || chains[0]?.name || 'ethereum', asset.address, asset.symbol)}
+                  <AssetImageEmail
+                    chain={getChain(asset.chainId)?.name || chains[0]?.name || 'ethereum'}
+                    assetAddress={asset.address}
+                    assetSymbol={asset.symbol}
+                  />
                   <span style={{ marginLeft: '4px', fontSize: '14px' }}>{asset.symbol}</span>
                   {index < displayedAssets.length - 1 && <span style={{ margin: '0 4px' }}>,</span>}
                 </div>
@@ -163,7 +166,7 @@ const AssetChainPairCellEmail = ({ chains, assets }: { chains: Chain[]; assets: 
           {displayedChains.map((chain, index) => (
             <React.Fragment key={index}>
               <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-                {getChainImageHtml(chain.name)}
+                <ChainImageEmail chain={chain.name} />
                 <span style={{ marginLeft: '4px', fontSize: '14px' }}>{chain.name}</span>
                 {index < displayedChains.length - 1 && <span style={{ margin: '0 4px' }}>,</span>}
               </div>

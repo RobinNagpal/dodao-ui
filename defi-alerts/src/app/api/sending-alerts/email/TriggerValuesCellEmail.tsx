@@ -8,7 +8,7 @@ interface TriggerValuesCellEmailProps {
   triggerValues: AlertTriggerValuesInterface[] | null;
 }
 
-function AssetImageEmail({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
+export function AssetImageEmail({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
   return <>{getAssetImageHtml(chain, assetAddress, assetSymbol)}</>;
 }
 
@@ -16,7 +16,7 @@ function ChainImageEmail({ chain }: { chain: string }) {
   return <>{getChainImageHtml(chain)}</>;
 }
 
-function PlatformImageEmail({ platform }: { platform: string }) {
+export function PlatformImageEmail({ platform }: { platform: string }) {
   return <>{getPlatformImageHtml(platform)}</>;
 }
 
