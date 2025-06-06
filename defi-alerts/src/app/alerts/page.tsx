@@ -3,7 +3,6 @@
 import { AlertActionsCell, StatusBadge, ConditionsCell, DeleteAlertModal, DeliveryChannelCell } from '@/components/alerts';
 import AssetChainPairCell from '@/components/alerts/core/AssetChainPairCell';
 import CreateAlertModals from '@/components/alerts/CreateAlertModals';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -41,7 +40,6 @@ export default function AlertsPage() {
     errorMessage: 'Failed to delete alert',
   });
 
-  // const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
   const userId = session.userId;
 
   // Use useFetchData hook to fetch alerts
@@ -260,7 +258,7 @@ export default function AlertsPage() {
       )}
 
       {/* Create Alert Modals */}
-      <CreateAlertModals isOpen={showCreateAlertModal} onClose={handleModalClose} />
+      <CreateAlertModals isOpen={showCreateAlertModal} onClose={handleModalClose} onAlertsUpdated={reFetchData} />
     </div>
   );
 }

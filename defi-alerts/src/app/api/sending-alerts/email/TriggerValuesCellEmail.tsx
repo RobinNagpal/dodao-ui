@@ -12,14 +12,27 @@ interface TriggerValuesCellEmailProps {
  * Email-friendly version of AssetInfo component
  */
 const AssetInfoEmail = ({ triggerValue }: { triggerValue: AlertTriggerValuesInterface }) => {
-  const { assetAddress, assetSymbol, chainName } = triggerValue;
-  if (!assetAddress || !assetSymbol || !chainName) {
+  const { assetAddress, asset, assetSymbol, chainName } = triggerValue;
+
+  // If we don't have either asset or chainName, we can't display anything meaningful
+  if ((!assetAddress && !asset) || !chainName) {
     return null;
   }
+
+  const symbol = assetSymbol || asset;
+
   return (
     <>
       {' '}
-      for <AssetImageEmail chain={chainName} assetAddress={assetAddress} assetSymbol={assetSymbol} /> on <ChainImageEmail chain={chainName} />.{' '}
+      for{' '}
+      {assetAddress ? (
+        <>
+          <AssetImageEmail chain={chainName} assetAddress={assetAddress} assetSymbol={symbol} /> {symbol}
+        </>
+      ) : (
+        <>{symbol}</>
+      )}{' '}
+      on <ChainImageEmail chain={chainName} /> {chainName}.{' '}
     </>
   );
 };
@@ -68,33 +81,31 @@ const TriggerValuesCellEmail: React.FC<TriggerValuesCellEmailProps> = ({ alert, 
     // Determine if this is a supply or borrow action based on the condition
     // Default to 'supply' if not specified
     const actionType = alert.actionType;
+    const actionVerb = actionType === 'SUPPLY' ? 'supply' : 'borrow';
 
     if (isComparison) {
       switch (condition.type) {
         case 'RATE_DIFF_ABOVE':
           return (
             <span>
-              Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate is {actionType === 'SUPPLY' ? 'more(better earnings)' : 'more(higher cost)'} on{' '}
-              <PlatformImageEmail platform={'compound'} /> by {formatThresholdValue(condition.threshold)} compared to{' '}
-              <CompareProtocolsEmail protocols={protocol ? [protocol] : []} /> <AssetInfoEmail triggerValue={triggerValue} />
-              Current difference: {diff}
+              <PlatformImageEmail platform={'compound'} /> {actionVerb} rate is {actionVerb === 'supply' ? 'higher (better returns)' : 'higher (higher cost)'}{' '}
+              than <CompareProtocolsEmail protocols={protocol ? [protocol] : []} /> by {formatThresholdValue(condition.threshold)}%
+              <AssetInfoEmail triggerValue={triggerValue} /> Current difference: {diff}%
             </span>
           );
         case 'RATE_DIFF_BELOW':
           return (
             <span>
-              Alert when {actionType === 'SUPPLY' ? 'supply' : 'borrow'} rate is {actionType === 'BORROW' ? 'less(better cost)' : 'more(better earnings)'} on{' '}
-              <PlatformImageEmail platform={'compound'} /> by {formatThresholdValue(condition.threshold)} compared to{' '}
-              <CompareProtocolsEmail protocols={protocol ? [protocol] : []} />
-              <AssetInfoEmail triggerValue={triggerValue} /> Current difference: {diff}
+              <PlatformImageEmail platform={'compound'} /> {actionVerb} rate is {actionVerb === 'supply' ? 'lower (lower returns)' : 'lower (better rate)'} than{' '}
+              <CompareProtocolsEmail protocols={protocol ? [protocol] : []} /> by {formatThresholdValue(condition.threshold)}%
+              <AssetInfoEmail triggerValue={triggerValue} /> Current difference: {diff}%
             </span>
           );
         default:
           return (
             <span>
-              Comparison between <PlatformImageEmail platform={'compound'} /> ({compoundRate}) and{' '}
-              <CompareProtocolsEmail protocols={protocol ? [protocol] : []} />
-              <AssetInfoEmail triggerValue={triggerValue} /> ({protocolRate}) with difference of {diff}
+              <PlatformImageEmail platform={'compound'} /> {actionVerb} rate is different from <CompareProtocolsEmail protocols={protocol ? [protocol] : []} />
+              <AssetInfoEmail triggerValue={triggerValue} /> Current rates: {compoundRate}% vs {protocolRate}%, difference: {diff}%
             </span>
           );
       }
@@ -105,31 +116,31 @@ const TriggerValuesCellEmail: React.FC<TriggerValuesCellEmailProps> = ({ alert, 
         case 'APR_RISE_ABOVE':
           return (
             <span>
-              Alert when <PlatformImageEmail platform={platform} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR rises above{' '}
-              {formatThresholdValue(condition.threshold)} {actionType === 'SUPPLY' ? '(better earning opportunity)' : '(higher borrowing cost)'}. Current rate:{' '}
-              {currentRate}
+              <PlatformImageEmail platform={platform} /> {actionVerb} rate is above {formatThresholdValue(condition.threshold)}%{' '}
+              {actionVerb === 'supply' ? '(better returns)' : '(higher cost)'}
+              <AssetInfoEmail triggerValue={triggerValue} /> Current rate: {currentRate}%
             </span>
           );
         case 'APR_FALLS_BELOW':
           return (
             <span>
-              Alert when <PlatformImageEmail platform={platform} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR falls below{' '}
-              {formatThresholdValue(condition.threshold)} {actionType === 'SUPPLY' ? '(worse earning opportunity)' : '(better borrowing rate)'}. Current rate:{' '}
-              {currentRate}
+              <PlatformImageEmail platform={platform} /> {actionVerb} rate is below {formatThresholdValue(condition.threshold)}%{' '}
+              {actionVerb === 'supply' ? '(lower returns)' : '(better rate)'}
+              <AssetInfoEmail triggerValue={triggerValue} /> Current rate: {currentRate}%
             </span>
           );
         case 'APR_OUTSIDE_RANGE':
           return (
             <span>
-              Alert when <PlatformImageEmail platform={platform} /> {actionType === 'SUPPLY' ? 'supply' : 'borrow'} APR moves outside the range of{' '}
-              {formatThresholdValue(condition.threshold)}{' '}
-              {actionType === 'SUPPLY' ? '(significant change in earning opportunity)' : '(significant change in borrowing cost)'}. Current rate: {currentRate}
+              <PlatformImageEmail platform={platform} /> {actionVerb} rate is outside the range of {formatThresholdValue(condition.threshold)}%
+              <AssetInfoEmail triggerValue={triggerValue} /> Current rate: {currentRate}%
             </span>
           );
         default:
           return (
             <span>
-              <PlatformImageEmail platform={platform} /> APR for {asset} on {chainName} is {currentRate}
+              <PlatformImageEmail platform={platform} /> {actionVerb} rate is
+              <AssetInfoEmail triggerValue={triggerValue} /> Current rate: {currentRate}%
             </span>
           );
       }

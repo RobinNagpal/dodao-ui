@@ -22,9 +22,10 @@ import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 interface CreateComparisonModalsProps {
   isOpen: boolean;
   onClose: () => void;
+  onAlertsUpdated?: () => void;
 }
 
-export default function CreateComparisonModals({ isOpen, onClose }: CreateComparisonModalsProps) {
+export default function CreateComparisonModals({ isOpen, onClose, onAlertsUpdated }: CreateComparisonModalsProps) {
   const { data } = useSession();
   const session = data as DoDAOSession;
   const baseUrl = getBaseUrl();
@@ -231,6 +232,11 @@ export default function CreateComparisonModals({ isOpen, onClose }: CreateCompar
         setWalletToDelete(null);
 
         await reFetchWallets();
+
+        // Refetch alerts in the parent component since wallet deletion archives associated alerts
+        if (onAlertsUpdated) {
+          onAlertsUpdated();
+        }
       } catch (error) {
         console.error('Error handling wallet deletion success:', error);
         setShowDeleteWalletModal(false);

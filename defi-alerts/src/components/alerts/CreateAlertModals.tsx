@@ -20,9 +20,10 @@ import { WalletPosition } from '../modals/types';
 interface CreateAlertModalsProps {
   isOpen: boolean;
   onClose: () => void;
+  onAlertsUpdated?: () => void;
 }
 
-export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModalsProps) {
+export default function CreateAlertModals({ isOpen, onClose, onAlertsUpdated }: CreateAlertModalsProps) {
   const { data } = useSession();
   const session = data as DoDAOSession;
   const baseUrl = getBaseUrl();
@@ -217,6 +218,11 @@ export default function CreateAlertModals({ isOpen, onClose }: CreateAlertModals
         setWalletToDelete(null);
 
         await reFetchWallets();
+
+        // Refetch alerts in the parent component since wallet deletion archives associated alerts
+        if (onAlertsUpdated) {
+          onAlertsUpdated();
+        }
       } catch (error) {
         console.error('Error handling wallet deletion success:', error);
         setShowDeleteWalletModal(false);
