@@ -2,10 +2,8 @@ import { AlertWithAllDetails } from '@/types/alerts';
 import { AlertTriggerValuesInterface } from '@/types/prismaTypes';
 import { formatWalletAddress } from '@/utils/getFormattedWalletAddress';
 import { toSentenceCase } from '@/utils/getSentenceCase';
-import { Asset, Chain } from '@prisma/client';
 import React from 'react';
 import TriggerValuesCellEmail from './TriggerValuesCellEmail';
-import { AssetImageEmail, ChainImageEmail } from '@/utils/emailRendering';
 
 export interface AlertsTableEmailProps {
   alert: AlertWithAllDetails;
@@ -14,7 +12,7 @@ export interface AlertsTableEmailProps {
 
 /**
  * Component for rendering a compact table of alerts for email
- * Shows common alert values at the top and each AlertTriggerValuesInterface as a separate row
+ * Shows alert type at the top and each AlertTriggerValuesInterface as a separate row with detailed condition information
  */
 
 function AlertsTableEmail({ alert, triggeredValues }: AlertsTableEmailProps) {
@@ -64,10 +62,6 @@ function AlertsTableEmail({ alert, triggeredValues }: AlertsTableEmailProps) {
           {alert.category === 'PERSONALIZED' ? formatWalletAddress(alert.walletAddress!) : 'General'}
         </span>
       </div>
-      <div>
-        <span style={{ fontWeight: 600, marginRight: '8px' }}>Assets/Chains:</span>
-        <AssetChainPairCellEmail chains={alert.selectedChains || []} assets={alert.selectedAssets || []} />
-      </div>
     </div>
   );
 
@@ -77,34 +71,12 @@ function AlertsTableEmail({ alert, triggeredValues }: AlertsTableEmailProps) {
       <table style={tableStyle}>
         <thead>
           <tr>
-            <th style={thStyle}>Asset</th>
-            <th style={thStyle}>Chain</th>
-            <th style={thStyle}>Condition</th>
+            <th style={thStyle}>Alert Details</th>
           </tr>
         </thead>
         <tbody>
           {triggeredValues.map((triggerValue, index) => (
             <tr key={index}>
-              <td style={tdStyle}>
-                {triggerValue.asset && triggerValue.assetAddress && (
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <span>
-                      <AssetImageEmail chain={triggerValue.chainName || 'ethereum'} assetAddress={triggerValue.assetAddress} assetSymbol={triggerValue.asset} />{' '}
-                    </span>
-                    <span style={{ marginLeft: '8px' }}>{triggerValue.asset}</span>
-                  </div>
-                )}
-              </td>
-              <td style={tdStyle}>
-                {triggerValue.chainName && (
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <span>
-                      <ChainImageEmail chain={triggerValue.chainName} />
-                    </span>
-                    <span style={{ marginLeft: '8px' }}>{triggerValue.chainName}</span>
-                  </div>
-                )}
-              </td>
               <td style={tdStyle}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <TriggerValuesCellEmail alert={alert} triggerValues={[triggerValue]} />
@@ -117,67 +89,5 @@ function AlertsTableEmail({ alert, triggeredValues }: AlertsTableEmailProps) {
     </div>
   );
 }
-
-/**
- * Email-friendly version of AssetChainPairCell component
- */
-const AssetChainPairCellEmail = ({ chains, assets }: { chains: Chain[]; assets: Asset[] }) => {
-  if (!chains || chains.length === 0 || !assets || assets.length === 0) {
-    return <span style={{ color: '#6b7280' }}>No chain/asset data</span>;
-  }
-
-  const getChain = (chainId: number) => {
-    return chains.find((c) => c.chainId === chainId);
-  };
-
-  // Display up to 3 assets and chains
-  const displayedAssets = assets.slice(0, 3);
-  const displayedChains = chains.slice(0, 3);
-
-  const hasMoreAssets = assets.length > 3;
-  const hasMoreChains = chains.length > 3;
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-      <div>
-        <span style={{ fontWeight: 600, marginRight: '8px' }}>Assets:</span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-          {displayedAssets.map((asset, index) => (
-            <React.Fragment key={index}>
-              {asset.address && asset.symbol && (
-                <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-                  <AssetImageEmail
-                    chain={getChain(asset.chainId)?.name || chains[0]?.name || 'ethereum'}
-                    assetAddress={asset.address}
-                    assetSymbol={asset.symbol}
-                  />
-                  <span style={{ marginLeft: '4px', fontSize: '14px' }}>{asset.symbol}</span>
-                  {index < displayedAssets.length - 1 && <span style={{ margin: '0 4px' }}>,</span>}
-                </div>
-              )}
-            </React.Fragment>
-          ))}
-          {hasMoreAssets && <span style={{ fontSize: '12px', color: '#6b7280' }}>+{assets.length - 3} more</span>}
-        </div>
-      </div>
-
-      <div>
-        <span style={{ fontWeight: 600, marginRight: '8px' }}>Chains:</span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-          {displayedChains.map((chain, index) => (
-            <React.Fragment key={index}>
-              <div style={{ display: 'inline-flex', alignItems: 'center' }}>
-                <ChainImageEmail chain={chain.name} />
-                <span style={{ marginLeft: '4px', fontSize: '14px' }}>{chain.name}</span>
-                {index < displayedChains.length - 1 && <span style={{ margin: '0 4px' }}>,</span>}
-              </div>
-            </React.Fragment>
-          ))}
-          {hasMoreChains && <span style={{ fontSize: '12px', color: '#6b7280' }}>+{chains.length - 3} more</span>}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default AlertsTableEmail;
