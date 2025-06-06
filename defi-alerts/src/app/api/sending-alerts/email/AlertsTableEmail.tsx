@@ -53,27 +53,9 @@ function AlertsTableEmail({ alert, triggeredValues }: AlertsTableEmailProps) {
     marginBottom: '16px',
   };
 
-  // Render the common alert information at the top
-  const alertInfoSection = (
-    <div style={alertInfoStyle}>
-      <div style={{ marginBottom: '12px' }}>
-        <span style={{ fontWeight: 600, fontSize: '16px', color: '#1f2937' }}>{toSentenceCase(alert.actionType)} Alert</span>
-        <span style={{ marginLeft: '8px', fontSize: '14px', color: '#6b7280' }}>
-          {alert.category === 'PERSONALIZED' ? formatWalletAddress(alert.walletAddress!) : 'General'}
-        </span>
-      </div>
-    </div>
-  );
-
   return (
     <div>
-      {alertInfoSection}
       <table style={tableStyle}>
-        <thead>
-          <tr>
-            <th style={thStyle}>Alert Details</th>
-          </tr>
-        </thead>
         <tbody>
           {triggeredValues.map((triggerValue, index) => (
             <tr key={index}>
