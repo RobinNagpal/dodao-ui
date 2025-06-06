@@ -267,7 +267,7 @@ export default function CompareCompoundPage() {
       )}
 
       {/* Create Comparison Alert Modal */}
-      <CreateComparisonModals isOpen={showCreateComparisonModal} onClose={handleModalClose} />
+      <CreateComparisonModals isOpen={showCreateComparisonModal} onClose={handleModalClose} onAlertsUpdated={reFetchData} />
     </div>
   );
 }
