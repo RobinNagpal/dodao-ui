@@ -85,7 +85,7 @@ export function ChainImageEmail({ chain }: { chain: string }): JSX.Element {
  */
 export function PlatformImageEmail({ platform }: { platform: string }): JSX.Element {
   // For email, we need to use absolute URLs
-  const imageUrl = `https://www.defialerts.xyz/${platform.toLowerCase()}.svg`;
+  const imageUrl = `https://www.defialerts.xyz/${platform.toLowerCase()}.png`;
 
   // For server-side rendering, we can't use onError
   // Instead, we'll use a simple img tag and rely on server-side rendering
