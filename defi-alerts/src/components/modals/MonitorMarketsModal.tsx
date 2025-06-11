@@ -225,7 +225,7 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
       platforms?: string;
       chains?: string;
       markets?: string;
-      thresholds?: string[];
+      conditions?: string[];
       channels?: string[];
     } = {};
 
@@ -254,6 +254,20 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
         setShowValidationError(true);
         return false;
       }
+    }
+
+    // Validate conditions
+    const conditionErrors: string[] = [];
+    conditions.forEach((cond, index) => {
+      if (!cond.thresholdValue) {
+        conditionErrors[index] = 'Threshold value is required';
+      } else if (isNaN(Number(cond.thresholdValue))) {
+        conditionErrors[index] = 'Threshold value must be a valid number';
+      }
+    });
+
+    if (conditionErrors.some((error) => error)) {
+      newErrors.conditions = conditionErrors;
     }
 
     // Validate channels
