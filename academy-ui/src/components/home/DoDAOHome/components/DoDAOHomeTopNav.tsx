@@ -18,6 +18,8 @@ import {
   GlobeAltIcon,
   UserGroupIcon,
   LifebuoyIcon,
+  ChatBubbleLeftEllipsisIcon,
+  ShieldCheckIcon,
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
@@ -43,6 +45,18 @@ const products = [
 ];
 
 const educationAreas = [
+  {
+    name: 'AI Agent Bootcamp',
+    description: 'Hands-on training in AI agent design and deployment.',
+    href: '/home-section/dodao-io/education/ai-agent-bootcamp',
+    icon: CpuChipIcon,
+  },
+  {
+    name: 'Prompt Engineering Guide',
+    description: 'Learn prompt crafting and optimization techniques.',
+    href: '/home-section/dodao-io/education/prompt-engineering-guide',
+    icon: ChatBubbleLeftEllipsisIcon,
+  },
   {
     name: 'Blockchain Bootcamp',
     description: 'Comprehensive training from basics to advanced blockchain technologies.',
@@ -111,6 +125,12 @@ const blockchainServices = [
     description: 'Gain deep insights with advanced DeFi analytics.',
     href: '/home-section/dodao-io/services/defi-analytics',
     icon: ChartBarIcon,
+  },
+  {
+    name: 'DeFi Alerts',
+    description: 'Receive real-time alerts for yield, rates, and position health across DeFi protocol.',
+    href: '/home-section/dodao-io/services/defi-alerts',
+    icon: ShieldCheckIcon,
   },
 ];
 
