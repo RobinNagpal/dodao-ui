@@ -258,7 +258,7 @@ export default function AlertsPage() {
       )}
 
       {/* Create Alert Modals */}
-      <CreateAlertModals isOpen={showCreateAlertModal} onClose={handleModalClose} onAlertsUpdated={reFetchData} />
+      {showCreateAlertModal && <CreateAlertModals isOpen={showCreateAlertModal} onClose={handleModalClose} onAlertsUpdated={reFetchData} />}
     </div>
   );
 }
