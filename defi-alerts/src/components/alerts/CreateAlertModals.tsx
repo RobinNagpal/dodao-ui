@@ -84,6 +84,15 @@ export default function CreateAlertModals({ isOpen, onClose, onAlertsUpdated }: 
     [positionId: string]: any;
   }>({});
 
+  // Reset states when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      // Reset channels and errors when modal opens
+      setChannels([{ channelType: 'EMAIL', email: session?.username || '' }]);
+      setErrors({});
+    }
+  }, [isOpen, session?.username]);
+
   // Set initial modal state based on wallet addresses
   useEffect(() => {
     if (isOpen && walletData) {

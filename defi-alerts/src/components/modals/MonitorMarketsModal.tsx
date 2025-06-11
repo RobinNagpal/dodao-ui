@@ -24,7 +24,7 @@ import {
 } from '@prisma/client';
 import { AlertCircle } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface MonitorMarketsProps {
   isOpen: boolean;
@@ -60,6 +60,36 @@ export default function MonitorMarketsModal({ isOpen, modalType, handleClose, ch
   ]);
 
   const [alertType, setAlertType] = useState<'borrow' | 'supply'>('borrow');
+
+  // Reset states when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      // Reset all form states to defaults when modal opens
+      setConditions([getEmptyCondition(modalType, [], 'borrow')]);
+      setNotificationFrequency('ONCE_PER_ALERT');
+      setSelectedChains([]);
+      setSelectedMarkets([]);
+      setSelectedPlatforms([]);
+      setShowValidationError(false);
+      setThresholds([
+        {
+          platform: '',
+          chain: '',
+          market: '',
+          threshold: '',
+          severity: 'NONE',
+          frequency: 'ONCE_PER_ALERT',
+        },
+      ]);
+      setAlertType('borrow');
+
+      // Reset channels to default with user's email
+      setChannels([{ channelType: 'EMAIL', email: session?.username || '' }]);
+
+      // Reset errors
+      setErrors({});
+    }
+  }, [isOpen, modalType, session?.username, setChannels, setErrors]);
 
   const toggleChain = (chain: string) => setSelectedChains((cs) => (cs.includes(chain) ? cs.filter((c) => c !== chain) : [...cs, chain]));
   const toggleMarket = (market: string) => setSelectedMarkets((ms) => (ms.includes(market) ? ms.filter((m) => m !== market) : [...ms, market]));
