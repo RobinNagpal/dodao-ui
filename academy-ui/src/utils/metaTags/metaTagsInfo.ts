@@ -95,8 +95,8 @@ export function getMetaTags(space: SpaceWithIntegrationsDto): Metadata {
   }
   if (space?.id === PredefinedSpaces.DODAO_HOME) {
     return {
-      title: 'DoDAO - Empowering Blockchain Innovation',
-      description: 'DoDAO offers blockchain development, education, and research services to empower innovation in the blockchain ecosystem.',
+      title: 'DoDAO – Building AI Agents & DeFi Tools',
+      description: 'DoDAO helps teams build, deploy, and train AI Agents and DeFi tools for real-world use cases in finance, education, and Web3.',
       keywords: [
         'dodao',
         'DoDAO',
@@ -117,8 +117,8 @@ export function getMetaTags(space: SpaceWithIntegrationsDto): Metadata {
         canonical: 'https://dodao.io/',
       },
       openGraph: {
-        title: 'DoDAO - Empowering Blockchain Innovation',
-        description: 'DoDAO offers blockchain development, education, and research services to empower innovation in the blockchain ecosystem.',
+        title: 'DoDAO – Building AI Agents & DeFi Tools',
+        description: 'DoDAO helps teams build, deploy, and train AI Agents and DeFi tools for real-world use cases in finance, education, and Web3.',
         url: 'https://dodao.io/',
         type: 'website',
         images: ['https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png'],
@@ -126,8 +126,8 @@ export function getMetaTags(space: SpaceWithIntegrationsDto): Metadata {
       },
       twitter: {
         card: 'summary_large_image',
-        title: 'DoDAO - Empowering Blockchain Innovation',
-        description: 'DoDAO offers blockchain development, education, and research services to empower innovation in the blockchain ecosystem.',
+        title: 'DoDAO – Building AI Agents & DeFi Tools',
+        description: 'DoDAO helps teams build, deploy, and train AI Agents and DeFi tools for real-world use cases in finance, education, and Web3.',
         images: ['https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png'],
         site: '@dodao_io',
         creator: '@dodao_io',

@@ -22,10 +22,9 @@ export default function DoDAOHomeHero() {
         <div className="text-center">
           <h1 className="text-balance text-4xl font-bold tracking-tight text-white sm:text-6xl">Building the Future with DoDAO</h1>
           <p className="mt-6 text-lg leading-8 text-gray-300">
-            DoDAO is a dedicated team of builders creating meaningful, impact-driven products. We’ve collaborated with leading blockchain projects, offering
-            expertise in Smart Contract Development, Blockchain Tooling, Education, and Research. Now, our primary focus is on AI Agent Development and AI Agent
-            Training—designing and teaching intelligent agents that automate your most complex workflows, boost productivity, and adapt as your business
-            evolves.
+            DoDAO is a team of innovators building the future with AI Agents. We design, develop, and train intelligent agents that automate workflows, save
+            time, and learn as they go. From research to real-world deployment, we help teams work smarter. We also bring years of experience in the DeFi space
+            building tools, smart contracts, and educational platforms for leading DeFi projects.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <ContactUsButton />
