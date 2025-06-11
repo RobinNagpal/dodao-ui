@@ -14,8 +14,8 @@ export default function DoDAOHomeHero() {
         <div className="hidden sm:mb-8 sm:flex sm:justify-center">
           <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-400 ring-1 ring-white/10 hover:ring-white/20">
             Announcing our Latest Product:{' '}
-            <a href="https://tidbitshub.org" target="_blank" className="font-semibold text-white">
-              Tidbits Hub <span aria-hidden="true">&rarr;</span>
+            <a href="https://koalagains.com/" target="_blank" className="font-semibold text-white">
+              KoalaGains <span aria-hidden="true">&rarr;</span>
             </a>
           </div>
         </div>
@@ -23,9 +23,9 @@ export default function DoDAOHomeHero() {
           <h1 className="text-balance text-4xl font-bold tracking-tight text-white sm:text-6xl">Building the Future with DoDAO</h1>
           <p className="mt-6 text-lg leading-8 text-gray-300">
             DoDAO is a dedicated team of builders creating meaningful, impact-driven products. We’ve collaborated with leading blockchain projects, offering
-            expertise in Smart Contract Development, Blockchain Tooling, Education, and Research. Our mission is to empower the blockchain ecosystem with
-            cutting-edge solutions. Expanding our horizons, we also specialize in AI agent development tailored to meet the customized needs of businesses,
-            ensuring innovative and efficient solutions.
+            expertise in Smart Contract Development, Blockchain Tooling, Education, and Research. Now, our primary focus is on AI Agent Development and AI Agent
+            Training—designing and teaching intelligent agents that automate your most complex workflows, boost productivity, and adapt as your business
+            evolves.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <ContactUsButton />
