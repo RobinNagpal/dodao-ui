@@ -28,7 +28,10 @@ export function getMarkedRenderer(katexExt: marked.MarkedExtension = katexExtens
 
   marked.use(katexExt);
   renderer.link = function (href: string, title: string, text: string) {
-    return '<a target="_blank" href="' + href + '" title="' + title + '">' + text + '</a>';
+    // If the link starts with #, it's an internal anchor link (table of contents)
+    // so we don't open it in a new tab
+    const target = href.startsWith('#') ? '' : ' target="_blank"';
+    return '<a' + target + ' href="' + href + '" title="' + title + '">' + text + '</a>';
   };
 
   // ![Sample Image](path/to/image.jpg "300x200")
