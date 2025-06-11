@@ -1,48 +1,47 @@
-import { LightBulbIcon, UserGroupIcon, WrenchIcon, ArrowTrendingUpIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
+import { LightBulbIcon, UserGroupIcon, WrenchIcon, ArrowTrendingUpIcon, RocketLaunchIcon, AcademicCapIcon } from '@heroicons/react/24/outline';
 
 const coreValues = [
   {
-    name: 'Right Intention',
+    name: 'AI Agent Design & Development',
     description:
-      "Inspired by the Buddha's Eightfold Path, it's important to start with the right intentions.  We strive to create valuable tools and services for our partners, helping them succeed. We aim to leave a positive impact on everyone we work with.",
+      'We specialize in designing and developing AI Agents that go beyond simple automation. Our agents are context-aware, goal-driven, and built for complex real-world tasks—from investment research to internal business operations.',
     icon: LightBulbIcon,
   },
   {
-    name: 'Right Team',
+    name: 'Real-World Agent Deployment',
     description:
-      'We are not driven by aggressive financial goals. For us, the journey should be full of fun and learning. We are a team of builders always looking to create something new and useful, whether it’s our own product or for our partners.',
-    icon: UserGroupIcon,
-  },
-  {
-    name: 'Hard Work',
-    description:
-      'Being able to work hard without feeling drained is a true blessing. We believe that when we focus on what truly matters and surround ourselves with the right team, hard work becomes more fulfilling and less of a forced effort.',
-    icon: WrenchIcon,
-  },
-  {
-    name: 'Moving Fast',
-    description:
-      "We are not rushing to build a big team or raise funds. But as a startup, it's important to try many 'home run shots'. For us, the biggest failure is not trying at all. Each attempt, whether successful or not, brings us closer to finding what works.",
+      'It’s not just about building. We actively deploy AI Agents in real environments, train them with domain-specific knowledge, and ensure they generate value across industries like finance, real estate, and education.',
     icon: RocketLaunchIcon,
   },
   {
-    name: 'Collective Growth',
+    name: 'AI Agent Training',
     description:
-      "Even though we haven't reached our goals yet, we believe every day should be about learning and growing. We commit to growing our knowledge each day. Once we find the right business area, we aim to achieve financial growth together as a team.",
+      'We train students and professionals to build production-ready AI Agents. Our bootcamps teach real-world workflows—covering prompt engineering, memory use, and building agents for finance, real estate, and education.',
+    icon: AcademicCapIcon,
+  },
+  {
+    name: 'DeFi Tooling & Dashboards',
+    description:
+      'We’ve built tools, dashboards, and APIs for leading DeFi protocols. Whether it’s custom analytics, real-time alerts, or on-chain data visualization, our work helps protocols operate smarter.',
+    icon: WrenchIcon,
+  },
+  {
+    name: 'Smart Contracts & Protocol Design',
+    description:
+      'With deep experience in protocol development, we’ve contributed to DeFi ecosystems through secure smart contracts, DAO tooling, and product education—accelerating adoption across Web3.',
     icon: ArrowTrendingUpIcon,
   },
 ];
 
 export default function CoreValues() {
   return (
-    <div className="py-8 mt-8 bg-gray-50">
+    <div className="py-8 bg-gray-50">
       <div className="mx-auto px-6 w-full">
         <div className="mx-auto max-w-2xl text-center lg:text-center">
-          <h2 className="text-base font-semibold leading-7 text-indigo-600">Our Core Values</h2>
-          <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">What We Believe In</p>
+          <h2 className="text-base font-semibold leading-7 text-indigo-600">What We Do</h2>
+          <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">AI Agents & DeFi Tools</p>
           <p className="mt-4 text-base text-gray-500">
-            Our journey is guided by our core values. They shape our actions and decisions every day. These principles ensure we stay true to our mission and
-            vision.
+            From building intelligent AI workflows to creating DeFi tools, we build products that ship—and teach others how to do the same.
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-6xl">

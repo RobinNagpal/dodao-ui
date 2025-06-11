@@ -19,8 +19,8 @@ export async function generateMetadata(): Promise<Metadata> {
     return getMetaTags(space);
   }
   return {
-    title: 'DoDAO - Empowering Blockchain Innovation',
-    description: 'DoDAO offers blockchain development, education, and research services to empower innovation in the blockchain ecosystem.',
+    title: 'DoDAO – Building AI Agents & DeFi Tools',
+    description: 'DoDAO helps teams build, deploy, and train AI Agents and DeFi tools for real-world use cases in finance, education, and Web3.',
   };
 }
 
