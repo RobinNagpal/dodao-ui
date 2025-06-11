@@ -23,6 +23,12 @@ import { useState } from 'react';
 
 const products = [
   {
+    name: 'KoalaGains',
+    description: 'Use AI Agents to get deeper investing insights on crowdfunding and REITs',
+    href: '/home-section/dodao-io/products/koalagains',
+    icon: ChartBarIcon,
+  },
+  {
     name: 'Tidbits Hub',
     description: 'Empower your customers with quick educational tidbits.',
     href: '/home-section/dodao-io/products/tidbitshub',
@@ -33,12 +39,6 @@ const products = [
     description: 'Build immersive educational platforms for your audience.',
     href: '/home-section/dodao-io/products/academysites',
     icon: AcademicCapIcon,
-  },
-  {
-    name: 'KoalaGains',
-    description: 'Use AI Agents to get deeper investing insights on crowdfunding and REITs',
-    href: '/home-section/dodao-io/products/koalagains',
-    icon: ChartBarIcon,
   },
 ];
 
