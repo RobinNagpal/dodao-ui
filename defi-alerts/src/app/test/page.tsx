@@ -2,6 +2,7 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ExternalLink, RefreshCw } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -18,12 +19,29 @@ interface MarketRate {
 
 interface ApiResponse {
   sparkAprs: any[];
+  aaveAprs: any[];
   compoundAprs: any[];
 }
 
 export default function DebugPage() {
-  const [compoundRates, setCompoundRates] = useState<MarketRate[]>([]);
+  const [allRates, setAllRates] = useState<MarketRate[]>([]);
+  const [filteredRates, setFilteredRates] = useState<MarketRate[]>([]);
+  const [platformFilter, setPlatformFilter] = useState('all');
   const baseUrl = getBaseUrl();
+
+  // Function to generate market links based on platform
+  const generateMarketLink = (platform: string, asset: string, chainName: string, assetAddress: string): string => {
+    switch (platform.toLowerCase()) {
+      case 'compound':
+        return generateCompoundLink(asset, chainName);
+      case 'aave':
+        return generateAaveLink(assetAddress, chainName);
+      case 'spark':
+        return generateSparkLink(assetAddress, chainName);
+      default:
+        return '#';
+    }
+  };
 
   // Function to generate Compound market links
   const generateCompoundLink = (asset: string, chainName: string): string => {
@@ -63,6 +81,37 @@ export default function DebugPage() {
     return `${baseUrl}/${assetSlug}-${chainSuffix}`;
   };
 
+  // Function to generate Aave market links
+  const generateAaveLink = (assetAddress: string, chainName: string): string => {
+    const baseUrl = 'https://app.aave.com/reserve-overview/';
+    
+    // Chain market name mapping
+    const marketMapping: Record<string, string> = {
+      'Ethereum': 'proto_mainnet_v3',
+      'Arbitrum': 'proto_arbitrum_v3',
+      'Base': 'proto_base_v3',
+      'Optimism': 'proto_optimism_v3',
+      'Polygon': 'proto_polygon_v3',
+      'Scroll': 'proto_scroll_v3'
+    };
+
+    const marketName = marketMapping[chainName] || 'proto_mainnet_v3';
+    return `${baseUrl}?underlyingAsset=${assetAddress.toLowerCase()}&marketName=${marketName}`;
+  };
+
+  // Function to generate Spark market links
+  const generateSparkLink = (assetAddress: string, chainName: string): string => {
+    const baseUrl = 'https://app.spark.fi/markets';
+    
+    // Chain ID mapping (Spark is primarily on Ethereum)
+    const chainIdMapping: Record<string, string> = {
+      'Ethereum': '1'
+    };
+
+    const chainId = chainIdMapping[chainName] || '1';
+    return `${baseUrl}/${chainId}/${assetAddress}`;
+  };
+
   // Use useFetchData hook to fetch rates data
   const {
     data: ratesData,
@@ -71,21 +120,68 @@ export default function DebugPage() {
     reFetchData,
   } = useFetchData<ApiResponse>(`${baseUrl}/api/sending-alerts/test`, {}, 'Failed to load rates data. Please try again later.');
 
-  // Transform compound data when rates data changes
+  // Transform all platform data when rates data changes
   useEffect(() => {
-    if (ratesData?.compoundAprs) {
-      const transformedRates: MarketRate[] = ratesData.compoundAprs.map((rate: any) => ({
-        platform: 'Compound',
-        chainName: rate.chainName,
-        asset: rate.asset,
-        earnRate: rate.netEarnAPY,
-        borrowRate: rate.netBorrowAPY,
-        marketLink: generateCompoundLink(rate.asset, rate.chainName)
-      }));
+    if (ratesData) {
+      const allTransformedRates: MarketRate[] = [];
+
+      // Transform Compound data
+      if (ratesData.compoundAprs) {
+        const compoundRates = ratesData.compoundAprs
+          .filter((rate: any) => rate.asset !== 'Unknown') // Exclude Unknown assets
+          .map((rate: any) => ({
+            platform: 'Compound',
+            chainName: rate.chainName,
+            asset: rate.asset,
+            earnRate: rate.netEarnAPY,
+            borrowRate: rate.netBorrowAPY,
+            marketLink: generateMarketLink('compound', rate.asset, rate.chainName, rate.assetAddress)
+          }));
+        allTransformedRates.push(...compoundRates);
+      }
+
+      // Transform Aave data
+      if (ratesData.aaveAprs) {
+        const aaveRates = ratesData.aaveAprs
+          .filter((rate: any) => rate.asset !== 'Unknown') // Exclude Unknown assets
+          .map((rate: any) => ({
+            platform: 'Aave',
+            chainName: rate.chainName,
+            asset: rate.asset,
+            earnRate: rate.netEarnAPY,
+            borrowRate: rate.netBorrowAPY,
+            marketLink: generateMarketLink('aave', rate.asset, rate.chainName, rate.assetAddress)
+          }));
+        allTransformedRates.push(...aaveRates);
+      }
+
+      // Transform Spark data
+      if (ratesData.sparkAprs) {
+        const sparkRates = ratesData.sparkAprs
+          .filter((rate: any) => rate.asset !== 'Unknown') // Exclude Unknown assets
+          .map((rate: any) => ({
+            platform: 'Spark',
+            chainName: rate.chainName,
+            asset: rate.asset,
+            earnRate: rate.netEarnAPY,
+            borrowRate: rate.netBorrowAPY,
+            marketLink: generateMarketLink('spark', rate.asset, rate.chainName, rate.assetAddress)
+          }));
+        allTransformedRates.push(...sparkRates);
+      }
       
-      setCompoundRates(transformedRates);
+      setAllRates(allTransformedRates);
     }
   }, [ratesData]);
+
+  // Filter rates by platform
+  useEffect(() => {
+    if (platformFilter === 'all') {
+      setFilteredRates(allRates);
+    } else {
+      setFilteredRates(allRates.filter(rate => rate.platform.toLowerCase() === platformFilter.toLowerCase()));
+    }
+  }, [allRates, platformFilter]);
 
   return (
     <div className="max-w-7xl mx-auto px-2 py-8">
@@ -97,14 +193,36 @@ export default function DebugPage() {
           </p>
         </div>
 
-        <Button
-          onClick={reFetchData}
-          disabled={loading}
-          className="mt-4 md:mt-0 px-4 py-2 text-sm bg-primary-color text-primary-text border border-transparent rounded-lg hover-border-body"
-        >
-          <RefreshCw size={16} className={`inline mr-1 ${loading ? 'animate-spin' : ''}`} /> 
-          Refresh Rates
-        </Button>
+        <div className="flex gap-2">
+          <Select onValueChange={setPlatformFilter} defaultValue="all">
+            <SelectTrigger className="w-[180px] border-theme-border-primary">
+              <SelectValue placeholder="All Platforms" />
+            </SelectTrigger>
+            <SelectContent className="bg-block">
+              <div className="hover-border-primary hover-text-primary">
+                <SelectItem value="all">All Platforms</SelectItem>
+              </div>
+              <div className="hover-border-primary hover-text-primary">
+                <SelectItem value="compound">Compound</SelectItem>
+              </div>
+              <div className="hover-border-primary hover-text-primary">
+                <SelectItem value="aave">Aave</SelectItem>
+              </div>
+              <div className="hover-border-primary hover-text-primary">
+                <SelectItem value="spark">Spark</SelectItem>
+              </div>
+            </SelectContent>
+          </Select>
+
+          <Button
+            onClick={reFetchData}
+            disabled={loading}
+            className="px-4 py-2 text-sm bg-primary-color text-primary-text border border-transparent rounded-lg hover-border-body"
+          >
+            <RefreshCw size={16} className={`inline mr-1 ${loading ? 'animate-spin' : ''}`} /> 
+            Refresh Rates
+          </Button>
+        </div>
       </div>
 
       {error && (
@@ -134,8 +252,8 @@ export default function DebugPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {compoundRates.length > 0 ? (
-                  compoundRates.map((rate, index) => (
+                {filteredRates.length > 0 ? (
+                  filteredRates.map((rate, index) => (
                     <TableRow key={`${rate.platform}-${rate.chainName}-${rate.asset}-${index}`} className="border-primary-color">
                       <TableCell className="font-medium text-theme-primary">
                         {rate.platform}
@@ -184,22 +302,22 @@ export default function DebugPage() {
       )}
 
       {/* Summary Stats */}
-      {compoundRates.length > 0 && (
+      {filteredRates.length > 0 && (
         <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 bg-block border border-primary-color rounded-lg">
             <h3 className="text-lg font-semibold text-theme-primary mb-2">Total Markets</h3>
-            <p className="text-2xl font-bold text-primary-color">{compoundRates.length}</p>
+            <p className="text-2xl font-bold text-primary-color">{filteredRates.length}</p>
           </div>
           <div className="p-4 bg-block border border-primary-color rounded-lg">
             <h3 className="text-lg font-semibold text-theme-primary mb-2">Highest Earn Rate</h3>
             <p className="text-2xl font-bold text-green-600">
-              {Math.max(...compoundRates.map(r => r.earnRate)).toFixed(2)}%
+              {Math.max(...filteredRates.map((r: MarketRate) => r.earnRate)).toFixed(2)}%
             </p>
           </div>
           <div className="p-4 bg-block border border-primary-color rounded-lg">
             <h3 className="text-lg font-semibold text-theme-primary mb-2">Lowest Borrow Rate</h3>
             <p className="text-2xl font-bold text-red-600">
-              {Math.min(...compoundRates.map(r => r.borrowRate)).toFixed(2)}%
+              {Math.min(...filteredRates.map((r: MarketRate) => r.borrowRate)).toFixed(2)}%
             </p>
           </div>
         </div>
