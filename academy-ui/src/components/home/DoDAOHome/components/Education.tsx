@@ -7,6 +7,8 @@ import { PDFViewModal } from './PDFViewModal';
 import { navbarToggleEvent } from './NavbarToggle';
 import educationalContent from '@/images/DoDAOHomePage/educationalContent.jpg';
 import educationCrypto from '@/images/DoDAOHomePage/educationCrypto.webp';
+import promptEngineering from '@/images/DoDAOHomePage/promptEngineering.jpg';
+import aiAgent from '@/images/DoDAOHomePage/aiAgent.png';
 import { IframeViewModal } from './IframeFullScreenModal';
 
 const education = [
@@ -14,14 +16,14 @@ const education = [
     name: 'AI Agent Bootcamp',
     description:
       'Master AI Agents end-to-end with our hands-on bootcamp, covering LLM fundamentals, advanced prompt techniques, agent architecture, and real-world deployment projects.',
-    imageSrc: educationCrypto,
+    imageSrc: aiAgent,
     imageAlt: 'AI Agent Bootcamp',
   },
   {
     name: 'Prompt Engineering Guide',
     description:
       'Learn to craft and optimize prompts for any AI workflow with our comprehensive guide—covering prompt design best practices, chaining strategies, and performance tuning techniques.',
-    imageSrc: educationCrypto,
+    imageSrc: promptEngineering,
     imageAlt: 'Prompt Engineering Guide',
   },
   {
@@ -102,7 +104,8 @@ export function Education() {
             <div className="mx-auto max-w-3xl text-center">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Education</h2>
               <p className="mt-4 text-base text-gray-500">
-                At DoDAO, we empower learners with hands-on blockchain courses (NFTs, DeFi, Layer 2) and an immersive AI Agent Bootcamp—covering LLM fundamentals, prompt engineering, and real-world agent deployment—so your team masters both decentralized tech and intelligent automation.
+                At DoDAO, we empower learners with hands-on blockchain courses (NFTs, DeFi, Layer 2) and an immersive AI Agent Bootcamp—covering LLM
+                fundamentals, prompt engineering, and real-world agent deployment—so your team masters both decentralized tech and intelligent automation.
               </p>
             </div>
             <div>
@@ -154,17 +157,17 @@ export function Education() {
         </div>
 
         {isClickedAIPDF && (
-          <PDFViewModal 
-            onClose={handleCloseAIPDF} 
-            title="AI Agent Bootcamp" 
-            pdfUrl="https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com/dodao-io/Koala_AI_Agent_bootcamp.pdf" 
+          <PDFViewModal
+            onClose={handleCloseAIPDF}
+            title="AI Agent Bootcamp"
+            pdfUrl="https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com/dodao-io/Koala_AI_Agent_bootcamp.pdf"
           />
         )}
         {isClickedPDF && (
-          <PDFViewModal 
-            onClose={handleClosePDF} 
-            title="Blockchain Bootcamp" 
-            pdfUrl="https://dodao-prod-public-assets.s3.amazonaws.com/dodao-io/bootcamp_pdf.pdf" 
+          <PDFViewModal
+            onClose={handleClosePDF}
+            title="Blockchain Bootcamp"
+            pdfUrl="https://dodao-prod-public-assets.s3.amazonaws.com/dodao-io/bootcamp_pdf.pdf"
           />
         )}
         {isClickedUni && <IframeViewModal onClose={handleCloseUni} title="Uniswap Educational Website" src="https://uniswap.university/" />}
