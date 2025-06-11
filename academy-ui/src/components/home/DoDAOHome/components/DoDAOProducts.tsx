@@ -6,6 +6,14 @@ import { SectionHeading } from './SectionHeading';
 
 const features = [
   {
+    name: 'KoalaGains',
+    id: 'koala-gains',
+    description:
+      'KoalaGains revolutionizes investment research through powerful AI-driven insights, enabling users to quickly analyze crowdfunding projects, REITs, and public companies. It offers automated financial reports, interactive spider charts, sentiment-driven analysis, and detailed scoring explanations using advanced AI Agents. KoalaGains generates precise, reports tailored to different investment strategies. Investors can now effortlessly discover high-value opportunities and make informed decisions faster than ever before.',
+    imageSrc: KoalaGains.src,
+    imageAlt: 'AI Agent for startups and REITs',
+  },
+  {
     name: 'Tidbits Hub',
     id: 'tidbits-hub',
     description:
@@ -21,14 +29,6 @@ const features = [
     imageSrc: AcademyGif.src,
     imageAlt: 'Academy Sites',
   },
-  {
-    name: 'KoalaGains',
-    id: 'koala-gains',
-    description:
-      'KoalaGains revolutionizes investment research through powerful AI-driven insights, enabling users to quickly analyze crowdfunding projects, REITs, and public companies. It offers automated financial reports, interactive spider charts, sentiment-driven analysis, and detailed scoring explanations using advanced AI Agents. KoalaGains generates precise, reports tailored to different investment strategies. Investors can now effortlessly discover high-value opportunities and make informed decisions faster than ever before.',
-    imageSrc: KoalaGains.src,
-    imageAlt: 'AI Agent for startups and REITs',
-  },
 ];
 
 export default function DoDAOProducts() {
@@ -42,10 +42,10 @@ export default function DoDAOProducts() {
           <div className="mx-auto max-w-2xl sm:text-center">
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Empowering Innovation with DoDAO Products</h2>
             <p className="mt-4 text-base text-gray-500">
-              At DoDAO, we’re dedicated builders creating impactful products for the blockchain community. We support leading blockchain projects in areas like
-              Smart Contract Development, Tooling, Education, and Research. Our products, such as Tidbits Hub and Academy Sites, offer custom learning tools to
-              boost your blockchain skills. We’re also developing a decentralized review platform to provide detailed, unbiased evaluations of projects and
-              policies.
+              At DoDAO, we empower organizations across both blockchain and AI. We specialize in AI agent development tailored to meet the customized needs of
+              businesses, ensuring innovative and efficient solutions. Our AI Agent platform, KoalaGains, automates investment research on crowdfunding and
+              REITs with instant, data-driven insights. We also support leading blockchain projects with smart contracts, developer tooling, and bite-sized
+              learning through Tidbits Hub and Academy Sites.
             </p>
           </div>
         </div>
