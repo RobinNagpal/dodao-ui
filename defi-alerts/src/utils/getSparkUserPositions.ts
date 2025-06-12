@@ -3,7 +3,7 @@ import type { Address } from 'viem';
 import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
 import { SPARK_DATA_PROVIDER } from '@/shared/migrator/spark/config';
 import { Pool_Abi_DataProvider } from '@/shared/migrator/spark/abi/Pool_Abi_DataProvider';
-import { useSparkAprs, MarketApr } from './getSparkAPR';
+import { useSparkAprs, SparkMarketApr } from './getSparkAPR';
 import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
 import { WalletComparisonPosition } from '@/components/modals/types';
 
@@ -98,7 +98,7 @@ async function fetchUserReserveDataInBatches(
   chainId: number,
   provider: Address,
   wallet: Address,
-  markets: MarketApr[], // each MarketApr has `assetAddress`
+  markets: SparkMarketApr[], // each MarketApr has `assetAddress`
   chunkSize = 10
 ): Promise<
   | readonly {
@@ -158,13 +158,13 @@ export function useSparkUserPositions(): (wallets: string[]) => Promise<WalletCo
   const flattenProvider = (addrOrObj: Address | Record<string, Address>): Address => (typeof addrOrObj === 'string' ? addrOrObj : Object.values(addrOrObj)[0]);
 
   return async (wallets: string[]) => {
-    const aprs: MarketApr[] = await fetchAprs();
-    const aprsByChain = aprs.reduce<Record<number, MarketApr[]>>((acc, a) => {
+    const aprs: SparkMarketApr[] = await fetchAprs();
+    const aprsByChain = aprs.reduce<Record<number, SparkMarketApr[]>>((acc, a) => {
       (acc[a.chainId] ||= []).push(a);
       return acc;
     }, {});
 
-    const aprIndex: Record<number, Record<string, MarketApr>> = {};
+    const aprIndex: Record<number, Record<string, SparkMarketApr>> = {};
     aprs.forEach((a) => {
       const key = a.assetAddress.toLowerCase();
       (aprIndex[a.chainId] ||= {})[key] = a;
