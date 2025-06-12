@@ -1,11 +1,7 @@
 import { MORPHO_CHAIN_IDS } from '@/shared/migrator/morpho/config';
 import { COMPOUND_MARKETS, CHAINS } from '@/shared/web3/config';
 import MorphoClient from '@/graphql/morpho/morpho-client';
-import {
-  GetMorphoVaultsDocument,
-  GetMorphoVaultsQuery,
-  GetMorphoVaultsQueryVariables,
-} from '@/graphql/morpho/generated/generated-types';
+import { GetMorphoVaultsDocument, GetMorphoVaultsQuery, GetMorphoVaultsQueryVariables } from '@/graphql/morpho/generated/generated-types';
 
 export type MorphoVaultApr = {
   chainId: number;
@@ -30,7 +26,7 @@ export function useMorphoVaultsAprs(): () => Promise<MorphoVaultApr[]> {
 
     for (const chainId of MORPHO_CHAIN_IDS) {
       const chainName = CHAINS.find((c) => c.chainId === chainId)?.name ?? 'Unknown';
-      
+
       try {
         const result = await MorphoClient.query<GetMorphoVaultsQuery, GetMorphoVaultsQueryVariables>({
           query: GetMorphoVaultsDocument,
@@ -45,19 +41,17 @@ export function useMorphoVaultsAprs(): () => Promise<MorphoVaultApr[]> {
         });
 
         const vaults = result.data?.vaults?.items || [];
-        
+
         // Filter vaults to only include assets that exist in Compound markets on the same chain
         const compoundForChain = COMPOUND_MARKETS.filter((m) => m.chainId === chainId);
-        
+
         for (const vault of vaults) {
           if (!vault.asset?.address || !vault.state?.dailyNetApy || !vault.address) {
             continue;
           }
 
           const assetAddress = vault.asset.address.toLowerCase();
-          const hasMatchingMarket = compoundForChain.some(
-            (m) => m.baseAssetAddress.toLowerCase() === assetAddress
-          );
+          const hasMatchingMarket = compoundForChain.some((m) => m.baseAssetAddress.toLowerCase() === assetAddress);
 
           // Only include if asset exists in Compound markets
           if (!hasMatchingMarket) {
@@ -65,7 +59,7 @@ export function useMorphoVaultsAprs(): () => Promise<MorphoVaultApr[]> {
           }
 
           const assetSymbol = SYMBOL_BY_ASSET[assetAddress] ?? 'Unknown';
-          
+
           // Skip Unknown assets
           if (assetSymbol === 'Unknown') {
             continue;
@@ -84,10 +78,8 @@ export function useMorphoVaultsAprs(): () => Promise<MorphoVaultApr[]> {
           });
         }
       } catch (err: any) {
-        const isEmptyError = err.name === 'ApolloError' && 
-          typeof err.message === 'string' && 
-          err.message.includes('No results matching given parameters');
-        
+        const isEmptyError = err.name === 'ApolloError' && typeof err.message === 'string' && err.message.includes('No results matching given parameters');
+
         if (!isEmptyError) {
           console.error(`Morpho vaults query failed on chain ${chainId}:`, err);
         }
@@ -98,4 +90,4 @@ export function useMorphoVaultsAprs(): () => Promise<MorphoVaultApr[]> {
 
     return allVaults;
   };
-} 
+}

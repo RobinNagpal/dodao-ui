@@ -3582,7 +3582,14 @@ export type GetMorphoVaultsQueryVariables = Exact<{
 }>;
 
 
-export type GetMorphoVaultsQuery = { __typename?: 'Query', vaults: { __typename?: 'PaginatedMetaMorphos', items?: Array<{ __typename?: 'Vault', address: any, symbol: string, name: string, asset: { __typename?: 'Asset', id: string, address: any }, chain: { __typename?: 'Chain', id: number, network: string }, state?: { __typename?: 'VaultState', id: string, dailyNetApy?: number | null } | null }> | null } };
+export type GetMorphoVaultsQuery = { __typename?: 'Query', vaults: { __typename?: 'PaginatedMetaMorphos', items?: Array<{ __typename?: 'Vault', address: any, symbol: string, name: string, asset: { __typename?: 'Asset', id: string, address: any, symbol: string }, chain: { __typename?: 'Chain', id: number, network: string }, state?: { __typename?: 'VaultState', id: string, dailyNetApy?: number | null } | null }> | null } };
+
+export type GetMorphoMarketsQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetMorphoMarketsQuery = { __typename?: 'Query', markets: { __typename?: 'PaginatedMarkets', items?: Array<{ __typename?: 'Market', whitelisted: boolean, uniqueKey: any, oracle?: { __typename?: 'Oracle', chain: { __typename?: 'Chain', id: number, network: string } } | null, loanAsset: { __typename?: 'Asset', address: any, symbol: string }, collateralAsset?: { __typename?: 'Asset', address: any, symbol: string } | null, state?: { __typename?: 'MarketState', dailyNetBorrowApy?: number | null } | null }> | null } };
 
 
 export const GetMorphoVaultPositionsDocument = gql`
@@ -3669,6 +3676,7 @@ export const GetMorphoVaultsDocument = gql`
       asset {
         id
         address
+        symbol
       }
       chain {
         id
@@ -3713,4 +3721,62 @@ export type GetMorphoVaultsLazyQueryHookResult = ReturnType<typeof useGetMorphoV
 export type GetMorphoVaultsQueryResult = Apollo.QueryResult<GetMorphoVaultsQuery, GetMorphoVaultsQueryVariables>;
 export function refetchGetMorphoVaultsQuery(variables?: GetMorphoVaultsQueryVariables) {
       return { query: GetMorphoVaultsDocument, variables: variables }
+    }
+export const GetMorphoMarketsDocument = gql`
+    query GetMorphoMarkets($first: Int) {
+  markets(where: {whitelisted: true}, first: $first) {
+    items {
+      whitelisted
+      uniqueKey
+      oracle {
+        chain {
+          id
+          network
+        }
+      }
+      loanAsset {
+        address
+        symbol
+      }
+      collateralAsset {
+        address
+        symbol
+      }
+      state {
+        dailyNetBorrowApy
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMorphoMarketsQuery__
+ *
+ * To run a query within a React component, call `useGetMorphoMarketsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMorphoMarketsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMorphoMarketsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *   },
+ * });
+ */
+export function useGetMorphoMarketsQuery(baseOptions?: Apollo.QueryHookOptions<GetMorphoMarketsQuery, GetMorphoMarketsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMorphoMarketsQuery, GetMorphoMarketsQueryVariables>(GetMorphoMarketsDocument, options);
+      }
+export function useGetMorphoMarketsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMorphoMarketsQuery, GetMorphoMarketsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMorphoMarketsQuery, GetMorphoMarketsQueryVariables>(GetMorphoMarketsDocument, options);
+        }
+export type GetMorphoMarketsQueryHookResult = ReturnType<typeof useGetMorphoMarketsQuery>;
+export type GetMorphoMarketsLazyQueryHookResult = ReturnType<typeof useGetMorphoMarketsLazyQuery>;
+export type GetMorphoMarketsQueryResult = Apollo.QueryResult<GetMorphoMarketsQuery, GetMorphoMarketsQueryVariables>;
+export function refetchGetMorphoMarketsQuery(variables?: GetMorphoMarketsQueryVariables) {
+      return { query: GetMorphoMarketsDocument, variables: variables }
     }

@@ -61,4 +61,30 @@ query GetMorphoVaults($where: VaultFilters, $first: Int) {
     }
   }
 }
+
+query GetMorphoMarkets($first: Int) {
+  markets(where: { whitelisted: true }, first: $first) {
+    items {
+      whitelisted
+      uniqueKey
+      oracle {
+        chain {
+          id
+          network
+        }
+      }
+      loanAsset {
+        address
+        symbol
+      }
+      collateralAsset {
+        address
+        symbol
+      }
+      state {
+        dailyNetBorrowApy
+      }
+    }
+  }
+}
   

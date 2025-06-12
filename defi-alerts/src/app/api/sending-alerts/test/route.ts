@@ -2,6 +2,7 @@ import { useAaveAprs } from '@/utils/getAaveAPR';
 import { useCompoundMarketsAprs } from '@/utils/getCompoundAPR';
 import { useSparkAprs } from '@/utils/getSparkAPR';
 import { useMorphoVaultsAprs } from '@/utils/getMorphoAPR';
+import { useMorphoMarketsAprs } from '@/utils/getMorphoMarketsAPR';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -17,10 +18,14 @@ export async function GET(request: NextRequest) {
   const fetchMorphoVaults = useMorphoVaultsAprs();
   const morphoVaults = await fetchMorphoVaults();
 
+  const fetchMorphoMarkets = useMorphoMarketsAprs();
+  const morphoMarkets = await fetchMorphoMarkets();
+
   return NextResponse.json({
     sparkAprs,
     aaveAprs,
     compoundAprs,
     morphoVaults,
+    morphoMarkets,
   });
 }
