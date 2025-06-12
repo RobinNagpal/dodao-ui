@@ -86,8 +86,9 @@ export function useMorphoMarketsAprs(): () => Promise<MorphoMarketApr[]> {
           netBorrowAPY: parseFloat((market.state.dailyNetBorrowApy * 100).toFixed(2)),
         });
       }
-    } catch (err: any) {
-      const isEmptyError = err.name === 'ApolloError' && typeof err.message === 'string' && err.message.includes('No results matching given parameters');
+    } catch (err: unknown) {
+      const isEmptyError =
+        err instanceof Error && err.name === 'ApolloError' && typeof err.message === 'string' && err.message.includes('No results matching given parameters');
 
       if (!isEmptyError) {
         console.error('Morpho markets query failed:', err);

@@ -90,7 +90,7 @@ async function fetchReserveDataInBatches(
   return allResults;
 }
 
-export type MarketApr = {
+export type SparkMarketApr = {
   chainId: number;
   chainName: string;
   asset: string;
@@ -99,7 +99,7 @@ export type MarketApr = {
   netBorrowAPY: number;
 };
 
-export function useSparkAprs(): () => Promise<MarketApr[]> {
+export function useSparkAprs(): () => Promise<SparkMarketApr[]> {
   const config: Config = useDefaultConfig;
 
   // Helper to pick a single address if SPARK_DATA_PROVIDER is an object

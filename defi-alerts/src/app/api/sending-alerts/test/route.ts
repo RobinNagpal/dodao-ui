@@ -4,8 +4,9 @@ import { useSparkAprs } from '@/utils/getSparkAPR';
 import { useMorphoVaultsAprs } from '@/utils/getMorphoAPR';
 import { useMorphoMarketsAprs } from '@/utils/getMorphoMarketsAPR';
 import { NextRequest, NextResponse } from 'next/server';
+import type { ApiResponse } from '@/types/apiTypes';
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<NextResponse<ApiResponse>> {
   const fetchSparkAprs = useSparkAprs();
   const sparkAprs = await fetchSparkAprs();
 
@@ -21,11 +22,13 @@ export async function GET(request: NextRequest) {
   const fetchMorphoMarkets = useMorphoMarketsAprs();
   const morphoMarkets = await fetchMorphoMarkets();
 
-  return NextResponse.json({
+  const response: ApiResponse = {
     sparkAprs,
     aaveAprs,
     compoundAprs,
     morphoVaults,
     morphoMarkets,
-  });
+  };
+
+  return NextResponse.json(response);
 }

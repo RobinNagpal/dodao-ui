@@ -77,8 +77,9 @@ export function useMorphoVaultsAprs(): () => Promise<MorphoVaultApr[]> {
             netBorrowAPY: 0, // Morpho vaults are supply-only
           });
         }
-      } catch (err: any) {
-        const isEmptyError = err.name === 'ApolloError' && typeof err.message === 'string' && err.message.includes('No results matching given parameters');
+      } catch (err: unknown) {
+        const isEmptyError =
+          err instanceof Error && err.name === 'ApolloError' && typeof err.message === 'string' && err.message.includes('No results matching given parameters');
 
         if (!isEmptyError) {
           console.error(`Morpho vaults query failed on chain ${chainId}:`, err);

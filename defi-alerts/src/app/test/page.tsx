@@ -7,24 +7,7 @@ import { ExternalLink, RefreshCw } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-
-interface MarketRate {
-  platform: string;
-  chainName: string;
-  asset: string;
-  earnRate: number;
-  borrowRate: number;
-  marketLink: string;
-  vaultName?: string; // Optional for Morpho vaults
-}
-
-interface ApiResponse {
-  sparkAprs: any[];
-  aaveAprs: any[];
-  compoundAprs: any[];
-  morphoVaults: any[];
-  morphoMarkets: any[];
-}
+import type { ApiResponse, MarketRate, CompoundMarketApr, AaveMarketApr, SparkMarketApr, MorphoVaultApr, MorphoMarketApr } from '@/types/apiTypes';
 
 export default function DebugPage() {
   const [allRates, setAllRates] = useState<MarketRate[]>([]);
@@ -186,8 +169,8 @@ export default function DebugPage() {
       // Transform Compound data
       if (ratesData.compoundAprs) {
         const compoundRates = ratesData.compoundAprs
-          .filter((rate: any) => rate.asset !== 'Unknown') // Exclude Unknown assets
-          .map((rate: any) => ({
+          .filter((rate: CompoundMarketApr) => rate.asset !== 'Unknown') // Exclude Unknown assets
+          .map((rate: CompoundMarketApr) => ({
             platform: 'Compound',
             chainName: rate.chainName,
             asset: rate.asset,
@@ -201,8 +184,8 @@ export default function DebugPage() {
       // Transform Aave data
       if (ratesData.aaveAprs) {
         const aaveRates = ratesData.aaveAprs
-          .filter((rate: any) => rate.asset !== 'Unknown') // Exclude Unknown assets
-          .map((rate: any) => ({
+          .filter((rate: AaveMarketApr) => rate.asset !== 'Unknown') // Exclude Unknown assets
+          .map((rate: AaveMarketApr) => ({
             platform: 'Aave',
             chainName: rate.chainName,
             asset: rate.asset,
@@ -216,8 +199,8 @@ export default function DebugPage() {
       // Transform Spark data
       if (ratesData.sparkAprs) {
         const sparkRates = ratesData.sparkAprs
-          .filter((rate: any) => rate.asset !== 'Unknown') // Exclude Unknown assets
-          .map((rate: any) => ({
+          .filter((rate: SparkMarketApr) => rate.asset !== 'Unknown') // Exclude Unknown assets
+          .map((rate: SparkMarketApr) => ({
             platform: 'Spark',
             chainName: rate.chainName,
             asset: rate.asset,
@@ -231,8 +214,8 @@ export default function DebugPage() {
       // Transform Morpho Vaults data
       if (ratesData.morphoVaults) {
         const morphoVaultRates = ratesData.morphoVaults
-          .filter((rate: any) => rate.asset !== 'Unknown') // Exclude Unknown assets
-          .map((rate: any) => ({
+          .filter((rate: MorphoVaultApr) => rate.asset !== 'Unknown') // Exclude Unknown assets
+          .map((rate: MorphoVaultApr) => ({
             platform: 'Morpho Vault',
             chainName: rate.chainName,
             asset: rate.asset,
@@ -247,8 +230,8 @@ export default function DebugPage() {
       // Transform Morpho Markets data
       if (ratesData.morphoMarkets) {
         const morphoMarketRates = ratesData.morphoMarkets
-          .filter((rate: any) => rate.asset !== 'Unknown') // Exclude Unknown assets
-          .map((rate: any) => ({
+          .filter((rate: MorphoMarketApr) => rate.asset !== 'Unknown') // Exclude Unknown assets
+          .map((rate: MorphoMarketApr) => ({
             platform: 'Morpho Market',
             chainName: rate.chainName,
             asset: rate.asset,
