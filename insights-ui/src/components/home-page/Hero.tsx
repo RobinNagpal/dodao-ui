@@ -56,9 +56,9 @@ export function Hero() {
   return (
     <header className="overflow-hidden bg-gray-800">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="relative isolate pt-4 lg:pt-8">
+        <div className="relative isolate pt-2 lg:pt-4">
           {/* Main Hero Content */}
-          <div className="mx-auto max-w-4xl py-16 sm:py-20 lg:py-24">
+          <div className="mx-auto max-w-4xl py-2 sm:py-4 lg:py-8">
             {/* Hero Header with Koala */}
             <div className="text-center">
               <div className="flex justify-center mb-8">
@@ -72,7 +72,7 @@ export function Hero() {
                 <span className="text-indigo-400"> Future</span>
               </h1>
 
-              <p className="mt-6 text-lg leading-8 text-gray-300 max-w-3xl mx-auto">
+              <p className="mt-6 text-lg leading-7 text-gray-300 max-w-3xl mx-auto">
                 From custom AI agent development to comprehensive training programs and powerful investment analysis tools - we deliver cutting-edge AI Agent
                 solutions that transform how businesses operate and make decisions.
               </p>
