@@ -3,7 +3,7 @@ import type { Address } from 'viem';
 import { useDefaultConfig } from '@/shared/web3/wagmiConfig';
 import { AAVE_CONFIG_POOL_CONTRACT } from '@/shared/migrator/aave/config';
 import { PoolDataAddressAbi_Arbitrum } from '@/shared/migrator/aave/abi/PoolDataAddressAbi_Arbitrum';
-import { useAaveAprs, MarketApr } from './getAaveAPR';
+import { useAaveAprs, AaveMarketApr } from './getAaveAPR';
 import { CHAINS, COMPOUND_MARKETS } from '@/shared/web3/config';
 import { WalletComparisonPosition } from '@/components/modals/types';
 
@@ -70,16 +70,16 @@ export function useAaveUserPositions(): (wallets: string[]) => Promise<WalletCom
   const fetchAprs = useAaveAprs();
 
   return async (wallets: string[]) => {
-    const aprs: MarketApr[] = await fetchAprs();
+    const aprs: AaveMarketApr[] = await fetchAprs();
 
     // group the filtered APRs by chainId
-    const aprsByChain = aprs.reduce<Record<number, MarketApr[]>>((acc, apr) => {
+    const aprsByChain = aprs.reduce<Record<number, AaveMarketApr[]>>((acc, apr) => {
       (acc[apr.chainId] ||= []).push(apr);
       return acc;
     }, {});
 
     const positions: WalletComparisonPosition[] = [];
-    const aprIndex: Record<number, Record<string, MarketApr>> = {};
+    const aprIndex: Record<number, Record<string, AaveMarketApr>> = {};
     aprs.forEach((a) => {
       const key = a.assetAddress.toLowerCase();
       (aprIndex[a.chainId] ||= {})[key] = a;

@@ -38,4 +38,53 @@ query GetMorphoVaultPositions($chainId: Int!, $address: String!) {
         }
       }
     }
+
+query GetMorphoVaults($where: VaultFilters, $first: Int) {
+  vaults(where: $where, first: $first) {
+    items {
+      address
+      symbol
+      name
+      asset {
+        id
+        address
+        symbol
+      }
+      chain {
+        id
+        network
+      }
+      state {
+        id
+        dailyNetApy
+      }
+    }
+  }
+}
+
+query GetMorphoMarkets($first: Int) {
+  markets(where: { whitelisted: true }, first: $first) {
+    items {
+      whitelisted
+      uniqueKey
+      oracle {
+        chain {
+          id
+          network
+        }
+      }
+      loanAsset {
+        address
+        symbol
+      }
+      collateralAsset {
+        address
+        symbol
+      }
+      state {
+        dailyNetBorrowApy
+      }
+    }
+  }
+}
   

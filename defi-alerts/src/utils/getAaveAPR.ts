@@ -91,7 +91,7 @@ async function fetchReserveDataInBatches(
   return allResults;
 }
 
-export type MarketApr = {
+export type AaveMarketApr = {
   chainId: number;
   chainName: string;
   asset: string;
@@ -100,7 +100,7 @@ export type MarketApr = {
   netBorrowAPY: number;
 };
 
-export function useAaveAprs(): () => Promise<MarketApr[]> {
+export function useAaveAprs(): () => Promise<AaveMarketApr[]> {
   const config: Config = useDefaultConfig;
 
   const SYMBOL_BY_ASSET: Record<string, string> = COMPOUND_MARKETS.reduce((acc, m) => {
@@ -108,7 +108,7 @@ export function useAaveAprs(): () => Promise<MarketApr[]> {
     return acc;
   }, {} as Record<string, string>);
 
-  const fetchChain = async (chainId: number): Promise<MarketApr[]> => {
+  const fetchChain = async (chainId: number): Promise<AaveMarketApr[]> => {
     // find the Aave pool address for this chain
     const [provider] = flatten(AAVE_CONFIG_POOL_CONTRACT[chainId] || []);
     if (!provider) return [];
