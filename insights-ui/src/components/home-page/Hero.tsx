@@ -34,24 +34,6 @@ const services = [
   },
 ];
 
-function Testimonial() {
-  return (
-    <figure className="relative mx-auto max-w-md text-center lg:mx-0 lg:text-left">
-      <div className="flex justify-center text-indigo-400 lg:justify-start">
-        <StarRating />
-      </div>
-      <blockquote className="mt-2">
-        <p className="font-display text-lg font-medium text-white">
-          “It is not the strongest of the species that survive, nor the most intelligent, but the one most responsive to change.”
-        </p>
-      </blockquote>
-      <figcaption className="mt-2 text-sm text-gray-400">
-        <strong className="font-semibold text-indigo-400 before:content-['—_']">Charles Darwin</strong>
-      </figcaption>
-    </figure>
-  );
-}
-
 export function Hero() {
   return (
     <header className="overflow-hidden bg-gray-800">
@@ -141,13 +123,6 @@ export function Hero() {
               >
                 Get In Touch
               </a>
-            </div>
-          </div>
-
-          {/* Testimonial */}
-          <div className="flex justify-center">
-            <div className="bg-gray-900/30 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30 max-w-2xl">
-              <Testimonial />
             </div>
           </div>
         </div>
