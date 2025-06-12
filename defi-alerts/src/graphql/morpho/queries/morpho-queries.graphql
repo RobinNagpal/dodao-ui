@@ -38,4 +38,27 @@ query GetMorphoVaultPositions($chainId: Int!, $address: String!) {
         }
       }
     }
+
+query GetMorphoVaults($where: VaultFilters, $first: Int) {
+  vaults(where: $where, first: $first) {
+    items {
+      address
+      symbol
+      name
+      asset {
+        id
+        address
+        symbol
+      }
+      chain {
+        id
+        network
+      }
+      state {
+        id
+        dailyNetApy
+      }
+    }
+  }
+}
   

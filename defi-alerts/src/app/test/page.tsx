@@ -15,22 +15,25 @@ interface MarketRate {
   earnRate: number;
   borrowRate: number;
   marketLink: string;
+  vaultName?: string; // Optional for Morpho vaults
 }
 
 interface ApiResponse {
   sparkAprs: any[];
   aaveAprs: any[];
   compoundAprs: any[];
+  morphoVaults: any[];
 }
 
 export default function DebugPage() {
   const [allRates, setAllRates] = useState<MarketRate[]>([]);
   const [filteredRates, setFilteredRates] = useState<MarketRate[]>([]);
   const [platformFilter, setPlatformFilter] = useState('all');
+  const [showMorphoColumns, setShowMorphoColumns] = useState(false);
   const baseUrl = getBaseUrl();
 
   // Function to generate market links based on platform
-  const generateMarketLink = (platform: string, asset: string, chainName: string, assetAddress: string): string => {
+  const generateMarketLink = (platform: string, asset: string, chainName: string, assetAddress: string, vaultAddress?: string, vaultName?: string): string => {
     switch (platform.toLowerCase()) {
       case 'compound':
         return generateCompoundLink(asset, chainName);
@@ -38,6 +41,8 @@ export default function DebugPage() {
         return generateAaveLink(assetAddress, chainName);
       case 'spark':
         return generateSparkLink(assetAddress, chainName);
+      case 'morpho':
+        return generateMorphoLink(vaultAddress || '', chainName, vaultName || '');
       default:
         return '#';
     }
@@ -112,6 +117,25 @@ export default function DebugPage() {
     return `${baseUrl}/${chainId}/${assetAddress}`;
   };
 
+  // Function to generate Morpho vault links
+  const generateMorphoLink = (vaultAddress: string, chainName: string, vaultName: string): string => {
+    const baseUrl = 'https://app.morpho.org';
+    
+    // Chain network mapping
+    const networkMapping: Record<string, string> = {
+      'Ethereum': 'ethereum',
+      'Base': 'base',
+      'Polygon': 'polygon',
+      'Unichain': 'unichain'
+    };
+
+    const network = networkMapping[chainName] || 'ethereum';
+    // Convert vault name to URL-friendly format (lowercase, spaces to hyphens)
+    const urlFriendlyName = vaultName.toLowerCase().replace(/\s+/g, '-');
+    
+    return `${baseUrl}/${network}/vault/${vaultAddress}/${urlFriendlyName}`;
+  };
+
   // Use useFetchData hook to fetch rates data
   const {
     data: ratesData,
@@ -169,6 +193,22 @@ export default function DebugPage() {
           }));
         allTransformedRates.push(...sparkRates);
       }
+
+      // Transform Morpho data
+      if (ratesData.morphoVaults) {
+        const morphoRates = ratesData.morphoVaults
+          .filter((rate: any) => rate.asset !== 'Unknown') // Exclude Unknown assets
+          .map((rate: any) => ({
+            platform: 'Morpho',
+            chainName: rate.chainName,
+            asset: rate.asset,
+            earnRate: rate.netEarnAPY,
+            borrowRate: rate.netBorrowAPY,
+            marketLink: generateMarketLink('morpho', rate.asset, rate.chainName, rate.assetAddress, rate.vaultAddress, rate.vaultName),
+            vaultName: rate.vaultName
+          }));
+        allTransformedRates.push(...morphoRates);
+      }
       
       setAllRates(allTransformedRates);
     }
@@ -178,8 +218,10 @@ export default function DebugPage() {
   useEffect(() => {
     if (platformFilter === 'all') {
       setFilteredRates(allRates);
+      setShowMorphoColumns(allRates.some(rate => rate.platform === 'Morpho'));
     } else {
       setFilteredRates(allRates.filter(rate => rate.platform.toLowerCase() === platformFilter.toLowerCase()));
+      setShowMorphoColumns(platformFilter.toLowerCase() === 'morpho');
     }
   }, [allRates, platformFilter]);
 
@@ -210,6 +252,9 @@ export default function DebugPage() {
               </div>
               <div className="hover-border-primary hover-text-primary">
                 <SelectItem value="spark">Spark</SelectItem>
+              </div>
+              <div className="hover-border-primary hover-text-primary">
+                <SelectItem value="morpho">Morpho</SelectItem>
               </div>
             </SelectContent>
           </Select>
@@ -246,6 +291,9 @@ export default function DebugPage() {
                   <TableHead className="w-[120px] text-left">Platform</TableHead>
                   <TableHead className="w-[120px] text-left">Chain</TableHead>
                   <TableHead className="w-[120px] text-left">Asset</TableHead>
+                  {showMorphoColumns && (
+                    <TableHead className="w-[180px] text-left">Vault Name</TableHead>
+                  )}
                   <TableHead className="w-[120px] text-center">Earn Rate (%)</TableHead>
                   <TableHead className="w-[120px] text-center">Borrow Rate (%)</TableHead>
                   <TableHead className="w-[120px] text-center">Market Link</TableHead>
@@ -264,6 +312,11 @@ export default function DebugPage() {
                       <TableCell className="text-theme-primary">
                         {rate.asset}
                       </TableCell>
+                      {showMorphoColumns && (
+                        <TableCell className="text-theme-primary">
+                          {rate.vaultName || '-'}
+                        </TableCell>
+                      )}
                       <TableCell className="text-center">
                         <span className="text-green-600 font-medium">
                           {rate.earnRate.toFixed(2)}%
@@ -288,7 +341,7 @@ export default function DebugPage() {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={6} className="h-24 text-center">
+                    <TableCell colSpan={showMorphoColumns ? 7 : 6} className="h-24 text-center">
                       <div className="flex flex-col items-center justify-center text-theme-muted">
                         <p>No rates data available</p>
                       </div>
