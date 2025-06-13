@@ -36,7 +36,7 @@ export default function DoDAOHomeHero() {
           </h1>
 
           <p className="mt-6 text-xl leading-8 text-gray-300 max-w-3xl mx-auto">
-            We specialize in designing intelligent AI ASgents, training teams to build them, and creating DeFi tools that power the decentralized future.
+            We specialize in designing intelligent AI Agents, training teams to build them, and creating DeFi tools that power the decentralized future.
           </p>
 
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-5xl mx-auto">
