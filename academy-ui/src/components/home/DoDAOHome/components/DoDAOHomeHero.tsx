@@ -36,7 +36,7 @@ export default function DoDAOHomeHero() {
           </h1>
 
           <p className="mt-6 text-xl leading-8 text-gray-300 max-w-3xl mx-auto">
-            We specialize in designing intelligent AI agents, training teams to build them, and creating DeFi tools that power the decentralized future.
+            We specialize in designing intelligent AI ASgents, training teams to build them, and creating DeFi tools that power the decentralized future.
           </p>
 
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-5xl mx-auto">
@@ -54,7 +54,7 @@ export default function DoDAOHomeHero() {
                   </svg>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">AI Agent Development</h3>
-                <p className="text-sm text-gray-300">Custom AI agents that automate workflows and solve complex business problems</p>
+                <p className="text-sm text-gray-300">Custom AI Agents that automate workflows and solve complex business problems</p>
               </div>
             </div>
 

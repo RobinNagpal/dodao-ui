@@ -37,14 +37,14 @@ const aiagent = [
   {
     name: 'Custom AI Agent Development',
     description:
-      'At DoDAO, we offer AI agent development services using advanced tools tailored to your business needs. Our trusted and highly trained AI agents streamline financial processes and enhance decision-making, empowering your business with smarter solutions. If you’re looking for a customized AI agent to meet your unique requirements, DoDAO is here to assist you.',
+      'At DoDAO, we offer AI Agent development services using advanced tools tailored to your business needs. Our trusted and highly trained AI Agents streamline financial processes and enhance decision-making, empowering your business with smarter solutions. If you’re looking for a customized AI Agent to meet your unique requirements, DoDAO is here to assist you.',
     href: '#',
     icon: CpuChipIcon,
   },
   {
     name: 'Maintenance and Support',
     description:
-      'We provide ongoing maintenance and support to ensure your AI agents operate seamlessly and deliver consistent performance. With DoDAO, you can rely on a partner committed to the long-term success of your AI-powered systems. Our maintenance services are designed to keep your AI agents running smoothly and efficiently, helping you achieve your business goals.',
+      'We provide ongoing maintenance and support to ensure your AI Agents operate seamlessly and deliver consistent performance. With DoDAO, you can rely on a partner committed to the long-term success of your AI-powered systems. Our maintenance services are designed to keep your AI Agents running smoothly and efficiently, helping you achieve your business goals.',
     href: '#',
     icon: LifebuoyIcon,
   },
@@ -62,7 +62,7 @@ export default function Services() {
             <p className="text-base font-semibold leading-7 text-indigo-600">Everything you need</p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">AI Agent Services</h2>
             <p className="mt-4 text-base text-gray-500">
-              At DoDAO, we provide AI agent services designed to empower your business with intelligent solutions, streamline operations, and drive smarter
+              At DoDAO, we provide AI Agent services designed to empower your business with intelligent solutions, streamline operations, and drive smarter
               decision-making.
             </p>
           </div>
