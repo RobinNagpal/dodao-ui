@@ -109,7 +109,6 @@ export function Hero() {
               ))}
             </div>
 
-            {/* Main CTA Buttons */}
             <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/reports"
