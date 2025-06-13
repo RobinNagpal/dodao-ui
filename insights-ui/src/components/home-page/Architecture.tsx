@@ -50,7 +50,7 @@ export default function Architecture() {
     <div className="bg-gray-800 py-16 sm:py-16">
       <div className="mx-auto max-w-2xl sm:text-center">
         <h2 className="text-base/7 font-semibold text-indigo-400">Accelerate Your Insights</h2>
-        <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-white sm:text-5xl sm:text-balance">Our Key Features</p>
+        <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-white sm:text-5xl sm:text-balance">Key Features of KoalaGains</p>
         <p className="mt-6 text-lg/8 text-gray-300">Unlock the full potential of your investment research with our advanced AI-driven features.</p>
       </div>
       <div className="mx-auto mb-16 max-w-7xl px-6 sm:mt-20 md:mt-16 lg:px-8">
