@@ -1,6 +1,10 @@
+'use client';
+import { useState } from 'react';
 import ContactUsButton from '@/components/home/DoDAOHome/components/ContactUsButton';
 
 export default function DoDAOHomeHero() {
+  const [activeTab, setActiveTab] = useState('services');
+
   return (
     <div className="relative isolate overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900">
       <div className="absolute inset-0 overflow-hidden">
@@ -16,14 +20,19 @@ export default function DoDAOHomeHero() {
         }}
       ></div>
 
-      <div className="relative mx-auto max-w-7xl px-6 py-8 sm:py-12 lg:py-20 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-6 py-8 sm:py-12 lg:py-16 lg:px-8">
         <div className="mb-8 flex justify-center">
           <div className="relative rounded-full px-4 py-2 text-sm leading-6 text-gray-300 ring-1 ring-white/20 hover:ring-white/30 transition-all duration-300 backdrop-blur-sm bg-white/5">
             <span className="inline-flex items-center">
               <span className="h-2 w-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
               Latest Product Launch:{' '}
-              <a href="https://koalagains.com/" target="_blank" className="font-semibold text-white ml-1 hover:text-blue-300 transition-colors">
-                KoalaGains AI-powered investment insights <span aria-hidden="true">&rarr;</span>
+              <a
+                href="https://koalagains.com/"
+                target="_blank"
+                className="font-semibold text-white ml-1 hover:text-blue-300 transition-colors"
+                rel="noreferrer"
+              >
+                KoalaGains <span aria-hidden="true">&rarr;</span>
               </a>
             </span>
           </div>
@@ -39,56 +48,255 @@ export default function DoDAOHomeHero() {
             We specialize in designing intelligent AI agents, training teams to build them, and creating DeFi tools that power the decentralized future.
           </p>
 
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-5xl mx-auto">
-            <div className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 hover:bg-white/15 transition-all duration-300 hover:scale-105">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20 mb-4">
-                  <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2">AI Agent Development</h3>
-                <p className="text-sm text-gray-300">Custom AI agents that automate workflows and solve complex business problems</p>
-              </div>
-            </div>
-
-            <div className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 hover:bg-white/15 transition-all duration-300 hover:scale-105">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-purple-500/20 mb-4">
-                  <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.168 18.477 18.582 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2">AI Agent Training</h3>
-                <p className="text-sm text-gray-300">Comprehensive bootcamps teaching teams to build production-ready AI Agents</p>
-              </div>
-            </div>
-
-            <div className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 hover:bg-white/15 transition-all duration-300 hover:scale-105">
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="relative">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-500/20 mb-4">
-                  <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2">DeFi Tools</h3>
-                <p className="text-sm text-gray-300">Advanced tooling and smart contracts for leading DeFi protocols</p>
-              </div>
+          {/* Tab navigation */}
+          <div className="mt-10 flex justify-center">
+            <div className="inline-flex rounded-md p-1 bg-white/10 backdrop-blur-sm">
+              <button
+                onClick={() => setActiveTab('services')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+                  activeTab === 'services' ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:text-white'
+                }`}
+              >
+                Our Services
+              </button>
+              <button
+                onClick={() => setActiveTab('products')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+                  activeTab === 'products' ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:text-white'
+                }`}
+              >
+                Our Products
+              </button>
             </div>
           </div>
+
+          {/* Services section */}
+          {activeTab === 'services' && (
+            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-5xl mx-auto">
+              <div className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20 mb-4">
+                    <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">AI Agent Development</h3>
+                  <p className="text-sm text-gray-300">Custom AI agents that automate workflows and solve complex business problems</p>
+                </div>
+              </div>
+
+              <div className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-purple-500/20 mb-4">
+                    <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.168 18.477 18.582 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">AI Agent Training</h3>
+                  <p className="text-sm text-gray-300">Comprehensive bootcamps teaching teams to build production-ready AI Agents</p>
+                </div>
+              </div>
+
+              <div className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-500/20 mb-4">
+                    <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">DeFi Tools</h3>
+                  <p className="text-sm text-gray-300">Advanced tooling and smart contracts for leading DeFi protocols</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'products' && (
+            <div className="mt-14">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-6xl mx-auto">
+                <a
+                  href="/home-section/dodao-io/products/koalagains"
+                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 backdrop-blur-md border border-emerald-500/30 p-6 hover:from-emerald-500/20 hover:to-teal-500/20 transition-all duration-300 hover:scale-105 hover:border-emerald-400/50"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/20">
+                        <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                      </div>
+                      <span className="text-emerald-400 text-sm font-medium">AI Agent</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3">KoalaGains</h3>
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      AI-powered investment research platform for crowdfunding projects and REITs. Automated analysis, risk assessment, and data-driven
+                      insights.
+                    </p>
+                    <div className="mt-4 inline-flex items-center text-emerald-400 text-sm font-medium group-hover:text-emerald-300 transition-colors">
+                      Explore More
+                      <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </a>
+
+                <a
+                  href="/home-section/dodao-io/products/tidbitshub"
+                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-500/10 to-purple-500/10 backdrop-blur-md border border-violet-500/30 p-6 hover:from-violet-500/20 hover:to-purple-500/20 transition-all duration-300 hover:scale-105 hover:border-violet-400/50"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-violet-500/20">
+                        <svg className="w-6 h-6 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.168 18.477 18.582 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                          />
+                        </svg>
+                      </div>
+                      <span className="text-violet-400 text-sm font-medium">Education</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3">Tidbits Hub</h3>
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      Bite-sized interactive learning platform. Transform complex concepts into 5-10 minute engaging content with quizzes, demos, and videos.
+                    </p>
+                    <div className="mt-4 inline-flex items-center text-violet-400 text-sm font-medium group-hover:text-violet-300 transition-colors">
+                      Explore More
+                      <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </a>
+
+                <a
+                  href="/home-section/dodao-io/services/defi-alerts"
+                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500/10 to-red-500/10 backdrop-blur-md border border-orange-500/30 p-6 hover:from-orange-500/20 hover:to-red-500/20 transition-all duration-300 hover:scale-105 hover:border-orange-400/50"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-orange-500/20">
+                        <svg className="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM9 9l3-3m0 0l3 3m-3-3v12" />
+                        </svg>
+                      </div>
+                      <span className="text-orange-400 text-sm font-medium">DeFi Tool</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3">DeFi Alerts</h3>
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      Proactive notification platform for DeFi opportunities. Real-time alerts for yields, position health, and market changes across all
+                      protocols.
+                    </p>
+                    <div className="mt-4 inline-flex items-center text-orange-400 text-sm font-medium group-hover:text-orange-300 transition-colors">
+                      Explore More
+                      <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          )}
+
+          {/* {activeTab === 'products' && (
+            <div className="mt-12 max-w-5xl mx-auto">
+              <div className="grid grid-cols-1 gap-8">
+                <Link href="/home-section/dodao-io/products/koalagains" className="group block">
+                  <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 transition-all duration-300">
+                    <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-xl font-semibold text-white group-hover:text-blue-300 transition-colors">KoalaGains</h3>
+                      <p className="mt-2 text-gray-300">
+                        AI-powered investment research platform that analyzes crowdfunding projects and REITs with automated financial reports and sentiment
+                        analysis.
+                      </p>
+                      <div className="mt-3 inline-flex items-center text-blue-400 group-hover:text-blue-300">
+                        Learn more <span className="ml-1 group-hover:translate-x-1 transition-transform">&rarr;</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+
+                <Link href="/home-section/dodao-io/products/tidbitshub" className="group block">
+                  <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 transition-all duration-300">
+                    <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.168 18.477 18.582 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                        />
+                      </svg>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-xl font-semibold text-white group-hover:text-purple-300 transition-colors">Tidbits Hub</h3>
+                      <p className="mt-2 text-gray-300">
+                        Bite-sized learning platform with interactive demos and short videos that help users absorb essential information in under five minutes.
+                      </p>
+                      <div className="mt-3 inline-flex items-center text-purple-400 group-hover:text-purple-300">
+                        Learn more <span className="ml-1 group-hover:translate-x-1 transition-transform">&rarr;</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+
+                <Link href="/home-section/dodao-io/products/defialerts" className="group block">
+                  <div className="flex flex-col md:flex-row items-center gap-6 p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 transition-all duration-300">
+                    <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                        />
+                      </svg>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-xl font-semibold text-white group-hover:text-green-300 transition-colors">DeFi Alerts</h3>
+                      <p className="mt-2 text-gray-300">
+                        Real-time notification system for DeFi opportunities and risks across all chains, helping users optimize yields and manage positions
+                        efficiently.
+                      </p>
+                      <div className="mt-3 inline-flex items-center text-green-400 group-hover:text-green-300">
+                        Learn more <span className="ml-1 group-hover:translate-x-1 transition-transform">&rarr;</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          )} */}
 
           <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
             <div className="-mt-4">

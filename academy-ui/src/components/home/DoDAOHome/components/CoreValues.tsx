@@ -4,7 +4,7 @@ const coreValues = [
   {
     name: 'AI Agent Design & Development',
     description:
-      'We specialize in designing and developing AI Agents that go beyond simple automation. Our agents are context-aware, goal-driven, and built for complex real-world tasks—from investment research to internal business operations.',
+      'We specialize in designing and developing AI Agents that go beyond simple automation. Our Agents are context-aware, goal-driven, and built for complex real-world tasks—from investment research to internal business operations.',
     icon: LightBulbIcon,
   },
   {
@@ -16,7 +16,7 @@ const coreValues = [
   {
     name: 'AI Agent Training',
     description:
-      'We train students and professionals to build production-ready AI Agents. Our bootcamps teach real-world workflows—covering prompt engineering, memory use, and building agents for finance, real estate, and education.',
+      'We train students and professionals to build production-ready AI Agents. Our bootcamps teach real-world workflows—covering prompt engineering, memory use, and building Agents for finance, real estate, and education.',
     icon: AcademicCapIcon,
   },
   {

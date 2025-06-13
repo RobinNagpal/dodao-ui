@@ -42,7 +42,7 @@ export default function DoDAOProducts() {
           <div className="mx-auto max-w-2xl sm:text-center">
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Empowering Innovation with DoDAO Products</h2>
             <p className="mt-4 text-base text-gray-500">
-              At DoDAO, we empower organizations across both blockchain and AI. We specialize in AI agent development tailored to meet the customized needs of
+              At DoDAO, we empower organizations across both DeFi and AI. We specialize in AI Agent development tailored to meet the customized needs of
               businesses, ensuring innovative and efficient solutions. Our AI Agent platform, KoalaGains, automates investment research on crowdfunding and
               REITs with instant, data-driven insights. We also support leading blockchain projects with smart contracts, developer tooling, and bite-sized
               learning through Tidbits Hub and Academy Sites.
