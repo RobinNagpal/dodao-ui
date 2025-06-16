@@ -4,18 +4,19 @@ import { useState, useEffect } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon, ArrowTopRightOnSquareIcon, PlayIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import TidbitsHubGif from '@/images/DoDAOHomePage/Tidbitshub_giffy.gif';
-import KoalaGains from '@/images/DoDAOHomePage/koala_gains_reduced.gif';
+import KoalaGains from '@/images/DoDAOHomePage/koala_gains.gif';
 import { Container } from './Container';
 import { SectionHeading } from './SectionHeading';
 import AcademyGif from '@/images/DoDAOHomePage/Academy_site.gif';
+import DefiGif from '@/images/DoDAOHomePage/defi_alerts.gif';
 
 const products = [
   {
     id: 'koala-gains',
     name: 'KoalaGains',
-    tagline: 'AI-Powered Investment Intelligence',
+    tagline: 'AI-Powered Investment Insights',
     problem: 'Investment research takes weeks and often misses critical insights across multiple data sources',
-    solution: 'AI agents analyze crowdfunding projects, REITs, and public companies in minutes with comprehensive reports',
+    solution: 'AI Agents analyze crowdfunding projects, REITs, and public companies in minutes with detailed financial insights and reports',
     description:
       'KoalaGains revolutionizes investment research through powerful AI-driven insights, enabling users to quickly analyze investment opportunities with unprecedented speed and accuracy.',
     features: [
@@ -26,15 +27,15 @@ const products = [
       'Multi-Asset Coverage',
       'Real-time Data Integration',
     ],
-    metrics: [
-      { label: 'Analysis Time', value: '5 mins', subtext: 'vs 2-3 weeks manual' },
-      { label: 'Data Sources', value: '50+', subtext: 'integrated platforms' },
-      { label: 'Accuracy Rate', value: '94%', subtext: 'prediction accuracy' },
-    ],
+    // metrics: [
+    //   { label: 'Analysis Time', value: '5 mins', subtext: 'vs 2-3 weeks manual' },
+    //   { label: 'Data Sources', value: '50+', subtext: 'integrated platforms' },
+    //   { label: 'Accuracy Rate', value: '94%', subtext: 'prediction accuracy' },
+    // ],
     imageSrc: KoalaGains.src,
     imageAlt: 'KoalaGains AI Investment Platform',
     ctaText: 'Try KoalaGains',
-    ctaLink: '/home-section/dodao-io/products/koalagains',
+    ctaLink: 'https://koalagains.com/',
     category: 'AI Agent',
     categoryColor: 'from-blue-500 to-cyan-500',
     bgGradient: 'from-blue-50 to-cyan-50',
@@ -47,16 +48,16 @@ const products = [
     solution: 'Bite-sized learning content delivers key insights in under 5 minutes with interactive elements',
     description:
       'Tidbits Hub transforms complex information into digestible 5-10 minute learning experiences with videos, interactive demos, and shareable content.',
-    features: ['5-10 Minute Learning Bites', 'One-Minute Videos', 'Interactive Demos', 'Social Media Ready', 'Embedded CTAs', 'Progress Tracking'],
-    metrics: [
-      { label: 'Learning Time', value: '5 mins', subtext: 'per topic' },
-      { label: 'Retention Rate', value: '85%', subtext: 'vs 20% traditional' },
-      { label: 'Completion Rate', value: '92%', subtext: 'user engagement' },
-    ],
+    features: ['Step-by-Step Tidbits', 'One-Minute Videos', 'Clickable Demos', 'Interactive Quizzes', 'Decrease Churn', 'Progress Tracking'],
+    // metrics: [
+    //   { label: 'Learning Time', value: '5 mins', subtext: 'per topic' },
+    //   { label: 'Retention Rate', value: '85%', subtext: 'vs 20% traditional' },
+    //   { label: 'Completion Rate', value: '92%', subtext: 'user engagement' },
+    // ],
     imageSrc: TidbitsHubGif.src,
     imageAlt: 'Tidbits Hub Learning Platform',
     ctaText: 'Explore Tidbits',
-    ctaLink: '/home-section/dodao-io/products/tidbitshub',
+    ctaLink: 'https://tidbitshub.org/',
     category: 'Education',
     categoryColor: 'from-violet-500 to-purple-500',
     bgGradient: 'from-violet-50 to-purple-50',
@@ -70,15 +71,15 @@ const products = [
     description:
       'DeFi Alerts provides real-time notifications for DeFi opportunities and risks, helping users optimize yields and manage positions efficiently across multiple protocols.',
     features: ['Multi-Chain Monitoring', 'Custom Alert Thresholds', 'Position Health Tracking', 'Yield Optimization', 'Risk Management', 'API Integration'],
-    metrics: [
-      { label: 'Response Time', value: '<60s', subtext: 'alert delivery' },
-      { label: 'Protocols', value: '100+', subtext: 'supported' },
-      { label: 'Uptime', value: '99.9%', subtext: 'reliability' },
-    ],
-    imageSrc: '/placeholder.svg?height=400&width=600',
+    // metrics: [
+    //   { label: 'Response Time', value: '<60s', subtext: 'alert delivery' },
+    //   { label: 'Protocols', value: '100+', subtext: 'supported' },
+    //   { label: 'Uptime', value: '99.9%', subtext: 'reliability' },
+    // ],
+    imageSrc: DefiGif.src,
     imageAlt: 'DeFi Alerts Platform',
     ctaText: 'Get Alerts',
-    ctaLink: '/home-section/dodao-io/products/defialerts',
+    ctaLink: 'https://www.defialerts.xyz/',
     category: 'DeFi Tool',
     categoryColor: 'from-green-500 to-teal-500',
     bgGradient: 'from-green-50 to-teal-50',
@@ -88,19 +89,19 @@ const products = [
     name: 'Academy Sites',
     tagline: 'Comprehensive Learning Ecosystems',
     problem: 'Organizations struggle to create engaging, comprehensive training that accommodates different learning styles and tracks progress effectively',
-    solution: 'Multi-format learning platform with courses, simulations, and interactive content tailored to your organization',
+    solution: 'Multi-format learning platform with courses, guides, and interactive demos tailored to your organization',
     description:
       'Academy Sites provides a complete learning ecosystem with nano-courses, interactive simulations, and comprehensive training programs tailored to your organization.',
-    features: ['Nano-Courses (5-10 mins)', 'Interactive Simulations', 'Full Course Programs', 'Progress Tracking', 'Custom Branding', 'Multi-Format Content'],
-    metrics: [
-      { label: 'Course Length', value: '5-10 mins', subtext: 'nano-courses' },
-      { label: 'Engagement', value: '88%', subtext: 'completion rate' },
-      { label: 'Custom Sites', value: '50+', subtext: 'organizations served' },
-    ],
+    features: ['Nano-Courses (5-10 mins)', 'Clickable Demos', 'Full Course Programs', 'Progress Tracking', 'Custom Branding', 'Multi-Format Content'],
+    // metrics: [
+    //   { label: 'Course Length', value: '5-10 mins', subtext: 'nano-courses' },
+    //   { label: 'Engagement', value: '88%', subtext: 'completion rate' },
+    //   { label: 'Custom Sites', value: '50+', subtext: 'organizations served' },
+    // ],
     imageSrc: AcademyGif.src,
     imageAlt: 'Academy Sites Learning Platform',
     ctaText: 'Build Academy',
-    ctaLink: '/home-section/dodao-io/products/academy-sites',
+    ctaLink: '/home-section/dodao-io/products/academysites',
     category: 'Education',
     categoryColor: 'from-indigo-500 to-blue-500',
     bgGradient: 'from-indigo-50 to-blue-50',
@@ -145,7 +146,7 @@ export default function DoDAOProducts() {
 
     const interval = setInterval(() => {
       nextProduct();
-    }, 8000);
+    }, 15000);
 
     return () => clearInterval(interval);
   }, [isPaused]);
@@ -153,32 +154,30 @@ export default function DoDAOProducts() {
   const currentProduct = products[currentIndex];
 
   return (
-    <section className="relative py-20 bg-gradient-to-br from-gray-50 to-white overflow-hidden" id="products">
+    <section className="sm:pb-20" id="products">
       {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
-      </div>
+      </div> */}
 
-      <Container size="lg" className="relative">
+      <Container size="lg" className="bg-gray-50 pt-8">
         <SectionHeading number="1" id="products-title">
           Products
         </SectionHeading>
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-8">
           <div className="mx-auto max-w-3xl text-center mb-16">
-            <h2 className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl">
               Products That{' '}
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">Solve Real Problems</span>
             </h2>
-            <p className="mt-6 text-xl leading-8 text-gray-600">
-              From AI-powered investment research to comprehensive learning platforms, our products transform how businesses operate and users learn.
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              From AI-powered investment insights to comprehensive learning platforms, our products transform how businesses operate and users learn.
             </p>
           </div>
 
-          {/* Product Showcase */}
           <div className="relative" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
-            {/* Navigation Arrows */}
             <button
               onClick={prevProduct}
               className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-4 rounded-full bg-white/90 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 group border border-gray-200"
@@ -195,16 +194,12 @@ export default function DoDAOProducts() {
               <ChevronRightIcon className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
             </button>
 
-            {/* Main Product Card */}
             <div className="mx-auto max-w-7xl">
               <div className="relative overflow-hidden rounded-3xl bg-white shadow-2xl border border-gray-100">
                 <div className={`absolute inset-0 bg-gradient-to-br ${currentProduct.bgGradient} opacity-30`}></div>
 
-                {/* Vertical Layout */}
                 <div className="relative">
-                  {/* Content Section */}
                   <div className="p-8 lg:p-12">
-                    {/* Category Badge */}
                     <div
                       className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold text-white mb-8 w-fit bg-gradient-to-r ${currentProduct.categoryColor} shadow-lg`}
                     >
@@ -212,17 +207,14 @@ export default function DoDAOProducts() {
                       {currentProduct.category}
                     </div>
 
-                    {/* Product Name & Tagline */}
                     <div className={`transition-all duration-500 ${isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'}`}>
-                      <h3 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">{currentProduct.name}</h3>
-                      <p className="text-2xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-8">
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">{currentProduct.name}</h3>
+                      <p className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-8">
                         {currentProduct.tagline}
                       </p>
                     </div>
 
-                    {/* Problem & Solution Grid */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-                      {/* Problem */}
                       <div className={`transition-all duration-500 delay-100 ${isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'}`}>
                         <div className="flex items-start space-x-4 p-6 rounded-2xl bg-red-50 border border-red-100 h-full">
                           <div className="flex-shrink-0">
@@ -235,7 +227,6 @@ export default function DoDAOProducts() {
                         </div>
                       </div>
 
-                      {/* Solution */}
                       <div className={`transition-all duration-500 delay-200 ${isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'}`}>
                         <div className="flex items-start space-x-4 p-6 rounded-2xl bg-green-50 border border-green-100 h-full">
                           <div className="flex-shrink-0">
@@ -249,8 +240,11 @@ export default function DoDAOProducts() {
                       </div>
                     </div>
 
-                    {/* CTA Button */}
-                    <div className={`text-center mb-8 transition-all duration-500 delay-300 ${isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'}`}>
+                    <div
+                      className={`text-center mb-8 transition-all duration-500 delay-300 ${
+                        isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'
+                      }`}
+                    >
                       <a
                         href={currentProduct.ctaLink}
                         className={`inline-flex items-center px-8 py-4 rounded-2xl bg-gradient-to-r ${currentProduct.categoryColor} text-white font-bold text-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 group`}
@@ -262,36 +256,27 @@ export default function DoDAOProducts() {
                     </div>
                   </div>
 
-                  {/* GIF Demo Section - Full Width */}
                   <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 p-8">
                     <div className={`transition-all duration-500 delay-400 ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
-                      {/* Demo Label */}
                       <div className="text-center mb-6">
                         <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold text-gray-700 bg-white/80 backdrop-blur-sm border border-gray-200">
                           <PlayIcon className="w-4 h-4 mr-2" />
                           Live Demo
                         </span>
                       </div>
-                      
-                      {/* GIF Container */}
+
                       <div className="relative max-w-5xl mx-auto">
                         <div className="relative overflow-hidden rounded-2xl shadow-2xl bg-white/95 backdrop-blur-sm border border-white/50">
-                          <img 
-                            src={currentProduct.imageSrc || '/placeholder.svg'} 
-                            alt={currentProduct.imageAlt} 
-                            className="w-full h-auto object-contain"
-                          />
+                          <img src={currentProduct.imageSrc || '/placeholder.svg'} alt={currentProduct.imageAlt} className="w-full h-auto object-contain" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent"></div>
-                          
-                          {/* Play overlay effect */}
+
                           <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/20">
                             <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm">
                               <PlayIcon className="w-8 h-8 text-gray-700 ml-1" />
                             </div>
                           </div>
                         </div>
-                        
-                        {/* Floating Elements around GIF */}
+
                         <div className="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full opacity-20 animate-pulse"></div>
                         <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-gradient-to-br from-green-500 to-teal-500 rounded-full opacity-30 animate-pulse delay-1000"></div>
                         <div className="absolute top-1/4 -left-6 w-4 h-4 bg-gradient-to-br from-pink-500 to-rose-500 rounded-full opacity-25 animate-pulse delay-500"></div>
@@ -303,7 +288,6 @@ export default function DoDAOProducts() {
               </div>
             </div>
 
-            {/* Features Grid */}
             <div className={`mt-12 transition-all duration-500 delay-500 ${isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'}`}>
               <div className="text-center mb-8">
                 <h4 className="text-lg font-bold text-gray-900 mb-2">Key Features</h4>
@@ -322,7 +306,6 @@ export default function DoDAOProducts() {
               </div>
             </div>
 
-            {/* Progress Indicators */}
             <div className="flex justify-center mt-12 space-x-4">
               {products.map((_, index) => (
                 <button
@@ -339,7 +322,6 @@ export default function DoDAOProducts() {
               ))}
             </div>
 
-            {/* Product Counter */}
             <div className="text-center mt-6">
               <span className="text-sm text-gray-500 font-medium bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200">
                 {currentIndex + 1} of {products.length} Products

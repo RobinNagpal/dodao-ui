@@ -16,16 +16,16 @@ export default function DoDAOHome() {
       <DoDAOHomeHero />
       <CoreValues />
 
-      {/* <PageWrapper> */}
-      <DoDAOHelpButton />
-      <TrustedBy />
-      <NavBar />
-      <DoDAOProducts />
-      <Services />
-      <Education />
-      <Research />
-      <Footer />
-      {/* </PageWrapper> */}
+      <PageWrapper>
+        <DoDAOHelpButton />
+        <TrustedBy />
+        <NavBar />
+        <DoDAOProducts />
+        <Services />
+        <Education />
+        <Research />
+        <Footer />
+      </PageWrapper>
     </div>
   );
 }
