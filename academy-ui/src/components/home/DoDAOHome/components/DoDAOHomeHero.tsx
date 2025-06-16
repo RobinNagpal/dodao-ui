@@ -4,18 +4,28 @@ import ContactUsButton from '@/components/home/DoDAOHome/components/ContactUsBut
 
 export default function DoDAOHomeHero() {
   const [activeTab, setActiveTab] = useState('services');
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Auto-switch between tabs every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveTab((prev) => (prev === 'services' ? 'products' : 'services'));
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setActiveTab((prev) => (prev === 'services' ? 'products' : 'services'));
+        setIsTransitioning(false);
+      }, 150);
     }, 5000);
 
     return () => clearInterval(interval);
   }, []);
 
   const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
+    if (tab !== activeTab) {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setActiveTab(tab);
+        setIsTransitioning(false);
+      }, 150);
+    }
   };
 
   return (
@@ -83,7 +93,7 @@ export default function DoDAOHomeHero() {
             </div>
           </div>
 
-          {/* Services section */}
+          {/* Services and Products Cards */}
           {activeTab === 'services' && (
             <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-5xl mx-auto">
               <a
@@ -105,8 +115,20 @@ export default function DoDAOHomeHero() {
                     </div>
                     <span className="text-blue-400 text-sm font-medium">AI Agent</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">AI Agent Development</h3>
-                  <p className="text-sm text-gray-300">Custom AI agents that automate workflows and solve complex business problems.</p>
+                  <h3
+                    className={`text-lg font-semibold text-white mb-2 transition-all duration-300 ${
+                      isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                    }`}
+                  >
+                    AI Agent Development
+                  </h3>
+                  <p
+                    className={`text-sm text-gray-300 transition-all duration-300 delay-75 ${
+                      isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                    }`}
+                  >
+                    Custom AI agents that automate workflows and solve complex business problems.
+                  </p>
                   <div className="mt-4 inline-flex items-center text-blue-400 text-sm font-medium group-hover:text-blue-300 transition-colors">
                     Explore More
                     <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,8 +157,20 @@ export default function DoDAOHomeHero() {
                     </div>
                     <span className="text-purple-400 text-sm font-medium">Education</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">AI Agent Training</h3>
-                  <p className="text-sm text-gray-300">Comprehensive bootcamps teaching teams to build production-ready AI Agents.</p>
+                  <h3
+                    className={`text-lg font-semibold text-white mb-2 transition-all duration-300 ${
+                      isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                    }`}
+                  >
+                    AI Agent Training
+                  </h3>
+                  <p
+                    className={`text-sm text-gray-300 transition-all duration-300 delay-75 ${
+                      isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                    }`}
+                  >
+                    Comprehensive bootcamps teaching teams to build production-ready AI Agents.
+                  </p>
                   <div className="mt-4 inline-flex items-center text-purple-400 text-sm font-medium group-hover:text-purple-300 transition-colors">
                     Explore More
                     <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,8 +194,20 @@ export default function DoDAOHomeHero() {
                     </div>
                     <span className="text-indigo-400 text-sm font-medium">DeFi Tool</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">DeFi Development & Tools</h3>
-                  <p className="text-sm text-gray-300">Advanced tooling, dashboards, and smart contracts for leading DeFi protocols.</p>
+                  <h3
+                    className={`text-lg font-semibold text-white mb-2 transition-all duration-300 ${
+                      isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                    }`}
+                  >
+                    DeFi Development & Tools
+                  </h3>
+                  <p
+                    className={`text-sm text-gray-300 transition-all duration-300 delay-75 ${
+                      isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                    }`}
+                  >
+                    Advanced tooling, dashboards, and smart contracts for leading DeFi protocols.
+                  </p>
                   <div className="mt-4 inline-flex items-center text-indigo-400 text-sm font-medium group-hover:text-indigo-300 transition-colors">
                     Explore More
                     <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -189,8 +235,20 @@ export default function DoDAOHomeHero() {
                     </div>
                     <span className="text-blue-400 text-sm font-medium">AI Agent</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">KoalaGains</h3>
-                  <p className="text-sm text-gray-300">AI-powered investment analysis platform for detailed financial insights and reports.</p>
+                  <h3
+                    className={`text-lg font-semibold text-white mb-2 transition-all duration-300 ${
+                      isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                    }`}
+                  >
+                    KoalaGains Platform
+                  </h3>
+                  <p
+                    className={`text-sm text-gray-300 transition-all duration-300 delay-75 ${
+                      isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                    }`}
+                  >
+                    AI-powered investment analysis platform for detailed financial insights and reports.
+                  </p>
                   <div className="mt-4 inline-flex items-center text-blue-400 text-sm font-medium group-hover:text-blue-300 transition-colors">
                     Explore More
                     <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -219,8 +277,18 @@ export default function DoDAOHomeHero() {
                     </div>
                     <span className="text-violet-400 text-sm font-medium">Education</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Tidbits Hub</h3>
-                  <p className="text-sm text-gray-300">
+                  <h3
+                    className={`text-lg font-semibold text-white mb-2 transition-all duration-300 ${
+                      isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                    }`}
+                  >
+                    Tidbits Hub
+                  </h3>
+                  <p
+                    className={`text-sm text-gray-300 transition-all duration-300 delay-75 ${
+                      isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                    }`}
+                  >
                     Quickly learn complex topics in 5–10 minute interactive bites, complete with videos, quizzes, and demos.
                   </p>
                   <div className="mt-4 inline-flex items-center text-violet-400 text-sm font-medium group-hover:text-violet-300 transition-colors">
@@ -246,8 +314,20 @@ export default function DoDAOHomeHero() {
                     </div>
                     <span className="text-indigo-400 text-sm font-medium">DeFi Tool</span>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">DeFi Alerts</h3>
-                  <p className="text-sm text-gray-300">Get real-time DeFi alerts for yields, position health, and market changes with custom thresholds</p>
+                  <h3
+                    className={`text-lg font-semibold text-white mb-2 transition-all duration-300 ${
+                      isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                    }`}
+                  >
+                    DeFi Alerts
+                  </h3>
+                  <p
+                    className={`text-sm text-gray-300 transition-all duration-300 delay-75 ${
+                      isTransitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
+                    }`}
+                  >
+                    Get real-time DeFi alerts for yields, position health, and market changes with custom thresholds.
+                  </p>
                   <div className="mt-4 inline-flex items-center text-indigo-400 text-sm font-medium group-hover:text-indigo-300 transition-colors">
                     Explore More
                     <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
