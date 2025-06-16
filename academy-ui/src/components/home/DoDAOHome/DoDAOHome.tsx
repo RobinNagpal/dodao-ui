@@ -14,10 +14,10 @@ export default function DoDAOHome() {
   return (
     <div>
       <DoDAOHomeHero />
+      <CoreValues />
 
       <PageWrapper>
         <DoDAOHelpButton />
-        <CoreValues />
         <TrustedBy />
         <NavBar />
         <DoDAOProducts />
