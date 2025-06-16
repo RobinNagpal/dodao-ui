@@ -61,7 +61,7 @@ export default function CoreValues() {
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-6 py-12 lg:py-20">
+      <div className="relative mx-auto max-w-7xl px-6 py-8 sm:py-12 lg:py-16">
         <div className="text-center mb-20">
           <h2 className="text-base font-semibold leading-7 text-blue-400 mb-4">What We Do</h2>
           <p className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
