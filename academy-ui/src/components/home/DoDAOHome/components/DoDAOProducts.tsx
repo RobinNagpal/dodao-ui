@@ -220,11 +220,13 @@ export default function DoDAOProducts() {
                           <h4 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Key Features</h4>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {currentProduct.features.slice(0, 4).map((feature, index) => (
-                              <div 
-                                key={feature} 
+                              <div
+                                key={feature}
                                 className="group flex items-center space-x-2 p-2 rounded-lg bg-white/60 backdrop-blur-sm border border-gray-100 hover:bg-white/80 hover:border-gray-200 transition-all duration-200"
                               >
-                                <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${currentProduct.categoryColor} group-hover:shadow-sm transition-all duration-200`}></div>
+                                <div
+                                  className={`w-2 h-2 rounded-full bg-gradient-to-r ${currentProduct.categoryColor} group-hover:shadow-sm transition-all duration-200`}
+                                ></div>
                                 <span className="text-gray-700 text-sm font-medium group-hover:text-gray-900 transition-colors duration-200">{feature}</span>
                               </div>
                             ))}

@@ -85,12 +85,6 @@ const researchAreas = [
     icon: BuildingOfficeIcon,
   },
   {
-    name: 'Decentralized Solution & Reviews',
-    description: 'Researching innovative decentralized solutions for improved system transparency.',
-    href: '/home-section/dodao-io/research/decen-sol-reviews',
-    icon: GlobeAltIcon,
-  },
-  {
     name: 'How Credit Unions Can Attract Gen Z',
     description: 'Strategies for credit unions to connect with Gen Z members.',
     href: '/home-section/dodao-io/research/credit-union',
@@ -115,15 +109,15 @@ const aiAgentServices = [
 
 const blockchainServices = [
   {
-    name: 'SmartContract Development',
+    name: 'Smart Contract Development',
     description: 'Craft secure and efficient decentralized applications.',
     href: '/home-section/dodao-io/services/smart-contract',
     icon: CodeBracketIcon,
   },
   {
-    name: 'Blockchain Tooling',
+    name: 'Custom DeFi Tooling',
     description: 'Enhance your development process with cutting-edge tools.',
-    href: '/home-section/dodao-io/services/blockchain-tooling',
+    href: '/home-section/dodao-io/services/defi-tooling',
     icon: WrenchScrewdriverIcon,
   },
   {
@@ -162,9 +156,12 @@ export default function DoDAOHomeTopNav() {
         </div>
         <PopoverGroup className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 p-1">
+            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 p-1 data-[open]:text-indigo-600 data-[open]:bg-gray-50 rounded-md transition-colors duration-200">
               Products
-              <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
+              <ChevronDownIcon
+                aria-hidden="true"
+                className="h-5 w-5 flex-none text-gray-400 data-[open]:text-indigo-600 data-[open]:rotate-180 transition-all duration-200"
+              />
             </PopoverButton>
 
             <PopoverPanel
@@ -190,9 +187,12 @@ export default function DoDAOHomeTopNav() {
             </PopoverPanel>
           </Popover>
           <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 p-1">
+            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 p-1 data-[open]:text-indigo-600 data-[open]:bg-gray-50 rounded-md transition-colors duration-200">
               Services
-              <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
+              <ChevronDownIcon
+                aria-hidden="true"
+                className="h-5 w-5 flex-none text-gray-400 data-[open]:text-indigo-600 data-[open]:rotate-180 transition-all duration-200"
+              />
             </PopoverButton>
             <PopoverPanel
               transition
@@ -241,9 +241,12 @@ export default function DoDAOHomeTopNav() {
             </PopoverPanel>
           </Popover>
           <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 p-1">
+            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 p-1 data-[open]:text-indigo-600 data-[open]:bg-gray-50 rounded-md transition-colors duration-200">
               Education
-              <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
+              <ChevronDownIcon
+                aria-hidden="true"
+                className="h-5 w-5 flex-none text-gray-400 data-[open]:text-indigo-600 data-[open]:rotate-180 transition-all duration-200"
+              />
             </PopoverButton>
             <PopoverPanel
               transition
@@ -268,9 +271,12 @@ export default function DoDAOHomeTopNav() {
             </PopoverPanel>
           </Popover>
           <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 p-1">
+            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 p-1 data-[open]:text-indigo-600 data-[open]:bg-gray-50 rounded-md transition-colors duration-200">
               Research
-              <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
+              <ChevronDownIcon
+                aria-hidden="true"
+                className="h-5 w-5 flex-none text-gray-400 data-[open]:text-indigo-600 data-[open]:rotate-180 transition-all duration-200"
+              />
             </PopoverButton>
 
             <PopoverPanel

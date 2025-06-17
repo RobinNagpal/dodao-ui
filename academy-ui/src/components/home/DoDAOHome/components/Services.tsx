@@ -4,25 +4,18 @@ import { Container } from './Container';
 
 const blockchain = [
   {
-    name: 'Blockchain Tooling',
+    name: 'Smart Contract Development',
     description:
-      'DoDAO’s blockchain tooling has been trusted by top protocols in the industry. Our tools are designed to simplify blockchain operations and enhance your development process. If you’re looking to brainstorm new tooling ideas or need expert assistance with your existing tools, DoDAO is here to help, offering support and innovation tailored to your needs.',
+      'Expert smart contract development with deep DeFi experience. We build secure, gas-optimized contracts for protocols, DAOs, and decentralized applications. Our team has contributed to leading DeFi protocols, ensuring battle-tested security practices and efficient deployment.',
+    href: '#',
+    icon: ShieldCheckIcon,
+  },
+  {
+    name: 'Custom DeFi Tooling',
+    description:
+      'Build custom DeFi tools, dashboards, and APIs for protocols. From real-time analytics to automated alerts, we create tools that help protocols operate smarter. Our DeFi tooling has been trusted by top protocols, providing comprehensive insights and data-driven decision making capabilities.',
     href: '#',
     icon: WrenchScrewdriverIcon,
-  },
-  {
-    name: 'DeFi Analytics',
-    description:
-      'We offer advanced DeFi analytics services, helping you create detailed dashboards to track and analyze your on-chain activity. Our Asset Analysis Dashboard is one of the most comprehensive in the market, providing deep insights and real-time data. It’s trusted by some of the leading DeFi protocols, helping them make data-driven decisions.',
-    href: '#',
-    icon: PresentationChartLineIcon,
-  },
-  {
-    name: 'Blockchain Development',
-    description:
-      'At DoDAO, we specialize in blockchain development with a strong focus on Decentralized Finance (DeFi). Our team of experts has contributed to the top DeFi protocols, ensuring secure and scalable solutions that drive the future of decentralized finance. Whether you’re building smart contracts, decentralized applications, or any other blockchain project, we have the expertise to help you succeed.',
-    href: '#',
-    icon: CodeBracketIcon,
   },
 ];
 
@@ -78,9 +71,9 @@ export default function Services() {
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-8">
           <div className="mx-auto max-w-2xl sm:text-center">
-            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Blockchain Services</h2>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">DeFi Services</h2>
             <p className="mt-4 text-base text-gray-500">
-              At DoDAO, we offer a suite of specialized development services designed to help you innovate and stay ahead in the blockchain landscape.
+              At DoDAO, we offer specialized DeFi development services designed to help you build secure, scalable solutions in the decentralized finance space.
             </p>
           </div>
         </div>

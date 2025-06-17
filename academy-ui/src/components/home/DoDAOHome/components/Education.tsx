@@ -37,7 +37,7 @@ function HeroEducationCardImageLeft({ title, subtitle, description, imageSrc, im
         </svg>
       </div>
       <div className="relative mx-auto max-w-7xl py-24 sm:py-32 lg:px-8 lg:py-40">
-        <div className="pl-6 pr-6 md:ml-auto md:w-2/3 md:pl-8 lg:w-1/2 lg:pl-12 lg:pr-0 xl:pl-16">
+        <div className="pl-6 pr-6 md:ml-auto md:w-2/3 md:pl-8 lg:w-1/2 lg:pl-12 lg:pr-8 xl:pl-16 xl:pr-12">
           <h2 className="text-base/7 font-semibold text-indigo-400">{subtitle}</h2>
           <p className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">{title}</p>
           <p className="mt-6 text-base/7 text-gray-300">{description}</p>
@@ -80,8 +80,8 @@ export function Education() {
             <div className="mx-auto max-w-3xl text-center">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Education</h2>
               <p className="mt-4 text-base text-gray-500">
-                At DoDAO, we empower learners with hands-on blockchain courses (NFTs, DeFi, Layer 2) and an immersive AI Agent Bootcamp—covering LLM
-                fundamentals, prompt engineering, and real-world agent deployment—so your team masters both decentralized tech and intelligent automation.
+                At DoDAO, we empower teams with comprehensive AI Agent training. Our immersive bootcamp covers LLM fundamentals, prompt engineering, and
+                real-world agent deployment—so your team masters intelligent automation and stays ahead in the AI revolution.
               </p>
             </div>
 
@@ -106,7 +106,6 @@ export function Education() {
             pdfUrl="https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com/dodao-io/Koala_AI_Agent_bootcamp.pdf"
           />
         )}
-        
       </Container>
     </section>
   );
