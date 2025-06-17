@@ -106,7 +106,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
     },
     {
       name: tickerKey,
-      href: `/public-equities/tickers/${tickerKey}}`,
+      href: `/public-equities/tickers/${tickerKey}`,
       current: true,
     },
   ];
