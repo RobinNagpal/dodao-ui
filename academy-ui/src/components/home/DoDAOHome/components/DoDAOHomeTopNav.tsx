@@ -39,8 +39,14 @@ const products = [
   {
     name: 'Academy Sites',
     description: 'Build immersive educational platforms for your audience.',
-    href: '/home-section/dodao-io/products/academysites',
+    href: '/home-section/dodao-io/products/academy-sites',
     icon: AcademicCapIcon,
+  },
+  {
+    name: 'DeFi Alerts',
+    description: 'Receive real-time alerts for yield, rates, and position health across DeFi protocol.',
+    href: '/home-section/dodao-io/products/defi-alerts',
+    icon: ShieldCheckIcon,
   },
 ];
 
@@ -125,12 +131,6 @@ const blockchainServices = [
     description: 'Gain deep insights with advanced DeFi analytics.',
     href: '/home-section/dodao-io/services/defi-analytics',
     icon: ChartBarIcon,
-  },
-  {
-    name: 'DeFi Alerts',
-    description: 'Receive real-time alerts for yield, rates, and position health across DeFi protocol.',
-    href: '/home-section/dodao-io/services/defi-alerts',
-    icon: ShieldCheckIcon,
   },
 ];
 

@@ -24,13 +24,6 @@ const blockchain = [
     href: '#',
     icon: CodeBracketIcon,
   },
-  {
-    name: 'DeFi Alerts',
-    description:
-      'Get proactive, real-time alerts for supply, borrow, and position health across any chain or protocol. Define custom thresholds, choose delivery channels, and integrate via our developer-friendly API to optimize your DeFi yields and manage risk. We’ve already built and battle-tested this platform for Compound—now we’re ready to deploy it for your protocol. Let DoDAO handle your alerting needs from design through production.',
-    href: '#',
-    icon: ShieldCheckIcon,
-  },
 ];
 
 const aiagent = [
