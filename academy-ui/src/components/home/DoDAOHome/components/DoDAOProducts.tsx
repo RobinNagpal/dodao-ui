@@ -74,7 +74,7 @@ const products = [
     imageSrc: AcademyGif.src,
     imageAlt: 'Academy Sites Learning Platform',
     ctaText: 'Build Academy',
-    ctaLink: '/home-section/dodao-io/products/academysites',
+    ctaLink: '/home-section/dodao-io/products/academy-sites',
     category: 'Education',
     categoryColor: 'from-indigo-500 to-blue-500',
     bgGradient: 'from-indigo-50 to-blue-50',
