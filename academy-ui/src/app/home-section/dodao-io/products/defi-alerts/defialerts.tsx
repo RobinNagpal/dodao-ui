@@ -40,14 +40,13 @@ const benefits = [
 const features = [
   {
     name: 'Compound Market Monitoring',
-    description:
-      'Monitor any market on Compound with real-time supply and borrow APR tracking. Set multiple thresholds and get notified when rates move in your favor.',
+    description: 'Monitor any market on Compound with supply and borrow APR tracking. Set multiple thresholds and get notified when rates move in your favor.',
     icon: EyeIcon,
   },
   {
     name: 'Custom Alert Thresholds',
     description:
-      'Define precise thresholds for supply rates, borrow rates, and position health. Set multiple alerts per market with different notification frequencies.',
+      'Define precise thresholds for supply rates, borrow rates, and position health. Set multiple alerts per market with different severity levels.',
     icon: ScaleIcon,
   },
   {
@@ -76,7 +75,7 @@ const protocols = [
   {
     name: 'Built for Compound',
     description:
-      'DeFi Alerts was originally built and battle-tested for Compound Finance. We provide comprehensive monitoring of all Compound markets with deep integration and real-time data feeds.',
+      'DeFi Alerts was originally built and battle-tested for Compound DeFi protocol. We provide comprehensive monitoring of all Compound markets with deep integration and real-time data feeds.',
     imageSrc: 'https://d31h13bdjwgzxs.cloudfront.net/academy/compound-eth-1/Space/compound/1717288684207_compound-comp-logo.png',
   },
   {
@@ -100,7 +99,7 @@ const useCases = [
   },
   {
     title: 'For Protocol Teams',
-    description: "Monitor your protocol's competitive position and user activity with our developer API.",
+    description: 'Monitor your protocol’s competitive position and user activity with our developer API.',
     icon: LinkIcon,
   },
   {
@@ -141,7 +140,7 @@ function DeFiAlertsComponent() {
                   </h1>
                   <p className="mt-3 text-lg leading-8 text-gray-500">
                     Real-time intelligence for DeFi markets. Monitor Compound rates, compare with Aave, Spark, and Morpho, and get personalized alerts for your
-                    positions. Built for Compound, extended for the entire DeFi ecosystem.
+                    positions. Originally built for Compound, our platform is designed to extend seamlessly to all DeFi lending protocols.
                   </p>
                   <div className="mt-10 sm:flex sm:justify-center lg:justify-start">
                     <div className="rounded-md shadow">
@@ -251,7 +250,7 @@ function DeFiAlertsComponent() {
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Perfect for Every DeFi User</h2>
             <p className="mt-4 text-lg leading-8 text-gray-600">
-              Whether you're optimizing yields, managing positions, or building DeFi products, our alerts keep you informed and ahead of the market.
+              Whether you’re optimizing yields, managing positions, or building DeFi products, our alerts keep you informed and ahead of the market.
             </p>
           </div>
           <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4">
@@ -281,7 +280,7 @@ function DeFiAlertsComponent() {
           <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-white sm:text-5xl">Stay Ahead of DeFi Markets</h1>
             <p className="mt-6 max-w-3xl text-base text-gray-300">
-              DeFi moves fast. Rates change by the minute, positions can become unhealthy quickly, and opportunities disappear in seconds. Don't rely on manual
+              DeFi moves fast. Rates change by the minute, positions can become unhealthy quickly, and opportunities disappear in seconds. Don’t rely on manual
               checking—let our intelligent alerts keep you informed and your positions safe.
             </p>
           </div>
