@@ -62,12 +62,12 @@ export default function CoreValues() {
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 py-8 sm:py-12 lg:py-16">
-        <div className="text-center mb-20">
+        <div className="text-center mb-16">
           <h2 className="text-base font-semibold leading-7 text-blue-400 mb-4">What We Do</h2>
           <p className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
             <span className="block">AI Agents & DeFi Tools</span>
           </p>
-          <p className="mt-6 text-lg leading-7 text-gray-300 max-w-3xl mx-auto">
+          <p className="mt-4 text-lg leading-7 text-gray-300 max-w-3xl mx-auto">
             From building intelligent AI workflows to creating DeFi tools, we build products that ship and teach others how to do the same.
           </p>
         </div>
