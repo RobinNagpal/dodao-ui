@@ -17,7 +17,7 @@ export default async function SecFilingPage({ params }: { params: Promise<{ tick
     },
     {
       name: tickerKey,
-      href: `/public-equities/tickers/${tickerKey}}/sec-filings`,
+      href: `/public-equities/tickers/${tickerKey}/sec-filings`,
       current: true,
     },
   ];
