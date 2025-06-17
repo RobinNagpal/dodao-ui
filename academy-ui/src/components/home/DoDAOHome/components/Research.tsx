@@ -37,21 +37,6 @@ const rwa = [
   },
 ];
 
-const decentralized = [
-  {
-    name: 'Empowering Collective Solutions',
-    icon: UserGroupIcon,
-    description:
-      'People can propose solutions by submitting a bond. Honest proposals lead to getting their bond back, while the best-rated ideas are rewarded. This system ensures fairness and encourages innovative thinking. With this approach, we motivate communities to actively participate and create impactful solutions.',
-  },
-  {
-    name: 'Ensuring Honest Reviews',
-    icon: StarIcon,
-    description:
-      'Reviews play a vital role in choosing the best products, services, and providers. We apply a similar bonding system to reviews. Reviewers provide a bond, which they lose if they are dishonest. Honest reviewers get their bond back and receive a reward for their genuine feedback.',
-  },
-];
-
 const creditUnion = [
   {
     name: 'Engaging Generation Z',
@@ -90,34 +75,6 @@ export default function Research() {
               <dl className="flex flex-wrap justify-center gap-y-10">
                 {rwa.map((value, index) => (
                   <div key={value.name} className={`relative px-16 w-full sm:w-1/2 ${index === rwa.length - 1 ? 'sm:mx-auto' : ''}`}>
-                    <dt className="text-base font-semibold text-gray-900">
-                      <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                        <value.icon aria-hidden="true" className="h-6 w-6 text-white" />
-                      </div>
-                      {value.name}
-                    </dt>
-                    <dd className="mt-2 text-base text-gray-500">{value.description}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </div>
-        </div>
-
-        <div className="mx-auto max-w-7xl py-4 sm:py-8">
-          <div className="mx-auto max-w-2xl lg:max-w-none">
-            <div className="mx-auto max-w-3xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Decentralized - Solution & Reviews</h2>
-              <p className="mt-4 text-base text-gray-500">
-                DoDAO is exploring ways to improve human coordination in both public and private sectors through decentralized systems. We aim to create
-                transparent and accountable platforms where everyone can contribute ideas and provide honest feedback, ensuring that resources are used
-                effectively and the system benefits all.
-              </p>
-            </div>
-            <div className="mx-auto mt-12 max-w-6xl">
-              <dl className="flex flex-wrap justify-center gap-y-10">
-                {decentralized.map((value, index) => (
-                  <div key={value.name} className={`relative px-16 w-full sm:w-1/2 ${index === decentralized.length - 1 ? 'sm:mx-auto' : ''}`}>
                     <dt className="text-base font-semibold text-gray-900">
                       <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
                         <value.icon aria-hidden="true" className="h-6 w-6 text-white" />

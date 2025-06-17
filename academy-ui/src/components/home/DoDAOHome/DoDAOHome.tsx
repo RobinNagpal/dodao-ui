@@ -5,7 +5,6 @@ import DoDAOHomeHero from './components/DoDAOHomeHero';
 import DoDAOProducts from './components/DoDAOProducts';
 import { Education } from './components/Education';
 import { Footer } from './components/Footer';
-import { NavBar } from './components/NavBar';
 import Research from './components/Research';
 import Services from './components/Services';
 import { TrustedBy } from './components/TrustedBy';
@@ -19,7 +18,6 @@ export default function DoDAOHome() {
       <PageWrapper>
         <DoDAOHelpButton />
         <TrustedBy />
-        <NavBar />
         <DoDAOProducts />
         <Services />
         <Education />

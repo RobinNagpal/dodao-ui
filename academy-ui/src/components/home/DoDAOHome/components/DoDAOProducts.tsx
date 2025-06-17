@@ -127,7 +127,7 @@ export default function DoDAOProducts() {
 
   return (
     <section className="py-12 sm:py-16" id="products">
-      <Container size="lg" className="bg-gray-50">
+      <Container size="lg" className="bg-gray-50 pt-8">
         <SectionHeading number="1" id="products-title">
           Products
         </SectionHeading>
@@ -186,13 +186,15 @@ export default function DoDAOProducts() {
                 <div className="relative p-6 lg:p-8">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                     <div className={`transition-all duration-500 ${isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'}`}>
-                      <div
-                        className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold text-white mb-4 w-fit bg-gradient-to-r ${currentProduct.categoryColor} shadow-md`}
-                      >
-                        <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
-                        {currentProduct.category}
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">{currentProduct.name}</h3>
+                        <div
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold text-white w-fit bg-gradient-to-r ${currentProduct.categoryColor} shadow-md`}
+                        >
+                          <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
+                          {currentProduct.category}
+                        </div>
                       </div>
-                      <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3 leading-tight">{currentProduct.name}</h3>
                       <p className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
                         {currentProduct.tagline}
                       </p>
@@ -201,7 +203,7 @@ export default function DoDAOProducts() {
 
                     <div className={`transition-all duration-500 delay-100 ${isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'}`}>
                       <div className="space-y-6">
-                        <div className="text-center lg:text-left">
+                        <div className="text-right">
                           <a
                             href={currentProduct.ctaLink}
                             target="_blank"
@@ -218,9 +220,14 @@ export default function DoDAOProducts() {
                           <h4 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">Key Features</h4>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {currentProduct.features.slice(0, 4).map((feature, index) => (
-                              <div key={feature} className="flex items-center space-x-2 p-2 rounded-lg bg-white/60 backdrop-blur-sm border border-gray-100">
-                                <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${currentProduct.categoryColor}`}></div>
-                                <span className="text-gray-700 text-sm font-medium">{feature}</span>
+                              <div
+                                key={feature}
+                                className="group flex items-center space-x-2 p-2 rounded-lg bg-white/60 backdrop-blur-sm border border-gray-100 hover:bg-white/80 hover:border-gray-200 transition-all duration-200"
+                              >
+                                <div
+                                  className={`w-2 h-2 rounded-full bg-gradient-to-r ${currentProduct.categoryColor} group-hover:shadow-sm transition-all duration-200`}
+                                ></div>
+                                <span className="text-gray-700 text-sm font-medium group-hover:text-gray-900 transition-colors duration-200">{feature}</span>
                               </div>
                             ))}
                           </div>
