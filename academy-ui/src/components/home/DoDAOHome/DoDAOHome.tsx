@@ -1,5 +1,4 @@
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import CoreValues from './components/CoreValues';
+import CoreOfferings from './components/CoreOfferings';
 import DoDAOHelpButton from './components/DoDAOHelpButton';
 import DoDAOHomeHero from './components/DoDAOHomeHero';
 import DoDAOProducts from './components/DoDAOProducts';
@@ -13,7 +12,7 @@ export default function DoDAOHome() {
   return (
     <div>
       <DoDAOHomeHero />
-      <CoreValues />
+      <CoreOfferings />
       <DoDAOHelpButton />
       <TrustedBy />
       <DoDAOProducts />

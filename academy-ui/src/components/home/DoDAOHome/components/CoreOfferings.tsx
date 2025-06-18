@@ -42,7 +42,7 @@ const defiValues = [
   },
 ];
 
-export default function CoreValues() {
+export default function CoreOfferings() {
   const [openAiItem, setOpenAiItem] = useState<number | null>(null);
   const [openDefiItem, setOpenDefiItem] = useState<number | null>(null);
 
