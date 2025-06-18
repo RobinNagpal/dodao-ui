@@ -37,7 +37,7 @@ function HeroEducationCardImageLeft({ title, subtitle, description, imageSrc, im
         </svg>
       </div>
       <div className="relative mx-auto max-w-7xl py-24 sm:py-32 lg:px-8 lg:py-40">
-        <div className="pl-6 pr-6 md:ml-auto md:w-2/3 md:pl-8 lg:w-1/2 lg:pl-12 lg:pr-8 xl:pl-16 xl:pr-12">
+        <div className="pl-6 md:ml-auto md:w-2/3 md:pl-8 lg:w-1/2 lg:pl-12 lg:pr-2 xl:pl-12 xl:pr-4">
           <h2 className="text-base/7 font-semibold text-indigo-400">{subtitle}</h2>
           <p className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">{title}</p>
           <p className="mt-6 text-base/7 text-gray-300">{description}</p>
