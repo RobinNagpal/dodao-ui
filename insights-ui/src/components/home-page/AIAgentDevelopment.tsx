@@ -23,7 +23,7 @@ const developmentFeatures = [
 
 export default function AIAgentDevelopment() {
   return (
-    <div className="bg-gray-800 py-8 sm:py-12">
+    <div id="agent-development" className="bg-gray-800 py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
           <h2 className="text-4xl font-semibold text-indigo-400">AI Agent Development</h2>

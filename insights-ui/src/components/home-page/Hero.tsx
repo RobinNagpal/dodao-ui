@@ -20,7 +20,7 @@ const koalaGainsServices = [
     name: 'KoalaGains Platform',
     description: 'The underlying AI infrastructure powering automated data analysis, processing, and report generation',
     icon: RocketLaunchIcon,
-    href: '#features',
+    href: '#platform',
     cta: 'Learn More',
     color: 'from-blue-500 to-cyan-600',
     highlight: 'Platform',
@@ -32,8 +32,8 @@ const ourServices = [
     name: 'AI Agent Development',
     description: 'Custom AI Agents tailored to your business needs with advanced automation capabilities',
     icon: CpuChipIcon,
-    href: '#contact',
-    cta: 'Get Started',
+    href: '#agent-development',
+    cta: 'Learn More',
     color: 'from-purple-500 to-indigo-600',
     highlight: 'Development',
   },
@@ -41,7 +41,7 @@ const ourServices = [
     name: 'AI Agent Training',
     description: 'Comprehensive training programs to build AI expertise within your organization',
     icon: AcademicCapIcon,
-    href: '#contact',
+    href: '#agent-training',
     cta: 'Learn More',
     color: 'from-orange-500 to-pink-600',
     highlight: 'Education',
@@ -151,8 +151,21 @@ export function Hero() {
 
                       <p className="text-gray-300 text-sm mb-6 leading-relaxed min-h-[3rem]">{service.description}</p>
 
-                      <Link
-                        href={service.href}
+                      <button
+                        onClick={() => {
+                          if (service.href.startsWith('#')) {
+                            const element = document.querySelector(service.href);
+                            if (element) {
+                              element.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start',
+                                inline: 'nearest',
+                              });
+                            }
+                          } else {
+                            window.location.href = service.href;
+                          }
+                        }}
                         className="inline-flex items-center justify-center text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors duration-200 group/link"
                       >
                         {service.cta}
@@ -163,7 +176,7 @@ export function Hero() {
                             clipRule="evenodd"
                           />
                         </svg>
-                      </Link>
+                      </button>
                     </div>
                   </div>
                 </div>

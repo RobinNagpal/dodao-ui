@@ -186,7 +186,7 @@ export default function DoDAOProducts() {
                 <div className="relative p-6 lg:p-8">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                     <div className={`transition-all duration-500 ${isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'}`}>
-                      <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-4 mb-3 flex-wrap">
                         <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">{currentProduct.name}</h3>
                         <div
                           className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold text-white w-fit bg-gradient-to-r ${currentProduct.categoryColor} shadow-md`}

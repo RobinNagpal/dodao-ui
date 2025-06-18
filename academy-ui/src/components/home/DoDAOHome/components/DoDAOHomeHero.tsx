@@ -71,7 +71,6 @@ export default function DoDAOHomeHero() {
             We specialize in designing intelligent AI agents, training teams to build them, and creating DeFi tools that power the decentralized future.
           </p>
 
-          {/* Tab navigation */}
           <div className="mt-10 flex justify-center">
             <div className="inline-flex rounded-md p-1 bg-white/10 backdrop-blur-sm">
               <button
@@ -93,7 +92,6 @@ export default function DoDAOHomeHero() {
             </div>
           </div>
 
-          {/* Services and Products Cards */}
           {activeTab === 'services' && (
             <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-5xl mx-auto">
               <a
@@ -181,7 +179,7 @@ export default function DoDAOHomeHero() {
               </a>
 
               <a
-                href="#services"
+                href="/home-section/dodao-io/services/defi-tooling"
                 className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 hover:bg-white/15 transition-all duration-300 hover:scale-105"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -301,7 +299,7 @@ export default function DoDAOHomeHero() {
               </a>
 
               <a
-                href="/home-section/dodao-io/services/defi-alerts"
+                href="/home-section/dodao-io/products/defi-alerts"
                 className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 hover:bg-white/15 transition-all duration-300 hover:scale-105"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -343,15 +341,24 @@ export default function DoDAOHomeHero() {
             <div className="-mt-4">
               <ContactUsButton />
             </div>
-            <a
-              href="#products"
+            <button
+              onClick={() => {
+                const element = document.querySelector('#products');
+                if (element) {
+                  element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest',
+                  });
+                }
+              }}
               className="inline-flex items-center px-6 py-3 rounded-lg text-sm font-semibold text-gray-300 hover:text-white border border-white/20 hover:border-white/30 transition-all duration-300 backdrop-blur-sm hover:bg-white/5"
             >
               Explore Our Work
               <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
-            </a>
+            </button>
           </div>
         </div>
       </div>

@@ -3,12 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @include meta.load-css('styles/variables');
 @include meta.load-css('styles/theme-styles');
 @include meta.load-css('styles/scrollbar');
 
 @include meta.load-css("styles/markdown");
+
+// html {
+//   scroll-behavior: smooth;
+//   scroll-padding-top: 2rem; 
+// }
 
 body {
   font-family: 'Inter', sans-serif;
