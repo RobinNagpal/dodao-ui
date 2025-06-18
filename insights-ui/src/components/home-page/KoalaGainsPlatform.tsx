@@ -1,6 +1,7 @@
 import { ChartBarSquareIcon, DocumentChartBarIcon, LightBulbIcon, WrenchIcon } from '@heroicons/react/20/solid';
 import architectureImage from '@/images/architecture.png';
 import Image from 'next/image';
+import { SectionHeading } from './SectionHeading';
 
 const keyFeatures = [
   {
@@ -39,9 +40,12 @@ const keyFeatures = [
 
 export default function KoalaGainsPlatform() {
   return (
-    <div className="bg-gray-800 py-8 sm:py-12">
+    <section id="platform" className="bg-gray-800 py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
+          <div className="mb-6">
+            <SectionHeading number="1">Platform</SectionHeading>
+          </div>
           <h2 className="text-4xl font-semibold text-indigo-400">KoalaGains Platform</h2>
           <p className="mt-4 text-lg text-gray-300">
             Unlock the full potential of your investment research with our advanced AI-driven platform that delivers insights in minutes, not days.
@@ -71,6 +75,6 @@ export default function KoalaGainsPlatform() {
           ))}
         </dl>
       </div>
-    </div>
+    </section>
   );
 }

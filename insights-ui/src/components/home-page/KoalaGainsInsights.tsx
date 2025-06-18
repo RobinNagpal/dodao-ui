@@ -1,4 +1,5 @@
 import { ChartBarIcon, CircleStackIcon, LightBulbIcon } from '@heroicons/react/20/solid';
+import { SectionHeading } from './SectionHeading';
 
 const insights = [
   {
@@ -26,6 +27,9 @@ export default function KoalaGainsInsights() {
     <div className="bg-gray-800 py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
+          <div className="mb-6">
+            <SectionHeading number="2">Insights</SectionHeading>
+          </div>
           <h2 className="text-4xl font-semibold text-indigo-400">KoalaGains Insights</h2>
           <p className="mt-4 text-lg text-gray-300">
             Access comprehensive, AI-generated investment analysis across multiple asset classes. Our reports deliver deep insights with charts, metrics, and
