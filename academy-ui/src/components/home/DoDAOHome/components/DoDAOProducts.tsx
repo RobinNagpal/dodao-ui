@@ -126,8 +126,13 @@ export default function DoDAOProducts() {
   const currentProduct = products[currentIndex];
 
   return (
-    <section className="py-12 sm:py-16" id="products">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-6">
+    <section className="py-16 sm:py-20 relative" id="products">
+      <div className="absolute inset-0 overflow-hidden opacity-10">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center mb-8">
           <h2 className="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl">
             Products That <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">Solve Real Problems</span>
@@ -180,10 +185,10 @@ export default function DoDAOProducts() {
               <div className="relative p-6 lg:p-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                   <div className={`transition-all duration-500 ${isTransitioning ? 'opacity-0 translate-y-8' : 'opacity-100 translate-y-0'}`}>
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex mb-3">
                       <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">{currentProduct.name}</h3>
                       <div
-                        className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold text-white w-fit bg-gradient-to-r ${currentProduct.categoryColor} shadow-md`}
+                        className={`inline-flex items-center px-3 mx-3 py-1 rounded-full text-sm font-semibold text-white w-fit bg-gradient-to-r ${currentProduct.categoryColor} shadow-md`}
                       >
                         <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
                         {currentProduct.category}
