@@ -1,4 +1,5 @@
 import { CpuChipIcon, CogIcon, RocketLaunchIcon } from '@heroicons/react/20/solid';
+import { SectionHeading } from './SectionHeading';
 
 const developmentFeatures = [
   {
@@ -23,9 +24,12 @@ const developmentFeatures = [
 
 export default function AIAgentDevelopment() {
   return (
-    <div className="bg-gray-800 py-8 sm:py-12">
+    <section id="agent-development" className="bg-gray-800 py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
+          <div className="mb-6">
+            <SectionHeading number="4">Development</SectionHeading>
+          </div>
           <h2 className="text-4xl font-semibold text-indigo-400">AI Agent Development</h2>
           <p className="mt-4 text-lg text-gray-300">
             Custom AI agent development tailored to your unique business needs. We build intelligent automation solutions that integrate seamlessly with your
@@ -44,6 +48,6 @@ export default function AIAgentDevelopment() {
           ))}
         </dl>
       </div>
-    </div>
+    </section>
   );
 }
