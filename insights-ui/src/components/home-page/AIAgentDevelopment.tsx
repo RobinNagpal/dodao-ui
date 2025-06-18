@@ -23,11 +23,10 @@ const developmentFeatures = [
 
 export default function AIAgentDevelopment() {
   return (
-    <div className="bg-gray-800 py-4 sm:py-8">
+    <div className="bg-gray-800 py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
-          <p className="text-base/7 font-semibold text-indigo-400">AI Agent Development</p>
-          <h2 className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">Custom AI Solutions for Your Business</h2>
+          <h2 className="text-4xl font-semibold text-indigo-400">AI Agent Development</h2>
           <p className="mt-4 text-lg text-gray-300">
             Custom AI agent development tailored to your unique business needs. We build intelligent automation solutions that integrate seamlessly with your
             existing systems and scale with your growth.

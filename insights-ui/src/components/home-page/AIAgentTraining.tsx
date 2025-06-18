@@ -64,11 +64,10 @@ export default function AIAgentTraining() {
   };
 
   return (
-    <section className="bg-gray-800 py-4 sm:py-8">
+    <section className="bg-gray-800 py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
-          <p className="text-base/7 font-semibold text-indigo-400">AI Agent Training</p>
-          <h2 className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">Build AI Expertise Within Your Team</h2>
+          <h2 className="text-4xl font-semibold text-indigo-400">AI Agent Training</h2>
           <p className="mt-4 text-lg text-gray-300">
             KoalaGains AI Agent Training empowers teams with comprehensive bootcamp programs. From LLM fundamentals to real-world deployment, master intelligent
             automation and stay ahead in the AI revolution.
