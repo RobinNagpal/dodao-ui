@@ -1,3 +1,4 @@
+import NewServicesGrid from '@/components/home/DoDAOHome/components/NewServicesGrid';
 import CoreOfferings from './components/CoreOfferings';
 import DoDAOHelpButton from './components/DoDAOHelpButton';
 import DoDAOHomeHero from './components/DoDAOHomeHero';
@@ -32,6 +33,9 @@ export default function DoDAOHome() {
         <DoDAOProducts />
       </div>
 
+      <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-800">
+        <NewServicesGrid />
+      </div>
       {/* Services section */}
       <div className="bg-gradient-to-br from-blue-900 via-indigo-900 to-violet-900">
         <Services />
