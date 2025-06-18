@@ -77,12 +77,10 @@ export function Hero() {
   const currentServices = activeTab === 'koalagains' ? koalaGainsServices : ourServices;
 
   return (
-    <header className="overflow-hidden bg-gray-800 relative">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 relative">
-        <div className="relative isolate pt-2 lg:pt-4">
-          {/* Main Hero Content */}
+    <header className="overflow-hidden bg-gray-800">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="relative isolate pt-2 lg:pt-2">
           <div className="mx-auto max-w-4xl py-2 sm:py-4 lg:py-8">
-            {/* Hero Header with Koala */}
             <div className="text-center">
               <div className="flex justify-center mb-8">
                 <div className="relative w-24 h-24 sm:w-32 sm:h-32">
@@ -101,8 +99,7 @@ export function Hero() {
               </p>
             </div>
 
-            {/* Tab Navigation */}
-            <div className="mt-12 flex justify-center">
+            <div className="mt-8 flex justify-center">
               <div className="inline-flex rounded-xl p-1 bg-gray-700/50 backdrop-blur-sm border border-gray-600/50">
                 <button
                   onClick={() => handleTabClick('koalagains')}
@@ -125,15 +122,13 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Services Cards - 2 cards side by side */}
-            <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8 max-w-4xl mx-auto mb-16">
+            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8 max-w-4xl mx-auto mb-12">
               {currentServices.map((service, index) => (
                 <div
                   key={service.name}
                   className={`relative group transition-all duration-500 z-10 ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
-                  {/* Highlight Badge */}
                   <div className="flex justify-center mb-3">
                     <span
                       className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${service.color} text-white shadow-lg`}
@@ -142,9 +137,7 @@ export function Hero() {
                     </span>
                   </div>
 
-                  {/* Main Card */}
                   <div className="bg-gray-700/40 backdrop-blur-sm rounded-xl p-6 border border-gray-600/40 hover:border-indigo-500/50 transition-all duration-300 group-hover:transform group-hover:scale-[1.02] hover:bg-gray-700/60 relative overflow-hidden">
-                    {/* Icon */}
                     <div className="flex justify-center mb-4">
                       <div
                         className={`inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-r ${service.color} group-hover:scale-110 transition-transform duration-300 shadow-lg`}
@@ -153,7 +146,6 @@ export function Hero() {
                       </div>
                     </div>
 
-                    {/* Content */}
                     <div className="text-center">
                       <h3 className="text-lg font-semibold text-white mb-3">{service.name}</h3>
 
