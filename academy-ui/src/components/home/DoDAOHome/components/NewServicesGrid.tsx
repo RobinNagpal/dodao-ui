@@ -1,78 +1,61 @@
+import { CpuChipIcon, CogIcon, BookOpenIcon, WrenchScrewdriverIcon, MagnifyingGlassIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
+
+const services = [
+  {
+    name: 'AI Agent Development',
+    title: 'Custom AI Solutions for Your Business',
+    description:
+      'End-to-end development of AI agents tailored to your business processes. We build intelligent automation solutions that integrate seamlessly with your existing systems and scale with your growth.',
+    icon: CpuChipIcon,
+  },
+  {
+    name: 'Smart Contract Development',
+    title: 'Secure Blockchain Solutions',
+    description:
+      'Expert smart contract development with deep DeFi experience. We build secure, gas-optimized contracts for protocols, DAOs, and decentralized applications, ensuring battle-tested security practices and efficient deployment.',
+    icon: ShieldCheckIcon,
+  },
+  {
+    name: 'AI Agent Trainings',
+    title: 'Build AI Expertise Within Your Team',
+    description:
+      'Comprehensive bootcamp programs that empower your team with AI skills. From LLM fundamentals to real-world deployment, master intelligent automation and stay ahead in the AI revolution.',
+    icon: BookOpenIcon,
+  },
+  {
+    name: 'DeFi Tooling',
+    title: 'Custom Tools for DeFi Protocols',
+    description:
+      'Build custom DeFi tools, dashboards, and APIs for protocols. From real-time analytics to automated alerts, we create tools that help protocols operate smarter, providing comprehensive insights and data-driven decision making.',
+    icon: WrenchScrewdriverIcon,
+  },
+  {
+    name: 'Research',
+    title: 'In-depth Industry Insights',
+    description:
+      'We provide in-depth research on Real World Assets and emerging technologies, covering regulations, market trends, and investment opportunities. Our insights help companies make informed decisions and stay ahead in rapidly evolving landscapes.',
+    icon: MagnifyingGlassIcon,
+  },
+];
+
 export default function NewServicesGrid() {
   return (
     <div className="py-24 sm:py-32">
       <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
-        <h2 className="text-base/7 font-semibold text-indigo-600">Deploy faster</h2>
-        <p className="mt-2 max-w-lg text-pretty text-4xl font-semibold tracking-tight text-gray-950 sm:text-5xl">Everything you need to deploy your app</p>
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6 lg:grid-rows-2">
-          <div className="relative lg:col-span-3">
-            <div className="absolute inset-px rounded-lg bg-white max-lg:rounded-t-[2rem] lg:rounded-tl-[2rem]" />
-            <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)] lg:rounded-tl-[calc(2rem+1px)]">
-              <img alt="" src="https://tailwindcss.com/plus-assets/img/component-images/bento-01-performance.png" className="h-80 object-cover object-left" />
-              <div className="p-10 pt-4">
-                <h3 className="text-sm/4 font-semibold text-indigo-600">Performance</h3>
-                <p className="mt-2 text-lg font-medium tracking-tight text-gray-950">Lightning-fast builds</p>
-                <p className="mt-2 max-w-lg text-sm/6 text-gray-600">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. In gravida justo et nulla efficitur, maximus egestas sem pellentesque.
-                </p>
+        <p className="mt-2 max-w-lg text-pretty text-4xl font-semibold tracking-tight text-gray-100 sm:text-5xl">Our Services</p>
+        <div className="mt-10 grid grid-cols-1 gap-8 sm:mt-16 md:grid-cols-2 lg:grid-cols-3">
+          {services.map((service) => (
+            <div key={service.name} className="relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-black/5">
+              <div className="p-8">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-600">
+                  <service.icon className="h-6 w-6 text-white" aria-hidden="true" />
+                </div>
+                <h3 className="mt-6 text-sm/4 font-semibold text-indigo-600">{service.name}</h3>
+                <p className="mt-2 text-lg font-medium tracking-tight text-gray-950">{service.title}</p>
+                <p className="mt-4 text-sm/6 text-gray-600">{service.description}</p>
               </div>
             </div>
-            <div className="pointer-events-none absolute inset-px rounded-lg shadow ring-1 ring-black/5 max-lg:rounded-t-[2rem] lg:rounded-tl-[2rem]" />
-          </div>
-          <div className="relative lg:col-span-3">
-            <div className="absolute inset-px rounded-lg bg-white lg:rounded-tr-[2rem]" />
-            <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] lg:rounded-tr-[calc(2rem+1px)]">
-              <img
-                alt=""
-                src="https://tailwindcss.com/plus-assets/img/component-images/bento-01-releases.png"
-                className="h-80 object-cover object-left lg:object-right"
-              />
-              <div className="p-10 pt-4">
-                <h3 className="text-sm/4 font-semibold text-indigo-600">Releases</h3>
-                <p className="mt-2 text-lg font-medium tracking-tight text-gray-950">Push to deploy</p>
-                <p className="mt-2 max-w-lg text-sm/6 text-gray-600">
-                  Curabitur auctor, ex quis auctor venenatis, eros arcu rhoncus massa, laoreet dapibus ex elit vitae odio.
-                </p>
-              </div>
-            </div>
-            <div className="pointer-events-none absolute inset-px rounded-lg shadow ring-1 ring-black/5 lg:rounded-tr-[2rem]" />
-          </div>
-          <div className="relative lg:col-span-2">
-            <div className="absolute inset-px rounded-lg bg-white lg:rounded-bl-[2rem]" />
-            <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] lg:rounded-bl-[calc(2rem+1px)]">
-              <img alt="" src="https://tailwindcss.com/plus-assets/img/component-images/bento-01-speed.png" className="h-80 object-cover object-left" />
-              <div className="p-10 pt-4">
-                <h3 className="text-sm/4 font-semibold text-indigo-600">Speed</h3>
-                <p className="mt-2 text-lg font-medium tracking-tight text-gray-950">Built for power users</p>
-                <p className="mt-2 max-w-lg text-sm/6 text-gray-600">Sed congue eros non finibus molestie. Vestibulum euismod augue.</p>
-              </div>
-            </div>
-            <div className="pointer-events-none absolute inset-px rounded-lg shadow ring-1 ring-black/5 lg:rounded-bl-[2rem]" />
-          </div>
-          <div className="relative lg:col-span-2">
-            <div className="absolute inset-px rounded-lg bg-white" />
-            <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)]">
-              <img alt="" src="https://tailwindcss.com/plus-assets/img/component-images/bento-01-integrations.png" className="h-80 object-cover" />
-              <div className="p-10 pt-4">
-                <h3 className="text-sm/4 font-semibold text-indigo-600">Integrations</h3>
-                <p className="mt-2 text-lg font-medium tracking-tight text-gray-950">Connect your favorite tools</p>
-                <p className="mt-2 max-w-lg text-sm/6 text-gray-600">Maecenas at augue sed elit dictum vulputate, in nisi aliquam maximus arcu.</p>
-              </div>
-            </div>
-            <div className="pointer-events-none absolute inset-px rounded-lg shadow ring-1 ring-black/5" />
-          </div>
-          <div className="relative lg:col-span-2">
-            <div className="absolute inset-px rounded-lg bg-white max-lg:rounded-b-[2rem] lg:rounded-br-[2rem]" />
-            <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-b-[calc(2rem+1px)] lg:rounded-br-[calc(2rem+1px)]">
-              <img alt="" src="https://tailwindcss.com/plus-assets/img/component-images/bento-01-network.png" className="h-80 object-cover" />
-              <div className="p-10 pt-4">
-                <h3 className="text-sm/4 font-semibold text-indigo-600">Network</h3>
-                <p className="mt-2 text-lg font-medium tracking-tight text-gray-950">Globally distributed CDN</p>
-                <p className="mt-2 max-w-lg text-sm/6 text-gray-600">Aenean vulputate justo commodo auctor vehicula in malesuada semper.</p>
-              </div>
-            </div>
-            <div className="pointer-events-none absolute inset-px rounded-lg shadow ring-1 ring-black/5 max-lg:rounded-b-[2rem] lg:rounded-br-[2rem]" />
-          </div>
+          ))}
         </div>
       </div>
     </div>

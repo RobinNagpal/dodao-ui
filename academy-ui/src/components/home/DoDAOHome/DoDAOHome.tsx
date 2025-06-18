@@ -36,20 +36,6 @@ export default function DoDAOHome() {
       <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-800">
         <NewServicesGrid />
       </div>
-      {/* Services section */}
-      <div className="bg-gradient-to-br from-blue-900 via-indigo-900 to-violet-900">
-        <Services />
-      </div>
-
-      {/* Education section */}
-      <div className="bg-gradient-to-br from-indigo-100 via-blue-50 to-sky-100">
-        <Education />
-      </div>
-
-      {/* Research section */}
-      <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-800">
-        <Research />
-      </div>
 
       {/* Footer */}
       <Footer />
