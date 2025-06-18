@@ -2,7 +2,7 @@ import { BuildingOffice2Icon, EnvelopeIcon } from '@heroicons/react/24/outline';
 
 export default function Contact() {
   return (
-    <div id="contact" className="bg-gray-800 py-24 sm:py-32">
+    <div id="contact" className="bg-gray-800 py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="relative isolate bg-gray-800">
           <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">

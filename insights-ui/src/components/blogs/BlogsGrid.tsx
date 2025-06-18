@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function BlogsGrid({ posts }: { posts: BlogInterfaceWithId[]; length?: number }) {
   return (
-    <div className="bg-gray-800 py-16 sm:py-16">
+    <div className="bg-gray-800 py-12 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Heading */}
         <div className="mx-auto max-w-7xl px-6 lg:px-8">

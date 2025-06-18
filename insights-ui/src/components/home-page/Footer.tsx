@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="relative bg-gray-800 pt-5 pb-8 sm:pt-14 sm:pb-16">
+    <footer className="relative bg-gray-800 pt-4 pb-4 sm:pt-12 sm:pb-12">
       <div className="relative text-center text-sm text-gray-400">
         <p>
           Copyright &copy; {new Date().getFullYear()} <strong className="text-white">KoalaGains.com</strong>. All rights reserved.

@@ -67,7 +67,7 @@ export default function KoalaGainsPlatform() {
           <div className="mx-auto max-w-2xl sm:text-center">
             <h2 className="text-base/7 font-semibold text-indigo-400">KoalaGains Platform</h2>
             <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-white sm:text-5xl sm:text-balance">Key Features</p>
-            <p className="mt-4 text-lg/8 text-gray-300">
+            <p className="mt-4 text-lg text-gray-300">
               Unlock the full potential of your investment research with our advanced AI-driven platform that delivers insights in minutes, not days.
             </p>
           </div>
@@ -92,7 +92,7 @@ export default function KoalaGainsPlatform() {
               <div className="lg:max-w-lg">
                 <p className="text-base/7 font-semibold text-indigo-400">Automate Your Reporting Workflow</p>
                 <h2 className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">Why Choose KoalaGains?</h2>
-                <p className="mt-4 text-lg/8 text-gray-300">
+                <p className="mt-4 text-lg text-gray-300">
                   KoalaGains brings together data ingestion, AI-driven analysis, and rich visualization in one platform. Configure once and let your custom AI
                   Agents generate consistent, high-fidelity reports on demand.
                 </p>
@@ -123,7 +123,7 @@ export default function KoalaGainsPlatform() {
           <div className="mx-auto max-w-2xl sm:text-center">
             <h2 className="text-base/7 font-semibold text-indigo-400">KoalaGains Platform</h2>
             <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-white sm:text-5xl sm:text-balance">Product Architecture</p>
-            <p className="mt-4 text-lg/8 text-gray-300">
+            <p className="mt-4 text-lg text-gray-300">
               Our system automatically extracts, analyzes, and delivers customized financial insights, providing you with everything you need, hassle-free.
             </p>
           </div>
