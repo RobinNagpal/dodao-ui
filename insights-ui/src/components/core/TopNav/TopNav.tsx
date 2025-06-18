@@ -3,25 +3,32 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { Dialog, DialogPanel } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { UserIcon } from '@heroicons/react/24/solid';
 import AdminLoginModal from '@/components/ui/AdminLoginModal';
 import { getAuthKey } from '@/util/auth/authKey';
 
+const reportsDropdown = [
+  { name: 'Crowdfunding Reports', href: '/crowd-funding', description: 'Detailed crowdfunding analysis' },
+  { name: 'REIT Reports', href: '/public-equities/tickers', description: 'Real Estate Investment Trust insights' },
+  { name: 'Tariff Reports', href: '/tariff-reports', description: 'Trade tariff impact analysis' },
+  { name: 'All Reports', href: '/reports', description: 'Browse all available reports' },
+];
+
 const navigation = [
-  { name: 'Crowdfunding Reports', href: '/crowd-funding', newTab: false },
-  { name: 'REIT Reports', href: '/public-equities/tickers', newTab: false },
-  { name: 'Tariff Reports', href: '/tariff-reports', newTab: false },
   { name: 'Blogs', href: '/blogs', newTab: true },
-  { name: 'Docs', href: 'https://docs.koalagains.com', newTab: true },
+  { name: 'Platform Docs', href: 'https://docs.koalagains.com', newTab: true },
 ];
 
 export default function TopNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [reportsDropdownOpen, setReportsDropdownOpen] = useState(false);
+  const [mobileReportsOpen, setMobileReportsOpen] = useState(false);
   const [isLoggedin, setIsLoggedin] = useState(false);
-  const menuRef = useRef<HTMLDivElement | null>(null);
+  const userMenuRef = useRef<HTMLDivElement | null>(null);
+  const reportsDropdownRef = useRef<HTMLDivElement | null>(null);
 
   const checkLoginStatus = () => {
     setIsLoggedin(!!getAuthKey());
@@ -31,14 +38,14 @@ export default function TopNav() {
     checkLoginStatus();
   }, []);
 
-  const toggleMenu = () => {
-    setMenuOpen((prev) => !prev);
+  const toggleUserMenu = () => {
+    setUserMenuOpen((prev) => !prev);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('AUTHENTICATION_KEY');
     setIsLoggedin(false);
-    setMenuOpen(false);
+    setUserMenuOpen(false);
     setMobileMenuOpen(false);
   };
 
@@ -46,11 +53,14 @@ export default function TopNav() {
     checkLoginStatus();
   };
 
-  // Close the menu when clicking outside the component
+  // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setMenuOpen(false);
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+      if (reportsDropdownRef.current && !reportsDropdownRef.current.contains(event.target as Node)) {
+        setReportsDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -77,20 +87,59 @@ export default function TopNav() {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12 items-center">
+          {/* KoalaGains Insights Dropdown */}
+          <div className="relative" ref={reportsDropdownRef}>
+            <button
+              type="button"
+              onClick={() => setReportsDropdownOpen(!reportsDropdownOpen)}
+              onMouseEnter={() => setReportsDropdownOpen(true)}
+              className="flex items-center text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
+              aria-expanded={reportsDropdownOpen}
+            >
+              KoalaGains Insights
+              <ChevronDownIcon aria-hidden="true" className={`ml-1 h-4 w-4 transition-transform duration-200 ${reportsDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {reportsDropdownOpen && (
+              <div
+                onMouseLeave={() => setReportsDropdownOpen(false)}
+                className="absolute left-0 z-20 mt-2 w-80 origin-top-left rounded-md bg-gray-700 shadow-xl ring-1 ring-gray-600 focus:outline-none overflow-hidden"
+              >
+                {reportsDropdown.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-600 hover:text-white transition-colors duration-150"
+                  >
+                    <div className="font-semibold">{item.name}</div>
+                    <div className="text-xs text-gray-400 mt-1">{item.description}</div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Regular Navigation Items */}
           {navigation.map((item) => (
-            <Link key={item.name} href={item.href} className="text-sm/6 font-semibold text-color" target={item.newTab ? '_blank' : '_self'}>
+            <Link
+              key={item.name}
+              href={item.href}
+              className="text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
+              target={item.newTab ? '_blank' : '_self'}
+            >
               {item.name}
             </Link>
           ))}
+
+          {/* User Menu */}
           {isLoggedin ? (
-            <div className="relative" ref={menuRef}>
+            <div className="relative" ref={userMenuRef}>
               <div>
                 <button
                   type="button"
-                  onClick={toggleMenu}
-                  className="relative flex text-sm ring-2 ring-color rounded-full"
+                  onClick={toggleUserMenu}
+                  className="relative flex text-sm ring-2 ring-color rounded-full hover:ring-indigo-400 transition-colors duration-200"
                   id="user-menu-button"
-                  aria-expanded={menuOpen}
+                  aria-expanded={userMenuOpen}
                   aria-haspopup="true"
                 >
                   <span className="absolute -inset-1.5"></span>
@@ -98,7 +147,7 @@ export default function TopNav() {
                   <UserIcon className="m-2 text-color h-5 w-5" />
                 </button>
               </div>
-              {menuOpen && (
+              {userMenuOpen && (
                 <div
                   className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md background-color py-1 ring-1 shadow-lg ring-color focus:outline-hidden"
                   role="menu"
@@ -123,12 +172,17 @@ export default function TopNav() {
               )}
             </div>
           ) : (
-            <button onClick={() => setLoginModalOpen(true)} className="text-sm/6 font-semibold text-color cursor-pointer">
+            <button
+              onClick={() => setLoginModalOpen(true)}
+              className="text-sm/6 font-semibold text-color cursor-pointer hover:text-indigo-400 transition-colors duration-200"
+            >
               Log in <span aria-hidden="true">&rarr;</span>
             </button>
           )}
         </div>
       </nav>
+
+      {/* Mobile Menu */}
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-10" />
         <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-800 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-700/50">
@@ -145,12 +199,39 @@ export default function TopNav() {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
+                {/* Mobile KoalaGains Insights */}
+                <div>
+                  <button
+                    onClick={() => setMobileReportsOpen(!mobileReportsOpen)}
+                    className="flex w-full items-center justify-between -mx-3 rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-gray-700"
+                  >
+                    KoalaGains Insights
+                    <ChevronDownIcon aria-hidden="true" className={`h-5 w-5 transition-transform duration-200 ${mobileReportsOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  {mobileReportsOpen && (
+                    <div className="ml-4 mt-2 space-y-2">
+                      {reportsDropdown.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="block -mx-3 rounded-lg px-3 py-2 text-sm text-gray-400 hover:bg-gray-700 hover:text-gray-300"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Regular Mobile Navigation */}
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-gray-700"
                     target={item.newTab ? '_blank' : '_self'}
+                    onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.name}
                   </Link>
@@ -162,12 +243,14 @@ export default function TopNav() {
                     <Link
                       href="/prompts"
                       className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+                      onClick={() => setMobileMenuOpen(false)}
                     >
                       Prompts
                     </Link>
                     <Link
                       href="/invocations"
                       className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+                      onClick={() => setMobileMenuOpen(false)}
                     >
                       Invocations
                     </Link>
