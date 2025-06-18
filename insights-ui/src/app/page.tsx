@@ -1,10 +1,11 @@
-import AllInOnePlatform from '@/components/home-page/AllInOnePlatform';
-import Architecture from '@/components/home-page/Architecture';
 import Contact from '@/components/home-page/Contact';
-import Features from '@/components/home-page/Features';
 import { Footer } from '@/components/home-page/Footer';
 import BlogsGrid from '@/components/blogs/BlogsGrid';
 import { Hero } from '@/components/home-page/Hero';
+import KoalaGainsPlatform from '@/components/home-page/KoalaGainsPlatform';
+import KoalaGainsInsights from '@/components/home-page/KoalaGainsInsights';
+import AIAgentTraining from '@/components/home-page/AIAgentTraining';
+import AIAgentDevelopment from '@/components/home-page/AIAgentDevelopment';
 import { getPostsData } from '@/util/blog-utils';
 import { themeColors } from '@/util/theme-colors';
 
@@ -13,9 +14,10 @@ export default async function Home() {
   return (
     <div style={{ ...themeColors }}>
       <Hero />
-      <Architecture />
-      <Features />
-      <AllInOnePlatform />
+      <KoalaGainsPlatform />
+      <KoalaGainsInsights />
+      <AIAgentTraining />
+      <AIAgentDevelopment />
       <BlogsGrid posts={posts} />
       <Contact />
       <Footer />
