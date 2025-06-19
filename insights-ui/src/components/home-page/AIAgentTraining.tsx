@@ -36,7 +36,7 @@ function HeroTrainingCardImageLeft({ title, subtitle, description, imageSrc, ima
       </div>
       <div className="relative mx-auto max-w-7xl py-24 sm:py-32 lg:px-8 lg:py-40">
         <div className="pl-6 pr-6 md:ml-auto md:w-2/3 md:pl-8 lg:w-1/2 lg:pl-12 lg:pr-8 xl:pl-16 xl:pr-12">
-          <h2 className="text-base/7 font-semibold text-indigo-400">{subtitle}</h2>
+          <h3 className="text-base/7 font-semibold text-indigo-400">{subtitle}</h3>
           <p className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">{title}</p>
           <p className="mt-6 text-base/7 text-gray-300">{description}</p>
           <div className="mt-8">
@@ -65,7 +65,7 @@ export default function AIAgentTraining() {
   };
 
   return (
-    <section id="agent-training" className="bg-gray-800 py-8 sm:py-12">
+    <section id="agent-training" className="bg-gray-800 pt-16 sm:pt-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
           <div className="mb-6">
@@ -98,6 +98,7 @@ export default function AIAgentTraining() {
           />
         )}
       </div>
+      <div className="mt-16 sm:mt-20 border-b border-gray-600"></div>
     </section>
   );
 }
