@@ -19,10 +19,23 @@ function MenuIcon({
 }) {
   return (
     <svg aria-hidden="true" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" {...props}>
-      <path d={open ? 'M17 7 7 17M7 7l10 10' : 'm15 16-3 3-3-3M15 8l-3-3-3 3'} />
+      <path d={open ? 'M17 7 7 17M7 7l10 10' : 'm15 16-3 3-3 3M15 8l-3-3-3 3'} />
     </svg>
   );
 }
+
+const smoothScrollToSection = (id: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    const navHeight = 128;
+    const offsetTop = element.getBoundingClientRect().top + window.pageYOffset - navHeight;
+
+    window.scrollTo({
+      top: offsetTop,
+      behavior: 'smooth',
+    });
+  }
+};
 
 export function NavBar() {
   let navBarRef = useRef<React.ElementRef<'div'>>(null);
@@ -38,15 +51,13 @@ export function NavBar() {
       let newActiveIndex = null;
       let elements = sections.map(({ id }) => document.getElementById(id)).filter((el): el is HTMLElement => el !== null);
       let bodyRect = document.body.getBoundingClientRect();
-      let offset = bodyRect.top + navBarRef.current.offsetHeight + 1;
+      let offset = bodyRect.top + navBarRef.current.offsetHeight + 64;
 
-      // Check if we've scrolled past the last tracked section
       if (elements.length > 0) {
         const lastElement = elements[elements.length - 1];
         const lastElementBottom = lastElement.getBoundingClientRect().bottom + window.scrollY;
         const lastElementHeight = lastElement.offsetHeight;
 
-        // If we've scrolled past the last section by more than half its height, clear active state
         if (window.scrollY > lastElementBottom - lastElementHeight / 2) {
           setActiveIndex(null);
           return;
@@ -109,7 +120,7 @@ export function NavBar() {
             </div>
             <PopoverPanel className="absolute inset-x-0 top-0 bg-gray-800/95 py-3.5 shadow-sm [@supports(backdrop-filter:blur(0))]:bg-gray-800/80 [@supports(backdrop-filter:blur(0))]:backdrop-blur-sm">
               {sections.map((section, sectionIndex) => (
-                <PopoverButton as="a" key={section.id} href={`#${section.id}`} className="flex items-center px-4 py-1.5">
+                <PopoverButton key={section.id} className="flex items-center px-4 py-1.5 w-full" onClick={() => smoothScrollToSection(section.id)}>
                   <span aria-hidden="true" className="font-mono text-sm text-indigo-400">
                     {(sectionIndex + 1).toString().padStart(2, '0')}
                   </span>
@@ -125,17 +136,17 @@ export function NavBar() {
         <ol role="list" className="mb-[-2px] grid auto-cols-[minmax(0,15rem)] grid-flow-col text-base font-medium text-white [counter-reset:section]">
           {sections.map((section, sectionIndex) => (
             <li key={section.id} className="flex [counter-increment:section]">
-              <a
-                href={`#${section.id}`}
+              <button
+                onClick={() => smoothScrollToSection(section.id)}
                 className={clsx(
-                  'flex w-full flex-col items-center justify-center border-b-2 before:mb-2 before:font-mono before:text-sm before:content-[counter(section,decimal-leading-zero)]',
+                  'flex w-full flex-col items-center justify-center border-b-2 before:mb-2 before:font-mono before:text-sm before:content-[counter(section,decimal-leading-zero)] cursor-pointer',
                   sectionIndex === activeIndex
                     ? 'border-indigo-400 bg-indigo-900/30 text-indigo-400 before:text-indigo-400'
                     : 'border-transparent before:text-gray-500 hover:bg-gray-700/40 hover:before:text-gray-300'
                 )}
               >
                 {section.title}
-              </a>
+              </button>
             </li>
           ))}
         </ol>
