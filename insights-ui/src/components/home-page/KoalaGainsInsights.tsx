@@ -24,7 +24,7 @@ const insights = [
 
 export default function KoalaGainsInsights() {
   return (
-    <div className="bg-gray-800 py-8 sm:py-12">
+    <div id="insights" className="bg-gray-800 py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
           <div className="mb-6">
