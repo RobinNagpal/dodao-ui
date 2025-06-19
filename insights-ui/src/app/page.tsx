@@ -2,6 +2,7 @@ import Contact from '@/components/home-page/Contact';
 import { Footer } from '@/components/home-page/Footer';
 import BlogsGrid from '@/components/blogs/BlogsGrid';
 import { Hero } from '@/components/home-page/Hero';
+import { NavBar } from '@/components/home-page/NavBar';
 import KoalaGainsPlatform from '@/components/home-page/KoalaGainsPlatform';
 import KoalaGainsInsights from '@/components/home-page/KoalaGainsInsights';
 import AIAgentTraining from '@/components/home-page/AIAgentTraining';
@@ -14,6 +15,7 @@ export default async function Home() {
   return (
     <div style={{ ...themeColors }}>
       <Hero />
+      <NavBar />
       <KoalaGainsPlatform />
       <KoalaGainsInsights />
       <AIAgentTraining />
