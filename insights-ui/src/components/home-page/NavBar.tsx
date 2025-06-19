@@ -27,8 +27,8 @@ function MenuIcon({
 const smoothScrollToSection = (id: string) => {
   const element = document.getElementById(id);
   if (element) {
-    const navHeight = 128; // Height of the navbar (h-32 = 8rem = 128px)
-    const offsetTop = element.getBoundingClientRect().top + window.pageYOffset - navHeight - 32; // Extra 32px for breathing room
+    const navHeight = 128;
+    const offsetTop = element.getBoundingClientRect().top + window.pageYOffset - navHeight;
 
     window.scrollTo({
       top: offsetTop,
@@ -51,15 +51,13 @@ export function NavBar() {
       let newActiveIndex = null;
       let elements = sections.map(({ id }) => document.getElementById(id)).filter((el): el is HTMLElement => el !== null);
       let bodyRect = document.body.getBoundingClientRect();
-      let offset = bodyRect.top + navBarRef.current.offsetHeight + 64; // Increased offset to account for section headings
+      let offset = bodyRect.top + navBarRef.current.offsetHeight + 64;
 
-      // Check if we've scrolled past the last tracked section
       if (elements.length > 0) {
         const lastElement = elements[elements.length - 1];
         const lastElementBottom = lastElement.getBoundingClientRect().bottom + window.scrollY;
         const lastElementHeight = lastElement.offsetHeight;
 
-        // If we've scrolled past the last section by more than half its height, clear active state
         if (window.scrollY > lastElementBottom - lastElementHeight / 2) {
           setActiveIndex(null);
           return;
