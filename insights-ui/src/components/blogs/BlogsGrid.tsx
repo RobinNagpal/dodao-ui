@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function BlogsGrid({ posts }: { posts: BlogInterfaceWithId[]; length?: number }) {
   return (
-    <div className="bg-gray-800 py-12 sm:py-12">
+    <section className="bg-gray-800 pt-16 pb-12 sm:pt-20 sm:pb-16">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Heading */}
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -14,7 +14,7 @@ export default function BlogsGrid({ posts }: { posts: BlogInterfaceWithId[]; len
             <p className="mt-2 text-lg text-gray-400">Dive deeper into how KoalaGains is changing the investment landscape.</p>
           </div>
         </div>
-        <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-700 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        <div className="mx-auto mt-2 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 pt-10 sm:mt-2 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {posts.map((post) => (
             <article key={post.id} className="flex max-w-xl flex-col justify-between">
               <div className="flex-col items-start">
@@ -48,6 +48,6 @@ export default function BlogsGrid({ posts }: { posts: BlogInterfaceWithId[]; len
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -40,7 +40,7 @@ const keyFeatures = [
 
 export default function KoalaGainsPlatform() {
   return (
-    <section id="platform" className="bg-gray-800 py-8 sm:py-12">
+    <section id="platform" className="bg-gray-800 pt-12 sm:pt-16">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
           <div className="mb-6">
@@ -75,6 +75,7 @@ export default function KoalaGainsPlatform() {
           ))}
         </dl>
       </div>
+      <div className="mt-16 sm:mt-20 border-b border-gray-600"></div>
     </section>
   );
 }
