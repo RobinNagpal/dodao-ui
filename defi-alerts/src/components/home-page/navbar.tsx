@@ -49,7 +49,7 @@ const Navbar = () => {
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="font-bold text-xl text-[#f1f1f3]">DeFiAlerts</span>
+            <img alt="" src="/defialerts_icon.png" className="h-10 w-auto" />
           </Link>
         </div>
 
