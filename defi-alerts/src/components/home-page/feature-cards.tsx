@@ -1,39 +1,40 @@
-import { Bell, Sliders, Send, Code } from 'lucide-react';
+import { Bell, Sliders, Send, Wrench } from 'lucide-react';
 
 const features = [
   {
     title: 'Flexible Alert Configuration',
-    description: 'Define custom thresholds with decimal precision and complex conditions using our intuitive alert wizard.',
+    description: 'Set up custom alerts with precise thresholds and conditions using our simple alert builder.',
     icon: Sliders,
-    details: ['Decimal precision (0.01%)', 'Equality operators (>, <, ≥, ≤)', 'Custom templates & presets', 'Multi-wallet portfolio groups'],
+    details: ['Precise percentage settings', 'Above, below, or range alerts', 'Custom templates & presets', 'Portfolio groups'],
   },
   {
     title: 'Multi-Channel Delivery',
-    description: 'Choose how you receive alerts: Email, SMS, Push, Telegram, Discord, Slack, PagerDuty, or custom webhooks.',
+    description: 'Get alerts delivered exactly how you want: Email, Telegram, Discord, Slack, or custom webhooks.',
     icon: Send,
-    details: ['Frequency controls', 'Severity levels (Info/Warning/Critical)', 'Batched digest options', 'Alert snoozing'],
+    details: ['Control alert frequency', 'Severity levels (Low/Medium/High)', 'Edit, delete, or pause alerts', 'Email notifications'],
   },
   {
-    title: 'Advanced Portfolio Discovery',
-    description: 'Automatic position detection across all chains via wallet connection, with manual position addition option.',
+    title: 'Smart Portfolio Tracking',
+    description: 'Simply add your wallet addresses to automatically discover all your DeFi positions across multiple protocols and chains.',
     icon: Bell,
-    details: ['Cross-chain address aliasing', 'Historical backtest preview', 'Position-specific suggestions', 'Idle funds detection'],
+    details: ['No wallet connection required', 'Track multiple wallet addresses', 'Supply & borrow monitoring', 'Monitor competitors for better rates'],
   },
   {
-    title: 'Developer-Friendly API',
-    description: 'Build custom integrations with our REST/GraphQL API, webhooks, and SDKs for TypeScript, Python and Rust.',
-    icon: Code,
-    details: ['HMAC-signed webhooks', 'Bulk import/export', 'Sample recipes & bots', 'Rate limiting & auth controls'],
+    title: 'Custom Platform Development',
+    description: 'Need alerts for your specific protocol? We build custom alert systems tailored to your unique DeFi requirements.',
+    icon: Wrench,
+    details: ['Protocol-specific alerts', 'Custom monitoring solutions', 'Tailored notification systems', 'Enterprise integrations'],
   },
 ];
 
 const FeatureCards = () => {
   return (
-    <section id="features" className="py-24 bg-[#0D131A]">
+    <section id="features" className="py-20 bg-[#0D131A]">
       <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-        <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">User Configuration & Delivery</h2>
+        <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">Smart Alerts Made Simple</h2>
         <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-12">
-          Our platform offers extensive customization options for alerts, ensuring you receive exactly the information you need, when and how you want it.
+          We offer a complete DeFi alert platform with flexible customization options, ensuring you get exactly the information you need, when and how you want
+          it.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

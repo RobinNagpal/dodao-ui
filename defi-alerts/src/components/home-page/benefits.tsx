@@ -1,65 +1,63 @@
-import { Shield, BarChart3, Rocket, ServerOff, Globe } from 'lucide-react';
+import { Shield, BarChart3, ServerOff, Globe } from 'lucide-react';
 
 const benefits = [
   {
-    title: 'Enterprise-Grade Performance',
-    description: 'Process 10,000+ events/sec with < 300ms latency and 99.9% delivery success rate.',
+    title: 'Instant Alerts',
+    description: 'Get notified immediately when your DeFi conditions are met.',
     icon: BarChart3,
-    metric: 'Up to 100M active alerts',
+    metric: 'Seconds to delivery',
   },
   {
-    title: 'Bulletproof Security',
-    description: 'SOC 2 Type II compliant with HSM-stored secrets and encrypted sensitive data.',
+    title: 'Privacy First',
+    description: 'Your wallet addresses and settings stay safe and private.',
     icon: Shield,
-    metric: 'GDPR & privacy ready',
+    metric: 'Encrypted data',
   },
   {
-    title: 'High Resilience',
-    description: 'Zero data loss during provider outages with auto-failover and distributed architecture.',
+    title: 'Always On',
+    description: 'Our service runs 24/7 so you never miss a market move.',
     icon: ServerOff,
-    metric: '99.99% uptime SLA',
+    metric: '99.9% uptime',
   },
   {
-    title: 'Global Accessibility',
-    description: 'Fully internationalized with support for locale-specific number formats and dates.',
+    title: 'Multi-Chain Support',
+    description: 'Works across Ethereum, Polygon, Base, and more.',
     icon: Globe,
-    metric: 'i18n/Unicode ready',
+    metric: 'All major chains',
   },
 ];
 
 const successKPIs = [
-  { metric: '% positions improved within 24h of alert', target: 'Track & maximize' },
-  { metric: 'Avg. increase in effective APY after optimization', target: 'Measure ROI' },
-  { metric: '# integrations built via webhook/API', target: 'Ecosystem growth' },
-  { metric: 'Alert delivery success rate', target: '> 99% guaranteed' },
+  { metric: 'Alerts delivered on time', target: '> 99%' },
+  { metric: 'Markets monitored', target: 'All Compound markets' },
+  { metric: 'Wallets tracked', target: 'Unlimited addresses' },
+  { metric: 'Custom alerts created', target: 'Unlimited' },
 ];
 
 const Benefits = () => {
   return (
-    <section id="benefits" className="py-24 bg-[#0D131A]">
+    <section id="benefits" className="py-20 bg-[#0D131A]">
       <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-        <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">Enterprise-Grade Reliability</h2>
-        <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-12">
-          Our platform is built to meet the demanding requirements of institutional users while remaining accessible to individuals.
-        </p>
+        <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">Key Benefits</h2>
+        <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-12">Fast, secure, always on, and multi-chain alerting for everyone.</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {benefits.map((benefit, index) => (
-            <div key={index} className="flex flex-col items-center text-center">
+          {benefits.map((b, i) => (
+            <div key={i} className="flex flex-col items-center text-center">
               <div className="mb-4 p-3 rounded-full bg-[#00AD79]/10">
-                <benefit.icon className="h-8 w-8 text-[#00AD79]" />
+                <b.icon className="h-8 w-8 text-[#00AD79]" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-[#f1f1f3]">{benefit.title}</h3>
-              <p className="text-[#f1f1f3]/80 mb-2">{benefit.description}</p>
-              <span className="text-sm font-medium bg-[#0D131A] px-3 py-1 rounded-full text-[#00AD79]">{benefit.metric}</span>
+              <h3 className="text-xl font-semibold mb-2 text-[#f1f1f3]">{b.title}</h3>
+              <p className="text-[#f1f1f3]/80 mb-2">{b.description}</p>
+              <span className="text-sm font-medium bg-[#0D131A] px-3 py-1 rounded-full text-[#00AD79]">{b.metric}</span>
             </div>
           ))}
         </div>
 
-        <h3 className="text-2xl font-bold text-center mb-6 text-[#f1f1f3]">Success Metrics We Track</h3>
+        <h3 className="text-2xl font-bold text-center mb-6 text-[#f1f1f3]">How We Measure Success</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {successKPIs.map((kpi, index) => (
-            <div key={index} className="bg-[#1e202d] p-4 rounded-lg border border-[#d1d5da]">
+          {successKPIs.map((kpi, i) => (
+            <div key={i} className="bg-[#1e202d] p-4 rounded-lg border border-[#d1d5da]">
               <div className="font-medium text-[#f1f1f3] mb-1">{kpi.metric}</div>
               <div className="text-sm text-[#00AD79]">{kpi.target}</div>
             </div>
