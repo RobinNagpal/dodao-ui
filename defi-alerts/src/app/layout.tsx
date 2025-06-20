@@ -22,7 +22,8 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: 'DeFi Alerts',
-  description: 'DeFi Alerts',
+  description:
+    'Optimize every DeFi position with proactive alerts for higher yields, rewards, and inefficient positions across any chain or protocol. Get real-time notifications for market volatility, opportunity timing, and portfolio tracking.',
 };
 
 export default async function RootLayout({
@@ -31,12 +32,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
+  const reqHeaders = await headers();
+  const host = reqHeaders.get('host')?.split(':')?.[0];
 
-  // Redirect to login if not logged in
-  if (!session) {
-    // We need to exclude the login page to avoid redirect loops
-    const headersList = await headers();
-    const path = headersList?.get('x-current-path') || '';
+  const isCompoundDomain = host === 'compound.defialerts-localhost.xyz' || host === 'compound.defialerts.xyz';
+
+  if (isCompoundDomain && !session) {
+    const path = reqHeaders?.get('x-current-path') || '';
     console.log('path', path);
 
     if (path !== '/login' && path !== '/auth/email/verify') {
