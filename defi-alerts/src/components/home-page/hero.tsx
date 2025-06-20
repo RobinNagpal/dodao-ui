@@ -34,20 +34,20 @@ const Hero = () => {
           <div className="relative aspect-video rounded-lg overflow-hidden border border-[#d1d5da] shadow-xl">
             <div className="absolute inset-0 flex items-center justify-center bg-[#1e202d]">
               <div className="text-[#f1f1f3] p-6 w-full">
-                <h3 className="text-xl font-semibold mb-4 text-[#00AD79]">Supported Surfaces</h3>
+                <h3 className="text-xl font-semibold mb-4 text-[#00AD79]">What We Monitor</h3>
                 <ul className="list-disc list-inside space-y-2">
-                  <li>Any EVM or non-EVM chain, L2, side-chain, or roll-up</li>
-                  <li>Lending protocols, DEX/AMM, perpetuals</li>
-                  <li>Vaults, restaking, liquid staking</li>
-                  <li>Money markets, bridges, and more</li>
+                  <li>All major blockchains (Ethereum, Polygon, Base, and more)</li>
+                  <li>Lending platforms (Compound, Aave, Spark, Morpho)</li>
+                  <li>Yield farming, staking, and liquidity pools</li>
+                  <li>Decentralized exchanges (DEXs), AMMs, and other DeFi protocols</li>
                 </ul>
                 <div className="mt-6">
                   <h3 className="text-xl font-semibold mb-2 text-[#00AD79]">For Everyone</h3>
                   <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div className="bg-[#0D131A] p-2 rounded">✓ Everyday DeFi users</div>
-                    <div className="bg-[#0D131A] p-2 rounded">✓ Power users & whales</div>
-                    <div className="bg-[#0D131A] p-2 rounded">✓ DAO treasuries & funds</div>
-                    <div className="bg-[#0D131A] p-2 rounded">✓ Builders (via API/webhooks)</div>
+                    <div className="bg-[#0D131A] p-2 rounded">✓ DeFi beginners</div>
+                    <div className="bg-[#0D131A] p-2 rounded">✓ Experienced traders</div>
+                    <div className="bg-[#0D131A] p-2 rounded">✓ Investment funds</div>
+                    <div className="bg-[#0D131A] p-2 rounded">✓ Developers & teams</div>
                   </div>
                 </div>
               </div>

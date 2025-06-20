@@ -2,53 +2,49 @@ import { Database, Cpu, Send, BarChart, Clock } from 'lucide-react';
 
 const steps = [
   {
-    title: 'Event Ingest Layer',
-    description: 'Indexers, RPC, subgraphs, APIs',
+    title: 'Data Collection Layer',
+    description: 'RPC, The Graph, and APIs',
     icon: Database,
-    detail:
-      'Collects data from multiple sources including on-chain RPC nodes, The Graph subgraphs, third-party indexers, and off-chain APIs for maximum coverage.',
-    metrics: '< 60 sec evaluation time',
+    detail: 'Pulls data from on-chain RPC nodes, The Graph subgraphs, and other APIs to give you full market coverage.',
+    metrics: 'Real-time data collection',
   },
   {
-    title: 'Real-Time Rule Engine',
-    description: 'User rules, templates, conditions',
+    title: 'Smart Alert Engine',
+    description: 'Condition checking and processing',
     icon: Cpu,
-    detail: 'Advanced rule processing system evaluates complex conditions with boolean logic, decimal precision thresholds, and comparison operators.',
-    metrics: '< 300ms p95 rule evaluation',
+    detail: 'Continuously evaluates your custom alert conditions and thresholds to determine when to send you notifications.',
+    metrics: 'Instant condition checking',
   },
   {
-    title: 'Notification Dispatcher',
-    description: 'Multi-channel delivery, retry logic',
+    title: 'Notification Delivery',
+    description: 'Email, Telegram, Discord, Webhooks',
     icon: Send,
-    detail: 'Routes alerts to user-specified channels (Email, SMS, Push, Telegram, Discord, Slack, Webhook) with configurable frequency and severity levels.',
-    metrics: '99.9% delivery success',
+    detail: 'Sends your alerts exactly where you want them, with configurable frequency, severity (Low/Medium/High), and retry logic.',
+    metrics: 'Reliable delivery',
   },
   {
-    title: 'Alert Router & User Database',
-    description: 'Configuration management, portfolios',
+    title: 'User Management System',
+    description: 'User settings & portfolios',
     icon: Clock,
-    detail: 'Central system for managing user preferences, alert configurations, and portfolio tracking across multiple wallets and chains.',
-    metrics: 'Support for 1M+ active users',
+    detail: 'Manages your alert configurations, wallet addresses, and preferences across all supported protocols and chains.',
+    metrics: 'Secure & organized',
   },
   {
-    title: 'Analytics & Monitoring',
-    description: 'Delivery logs, performance metrics',
+    title: 'Dashboard & History',
+    description: 'Alert tracking and insights',
     icon: BarChart,
-    detail: 'Comprehensive observability with structured logs, Prometheus metrics, and OpenTelemetry traces for system health monitoring and user insights.',
-    metrics: 'Actionable KPIs & SLO tracking',
+    detail: 'Provides a complete dashboard to view all your active alerts, detailed history of triggered notifications, and performance insights.',
+    metrics: 'Complete visibility',
   },
 ];
 
 const TechnicalArchitecture = () => {
   return (
-    <section id="architecture" className="py-24 bg-[#1e202d]">
+    <section id="architecture" className="py-20 bg-[#1e202d]">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">System Architecture</h2>
-        <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-6">
-          Our stateless microservice architecture is built for horizontal scaling, high availability, and real-time performance.
-        </p>
-        <p className="text-[#00AD79] text-center text-sm font-mono mb-12">
-          Redis pub/sub • Postgres • BigQuery/Snowflake • Kubernetes • Prometheus • OpenTelemetry
+        <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">How Our Platform Works</h2>
+        <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-12">
+          Our platform is built for reliability and speed, ensuring you never miss important DeFi opportunities or risks.
         </p>
 
         <div className="relative max-w-4xl mx-auto">

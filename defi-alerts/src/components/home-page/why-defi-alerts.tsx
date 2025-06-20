@@ -29,7 +29,7 @@ const reasons = [
 
 const WhyDefiAlerts = () => {
   return (
-    <section id="why-alerts" className="py-24 bg-[#1e202d]">
+    <section id="why-alerts" className="py-20 bg-[#1e202d]">
       <div className="max-w-[1400px] mx-auto px-4 md:px-6">
         <h2 className="text-3xl font-bold text-center mb-4 text-[#f1f1f3]">Why DeFi Alerts Matter</h2>
         <p className="text-[#f1f1f3] text-center max-w-2xl mx-auto mb-12">

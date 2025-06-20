@@ -25,19 +25,9 @@ const faqs = [
       'Users can connect their wallet via SIWE (Sign-In With Ethereum) for automatic discovery of all active positions across protocols and chains. We support cross-chain address aliasing (same EOA on multiple chains) and multi-wallet portfolios. Users can also manually add positions by transaction hash or position ID.',
   },
   {
-    question: 'What developer tools are available?',
-    answer:
-      'We offer REST/GraphQL APIs for alert management, a webhook specification with HMAC-SHA256 signature verification and retry policies, and SDKs for TypeScript, Python, and Rust. Developers can use our JSON/YAML schema for bulk import/export of alert definitions. We also provide sample recipes for building auto-rebalance bots.',
-  },
-  {
     question: 'What are your scalability and performance metrics?',
     answer:
       'Our system is designed to handle 1M+ active users, 100M+ active alerts, and process 10k+ events/second. We guarantee < 300ms p95 rule evaluation latency and 99.9% delivery success rate. Our architecture uses stateless microservices with horizontal scaling for maximum resilience.',
-  },
-  {
-    question: 'How do you ensure data privacy and security?',
-    answer:
-      'We follow SOC 2 Type II standards with all secrets stored in HSM. Sensitive data like email addresses and phone numbers are encrypted at rest. We support full GDPR compliance with right-to-be-forgotten flows. Wallet signatures are never stored. Our systems include comprehensive audit logs and access controls.',
   },
   {
     question: 'How can I onboard my protocol or integrate with my application?',
@@ -54,7 +44,7 @@ const FAQ = () => {
   };
 
   return (
-    <section id="faq" className="py-24">
+    <section id="faq" className="py-20">
       <div className="max-w-[1400px] mx-auto px-4 md:px-6">
         <h2 className="text-3xl font-bold text-center mb-12 text-[#f1f1f3]">Frequently Asked Questions</h2>
 
