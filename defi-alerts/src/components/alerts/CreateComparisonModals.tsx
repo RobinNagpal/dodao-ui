@@ -35,14 +35,15 @@ export default function CreateComparisonModals({ isOpen, onClose, onAlertsUpdate
   const fetchMorphoPositions = useMorphoUserPositions();
 
   // Modal state
-  const [currentModal, setCurrentModal] = useState<'generalComparison' | 'personalizedPositions' | 'configurePosition' | 'addWallet'>('personalizedPositions');
+  const [currentModal, setCurrentModal] = useState<'generalComparison' | 'personalizedPositions' | 'configurePosition' | 'addWallet' | 'deleteWallet'>(
+    'personalizedPositions'
+  );
   const [walletAddresses, setWalletAddresses] = useState<string[]>([]);
   const [currentWalletAddress, setCurrentWalletAddress] = useState<string>('');
   const [walletHasPositions, setWalletHasPositions] = useState<boolean>(true);
 
   // Delete wallet state
   const [walletToDelete, setWalletToDelete] = useState<string | null>(null);
-  const [showDeleteWalletModal, setShowDeleteWalletModal] = useState(false);
 
   const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
 
@@ -220,15 +221,18 @@ export default function CreateComparisonModals({ isOpen, onClose, onAlertsUpdate
   // Handle wallet deletion
   const handleDeleteWallet = (walletAddress: string) => {
     setWalletToDelete(walletAddress);
-    setShowDeleteWalletModal(true);
-    onClose();
+    setCurrentModal('deleteWallet');
+  };
+
+  const handleDeleteWalletClose = () => {
+    setWalletToDelete(null);
+    setCurrentModal('personalizedPositions');
   };
 
   const handleDeleteWalletSuccess = async () => {
     if (walletToDelete) {
       try {
-        // Close modal
-        setShowDeleteWalletModal(false);
+        // Reset delete state
         setWalletToDelete(null);
 
         await reFetchWallets();
@@ -237,10 +241,14 @@ export default function CreateComparisonModals({ isOpen, onClose, onAlertsUpdate
         if (onAlertsUpdated) {
           onAlertsUpdated();
         }
+
+        // Close the entire modal after successful deletion
+        onClose();
       } catch (error) {
         console.error('Error handling wallet deletion success:', error);
-        setShowDeleteWalletModal(false);
         setWalletToDelete(null);
+        // Go back to positions modal on error
+        setCurrentModal('personalizedPositions');
       }
     }
   };
@@ -297,14 +305,11 @@ export default function CreateComparisonModals({ isOpen, onClose, onAlertsUpdate
       />
 
       <DeleteWalletModal
-        open={showDeleteWalletModal}
+        open={isOpen && currentModal === 'deleteWallet'}
         walletAddress={walletToDelete}
         baseUrl={baseUrl}
         deleting={deleting}
-        onClose={() => {
-          setShowDeleteWalletModal(false);
-          setWalletToDelete(null);
-        }}
+        onClose={handleDeleteWalletClose}
         onDeleteSuccess={handleDeleteWalletSuccess}
         deleteWallet={deleteWallet}
       />

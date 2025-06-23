@@ -31,14 +31,13 @@ export default function CreateAlertModals({ isOpen, onClose, onAlertsUpdated }: 
   const fetchPositions = useCompoundUserPositions();
 
   // Modal state
-  const [currentModal, setCurrentModal] = useState<'monitorMarkets' | 'positions' | 'configurePosition' | 'addWallet'>('positions');
+  const [currentModal, setCurrentModal] = useState<'monitorMarkets' | 'positions' | 'configurePosition' | 'addWallet' | 'deleteWallet'>('positions');
   const [walletAddresses, setWalletAddresses] = useState<string[]>([]);
   const [currentWalletAddress, setCurrentWalletAddress] = useState<string>('');
   const [walletHasPositions, setWalletHasPositions] = useState<boolean>(false);
 
   // Delete wallet state
   const [walletToDelete, setWalletToDelete] = useState<string | null>(null);
-  const [showDeleteWalletModal, setShowDeleteWalletModal] = useState(false);
 
   // Monitor markets state
   const [channels, setChannels] = useState<Channel[]>([{ channelType: 'EMAIL', email: '' }]);
@@ -206,15 +205,18 @@ export default function CreateAlertModals({ isOpen, onClose, onAlertsUpdated }: 
   // Handle wallet deletion
   const handleDeleteWallet = (walletAddress: string) => {
     setWalletToDelete(walletAddress);
-    setShowDeleteWalletModal(true);
-    onClose();
+    setCurrentModal('deleteWallet');
+  };
+
+  const handleDeleteWalletClose = () => {
+    setWalletToDelete(null);
+    setCurrentModal('positions');
   };
 
   const handleDeleteWalletSuccess = async () => {
     if (walletToDelete) {
       try {
-        // Close modal
-        setShowDeleteWalletModal(false);
+        // Reset delete state
         setWalletToDelete(null);
 
         await reFetchWallets();
@@ -223,10 +225,14 @@ export default function CreateAlertModals({ isOpen, onClose, onAlertsUpdated }: 
         if (onAlertsUpdated) {
           onAlertsUpdated();
         }
+
+        // Close the entire modal after successful deletion
+        onClose();
       } catch (error) {
         console.error('Error handling wallet deletion success:', error);
-        setShowDeleteWalletModal(false);
         setWalletToDelete(null);
+        // Go back to positions modal on error
+        setCurrentModal('positions');
       }
     }
   };
@@ -284,14 +290,11 @@ export default function CreateAlertModals({ isOpen, onClose, onAlertsUpdated }: 
       />
 
       <DeleteWalletModal
-        open={showDeleteWalletModal}
+        open={isOpen && currentModal === 'deleteWallet'}
         walletAddress={walletToDelete}
         baseUrl={baseUrl}
         deleting={deleting}
-        onClose={() => {
-          setShowDeleteWalletModal(false);
-          setWalletToDelete(null);
-        }}
+        onClose={handleDeleteWalletClose}
         onDeleteSuccess={handleDeleteWalletSuccess}
         deleteWallet={deleteWallet}
       />

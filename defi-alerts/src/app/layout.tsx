@@ -54,7 +54,7 @@ export default async function RootLayout({
           <NotificationProvider>
             <>
               <NotificationWrapper />
-              <Navbar />
+              {isCompoundDomain && <Navbar />}
               {children}
             </>
           </NotificationProvider>
