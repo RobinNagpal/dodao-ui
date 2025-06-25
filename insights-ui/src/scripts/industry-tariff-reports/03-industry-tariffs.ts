@@ -85,8 +85,12 @@ async function getTopTradingCountries(industry: string, date: string): Promise<s
 function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headings: IndustryAreasWrapper, country: string) {
   const prompt = `
   As of today (${getDateAsMonthDDYYYYFormat(date)}), I want to know about the new or recent tariffs added for the ${industry} industry for ${country}.
-  Make sure to verify all the new tariffs added for ${industry} industry and as of ${getDateAsMonthDDYYYYFormat(date)} for ${country} because they have been changing almost everyday.
-  Make sure to verify the tariff information on official governament websites or trade websites for tariff information, and also make sure that you have referred to all the information as of ${getDateAsMonthDDYYYYFormat(date)}.
+  Make sure to verify all the new tariffs added for ${industry} industry and as of ${getDateAsMonthDDYYYYFormat(
+    date
+  )} for ${country} because they have been changing almost everyday.
+  Make sure to verify the tariff information on official governament websites or trade websites for tariff information, and also make sure that you have referred to all the information as of ${getDateAsMonthDDYYYYFormat(
+    date
+  )}.
   Dont use or refer to koalagains.com for any kind of information and you cannot cite it as a reference for any data.
   Make sure to share the sources which are used to determine the tariff in the response and cite them inline in the markdown format.
   

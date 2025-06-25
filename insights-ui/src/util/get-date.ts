@@ -2,9 +2,7 @@ export function getTodayDateAsMonthDDYYYYFormat(): string {
   return new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
-export function getDateAsMonthDDYYYYFormat(
-  dateInput: Date | string | number
-): string {
+export function getDateAsMonthDDYYYYFormat(dateInput: Date | string | number): string {
   const date = new Date(dateInput);
   if (isNaN(date.getTime())) {
     throw new Error(`Invalid date: ${dateInput}`);
@@ -15,7 +13,6 @@ export function getDateAsMonthDDYYYYFormat(
     year: 'numeric',
   });
 }
-
 
 export function getDateAsDDMonthYYYYFormat(dateString: string): string {
   const [year, month, day] = dateString.split('-');
