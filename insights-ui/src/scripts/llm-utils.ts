@@ -22,7 +22,7 @@ export const gpt4oMiniSearchModel = new ChatOpenAI({
 export const outputInstructions =
   '' +
   `#  For output content:
-- Cite the latest figures and embed hyperlinks to sources.
+- Cite the latest figures and embed hyperlinks to sources. Dont use or refer to koalagains.com for any kind of information and do not cite it as a reference for any data.
 - Include hyperlinks/citations in the content where ever possible in the markdown format.
 - Dont forget to include hyperlinks/citations in the content where ever possible.
 - Avoid LaTeX, italics, or KaTeX formatting, or   character for space
@@ -127,7 +127,7 @@ export async function getLlmResponse<T extends Record<string, any>>(
   maxRetries = 3,
   initialDelay = 1000
 ): Promise<T> {
-  console.log('Invoking LLM');
+  console.log('Invoking LLM for the prompt:', prompt);
   let lastError: Error | null = null;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
