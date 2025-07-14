@@ -5,6 +5,7 @@ import {
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { CountrySpecificTariff, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
+import { getDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { z } from 'zod';
 
 const CountrySpecificTariffSchema = z.object({
@@ -83,12 +84,19 @@ async function getTopTradingCountries(industry: string, date: string): Promise<s
 
 function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headings: IndustryAreasWrapper, country: string) {
   const prompt = `
-  I want to know about the new tariffs added for the ${industry} industry as of ${date} for ${country}.
-  Make sure to verify all the new tariffs added for ${industry} industry and as of ${date} for ${country} because they have been changing almost everyday.
-
+  As of today (${getDateAsMonthDDYYYYFormat(date)}), I want to know about the new or recent tariffs added for the ${industry} industry for ${country}.
+  Make sure to verify all the new tariffs added for ${industry} industry and as of ${getDateAsMonthDDYYYYFormat(
+    date
+  )} for ${country} because they have been changing almost everyday.
+  Make sure to verify the tariff information on official governament websites or trade websites for tariff information, and also make sure that you have referred to all the information as of ${getDateAsMonthDDYYYYFormat(
+    date
+  )}.
+  Dont use or refer to koalagains.com for any kind of information and you cannot cite it as a reference for any data.
+  Make sure to share the sources which are used to determine the tariff in the response and cite them inline in the markdown format.
+  
   Please give me the details of the new tariffs added for ${country}. 
 
-  The details should include 
+  The details should include: 
   - Name of the country
   - Amount of trade that is conducted with the US for the given industry
   - Description of the new tariffs added as of the mentioned date for the given industry. Add 6-8 lines of description.

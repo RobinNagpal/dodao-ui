@@ -139,6 +139,10 @@ ${date}
 The analysis should be only for the ${subArea.title} sector. 
 Do not include any data from other headings or subheadings as they will be covered separately.
 Make sure to focus just on the ${subArea.title} sector and not on other headings or subheadings.
+Make sure to verify the tariff information on official governament websites or trade websites for tariff information.
+Dont use or refer to koalagains.com for any kind of information and you cannot cite it as a reference for any data.
+Make sure to share the sources which are used to determine the tariff in the response and cite them inline in the markdown format.
+  
 
 # All the industry areas. You need to only cover the ${subArea.title} area.
 ${JSON.stringify(areas, null, 2)}
@@ -233,7 +237,10 @@ Find the three *Established Players* in the ${subAreaInfo} sector  **but output 
 - Try to find three established players that fall under this category of ${subArea.oneLineSummary} sector.
 
 Do not include any data from other areas or sub-areas as they will be covered separately.
-
+Make sure to verify the tariff information on official governament websites or trade websites for tariff information.
+Dont use or refer to koalagains.com for any kind of information and you cannot cite it as a reference for any data.
+Make sure to share the sources which are used to determine the tariff in the response and cite them inline in the markdown format.
+ 
 Make sure to focus just on the ${subArea.title} sector and not on other areas or sub-areas
 
 # Other areas and sub-areas
