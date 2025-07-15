@@ -115,5 +115,9 @@ export function getTariffIndustryDefinitionById(industryId: TariffIndustryId): T
 }
 
 export function fetchTariffReports(): TariffIndustryDefinition[] {
-  return [getTariffIndustryDefinitionById(TariffIndustryId.plastic), getTariffIndustryDefinitionById(TariffIndustryId.automobiles)];
+  return [
+    getTariffIndustryDefinitionById(TariffIndustryId.plastic),
+    getTariffIndustryDefinitionById(TariffIndustryId.automobiles),
+    getTariffIndustryDefinitionById(TariffIndustryId.apparelandaccessories),
+  ];
 }

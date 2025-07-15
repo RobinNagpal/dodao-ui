@@ -142,17 +142,13 @@ export async function doIt(
 const industry = getTariffIndustryDefinitionById(TariffIndustryId.automobiles);
 const apparel = getTariffIndustryDefinitionById(TariffIndustryId.apparelandaccessories);
 
-doIt(ReportType.ALL, apparel)
-  .then(() => console.log('Apparel & Accessories report done'))
-  .catch(console.error);
-
 // Example usage:
-// doIt(ReportType.HEADINGS, industry, {
-//   headingIndex: 1,
-//   subHeadingIndex: 0,
-// })
-//   .then(() => {
-//     console.log('Tariff updates generated successfully.');
-//   })
-//   .catch(console.error);
+doIt(ReportType.HEADINGS, apparel, {
+  headingIndex: 1,
+  subHeadingIndex: 0,
+})
+  .then(() => {
+    console.log('Tariff updates generated successfully.');
+  })
+  .catch(console.error);
 // doIt(ReportType.ALL, 'Plastic', 'April 21, 2025').catch(console.error);
