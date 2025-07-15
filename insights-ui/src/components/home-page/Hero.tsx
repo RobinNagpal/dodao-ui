@@ -3,7 +3,7 @@
 import coverImage from '@/images/koala.png';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CpuChipIcon, AcademicCapIcon, ChartBarSquareIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
+import { ChartBarSquareIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from 'react';
 
 const koalaGainsServices = [
@@ -18,7 +18,7 @@ const koalaGainsServices = [
   },
   {
     name: 'KoalaGains Platform',
-    description: 'The underlying AI infrastructure powering automated data analysis, processing, and report generation',
+    description: 'The underlying AI infrastructure powering automated data analysis and report generation',
     icon: RocketLaunchIcon,
     href: '#platform',
     cta: 'Learn More',
@@ -27,54 +27,19 @@ const koalaGainsServices = [
   },
 ];
 
-const ourServices = [
-  {
-    name: 'AI Agent Development',
-    description: 'Custom AI Agents tailored to your business needs with advanced automation capabilities',
-    icon: CpuChipIcon,
-    href: '#agent-development',
-    cta: 'Learn More',
-    color: 'from-purple-500 to-indigo-600',
-    highlight: 'Development',
-  },
-  {
-    name: 'AI Agent Training',
-    description: 'Comprehensive training programs to build AI expertise within your organization',
-    icon: AcademicCapIcon,
-    href: '#agent-training',
-    cta: 'Learn More',
-    color: 'from-orange-500 to-pink-600',
-    highlight: 'Education',
-  },
-];
-
 export function Hero() {
-  const [activeTab, setActiveTab] = useState('koalagains');
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setIsTransitioning(true);
       setTimeout(() => {
-        setActiveTab((prev) => (prev === 'koalagains' ? 'services' : 'koalagains'));
         setIsTransitioning(false);
       }, 200);
     }, 5000);
 
     return () => clearInterval(interval);
   }, []);
-
-  const handleTabClick = (tab: string) => {
-    if (tab !== activeTab) {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setActiveTab(tab);
-        setIsTransitioning(false);
-      }, 200);
-    }
-  };
-
-  const currentServices = activeTab === 'koalagains' ? koalaGainsServices : ourServices;
 
   return (
     <header className="overflow-hidden bg-gray-800">
@@ -94,36 +59,12 @@ export function Hero() {
               </h1>
 
               <p className="mt-6 text-lg leading-7 text-gray-300 max-w-3xl mx-auto">
-                KoalaGains: AI-powered investment insights and data reports—crowdfunding, REIT, tariff analysis and more, in minutes. We also specialize in
-                custom AI Agent development and training to help businesses harness the power of artificial intelligence.
+                KoalaGains: AI-powered investment insights and data reports—crowdfunding, REIT, tariff analysis and more, in minutes.
               </p>
             </div>
 
-            <div className="mt-8 flex justify-center">
-              <div className="inline-flex rounded-xl p-1 bg-gray-700/50 backdrop-blur-sm border border-gray-600/50">
-                <button
-                  onClick={() => handleTabClick('koalagains')}
-                  className={`px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-300 ${
-                    activeTab === 'koalagains'
-                      ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/25'
-                      : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
-                  }`}
-                >
-                  KoalaGains
-                </button>
-                <button
-                  onClick={() => handleTabClick('services')}
-                  className={`px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-300 ${
-                    activeTab === 'services' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/25' : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
-                  }`}
-                >
-                  Our Services
-                </button>
-              </div>
-            </div>
-
             <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8 max-w-4xl mx-auto mb-12">
-              {currentServices.map((service, index) => (
+              {koalaGainsServices.map((service, index) => (
                 <div
                   key={service.name}
                   className={`relative group transition-all duration-500 z-10 ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}
@@ -172,7 +113,7 @@ export function Hero() {
                         <svg className="ml-1 h-4 w-4 group-hover/link:translate-x-1 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
                           <path
                             fillRule="evenodd"
-                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4-293a1 1 0 010-1.414z"
                             clipRule="evenodd"
                           />
                         </svg>

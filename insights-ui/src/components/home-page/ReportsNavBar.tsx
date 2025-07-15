@@ -5,10 +5,9 @@ import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import clsx from 'clsx';
 
 const sections = [
-  { id: 'platform', title: 'Platform' },
-  { id: 'insights', title: 'Insights' },
-  { id: 'agent-training', title: 'Training' },
-  { id: 'agent-development', title: 'Development' },
+  { id: 'crowdfunding', title: 'Crowdfunding' },
+  { id: 'reit', title: 'REIT' },
+  { id: 'tariff', title: 'Tariff' },
 ];
 
 function MenuIcon({
@@ -37,7 +36,7 @@ const smoothScrollToSection = (id: string) => {
   }
 };
 
-export function NavBar() {
+export function ReportsNavBar() {
   let navBarRef = useRef<React.ElementRef<'div'>>(null);
   let [activeIndex, setActiveIndex] = useState<number | null>(null);
   let mobileActiveIndex = activeIndex === null ? 0 : activeIndex;
