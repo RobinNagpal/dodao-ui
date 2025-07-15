@@ -105,7 +105,7 @@ export async function doIt(
     case ReportType.REPORT_COVER:
       const tariffUpd = await readTariffUpdatesFromFile(industryId);
       const summ = await getSummariesOfEvaluatedAreas(industryId, headings);
-      if (!tariffUpdates) throw new Error('Tariff updates not found');
+      if (!tariffUpd) throw new Error('Tariff updates not found');
       const executiveSummary = await readExecutiveSummaryFromFile(industryId);
       if (!executiveSummary) throw new Error('Executive summary not found');
       if (!tariffUpd) throw new Error('Tariff updates not found');
@@ -133,21 +133,26 @@ export async function doIt(
       for (const type of Object.values(ReportType)) {
         if (type === ReportType.ALL) continue;
         // @ts-ignore
-        await doIt(type, industryId, date);
+        await doIt(type as ReportType, tariffIndustry);
       }
       break;
   }
 }
 
 const industry = getTariffIndustryDefinitionById(TariffIndustryId.automobiles);
+const apparel = getTariffIndustryDefinitionById(TariffIndustryId.apparelandaccessories);
+
+doIt(ReportType.ALL, apparel)
+  .then(() => console.log('Apparel & Accessories report done'))
+  .catch(console.error);
 
 // Example usage:
-doIt(ReportType.HEADINGS, industry, {
-  headingIndex: 1,
-  subHeadingIndex: 0,
-})
-  .then(() => {
-    console.log('Tariff updates generated successfully.');
-  })
-  .catch(console.error);
+// doIt(ReportType.HEADINGS, industry, {
+//   headingIndex: 1,
+//   subHeadingIndex: 0,
+// })
+//   .then(() => {
+//     console.log('Tariff updates generated successfully.');
+//   })
+//   .catch(console.error);
 // doIt(ReportType.ALL, 'Plastic', 'April 21, 2025').catch(console.error);
