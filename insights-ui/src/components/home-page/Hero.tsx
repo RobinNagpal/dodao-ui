@@ -4,7 +4,6 @@ import coverImage from '@/images/koala.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChartBarSquareIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
-import { useState, useEffect } from 'react';
 
 const koalaGainsServices = [
   {
@@ -14,7 +13,7 @@ const koalaGainsServices = [
     href: '/reports',
     cta: 'Browse Reports',
     color: 'from-emerald-500 to-teal-600',
-    highlight: 'Products',
+    highlight: 'Product',
   },
   {
     name: 'KoalaGains Platform',
@@ -28,19 +27,6 @@ const koalaGainsServices = [
 ];
 
 export function Hero() {
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 200);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <header className="overflow-hidden bg-gray-800">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -65,11 +51,7 @@ export function Hero() {
 
             <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8 max-w-4xl mx-auto mb-12">
               {koalaGainsServices.map((service, index) => (
-                <div
-                  key={service.name}
-                  className={`relative group transition-all duration-500 z-10 ${isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
+                <div key={service.name} className="relative group transition-all duration-500 z-10">
                   <div className="flex justify-center mb-3">
                     <span
                       className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${service.color} text-white shadow-lg`}
