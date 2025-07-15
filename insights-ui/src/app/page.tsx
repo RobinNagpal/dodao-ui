@@ -2,11 +2,11 @@ import Contact from '@/components/home-page/Contact';
 import { Footer } from '@/components/home-page/Footer';
 import BlogsGrid from '@/components/blogs/BlogsGrid';
 import { Hero } from '@/components/home-page/Hero';
-import { NavBar } from '@/components/home-page/NavBar';
 import KoalaGainsPlatform from '@/components/home-page/KoalaGainsPlatform';
-import KoalaGainsInsights from '@/components/home-page/KoalaGainsInsights';
-import AIAgentTraining from '@/components/home-page/AIAgentTraining';
-import AIAgentDevelopment from '@/components/home-page/AIAgentDevelopment';
+import { ReportsNavBar } from '@/components/home-page/ReportsNavBar';
+import Crowdfunding from '@/components/home-page/Crowdfunding';
+import REIT from '@/components/home-page/Reit';
+import Tariff from '@/components/home-page/Tariff';
 import { getPostsData } from '@/util/blog-utils';
 import { themeColors } from '@/util/theme-colors';
 
@@ -15,11 +15,11 @@ export default async function Home() {
   return (
     <div style={{ ...themeColors }}>
       <Hero />
-      <NavBar />
       <KoalaGainsPlatform />
-      <KoalaGainsInsights />
-      <AIAgentTraining />
-      <AIAgentDevelopment />
+      <ReportsNavBar />
+      <Crowdfunding />
+      <REIT />
+      <Tariff />
       <BlogsGrid posts={posts} />
       <Contact />
       <Footer />
