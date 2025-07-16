@@ -105,7 +105,7 @@ export async function doIt(
     case ReportType.REPORT_COVER:
       const tariffUpd = await readTariffUpdatesFromFile(industryId);
       const summ = await getSummariesOfEvaluatedAreas(industryId, headings);
-      if (!tariffUpdates) throw new Error('Tariff updates not found');
+      if (!tariffUpd) throw new Error('Tariff updates not found');
       const executiveSummary = await readExecutiveSummaryFromFile(industryId);
       if (!executiveSummary) throw new Error('Executive summary not found');
       if (!tariffUpd) throw new Error('Tariff updates not found');
@@ -133,16 +133,17 @@ export async function doIt(
       for (const type of Object.values(ReportType)) {
         if (type === ReportType.ALL) continue;
         // @ts-ignore
-        await doIt(type, industryId, date);
+        await doIt(type as ReportType, tariffIndustry);
       }
       break;
   }
 }
 
 const industry = getTariffIndustryDefinitionById(TariffIndustryId.automobiles);
+const apparel = getTariffIndustryDefinitionById(TariffIndustryId.apparelandaccessories);
 
 // Example usage:
-doIt(ReportType.HEADINGS, industry, {
+doIt(ReportType.HEADINGS, apparel, {
   headingIndex: 1,
   subHeadingIndex: 0,
 })
