@@ -119,6 +119,5 @@ export function fetchTariffReports(): TariffIndustryDefinition[] {
     getTariffIndustryDefinitionById(TariffIndustryId.plastic),
     getTariffIndustryDefinitionById(TariffIndustryId.automobiles),
     getTariffIndustryDefinitionById(TariffIndustryId.apparelandaccessories),
-    getTariffIndustryDefinitionById(TariffIndustryId.aluminium),
   ];
 }

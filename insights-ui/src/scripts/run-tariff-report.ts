@@ -142,10 +142,11 @@ export async function doIt(
   }
 }
 
-const industry = getTariffIndustryDefinitionById(TariffIndustryId.toys);
+const industry = getTariffIndustryDefinitionById(TariffIndustryId.automobiles);
+const apparel = getTariffIndustryDefinitionById(TariffIndustryId.apparelandaccessories);
 
 // Example usage:
-doIt(ReportType.HEADINGS, industry, {
+doIt(ReportType.HEADINGS, apparel, {
   headingIndex: 1,
   subHeadingIndex: 0,
 })
