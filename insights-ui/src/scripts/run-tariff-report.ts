@@ -56,8 +56,11 @@ export async function doIt(
 
   switch (reportType) {
     case ReportType.HEADINGS:
+      const existingHeadings = await readIndustryHeadingsFromFile(industryId);
+      if (existingHeadings) {
+        break;
+      }
       await getAndWriteIndustryHeadings(industryId);
-      await writeMarkdownFileForIndustryAreas(industryId, headings);
       break;
 
     case ReportType.UNDERSTAND_INDUSTRY:
@@ -105,7 +108,7 @@ export async function doIt(
     case ReportType.REPORT_COVER:
       const tariffUpd = await readTariffUpdatesFromFile(industryId);
       const summ = await getSummariesOfEvaluatedAreas(industryId, headings);
-      if (!tariffUpdates) throw new Error('Tariff updates not found');
+      if (!tariffUpd) throw new Error('Tariff updates not found');
       const executiveSummary = await readExecutiveSummaryFromFile(industryId);
       if (!executiveSummary) throw new Error('Executive summary not found');
       if (!tariffUpd) throw new Error('Tariff updates not found');
@@ -139,7 +142,7 @@ export async function doIt(
   }
 }
 
-const industry = getTariffIndustryDefinitionById(TariffIndustryId.automobiles);
+const industry = getTariffIndustryDefinitionById(TariffIndustryId.toys);
 
 // Example usage:
 doIt(ReportType.HEADINGS, industry, {

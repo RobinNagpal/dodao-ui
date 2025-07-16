@@ -3,6 +3,7 @@ export enum TariffIndustryId {
   toys = 'toys',
   aluminium = 'aluminium',
   automobiles = 'automobiles',
+  apparelandaccessories = 'apparelandaccessories',
 }
 
 export interface TariffIndustryDefinition {
@@ -80,6 +81,18 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
       'Slate Auto (Ticker: SLTE)',
     ],
   },
+  ApparelAndAccessories: {
+    name: 'Apparel & Accessories',
+    industryId: TariffIndustryId.apparelandaccessories,
+    reportTitle: 'Impact of Tariffs on Apparel & Accessories',
+    reportOneLiner: 'Analysis of tariff changes affecting apparel & accessories trade.',
+    updatedAt: 'July 14, 2025',
+    headingsCount: 3,
+    subHeadingsCount: 2,
+    establishedPlayersCount: 3,
+    newChallengersCount: 3,
+    companiesToIgnore: [],
+  },
 };
 
 export function getNumberOfHeadings(industryId: TariffIndustryId): number {
@@ -102,5 +115,10 @@ export function getTariffIndustryDefinitionById(industryId: TariffIndustryId): T
 }
 
 export function fetchTariffReports(): TariffIndustryDefinition[] {
-  return [getTariffIndustryDefinitionById(TariffIndustryId.plastic), getTariffIndustryDefinitionById(TariffIndustryId.automobiles)];
+  return [
+    getTariffIndustryDefinitionById(TariffIndustryId.plastic),
+    getTariffIndustryDefinitionById(TariffIndustryId.automobiles),
+    getTariffIndustryDefinitionById(TariffIndustryId.apparelandaccessories),
+    getTariffIndustryDefinitionById(TariffIndustryId.aluminium),
+  ];
 }
