@@ -65,7 +65,7 @@ export function recursivelyCleanOpenAiUrls(data: any): any {
 export async function getLlmResponse<T extends Record<string, any>>(
   prompt: string,
   schema: ZodObject<any>,
-  model: 'gemini' | 'gemini-search' = 'gemini',
+  model?: 'gemini',
   maxRetries = 3,
   initialDelay = 1000
 ): Promise<T> {

@@ -27,7 +27,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!understandIndustry) {
     throw new Error('Understand industry section not found');
   }
-  await writeMarkdownFileForUnderstandIndustry(industry, understandIndustry);
 
   return getIndustryTariffReport(industry);
 }

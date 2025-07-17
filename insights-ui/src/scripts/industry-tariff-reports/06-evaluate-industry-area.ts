@@ -5,7 +5,7 @@ import {
   writeJsonFileForEvaluateSubIndustryArea,
   writeMarkdownFileForEvaluateSubIndustryArea,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
+// import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { uploadFileToS3 } from '@/scripts/report-file-utils';
 import { z } from 'zod';
 import {
@@ -22,6 +22,7 @@ import {
   PositiveTariffImpactOnCompanyType,
   TariffUpdatesForIndustry,
 } from './tariff-types';
+import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 
 // ---------------------------------------------------------------------------
 // ─── 1. TYPE & SCHEMA EXTENSIONS ────────────────────────────────────────────
@@ -198,7 +199,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${s
     instructions: detailInstructions,
   });
 
-  return await getLlmResponse<EstablishedPlayer>(detailPrompt, EstablishedPlayerSchema, 'gpt-4o-search-preview');
+  return await getLlmResponse<EstablishedPlayer>(detailPrompt, EstablishedPlayerSchema, 'gemini');
 }
 
 function getSubAreaInfoString(subArea: IndustrySubArea, areas: IndustryAreasWrapper, tariffIndustry: TariffIndustryDefinition) {
@@ -250,7 +251,7 @@ ${JSON.stringify(areas, null, 2)}
   const { establishedPlayers: basicList } = await getLlmResponse<{ establishedPlayers: { companyName: string; companyTicker: string }[] }>(
     listInstructions,
     EstablishedPlayerListSchema,
-    'gpt-4o-search-preview'
+    'gemini'
   );
   console.log(`[EstablishedPlayers] ${`← Received basic list: ${JSON.stringify(basicList)}`}`);
 
@@ -312,7 +313,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${s
     },
   });
 
-  return await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, 'gpt-4o-search-preview');
+  return await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, 'gemini');
 }
 
 /**
@@ -355,7 +356,7 @@ ${JSON.stringify(areas, null, 2)}
   const { newChallengers: basicList } = await getLlmResponse<{ newChallengers: { companyName: string; companyTicker: string }[] }>(
     listInstructions,
     NewChallengerListSchema,
-    'gpt-4o-search-preview'
+    'gemini'
   );
   console.log(`[NewChallengers] ${`← Received basic list: ${JSON.stringify(basicList)}`}`);
 

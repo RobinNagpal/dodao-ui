@@ -33,7 +33,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!tariffUpdatesForIndustry) {
     throw new Error('Tariff updates not found');
   }
-  await writeMarkdownFileForIndustryTariffs(industry, tariffUpdatesForIndustry);
 
   return getIndustryTariffReport(industry);
 }

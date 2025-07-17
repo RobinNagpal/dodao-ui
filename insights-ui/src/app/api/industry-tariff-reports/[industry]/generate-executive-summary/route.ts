@@ -36,7 +36,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!execSummary) {
     throw new Error('Executive summary not found');
   }
-  await writeMarkdownFileForExecutiveSummary(industry, execSummary);
 
   return getIndustryTariffReport(industry);
 }

@@ -45,7 +45,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!conclusion) {
     throw new Error('Final conclusion not found');
   }
-  await writeMarkdownFileForFinalConclusion(industry, conclusion);
 
   return getIndustryTariffReport(industry);
 }

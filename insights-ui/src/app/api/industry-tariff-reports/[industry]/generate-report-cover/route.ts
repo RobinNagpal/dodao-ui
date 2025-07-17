@@ -40,7 +40,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!reportCover) {
     throw new Error('Report cover not found');
   }
-  await writeMarkdownFileForReportCover(industry, reportCover);
 
   return getIndustryTariffReport(industry);
 }
