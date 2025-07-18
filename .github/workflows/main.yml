@@ -5,16 +5,16 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'docs/**'
-      - 'tasks/**'
-      - 'ai-agents/**'
-      - 'lambdas/**'
+      - "docs/**"
+      - "tasks/**"
+      - "ai-agents/**"
+      - "lambdas/**"
   pull_request:
     branches:
       - main
     paths-ignore:
-      - 'docs/**'
-      - 'tasks/**'
+      - "docs/**"
+      - "tasks/**"
 
 jobs:
   determine-changed-paths:
@@ -168,7 +168,9 @@ jobs:
           node-version: 20
 
       - name: Set environment variables
-        run: echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+          echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" >> $GITHUB_ENV
 
       - name: Shared Web Core - Install dependencies
         run: cd shared/web-core && yarn

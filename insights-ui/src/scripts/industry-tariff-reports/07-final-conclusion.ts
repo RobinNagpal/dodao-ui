@@ -6,8 +6,9 @@ import {
   PositiveTariffImpactOnCompanyType,
   TariffUpdatesForIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
-import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
+// import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
+import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 
 const PositiveImpactsSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),

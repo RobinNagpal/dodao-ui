@@ -1,7 +1,8 @@
 import { writeJsonAndMarkdownFilesForReportCover } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { ExecutiveSummary, IndustryAreasWrapper, ReportCover, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
+// import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
+import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 
 const ReportCoverSchema = z.object({
   title: z.string().describe('Title of the cover page.'),

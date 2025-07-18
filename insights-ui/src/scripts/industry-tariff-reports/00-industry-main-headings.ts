@@ -1,8 +1,9 @@
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { writeJsonAndMarkdownFilesForIndustryAreas } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryAreasWrapper } from '@/scripts/industry-tariff-reports/tariff-types';
-import { getLlmResponse } from '@/scripts/llm-utils';
+// import { getLlmResponse } from '@/scripts/llm-utils';
 import { z, ZodObject } from 'zod';
+import { getLlmResponse } from '../llm‑utils‑gemini';
 
 export const PublicCompanySchema = z.object({
   name: z.string().describe('Name of the public company.'),

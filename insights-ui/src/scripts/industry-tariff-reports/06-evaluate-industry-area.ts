@@ -5,7 +5,7 @@ import {
   writeJsonFileForEvaluateSubIndustryArea,
   writeMarkdownFileForEvaluateSubIndustryArea,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
+// import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { uploadFileToS3 } from '@/scripts/report-file-utils';
 import { z } from 'zod';
 import {
@@ -22,23 +22,47 @@ import {
   PositiveTariffImpactOnCompanyType,
   TariffUpdatesForIndustry,
 } from './tariff-types';
+import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 
 // ---------------------------------------------------------------------------
 // ─── 1. TYPE & SCHEMA EXTENSIONS ────────────────────────────────────────────
 // ---------------------------------------------------------------------------
 
-const CompanyProductSchema = z.object({
-  productName: z.string().describe('Product name'),
-  productDescription: z.string().describe('Brief two-line description of the product'),
-  percentageOfRevenue: z.string().describe('Percentage of total revenue contributed'),
-  competitors: z.string().array().describe('List of competitors and their relative market scale'),
-});
-
-const PerformanceMetricsSchema = z.object({
-  revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
-  costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
-  profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
-  rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
+const EstablishedPlayerSchema = z.object({
+  companyName: z.string().describe('Name of the company'),
+  companyDescription: z.string().describe('One-paragraph overview of the company'),
+  companyWebsite: z.string().describe('Company website URL'),
+  companyTicker: z.string().describe('Stock ticker symbol'),
+  products: z
+    .array(
+      z.object({
+        productName: z.string().describe('Product name'),
+        productDescription: z.string().describe('Brief two-line description of the product'),
+        percentageOfRevenue: z.string().describe('Percentage of total revenue contributed'),
+        competitors: z.string().array().describe('List of competitors and their relative market scale'),
+      })
+    )
+    .describe('Product portfolio and revenue breakdown'),
+  aboutManagement: z.string().describe('Summary of the management team'),
+  uniqueAdvantage: z.string().describe('Key competitive advantage'),
+  pastPerformance: z
+    .object({
+      revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
+      costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
+      profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
+      rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
+    })
+    .describe('Financial performance over the past five years'),
+  futureGrowth: z
+    .object({
+      revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
+      costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
+      profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
+      rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
+    })
+    .describe('Projected financial performance over the next five years'),
+  impactOfTariffs: z.string().describe('Impact of new tariffs on the company, with facts and reasoning (5-6 lines)'),
+  competitors: z.string().describe('Major competitors and their market position'),
 });
 
 const NewChallengerSchema = z.object({
@@ -46,25 +70,34 @@ const NewChallengerSchema = z.object({
   companyDescription: z.string().describe('One-paragraph overview of the company'),
   companyWebsite: z.string().describe('Company website URL'),
   companyTicker: z.string().describe('Stock ticker symbol'),
-  products: z.array(CompanyProductSchema).describe('Product portfolio and revenue breakdown'),
+  products: z
+    .array(
+      z.object({
+        productName: z.string().describe('Product name'),
+        productDescription: z.string().describe('Brief two-line description of the product'),
+        percentageOfRevenue: z.string().describe('Percentage of total revenue contributed'),
+        competitors: z.string().array().describe('List of competitors and their relative market scale'),
+      })
+    )
+    .describe('Product portfolio and revenue breakdown'),
   aboutManagement: z.string().describe('Summary of the management team'),
   uniqueAdvantage: z.string().describe('Key competitive advantage over established players'),
-  pastPerformance: PerformanceMetricsSchema.describe('Financial performance over the past five years'),
-  futureGrowth: PerformanceMetricsSchema.describe('Projected financial performance over the next five years'),
-  impactOfTariffs: z.string().describe('Impact of new tariffs on the company, with facts and reasoning (5-6 lines)'),
-  competitors: z.string().describe('Major competitors and their market position'),
-});
-
-const EstablishedPlayerSchema = z.object({
-  companyName: z.string().describe('Name of the company'),
-  companyDescription: z.string().describe('One-paragraph overview of the company'),
-  companyWebsite: z.string().describe('Company website URL'),
-  companyTicker: z.string().describe('Stock ticker symbol'),
-  products: z.array(CompanyProductSchema).describe('Product portfolio and revenue breakdown'),
-  aboutManagement: z.string().describe('Summary of the management team'),
-  uniqueAdvantage: z.string().describe('Key competitive advantage'),
-  pastPerformance: PerformanceMetricsSchema.describe('Financial performance over the past five years'),
-  futureGrowth: PerformanceMetricsSchema.describe('Projected financial performance over the next five years'),
+  pastPerformance: z
+    .object({
+      revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
+      costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
+      profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
+      rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
+    })
+    .describe('Financial performance over the past five years'),
+  futureGrowth: z
+    .object({
+      revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
+      costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
+      profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
+      rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
+    })
+    .describe('Projected financial performance over the next five years'),
   impactOfTariffs: z.string().describe('Impact of new tariffs on the company, with facts and reasoning (5-6 lines)'),
   competitors: z.string().describe('Major competitors and their market position'),
 });
@@ -198,7 +231,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${s
     instructions: detailInstructions,
   });
 
-  return await getLlmResponse<EstablishedPlayer>(detailPrompt, EstablishedPlayerSchema, 'gpt-4o-search-preview');
+  return await getLlmResponse<EstablishedPlayer>(detailPrompt, EstablishedPlayerSchema, 'gemini');
 }
 
 function getSubAreaInfoString(subArea: IndustrySubArea, areas: IndustryAreasWrapper, tariffIndustry: TariffIndustryDefinition) {
@@ -250,7 +283,7 @@ ${JSON.stringify(areas, null, 2)}
   const { establishedPlayers: basicList } = await getLlmResponse<{ establishedPlayers: { companyName: string; companyTicker: string }[] }>(
     listInstructions,
     EstablishedPlayerListSchema,
-    'gpt-4o-search-preview'
+    'gemini'
   );
   console.log(`[EstablishedPlayers] ${`← Received basic list: ${JSON.stringify(basicList)}`}`);
 
@@ -312,7 +345,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${s
     },
   });
 
-  return await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, 'gpt-4o-search-preview');
+  return await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, 'gemini');
 }
 
 /**
@@ -355,7 +388,7 @@ ${JSON.stringify(areas, null, 2)}
   const { newChallengers: basicList } = await getLlmResponse<{ newChallengers: { companyName: string; companyTicker: string }[] }>(
     listInstructions,
     NewChallengerListSchema,
-    'gpt-4o-search-preview'
+    'gemini'
   );
   console.log(`[NewChallengers] ${`← Received basic list: ${JSON.stringify(basicList)}`}`);
 

@@ -4,7 +4,7 @@ import {
   writeMarkdownFileForIndustryTariffs,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { CountrySpecificTariff, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
+import { getLlmResponse, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
 import { getDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { z } from 'zod';
 
@@ -160,32 +160,62 @@ async function getTariffUpdatesForIndustry(
     const prompt = getTariffUpdatesForIndustryPrompt(industry, date, headings, country);
     console.log(`Fetching tariffs for ${country}…`);
     const countryTariff = await getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, 'gpt-4o-search-preview');
-    console.log(`Tariff for ${country} fetched successfully.`, JSON.stringify(countryTariff));
-    countrySpecificTariffs.push(countryTariff);
+
+    // Clean the response data to remove any URL parameters that might affect country names
+    const cleanedCountryTariff = recursivelyCleanOpenAiUrls(countryTariff);
+
+    countrySpecificTariffs.push(cleanedCountryTariff);
   }
 
-  // If we have existing data, maintain the order
+  // If regenerating all countries, use the new data entirely
+  if (!countryName) {
+    const result = {
+      countryNames: countriesToProcess,
+      countrySpecificTariffs,
+    };
+    return result;
+  }
+
+  // If we have existing data and regenerating a specific country, maintain the order
   if (existingTariffUpdates && existingTariffUpdates.countrySpecificTariffs.length > 0) {
-    // Create a map of new tariffs for quick lookup
-    const newTariffsMap = new Map(countrySpecificTariffs.map((tariff) => [tariff.countryName, tariff]));
+    // Create a map of new tariffs for quick lookup with case-insensitive keys
+    const newTariffsMap = new Map<string, CountrySpecificTariff>();
+    countrySpecificTariffs.forEach((tariff) => {
+      newTariffsMap.set(tariff.countryName.toLowerCase(), tariff);
+    });
 
     // Create a new array maintaining the existing order
     const orderedTariffs = existingCountryNames.map((country) => {
       // If this is the country being regenerated, use the new data
-      if (countryName && country === countryName) {
-        const newTariff = newTariffsMap.get(country);
+      if (countryName && country.toLowerCase() === countryName.toLowerCase()) {
+        // Try exact match first, then case-insensitive match
+        let newTariff = newTariffsMap.get(country) || newTariffsMap.get(country.toLowerCase());
+
+        if (!newTariff) {
+          // Try to find by any of the generated country names (case-insensitive)
+          for (const generatedTariff of countrySpecificTariffs) {
+            if (generatedTariff.countryName.toLowerCase() === country.toLowerCase()) {
+              newTariff = generatedTariff;
+              break;
+            }
+          }
+        }
+
         if (!newTariff) {
           console.error(`Failed to get new tariff data for ${country}`);
           return existingTariffUpdates.countrySpecificTariffs.find((t) => t.countryName === country)!;
         }
+
         return newTariff;
       }
-      // Otherwise, use existing data if available, or new data if not
+
+      // Otherwise, use existing data
       const existingTariff = existingTariffUpdates.countrySpecificTariffs.find((t) => t.countryName === country);
       if (!existingTariff) {
         console.error(`Failed to find existing tariff data for ${country}`);
-        return newTariffsMap.get(country)!;
+        throw new Error(`No data available for country: ${country}`);
       }
+
       return existingTariff;
     });
 

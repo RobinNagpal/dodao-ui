@@ -127,7 +127,7 @@ export async function getLlmResponse<T extends Record<string, any>>(
   maxRetries = 3,
   initialDelay = 1000
 ): Promise<T> {
-  console.log('Invoking LLM for the prompt:', prompt);
+  console.log('Invoking OpenAI for the prompt:', prompt);
   let lastError: Error | null = null;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {

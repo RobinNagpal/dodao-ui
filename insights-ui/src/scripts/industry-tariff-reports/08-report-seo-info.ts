@@ -11,9 +11,10 @@ import {
   writeJsonFileForSeoDetails,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { EvaluateIndustryArea, IndustryTariffReport, PageSeoDetails, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
-import { getLlmResponse } from '@/scripts/llm-utils';
+// import { getLlmResponse } from '@/scripts/llm-utils';
 import { z } from 'zod';
 import { ReportType } from './tariff-types';
+import { getLlmResponse } from '../llm‑utils‑gemini';
 
 const PageSeoDetailsSchema = z.object({
   title: z.string().describe('SEO title for the page (50-60 characters)'),
@@ -38,7 +39,7 @@ async function generateSeoDetailsForSection(industry: string, sectionName: strin
     ${JSON.stringify(sectionContent, null, 2)}
   `;
 
-  return await getLlmResponse<PageSeoDetails>(prompt, PageSeoDetailsSchema, 'gpt-4o-mini');
+  return await getLlmResponse<PageSeoDetails>(prompt, PageSeoDetailsSchema, 'gemini');
 }
 
 // Generate SEO details for report cover

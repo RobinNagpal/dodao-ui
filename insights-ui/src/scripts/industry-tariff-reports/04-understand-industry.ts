@@ -1,7 +1,8 @@
 import { writeJsonFileForUnderstandIndustry, writeMarkdownFileForUnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryAreasWrapper, UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-import { getLlmResponse } from '@/scripts/llm-utils';
+// import { getLlmResponse } from '@/scripts/llm-utils';
 import { z } from 'zod';
+import { getLlmResponse } from '../llm‑utils‑gemini';
 
 const IndustrySectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific part of the article.'),
