@@ -33,26 +33,34 @@ const EstablishedPlayerSchema = z.object({
   companyDescription: z.string().describe('One-paragraph overview of the company'),
   companyWebsite: z.string().describe('Company website URL'),
   companyTicker: z.string().describe('Stock ticker symbol'),
-  products: z.array(z.object({
-    productName: z.string().describe('Product name'),
-    productDescription: z.string().describe('Brief two-line description of the product'),
-    percentageOfRevenue: z.string().describe('Percentage of total revenue contributed'),
-    competitors: z.string().array().describe('List of competitors and their relative market scale'),
-  })).describe('Product portfolio and revenue breakdown'),
+  products: z
+    .array(
+      z.object({
+        productName: z.string().describe('Product name'),
+        productDescription: z.string().describe('Brief two-line description of the product'),
+        percentageOfRevenue: z.string().describe('Percentage of total revenue contributed'),
+        competitors: z.string().array().describe('List of competitors and their relative market scale'),
+      })
+    )
+    .describe('Product portfolio and revenue breakdown'),
   aboutManagement: z.string().describe('Summary of the management team'),
   uniqueAdvantage: z.string().describe('Key competitive advantage'),
-  pastPerformance: z.object({
-    revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
-    costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
-    profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
-    rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
-  }).describe('Financial performance over the past five years'),
-  futureGrowth: z.object({
-    revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
-    costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
-    profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
-    rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
-  }).describe('Projected financial performance over the next five years'),
+  pastPerformance: z
+    .object({
+      revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
+      costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
+      profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
+      rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
+    })
+    .describe('Financial performance over the past five years'),
+  futureGrowth: z
+    .object({
+      revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
+      costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
+      profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
+      rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
+    })
+    .describe('Projected financial performance over the next five years'),
   impactOfTariffs: z.string().describe('Impact of new tariffs on the company, with facts and reasoning (5-6 lines)'),
   competitors: z.string().describe('Major competitors and their market position'),
 });
@@ -62,26 +70,34 @@ const NewChallengerSchema = z.object({
   companyDescription: z.string().describe('One-paragraph overview of the company'),
   companyWebsite: z.string().describe('Company website URL'),
   companyTicker: z.string().describe('Stock ticker symbol'),
-  products: z.array(z.object({
-    productName: z.string().describe('Product name'),
-    productDescription: z.string().describe('Brief two-line description of the product'),
-    percentageOfRevenue: z.string().describe('Percentage of total revenue contributed'),
-    competitors: z.string().array().describe('List of competitors and their relative market scale'),
-  })).describe('Product portfolio and revenue breakdown'),
+  products: z
+    .array(
+      z.object({
+        productName: z.string().describe('Product name'),
+        productDescription: z.string().describe('Brief two-line description of the product'),
+        percentageOfRevenue: z.string().describe('Percentage of total revenue contributed'),
+        competitors: z.string().array().describe('List of competitors and their relative market scale'),
+      })
+    )
+    .describe('Product portfolio and revenue breakdown'),
   aboutManagement: z.string().describe('Summary of the management team'),
   uniqueAdvantage: z.string().describe('Key competitive advantage over established players'),
-  pastPerformance: z.object({
-    revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
-    costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
-    profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
-    rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
-  }).describe('Financial performance over the past five years'),
-  futureGrowth: z.object({
-    revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
-    costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
-    profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
-    rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
-  }).describe('Projected financial performance over the next five years'),
+  pastPerformance: z
+    .object({
+      revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
+      costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
+      profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
+      rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
+    })
+    .describe('Financial performance over the past five years'),
+  futureGrowth: z
+    .object({
+      revenueGrowth: z.string().describe('Revenue growth: include both percentage and absolute values'),
+      costOfRevenue: z.string().describe('Cost of revenue: include percentage and absolute values, and commentary on efficiency'),
+      profitabilityGrowth: z.string().describe('Profitability growth: include both percentage and absolute values'),
+      rocGrowth: z.string().describe('Return on capital growth: include both percentage and absolute values'),
+    })
+    .describe('Projected financial performance over the next five years'),
   impactOfTariffs: z.string().describe('Impact of new tariffs on the company, with facts and reasoning (5-6 lines)'),
   competitors: z.string().describe('Major competitors and their market position'),
 });
@@ -718,4 +734,4 @@ export async function regenerateTariffImpactSummary(
   console.log('Found tariff impact summary:', tariffImpactSummary);
 
   return tariffImpactSummary;
-} 
+}
