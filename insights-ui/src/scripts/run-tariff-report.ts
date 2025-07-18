@@ -130,7 +130,7 @@ export async function doIt(
       // Run all sections in sequence
       for (const type of Object.values(ReportType)) {
         if (type === ReportType.ALL) continue;
-        await doIt(type, tariffIndustry, evaluationReportToGenerate);
+        await doIt(type as ReportType, tariffIndustry);
       }
       break;
   }
@@ -140,7 +140,7 @@ const industry = getTariffIndustryDefinitionById(TariffIndustryId.automobiles);
 const apparel = getTariffIndustryDefinitionById(TariffIndustryId.apparelandaccessories);
 
 // Example usage:
-doIt(ReportType.EVALUATE_INDUSTRY_AREA, apparel, {
+doIt(ReportType.HEADINGS, apparel, {
   headingIndex: 1,
   subHeadingIndex: 0,
 })
