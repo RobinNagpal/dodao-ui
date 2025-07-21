@@ -40,6 +40,8 @@ export default function EditPageClient({ industryId, section, initialContent }: 
         return 'Report Cover';
       case 'understand-industry':
         return 'Understand Industry';
+      case 'industry-areas':
+        return 'Industry Areas';
       case 'tariff-updates':
         return 'Tariff Updates';
       case 'final-conclusion':
@@ -93,4 +95,4 @@ export default function EditPageClient({ industryId, section, initialContent }: 
       </div>
     </div>
   );
-} 
+}

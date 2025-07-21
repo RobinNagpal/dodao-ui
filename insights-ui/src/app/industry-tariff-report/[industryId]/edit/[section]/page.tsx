@@ -61,8 +61,9 @@ export default async function EditPage({ params }: EditPageProps) {
                 sections.push(
                   '## Industry Sub-Area Changes',
                   '',
-                  tariff.tariffChangesForIndustrySubArea.map(change => `- ${change}`).join('\n\n'),
-                  '',
+                  // Don't add bullet prefixes - preserve original formatting
+                  tariff.tariffChangesForIndustrySubArea.join('\n\n'),
+                  ''
                 );
               }
 
@@ -72,7 +73,7 @@ export default async function EditPage({ params }: EditPageProps) {
                 '',
                 '## Trade Exempted by New Tariff',
                 tariff.tradeExemptedByNewTariff,
-                '',
+                ''
               );
 
               return sections.join('\n');
@@ -80,25 +81,29 @@ export default async function EditPage({ params }: EditPageProps) {
             .join('\n---\n\n');
         }
         break;
+      case 'industry-areas':
+        // Convert industry areas to markdown format
+        if (report.industryAreasSections) {
+          content = [`# ${report.industryAreasSections.title}`, '', report.industryAreasSections.industryAreas].join('\n');
+        }
+        break;
       case 'final-conclusion':
         // Convert final conclusion to markdown format
         if (report.finalConclusion) {
           const fc = report.finalConclusion;
           content = [
-            `# ${fc.title}`,
+            '# Final Conclusion',
             '',
+            `## ${fc.title}`,
             fc.conclusionBrief,
             '',
             `## ${fc.positiveImpacts.title}`,
-            '',
             fc.positiveImpacts.positiveImpacts,
             '',
             `## ${fc.negativeImpacts.title}`,
-            '',
             fc.negativeImpacts.negativeImpacts,
             '',
             '## Final Statements',
-            '',
             fc.finalStatements,
           ].join('\n');
         }
