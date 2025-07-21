@@ -1,9 +1,30 @@
 export enum TariffIndustryId {
   plastic = 'plastic',
-  toys = 'toys',
   aluminium = 'aluminium',
   automobiles = 'automobiles',
   apparelandaccessories = 'apparelandaccessories',
+  ironandsteel = 'ironandsteel',
+
+  // renewableelectricity = 'renewable electricity',
+  // independentpowerproducers = 'independentpowerproducers',
+  // semiconductormaterialsequipment = 'semiconductormaterialsequipment',
+  // semiconductors = 'semiconductors',
+  // electronicequipmentinstruments = 'electronicequipmentinstruments',
+  // electroniccomponents = 'electroniccomponents',
+  // electronicmanufacturingservices = 'electronicmanufacturingservices',
+  // internetservicesinfrastructure = 'internetservicesinfrastructure',
+  // applicationsoftware = 'applicationsoftware',
+  // systemssoftware = 'systemssoftware',
+  // dataprocessingoutsourcedservices = 'dataprocessingoutsourcedservices',
+  // transactionpaymentprocessing = 'transactionpaymentprocessing',
+  // interactivemediaservices = 'interactivemediaservices',
+  // biotechnology = 'biotechnology',
+  // healthcaretechnology = 'healthcaretechnology',
+  // specialtychemicals = 'specialtychemicals',
+  // industrialgases = 'industrialgases',
+  // datacenterreits = 'datacenterreits',
+  // telecomtowerreits = 'telecomtowerreits',
+  // selfstoragereits = 'selfstoragereits',
 }
 
 export interface TariffIndustryDefinition {
@@ -32,24 +53,12 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     newChallengersCount: 3,
     companiesToIgnore: ['Pactiv Evergreen Inc', 'Danimer Scientific(DNMR)', 'Zymergen Inc (ZY)', 'Amyris, Inc.'],
   },
-  Toys: {
-    name: 'Toys',
-    industryId: TariffIndustryId.toys,
-    reportTitle: 'Impact of Tariffs on Toy Industry',
-    reportOneLiner: 'A detailed examination of how tariffs influence the toy industry, including shifts in manufacturing and pricing strategies.',
-    updatedAt: 'May 1, 2025',
-    headingsCount: 3,
-    subHeadingsCount: 2,
-    establishedPlayersCount: 3,
-    newChallengersCount: 3,
-    companiesToIgnore: [],
-  },
   Aluminium: {
     name: 'Aluminium',
     industryId: TariffIndustryId.aluminium,
     reportTitle: 'Impact of Tariffs on Aluminium Industry',
     reportOneLiner: 'An in-depth analysis of how tariffs affect the aluminium industry, including market dynamics and competitive landscape.',
-    updatedAt: 'May 1, 2025',
+    updatedAt: 'June 18, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -93,6 +102,18 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     newChallengersCount: 3,
     companiesToIgnore: [],
   },
+  IronAndSteel: {
+    name: 'Iron & Steel',
+    industryId: TariffIndustryId.ironandsteel,
+    reportTitle: 'Impact of Tariffs on Iron & Steel Industry',
+    reportOneLiner: 'An in-depth look at how tariffs are reshaping the iron & steel industry supply chains, costs, and competitiveness.',
+    updatedAt: 'July 19, 2025',
+    headingsCount: 3,
+    subHeadingsCount: 2,
+    establishedPlayersCount: 3,
+    newChallengersCount: 3,
+    companiesToIgnore: [],
+  },
 };
 
 export function getNumberOfHeadings(industryId: TariffIndustryId): number {
@@ -115,9 +136,5 @@ export function getTariffIndustryDefinitionById(industryId: TariffIndustryId): T
 }
 
 export function fetchTariffReports(): TariffIndustryDefinition[] {
-  return [
-    getTariffIndustryDefinitionById(TariffIndustryId.plastic),
-    getTariffIndustryDefinitionById(TariffIndustryId.automobiles),
-    getTariffIndustryDefinitionById(TariffIndustryId.apparelandaccessories),
-  ];
+  return Object.values(TariffIndustryId).map((industryId) => getTariffIndustryDefinitionById(industryId));
 }
