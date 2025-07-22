@@ -39,6 +39,15 @@ export default async function TariffReportsPage() {
   // Fetch tariff reports
   const tariffReports: TariffIndustryDefinition[] = fetchTariffReports();
 
+  // Sort reports by updatedAt date (most recent first)
+  const sortedTariffReports = tariffReports.sort((a, b) => {
+    if (!a.updatedAt && !b.updatedAt) return 0;
+    if (!a.updatedAt) return 1;
+    if (!b.updatedAt) return -1;
+
+    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+  });
+
   // Set up breadcrumbs
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
@@ -78,7 +87,7 @@ export default async function TariffReportsPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {tariffReports.map((report) => (
+                {sortedTariffReports.map((report) => (
                   <div
                     key={report.industryId}
                     className="flex flex-col overflow-hidden rounded-lg shadow-lg border border-color hover:shadow-xl transition-all duration-300"
