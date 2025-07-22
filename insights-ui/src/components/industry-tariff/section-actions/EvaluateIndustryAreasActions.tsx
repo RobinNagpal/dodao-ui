@@ -31,9 +31,15 @@ export default function EvaluateIndustryAreasActions({
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
   const [showGenerateSeoModal, setShowGenerateSeoModal] = useState(false);
 
+  // Only allow editing for section-level, not individual players/challengers or the entire area (ALL)
+  const allowEdit =
+    sectionType !== EvaluateIndustryContent.ALL &&
+    sectionType !== EvaluateIndustryContent.ESTABLISHED_PLAYER &&
+    sectionType !== EvaluateIndustryContent.NEW_CHALLENGER;
+
   const actions: EllipsisDropdownItem[] = [
     { key: 'regenerate', label: `Regenerate ${sectionName}` },
-    { key: 'edit', label: `Edit ${sectionName}` },
+    ...(allowEdit ? [{ key: 'edit', label: `Edit ${sectionName}` }] : []),
     { key: 'generate-seo', label: `Generate SEO for ${sectionName}` },
   ];
 
@@ -83,7 +89,25 @@ export default function EvaluateIndustryAreasActions({
           if (key === 'regenerate') {
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
-            router.push(`/industry-tariff-report/${industryId}/edit/evaluate-industry-areas/${headingIndex}-${subHeadingIndex}`);
+            const sectionParam =
+              sectionType === EvaluateIndustryContent.ALL
+                ? 'all'
+                : sectionType === EvaluateIndustryContent.ESTABLISHED_PLAYERS
+                ? 'established-players'
+                : sectionType === EvaluateIndustryContent.NEW_CHALLENGERS
+                ? 'new-challengers'
+                : sectionType === EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS
+                ? 'headwinds-and-tailwinds'
+                : sectionType === EvaluateIndustryContent.TARIFF_IMPACT_BY_COMPANY_TYPE
+                ? 'tariff-impact-by-company-type'
+                : sectionType === EvaluateIndustryContent.TARIFF_IMPACT_SUMMARY
+                ? 'tariff-impact-summary'
+                : sectionType === EvaluateIndustryContent.ESTABLISHED_PLAYER
+                ? `established-player-${establishedPlayerTicker}`
+                : sectionType === EvaluateIndustryContent.NEW_CHALLENGER
+                ? `new-challenger-${challengerTicker}`
+                : 'all';
+            router.push(`/industry-tariff-report/${industryId}/edit/evaluate-industry-areas/${headingIndex}-${subHeadingIndex}/${sectionParam}`);
           } else if (key === 'generate-seo') {
             setShowGenerateSeoModal(true);
           }

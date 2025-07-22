@@ -29,7 +29,10 @@ export default function TariffUpdatesActions({ industryId, tariffIndex, countryN
     actions.push({ key: 'regenerate', label: `Regenerate ${sectionName}` });
   }
 
-  actions.push({ key: 'edit', label: `Edit ${sectionName}` });
+  // Only allow editing the whole tariff updates section, not individual countries
+  if (!countryName) {
+    actions.push({ key: 'edit', label: `Edit ${sectionName}` });
+  }
   actions.push({ key: 'generate-seo', label: `Generate SEO for ${sectionName}` });
 
   const { postData, loading: isRegenerating } = usePostData<any, any>({
@@ -73,11 +76,8 @@ export default function TariffUpdatesActions({ industryId, tariffIndex, countryN
           if (key === 'regenerate' || key === 'regenerate-country') {
             setShowRegenerateModal(true);
           } else if (key === 'edit') {
-            if (tariffIndex !== undefined) {
-              router.push(`/industry-tariff-report/${industryId}/edit/tariff-updates/country-specific-tariffs/${tariffIndex}`);
-            } else {
-              router.push(`/industry-tariff-report/${industryId}/edit/tariff-updates`);
-            }
+            // Only allow editing the whole tariff updates section
+            router.push(`/industry-tariff-report/${industryId}/edit/tariff-updates`);
           } else if (key === 'generate-seo') {
             setShowGenerateSeoModal(true);
           }

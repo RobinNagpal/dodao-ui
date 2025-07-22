@@ -243,6 +243,11 @@ export async function writeJsonFileForFinalConclusion(industry: string, finalCon
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(finalConclusion, null, 2)), jsonKey, 'application/json');
 }
 
+export async function writeJsonAndMarkdownFilesForFinalConclusion(industry: string, finalConclusion: FinalConclusion) {
+  await writeJsonFileForFinalConclusion(industry, finalConclusion);
+  await writeMarkdownFileForFinalConclusion(industry, finalConclusion);
+}
+
 export async function readFinalConclusionFromFile(industry: string): Promise<FinalConclusion | undefined> {
   const key = getS3KeyForFinalConclusion(industry, 'final-conclusion.json');
   return await getJsonFromS3<FinalConclusion>(key);

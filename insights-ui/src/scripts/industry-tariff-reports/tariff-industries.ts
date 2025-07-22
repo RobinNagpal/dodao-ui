@@ -4,27 +4,8 @@ export enum TariffIndustryId {
   automobiles = 'automobiles',
   apparelandaccessories = 'apparelandaccessories',
   ironandsteel = 'ironandsteel',
-
-  // renewableelectricity = 'renewable electricity',
-  // independentpowerproducers = 'independentpowerproducers',
-  // semiconductormaterialsequipment = 'semiconductormaterialsequipment',
-  // semiconductors = 'semiconductors',
-  // electronicequipmentinstruments = 'electronicequipmentinstruments',
-  // electroniccomponents = 'electroniccomponents',
-  // electronicmanufacturingservices = 'electronicmanufacturingservices',
-  // internetservicesinfrastructure = 'internetservicesinfrastructure',
-  // applicationsoftware = 'applicationsoftware',
-  // systemssoftware = 'systemssoftware',
-  // dataprocessingoutsourcedservices = 'dataprocessingoutsourcedservices',
-  // transactionpaymentprocessing = 'transactionpaymentprocessing',
-  // interactivemediaservices = 'interactivemediaservices',
-  // biotechnology = 'biotechnology',
-  // healthcaretechnology = 'healthcaretechnology',
-  // specialtychemicals = 'specialtychemicals',
-  // industrialgases = 'industrialgases',
-  // datacenterreits = 'datacenterreits',
-  // telecomtowerreits = 'telecomtowerreits',
-  // selfstoragereits = 'selfstoragereits',
+  copper = 'copper',
+  // householdappliances = 'householdappliances',
 }
 
 export interface TariffIndustryDefinition {
@@ -114,6 +95,31 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     newChallengersCount: 3,
     companiesToIgnore: [],
   },
+  Copper: {
+    name: 'Copper',
+    industryId: TariffIndustryId.copper,
+    reportTitle: 'Impact of Tariffs on Copper',
+    reportOneLiner: 'An analysis of the newly announced 50% Section 232 tariffs on copper imports and their effects on supply chains and pricing.',
+    updatedAt: 'July 22, 2025',
+    headingsCount: 3,
+    subHeadingsCount: 2,
+    establishedPlayersCount: 3,
+    newChallengersCount: 3,
+    companiesToIgnore: [],
+  },
+  // HouseholdAppliances: {
+  //   name: 'Household Appliances',
+  //   industryId: TariffIndustryId.householdappliances,
+  //   reportTitle: 'Impact of Tariffs on Household Appliances',
+  //   reportOneLiner:
+  //     'Analysis of how steel and aluminum tariffs affect major household appliances—washing machines, refrigerators, ovens, dishwashers—covering cost and supply chain impacts.',
+  //   updatedAt: 'July 22, 2025',
+  //   headingsCount: 3,
+  //   subHeadingsCount: 2,
+  //   establishedPlayersCount: 3,
+  //   newChallengersCount: 3,
+  //   companiesToIgnore: [],
+  // },
 };
 
 export function getNumberOfHeadings(industryId: TariffIndustryId): number {
