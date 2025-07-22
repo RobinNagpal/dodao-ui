@@ -53,11 +53,20 @@ export default function EditEstablishedPlayersClient({ industryId, headingAndSub
   });
 
   const handleSave = async () => {
+    // Clean up competitors data before saving
+    const cleanedPlayers = players.map((player) => ({
+      ...player,
+      products: player.products.map((product) => ({
+        ...product,
+        competitors: getCleanedCompetitors(product.competitors),
+      })),
+    }));
+
     await saveContent(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/save-json`, {
       section: 'evaluate-industry-areas',
       headingAndSubheadingIndex,
       sectionType: 'established-players',
-      data: players,
+      data: cleanedPlayers,
     });
   };
 
@@ -79,6 +88,64 @@ export default function EditEstablishedPlayersClient({ industryId, headingAndSub
           : player
       )
     );
+  };
+
+  const updateProductField = (playerIndex: number, productIndex: number, field: string, value: string | string[]) => {
+    setPlayers((prev) =>
+      prev.map((player, index) =>
+        index === playerIndex
+          ? {
+              ...player,
+              products: player.products.map((product, pIndex) => (pIndex === productIndex ? { ...product, [field]: value } : product)),
+            }
+          : player
+      )
+    );
+  };
+
+  const addProduct = (playerIndex: number) => {
+    setPlayers((prev) =>
+      prev.map((player, index) =>
+        index === playerIndex
+          ? {
+              ...player,
+              products: [
+                ...player.products,
+                {
+                  productName: '',
+                  productDescription: '',
+                  percentageOfRevenue: '',
+                  competitors: [],
+                },
+              ],
+            }
+          : player
+      )
+    );
+  };
+
+  const removeProduct = (playerIndex: number, productIndex: number) => {
+    setPlayers((prev) =>
+      prev.map((player, index) =>
+        index === playerIndex
+          ? {
+              ...player,
+              products: player.products.filter((_, pIndex) => pIndex !== productIndex),
+            }
+          : player
+      )
+    );
+  };
+
+  const updateProductCompetitors = (playerIndex: number, productIndex: number, competitorsText: string) => {
+    // Store raw text to preserve textarea behavior, clean up only when saving
+    const competitorsArray = competitorsText.split('\n');
+    updateProductField(playerIndex, productIndex, 'competitors', competitorsArray);
+  };
+
+  const getCleanedCompetitors = (competitors: string[]) => {
+    // Clean up competitors array for display and saving
+    return competitors.map((line) => line.trim()).filter((line) => line.length > 0);
   };
 
   const getRedirectPath = () => {
@@ -149,6 +216,68 @@ export default function EditEstablishedPlayersClient({ industryId, headingAndSub
                   maxHeight="150px"
                 />
               </div>
+            </div>
+
+            {/* Products Section */}
+            <div className="border rounded-lg p-4 mb-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">Products</h3>
+                <Button onClick={() => addProduct(playerIndex)}>Add Product</Button>
+              </div>
+              {player.products.map((product, productIndex) => (
+                <div key={productIndex} className="border rounded-lg p-4 mb-4 bg-gray-50">
+                  <div className="flex justify-between items-center mb-4">
+                    <h4 className="text-md font-medium">Product {productIndex + 1}</h4>
+                    <Button onClick={() => removeProduct(playerIndex, productIndex)} className="text-red-600 hover:text-red-800">
+                      Remove
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Product Name</label>
+                      <input
+                        type="text"
+                        value={product.productName}
+                        onChange={(e) => updateProductField(playerIndex, productIndex, 'productName', e.target.value)}
+                        className="w-full p-2 border rounded-md"
+                        placeholder="Enter product name..."
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Percentage of Revenue</label>
+                      <input
+                        type="text"
+                        value={product.percentageOfRevenue}
+                        onChange={(e) => updateProductField(playerIndex, productIndex, 'percentageOfRevenue', e.target.value)}
+                        className="w-full p-2 border rounded-md"
+                        placeholder="e.g., 25%"
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-2">Product Description</label>
+                    <MarkdownEditor
+                      label=""
+                      modelValue={product.productDescription}
+                      placeholder="Enter product description..."
+                      onUpdate={(value) => updateProductField(playerIndex, productIndex, 'productDescription', value || '')}
+                      objectId={`product-description-${playerIndex}-${productIndex}`}
+                      maxHeight="150px"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Competitors (one per line)</label>
+                    <textarea
+                      value={product.competitors.join('\n')}
+                      onChange={(e) => updateProductCompetitors(playerIndex, productIndex, e.target.value)}
+                      className="w-full p-2 border rounded-md"
+                      rows={4}
+                      placeholder="Enter competitors, one per line..."
+                    />
+                  </div>
+                </div>
+              ))}
+              {player.products.length === 0 && <div className="text-gray-500 text-center py-4">No products added yet. Click Add Product to get started.</div>}
             </div>
 
             {/* Markdown Fields */}
