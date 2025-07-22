@@ -312,12 +312,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
         case 'about':
           updatedData.aboutParagraphs = content;
           break;
-        case 'established-players':
-          updatedData.establishedPlayerDetails = parseEstablishedPlayersFromMarkdown(content);
-          break;
-        case 'new-challengers':
-          updatedData.newChallengersDetails = parseNewChallengersFromMarkdown(content);
-          break;
         case 'headwinds-and-tailwinds':
           updatedData.headwindsAndTailwinds = parseHeadwindsAndTailwindsFromMarkdown(content);
           break;
@@ -329,31 +323,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
         case 'tariff-impact-summary':
           updatedData.tariffImpactSummary = content;
           break;
-        case 'all':
-          updatedData = parseCompleteEvaluateIndustryAreaFromMarkdown(content, existingData);
-          break;
         default:
-          if (sectionType.startsWith('established-player-')) {
-            const ticker = sectionType.replace('established-player-', '');
-            const playerIndex = updatedData.establishedPlayerDetails?.findIndex((p) => p.companyTicker === ticker);
-            if (playerIndex !== undefined && playerIndex >= 0 && updatedData.establishedPlayerDetails) {
-              updatedData.establishedPlayerDetails[playerIndex] = parseSingleEstablishedPlayerFromMarkdown(
-                content,
-                updatedData.establishedPlayerDetails[playerIndex]
-              );
-            }
-          } else if (sectionType.startsWith('new-challenger-')) {
-            const ticker = sectionType.replace('new-challenger-', '');
-            const challengerIndex = updatedData.newChallengersDetails?.findIndex((c) => c.companyTicker === ticker);
-            if (challengerIndex !== undefined && challengerIndex >= 0 && updatedData.newChallengersDetails) {
-              updatedData.newChallengersDetails[challengerIndex] = parseSingleNewChallengerFromMarkdown(
-                content,
-                updatedData.newChallengersDetails[challengerIndex]
-              );
-            }
-          } else {
-            throw new Error(`Unknown evaluate industry area section type: ${sectionType}`);
-          }
+          throw new Error(`Unknown sectionType: ${sectionType}`);
       }
 
       await writeJsonFileForEvaluateSubIndustryArea(industry, area, existingHeadings, updatedData);
@@ -369,98 +340,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
     success: true,
     message: `${section} content updated successfully`,
   };
-}
-
-// Helper functions to parse markdown back to JSON for evaluate industry areas
-function parseEstablishedPlayersFromMarkdown(markdown: string): any[] {
-  // Simple parsing - in production, you might want more robust parsing
-  const sections = markdown
-    .split('---')
-    .map((s) => s.trim())
-    .filter((s) => s);
-  return sections
-    .map((section) => {
-      const lines = section.split('\n').filter((l) => l.trim());
-      const titleMatch = lines[0]?.match(/### (.+) \((.+)\)/);
-      if (!titleMatch) return null;
-
-      const companyName = titleMatch[1];
-      const companyTicker = titleMatch[2];
-
-      let companyDescription = '';
-      let aboutManagement = '';
-      let uniqueAdvantage = '';
-      let impactOfTariffs = '';
-
-      let currentSection = '';
-      let currentContent = '';
-
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i];
-        if (line.startsWith('**Description:**')) {
-          if (currentSection) {
-            setFieldValue(currentSection, currentContent.trim());
-          }
-          currentSection = 'description';
-          currentContent = line.replace('**Description:**', '').trim();
-        } else if (line.startsWith('**About Management:**')) {
-          if (currentSection) {
-            setFieldValue(currentSection, currentContent.trim());
-          }
-          currentSection = 'management';
-          currentContent = line.replace('**About Management:**', '').trim();
-        } else if (line.startsWith('**Unique Advantage:**')) {
-          if (currentSection) {
-            setFieldValue(currentSection, currentContent.trim());
-          }
-          currentSection = 'advantage';
-          currentContent = line.replace('**Unique Advantage:**', '').trim();
-        } else if (line.startsWith('**Impact of Tariffs:**')) {
-          if (currentSection) {
-            setFieldValue(currentSection, currentContent.trim());
-          }
-          currentSection = 'tariffs';
-          currentContent = line.replace('**Impact of Tariffs:**', '').trim();
-        } else {
-          currentContent += '\n' + line;
-        }
-      }
-
-      if (currentSection) {
-        setFieldValue(currentSection, currentContent.trim());
-      }
-
-      function setFieldValue(section: string, value: string) {
-        switch (section) {
-          case 'description':
-            companyDescription = value;
-            break;
-          case 'management':
-            aboutManagement = value;
-            break;
-          case 'advantage':
-            uniqueAdvantage = value;
-            break;
-          case 'tariffs':
-            impactOfTariffs = value;
-            break;
-        }
-      }
-
-      return {
-        companyName,
-        companyTicker,
-        companyDescription,
-        aboutManagement,
-        uniqueAdvantage,
-        impactOfTariffs,
-      };
-    })
-    .filter(Boolean);
-}
-
-function parseNewChallengersFromMarkdown(markdown: string): any[] {
-  return parseEstablishedPlayersFromMarkdown(markdown); // Same structure
 }
 
 function parseHeadwindsAndTailwindsFromMarkdown(markdown: string): any {
@@ -555,82 +434,6 @@ function parseTariffImpactByCompanyTypeFromMarkdown(markdown: string): { positiv
   }
 
   return { positive, negative };
-}
-
-function parseCompleteEvaluateIndustryAreaFromMarkdown(markdown: string, existingData: any): any {
-  // For now, just update the about section and return existing data
-  // In a full implementation, you'd parse the entire markdown structure
-  const lines = markdown.split('\n');
-  let aboutContent = '';
-  let inAboutSection = false;
-
-  for (const line of lines) {
-    if (line.startsWith('## About')) {
-      inAboutSection = true;
-      continue;
-    } else if (line.startsWith('## ') && inAboutSection) {
-      break;
-    } else if (inAboutSection && line.trim()) {
-      aboutContent += line + '\n';
-    }
-  }
-
-  return {
-    ...existingData,
-    aboutParagraphs: aboutContent.trim(),
-  };
-}
-
-function parseSingleEstablishedPlayerFromMarkdown(markdown: string, existingPlayer: any): any {
-  const lines = markdown.split('\n').filter((l) => l.trim());
-  const updatedPlayer = { ...existingPlayer };
-
-  let currentField = '';
-  let currentContent = '';
-
-  for (const line of lines) {
-    if (line.startsWith('**Description:**')) {
-      if (currentField) {
-        setPlayerField(updatedPlayer, currentField, currentContent.trim());
-      }
-      currentField = 'companyDescription';
-      currentContent = line.replace('**Description:**', '').trim();
-    } else if (line.startsWith('**About Management:**')) {
-      if (currentField) {
-        setPlayerField(updatedPlayer, currentField, currentContent.trim());
-      }
-      currentField = 'aboutManagement';
-      currentContent = line.replace('**About Management:**', '').trim();
-    } else if (line.startsWith('**Unique Advantage:**')) {
-      if (currentField) {
-        setPlayerField(updatedPlayer, currentField, currentContent.trim());
-      }
-      currentField = 'uniqueAdvantage';
-      currentContent = line.replace('**Unique Advantage:**', '').trim();
-    } else if (line.startsWith('**Impact of Tariffs:**')) {
-      if (currentField) {
-        setPlayerField(updatedPlayer, currentField, currentContent.trim());
-      }
-      currentField = 'impactOfTariffs';
-      currentContent = line.replace('**Impact of Tariffs:**', '').trim();
-    } else {
-      currentContent += '\n' + line;
-    }
-  }
-
-  if (currentField) {
-    setPlayerField(updatedPlayer, currentField, currentContent.trim());
-  }
-
-  return updatedPlayer;
-}
-
-function parseSingleNewChallengerFromMarkdown(markdown: string, existingChallenger: any): any {
-  return parseSingleEstablishedPlayerFromMarkdown(markdown, existingChallenger); // Same structure
-}
-
-function setPlayerField(player: any, field: string, value: string) {
-  player[field] = value;
 }
 
 export const POST = withErrorHandlingV2<{ success: boolean; message: string }>(postHandler);
