@@ -1,11 +1,12 @@
 export enum TariffIndustryId {
   plastic = 'plastic',
-  aluminium = 'aluminium',
   automobiles = 'automobiles',
+  aluminium = 'aluminium',
   apparelandaccessories = 'apparelandaccessories',
   ironandsteel = 'ironandsteel',
   copper = 'copper',
-  // householdappliances = 'householdappliances',
+  electricalcomponentsandequipment = 'electricalcomponentsandequipment',
+  homefurnishings = 'homefurnishings',
 }
 
 export interface TariffIndustryDefinition {
@@ -107,19 +108,30 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     newChallengersCount: 3,
     companiesToIgnore: [],
   },
-  // HouseholdAppliances: {
-  //   name: 'Household Appliances',
-  //   industryId: TariffIndustryId.householdappliances,
-  //   reportTitle: 'Impact of Tariffs on Household Appliances',
-  //   reportOneLiner:
-  //     'Analysis of how steel and aluminum tariffs affect major household appliances—washing machines, refrigerators, ovens, dishwashers—covering cost and supply chain impacts.',
-  //   updatedAt: 'July 22, 2025',
-  //   headingsCount: 3,
-  //   subHeadingsCount: 2,
-  //   establishedPlayersCount: 3,
-  //   newChallengersCount: 3,
-  //   companiesToIgnore: [],
-  // },
+  ElectricalComponentsAndEquipment: {
+    name: 'Electrical Components & Equipment',
+    industryId: TariffIndustryId.electricalcomponentsandequipment,
+    reportTitle: 'Impact of Tariffs on Electrical Components & Equipment',
+    reportOneLiner: 'Analysis of how U.S. tariffs on imported electrical components and equipment affect supply chains, costs, and competitiveness.',
+    updatedAt: 'July 23, 2025',
+    headingsCount: 3,
+    subHeadingsCount: 2,
+    establishedPlayersCount: 3,
+    newChallengersCount: 3,
+    companiesToIgnore: [],
+  },
+  HomeFurnishings: {
+    name: 'Home Furnishings',
+    industryId: TariffIndustryId.homefurnishings,
+    reportTitle: 'Impact of Tariffs on Home Furnishings',
+    reportOneLiner: 'A detailed look at the effects of import duties on home furniture, bedding, and related goods in the U.S. market.',
+    updatedAt: 'July 24, 2025',
+    headingsCount: 3,
+    subHeadingsCount: 2,
+    establishedPlayersCount: 3,
+    newChallengersCount: 3,
+    companiesToIgnore: [],
+  },
 };
 
 export function getNumberOfHeadings(industryId: TariffIndustryId): number {
