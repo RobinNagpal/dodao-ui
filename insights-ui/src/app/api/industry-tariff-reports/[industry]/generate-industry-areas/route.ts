@@ -26,7 +26,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!industryAreaSection) {
     throw new Error('Industry area section not found');
   }
-  await writeMarkdownFileForIndustryAreaSections(industry, industryAreaSection);
 
   return getIndustryTariffReport(industry);
 }

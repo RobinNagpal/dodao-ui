@@ -1,11 +1,14 @@
 export enum TariffIndustryId {
   plastic = 'plastic',
-  aluminium = 'aluminium',
   automobiles = 'automobiles',
+  aluminium = 'aluminium',
   apparelandaccessories = 'apparelandaccessories',
   ironandsteel = 'ironandsteel',
   copper = 'copper',
-  // householdappliances = 'householdappliances',
+  electricalcomponentsandequipment = 'electricalcomponentsandequipment',
+  homefurnishings = 'homefurnishings',
+  pharmaceuticals = 'pharmaceuticals',
+  semiconductors = 'semiconductors',
 }
 
 export interface TariffIndustryDefinition {
@@ -107,19 +110,55 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     newChallengersCount: 3,
     companiesToIgnore: [],
   },
-  // HouseholdAppliances: {
-  //   name: 'Household Appliances',
-  //   industryId: TariffIndustryId.householdappliances,
-  //   reportTitle: 'Impact of Tariffs on Household Appliances',
-  //   reportOneLiner:
-  //     'Analysis of how steel and aluminum tariffs affect major household appliances—washing machines, refrigerators, ovens, dishwashers—covering cost and supply chain impacts.',
-  //   updatedAt: 'July 22, 2025',
-  //   headingsCount: 3,
-  //   subHeadingsCount: 2,
-  //   establishedPlayersCount: 3,
-  //   newChallengersCount: 3,
-  //   companiesToIgnore: [],
-  // },
+  ElectricalComponentsAndEquipment: {
+    name: 'Electrical Components & Equipment',
+    industryId: TariffIndustryId.electricalcomponentsandequipment,
+    reportTitle: 'Impact of Tariffs on Electrical Components & Equipment',
+    reportOneLiner: 'Analysis of how U.S. tariffs on imported electrical components and equipment affect supply chains, costs, and competitiveness.',
+    updatedAt: 'July 23, 2025',
+    headingsCount: 3,
+    subHeadingsCount: 2,
+    establishedPlayersCount: 3,
+    newChallengersCount: 3,
+    companiesToIgnore: [],
+  },
+  HomeFurnishings: {
+    name: 'Home Furnishings',
+    industryId: TariffIndustryId.homefurnishings,
+    reportTitle: 'Impact of Tariffs on Home Furnishings',
+    reportOneLiner: 'A detailed look at the effects of import duties on home furniture, bedding, and related goods in the U.S. market.',
+    updatedAt: 'July 24, 2025',
+    headingsCount: 3,
+    subHeadingsCount: 2,
+    establishedPlayersCount: 3,
+    newChallengersCount: 3,
+    companiesToIgnore: [],
+  },
+  Pharmaceuticals: {
+    name: 'Pharmaceuticals',
+    industryId: TariffIndustryId.pharmaceuticals,
+    reportTitle: 'Impact of Tariffs on Pharmaceuticals',
+    reportOneLiner: 'Analysis of how U.S. tariffs on imported pharmaceutical products and APIs affect drug pricing and supply chains.',
+    updatedAt: 'July 25, 2025',
+    headingsCount: 3,
+    subHeadingsCount: 2,
+    establishedPlayersCount: 3,
+    newChallengersCount: 3,
+    companiesToIgnore: [],
+  },
+  Semiconductors: {
+    name: 'Semiconductors & Equipment',
+    industryId: TariffIndustryId.semiconductors,
+    reportTitle: 'Impact of Tariffs on Semiconductors & Equipment',
+    reportOneLiner:
+      'Analysis of Section 301 duties on semiconductor imports especially Chinese-made chips and their ripple effects on global supply chains and domestic manufacturing incentives.',
+    updatedAt: 'August 1, 2025',
+    headingsCount: 3,
+    subHeadingsCount: 2,
+    establishedPlayersCount: 3,
+    newChallengersCount: 3,
+    companiesToIgnore: [],
+  },
 };
 
 export function getNumberOfHeadings(industryId: TariffIndustryId): number {
@@ -143,4 +182,27 @@ export function getTariffIndustryDefinitionById(industryId: TariffIndustryId): T
 
 export function fetchTariffReports(): TariffIndustryDefinition[] {
   return Object.values(TariffIndustryId).map((industryId) => getTariffIndustryDefinitionById(industryId));
+}
+
+export interface HeadingSubheadingCombination {
+  headingIndex: number;
+  subHeadingIndex: number;
+  displayName: string;
+}
+
+export function getAllHeadingSubheadingCombinations(industryId: TariffIndustryId): HeadingSubheadingCombination[] {
+  const industry = getTariffIndustryDefinitionById(industryId);
+  const combinations: HeadingSubheadingCombination[] = [];
+
+  for (let headingIndex = 0; headingIndex < industry.headingsCount; headingIndex++) {
+    for (let subHeadingIndex = 0; subHeadingIndex < industry.subHeadingsCount; subHeadingIndex++) {
+      combinations.push({
+        headingIndex,
+        subHeadingIndex,
+        displayName: `Evaluate Industry Area ${headingIndex}_${subHeadingIndex}`,
+      });
+    }
+  }
+
+  return combinations;
 }
