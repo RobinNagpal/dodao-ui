@@ -7,6 +7,8 @@ export enum TariffIndustryId {
   copper = 'copper',
   electricalcomponentsandequipment = 'electricalcomponentsandequipment',
   homefurnishings = 'homefurnishings',
+  pharmaceuticals = 'pharmaceuticals',
+  semiconductors = 'semiconductors',
 }
 
 export interface TariffIndustryDefinition {
@@ -132,6 +134,31 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     newChallengersCount: 3,
     companiesToIgnore: [],
   },
+  Pharmaceuticals: {
+    name: 'Pharmaceuticals',
+    industryId: TariffIndustryId.pharmaceuticals,
+    reportTitle: 'Impact of Tariffs on Pharmaceuticals',
+    reportOneLiner: 'Analysis of how U.S. tariffs on imported pharmaceutical products and APIs affect drug pricing and supply chains.',
+    updatedAt: 'July 25, 2025',
+    headingsCount: 3,
+    subHeadingsCount: 2,
+    establishedPlayersCount: 3,
+    newChallengersCount: 3,
+    companiesToIgnore: [],
+  },
+  Semiconductors: {
+    name: 'Semiconductors & Equipment',
+    industryId: TariffIndustryId.semiconductors,
+    reportTitle: 'Impact of Tariffs on Semiconductors & Equipment',
+    reportOneLiner:
+      'Analysis of Section 301 duties on semiconductor imports—especially Chinese-made chips—and their ripple effects on global supply chains and domestic manufacturing incentives.',
+    updatedAt: 'August 1, 2025',
+    headingsCount: 3,
+    subHeadingsCount: 2,
+    establishedPlayersCount: 3,
+    newChallengersCount: 3,
+    companiesToIgnore: [],
+  },
 };
 
 export function getNumberOfHeadings(industryId: TariffIndustryId): number {
@@ -155,4 +182,27 @@ export function getTariffIndustryDefinitionById(industryId: TariffIndustryId): T
 
 export function fetchTariffReports(): TariffIndustryDefinition[] {
   return Object.values(TariffIndustryId).map((industryId) => getTariffIndustryDefinitionById(industryId));
+}
+
+export interface HeadingSubheadingCombination {
+  headingIndex: number;
+  subHeadingIndex: number;
+  displayName: string;
+}
+
+export function getAllHeadingSubheadingCombinations(industryId: TariffIndustryId): HeadingSubheadingCombination[] {
+  const industry = getTariffIndustryDefinitionById(industryId);
+  const combinations: HeadingSubheadingCombination[] = [];
+
+  for (let headingIndex = 0; headingIndex < industry.headingsCount; headingIndex++) {
+    for (let subHeadingIndex = 0; subHeadingIndex < industry.subHeadingsCount; subHeadingIndex++) {
+      combinations.push({
+        headingIndex,
+        subHeadingIndex,
+        displayName: `Evaluate Industry Area ${headingIndex}_${subHeadingIndex}`,
+      });
+    }
+  }
+
+  return combinations;
 }
