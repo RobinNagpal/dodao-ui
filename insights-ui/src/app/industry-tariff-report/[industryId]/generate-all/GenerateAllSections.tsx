@@ -6,6 +6,7 @@ import { getAllHeadingSubheadingCombinations, TariffIndustryId } from '@/scripts
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect } from 'react';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 
 interface GenerationSection {
   id: string;
@@ -27,6 +28,7 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
   const [currentSectionIndex, setCurrentSectionIndex] = useState(-1);
   const [currentStep, setCurrentStep] = useState<'content' | 'seo' | 'idle'>('idle');
   const [sections, setSections] = useState<GenerationSection[]>([]);
+  const [showGenerateModal, setShowGenerateModal] = useState(false);
 
   const { postData: postContentData, loading: isContentLoading } = usePostData<any, any>({
     successMessage: '',
@@ -153,6 +155,7 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
   const generateAllSections = async () => {
     if (!industryId || isGenerating) return;
 
+    setShowGenerateModal(false);
     setCurrentSectionIndex(0);
 
     try {
@@ -181,16 +184,20 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
 
         try {
           let seoPayload: any = { section: section.seoType };
-          
+
           // For evaluate industry areas, we need to include headingIndex and subHeadingIndex
-          if (section.seoType === ReportType.EVALUATE_INDUSTRY_AREA && section.contentPayload.headingIndex !== undefined && section.contentPayload.subHeadingIndex !== undefined) {
+          if (
+            section.seoType === ReportType.EVALUATE_INDUSTRY_AREA &&
+            section.contentPayload.headingIndex !== undefined &&
+            section.contentPayload.subHeadingIndex !== undefined
+          ) {
             seoPayload = {
               section: section.seoType,
               headingIndex: section.contentPayload.headingIndex,
               subHeadingIndex: section.contentPayload.subHeadingIndex,
             };
           }
-          
+
           await postSeoData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-seo-info`, seoPayload);
           updateSectionStatus(i, 'seoStatus', 'success');
         } catch (error) {
@@ -255,7 +262,10 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
           </p>
 
           {!isGenerating && (
-            <button onClick={generateAllSections} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+            <button
+              onClick={() => setShowGenerateModal(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+            >
               Generate Whole Report
             </button>
           )}
@@ -333,6 +343,18 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
               <div className="text-green-800 font-medium">Report generation completed! You can now view the generated sections.</div>
             </div>
           )}
+
+        {showGenerateModal && (
+          <ConfirmationModal
+            open={showGenerateModal}
+            onClose={() => setShowGenerateModal(false)}
+            onConfirm={generateAllSections}
+            title="Generate Complete Tariff Report"
+            confirmationText="Are you sure you want to generate all sections of the tariff report? This will generate content and SEO metadata for all sections sequentially."
+            confirming={false}
+            askForTextInput={false}
+          />
+        )}
       </div>
     </PrivateWrapper>
   );

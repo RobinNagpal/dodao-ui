@@ -151,7 +151,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.semiconductors,
     reportTitle: 'Impact of Tariffs on Semiconductors & Equipment',
     reportOneLiner:
-      'Analysis of Section 301 duties on semiconductor imports—especially Chinese-made chips—and their ripple effects on global supply chains and domestic manufacturing incentives.',
+      'Analysis of Section 301 duties on semiconductor imports especially Chinese-made chips and their ripple effects on global supply chains and domestic manufacturing incentives.',
     updatedAt: 'August 1, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
