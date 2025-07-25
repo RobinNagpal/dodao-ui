@@ -9,6 +9,7 @@ import {
 // import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
+import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
 
 const PositiveImpactsSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),
@@ -51,20 +52,23 @@ const FinalConclusionSchema = z.object({
 });
 
 function getFinalConclusionPrompt(
-  industry: string,
+  industry: TariffIndustryId,
   headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[],
   positiveImpacts: PositiveTariffImpactOnCompanyType[],
   negativeImpacts: NegativeTariffImpactOnCompanyType[]
 ): string {
-  return `Write a final conclusion section for the ${industry} industry. The conclusion should be 4-6 paragraphs long and should follow the following rules: 
+  const definition = getTariffIndustryDefinitionById(industry);
+  return `Write a final conclusion section for the ${
+    definition.name
+  } industry. The conclusion should be 4-6 paragraphs long and should follow the following rules: 
   1. The conclusion should be concise and to the point, avoiding unnecessary details or jargon. 
   2. This is the conclusion, so there should be no introduction as this is the last sections of the report.
   3. Make sure to include the concrete company names and the company types and the reasoning.
-  4. The conclusion section should be specific to the ${industry} industry but mentions that
-     - In this full report, we will discuss the latest tariff updates and their impact on the ${industry} industry.
-     - The report assumes that the reader is not familiar with the ${industry} industry hence we first start with the 
+  4. The conclusion section should be specific to the ${definition.name} industry but mentions that
+     - In this full report, we will discuss the latest tariff updates and their impact on the ${definition.name} industry.
+     - The report assumes that the reader is not familiar with the ${definition.name} industry hence we first start with the 
         introduction of the industry.
      - We then try to understand the industry in detail by dividing the industry into few areas.
      - For each of these areas, we learn what exactly is the area, what the established companies, what are the new companies
@@ -101,7 +105,7 @@ function getFinalConclusionPrompt(
 }
 
 async function getFinalConclusion(
-  industry: string,
+  industry: TariffIndustryId,
   headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[],
@@ -114,7 +118,7 @@ async function getFinalConclusion(
 }
 
 export async function getFinalConclusionAndSaveToFile(
-  industry: string,
+  industry: TariffIndustryId,
   headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[],

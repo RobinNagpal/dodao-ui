@@ -3,6 +3,7 @@ import { ExecutiveSummary, IndustryAreasWrapper, TariffUpdatesForIndustry } from
 // import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
+import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 
 const ExecutiveSummarySchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),
@@ -17,18 +18,20 @@ const ExecutiveSummarySchema = z.object({
 });
 
 function getExecutiveSummaryPrompt(
-  industry: string,
+  industry: TariffIndustryId,
   headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[]
 ): string {
-  return `Write an executive summary section for the ${industry} industry. The summary should be 4-6 paragraphs long and should follow the following rules: 
+  const definition = getTariffIndustryDefinitionById(industry);
+  return `Write an executive summary section for the ${
+    definition.name
+  } industry. The summary should be 4-6 paragraphs long and should follow the following rules: 
   1. The summary should be concise and to the point, avoiding unnecessary details or jargon. 
   2. This is the introduction, so there should be no conclusion as this is the first sections of the report.
-  3. The summary section should be specific to the ${industry} industry but mentions that
-     - In this full report, we will discuss the latest tariff updates and their impact on the ${industry} industry.
-     - The report assumes that the reader is not familiar with the ${industry} industry hence we first start with the 
-        introduction of the industry.
+  3. The summary section should be specific to the ${definition.name} industry but mentions that
+     - In this full report, we will discuss the latest tariff updates and their impact on the ${definition.name} industry.
+     - The report assumes that the reader is not familiar with the ${definition.name} industry hence we first start with the introduction of the industry.
      - We then try to understand the industry in detail by dividing the industry into few areas.
      - For each of these areas, we learn what exactly is the area, what the established companies, what are the new companies
      and what are the latest tariff updates, and how these updates impact the given area.
@@ -55,7 +58,7 @@ function getExecutiveSummaryPrompt(
 }
 
 async function getExecutiveSummary(
-  industry: string,
+  industry: TariffIndustryId,
   headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[]
@@ -67,7 +70,7 @@ async function getExecutiveSummary(
 }
 
 export async function getExecutiveSummaryAndSaveToFile(
-  industryId: string,
+  industryId: TariffIndustryId,
   headings: IndustryAreasWrapper,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[]

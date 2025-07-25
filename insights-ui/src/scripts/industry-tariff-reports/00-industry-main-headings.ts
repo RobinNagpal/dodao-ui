@@ -29,7 +29,7 @@ export const IndustryAreasSchema: ZodObject<any> = z.object({
 function getMainIndustryPrompt(industryId: TariffIndustryId) {
   const definition = getTariffIndustryDefinitionById(industryId);
   const prompt: string = `
-  As an investor I want to learn everything about ${industryId} sub-industry(GICS). 
+  As an investor I want to learn everything about ${definition.name} sub-industry(GICS). 
   
   Give me the information based on the following rules:
   - I want to divide the industry into four main  areas, with three sub areas under each of them.
