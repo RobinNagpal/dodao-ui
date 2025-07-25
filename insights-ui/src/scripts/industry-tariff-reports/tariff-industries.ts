@@ -190,7 +190,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
   AgriculturalProductsAndServices: {
     name: 'Agricultural Products & Services',
     industryId: TariffIndustryId.agriculturalProductsAndServices,
-    reportTitle: 'Tariff Impact on Agricultural Inputs and Commodities',
+    reportTitle: 'Tariff Impact on Agricultural Products & Services',
     reportOneLiner: 'Includes live animals, oilseeds, cereals, and waste products affected by import duties.',
     updatedAt: 'August 1, 2025',
     headingsCount: 3,
@@ -535,7 +535,7 @@ export function getNumberOfSubHeadings(industryId: TariffIndustryId): number {
 
 export function getTariffIndustryDefinitionById(industryId: TariffIndustryId): TariffIndustryDefinition {
   const industryDefinition = Object.entries(TariffIndustries).find((k, v) => {
-    return k[1].industryId === industryId.toLowerCase();
+    return k[1].industryId === industryId;
   });
   if (!industryDefinition) {
     throw new Error(`Industry ${industryId} not found`);
