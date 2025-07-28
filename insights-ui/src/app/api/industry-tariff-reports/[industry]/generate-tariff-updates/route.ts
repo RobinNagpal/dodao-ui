@@ -1,20 +1,17 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import {
-  readIndustryHeadingsFromFile,
-  readTariffUpdatesFromFile,
-  writeMarkdownFileForIndustryTariffs,
-} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { readIndustryHeadingsFromFile, readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { getTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
+import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 
 interface GenerateTariffUpdatesRequest {
   date: string;
   countryName?: string;
 }
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: TariffIndustryId }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
   const request = (await req.json()) as GenerateTariffUpdatesRequest;
   const { date, countryName } = request;

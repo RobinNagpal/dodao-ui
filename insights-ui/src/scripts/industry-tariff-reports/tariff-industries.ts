@@ -202,7 +202,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
   PackagedFoodsAndMeats: {
     name: 'Packaged Foods & Meats',
     industryId: TariffIndustryId.packagedFoodsAndMeats,
-    reportTitle: 'Tariff Effects on the Global Food Supply Chain',
+    reportTitle: 'Tariff Effects on the Packaged Foods & Meats Industry',
     reportOneLiner: 'Covers dairy, meats, beverages, cereals, oils, cocoa, and processed foods.',
     updatedAt: 'August 1, 2025',
     headingsCount: 3,

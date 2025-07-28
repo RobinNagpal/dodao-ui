@@ -3,6 +3,7 @@ import { IndustryAreasWrapper, UnderstandIndustry } from '@/scripts/industry-tar
 // import { getLlmResponse } from '@/scripts/llm-utils';
 import { z } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
+import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
 
 const IndustrySectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific part of the article.'),
@@ -29,9 +30,10 @@ const UnderstandIndustrySchema = z.object({
     ),
 });
 
-function getUnderstandIndustryPrompt(industry: string, headings: IndustryAreasWrapper) {
+function getUnderstandIndustryPrompt(industry: TariffIndustryId, headings: IndustryAreasWrapper) {
+  const definition = getTariffIndustryDefinitionById(industry);
   const prompt = `
-I want to understand the ${industry} industry in depth. Give me a very detailed article with:
+I want to understand the ${definition.name} industry in depth. Give me a very detailed article with:
 - Exactly **6 Headings** and **2–3 small paragraphs** under each heading
 - Share as many facts as possible (volumes, amounts, dollar values)
 - Add hyperlinks for definitions and key numbers throughout
@@ -106,12 +108,12 @@ ${JSON.stringify(headings, null, 2)}
   return prompt;
 }
 
-export async function getUnderstandIndustry(industry: string, headings: IndustryAreasWrapper) {
+export async function getUnderstandIndustry(industry: TariffIndustryId, headings: IndustryAreasWrapper) {
   console.log('Invoking LLM for understanding industry');
   return await getLlmResponse<UnderstandIndustry>(getUnderstandIndustryPrompt(industry, headings), UnderstandIndustrySchema);
 }
 
-export async function getAndWriteUnderstandIndustryJson(industry: string, headings: IndustryAreasWrapper) {
+export async function getAndWriteUnderstandIndustryJson(industry: TariffIndustryId, headings: IndustryAreasWrapper) {
   const understandIndustry = await getUnderstandIndustry(industry, headings);
   console.log('Understand Industry:', understandIndustry);
 
