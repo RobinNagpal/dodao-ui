@@ -3,6 +3,7 @@ import { ExecutiveSummary, IndustryAreasWrapper, ReportCover, TariffUpdatesForIn
 // import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
+import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
 
 const ReportCoverSchema = z.object({
   title: z.string().describe('Title of the cover page.'),
@@ -18,13 +19,14 @@ const ReportCoverSchema = z.object({
 });
 
 async function getReportCover(
-  industry: string,
+  industry: TariffIndustryId,
   headings: IndustryAreasWrapper,
   executiveSummary: ExecutiveSummary,
   tariffUpdates: TariffUpdatesForIndustry,
   tariffSummaries: string[]
 ): Promise<ReportCover> {
-  const prompt = `Write a report cover page for the ${industry} industry. The cover page should be 2 paragraphs paragraphs long 
+  const definition = getTariffIndustryDefinitionById(industry);
+  const prompt = `Write a report cover page for the ${definition.name} industry. The cover page should be 2 paragraphs paragraphs long
   each paragraph should be 5-6 lines long. I am passing you the executive summary, the industry areas, the tariff updates,
   the summaries of the tariff updates on the industry areas.
   
@@ -53,7 +55,7 @@ async function getReportCover(
 }
 
 export async function getReportCoverAndSaveToFile(
-  industryId: string,
+  industryId: TariffIndustryId,
   headings: IndustryAreasWrapper,
   executiveSummary: ExecutiveSummary,
   tariffUpdates: TariffUpdatesForIndustry,

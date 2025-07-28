@@ -11,6 +11,8 @@ import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { getAndWriteEvaluateIndustryAreaJson, regenerateEvaluateIndustryAreaJson } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 
+export const maxDuration = 300;
+
 export interface GenerateEvaluateIndustryAreaRequest {
   companiesToIgnore?: string[];
   date: string;

@@ -7,6 +7,7 @@ import { CountrySpecificTariff, IndustryAreasWrapper, TariffUpdatesForIndustry }
 import { getLlmResponse, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
 import { getDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { z } from 'zod';
+import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
 
 const CountrySpecificTariffSchema = z.object({
   countryName: z.string().describe('Name of the country.'),
@@ -60,9 +61,10 @@ const TopCountriesSchema = z.object({
 });
 
 // 2) Prompt builder + fetcher
-function getTopTradingCountriesPrompt(industry: string, date: string) {
+function getTopTradingCountriesPrompt(industry: TariffIndustryId, date: string) {
+  const definition = getTariffIndustryDefinitionById(industry);
   return `
-Identify the top 5 countries by trading volume with the U.S. for the ${industry} industry as of ${date}.
+Identify the top 5 countries by trading volume with the U.S. for the ${definition.name} industry as of ${date}.
 Output a JSON object with a single key \`topCountries\`, whose value is an array of exactly five ISO-style country names (strings).
 Example:
 \`\`\`
@@ -76,16 +78,17 @@ Fetch the countries in the descending order of trading volume with the US for th
 `;
 }
 
-async function getTopTradingCountries(industry: string, date: string): Promise<string[]> {
+async function getTopTradingCountries(industry: TariffIndustryId, date: string): Promise<string[]> {
   const prompt = getTopTradingCountriesPrompt(industry, date);
   const response = await getLlmResponse<{ topCountries: string[] }>(prompt, TopCountriesSchema);
   return response.topCountries;
 }
 
-function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headings: IndustryAreasWrapper, country: string) {
+function getTariffUpdatesForIndustryPrompt(industry: TariffIndustryId, date: string, headings: IndustryAreasWrapper, country: string) {
+  const definition = getTariffIndustryDefinitionById(industry);
   const prompt = `
-  As of today (${getDateAsMonthDDYYYYFormat(date)}), I want to know about the new or recent tariffs added for the ${industry} industry for ${country}.
-  Make sure to verify all the new tariffs added for ${industry} industry and as of ${getDateAsMonthDDYYYYFormat(
+  As of today (${getDateAsMonthDDYYYYFormat(date)}), I want to know about the new or recent tariffs added for the ${definition.name} industry for ${country}.
+  Make sure to verify all the new tariffs added for ${definition.name} industry and as of ${getDateAsMonthDDYYYYFormat(
     date
   )} for ${country} because they have been changing almost everyday.
   Make sure to verify the tariff information on official governament websites or trade websites for tariff information, and also make sure that you have referred to all the information as of ${getDateAsMonthDDYYYYFormat(
@@ -132,7 +135,7 @@ function getTariffUpdatesForIndustryPrompt(industry: string, date: string, headi
 
 // 3) Use it in your tariff-fetcher
 async function getTariffUpdatesForIndustry(
-  industry: string,
+  industry: TariffIndustryId,
   date: string,
   headings: IndustryAreasWrapper,
   countryName?: string
@@ -236,7 +239,7 @@ async function getTariffUpdatesForIndustry(
   return result;
 }
 
-export async function getTariffUpdatesForIndustryAndSaveToFile(industry: string, date: string, headings: IndustryAreasWrapper, countryName?: string) {
+export async function getTariffUpdatesForIndustryAndSaveToFile(industry: TariffIndustryId, date: string, headings: IndustryAreasWrapper, countryName?: string) {
   console.log(`Starting tariff update generation for ${industry} ${countryName ? ` (${countryName})` : ''}`);
   const tariffUpdates = await getTariffUpdatesForIndustry(industry, date, headings, countryName);
 

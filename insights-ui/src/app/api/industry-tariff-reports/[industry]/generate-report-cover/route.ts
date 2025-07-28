@@ -1,18 +1,17 @@
 import { getReportCoverAndSaveToFile } from '@/scripts/industry-tariff-reports/01-industry-cover';
-import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-reports/02-executive-summary';
 import { getIndustryTariffReport, getSummariesOfEvaluatedAreas } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
+import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import {
   readExecutiveSummaryFromFile,
   readIndustryHeadingsFromFile,
   readReportCoverFromFile,
   readTariffUpdatesFromFile,
-  writeMarkdownFileForReportCover,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: TariffIndustryId }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
 
   if (!industry) {
