@@ -44,11 +44,6 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
-      name: 'Debug',
-      href: `/public-equities/debug/`,
-      current: false,
-    },
-    {
       name: 'Debug Tickers',
       href: `/public-equities/debug/tickers`,
       current: false,

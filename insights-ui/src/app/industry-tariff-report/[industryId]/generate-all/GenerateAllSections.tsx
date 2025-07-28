@@ -80,29 +80,20 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
 
       // Add multiple sections for each heading/subheading combination
       const evaluateIndustryCombinations = getAllHeadingSubheadingCombinations(industryId as TariffIndustryId);
-      const sectionTypes = [
-        { type: EvaluateIndustryContent.ESTABLISHED_PLAYERS, label: 'Established Players' },
-        { type: EvaluateIndustryContent.NEW_CHALLENGERS, label: 'New Challengers' },
-        { type: EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS, label: 'Headwinds & Tailwinds' },
-        { type: EvaluateIndustryContent.TARIFF_IMPACT_BY_COMPANY_TYPE, label: 'Tariff Impact by Company Type' },
-        { type: EvaluateIndustryContent.TARIFF_IMPACT_SUMMARY, label: 'Tariff Impact Summary' },
-      ];
       evaluateIndustryCombinations.forEach((combination) => {
-        sectionTypes.forEach((sectionTypeObj) => {
-          initialSections.push({
-            id: `evaluate-industry-areas-${combination.headingIndex}-${combination.subHeadingIndex}-${sectionTypeObj.type}`,
-            name: `${combination.displayName} - ${sectionTypeObj.label}`,
-            contentApi: `/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`,
-            contentPayload: {
-              date: new Date().toISOString().split('T')[0],
-              headingIndex: combination.headingIndex,
-              subHeadingIndex: combination.subHeadingIndex,
-              sectionType: sectionTypeObj.type,
-            },
-            seoType: ReportType.EVALUATE_INDUSTRY_AREA,
-            contentStatus: 'pending',
-            seoStatus: 'pending',
-          });
+        initialSections.push({
+          id: `evaluate-industry-areas-${combination.headingIndex}-${combination.subHeadingIndex}`,
+          name: combination.displayName,
+          contentApi: `/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`,
+          contentPayload: {
+            date: new Date().toISOString().split('T')[0],
+            headingIndex: combination.headingIndex,
+            subHeadingIndex: combination.subHeadingIndex,
+            sectionType: EvaluateIndustryContent.ALL,
+          },
+          seoType: ReportType.EVALUATE_INDUSTRY_AREA,
+          contentStatus: 'pending',
+          seoStatus: 'pending',
         });
       });
 
