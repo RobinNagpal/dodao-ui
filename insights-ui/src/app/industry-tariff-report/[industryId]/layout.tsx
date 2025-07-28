@@ -39,7 +39,7 @@ export default async function IndustryTariffReportLayout({
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
       name: 'Tariff Reports',
-      href: '/reports',
+      href: '/tariff-reports',
       current: false,
     },
     {
