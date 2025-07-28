@@ -20,7 +20,7 @@ export default async function Home() {
       <Crowdfunding />
       <REIT />
       <Tariff />
-      <BlogsGrid posts={posts} />
+      <BlogsGrid posts={posts} showViewAllButton={true} />
       <Contact />
       <Footer />
     </div>
