@@ -1,5 +1,3 @@
-export const maxDuration = 800;
-
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import {
@@ -12,6 +10,8 @@ import { EvaluateIndustryContent, IndustryTariffReport } from '@/scripts/industr
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { getAndWriteEvaluateIndustryAreaJson, regenerateEvaluateIndustryAreaJson } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
+
+export const maxDuration = 800;
 
 export interface GenerateEvaluateIndustryAreaRequest {
   companiesToIgnore?: string[];
