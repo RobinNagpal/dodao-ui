@@ -21,7 +21,7 @@ export default function TickerTableActions({ ticker }: TickerTableActionsProps) 
   const router = useRouter();
 
   const handleEdit = (ticker: string) => {
-    router.push(`/public-equities/tickers/edit/${ticker}`);
+    router.push(`/public-equities/tickers/${ticker}/edit`);
   };
 
   const handleDeleteClick = (ticker: string) => {

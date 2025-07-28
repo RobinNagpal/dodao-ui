@@ -6,7 +6,14 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Ticker } from '@prisma/client';
 import Link from 'next/link';
-import { PaginatedTickersResponse } from '../page';
+
+interface PaginatedTickersResponse {
+  tickers: Ticker[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
 
 async function getTickersResponse(): Promise<Ticker[]> {
   try {
@@ -21,12 +28,7 @@ async function getTickersResponse(): Promise<Ticker[]> {
 
 const breadcrumbs: BreadcrumbsOjbect[] = [
   {
-    name: 'Debug',
-    href: `/public-equities/debug`,
-    current: false,
-  },
-  {
-    name: 'Tickers',
+    name: 'Debug Tickers',
     href: `/public-equities/debug/tickers`,
     current: true,
   },
@@ -41,6 +43,9 @@ export default async function AllTickersPage() {
         <div className="flex justify-between">
           <div></div>
           <div>
+            <Link href={'/public-equities/industry-group-criteria'} className="link-color border border-color rounded-xl p-2">
+              Criteria Table
+            </Link>
             <Link
               href={'/public-equities/industry-group-criteria/real-estate/equity-real-estate-investment-trusts-reits/create'}
               className="link-color border border-color rounded-xl p-2"
