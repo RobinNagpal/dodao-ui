@@ -4,9 +4,17 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Ticker } from '@prisma/client';
 import Link from 'next/link';
 
+export interface PaginatedTickersResponse {
+  tickers: Ticker[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
 export default async function DebugPage() {
-  const response = await fetch(`${getBaseUrl()}/api/tickers`, { cache: 'no-cache' });
-  const tickers: Ticker[] = (await response.json()) as Ticker[];
+  const response = await fetch(`${getBaseUrl()}/api/tickers?all=true`, { cache: 'no-cache' });
+  const { tickers } = (await response.json()) as PaginatedTickersResponse;
   return (
     <PageWrapper>
       <div className="my-16">

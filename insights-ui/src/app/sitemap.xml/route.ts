@@ -70,7 +70,7 @@ async function getAllTickers(): Promise<string[]> {
   const baseUrl = getBaseUrl();
   try {
     // Use the new paginated API with a large page size to get all tickers for sitemap
-    const response = await fetch(`${baseUrl}/api/tickers?page=1&pageSize=1000`, { cache: 'no-cache' });
+    const response = await fetch(`${baseUrl}/api/tickers?all=true`, { cache: 'no-cache' });
     if (!response.ok) {
       throw new Error(`Failed to fetch tickers: ${response.statusText}`);
     }
@@ -157,7 +157,7 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
 
   // Main reports page
   urls.push({
-    url: '/reports',
+    url: '/tariff-reports',
     changefreq: 'daily',
     priority: 0.8,
   });
