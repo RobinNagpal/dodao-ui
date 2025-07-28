@@ -6,11 +6,13 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Ticker } from '@prisma/client';
 import Link from 'next/link';
+import { PaginatedTickersResponse } from '../page';
 
 async function getTickersResponse(): Promise<Ticker[]> {
   try {
-    const response = await fetch(`${getBaseUrl()}/api/tickers`, { cache: 'no-cache' });
-    return await response.json();
+    const response = await fetch(`${getBaseUrl()}/api/tickers?all=true`, { cache: 'no-cache' });
+    const { tickers } = (await response.json()) as PaginatedTickersResponse;
+    return tickers;
   } catch (error) {
     console.error('Error fetching tickers:', error);
     return [];

@@ -18,30 +18,26 @@ interface PaginatedTickersResponse {
 }
 
 async function getHandler(req: NextRequest): Promise<PaginatedTickersResponse> {
-  // Extract pagination parameters from URL
   const searchParams = req.nextUrl.searchParams;
-  const page = parseInt(searchParams.get('page') || '1');
-  const pageSize = parseInt(searchParams.get('pageSize') || '20');
+  const all = searchParams.get('all') === 'true';
 
-  // Ensure valid pagination parameters
-  const validPage = isNaN(page) || page < 1 ? 1 : page;
-  const validPageSize = isNaN(pageSize) || pageSize < 1 || pageSize > 100 ? 20 : pageSize;
-
-  // Calculate skip value for pagination
-  const skip = (validPage - 1) * validPageSize;
-
-  // First, get total count for pagination metadata
+  // First, get total count for metadata (needed whether paginating or not)
   const totalCount = await prisma.ticker.count({
-    where: {
-      spaceId: KoalaGainsSpaceId,
-    },
+    where: { spaceId: KoalaGainsSpaceId },
   });
 
-  // Then fetch paginated tickers
+  // Parse incoming page & pageSize (but override if 'all' requested)
+  const requestedPage = parseInt(searchParams.get('page') || '1', 10);
+  const requestedPageSize = parseInt(searchParams.get('pageSize') || '20', 10);
+
+  const validPage = isNaN(requestedPage) || requestedPage < 1 ? 1 : requestedPage;
+  const validPageSize = all ? totalCount : isNaN(requestedPageSize) || requestedPageSize < 1 || requestedPageSize > 100 ? 20 : requestedPageSize;
+
+  const skip = (validPage - 1) * validPageSize;
+
+  // Fetch tickers, either all at once or paginated
   const tickers = await prisma.ticker.findMany({
-    where: {
-      spaceId: KoalaGainsSpaceId,
-    },
+    where: { spaceId: KoalaGainsSpaceId },
     include: {
       evaluationsOfLatest10Q: {
         include: {
@@ -53,15 +49,11 @@ async function getHandler(req: NextRequest): Promise<PaginatedTickersResponse> {
         },
       },
     },
-    orderBy: {
-      createdAt: 'asc',
-    },
-    skip,
-    take: validPageSize,
+    orderBy: { createdAt: 'asc' },
+    ...(all ? {} : { skip, take: validPageSize }),
   });
 
-  // Calculate total pages
-  const totalPages = Math.ceil(totalCount / validPageSize);
+  const totalPages = all ? 1 : Math.ceil(totalCount / validPageSize);
 
   return {
     tickers,
