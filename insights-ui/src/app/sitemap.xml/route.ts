@@ -1,4 +1,4 @@
-import { fetchTariffReports, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { fetchTariffReports, TariffIndustryDefinition, getAllHeadingSubheadingCombinations } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { ReportType } from '@/types/project/project';
 import { getPostsData } from '@/util/blog-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -189,43 +189,20 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
       });
     }
 
-    // Try to fetch report data to get evaluate-industry-areas sub-sections
-    try {
-      const baseUrl = getBaseUrl();
-      const reportResponse = await fetch(`${baseUrl}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
-
-      if (reportResponse.ok) {
-        const report = await reportResponse.json();
-
-        // Add the main evaluate-industry-areas section
-        urls.push({
-          url: `/industry-tariff-report/${industryId}/evaluate-industry-areas`,
-          changefreq: 'weekly',
-          priority: 0.7,
-        });
-
-        // Add sub-areas if they exist
-        if (report.industryAreas?.areas) {
-          report.industryAreas.areas.forEach((heading: any, index: number) => {
-            heading.subAreas.forEach((_: any, subIndex: number) => {
-              urls.push({
-                url: `/industry-tariff-report/${industryId}/evaluate-industry-areas/${index}-${subIndex}`,
-                changefreq: 'weekly',
-                priority: 0.6,
-              });
-            });
-          });
-        }
-      }
-    } catch (error) {
-      console.error(`Error processing evaluate-industry-areas for ${industryId}:`, error);
-      // If we can't fetch the detailed structure, add a generic URL for the section
+    const combos = getAllHeadingSubheadingCombinations(industry.industryId);
+    // Add the main evaluate-industry-areas section
+    urls.push({
+      url: `/industry-tariff-report/${industryId}/evaluate-industry-areas`,
+      changefreq: 'weekly',
+      priority: 0.7,
+    });
+    combos.forEach((c) =>
       urls.push({
-        url: `/industry-tariff-report/${industryId}/evaluate-industry-areas`,
+        url: `/industry-tariff-report/${industry.industryId}/evaluate-industry-areas/${c.headingIndex}-${c.subHeadingIndex}`,
         changefreq: 'weekly',
-        priority: 0.7,
-      });
-    }
+        priority: 0.6,
+      })
+    );
   }
 
   return urls;
