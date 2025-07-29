@@ -42,3 +42,11 @@ export async function getPostsData(length?: number): Promise<BlogInterfaceWithId
 
   return posts;
 }
+
+export async function getRelatedPosts(categorySlug: string, currentPostId: string, limit: number = 3): Promise<BlogInterfaceWithId[]> {
+  const allPosts = await getPostsData();
+
+  const relatedPosts = allPosts.filter((post) => post.category.slug === categorySlug && post.id !== currentPostId);
+
+  return relatedPosts.slice(0, limit);
+}

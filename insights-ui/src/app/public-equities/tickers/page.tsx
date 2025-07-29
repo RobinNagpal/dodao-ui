@@ -12,15 +12,31 @@ import { getGraphColor, getSpiderGraphScorePercentage } from '@/util/radar-chart
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: 'REIT Tickers | KoalaGains',
-  description:
-    'Explore all available REIT tickers. Dive into detailed AI-driven financial reports, analyze key metrics, and streamline your public equities research on KoalaGains.',
-  alternates: {
-    canonical: 'https://koalagains.com/public-equities/tickers',
-  },
-  keywords: ['REIT', 'Tickers', 'Public Equities', 'REIT Financial Reports', 'KoalaGains', 'REIT Analysis'],
-};
+export async function generateMetadata(props: { searchParams: Promise<{ page?: string }> }): Promise<Metadata> {
+  const { page } = await props.searchParams;
+  const currentPage = parseInt(page || '1');
+  const base = 'https://koalagains.com/public-equities/tickers';
+  return {
+    title: 'REIT Tickers | KoalaGains',
+    description:
+      'Explore all available REIT tickers. Dive into detailed AI-driven financial reports, analyze key metrics, and streamline your public equities research on KoalaGains.',
+    alternates: {
+      canonical: currentPage === 1 ? base : `${base}?page=${currentPage}`,
+    },
+    keywords: [
+      'REIT tickers',
+      'Tickers List',
+      'Public Equities',
+      'REIT Financial Reports',
+      'KoalaGains',
+      'REIT Analysis',
+      'Real Estate Investment Trusts',
+      'REIT list',
+      'Public REITs',
+      'REIT performance scores',
+    ],
+  };
+}
 
 interface ScoreIndicatorProps {
   scorePercent: number | null | undefined;

@@ -10,6 +10,8 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { Metadata } from 'next';
+import { getRelatedPosts } from '@/util/blog-utils';
+import RelatedBlogs from '@/components/blogs/RelatedBlogs';
 
 export async function generateMetadata({ params }: { params: Promise<{ blogSlug: string }> }): Promise<Metadata> {
   const blogSlug = (await params).blogSlug as string;
@@ -78,15 +80,15 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
 
   const blogContents = marked.parse(content, { renderer });
 
+  const relatedPosts = await getRelatedPosts(data.category.slug, slug, 3);
+
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="px-6 pt-16 lg:px-8 text-color">
         <div className="mx-auto max-w-6xl text-base/7">
           <p className="text-base/7 font-semibold">
-            <a href={'category/' + data.category.slug} className="relative z-10 rounded-full py-1.5 font-medium">
-              {data.category.title}
-            </a>
+            <span className="relative z-10 rounded-full py-1.5 font-medium">{data.category.title}</span>
           </p>
           <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty  sm:text-3xl">{data.title}</h1>
           <div className="mt-10 max-w-6xl text-md">
@@ -100,6 +102,8 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
           </div>
         </div>
       </div>
+
+      <RelatedBlogs posts={relatedPosts} />
     </PageWrapper>
   );
 }

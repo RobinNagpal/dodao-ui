@@ -11,7 +11,16 @@ export async function generateMetadata(): Promise<Metadata> {
   const description = 'Comprehensive collection of tariff reports. Explore industry insights and tariff impacts across various sectors.';
   const canonicalUrl = 'https://koalagains.com/tariff-reports';
 
-  const keywords = ['tariff reports', 'industry analysis', 'tariff impacts', 'trade policy', 'industry evaluation', 'sector analysis', 'KoalaGains'];
+  const keywords = [
+    'tariff reports',
+    'industry analysis',
+    'tariff impacts',
+    'trade policy',
+    'industry evaluation',
+    'sector analysis',
+    'KoalaGains',
+    'tariff updates',
+  ];
 
   return {
     title,
@@ -68,11 +77,11 @@ export default async function TariffReportsPage() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color">
         <div className="mx-auto">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-6">Reports</h1>
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-6">Industry Tariff Reports</h1>
 
           {/* Tariff Reports Section */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-6 border-b border-color pb-2">Industry Tariff Reports</h2>
+            <h2 className="text-2xl font-semibold mb-6 border-b border-color pb-2">Comprehensive Trade & Policy Analyses</h2>
             <p className="mb-6 text-muted-foreground">
               Comprehensive analyses of tariff impacts across various industries. These reports provide deep insights into how tariff policies affect industry
               dynamics, supply chains, competitive landscapes, and future outlook. Each report explores established players, emerging challengers, and potential
