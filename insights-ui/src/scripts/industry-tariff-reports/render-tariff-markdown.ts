@@ -49,7 +49,7 @@ export function generateMarkdownContent(industryId: string, industryAreasWrapper
 //--------------------------------------------------------------------------------------------------------
 
 export function getMarkdownContentForExecutiveSummary(executiveSummary: ExecutiveSummary) {
-  const markdownContent = `# Executive Summary\n\n` + `${executiveSummary.executiveSummary}\n`;
+  const markdownContent = `## ${executiveSummary.title}\n\n` + `${executiveSummary.executiveSummary}\n`;
   return recursivelyCleanOpenAiUrls(markdownContent);
 }
 
@@ -244,8 +244,7 @@ export function getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea: 
 //--------------------------------------------------------------------------------------------------------
 export function getMarkdownContentForFinalConclusion(finalConclusion: FinalConclusion) {
   const markdownContent =
-    `# Final Conclusion\n\n` +
-    `## ${finalConclusion.title}\n` +
+    `# ${finalConclusion.title}\n` +
     `${finalConclusion.conclusionBrief}\n\n` +
     `## ${finalConclusion.positiveImpacts.title}\n` +
     `${finalConclusion.positiveImpacts.positiveImpacts}\n\n` +

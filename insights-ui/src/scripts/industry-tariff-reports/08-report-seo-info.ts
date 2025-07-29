@@ -1,4 +1,4 @@
-import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getNumberOfSubHeadings, getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import {
   readExecutiveSummaryFromFile,
@@ -23,9 +23,10 @@ const PageSeoDetailsSchema = z.object({
 });
 
 // Function to generate SEO details for a single section
-async function generateSeoDetailsForSection(industry: string, sectionName: string, sectionContent: any): Promise<PageSeoDetails> {
+async function generateSeoDetailsForSection(industry: TariffIndustryId, sectionName: string, sectionContent: any): Promise<PageSeoDetails> {
+  const definition = getTariffIndustryDefinitionById(industry);
   const prompt = `
-    Generate SEO metadata for the ${sectionName} section of the ${industry} industry tariff report. 
+    Generate SEO metadata for the ${sectionName} section of the ${definition.name} industry tariff report. 
     The section content is provided below.
     
     Please create:
@@ -43,7 +44,7 @@ async function generateSeoDetailsForSection(industry: string, sectionName: strin
 }
 
 // Generate SEO details for report cover
-export async function generateReportCoverSeo(industry: string): Promise<PageSeoDetails | undefined> {
+export async function generateReportCoverSeo(industry: TariffIndustryId): Promise<PageSeoDetails | undefined> {
   const reportCover = await readReportCoverFromFile(industry);
   if (!reportCover) return undefined;
 
@@ -51,7 +52,7 @@ export async function generateReportCoverSeo(industry: string): Promise<PageSeoD
 }
 
 // Generate SEO details for executive summary
-export async function generateExecutiveSummarySeo(industry: string): Promise<PageSeoDetails | undefined> {
+export async function generateExecutiveSummarySeo(industry: TariffIndustryId): Promise<PageSeoDetails | undefined> {
   const executiveSummary = await readExecutiveSummaryFromFile(industry);
   if (!executiveSummary) return undefined;
 
@@ -59,7 +60,7 @@ export async function generateExecutiveSummarySeo(industry: string): Promise<Pag
 }
 
 // Generate SEO details for tariff updates
-export async function generateTariffUpdatesSeo(industry: string): Promise<PageSeoDetails | undefined> {
+export async function generateTariffUpdatesSeo(industry: TariffIndustryId): Promise<PageSeoDetails | undefined> {
   const tariffUpdates = await readTariffUpdatesFromFile(industry);
   if (!tariffUpdates) return undefined;
 
@@ -67,7 +68,7 @@ export async function generateTariffUpdatesSeo(industry: string): Promise<PageSe
 }
 
 // Generate SEO details for understand industry
-export async function generateUnderstandIndustrySeo(industry: string): Promise<PageSeoDetails | undefined> {
+export async function generateUnderstandIndustrySeo(industry: TariffIndustryId): Promise<PageSeoDetails | undefined> {
   const understandIndustry = await readUnderstandIndustryJsonFromFile(industry);
   if (!understandIndustry) return undefined;
 
@@ -75,7 +76,7 @@ export async function generateUnderstandIndustrySeo(industry: string): Promise<P
 }
 
 // Generate SEO details for industry areas
-export async function generateIndustryAreasSeo(industry: string): Promise<PageSeoDetails | undefined> {
+export async function generateIndustryAreasSeo(industry: TariffIndustryId): Promise<PageSeoDetails | undefined> {
   const industryAreas = await readIndustryAreaSectionFromFile(industry);
   if (!industryAreas) return undefined;
 
@@ -246,6 +247,6 @@ export async function generateAndSaveAllSeoDetails(industry: TariffIndustryId, t
 }
 
 // Helper function to save partial SEO details
-async function savePartialSeoDetails(industry: string, partialSeoDetails: TariffReportSeoDetails): Promise<void> {
+async function savePartialSeoDetails(industry: TariffIndustryId, partialSeoDetails: TariffReportSeoDetails): Promise<void> {
   await writeJsonFileForSeoDetails(industry, partialSeoDetails);
 }

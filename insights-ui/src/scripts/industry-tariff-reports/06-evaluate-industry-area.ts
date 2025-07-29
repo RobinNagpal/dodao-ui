@@ -261,7 +261,7 @@ async function getEstablishedPlayers(
 Find the three *Established Players* in the ${subAreaInfo} sector  **but output only** each company's **name** and **ticker** in JSON:
 - Select three biggest and most performant public US companies with 5+ years in the sector.
 - Focus on US based companies.
-- Bigger Focus is on ${tariffIndustry.industryId}
+- Bigger Focus is on ${tariffIndustry.name} industry.
 - Make sure the companies are active and are being publicly traded as of ${date} on Nasdaq or NYSE.
 - The company should be traded on US exchanges i.e. Nasdaq or NYSE.
 - Dont return duplicate companies.

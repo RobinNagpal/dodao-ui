@@ -178,7 +178,7 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
     });
 
     // Standard report sections based on navigation structure
-    const reportSections = ['executive-summary', 'tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
+    const reportSections = ['tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
 
     // Add URLs for each section
     for (const section of reportSections) {

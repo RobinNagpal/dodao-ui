@@ -64,18 +64,6 @@ export default function ReportLeftNavigation({ report, industryId, isMobile = fa
 
         {/* Navigation items based on IndustryTariffReport structure */}
         <NavSection
-          title="Executive Summary"
-          section="executive-summary"
-          isExpanded={isSectionExpanded('executive-summary')}
-          reportId={industryId}
-          currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${industryId}/executive-summary`)}
-          onClick={() => toggleSection('executive-summary')}
-          onNavItemClick={handleNavClick}
-          isMobile={isMobile}
-        />
-
-        <NavSection
           title="Tariff Updates"
           section="tariff-updates"
           isExpanded={isSectionExpanded('tariff-updates')}
