@@ -6,20 +6,36 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'KoalaGains Blog – REITs, Crowdfunding & Investment Insights',
   description:
-    'Dive into expert articles on REIT performance, crowdfunding analysis, advanced AI-driven strategies, and more. KoalaGains helps you stay informed and make smarter investment decisions.',
+    'Explore expert articles on REIT fundamentals, value‑investing techniques, crowdfunding analysis, and GenAI capabilities. KoalaGains helps you stay informed and make smarter investment decisions.',
   alternates: {
     canonical: 'https://koalagains.com/blogs',
   },
-  keywords: [
-    'KoalaGains Blog',
-    'REITs',
-    'Crowdfunding',
-    'Investment Insights',
-    'Financial Analysis',
-    'AI-driven insights',
-    'REIT Analysis',
-    'Crowdfunding Reports',
-  ],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  keywords: ['KoalaGains Blog', 'REIT analysis', 'Crowdfunding insights', 'Investment insights', 'Financial analysis', 'AI-driven insights', 'REIT Analysis'],
+  openGraph: {
+    title: 'KoalaGains Blog – REITs, Crowdfunding & Investment Insights',
+    description: 'Explore expert articles on REIT fundamentals, value‑investing techniques, crowdfunding analysis, and GenAI capabilities.',
+    url: 'https://koalagains.com/blogs',
+    siteName: 'KoalaGains',
+    type: 'website',
+    images: [
+      {
+        url: 'https://koalagains.com/koalagain_logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'KoalaGains Blog',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'KoalaGains Blog – REITs, Crowdfunding & Investment Insights',
+    description: 'Explore expert articles on REIT fundamentals, value‑investing techniques, crowdfunding analysis, and GenAI capabilities.',
+    images: ['https://koalagains.com/koalagain_logo.png'],
+  },
 };
 
 export default async function BlogsPage() {
