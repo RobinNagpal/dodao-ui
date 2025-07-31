@@ -1,7 +1,7 @@
 'use client';
 
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import { ReportType, EvaluateIndustryContent } from '@/scripts/industry-tariff-reports/tariff-types';
+import { ReportType, EvaluateIndustryContent, EstablishedPlayerRef, NewChallengerRef } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getAllHeadingSubheadingCombinations, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect } from 'react';
@@ -18,6 +18,7 @@ interface GenerationSection {
   seoStatus: 'pending' | 'loading' | 'success' | 'error';
   contentError?: string;
   seoError?: string;
+  skipSeo?: boolean; // Skip SEO generation for intermediate steps
 }
 
 interface GenerateAllClientProps {
@@ -39,6 +40,144 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
     successMessage: '',
     errorMessage: '',
   });
+
+  // Helper function to add individual established player sections
+  const addEstablishedPlayerSections = (
+    baseSectionId: string,
+    combination: { headingIndex: number; subHeadingIndex: number; displayName: string },
+    establishedPlayers: EstablishedPlayerRef[]
+  ): GenerationSection[] => {
+    const sections: GenerationSection[] = [];
+
+    // Add individual established player sections
+    establishedPlayers.forEach((player) => {
+      sections.push({
+        id: `${baseSectionId}-established-player-${player.companyTicker}`,
+        name: `${combination.displayName} - ${player.companyName}`,
+        contentApi: `/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`,
+        contentPayload: {
+          date: new Date().toISOString().split('T')[0],
+          headingIndex: combination.headingIndex,
+          subHeadingIndex: combination.subHeadingIndex,
+          sectionType: EvaluateIndustryContent.ESTABLISHED_PLAYER,
+          establishedPlayerTicker: player.companyTicker,
+        },
+        seoType: ReportType.EVALUATE_INDUSTRY_AREA,
+        contentStatus: 'pending',
+        seoStatus: 'pending',
+        skipSeo: true,
+      });
+    });
+
+    return sections;
+  };
+
+  // Helper function to add get new challengers section after all established players are done
+  const addGetNewChallengersSection = (
+    baseSectionId: string,
+    combination: { headingIndex: number; subHeadingIndex: number; displayName: string }
+  ): GenerationSection => {
+    return {
+      id: `${baseSectionId}-get-new-challengers`,
+      name: `${combination.displayName} - Get New Challengers`,
+      contentApi: `/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`,
+      contentPayload: {
+        date: new Date().toISOString().split('T')[0],
+        headingIndex: combination.headingIndex,
+        subHeadingIndex: combination.subHeadingIndex,
+        sectionType: EvaluateIndustryContent.GET_NEW_CHALLENGERS,
+      },
+      seoType: ReportType.EVALUATE_INDUSTRY_AREA,
+      contentStatus: 'pending',
+      seoStatus: 'pending',
+      skipSeo: true,
+    };
+  };
+
+  // Helper function to add individual new challenger sections
+  const addNewChallengerSections = (
+    baseSectionId: string,
+    combination: { headingIndex: number; subHeadingIndex: number; displayName: string },
+    newChallengers: NewChallengerRef[]
+  ): GenerationSection[] => {
+    const sections: GenerationSection[] = [];
+
+    // Add individual new challenger sections
+    newChallengers.forEach((challenger) => {
+      sections.push({
+        id: `${baseSectionId}-new-challenger-${challenger.companyTicker}`,
+        name: `${combination.displayName} - ${challenger.companyName}`,
+        contentApi: `/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`,
+        contentPayload: {
+          date: new Date().toISOString().split('T')[0],
+          headingIndex: combination.headingIndex,
+          subHeadingIndex: combination.subHeadingIndex,
+          sectionType: EvaluateIndustryContent.NEW_CHALLENGER,
+          challengerTicker: challenger.companyTicker,
+        },
+        seoType: ReportType.EVALUATE_INDUSTRY_AREA,
+        contentStatus: 'pending',
+        seoStatus: 'pending',
+        skipSeo: true,
+      });
+    });
+
+    return sections;
+  };
+
+  // Helper function to add final evaluation sections
+  const addFinalEvaluationSections = (
+    baseSectionId: string,
+    combination: { headingIndex: number; subHeadingIndex: number; displayName: string }
+  ): GenerationSection[] => {
+    return [
+      {
+        id: `${baseSectionId}-headwinds-tailwinds`,
+        name: `${combination.displayName} - Headwinds & Tailwinds`,
+        contentApi: `/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`,
+        contentPayload: {
+          date: new Date().toISOString().split('T')[0],
+          headingIndex: combination.headingIndex,
+          subHeadingIndex: combination.subHeadingIndex,
+          sectionType: EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS,
+        },
+        seoType: ReportType.EVALUATE_INDUSTRY_AREA,
+        contentStatus: 'pending',
+        seoStatus: 'pending',
+        skipSeo: true,
+      },
+      {
+        id: `${baseSectionId}-tariff-impact-by-company-type`,
+        name: `${combination.displayName} - Tariff Impact by Company Type`,
+        contentApi: `/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`,
+        contentPayload: {
+          date: new Date().toISOString().split('T')[0],
+          headingIndex: combination.headingIndex,
+          subHeadingIndex: combination.subHeadingIndex,
+          sectionType: EvaluateIndustryContent.TARIFF_IMPACT_BY_COMPANY_TYPE,
+        },
+        seoType: ReportType.EVALUATE_INDUSTRY_AREA,
+        contentStatus: 'pending',
+        seoStatus: 'pending',
+        skipSeo: true,
+      },
+      {
+        id: `${baseSectionId}-tariff-impact-summary`,
+        name: `${combination.displayName} - Tariff Impact Summary`,
+        contentApi: `/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`,
+        contentPayload: {
+          date: new Date().toISOString().split('T')[0],
+          headingIndex: combination.headingIndex,
+          subHeadingIndex: combination.subHeadingIndex,
+          sectionType: EvaluateIndustryContent.TARIFF_IMPACT_SUMMARY,
+        },
+        seoType: ReportType.EVALUATE_INDUSTRY_AREA,
+        contentStatus: 'pending',
+        seoStatus: 'pending',
+        skipSeo: false, // Generate SEO for the final section
+      },
+    ];
+  };
 
   // Initialize sections when component mounts or industryId changes
   useEffect(() => {
@@ -78,22 +217,26 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
         },
       ];
 
-      // Add multiple sections for each heading/subheading combination
+      // Add initial evaluate industry sections (only get established players initially)
       const evaluateIndustryCombinations = getAllHeadingSubheadingCombinations(industryId as TariffIndustryId);
       evaluateIndustryCombinations.forEach((combination) => {
+        const baseSectionId = `evaluate-industry-${combination.headingIndex}-${combination.subHeadingIndex}`;
+
+        // Add get established players section only
         initialSections.push({
-          id: `evaluate-industry-areas-${combination.headingIndex}-${combination.subHeadingIndex}`,
-          name: combination.displayName,
+          id: `${baseSectionId}-get-established-players`,
+          name: `${combination.displayName} - Get Established Players`,
           contentApi: `/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`,
           contentPayload: {
             date: new Date().toISOString().split('T')[0],
             headingIndex: combination.headingIndex,
             subHeadingIndex: combination.subHeadingIndex,
-            sectionType: EvaluateIndustryContent.ALL,
+            sectionType: EvaluateIndustryContent.GET_ESTABLISHED_PLAYERS,
           },
           seoType: ReportType.EVALUATE_INDUSTRY_AREA,
           contentStatus: 'pending',
           seoStatus: 'pending',
+          skipSeo: true,
         });
       });
 
@@ -159,17 +302,155 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
     setCurrentSectionIndex(0);
 
     try {
-      for (let i = 0; i < sections.length; i++) {
+      let currentSections = [...sections];
+      let processedCombinations = new Set<string>(); // Track which combinations we've fully processed
+
+      for (let i = 0; i < currentSections.length; i++) {
         setCurrentSectionIndex(i);
-        const section = sections[i];
+        const section = currentSections[i];
 
         // Generate Content
         setCurrentStep('content');
         updateSectionStatus(i, 'contentStatus', 'loading');
 
         try {
-          await postContentData(`${getBaseUrl()}${section.contentApi}`, section.contentPayload);
+          const response = await postContentData(`${getBaseUrl()}${section.contentApi}`, section.contentPayload);
           updateSectionStatus(i, 'contentStatus', 'success');
+
+          // Handle different section types and add subsequent sections dynamically
+          if (section.id.includes('-get-established-players')) {
+            // After GET_ESTABLISHED_PLAYERS completes, add individual established player sections
+            const match = section.id.match(/evaluate-industry-(\d+)-(\d+)-get-established-players/);
+            if (match) {
+              const headingIndex = parseInt(match[1]);
+              const subHeadingIndex = parseInt(match[2]);
+              const baseSectionId = `evaluate-industry-${headingIndex}-${subHeadingIndex}`;
+
+              try {
+                // Get established players list
+                const establishedPlayersResponse = await postContentData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/get-established-players`, {
+                  headingIndex,
+                  subHeadingIndex,
+                });
+
+                const establishedPlayers = establishedPlayersResponse?.establishedPlayers || [];
+
+                // Get combination info for display name
+                const evaluateIndustryCombinations = getAllHeadingSubheadingCombinations(industryId as TariffIndustryId);
+                const combination = evaluateIndustryCombinations.find((c) => c.headingIndex === headingIndex && c.subHeadingIndex === subHeadingIndex);
+
+                if (combination && establishedPlayers.length > 0) {
+                  // Add individual established player sections
+                  const establishedPlayerSections = addEstablishedPlayerSections(baseSectionId, combination, establishedPlayers);
+
+                  // Insert after current section
+                  const insertIndex = i + 1;
+                  currentSections.splice(insertIndex, 0, ...establishedPlayerSections);
+                  setSections([...currentSections]);
+                }
+              } catch (error) {
+                console.error('Error getting established players tickers:', error);
+              }
+            }
+          } else if (section.id.includes('-established-player-')) {
+            // Check if this is the last established player for this combination
+            const match = section.id.match(/evaluate-industry-(\d+)-(\d+)-established-player-/);
+            if (match) {
+              const headingIndex = parseInt(match[1]);
+              const subHeadingIndex = parseInt(match[2]);
+              const baseSectionId = `evaluate-industry-${headingIndex}-${subHeadingIndex}`;
+
+              // Find all established player sections for this combination
+              const allEstablishedPlayerSections = currentSections.filter((s) => s.id.startsWith(`${baseSectionId}-established-player-`));
+
+              // Check if all established player sections are completed
+              const allEstablishedPlayersCompleted = allEstablishedPlayerSections.every((s) => s.contentStatus === 'success' || s.contentStatus === 'error');
+
+              if (allEstablishedPlayersCompleted && !processedCombinations.has(`${baseSectionId}-get-new-challengers`)) {
+                processedCombinations.add(`${baseSectionId}-get-new-challengers`);
+
+                // Get combination info for display name
+                const evaluateIndustryCombinations = getAllHeadingSubheadingCombinations(industryId as TariffIndustryId);
+                const combination = evaluateIndustryCombinations.find((c) => c.headingIndex === headingIndex && c.subHeadingIndex === subHeadingIndex);
+
+                if (combination) {
+                  // Add GET_NEW_CHALLENGERS section
+                  const getNewChallengersSection = addGetNewChallengersSection(baseSectionId, combination);
+
+                  // Insert after current section
+                  const insertIndex = i + 1;
+                  currentSections.splice(insertIndex, 0, getNewChallengersSection);
+                  setSections([...currentSections]);
+                }
+              }
+            }
+          } else if (section.id.includes('-get-new-challengers')) {
+            // After GET_NEW_CHALLENGERS completes, add individual new challenger sections
+            const match = section.id.match(/evaluate-industry-(\d+)-(\d+)-get-new-challengers/);
+            if (match) {
+              const headingIndex = parseInt(match[1]);
+              const subHeadingIndex = parseInt(match[2]);
+              const baseSectionId = `evaluate-industry-${headingIndex}-${subHeadingIndex}`;
+
+              try {
+                // Get new challengers list
+                const newChallengersResponse = await postContentData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/get-new-challengers`, {
+                  headingIndex,
+                  subHeadingIndex,
+                });
+
+                const newChallengers = newChallengersResponse?.newChallengers || [];
+
+                // Get combination info for display name
+                const evaluateIndustryCombinations = getAllHeadingSubheadingCombinations(industryId as TariffIndustryId);
+                const combination = evaluateIndustryCombinations.find((c) => c.headingIndex === headingIndex && c.subHeadingIndex === subHeadingIndex);
+
+                if (combination && newChallengers.length > 0) {
+                  // Add individual new challenger sections
+                  const newChallengerSections = addNewChallengerSections(baseSectionId, combination, newChallengers);
+
+                  // Insert after current section
+                  const insertIndex = i + 1;
+                  currentSections.splice(insertIndex, 0, ...newChallengerSections);
+                  setSections([...currentSections]);
+                }
+              } catch (error) {
+                console.error('Error getting new challengers tickers:', error);
+              }
+            }
+          } else if (section.id.includes('-new-challenger-')) {
+            // Check if this is the last new challenger for this combination
+            const match = section.id.match(/evaluate-industry-(\d+)-(\d+)-new-challenger-/);
+            if (match) {
+              const headingIndex = parseInt(match[1]);
+              const subHeadingIndex = parseInt(match[2]);
+              const baseSectionId = `evaluate-industry-${headingIndex}-${subHeadingIndex}`;
+
+              // Find all new challenger sections for this combination
+              const allNewChallengerSections = currentSections.filter((s) => s.id.startsWith(`${baseSectionId}-new-challenger-`));
+
+              // Check if all new challenger sections are completed
+              const allNewChallengersCompleted = allNewChallengerSections.every((s) => s.contentStatus === 'success' || s.contentStatus === 'error');
+
+              if (allNewChallengersCompleted && !processedCombinations.has(`${baseSectionId}-final`)) {
+                processedCombinations.add(`${baseSectionId}-final`);
+
+                // Get combination info for display name
+                const evaluateIndustryCombinations = getAllHeadingSubheadingCombinations(industryId as TariffIndustryId);
+                const combination = evaluateIndustryCombinations.find((c) => c.headingIndex === headingIndex && c.subHeadingIndex === subHeadingIndex);
+
+                if (combination) {
+                  // Add final evaluation sections
+                  const finalSections = addFinalEvaluationSections(baseSectionId, combination);
+
+                  // Insert after current section
+                  const insertIndex = i + 1;
+                  currentSections.splice(insertIndex, 0, ...finalSections);
+                  setSections([...currentSections]);
+                }
+              }
+            }
+          }
         } catch (error) {
           updateSectionStatus(i, 'contentStatus', 'error', error instanceof Error ? error.message : 'Unknown error');
           // Continue with SEO generation even if content fails
@@ -178,31 +459,39 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
         // Small delay between content and SEO
         await new Promise((resolve) => setTimeout(resolve, 500));
 
-        // Generate SEO
-        setCurrentStep('seo');
-        updateSectionStatus(i, 'seoStatus', 'loading');
+        // Generate SEO (skip if section has skipSeo flag)
+        if (!section.skipSeo) {
+          setCurrentStep('seo');
+          updateSectionStatus(i, 'seoStatus', 'loading');
 
-        try {
-          let seoPayload: any = { section: section.seoType };
+          try {
+            let seoPayload: any = { section: section.seoType };
 
-          // For evaluate industry areas, we need to include headingIndex and subHeadingIndex
-          if (
-            section.seoType === ReportType.EVALUATE_INDUSTRY_AREA &&
-            section.contentPayload.headingIndex !== undefined &&
-            section.contentPayload.subHeadingIndex !== undefined
-          ) {
-            seoPayload = {
-              section: section.seoType,
-              headingIndex: section.contentPayload.headingIndex,
-              subHeadingIndex: section.contentPayload.subHeadingIndex,
-            };
+            // For evaluate industry areas, we need to include headingIndex and subHeadingIndex
+            if (
+              section.seoType === ReportType.EVALUATE_INDUSTRY_AREA &&
+              section.contentPayload.headingIndex !== undefined &&
+              section.contentPayload.subHeadingIndex !== undefined
+            ) {
+              seoPayload = {
+                section: section.seoType,
+                headingIndex: section.contentPayload.headingIndex,
+                subHeadingIndex: section.contentPayload.subHeadingIndex,
+              };
+            }
+
+            await postSeoData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-seo-info`, seoPayload);
+            updateSectionStatus(i, 'seoStatus', 'success');
+          } catch (error) {
+            updateSectionStatus(i, 'seoStatus', 'error', error instanceof Error ? error.message : 'Unknown error');
           }
-
-          await postSeoData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-seo-info`, seoPayload);
+        } else {
+          // Mark SEO as success for skipped sections
           updateSectionStatus(i, 'seoStatus', 'success');
-        } catch (error) {
-          updateSectionStatus(i, 'seoStatus', 'error', error instanceof Error ? error.message : 'Unknown error');
         }
+
+        // Update currentSections reference for next iteration (in case new sections were added)
+        currentSections = [...sections];
 
         // Small delay before next section
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -231,25 +520,35 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
   const getProgressPercentage = () => {
     if (!isGenerating) return 0;
 
-    const totalSteps = sections.length * 2; // content + seo for each section
+    let totalSteps = 0;
     let completedSteps = 0;
 
     sections.forEach((section, index) => {
+      // Count content step for all sections
+      totalSteps += 1;
+      // Count SEO step only for sections that don't skip SEO
+      if (!section.skipSeo) {
+        totalSteps += 1;
+      }
+
       if (index < currentSectionIndex) {
         // Previous sections are fully completed
-        completedSteps += 2;
+        completedSteps += 1; // content
+        if (!section.skipSeo) {
+          completedSteps += 1; // seo
+        }
       } else if (index === currentSectionIndex) {
         // Current section
         if (section.contentStatus === 'success' || section.contentStatus === 'error') {
           completedSteps += 1;
         }
-        if (section.seoStatus === 'success' || section.seoStatus === 'error') {
+        if (!section.skipSeo && (section.seoStatus === 'success' || section.seoStatus === 'error')) {
           completedSteps += 1;
         }
       }
     });
 
-    return Math.round((completedSteps / totalSteps) * 100);
+    return totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
   };
 
   return (
@@ -312,14 +611,24 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
 
                 {/* SEO Generation */}
                 <div className="flex items-center space-x-3 p-3 border rounded-md">
-                  {getStatusIcon(section.seoStatus)}
+                  {section.skipSeo ? (
+                    <div className="w-4 h-4 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">-</div>
+                  ) : (
+                    getStatusIcon(section.seoStatus)
+                  )}
                   <div className="flex-1">
                     <div className="font-medium text-sm">SEO Generation</div>
-                    {section.seoStatus === 'loading' && currentStep === 'seo' && index === currentSectionIndex && (
-                      <div className="text-xs text-blue-600">Generating SEO metadata...</div>
+                    {section.skipSeo ? (
+                      <div className="text-xs text-gray-500">Skipped for intermediate step</div>
+                    ) : (
+                      <>
+                        {section.seoStatus === 'loading' && currentStep === 'seo' && index === currentSectionIndex && (
+                          <div className="text-xs text-blue-600">Generating SEO metadata...</div>
+                        )}
+                        {section.seoStatus === 'error' && section.seoError && <div className="text-xs text-red-600">{section.seoError}</div>}
+                        {section.seoStatus === 'success' && <div className="text-xs text-green-600">SEO generated successfully</div>}
+                      </>
                     )}
-                    {section.seoStatus === 'error' && section.seoError && <div className="text-xs text-red-600">{section.seoError}</div>}
-                    {section.seoStatus === 'success' && <div className="text-xs text-green-600">SEO generated successfully</div>}
                   </div>
                 </div>
               </div>
@@ -338,7 +647,9 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
 
         {!isGenerating &&
           sections.length > 0 &&
-          sections.every((s) => (s.contentStatus === 'success' || s.contentStatus === 'error') && (s.seoStatus === 'success' || s.seoStatus === 'error')) && (
+          sections.every(
+            (s) => (s.contentStatus === 'success' || s.contentStatus === 'error') && (s.skipSeo || s.seoStatus === 'success' || s.seoStatus === 'error')
+          ) && (
             <div className="mt-8 p-4 bg-green-50 border border-green-200 rounded-lg">
               <div className="text-green-800 font-medium">Report generation completed! You can now view the generated sections.</div>
             </div>
