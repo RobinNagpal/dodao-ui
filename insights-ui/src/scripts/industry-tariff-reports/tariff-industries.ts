@@ -50,6 +50,7 @@ export interface TariffIndustryDefinition {
   establishedPlayersCount: number;
   newChallengersCount: number;
   companiesToIgnore: string[];
+  relatedIndustryIds: TariffIndustryId[];
 }
 
 export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
@@ -64,6 +65,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: ['Pactiv Evergreen Inc', 'Danimer Scientific(DNMR)', 'Zymergen Inc (ZY)', 'Amyris, Inc.'],
+    relatedIndustryIds: [TariffIndustryId.metalGlassPlasticContainers, TariffIndustryId.diversifiedChemicals],
   },
   Aluminium: {
     name: 'Aluminium',
@@ -76,6 +78,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.ironandsteel, TariffIndustryId.diversifiedMetalsAndMining],
   },
   Automobiles: {
     name: 'Automobiles',
@@ -101,6 +104,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
       'ElectraMeccanica Vehicles Corp. (Ticker: SOLO)',
       'Slate Auto (Ticker: SLTE)',
     ],
+    relatedIndustryIds: [TariffIndustryId.industrialMachineryAndSupplies, TariffIndustryId.constructionMachineryAndHeavyTransportationEquipment],
   },
   ApparelAndAccessories: {
     name: 'Apparel & Accessories',
@@ -113,6 +117,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.textiles, TariffIndustryId.footwear],
   },
   IronAndSteel: {
     name: 'Iron & Steel',
@@ -125,6 +130,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.diversifiedMetalsAndMining, TariffIndustryId.aluminium],
   },
   Copper: {
     name: 'Copper',
@@ -137,6 +143,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.electricalcomponentsandequipment, TariffIndustryId.diversifiedMetalsAndMining],
   },
   ElectricalComponentsAndEquipment: {
     name: 'Electrical Components & Equipment',
@@ -149,6 +156,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.consumerElectronics, TariffIndustryId.industrialMachineryAndSupplies],
   },
   HomeFurnishings: {
     name: 'Home Furnishings',
@@ -161,6 +169,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.textiles, TariffIndustryId.householdAppliances],
   },
   Pharmaceuticals: {
     name: 'Pharmaceuticals',
@@ -173,6 +182,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.consumerElectronics, TariffIndustryId.industrialMachineryAndSupplies],
   },
   Semiconductors: {
     name: 'Semiconductors & Equipment',
@@ -186,6 +196,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.consumerElectronics, TariffIndustryId.electricalcomponentsandequipment],
   },
   AgriculturalProductsAndServices: {
     name: 'Agricultural Products & Services',
@@ -198,6 +209,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.packagedFoodsAndMeats, TariffIndustryId.fertilizersAndAgriculturalChemicals],
   },
   PackagedFoodsAndMeats: {
     name: 'Packaged Foods & Meats',
@@ -210,6 +222,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.agriculturalProductsAndServices, TariffIndustryId.brewers],
   },
   ForestProducts: {
     name: 'Forest Products',
@@ -222,6 +235,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.paperProducts, TariffIndustryId.constructionMaterials],
   },
   Tobacco: {
     name: 'Tobacco',
@@ -234,6 +248,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.packagedFoodsAndMeats, TariffIndustryId.commercialPrinting],
   },
   ConstructionMaterials: {
     name: 'Construction Materials',
@@ -246,6 +261,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.diversifiedMetalsAndMining, TariffIndustryId.ironandsteel],
   },
   DiversifiedMetalsAndMining: {
     name: 'Diversified Metals & Mining',
@@ -258,6 +274,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.ironandsteel, TariffIndustryId.aluminium],
   },
   OilAndGasRefiningAndMarketing: {
     name: 'Oil & Gas Refining & Marketing',
@@ -270,6 +287,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.commodityChemicals, TariffIndustryId.industrialGases],
   },
   CommodityChemicals: {
     name: 'Commodity Chemicals',
@@ -282,6 +300,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.specialtyChemicals, TariffIndustryId.diversifiedChemicals],
   },
   SpecialtyChemicals: {
     name: 'Specialty Chemicals',
@@ -294,6 +313,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.commodityChemicals, TariffIndustryId.plastic],
   },
   FertilizersAndAgriculturalChemicals: {
     name: 'Fertilizers & Agricultural Chemicals',
@@ -306,6 +326,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.agriculturalProductsAndServices, TariffIndustryId.commodityChemicals],
   },
   IndustrialGases: {
     name: 'Industrial Gases',
@@ -318,6 +339,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.commodityChemicals, TariffIndustryId.industrialMachineryAndSupplies],
   },
   DiversifiedChemicals: {
     name: 'Diversified Chemicals',
@@ -330,6 +352,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.commodityChemicals, TariffIndustryId.plastic],
   },
   MetalGlassPlasticContainers: {
     name: 'Metal, Glass & Plastic Containers',
@@ -342,6 +365,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.plastic, TariffIndustryId.packagedFoodsAndMeats],
   },
   PaperPlasticPackagingProductsAndMaterials: {
     name: 'Paper & Plastic Packaging Products & Materials',
@@ -354,6 +378,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.plastic, TariffIndustryId.metalGlassPlasticContainers],
   },
   PaperProducts: {
     name: 'Paper Products',
@@ -366,6 +391,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.forestProducts, TariffIndustryId.commercialPrinting],
   },
   ConsumerElectronics: {
     name: 'Consumer Electronics',
@@ -378,6 +404,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.semiconductors, TariffIndustryId.electricalcomponentsandequipment],
   },
   HouseholdAppliances: {
     name: 'Household Appliances',
@@ -390,6 +417,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.consumerElectronics, TariffIndustryId.electricalcomponentsandequipment],
   },
   LeisureProducts: {
     name: 'Leisure Products',
@@ -402,6 +430,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.textiles, TariffIndustryId.footwear],
   },
   Footwear: {
     name: 'Footwear',
@@ -414,6 +443,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.apparelandaccessories, TariffIndustryId.textiles],
   },
   Textiles: {
     name: 'Textiles',
@@ -426,6 +456,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.apparelandaccessories, TariffIndustryId.footwear],
   },
   Brewers: {
     name: 'Brewers',
@@ -438,6 +469,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.packagedFoodsAndMeats, TariffIndustryId.distillersAndVintners],
   },
   DistillersAndVintners: {
     name: 'Distillers & Vintners',
@@ -450,6 +482,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.brewers, TariffIndustryId.softDrinksAndNonAlcoholicBeverages],
   },
   SoftDrinksAndNonAlcoholicBeverages: {
     name: 'Soft Drinks & Non-Alcoholic Beverages',
@@ -462,6 +495,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.packagedFoodsAndMeats, TariffIndustryId.brewers],
   },
   CommercialPrinting: {
     name: 'Commercial Printing',
@@ -474,6 +508,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.paperProducts, TariffIndustryId.paperPlasticPackagingProductsAndMaterials],
   },
   HeavyElectricalEquipment: {
     name: 'Heavy Electrical Equipment',
@@ -486,6 +521,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.electricalcomponentsandequipment, TariffIndustryId.industrialMachineryAndSupplies],
   },
   IndustrialMachineryAndSupplies: {
     name: 'Industrial Machinery & Supplies',
@@ -498,6 +534,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.heavyElectricalEquipment, TariffIndustryId.constructionMachineryAndHeavyTransportationEquipment],
   },
   AerospaceAndDefense: {
     name: 'Aerospace & Defense',
@@ -510,6 +547,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.industrialMachineryAndSupplies, TariffIndustryId.semiconductors],
   },
   ConstructionMachineryAndHeavyTransportationEquipment: {
     name: 'Construction Machinery & Heavy Transportation Equipment',
@@ -522,6 +560,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     establishedPlayersCount: 3,
     newChallengersCount: 3,
     companiesToIgnore: [],
+    relatedIndustryIds: [TariffIndustryId.automobiles, TariffIndustryId.industrialMachineryAndSupplies],
   },
 };
 

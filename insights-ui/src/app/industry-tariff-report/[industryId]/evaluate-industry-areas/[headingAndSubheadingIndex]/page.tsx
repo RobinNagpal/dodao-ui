@@ -2,11 +2,13 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-actions/EvaluateIndustryAreasActions';
 import { establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 
-import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getNumberOfHeadings, getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { EvaluateIndustryContent, IndustryArea, IndustrySubArea, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
+import { getPreviousNextIndices } from '@/util/getPreviousNextIndices';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export async function generateMetadata({
   params,
@@ -336,6 +338,59 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
         </div>,
         EvaluateIndustryContent.TARIFF_IMPACT_SUMMARY
       )}
+
+      {/* Navigation Buttons */}
+      <div className="flex justify-between items-center mt-12 pt-8 border-t">
+        {(() => {
+          const navigation = getPreviousNextIndices(industryId, headingIndex, subHeadingIndex);
+
+          return (
+            <>
+              <div className="flex-1">
+                {navigation.hasPrevious && (
+                  <Link
+                    href={`/industry-tariff-report/${industryId}/evaluate-industry-areas/${navigation.prevHeadingIndex}-${navigation.prevSubHeadingIndex}`}
+                    className="inline-flex items-center rounded-md bg-indigo-600 px-6 py-3 text-sm text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    Previous
+                  </Link>
+                )}
+              </div>
+
+              <div className="flex-1 text-center">
+                <span className="text-sm text-gray-500">
+                  {navigation.currentPosition + 1} of {navigation.totalPositions}
+                </span>
+              </div>
+
+              <div className="flex-1 text-right">
+                {navigation.hasNext && (
+                  <Link
+                    href={`/industry-tariff-report/${industryId}/evaluate-industry-areas/${navigation.nextHeadingIndex}-${navigation.nextSubHeadingIndex}`}
+                    className="inline-flex items-center rounded-md bg-indigo-600 px-6 py-3 text-sm text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200"
+                  >
+                    Next
+                    <svg className="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </Link>
+                )}
+              </div>
+            </>
+          );
+        })()}
+      </div>
     </div>
   );
 }
