@@ -1,5 +1,5 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getNumberOfSubHeadings, getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
@@ -76,6 +76,8 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
 
   const { industryAreas } = report;
 
+  const definition = getTariffIndustryDefinitionById(industryId);
+
   if (!industryAreas?.areas || industryAreas?.areas?.length === 0) {
     return <div>No industry area headings found</div>;
   }
@@ -86,7 +88,7 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold mb-6 heading-color">Evaluate Industry Areas</h1>
+      <h1 className="text-2xl font-bold mb-6 heading-color">Evaluate Industry Areas for {definition.name}</h1>
 
       {/* SEO Warning Banner for Admins */}
       {isSeoMissing && (

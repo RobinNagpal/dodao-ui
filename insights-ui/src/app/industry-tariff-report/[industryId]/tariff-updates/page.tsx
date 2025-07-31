@@ -2,6 +2,7 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import TariffUpdatesActions from '@/components/industry-tariff/section-actions/TariffUpdatesActions';
 
 import { getMarkdownContentForCountryTariffs } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
+import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -65,7 +66,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   };
 }
 
-export default async function TariffUpdatesPage({ params }: { params: Promise<{ industryId: string }> }) {
+export default async function TariffUpdatesPage({ params }: { params: Promise<{ industryId: TariffIndustryId }> }) {
   const { industryId } = await params;
 
   // Fetch the report data
@@ -80,6 +81,8 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
     return <div>Report not found</div>;
   }
 
+  const definition = getTariffIndustryDefinitionById(industryId);
+
   // Check if SEO data exists for this page
   const seoDetails = report.reportSeoDetails?.tariffUpdatesSeoDetails;
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
@@ -87,7 +90,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <h1 className="text-3xl font-bold">Tariff Updates</h1>
+        <h1 className="text-3xl font-bold">Tariff Updates for {definition.name}</h1>
         <PrivateWrapper>
           <TariffUpdatesActions industryId={industryId} />
         </PrivateWrapper>

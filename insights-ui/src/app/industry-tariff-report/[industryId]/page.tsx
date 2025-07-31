@@ -1,6 +1,6 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ReportCoverActions from '@/components/industry-tariff/section-actions/ReportCoverActions';
-import { getMarkdownContentForReportCover } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
+import { getMarkdownContentForReportCover, getMarkdownContentForExecutiveSummary } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import type { IndustryTariffReport, ReportCover } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -86,6 +86,10 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
 
   const reportCover: ReportCover | undefined = report?.reportCover;
   const markdownContent = reportCover && getMarkdownContentForReportCover(reportCover);
+
+  // Get executive summary content for better SEO
+  const executiveSummaryContent = report.executiveSummary ? parseMarkdown(getMarkdownContentForExecutiveSummary(report.executiveSummary)) : null;
+
   return (
     <div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
@@ -108,12 +112,25 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
         </PrivateWrapper>
       )}
 
+      {/* Report Cover Content */}
       <div
         dangerouslySetInnerHTML={{
           __html: (markdownContent && parseMarkdown(markdownContent)) || 'No content available',
         }}
         className="markdown-body"
       />
+
+      {/* Executive Summary Content for SEO */}
+      {executiveSummaryContent && (
+        <div className="mt-8">
+          <div
+            dangerouslySetInnerHTML={{
+              __html: executiveSummaryContent,
+            }}
+            className="markdown-body"
+          />
+        </div>
+      )}
     </div>
   );
 }
