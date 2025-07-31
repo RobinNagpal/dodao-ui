@@ -254,8 +254,32 @@ async function getEstablishedPlayers(
   subArea: IndustrySubArea,
   date: string
 ): Promise<{ establishedPlayersRefs: EstablishedPlayerRef[]; establishedPlayerDetails: EstablishedPlayer[] }> {
-  // --- STEP 1: Fetch just names + tickers ---
-  console.log(`[EstablishedPlayers] ${'→ Fetching list of names and tickers'}`);
+  // --- STEP 1: Fetch just names + tickers using the dedicated function ---
+  const basicList = await getEstablishedPlayersListOnly(tariffIndustry, areas, tariffUpdates, subArea, date);
+
+  // --- STEP 2: For each, fetch full details ---
+  const detailedList: EstablishedPlayer[] = [];
+  for (const { companyName, companyTicker } of basicList) {
+    console.log(`[EstablishedPlayers] ${`→ Fetching details for ${companyName} (${companyTicker})`}`);
+    const establishedPlayer = await getEstablishedPlayerDetails(tariffIndustry, areas, tariffUpdates, subArea, date, companyName, companyTicker);
+    console.log(`[EstablishedPlayers] ${`← Received details for ${companyName}`}`);
+    detailedList.push(establishedPlayer);
+  }
+
+  return { establishedPlayersRefs: basicList, establishedPlayerDetails: detailedList };
+}
+
+/**
+ * Get just the established players list without detailed information
+ */
+async function getEstablishedPlayersListOnly(
+  tariffIndustry: TariffIndustryDefinition,
+  areas: IndustryAreasWrapper,
+  tariffUpdates: TariffUpdatesForIndustry,
+  subArea: IndustrySubArea,
+  date: string
+): Promise<EstablishedPlayerRef[]> {
+  console.log(`[EstablishedPlayers] ${'→ Fetching list of names and tickers only'}`);
   const subAreaInfo = getSubAreaInfoString(subArea, areas, tariffIndustry);
   const listInstructions = `
 Find the three *Established Players* in the ${subAreaInfo} sector  **but output only** each company's **name** and **ticker** in JSON:
@@ -280,23 +304,22 @@ Make sure to focus just on the ${subArea.title} sector and not on other areas or
 ${JSON.stringify(areas, null, 2)}
 `;
 
+  const prompt = createIndustrySectorPrompt({
+    subArea: subArea,
+    areas,
+    tariffUpdates,
+    date,
+    instructions: listInstructions,
+  });
+
   const { establishedPlayers: basicList } = await getLlmResponse<{ establishedPlayers: { companyName: string; companyTicker: string }[] }>(
-    listInstructions,
+    prompt,
     EstablishedPlayerListSchema,
     'gemini'
   );
-  console.log(`[EstablishedPlayers] ${`← Received basic list: ${JSON.stringify(basicList)}`}`);
+  console.log(`[EstablishedPlayers] ${`← Received basic list only: ${JSON.stringify(basicList)}`}`);
 
-  // --- STEP 2: For each, fetch full details ---
-  const detailedList: EstablishedPlayer[] = [];
-  for (const { companyName, companyTicker } of basicList) {
-    console.log(`[EstablishedPlayers] ${`→ Fetching details for ${companyName} (${companyTicker})`}`);
-    const establishedPlayer = await getEstablishedPlayerDetails(tariffIndustry, areas, tariffUpdates, subArea, date, companyName, companyTicker);
-    console.log(`[EstablishedPlayers] ${`← Received details for ${companyName}`}`);
-    detailedList.push(establishedPlayer);
-  }
-
-  return { establishedPlayersRefs: basicList, establishedPlayerDetails: detailedList };
+  return basicList;
 }
 
 // A minimal schema for step 1: name + ticker only
@@ -359,8 +382,33 @@ async function getNewChallengers(
   establishedPlayers: EstablishedPlayer[],
   date: string
 ): Promise<{ newChallengersRefs: NewChallengerRef[]; newChallengersDetails: NewChallenger[] }> {
-  // --- STEP 1: Fetch just names + tickers ---
-  console.log(`[NewChallengers] ${'→ Fetching list of names and tickers'}`);
+  // --- STEP 1: Fetch just names + tickers using the dedicated function ---
+  const basicList = await getNewChallengersListOnly(tariffIndustry, areas, tariffUpdates, subArea, establishedPlayers, date);
+
+  // --- STEP 2: For each, fetch full details ---
+  const detailedList: NewChallenger[] = [];
+  for (const { companyName, companyTicker } of basicList) {
+    console.log(`[NewChallengers] ${`→ Fetching details for ${companyName} (${companyTicker})`}`);
+    const newChallenger = await getNewChallengerDetails(tariffIndustry, areas, tariffUpdates, subArea, establishedPlayers, date, companyName, companyTicker);
+    console.log(`[NewChallengers] ${`← Received details for ${companyName}`}`);
+    detailedList.push(newChallenger);
+  }
+
+  return { newChallengersRefs: basicList, newChallengersDetails: detailedList };
+}
+
+/**
+ * Get just the new challengers list without detailed information
+ */
+async function getNewChallengersListOnly(
+  tariffIndustry: TariffIndustryDefinition,
+  areas: IndustryAreasWrapper,
+  tariffUpdates: TariffUpdatesForIndustry,
+  subArea: IndustrySubArea,
+  establishedPlayers: EstablishedPlayer[],
+  date: string
+): Promise<NewChallengerRef[]> {
+  console.log(`[NewChallengers] ${'→ Fetching list of names and tickers only'}`);
   const subAreaInfo = getSubAreaInfoString(subArea, areas, tariffIndustry);
   const listInstructions = `
 Find the *New Challengers* in the ${subAreaInfo} sector **but output only** each company's **name** and **ticker** in JSON:
@@ -385,23 +433,22 @@ Make sure to focus just on the ${subArea.title} sector and not on other areas or
 ${JSON.stringify(areas, null, 2)}
 `;
 
+  const prompt = createIndustrySectorPrompt({
+    subArea: subArea,
+    areas,
+    tariffUpdates,
+    date,
+    instructions: listInstructions,
+  });
+
   const { newChallengers: basicList } = await getLlmResponse<{ newChallengers: { companyName: string; companyTicker: string }[] }>(
-    listInstructions,
+    prompt,
     NewChallengerListSchema,
     'gemini'
   );
-  console.log(`[NewChallengers] ${`← Received basic list: ${JSON.stringify(basicList)}`}`);
+  console.log(`[NewChallengers] ${`← Received basic list only: ${JSON.stringify(basicList)}`}`);
 
-  // --- STEP 2: For each, fetch full details ---
-  const detailedList: NewChallenger[] = [];
-  for (const { companyName, companyTicker } of basicList) {
-    console.log(`[NewChallengers] ${`→ Fetching details for ${companyName} (${companyTicker})`}`);
-    const newChallenger = await getNewChallengerDetails(tariffIndustry, areas, tariffUpdates, subArea, establishedPlayers, date, companyName, companyTicker);
-    console.log(`[NewChallengers] ${`← Received details for ${companyName}`}`);
-    detailedList.push(newChallenger);
-  }
-
-  return { newChallengersRefs: basicList, newChallengersDetails: detailedList };
+  return basicList;
 }
 
 /**
@@ -647,6 +694,12 @@ export async function regenerateEvaluateIndustryAreaJson(
       result.establishedPlayerDetails[playerIndex] = newPlayer;
       result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
       break;
+    case EvaluateIndustryContent.GET_ESTABLISHED_PLAYERS:
+      console.log('Getting established players list only');
+      const establishedPlayersListOnly = await getEstablishedPlayersListOnly(tariffIndustry, industryAreasWrapper, tariffUpdates, industryArea, date);
+      result.establishedPlayersRefs = establishedPlayersListOnly;
+      result.establishedPlayerDetails = []; // Clear detailed information
+      break;
     case EvaluateIndustryContent.NEW_CHALLENGERS:
       console.log('Regenerating new challengers');
       const { newChallengersRefs, newChallengersDetails } = await getNewChallengers(
@@ -683,6 +736,19 @@ export async function regenerateEvaluateIndustryAreaJson(
       const challengerIndex = result.newChallengersDetails.findIndex((c) => c.companyTicker === challengerTicker);
       result.newChallengersDetails[challengerIndex] = newChallenger;
       result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
+      break;
+    case EvaluateIndustryContent.GET_NEW_CHALLENGERS:
+      console.log('Getting new challengers list only');
+      const newChallengersListOnly = await getNewChallengersListOnly(
+        tariffIndustry,
+        industryAreasWrapper,
+        tariffUpdates,
+        industryArea,
+        result.establishedPlayerDetails,
+        date
+      );
+      result.newChallengersRefs = newChallengersListOnly;
+      result.newChallengersDetails = []; // Clear detailed information
       break;
     case EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS:
       result.headwindsAndTailwinds = await getHeadwindsAndTailwinds(tariffIndustry, industryAreasWrapper, tariffUpdates, industryArea, date);
