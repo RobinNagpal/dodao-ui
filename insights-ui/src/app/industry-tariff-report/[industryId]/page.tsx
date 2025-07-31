@@ -95,11 +95,11 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
   // Get executive summary content for better SEO
   const executiveSummaryContent = report.executiveSummary ? parseMarkdown(getMarkdownContentForExecutiveSummary(report.executiveSummary)) : null;
 
-  // Prepare tariff updates summary with first sentence only
+  // Prepare tariff updates summary with complete newChanges
   const tariffUpdatesSummary =
     report.tariffUpdates?.countrySpecificTariffs?.map((tariff) => ({
       countryName: tariff.countryName,
-      newChangesFirstSentence: tariff.newChanges.split('.')[0] + '.',
+      newChangesFirstSentence: tariff.newChanges,
     })) || [];
 
   return (
@@ -136,13 +136,19 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
       {tariffUpdatesSummary.length > 0 && (
         <div className="mt-8">
           <h2 className="text-2xl font-bold mb-4">Latest {definition.name} Tariff Actions</h2>
-          <ul className="list-none space-y-2 mb-4">
+          <div className="space-y-4 mb-4">
             {tariffUpdatesSummary.map((tariff, index) => (
-              <li key={index}>
-                <strong>{tariff.countryName}</strong> – {tariff.newChangesFirstSentence}
-              </li>
+              <div key={index}>
+                <h3 className="font-bold text-lg">{tariff.countryName}</h3>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: parseMarkdown(tariff.newChangesFirstSentence),
+                  }}
+                  className="markdown-body"
+                />
+              </div>
             ))}
-          </ul>
+          </div>
           <a href={`/industry-tariff-report/${industryId}/tariff-updates`} className="link-color underline font-medium">
             See full country breakdown
           </a>
@@ -163,7 +169,7 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
 
       {/* Related Industries Section */}
       {definition.relatedIndustryIds && definition.relatedIndustryIds.length > 0 && (
-        <div className="mt-12 pt-8 border-t border-color">
+        <div className="mt-12 pt-8 border-t">
           <h3 className="text-xl font-bold mb-4 text-color">Related Industry Reports</h3>
           <p className="text-muted-foreground mb-6">
             Explore tariff impacts on related industries that may affect your supply chain, sourcing decisions, or market opportunities.
