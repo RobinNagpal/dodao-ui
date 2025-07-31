@@ -4,7 +4,7 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { ReportType, EvaluateIndustryContent, EstablishedPlayerRef, NewChallengerRef } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getAllHeadingSubheadingCombinations, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 
@@ -40,6 +40,22 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
     successMessage: '',
     errorMessage: '',
   });
+
+  // Helper function to update section status with proper state management
+  const updateSectionStatus = useCallback((index: number, field: 'contentStatus' | 'seoStatus', status: GenerationSection[typeof field], error?: string) => {
+    setSections((prev) =>
+      prev.map((section, i) =>
+        i === index
+          ? {
+              ...section,
+              [field]: status,
+              ...(error && field === 'contentStatus' ? { contentError: error } : {}),
+              ...(error && field === 'seoStatus' ? { seoError: error } : {}),
+            }
+          : section
+      )
+    );
+  }, []);
 
   // Helper function to add individual established player sections
   const addEstablishedPlayerSections = (
@@ -280,21 +296,6 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
   // Computed value to check if generation is in progress
   const isGenerating = currentSectionIndex !== -1;
 
-  const updateSectionStatus = (index: number, field: 'contentStatus' | 'seoStatus', status: GenerationSection[typeof field], error?: string) => {
-    setSections((prev) =>
-      prev.map((section, i) =>
-        i === index
-          ? {
-              ...section,
-              [field]: status,
-              ...(error && field === 'contentStatus' ? { contentError: error } : {}),
-              ...(error && field === 'seoStatus' ? { seoError: error } : {}),
-            }
-          : section
-      )
-    );
-  };
-
   const generateAllSections = async () => {
     if (!industryId || isGenerating) return;
 
@@ -302,20 +303,29 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
     setCurrentSectionIndex(0);
 
     try {
-      let currentSections = [...sections];
       let processedCombinations = new Set<string>(); // Track which combinations we've fully processed
+      let sectionIndex = 0;
 
-      for (let i = 0; i < currentSections.length; i++) {
-        setCurrentSectionIndex(i);
-        const section = currentSections[i];
+      // Keep processing until all sections are done
+      while (true) {
+        // Get current sections from state
+        const currentSections = sections;
+
+        // Break if we've processed all sections
+        if (sectionIndex >= currentSections.length) {
+          break;
+        }
+
+        setCurrentSectionIndex(sectionIndex);
+        const section = currentSections[sectionIndex];
 
         // Generate Content
         setCurrentStep('content');
-        updateSectionStatus(i, 'contentStatus', 'loading');
+        updateSectionStatus(sectionIndex, 'contentStatus', 'loading');
 
         try {
           const response = await postContentData(`${getBaseUrl()}${section.contentApi}`, section.contentPayload);
-          updateSectionStatus(i, 'contentStatus', 'success');
+          updateSectionStatus(sectionIndex, 'contentStatus', 'success');
 
           // Handle different section types and add subsequent sections dynamically
           if (section.id.includes('-get-established-players')) {
@@ -343,10 +353,15 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
                   // Add individual established player sections
                   const establishedPlayerSections = addEstablishedPlayerSections(baseSectionId, combination, establishedPlayers);
 
-                  // Insert after current section
-                  const insertIndex = i + 1;
-                  currentSections.splice(insertIndex, 0, ...establishedPlayerSections);
-                  setSections([...currentSections]);
+                  // Insert after current section and wait for state update
+                  await new Promise<void>((resolve) => {
+                    setSections((prev) => {
+                      const newSections = [...prev];
+                      newSections.splice(sectionIndex + 1, 0, ...establishedPlayerSections);
+                      setTimeout(() => resolve(), 0); // Wait for state update
+                      return newSections;
+                    });
+                  });
                 }
               } catch (error) {
                 console.error('Error getting established players tickers:', error);
@@ -361,10 +376,13 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
               const baseSectionId = `evaluate-industry-${headingIndex}-${subHeadingIndex}`;
 
               // Find all established player sections for this combination
-              const allEstablishedPlayerSections = currentSections.filter((s) => s.id.startsWith(`${baseSectionId}-established-player-`));
+              const allEstablishedPlayerSections = sections.filter((s) => s.id.startsWith(`${baseSectionId}-established-player-`));
 
-              // Check if all established player sections are completed
-              const allEstablishedPlayersCompleted = allEstablishedPlayerSections.every((s) => s.contentStatus === 'success' || s.contentStatus === 'error');
+              // Check if all established player sections are completed (including current one)
+              const allEstablishedPlayersCompleted = allEstablishedPlayerSections.every((s, idx) => {
+                if (s.id === section.id) return true; // Current section is being completed
+                return s.contentStatus === 'success' || s.contentStatus === 'error';
+              });
 
               if (allEstablishedPlayersCompleted && !processedCombinations.has(`${baseSectionId}-get-new-challengers`)) {
                 processedCombinations.add(`${baseSectionId}-get-new-challengers`);
@@ -377,10 +395,15 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
                   // Add GET_NEW_CHALLENGERS section
                   const getNewChallengersSection = addGetNewChallengersSection(baseSectionId, combination);
 
-                  // Insert after current section
-                  const insertIndex = i + 1;
-                  currentSections.splice(insertIndex, 0, getNewChallengersSection);
-                  setSections([...currentSections]);
+                  // Insert after current section and wait for state update
+                  await new Promise<void>((resolve) => {
+                    setSections((prev) => {
+                      const newSections = [...prev];
+                      newSections.splice(sectionIndex + 1, 0, getNewChallengersSection);
+                      setTimeout(() => resolve(), 0); // Wait for state update
+                      return newSections;
+                    });
+                  });
                 }
               }
             }
@@ -409,10 +432,15 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
                   // Add individual new challenger sections
                   const newChallengerSections = addNewChallengerSections(baseSectionId, combination, newChallengers);
 
-                  // Insert after current section
-                  const insertIndex = i + 1;
-                  currentSections.splice(insertIndex, 0, ...newChallengerSections);
-                  setSections([...currentSections]);
+                  // Insert after current section and wait for state update
+                  await new Promise<void>((resolve) => {
+                    setSections((prev) => {
+                      const newSections = [...prev];
+                      newSections.splice(sectionIndex + 1, 0, ...newChallengerSections);
+                      setTimeout(() => resolve(), 0); // Wait for state update
+                      return newSections;
+                    });
+                  });
                 }
               } catch (error) {
                 console.error('Error getting new challengers tickers:', error);
@@ -427,10 +455,13 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
               const baseSectionId = `evaluate-industry-${headingIndex}-${subHeadingIndex}`;
 
               // Find all new challenger sections for this combination
-              const allNewChallengerSections = currentSections.filter((s) => s.id.startsWith(`${baseSectionId}-new-challenger-`));
+              const allNewChallengerSections = sections.filter((s) => s.id.startsWith(`${baseSectionId}-new-challenger-`));
 
-              // Check if all new challenger sections are completed
-              const allNewChallengersCompleted = allNewChallengerSections.every((s) => s.contentStatus === 'success' || s.contentStatus === 'error');
+              // Check if all new challenger sections are completed (including current one)
+              const allNewChallengersCompleted = allNewChallengerSections.every((s, idx) => {
+                if (s.id === section.id) return true; // Current section is being completed
+                return s.contentStatus === 'success' || s.contentStatus === 'error';
+              });
 
               if (allNewChallengersCompleted && !processedCombinations.has(`${baseSectionId}-final`)) {
                 processedCombinations.add(`${baseSectionId}-final`);
@@ -443,16 +474,21 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
                   // Add final evaluation sections
                   const finalSections = addFinalEvaluationSections(baseSectionId, combination);
 
-                  // Insert after current section
-                  const insertIndex = i + 1;
-                  currentSections.splice(insertIndex, 0, ...finalSections);
-                  setSections([...currentSections]);
+                  // Insert after current section and wait for state update
+                  await new Promise<void>((resolve) => {
+                    setSections((prev) => {
+                      const newSections = [...prev];
+                      newSections.splice(sectionIndex + 1, 0, ...finalSections);
+                      setTimeout(() => resolve(), 0); // Wait for state update
+                      return newSections;
+                    });
+                  });
                 }
               }
             }
           }
         } catch (error) {
-          updateSectionStatus(i, 'contentStatus', 'error', error instanceof Error ? error.message : 'Unknown error');
+          updateSectionStatus(sectionIndex, 'contentStatus', 'error', error instanceof Error ? error.message : 'Unknown error');
           // Continue with SEO generation even if content fails
         }
 
@@ -462,7 +498,7 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
         // Generate SEO (skip if section has skipSeo flag)
         if (!section.skipSeo) {
           setCurrentStep('seo');
-          updateSectionStatus(i, 'seoStatus', 'loading');
+          updateSectionStatus(sectionIndex, 'seoStatus', 'loading');
 
           try {
             let seoPayload: any = { section: section.seoType };
@@ -481,17 +517,17 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
             }
 
             await postSeoData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-seo-info`, seoPayload);
-            updateSectionStatus(i, 'seoStatus', 'success');
+            updateSectionStatus(sectionIndex, 'seoStatus', 'success');
           } catch (error) {
-            updateSectionStatus(i, 'seoStatus', 'error', error instanceof Error ? error.message : 'Unknown error');
+            updateSectionStatus(sectionIndex, 'seoStatus', 'error', error instanceof Error ? error.message : 'Unknown error');
           }
         } else {
           // Mark SEO as success for skipped sections
-          updateSectionStatus(i, 'seoStatus', 'success');
+          updateSectionStatus(sectionIndex, 'seoStatus', 'success');
         }
 
-        // Update currentSections reference for next iteration (in case new sections were added)
-        currentSections = [...sections];
+        // Move to next section
+        sectionIndex++;
 
         // Small delay before next section
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -557,7 +593,8 @@ export default function GenerateAllSections({ industryId }: GenerateAllClientPro
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">Generate Complete Tariff Report</h1>
           <p className="mb-6">
-            This will generate all sections of the tariff report sequentially. Each section will generate content first, then SEO metadata.
+            This will generate all sections of the tariff report sequentially. Each section will generate content first, then SEO metadata only for the final
+            sections.
           </p>
 
           {!isGenerating && (

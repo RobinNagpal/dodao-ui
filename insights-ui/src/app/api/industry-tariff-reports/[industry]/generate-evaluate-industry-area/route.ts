@@ -53,10 +53,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
     await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType, challengerTicker);
   } else if (sectionType === EvaluateIndustryContent.ESTABLISHED_PLAYER && establishedPlayerTicker) {
     await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType, undefined, establishedPlayerTicker);
-  } else if (sectionType === EvaluateIndustryContent.GET_ESTABLISHED_PLAYERS) {
-    await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType);
-  } else if (sectionType === EvaluateIndustryContent.GET_NEW_CHALLENGERS) {
-    await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType);
   } else {
     await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType);
   }
