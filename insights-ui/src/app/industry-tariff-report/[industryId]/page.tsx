@@ -1,10 +1,13 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ReportCoverActions from '@/components/industry-tariff/section-actions/ReportCoverActions';
 import { getMarkdownContentForReportCover, getMarkdownContentForExecutiveSummary } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
+import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport, ReportCover } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { ChevronRight } from 'lucide-react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
@@ -60,8 +63,10 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   };
 }
 
-export default async function IndustryTariffReportPage({ params }: { params: Promise<{ industryId: string }> }) {
+export default async function IndustryTariffReportPage({ params }: { params: Promise<{ industryId: TariffIndustryId }> }) {
   const { industryId } = await params;
+
+  const definition = getTariffIndustryDefinitionById(industryId);
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
@@ -89,6 +94,13 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
 
   // Get executive summary content for better SEO
   const executiveSummaryContent = report.executiveSummary ? parseMarkdown(getMarkdownContentForExecutiveSummary(report.executiveSummary)) : null;
+
+  // Prepare tariff updates summary with complete newChanges
+  const tariffUpdatesSummary =
+    report.tariffUpdates?.countrySpecificTariffs?.map((tariff) => ({
+      countryName: tariff.countryName,
+      newChangesFirstSentence: tariff.newChanges,
+    })) || [];
 
   return (
     <div>
@@ -120,6 +132,29 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
         className="markdown-body"
       />
 
+      {/* Latest Tariff Actions Summary */}
+      {tariffUpdatesSummary.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-4">Latest {definition.name} Tariff Actions</h2>
+          <div className="space-y-4 mb-4">
+            {tariffUpdatesSummary.map((tariff, index) => (
+              <div key={index}>
+                <h3 className="font-bold text-lg">{tariff.countryName}</h3>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: parseMarkdown(tariff.newChangesFirstSentence),
+                  }}
+                  className="markdown-body"
+                />
+              </div>
+            ))}
+          </div>
+          <a href={`/industry-tariff-report/${industryId}/tariff-updates`} className="link-color underline font-medium">
+            See full country breakdown
+          </a>
+        </div>
+      )}
+
       {/* Executive Summary Content for SEO */}
       {executiveSummaryContent && (
         <div className="mt-8">
@@ -129,6 +164,48 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
             }}
             className="markdown-body"
           />
+        </div>
+      )}
+
+      {/* Related Industries Section */}
+      {definition.relatedIndustryIds && definition.relatedIndustryIds.length > 0 && (
+        <div className="mt-12 pt-8 border-t">
+          <h3 className="text-xl font-bold mb-4 text-color">Related Industry Reports</h3>
+          <p className="text-muted-foreground mb-6">
+            Explore tariff impacts on related industries that may affect your supply chain, sourcing decisions, or market opportunities.
+          </p>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {definition.relatedIndustryIds.map((relatedIndustryId) => {
+              const relatedDefinition = getTariffIndustryDefinitionById(relatedIndustryId);
+              return (
+                <div
+                  key={relatedIndustryId}
+                  className="flex flex-col overflow-hidden rounded-lg shadow-lg border border-color hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="flex-1 background-color p-6">
+                    <div className="flex items-center text-xs font-medium mb-3">
+                      <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+                        Related Report
+                      </span>
+                    </div>
+
+                    <Link href={`/industry-tariff-report/${relatedIndustryId}`} className="block mt-2 group">
+                      <h4 className="text-lg font-semibold group-hover:text-primary-color transition-colors text-color">{relatedDefinition.name}</h4>
+                    </Link>
+
+                    <p className="mt-3 text-muted-foreground line-clamp-3">{relatedDefinition.reportOneLiner}</p>
+                  </div>
+
+                  <div className="block-bg-color border-t border-color p-4">
+                    <Link href={`/industry-tariff-report/${relatedIndustryId}`} className="group flex items-center text-sm font-medium primary-color">
+                      View report
+                      <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
