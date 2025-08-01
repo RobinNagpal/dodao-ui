@@ -5,7 +5,25 @@ import { EvaluateIndustryContent, ReportType } from '@/scripts/industry-tariff-r
 import { getAllHeadingSubheadingCombinations, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+// Define types for tracking API call status
+type ApiCallStatus = 'pending' | 'completed';
+
+interface ApiCall {
+  id: string;
+  name: string;
+  status: ApiCallStatus;
+}
+
+interface TariffReportApiCalls {
+  id: string;
+  headingIndex: number;
+  subHeadingIndex: number;
+  displayName: string;
+  apiCalls: ApiCall[];
+  allCompleted: boolean;
+}
 
 export default function GenerateWholeReport({ industryId }: { industryId: string }) {
   const { postData } = usePostData<any, any>({ successMessage: '', errorMessage: '' });
@@ -14,11 +32,64 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
   const [currentStep, setCurrentStep] = useState('');
   const [error, setError] = useState<string | null>(null);
 
+  // New state variables for tracking API calls
+  const [topLevelApiCalls, setTopLevelApiCalls] = useState<ApiCall[]>([
+    { id: 'understand-industry', name: 'Industry Understanding', status: 'pending' },
+    { id: 'tariff-updates', name: 'Tariff Updates', status: 'pending' },
+    { id: 'industry-areas', name: 'Industry Areas', status: 'pending' },
+  ]);
+
+  const [comboApiCalls, setComboApiCalls] = useState<TariffReportApiCalls[]>([]);
+
+  const [finalApiCalls, setFinalApiCalls] = useState<ApiCall[]>([
+    { id: 'executive-summary', name: 'Executive Summary', status: 'pending' },
+    { id: 'report-cover', name: 'Report Cover', status: 'pending' },
+    { id: 'final-conclusion', name: 'Final Conclusion', status: 'pending' },
+  ]);
+
+  // Initialize comboApiCalls when the component loads
+  useEffect(() => {
+    if (industryId) {
+      const combos = getAllHeadingSubheadingCombinations(industryId as TariffIndustryId);
+      const initialComboApiCalls = combos.map((combo) => ({
+        id: `combo-${combo.headingIndex}-${combo.subHeadingIndex}`,
+        headingIndex: combo.headingIndex,
+        subHeadingIndex: combo.subHeadingIndex,
+        displayName: combo.displayName,
+        apiCalls: [
+          {
+            id: `established-players-tickers-${combo.headingIndex}-${combo.subHeadingIndex}`,
+            name: 'Get Established Players',
+            status: 'pending' as ApiCallStatus,
+          },
+          { id: `new-challengers-tickers-${combo.headingIndex}-${combo.subHeadingIndex}`, name: 'Get New Challengers', status: 'pending' as ApiCallStatus },
+          { id: `headwinds-tailwinds-${combo.headingIndex}-${combo.subHeadingIndex}`, name: 'Headwinds & Tailwinds', status: 'pending' as ApiCallStatus },
+          { id: `tariff-impact-${combo.headingIndex}-${combo.subHeadingIndex}`, name: 'Tariff Impact Analysis', status: 'pending' as ApiCallStatus },
+          { id: `final-summary-${combo.headingIndex}-${combo.subHeadingIndex}`, name: 'Final Summary', status: 'pending' as ApiCallStatus },
+        ],
+        allCompleted: false,
+      }));
+
+      setComboApiCalls(initialComboApiCalls);
+    }
+  }, [industryId]);
+
   const run = async () => {
     if (running) return;
     setRunning(true);
     setError(null);
     setProgress(0);
+
+    // Reset all API call statuses to pending
+    setTopLevelApiCalls((prev) => prev.map((call) => ({ ...call, status: 'pending' })));
+    setComboApiCalls((prev) =>
+      prev.map((combo) => ({
+        ...combo,
+        apiCalls: combo.apiCalls.map((call) => ({ ...call, status: 'pending' })),
+        allCompleted: false,
+      }))
+    );
+    setFinalApiCalls((prev) => prev.map((call) => ({ ...call, status: 'pending' })));
 
     try {
       const today = new Date().toISOString().split('T')[0];
@@ -34,9 +105,38 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         setCurrentStep(stepName);
       };
 
+      // Helper function to update API call status
+      const updateApiCallStatus = (apiCallId: string, setStateFn: React.Dispatch<React.SetStateAction<ApiCall[]>>) => {
+        setStateFn((prev) => prev.map((call) => (call.id === apiCallId ? { ...call, status: 'completed' } : call)));
+      };
+
+      // Helper function to update combo API call status
+      const updateComboApiCallStatus = (comboId: string, apiCallId: string) => {
+        setComboApiCalls((prev: TariffReportApiCalls[]) => {
+          const newCombos = prev.map((combo) => {
+            if (combo.id === comboId) {
+              const newApiCalls: ApiCall[] = combo.apiCalls.map((call) => (call.id === apiCallId ? { ...call, status: 'completed' } : call));
+
+              // Check if all API calls in this combo are completed
+              const allCompleted = newApiCalls.every((call) => call.status === 'completed');
+
+              return {
+                ...combo,
+                apiCalls: newApiCalls,
+                allCompleted,
+              };
+            }
+            return combo;
+          });
+
+          return newCombos;
+        });
+      };
+
       /* -------- 1. top-level sections ------------------------------------ */
       setCurrentStep('Generating industry understanding...');
       await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-understand-industry`, {});
+      updateApiCallStatus('understand-industry', setTopLevelApiCalls);
       bump('Industry understanding complete');
 
       setCurrentStep('Generating tariff updates...');
@@ -44,18 +144,21 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         industry: industryId,
         date: today,
       });
+      updateApiCallStatus('tariff-updates', setTopLevelApiCalls);
       bump('Tariff updates complete');
 
       setCurrentStep('Generating industry areas...');
       await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-industry-areas`, {
         industry: industryId,
       });
+      updateApiCallStatus('industry-areas', setTopLevelApiCalls);
       bump('Industry areas complete');
 
       /* -------- 2. every heading/sub-heading combo ----------------------- */
       for (const c of combos) {
         const basePayload = { date: today, headingIndex: c.headingIndex, subHeadingIndex: c.subHeadingIndex };
         const sectionName = `${c.displayName}`;
+        const comboId = `combo-${c.headingIndex}-${c.subHeadingIndex}`;
 
         await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
           ...basePayload,
@@ -65,6 +168,7 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         /* 2-a  get list of established players */
         setCurrentStep(`Getting established players for ${sectionName}...`);
         const { establishedPlayers = [] } = await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/get-established-players`, basePayload);
+        updateComboApiCallStatus(comboId, `established-players-tickers-${c.headingIndex}-${c.subHeadingIndex}`);
 
         // Update total steps now that we know how many players/challengers there are
         if (done === 3) {
@@ -91,7 +195,6 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         }
 
         /* 2-c  get list of new challengers */
-
         await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
           ...basePayload,
           sectionType: EvaluateIndustryContent.NEW_CHALLENGERS_TICKERS_ONLY,
@@ -99,6 +202,7 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
 
         setCurrentStep(`Getting new challengers for ${sectionName}...`);
         const { newChallengers = [] } = await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/get-new-challengers`, basePayload);
+        updateComboApiCallStatus(comboId, `new-challengers-tickers-${c.headingIndex}-${c.subHeadingIndex}`);
         bump(`Found ${newChallengers.length} new challengers for ${sectionName}`);
 
         /* 2-d  detail for each challenger */
@@ -118,6 +222,7 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
           ...basePayload,
           sectionType: EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS,
         });
+        updateComboApiCallStatus(comboId, `headwinds-tailwinds-${c.headingIndex}-${c.subHeadingIndex}`);
         bump(`Headwinds & tailwinds complete for ${sectionName}`);
 
         /* 2-f  tariff impact by company-type */
@@ -126,6 +231,7 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
           ...basePayload,
           sectionType: EvaluateIndustryContent.TARIFF_IMPACT_BY_COMPANY_TYPE,
         });
+        updateComboApiCallStatus(comboId, `tariff-impact-${c.headingIndex}-${c.subHeadingIndex}`);
         bump(`Tariff impact analysis complete for ${sectionName}`);
 
         /* 2-g  final summary */
@@ -134,22 +240,26 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
           ...basePayload,
           sectionType: EvaluateIndustryContent.TARIFF_IMPACT_SUMMARY,
         });
+        updateComboApiCallStatus(comboId, `final-summary-${c.headingIndex}-${c.subHeadingIndex}`);
         bump(`${sectionName} complete!`);
       }
 
       /* -------- 3. Final sections ----------------------------------------- */
       setCurrentStep('Generating executive summary...');
       await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-executive-summary`, {});
+      updateApiCallStatus('executive-summary', setFinalApiCalls);
       bump('Executive summary complete');
 
       setCurrentStep('Generating report cover...');
       await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-report-cover`, {});
+      updateApiCallStatus('report-cover', setFinalApiCalls);
       bump('Report cover complete');
 
       setCurrentStep('Generating final conclusion...');
       await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-final-conclusion`, {
         industry: industryId,
       });
+      updateApiCallStatus('final-conclusion', setFinalApiCalls);
       bump('Final conclusion complete');
 
       setCurrentStep('Report generation completed successfully! 🎉');
@@ -170,6 +280,84 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         <p className="text-gray-600 mb-6">
           This will generate all sections of the tariff report sequentially. The process may take several minutes to complete.
         </p>
+        <div className="mt-4 border-t border-blue-100 pt-4">
+          <h3 className="text-sm font-medium text-blue-800 mb-2">API Calls Status:</h3>
+
+          {/* Top Level API Calls */}
+          <div className="mb-4">
+            <h4 className="text-xs font-medium mb-1">Top Level Sections:</h4>
+            <ul className="space-y-1">
+              {topLevelApiCalls.map((call) => (
+                <li key={call.id} className="flex items-center text-sm">
+                  <div
+                    className={`w-4 h-4 rounded-full flex items-center justify-center text-white text-xs mr-2 ${
+                      call.status === 'completed' ? 'bg-green-500' : 'bg-gray-300'
+                    }`}
+                  >
+                    {call.status === 'completed' ? '✓' : ''}
+                  </div>
+                  <span>{call.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Combo API Calls */}
+          <div className="mb-4">
+            <h4 className="text-xs font-medium mb-1">Heading/Subheading Combinations:</h4>
+            <ul className="space-y-3">
+              {comboApiCalls.map((combo) => (
+                <li key={combo.id} className="border-l-2 border-gray-200 pl-3">
+                  <div className="flex items-center mb-1">
+                    <div
+                      className={`w-4 h-4 rounded-full flex items-center justify-center text-white text-xs mr-2 ${
+                        combo.allCompleted ? 'bg-green-500' : 'bg-gray-300'
+                      }`}
+                    >
+                      {combo.allCompleted ? '✓' : ''}
+                    </div>
+                    <span className="text-sm font-medium">
+                      [{combo.headingIndex}, {combo.subHeadingIndex}] {combo.displayName}
+                    </span>
+                  </div>
+                  <ul className="space-y-1 ml-6">
+                    {combo.apiCalls.map((call) => (
+                      <li key={call.id} className="flex items-center text-xs">
+                        <div
+                          className={`w-3 h-3 rounded-full flex items-center justify-center text-white text-xs mr-2 ${
+                            call.status === 'completed' ? 'bg-green-500' : 'bg-gray-300'
+                          }`}
+                        >
+                          {call.status === 'completed' ? '✓' : ''}
+                        </div>
+                        <span>{call.name}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Final API Calls */}
+          <div>
+            <h4 className="text-xs font-medium mb-1">Final Sections:</h4>
+            <ul className="space-y-1">
+              {finalApiCalls.map((call) => (
+                <li key={call.id} className="flex items-center text-sm">
+                  <div
+                    className={`w-4 h-4 rounded-full flex items-center justify-center text-white text-xs mr-2 ${
+                      call.status === 'completed' ? 'bg-green-500' : 'bg-gray-300'
+                    }`}
+                  >
+                    {call.status === 'completed' ? '✓' : ''}
+                  </div>
+                  <span>{call.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
 
         {!running && !error && (
           <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors" onClick={run}>
@@ -205,9 +393,11 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
                 </div>
               </div>
 
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-gray-700 mb-4">
                 <strong>Current:</strong> {currentStep}
               </p>
+
+              {/* API Call Status Section */}
             </div>
 
             <div className="text-sm text-gray-500 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
