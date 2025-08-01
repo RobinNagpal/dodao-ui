@@ -8,7 +8,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect } from 'react';
 
 // Define types for tracking API call status
-type ApiCallStatus = 'pending' | 'completed';
+type ApiCallStatus = 'pending' | 'loading' | 'completed';
 
 interface ApiCall {
   id: string;
@@ -101,16 +101,39 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
 
       const bump = (stepName: string) => {
         done++;
-        setProgress(Math.round((done / totalSteps) * 100));
+        // Progress is now calculated based on completed API calls
         setCurrentStep(stepName);
       };
 
-      // Helper function to update API call status
+      // Helper function to set API call to loading state
+      const setApiCallLoading = (apiCallId: string, setStateFn: React.Dispatch<React.SetStateAction<ApiCall[]>>) => {
+        setStateFn((prev) => prev.map((call) => (call.id === apiCallId ? { ...call, status: 'loading' } : call)));
+      };
+
+      // Helper function to set combo API call to loading state
+      const setComboApiCallLoading = (comboId: string, apiCallId: string) => {
+        setComboApiCalls((prev: TariffReportApiCalls[]) => {
+          return prev.map((combo) => {
+            if (combo.id === comboId) {
+              const newApiCalls: ApiCall[] = combo.apiCalls.map((call) => (call.id === apiCallId ? { ...call, status: 'loading' } : call));
+
+              return {
+                ...combo,
+                apiCalls: newApiCalls,
+                // Don't update allCompleted here as we're just setting to loading
+              };
+            }
+            return combo;
+          });
+        });
+      };
+
+      // Helper function to update API call status to completed
       const updateApiCallStatus = (apiCallId: string, setStateFn: React.Dispatch<React.SetStateAction<ApiCall[]>>) => {
         setStateFn((prev) => prev.map((call) => (call.id === apiCallId ? { ...call, status: 'completed' } : call)));
       };
 
-      // Helper function to update combo API call status
+      // Helper function to update combo API call status to completed
       const updateComboApiCallStatus = (comboId: string, apiCallId: string) => {
         setComboApiCalls((prev: TariffReportApiCalls[]) => {
           const newCombos = prev.map((combo) => {
@@ -133,25 +156,58 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         });
       };
 
+      // Calculate total number of API calls
+      const calculateTotalApiCalls = () => {
+        const topLevelCount = topLevelApiCalls.length;
+        const comboCount = comboApiCalls.reduce((total, combo) => total + combo.apiCalls.length, 0);
+        const finalCount = finalApiCalls.length;
+        return topLevelCount + comboCount + finalCount;
+      };
+
+      // Calculate number of completed API calls
+      const calculateCompletedApiCalls = () => {
+        const topLevelCompleted = topLevelApiCalls.filter((call) => call.status === 'completed').length;
+        const comboCompleted = comboApiCalls.reduce((total, combo) => total + combo.apiCalls.filter((call) => call.status === 'completed').length, 0);
+        const finalCompleted = finalApiCalls.filter((call) => call.status === 'completed').length;
+        return topLevelCompleted + comboCompleted + finalCompleted;
+      };
+
+      // Update progress based on completed API calls
+      const updateProgress = () => {
+        const total = calculateTotalApiCalls();
+        const completed = calculateCompletedApiCalls();
+        const newProgress = total > 0 ? Math.round((completed / total) * 100) : 0;
+        setProgress(newProgress);
+      };
+
       /* -------- 1. top-level sections ------------------------------------ */
       setCurrentStep('Generating industry understanding...');
+      setApiCallLoading('understand-industry', setTopLevelApiCalls);
+      updateProgress();
       await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-understand-industry`, {});
       updateApiCallStatus('understand-industry', setTopLevelApiCalls);
+      updateProgress();
       bump('Industry understanding complete');
 
       setCurrentStep('Generating tariff updates...');
+      setApiCallLoading('tariff-updates', setTopLevelApiCalls);
+      updateProgress();
       await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-tariff-updates`, {
         industry: industryId,
         date: today,
       });
       updateApiCallStatus('tariff-updates', setTopLevelApiCalls);
+      updateProgress();
       bump('Tariff updates complete');
 
       setCurrentStep('Generating industry areas...');
+      setApiCallLoading('industry-areas', setTopLevelApiCalls);
+      updateProgress();
       await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-industry-areas`, {
         industry: industryId,
       });
       updateApiCallStatus('industry-areas', setTopLevelApiCalls);
+      updateProgress();
       bump('Industry areas complete');
 
       /* -------- 2. every heading/sub-heading combo ----------------------- */
@@ -167,8 +223,11 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
 
         /* 2-a  get list of established players */
         setCurrentStep(`Getting established players for ${sectionName}...`);
+        setComboApiCallLoading(comboId, `established-players-tickers-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
         const { establishedPlayers = [] } = await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/get-established-players`, basePayload);
         updateComboApiCallStatus(comboId, `established-players-tickers-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
 
         // Update total steps now that we know how many players/challengers there are
         if (done === 3) {
@@ -201,8 +260,11 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         });
 
         setCurrentStep(`Getting new challengers for ${sectionName}...`);
+        setComboApiCallLoading(comboId, `new-challengers-tickers-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
         const { newChallengers = [] } = await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/get-new-challengers`, basePayload);
         updateComboApiCallStatus(comboId, `new-challengers-tickers-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
         bump(`Found ${newChallengers.length} new challengers for ${sectionName}`);
 
         /* 2-d  detail for each challenger */
@@ -218,51 +280,70 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
 
         /* 2-e  headwinds / tailwinds */
         setCurrentStep(`Generating headwinds & tailwinds for ${sectionName}...`);
+        setComboApiCallLoading(comboId, `headwinds-tailwinds-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
         await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
           ...basePayload,
           sectionType: EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS,
         });
         updateComboApiCallStatus(comboId, `headwinds-tailwinds-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
         bump(`Headwinds & tailwinds complete for ${sectionName}`);
 
         /* 2-f  tariff impact by company-type */
         setCurrentStep(`Generating tariff impact analysis for ${sectionName}...`);
+        setComboApiCallLoading(comboId, `tariff-impact-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
         await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
           ...basePayload,
           sectionType: EvaluateIndustryContent.TARIFF_IMPACT_BY_COMPANY_TYPE,
         });
         updateComboApiCallStatus(comboId, `tariff-impact-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
         bump(`Tariff impact analysis complete for ${sectionName}`);
 
         /* 2-g  final summary */
         setCurrentStep(`Generating final summary for ${sectionName}...`);
+        setComboApiCallLoading(comboId, `final-summary-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
         await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
           ...basePayload,
           sectionType: EvaluateIndustryContent.TARIFF_IMPACT_SUMMARY,
         });
         updateComboApiCallStatus(comboId, `final-summary-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
         bump(`${sectionName} complete!`);
       }
 
       /* -------- 3. Final sections ----------------------------------------- */
       setCurrentStep('Generating executive summary...');
+      setApiCallLoading('executive-summary', setFinalApiCalls);
+      updateProgress();
       await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-executive-summary`, {});
       updateApiCallStatus('executive-summary', setFinalApiCalls);
+      updateProgress();
       bump('Executive summary complete');
 
       setCurrentStep('Generating report cover...');
+      setApiCallLoading('report-cover', setFinalApiCalls);
+      updateProgress();
       await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-report-cover`, {});
       updateApiCallStatus('report-cover', setFinalApiCalls);
+      updateProgress();
       bump('Report cover complete');
 
       setCurrentStep('Generating final conclusion...');
+      setApiCallLoading('final-conclusion', setFinalApiCalls);
+      updateProgress();
       await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-final-conclusion`, {
         industry: industryId,
       });
       updateApiCallStatus('final-conclusion', setFinalApiCalls);
+      updateProgress();
       bump('Final conclusion complete');
 
       setCurrentStep('Report generation completed successfully! 🎉');
+      // Set progress to 100% when all API calls are completed
       setProgress(100);
     } catch (err: any) {
       console.error('Generation failed:', err);
@@ -291,10 +372,16 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
                 <li key={call.id} className="flex items-center text-sm">
                   <div
                     className={`w-4 h-4 rounded-full flex items-center justify-center text-white text-xs mr-2 ${
-                      call.status === 'completed' ? 'bg-green-500' : 'bg-gray-300'
+                      call.status === 'completed' ? 'bg-green-500' : call.status === 'loading' ? 'bg-blue-500' : 'bg-gray-300'
                     }`}
                   >
-                    {call.status === 'completed' ? '✓' : ''}
+                    {call.status === 'completed' ? (
+                      '✓'
+                    ) : call.status === 'loading' ? (
+                      <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      ''
+                    )}
                   </div>
                   <span>{call.name}</span>
                 </li>
@@ -325,10 +412,16 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
                       <li key={call.id} className="flex items-center text-xs">
                         <div
                           className={`w-3 h-3 rounded-full flex items-center justify-center text-white text-xs mr-2 ${
-                            call.status === 'completed' ? 'bg-green-500' : 'bg-gray-300'
+                            call.status === 'completed' ? 'bg-green-500' : call.status === 'loading' ? 'bg-blue-500' : 'bg-gray-300'
                           }`}
                         >
-                          {call.status === 'completed' ? '✓' : ''}
+                          {call.status === 'completed' ? (
+                            '✓'
+                          ) : call.status === 'loading' ? (
+                            <div className="w-2 h-2 border-1 border-white border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            ''
+                          )}
                         </div>
                         <span>{call.name}</span>
                       </li>
@@ -347,10 +440,16 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
                 <li key={call.id} className="flex items-center text-sm">
                   <div
                     className={`w-4 h-4 rounded-full flex items-center justify-center text-white text-xs mr-2 ${
-                      call.status === 'completed' ? 'bg-green-500' : 'bg-gray-300'
+                      call.status === 'completed' ? 'bg-green-500' : call.status === 'loading' ? 'bg-blue-500' : 'bg-gray-300'
                     }`}
                   >
-                    {call.status === 'completed' ? '✓' : ''}
+                    {call.status === 'completed' ? (
+                      '✓'
+                    ) : call.status === 'loading' ? (
+                      <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      ''
+                    )}
                   </div>
                   <span>{call.name}</span>
                 </li>
