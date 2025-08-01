@@ -59,7 +59,7 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
 
         await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
           ...basePayload,
-          sectionType: EvaluateIndustryContent.GET_ESTABLISHED_PLAYERS,
+          sectionType: EvaluateIndustryContent.ESTABLISHED_PLAYERS_TICKERS_ONLY,
         });
 
         /* 2-a  get list of established players */
@@ -91,7 +91,7 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
 
         await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
           ...basePayload,
-          sectionType: EvaluateIndustryContent.GET_NEW_CHALLENGERS,
+          sectionType: EvaluateIndustryContent.NEW_CHALLENGERS_TICKERS_ONLY,
         });
 
         setCurrentStep(`Getting new challengers for ${sectionName}...`);

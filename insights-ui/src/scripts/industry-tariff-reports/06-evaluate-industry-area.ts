@@ -694,7 +694,7 @@ export async function regenerateEvaluateIndustryAreaJson(
       result.establishedPlayerDetails[playerIndex] = newPlayer;
       result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
       break;
-    case EvaluateIndustryContent.GET_ESTABLISHED_PLAYERS:
+    case EvaluateIndustryContent.ESTABLISHED_PLAYERS_TICKERS_ONLY:
       console.log('Getting established players list only');
       const establishedPlayersListOnly = await getEstablishedPlayersListOnly(tariffIndustry, industryAreasWrapper, tariffUpdates, industryArea, date);
       result.establishedPlayersRefs = establishedPlayersListOnly;
@@ -737,7 +737,7 @@ export async function regenerateEvaluateIndustryAreaJson(
       result.newChallengersDetails[challengerIndex] = newChallenger;
       result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
       break;
-    case EvaluateIndustryContent.GET_NEW_CHALLENGERS:
+    case EvaluateIndustryContent.NEW_CHALLENGERS_TICKERS_ONLY:
       console.log('Getting new challengers list only');
       const newChallengersListOnly = await getNewChallengersListOnly(
         tariffIndustry,
