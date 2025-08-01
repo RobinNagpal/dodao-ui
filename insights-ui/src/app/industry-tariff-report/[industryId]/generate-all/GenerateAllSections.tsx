@@ -216,10 +216,14 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         const sectionName = `${c.displayName}`;
         const comboId = `combo-${c.headingIndex}-${c.subHeadingIndex}`;
 
+        setComboApiCallLoading(comboId, `established-players-tickers-only-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
         await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
           ...basePayload,
           sectionType: EvaluateIndustryContent.ESTABLISHED_PLAYERS_TICKERS_ONLY,
         });
+        updateComboApiCallStatus(comboId, `established-players-tickers-only-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
 
         /* 2-a  get list of established players */
         setCurrentStep(`Getting established players for ${sectionName}...`);
@@ -245,19 +249,28 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         for (const p of establishedPlayers) {
           console.log(`Generating details for established player: ${p.companyName} (${p.companyTicker})`);
           setCurrentStep(`Generating details for ${p.companyName} (${p.companyTicker})...`);
+          const playerApiCallId = `established-player-${c.headingIndex}-${c.subHeadingIndex}-${p.companyTicker}`;
+          setComboApiCallLoading(comboId, playerApiCallId);
+          updateProgress();
           await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
             ...basePayload,
             sectionType: EvaluateIndustryContent.ESTABLISHED_PLAYER,
             establishedPlayerTicker: p.companyTicker,
           });
+          updateComboApiCallStatus(comboId, playerApiCallId);
+          updateProgress();
           bump(`${p.companyName} details complete`);
         }
 
         /* 2-c  get list of new challengers */
+        setComboApiCallLoading(comboId, `new-challengers-tickers-only-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
         await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
           ...basePayload,
           sectionType: EvaluateIndustryContent.NEW_CHALLENGERS_TICKERS_ONLY,
         });
+        updateComboApiCallStatus(comboId, `new-challengers-tickers-only-${c.headingIndex}-${c.subHeadingIndex}`);
+        updateProgress();
 
         setCurrentStep(`Getting new challengers for ${sectionName}...`);
         setComboApiCallLoading(comboId, `new-challengers-tickers-${c.headingIndex}-${c.subHeadingIndex}`);
@@ -270,11 +283,16 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         /* 2-d  detail for each challenger */
         for (const n of newChallengers) {
           setCurrentStep(`Generating details for ${n.companyName} (${n.companyTicker})...`);
+          const challengerApiCallId = `new-challenger-${c.headingIndex}-${c.subHeadingIndex}-${n.companyTicker}`;
+          setComboApiCallLoading(comboId, challengerApiCallId);
+          updateProgress();
           await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
             ...basePayload,
             sectionType: EvaluateIndustryContent.NEW_CHALLENGER,
             challengerTicker: n.companyTicker,
           });
+          updateComboApiCallStatus(comboId, challengerApiCallId);
+          updateProgress();
           bump(`${n.companyName} details complete`);
         }
 
