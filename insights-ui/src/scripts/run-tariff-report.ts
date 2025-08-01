@@ -133,7 +133,7 @@ export async function doIt(
   }
 }
 
-const industry = getTariffIndustryDefinitionById(TariffIndustryId.aerospaceAndDefense);
+const industry = getTariffIndustryDefinitionById(TariffIndustryId.tiresAndRubber);
 
 // Example usage:
 doIt(ReportType.HEADINGS, industry, {

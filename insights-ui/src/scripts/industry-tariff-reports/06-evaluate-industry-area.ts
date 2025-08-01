@@ -641,21 +641,41 @@ export async function getAndWriteEvaluateIndustryAreaJson(
   await writeMarkdownFileForEvaluateSubIndustryArea(industry, industryArea, industryAreasWrapper, result);
 }
 
-export async function regenerateEvaluateIndustryAreaJson(
-  tariffIndustry: TariffIndustryDefinition,
-  industryArea: IndustrySubArea,
-  industryAreasWrapper: IndustryAreasWrapper,
-  tariffUpdates: TariffUpdatesForIndustry,
-  date: string,
-  content: EvaluateIndustryContent,
-  challengerTicker?: string,
-  establishedPlayerTicker?: string
-) {
-  // load existing or start new result
-  const result = await readEvaluateSubIndustryAreaJsonFromFile(tariffIndustry.industryId, industryArea, industryAreasWrapper);
+interface EvaluateIndustryParams {
+  tariffIndustry: TariffIndustryDefinition;
+  industryArea: IndustrySubArea;
+  industryAreasWrapper: IndustryAreasWrapper;
+  tariffUpdates: TariffUpdatesForIndustry;
+  date: string;
+  content: EvaluateIndustryContent;
+  challengerTicker?: string;
+  establishedPlayerTicker?: string;
+}
+
+export async function regenerateEvaluateIndustryAreaJson(params: EvaluateIndustryParams) {
+  const { tariffIndustry, industryArea, industryAreasWrapper, tariffUpdates, date, content, challengerTicker, establishedPlayerTicker } = params;
+  let result = await readEvaluateSubIndustryAreaJsonFromFile(tariffIndustry.industryId, industryArea, industryAreasWrapper);
+
+  const isTickersOnly = content === EvaluateIndustryContent.ESTABLISHED_PLAYERS_TICKERS_ONLY;
+
   if (!result) {
-    await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, industryArea, industryAreasWrapper, tariffUpdates, date);
-    return;
+    if (!isTickersOnly) {
+      await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, industryArea, industryAreasWrapper, tariffUpdates, date);
+      return;
+    }
+
+    result = {
+      title: industryArea.title,
+      aboutParagraphs: industryArea.oneLineSummary,
+      establishedPlayersRefs: [],
+      establishedPlayerDetails: [],
+      newChallengersRefs: [],
+      newChallengersDetails: [],
+      headwindsAndTailwinds: { headwinds: [], tailwinds: [] },
+      positiveTariffImpactOnCompanyType: [],
+      negativeTariffImpactOnCompanyType: [],
+      tariffImpactSummary: '',
+    };
   }
 
   switch (content) {
@@ -676,29 +696,32 @@ export async function regenerateEvaluateIndustryAreaJson(
       if (!establishedPlayerTicker) {
         throw new Error('Established player ticker is required for individual player regeneration');
       }
-      const existingPlayer = result.establishedPlayersRefs.find((p) => p.companyTicker === establishedPlayerTicker);
-      if (!existingPlayer) {
+      const existingRef = result.establishedPlayersRefs.find((p) => p.companyTicker === establishedPlayerTicker);
+      if (!existingRef) {
         throw new Error(`Established player with ticker ${establishedPlayerTicker} not found`);
       }
-      console.log(`Regenerating established player ${existingPlayer.companyName} (${establishedPlayerTicker})`);
+      console.log(`Regenerating established player ${existingRef.companyName} (${establishedPlayerTicker})`);
       const newPlayer = await getEstablishedPlayerDetails(
         tariffIndustry,
         industryAreasWrapper,
         tariffUpdates,
         industryArea,
         date,
-        existingPlayer.companyName,
+        existingRef.companyName,
         establishedPlayerTicker
       );
-      const playerIndex = result.establishedPlayerDetails.findIndex((p) => p.companyTicker === establishedPlayerTicker);
-      result.establishedPlayerDetails[playerIndex] = newPlayer;
-      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
+      const idx = result.establishedPlayerDetails.findIndex((p) => p.companyTicker === establishedPlayerTicker);
+      if (idx >= 0) {
+        result.establishedPlayerDetails[idx] = newPlayer;
+      } else {
+        result.establishedPlayerDetails.push(newPlayer);
+      }
+      // result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
       break;
-    case EvaluateIndustryContent.GET_ESTABLISHED_PLAYERS:
+    case EvaluateIndustryContent.ESTABLISHED_PLAYERS_TICKERS_ONLY:
       console.log('Getting established players list only');
       const establishedPlayersListOnly = await getEstablishedPlayersListOnly(tariffIndustry, industryAreasWrapper, tariffUpdates, industryArea, date);
       result.establishedPlayersRefs = establishedPlayersListOnly;
-      result.establishedPlayerDetails = []; // Clear detailed information
       break;
     case EvaluateIndustryContent.NEW_CHALLENGERS:
       console.log('Regenerating new challengers');
@@ -733,11 +756,15 @@ export async function regenerateEvaluateIndustryAreaJson(
         existingChallenger.companyName,
         challengerTicker
       );
-      const challengerIndex = result.newChallengersDetails.findIndex((c) => c.companyTicker === challengerTicker);
-      result.newChallengersDetails[challengerIndex] = newChallenger;
-      result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
+      const newIdx = result.newChallengersDetails.findIndex((c) => c.companyTicker === challengerTicker);
+      if (newIdx >= 0) {
+        result.newChallengersDetails[newIdx] = newChallenger;
+      } else {
+        result.newChallengersDetails.push(newChallenger);
+      }
+      // result.tariffImpactSummary = await regenerateTariffImpactSummary(tariffUpdates, industryAreasWrapper, industryArea, result);
       break;
-    case EvaluateIndustryContent.GET_NEW_CHALLENGERS:
+    case EvaluateIndustryContent.NEW_CHALLENGERS_TICKERS_ONLY:
       console.log('Getting new challengers list only');
       const newChallengersListOnly = await getNewChallengersListOnly(
         tariffIndustry,
@@ -748,7 +775,6 @@ export async function regenerateEvaluateIndustryAreaJson(
         date
       );
       result.newChallengersRefs = newChallengersListOnly;
-      result.newChallengersDetails = []; // Clear detailed information
       break;
     case EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS:
       result.headwindsAndTailwinds = await getHeadwindsAndTailwinds(tariffIndustry, industryAreasWrapper, tariffUpdates, industryArea, date);
