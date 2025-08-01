@@ -74,10 +74,13 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
           totalSteps = 3 + combos.length * (1 + estimatedPlayersPerCombo + 1 + estimatedChallengersPerCombo + 3);
         }
 
+        console.log(`Found ${establishedPlayers.length} established players for ${sectionName}`);
+
         bump(`Found ${establishedPlayers.length} established players for ${sectionName}`);
 
         /* 2-b  detail for each player */
         for (const p of establishedPlayers) {
+          console.log(`Generating details for established player: ${p.companyName} (${p.companyTicker})`);
           setCurrentStep(`Generating details for ${p.companyName} (${p.companyTicker})...`);
           await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
             ...basePayload,

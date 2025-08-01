@@ -20,6 +20,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   const request = (await req.json()) as GetEstablishedPlayersRequest;
   const { headingIndex, subHeadingIndex } = request;
 
+  console.log('fetching established players for');
+
   if (!industryId || headingIndex === undefined || subHeadingIndex === undefined) {
     throw new Error('Industry, headingIndex, and subHeadingIndex are required');
   }
@@ -36,6 +38,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!evaluatedArea || !evaluatedArea.establishedPlayersRefs || evaluatedArea.establishedPlayersRefs.length === 0) {
     throw new Error('No established players found. Please generate the established players list first.');
   }
+
+  console.log(evaluatedArea.establishedPlayersRefs);
 
   return {
     establishedPlayers: evaluatedArea.establishedPlayersRefs,

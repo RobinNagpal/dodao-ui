@@ -20,6 +20,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   const request = (await req.json()) as GetNewChallengersRequest;
   const { headingIndex, subHeadingIndex } = request;
 
+  console.log('fetching new challengers for');
+
   if (!industryId || headingIndex === undefined || subHeadingIndex === undefined) {
     throw new Error('Industry, headingIndex, and subHeadingIndex are required');
   }
@@ -36,6 +38,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!evaluatedArea || !evaluatedArea.newChallengersRefs || evaluatedArea.newChallengersRefs.length === 0) {
     throw new Error('No new challengers found. Please generate the new challengers list first.');
   }
+
+  console.log(evaluatedArea.newChallengersRefs);
 
   return {
     newChallengers: evaluatedArea.newChallengersRefs,
