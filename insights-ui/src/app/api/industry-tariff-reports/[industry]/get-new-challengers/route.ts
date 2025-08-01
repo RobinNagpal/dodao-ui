@@ -20,8 +20,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   const request = (await req.json()) as GetNewChallengersRequest;
   const { headingIndex, subHeadingIndex } = request;
 
-  console.log('fetching new challengers for');
-
   if (!industryId || headingIndex === undefined || subHeadingIndex === undefined) {
     throw new Error('Industry, headingIndex, and subHeadingIndex are required');
   }
@@ -35,14 +33,11 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   // Read the existing evaluation data to get new challengers
   const evaluatedArea = await readEvaluateSubIndustryAreaJsonFromFile(industryId, area, headings);
 
-  if (!evaluatedArea || !evaluatedArea.newChallengersRefs || evaluatedArea.newChallengersRefs.length === 0) {
-    throw new Error('No new challengers found. Please generate the new challengers list first.');
-  }
-
-  console.log(evaluatedArea.newChallengersRefs);
+  // If there's no data or empty, just return an empty list
+  const newChallengers = evaluatedArea?.newChallengersRefs ?? [];
 
   return {
-    newChallengers: evaluatedArea.newChallengersRefs,
+    newChallengers,
   };
 }
 

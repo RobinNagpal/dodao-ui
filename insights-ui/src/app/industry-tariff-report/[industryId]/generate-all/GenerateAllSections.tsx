@@ -45,6 +45,7 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
     { id: 'executive-summary', name: 'Executive Summary', status: 'pending' },
     { id: 'report-cover', name: 'Report Cover', status: 'pending' },
     { id: 'final-conclusion', name: 'Final Conclusion', status: 'pending' },
+    { id: 'seo-metadata', name: 'SEO Metadata', status: 'pending' },
   ]);
 
   // Initialize comboApiCalls when the component loads
@@ -281,19 +282,21 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         bump(`Found ${newChallengers.length} new challengers for ${sectionName}`);
 
         /* 2-d  detail for each challenger */
-        for (const n of newChallengers) {
-          setCurrentStep(`Generating details for ${n.companyName} (${n.companyTicker})...`);
-          const challengerApiCallId = `new-challenger-${c.headingIndex}-${c.subHeadingIndex}-${n.companyTicker}`;
-          setComboApiCallLoading(comboId, challengerApiCallId);
-          updateProgress();
-          await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
-            ...basePayload,
-            sectionType: EvaluateIndustryContent.NEW_CHALLENGER,
-            challengerTicker: n.companyTicker,
-          });
-          updateComboApiCallStatus(comboId, challengerApiCallId);
-          updateProgress();
-          bump(`${n.companyName} details complete`);
+        if (newChallengers.length > 0) {
+          for (const n of newChallengers) {
+            setCurrentStep(`Generating details for ${n.companyName} (${n.companyTicker})...`);
+            const challengerApiCallId = `new-challenger-${c.headingIndex}-${c.subHeadingIndex}-${n.companyTicker}`;
+            setComboApiCallLoading(comboId, challengerApiCallId);
+            updateProgress();
+            await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-evaluate-industry-area`, {
+              ...basePayload,
+              sectionType: EvaluateIndustryContent.NEW_CHALLENGER,
+              challengerTicker: n.companyTicker,
+            });
+            updateComboApiCallStatus(comboId, challengerApiCallId);
+            updateProgress();
+            bump(`${n.companyName} details complete`);
+          }
         }
 
         /* 2-e  headwinds / tailwinds */
@@ -359,6 +362,16 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
       updateApiCallStatus('final-conclusion', setFinalApiCalls);
       updateProgress();
       bump('Final conclusion complete');
+
+      setCurrentStep('Generating SEO metadata...');
+      setApiCallLoading('seo-metadata', setFinalApiCalls);
+      updateProgress();
+      await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-seo-info`, {
+        section: ReportType.ALL,
+      });
+      updateApiCallStatus('seo-metadata', setFinalApiCalls);
+      updateProgress();
+      bump('SEO metadata complete');
 
       setCurrentStep('Report generation completed successfully! 🎉');
       // Set progress to 100% when all API calls are completed
