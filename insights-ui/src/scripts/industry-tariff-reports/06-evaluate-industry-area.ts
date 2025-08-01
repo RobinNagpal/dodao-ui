@@ -641,16 +641,19 @@ export async function getAndWriteEvaluateIndustryAreaJson(
   await writeMarkdownFileForEvaluateSubIndustryArea(industry, industryArea, industryAreasWrapper, result);
 }
 
-export async function regenerateEvaluateIndustryAreaJson(
-  tariffIndustry: TariffIndustryDefinition,
-  industryArea: IndustrySubArea,
-  industryAreasWrapper: IndustryAreasWrapper,
-  tariffUpdates: TariffUpdatesForIndustry,
-  date: string,
-  content: EvaluateIndustryContent,
-  challengerTicker?: string,
-  establishedPlayerTicker?: string
-) {
+interface EvaluateIndustryParams {
+  tariffIndustry: TariffIndustryDefinition;
+  industryArea: IndustrySubArea;
+  industryAreasWrapper: IndustryAreasWrapper;
+  tariffUpdates: TariffUpdatesForIndustry;
+  date: string;
+  content: EvaluateIndustryContent;
+  challengerTicker?: string;
+  establishedPlayerTicker?: string;
+}
+
+export async function regenerateEvaluateIndustryAreaJson(params: EvaluateIndustryParams) {
+  const { tariffIndustry, industryArea, industryAreasWrapper, tariffUpdates, date, content, challengerTicker, establishedPlayerTicker } = params;
   let result = await readEvaluateSubIndustryAreaJsonFromFile(tariffIndustry.industryId, industryArea, industryAreasWrapper);
 
   const isTickersOnly = content === EvaluateIndustryContent.ESTABLISHED_PLAYERS_TICKERS_ONLY;

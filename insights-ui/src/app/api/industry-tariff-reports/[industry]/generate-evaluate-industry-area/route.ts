@@ -26,40 +26,63 @@ export interface GenerateEvaluateIndustryAreaRequest {
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: TariffIndustryId }> }): Promise<IndustryTariffReport> {
   const { industry: industryId } = await params;
   const request = (await req.json()) as GenerateEvaluateIndustryAreaRequest;
-  const { date, headingIndex, subHeadingIndex, sectionType = EvaluateIndustryContent.ALL, challengerTicker, establishedPlayerTicker } = request;
+  const { date, headingIndex, subHeadingIndex, sectionType: content = EvaluateIndustryContent.ALL, challengerTicker, establishedPlayerTicker } = request;
 
   if (!industryId || !date || headingIndex === undefined || subHeadingIndex === undefined) {
     throw new Error('Industry, date, headingIndex, and subHeadingIndex are required');
   }
 
   // Get dependencies
-  const headings = await readIndustryHeadingsFromFile(industryId);
-  if (!headings) throw new Error(`Headings not found for industry: ${industryId}`);
+  const industryAreasWrapper = await readIndustryHeadingsFromFile(industryId);
+  if (!industryAreasWrapper) throw new Error(`Headings not found for industry: ${industryId}`);
 
-  const tariff = await readTariffUpdatesFromFile(industryId);
-  const area = headings.areas[headingIndex].subAreas[subHeadingIndex];
+  const tariffUpdates = await readTariffUpdatesFromFile(industryId);
+  const industryArea = industryAreasWrapper.areas[headingIndex].subAreas[subHeadingIndex];
 
-  if (!tariff) {
+  if (!tariffUpdates) {
     throw new Error('Tariff updates not found');
   }
 
   const tariffIndustry = getTariffIndustryDefinitionById(industryId);
 
-  console.log(`Generating evaluation for ${industryId} - ${area} - ${sectionType} - ${headingIndex} - ${subHeadingIndex}`);
+  console.log(`Generating evaluation for ${industryId} - ${industryArea} - ${content} - ${headingIndex} - ${subHeadingIndex}`);
   // Generate the evaluation based on section type
-  if (sectionType === EvaluateIndustryContent.ALL) {
-    await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date);
-  } else if (sectionType === EvaluateIndustryContent.NEW_CHALLENGER && challengerTicker) {
-    await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType, challengerTicker);
-  } else if (sectionType === EvaluateIndustryContent.ESTABLISHED_PLAYER && establishedPlayerTicker) {
-    await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType, establishedPlayerTicker);
+  if (content === EvaluateIndustryContent.ALL) {
+    await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, industryArea, industryAreasWrapper, tariffUpdates, date);
+  } else if (content === EvaluateIndustryContent.NEW_CHALLENGER && challengerTicker) {
+    await regenerateEvaluateIndustryAreaJson({
+      tariffIndustry,
+      industryArea,
+      industryAreasWrapper,
+      tariffUpdates,
+      date,
+      content,
+      challengerTicker,
+    });
+  } else if (content === EvaluateIndustryContent.ESTABLISHED_PLAYER && establishedPlayerTicker) {
+    await regenerateEvaluateIndustryAreaJson({
+      tariffIndustry,
+      industryArea,
+      industryAreasWrapper,
+      tariffUpdates,
+      date,
+      content,
+      establishedPlayerTicker,
+    });
   } else {
-    await regenerateEvaluateIndustryAreaJson(tariffIndustry, area, headings, tariff, date, sectionType);
+    await regenerateEvaluateIndustryAreaJson({
+      tariffIndustry,
+      industryArea,
+      industryAreasWrapper,
+      tariffUpdates,
+      date,
+      content,
+    });
   }
 
-  const evaluated = await readEvaluateSubIndustryAreaJsonFromFile(industryId, area, headings);
+  const evaluated = await readEvaluateSubIndustryAreaJsonFromFile(industryId, industryArea, industryAreasWrapper);
   if (evaluated) {
-    await writeMarkdownFileForEvaluateSubIndustryArea(industryId, area, headings, evaluated);
+    await writeMarkdownFileForEvaluateSubIndustryArea(industryId, industryArea, industryAreasWrapper, evaluated);
   }
   return getIndustryTariffReport(industryId);
 }
