@@ -1,0 +1,147 @@
+{
+  "icon_bg_color": null,
+  "user_id": "0be3e4c3-3b27-440f-81e4-921ccf9df0b3",
+  "gradient": null,
+  "icon": null,
+  "is_component": true,
+  "tags": null,
+  "updated_at": "2025-08-06T14:29:57+00:00",
+  "locked": false,
+  "webhook": false,
+  "folder_id": "00af9b7e-c33a-4fbf-8396-9739dbc109f2",
+  "endpoint_name": null,
+  "description": "A custom component for getting price for the given date otherwise price at reporting period of latest 10Q.",
+  "id": "a88d1c32-f342-4be8-a732-e18c5e47e067",
+  "name": "Price",
+  "data": {
+    "edges": [],
+    "nodes": [
+      {
+        "data": {
+          "node": {
+            "template": {
+              "_type": "Component",
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from langflow.custom import Component\nfrom langflow.io import MessageTextInput, Output, MultilineInput\nfrom langflow.schema.message import Message\nimport requests\n\nclass PriceComponent(Component):\n    display_name = \"Price\"\n    description = \"A custom component for getting price for the given date otherwise price at reporting period of latest 10Q.\"\n    documentation = \"https://docs.langflow.org/components-custom-components\"\n    icon = \"custom_components\"\n    name = \"Price\"\n\n    PRICE_ENDPOINT = \"https://4mbhgkl77s4gubn7i2rdcllbru0wzyxl.lambda-url.us-east-1.on.aws/price-at-period-of-report\"\n    \n    inputs = [\n        MessageTextInput(\n            name=\"ticker\",\n            display_name=\"Ticker\",\n            info=\"The ticker to retrieve data for (e.g., MDV, FVR).\",\n            required=True\n        ),\n        MultilineInput(\n            name=\"period_of_report\",\n            display_name=\"Date\",\n            info=\"Date to get the price at (optional).\",\n        )\n    ]\n\n    outputs = [\n        Output(\n            display_name=\"Price\",\n            name=\"text\",\n            method=\"get_price\",\n        ),\n    ]\n\n    def get_price(self) -> Message:\n        ticker = self.ticker\n        period_of_report = self.period_of_report if self.period_of_report else None\n\n        payload = {\n            \"ticker\": ticker,\n            \"period_of_report\": period_of_report,\n        }\n        try:\n            response = requests.post(self.PRICE_ENDPOINT, json=payload)\n            resp_data = response.json()\n            return Message(text=str(resp_data[\"data\"]))\n        except Exception as exc:\n            return Message(text=str(exc))\n\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              },
+              "period_of_report": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "multiline": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "list_add_label": "Add More",
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "period_of_report",
+                "value": "",
+                "display_name": "Date",
+                "advanced": false,
+                "input_types": [
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "Date to get the price at (optional).",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "MultilineInput"
+              },
+              "ticker": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "list_add_label": "Add More",
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "ticker",
+                "value": "",
+                "display_name": "Ticker",
+                "advanced": false,
+                "input_types": [
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "The ticker to retrieve data for (e.g., MDV, FVR).",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "MessageTextInput"
+              }
+            },
+            "description": "A custom component for getting price for the given date otherwise price at reporting period of latest 10Q.",
+            "icon": "custom_components",
+            "base_classes": [
+              "Message"
+            ],
+            "display_name": "Price",
+            "documentation": "https://docs.langflow.org/components-custom-components",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "Message"
+                ],
+                "selected": "Message",
+                "name": "text",
+                "display_name": "Price",
+                "method": "get_price",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [
+              "ticker",
+              "period_of_report"
+            ],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {},
+            "tool_mode": false,
+            "official": false
+          },
+          "showNode": true,
+          "type": "Price",
+          "id": "Price-WoSlM"
+        },
+        "id": "Price-WoSlM",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "type": "genericNode"
+      }
+    ],
+    "viewport": {
+      "x": 1,
+      "y": 1,
+      "zoom": 1
+    }
+  }
+}

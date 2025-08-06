@@ -1,0 +1,171 @@
+{
+  "icon_bg_color": null,
+  "user_id": "0be3e4c3-3b27-440f-81e4-921ccf9df0b3",
+  "gradient": null,
+  "icon": null,
+  "is_component": true,
+  "tags": null,
+  "updated_at": "2025-04-11T13:50:36+00:00",
+  "locked": false,
+  "webhook": false,
+  "folder_id": "00af9b7e-c33a-4fbf-8396-9739dbc109f2",
+  "endpoint_name": null,
+  "description": "Defines a webhook input for the flow.",
+  "id": "d4324867-2d70-4522-ae36-7bd34ca8c6b8",
+  "name": "Custom Webhook",
+  "data": {
+    "edges": [],
+    "nodes": [
+      {
+        "data": {
+          "node": {
+            "template": {
+              "_type": "Component",
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "import json\r\n\r\nfrom langflow.custom import Component\r\nfrom langflow.io import MultilineInput, Output\r\nfrom langflow.schema import Data\r\nfrom langflow.schema.message import Message\r\n\r\n\r\nclass WebhookComponent(Component):\r\n    display_name = \"Custom Webhook\"\r\n    description = \"Defines a webhook input for the flow.\"\r\n    name = \"Webhook\"\r\n    icon = \"webhook\"\r\n\r\n    inputs = [\r\n        MultilineInput(\r\n            name=\"data\",\r\n            display_name=\"Payload\",\r\n            info=\"Receives a payload from external systems via HTTP POST.\",\r\n        )\r\n    ]\r\n    outputs = [\r\n        Output(display_name=\"Data\", name=\"output_data\", method=\"build_data\"),\r\n        Output(display_name=\"ticker\", name=\"ticker\", method=\"build_ticker\"),\r\n        Output(display_name=\"criterionKey\", name=\"criterionKey\", method=\"build_criterion_key\"),\r\n        Output(display_name=\"reportKey\", name=\"reportKey\", method=\"build_report_key\"),\r\n    ]\r\n    \r\n    def build_data(self) -> Data:\r\n        message: str | Data = \"\"\r\n        if not self.data:\r\n            self.status = \"No data provided.\"\r\n            return Data(data={})\r\n        try:\r\n            body = json.loads(self.data or \"{}\")\r\n        except json.JSONDecodeError:\r\n            body = {\"payload\": self.data}\r\n            message = f\"Invalid JSON payload. Please check the format.\\n\\n{self.data}\"\r\n        data = Data(data=body)\r\n        if not message:\r\n            message = data\r\n        self.status = message\r\n        return data\r\n\r\n    def _parse_payload(self) -> dict:\r\n        \"\"\"Helper method to parse JSON payload and handle errors.\"\"\"\r\n        if not self.data:\r\n            self.status = \"No data provided.\"\r\n            return {}\r\n        try:\r\n            return json.loads(self.data)\r\n        except json.JSONDecodeError:\r\n            self.status = f\"Invalid JSON payload. Please check the format.\\n\\n{self.data}\"\r\n            # Return the raw payload under a dedicated key if needed\r\n            return {\"payload\": self.data}\r\n\r\n    def build_ticker(self) -> Message:\r\n        \"\"\"Extracts the 'ticker' value from the payload.\"\"\"\r\n        payload = self._parse_payload()\r\n        ticker = payload.get(\"ticker\", \"\")\r\n        return Message(text=ticker)\r\n\r\n    def build_criterion_key(self) -> Message:\r\n        \"\"\"Extracts the 'key' from the nested 'criterion' field.\"\"\"\r\n        payload = self._parse_payload()\r\n        criterion = payload.get(\"criterion\", {})\r\n        criterion_key = criterion.get(\"key\", \"\")\r\n        return Message(text=criterion_key)\r\n\r\n    def build_report_key(self) -> Message:\r\n        \"\"\"Extracts the 'reportKey' value from the payload.\"\"\"\r\n        payload = self._parse_payload()\r\n        report_key = payload.get(\"reportKey\", \"\")\r\n        return Message(text=report_key)\r\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              },
+              "data": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "multiline": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "list_add_label": "Add More",
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "data",
+                "value": "",
+                "display_name": "Payload",
+                "advanced": false,
+                "input_types": [
+                  "Message"
+                ],
+                "dynamic": false,
+                "info": "Receives a payload from external systems via HTTP POST.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "MultilineInput"
+              }
+            },
+            "description": "Defines a webhook input for the flow.",
+            "icon": "webhook",
+            "base_classes": [
+              "Data",
+              "Message"
+            ],
+            "display_name": "Custom Webhook",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "name": "output_data",
+                "hidden": null,
+                "display_name": "Data",
+                "method": "build_data",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "required_inputs": null,
+                "allows_loop": false,
+                "tool_mode": true
+              },
+              {
+                "types": [
+                  "Message"
+                ],
+                "selected": "Message",
+                "name": "ticker",
+                "hidden": null,
+                "display_name": "ticker",
+                "method": "build_ticker",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "required_inputs": null,
+                "allows_loop": false,
+                "tool_mode": true
+              },
+              {
+                "types": [
+                  "Message"
+                ],
+                "selected": "Message",
+                "name": "criterionKey",
+                "hidden": null,
+                "display_name": "criterionKey",
+                "method": "build_criterion_key",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "required_inputs": null,
+                "allows_loop": false,
+                "tool_mode": true
+              },
+              {
+                "types": [
+                  "Message"
+                ],
+                "selected": "Message",
+                "name": "reportKey",
+                "hidden": null,
+                "display_name": "reportKey",
+                "method": "build_report_key",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "required_inputs": null,
+                "allows_loop": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [
+              "data"
+            ],
+            "beta": false,
+            "legacy": false,
+            "edited": true,
+            "metadata": {},
+            "tool_mode": false,
+            "official": false
+          },
+          "showNode": true,
+          "type": "Webhook",
+          "id": "Webhook-DfNMc"
+        },
+        "id": "Webhook-DfNMc",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "type": "genericNode"
+      }
+    ],
+    "viewport": {
+      "x": 1,
+      "y": 1,
+      "zoom": 1
+    }
+  }
+}

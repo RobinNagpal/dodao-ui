@@ -1,0 +1,229 @@
+{
+  "icon_bg_color": null,
+  "user_id": "0be3e4c3-3b27-440f-81e4-921ccf9df0b3",
+  "gradient": null,
+  "icon": null,
+  "is_component": true,
+  "tags": null,
+  "updated_at": "2025-03-05T17:23:31+00:00",
+  "locked": false,
+  "webhook": false,
+  "folder_id": "00af9b7e-c33a-4fbf-8396-9739dbc109f2",
+  "endpoint_name": null,
+  "description": "Makes an HTTP request with JSON-based body input.",
+  "id": "9b65919f-3afa-46ff-a1a8-b3bef6db63ed",
+  "name": "Simple API Request (1) (1)",
+  "data": {
+    "edges": [],
+    "nodes": [
+      {
+        "data": {
+          "node": {
+            "template": {
+              "_type": "Component",
+              "body_data": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "body_data",
+                "value": "",
+                "display_name": "Body (JSON Data)",
+                "advanced": false,
+                "input_types": [
+                  "Data"
+                ],
+                "dynamic": false,
+                "info": "Parsed JSON from the JSONPayloadComponent (or any Data).",
+                "title_case": false,
+                "type": "other",
+                "_input_type": "DataInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "import json\r\nimport asyncio\r\nfrom typing import Any, Dict\r\n\r\nimport httpx\r\n\r\nfrom langflow.custom import Component\r\nfrom langflow.io import (\r\n    StrInput,\r\n    DropdownInput,\r\n    DataInput,\r\n    Output,\r\n)\r\nfrom langflow.schema import Data\r\n\r\n\r\nclass SimpleAPIRequestComponent(Component):\r\n    display_name = \"Simple API Request\"\r\n    description = \"Makes an HTTP request with JSON-based body input.\"\r\n    icon = \"Globe\"\r\n    name = \"SimpleAPIRequest\"\r\n\r\n    inputs = [\r\n        StrInput(\r\n            name=\"url\",\r\n            display_name=\"URL\",\r\n            info=\"Enter the HTTP endpoint to call (e.g., https://api.example.com).\",\r\n        ),\r\n        DropdownInput(\r\n            name=\"method\",\r\n            display_name=\"Method\",\r\n            options=[\"GET\", \"POST\", \"PATCH\", \"PUT\", \"DELETE\"],\r\n            info=\"Select the HTTP method to use.\",\r\n        ),\r\n        DataInput(\r\n            name=\"body_data\",\r\n            display_name=\"Body (JSON Data)\",\r\n            info=\"Parsed JSON from the JSONPayloadComponent (or any Data).\",\r\n            advanced=False,\r\n        ),\r\n        TableInput(\r\n            name=\"headers\",\r\n            display_name=\"Headers\",\r\n            info=\"The headers to send with the request as a dictionary.\",\r\n            table_schema=[\r\n                {\r\n                    \"name\": \"key\",\r\n                    \"display_name\": \"Header\",\r\n                    \"type\": \"str\",\r\n                    \"description\": \"Header name\",\r\n                },\r\n                {\r\n                    \"name\": \"value\",\r\n                    \"display_name\": \"Value\",\r\n                    \"type\": \"str\",\r\n                    \"description\": \"Header value\",\r\n                },\r\n            ],\r\n            value=[],\r\n            advanced=True,\r\n            input_types=[\"Data\"],\r\n        ),\r\n    ]\r\n\r\n    outputs = [\r\n        Output(display_name=\"Response\", name=\"response\", method=\"make_request\"),\r\n    ]\r\n\r\n    async def make_request(self) -> Data:\r\n        \"\"\"Executes an HTTP request using the provided URL, method, body_data, and headers_data.\"\"\"\r\n        url = self.url\r\n        method = self.method.upper()\r\n\r\n        # Extract the actual data from the Data objects\r\n        # If \"body_data\" was from JSONPayloadComponent, it might be a dict or a string.\r\n        # We'll assume dictionary is intended for JSON body. If it's something else, handle gracefully.\r\n        body_content = self.body_data.data if self.body_data else None\r\n        if not isinstance(body_content, (dict, list)) and body_content is not None:\r\n            # If it's a plain string or something else, wrap it or parse it as needed\r\n            # For a real app, you could refine this logic. For now, we'll just send it as-is.\r\n            body_content = {\"data\": body_content}\r\n\r\n        # Same for headers\r\n        headers = {}\r\n        if self.headers_data and isinstance(self.headers_data.data, dict):\r\n            # Convert all header values to strings just to be safe\r\n            headers = {str(k): str(v) for k, v in self.headers_data.data.items()}\r\n\r\n        try:\r\n            async with httpx.AsyncClient() as client:\r\n                if method in {\"GET\", \"DELETE\"}:\r\n                    # GET/DELETE usually send no JSON body\r\n                    response = await client.request(method, url, headers=headers)\r\n                else:\r\n                    response = await client.request(method, url, headers=headers, json=body_content)\r\n\r\n                # Attempt to parse the response as JSON\r\n                try:\r\n                    resp_data = response.json()\r\n                except json.JSONDecodeError:\r\n                    # If not valid JSON, just return the raw text\r\n                    resp_data = {\"raw_text\": response.text}\r\n\r\n                return Data(\r\n                    data={\r\n                        \"status_code\": response.status_code,\r\n                        \"response\": resp_data,\r\n                    }\r\n                )\r\n\r\n        except Exception as exc:\r\n            # If there's a network error, timeouts, etc., return an error structure\r\n            return Data(data={\"error\": str(exc)})\r\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              },
+              "headers": {
+                "tool_mode": false,
+                "is_list": true,
+                "list_add_label": "Add More",
+                "table_schema": {
+                  "columns": [
+                    {
+                      "name": "key",
+                      "display_name": "Header",
+                      "sortable": true,
+                      "filterable": true,
+                      "type": "text",
+                      "description": "Header name",
+                      "disable_edit": false,
+                      "edit_mode": "modal",
+                      "hidden": false,
+                      "formatter": "text"
+                    },
+                    {
+                      "name": "value",
+                      "display_name": "Value",
+                      "sortable": true,
+                      "filterable": true,
+                      "type": "text",
+                      "description": "Header value",
+                      "disable_edit": false,
+                      "edit_mode": "modal",
+                      "hidden": false,
+                      "formatter": "text"
+                    }
+                  ]
+                },
+                "trigger_text": "Open table",
+                "trigger_icon": "Table",
+                "table_icon": "Table",
+                "trace_as_metadata": true,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "headers",
+                "value": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "display_name": "Headers",
+                "advanced": true,
+                "input_types": [
+                  "Data"
+                ],
+                "dynamic": false,
+                "info": "The headers to send with the request as a dictionary.",
+                "title_case": false,
+                "type": "table",
+                "_input_type": "TableInput"
+              },
+              "method": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "options": [
+                  "GET",
+                  "POST",
+                  "PATCH",
+                  "PUT",
+                  "DELETE"
+                ],
+                "options_metadata": [],
+                "combobox": false,
+                "dialog_inputs": {},
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "method",
+                "value": "POST",
+                "display_name": "Method",
+                "advanced": false,
+                "dynamic": false,
+                "info": "Select the HTTP method to use.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "DropdownInput",
+                "load_from_db": false
+              },
+              "url": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "list_add_label": "Add More",
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "url",
+                "value": "",
+                "display_name": "URL",
+                "advanced": false,
+                "dynamic": false,
+                "info": "Enter the HTTP endpoint to call (e.g., https://api.example.com).",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "StrInput"
+              }
+            },
+            "description": "Makes an HTTP request with JSON-based body input.",
+            "icon": "Globe",
+            "base_classes": [
+              "Data"
+            ],
+            "display_name": "Simple API Request (1) (1)",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "name": "response",
+                "hidden": null,
+                "display_name": "Response",
+                "method": "make_request",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "required_inputs": null,
+                "allows_loop": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [
+              "url",
+              "method",
+              "body_data",
+              "headers"
+            ],
+            "beta": false,
+            "legacy": false,
+            "edited": true,
+            "metadata": {},
+            "tool_mode": false,
+            "official": false
+          },
+          "showNode": true,
+          "type": "SimpleAPIRequest",
+          "id": "SimpleAPIRequest-9TibX"
+        },
+        "id": "SimpleAPIRequest-9TibX",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "type": "genericNode"
+      }
+    ],
+    "viewport": {
+      "x": 1,
+      "y": 1,
+      "zoom": 1
+    }
+  }
+}

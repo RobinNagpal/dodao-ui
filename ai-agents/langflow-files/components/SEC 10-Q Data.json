@@ -1,0 +1,274 @@
+{
+  "icon_bg_color": null,
+  "user_id": "0be3e4c3-3b27-440f-81e4-921ccf9df0b3",
+  "gradient": null,
+  "icon": null,
+  "is_component": true,
+  "tags": null,
+  "updated_at": "2025-02-28T11:57:06+00:00",
+  "locked": false,
+  "webhook": false,
+  "folder_id": "00af9b7e-c33a-4fbf-8396-9739dbc109f2",
+  "endpoint_name": null,
+  "description": "A custom component for retrieving financial statements, specific reports, or criteria information from SEC 10-Q filings.",
+  "id": "f0ced2a1-087a-4778-941b-4624cf386a6e",
+  "name": "SEC 10-Q Data",
+  "data": {
+    "edges": [],
+    "nodes": [
+      {
+        "data": {
+          "node": {
+            "template": {
+              "_type": "Component",
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from langflow.custom import Component\r\nfrom langflow.inputs import StrInput, DropdownInput\r\nfrom langflow.template import Output\r\nfrom langflow.schema.message import Message\r\n\r\nimport requests\r\nimport json\r\n\r\n\"\"\"\r\nThis module defines a single custom component (`SecEdgarMergedComponent`) that merges\r\nthree different \"tools\" or functionalities for retrieving SEC 10-Q filings data:\r\n\r\n1) **All Financials (mode='all_financials')**  \r\n   - Retrieves the full 10-Q XBRL-based financial statements for a given ticker.\r\n\r\n2) **Specific 10-Q Report (mode='specific_report')**  \r\n   - Retrieves a specific part of the 10-Q for a given ticker.  \r\n   - e.g. 'balance_sheet', 'income_statement', etc.\r\n\r\n3) **Criteria-Related Info (mode='criteria_related_info')**  \r\n   - Retrieves data related to a given \"criterion\" (e.g., 'debt', 'rent') in the 10-Q.\r\n\r\n-------------------------------------------------------------------------------\r\nExample System Prompt (to guide the LLM on how to choose the 'mode' & inputs):\r\n\r\n\"You have a single custom SEC 10-Q data extractor tool that has 3 possible modes:\r\n1) 'all_financials' for full 10-Q financial data,\r\n2) 'specific_report' for a specific 10-Q section (balance_sheet, income_statement, etc.),\r\n3) 'criteria_related_info' for retrieving specific criteria.\r\n\r\nWhen a user asks for the full 10-Q financial statements, set mode='all_financials'.\r\nWhen a user asks for a specific statement, set mode='specific_report' and fill 'report_type'.\r\nWhen a user asks for a custom criterion, set mode='criteria_related_info' and fill 'criterion_key'.\r\nAlways set 'ticker' according to the user's request.\"\r\n\r\n-------------------------------------------------------------------------------\r\nExample User Prompts that will route to the correct mode:\r\n\r\n1) \"Give me the info of debt criteria of AMT in sec filing.\"\r\n   \"Find me info on lease obligations for AMT's latest 10-Q.\"\r\n   -> mode='criteria_related_info', ticker='AMT', criterion_key='debt'\r\n\r\n2) \"Give me all financial details of AMT stock in sec filing.\"\r\n   \"Please fetch all 10-Q financial data for AMT.\"\r\n   -> mode='all_financials', ticker='AMT'\r\n\r\n3) \"Give me balance sheet of AMT stock in sec filing.\"\r\n   \"Show me the balance sheet of AMT's latest 10-Q.\"\r\n   -> mode='specific_report', ticker='AMT', report_type='balance_sheet'\r\n\r\n-------------------------------------------------------------------------------\r\n\"\"\"\r\n\r\nclass SecEdgarMergedComponent(Component):\r\n    display_name = \"SEC 10-Q Data\"\r\n    description = \"A custom component for retrieving financial statements, specific reports, or criteria information from SEC 10-Q filings.\"\r\n    documentation = \"https://docs.langflow.org/components-custom-components\"\r\n    icon = \"custom_components\"\r\n    name = \"Sec10QDataExtractor\"\r\n\r\n    FINANCIALS_ENDPOINT = \"https://4mbhgkl77s4gubn7i2rdcllbru0wzyxl.lambda-url.us-east-1.on.aws/financials\"\r\n    SEARCH_ENDPOINT = \"https://4mbhgkl77s4gubn7i2rdcllbru0wzyxl.lambda-url.us-east-1.on.aws/search\"\r\n    CRITERIA_ENDPOINT = \"https://5etqfusktd76bp3y5b5sbqiq5a0dldqu.lambda-url.us-east-1.on.aws/get-matching-criteria-attachments\"\r\n    \r\n    inputs = [\r\n        StrInput(\r\n            name=\"ticker\",\r\n            display_name=\"Ticker\",\r\n            value=\"AAPL\",\r\n            info=\"The stock ticker symbol (e.g. AAPL).\",\r\n            tool_mode=True,\r\n        ),\r\n        DropdownInput(\r\n            name=\"mode\",\r\n            display_name=\"Mode\",\r\n            options=[\"all_financials\", \"specific_report\", \"criteria_related_info\"],\r\n            info=(\r\n                \"Select 'all_financials' to retrieve the full 10Q XBRL-based data.\\n\"\r\n                \"Select 'specific_report' to retrieve a specific part of the 10Q.\\n\"\r\n                \"Select 'criteria_related_info' to retrieve specific criterion data from the 10Q.\"\r\n            ),\r\n            tool_mode=True,\r\n        ),\r\n        StrInput(\r\n            name=\"report_type\",\r\n            display_name=\"Report Type (Used if mode='specific_report')\",\r\n            value=\"\",\r\n            info=\"E.g.: 'balance_sheet', 'income_statement', 'operation_statement', or 'cash_flow'.\",\r\n            tool_mode=True,\r\n        ),\r\n        StrInput(\r\n            name=\"criterion_key\",\r\n            display_name=\"Criterion Key (Used if mode='criteria_related_info')\",\r\n            value=\"\",\r\n            info=\"Provide the criterion key to retrieve e.g. 'debt', 'rent', etc.\",\r\n            tool_mode=True,\r\n        ),\r\n    ]\r\n\r\n    outputs = [\r\n        Output(\r\n            display_name=\"Merged SEC Output\",\r\n            name=\"merged_sec_output\",\r\n            method=\"call_merged_tool\",\r\n        )\r\n    ]\r\n\r\n    def call_merged_tool(self) -> Message:\r\n        \"\"\"\r\n        Decide which underlying call to run based on 'mode'.\r\n        For PART 1, we'll return placeholder text.\r\n        Replace this with real Lambda calls in PART 2.\r\n        \"\"\"\r\n\r\n        ticker = self.ticker\r\n        mode = self.mode\r\n        report_type = self.report_type\r\n        criterion_key = self.criterion_key\r\n\r\n        if mode == \"all_financials\":\r\n            return self._call_all_financials(ticker)\r\n\r\n        elif mode == \"specific_report\":\r\n            return self._call_specific_report(ticker, report_type)\r\n        \r\n        elif mode == \"criteria_related_info\":\r\n            return self._call_criteria_info(ticker, criterion_key)\r\n\r\n        else:\r\n            return Message(\r\n                text=(\r\n                    f\"You selected mode '{mode}', which isn't implemented yet.\\n\"\r\n                    \"In the future, we can add new routes or logic here.\"\r\n                )\r\n            )\r\n\r\n    def _call_all_financials(self, ticker: str) -> Message:\r\n        try:\r\n            payload = {\"ticker\": ticker}\r\n            response = requests.post(self.FINANCIALS_ENDPOINT, json=payload)\r\n            response_data = response.json()  \r\n\r\n            if \"message\" in response_data:\r\n                return Message(text=response_data[\"message\"])\r\n            elif \"data\" in response_data:\r\n                return Message(text=json.dumps(response_data[\"data\"], indent=2))\r\n            else:\r\n                return Message(text=json.dumps(response_data, indent=2))\r\n\r\n        except Exception as e:\r\n            error_text = f\"Error calling SEC Edgar Lambda (/financials): {e}\"\r\n            return Message(text=error_text)\r\n\r\n    def _call_specific_report(self, ticker: str, report_type: str) -> Message:\r\n        try:\r\n            payload = {\"ticker\": ticker, \"report_type\": report_type}\r\n            response = requests.post(self.SEARCH_ENDPOINT, json=payload)\r\n            data = response.json()  \r\n\r\n            message_text = data.get(\"data\", \"\")\r\n            return Message(text=message_text)\r\n\r\n        except Exception as e:\r\n            error_text = f\"Error calling SEC Edgar Lambda (/search): {e}\"\r\n            return Message(text=error_text)\r\n\r\n    def _call_criteria_info(self, ticker: str, criterion_key: str) -> Message:\r\n        try:\r\n            payload = {\"ticker\": ticker, \"criterion_key\": criterion_key}\r\n            response = requests.post(self.CRITERIA_ENDPOINT, json=payload)\r\n            response_data = response.json()  \r\n\r\n            if \"message\" in response_data:\r\n                return Message(text=response_data[\"message\"])\r\n            elif \"data\" in response_data:\r\n                return Message(text=json.dumps(response_data[\"data\"], indent=2))\r\n            else:\r\n                return Message(text=json.dumps(response_data, indent=2))\r\n\r\n        except Exception as e:\r\n            error_text = f\"Error calling SEC Edgar Lambda (/get-matching-criteria-attachments): {e}\"\r\n            return Message(text=error_text)\r\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              },
+              "criterion_key": {
+                "tool_mode": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "list_add_label": "Add More",
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "criterion_key",
+                "value": "",
+                "display_name": "Criterion Key (Used if mode='criteria_related_info')",
+                "advanced": false,
+                "dynamic": false,
+                "info": "Provide the criterion key to retrieve e.g. 'debt', 'rent', etc.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "StrInput"
+              },
+              "mode": {
+                "tool_mode": true,
+                "trace_as_metadata": true,
+                "options": [
+                  "all_financials",
+                  "specific_report",
+                  "criteria_related_info"
+                ],
+                "options_metadata": [],
+                "combobox": false,
+                "dialog_inputs": {},
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "mode",
+                "value": "",
+                "display_name": "Mode",
+                "advanced": false,
+                "dynamic": false,
+                "info": "Select 'all_financials' to retrieve the full 10Q XBRL-based data.\nSelect 'specific_report' to retrieve a specific part of the 10Q.\nSelect 'criteria_related_info' to retrieve specific criterion data from the 10Q.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "DropdownInput"
+              },
+              "report_type": {
+                "tool_mode": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "list_add_label": "Add More",
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "report_type",
+                "value": "",
+                "display_name": "Report Type (Used if mode='specific_report')",
+                "advanced": false,
+                "dynamic": false,
+                "info": "E.g.: 'balance_sheet', 'income_statement', 'operation_statement', or 'cash_flow'.",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "StrInput"
+              },
+              "ticker": {
+                "tool_mode": true,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "list_add_label": "Add More",
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "ticker",
+                "value": "",
+                "display_name": "Ticker",
+                "advanced": false,
+                "dynamic": false,
+                "info": "The stock ticker symbol (e.g. AAPL).",
+                "title_case": false,
+                "type": "str",
+                "_input_type": "StrInput"
+              },
+              "tools_metadata": {
+                "tool_mode": false,
+                "is_list": true,
+                "list_add_label": "Add More",
+                "table_schema": {
+                  "columns": [
+                    {
+                      "name": "name",
+                      "display_name": "Tool Name",
+                      "sortable": false,
+                      "filterable": false,
+                      "type": "text",
+                      "description": "Specify the name of the tool.",
+                      "disable_edit": false,
+                      "edit_mode": "inline",
+                      "hidden": false,
+                      "formatter": "text"
+                    },
+                    {
+                      "name": "description",
+                      "display_name": "Tool Description",
+                      "sortable": false,
+                      "filterable": false,
+                      "type": "text",
+                      "description": "Describe the purpose of the tool.",
+                      "disable_edit": false,
+                      "edit_mode": "popover",
+                      "hidden": false,
+                      "formatter": "text"
+                    },
+                    {
+                      "name": "tags",
+                      "display_name": "Tool Identifiers",
+                      "sortable": false,
+                      "filterable": false,
+                      "type": "text",
+                      "description": "The default identifiers for the tools and cannot be changed.",
+                      "disable_edit": true,
+                      "edit_mode": "inline",
+                      "hidden": true,
+                      "formatter": "text"
+                    }
+                  ]
+                },
+                "trigger_text": "",
+                "trigger_icon": "Hammer",
+                "table_icon": "Hammer",
+                "table_options": {
+                  "block_add": true,
+                  "block_delete": true,
+                  "block_edit": true,
+                  "block_sort": true,
+                  "block_filter": true,
+                  "block_hide": true,
+                  "block_select": true,
+                  "hide_options": true,
+                  "field_parsers": {
+                    "name": [
+                      "snake_case",
+                      "no_blank"
+                    ],
+                    "commands": "commands"
+                  },
+                  "description": "Modify tool names and descriptions to help agents understand when to use each tool."
+                },
+                "trace_as_metadata": true,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "tools_metadata",
+                "value": [
+                  {
+                    "name": "Sec10QDataExtractor-call_merged_tool",
+                    "description": "call_merged_tool() - A custom component for retrieving financial statements, specific reports, or criteria information from SEC 10-Q filings.",
+                    "tags": [
+                      "Sec10QDataExtractor-call_merged_tool"
+                    ]
+                  }
+                ],
+                "display_name": "Edit tools",
+                "advanced": false,
+                "dynamic": false,
+                "info": "",
+                "real_time_refresh": true,
+                "title_case": false,
+                "type": "table",
+                "_input_type": "TableInput"
+              }
+            },
+            "description": "A custom component for retrieving financial statements, specific reports, or criteria information from SEC 10-Q filings.",
+            "icon": "custom_components",
+            "base_classes": [
+              "Message"
+            ],
+            "display_name": "SEC 10-Q Data",
+            "documentation": "https://docs.langflow.org/components-custom-components",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "Tool"
+                ],
+                "selected": "Tool",
+                "name": "component_as_tool",
+                "hidden": null,
+                "display_name": "Toolset",
+                "method": "to_toolkit",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "required_inputs": null,
+                "allows_loop": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [
+              "ticker",
+              "mode",
+              "report_type",
+              "criterion_key"
+            ],
+            "beta": false,
+            "legacy": false,
+            "edited": true,
+            "metadata": {},
+            "tool_mode": true,
+            "lf_version": "1.1.4.dev13",
+            "official": false
+          },
+          "showNode": true,
+          "type": "Sec10QDataExtractor",
+          "id": "Sec10QDataExtractor-tjLq9"
+        },
+        "id": "Sec10QDataExtractor-tjLq9",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "type": "genericNode"
+      }
+    ],
+    "viewport": {
+      "x": 1,
+      "y": 1,
+      "zoom": 1
+    }
+  }
+}
