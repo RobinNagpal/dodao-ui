@@ -15,6 +15,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { parseMarkdown } from '@/util/parse-markdown';
 import SpiderChartFlyoutMenu from './SpiderChartFlyoutMenu';
 import {
@@ -88,6 +89,14 @@ export async function generateMetadata({ params }: { params: Promise<{ tickerKey
 
 export default async function TickerDetailsPage({ params }: { params: Promise<{ tickerKey: string }> }) {
   const { tickerKey } = await params;
+
+  // Decode the URL and check if it contains '}' character
+  const decodedTickerKey = decodeURIComponent(tickerKey);
+  if (decodedTickerKey.includes('}')) {
+    // Remove all '}' characters from the URL and redirect
+    const cleanedTickerKey = decodedTickerKey.replace(/\}/g, '');
+    redirect(`/public-equities/tickers/${cleanedTickerKey}`);
+  }
 
   const criteriaResponse = await fetch(
     `https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json`,
