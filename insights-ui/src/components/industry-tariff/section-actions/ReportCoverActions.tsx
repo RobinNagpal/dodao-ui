@@ -16,10 +16,12 @@ export default function ReportCoverActions({ industryId }: ReportCoverActionsPro
   const router = useRouter();
   const [showRegenerateModal, setShowRegenerateModal] = useState(false);
   const [showGenerateSeoModal, setShowGenerateSeoModal] = useState(false);
+  const [showGenerateExecutiveSummaryModal, setShowGenerateExecutiveSummaryModal] = useState(false);
 
   const actions: EllipsisDropdownItem[] = [
     { key: 'generate-all', label: 'Generate All Sections of Report' },
     { key: 'regenerate', label: 'Regenerate Cover' },
+    { key: 'generate-executive-summary', label: 'Regenerate Summary' },
     { key: 'edit', label: 'Edit Cover' },
     { key: 'generate-seo', label: 'Generate SEO for Cover' },
   ];
@@ -33,6 +35,12 @@ export default function ReportCoverActions({ industryId }: ReportCoverActionsPro
   const { postData: generateSeo, loading: isGeneratingSeo } = usePostData<any, any>({
     successMessage: 'SEO for report cover generated successfully!',
     errorMessage: 'Failed to generate SEO for report cover. Please try again.',
+    redirectPath: `/industry-tariff-report/${industryId}`,
+  });
+
+  const { postData: generateExecutiveSummary, loading: isGeneratingExecutiveSummary } = usePostData<any, any>({
+    successMessage: 'Executive summary generated successfully!',
+    errorMessage: 'Failed to generate executive summary. Please try again.',
     redirectPath: `/industry-tariff-report/${industryId}`,
   });
 
@@ -52,6 +60,12 @@ export default function ReportCoverActions({ industryId }: ReportCoverActionsPro
     setShowGenerateSeoModal(false);
   };
 
+  const handleGenerateExecutiveSummary = async () => {
+    await generateExecutiveSummary(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-executive-summary`, {});
+    router.refresh();
+    setShowGenerateExecutiveSummaryModal(false);
+  };
+
   return (
     <>
       <EllipsisDropdown
@@ -63,6 +77,8 @@ export default function ReportCoverActions({ industryId }: ReportCoverActionsPro
             router.push(`/industry-tariff-report/${industryId}/edit/report-cover`);
           } else if (key === 'generate-seo') {
             setShowGenerateSeoModal(true);
+          } else if (key === 'generate-executive-summary') {
+            setShowGenerateExecutiveSummaryModal(true);
           } else if (key === 'generate-all') {
             router.push(`/industry-tariff-report/${industryId}/generate-all`);
           }
@@ -87,6 +103,17 @@ export default function ReportCoverActions({ industryId }: ReportCoverActionsPro
           title="Generate SEO for Report Cover"
           confirmationText="Are you sure you want to generate SEO metadata for the report cover?"
           confirming={isGeneratingSeo}
+          askForTextInput={false}
+        />
+      )}
+      {showGenerateExecutiveSummaryModal && (
+        <ConfirmationModal
+          open={showGenerateExecutiveSummaryModal}
+          onClose={() => setShowGenerateExecutiveSummaryModal(false)}
+          onConfirm={handleGenerateExecutiveSummary}
+          title="Generate Executive Summary"
+          confirmationText="Are you sure you want to generate the executive summary? This process may take a few minutes."
+          confirming={isGeneratingExecutiveSummary}
           askForTextInput={false}
         />
       )}

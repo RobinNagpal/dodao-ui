@@ -23,652 +23,526 @@ seoKeywords:
     'Cost Breakdown',
     'SIBA 2010',
     'Fund Regulation',
-    'Comparison Matrix'
+    'Comparison Matrix',
   ]
 ---
 
-
 Below is a deep‑dive on **every regulated open‑ended fund category available under the BVI Securities and Investment Business Act 2010 (SIBA)**—Private, Professional, Public, Incubator and Approved Funds—together with a practical look at SPC “cell” overlays and the banking routes most often used to run these funds from, or alongside, the BVI. A 20‑parameter matrix at the end lets you benchmark the vehicles at a glance.
-
-
-
-
 
 ## Key take‑aways (read this first)
 
-
-
-* **Professional and Private Funds remain the work‑horses** for large crypto and multi‑asset vehicles because they carry *no head‑count or AUM caps* yet only require a two‑page recognition filing plus a US $2,050 composite fee. ([Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
-* **Incubator and Approved Funds** offer the *cheapest regulatory runway* (flat FSC renewal fee US $1,200) but hard‑cap you at 20 investors and US $20 m or US $100 m AUM respectively—perfect for proof‑of‑concept token strategies. ([Conyers](https://www.conyers.com/services/legal-services/investment-funds/british-virgin-islands-investment-funds/), [Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
-* **Public Funds** unlock true retail capital but triple your compliance load (full prospectus vetting, compulsory custodian, board fit‑and‑proper tests, audited GAAP accounts). ([BVI Financial Services Commission](https://www.bvifsc.vg/faqs?page=5&utm_source=chatgpt.com), [BVI Financial Services Commission](https://www.bvifsc.vg/sites/default/files/public_funds_code.pdf))
-* **Segregated Portfolio Companies (SPCs)** act as an optional “cell wrapper” on top of Private, Professional or Public funds where you want separate vaults for different token sleeves; each new cell costs US $350 at the FSC. ([Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
-* **Banking is the choke‑point**:
-  * *Local*: VP Bank (BVI) asks for a US $100 k relationship minimum. ([VP Bank](https://www.vpbank.com/en-vg/private-clients/paying-and-saving/account-types))
-  * *U.S.*: Customers Bank’s CBIT network opens with US $50 but crypto funds usually keep ≥US $100 k to avoid charges. ([Customers Bank](https://www.customersbank.com/small-business-banking/business-checking/))
-  * *Other hubs*: Bank Frick (Liechtenstein) on‑boards funds with a CHF 500 yearly account fee, while Swiss digital‑asset bank Sygnum requires CHF 100 k for corporates. ([bankfrick.li](https://www.bankfrick.li/sites/default/files/documents/1614_EN_Standard_fee_schedule.pdf), [Sygnum Bank](https://www.sygnum.com/help/onboarding/how-can-i-start-the-onboarding-process-with-sygnum/))
-  * *Zero‑fee fintech*: Mercury offers FDIC‑swept operating accounts with no balance minimum; useful for U.S. treasury ops. ([Mercury](https://mercury.com/pricing))
-
-
-
-
+- **Professional and Private Funds remain the work‑horses** for large crypto and multi‑asset vehicles because they carry _no head‑count or AUM caps_ yet only require a two‑page recognition filing plus a US $2,050 composite fee. ([Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
+- **Incubator and Approved Funds** offer the _cheapest regulatory runway_ (flat FSC renewal fee US $1,200) but hard‑cap you at 20 investors and US $20 m or US $100 m AUM respectively—perfect for proof‑of‑concept token strategies. ([Conyers](https://www.conyers.com/services/legal-services/investment-funds/british-virgin-islands-investment-funds/), [Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
+- **Public Funds** unlock true retail capital but triple your compliance load (full prospectus vetting, compulsory custodian, board fit‑and‑proper tests, audited GAAP accounts). ([BVI Financial Services Commission](https://www.bvifsc.vg/faqs?page=5), [BVI Financial Services Commission](https://www.bvifsc.vg/sites/default/files/public_funds_code.pdf))
+- **Segregated Portfolio Companies (SPCs)** act as an optional “cell wrapper” on top of Private, Professional or Public funds where you want separate vaults for different token sleeves; each new cell costs US $350 at the FSC. ([Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
+- **Banking is the choke‑point**:
+  - _Local_: VP Bank (BVI) asks for a US $100 k relationship minimum. ([VP Bank](https://www.vpbank.com/en-vg/private-clients/paying-and-saving/account-types))
+  - _U.S._: Customers Bank’s CBIT network opens with US $50 but crypto funds usually keep ≥US $100 k to avoid charges. ([Customers Bank](https://www.customersbank.com/small-business-banking/business-checking/))
+  - _Other hubs_: Bank Frick (Liechtenstein) on‑boards funds with a CHF 500 yearly account fee, while Swiss digital‑asset bank Sygnum requires CHF 100 k for corporates. ([bankfrick.li](https://www.bankfrick.li/sites/default/files/documents/1614_EN_Standard_fee_schedule.pdf), [Sygnum Bank](https://www.sygnum.com/help/onboarding/how-can-i-start-the-onboarding-process-with-sygnum/))
+  - _Zero‑fee fintech_: Mercury offers FDIC‑swept operating accounts with no balance minimum; useful for U.S. treasury ops. ([Mercury](https://mercury.com/pricing))
 
 ## 1 Fund categories in depth
 
-
 ### 1.1 Private Fund
 
-
-
-* **Who can invest** – unlimited ticket size but *either* ≤50 holders *or* offers made only on a “private basis”. ([Harneys](https://www.harneys.com/funds-hub/resources/the-british-virgin-islands-and-investment-funds/))
-* **Forms & fees** – Recognition on **Form MF4** (+ Part 4 supplement); composite application/recognition fee US $2,050; FSC renewal fee US $1,200; Registry licence US $550–1,350 depending on share cap. ([Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf), [Ogier](https://www.ogier.com/news-and-insights/insights/a-guide-to-ongoing-obligations-for-bvi-professional-and-private-funds/))
-* **Timing** – 3–5 business days once the authorised representative uploads the pack via FSC REEFS. ([Harneys](https://www.harneys.com/funds-hub/resources/establishing-a-hedge-fund-in-the-bvi/))
-* **Complexities** – annual audit (unless SPC exemption), economic‑substance self‑return, FATCA/CRS by 31 May. ([BVI Financial Services Commission](https://www.bvifsc.vg/faqs?page=5&utm_source=chatgpt.com), [Ogier](https://www.ogier.com/news-and-insights/insights/compliance-calendar-for-bvi-investment-funds-2025/))
-
+- **Who can invest** – unlimited ticket size but _either_ ≤50 holders _or_ offers made only on a “private basis”. ([Harneys](https://www.harneys.com/funds-hub/resources/the-british-virgin-islands-and-investment-funds/))
+- **Forms & fees** – Recognition on **Form MF4** (+ Part 4 supplement); composite application/recognition fee US $2,050; FSC renewal fee US $1,200; Registry licence US $550–1,350 depending on share cap. ([Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf), [Ogier](https://www.ogier.com/news-and-insights/insights/a-guide-to-ongoing-obligations-for-bvi-professional-and-private-funds/))
+- **Timing** – 3–5 business days once the authorised representative uploads the pack via FSC REEFS. ([Harneys](https://www.harneys.com/funds-hub/resources/establishing-a-hedge-fund-in-the-bvi/))
+- **Complexities** – annual audit (unless SPC exemption), economic‑substance self‑return, FATCA/CRS by 31 May. ([BVI Financial Services Commission](https://www.bvifsc.vg/faqs?page=5), [Ogier](https://www.ogier.com/news-and-insights/insights/compliance-calendar-for-bvi-investment-funds-2025/))
 
 ### 1.2 Professional Fund
 
-
-
-* **Who can invest** – only “professional investors” (net worth ≥US $1 m) and min buy‑in US $100 k; no investor cap. ([Carey Olsen](https://www.careyolsen.com/insights/briefings/guide-investment-funds-british-virgin-islands-bvi))
-* **Forms & fees** – same MF4 pack; same US $2,050 entry and US $1,200 annual FSC fee. ([Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
-* **Fast‑track launch** – may begin dealing *immediately* after filing if functionaries are from a “recognised jurisdiction”, then wait 21 days for ex‑post FSC confirmation. ([Appleby](https://www.applebyglobal.com/publications/fund-finance-laws-and-regulations-bvi/))
-* **Typical Web3 users** – Pantera Blockchain Fund I, Multicoin Capital Master Fund and similar Cayman “feeder” mirrors.
-
+- **Who can invest** – only “professional investors” (net worth ≥US $1 m) and min buy‑in US $100 k; no investor cap. ([Carey Olsen](https://www.careyolsen.com/insights/briefings/guide-investment-funds-british-virgin-islands-bvi))
+- **Forms & fees** – same MF4 pack; same US $2,050 entry and US $1,200 annual FSC fee. ([Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
+- **Fast‑track launch** – may begin dealing _immediately_ after filing if functionaries are from a “recognised jurisdiction”, then wait 21 days for ex‑post FSC confirmation. ([Appleby](https://www.applebyglobal.com/publications/fund-finance-laws-and-regulations-bvi/))
+- **Typical Web3 users** – Pantera Blockchain Fund I, Multicoin Capital Master Fund and similar Cayman “feeder” mirrors.
 
 ### 1.3 Public Fund
 
-
-
-* **Retail‑facing** with no investor or AUM limits.
-* **Prospectus** vetted by FSC + **Public Funds Code 2021** governance tests. ([BVI Financial Services Commission](https://www.bvifsc.vg/sites/default/files/public_funds_code.pdf))
-* **Fees** – US $1,800 application + US $1,800 registration; US $1,800 annual renewal. ([Carey Olsen](https://www.careyolsen.com/insights/briefings/british-virgin-islands-investment-funds-autumn-2024-update))
-* **Mandatory service providers** – manager, administrator and custodian at all times. ([BVI Financial Services Commission](https://www.bvifsc.vg/sites/default/files/mutual_funds_regulations.pdf))
-* **Trade‑offs** – longer (6‑10 week) lead time and higher legal spend (≈ US $50–70 k) but enables global exchange listings. ([totalserve-live-7538af93d0344058b43d149-8a415b5.divio-media.com](https://totalserve-live-7538af93d0344058b43d149-8a415b5.divio-media.com/documents/Information_Sheet_No.58.pdf))
-
+- **Retail‑facing** with no investor or AUM limits.
+- **Prospectus** vetted by FSC + **Public Funds Code 2021** governance tests. ([BVI Financial Services Commission](https://www.bvifsc.vg/sites/default/files/public_funds_code.pdf))
+- **Fees** – US $1,800 application + US $1,800 registration; US $1,800 annual renewal. ([Carey Olsen](https://www.careyolsen.com/insights/briefings/british-virgin-islands-investment-funds-autumn-2024-update))
+- **Mandatory service providers** – manager, administrator and custodian at all times. ([BVI Financial Services Commission](https://www.bvifsc.vg/sites/default/files/mutual_funds_regulations.pdf))
+- **Trade‑offs** – longer (6‑10 week) lead time and higher legal spend (≈ US $50–70 k) but enables global exchange listings. ([totalserve-live-7538af93d0344058b43d149-8a415b5.divio-media.com](https://totalserve-live-7538af93d0344058b43d149-8a415b5.divio-media.com/documents/Information_Sheet_No.58.pdf))
 
 ### 1.4 Incubator Fund
 
-
-
-* **Startup sandbox** capped at 20 investors, US $20 m NAV and US $20 k min ticket. ([Conyers](https://www.conyers.com/services/legal-services/investment-funds/british-virgin-islands-investment-funds/))
-* **Application** – **Form IB‑A2‑IAF**; fee US $2,000; renewal US $1,200. ([BVI Financial Services Commission](https://www.bvifsc.vg/forms/incubator-and-approved-funds-form-ib-a2-iaf), [Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
-* **No audit** but must file semi‑annual report and abbreviated investment warning instead of full OM. ([Mourant](https://www.mourant.com/news-and-views/guides/continuing-obligations-for-bvi-incubator-funds.aspx), [Harneys](https://www.harneys.com/media/wh1ffsgh/guide-continuing-obligations-for-bvi-incubator-funds.pdf))
-* **Two directors** (one individual) minimum. ([Fast Offshore](https://fastoffshore.com/bvi-incubator-and-approved-funds/incubator-funds-2/))
-* **Exit route** – auto‑lapses after two years unless upgraded to Approved/Professional.
-
+- **Startup sandbox** capped at 20 investors, US $20 m NAV and US $20 k min ticket. ([Conyers](https://www.conyers.com/services/legal-services/investment-funds/british-virgin-islands-investment-funds/))
+- **Application** – **Form IB‑A2‑IAF**; fee US $2,000; renewal US $1,200. ([BVI Financial Services Commission](https://www.bvifsc.vg/forms/incubator-and-approved-funds-form-ib-a2-iaf), [Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
+- **No audit** but must file semi‑annual report and abbreviated investment warning instead of full OM. ([Mourant](https://www.mourant.com/news-and-views/guides/continuing-obligations-for-bvi-incubator-funds.aspx), [Harneys](https://www.harneys.com/media/wh1ffsgh/guide-continuing-obligations-for-bvi-incubator-funds.pdf))
+- **Two directors** (one individual) minimum. ([Fast Offshore](https://fastoffshore.com/bvi-incubator-and-approved-funds/incubator-funds-2/))
+- **Exit route** – auto‑lapses after two years unless upgraded to Approved/Professional.
 
 ### 1.5 Approved Fund
 
-
-
-* **Long‑hold private club** – 20 investor cap, *no minimum ticket*, AUM ceiling US $100 m. ([Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
-* **Forms/fees** identical to Incubator (Form IB‑A2‑IAF, US $2,000 → US $1,200 p.a.).
-* **Audit optional**; must appoint an administrator but can dispense with custodian. ([Harneys](https://www.harneys.com/media/mukdyzrb/guide-establishing-an-incubator-or-approved-fund-in-the-british-virgin-islands.pdf))
-
+- **Long‑hold private club** – 20 investor cap, _no minimum ticket_, AUM ceiling US $100 m. ([Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
+- **Forms/fees** identical to Incubator (Form IB‑A2‑IAF, US $2,000 → US $1,200 p.a.).
+- **Audit optional**; must appoint an administrator but can dispense with custodian. ([Harneys](https://www.harneys.com/media/mukdyzrb/guide-establishing-an-incubator-or-approved-fund-in-the-british-virgin-islands.pdf))
 
 ### 1.6 Segregated Portfolio Company overlay
 
-Any Private, Professional or Public Fund (and, since 2023, Incubator/Approved) can convert to an **SPC** to issue legally ring‑fenced “cells”.  Add FSC fee US $1,500 + US $350 per cell on application and annually. ([Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
-
-
-
-
+Any Private, Professional or Public Fund (and, since 2023, Incubator/Approved) can convert to an **SPC** to issue legally ring‑fenced “cells”. Add FSC fee US $1,500 + US $350 per cell on application and annually. ([Harneys](https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf))
 
 ## 2 Core application documents
 
-
 <table>
   <tr>
-    <td><strong>Fund class</strong>
+    <td>
+      <strong>Fund class</strong>
     </td>
-    <td><strong>Governing regs</strong>
+    <td>
+      <strong>Governing regs</strong>
     </td>
-    <td><strong>Primary FSC form(s)</strong>
+    <td>
+      <strong>Primary FSC form(s)</strong>
     </td>
-    <td><strong>Key supporting docs</strong>
-    </td>
-  </tr>
-  <tr>
-    <td>Private / Professional
-    </td>
-    <td>Mutual Funds Regs 2020
-    </td>
-    <td>MF4 + Part 4 addendum
-    </td>
-    <td>Memorandum & Articles, Offering Memorandum, service‑provider consents, director KYC
+    <td>
+      <strong>Key supporting docs</strong>
     </td>
   </tr>
   <tr>
-    <td>Public
-    </td>
-    <td>SIBA s.41 & Public Funds Code 2021
-    </td>
-    <td>MF1 (registration)
-    </td>
-    <td>Full prospectus (sec. 8 requirements), audited opening NAV, board affidavits
-    </td>
+    <td>Private / Professional</td>
+    <td>Mutual Funds Regs 2020</td>
+    <td>MF4 + Part 4 addendum</td>
+    <td>Memorandum & Articles, Offering Memorandum, service‑provider consents, director KYC</td>
   </tr>
   <tr>
-    <td>Incubator / Approved
-    </td>
-    <td>Incubator & Approved Funds Regs 2015
-    </td>
-    <td>IB‑A2‑IAF
-    </td>
-    <td>Two‑page investment strategy statement & investment warning
-    </td>
+    <td>Public</td>
+    <td>SIBA s.41 & Public Funds Code 2021</td>
+    <td>MF1 (registration)</td>
+    <td>Full prospectus (sec. 8 requirements), audited opening NAV, board affidavits</td>
   </tr>
   <tr>
-    <td>SPC overlay
-    </td>
-    <td>Segregated Portfolio Co. Regs 2018
-    </td>
-    <td>SPC Application
-    </td>
-    <td>Cell‑by‑cell OM / investment warning
-    </td>
+    <td>Incubator / Approved</td>
+    <td>Incubator & Approved Funds Regs 2015</td>
+    <td>IB‑A2‑IAF</td>
+    <td>Two‑page investment strategy statement & investment warning</td>
+  </tr>
+  <tr>
+    <td>SPC overlay</td>
+    <td>Segregated Portfolio Co. Regs 2018</td>
+    <td>SPC Application</td>
+    <td>Cell‑by‑cell OM / investment warning</td>
   </tr>
 </table>
-
 
 (See FSC forms library for MF and SPC templates.) ([BVI Financial Services Commission](https://www.bvifsc.vg/forms))
 
-
-
-
-
 ## 3 Cost stack (government **and** professional)
-
 
 <table>
   <tr>
-    <td><strong>Item</strong>
+    <td>
+      <strong>Item</strong>
     </td>
-    <td><strong>Private / Professional</strong>
+    <td>
+      <strong>Private / Professional</strong>
     </td>
-    <td><strong>Public</strong>
+    <td>
+      <strong>Public</strong>
     </td>
-    <td><strong>Incubator / Approved</strong>
-    </td>
-  </tr>
-  <tr>
-    <td>Government application
-    </td>
-    <td>US $2,050 (<a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">Harneys</a>)
-    </td>
-    <td>US $1,800 (<a href="https://www.careyolsen.com/insights/briefings/british-virgin-islands-investment-funds-autumn-2024-update">Carey Olsen</a>)
-    </td>
-    <td>US $2,000 (<a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">Harneys</a>)
+    <td>
+      <strong>Incubator / Approved</strong>
     </td>
   </tr>
   <tr>
-    <td>Annual FSC renewal
+    <td>Government application</td>
+    <td>
+      US $2,050 (
+      <a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">
+        Harneys
+      </a>
+      )
     </td>
-    <td>US $1,200 (<a href="https://www.bvifsc.vg/faqs?page=5&utm_source=chatgpt.com">BVI Financial Services Commission</a>)
+    <td>
+      US $1,800 (<a href="https://www.careyolsen.com/insights/briefings/british-virgin-islands-investment-funds-autumn-2024-update">Carey Olsen</a>)
     </td>
-    <td>US $1,800 (<a href="https://www.careyolsen.com/insights/briefings/british-virgin-islands-investment-funds-autumn-2024-update">Carey Olsen</a>)
-    </td>
-    <td>US $1,200 (<a href="https://www.ogier.com/news-and-insights/insights/compliance-calendar-for-bvi-investment-funds-2025/">Ogier</a>)
+    <td>
+      US $2,000 (
+      <a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">
+        Harneys
+      </a>
+      )
     </td>
   </tr>
   <tr>
-    <td>Registry licence (company)
+    <td>Annual FSC renewal</td>
+    <td>
+      US $1,200 (<a href="https://www.bvifsc.vg/faqs?page=5">BVI Financial Services Commission</a>)
     </td>
-    <td>US $550 ≤ 50k shares; US $1,350 > 50k (<a href="https://www.ogier.com/news-and-insights/insights/a-guide-to-ongoing-obligations-for-bvi-professional-and-private-funds/">Ogier</a>)
+    <td>
+      US $1,800 (<a href="https://www.careyolsen.com/insights/briefings/british-virgin-islands-investment-funds-autumn-2024-update">Carey Olsen</a>)
     </td>
-    <td>same
-    </td>
-    <td>same
+    <td>
+      US $1,200 (<a href="https://www.ogier.com/news-and-insights/insights/compliance-calendar-for-bvi-investment-funds-2025/">Ogier</a>)
     </td>
   </tr>
   <tr>
-    <td>Typical legal & launch
+    <td>Registry licence (company)</td>
+    <td>
+      US $550 ≤ 50k shares; US $1,350 > 50k (
+      <a href="https://www.ogier.com/news-and-insights/insights/a-guide-to-ongoing-obligations-for-bvi-professional-and-private-funds/">Ogier</a>)
     </td>
-    <td>US $15‑25 k (simple master‑feeder) (<a href="https://www.cogcpa.com/six-major-costs-starting-hedge-fund/">Michael Coglianese CPA, P.C.</a>)
+    <td>same</td>
+    <td>same</td>
+  </tr>
+  <tr>
+    <td>Typical legal & launch</td>
+    <td>
+      US $15‑25 k (simple master‑feeder) (<a href="https://www.cogcpa.com/six-major-costs-starting-hedge-fund/">Michael Coglianese CPA, P.C.</a>)
     </td>
-    <td>US $50‑70 k (full prospectus) (<a href="https://totalserve-live-7538af93d0344058b43d149-8a415b5.divio-media.com/documents/Information_Sheet_No.58.pdf">totalserve-live-7538af93d0344058b43d149-8a415b5.divio-media.com</a>)
+    <td>
+      US $50‑70 k (full prospectus) (
+      <a href="https://totalserve-live-7538af93d0344058b43d149-8a415b5.divio-media.com/documents/Information_Sheet_No.58.pdf">
+        totalserve-live-7538af93d0344058b43d149-8a415b5.divio-media.com
+      </a>
+      )
     </td>
-    <td>US $8‑15 k (light docs) (<a href="https://www.harneys.com/media/mukdyzrb/guide-establishing-an-incubator-or-approved-fund-in-the-british-virgin-islands.pdf">Harneys</a>)
+    <td>
+      US $8‑15 k (light docs) (
+      <a href="https://www.harneys.com/media/mukdyzrb/guide-establishing-an-incubator-or-approved-fund-in-the-british-virgin-islands.pdf">Harneys</a>)
     </td>
   </tr>
 </table>
-
-
-
-
-
 
 ## 4 Banking options
 
-
 <table>
   <tr>
-    <td><strong>Bank</strong>
+    <td>
+      <strong>Bank</strong>
     </td>
-    <td><strong>Jurisdiction</strong>
+    <td>
+      <strong>Jurisdiction</strong>
     </td>
-    <td><strong>Crypto policy & min balance</strong>
+    <td>
+      <strong>Crypto policy & min balance</strong>
     </td>
-    <td><strong>Typical use‑case</strong>
-    </td>
-  </tr>
-  <tr>
-    <td><strong>VP Bank (BVI) Ltd</strong>
-    </td>
-    <td>Road Town
-    </td>
-    <td>min. US $100 k for non‑residents (<a href="https://www.vpbank.com/en-vg/private-clients/paying-and-saving/account-types">VP Bank</a>)
-    </td>
-    <td>local operating account, subscription monies
+    <td>
+      <strong>Typical use‑case</strong>
     </td>
   </tr>
   <tr>
-    <td><strong>Customers Bank (CBIT)</strong>
+    <td>
+      <strong>VP Bank (BVI) Ltd</strong>
     </td>
-    <td>USA (PA)
+    <td>Road Town</td>
+    <td>
+      min. US $100 k for non‑residents (<a href="https://www.vpbank.com/en-vg/private-clients/paying-and-saving/account-types">VP Bank</a>)
     </td>
-    <td>opens from US $50; CBIT instant USD rail; crypto firms must maintain ≥US $100 k working capital (<a href="https://www.customersbank.com/small-business-banking/business-checking/">Customers Bank</a>)
-    </td>
-    <td>24/7 fiat on‑/off‑ramp
-    </td>
+    <td>local operating account, subscription monies</td>
   </tr>
   <tr>
-    <td><strong>Mercury</strong>
+    <td>
+      <strong>Customers Bank (CBIT)</strong>
     </td>
-    <td>USA (partner banks)
+    <td>USA (PA)</td>
+    <td>
+      opens from US $50; CBIT instant USD rail; crypto firms must maintain ≥US $100 k working capital (
+      <a href="https://www.customersbank.com/small-business-banking/business-checking/">Customers Bank</a>)
     </td>
-    <td>zero min; no monthly fee (<a href="https://mercury.com/pricing">Mercury</a>)
-    </td>
-    <td>treasury sweep, USD wires
-    </td>
+    <td>24/7 fiat on‑/off‑ramp</td>
   </tr>
   <tr>
-    <td><strong>Bank Frick</strong>
+    <td>
+      <strong>Mercury</strong>
     </td>
-    <td>Liechtenstein
+    <td>USA (partner banks)</td>
+    <td>
+      zero min; no monthly fee (<a href="https://mercury.com/pricing">Mercury</a>)
     </td>
-    <td>CHF 500 annual fee; no fixed min but UCITS/AIF want EUR 1.25 m NAV within 12 m (<a href="https://www.bankfrick.li/sites/default/files/documents/1614_EN_Standard_fee_schedule.pdf">bankfrick.li</a>, <a href="https://www.bankfrick.li/en/faq">bankfrick.li</a>)
-    </td>
-    <td>EU custodian + crypto prime
-    </td>
+    <td>treasury sweep, USD wires</td>
   </tr>
   <tr>
-    <td><strong>Sygnum Bank</strong>
+    <td>
+      <strong>Bank Frick</strong>
     </td>
-    <td>Zürich
+    <td>Liechtenstein</td>
+    <td>
+      CHF 500 annual fee; no fixed min but UCITS/AIF want EUR 1.25 m NAV within 12 m (
+      <a href="https://www.bankfrick.li/sites/default/files/documents/1614_EN_Standard_fee_schedule.pdf">bankfrick.li</a>,{' '}
+      <a href="https://www.bankfrick.li/en/faq">bankfrick.li</a>)
     </td>
-    <td>onboarding threshold CHF 100 k deposit (<a href="https://www.sygnum.com/help/onboarding/how-can-i-start-the-onboarding-process-with-sygnum/">Sygnum Bank</a>)
+    <td>EU custodian + crypto prime</td>
+  </tr>
+  <tr>
+    <td>
+      <strong>Sygnum Bank</strong>
     </td>
-    <td>staking, tokenised shares custody
+    <td>Zürich</td>
+    <td>
+      onboarding threshold CHF 100 k deposit (
+      <a href="https://www.sygnum.com/help/onboarding/how-can-i-start-the-onboarding-process-with-sygnum/">Sygnum Bank</a>)
     </td>
+    <td>staking, tokenised shares custody</td>
   </tr>
 </table>
 
-
-*BVI funds routinely keep a local VP Bank account for statutory “place of business” purposes and run trading/settlement through offshore correspondents such as Bank Frick or CBIT.*
-
-
-
-
+_BVI funds routinely keep a local VP Bank account for statutory “place of business” purposes and run trading/settlement through offshore correspondents such as Bank Frick or CBIT._
 
 ## 5 Twenty‑parameter comparison matrix
 
-
 <table>
   <tr>
-    <td><strong>#</strong>
+    <td>
+      <strong>#</strong>
     </td>
-    <td><strong>Parameter</strong>
+    <td>
+      <strong>Parameter</strong>
     </td>
-    <td><strong>Private</strong>
+    <td>
+      <strong>Private</strong>
     </td>
-    <td><strong>Professional</strong>
+    <td>
+      <strong>Professional</strong>
     </td>
-    <td><strong>Public</strong>
+    <td>
+      <strong>Public</strong>
     </td>
-    <td><strong>Incubator</strong>
+    <td>
+      <strong>Incubator</strong>
     </td>
-    <td><strong>Approved</strong>
-    </td>
-  </tr>
-  <tr>
-    <td>1
-    </td>
-    <td>Investor cap
-    </td>
-    <td>≤50 <em>or</em> private offer (<a href="https://www.harneys.com/funds-hub/resources/the-british-virgin-islands-and-investment-funds/">Harneys</a>)
-    </td>
-    <td>Unlimited
-    </td>
-    <td>Unlimited
-    </td>
-    <td>20
-    </td>
-    <td>20
+    <td>
+      <strong>Approved</strong>
     </td>
   </tr>
   <tr>
-    <td>2
+    <td>1</td>
+    <td>Investor cap</td>
+    <td>
+      ≤50 <em>or</em> private offer (<a href="https://www.harneys.com/funds-hub/resources/the-british-virgin-islands-and-investment-funds/">Harneys</a>)
     </td>
-    <td>Investor type
+    <td>Unlimited</td>
+    <td>Unlimited</td>
+    <td>20</td>
+    <td>20</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Investor type</td>
+    <td>Any</td>
+    <td>
+      “Professional” only (<a href="https://www.careyolsen.com/insights/briefings/guide-investment-funds-british-virgin-islands-bvi">Carey Olsen</a>)
     </td>
-    <td>Any
+    <td>Retail</td>
+    <td>Any</td>
+    <td>Any</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Min subscription</td>
+    <td>None</td>
+    <td>
+      US $100 k (<a href="https://www.careyolsen.com/insights/briefings/guide-investment-funds-british-virgin-islands-bvi">Carey Olsen</a>)
     </td>
-    <td>“Professional” only (<a href="https://www.careyolsen.com/insights/briefings/guide-investment-funds-british-virgin-islands-bvi">Carey Olsen</a>)
+    <td>None</td>
+    <td>
+      US $20 k (<a href="https://www.conyers.com/services/legal-services/investment-funds/british-virgin-islands-investment-funds/">Conyers</a>)
     </td>
-    <td>Retail
+    <td>None</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>AUM cap</td>
+    <td>None</td>
+    <td>None</td>
+    <td>None</td>
+    <td>
+      US $20 m (<a href="https://www.conyers.com/services/legal-services/investment-funds/british-virgin-islands-investment-funds/">Conyers</a>)
     </td>
-    <td>Any
-    </td>
-    <td>Any
+    <td>
+      US $100 m (
+      <a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">
+        Harneys
+      </a>
+      )
     </td>
   </tr>
   <tr>
-    <td>3
+    <td>5</td>
+    <td>Governing regs</td>
+    <td>Mutual Funds Regs 2020</td>
+    <td>Same</td>
+    <td>SIBA s.41 & PF Code</td>
+    <td>Incubator & Approved Regs 2015</td>
+    <td>Same</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Main form</td>
+    <td>MF4</td>
+    <td>MF4</td>
+    <td>MF1</td>
+    <td>IB‑A2‑IAF</td>
+    <td>IB‑A2‑IAF</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>App fee (US$)</td>
+    <td>
+      2,050 (
+      <a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">
+        Harneys
+      </a>
+      )
     </td>
-    <td>Min subscription
+    <td>
+      2,050 (
+      <a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">
+        Harneys
+      </a>
+      )
     </td>
-    <td>None
+    <td>
+      1,800 (<a href="https://www.careyolsen.com/insights/briefings/british-virgin-islands-investment-funds-autumn-2024-update">Carey Olsen</a>)
     </td>
-    <td>US $100 k (<a href="https://www.careyolsen.com/insights/briefings/guide-investment-funds-british-virgin-islands-bvi">Carey Olsen</a>)
+    <td>
+      2,000 (
+      <a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">
+        Harneys
+      </a>
+      )
     </td>
-    <td>None
-    </td>
-    <td>US $20 k (<a href="https://www.conyers.com/services/legal-services/investment-funds/british-virgin-islands-investment-funds/">Conyers</a>)
-    </td>
-    <td>None
+    <td>
+      2,000 (
+      <a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">
+        Harneys
+      </a>
+      )
     </td>
   </tr>
   <tr>
-    <td>4
+    <td>8</td>
+    <td>FSC renewal</td>
+    <td>
+      1,200 (<a href="https://www.bvifsc.vg/faqs?page=5">BVI Financial Services Commission</a>)
     </td>
-    <td>AUM cap
-    </td>
-    <td>None
-    </td>
-    <td>None
-    </td>
-    <td>None
-    </td>
-    <td>US $20 m (<a href="https://www.conyers.com/services/legal-services/investment-funds/british-virgin-islands-investment-funds/">Conyers</a>)
-    </td>
-    <td>US $100 m (<a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">Harneys</a>)
-    </td>
+    <td>1,200</td>
+    <td>1,800</td>
+    <td>1,200</td>
+    <td>1,200</td>
   </tr>
   <tr>
-    <td>5
-    </td>
-    <td>Governing regs
-    </td>
-    <td>Mutual Funds Regs 2020
-    </td>
-    <td>Same
-    </td>
-    <td>SIBA s.41 & PF Code
-    </td>
-    <td>Incubator & Approved Regs 2015
-    </td>
-    <td>Same
-    </td>
+    <td>9</td>
+    <td>Audit duty</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Optional</td>
   </tr>
   <tr>
-    <td>6
-    </td>
-    <td>Main form
-    </td>
-    <td>MF4
-    </td>
-    <td>MF4
-    </td>
-    <td>MF1
-    </td>
-    <td>IB‑A2‑IAF
-    </td>
-    <td>IB‑A2‑IAF
-    </td>
+    <td>10</td>
+    <td>Offering document</td>
+    <td>Full OM</td>
+    <td>Full OM</td>
+    <td>FSC‑vetted Prospectus</td>
+    <td>Investment warning</td>
+    <td>Investment warning</td>
   </tr>
   <tr>
-    <td>7
-    </td>
-    <td>App fee (US$)
-    </td>
-    <td>2,050 (<a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">Harneys</a>)
-    </td>
-    <td>2,050 (<a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">Harneys</a>)
-    </td>
-    <td>1,800 (<a href="https://www.careyolsen.com/insights/briefings/british-virgin-islands-investment-funds-autumn-2024-update">Carey Olsen</a>)
-    </td>
-    <td>2,000 (<a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">Harneys</a>)
-    </td>
-    <td>2,000 (<a href="https://www.harneys.com/media/a3uffubm/bvif18-mutual-funds-established-as-segregated-portfolio-companies-in-the-british-virgin-islands-bvi-oct24.pdf">Harneys</a>)
-    </td>
+    <td>11</td>
+    <td>Approval time</td>
+    <td>3–5 days</td>
+    <td>1 day fast‑track</td>
+    <td>6–10 weeks</td>
+    <td>2–3 days</td>
+    <td>2–3 days</td>
   </tr>
   <tr>
-    <td>8
-    </td>
-    <td>FSC renewal
-    </td>
-    <td>1,200 (<a href="https://www.bvifsc.vg/faqs?page=5&utm_source=chatgpt.com">BVI Financial Services Commission</a>)
-    </td>
-    <td>1,200
-    </td>
-    <td>1,800
-    </td>
-    <td>1,200
-    </td>
-    <td>1,200
-    </td>
+    <td>12</td>
+    <td>Admin mandatory</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Yes</td>
   </tr>
   <tr>
-    <td>9
-    </td>
-    <td>Audit duty
-    </td>
-    <td>Yes
-    </td>
-    <td>Yes
-    </td>
-    <td>Yes
-    </td>
-    <td>No
-    </td>
-    <td>Optional
-    </td>
+    <td>13</td>
+    <td>Custodian mandatory</td>
+    <td>No</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>No</td>
   </tr>
   <tr>
-    <td>10
+    <td>14</td>
+    <td>Min directors</td>
+    <td>2</td>
+    <td>2</td>
+    <td>
+      3 ind. (no corporates) (<a href="https://www.bvifsc.vg/sites/default/files/public_funds_code.pdf">BVI Financial Services Commission</a>)
     </td>
-    <td>Offering document
+    <td>
+      2 (≥1 natural) (<a href="https://fastoffshore.com/bvi-incubator-and-approved-funds/incubator-funds-2/">Fast Offshore</a>)
     </td>
-    <td>Full OM
-    </td>
-    <td>Full OM
-    </td>
-    <td>FSC‑vetted Prospectus
-    </td>
-    <td>Investment warning
-    </td>
-    <td>Investment warning
-    </td>
+    <td>2</td>
   </tr>
   <tr>
-    <td>11
-    </td>
-    <td>Approval time
-    </td>
-    <td>3–5 days
-    </td>
-    <td>1 day fast‑track
-    </td>
-    <td>6–10 weeks
-    </td>
-    <td>2–3 days
-    </td>
-    <td>2–3 days
-    </td>
+    <td>15</td>
+    <td>Local authorised rep</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
   </tr>
   <tr>
-    <td>12
-    </td>
-    <td>Admin mandatory
-    </td>
-    <td>Yes
-    </td>
-    <td>Yes
-    </td>
-    <td>Yes
-    </td>
-    <td>No
-    </td>
-    <td>Yes
-    </td>
+    <td>16</td>
+    <td>Economic‑substance return</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Yes</td>
   </tr>
   <tr>
-    <td>13
+    <td>17</td>
+    <td>FATCA/CRS</td>
+    <td>
+      Annual by 31 May (<a href="https://www.ogier.com/news-and-insights/insights/compliance-calendar-for-bvi-investment-funds-2025/">Ogier</a>)
     </td>
-    <td>Custodian mandatory
-    </td>
-    <td>No
-    </td>
-    <td>No
-    </td>
-    <td>Yes
-    </td>
-    <td>No
-    </td>
-    <td>No
-    </td>
+    <td>Same</td>
+    <td>Same</td>
+    <td>Same</td>
+    <td>Same</td>
   </tr>
   <tr>
-    <td>14
-    </td>
-    <td>Min directors
-    </td>
-    <td>2
-    </td>
-    <td>2
-    </td>
-    <td>3 ind. (no corporates) (<a href="https://www.bvifsc.vg/sites/default/files/public_funds_code.pdf">BVI Financial Services Commission</a>)
-    </td>
-    <td>2 (≥1 natural) (<a href="https://fastoffshore.com/bvi-incubator-and-approved-funds/incubator-funds-2/">Fast Offshore</a>)
-    </td>
-    <td>2
-    </td>
+    <td>18</td>
+    <td>Eligible vehicles</td>
+    <td>Co, LP, Unit trust</td>
+    <td>Co, LP, Unit trust</td>
+    <td>Co, LP, Unit trust</td>
+    <td>Co, LP</td>
+    <td>Co, LP</td>
   </tr>
   <tr>
-    <td>15
-    </td>
-    <td>Local authorised rep
-    </td>
-    <td>Yes
-    </td>
-    <td>Yes
-    </td>
-    <td>Yes
-    </td>
-    <td>Yes
-    </td>
-    <td>Yes
-    </td>
+    <td>19</td>
+    <td>SPC compatible</td>
+    <td>✔</td>
+    <td>✔</td>
+    <td>✔</td>
+    <td>✔ (since 2023)</td>
+    <td>✔</td>
   </tr>
   <tr>
-    <td>16
-    </td>
-    <td>Economic‑substance return
-    </td>
-    <td>Yes
-    </td>
-    <td>Yes
-    </td>
-    <td>Yes
-    </td>
-    <td>Yes
-    </td>
-    <td>Yes
-    </td>
-  </tr>
-  <tr>
-    <td>17
-    </td>
-    <td>FATCA/CRS
-    </td>
-    <td>Annual by 31 May (<a href="https://www.ogier.com/news-and-insights/insights/compliance-calendar-for-bvi-investment-funds-2025/">Ogier</a>)
-    </td>
-    <td>Same
-    </td>
-    <td>Same
-    </td>
-    <td>Same
-    </td>
-    <td>Same
-    </td>
-  </tr>
-  <tr>
-    <td>18
-    </td>
-    <td>Eligible vehicles
-    </td>
-    <td>Co, LP, Unit trust
-    </td>
-    <td>Co, LP, Unit trust
-    </td>
-    <td>Co, LP, Unit trust
-    </td>
-    <td>Co, LP
-    </td>
-    <td>Co, LP
-    </td>
-  </tr>
-  <tr>
-    <td>19
-    </td>
-    <td>SPC compatible
-    </td>
-    <td>✔
-    </td>
-    <td>✔
-    </td>
-    <td>✔
-    </td>
-    <td>✔ (since 2023)
-    </td>
-    <td>✔
-    </td>
-  </tr>
-  <tr>
-    <td>20
-    </td>
-    <td>Example Web3 fund
-    </td>
-    <td>Multicoin Offshore
-    </td>
-    <td>Pantera Blockchain
-    </td>
-    <td>— (retail not yet used)
-    </td>
-    <td>Early‑stage NFT index pilots
-    </td>
-    <td>100 Acre DeFi Opportunities
-    </td>
+    <td>20</td>
+    <td>Example Web3 fund</td>
+    <td>Multicoin Offshore</td>
+    <td>Pantera Blockchain</td>
+    <td>— (retail not yet used)</td>
+    <td>Early‑stage NFT index pilots</td>
+    <td>100 Acre DeFi Opportunities</td>
   </tr>
 </table>
 
-
-
-
-
-
 ### Final pointers for setting up a blockchain‑heavy fund
 
-
-
 1. **Map token‑flows before you file** so your OM or investment warning already addresses whether the fund will stake, lend or act as a VASP—this avoids post‑launch amendment fees.
-2. **Pre‑clear banking**: get a soft yes from VP Bank (BVI) *and* at least one USD correspondent (CBIT, Mercury) before you spend on legal drafts.
+2. **Pre‑clear banking**: get a soft yes from VP Bank (BVI) _and_ at least one USD correspondent (CBIT, Mercury) before you spend on legal drafts.
 3. **Document service‑provider reliance** (oracle pricing, custodian hot‑wallet arrangements) in minutes; the FSC increasingly asks for this at audit.
 4. **Plan your upgrade path**: managers often go Incubator ➜ Professional in 24 months once track record and AUM exceed the caps.
 
-
-
-
-*This overview reflects statutory fee schedules and FSC practice current as of **27 May 2025**.  Always check the FSC fee notice published each January before filing.*
-
+_This overview reflects statutory fee schedules and FSC practice current as of **27 May 2025**. Always check the FSC fee notice published each January before filing._
