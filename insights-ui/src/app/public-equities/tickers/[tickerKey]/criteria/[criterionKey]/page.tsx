@@ -9,6 +9,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import CriterionActionsDropdown from './CriterionActionsDropdown';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { getCriterionName } from '@/util/criterion-name-by-key';
 import { formatKey } from '@/util/format-key';
 
@@ -67,6 +68,17 @@ export async function generateMetadata({ params }: { params: Promise<{ tickerKey
 
 export default async function CriterionDetailsPage({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }) {
   const { tickerKey, criterionKey } = await params;
+
+  // Decode the URL parameters and check if they contain '}' character
+  const decodedTickerKey = decodeURIComponent(tickerKey);
+  const decodedCriterionKey = decodeURIComponent(criterionKey);
+
+  if (decodedTickerKey.includes('}') || decodedCriterionKey.includes('}')) {
+    // Remove all '}' characters from the URL parameters and redirect
+    const cleanedTickerKey = decodedTickerKey.replace(/\}/g, '');
+    const cleanedCriterionKey = decodedCriterionKey.replace(/\}/g, '');
+    redirect(`/public-equities/tickers/${cleanedTickerKey}/criteria/${cleanedCriterionKey}`);
+  }
 
   const response = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?page=criteriaDetailsPage`, { cache: 'no-cache' });
   const tickerReport = (await response.json()) as FullNestedTickerReport;
