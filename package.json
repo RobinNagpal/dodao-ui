@@ -9,6 +9,7 @@
     "x-news-ui",
     "insights-ui",
     "clickable-demos",
+    "news-reader",
     "shared/web-core",
     "dodao-lambdas/tweet-collection-updater"
   ],
