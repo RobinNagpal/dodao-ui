@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   const { industryId } = await params;
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`);
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -72,7 +72,7 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
   const { industryId } = await params;
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`);
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {

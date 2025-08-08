@@ -12,6 +12,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import { Metadata } from 'next';
 import { getRelatedPosts } from '@/util/blog-utils';
 import RelatedBlogs from '@/components/blogs/RelatedBlogs';
+import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: Promise<{ blogSlug: string }> }): Promise<Metadata> {
   const blogSlug = (await params).blogSlug as string;
@@ -58,6 +59,12 @@ export async function generateMetadata({ params }: { params: Promise<{ blogSlug:
 export default async function PostPage({ params }: { params: Promise<{ blogSlug: string }> }) {
   const slug = (await params).blogSlug as string;
   const filePath = path.join(process.cwd(), 'blogs', `${slug}.mdx`);
+
+  // If the MDX doesn’t exist, render Next’s 404 page
+  if (!fs.existsSync(filePath)) {
+    notFound();
+  }
+
   const fileContents = fs.readFileSync(filePath, 'utf8');
 
   // Extract front matter and markdown content separately
