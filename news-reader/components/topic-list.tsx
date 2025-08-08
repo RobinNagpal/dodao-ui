@@ -1,21 +1,27 @@
-"use client"
+'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Trash2, Calendar, Filter, LayoutTemplateIcon as Template, FolderOpen } from 'lucide-react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { NewsTopicFolder, NewsTopic } from '@/lib/news-reader-types';
+import { Trash2, Calendar, Filter, LayoutTemplateIcon as Template, FolderOpen } from 'lucide-react';
 
-export default function TopicList({ topics, onDelete, folders, getFolderPath }) {
+interface TopicListProps {
+  topics: NewsTopic[];
+  onDelete: (id: number) => void;
+  folders: NewsTopicFolder[];
+  getFolderPath: (folderId: number | null, folders: NewsTopicFolder[], path?: string[]) => string[];
+}
+
+export default function TopicList({ topics, onDelete, folders, getFolderPath }: TopicListProps) {
   if (topics.length === 0) {
     return (
       <div className="text-center py-12">
         <Filter className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
         <h3 className="text-lg font-semibold mb-2">No News Topics Configured</h3>
-        <p className="text-muted-foreground mb-4">
-          Add your first news topic to start tracking articles
-        </p>
+        <p className="text-muted-foreground mb-4">Add your first news topic to start tracking articles</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -26,7 +32,7 @@ export default function TopicList({ topics, onDelete, folders, getFolderPath }) 
           {topics.length} topic{topics.length !== 1 ? 's' : ''} configured
         </Badge>
       </div>
-      
+
       <div className="grid gap-4">
         {topics.map((item) => (
           <Card key={item.id}>
@@ -34,16 +40,9 @@ export default function TopicList({ topics, onDelete, folders, getFolderPath }) 
               <div className="flex items-start justify-between">
                 <div>
                   <CardTitle className="text-lg">{item.topic}</CardTitle>
-                  <CardDescription className="mt-1">
-                    {item.description}
-                  </CardDescription>
+                  <CardDescription className="mt-1">{item.description}</CardDescription>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onDelete(item.id)}
-                  className="text-destructive hover:text-destructive"
-                >
+                <Button variant="ghost" size="sm" onClick={() => onDelete(item.id)} className="text-destructive hover:text-destructive">
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
@@ -66,7 +65,7 @@ export default function TopicList({ topics, onDelete, folders, getFolderPath }) 
                     </div>
                   )}
                 </div>
-                
+
                 {item.filters.length > 0 && (
                   <div>
                     <p className="text-sm font-medium mb-2">Active Filters:</p>
@@ -85,5 +84,5 @@ export default function TopicList({ topics, onDelete, folders, getFolderPath }) 
         ))}
       </div>
     </div>
-  )
+  );
 }

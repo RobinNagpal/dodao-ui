@@ -1,78 +1,82 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { X } from 'lucide-react'
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { X } from 'lucide-react';
 
-const availableFilters = [
-  "Financial Changes",
-  "Core Management Changes", 
-  "Product Launches",
-  "Regulatory Updates",
-  "Partnership Announcements",
-  "Market Expansion",
-  "Technology Breakthroughs",
-  "Legal Issues",
-  "Acquisition News",
-  "IPO Updates"
-]
+const availableFilters: string[] = [
+  'Financial Changes',
+  'Core Management Changes',
+  'Product Launches',
+  'Regulatory Updates',
+  'Partnership Announcements',
+  'Market Expansion',
+  'Technology Breakthroughs',
+  'Legal Issues',
+  'Acquisition News',
+  'IPO Updates',
+];
 
-export default function AddKeywordForm({ onAdd }) {
-  const [keyword, setKeyword] = useState("")
-  const [description, setDescription] = useState("")
-  const [selectedFilters, setSelectedFilters] = useState([])
-  const [customFilter, setCustomFilter] = useState("")
+interface KeywordData {
+  keyword: string;
+  description: string;
+  filters: string[];
+}
 
-  const handleFilterChange = (filter, checked) => {
+interface AddKeywordFormProps {
+  onAdd: (data: KeywordData) => void;
+}
+
+export default function AddKeywordForm({ onAdd }: AddKeywordFormProps) {
+  const [keyword, setKeyword] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [customFilter, setCustomFilter] = useState<string>('');
+
+  const handleFilterChange = (filter: string, checked: boolean | string): void => {
     if (checked) {
-      setSelectedFilters([...selectedFilters, filter])
+      setSelectedFilters([...selectedFilters, filter]);
     } else {
-      setSelectedFilters(selectedFilters.filter(f => f !== filter))
+      setSelectedFilters(selectedFilters.filter((f) => f !== filter));
     }
-  }
+  };
 
-  const addCustomFilter = () => {
+  const addCustomFilter = (): void => {
     if (customFilter.trim() && !selectedFilters.includes(customFilter.trim())) {
-      setSelectedFilters([...selectedFilters, customFilter.trim()])
-      setCustomFilter("")
+      setSelectedFilters([...selectedFilters, customFilter.trim()]);
+      setCustomFilter('');
     }
-  }
+  };
 
-  const removeFilter = (filter) => {
-    setSelectedFilters(selectedFilters.filter(f => f !== filter))
-  }
+  const removeFilter = (filter: string): void => {
+    setSelectedFilters(selectedFilters.filter((f) => f !== filter));
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = (e: React.FormEvent): void => {
+    e.preventDefault();
     if (keyword.trim() && description.trim()) {
       onAdd({
         keyword: keyword.trim(),
         description: description.trim(),
-        filters: selectedFilters
-      })
-      setKeyword("")
-      setDescription("")
-      setSelectedFilters([])
+        filters: selectedFilters,
+      });
+      setKeyword('');
+      setDescription('');
+      setSelectedFilters([]);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="keyword">Keyword</Label>
-        <Input
-          id="keyword"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          placeholder="e.g., Tesla, OpenAI, Apple"
-          required
-        />
+        <Input id="keyword" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="e.g., Tesla, OpenAI, Apple" required />
       </div>
 
       <div className="space-y-2">
@@ -89,18 +93,12 @@ export default function AddKeywordForm({ onAdd }) {
 
       <div className="space-y-4">
         <Label>Filters</Label>
-        <p className="text-sm text-muted-foreground">
-          Select filters to only show news when these conditions are met
-        </p>
-        
+        <p className="text-sm text-muted-foreground">Select filters to only show news when these conditions are met</p>
+
         <div className="grid grid-cols-2 gap-3">
           {availableFilters.map((filter) => (
             <div key={filter} className="flex items-center space-x-2">
-              <Checkbox
-                id={filter}
-                checked={selectedFilters.includes(filter)}
-                onCheckedChange={(checked) => handleFilterChange(filter, checked)}
-              />
+              <Checkbox id={filter} checked={selectedFilters.includes(filter)} onCheckedChange={(checked) => handleFilterChange(filter, checked)} />
               <Label htmlFor={filter} className="text-sm font-normal">
                 {filter}
               </Label>
@@ -128,10 +126,7 @@ export default function AddKeywordForm({ onAdd }) {
                 {selectedFilters.map((filter) => (
                   <Badge key={filter} variant="secondary" className="flex items-center gap-1">
                     {filter}
-                    <X 
-                      className="h-3 w-3 cursor-pointer" 
-                      onClick={() => removeFilter(filter)}
-                    />
+                    <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter(filter)} />
                   </Badge>
                 ))}
               </div>
@@ -144,5 +139,5 @@ export default function AddKeywordForm({ onAdd }) {
         Add Keyword
       </Button>
     </form>
-  )
+  );
 }

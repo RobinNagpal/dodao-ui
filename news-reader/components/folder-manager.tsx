@@ -1,82 +1,90 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Trash2, FolderOpen, Plus, Folder, ChevronRight } from 'lucide-react'
+import { NewsTopicFolder as FolderType, NewsTopic } from '@/lib/news-reader-types';
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Trash2, FolderOpen, Plus, Folder, ChevronRight } from 'lucide-react';
 
-export default function FolderManager({ folders, onAdd, onDelete, topics }) {
-  const [showAddForm, setShowAddForm] = useState(false)
-  const [newFolderName, setNewFolderName] = useState("")
-  const [selectedParent, setSelectedParent] = useState("")
+interface FolderManagerProps {
+  folders: FolderType[];
+  onAdd: (newFolder: Partial<FolderType>) => void;
+  onDelete: (id: number) => void;
+  topics: NewsTopic[];
+}
+
+export default function FolderManager({ folders, onAdd, onDelete, topics }: FolderManagerProps) {
+  const [showAddForm, setShowAddForm] = useState<boolean>(false);
+  const [newFolderName, setNewFolderName] = useState<string>('');
+  const [selectedParent, setSelectedParent] = useState<string>('');
 
   // Flatten folders for parent selection
-  const flattenFolders = (folders, level = 0) => {
-    let result = []
-    folders.forEach(folder => {
-      result.push({ ...folder, level })
+  const flattenFolders = (folders: FolderType[], level = 0): (FolderType & { level: number })[] => {
+    let result: (FolderType & { level: number })[] = [];
+    folders.forEach((folder) => {
+      result.push({ ...folder, level });
       if (folder.children.length > 0) {
-        result = result.concat(flattenFolders(folder.children, level + 1))
+        result = result.concat(flattenFolders(folder.children, level + 1));
       }
-    })
-    return result
-  }
+    });
+    return result;
+  };
 
-  const flatFolders = flattenFolders(folders)
+  const flatFolders = flattenFolders(folders);
 
   // Count topics in folder and subfolders
-  const countTopicsInFolder = (folderId) => {
-    const getFolderAndChildren = (folders, targetId) => {
-      let result = []
-      folders.forEach(folder => {
+  const countTopicsInFolder = (folderId: number): number => {
+    const getFolderAndChildren = (folders: FolderType[], targetId: number): number[] => {
+      let result: number[] = [];
+      folders.forEach((folder) => {
         if (folder.id === targetId) {
-          result.push(folder.id)
-          const getChildIds = (children) => {
-            children.forEach(child => {
-              result.push(child.id)
+          result.push(folder.id);
+          const getChildIds = (children: FolderType[]): void => {
+            children.forEach((child) => {
+              result.push(child.id);
               if (child.children.length > 0) {
-                getChildIds(child.children)
+                getChildIds(child.children);
               }
-            })
-          }
-          getChildIds(folder.children)
+            });
+          };
+          getChildIds(folder.children);
         } else if (folder.children.length > 0) {
-          result = result.concat(getFolderAndChildren(folder.children, targetId))
+          result = result.concat(getFolderAndChildren(folder.children, targetId));
         }
-      })
-      return result
-    }
+      });
+      return result;
+    };
 
-    const folderIds = getFolderAndChildren(folders, folderId)
-    return topics.filter(topic => folderIds.includes(topic.folderId)).length
-  }
+    const folderIds = getFolderAndChildren(folders, folderId);
+    return topics.filter((topic) => folderIds.includes(topic.folderId as number)).length;
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = (e: React.FormEvent): void => {
+    e.preventDefault();
     if (newFolderName.trim()) {
       onAdd({
         name: newFolderName.trim(),
-        parentId: selectedParent ? parseInt(selectedParent) : null
-      })
-      setNewFolderName("")
-      setSelectedParent("")
-      setShowAddForm(false)
+        parentId: selectedParent ? parseInt(selectedParent) : null,
+      });
+      setNewFolderName('');
+      setSelectedParent('');
+      setShowAddForm(false);
     }
-  }
+  };
 
-  const resetForm = () => {
-    setNewFolderName("")
-    setSelectedParent("")
-    setShowAddForm(false)
-  }
+  const resetForm = (): void => {
+    setNewFolderName('');
+    setSelectedParent('');
+    setShowAddForm(false);
+  };
 
-  const renderFolder = (folder, level = 0) => {
-    const topicCount = countTopicsInFolder(folder.id)
-    
+  const renderFolder = (folder: FolderType, level = 0): JSX.Element => {
+    const topicCount = countTopicsInFolder(folder.id);
+
     return (
       <div key={folder.id}>
         <Card className="mb-2">
@@ -92,21 +100,16 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }) {
                   </Badge>
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onDelete(folder.id)}
-                className="text-destructive hover:text-destructive"
-              >
+              <Button variant="ghost" size="sm" onClick={() => onDelete(folder.id)} className="text-destructive hover:text-destructive">
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
           </CardContent>
         </Card>
-        {folder.children.map(child => renderFolder(child, level + 1))}
+        {folder.children.map((child) => renderFolder(child, level + 1))}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="space-y-6">
@@ -125,9 +128,7 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }) {
         <Card>
           <CardHeader>
             <CardTitle>Create New Folder</CardTitle>
-            <CardDescription>
-              Create a new folder to organize your news topics
-            </CardDescription>
+            <CardDescription>Create a new folder to organize your news topics</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -185,17 +186,13 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }) {
             <CardContent className="text-center py-12">
               <Folder className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">No Folders Created</h3>
-              <p className="text-muted-foreground">
-                Create your first folder to organize your news topics
-              </p>
+              <p className="text-muted-foreground">Create your first folder to organize your news topics</p>
             </CardContent>
           </Card>
         ) : (
-          <div>
-            {folders.map(folder => renderFolder(folder))}
-          </div>
+          <div>{folders.map((folder) => renderFolder(folder))}</div>
         )}
       </div>
     </div>
-  )
+  );
 }

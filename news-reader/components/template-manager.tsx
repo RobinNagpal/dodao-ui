@@ -1,81 +1,88 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Trash2, LayoutTemplateIcon as Template, Plus, X, Shield } from 'lucide-react'
+import { NewsTopicTemplate as TemplateType } from '@/lib/news-reader-types';
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Trash2, LayoutTemplateIcon as Template, Plus, X, Shield } from 'lucide-react';
 
-const availableFilters = [
-  "Financial Changes",
-  "Core Management Changes", 
-  "Product Launches",
-  "Regulatory Updates",
-  "Partnership Announcements",
-  "Market Expansion",
-  "Technology Breakthroughs",
-  "Legal Issues",
-  "Acquisition News",
-  "IPO Updates",
-  "Merger & Acquisitions",
-  "Stock Performance",
-  "Earnings Reports",
-  "Product Recalls",
-  "Environmental Impact"
-]
+const availableFilters: string[] = [
+  'Financial Changes',
+  'Core Management Changes',
+  'Product Launches',
+  'Regulatory Updates',
+  'Partnership Announcements',
+  'Market Expansion',
+  'Technology Breakthroughs',
+  'Legal Issues',
+  'Acquisition News',
+  'IPO Updates',
+  'Merger & Acquisitions',
+  'Stock Performance',
+  'Earnings Reports',
+  'Product Recalls',
+  'Environmental Impact',
+];
 
-export default function TemplateManager({ templates, onAdd, onDelete }) {
-  const [showAddForm, setShowAddForm] = useState(false)
-  const [newTemplateName, setNewTemplateName] = useState("")
-  const [newTemplateDescription, setNewTemplateDescription] = useState("")
-  const [newTemplateFilters, setNewTemplateFilters] = useState([])
-  const [customFilter, setCustomFilter] = useState("")
+interface TemplateManagerProps {
+  templates: TemplateType[];
+  onAdd: (newTemplate: Partial<TemplateType>) => void;
+  onDelete: (id: number) => void;
+}
 
-  const handleFilterChange = (filter, checked) => {
+export default function TemplateManager({ templates, onAdd, onDelete }: TemplateManagerProps) {
+  const [showAddForm, setShowAddForm] = useState<boolean>(false);
+  const [newTemplateName, setNewTemplateName] = useState<string>('');
+  const [newTemplateDescription, setNewTemplateDescription] = useState<string>('');
+  const [newTemplateFilters, setNewTemplateFilters] = useState<string[]>([]);
+  const [customFilter, setCustomFilter] = useState<string>('');
+
+  const handleFilterChange = (filter: string, checked: boolean): void => {
     if (checked) {
-      setNewTemplateFilters([...newTemplateFilters, filter])
+      setNewTemplateFilters([...newTemplateFilters, filter]);
     } else {
-      setNewTemplateFilters(newTemplateFilters.filter(f => f !== filter))
+      setNewTemplateFilters(newTemplateFilters.filter((f) => f !== filter));
     }
-  }
+  };
 
-  const addCustomFilter = () => {
+  const addCustomFilter = (): void => {
     if (customFilter.trim() && !newTemplateFilters.includes(customFilter.trim())) {
-      setNewTemplateFilters([...newTemplateFilters, customFilter.trim()])
-      setCustomFilter("")
+      setNewTemplateFilters([...newTemplateFilters, customFilter.trim()]);
+      setCustomFilter('');
     }
-  }
+  };
 
-  const removeFilter = (filter) => {
-    setNewTemplateFilters(newTemplateFilters.filter(f => f !== filter))
-  }
+  const removeFilter = (filter: string): void => {
+    setNewTemplateFilters(newTemplateFilters.filter((f) => f !== filter));
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = (e: React.FormEvent): void => {
+    e.preventDefault();
     if (newTemplateName.trim() && newTemplateDescription.trim()) {
       onAdd({
         name: newTemplateName.trim(),
         description: newTemplateDescription.trim(),
-        filters: newTemplateFilters
-      })
-      setNewTemplateName("")
-      setNewTemplateDescription("")
-      setNewTemplateFilters([])
-      setShowAddForm(false)
+        filters: newTemplateFilters,
+      });
+      setNewTemplateName('');
+      setNewTemplateDescription('');
+      setNewTemplateFilters([]);
+      setShowAddForm(false);
     }
-  }
+  };
 
-  const resetForm = () => {
-    setNewTemplateName("")
-    setNewTemplateDescription("")
-    setNewTemplateFilters([])
-    setCustomFilter("")
-    setShowAddForm(false)
-  }
+  const resetForm = (): void => {
+    setNewTemplateName('');
+    setNewTemplateDescription('');
+    setNewTemplateFilters([]);
+    setCustomFilter('');
+    setShowAddForm(false);
+  };
 
   return (
     <div className="space-y-6">
@@ -94,9 +101,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }) {
         <Card>
           <CardHeader>
             <CardTitle>Create New Template</CardTitle>
-            <CardDescription>
-              Create a reusable template with predefined filters for similar types of topics
-            </CardDescription>
+            <CardDescription>Create a reusable template with predefined filters for similar types of topics</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -125,18 +130,12 @@ export default function TemplateManager({ templates, onAdd, onDelete }) {
 
               <div className="space-y-4">
                 <Label>Template Filters</Label>
-                <p className="text-sm text-muted-foreground">
-                  Select the filters that should be included by default in this template
-                </p>
-                
+                <p className="text-sm text-muted-foreground">Select the filters that should be included by default in this template</p>
+
                 <div className="grid grid-cols-2 gap-3">
                   {availableFilters.map((filter) => (
                     <div key={filter} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={filter}
-                        checked={newTemplateFilters.includes(filter)}
-                        onCheckedChange={(checked) => handleFilterChange(filter, checked)}
-                      />
+                      <Checkbox id={filter} checked={newTemplateFilters.includes(filter)} onCheckedChange={(checked) => handleFilterChange(filter, checked)} />
                       <Label htmlFor={filter} className="text-sm font-normal">
                         {filter}
                       </Label>
@@ -164,10 +163,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }) {
                         {newTemplateFilters.map((filter) => (
                           <Badge key={filter} variant="secondary" className="flex items-center gap-1">
                             {filter}
-                            <X 
-                              className="h-3 w-3 cursor-pointer" 
-                              onClick={() => removeFilter(filter)}
-                            />
+                            <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter(filter)} />
                           </Badge>
                         ))}
                       </div>
@@ -206,18 +202,11 @@ export default function TemplateManager({ templates, onAdd, onDelete }) {
                         </Badge>
                       )}
                     </div>
-                    <CardDescription className="mt-1">
-                      {template.description}
-                    </CardDescription>
+                    <CardDescription className="mt-1">{template.description}</CardDescription>
                   </div>
                 </div>
                 {!template.isDefault && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onDelete(template.id)}
-                    className="text-destructive hover:text-destructive"
-                  >
+                  <Button variant="ghost" size="sm" onClick={() => onDelete(template.id)} className="text-destructive hover:text-destructive">
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 )}
@@ -241,5 +230,5 @@ export default function TemplateManager({ templates, onAdd, onDelete }) {
         ))}
       </div>
     </div>
-  )
+  );
 }

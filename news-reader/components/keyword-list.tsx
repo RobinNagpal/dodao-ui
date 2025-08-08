@@ -5,7 +5,20 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Trash2, Calendar, Filter } from 'lucide-react'
 
-export default function KeywordList({ keywords, onDelete }) {
+interface Keyword {
+  id: number;
+  keyword: string;
+  description: string;
+  filters: string[];
+  createdAt: string;
+}
+
+interface KeywordListProps {
+  keywords: Keyword[];
+  onDelete: (id: number) => void;
+}
+
+export default function KeywordList({ keywords, onDelete }: KeywordListProps) {
   if (keywords.length === 0) {
     return (
       <div className="text-center py-12">
@@ -26,7 +39,7 @@ export default function KeywordList({ keywords, onDelete }) {
           {keywords.length} keyword{keywords.length !== 1 ? 's' : ''} configured
         </Badge>
       </div>
-      
+
       <div className="grid gap-4">
         {keywords.map((item) => (
           <Card key={item.id}>
@@ -54,7 +67,7 @@ export default function KeywordList({ keywords, onDelete }) {
                   <Calendar className="h-4 w-4" />
                   Created on {new Date(item.createdAt).toLocaleDateString()}
                 </div>
-                
+
                 {item.filters.length > 0 && (
                   <div>
                     <p className="text-sm font-medium mb-2">Active Filters:</p>

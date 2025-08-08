@@ -1,189 +1,134 @@
-"use client"
+'use client';
 
-import { useState, useMemo } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Clock, ExternalLink, Search, Filter } from 'lucide-react'
-import EnhancedArticleCard from "@/components/enhanced-article-card"
+import { NewsArticle, NewsTopicFolder, NewsTopic } from '@/lib/news-reader-types';
+import { useState, useMemo } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Clock, ExternalLink, Search, Filter } from 'lucide-react';
+import EnhancedArticleCard from '@/components/enhanced-article-card';
+import { sampleNews } from '@/lib/sample-data';
 
-// Sample news data
-const sampleNews = [
-  {
-    id: 1,
-    title: "Tesla Reports Record Q4 Earnings, Stock Surges 12%",
-    description: "Tesla announced record quarterly earnings with revenue exceeding expectations, leading to significant stock price movement.",
-    keyword: "Tesla",
-    filters: ["Financial Changes"],
-    source: "TechCrunch",
-    publishedAt: "2024-01-20T10:30:00Z",
-    url: "#"
-  },
-  {
-    id: 2,
-    title: "OpenAI Launches GPT-5 with Enhanced Reasoning Capabilities",
-    description: "The latest iteration of OpenAI's language model shows significant improvements in logical reasoning and problem-solving.",
-    keyword: "OpenAI",
-    filters: ["Product Launches"],
-    source: "The Verge",
-    publishedAt: "2024-01-19T14:15:00Z",
-    url: "#"
-  },
-  {
-    id: 3,
-    title: "Apple CEO Tim Cook Announces Succession Planning Initiative",
-    description: "Apple begins formal succession planning process as Tim Cook discusses long-term leadership transition strategy.",
-    keyword: "Apple",
-    filters: ["Core Management Changes"],
-    source: "Bloomberg",
-    publishedAt: "2024-01-18T09:45:00Z",
-    url: "#"
-  },
-  {
-    id: 4,
-    title: "Tesla Expands Supercharger Network to 50,000 Stations Globally",
-    description: "Tesla reaches major milestone in charging infrastructure expansion across North America and Europe.",
-    keyword: "Tesla",
-    filters: ["Market Expansion"],
-    source: "Reuters",
-    publishedAt: "2024-01-17T16:20:00Z",
-    url: "#"
-  },
-  {
-    id: 5,
-    title: "OpenAI Secures $10B Funding Round Led by Microsoft",
-    description: "Major funding round values OpenAI at $80 billion, with Microsoft increasing its stake in the AI company.",
-    keyword: "OpenAI",
-    filters: ["Financial Changes"],
-    source: "Wall Street Journal",
-    publishedAt: "2024-01-16T11:30:00Z",
-    url: "#"
-  },
-  {
-    id: 6,
-    title: "Apple Unveils Revolutionary AR Glasses at Developer Conference",
-    description: "Apple's long-awaited augmented reality glasses feature advanced display technology and seamless iOS integration.",
-    keyword: "Apple",
-    filters: ["Product Launches"],
-    source: "MacRumors",
-    publishedAt: "2024-01-15T13:00:00Z",
-    url: "#"
-  }
-]
+interface NewsFeedProps {
+  topics: NewsTopic[];
+  folders: NewsTopicFolder[];
+  bookmarks: number[];
+  onToggleBookmark: (articleId: number) => void;
+  getFolderPath: (folderId: number | null, folders: NewsTopicFolder[], path?: string[]) => string[];
+}
 
-export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark, getFolderPath }) {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedTopic, setSelectedTopic] = useState("all")
-  const [selectedFilter, setSelectedFilter] = useState("all")
-  const [selectedFolder, setSelectedFolder] = useState("all")
+export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark, getFolderPath }: NewsFeedProps) {
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedTopic, setSelectedTopic] = useState<string>('all');
+  const [selectedFilter, setSelectedFilter] = useState<string>('all');
+  const [selectedFolder, setSelectedFolder] = useState<string>('all');
 
   // Get all unique filters from topics
-  const allFilters = useMemo(() => {
-    const filters = new Set()
-    topics.forEach(topic => {
-      topic.filters.forEach(filter => filters.add(filter))
-    })
-    return Array.from(filters)
-  }, [topics])
+  const allFilters = useMemo<string[]>(() => {
+    const filters = new Set<string>();
+    topics.forEach((topic) => {
+      topic.filters.forEach((filter) => filters.add(filter));
+    });
+    return Array.from(filters);
+  }, [topics]);
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
+      minute: '2-digit',
+    });
+  };
 
   // Flatten folders for selection
-  const flattenFolders = (folders, level = 0) => {
-    let result = []
-    folders.forEach(folder => {
-      result.push({ ...folder, level })
+  const flattenFolders = (folders: NewsTopicFolder[], level = 0): (NewsTopicFolder & { level: number })[] => {
+    let result: (NewsTopicFolder & { level: number })[] = [];
+    folders.forEach((folder) => {
+      result.push({ ...folder, level });
       if (folder.children.length > 0) {
-        result = result.concat(flattenFolders(folder.children, level + 1))
+        result = result.concat(flattenFolders(folder.children, level + 1));
       }
-    })
-    return result
-  }
+    });
+    return result;
+  };
 
-  const flatFolders = flattenFolders(folders)
+  const flatFolders = flattenFolders(folders);
 
   // Filter news based on configured topics and their filters
-  const filteredNews = useMemo(() => {
-    return sampleNews.filter(article => {
+  const filteredNews = useMemo<NewsArticle[]>(() => {
+    return sampleNews.filter((article) => {
       // Check if topic is configured
-      const topicConfig = topics.find(t => t.topic.toLowerCase() === article.keyword.toLowerCase())
-      if (!topicConfig) return false
+      const topicConfig = topics.find((t) => t.topic.toLowerCase() === article.keyword.toLowerCase());
+      if (!topicConfig) return false;
 
       // Check if article matches any of the topic's filters
-      const hasMatchingFilter = article.filters.some(filter => 
-        topicConfig.filters.includes(filter)
-      )
-      if (!hasMatchingFilter) return false
+      const hasMatchingFilter = article.filters.some((filter) => topicConfig.filters.includes(filter));
+      if (!hasMatchingFilter) return false;
 
       // Apply search filter
-      if (searchTerm && !article.title.toLowerCase().includes(searchTerm.toLowerCase()) && 
-          !article.description.toLowerCase().includes(searchTerm.toLowerCase())) {
-        return false
+      if (
+        searchTerm &&
+        !article.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        !article.description.toLowerCase().includes(searchTerm.toLowerCase())
+      ) {
+        return false;
       }
 
       // Apply topic filter
-      if (selectedTopic !== "all" && article.keyword !== selectedTopic) {
-        return false
+      if (selectedTopic !== 'all' && article.keyword !== selectedTopic) {
+        return false;
       }
 
       // Apply filter type filter
-      if (selectedFilter !== "all" && !article.filters.includes(selectedFilter)) {
-        return false
+      if (selectedFilter !== 'all' && !article.filters.includes(selectedFilter)) {
+        return false;
       }
 
       // Apply folder filter
-      if (selectedFolder !== "all") {
-        const folderId = parseInt(selectedFolder)
+      if (selectedFolder !== 'all') {
+        const folderId = parseInt(selectedFolder);
         // Get all folder IDs including children
-        const getFolderAndChildren = (folders, targetId) => {
-          let result = []
-          folders.forEach(folder => {
+        const getFolderAndChildren = (folders: NewsTopicFolder[], targetId: number): number[] => {
+          let result: number[] = [];
+          folders.forEach((folder) => {
             if (folder.id === targetId) {
-              result.push(folder.id)
-              const getChildIds = (children) => {
-                children.forEach(child => {
-                  result.push(child.id)
+              result.push(folder.id);
+              const getChildIds = (children: NewsTopicFolder[]): void => {
+                children.forEach((child) => {
+                  result.push(child.id);
                   if (child.children.length > 0) {
-                    getChildIds(child.children)
+                    getChildIds(child.children);
                   }
-                })
-              }
-              getChildIds(folder.children)
+                });
+              };
+              getChildIds(folder.children);
             } else if (folder.children.length > 0) {
-              result = result.concat(getFolderAndChildren(folder.children, targetId))
+              result = result.concat(getFolderAndChildren(folder.children, targetId));
             }
-          })
-          return result
-        }
-        
-        const allowedFolderIds = getFolderAndChildren(folders, folderId)
-        const topicInFolder = topics.find(t => t.topic.toLowerCase() === article.keyword.toLowerCase() && allowedFolderIds.includes(t.folderId))
-        if (!topicInFolder) return false
+          });
+          return result;
+        };
+
+        const allowedFolderIds = getFolderAndChildren(folders, folderId);
+        const topicInFolder = topics.find((t) => t.topic.toLowerCase() === article.keyword.toLowerCase() && allowedFolderIds.includes(t.folderId as number));
+        if (!topicInFolder) return false;
       }
 
-      return true
-    })
-  }, [topics, searchTerm, selectedTopic, selectedFilter, selectedFolder, folders])
+      return true;
+    });
+  }, [topics, searchTerm, selectedTopic, selectedFilter, selectedFolder, folders]);
 
   if (topics.length === 0) {
     return (
       <div className="text-center py-12">
         <Filter className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
         <h3 className="text-lg font-semibold mb-2">No Topics Configured</h3>
-        <p className="text-muted-foreground mb-4">
-          Add topics to start seeing filtered news articles
-        </p>
+        <p className="text-muted-foreground mb-4">Add topics to start seeing filtered news articles</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -199,15 +144,10 @@ export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark,
               <label className="text-sm font-medium">Search</label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search articles..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+                <Input placeholder="Search articles..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10" />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <label className="text-sm font-medium">Topic</label>
               <Select value={selectedTopic} onValueChange={setSelectedTopic}>
@@ -216,7 +156,7 @@ export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark,
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Topics</SelectItem>
-                  {topics.map(topic => (
+                  {topics.map((topic) => (
                     <SelectItem key={topic.id} value={topic.topic}>
                       {topic.topic}
                     </SelectItem>
@@ -233,7 +173,7 @@ export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark,
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Filters</SelectItem>
-                  {allFilters.map(filter => (
+                  {allFilters.map((filter) => (
                     <SelectItem key={filter} value={filter}>
                       {filter}
                     </SelectItem>
@@ -282,17 +222,15 @@ export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark,
             <CardContent className="text-center py-12">
               <Filter className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">No Articles Found</h3>
-              <p className="text-muted-foreground">
-                Try adjusting your filters or add more topics to see relevant news
-              </p>
+              <p className="text-muted-foreground">Try adjusting your filters or add more topics to see relevant news</p>
             </CardContent>
           </Card>
         ) : (
           <div className="grid gap-4">
             {filteredNews.map((article) => {
-              const topic = topics.find(t => t.topic.toLowerCase() === article.keyword.toLowerCase())
-              const folderPath = topic?.folderId ? getFolderPath(topic.folderId, folders) : null
-              
+              const topic = topics.find((t) => t.topic.toLowerCase() === article.keyword.toLowerCase());
+              const folderPath = topic?.folderId ? getFolderPath(topic.folderId, folders) : null;
+
               return (
                 <EnhancedArticleCard
                   key={article.id}
@@ -301,11 +239,11 @@ export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark,
                   onToggleBookmark={onToggleBookmark}
                   folderPath={folderPath}
                 />
-              )
+              );
             })}
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }

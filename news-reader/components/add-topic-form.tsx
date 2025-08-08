@@ -1,183 +1,192 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { X, Plus, LayoutTemplateIcon as Template, Settings, Wand2 } from 'lucide-react'
+import { NewsTopicFolder, NewsTopicTemplate as TemplateType, NewsTopic } from '@/lib/news-reader-types';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { X, Plus, LayoutTemplateIcon as Template, Settings, Wand2 } from 'lucide-react';
 
-const availableFilters = [
-  "Financial Changes",
-  "Core Management Changes", 
-  "Product Launches",
-  "Regulatory Updates",
-  "Partnership Announcements",
-  "Market Expansion",
-  "Technology Breakthroughs",
-  "Legal Issues",
-  "Acquisition News",
-  "IPO Updates",
-  "Merger & Acquisitions",
-  "Stock Performance",
-  "Earnings Reports",
-  "Product Recalls",
-  "Environmental Impact"
-]
+const availableFilters: string[] = [
+  'Financial Changes',
+  'Core Management Changes',
+  'Product Launches',
+  'Regulatory Updates',
+  'Partnership Announcements',
+  'Market Expansion',
+  'Technology Breakthroughs',
+  'Legal Issues',
+  'Acquisition News',
+  'IPO Updates',
+  'Merger & Acquisitions',
+  'Stock Performance',
+  'Earnings Reports',
+  'Product Recalls',
+  'Environmental Impact',
+];
 
-export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders, getFolderPath }) {
-  const [activeMethod, setActiveMethod] = useState("template")
-  
+interface AddTopicFormProps {
+  onAdd: (newTopic: Partial<NewsTopic>) => void;
+  templates: TemplateType[];
+  onAddTemplate: (newTemplate: Partial<TemplateType>) => void;
+  folders: NewsTopicFolder[];
+  getFolderPath: (folderId: number | null, folders: NewsTopicFolder[], path?: string[]) => string[];
+}
+
+export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders, getFolderPath }: AddTopicFormProps) {
+  const [activeMethod, setActiveMethod] = useState<string>('template');
+
   // Template-based form
-  const [selectedTemplate, setSelectedTemplate] = useState("")
-  const [templateTopic, setTemplateTopic] = useState("")
-  const [templateDescription, setTemplateDescription] = useState("")
-  const [templateFilters, setTemplateFilters] = useState([])
+  const [selectedTemplate, setSelectedTemplate] = useState<string>('');
+  const [templateTopic, setTemplateTopic] = useState<string>('');
+  const [templateDescription, setTemplateDescription] = useState<string>('');
+  const [templateFilters, setTemplateFilters] = useState<string[]>([]);
 
   // Manual form
-  const [manualTopic, setManualTopic] = useState("")
-  const [manualDescription, setManualDescription] = useState("")
-  const [manualFilters, setManualFilters] = useState([])
-  const [customFilter, setCustomFilter] = useState("")
+  const [manualTopic, setManualTopic] = useState<string>('');
+  const [manualDescription, setManualDescription] = useState<string>('');
+  const [manualFilters, setManualFilters] = useState<string[]>([]);
+  const [customFilter, setCustomFilter] = useState<string>('');
 
   // New template form
-  const [newTemplateName, setNewTemplateName] = useState("")
-  const [newTemplateDescription, setNewTemplateDescription] = useState("")
-  const [newTemplateFilters, setNewTemplateFilters] = useState([])
-  const [newTemplateCustomFilter, setNewTemplateCustomFilter] = useState("")
+  const [newTemplateName, setNewTemplateName] = useState<string>('');
+  const [newTemplateDescription, setNewTemplateDescription] = useState<string>('');
+  const [newTemplateFilters, setNewTemplateFilters] = useState<string[]>([]);
+  const [newTemplateCustomFilter, setNewTemplateCustomFilter] = useState<string>('');
 
-  const [selectedFolder, setSelectedFolder] = useState("")
+  const [selectedFolder, setSelectedFolder] = useState<string>('');
 
   // Flatten folders for selection
-  const flattenFolders = (folders, level = 0) => {
-    let result = []
-    folders.forEach(folder => {
-      result.push({ ...folder, level })
+  const flattenFolders = (folders: NewsTopicFolder[], level = 0): (NewsTopicFolder & { level: number })[] => {
+    let result: (NewsTopicFolder & { level: number })[] = [];
+    folders.forEach((folder) => {
+      result.push({ ...folder, level });
       if (folder.children.length > 0) {
-        result = result.concat(flattenFolders(folder.children, level + 1))
+        result = result.concat(flattenFolders(folder.children, level + 1));
       }
-    })
-    return result
-  }
+    });
+    return result;
+  };
 
-  const flatFolders = flattenFolders(folders)
+  const flatFolders = flattenFolders(folders);
 
-  const handleTemplateSelect = (templateId) => {
-    const template = templates.find(t => t.id === parseInt(templateId))
+  const handleTemplateSelect = (templateId: string): void => {
+    const template = templates.find((t) => t.id === parseInt(templateId));
     if (template) {
-      setSelectedTemplate(templateId)
-      setTemplateFilters([...template.filters])
-      setTemplateDescription(template.description)
+      setSelectedTemplate(templateId);
+      setTemplateFilters([...template.filters]);
+      setTemplateDescription(template.description);
     }
-  }
+  };
 
-  const handleTemplateFilterChange = (filter, checked) => {
+  const handleTemplateFilterChange = (filter: string, checked: boolean | string): void => {
     if (checked) {
-      setTemplateFilters([...templateFilters, filter])
+      setTemplateFilters([...templateFilters, filter]);
     } else {
-      setTemplateFilters(templateFilters.filter(f => f !== filter))
+      setTemplateFilters(templateFilters.filter((f) => f !== filter));
     }
-  }
+  };
 
-  const handleManualFilterChange = (filter, checked) => {
+  const handleManualFilterChange = (filter: string, checked: boolean | string): void => {
     if (checked) {
-      setManualFilters([...manualFilters, filter])
+      setManualFilters([...manualFilters, filter]);
     } else {
-      setManualFilters(manualFilters.filter(f => f !== filter))
+      setManualFilters(manualFilters.filter((f) => f !== filter));
     }
-  }
+  };
 
-  const handleNewTemplateFilterChange = (filter, checked) => {
+  const handleNewTemplateFilterChange = (filter: string, checked: boolean | string): void => {
     if (checked) {
-      setNewTemplateFilters([...newTemplateFilters, filter])
+      setNewTemplateFilters([...newTemplateFilters, filter]);
     } else {
-      setNewTemplateFilters(newTemplateFilters.filter(f => f !== filter))
+      setNewTemplateFilters(newTemplateFilters.filter((f) => f !== filter));
     }
-  }
+  };
 
-  const addCustomFilterToManual = () => {
+  const addCustomFilterToManual = (): void => {
     if (customFilter.trim() && !manualFilters.includes(customFilter.trim())) {
-      setManualFilters([...manualFilters, customFilter.trim()])
-      setCustomFilter("")
+      setManualFilters([...manualFilters, customFilter.trim()]);
+      setCustomFilter('');
     }
-  }
+  };
 
-  const addCustomFilterToNewTemplate = () => {
+  const addCustomFilterToNewTemplate = (): void => {
     if (newTemplateCustomFilter.trim() && !newTemplateFilters.includes(newTemplateCustomFilter.trim())) {
-      setNewTemplateFilters([...newTemplateFilters, newTemplateCustomFilter.trim()])
-      setNewTemplateCustomFilter("")
+      setNewTemplateFilters([...newTemplateFilters, newTemplateCustomFilter.trim()]);
+      setNewTemplateCustomFilter('');
     }
-  }
+  };
 
-  const removeFilterFromTemplate = (filter) => {
-    setTemplateFilters(templateFilters.filter(f => f !== filter))
-  }
+  const removeFilterFromTemplate = (filter: string): void => {
+    setTemplateFilters(templateFilters.filter((f) => f !== filter));
+  };
 
-  const removeFilterFromManual = (filter) => {
-    setManualFilters(manualFilters.filter(f => f !== filter))
-  }
+  const removeFilterFromManual = (filter: string): void => {
+    setManualFilters(manualFilters.filter((f) => f !== filter));
+  };
 
-  const removeFilterFromNewTemplate = (filter) => {
-    setNewTemplateFilters(newTemplateFilters.filter(f => f !== filter))
-  }
+  const removeFilterFromNewTemplate = (filter: string): void => {
+    setNewTemplateFilters(newTemplateFilters.filter((f) => f !== filter));
+  };
 
-  const handleTemplateSubmit = (e) => {
-    e.preventDefault()
+  const handleTemplateSubmit = (e: React.FormEvent): void => {
+    e.preventDefault();
     if (templateTopic.trim() && templateDescription.trim() && selectedTemplate) {
-      const template = templates.find(t => t.id === parseInt(selectedTemplate))
+      const template = templates.find((t) => t.id === parseInt(selectedTemplate));
       onAdd({
         topic: templateTopic.trim(),
         description: templateDescription.trim(),
         filters: templateFilters,
-        templateUsed: template.name,
-        folderId: selectedFolder ? parseInt(selectedFolder) : null
-      })
-      setTemplateTopic("")
-      setTemplateDescription("")
-      setTemplateFilters([])
-      setSelectedTemplate("")
-      setSelectedFolder("")
+        templateUsed: template!.name,
+        folderId: selectedFolder ? parseInt(selectedFolder) : null,
+      });
+      setTemplateTopic('');
+      setTemplateDescription('');
+      setTemplateFilters([]);
+      setSelectedTemplate('');
+      setSelectedFolder('');
     }
-  }
+  };
 
-  const handleManualSubmit = (e) => {
-    e.preventDefault()
+  const handleManualSubmit = (e: React.FormEvent): void => {
+    e.preventDefault();
     if (manualTopic.trim() && manualDescription.trim()) {
       onAdd({
         topic: manualTopic.trim(),
         description: manualDescription.trim(),
         filters: manualFilters,
-        templateUsed: "Custom",
-        folderId: selectedFolder ? parseInt(selectedFolder) : null
-      })
-      setManualTopic("")
-      setManualDescription("")
-      setManualFilters([])
-      setSelectedFolder("")
+        templateUsed: 'Custom',
+        folderId: selectedFolder ? parseInt(selectedFolder) : null,
+      });
+      setManualTopic('');
+      setManualDescription('');
+      setManualFilters([]);
+      setSelectedFolder('');
     }
-  }
+  };
 
-  const handleNewTemplateSubmit = (e) => {
-    e.preventDefault()
+  const handleNewTemplateSubmit = (e: React.FormEvent): void => {
+    e.preventDefault();
     if (newTemplateName.trim() && newTemplateDescription.trim()) {
       onAddTemplate({
         name: newTemplateName.trim(),
         description: newTemplateDescription.trim(),
-        filters: newTemplateFilters
-      })
-      setNewTemplateName("")
-      setNewTemplateDescription("")
-      setNewTemplateFilters([])
+        filters: newTemplateFilters,
+      });
+      setNewTemplateName('');
+      setNewTemplateDescription('');
+      setNewTemplateFilters([]);
       // Switch to template method and select the new template
-      setActiveMethod("template")
-      setSelectedFolder("")
+      setActiveMethod('template');
+      setSelectedFolder('');
     }
-  }
+  };
 
   return (
     <Tabs value={activeMethod} onValueChange={setActiveMethod} className="w-full">
@@ -290,10 +299,7 @@ export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders,
                         {templateFilters.map((filter) => (
                           <Badge key={filter} variant="secondary" className="flex items-center gap-1">
                             {filter}
-                            <X 
-                              className="h-3 w-3 cursor-pointer" 
-                              onClick={() => removeFilterFromTemplate(filter)}
-                            />
+                            <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilterFromTemplate(filter)} />
                           </Badge>
                         ))}
                       </div>
@@ -314,13 +320,7 @@ export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders,
         <form onSubmit={handleManualSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="manual-topic">News Topic</Label>
-            <Input
-              id="manual-topic"
-              value={manualTopic}
-              onChange={(e) => setManualTopic(e.target.value)}
-              placeholder="e.g., Tesla, OpenAI, Apple"
-              required
-            />
+            <Input id="manual-topic" value={manualTopic} onChange={(e) => setManualTopic(e.target.value)} placeholder="e.g., Tesla, OpenAI, Apple" required />
           </div>
 
           <div className="space-y-2">
@@ -360,10 +360,8 @@ export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders,
 
           <div className="space-y-4">
             <Label>Filters</Label>
-            <p className="text-sm text-muted-foreground">
-              Select filters to only show news when these conditions are met
-            </p>
-            
+            <p className="text-sm text-muted-foreground">Select filters to only show news when these conditions are met</p>
+
             <div className="grid grid-cols-2 gap-3">
               {availableFilters.map((filter) => (
                 <div key={filter} className="flex items-center space-x-2">
@@ -399,10 +397,7 @@ export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders,
                     {manualFilters.map((filter) => (
                       <Badge key={filter} variant="secondary" className="flex items-center gap-1">
                         {filter}
-                        <X 
-                          className="h-3 w-3 cursor-pointer" 
-                          onClick={() => removeFilterFromManual(filter)}
-                        />
+                        <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilterFromManual(filter)} />
                       </Badge>
                     ))}
                   </div>
@@ -444,10 +439,8 @@ export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders,
 
           <div className="space-y-4">
             <Label>Template Filters</Label>
-            <p className="text-sm text-muted-foreground">
-              Select the filters that should be included by default in this template
-            </p>
-            
+            <p className="text-sm text-muted-foreground">Select the filters that should be included by default in this template</p>
+
             <div className="grid grid-cols-2 gap-3">
               {availableFilters.map((filter) => (
                 <div key={filter} className="flex items-center space-x-2">
@@ -483,10 +476,7 @@ export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders,
                     {newTemplateFilters.map((filter) => (
                       <Badge key={filter} variant="secondary" className="flex items-center gap-1">
                         {filter}
-                        <X 
-                          className="h-3 w-3 cursor-pointer" 
-                          onClick={() => removeFilterFromNewTemplate(filter)}
-                        />
+                        <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilterFromNewTemplate(filter)} />
                       </Badge>
                     ))}
                   </div>
@@ -501,5 +491,5 @@ export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders,
         </form>
       </TabsContent>
     </Tabs>
-  )
+  );
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import { NewsArticle, ArticleSource } from '@/lib/news-reader-types';
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,10 +9,17 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Progress } from '@/components/ui/progress';
 import { Clock, ExternalLink, Bookmark, BookmarkCheck, ChevronDown, Link } from 'lucide-react';
 
-export default function EnhancedArticleCard({ article, isBookmarked, onToggleBookmark, folderPath }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+interface EnhancedArticleCardProps {
+  article: NewsArticle;
+  isBookmarked: boolean;
+  onToggleBookmark: (articleId: number) => void;
+  folderPath: string[] | null;
+}
 
-  const formatDate = (dateString) => {
+export default function EnhancedArticleCard({ article, isBookmarked, onToggleBookmark, folderPath }: EnhancedArticleCardProps) {
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
+  const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',

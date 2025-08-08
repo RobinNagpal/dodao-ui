@@ -1,212 +1,133 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Plus, Settings, BookOpen, Filter, LayoutTemplateIcon as Template, FolderOpen, Bookmark } from 'lucide-react'
-import AddTopicForm from "@/components/add-topic-form"
-import TopicList from "@/components/topic-list"
-import NewsFeed from "@/components/news-feed"
-import TemplateManager from "@/components/template-manager"
-import FolderManager from "@/components/folder-manager"
-import BookmarksList from "@/components/bookmarks-list"
-
-// Predefined templates
-const defaultTemplates = [
-  {
-    id: 1,
-    name: "Technology Company",
-    description: "Track major technology companies",
-    filters: ["Financial Changes", "Product Launches", "Core Management Changes", "Partnership Announcements"],
-    isDefault: true
-  },
-  {
-    id: 2,
-    name: "Startup Tracking",
-    description: "Monitor startup companies and funding",
-    filters: ["Financial Changes", "Partnership Announcements", "Product Launches", "Market Expansion"],
-    isDefault: true
-  },
-  {
-    id: 3,
-    name: "Public Company",
-    description: "Track publicly traded companies",
-    filters: ["Financial Changes", "Regulatory Updates", "Core Management Changes", "Acquisition News"],
-    isDefault: true
-  },
-  {
-    id: 4,
-    name: "Healthcare & Pharma",
-    description: "Monitor healthcare and pharmaceutical companies",
-    filters: ["Regulatory Updates", "Product Launches", "Financial Changes", "Legal Issues"],
-    isDefault: true
-  },
-  {
-    id: 5,
-    name: "Cryptocurrency",
-    description: "Track cryptocurrency and blockchain projects",
-    filters: ["Regulatory Updates", "Technology Breakthroughs", "Partnership Announcements", "Market Expansion"],
-    isDefault: true
-  }
-]
-
-// Default folders structure
-const defaultFolders = [
-  {
-    id: 1,
-    name: "Technology",
-    parentId: null,
-    children: [
-      { id: 2, name: "AI Companies", parentId: 1, children: [] },
-      { id: 3, name: "Hardware", parentId: 1, children: [] }
-    ]
-  },
-  {
-    id: 4,
-    name: "Finance",
-    parentId: null,
-    children: [
-      { id: 5, name: "Fintech", parentId: 4, children: [] },
-      { id: 6, name: "Traditional Banks", parentId: 4, children: [] }
-    ]
-  }
-]
+import { NewsTopicFolder, NewsTopicTemplate, NewsTopic } from '@/lib/news-reader-types';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Plus, Settings, BookOpen, Filter, LayoutTemplateIcon as Template, FolderOpen, Bookmark } from 'lucide-react';
+import AddTopicForm from '@/components/add-topic-form';
+import TopicList from '@/components/topic-list';
+import NewsFeed from '@/components/news-feed';
+import TemplateManager from '@/components/template-manager';
+import FolderManager from '@/components/folder-manager';
+import BookmarksList from '@/components/bookmarks-list';
+import { defaultTemplates, defaultFolders, defaultTopics } from '@/lib/sample-data';
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState("feed")
-  const [folders, setFolders] = useState(defaultFolders)
-  const [topics, setTopics] = useState([
-    {
-      id: 1,
-      topic: "Tesla",
-      description: "Electric vehicle company news and updates",
-      filters: ["Financial Changes", "Core Management Changes"],
-      templateUsed: "Technology Company",
-      folderId: 3, // Hardware folder
-      createdAt: "2024-01-15"
-    },
-    {
-      id: 2,
-      topic: "OpenAI",
-      description: "AI research and product developments",
-      filters: ["Product Launches", "Financial Changes"],
-      templateUsed: "Startup Tracking",
-      folderId: 2, // AI Companies folder
-      createdAt: "2024-01-10"
-    },
-    {
-      id: 3,
-      topic: "Apple",
-      description: "Consumer technology and hardware updates",
-      filters: ["Product Launches", "Core Management Changes"],
-      templateUsed: "Technology Company",
-      folderId: 3, // Hardware folder
-      createdAt: "2024-01-08"
-    }
-  ])
+  const [activeTab, setActiveTab] = useState<string>('feed');
+  const [folders, setFolders] = useState<NewsTopicFolder[]>(defaultFolders);
+  const [topics, setTopics] = useState<NewsTopic[]>(defaultTopics);
+  const [templates, setTemplates] = useState<NewsTopicTemplate[]>(defaultTemplates);
+  const [bookmarks, setBookmarks] = useState<number[]>([]);
 
-  const [templates, setTemplates] = useState(defaultTemplates)
-  const [bookmarks, setBookmarks] = useState([])
-
-  const addTopic = (newTopic) => {
-    const topic = {
-      ...newTopic,
+  // Add a new topic
+  const addTopic = (newTopic: Partial<NewsTopic>): void => {
+    const topic: NewsTopic = {
+      ...(newTopic as NewsTopic),
       id: Date.now(),
-      createdAt: new Date().toISOString().split('T')[0]
-    }
-    setTopics([...topics, topic])
-  }
+      createdAt: new Date().toISOString().split('T')[0],
+    };
+    setTopics([...topics, topic]);
+  };
 
-  const deleteTopic = (id) => {
-    setTopics(topics.filter(t => t.id !== id))
-  }
+  // Delete a topic by ID
+  const deleteTopic = (id: number): void => {
+    setTopics(topics.filter((t) => t.id !== id));
+  };
 
-  const addTemplate = (newTemplate) => {
-    const template = {
-      ...newTemplate,
+  // Add a new template
+  const addTemplate = (newTemplate: Partial<NewsTopicTemplate>): void => {
+    const template: NewsTopicTemplate = {
+      ...(newTemplate as NewsTopicTemplate),
       id: Date.now(),
-      isDefault: false
-    }
-    setTemplates([...templates, template])
-  }
+      isDefault: false,
+    };
+    setTemplates([...templates, template]);
+  };
 
-  const deleteTemplate = (id) => {
-    setTemplates(templates.filter(t => t.id !== id || t.isDefault))
-  }
+  // Delete a template by ID
+  const deleteTemplate = (id: number): void => {
+    setTemplates(templates.filter((t) => t.id !== id || t.isDefault));
+  };
 
-  const addFolder = (newFolder) => {
-    const folder = {
-      ...newFolder,
+  // Add a new folder
+  const addFolder = (newFolder: Partial<NewsTopicFolder>): void => {
+    const folder: NewsTopicFolder = {
+      ...(newFolder as NewsTopicFolder),
       id: Date.now(),
-      children: []
-    }
-    
+      children: [],
+    };
+
     if (newFolder.parentId) {
       // Add to parent folder
-      const updateFolders = (folders) => {
-        return folders.map(f => {
+      const updateFolders = (folders: NewsTopicFolder[]): NewsTopicFolder[] => {
+        return folders.map((f) => {
           if (f.id === newFolder.parentId) {
-            return { ...f, children: [...f.children, folder] }
+            return { ...f, children: [...f.children, folder] };
           }
           if (f.children.length > 0) {
-            return { ...f, children: updateFolders(f.children) }
+            return { ...f, children: updateFolders(f.children) };
           }
-          return f
-        })
-      }
-      setFolders(updateFolders(folders))
+          return f;
+        });
+      };
+      setFolders(updateFolders(folders));
     } else {
       // Add as root folder
-      setFolders([...folders, folder])
+      setFolders([...folders, folder]);
     }
-  }
+  };
 
-  const deleteFolder = (id) => {
+  // Delete a folder by ID
+  const deleteFolder = (id: number): void => {
     // Move topics from deleted folder to root
-    setTopics(topics.map(t => t.folderId === id ? { ...t, folderId: null } : t))
-    
-    // Remove folder
-    const removeFolderRecursive = (folders) => {
-      return folders.filter(f => f.id !== id).map(f => ({
-        ...f,
-        children: removeFolderRecursive(f.children)
-      }))
-    }
-    setFolders(removeFolderRecursive(folders))
-  }
+    setTopics(topics.map((t) => (t.folderId === id ? { ...t, folderId: null } : t)));
 
-  const toggleBookmark = (articleId) => {
+    // Remove folder
+    const removeFolderRecursive = (folders: NewsTopicFolder[]): NewsTopicFolder[] => {
+      return folders
+        .filter((f) => f.id !== id)
+        .map((f) => ({
+          ...f,
+          children: removeFolderRecursive(f.children),
+        }));
+    };
+    setFolders(removeFolderRecursive(folders));
+  };
+
+  // Toggle bookmark status for an article
+  const toggleBookmark = (articleId: number): void => {
     if (bookmarks.includes(articleId)) {
-      setBookmarks(bookmarks.filter(id => id !== articleId))
+      setBookmarks(bookmarks.filter((id) => id !== articleId));
     } else {
-      setBookmarks([...bookmarks, articleId])
+      setBookmarks([...bookmarks, articleId]);
     }
-  }
+  };
 
   // Get folder path for display
-  const getFolderPath = (folderId, folders, path = []) => {
-    if (!folderId) return path
-    
-    const findFolder = (folders) => {
+  const getFolderPath = (folderId: number | null, folders: NewsTopicFolder[], path: string[] = []): string[] => {
+    if (!folderId) return path;
+
+    const findFolder = (folders: NewsTopicFolder[]): NewsTopicFolder | null => {
       for (const folder of folders) {
         if (folder.id === folderId) {
-          return folder
+          return folder;
         }
-        const found = findFolder(folder.children)
-        if (found) return found
+        const found = findFolder(folder.children);
+        if (found) return found;
       }
-      return null
-    }
-    
-    const folder = findFolder(folders)
+      return null;
+    };
+
+    const folder = findFolder(folders);
     if (folder) {
-      const newPath = [folder.name, ...path]
-      return folder.parentId ? getFolderPath(folder.parentId, folders, newPath) : newPath
+      const newPath = [folder.name, ...path];
+      return folder.parentId ? getFolderPath(folder.parentId, folders, newPath) : newPath;
     }
-    return path
-  }
+    return path;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -269,13 +190,7 @@ export default function HomePage() {
           </TabsList>
 
           <TabsContent value="feed" className="mt-6">
-            <NewsFeed 
-              topics={topics} 
-              folders={folders} 
-              bookmarks={bookmarks}
-              onToggleBookmark={toggleBookmark}
-              getFolderPath={getFolderPath}
-            />
+            <NewsFeed topics={topics} folders={folders} bookmarks={bookmarks} onToggleBookmark={toggleBookmark} getFolderPath={getFolderPath} />
           </TabsContent>
 
           <TabsContent value="add" className="mt-6">
@@ -283,39 +198,21 @@ export default function HomePage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Add New News Topic</CardTitle>
-                  <CardDescription>
-                    Configure a new topic to track news articles. You can use a template or create your own configuration.
-                  </CardDescription>
+                  <CardDescription>Configure a new topic to track news articles. You can use a template or create your own configuration.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <AddTopicForm 
-                    onAdd={addTopic} 
-                    templates={templates} 
-                    onAddTemplate={addTemplate}
-                    folders={folders}
-                    getFolderPath={getFolderPath}
-                  />
+                  <AddTopicForm onAdd={addTopic} templates={templates} onAddTemplate={addTemplate} folders={folders} getFolderPath={getFolderPath} />
                 </CardContent>
               </Card>
             </div>
           </TabsContent>
 
           <TabsContent value="manage" className="mt-6">
-            <TopicList 
-              topics={topics} 
-              onDelete={deleteTopic} 
-              folders={folders}
-              getFolderPath={getFolderPath}
-            />
+            <TopicList topics={topics} onDelete={deleteTopic} folders={folders} getFolderPath={getFolderPath} />
           </TabsContent>
 
           <TabsContent value="folders" className="mt-6">
-            <FolderManager 
-              folders={folders} 
-              onAdd={addFolder} 
-              onDelete={deleteFolder}
-              topics={topics}
-            />
+            <FolderManager folders={folders} onAdd={addFolder} onDelete={deleteFolder} topics={topics} />
           </TabsContent>
 
           <TabsContent value="templates" className="mt-6">
@@ -323,13 +220,10 @@ export default function HomePage() {
           </TabsContent>
 
           <TabsContent value="bookmarks" className="mt-6">
-            <BookmarksList 
-              bookmarks={bookmarks}
-              onToggleBookmark={toggleBookmark}
-            />
+            <BookmarksList bookmarks={bookmarks} onToggleBookmark={toggleBookmark} />
           </TabsContent>
         </Tabs>
       </div>
     </div>
-  )
+  );
 }
