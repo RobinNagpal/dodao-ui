@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   const { industryId } = await params;
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`);
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -68,23 +68,7 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
 
   const definition = getTariffIndustryDefinitionById(industryId);
 
-  // Fetch the report data
-
-  /**
-   *  Old id to new id map
-   *  const oldToNewIdMap = {
-   *    'oldIndustryId': 'correct-industry-id',
-   *    'oldIndustryId2': 'correct-industry-id2',
-   *  }
-   *
-   *  We read if the industryId is in the oldToNewIdMap and if so, we redirect to user to the new page. I think google handles redirects automatically.
-   *  We should however read how google handles redirects and if we need to do anything else.
-   *
-   *  I think we can create a robot.txt file that redirects old urls to the new ones.
-   *
-   */
-  //
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`);
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {

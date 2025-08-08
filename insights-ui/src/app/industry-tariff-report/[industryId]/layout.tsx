@@ -16,7 +16,7 @@ export default async function IndustryTariffReportLayout({
   params: Promise<{ industryId: TariffIndustryId }>;
 }) {
   const { industryId } = await params;
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`);
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
