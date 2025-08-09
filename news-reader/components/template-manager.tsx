@@ -42,7 +42,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
   const [newTemplateFilters, setNewTemplateFilters] = useState<string[]>([]);
   const [customFilter, setCustomFilter] = useState<string>('');
 
-  const handleFilterChange = (filter: string, checked: boolean): void => {
+  const handleFilterChange = (filter: string, checked: boolean | string): void => {
     if (checked) {
       setNewTemplateFilters([...newTemplateFilters, filter]);
     } else {
