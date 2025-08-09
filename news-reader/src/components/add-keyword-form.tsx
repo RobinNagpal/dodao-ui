@@ -98,7 +98,7 @@ export default function AddKeywordForm({ onAdd }: AddKeywordFormProps) {
         <div className="grid grid-cols-2 gap-3">
           {availableFilters.map((filter) => (
             <div key={filter} className="flex items-center space-x-2">
-              <Checkbox id={filter} checked={selectedFilters.includes(filter)} onCheckedChange={(checked) => handleFilterChange(filter, checked)} />
+              <Checkbox id={filter} checked={selectedFilters.includes(filter)} onCheckedChange={(checked: boolean) => handleFilterChange(filter, checked)} />
               <Label htmlFor={filter} className="text-sm font-normal">
                 {filter}
               </Label>
