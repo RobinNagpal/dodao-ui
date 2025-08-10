@@ -1,6 +1,6 @@
 'use client';
 
-import { NewsArticle, NewsTopicFolder, NewsTopic } from '@/lib/news-reader-types';
+import { NewsArticleType, NewsTopicFolderType, NewsTopicType } from '@/lib/news-reader-types';
 import { useState, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -12,11 +12,11 @@ import EnhancedArticleCard from '@/components/enhanced-article-card';
 import { sampleNews } from '@/lib/sample-data';
 
 interface NewsFeedProps {
-  topics: NewsTopic[];
-  folders: NewsTopicFolder[];
-  bookmarks: number[];
-  onToggleBookmark: (articleId: number) => void;
-  getFolderPath: (folderId: number | null, folders: NewsTopicFolder[], path?: string[]) => string[];
+  topics: NewsTopicType[];
+  folders: NewsTopicFolderType[];
+  bookmarks: string[];
+  onToggleBookmark: (articleId: string) => void;
+  getFolderPath: (folderId: string | null, folders: NewsTopicFolderType[], path?: string[]) => string[];
 }
 
 export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark, getFolderPath }: NewsFeedProps) {
@@ -44,8 +44,8 @@ export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark,
   };
 
   // Flatten folders for selection
-  const flattenFolders = (folders: NewsTopicFolder[], level = 0): (NewsTopicFolder & { level: number })[] => {
-    let result: (NewsTopicFolder & { level: number })[] = [];
+  const flattenFolders = (folders: NewsTopicFolderType[], level = 0): (NewsTopicFolderType & { level: number })[] => {
+    let result: (NewsTopicFolderType & { level: number })[] = [];
     folders.forEach((folder) => {
       result.push({ ...folder, level });
       if (folder.children.length > 0) {
@@ -58,7 +58,7 @@ export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark,
   const flatFolders = flattenFolders(folders);
 
   // Filter news based on configured topics and their filters
-  const filteredNews = useMemo<NewsArticle[]>(() => {
+  const filteredNews = useMemo<NewsArticleType[]>(() => {
     return sampleNews.filter((article) => {
       // Check if topic is configured
       const topicConfig = topics.find((t) => t.topic.toLowerCase() === article.keyword.toLowerCase());
@@ -89,14 +89,14 @@ export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark,
 
       // Apply folder filter
       if (selectedFolder !== 'all') {
-        const folderId = parseInt(selectedFolder);
+        const folderId = selectedFolder;
         // Get all folder IDs including children
-        const getFolderAndChildren = (folders: NewsTopicFolder[], targetId: number): number[] => {
-          let result: number[] = [];
+        const getFolderAndChildren = (folders: NewsTopicFolderType[], targetId: string): string[] => {
+          let result: string[] = [];
           folders.forEach((folder) => {
             if (folder.id === targetId) {
               result.push(folder.id);
-              const getChildIds = (children: NewsTopicFolder[]): void => {
+              const getChildIds = (children: NewsTopicFolderType[]): void => {
                 children.forEach((child) => {
                   result.push(child.id);
                   if (child.children.length > 0) {
@@ -113,7 +113,7 @@ export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark,
         };
 
         const allowedFolderIds = getFolderAndChildren(folders, folderId);
-        const topicInFolder = topics.find((t) => t.topic.toLowerCase() === article.keyword.toLowerCase() && allowedFolderIds.includes(t.folderId as number));
+        const topicInFolder = topics.find((t) => t.topic.toLowerCase() === article.keyword.toLowerCase() && allowedFolderIds.includes(t.folderId || ''));
         if (!topicInFolder) return false;
       }
 

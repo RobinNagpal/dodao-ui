@@ -3,14 +3,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { NewsTopicFolder, NewsTopic } from '@/lib/news-reader-types';
+import { NewsTopicFolderType, NewsTopicType } from '@/lib/news-reader-types';
 import { Trash2, Calendar, Filter, LayoutTemplateIcon as Template, FolderOpen } from 'lucide-react';
 
 interface TopicListProps {
-  topics: NewsTopic[];
-  onDelete: (id: number) => void;
-  folders: NewsTopicFolder[];
-  getFolderPath: (folderId: number | null, folders: NewsTopicFolder[], path?: string[]) => string[];
+  topics: NewsTopicType[];
+  onDelete: (id: string) => void;
+  folders: NewsTopicFolderType[];
+  getFolderPath: (folderId: string | null, folders: NewsTopicFolderType[], path?: string[]) => string[];
 }
 
 export default function TopicList({ topics, onDelete, folders, getFolderPath }: TopicListProps) {
