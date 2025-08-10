@@ -162,7 +162,7 @@ export default function HomePage() {
 
       <div className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-6 border border-gray-400 pb-4 mb-6">
             <TabsTrigger value="feed" className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
               News Feed
