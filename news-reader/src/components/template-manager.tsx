@@ -1,6 +1,6 @@
 'use client';
 
-import { NewsTopicTemplate as TemplateType } from '@/lib/news-reader-types';
+import { NewsTopicTemplateType as TemplateType } from '@/lib/news-reader-types';
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -31,8 +31,8 @@ const availableFilters: string[] = [
 
 interface TemplateManagerProps {
   templates: TemplateType[];
-  onAdd: (newTemplate: Partial<TemplateType>) => void;
-  onDelete: (id: number) => void;
+  onAdd: (newTemplate: Partial<TemplateType>) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }
 
 export default function TemplateManager({ templates, onAdd, onDelete }: TemplateManagerProps) {
@@ -46,27 +46,31 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
     if (checked) {
       setNewTemplateFilters([...newTemplateFilters, filter]);
     } else {
-      setNewTemplateFilters(newTemplateFilters.filter((f) => f !== filter));
+      setNewTemplateFilters(newTemplateFilters.filter((f: string): boolean => f !== filter));
     }
   };
 
   const addCustomFilter = (): void => {
-    if (customFilter.trim() && !newTemplateFilters.includes(customFilter.trim())) {
-      setNewTemplateFilters([...newTemplateFilters, customFilter.trim()]);
+    const trimmedFilter: string = customFilter.trim();
+    if (trimmedFilter && !newTemplateFilters.includes(trimmedFilter)) {
+      setNewTemplateFilters([...newTemplateFilters, trimmedFilter]);
       setCustomFilter('');
     }
   };
 
   const removeFilter = (filter: string): void => {
-    setNewTemplateFilters(newTemplateFilters.filter((f) => f !== filter));
+    setNewTemplateFilters(newTemplateFilters.filter((f: string): boolean => f !== filter));
   };
 
-  const handleSubmit = (e: React.FormEvent): void => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (newTemplateName.trim() && newTemplateDescription.trim()) {
+    const trimmedName: string = newTemplateName.trim();
+    const trimmedDescription: string = newTemplateDescription.trim();
+
+    if (trimmedName && trimmedDescription) {
       onAdd({
-        name: newTemplateName.trim(),
-        description: newTemplateDescription.trim(),
+        name: trimmedName,
+        description: trimmedDescription,
         filters: newTemplateFilters,
       });
       setNewTemplateName('');
@@ -91,7 +95,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
           <h2 className="text-2xl font-bold">Template Manager</h2>
           <p className="text-muted-foreground">Create and manage templates for quick topic setup</p>
         </div>
-        <Button onClick={() => setShowAddForm(!showAddForm)} className="flex items-center gap-2">
+        <Button onClick={(): void => setShowAddForm(!showAddForm)} className="flex items-center gap-2">
           <Plus className="h-4 w-4" />
           Create Template
         </Button>
@@ -110,7 +114,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
                 <Input
                   id="template-name"
                   value={newTemplateName}
-                  onChange={(e) => setNewTemplateName(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setNewTemplateName(e.target.value)}
                   placeholder="e.g., Fintech Company, Healthcare Startup"
                   required
                 />
@@ -121,7 +125,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
                 <Textarea
                   id="template-description"
                   value={newTemplateDescription}
-                  onChange={(e) => setNewTemplateDescription(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setNewTemplateDescription(e.target.value)}
                   placeholder="Describe what type of companies or topics this template is for..."
                   rows={3}
                   required
@@ -133,9 +137,13 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
                 <p className="text-sm text-muted-foreground">Select the filters that should be included by default in this template</p>
 
                 <div className="grid grid-cols-2 gap-3">
-                  {availableFilters.map((filter) => (
+                  {availableFilters.map((filter: string) => (
                     <div key={filter} className="flex items-center space-x-2">
-                      <Checkbox id={filter} checked={newTemplateFilters.includes(filter)} onCheckedChange={(checked) => handleFilterChange(filter, checked)} />
+                      <Checkbox
+                        id={filter}
+                        checked={newTemplateFilters.includes(filter)}
+                        onCheckedChange={(checked: boolean | string): void => handleFilterChange(filter, checked)}
+                      />
                       <Label htmlFor={filter} className="text-sm font-normal">
                         {filter}
                       </Label>
@@ -146,9 +154,14 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
                 <div className="flex gap-2">
                   <Input
                     value={customFilter}
-                    onChange={(e) => setCustomFilter(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setCustomFilter(e.target.value)}
                     placeholder="Add custom filter to template..."
-                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomFilter())}
+                    onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>): void => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addCustomFilter();
+                      }
+                    }}
                   />
                   <Button type="button" variant="outline" onClick={addCustomFilter}>
                     Add
@@ -160,10 +173,10 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
                     <CardContent className="pt-4">
                       <Label className="text-sm font-medium">Template Filters:</Label>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {newTemplateFilters.map((filter) => (
+                        {newTemplateFilters.map((filter: string) => (
                           <Badge key={filter} variant="secondary" className="flex items-center gap-1">
                             {filter}
-                            <X className="h-3 w-3 cursor-pointer" onClick={() => removeFilter(filter)} />
+                            <X className="h-3 w-3 cursor-pointer" onClick={(): void => removeFilter(filter)} />
                           </Badge>
                         ))}
                       </div>
@@ -186,7 +199,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
       )}
 
       <div className="grid gap-4">
-        {templates.map((template) => (
+        {templates.map((template: TemplateType) => (
           <Card key={template.id}>
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
@@ -206,7 +219,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
                   </div>
                 </div>
                 {!template.isDefault && (
-                  <Button variant="ghost" size="sm" onClick={() => onDelete(template.id)} className="text-destructive hover:text-destructive">
+                  <Button variant="ghost" size="sm" onClick={(): Promise<void> => onDelete(template.id)} className="text-destructive hover:text-destructive">
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 )}
@@ -217,7 +230,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
                 <div>
                   <p className="text-sm font-medium mb-2">Included Filters:</p>
                   <div className="flex flex-wrap gap-2">
-                    {template.filters.map((filter) => (
+                    {template.filters.map((filter: string) => (
                       <Badge key={filter} variant="secondary" className="text-xs">
                         {filter}
                       </Badge>

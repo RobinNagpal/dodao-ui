@@ -1,6 +1,6 @@
 'use client';
 
-import { NewsTopicFolder, NewsTopicTemplate, NewsTopic } from '@/lib/news-reader-types';
+import { NewsTopicFolderType, NewsTopicTemplateType, NewsTopicType } from '@/lib/news-reader-types';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,55 +14,67 @@ import TemplateManager from '@/components/template-manager';
 import FolderManager from '@/components/folder-manager';
 import BookmarksList from '@/components/bookmarks-list';
 import { defaultTemplates, defaultFolders, defaultTopics } from '@/lib/sample-data';
+import Link from 'next/link';
 
-export default function HomePage() {
+export default function HomePage(): React.ReactNode {
   const [activeTab, setActiveTab] = useState<string>('feed');
-  const [folders, setFolders] = useState<NewsTopicFolder[]>(defaultFolders);
-  const [topics, setTopics] = useState<NewsTopic[]>(defaultTopics);
-  const [templates, setTemplates] = useState<NewsTopicTemplate[]>(defaultTemplates);
-  const [bookmarks, setBookmarks] = useState<number[]>([]);
+  const [folders, setFolders] = useState<NewsTopicFolderType[]>(defaultFolders);
+  const [topics, setTopics] = useState<NewsTopicType[]>(defaultTopics);
+  const [templates, setTemplates] = useState<NewsTopicTemplateType[]>(defaultTemplates);
+  const [bookmarks, setBookmarks] = useState<string[]>([]);
 
   // Add a new topic
-  const addTopic = (newTopic: Partial<NewsTopic>): void => {
-    const topic: NewsTopic = {
-      ...(newTopic as NewsTopic),
-      id: Date.now(),
-      createdAt: new Date().toISOString().split('T')[0],
+  const addTopic = (newTopic: Partial<NewsTopicType>): void => {
+    const topic: NewsTopicType = {
+      ...(newTopic as NewsTopicType),
+      id: Date.now().toString(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      createdBy: 'user',
+      updatedBy: 'user',
     };
     setTopics([...topics, topic]);
   };
 
   // Delete a topic by ID
-  const deleteTopic = (id: number): void => {
+  const deleteTopic = (id: string): void => {
     setTopics(topics.filter((t) => t.id !== id));
   };
 
   // Add a new template
-  const addTemplate = (newTemplate: Partial<NewsTopicTemplate>): void => {
-    const template: NewsTopicTemplate = {
-      ...(newTemplate as NewsTopicTemplate),
-      id: Date.now(),
+  const addTemplate = (newTemplate: Partial<NewsTopicTemplateType>): void => {
+    const template: NewsTopicTemplateType = {
+      ...(newTemplate as NewsTopicTemplateType),
+      id: Date.now().toString(),
       isDefault: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      createdBy: 'user',
+      updatedBy: 'user',
     };
     setTemplates([...templates, template]);
   };
 
   // Delete a template by ID
-  const deleteTemplate = (id: number): void => {
+  const deleteTemplate = (id: string): void => {
     setTemplates(templates.filter((t) => t.id !== id || t.isDefault));
   };
 
   // Add a new folder
-  const addFolder = (newFolder: Partial<NewsTopicFolder>): void => {
-    const folder: NewsTopicFolder = {
-      ...(newFolder as NewsTopicFolder),
-      id: Date.now(),
+  const addFolder = (newFolder: Partial<NewsTopicFolderType>): void => {
+    const folder: NewsTopicFolderType = {
+      ...(newFolder as NewsTopicFolderType),
+      id: Date.now().toString(),
       children: [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      createdBy: 'user',
+      updatedBy: 'user',
     };
 
     if (newFolder.parentId) {
       // Add to parent folder
-      const updateFolders = (folders: NewsTopicFolder[]): NewsTopicFolder[] => {
+      const updateFolders = (folders: NewsTopicFolderType[]): NewsTopicFolderType[] => {
         return folders.map((f) => {
           if (f.id === newFolder.parentId) {
             return { ...f, children: [...f.children, folder] };
@@ -81,12 +93,12 @@ export default function HomePage() {
   };
 
   // Delete a folder by ID
-  const deleteFolder = (id: number): void => {
+  const deleteFolder = (id: string): void => {
     // Move topics from deleted folder to root
     setTopics(topics.map((t) => (t.folderId === id ? { ...t, folderId: null } : t)));
 
     // Remove folder
-    const removeFolderRecursive = (folders: NewsTopicFolder[]): NewsTopicFolder[] => {
+    const removeFolderRecursive = (folders: NewsTopicFolderType[]): NewsTopicFolderType[] => {
       return folders
         .filter((f) => f.id !== id)
         .map((f) => ({
@@ -98,7 +110,7 @@ export default function HomePage() {
   };
 
   // Toggle bookmark status for an article
-  const toggleBookmark = (articleId: number): void => {
+  const toggleBookmark = (articleId: string): void => {
     if (bookmarks.includes(articleId)) {
       setBookmarks(bookmarks.filter((id) => id !== articleId));
     } else {
@@ -107,10 +119,10 @@ export default function HomePage() {
   };
 
   // Get folder path for display
-  const getFolderPath = (folderId: number | null, folders: NewsTopicFolder[], path: string[] = []): string[] => {
+  const getFolderPath = (folderId: string | null, folders: NewsTopicFolderType[], path: string[] = []): string[] => {
     if (!folderId) return path;
 
-    const findFolder = (folders: NewsTopicFolder[]): NewsTopicFolder | null => {
+    const findFolder = (folders: NewsTopicFolderType[]): NewsTopicFolderType | null => {
       for (const folder of folders) {
         if (folder.id === folderId) {
           return folder;
@@ -179,10 +191,13 @@ export default function HomePage() {
               <FolderOpen className="h-4 w-4" />
               Folders
             </TabsTrigger>
-            <TabsTrigger value="templates" className="flex items-center gap-2">
+            <Link
+              href="/news-templates"
+              className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+            >
               <Template className="h-4 w-4" />
               Templates
-            </TabsTrigger>
+            </Link>
             <TabsTrigger value="bookmarks" className="flex items-center gap-2">
               <Bookmark className="h-4 w-4" />
               Bookmarks
@@ -213,10 +228,6 @@ export default function HomePage() {
 
           <TabsContent value="folders" className="mt-6">
             <FolderManager folders={folders} onAdd={addFolder} onDelete={deleteFolder} topics={topics} />
-          </TabsContent>
-
-          <TabsContent value="templates" className="mt-6">
-            <TemplateManager templates={templates} onAdd={addTemplate} onDelete={deleteTemplate} />
           </TabsContent>
 
           <TabsContent value="bookmarks" className="mt-6">

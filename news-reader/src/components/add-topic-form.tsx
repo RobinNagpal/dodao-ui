@@ -1,6 +1,6 @@
 'use client';
 
-import { NewsTopicFolder, NewsTopicTemplate as TemplateType, NewsTopic } from '@/lib/news-reader-types';
+import { NewsTopicFolderType, NewsTopicTemplateType as TemplateType, NewsTopicType } from '@/lib/news-reader-types';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,11 +32,11 @@ const availableFilters: string[] = [
 ];
 
 interface AddTopicFormProps {
-  onAdd: (newTopic: Partial<NewsTopic>) => void;
+  onAdd: (newTopic: Partial<NewsTopicType>) => void;
   templates: TemplateType[];
   onAddTemplate: (newTemplate: Partial<TemplateType>) => void;
-  folders: NewsTopicFolder[];
-  getFolderPath: (folderId: number | null, folders: NewsTopicFolder[], path?: string[]) => string[];
+  folders: NewsTopicFolderType[];
+  getFolderPath: (folderId: string | null, folders: NewsTopicFolderType[], path?: string[]) => string[];
 }
 
 export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders, getFolderPath }: AddTopicFormProps) {
@@ -63,8 +63,8 @@ export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders,
   const [selectedFolder, setSelectedFolder] = useState<string>('');
 
   // Flatten folders for selection
-  const flattenFolders = (folders: NewsTopicFolder[], level = 0): (NewsTopicFolder & { level: number })[] => {
-    let result: (NewsTopicFolder & { level: number })[] = [];
+  const flattenFolders = (folders: NewsTopicFolderType[], level = 0): (NewsTopicFolderType & { level: number })[] => {
+    let result: (NewsTopicFolderType & { level: number })[] = [];
     folders.forEach((folder) => {
       result.push({ ...folder, level });
       if (folder.children.length > 0) {
@@ -77,7 +77,7 @@ export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders,
   const flatFolders = flattenFolders(folders);
 
   const handleTemplateSelect = (templateId: string): void => {
-    const template = templates.find((t) => t.id === parseInt(templateId));
+    const template = templates.find((t) => t.id === templateId);
     if (template) {
       setSelectedTemplate(templateId);
       setTemplateFilters([...template.filters]);
@@ -138,13 +138,13 @@ export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders,
   const handleTemplateSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     if (templateTopic.trim() && templateDescription.trim() && selectedTemplate) {
-      const template = templates.find((t) => t.id === parseInt(selectedTemplate));
+      const template = templates.find((t) => t.id === selectedTemplate);
       onAdd({
         topic: templateTopic.trim(),
         description: templateDescription.trim(),
         filters: templateFilters,
         templateUsed: template!.name,
-        folderId: selectedFolder ? parseInt(selectedFolder) : null,
+        folderId: selectedFolder ? selectedFolder : null,
       });
       setTemplateTopic('');
       setTemplateDescription('');
@@ -162,7 +162,7 @@ export default function AddTopicForm({ onAdd, templates, onAddTemplate, folders,
         description: manualDescription.trim(),
         filters: manualFilters,
         templateUsed: 'Custom',
-        folderId: selectedFolder ? parseInt(selectedFolder) : null,
+        folderId: selectedFolder ? selectedFolder : null,
       });
       setManualTopic('');
       setManualDescription('');

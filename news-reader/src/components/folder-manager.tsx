@@ -1,6 +1,6 @@
 'use client';
 
-import { NewsTopicFolder as FolderType, NewsTopic } from '@/lib/news-reader-types';
+import { NewsTopicFolderType as FolderType, NewsTopicType } from '@/lib/news-reader-types';
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,8 +13,8 @@ import { Trash2, FolderOpen, Plus, Folder, ChevronRight } from 'lucide-react';
 interface FolderManagerProps {
   folders: FolderType[];
   onAdd: (newFolder: Partial<FolderType>) => void;
-  onDelete: (id: number) => void;
-  topics: NewsTopic[];
+  onDelete: (id: string) => void;
+  topics: NewsTopicType[];
 }
 
 export default function FolderManager({ folders, onAdd, onDelete, topics }: FolderManagerProps) {
@@ -37,9 +37,9 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }: Fold
   const flatFolders = flattenFolders(folders);
 
   // Count topics in folder and subfolders
-  const countTopicsInFolder = (folderId: number): number => {
-    const getFolderAndChildren = (folders: FolderType[], targetId: number): number[] => {
-      let result: number[] = [];
+  const countTopicsInFolder = (folderId: string): number => {
+    const getFolderAndChildren = (folders: FolderType[], targetId: string): string[] => {
+      let result: string[] = [];
       folders.forEach((folder) => {
         if (folder.id === targetId) {
           result.push(folder.id);
@@ -60,15 +60,15 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }: Fold
     };
 
     const folderIds = getFolderAndChildren(folders, folderId);
-    return topics.filter((topic) => folderIds.includes(topic.folderId as number)).length;
+    return topics.filter((topic) => topic.folderId !== null && folderIds.includes(topic.folderId)).length;
   };
 
-  const handleSubmit = (e: React.FormEvent): void => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (newFolderName.trim()) {
       onAdd({
         name: newFolderName.trim(),
-        parentId: selectedParent ? parseInt(selectedParent) : null,
+        parentId: selectedParent ? selectedParent : null,
       });
       setNewFolderName('');
       setSelectedParent('');
@@ -100,7 +100,7 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }: Fold
                   </Badge>
                 </div>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => onDelete(folder.id)} className="text-destructive hover:text-destructive">
+              <Button variant="ghost" size="sm" onClick={(): void => onDelete(folder.id)} className="text-destructive hover:text-destructive">
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
@@ -118,7 +118,7 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }: Fold
           <h2 className="text-2xl font-bold">Folder Manager</h2>
           <p className="text-muted-foreground">Organize your news topics into folders</p>
         </div>
-        <Button onClick={() => setShowAddForm(!showAddForm)} className="flex items-center gap-2">
+        <Button onClick={(): void => setShowAddForm(!showAddForm)} className="flex items-center gap-2">
           <Plus className="h-4 w-4" />
           Create Folder
         </Button>
@@ -137,7 +137,7 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }: Fold
                 <Input
                   id="folder-name"
                   value={newFolderName}
-                  onChange={(e) => setNewFolderName(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>): void => setNewFolderName(e.target.value)}
                   placeholder="e.g., Technology, Finance, Healthcare"
                   required
                 />
@@ -170,7 +170,7 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }: Fold
                 <Button type="submit" className="flex-1">
                   Create Folder
                 </Button>
-                <Button type="button" variant="outline" onClick={resetForm}>
+                <Button type="button" variant="outline" onClick={(): void => resetForm()}>
                   Cancel
                 </Button>
               </div>

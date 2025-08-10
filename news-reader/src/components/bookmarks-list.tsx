@@ -3,18 +3,18 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { NewsArticle } from '@/lib/news-reader-types';
+import { NewsArticleType } from '@/lib/news-reader-types';
 import { Bookmark, BookmarkCheck, ExternalLink, Clock } from 'lucide-react';
 import EnhancedArticleCard from '@/components/enhanced-article-card';
 import { sampleNews } from '@/lib/sample-data';
 
 interface BookmarksListProps {
-  bookmarks: number[];
-  onToggleBookmark: (articleId: number) => void;
+  bookmarks: string[];
+  onToggleBookmark: (articleId: string) => void;
 }
 
 export default function BookmarksList({ bookmarks, onToggleBookmark }: BookmarksListProps) {
-  const bookmarkedArticles: NewsArticle[] = sampleNews.filter((article) => bookmarks.includes(article.id));
+  const bookmarkedArticles: NewsArticleType[] = sampleNews.filter((article) => bookmarks.includes(article.id));
 
   if (bookmarks.length === 0) {
     return (

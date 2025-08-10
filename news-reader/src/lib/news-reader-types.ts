@@ -1,45 +1,43 @@
-export interface NewsTopicTemplate {
-  id: number;
+import { ArticleSource, NewsArticle, NewsTopic, NewsTopicFolder, NewsTopicTemplate } from '@prisma/client';
+
+export interface NewsTopicTemplateType extends NewsTopicTemplate {
+  id: string;
   name: string;
   description: string;
   filters: string[];
   isDefault: boolean;
 }
 
-export interface NewsTopicFolder {
-  id: number;
+export interface NewsTopicFolderType extends NewsTopicFolder {
+  id: string;
   name: string;
-  parentId: number | null;
-  children: NewsTopicFolder[];
+  parentId: string | null;
+  children: NewsTopicFolderType[];
 }
 
-export interface NewsTopic {
-  id: number;
+export interface NewsTopicType extends NewsTopic {
+  id: string;
   topic: string;
   description: string;
   filters: string[];
   templateUsed: string;
-  folderId: number | null;
-  createdAt: string;
+  folderId: string | null;
 }
 
-export interface ArticleSource {
+export interface ArticleSourceType extends ArticleSource {
   title: string;
   url: string;
   source: string;
   percentage: number;
-  publishedAt: string;
 }
 
-export interface NewsArticle {
-  id: number;
+export interface NewsArticleType extends NewsArticle {
+  id: string;
   title: string;
   description: string;
   keyword: string;
   filters: string[];
   source: string;
-  publishedAt: string;
   url: string;
-  fullContent?: string;
-  sources?: ArticleSource[];
+  sources?: ArticleSourceType[];
 }
