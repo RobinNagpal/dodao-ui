@@ -57,14 +57,7 @@ async function putHandler(
 ): Promise<ArticleSourceWithRelations> {
   const { id } = params;
   const { userId } = userContext;
-  const {
-    title,
-    url,
-    source,
-    percentage,
-    publishedAt,
-    articleId,
-  } = await request.json() as {
+  const { title, url, source, percentage, publishedAt, articleId } = (await request.json()) as {
     title: string;
     url: string;
     source: string;

@@ -18,10 +18,7 @@ export type NewsTopicFolderWithChildren = NewsTopicFolder & {
  * @param userContext - The authenticated user context
  * @returns A promise that resolves to an array of NewsTopicFolderWithChildren objects
  */
-async function getHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload
-): Promise<NewsTopicFolderWithChildren[]> {
+async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<NewsTopicFolderWithChildren[]> {
   const { userId } = userContext;
 
   // Get all folders
@@ -45,7 +42,7 @@ async function getHandler(
 
   // Build folder hierarchy
   const rootFolders = foldersWithTopicCount.filter((folder) => folder.parentId === null);
-  
+
   // Recursive function to build the folder tree
   const buildFolderTree = (parentId: string | null): NewsTopicFolderWithChildren[] => {
     return foldersWithTopicCount
@@ -71,12 +68,9 @@ async function getHandler(
  * @param userContext - The authenticated user context
  * @returns A promise that resolves to the created NewsTopicFolder object
  */
-async function postHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload
-): Promise<NewsTopicFolder> {
+async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<NewsTopicFolder> {
   const { userId } = userContext;
-  const { name, parentId } = await request.json() as {
+  const { name, parentId } = (await request.json()) as {
     name: string;
     parentId: string | null;
   };

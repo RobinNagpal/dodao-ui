@@ -29,11 +29,7 @@ export type NewsArticleWithRelations = NewsArticle & {
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the NewsArticleWithRelations object
  */
-async function getHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
-): Promise<NewsArticleWithRelations> {
+async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsArticleWithRelations> {
   const { id } = params;
 
   const article = await prisma.newsArticle.findUniqueOrThrow({
@@ -59,25 +55,10 @@ async function getHandler(
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the updated NewsArticleWithRelations object
  */
-async function putHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
-): Promise<NewsArticleWithRelations> {
+async function putHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsArticleWithRelations> {
   const { id } = params;
   const { userId } = userContext;
-  const {
-    title,
-    description,
-    keyword,
-    filters,
-    source,
-    publishedAt,
-    url,
-    fullContent,
-    topicId,
-    sources,
-  } = await request.json() as {
+  const { title, description, keyword, filters, source, publishedAt, url, fullContent, topicId, sources } = (await request.json()) as {
     title: string;
     description: string;
     keyword: string;
@@ -123,13 +104,9 @@ async function putHandler(
       },
     });
 
-    const updatedSourceIds = sources
-      .filter((s) => s.id)
-      .map((s) => s.id as string);
+    const updatedSourceIds = sources.filter((s) => s.id).map((s) => s.id as string);
 
-    const sourcesToDelete = existingSources
-      .filter((s) => !updatedSourceIds.includes(s.id))
-      .map((s) => s.id);
+    const sourcesToDelete = existingSources.filter((s) => !updatedSourceIds.includes(s.id)).map((s) => s.id);
 
     // Delete sources that are not in the updated list
     if (sourcesToDelete.length > 0) {

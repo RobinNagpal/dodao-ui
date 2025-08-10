@@ -26,11 +26,7 @@ export type NewsTopicWithRelations = NewsTopic & {
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the NewsTopicWithRelations object
  */
-async function getHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
-): Promise<NewsTopicWithRelations> {
+async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicWithRelations> {
   const { id } = params;
 
   const topic = await prisma.newsTopic.findUniqueOrThrow({
@@ -65,14 +61,10 @@ async function getHandler(
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the updated NewsTopicWithRelations object
  */
-async function putHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
-): Promise<NewsTopicWithRelations> {
+async function putHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicWithRelations> {
   const { id } = params;
   const { userId } = userContext;
-  const { topic, description, filters, templateUsed, folderId } = await request.json() as {
+  const { topic, description, filters, templateUsed, folderId } = (await request.json()) as {
     topic: string;
     description: string;
     filters: string[];
@@ -136,11 +128,7 @@ async function putHandler(
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the deleted NewsTopicWithRelations object
  */
-async function deleteHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
-): Promise<NewsTopicWithRelations> {
+async function deleteHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicWithRelations> {
   const { id } = params;
 
   // Check if the topic has articles

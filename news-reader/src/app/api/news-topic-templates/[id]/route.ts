@@ -11,11 +11,7 @@ import { NextRequest } from 'next/server';
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the NewsTopicTemplate object
  */
-async function getHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
-): Promise<NewsTopicTemplate> {
+async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicTemplate> {
   const { id } = params;
 
   const template = await prisma.newsTopicTemplate.findUniqueOrThrow({
@@ -35,14 +31,10 @@ async function getHandler(
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the updated NewsTopicTemplate object
  */
-async function putHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
-): Promise<NewsTopicTemplate> {
+async function putHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicTemplate> {
   const { id } = params;
   const { userId } = userContext;
-  const { name, description, filters, isDefault } = await request.json() as {
+  const { name, description, filters, isDefault } = (await request.json()) as {
     name: string;
     description: string;
     filters: string[];
@@ -78,11 +70,7 @@ async function putHandler(
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the deleted NewsTopicTemplate object
  */
-async function deleteHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
-): Promise<NewsTopicTemplate> {
+async function deleteHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicTemplate> {
   const { id } = params;
 
   // Check if the template is used by any topics

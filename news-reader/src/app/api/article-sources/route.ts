@@ -20,10 +20,7 @@ export type ArticleSourceWithRelations = ArticleSource & {
  * @param userContext - The authenticated user context
  * @returns A promise that resolves to an array of ArticleSourceWithRelations objects
  */
-async function getHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload
-): Promise<ArticleSourceWithRelations[]> {
+async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<ArticleSourceWithRelations[]> {
   const { userId } = userContext;
   const { searchParams } = new URL(request.url);
   const articleId = searchParams.get('articleId');
@@ -60,19 +57,9 @@ async function getHandler(
  * @param userContext - The authenticated user context
  * @returns A promise that resolves to the created ArticleSource object
  */
-async function postHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload
-): Promise<ArticleSource> {
+async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<ArticleSource> {
   const { userId } = userContext;
-  const {
-    title,
-    url,
-    source,
-    percentage,
-    publishedAt,
-    articleId,
-  } = await request.json() as {
+  const { title, url, source, percentage, publishedAt, articleId } = (await request.json()) as {
     title: string;
     url: string;
     source: string;

@@ -21,10 +21,7 @@ export type NewsTopicWithRelations = NewsTopic & {
  * @param userContext - The authenticated user context
  * @returns A promise that resolves to an array of NewsTopicWithRelations objects
  */
-async function getHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload
-): Promise<NewsTopicWithRelations[]> {
+async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<NewsTopicWithRelations[]> {
   const { userId } = userContext;
   const { searchParams } = new URL(request.url);
   const folderId = searchParams.get('folderId');
@@ -69,12 +66,9 @@ async function getHandler(
  * @param userContext - The authenticated user context
  * @returns A promise that resolves to the created NewsTopic object
  */
-async function postHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload
-): Promise<NewsTopic> {
+async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<NewsTopic> {
   const { userId } = userContext;
-  const { topic, description, filters, templateUsed, folderId } = await request.json() as {
+  const { topic, description, filters, templateUsed, folderId } = (await request.json()) as {
     topic: string;
     description: string;
     filters: string[];

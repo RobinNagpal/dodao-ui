@@ -10,10 +10,7 @@ import { NextRequest } from 'next/server';
  * @param userContext - The authenticated user context
  * @returns A promise that resolves to an array of NewsTopicTemplate objects
  */
-async function getHandler(
-  request: NextRequest, 
-  userContext: DoDaoJwtTokenPayload
-): Promise<NewsTopicTemplate[]> {
+async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<NewsTopicTemplate[]> {
   const { userId } = userContext;
 
   const templates = await prisma.newsTopicTemplate.findMany({
@@ -29,12 +26,9 @@ async function getHandler(
  * @param userContext - The authenticated user context
  * @returns A promise that resolves to the created NewsTopicTemplate object
  */
-async function postHandler(
-  request: NextRequest, 
-  userContext: DoDaoJwtTokenPayload
-): Promise<NewsTopicTemplate> {
+async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<NewsTopicTemplate> {
   const { userId } = userContext;
-  const { name, description, filters, isDefault } = await request.json() as {
+  const { name, description, filters, isDefault } = (await request.json()) as {
     name: string;
     description: string;
     filters: string[];

@@ -11,11 +11,7 @@ import { NextRequest } from 'next/server';
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the NewsTopicFolder object
  */
-async function getHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
-): Promise<NewsTopicFolder> {
+async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicFolder> {
   const { id } = params;
 
   const folder = await prisma.newsTopicFolder.findUniqueOrThrow({
@@ -37,14 +33,10 @@ async function getHandler(
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the updated NewsTopicFolder object
  */
-async function putHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
-): Promise<NewsTopicFolder> {
+async function putHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicFolder> {
   const { id } = params;
   const { userId } = userContext;
-  const { name, parentId } = await request.json() as {
+  const { name, parentId } = (await request.json()) as {
     name: string;
     parentId: string | null;
   };
@@ -100,11 +92,7 @@ async function putHandler(
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the deleted NewsTopicFolder object
  */
-async function deleteHandler(
-  request: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
-): Promise<NewsTopicFolder> {
+async function deleteHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicFolder> {
   const { id } = params;
 
   // Check if the folder has children
