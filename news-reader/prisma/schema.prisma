@@ -58,8 +58,10 @@ model NewsTopic {
   createdBy    String?  @map("created_by")
   updatedBy    String?  @map("updated_by")
 
-  folder   NewsTopicFolder? @relation(fields: [folderId], references: [id])
-  articles NewsArticle[]
+  folder              NewsTopicFolder?   @relation(fields: [folderId], references: [id])
+  articles            NewsArticle[]
+  NewsTopicTemplate   NewsTopicTemplate? @relation(fields: [newsTopicTemplateId], references: [id])
+  newsTopicTemplateId String?
 
   @@map("news_topics")
 }
