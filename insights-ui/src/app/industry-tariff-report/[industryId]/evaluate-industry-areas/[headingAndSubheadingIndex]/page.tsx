@@ -22,7 +22,7 @@ export async function generateMetadata({
   const subHeadingIndex = Number.parseInt(subHeadingString, 10);
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`);
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -97,7 +97,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
   const indexInArray = headingIndex * getNumberOfSubHeadings(industryId) + subHeadingIndex;
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, { cache: 'no-cache' });
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`);
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
