@@ -14,6 +14,7 @@ import NewsFeed from '@/components/news-feed';
 import TemplateManager from '@/components/template-manager';
 import FolderManager from '@/components/folder-manager';
 import BookmarksList from '@/components/bookmarks-list';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { defaultTemplates, defaultFolders, defaultTopics } from '@/lib/sample-data';
 import Link from 'next/link';
 
@@ -179,6 +180,7 @@ export default function ClientSideHomePage({ token }: ClientSideHomePageProps) {
                 <Bookmark className="h-3 w-3" />
                 {bookmarks.length} Bookmarked
               </Badge>
+              <ThemeToggle />
             </div>
           </div>
         </div>
