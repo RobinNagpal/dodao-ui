@@ -15,6 +15,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { NewsTopicTemplate } from '@prisma/client';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 
 // Define types for API requests and responses
 interface CreateTemplatePayload {
@@ -40,6 +41,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
   const [newTemplateFilters, setNewTemplateFilters] = useState<string[]>([]);
   const [customFilter, setCustomFilter] = useState<string>('');
   const [availableFilters, setAvailableFilters] = useState<string[]>([]);
+  const [templateToDelete, setTemplateToDelete] = useState<TemplateType | null>(null);
 
   const baseUrl = getBaseUrl();
   const { showNotification } = useNotificationContext();
@@ -125,6 +127,21 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
     setNewTemplateFilters([]);
     setCustomFilter('');
     setShowAddForm(false);
+  };
+
+  const handleDeleteConfirm = async (): Promise<void> => {
+    if (!templateToDelete) return;
+
+    // Use the deleteTemplate function from useDeleteData
+    const success = await deleteTemplate(`${baseUrl}/api/news-topic-templates/${templateToDelete.id}`);
+
+    // If onDelete is provided, call it as well (for backward compatibility)
+    if (success && onDelete) {
+      await onDelete(templateToDelete.id);
+    }
+
+    // Close the modal
+    setTemplateToDelete(null);
   };
 
   return (
@@ -261,14 +278,8 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={async (): Promise<void> => {
-                      // Use the deleteTemplate function from usePostData
-                      const success = await deleteTemplate(`${baseUrl}/api/news-topic-templates/${template.id}`);
-
-                      // If onDelete is provided, call it as well (for backward compatibility)
-                      if (success && onDelete) {
-                        await onDelete(template.id);
-                      }
+                    onClick={(): void => {
+                      setTemplateToDelete(template);
                     }}
                     className="text-destructive hover:text-destructive"
                     disabled={deletingTemplate}
@@ -308,6 +319,18 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
           </Card>
         ))}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        open={templateToDelete !== null}
+        onClose={() => setTemplateToDelete(null)}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Template"
+        confirmationText={`Are you sure you want to delete the template "${templateToDelete?.name}"? This action cannot be undone.`}
+        confirming={deletingTemplate}
+        askForTextInput={false}
+        showSemiTransparentBg={true}
+      />
     </div>
   );
 }
