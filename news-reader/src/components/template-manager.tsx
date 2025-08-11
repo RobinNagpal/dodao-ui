@@ -2,6 +2,7 @@
 
 import { NewsTopicTemplateType as TemplateType } from '@/lib/news-reader-types';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import Link from 'next/link';
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Trash2, LayoutTemplateIcon as Template, Plus, X, Shield } from 'lucide-react';
+import { Trash2, LayoutTemplateIcon as Template, Plus, X, Shield, ArrowLeft } from 'lucide-react';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -29,12 +30,11 @@ interface CreateTemplatePayload {
 interface CreateTemplateResponse extends NewsTopicTemplate {}
 
 interface TemplateManagerProps {
+  fetchTemplates: () => void;
   templates: TemplateType[];
-  onAdd?: (newTemplate: Partial<TemplateType>) => Promise<void>;
-  onDelete?: (id: string) => Promise<void>;
 }
 
-export default function TemplateManager({ templates, onAdd, onDelete }: TemplateManagerProps) {
+export default function TemplateManager({ templates, fetchTemplates }: TemplateManagerProps) {
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
   const [newTemplateName, setNewTemplateName] = useState<string>('');
   const [newTemplateDescription, setNewTemplateDescription] = useState<string>('');
@@ -97,20 +97,11 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
       const success = await createTemplate(`${baseUrl}/api/news-topic-templates`, payload);
 
       if (success) {
-        // If onAdd is provided, call it as well (for backward compatibility)
-        if (onAdd) {
-          await onAdd({
-            name: trimmedName,
-            description: trimmedDescription,
-            filters: newTemplateFilters,
-            availableFilters: availableFilters.length > 0 ? availableFilters : newTemplateFilters,
-          });
-        }
-
         setNewTemplateName('');
         setNewTemplateDescription('');
         setNewTemplateFilters([]);
         setShowAddForm(false);
+        fetchTemplates();
       }
     } else {
       showNotification({
@@ -136,8 +127,8 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
     const success = await deleteTemplate(`${baseUrl}/api/news-topic-templates/${templateToDelete.id}`);
 
     // If onDelete is provided, call it as well (for backward compatibility)
-    if (success && onDelete) {
-      await onDelete(templateToDelete.id);
+    if (success) {
+      fetchTemplates();
     }
 
     // Close the modal
@@ -147,14 +138,32 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Link href="/">
+            <Button variant="ghost" className="flex items-center gap-2" type="button">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Dashboard
+            </Button>
+          </Link>
+        </div>
+
+        <div className="m-4 rounded-md border border-primary bg-primary px-3 py-2 text-primary-foreground">Primary check</div>
+        <Button
+          onClick={(): void => setShowAddForm(!showAddForm)}
+          variant="outline"
+          className="flex items-center gap-2 border-primary"
+          disabled={creatingTemplate || deletingTemplate}
+        >
+          <Plus className="h-4 w-4" />
+          Create Template
+        </Button>
+      </div>
+
+      <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Template Manager</h2>
           <p className="text-muted-foreground">Create and manage templates for quick topic setup</p>
         </div>
-        <Button onClick={(): void => setShowAddForm(!showAddForm)} className="flex items-center gap-2" disabled={creatingTemplate || deletingTemplate}>
-          <Plus className="h-4 w-4" />
-          Create Template
-        </Button>
       </div>
 
       {showAddForm && (
@@ -242,7 +251,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
               </div>
 
               <div className="flex gap-2">
-                <Button type="submit" className="flex-1" disabled={creatingTemplate}>
+                <Button type="submit" variant="default" className="flex-1" disabled={creatingTemplate}>
                   {creatingTemplate ? 'Creating...' : 'Create Template'}
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm} disabled={creatingTemplate}>

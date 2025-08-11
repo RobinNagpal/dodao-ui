@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { ThemeProviderWrapper } from '@/providers/ThemeProviderWrapper';
+import TopNav from '@/components/top-nav';
 import './globals.scss';
 import './plugins.css';
 
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        <title>News Reader</title>
         <style>{`
 html {
   font-family: ${GeistSans.style.fontFamily};
@@ -28,7 +30,10 @@ html {
         `}</style>
       </head>
       <body>
-        <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
+        <ThemeProviderWrapper>
+          <TopNav />
+          {children}
+        </ThemeProviderWrapper>
       </body>
     </html>
   );

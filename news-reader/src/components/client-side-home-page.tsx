@@ -156,39 +156,9 @@ export default function ClientSideHomePage({ token }: ClientSideHomePageProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <BookOpen className="h-6 w-6 text-primary" />
-              <h1 className="text-2xl font-bold">NewsReader</h1>
-            </div>
-            <div className="flex items-center gap-4">
-              <Badge variant="secondary" className="flex items-center gap-1">
-                <FolderOpen className="h-3 w-3" />
-                {folders.length} Folders
-              </Badge>
-              <Badge variant="secondary" className="flex items-center gap-1">
-                <Template className="h-3 w-3" />
-                {templates.length} Templates
-              </Badge>
-              <Badge variant="secondary" className="flex items-center gap-1">
-                <Filter className="h-3 w-3" />
-                {topics.length} Topics Active
-              </Badge>
-              <Badge variant="secondary" className="flex items-center gap-1">
-                <Bookmark className="h-3 w-3" />
-                {bookmarks.length} Bookmarked
-              </Badge>
-              <ThemeToggle />
-            </div>
-          </div>
-        </div>
-      </header>
-
       <div className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 border border-gray-400 pb-4 mb-6">
+          <TabsList className="grid w-full grid-cols-6  pb-4 mb-6">
             <TabsTrigger value="feed" className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
               News Feed
