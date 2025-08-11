@@ -21,6 +21,7 @@ interface CreateTemplatePayload {
   name: string;
   description: string;
   filters: string[];
+  availableFilters: string[];
   isDefault: boolean;
 }
 
@@ -86,6 +87,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
         name: trimmedName,
         description: trimmedDescription,
         filters: newTemplateFilters,
+        availableFilters: availableFilters.length > 0 ? availableFilters : newTemplateFilters,
         isDefault: false,
       };
 
@@ -99,6 +101,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
             name: trimmedName,
             description: trimmedDescription,
             filters: newTemplateFilters,
+            availableFilters: availableFilters.length > 0 ? availableFilters : newTemplateFilters,
           });
         }
 
@@ -277,11 +280,24 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
             </CardHeader>
             <CardContent className="pt-0">
               {template.filters.length > 0 && (
-                <div>
-                  <p className="text-sm font-medium mb-2">Included Filters:</p>
+                <div className="mb-4">
+                  <p className="text-sm font-medium mb-2">Activated Filters:</p>
                   <div className="flex flex-wrap gap-2">
                     {template.filters.map((filter: string) => (
                       <Badge key={filter} variant="secondary" className="text-xs">
+                        {filter}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {template.availableFilters && template.availableFilters.length > 0 && (
+                <div>
+                  <p className="text-sm font-medium mb-2">Available Filters:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {template.availableFilters.map((filter: string) => (
+                      <Badge key={filter} variant="outline" className="text-xs">
                         {filter}
                       </Badge>
                     ))}

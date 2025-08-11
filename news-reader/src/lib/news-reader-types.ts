@@ -5,6 +5,7 @@ export interface NewsTopicTemplateType extends NewsTopicTemplate {
   name: string;
   description: string;
   filters: string[];
+  availableFilters: string[];
   isDefault: boolean;
 }
 
