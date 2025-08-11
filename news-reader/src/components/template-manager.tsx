@@ -147,7 +147,6 @@ export default function TemplateManager({ templates, fetchTemplates }: TemplateM
           </Link>
         </div>
 
-        <div className="m-4 rounded-md border border-primary bg-primary px-3 py-2 text-primary-foreground">Primary check</div>
         <Button
           onClick={(): void => setShowAddForm(!showAddForm)}
           variant="outline"

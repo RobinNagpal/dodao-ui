@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Plus, Settings, BookOpen, Filter, LayoutTemplateIcon as Template, FolderOpen, Bookmark } from 'lucide-react';
 import AddTopicForm from '@/components/add-topic-form';
 import TopicList from '@/components/topic-list';
@@ -17,6 +17,7 @@ import BookmarksList from '@/components/bookmarks-list';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { defaultTemplates, defaultFolders, defaultTopics } from '@/lib/sample-data';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface ClientSideHomePageProps {
   token: string;
@@ -30,7 +31,19 @@ export default function ClientSideHomePage({ token }: ClientSideHomePageProps) {
     }
   }, [token]);
 
-  const [activeTab, setActiveTab] = useState<string>('feed');
+  // Use the pathname to determine which tab content to show
+  const pathname = usePathname();
+
+  // Map pathname to tab value
+  const getActiveTab = () => {
+    if (pathname === '/' || pathname === '/news') return 'feed';
+    if (pathname === '/topics/add') return 'add';
+    if (pathname === '/topics/manage') return 'manage';
+    if (pathname === '/folders') return 'folders';
+    if (pathname === '/news-templates') return 'templates';
+    if (pathname === '/bookmarks') return 'bookmarks';
+    return 'feed'; // Default to feed
+  };
   const [folders, setFolders] = useState<NewsTopicFolderType[]>(defaultFolders);
   const [topics, setTopics] = useState<NewsTopicType[]>(defaultTopics);
   const [templates, setTemplates] = useState<NewsTopicTemplateType[]>(defaultTemplates);
@@ -157,37 +170,7 @@ export default function ClientSideHomePage({ token }: ClientSideHomePageProps) {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6  pb-4 mb-6">
-            <TabsTrigger value="feed" className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4" />
-              News Feed
-            </TabsTrigger>
-            <TabsTrigger value="add" className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Add Topic
-            </TabsTrigger>
-            <TabsTrigger value="manage" className="flex items-center gap-2">
-              <Settings className="h-4 w-4" />
-              Manage Topics
-            </TabsTrigger>
-            <TabsTrigger value="folders" className="flex items-center gap-2">
-              <FolderOpen className="h-4 w-4" />
-              Folders
-            </TabsTrigger>
-            <Link
-              href="/news-templates"
-              className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
-            >
-              <Template className="h-4 w-4" />
-              Templates
-            </Link>
-            <TabsTrigger value="bookmarks" className="flex items-center gap-2">
-              <Bookmark className="h-4 w-4" />
-              Bookmarks
-            </TabsTrigger>
-          </TabsList>
-
+        <Tabs value={getActiveTab()} className="w-full">
           <TabsContent value="feed" className="mt-6">
             <NewsFeed topics={topics} folders={folders} bookmarks={bookmarks} onToggleBookmark={toggleBookmark} getFolderPath={getFolderPath} />
           </TabsContent>
@@ -212,6 +195,10 @@ export default function ClientSideHomePage({ token }: ClientSideHomePageProps) {
 
           <TabsContent value="folders" className="mt-6">
             <FolderManager folders={folders} onAdd={addFolder} onDelete={deleteFolder} topics={topics} />
+          </TabsContent>
+
+          <TabsContent value="templates" className="mt-6">
+            <TemplateManager templates={templates} fetchTemplates={() => {}} />
           </TabsContent>
 
           <TabsContent value="bookmarks" className="mt-6">
