@@ -2,7 +2,7 @@ export default function FAQSection() {
   const faqs = [
     {
       q: 'Who can use this simulation?',
-      a: 'Ideal for undergraduate, graduate (MBA), executive education, and professional development programs across all business disciplines.',
+      a: 'Ideal for undergraduate and graduate (MBA) across all business disciplines.',
     },
     {
       q: 'Are there participant limits?',
@@ -20,13 +20,21 @@ export default function FAQSection() {
       q: 'How does pricing work?',
       a: "We offer flexible pricing based on your institution's needs. Contact us for a customized quote and demo.",
     },
+    {
+      q: 'Can I track student progress?',
+      a: 'Yes. Instructors can monitor each student’s performance, view simulation outputs, and assess how concepts are applied.',
+    },
+    {
+      q: 'Can students work in groups?',
+      a: 'The platform runs exercises individually, but professors can assign students into offline groups who take turns completing simulations together.',
+    },
   ];
 
   return (
     <section id="faq" className="relative py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center mb-16">
-          <h2 className="text-4xl font-bold text-white">Frequently Asked Questions</h2>
+          <h2 className="text-4xl font-bold text-indigo-400">Frequently Asked Questions</h2>
           <p className="mt-4 text-lg text-gray-300">Everything you need to know about our GenAI simulation platform</p>
         </div>
 

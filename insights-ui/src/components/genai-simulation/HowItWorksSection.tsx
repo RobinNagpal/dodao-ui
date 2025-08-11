@@ -6,7 +6,7 @@ export default function HowItWorksSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-gray-800" />
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-4xl font-bold text-white">How It Works</h2>
+          <h2 className="text-4xl font-bold text-indigo-400">How It Works</h2>
           <p className="mt-4 text-lg text-gray-300">A structured, step-by-step approach that makes learning both effective and engaging</p>
         </div>
 

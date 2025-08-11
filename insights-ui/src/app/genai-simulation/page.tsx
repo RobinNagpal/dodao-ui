@@ -11,13 +11,13 @@ import {
 } from '@/components/genai-simulation';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = 'GenAI Business Simulation Platform | KoalaGains';
+  const title = 'GenAI Business Simulations | KoalaGains';
   const description =
     'Revolutionary GenAI simulation platform for business education. Guide students through realistic case studies while teaching AI prompting skills across Marketing, Finance, Operations, HR, and Economics.';
   const canonicalUrl = 'https://koalagains.com/genai-simulation';
 
   const keywords = [
-    'GenAI simulation',
+    'GenAI simulations',
     'business education',
     'AI simulation platform',
     'higher education',
@@ -66,8 +66,8 @@ export default function AISimulationPage() {
   return (
     <main className="bg-gray-900 overflow-hidden">
       <HeroSection />
-      <HowItWorksSection />
       <SubjectsSection />
+      <HowItWorksSection />
       <BenefitsSection />
       <FeaturesSection />
       <DemoSection />

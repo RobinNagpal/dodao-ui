@@ -5,7 +5,7 @@ export default function FeaturesSection() {
     <section className="relative py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center mb-16">
-          <h2 className="text-4xl font-bold text-white">Powerful Features for Modern Education</h2>
+          <h2 className="text-4xl font-bold text-indigo-400">Powerful Features for Modern Education</h2>
           <p className="mt-4 text-lg text-gray-300">Tools that help you design, run, and evaluate immersive AI-powered learning simulations.</p>
         </div>
 

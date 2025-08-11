@@ -3,9 +3,9 @@ import { SparklesIcon, ArrowRightIcon, PlayCircleIcon } from '@heroicons/react/2
 
 export default function HeroSection() {
   const stats = [
-    { label: 'Business Subjects', value: '4+' },
-    { label: 'Ready Case Studies', value: '10+' },
-    { label: 'Student Capacity', value: 'Unlimited' },
+    { label: 'Business Disciplines', value: '4+' },
+    { label: 'Ready-to-Use Cases', value: '10+' },
+    { label: 'Student Capacity', value: 'Scalable' },
     { label: 'Setup Time', value: '< 3 min' },
   ];
 
@@ -23,18 +23,18 @@ export default function HeroSection() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-4 py-2 text-sm font-semibold text-indigo-300 ring-1 ring-inset ring-indigo-500/30 backdrop-blur-sm">
             <SparklesIcon className="h-4 w-4" />
-            The Academic GenAI Simulation Experience
+            The Academic GenAI Simulations Experience
           </div>
 
           {/* Main Heading */}
           <h1 className="mt-8 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-6xl bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
-            Bring Business Simulations
-            <span className="block bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent"> to Life with GenAI</span>
+            GenAI Simulations for every
+            <span className="block bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Business School Stream</span>
           </h1>
 
           <p className="mt-6 text-lg leading-7 text-gray-300 max-w-3xl mx-auto">
-            The first comprehensive GenAI simulation platform built for higher education. Guide students through realistic business case studies while showing
-            them how to solve problems faster and more effectively with AI.
+            GenAI simulations built for higher education. Students learn by doing—mastering concepts in Marketing, Finance, Operations, HR, and Economics, then
+            applying them to realistic, research-driven case studies. Turning theory into practice.
           </p>
 
           {/* CTA Buttons */}

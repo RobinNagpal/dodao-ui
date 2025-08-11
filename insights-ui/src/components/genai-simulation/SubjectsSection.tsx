@@ -36,13 +36,13 @@ export default function SubjectsSection() {
     <section className="relative py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-4xl font-bold text-white">Comprehensive Subject Coverage</h2>
+          <h2 className="text-4xl font-bold text-indigo-400">Comprehensive Subject Coverage</h2>
           <p className="mt-4 text-lg text-gray-300">Ready-to-use case studies across all major business disciplines</p>
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-16 flex flex-wrap justify-center gap-6 max-w-6xl mx-auto">
           {subjects.map((subject, index) => (
-            <div key={subject.title} className="group relative">
+            <div key={subject.title} className="group relative w-full sm:w-80 md:w-96 lg:w-80">
               <div
                 className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-2xl blur-xl"
                 style={{

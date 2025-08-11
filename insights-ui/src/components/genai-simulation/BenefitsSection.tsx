@@ -35,10 +35,9 @@ export default function BenefitsSection() {
   ];
 
   const studentBenefits = [
-    'Master core business concepts through hands-on application',
-    'Develop professional-grade AI prompting skills',
+    'Understand core business concepts through hands-on application',
+    'Develop prompt engineering skills, then apply them in simulations',
     'Learn to structure and format AI responses effectively',
-    'Build comprehensive reports through iterative processes',
     'Gain practical GenAI experience that employers are looking for',
     'Apply theoretical knowledge to realistic business scenarios',
   ];
@@ -54,7 +53,7 @@ export default function BenefitsSection() {
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500">
                 <ClipboardDocumentListIcon className="h-6 w-6 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-white">For Professors</h2>
+              <h2 className="text-3xl font-bold text-indigo-400">For Professors</h2>
             </div>
             <p className="text-lg text-gray-300 mb-8">Streamline your teaching with AI-powered tools that enhance both efficiency and student engagement.</p>
 
@@ -79,9 +78,9 @@ export default function BenefitsSection() {
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500">
                 <AcademicCapIcon className="h-6 w-6 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-white">For Students</h2>
+              <h2 className="text-3xl font-bold text-indigo-400">For Students</h2>
             </div>
-            <p className="text-lg text-gray-300 mb-8">Develop both subject mastery and cutting-edge AI skills that employers value.</p>
+            <p className="text-lg text-gray-300 mb-8">Use AI-powered simulations to speed up your learning and apply concepts to real-world cases.</p>
 
             <div className="space-y-4">
               {studentBenefits.map((benefit, index) => (
