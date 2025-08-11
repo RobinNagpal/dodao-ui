@@ -11,7 +11,6 @@ export default function HeroSection() {
 
   return (
     <section className="relative">
-      {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-gray-900 to-purple-900/20" />
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" />
@@ -20,13 +19,11 @@ export default function HeroSection() {
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-4xl py-16 sm:py-24 text-center">
-          {/* Badge */}
           <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-4 py-2 text-sm font-semibold text-indigo-300 ring-1 ring-inset ring-indigo-500/30 backdrop-blur-sm">
             <SparklesIcon className="h-4 w-4" />
             The Academic GenAI Simulations Experience
           </div>
 
-          {/* Main Heading */}
           <h1 className="mt-8 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-6xl bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
             GenAI Simulations for every
             <span className="block bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Business School Stream</span>
@@ -37,7 +34,6 @@ export default function HeroSection() {
             applying them to realistic, research-driven case studies. Turning theory into practice.
           </p>
 
-          {/* CTA Buttons */}
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/#contact"
@@ -54,7 +50,6 @@ export default function HeroSection() {
             </Link>
           </div>
 
-          {/* Stats */}
           <div className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-4">
             {stats.map((stat) => (
               <div key={stat.label} className="text-center">
@@ -66,7 +61,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Product Preview */}
       <div className="relative mx-auto max-w-6xl px-6 lg:px-8 pb-20">
         <div className="relative rounded-2xl border border-gray-700/50 bg-gradient-to-br from-gray-800/50 to-gray-900/50 p-4 backdrop-blur-sm shadow-2xl">
           <div className="aspect-video w-full rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 ring-1 ring-white/10 flex items-center justify-center relative overflow-hidden">

@@ -47,7 +47,6 @@ export default function BenefitsSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-gray-800 to-gray-900" />
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
-          {/* Professors */}
           <div>
             <div className="flex items-center gap-3 mb-6">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500">
@@ -72,7 +71,6 @@ export default function BenefitsSection() {
             </div>
           </div>
 
-          {/* Students */}
           <div>
             <div className="flex items-center gap-3 mb-6">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500">
