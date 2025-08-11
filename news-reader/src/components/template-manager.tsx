@@ -11,24 +11,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Trash2, LayoutTemplateIcon as Template, Plus, X, Shield } from 'lucide-react';
 
-const availableFilters: string[] = [
-  'Financial Changes',
-  'Core Management Changes',
-  'Product Launches',
-  'Regulatory Updates',
-  'Partnership Announcements',
-  'Market Expansion',
-  'Technology Breakthroughs',
-  'Legal Issues',
-  'Acquisition News',
-  'IPO Updates',
-  'Merger & Acquisitions',
-  'Stock Performance',
-  'Earnings Reports',
-  'Product Recalls',
-  'Environmental Impact',
-];
-
 interface TemplateManagerProps {
   templates: TemplateType[];
   onAdd: (newTemplate: Partial<TemplateType>) => Promise<void>;
@@ -41,6 +23,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
   const [newTemplateDescription, setNewTemplateDescription] = useState<string>('');
   const [newTemplateFilters, setNewTemplateFilters] = useState<string[]>([]);
   const [customFilter, setCustomFilter] = useState<string>('');
+  const [availableFilters, setAvailableFilters] = useState<string[]>([]);
 
   const handleFilterChange = (filter: string, checked: boolean | string): void => {
     if (checked) {
@@ -54,6 +37,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
     const trimmedFilter: string = customFilter.trim();
     if (trimmedFilter && !newTemplateFilters.includes(trimmedFilter)) {
       setNewTemplateFilters([...newTemplateFilters, trimmedFilter]);
+      setAvailableFilters([...availableFilters, trimmedFilter]);
       setCustomFilter('');
     }
   };
