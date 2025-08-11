@@ -1,6 +1,7 @@
 'use client';
 
 import { NewsTopicTemplateType as TemplateType } from '@/lib/news-reader-types';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,11 +11,25 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Trash2, LayoutTemplateIcon as Template, Plus, X, Shield } from 'lucide-react';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { NewsTopicTemplate } from '@prisma/client';
+
+// Define types for API requests and responses
+interface CreateTemplatePayload {
+  name: string;
+  description: string;
+  filters: string[];
+  isDefault: boolean;
+}
+
+interface CreateTemplateResponse extends NewsTopicTemplate {}
 
 interface TemplateManagerProps {
   templates: TemplateType[];
-  onAdd: (newTemplate: Partial<TemplateType>) => Promise<void>;
-  onDelete: (id: string) => Promise<void>;
+  onAdd?: (newTemplate: Partial<TemplateType>) => Promise<void>;
+  onDelete?: (id: string) => Promise<void>;
 }
 
 export default function TemplateManager({ templates, onAdd, onDelete }: TemplateManagerProps) {
@@ -24,6 +39,21 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
   const [newTemplateFilters, setNewTemplateFilters] = useState<string[]>([]);
   const [customFilter, setCustomFilter] = useState<string>('');
   const [availableFilters, setAvailableFilters] = useState<string[]>([]);
+
+  const baseUrl = getBaseUrl();
+  const { showNotification } = useNotificationContext();
+
+  // Use the usePostData hook for creating templates
+  const { postData: createTemplate, loading: creatingTemplate } = usePostData<CreateTemplateResponse, CreateTemplatePayload>({
+    successMessage: 'Template created successfully',
+    errorMessage: 'Failed to create template',
+  });
+
+  // Use the usePostData hook for deleting templates
+  const { deleteData: deleteTemplate, loading: deletingTemplate } = useDeleteData<NewsTopicTemplate, void>({
+    successMessage: 'Template deleted successfully',
+    errorMessage: 'Failed to delete template',
+  });
 
   const handleFilterChange = (filter: string, checked: boolean | string): void => {
     if (checked) {
@@ -46,21 +76,43 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
     setNewTemplateFilters(newTemplateFilters.filter((f: string): boolean => f !== filter));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const trimmedName: string = newTemplateName.trim();
     const trimmedDescription: string = newTemplateDescription.trim();
 
     if (trimmedName && trimmedDescription) {
-      onAdd({
+      const payload: CreateTemplatePayload = {
         name: trimmedName,
         description: trimmedDescription,
         filters: newTemplateFilters,
+        isDefault: false,
+      };
+
+      // Use the createTemplate function from usePostData
+      const success = await createTemplate(`${baseUrl}/api/news-topic-templates`, payload);
+
+      if (success) {
+        // If onAdd is provided, call it as well (for backward compatibility)
+        if (onAdd) {
+          await onAdd({
+            name: trimmedName,
+            description: trimmedDescription,
+            filters: newTemplateFilters,
+          });
+        }
+
+        setNewTemplateName('');
+        setNewTemplateDescription('');
+        setNewTemplateFilters([]);
+        setShowAddForm(false);
+      }
+    } else {
+      showNotification({
+        type: 'error',
+        heading: 'Validation Error',
+        message: 'Name and description are required',
       });
-      setNewTemplateName('');
-      setNewTemplateDescription('');
-      setNewTemplateFilters([]);
-      setShowAddForm(false);
     }
   };
 
@@ -79,7 +131,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
           <h2 className="text-2xl font-bold">Template Manager</h2>
           <p className="text-muted-foreground">Create and manage templates for quick topic setup</p>
         </div>
-        <Button onClick={(): void => setShowAddForm(!showAddForm)} className="flex items-center gap-2">
+        <Button onClick={(): void => setShowAddForm(!showAddForm)} className="flex items-center gap-2" disabled={creatingTemplate || deletingTemplate}>
           <Plus className="h-4 w-4" />
           Create Template
         </Button>
@@ -170,10 +222,10 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
               </div>
 
               <div className="flex gap-2">
-                <Button type="submit" className="flex-1">
-                  Create Template
+                <Button type="submit" className="flex-1" disabled={creatingTemplate}>
+                  {creatingTemplate ? 'Creating...' : 'Create Template'}
                 </Button>
-                <Button type="button" variant="outline" onClick={resetForm}>
+                <Button type="button" variant="outline" onClick={resetForm} disabled={creatingTemplate}>
                   Cancel
                 </Button>
               </div>
@@ -203,7 +255,21 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
                   </div>
                 </div>
                 {!template.isDefault && (
-                  <Button variant="ghost" size="sm" onClick={(): Promise<void> => onDelete(template.id)} className="text-destructive hover:text-destructive">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={async (): Promise<void> => {
+                      // Use the deleteTemplate function from usePostData
+                      const success = await deleteTemplate(`${baseUrl}/api/news-topic-templates/${template.id}`);
+
+                      // If onDelete is provided, call it as well (for backward compatibility)
+                      if (success && onDelete) {
+                        await onDelete(template.id);
+                      }
+                    }}
+                    className="text-destructive hover:text-destructive"
+                    disabled={deletingTemplate}
+                  >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 )}
