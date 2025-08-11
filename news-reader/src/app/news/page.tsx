@@ -14,7 +14,7 @@ async function getToken() {
   return data.token;
 }
 
-export default async function HomePage() {
+export default async function NewsPage() {
   const token = await getToken();
 
   return <ClientSideHomePage token={token} />;

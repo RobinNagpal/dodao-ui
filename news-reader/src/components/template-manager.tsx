@@ -1,6 +1,8 @@
 'use client';
 
 import { NewsTopicTemplateType as TemplateType } from '@/lib/news-reader-types';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import Link from 'next/link';
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,38 +11,52 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Trash2, LayoutTemplateIcon as Template, Plus, X, Shield } from 'lucide-react';
+import { Trash2, LayoutTemplateIcon as Template, Plus, X, Shield, ArrowLeft } from 'lucide-react';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { NewsTopicTemplate } from '@prisma/client';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 
-const availableFilters: string[] = [
-  'Financial Changes',
-  'Core Management Changes',
-  'Product Launches',
-  'Regulatory Updates',
-  'Partnership Announcements',
-  'Market Expansion',
-  'Technology Breakthroughs',
-  'Legal Issues',
-  'Acquisition News',
-  'IPO Updates',
-  'Merger & Acquisitions',
-  'Stock Performance',
-  'Earnings Reports',
-  'Product Recalls',
-  'Environmental Impact',
-];
-
-interface TemplateManagerProps {
-  templates: TemplateType[];
-  onAdd: (newTemplate: Partial<TemplateType>) => Promise<void>;
-  onDelete: (id: string) => Promise<void>;
+// Define types for API requests and responses
+interface CreateTemplatePayload {
+  name: string;
+  description: string;
+  filters: string[];
+  availableFilters: string[];
+  isDefault: boolean;
 }
 
-export default function TemplateManager({ templates, onAdd, onDelete }: TemplateManagerProps) {
+interface CreateTemplateResponse extends NewsTopicTemplate {}
+
+interface TemplateManagerProps {
+  fetchTemplates: () => void;
+  templates: TemplateType[];
+}
+
+export default function TemplateManager({ templates, fetchTemplates }: TemplateManagerProps) {
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
   const [newTemplateName, setNewTemplateName] = useState<string>('');
   const [newTemplateDescription, setNewTemplateDescription] = useState<string>('');
   const [newTemplateFilters, setNewTemplateFilters] = useState<string[]>([]);
   const [customFilter, setCustomFilter] = useState<string>('');
+  const [availableFilters, setAvailableFilters] = useState<string[]>([]);
+  const [templateToDelete, setTemplateToDelete] = useState<TemplateType | null>(null);
+
+  const baseUrl = getBaseUrl();
+  const { showNotification } = useNotificationContext();
+
+  // Use the usePostData hook for creating templates
+  const { postData: createTemplate, loading: creatingTemplate } = usePostData<CreateTemplateResponse, CreateTemplatePayload>({
+    successMessage: 'Template created successfully',
+    errorMessage: 'Failed to create template',
+  });
+
+  // Use the usePostData hook for deleting templates
+  const { deleteData: deleteTemplate, loading: deletingTemplate } = useDeleteData<NewsTopicTemplate, void>({
+    successMessage: 'Template deleted successfully',
+    errorMessage: 'Failed to delete template',
+  });
 
   const handleFilterChange = (filter: string, checked: boolean | string): void => {
     if (checked) {
@@ -54,6 +70,7 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
     const trimmedFilter: string = customFilter.trim();
     if (trimmedFilter && !newTemplateFilters.includes(trimmedFilter)) {
       setNewTemplateFilters([...newTemplateFilters, trimmedFilter]);
+      setAvailableFilters([...availableFilters, trimmedFilter]);
       setCustomFilter('');
     }
   };
@@ -62,21 +79,36 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
     setNewTemplateFilters(newTemplateFilters.filter((f: string): boolean => f !== filter));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const trimmedName: string = newTemplateName.trim();
     const trimmedDescription: string = newTemplateDescription.trim();
 
     if (trimmedName && trimmedDescription) {
-      onAdd({
+      const payload: CreateTemplatePayload = {
         name: trimmedName,
         description: trimmedDescription,
         filters: newTemplateFilters,
+        availableFilters: availableFilters.length > 0 ? availableFilters : newTemplateFilters,
+        isDefault: false,
+      };
+
+      // Use the createTemplate function from usePostData
+      const success = await createTemplate(`${baseUrl}/api/news-topic-templates`, payload);
+
+      if (success) {
+        setNewTemplateName('');
+        setNewTemplateDescription('');
+        setNewTemplateFilters([]);
+        setShowAddForm(false);
+        fetchTemplates();
+      }
+    } else {
+      showNotification({
+        type: 'error',
+        heading: 'Validation Error',
+        message: 'Name and description are required',
       });
-      setNewTemplateName('');
-      setNewTemplateDescription('');
-      setNewTemplateFilters([]);
-      setShowAddForm(false);
     }
   };
 
@@ -88,17 +120,49 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
     setShowAddForm(false);
   };
 
+  const handleDeleteConfirm = async (): Promise<void> => {
+    if (!templateToDelete) return;
+
+    // Use the deleteTemplate function from useDeleteData
+    const success = await deleteTemplate(`${baseUrl}/api/news-topic-templates/${templateToDelete.id}`);
+
+    // If onDelete is provided, call it as well (for backward compatibility)
+    if (success) {
+      fetchTemplates();
+    }
+
+    // Close the modal
+    setTemplateToDelete(null);
+  };
+
   return (
     <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Link href="/">
+            <Button variant="ghost" className="flex items-center gap-2" type="button">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Dashboard
+            </Button>
+          </Link>
+        </div>
+
+        <Button
+          onClick={(): void => setShowAddForm(!showAddForm)}
+          variant="outline"
+          className="flex items-center gap-2 border-primary"
+          disabled={creatingTemplate || deletingTemplate}
+        >
+          <Plus className="h-4 w-4" />
+          Create Template
+        </Button>
+      </div>
+
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Template Manager</h2>
           <p className="text-muted-foreground">Create and manage templates for quick topic setup</p>
         </div>
-        <Button onClick={(): void => setShowAddForm(!showAddForm)} className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
-          Create Template
-        </Button>
       </div>
 
       {showAddForm && (
@@ -186,10 +250,10 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
               </div>
 
               <div className="flex gap-2">
-                <Button type="submit" className="flex-1">
-                  Create Template
+                <Button type="submit" variant="default" className="flex-1" disabled={creatingTemplate}>
+                  {creatingTemplate ? 'Creating...' : 'Create Template'}
                 </Button>
-                <Button type="button" variant="outline" onClick={resetForm}>
+                <Button type="button" variant="outline" onClick={resetForm} disabled={creatingTemplate}>
                   Cancel
                 </Button>
               </div>
@@ -219,7 +283,15 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
                   </div>
                 </div>
                 {!template.isDefault && (
-                  <Button variant="ghost" size="sm" onClick={(): Promise<void> => onDelete(template.id)} className="text-destructive hover:text-destructive">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={(): void => {
+                      setTemplateToDelete(template);
+                    }}
+                    className="text-destructive hover:text-destructive"
+                    disabled={deletingTemplate}
+                  >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 )}
@@ -227,11 +299,24 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
             </CardHeader>
             <CardContent className="pt-0">
               {template.filters.length > 0 && (
-                <div>
-                  <p className="text-sm font-medium mb-2">Included Filters:</p>
+                <div className="mb-4">
+                  <p className="text-sm font-medium mb-2">Activated Filters:</p>
                   <div className="flex flex-wrap gap-2">
                     {template.filters.map((filter: string) => (
                       <Badge key={filter} variant="secondary" className="text-xs">
+                        {filter}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {template.availableFilters && template.availableFilters.length > 0 && (
+                <div>
+                  <p className="text-sm font-medium mb-2">Available Filters:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {template.availableFilters.map((filter: string) => (
+                      <Badge key={filter} variant="outline" className="text-xs">
                         {filter}
                       </Badge>
                     ))}
@@ -242,6 +327,18 @@ export default function TemplateManager({ templates, onAdd, onDelete }: Template
           </Card>
         ))}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        open={templateToDelete !== null}
+        onClose={() => setTemplateToDelete(null)}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Template"
+        confirmationText={`Are you sure you want to delete the template "${templateToDelete?.name}"? This action cannot be undone.`}
+        confirming={deletingTemplate}
+        askForTextInput={false}
+        showSemiTransparentBg={true}
+      />
     </div>
   );
 }

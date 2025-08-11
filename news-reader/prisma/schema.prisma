@@ -15,15 +15,16 @@ datasource db {
 // --------------------------
 
 model NewsTopicTemplate {
-  id          String   @id @default(uuid())
-  name        String   @map("name")
-  description String   @map("description")
-  filters     String[] @map("filters")
-  isDefault   Boolean  @map("is_default")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  createdBy   String?  @map("created_by")
-  updatedBy   String?  @map("updated_by")
+  id               String   @id @default(uuid())
+  name             String   @map("name")
+  description      String   @map("description")
+  filters          String[] @map("filters")
+  availableFilters String[] @map("available_filters")
+  isDefault        Boolean  @map("is_default")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  createdBy        String?  @map("created_by")
+  updatedBy        String?  @map("updated_by")
 
   topics NewsTopic[]
 

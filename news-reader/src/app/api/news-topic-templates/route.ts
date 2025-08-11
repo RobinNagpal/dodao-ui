@@ -28,16 +28,17 @@ async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
  */
 async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<NewsTopicTemplate> {
   const { userId } = userContext;
-  const { name, description, filters, isDefault } = (await request.json()) as {
+  const { name, description, filters, availableFilters, isDefault } = (await request.json()) as {
     name: string;
     description: string;
     filters: string[];
+    availableFilters: string[];
     isDefault: boolean;
   };
 
   // Validate required fields
-  if (!name || !description || !filters || filters.length === 0) {
-    throw new Error('Missing required fields: name, description, and filters are required');
+  if (!name || !description || !filters || filters.length === 0 || !availableFilters || availableFilters.length === 0) {
+    throw new Error('Missing required fields: name, description, filters, and availableFilters are required');
   }
 
   const template = await prisma.newsTopicTemplate.create({
@@ -45,6 +46,7 @@ async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPaylo
       name,
       description,
       filters,
+      availableFilters,
       isDefault,
       createdBy: userId,
       updatedBy: userId,
