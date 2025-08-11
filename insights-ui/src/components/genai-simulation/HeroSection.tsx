@@ -1,0 +1,80 @@
+import Link from 'next/link';
+import { SparklesIcon, ArrowRightIcon, PlayCircleIcon } from '@heroicons/react/24/outline';
+
+export default function HeroSection() {
+  const stats = [
+    { label: 'Business Disciplines', value: '4+' },
+    { label: 'Ready-to-Use Cases', value: '10+' },
+    { label: 'Student Capacity', value: 'Scalable' },
+    { label: 'Setup Time', value: '< 3 min' },
+  ];
+
+  return (
+    <section className="relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-gray-900 to-purple-900/20" />
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl py-16 sm:py-24 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-4 py-2 text-sm font-semibold text-indigo-300 ring-1 ring-inset ring-indigo-500/30 backdrop-blur-sm">
+            <SparklesIcon className="h-4 w-4" />
+            The Academic GenAI Simulations Experience
+          </div>
+
+          <h1 className="mt-8 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-6xl bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
+            GenAI Simulations for every
+            <span className="block bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Business School Stream</span>
+          </h1>
+
+          <p className="mt-6 text-lg leading-7 text-gray-300 max-w-3xl mx-auto">
+            GenAI simulations built for higher education. Students learn by doing—mastering concepts in Marketing, Finance, Operations, HR, and Economics, then
+            applying them to realistic, research-driven case studies. Turning theory into practice.
+          </p>
+
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link
+              href="/#contact"
+              className="group inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 transform hover:scale-105"
+            >
+              Book a Demo
+              <ArrowRightIcon className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
+              href="#how-it-works"
+              className="inline-flex items-center justify-center rounded-lg border border-gray-600 bg-gray-800/50 px-6 py-3 text-base font-semibold text-gray-300 backdrop-blur-sm hover:bg-gray-700/50 hover:border-gray-500 transition-all duration-300"
+            >
+              See How It Works
+            </Link>
+          </div>
+
+          <div className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-4">
+            {stats.map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="text-3xl font-bold text-white">{stat.value}</div>
+                <div className="text-sm text-gray-400">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="relative mx-auto max-w-6xl px-6 lg:px-8 pb-20">
+        <div className="relative rounded-2xl border border-gray-700/50 bg-gradient-to-br from-gray-800/50 to-gray-900/50 p-4 backdrop-blur-sm shadow-2xl">
+          <div className="aspect-video w-full rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 ring-1 ring-white/10 flex items-center justify-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10" />
+            <div className="relative text-center z-10">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 mb-4">
+                <PlayCircleIcon className="h-10 w-10 text-white" />
+              </div>
+              <p className="text-lg font-semibold text-white">Interactive Product Demo</p>
+              <p className="text-sm text-gray-400 mt-1">Click to see the simulation in action</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

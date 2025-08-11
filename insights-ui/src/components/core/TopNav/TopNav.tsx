@@ -17,6 +17,7 @@ const reportsDropdown = [
 
 const navigation = [
   { name: 'Blogs', href: '/blogs', newTab: true },
+  { name: 'GenAI Simulations', href: '/genai-simulation', newTab: true },
   { name: 'Platform Docs', href: 'https://docs.koalagains.com', newTab: true },
 ];
 
