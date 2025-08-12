@@ -2,13 +2,14 @@ import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { ThemeProviderWrapper } from '@/providers/ThemeProviderWrapper';
+import { NewsDataProviderWrapper } from '@/providers/NewsDataProviderWrapper';
 import TopNav from '@/components/top-nav';
 import './globals.scss';
 import './plugins.css';
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'News Reader',
+  description: 'News Reader',
   generator: 'v0.dev',
 };
 
@@ -31,8 +32,10 @@ html {
       </head>
       <body>
         <ThemeProviderWrapper>
-          <TopNav />
-          {children}
+          <NewsDataProviderWrapper>
+            <TopNav />
+            {children}
+          </NewsDataProviderWrapper>
         </ThemeProviderWrapper>
       </body>
     </html>

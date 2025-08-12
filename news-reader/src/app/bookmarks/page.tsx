@@ -1,21 +1,16 @@
-import ClientSideHomePage from '@/components/client-side-home-page';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+'use client';
 
-async function getToken() {
-  const response = await fetch(`${getBaseUrl()}/api/temp-token`, {
-    cache: 'no-store',
-  });
+import BookmarksList from '@/components/bookmarks-list';
+import { useNewsData } from '@/providers/NewsDataProvider';
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch token');
-  }
+export default function BookmarksPage() {
+  const { bookmarks, toggleBookmark } = useNewsData();
 
-  const data = await response.json();
-  return data.token;
-}
-
-export default async function BookmarksPage() {
-  const token = await getToken();
-
-  return <ClientSideHomePage token={token} />;
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-6">
+        <BookmarksList bookmarks={bookmarks} onToggleBookmark={toggleBookmark} />
+      </div>
+    </div>
+  );
 }

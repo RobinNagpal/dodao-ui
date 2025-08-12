@@ -1,20 +1,21 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
-import { BookOpen, FolderOpen, Filter, LayoutTemplateIcon as Template, Bookmark, Plus, Settings } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useNewsData } from '@/providers/NewsDataProvider';
+import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/enums';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Bookmark, BookOpen, Filter, FolderOpen, LayoutTemplateIcon as Template, Plus, Settings } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-interface TopNavProps {
-  foldersCount?: number;
-  templatesCount?: number;
-  topicsCount?: number;
-  bookmarksCount?: number;
-}
-
-export default function TopNav({ foldersCount = 0, templatesCount = 0, topicsCount = 0, bookmarksCount = 0 }: TopNavProps) {
+export default function TopNav() {
+  const { folders, templates, topics, bookmarks } = useNewsData();
+  const foldersCount = folders.length;
+  const templatesCount = templates.length;
+  const topicsCount = topics.length;
+  const bookmarksCount = bookmarks.length;
   const pathname = usePathname();
   const router = useRouter();
 
@@ -24,10 +25,31 @@ export default function TopNav({ foldersCount = 0, templatesCount = 0, topicsCou
     if (pathname === '/topics/add') return 'add';
     if (pathname === '/topics/manage') return 'manage';
     if (pathname === '/folders') return 'folders';
-    if (pathname === '/news-templates') return 'templates';
+    if (pathname === '/news-templates' || pathname === '/news-topic-templates') return 'templates';
     if (pathname === '/bookmarks') return 'bookmarks';
     return 'news'; // Default to news
   };
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const response = await fetch(`${getBaseUrl()}/api/temp-token`, {
+          cache: 'no-store',
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch token');
+        }
+
+        const data = await response.json();
+        localStorage.setItem(DODAO_ACCESS_TOKEN_KEY, data.token);
+      } catch (error) {
+        console.error('Error fetching token:', error);
+      }
+    };
+
+    fetchToken();
+  }, []);
 
   return (
     <header>
@@ -100,7 +122,7 @@ export default function TopNav({ foldersCount = 0, templatesCount = 0, topicsCou
               </TabsTrigger>
               <TabsTrigger
                 value="templates"
-                onClick={() => router.push('/news-templates')}
+                onClick={() => router.push('/news-topic-templates')}
                 className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               >
                 <Template className="h-4 w-4" />

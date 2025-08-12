@@ -1,14 +1,10 @@
 'use client';
 
-import { NewsTopicTemplateType } from '@/lib/news-reader-types';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
 import TemplateManager from '@/components/template-manager';
-import Link from 'next/link';
+import { NewsTopicTemplateType } from '@/lib/news-reader-types';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 
 export default function TemplatesPage(): React.ReactNode {
   const baseUrl: string = getBaseUrl();

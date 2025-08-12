@@ -2,48 +2,47 @@
 
 import { NewsTopicFolderType, NewsTopicTemplateType, NewsTopicType } from '@/lib/news-reader-types';
 import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/enums';
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent } from '@/components/ui/tabs';
-import { Plus, Settings, BookOpen, Filter, LayoutTemplateIcon as Template, FolderOpen, Bookmark } from 'lucide-react';
-import AddTopicForm from '@/components/add-topic-form';
-import TopicList from '@/components/topic-list';
-import NewsFeed from '@/components/news-feed';
-import TemplateManager from '@/components/template-manager';
-import FolderManager from '@/components/folder-manager';
-import BookmarksList from '@/components/bookmarks-list';
-import { ThemeToggle } from '@/components/theme-toggle';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { defaultTemplates, defaultFolders, defaultTopics } from '@/lib/sample-data';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
-interface ClientSideHomePageProps {
-  token: string;
+interface NewsDataContextType {
+  folders: NewsTopicFolderType[];
+  topics: NewsTopicType[];
+  templates: NewsTopicTemplateType[];
+  bookmarks: string[];
+  addTopic: (newTopic: Partial<NewsTopicType>) => void;
+  deleteTopic: (id: string) => void;
+  addTemplate: (newTemplate: Partial<NewsTopicTemplateType>) => void;
+  deleteTemplate: (id: string) => void;
+  addFolder: (newFolder: Partial<NewsTopicFolderType>) => void;
+  deleteFolder: (id: string) => void;
+  toggleBookmark: (articleId: string) => void;
+  getFolderPath: (folderId: string | null, folders: NewsTopicFolderType[], path?: string[]) => string[];
 }
 
-export default function ClientSideHomePage({ token }: ClientSideHomePageProps) {
-  // Save token to localStorage as the first thing
+const NewsDataContext = createContext<NewsDataContextType | undefined>(undefined);
+
+export function useNewsData() {
+  const context = useContext(NewsDataContext);
+  if (context === undefined) {
+    throw new Error('useNewsData must be used within a NewsDataProvider');
+  }
+  return context;
+}
+
+interface NewsDataProviderProps {
+  children: ReactNode;
+  token?: string;
+}
+
+export function NewsDataProvider({ children, token }: NewsDataProviderProps) {
+  // Save token to localStorage if provided
   useEffect(() => {
     if (token) {
       localStorage.setItem(DODAO_ACCESS_TOKEN_KEY, token);
     }
   }, [token]);
 
-  // Use the pathname to determine which tab content to show
-  const pathname = usePathname();
-
-  // Map pathname to tab value
-  const getActiveTab = () => {
-    if (pathname === '/' || pathname === '/news') return 'feed';
-    if (pathname === '/topics/add') return 'add';
-    if (pathname === '/topics/manage') return 'manage';
-    if (pathname === '/folders') return 'folders';
-    if (pathname === '/news-templates') return 'templates';
-    if (pathname === '/bookmarks') return 'bookmarks';
-    return 'feed'; // Default to feed
-  };
   const [folders, setFolders] = useState<NewsTopicFolderType[]>(defaultFolders);
   const [topics, setTopics] = useState<NewsTopicType[]>(defaultTopics);
   const [templates, setTemplates] = useState<NewsTopicTemplateType[]>(defaultTemplates);
@@ -167,45 +166,20 @@ export default function ClientSideHomePage({ token }: ClientSideHomePageProps) {
     return path;
   };
 
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-6">
-        <Tabs value={getActiveTab()} className="w-full">
-          <TabsContent value="feed" className="mt-6">
-            <NewsFeed topics={topics} folders={folders} bookmarks={bookmarks} onToggleBookmark={toggleBookmark} getFolderPath={getFolderPath} />
-          </TabsContent>
+  const value = {
+    folders,
+    topics,
+    templates,
+    bookmarks,
+    addTopic,
+    deleteTopic,
+    addTemplate,
+    deleteTemplate,
+    addFolder,
+    deleteFolder,
+    toggleBookmark,
+    getFolderPath,
+  };
 
-          <TabsContent value="add" className="mt-6">
-            <div className="max-w-4xl mx-auto">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Add New News Topic</CardTitle>
-                  <CardDescription>Configure a new topic to track news articles. You can use a template or create your own configuration.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <AddTopicForm onAdd={addTopic} templates={templates} onAddTemplate={addTemplate} folders={folders} getFolderPath={getFolderPath} />
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="manage" className="mt-6">
-            <TopicList topics={topics} onDelete={deleteTopic} folders={folders} getFolderPath={getFolderPath} />
-          </TabsContent>
-
-          <TabsContent value="folders" className="mt-6">
-            <FolderManager folders={folders} onAdd={addFolder} onDelete={deleteFolder} topics={topics} />
-          </TabsContent>
-
-          <TabsContent value="templates" className="mt-6">
-            <TemplateManager templates={templates} fetchTemplates={() => {}} />
-          </TabsContent>
-
-          <TabsContent value="bookmarks" className="mt-6">
-            <BookmarksList bookmarks={bookmarks} onToggleBookmark={toggleBookmark} />
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
-  );
+  return <NewsDataContext.Provider value={value}>{children}</NewsDataContext.Provider>;
 }

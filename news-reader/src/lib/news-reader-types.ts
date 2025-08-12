@@ -1,5 +1,7 @@
 import { ArticleSource, NewsArticle, NewsTopic, NewsTopicFolder, NewsTopicTemplate } from '@prisma/client';
 
+export const ROOT_FOLDER = 'ROOT';
+
 export interface NewsTopicTemplateType extends NewsTopicTemplate {
   id: string;
   name: string;

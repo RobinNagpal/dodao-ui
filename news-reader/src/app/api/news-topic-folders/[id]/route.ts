@@ -11,8 +11,8 @@ import { NextRequest } from 'next/server';
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the NewsTopicFolder object
  */
-async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicFolder> {
-  const { id } = params;
+async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ id: string }> }): Promise<NewsTopicFolder> {
+  const { id } = await params;
 
   const folder = await prisma.newsTopicFolder.findUniqueOrThrow({
     where: { id },
@@ -33,8 +33,8 @@ async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the updated NewsTopicFolder object
  */
-async function putHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicFolder> {
-  const { id } = params;
+async function putHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ id: string }> }): Promise<NewsTopicFolder> {
+  const { id } = await params;
   const { userId } = userContext;
   const { name, parentId } = (await request.json()) as {
     name: string;
@@ -92,8 +92,12 @@ async function putHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the deleted NewsTopicFolder object
  */
-async function deleteHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicFolder> {
-  const { id } = params;
+async function deleteHandler(
+  request: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NewsTopicFolder> {
+  const { id } = await params;
 
   // Check if the folder has children
   const childrenCount = await prisma.newsTopicFolder.count({

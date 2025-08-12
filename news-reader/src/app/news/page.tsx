@@ -1,21 +1,16 @@
-import ClientSideHomePage from '@/components/client-side-home-page';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+'use client';
 
-async function getToken() {
-  const response = await fetch(`${getBaseUrl()}/api/temp-token`, {
-    cache: 'no-store',
-  });
+import NewsFeed from '@/components/news-feed';
+import { useNewsData } from '@/providers/NewsDataProvider';
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch token');
-  }
+export default function NewsPage() {
+  const { topics, folders, bookmarks, toggleBookmark, getFolderPath } = useNewsData();
 
-  const data = await response.json();
-  return data.token;
-}
-
-export default async function NewsPage() {
-  const token = await getToken();
-
-  return <ClientSideHomePage token={token} />;
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-6">
+        <NewsFeed topics={topics} folders={folders} bookmarks={bookmarks} onToggleBookmark={toggleBookmark} getFolderPath={getFolderPath} />
+      </div>
+    </div>
+  );
 }

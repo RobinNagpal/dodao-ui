@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { ROOT_FOLDER } from '@/lib/news-reader-types';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NewsTopicFolder } from '@prisma/client';
@@ -70,10 +71,15 @@ async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
  */
 async function postHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<NewsTopicFolder> {
   const { userId } = userContext;
-  const { name, parentId } = (await request.json()) as {
+  let { name, parentId } = (await request.json()) as {
     name: string;
     parentId: string | null;
   };
+
+  // If parentId is ROOT_FOLDER, set it to null
+  if (parentId === ROOT_FOLDER) {
+    parentId = null;
+  }
 
   // Validate required fields
   if (!name) {

@@ -11,8 +11,12 @@ import { NextRequest } from 'next/server';
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the NewsTopicTemplate object
  */
-async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicTemplate> {
-  const { id } = params;
+async function getHandler(
+  request: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NewsTopicTemplate> {
+  const { id } = await params;
 
   const template = await prisma.newsTopicTemplate.findUniqueOrThrow({
     where: { id },
@@ -31,8 +35,12 @@ async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the updated NewsTopicTemplate object
  */
-async function putHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicTemplate> {
-  const { id } = params;
+async function putHandler(
+  request: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NewsTopicTemplate> {
+  const { id } = await params;
   const { userId } = userContext;
   const { name, description, filters, availableFilters, isDefault } = (await request.json()) as {
     name: string;
@@ -72,8 +80,12 @@ async function putHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the deleted NewsTopicTemplate object
  */
-async function deleteHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicTemplate> {
-  const { id } = params;
+async function deleteHandler(
+  request: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NewsTopicTemplate> {
+  const { id } = await params;
 
   // Check if the template is used by any topics
   const topicsUsingTemplate = await prisma.newsTopic.count({

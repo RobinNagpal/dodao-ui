@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Trash2, LayoutTemplateIcon as Template, Plus, X, Shield, ArrowLeft } from 'lucide-react';
+import { Trash2, LayoutTemplateIcon as Template, Plus, X, Shield, ArrowLeft, Folder } from 'lucide-react';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -262,71 +262,81 @@ export default function TemplateManager({ templates, fetchTemplates }: TemplateM
         </Card>
       )}
 
-      <div className="grid gap-4">
-        {templates.map((template: TemplateType) => (
-          <Card key={template.id}>
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="flex items-start gap-3">
-                  <Template className="h-5 w-5 text-primary mt-0.5" />
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <CardTitle className="text-lg">{template.name}</CardTitle>
-                      {template.isDefault && (
-                        <Badge variant="outline" className="flex items-center gap-1">
-                          <Shield className="h-3 w-3" />
-                          Default
-                        </Badge>
-                      )}
+      {templates.length === 0 ? (
+        <Card>
+          <CardContent className="text-center py-12">
+            <Folder className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-semibold mb-2">No News Topic Templates Created</h3>
+            <p className="text-muted-foreground">Create your first New Topic Template and then use it to create news topics</p>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid gap-4">
+          {templates.map((template: TemplateType) => (
+            <Card key={template.id}>
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-3">
+                    <Template className="h-5 w-5 text-primary mt-0.5" />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <CardTitle className="text-lg">{template.name}</CardTitle>
+                        {template.isDefault && (
+                          <Badge variant="outline" className="flex items-center gap-1">
+                            <Shield className="h-3 w-3" />
+                            Default
+                          </Badge>
+                        )}
+                      </div>
+                      <CardDescription className="mt-1">{template.description}</CardDescription>
                     </div>
-                    <CardDescription className="mt-1">{template.description}</CardDescription>
                   </div>
+                  {!template.isDefault && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={(): void => {
+                        setTemplateToDelete(template);
+                      }}
+                      className="text-destructive hover:text-destructive"
+                      disabled={deletingTemplate}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  )}
                 </div>
-                {!template.isDefault && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(): void => {
-                      setTemplateToDelete(template);
-                    }}
-                    className="text-destructive hover:text-destructive"
-                    disabled={deletingTemplate}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+              </CardHeader>
+              <CardContent className="pt-0">
+                {template.filters.length > 0 && (
+                  <div className="mb-4">
+                    <p className="text-sm font-medium mb-2">Activated Filters:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {template.filters.map((filter: string) => (
+                        <Badge key={filter} variant="secondary" className="text-xs">
+                          {filter}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
                 )}
-              </div>
-            </CardHeader>
-            <CardContent className="pt-0">
-              {template.filters.length > 0 && (
-                <div className="mb-4">
-                  <p className="text-sm font-medium mb-2">Activated Filters:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {template.filters.map((filter: string) => (
-                      <Badge key={filter} variant="secondary" className="text-xs">
-                        {filter}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
 
-              {template.availableFilters && template.availableFilters.length > 0 && (
-                <div>
-                  <p className="text-sm font-medium mb-2">Available Filters:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {template.availableFilters.map((filter: string) => (
-                      <Badge key={filter} variant="outline" className="text-xs">
-                        {filter}
-                      </Badge>
-                    ))}
+                {template.availableFilters && template.availableFilters.length > 0 && (
+                  <div>
+                    <p className="text-sm font-medium mb-2">Available Filters:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {template.availableFilters.map((filter: string) => (
+                        <Badge key={filter} variant="outline" className="text-xs">
+                          {filter}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
       {/* Delete Confirmation Modal */}
       <ConfirmationModal
