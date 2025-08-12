@@ -29,8 +29,12 @@ export type NewsArticleWithRelations = NewsArticle & {
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the NewsArticleWithRelations object
  */
-async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsArticleWithRelations> {
-  const { id } = params;
+async function getHandler(
+  request: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NewsArticleWithRelations> {
+  const { id } = await params;
 
   const article = await prisma.newsArticle.findUniqueOrThrow({
     where: { id },
@@ -55,8 +59,12 @@ async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the updated NewsArticleWithRelations object
  */
-async function putHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsArticleWithRelations> {
-  const { id } = params;
+async function putHandler(
+  request: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NewsArticleWithRelations> {
+  const { id } = await params;
   const { userId } = userContext;
   const { title, description, keyword, filters, source, publishedAt, url, fullContent, topicId, sources } = (await request.json()) as {
     title: string;
@@ -191,9 +199,9 @@ async function putHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
 async function deleteHandler(
   request: NextRequest,
   userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NewsArticleWithRelations> {
-  const { id } = params;
+  const { id } = await params;
 
   // First, delete all associated sources
   await prisma.articleSource.deleteMany({

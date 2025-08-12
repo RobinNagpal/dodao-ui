@@ -1,6 +1,6 @@
 'use client';
 
-import { NewsTopicFolderType as FolderType, NewsTopicType } from '@/lib/news-reader-types';
+import { NewsTopicFolderType as FolderType, NewsTopicType, ROOT_FOLDER } from '@/lib/news-reader-types';
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -34,7 +34,7 @@ interface FolderManagerProps {
 export default function FolderManager({ folders, topics, fetchFolders }: FolderManagerProps) {
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
   const [newFolderName, setNewFolderName] = useState<string>('');
-  const [selectedParent, setSelectedParent] = useState<string>('');
+  const [selectedParent, setSelectedParent] = useState<string>(ROOT_FOLDER);
   const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(null);
 
   const baseUrl: string = getBaseUrl();
@@ -100,7 +100,7 @@ export default function FolderManager({ folders, topics, fetchFolders }: FolderM
     if (trimmedName) {
       const payload: CreateFolderPayload = {
         name: trimmedName,
-        parentId: selectedParent ? selectedParent : null,
+        parentId: selectedParent === ROOT_FOLDER ? null : selectedParent,
       };
 
       // Use the createFolder function from usePostData
@@ -108,7 +108,7 @@ export default function FolderManager({ folders, topics, fetchFolders }: FolderM
 
       if (success) {
         setNewFolderName('');
-        setSelectedParent('');
+        setSelectedParent(ROOT_FOLDER);
         setShowAddForm(false);
         fetchFolders();
       }
@@ -123,7 +123,7 @@ export default function FolderManager({ folders, topics, fetchFolders }: FolderM
 
   const resetForm = (): void => {
     setNewFolderName('');
-    setSelectedParent('');
+    setSelectedParent(ROOT_FOLDER);
     setShowAddForm(false);
   };
 
@@ -159,10 +159,10 @@ export default function FolderManager({ folders, topics, fetchFolders }: FolderM
                   </Badge>
                 </div>
               </div>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={(): void => setFolderToDelete(folder)} 
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={(): void => setFolderToDelete(folder)}
                 className="text-destructive hover:text-destructive"
                 disabled={deletingFolder}
               >
@@ -188,8 +188,8 @@ export default function FolderManager({ folders, topics, fetchFolders }: FolderM
           </Link>
         </div>
 
-        <Button 
-          onClick={(): void => setShowAddForm(!showAddForm)} 
+        <Button
+          onClick={(): void => setShowAddForm(!showAddForm)}
           variant="outline"
           className="flex items-center gap-2 border-primary"
           disabled={creatingFolder || deletingFolder}
@@ -232,7 +232,7 @@ export default function FolderManager({ folders, topics, fetchFolders }: FolderM
                     <SelectValue placeholder="Select parent folder or leave empty for root" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Root Level</SelectItem>
+                    <SelectItem value={ROOT_FOLDER}>Root Level</SelectItem>
                     {flatFolders.map((folder) => (
                       <SelectItem key={folder.id} value={folder.id.toString()}>
                         <div className="flex items-center gap-2">
@@ -283,14 +283,8 @@ export default function FolderManager({ folders, topics, fetchFolders }: FolderM
         onConfirm={handleDeleteConfirm}
         title="Delete Folder"
         confirmationText={`Are you sure you want to delete the folder "${folderToDelete?.name}"? This action cannot be undone.${
-          folderToDelete && countTopicsInFolder(folderToDelete.id) > 0 
-            ? ' Note: This folder contains topics that will be moved to the root level.' 
-            : ''
-        }${
-          folderToDelete && folderToDelete.children.length > 0
-            ? ' Note: This folder contains subfolders that will be deleted as well.'
-            : ''
-        }`}
+          folderToDelete && countTopicsInFolder(folderToDelete.id) > 0 ? ' Note: This folder contains topics that will be moved to the root level.' : ''
+        }${folderToDelete && folderToDelete.children.length > 0 ? ' Note: This folder contains subfolders that will be deleted as well.' : ''}`}
         confirming={deletingFolder}
         askForTextInput={false}
         showSemiTransparentBg={true}

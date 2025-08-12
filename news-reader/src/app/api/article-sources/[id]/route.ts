@@ -24,9 +24,9 @@ export type ArticleSourceWithRelations = ArticleSource & {
 async function getHandler(
   request: NextRequest,
   userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<ArticleSourceWithRelations> {
-  const { id } = params;
+  const { id } = await params;
 
   const source = await prisma.articleSource.findUniqueOrThrow({
     where: { id },
@@ -53,9 +53,9 @@ async function getHandler(
 async function putHandler(
   request: NextRequest,
   userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<ArticleSourceWithRelations> {
-  const { id } = params;
+  const { id } = await params;
   const { userId } = userContext;
   const { title, url, source, percentage, publishedAt, articleId } = (await request.json()) as {
     title: string;
@@ -115,9 +115,9 @@ async function putHandler(
 async function deleteHandler(
   request: NextRequest,
   userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<ArticleSourceWithRelations> {
-  const { id } = params;
+  const { id } = await params;
 
   // Delete the article source
   const deletedSource = await prisma.articleSource.delete({

@@ -18,10 +18,11 @@ export default function FoldersPage(): React.ReactNode {
   } = useFetchData<NewsTopicFolderType[]>(`${baseUrl}/api/news-topic-folders`, {}, 'Failed to load folders. Please try again later.');
 
   // Use useFetchData hook to fetch topics from the server
-  const {
-    data: topics,
-    loading: isTopicsLoading,
-  } = useFetchData<NewsTopicType[]>(`${baseUrl}/api/news-topics`, {}, 'Failed to load topics. Please try again later.');
+  const { data: topics, loading: isTopicsLoading } = useFetchData<NewsTopicType[]>(
+    `${baseUrl}/api/news-topics`,
+    {},
+    'Failed to load topics. Please try again later.'
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -39,13 +40,10 @@ export default function FoldersPage(): React.ReactNode {
           </div>
         )}
 
-        {(!isLoading && !isTopicsLoading && !fetchError && folders && topics && 
-          <FolderManager 
-            folders={folders} 
-            topics={topics} 
-            fetchFolders={fetchFolders} 
-          />
-        ) || null}
+        {(!isLoading && !isTopicsLoading && !fetchError && folders && topics && (
+          <FolderManager folders={folders} topics={topics} fetchFolders={fetchFolders} />
+        )) ||
+          null}
       </div>
     </div>
   );

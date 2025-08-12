@@ -26,8 +26,12 @@ export type NewsTopicWithRelations = NewsTopic & {
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the NewsTopicWithRelations object
  */
-async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicWithRelations> {
-  const { id } = params;
+async function getHandler(
+  request: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NewsTopicWithRelations> {
+  const { id } = await params;
 
   const topic = await prisma.newsTopic.findUniqueOrThrow({
     where: { id },
@@ -61,8 +65,12 @@ async function getHandler(request: NextRequest, userContext: DoDaoJwtTokenPayloa
  * @param params - The route parameters containing the ID
  * @returns A promise that resolves to the updated NewsTopicWithRelations object
  */
-async function putHandler(request: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<NewsTopicWithRelations> {
-  const { id } = params;
+async function putHandler(
+  request: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NewsTopicWithRelations> {
+  const { id } = await params;
   const { userId } = userContext;
   const { topic, description, filters, templateUsed, folderId } = (await request.json()) as {
     topic: string;
