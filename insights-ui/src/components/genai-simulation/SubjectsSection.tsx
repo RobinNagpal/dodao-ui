@@ -15,7 +15,7 @@ export default function SubjectsSection() {
       color: 'from-yellow-500 to-orange-500',
     },
     {
-      title: 'Economics',
+      title: 'Business Economics',
       items: ['Supply & Demand', 'Welfare Analysis', 'Cost-Benefit Analysis'],
       icon: ArrowTrendingUpIcon,
       color: 'from-red-500 to-rose-500',
