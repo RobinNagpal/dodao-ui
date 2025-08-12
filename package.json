@@ -10,6 +10,7 @@
     "insights-ui",
     "clickable-demos",
     "news-reader",
+    "simulations",
     "shared/web-core",
     "dodao-lambdas/tweet-collection-updater"
   ],
