@@ -16,7 +16,7 @@ export default function FAQSection() {
     },
     {
       q: 'What subjects are covered?',
-      a: 'Built-in coverage for Marketing, Finance, Operations, HR, and Economics. Plus, you can easily add custom topics and case studies.',
+      a: 'Built-in coverage for Marketing, Finance, Operations, HR, and Business Economics. Plus, you can easily add custom topics and case studies.',
     },
     {
       q: 'Do I need AI expertise to use this?',
