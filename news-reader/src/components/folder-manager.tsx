@@ -8,19 +8,49 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Trash2, FolderOpen, Plus, Folder, ChevronRight } from 'lucide-react';
+import { Trash2, FolderOpen, Plus, Folder, ChevronRight, ArrowLeft } from 'lucide-react';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { NewsTopicFolder } from '@prisma/client';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import Link from 'next/link';
+
+// Define types for API requests and responses
+interface CreateFolderPayload {
+  name: string;
+  parentId: string | null;
+}
+
+interface CreateFolderResponse extends NewsTopicFolder {}
 
 interface FolderManagerProps {
   folders: FolderType[];
-  onAdd: (newFolder: Partial<FolderType>) => void;
-  onDelete: (id: string) => void;
   topics: NewsTopicType[];
+  fetchFolders: () => void;
 }
 
-export default function FolderManager({ folders, onAdd, onDelete, topics }: FolderManagerProps) {
+export default function FolderManager({ folders, topics, fetchFolders }: FolderManagerProps) {
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
   const [newFolderName, setNewFolderName] = useState<string>('');
   const [selectedParent, setSelectedParent] = useState<string>('');
+  const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(null);
+
+  const baseUrl: string = getBaseUrl();
+  const { showNotification } = useNotificationContext();
+
+  // Use the usePostData hook for creating folders
+  const { postData: createFolder, loading: creatingFolder } = usePostData<CreateFolderResponse, CreateFolderPayload>({
+    successMessage: 'Folder created successfully',
+    errorMessage: 'Failed to create folder',
+  });
+
+  // Use the useDeleteData hook for deleting folders
+  const { deleteData: deleteFolder, loading: deletingFolder } = useDeleteData<NewsTopicFolder, void>({
+    successMessage: 'Folder deleted successfully',
+    errorMessage: 'Failed to delete folder',
+  });
 
   // Flatten folders for parent selection
   const flattenFolders = (folders: FolderType[], level = 0): (FolderType & { level: number })[] => {
@@ -63,16 +93,31 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }: Fold
     return topics.filter((topic) => topic.folderId !== null && folderIds.includes(topic.folderId)).length;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    if (newFolderName.trim()) {
-      onAdd({
-        name: newFolderName.trim(),
+    const trimmedName: string = newFolderName.trim();
+
+    if (trimmedName) {
+      const payload: CreateFolderPayload = {
+        name: trimmedName,
         parentId: selectedParent ? selectedParent : null,
+      };
+
+      // Use the createFolder function from usePostData
+      const success = await createFolder(`${baseUrl}/api/news-topic-folders`, payload);
+
+      if (success) {
+        setNewFolderName('');
+        setSelectedParent('');
+        setShowAddForm(false);
+        fetchFolders();
+      }
+    } else {
+      showNotification({
+        type: 'error',
+        heading: 'Validation Error',
+        message: 'Folder name is required',
       });
-      setNewFolderName('');
-      setSelectedParent('');
-      setShowAddForm(false);
     }
   };
 
@@ -80,6 +125,20 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }: Fold
     setNewFolderName('');
     setSelectedParent('');
     setShowAddForm(false);
+  };
+
+  const handleDeleteConfirm = async (): Promise<void> => {
+    if (!folderToDelete) return;
+
+    // Use the deleteFolder function from useDeleteData
+    const success = await deleteFolder(`${baseUrl}/api/news-topic-folders/${folderToDelete.id}`);
+
+    if (success) {
+      fetchFolders();
+    }
+
+    // Close the modal
+    setFolderToDelete(null);
   };
 
   const renderFolder = (folder: FolderType, level = 0): JSX.Element => {
@@ -100,7 +159,13 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }: Fold
                   </Badge>
                 </div>
               </div>
-              <Button variant="ghost" size="sm" onClick={(): void => onDelete(folder.id)} className="text-destructive hover:text-destructive">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={(): void => setFolderToDelete(folder)} 
+                className="text-destructive hover:text-destructive"
+                disabled={deletingFolder}
+              >
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
@@ -114,14 +179,31 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }: Fold
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Link href="/">
+            <Button variant="ghost" className="flex items-center gap-2" type="button">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Dashboard
+            </Button>
+          </Link>
+        </div>
+
+        <Button 
+          onClick={(): void => setShowAddForm(!showAddForm)} 
+          variant="outline"
+          className="flex items-center gap-2 border-primary"
+          disabled={creatingFolder || deletingFolder}
+        >
+          <Plus className="h-4 w-4" />
+          Create Folder
+        </Button>
+      </div>
+
+      <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Folder Manager</h2>
           <p className="text-muted-foreground">Organize your news topics into folders</p>
         </div>
-        <Button onClick={(): void => setShowAddForm(!showAddForm)} className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
-          Create Folder
-        </Button>
       </div>
 
       {showAddForm && (
@@ -167,10 +249,10 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }: Fold
               </div>
 
               <div className="flex gap-2">
-                <Button type="submit" className="flex-1">
-                  Create Folder
+                <Button type="submit" className="flex-1" disabled={creatingFolder}>
+                  {creatingFolder ? 'Creating...' : 'Create Folder'}
                 </Button>
-                <Button type="button" variant="outline" onClick={(): void => resetForm()}>
+                <Button type="button" variant="outline" onClick={(): void => resetForm()} disabled={creatingFolder}>
                   Cancel
                 </Button>
               </div>
@@ -193,6 +275,26 @@ export default function FolderManager({ folders, onAdd, onDelete, topics }: Fold
           <div>{folders.map((folder) => renderFolder(folder))}</div>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        open={folderToDelete !== null}
+        onClose={() => setFolderToDelete(null)}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Folder"
+        confirmationText={`Are you sure you want to delete the folder "${folderToDelete?.name}"? This action cannot be undone.${
+          folderToDelete && countTopicsInFolder(folderToDelete.id) > 0 
+            ? ' Note: This folder contains topics that will be moved to the root level.' 
+            : ''
+        }${
+          folderToDelete && folderToDelete.children.length > 0
+            ? ' Note: This folder contains subfolders that will be deleted as well.'
+            : ''
+        }`}
+        confirming={deletingFolder}
+        askForTextInput={false}
+        showSemiTransparentBg={true}
+      />
     </div>
   );
 }
