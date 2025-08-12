@@ -221,6 +221,11 @@ async function generateSitemapUrls(): Promise<SiteMapUrl[]> {
       url: '/reports',
       changefreq: 'daily',
       priority: 0.8,
+    },
+    {
+      url: '/genai-simulation',
+      changefreq: 'weekly',
+      priority: 0.7,
     }
   );
 
