@@ -1,5 +1,7 @@
 import Link from 'next/link';
-import { SparklesIcon, ArrowRightIcon, PlayCircleIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
+import { SparklesIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import studentGif from '@/images/simulations/studentGif.gif';
 
 export default function HeroSection() {
   const stats = [
@@ -64,14 +66,7 @@ export default function HeroSection() {
       <div className="relative mx-auto max-w-6xl px-6 lg:px-8 pb-20">
         <div className="relative rounded-2xl border border-gray-700/50 bg-gradient-to-br from-gray-800/50 to-gray-900/50 p-4 backdrop-blur-sm shadow-2xl">
           <div className="aspect-video w-full rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 ring-1 ring-white/10 flex items-center justify-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10" />
-            <div className="relative text-center z-10">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 mb-4">
-                <PlayCircleIcon className="h-10 w-10 text-white" />
-              </div>
-              <p className="text-lg font-semibold text-white">Interactive Product Demo</p>
-              <p className="text-sm text-gray-400 mt-1">Click to see the simulation in action</p>
-            </div>
+            <Image src={studentGif} alt="Student using GenAI simulation" className="w-full h-full object-cover rounded-xl" unoptimized />
           </div>
         </div>
       </div>
