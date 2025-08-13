@@ -50,11 +50,27 @@ model CaseStudyEnrollment {
 
   createdBy   String?   @map("created_by")
   updatedBy   String?   @map("updated_by")
-  studentIds  String[]  @map("student_ids")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
+  students     EnrollmentStudent[]
+
   @@map("case_study_enrollments")
+}
+
+model EnrollmentStudent {
+  id             String               @id @default(uuid())
+  enrollmentId   String               @map("enrollment_id")
+  enrollment     CaseStudyEnrollment  @relation(fields: [enrollmentId], references: [id])
+
+  createdBy      String?              @map("created_by")
+  updatedBy      String?              @map("updated_by")
+  createdAt      DateTime             @default(now()) @map("created_at")
+  updatedAt      DateTime             @updatedAt @map("updated_at")
+
+  @@unique([enrollmentId, createdBy], map: "uq_enrollment_student")
+
+  @@map("enrollment_members")
 }
 
 model ModuleExercise {
