@@ -44,12 +44,6 @@ export default function TopicManager({ topics, templates, folders, getFolderPath
     errorMessage: 'Failed to create topic',
   });
 
-  // Use the usePostData hook for creating templates
-  const { postData: createTemplate, loading: creatingTemplate } = usePostData<NewsTopicTemplateType, Partial<NewsTopicTemplateType>>({
-    successMessage: 'Template created successfully',
-    errorMessage: 'Failed to create template',
-  });
-
   // Use the useDeleteData hook for deleting topics
   const { deleteData: deleteTopic, loading: deletingTopic } = useDeleteData<NewsTopicType, void>({
     successMessage: 'Topic deleted successfully',
@@ -81,20 +75,6 @@ export default function TopicManager({ topics, templates, folders, getFolderPath
       setShowAddForm(false);
       fetchTopics();
     }
-  };
-
-  const handleAddTemplate = async (newTemplate: Partial<NewsTopicTemplateType>): Promise<void> => {
-    if (!newTemplate.name || !newTemplate.description) {
-      showNotification({
-        type: 'error',
-        heading: 'Validation Error',
-        message: 'Template name and description are required',
-      });
-      return;
-    }
-
-    // Use the createTemplate function from usePostData
-    await createTemplate(`${baseUrl}/api/news-topic-templates`, newTemplate);
   };
 
   const handleDeleteConfirm = async (): Promise<void> => {
@@ -239,7 +219,7 @@ export default function TopicManager({ topics, templates, folders, getFolderPath
             <CardDescription>Configure a new topic to track news articles. You can use a template or create your own configuration.</CardDescription>
           </CardHeader>
           <CardContent>
-            <AddTopicForm onAdd={handleAddTopic} templates={templates} onAddTemplate={handleAddTemplate} folders={folders} getFolderPath={getFolderPath} />
+            <AddTopicForm onAdd={handleAddTopic} templates={templates} folders={folders} />
           </CardContent>
         </Card>
       ) : (

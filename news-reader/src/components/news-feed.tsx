@@ -1,7 +1,7 @@
 'use client';
 
 import { NewsArticleType, NewsTopicFolderType, NewsTopicType } from '@/lib/news-reader-types';
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -9,40 +9,36 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Clock, ExternalLink, Search, Filter } from 'lucide-react';
 import EnhancedArticleCard from '@/components/enhanced-article-card';
-import { sampleNews } from '@/lib/sample-data';
 
 interface NewsFeedProps {
   topics: NewsTopicType[];
   folders: NewsTopicFolderType[];
+  articles: NewsArticleType[];
   bookmarks: string[];
   onToggleBookmark: (articleId: string) => void;
   getFolderPath: (folderId: string | null, folders: NewsTopicFolderType[], path?: string[]) => string[];
+  selectedTopic: string;
+  setSelectedTopic: (topic: string) => void;
+  selectedFolder: string;
+  setSelectedFolder: (folder: string) => void;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
 }
 
-export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark, getFolderPath }: NewsFeedProps) {
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [selectedTopic, setSelectedTopic] = useState<string>('all');
-  const [selectedFilter, setSelectedFilter] = useState<string>('all');
-  const [selectedFolder, setSelectedFolder] = useState<string>('all');
-
-  // Get all unique filters from topics
-  const allFilters = useMemo<string[]>(() => {
-    const filters = new Set<string>();
-    topics.forEach((topic) => {
-      topic.filters.forEach((filter) => filters.add(filter));
-    });
-    return Array.from(filters);
-  }, [topics]);
-
-  const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
+export default function NewsFeed({
+  topics,
+  folders,
+  articles,
+  bookmarks,
+  onToggleBookmark,
+  getFolderPath,
+  selectedTopic,
+  setSelectedTopic,
+  selectedFolder,
+  setSelectedFolder,
+  searchTerm,
+  setSearchTerm,
+}: NewsFeedProps) {
   // Flatten folders for selection
   const flattenFolders = (folders: NewsTopicFolderType[], level = 0): (NewsTopicFolderType & { level: number })[] => {
     let result: (NewsTopicFolderType & { level: number })[] = [];
@@ -57,69 +53,53 @@ export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark,
 
   const flatFolders = flattenFolders(folders);
 
-  // Filter news based on configured topics and their filters
+  // Filter news based on folder and topic selection
   const filteredNews = useMemo<NewsArticleType[]>(() => {
-    return sampleNews.filter((article) => {
-      // Check if topic is configured
-      const topicConfig = topics.find((t) => t.topic.toLowerCase() === article.keyword.toLowerCase());
-      if (!topicConfig) return false;
+    // Start with all articles
+    let filtered = [...articles];
 
-      // Check if article matches any of the topic's filters
-      const hasMatchingFilter = article.filters.some((filter) => topicConfig.filters.includes(filter));
-      if (!hasMatchingFilter) return false;
-
-      // Apply search filter
-      if (
-        searchTerm &&
-        !article.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        !article.description.toLowerCase().includes(searchTerm.toLowerCase())
-      ) {
-        return false;
+    // Apply topic filter if a specific topic is selected
+    if (selectedTopic !== 'all') {
+      const topic = topics.find((t) => t.topic === selectedTopic);
+      if (topic) {
+        filtered = filtered.filter((article) => article.topicId === topic.id);
       }
+    }
 
-      // Apply topic filter
-      if (selectedTopic !== 'all' && article.keyword !== selectedTopic) {
-        return false;
-      }
+    // Apply folder filter if a specific folder is selected
+    if (selectedFolder !== 'all') {
+      // Get all folder IDs including children
+      const getFolderAndChildren = (folders: NewsTopicFolderType[], targetId: string): string[] => {
+        let result: string[] = [];
+        folders.forEach((folder) => {
+          if (folder.id === targetId) {
+            result.push(folder.id);
+            const getChildIds = (children: NewsTopicFolderType[]): void => {
+              children.forEach((child) => {
+                result.push(child.id);
+                if (child.children.length > 0) {
+                  getChildIds(child.children);
+                }
+              });
+            };
+            getChildIds(folder.children);
+          } else if (folder.children.length > 0) {
+            result = result.concat(getFolderAndChildren(folder.children, targetId));
+          }
+        });
+        return result;
+      };
 
-      // Apply filter type filter
-      if (selectedFilter !== 'all' && !article.filters.includes(selectedFilter)) {
-        return false;
-      }
+      // Get all topic IDs in the selected folder and its children
+      const allowedFolderIds = getFolderAndChildren(folders, selectedFolder);
+      const topicIdsInFolder = topics.filter((topic) => topic.folderId && allowedFolderIds.includes(topic.folderId)).map((topic) => topic.id);
 
-      // Apply folder filter
-      if (selectedFolder !== 'all') {
-        const folderId = selectedFolder;
-        // Get all folder IDs including children
-        const getFolderAndChildren = (folders: NewsTopicFolderType[], targetId: string): string[] => {
-          let result: string[] = [];
-          folders.forEach((folder) => {
-            if (folder.id === targetId) {
-              result.push(folder.id);
-              const getChildIds = (children: NewsTopicFolderType[]): void => {
-                children.forEach((child) => {
-                  result.push(child.id);
-                  if (child.children.length > 0) {
-                    getChildIds(child.children);
-                  }
-                });
-              };
-              getChildIds(folder.children);
-            } else if (folder.children.length > 0) {
-              result = result.concat(getFolderAndChildren(folder.children, targetId));
-            }
-          });
-          return result;
-        };
+      // Filter articles by topic IDs
+      filtered = filtered.filter((article) => article.topicId && topicIdsInFolder.includes(article.topicId));
+    }
 
-        const allowedFolderIds = getFolderAndChildren(folders, folderId);
-        const topicInFolder = topics.find((t) => t.topic.toLowerCase() === article.keyword.toLowerCase() && allowedFolderIds.includes(t.folderId || ''));
-        if (!topicInFolder) return false;
-      }
-
-      return true;
-    });
-  }, [topics, searchTerm, selectedTopic, selectedFilter, selectedFolder, folders]);
+    return filtered;
+  }, [articles, selectedTopic, selectedFolder, folders, topics]);
 
   if (topics.length === 0) {
     return (
@@ -159,23 +139,6 @@ export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark,
                   {topics.map((topic) => (
                     <SelectItem key={topic.id} value={topic.topic}>
                       {topic.topic}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Filter Type</label>
-              <Select value={selectedFilter} onValueChange={setSelectedFilter}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Filters</SelectItem>
-                  {allFilters.map((filter) => (
-                    <SelectItem key={filter} value={filter}>
-                      {filter}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -228,7 +191,7 @@ export default function NewsFeed({ topics, folders, bookmarks, onToggleBookmark,
         ) : (
           <div className="grid gap-4">
             {filteredNews.map((article) => {
-              const topic = topics.find((t) => t.topic.toLowerCase() === article.keyword.toLowerCase());
+              const topic = topics.find((t) => t.id === article.topicId);
               const folderPath = topic?.folderId ? getFolderPath(topic.folderId, folders) : null;
 
               return (
