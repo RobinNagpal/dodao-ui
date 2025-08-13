@@ -22,8 +22,7 @@ export default function TopNav() {
   // Get the active tab value based on the current pathname
   const getActiveTab = () => {
     if (pathname === '/' || pathname === '/news') return 'news';
-    if (pathname === '/topics/add') return 'add';
-    if (pathname === '/topics/manage') return 'manage';
+    if (pathname === '/news-topics') return 'topics';
     if (pathname === '/folders') return 'folders';
     if (pathname === '/news-templates' || pathname === '/news-topic-templates') return 'templates';
     if (pathname === '/bookmarks') return 'bookmarks';
@@ -87,7 +86,7 @@ export default function TopNav() {
       <div className="container mx-auto px-4 pt-6">
         <div className="flex flex-col">
           <Tabs value={getActiveTab()} className="w-full">
-            <TabsList className="h-10 w-full grid grid-cols-6 gap-1">
+            <TabsList className="h-10 w-full grid grid-cols-5 gap-1">
               <TabsTrigger
                 value="news"
                 onClick={() => router.push('/news')}
@@ -97,20 +96,12 @@ export default function TopNav() {
                 News Feed
               </TabsTrigger>
               <TabsTrigger
-                value="add"
-                onClick={() => router.push('/topics/add')}
+                value="topics"
+                onClick={() => router.push('/news-topics')}
                 className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               >
-                <Plus className="h-4 w-4" />
-                Add Topic
-              </TabsTrigger>
-              <TabsTrigger
-                value="manage"
-                onClick={() => router.push('/topics/manage')}
-                className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                <Settings className="h-4 w-4" />
-                Manage Topics
+                <Filter className="h-4 w-4" />
+                News Topics
               </TabsTrigger>
               <TabsTrigger
                 value="folders"
