@@ -89,7 +89,7 @@ export default function NewsPage(): React.ReactNode {
   };
 
   const isLoading: boolean = isTopicsLoading || isFoldersLoading || isArticlesLoading;
-  const error: string | null = topicsError || foldersError || articlesError;
+  const error: string | null | undefined = topicsError || foldersError || articlesError;
 
   return (
     <div className="min-h-screen bg-background">
