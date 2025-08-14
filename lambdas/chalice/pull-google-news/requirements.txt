@@ -2,4 +2,8 @@ setuptools<58
 pygooglenews
 chalice
 newspaper3k
-psycopg2-binary
+prisma
+beautifulsoup4
+feedparser
+dateparser
+requests

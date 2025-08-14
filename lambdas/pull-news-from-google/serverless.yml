@@ -1,0 +1,31 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: dodao
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: pull-news-from-google
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  httpApi:
+    cors: true
+  environment:
+    NODE_OPTIONS: '--enable-source-maps'
+
+plugins:
+  - serverless-plugin-typescript
+
+package:
+  individually: true
+  excludeDevDependencies: true
+
+functions:
+  fetchNews:
+    handler: handler.fetchNews
+    events:
+      - httpApi:
+          path: /fetch-news
+          method: POST
+      - httpApi:
+          path: /fetch-news
+          method: OPTIONS
+          handler: handler.handleOptions

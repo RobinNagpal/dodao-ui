@@ -1,0 +1,31 @@
+{
+    "name": "pull-news-from-google",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "compile": "tsc",
+        "lint": "next lint",
+        "lint-fix": "eslint .. --ext .ts,.js,.tsx --fix",
+        "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
+        "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'"
+    },
+    "dependencies": {
+        "@aws-sdk/client-s3": "3.363.0",
+        "@aws-sdk/lib-storage": "^3.679.0",
+        "aws-lambda": "^1.0.7",
+        "mime-types": "^2.1.35",
+        "typescript": "5.0.4"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "^8.10.145",
+        "@types/node": "18.16.3",
+        "@types/unzipper": "^0.10.10",
+        "@types/yauzl": "^2.10.3",
+        "eslint": "8.39.0",
+        "eslint-config-next": "13.3.4",
+        "postcss": "8.4.35",
+        "prettier": "^2.8.8",
+        "serverless-plugin-typescript": "^2.1.5",
+        "typescript": "5.0.4"
+    }
+}
