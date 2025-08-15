@@ -7,18 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum BusinessSubject {
+  HR
+  ECONOMICS
+  MARKETING
+  FINANCE
+  OPERATIONS
+}
+
 model CaseStudy {
   id               String   @id @default(uuid())
   title            String   @map("title")
   shortDescription String   @map("short_description")
   details          String   @db.Text @map("details")
+  subject          BusinessSubject @map("subject")
   createdBy        String?  @map("created_by")
   updatedBy        String?  @map("updated_by")
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
 
   modules      CaseStudyModule[] @relation("CaseStudyToModules")
-  enrollments  CaseStudyEnrollment[] @relation("CaseStudyToEnrollments")
+  enrollments  ClassCaseStudyEnrollment[] @relation("CaseStudyToEnrollments")
   submissions  FinalSubmission[] @relation("CaseStudyToSubmissions")
 
   @@map("case_studies")
@@ -43,10 +52,12 @@ model CaseStudyModule {
   @@map("case_study_modules")
 }
 
-model CaseStudyEnrollment {
+model ClassCaseStudyEnrollment {
   id          String    @id @default(uuid())
   caseStudyId String    @map("case_study_id")
   caseStudy   CaseStudy @relation("CaseStudyToEnrollments", fields: [caseStudyId], references: [id])
+
+  assignedInstructorId String @map("assigned_instructor_id")
 
   createdBy   String?   @map("created_by")
   updatedBy   String?   @map("updated_by")
@@ -61,7 +72,7 @@ model CaseStudyEnrollment {
 model EnrollmentStudent {
   id             String               @id @default(uuid())
   enrollmentId   String               @map("enrollment_id")
-  enrollment     CaseStudyEnrollment  @relation(fields: [enrollmentId], references: [id])
+  enrollment     ClassCaseStudyEnrollment  @relation(fields: [enrollmentId], references: [id])
 
   createdBy      String?              @map("created_by")
   updatedBy      String?              @map("updated_by")
