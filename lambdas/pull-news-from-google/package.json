@@ -7,24 +7,24 @@
         "lint": "next lint",
         "lint-fix": "eslint .. --ext .ts,.js,.tsx --fix",
         "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
-        "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'"
+        "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'",
+        "postinstall": "prisma generate"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "3.363.0",
         "@aws-sdk/lib-storage": "^3.679.0",
-        "@mozilla/readability": "^0.4.4",
+        "@postlight/parser": "^2.2.3",
         "@prisma/client": "^4.13.0",
+        "@sparticuz/chromium": "^138.0.2",
         "aws-lambda": "^1.0.7",
-        "axios": "^1.4.0",
         "google-news-scraper": "^2.7.0",
-        "jsdom": "^22.1.0",
         "mime-types": "^2.1.35",
-        "typescript": "5.0.4",
-        "prisma": "^4.13.0"
+        "prisma": "^4.13.0",
+        "typescript": "5.0.4"
     },
     "devDependencies": {
+        "@prisma/client": "^4.13.0",
         "@types/aws-lambda": "^8.10.145",
-        "@types/jsdom": "^21.1.6",
         "@types/node": "18.16.3",
         "@types/unzipper": "^0.10.10",
         "@types/yauzl": "^2.10.3",
@@ -32,6 +32,7 @@
         "eslint-config-next": "13.3.4",
         "postcss": "8.4.35",
         "prettier": "^2.8.8",
+        "puppeteer-core": "^24.16.2",
         "serverless-plugin-typescript": "^2.1.5",
         "typescript": "5.0.4"
     }

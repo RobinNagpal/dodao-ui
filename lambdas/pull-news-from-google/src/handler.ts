@@ -1,10 +1,30 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import googleNewsScraper from "google-news-scraper";
 import { PrismaClient } from "@prisma/client";
-import axios from "axios";
-import { GNSUserConfig } from "google-news-scraper/dist/tsc/types";
-import { JSDOM } from "jsdom";
-import { Readability } from "@mozilla/readability";
+import { GNSUserConfig } from "google-news-scraper";
+import Parser from "@postlight/parser";
+
+// at the top of src/handler.ts
+import chromium from "@sparticuz/chromium";
+
+// Cold-start init: resolve the path & stash in env for puppeteer
+
+// Resolve the path at cold start, but survive packaging quirks
+const ensureChromium = (async () => {
+  try {
+    // First try auto-detection (works when bin/ is present)
+    process.env.PUPPETEER_EXECUTABLE_PATH = await chromium.executablePath();
+  } catch (e) {
+    // If auto-detect fails (your current error), point to the bin folder explicitly
+    const packDir = "/var/task/node_modules/@sparticuz/chromium/bin";
+    process.env.PUPPETEER_EXECUTABLE_PATH = await chromium.executablePath(
+      packDir
+    );
+  }
+
+  // Optional cache dir to reduce /tmp churn
+  process.env.PUPPETEER_CACHE_DIR = "/tmp/puppeteer-cache";
+})();
 
 // Initialize Prisma client
 const prisma = new PrismaClient();
@@ -72,14 +92,18 @@ type NewsArticle = {
 type ParsedArticle = {
   title: string;
   content: string;
-  textContent: string;
-  length: number;
   excerpt: string;
-  byline: string | null;
-  dir: string;
-  siteName: string | null;
-  lang: string;
+  author: string | null;
+  date_published: string | null;
+  lead_image_url: string | null;
+  dek: string | null;
+  next_page_url: string | null;
   url: string;
+  domain: string;
+  word_count: number;
+  direction: string;
+  total_pages: number;
+  rendered_pages: number;
 };
 
 /**
@@ -164,6 +188,7 @@ export const fetchNews = async (
 ): Promise<APIGatewayProxyResult> => {
   console.log("Event received:", JSON.stringify(event, null, 2));
 
+  await ensureChromium; // make sure the path is set before puppeteer launches
   try {
     // Parse the request body
     if (!event.body) {
@@ -177,16 +202,9 @@ export const fetchNews = async (
         body: JSON.stringify({ error: "Request body is required" }),
       };
     }
-
+    console.log("Body:", event.body);
     const body: FetchNewsRequestBody = JSON.parse(event.body);
-    const {
-      searchTerm,
-      prettyURLs,
-      queryVars,
-      timeframe,
-      puppeteerArgs,
-      limit,
-    } = body;
+    const { searchTerm } = body;
 
     if (!searchTerm) {
       return {
@@ -203,11 +221,14 @@ export const fetchNews = async (
     // Configure options for the google-news-scraper
     const options: GNSUserConfig = {
       searchTerm,
-      prettyURLs: prettyURLs !== undefined ? prettyURLs : true,
-      queryVars: queryVars || {},
       timeframe: "24h",
-      puppeteerArgs: puppeteerArgs || [],
-      limit: limit || 10,
+      limit: 10,
+      puppeteerArgs: [
+        ...chromium.args,
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+      ],
+      puppeteerHeadlessMode: true,
     };
 
     // Fetch news articles
@@ -278,14 +299,8 @@ export const getNewsArticle = async (
       };
     }
 
-    // Fetch the article content
-    const response = await axios.get(url);
-    const html = response.data;
-
-    // Parse the article using Readability
-    const dom = new JSDOM(html, { url });
-    const reader = new Readability(dom.window.document);
-    const article = reader.parse();
+    // Fetch and parse the article using @postlight/parser
+    const article = await Parser.parse(url);
 
     if (!article) {
       return {
@@ -303,14 +318,18 @@ export const getNewsArticle = async (
     const articleData: ParsedArticle = {
       title: article.title,
       content: article.content,
-      textContent: article.textContent,
-      length: article.length,
       excerpt: article.excerpt,
-      byline: article.byline,
-      dir: article.dir,
-      siteName: article.siteName,
-      lang: article.lang,
-      url: url,
+      author: article.author,
+      date_published: article.date_published,
+      lead_image_url: article.lead_image_url,
+      dek: article.dek,
+      next_page_url: article.next_page_url,
+      url: article.url,
+      domain: article.domain,
+      word_count: article.word_count,
+      direction: article.direction,
+      total_pages: article.total_pages,
+      rendered_pages: article.rendered_pages,
     };
 
     return {

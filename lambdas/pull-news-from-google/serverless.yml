@@ -1,26 +1,42 @@
-# "org" ensures this Service is used with the correct Serverless Framework Access Key.
-org: dodao
-# "service" is the name of this project. This will also be added to your AWS resource names.
 service: pull-news-from-google
 
 provider:
   name: aws
   runtime: nodejs20.x
+  region: us-east-1
   httpApi:
     cors: true
   environment:
     NODE_OPTIONS: '--enable-source-maps'
-
-plugins:
-  - serverless-plugin-typescript
+    DATABASE_URL: ${env.DATABASE_URL}
+    PUPPETEER_SKIP_DOWNLOAD: true
 
 package:
   individually: true
-  excludeDevDependencies: true
+  patterns:
+    - prisma/**                     # include your source schema (optional but nice)
+    - node_modules/.prisma/**       # include generated client assets
+    - node_modules/@prisma/**       # include engines
+    - node_modules/@sparticuz/chromium/**   # include chromium assets
+    - node_modules/puppeteer/**             # the lib your scraper uses
+
+build:
+  esbuild:
+    # Path to the esbuild config file relative to the `serverless.yml` file
+    configFile: ./esbuild.config.js
+    target: node20
+    platform: node
+#    exclude:
+#      - 'jsdom'
+#      - 'canvas'
+#    external:
+#      - 'jsdom'
+#      - 'canvas'
+#      - '@postlight/parser'
 
 functions:
   fetchNews:
-    handler: handler.fetchNews
+    handler: src/handler.fetchNews
     events:
       - httpApi:
           path: /fetch-news
