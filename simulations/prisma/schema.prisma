@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BusinessSubject {
+  HR
+  ECONOMICS
+  MARKETING
+  FINANCE
+  OPERATIONS
+}
+
+model CaseStudy {
+  id               String   @id @default(uuid())
+  title            String   @map("title")
+  shortDescription String   @map("short_description")
+  details          String   @db.Text @map("details")
+  subject          BusinessSubject @map("subject")
+  createdBy        String?  @map("created_by")
+  updatedBy        String?  @map("updated_by")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  modules      CaseStudyModule[] @relation("CaseStudyToModules")
+  enrollments  ClassCaseStudyEnrollment[] @relation("CaseStudyToEnrollments")
+  submissions  FinalSubmission[] @relation("CaseStudyToSubmissions")
+
+  @@map("case_studies")
+}
+
+model CaseStudyModule {
+  id               String    @id @default(uuid())
+  caseStudyId      String    @map("case_study_id")
+  caseStudy        CaseStudy @relation("CaseStudyToModules", fields: [caseStudyId], references: [id])
+
+  title            String    @map("title")
+  shortDescription String    @map("short_description")
+  details          String    @db.Text @map("details")
+  orderNumber      Int       @map("order_number")
+  createdBy        String?   @map("created_by")
+  updatedBy        String?   @map("updated_by")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  exercises ModuleExercise[] @relation("ModuleToExercises")
+
+  @@map("case_study_modules")
+}
+
+model ClassCaseStudyEnrollment {
+  id          String    @id @default(uuid())
+  caseStudyId String    @map("case_study_id")
+  caseStudy   CaseStudy @relation("CaseStudyToEnrollments", fields: [caseStudyId], references: [id])
+
+  assignedInstructorId String @map("assigned_instructor_id")
+
+  createdBy   String?   @map("created_by")
+  updatedBy   String?   @map("updated_by")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  students     EnrollmentStudent[]
+
+  @@map("case_study_enrollments")
+}
+
+model EnrollmentStudent {
+  id             String               @id @default(uuid())
+  enrollmentId   String               @map("enrollment_id")
+  enrollment     ClassCaseStudyEnrollment  @relation(fields: [enrollmentId], references: [id])
+
+  createdBy      String?              @map("created_by")
+  updatedBy      String?              @map("updated_by")
+  createdAt      DateTime             @default(now()) @map("created_at")
+  updatedAt      DateTime             @updatedAt @map("updated_at")
+
+  @@unique([enrollmentId, createdBy], map: "uq_enrollment_student")
+
+  @@map("enrollment_members")
+}
+
+model ModuleExercise {
+  id               String           @id @default(uuid()) @map("id")
+  moduleId         String           @map("module_id")
+  module           CaseStudyModule  @relation("ModuleToExercises", fields: [moduleId], references: [id])
+
+  title            String           @map("title")
+  shortDescription String           @map("short_description")
+  details          String           @db.Text @map("details")
+  orderNumber      Int              @map("order_number")
+  createdBy        String?          @map("created_by")
+  updatedBy        String?          @map("updated_by")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+
+  attempts ExerciseAttempt[] @relation("ExerciseToAttempts")
+
+  @@map("topic_exercises")
+}
+
+model ExerciseAttempt {
+  id             String         @id @default(uuid()) @map("id")
+  exerciseId     String         @map("exercise_id")
+  exercise       ModuleExercise @relation("ExerciseToAttempts", fields: [exerciseId], references: [id])
+
+  createdBy      String?        @map("created_by")
+  updatedBy      String?        @map("updated_by")
+  attemptNumber  Int            @map("attempt_number")
+  model          String?        @map("model")
+  prompt         String?        @db.Text @map("prompt")
+  promptResponse String?        @db.Text @map("prompt_response")
+  status         String?        @map("status")
+  error          String?        @map("error")
+  createdAt      DateTime       @default(now()) @map("created_at")
+
+  @@map("exercise_attempts")
+}
+
+model FinalSubmission {
+  id           String    @id @default(uuid()) @map("id")
+  caseStudyId  String    @map("case_study_id")
+  caseStudy    CaseStudy @relation("CaseStudyToSubmissions", fields: [caseStudyId], references: [id])
+
+  createdBy    String?   @map("created_by")
+  updatedBy    String?   @map("updated_by")
+  finalContent String?   @db.Text @map("final_content")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@map("final_submissions")
+}

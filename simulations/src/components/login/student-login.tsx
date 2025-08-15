@@ -11,10 +11,10 @@ import { BookOpen, Users, GraduationCap, Eye, EyeOff } from 'lucide-react';
 
 interface StudentLoginProps {
   onLogin: (email: string) => void;
-  onSwitchToProfessor: () => void;
+  onSwitchToInstructor: () => void;
 }
 
-export function StudentLogin({ onLogin, onSwitchToProfessor }: StudentLoginProps) {
+export function StudentLogin({ onLogin, onSwitchToInstructor }: StudentLoginProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -100,8 +100,8 @@ export function StudentLogin({ onLogin, onSwitchToProfessor }: StudentLoginProps
             </form>
 
             <div className="mt-6 text-center">
-              <Button variant="ghost" size="sm" onClick={onSwitchToProfessor} className="text-purple-600 hover:text-purple-700">
-                Switch to Professor Portal
+              <Button variant="ghost" size="sm" onClick={onSwitchToInstructor} className="text-purple-600 hover:text-purple-700">
+                Switch to Instructor Portal
               </Button>
             </div>
           </CardContent>

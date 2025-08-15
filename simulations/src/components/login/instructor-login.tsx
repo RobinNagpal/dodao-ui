@@ -10,12 +10,12 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, Users, BarChart3, Shield, Eye, EyeOff } from 'lucide-react';
 
-interface ProfessorLoginProps {
+interface InstructorLoginProps {
   onLogin: (email: string) => void;
   onSwitchToStudent: () => void;
 }
 
-export function ProfessorLogin({ onLogin, onSwitchToStudent }: ProfessorLoginProps) {
+export function InstructorLogin({ onLogin, onSwitchToStudent }: InstructorLoginProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -54,7 +54,7 @@ export function ProfessorLogin({ onLogin, onSwitchToStudent }: ProfessorLoginPro
         <Card className="shadow-lg">
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-2xl font-semibold">Professor Login</CardTitle>
+              <CardTitle className="text-2xl font-semibold">Instructor Login</CardTitle>
               <Badge variant="secondary" className="bg-purple-100 text-purple-800">
                 Instructor Portal
               </Badge>
@@ -68,7 +68,7 @@ export function ProfessorLogin({ onLogin, onSwitchToStudent }: ProfessorLoginPro
                 <Input
                   id="email"
                   type="email"
-                  placeholder="professor@university.edu"
+                  placeholder="instructor@university.edu"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -113,7 +113,7 @@ export function ProfessorLogin({ onLogin, onSwitchToStudent }: ProfessorLoginPro
           </CardContent>
         </Card>
 
-        {/* Professor Features */}
+        {/* Instructor Features */}
         <div className="mt-8 grid grid-cols-3 gap-4 text-center">
           <div className="flex flex-col items-center space-y-2">
             <BarChart3 className="h-6 w-6 text-purple-600" />
