@@ -11,14 +11,14 @@ provider:
     DATABASE_URL: ${env.DATABASE_URL}
     PUPPETEER_SKIP_DOWNLOAD: true
 
+
 package:
   individually: true
+
   patterns:
     - prisma/**                     # include your source schema (optional but nice)
     - node_modules/.prisma/**       # include generated client assets
     - node_modules/@prisma/**       # include engines
-    - node_modules/@sparticuz/chromium/**   # include chromium assets
-    - node_modules/puppeteer/**             # the lib your scraper uses
 
 build:
   esbuild:

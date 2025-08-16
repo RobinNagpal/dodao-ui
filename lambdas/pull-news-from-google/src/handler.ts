@@ -1,30 +1,8 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import googleNewsScraper from "google-news-scraper";
+import googleNewsScraper from "./google-news-scraper";
 import { PrismaClient } from "@prisma/client";
-import { GNSUserConfig } from "google-news-scraper";
+import { GNSUserConfig } from "./google-news-scraper/types";
 import Parser from "@postlight/parser";
-
-// at the top of src/handler.ts
-import chromium from "@sparticuz/chromium";
-
-// Cold-start init: resolve the path & stash in env for puppeteer
-
-// Resolve the path at cold start, but survive packaging quirks
-const ensureChromium = (async () => {
-  try {
-    // First try auto-detection (works when bin/ is present)
-    process.env.PUPPETEER_EXECUTABLE_PATH = await chromium.executablePath();
-  } catch (e) {
-    // If auto-detect fails (your current error), point to the bin folder explicitly
-    const packDir = "/var/task/node_modules/@sparticuz/chromium/bin";
-    process.env.PUPPETEER_EXECUTABLE_PATH = await chromium.executablePath(
-      packDir
-    );
-  }
-
-  // Optional cache dir to reduce /tmp churn
-  process.env.PUPPETEER_CACHE_DIR = "/tmp/puppeteer-cache";
-})();
 
 // Initialize Prisma client
 const prisma = new PrismaClient();
@@ -188,7 +166,6 @@ export const fetchNews = async (
 ): Promise<APIGatewayProxyResult> => {
   console.log("Event received:", JSON.stringify(event, null, 2));
 
-  await ensureChromium; // make sure the path is set before puppeteer launches
   try {
     // Parse the request body
     if (!event.body) {
@@ -223,11 +200,7 @@ export const fetchNews = async (
       searchTerm,
       timeframe: "24h",
       limit: 10,
-      puppeteerArgs: [
-        ...chromium.args,
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-      ],
+      puppeteerArgs: ["--no-sandbox", "--disable-setuid-sandbox"],
       puppeteerHeadlessMode: true,
     };
 

@@ -2,7 +2,12 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // keep native for local dev, add the Lambda target
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  // optional but fine if you might switch to ARM later:
+  // binaryTargets = ["native", "rhel-openssl-3.0.x", "linux-arm64-openssl-3.0.x"]
+  // engineType = "binary" // (default in recent Prisma, leave out unless you changed it)
 }
 
 datasource db {
