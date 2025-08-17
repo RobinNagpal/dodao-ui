@@ -1,0 +1,71 @@
+import { BusinessSubject, CaseStudy, CaseStudyModule, ModuleExercise, ClassCaseStudyEnrollment, EnrollmentStudent } from '@prisma/client';
+
+export interface CreateCaseStudyRequest {
+  title: string;
+  shortDescription: string;
+  details: string;
+  subject: BusinessSubject;
+  modules: CreateModuleRequest[];
+}
+
+export interface CreateModuleRequest {
+  title: string;
+  shortDescription: string;
+  details: string;
+  orderNumber: number;
+  exercises: CreateExerciseRequest[];
+}
+
+export interface CreateExerciseRequest {
+  title: string;
+  shortDescription: string;
+  details: string;
+  orderNumber: number;
+}
+
+export interface UpdateCaseStudyRequest {
+  title: string;
+  shortDescription: string;
+  details: string;
+  subject: BusinessSubject;
+  modules: UpdateModuleRequest[];
+}
+
+export interface UpdateModuleRequest {
+  id?: string; // Optional for existing modules
+  title: string;
+  shortDescription: string;
+  details: string;
+  orderNumber: number;
+  exercises: UpdateExerciseRequest[];
+}
+
+export interface UpdateExerciseRequest {
+  id?: string; // Optional for existing exercises
+  title: string;
+  shortDescription: string;
+  details: string;
+  orderNumber: number;
+}
+
+export type CaseStudyWithRelations = CaseStudy & {
+  modules: Array<
+    CaseStudyModule & {
+      exercises: ModuleExercise[];
+    }
+  >;
+};
+
+export type EnrollmentWithRelations = ClassCaseStudyEnrollment & {
+  caseStudy: {
+    id: string;
+    title: string;
+    shortDescription: string;
+    subject: BusinessSubject;
+  };
+  students: EnrollmentStudent[];
+};
+
+export interface DeleteResponse {
+  message: string;
+}

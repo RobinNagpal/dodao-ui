@@ -1,0 +1,43 @@
+:root {
+  // Notification component variables based on the current light theme
+  --bg-color: #ffffff;
+  --text-color: #111827; // gray-900
+  --link-color: #3b82f6; // blue-600
+  --heading-color: #111827; // gray-900
+  --border-color: #e5e7eb; // gray-200
+  --block-bg: #f9fafb; // gray-50
+
+  // Primary theme colors
+  --primary-color: #ef4444; // red-500 (matching the red theme in admin)
+  --primary-text-color: #ffffff;
+}
+
+.dark {
+  // Dark theme notification variables
+  --bg-color: #1f2937; // gray-800
+  --text-color: #f9fafb; // gray-50
+  --link-color: #60a5fa; // blue-400
+  --heading-color: #f9fafb; // gray-50
+  --border-color: #374151; // gray-700
+  --block-bg: #111827; // gray-900
+
+  // Dark theme primary colors
+  --primary-color: #ef4444; // red-500
+  --primary-text-color: #ffffff;
+}
+
+// Additional compatibility with existing theme system
+:root {
+  // Map notification variables to existing design tokens
+  --notification-bg: var(--bg-color);
+  --notification-text: var(--text-color);
+  --notification-border: var(--border-color);
+  --notification-link: var(--link-color);
+}
+
+.dark {
+  --notification-bg: var(--bg-color);
+  --notification-text: var(--text-color);
+  --notification-border: var(--border-color);
+  --notification-link: var(--link-color);
+}

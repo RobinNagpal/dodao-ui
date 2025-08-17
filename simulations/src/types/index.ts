@@ -72,6 +72,7 @@ export interface CaseStudyEnrollment {
 export interface EnrollmentStudent {
   id: string;
   enrollmentId: string;
+  assignedStudentId: string;
   createdBy?: string;
   updatedBy?: string;
   createdAt: Date;
