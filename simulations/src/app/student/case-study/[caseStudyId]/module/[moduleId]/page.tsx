@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { getCaseStudyById, getModuleById, getExercisesByModuleId } from '@/data/mockData';
+import { getCaseStudyById, getModuleById, getExercisesByModuleId } from '@/dummy/mockData';
 import { CaseStudy, CaseStudyModule, ModuleExercise } from '@/types';
 
 export default function ModuleOverview() {

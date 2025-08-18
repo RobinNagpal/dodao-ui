@@ -81,6 +81,7 @@ export default function EditCaseStudyPage({ params }: EditCaseStudyPageProps): J
   const [details, setDetails] = useState('');
   const [subject, setSubject] = useState<BusinessSubject | ''>('');
   const [modules, setModules] = useState<Module[]>([]);
+  const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
 
   // Resolve params
   useEffect(() => {
@@ -97,8 +98,6 @@ export default function EditCaseStudyPage({ params }: EditCaseStudyPageProps): J
     { skipInitialFetch: !caseStudyId },
     'Failed to load case study'
   );
-
-  const adminEmail = localStorage.getItem('user_email') || 'admin@example.com';
 
   const { putData, loading: updating } = usePutData(
     {
@@ -124,6 +123,7 @@ export default function EditCaseStudyPage({ params }: EditCaseStudyPageProps): J
     }
 
     setUserEmail(email);
+    setAdminEmail(email);
     setIsLoading(false);
   }, [router]);
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -35,6 +35,15 @@ interface ManageStudentsModalProps {
 export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enrollmentTitle }: ManageStudentsModalProps) {
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
+
+  // Get admin email from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('user_email') || 'admin@example.com';
+      setAdminEmail(email);
+    }
+  }, []);
 
   // Fetch enrollment data with students
   const {
@@ -42,8 +51,6 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
     loading: loadingEnrollment,
     reFetchData,
   } = useFetchData<Enrollment>(`/api/enrollments/${enrollmentId}`, { skipInitialFetch: !enrollmentId || !isOpen }, 'Failed to load enrollment details');
-
-  const adminEmail = localStorage.getItem('user_email') || 'admin@example.com';
 
   const { postData: addStudent, loading: addingStudent } = usePostData(
     {

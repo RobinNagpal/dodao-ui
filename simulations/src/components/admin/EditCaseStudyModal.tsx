@@ -77,6 +77,15 @@ export default function EditCaseStudyModal({ isOpen, onClose, onSuccess, caseStu
   const [details, setDetails] = useState('');
   const [subject, setSubject] = useState<BusinessSubject | ''>('');
   const [modules, setModules] = useState<Module[]>([]);
+  const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
+
+  // Get admin email from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('user_email') || 'admin@example.com';
+      setAdminEmail(email);
+    }
+  }, []);
 
   // Fetch case study data
   const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudy>(
@@ -84,8 +93,6 @@ export default function EditCaseStudyModal({ isOpen, onClose, onSuccess, caseStu
     { skipInitialFetch: !caseStudyId || !isOpen },
     'Failed to load case study'
   );
-
-  const adminEmail = localStorage.getItem('user_email') || 'admin@example.com';
 
   const { putData, loading: updating } = usePutData(
     {
