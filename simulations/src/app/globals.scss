@@ -1,8 +1,47 @@
+@use 'sass:meta';
 @use './styles/colors.scss';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@include meta.load-css('styles/markdown');
+
+* {
+  border-color: var(--border);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Custom utility classes for modal components */
+.background-color {
+  background-color: var(--bg-color, #ffffff);
+}
+
+.text-color {
+  color: var(--text-color, #111827);
+}
+
+.border-color {
+  border-color: var(--border-color, #e5e7eb);
+}
+
+.heading-color {
+  color: var(--heading-color, #111827);
+}
+
+.markdown > * {
+  all: revert;
+}
+
+.markdown table {
+  all: unset; /* Exclude tables from 'revert' */
+}
 
 :root {
   --radius: 0.625rem;
@@ -71,32 +110,4 @@
   --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
-}
-
-* {
-  border-color: var(--border);
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-}
-
-/* Custom utility classes for modal components */
-.background-color {
-  background-color: var(--bg-color, #ffffff);
-}
-
-.text-color {
-  color: var(--text-color, #111827);
-}
-
-.border-color {
-  border-color: var(--border-color, #e5e7eb);
-}
-
-.heading-color {
-  color: var(--heading-color, #111827);
 }

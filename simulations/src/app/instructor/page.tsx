@@ -2,36 +2,40 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCaseStudiesAssignedToInstructor, getEnrolledStudents, addStudentToEnrollment, removeStudentFromEnrollment } from '@/dummy/mockData';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import InstructorManageStudentsModal from '@/components/instructor/InstructorManageStudentsModal';
 import type { CaseStudy } from '@/types';
 import { BookOpen, LogOut, Users, Plus, X, UserCheck } from 'lucide-react';
 
 export default function InstructorDashboard() {
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
-  const [assignedCaseStudies, setAssignedCaseStudies] = useState<CaseStudy[]>([]);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
-  const [enrolledStudents, setEnrolledStudents] = useState<string[]>([]);
-  const [newStudentEmail, setNewStudentEmail] = useState('');
   const [showStudentManagement, setShowStudentManagement] = useState(false);
   const router = useRouter();
+
+  // API hook to fetch case studies
+  const {
+    data: assignedCaseStudies = [],
+    loading: loadingCaseStudies,
+    reFetchData: refetchCaseStudies,
+  } = useFetchData<CaseStudy[]>(
+    `/api/instructor/case-studies?instructorEmail=${encodeURIComponent(userEmail)}`,
+    { skipInitialFetch: !userEmail },
+    'Failed to load assigned case studies'
+  );
 
   // Check authentication on page load
   useEffect(() => {
     const userType = localStorage.getItem('user_type');
     const email = localStorage.getItem('user_email');
 
-    if (!userType || userType !== 'professor' || !email) {
+    if (!userType || userType !== 'instructor' || !email) {
       router.push('/login');
       return;
     }
 
     setUserEmail(email);
-
-    // Load case studies assigned to this instructor
-    const assignedCases = getCaseStudiesAssignedToInstructor(email);
-    setAssignedCaseStudies(assignedCases);
-
     setIsLoading(false);
   }, [router]);
 
@@ -42,47 +46,19 @@ export default function InstructorDashboard() {
   };
 
   const handleViewCaseStudy = (caseStudy: CaseStudy) => {
-    router.push(`/professor/case-study/${caseStudy.id}`);
+    router.push(`/instructor/case-study/${caseStudy.id}`);
   };
 
   const handleManageStudents = (caseStudy: CaseStudy) => {
     setSelectedCaseStudy(caseStudy);
-    const students = getEnrolledStudents(caseStudy.id, userEmail);
-    setEnrolledStudents(students);
     setShowStudentManagement(true);
   };
 
-  const handleAddStudent = () => {
-    if (!selectedCaseStudy || !newStudentEmail.trim()) return;
-
-    const success = addStudentToEnrollment(selectedCaseStudy.id, newStudentEmail.trim(), userEmail);
-    if (success) {
-      const updatedStudents = getEnrolledStudents(selectedCaseStudy.id, userEmail);
-      setEnrolledStudents(updatedStudents);
-      setNewStudentEmail('');
-
-      // Refresh the case studies to get updated enrollment counts
-      const assignedCases = getCaseStudiesAssignedToInstructor(userEmail);
-      setAssignedCaseStudies(assignedCases);
-    } else {
-      alert('Failed to add student. They may already be enrolled.');
-    }
-  };
-
-  const handleRemoveStudent = (studentEmail: string) => {
-    if (!selectedCaseStudy) return;
-
-    const success = removeStudentFromEnrollment(selectedCaseStudy.id, studentEmail, userEmail);
-    if (success) {
-      const updatedStudents = getEnrolledStudents(selectedCaseStudy.id, userEmail);
-      setEnrolledStudents(updatedStudents);
-
-      // Refresh the case studies to get updated enrollment counts
-      const assignedCases = getCaseStudiesAssignedToInstructor(userEmail);
-      setAssignedCaseStudies(assignedCases);
-    } else {
-      alert('Failed to remove student.');
-    }
+  const handleCloseModal = async () => {
+    setShowStudentManagement(false);
+    setSelectedCaseStudy(null);
+    // Refresh case studies to get updated counts
+    await refetchCaseStudies();
   };
 
   const getSubjectDisplayName = (subject: string) => {
@@ -97,10 +73,10 @@ export default function InstructorDashboard() {
   };
 
   const getEnrollmentCount = (caseStudy: CaseStudy) => {
-    return getEnrolledStudents(caseStudy.id, userEmail).length;
+    return caseStudy.enrollments?.reduce((total, enrollment) => total + (enrollment.students?.length || 0), 0) || 0;
   };
 
-  if (isLoading) {
+  if (isLoading || loadingCaseStudies) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="flex items-center space-x-2">
@@ -202,74 +178,13 @@ export default function InstructorDashboard() {
       </div>
 
       {/* Student Management Modal */}
-      {showStudentManagement && selectedCaseStudy && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden">
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-gray-900">Manage Students - {selectedCaseStudy.title}</h3>
-                <button onClick={() => setShowStudentManagement(false)} className="text-gray-400 hover:text-gray-600">
-                  <X className="h-6 w-6" />
-                </button>
-              </div>
-            </div>
-
-            <div className="p-6 overflow-y-auto max-h-[60vh]">
-              {/* Add Student Section */}
-              <div className="mb-6">
-                <h4 className="text-md font-medium text-gray-900 mb-3">Add New Student</h4>
-                <div className="flex space-x-2">
-                  <input
-                    type="email"
-                    value={newStudentEmail}
-                    onChange={(e) => setNewStudentEmail(e.target.value)}
-                    placeholder="Enter student email"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <button
-                    onClick={handleAddStudent}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center space-x-2"
-                  >
-                    <Plus className="h-4 w-4" />
-                    <span>Add</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Enrolled Students Section */}
-              <div>
-                <h4 className="text-md font-medium text-gray-900 mb-3">Enrolled Students ({enrolledStudents.length})</h4>
-                {enrolledStudents.length === 0 ? (
-                  <p className="text-gray-500 italic">No students enrolled yet.</p>
-                ) : (
-                  <div className="space-y-2">
-                    {enrolledStudents.map((studentEmail) => (
-                      <div key={studentEmail} className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
-                        <div className="flex items-center space-x-2">
-                          <UserCheck className="h-4 w-4 text-green-600" />
-                          <span className="text-gray-900">{studentEmail}</span>
-                        </div>
-                        <button onClick={() => handleRemoveStudent(studentEmail)} className="text-red-600 hover:text-red-800 p-1" title="Remove student">
-                          <X className="h-4 w-4" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="p-6 border-t border-gray-200">
-              <button
-                onClick={() => setShowStudentManagement(false)}
-                className="w-full bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <InstructorManageStudentsModal
+        isOpen={showStudentManagement}
+        onClose={handleCloseModal}
+        caseStudyId={selectedCaseStudy?.id || ''}
+        caseStudyTitle={selectedCaseStudy?.title || ''}
+        instructorEmail={userEmail}
+      />
     </div>
   );
 }

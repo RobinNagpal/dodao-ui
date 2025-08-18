@@ -10,33 +10,55 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Shield, Plus, Trash2, X, ArrowLeft } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { BusinessSubject } from '@prisma/client';
-import { CreateCaseStudyRequest, CaseStudyWithRelations } from '@/types/api';
+import { UpdateCaseStudyRequest } from '@/types/api';
 
-interface ModuleFormData {
-  id: string;
+interface Module {
+  id?: string;
   title: string;
   shortDescription: string;
   details: string;
   orderNumber: number;
-  exercises: ExerciseFormData[];
+  exercises: Exercise[];
 }
 
-interface ExerciseFormData {
-  id: string;
+interface Exercise {
+  id?: string;
   title: string;
   shortDescription: string;
   details: string;
   orderNumber: number;
 }
 
-interface SubjectOption {
-  value: BusinessSubject;
-  label: string;
+interface CaseStudy {
+  id: string;
+  title: string;
+  shortDescription: string;
+  details: string;
+  subject: BusinessSubject;
+  modules: {
+    id: string;
+    title: string;
+    shortDescription: string;
+    details: string;
+    orderNumber: number;
+    exercises: {
+      id: string;
+      title: string;
+      shortDescription: string;
+      details: string;
+      orderNumber: number;
+    }[];
+  }[];
 }
 
-const subjectOptions: SubjectOption[] = [
+interface EditCaseStudyClientProps {
+  caseStudyId: string;
+}
+
+const subjectOptions = [
   { value: 'HR', label: 'Human Resources' },
   { value: 'ECONOMICS', label: 'Economics' },
   { value: 'MARKETING', label: 'Marketing' },
@@ -44,7 +66,7 @@ const subjectOptions: SubjectOption[] = [
   { value: 'OPERATIONS', label: 'Operations' },
 ];
 
-export default function CreateCaseStudyPage() {
+export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClientProps): JSX.Element {
   const router = useRouter();
   const { showNotification } = useNotificationContext();
 
@@ -53,17 +75,24 @@ export default function CreateCaseStudyPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Form state
-  const [title, setTitle] = useState<string>('');
-  const [shortDescription, setShortDescription] = useState<string>('');
-  const [details, setDetails] = useState<string>('');
+  const [title, setTitle] = useState('');
+  const [shortDescription, setShortDescription] = useState('');
+  const [details, setDetails] = useState('');
   const [subject, setSubject] = useState<BusinessSubject | ''>('');
-  const [modules, setModules] = useState<ModuleFormData[]>([]);
+  const [modules, setModules] = useState<Module[]>([]);
   const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
 
-  const { postData, loading } = usePostData<CaseStudyWithRelations, CreateCaseStudyRequest>(
+  // Fetch case study data
+  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudy>(
+    `/api/case-studies/${caseStudyId}`,
+    { skipInitialFetch: !caseStudyId },
+    'Failed to load case study'
+  );
+
+  const { putData, loading: updating } = usePutData(
     {
-      successMessage: 'Case study created successfully!',
-      errorMessage: 'Failed to create case study',
+      successMessage: 'Case study updated successfully!',
+      errorMessage: 'Failed to update case study',
       redirectPath: '/admin',
     },
     {
@@ -88,21 +117,28 @@ export default function CreateCaseStudyPage() {
     setIsLoading(false);
   }, [router]);
 
-  const resetForm = (): void => {
-    setTitle('');
-    setShortDescription('');
-    setDetails('');
-    setSubject('');
-    setModules([]);
-  };
+  // Initialize form when case study data is loaded
+  useEffect(() => {
+    if (caseStudy) {
+      setTitle(caseStudy.title);
+      setShortDescription(caseStudy.shortDescription);
+      setDetails(caseStudy.details);
+      setSubject(caseStudy.subject);
+      setModules(
+        caseStudy.modules.map((module) => ({
+          ...module,
+          exercises: module.exercises.map((exercise) => ({ ...exercise })),
+        }))
+      );
+    }
+  }, [caseStudy]);
 
-  const handleBack = (): void => {
+  const handleBack = () => {
     router.push('/admin');
   };
 
-  const addModule = (): void => {
-    const newModule: ModuleFormData = {
-      id: `module-${Date.now()}`,
+  const addModule = () => {
+    const newModule: Module = {
       title: '',
       shortDescription: '',
       details: '',
@@ -112,49 +148,45 @@ export default function CreateCaseStudyPage() {
     setModules([...modules, newModule]);
   };
 
-  const updateModule = (moduleId: string, field: keyof Omit<ModuleFormData, 'exercises'>, value: string | number): void => {
-    setModules(modules.map((m: ModuleFormData) => (m.id === moduleId ? { ...m, [field]: value } : m)));
+  const updateModule = (moduleIndex: number, field: keyof Omit<Module, 'exercises'>, value: string | number) => {
+    const updatedModules = [...modules];
+    updatedModules[moduleIndex] = { ...updatedModules[moduleIndex], [field]: value };
+    setModules(updatedModules);
   };
 
-  const removeModule = (moduleId: string): void => {
-    setModules(modules.filter((m: ModuleFormData) => m.id !== moduleId));
+  const removeModule = (moduleIndex: number) => {
+    setModules(modules.filter((_, index) => index !== moduleIndex));
   };
 
-  const addExercise = (moduleId: string): void => {
-    const caseStudyModule: ModuleFormData | undefined = modules.find((m: ModuleFormData) => m.id === moduleId);
-    if (!caseStudyModule) return;
-
-    const newExercise: ExerciseFormData = {
-      id: `exercise-${Date.now()}`,
+  const addExercise = (moduleIndex: number) => {
+    const newExercise: Exercise = {
       title: '',
       shortDescription: '',
       details: '',
-      orderNumber: caseStudyModule.exercises.length + 1,
+      orderNumber: modules[moduleIndex].exercises.length + 1,
     };
 
-    setModules(modules.map((m: ModuleFormData) => (m.id === moduleId ? { ...m, exercises: [...m.exercises, newExercise] } : m)));
+    const updatedModules = [...modules];
+    updatedModules[moduleIndex].exercises.push(newExercise);
+    setModules(updatedModules);
   };
 
-  const updateExercise = (moduleId: string, exerciseId: string, field: keyof ExerciseFormData, value: string | number): void => {
-    setModules(
-      modules.map((m: ModuleFormData) =>
-        m.id === moduleId
-          ? {
-              ...m,
-              exercises: m.exercises.map((e: ExerciseFormData) => (e.id === exerciseId ? { ...e, [field]: value } : e)),
-            }
-          : m
-      )
-    );
+  const updateExercise = (moduleIndex: number, exerciseIndex: number, field: keyof Exercise, value: string | number) => {
+    const updatedModules = [...modules];
+    updatedModules[moduleIndex].exercises[exerciseIndex] = {
+      ...updatedModules[moduleIndex].exercises[exerciseIndex],
+      [field]: value,
+    };
+    setModules(updatedModules);
   };
 
-  const removeExercise = (moduleId: string, exerciseId: string): void => {
-    setModules(
-      modules.map((m: ModuleFormData) => (m.id === moduleId ? { ...m, exercises: m.exercises.filter((e: ExerciseFormData) => e.id !== exerciseId) } : m))
-    );
+  const removeExercise = (moduleIndex: number, exerciseIndex: number) => {
+    const updatedModules = [...modules];
+    updatedModules[moduleIndex].exercises = updatedModules[moduleIndex].exercises.filter((_, index) => index !== exerciseIndex);
+    setModules(updatedModules);
   };
 
-  const handleSubmit = async (): Promise<void> => {
+  const handleSubmit = async () => {
     // Validation
     if (!title.trim()) {
       showNotification({ type: 'error', message: 'Title is required' });
@@ -195,17 +227,19 @@ export default function CreateCaseStudyPage() {
       }
     }
 
-    const payload: CreateCaseStudyRequest = {
+    const payload: UpdateCaseStudyRequest = {
       title,
       shortDescription,
       details,
       subject: subject as BusinessSubject,
-      modules: modules.map((module: ModuleFormData) => ({
+      modules: modules.map((module) => ({
+        id: module.id,
         title: module.title,
         shortDescription: module.shortDescription,
         details: module.details,
         orderNumber: module.orderNumber,
-        exercises: module.exercises.map((exercise: ExerciseFormData) => ({
+        exercises: module.exercises.map((exercise) => ({
+          id: exercise.id,
           title: exercise.title,
           shortDescription: exercise.shortDescription,
           details: exercise.details,
@@ -215,21 +249,18 @@ export default function CreateCaseStudyPage() {
     };
 
     try {
-      const result: CaseStudyWithRelations | undefined = await postData('/api/case-studies', payload);
-      if (result) {
-        resetForm();
-      }
-    } catch (error: unknown) {
-      console.error('Error creating case study:', error);
+      const result = await putData(`/api/case-studies/${caseStudyId}`, payload);
+    } catch (error) {
+      console.error('Error updating case study:', error);
     }
   };
 
-  if (isLoading) {
+  if (isLoading || loadingCaseStudy) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="flex items-center space-x-2">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="text-lg text-gray-900">Loading...</span>
+          <span className="text-lg text-gray-900">Loading case study...</span>
         </div>
       </div>
     );
@@ -250,7 +281,7 @@ export default function CreateCaseStudyPage() {
                 <Shield className="h-8 w-8 text-red-600" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Create New Case Study</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Edit Case Study</h1>
                 <p className="text-gray-600">Welcome back, {userEmail}</p>
               </div>
             </div>
@@ -316,11 +347,11 @@ export default function CreateCaseStudyPage() {
                 </Button>
               </div>
 
-              {modules.map((module: ModuleFormData, moduleIndex: number) => (
-                <div key={module.id} className="border rounded-lg p-4 mb-4">
+              {modules.map((module, moduleIndex) => (
+                <div key={`module-${moduleIndex}`} className="border rounded-lg p-4 mb-4">
                   <div className="flex justify-between items-center mb-3">
                     <h4 className="font-medium">Module {moduleIndex + 1}</h4>
-                    <Button type="button" variant="destructive" size="sm" onClick={(): void => removeModule(module.id)}>
+                    <Button type="button" variant="destructive" size="sm" onClick={() => removeModule(moduleIndex)}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
@@ -329,14 +360,14 @@ export default function CreateCaseStudyPage() {
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <Label>Module Title *</Label>
-                        <Input value={module.title} onChange={(e) => updateModule(module.id, 'title', e.target.value)} placeholder="Module title" />
+                        <Input value={module.title} onChange={(e) => updateModule(moduleIndex, 'title', e.target.value)} placeholder="Module title" />
                       </div>
                       <div>
                         <Label>Order Number</Label>
                         <Input
                           type="number"
                           value={module.orderNumber}
-                          onChange={(e) => updateModule(module.id, 'orderNumber', parseInt(e.target.value) || 1)}
+                          onChange={(e) => updateModule(moduleIndex, 'orderNumber', parseInt(e.target.value) || 1)}
                           min={1}
                         />
                       </div>
@@ -346,7 +377,7 @@ export default function CreateCaseStudyPage() {
                       <Label>Short Description *</Label>
                       <Textarea
                         value={module.shortDescription}
-                        onChange={(e) => updateModule(module.id, 'shortDescription', e.target.value)}
+                        onChange={(e) => updateModule(moduleIndex, 'shortDescription', e.target.value)}
                         placeholder="Brief module description"
                         rows={2}
                       />
@@ -354,10 +385,10 @@ export default function CreateCaseStudyPage() {
 
                     <div>
                       <MarkdownEditor
-                        objectId={`module-${module.id}-details`}
+                        objectId={`module-${moduleIndex}-details`}
                         label="Module Details *"
                         modelValue={module.details}
-                        onUpdate={(value) => updateModule(module.id, 'details', value)}
+                        onUpdate={(value: string) => updateModule(moduleIndex, 'details', value)}
                         placeholder="Enter module details using markdown..."
                         maxHeight={200}
                       />
@@ -367,17 +398,17 @@ export default function CreateCaseStudyPage() {
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <h5 className="font-medium">Exercises</h5>
-                        <Button type="button" onClick={() => addExercise(module.id)} size="sm" variant="outline">
+                        <Button type="button" onClick={() => addExercise(moduleIndex)} size="sm" variant="outline">
                           <Plus className="h-4 w-4 mr-1" />
                           Add Exercise
                         </Button>
                       </div>
 
-                      {module.exercises.map((exercise: ExerciseFormData, exerciseIndex: number) => (
-                        <div key={exercise.id} className="border border-gray-200 rounded p-3 mb-2">
+                      {module.exercises.map((exercise, exerciseIndex) => (
+                        <div key={`exercise-${exerciseIndex}`} className="border border-gray-200 rounded p-3 mb-2">
                           <div className="flex justify-between items-center mb-2">
                             <span className="text-sm font-medium">Exercise {exerciseIndex + 1}</span>
-                            <Button type="button" variant="ghost" size="sm" onClick={(): void => removeExercise(module.id, exercise.id)}>
+                            <Button type="button" variant="ghost" size="sm" onClick={() => removeExercise(moduleIndex, exerciseIndex)}>
                               <X className="h-4 w-4" />
                             </Button>
                           </div>
@@ -387,7 +418,7 @@ export default function CreateCaseStudyPage() {
                               <div>
                                 <Input
                                   value={exercise.title}
-                                  onChange={(e: React.ChangeEvent<HTMLInputElement>): void => updateExercise(module.id, exercise.id, 'title', e.target.value)}
+                                  onChange={(e) => updateExercise(moduleIndex, exerciseIndex, 'title', e.target.value)}
                                   placeholder="Exercise title"
                                 />
                               </div>
@@ -395,9 +426,7 @@ export default function CreateCaseStudyPage() {
                                 <Input
                                   type="number"
                                   value={exercise.orderNumber}
-                                  onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-                                    updateExercise(module.id, exercise.id, 'orderNumber', parseInt(e.target.value) || 1)
-                                  }
+                                  onChange={(e) => updateExercise(moduleIndex, exerciseIndex, 'orderNumber', parseInt(e.target.value) || 1)}
                                   placeholder="Order"
                                   min={1}
                                 />
@@ -407,9 +436,7 @@ export default function CreateCaseStudyPage() {
                             <div>
                               <Textarea
                                 value={exercise.shortDescription}
-                                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void =>
-                                  updateExercise(module.id, exercise.id, 'shortDescription', e.target.value)
-                                }
+                                onChange={(e) => updateExercise(moduleIndex, exerciseIndex, 'shortDescription', e.target.value)}
                                 placeholder="Brief exercise description"
                                 rows={1}
                               />
@@ -417,10 +444,10 @@ export default function CreateCaseStudyPage() {
 
                             <div>
                               <MarkdownEditor
-                                objectId={`exercise-${exercise.id}-details`}
+                                objectId={`exercise-${moduleIndex}-${exerciseIndex}-details`}
                                 label="Exercise Details *"
                                 modelValue={exercise.details}
-                                onUpdate={(value: string): void => updateExercise(module.id, exercise.id, 'details', value)}
+                                onUpdate={(value: string) => updateExercise(moduleIndex, exerciseIndex, 'details', value)}
                                 placeholder="Enter exercise details using markdown..."
                                 maxHeight={150}
                               />
@@ -439,8 +466,8 @@ export default function CreateCaseStudyPage() {
               <Button type="button" variant="outline" onClick={handleBack}>
                 Cancel
               </Button>
-              <Button type="button" onClick={handleSubmit} disabled={loading}>
-                {loading ? 'Creating...' : 'Create Case Study'}
+              <Button type="button" onClick={handleSubmit} disabled={updating}>
+                {updating ? 'Updating...' : 'Update Case Study'}
               </Button>
             </div>
           </div>

@@ -26,9 +26,9 @@ export default function LoginPage() {
   };
 
   const handleInstructorLogin = (email: string) => {
-    localStorage.setItem('user_type', 'professor'); // Keep as 'professor' for routing compatibility
+    localStorage.setItem('user_type', 'instructor');
     localStorage.setItem('user_email', email);
-    router.push('/professor');
+    router.push('/instructor');
   };
 
   const handleSwitchToStudent = () => {

@@ -10,7 +10,7 @@ interface RemoveStudentRequest {
 
 // DELETE /api/enrollments/[id]/students/remove - Remove a student from an enrollment by email
 async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<DeleteResponse> {
-  const { id: enrollmentId }: { id: string } = await params;
+  const { id: enrollmentId } = await params;
   const body: RemoveStudentRequest = await req.json();
 
   // Find and delete the student by email and enrollment
