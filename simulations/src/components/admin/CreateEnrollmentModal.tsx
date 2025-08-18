@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,6 +25,15 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
   const [selectedCaseStudyId, setSelectedCaseStudyId] = useState('');
   const [assignedInstructorId, setAssignedInstructorId] = useState('');
   const [errors, setErrors] = useState({ caseStudy: '', instructor: '' });
+  const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
+
+  // Get admin email from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('user_email') || 'admin@example.com';
+      setAdminEmail(email);
+    }
+  }, []);
 
   // Fetch case studies
   const { data: caseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudy[]>(
@@ -32,8 +41,6 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
     { skipInitialFetch: !isOpen },
     'Failed to load case studies'
   );
-
-  const adminEmail = localStorage.getItem('user_email') || 'admin@example.com';
 
   const { postData, loading } = usePostData(
     {

@@ -58,8 +58,7 @@ export default function CreateCaseStudyPage(): JSX.Element {
   const [details, setDetails] = useState<string>('');
   const [subject, setSubject] = useState<BusinessSubject | ''>('');
   const [modules, setModules] = useState<ModuleFormData[]>([]);
-
-  const adminEmail: string = localStorage.getItem('user_email') || 'admin@example.com';
+  const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
 
   const { postData, loading } = usePostData<CaseStudyWithRelations, CreateCaseStudyRequest>(
     {
@@ -85,6 +84,7 @@ export default function CreateCaseStudyPage(): JSX.Element {
     }
 
     setUserEmail(email);
+    setAdminEmail(email);
     setIsLoading(false);
   }, [router]);
 

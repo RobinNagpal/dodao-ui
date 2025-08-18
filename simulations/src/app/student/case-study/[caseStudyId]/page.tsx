@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { getCaseStudyById, getModulesByCaseStudyId } from '@/data/mockData';
+import { getCaseStudyById, getModulesByCaseStudyId } from '@/dummy/mockData';
 import type { CaseStudy, CaseStudyModule } from '@/types';
 import { ArrowLeft, BookOpen, Clock, Play, CheckCircle, User, Building } from 'lucide-react';
 

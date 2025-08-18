@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { StudentLogin } from '@/components/login/student-login';
 import { InstructorLogin } from '@/components/login/instructor-login';
-import { isAdminEmail } from '@/data/mockData';
+import { isAdminEmail } from '@/dummy/mockData';
 
 export default function LoginPage() {
   const [loginType, setLoginType] = useState<'student' | 'instructor'>('student');

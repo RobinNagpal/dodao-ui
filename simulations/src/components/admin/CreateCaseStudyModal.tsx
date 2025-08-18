@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -59,8 +59,15 @@ export default function CreateCaseStudyModal({ isOpen, onClose, onSuccess }: Cre
   const [details, setDetails] = useState<string>('');
   const [subject, setSubject] = useState<BusinessSubject | ''>('');
   const [modules, setModules] = useState<ModuleFormData[]>([]);
+  const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
 
-  const adminEmail: string = localStorage.getItem('user_email') || 'admin@example.com';
+  // Get admin email from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('user_email') || 'admin@example.com';
+      setAdminEmail(email);
+    }
+  }, []);
 
   const { postData, loading } = usePostData<CaseStudyWithRelations, CreateCaseStudyRequest>(
     {

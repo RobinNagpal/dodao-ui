@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCaseStudiesAssignedToInstructor, getEnrolledStudents, addStudentToEnrollment, removeStudentFromEnrollment } from '@/data/mockData';
+import { getCaseStudiesAssignedToInstructor, getEnrolledStudents, addStudentToEnrollment, removeStudentFromEnrollment } from '@/dummy/mockData';
 import type { CaseStudy } from '@/types';
 import { BookOpen, LogOut, Users, Plus, X, UserCheck } from 'lucide-react';
 
