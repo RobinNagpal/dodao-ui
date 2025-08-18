@@ -6,7 +6,6 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyWithRelations } from '@/types/api';
 import { ArrowLeft, BookOpen, GraduationCap, Target, Play, ChevronRight } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
-import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 
 interface StudentCaseStudyClientProps {
   caseStudyId: string;
@@ -15,8 +14,6 @@ interface StudentCaseStudyClientProps {
 export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudyClientProps) {
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
-  const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set());
-  const [expandedExercises, setExpandedExercises] = useState<Set<string>>(new Set());
 
   const router = useRouter();
 

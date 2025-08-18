@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import type { CaseStudyModule, CaseStudy } from '@/types';
+import type { CaseStudyModule, CaseStudy, ModuleExercise } from '@/types';
 import { ArrowLeft, BookOpen, Users, BarChart3, Target } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
@@ -220,7 +220,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
                       <div>
                         <h4 className="text-lg font-medium text-foreground mb-4">Exercises</h4>
                         <div className="space-y-3">
-                          {module.exercises.map((exercise: any, exerciseIndex: number) => (
+                          {module.exercises.map((exercise: ModuleExercise, exerciseIndex: number) => (
                             <Accordion
                               key={exercise.id}
                               isOpen={expandedExercises.has(exercise.id)}
