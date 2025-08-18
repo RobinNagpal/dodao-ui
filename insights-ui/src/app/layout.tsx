@@ -59,6 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="626f3994-7682-4573-a943-4987796f3eaf"></script>
         <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,500,700&display=swap" />
       </head>
