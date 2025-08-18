@@ -2,17 +2,24 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getEnrolledCaseStudies, isStudentEnrolled } from '@/dummy/mockData';
-import type { CaseStudy, BusinessSubject } from '@/types';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import type { CaseStudyWithRelations } from '@/types/api';
+import type { BusinessSubject } from '@/types';
 import { BookOpen, LogOut, GraduationCap, Lock, ArrowRight } from 'lucide-react';
 
 export default function StudentDashboard() {
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
-  const [enrolledCaseStudies, setEnrolledCaseStudies] = useState<CaseStudy[]>([]);
-  const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudy[]>([]);
+  const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyWithRelations[]>([]);
   const router = useRouter();
+
+  // API hook to fetch enrolled case studies
+  const { data: enrolledCaseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudyWithRelations[]>(
+    `/api/student/case-studies?studentEmail=${encodeURIComponent(userEmail)}`,
+    { skipInitialFetch: !userEmail },
+    'Failed to load enrolled case studies'
+  );
 
   // Check authentication on page load
   useEffect(() => {
@@ -25,20 +32,17 @@ export default function StudentDashboard() {
     }
 
     setUserEmail(email);
-
-    // Load only enrolled case studies for this student
-    const enrolled = getEnrolledCaseStudies(email);
-    setEnrolledCaseStudies(enrolled);
-    setFilteredCaseStudies(enrolled); // Initially show all enrolled case studies
     setIsLoading(false);
   }, [router]);
 
   useEffect(() => {
     // Filter enrolled case studies based on selected subject
-    if (selectedSubject === 'ALL') {
-      setFilteredCaseStudies(enrolledCaseStudies);
-    } else {
-      setFilteredCaseStudies(enrolledCaseStudies.filter((cs) => cs.subject === selectedSubject));
+    if (enrolledCaseStudies) {
+      if (selectedSubject === 'ALL') {
+        setFilteredCaseStudies(enrolledCaseStudies);
+      } else {
+        setFilteredCaseStudies(enrolledCaseStudies.filter((cs) => cs.subject === selectedSubject));
+      }
     }
   }, [selectedSubject, enrolledCaseStudies]);
 
@@ -48,7 +52,7 @@ export default function StudentDashboard() {
     router.push('/login');
   };
 
-  const handleStartCaseStudy = (caseStudy: CaseStudy) => {
+  const handleStartCaseStudy = (caseStudy: CaseStudyWithRelations) => {
     router.push(`/student/case-study/${caseStudy.id}`);
   };
 
@@ -65,6 +69,8 @@ export default function StudentDashboard() {
 
   // Get subjects with counts from enrolled case studies only
   const getEnrolledSubjectsWithCounts = () => {
+    if (!enrolledCaseStudies) return [];
+
     const subjects: BusinessSubject[] = ['MARKETING', 'FINANCE', 'HR', 'OPERATIONS', 'ECONOMICS'];
     return subjects
       .map((subject) => ({
@@ -76,7 +82,7 @@ export default function StudentDashboard() {
 
   const enrolledSubjectsWithCounts = getEnrolledSubjectsWithCounts();
 
-  if (isLoading) {
+  if (isLoading || loadingCaseStudies) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="flex items-center space-x-2">
@@ -116,7 +122,7 @@ export default function StudentDashboard() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
         <div className="flex gap-8">
           {/* Sidebar - Only show if student has enrolled case studies */}
-          {enrolledCaseStudies.length > 0 && (
+          {enrolledCaseStudies && enrolledCaseStudies.length > 0 && (
             <div className="w-64 flex-shrink-0">
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Subjects</h3>
@@ -129,7 +135,7 @@ export default function StudentDashboard() {
                     }`}
                   >
                     <span>All Subjects</span>
-                    <span className="text-sm bg-gray-200 px-2 py-1 rounded-full">{enrolledCaseStudies.length}</span>
+                    <span className="text-sm bg-gray-200 px-2 py-1 rounded-full">{enrolledCaseStudies?.length || 0}</span>
                   </button>
 
                   {enrolledSubjectsWithCounts.map(({ subject, count }) => (
@@ -156,13 +162,13 @@ export default function StudentDashboard() {
                 {selectedSubject === 'ALL' ? 'Your Enrolled Case Studies' : `${getSubjectDisplayName(selectedSubject as BusinessSubject)} Case Studies`}
               </h2>
               <p className="text-gray-600">
-                {enrolledCaseStudies.length === 0
+                {!enrolledCaseStudies || enrolledCaseStudies.length === 0
                   ? 'You are not enrolled in any case studies yet. Contact your instructor to get enrolled.'
                   : 'Continue your learning journey with these case studies.'}
               </p>
             </div>
 
-            {enrolledCaseStudies.length === 0 ? (
+            {!enrolledCaseStudies || enrolledCaseStudies.length === 0 ? (
               <div className="text-center py-12">
                 <BookOpen className="mx-auto h-16 w-16 text-gray-400 mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">No Case Studies Enrolled</h3>
@@ -204,7 +210,7 @@ export default function StudentDashboard() {
             )}
 
             {/* No filtered results */}
-            {enrolledCaseStudies.length > 0 && filteredCaseStudies.length === 0 && selectedSubject !== 'ALL' && (
+            {enrolledCaseStudies && enrolledCaseStudies.length > 0 && filteredCaseStudies.length === 0 && selectedSubject !== 'ALL' && (
               <div className="text-center py-12">
                 <BookOpen className="mx-auto h-16 w-16 text-gray-400 mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">No Case Studies in {getSubjectDisplayName(selectedSubject as BusinessSubject)}</h3>
