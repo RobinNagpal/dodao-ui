@@ -5,7 +5,7 @@ import { UpdateCaseStudyRequest, CaseStudyWithRelations, DeleteResponse } from '
 
 // GET /api/case-studies/[id] - Get a specific case study
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<CaseStudyWithRelations> {
-  const { id }: { id: string } = await params;
+  const { id } = await params;
 
   const caseStudy: CaseStudyWithRelations = await prisma.caseStudy.findUniqueOrThrow({
     where: { id },
@@ -30,7 +30,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
 
 // PUT /api/case-studies/[id] - Update a case study
 async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<CaseStudyWithRelations> {
-  const { id }: { id: string } = await params;
+  const { id } = await params;
   const body: UpdateCaseStudyRequest = await req.json();
 
   // Get admin email from request headers
@@ -50,7 +50,16 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: 
       },
     });
 
-    // Delete existing modules and exercises (cascade delete will handle exercises)
+    // Delete existing exercises first, then modules (due to foreign key constraints)
+    await tx.moduleExercise.deleteMany({
+      where: {
+        module: {
+          caseStudyId: id,
+        },
+      },
+    });
+
+    // Now delete the modules
     await tx.caseStudyModule.deleteMany({
       where: { caseStudyId: id },
     });
@@ -105,7 +114,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: 
 
 // DELETE /api/case-studies/[id] - Delete a case study
 async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<DeleteResponse> {
-  const { id }: { id: string } = await params;
+  const { id } = await params;
 
   // Use a transaction to ensure atomicity
   await prisma.$transaction(async (tx) => {

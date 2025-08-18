@@ -9,7 +9,7 @@ interface AddStudentRequest {
 
 // POST /api/enrollments/[id]/students - Add a student to an enrollment
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<EnrollmentStudent> {
-  const { id: enrollmentId }: { id: string } = await params;
+  const { id: enrollmentId } = await params;
   const body: AddStudentRequest = await req.json();
 
   // Get admin email from request headers

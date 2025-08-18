@@ -1,60 +1,50 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { getCaseStudyById, getModulesByCaseStudyId } from '@/dummy/mockData';
-import type { CaseStudy, CaseStudyModule } from '@/types';
-import { ArrowLeft, BookOpen, Users, BarChart3, Plus, Edit3, Target, TrendingUp, CheckCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import type { CaseStudyModule, CaseStudy } from '@/types';
+import { ArrowLeft, BookOpen, Users, BarChart3, Target } from 'lucide-react';
+import { parseMarkdown } from '@/utils/parse-markdown';
+import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 
-export default function ProfessorCaseStudyManagement() {
+interface CaseStudyManagementClientProps {
+  caseStudyId: string;
+}
+
+export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyManagementClientProps) {
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
-  const [caseStudy, setCaseStudy] = useState<CaseStudy | null>(null);
-  const [modules, setModules] = useState<CaseStudyModule[]>([]);
   const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'analytics'>('overview');
+  const [expandedExercises, setExpandedExercises] = useState<Set<string>>(new Set());
 
   const router = useRouter();
-  const params = useParams();
-  const caseStudyId = params.caseStudyId as string;
+
+  // API hook to fetch case study data
+  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudy>(
+    `/api/instructor/case-studies/${caseStudyId}?instructorEmail=${encodeURIComponent(userEmail)}`,
+    { skipInitialFetch: !caseStudyId || !userEmail },
+    'Failed to load case study'
+  );
 
   useEffect(() => {
     const userType = localStorage.getItem('user_type');
     const email = localStorage.getItem('user_email');
 
-    if (!userType || userType !== 'professor' || !email) {
+    if (!userType || userType !== 'instructor' || !email) {
       router.push('/login');
       return;
     }
 
     setUserEmail(email);
-
-    // Load case study data
-    const studyData = getCaseStudyById(caseStudyId);
-    if (!studyData) {
-      router.push('/professor');
-      return;
-    }
-
-    setCaseStudy(studyData);
-    setModules(getModulesByCaseStudyId(caseStudyId));
     setIsLoading(false);
-  }, [router, caseStudyId]);
+  }, [router]);
 
   const handleBack = () => {
-    router.push('/professor');
+    router.push('/instructor');
   };
 
-  const handleEditModule = (module: CaseStudyModule) => {
-    // In future, this would open an edit form
-    alert(`Edit module: ${module.title}`);
-  };
-
-  const handleAddModule = () => {
-    // In future, this would open a create form
-    alert('Add new module feature coming soon!');
-  };
-
-  if (isLoading) {
+  if (isLoading || loadingCaseStudy) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex items-center space-x-2">
@@ -82,7 +72,8 @@ export default function ProfessorCaseStudyManagement() {
     );
   }
 
-  const enrolledStudents = caseStudy.enrollments?.reduce((total, enrollment) => total + (enrollment.students?.length || 0), 0) || 0;
+  const enrolledStudents = caseStudy?.enrollments?.reduce((total, enrollment) => total + (enrollment.students?.length || 0), 0) || 0;
+  const modules = caseStudy?.modules || [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -98,14 +89,14 @@ export default function ProfessorCaseStudyManagement() {
               <div className="h-6 w-px bg-border"></div>
               <div>
                 <h1 className="text-2xl font-bold text-foreground">{caseStudy.title}</h1>
-                <p className="text-muted-foreground">Professor Management Console</p>
+                <p className="text-muted-foreground">Instructor Management Console</p>
               </div>
             </div>
             <div className="text-sm text-muted-foreground">Logged in as {userEmail}</div>
           </div>
 
           {/* Stats Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-6">
             <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
               <div className="flex items-center space-x-3">
                 <div className="bg-primary/10 p-2 rounded-lg">
@@ -135,18 +126,9 @@ export default function ProfessorCaseStudyManagement() {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Total Exercises</p>
-                  <p className="text-xl font-semibold text-foreground">{modules.reduce((total, module) => total + (module.exercises?.length || 0), 0)}</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-muted/50 rounded-lg p-4 border border-border">
-              <div className="flex items-center space-x-3">
-                <div className="bg-muted p-2 rounded-lg">
-                  <TrendingUp className="h-5 w-5 text-muted-foreground" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Avg. Progress</p>
-                  <p className="text-xl font-semibold text-foreground">68%</p>
+                  <p className="text-xl font-semibold text-foreground">
+                    {modules.reduce((total: number, module: CaseStudyModule) => total + (module.exercises?.length || 0), 0)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -201,64 +183,76 @@ export default function ProfessorCaseStudyManagement() {
               <h2 className="text-2xl font-bold text-foreground mb-4">Case Study Details</h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">{caseStudy.shortDescription}</p>
               <div className="bg-card/70 backdrop-blur-sm rounded-xl p-6 border border-border/50">
-                <p className="text-foreground leading-relaxed">{caseStudy.details}</p>
+                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy.details) }} />
               </div>
             </div>
 
             {/* Modules Management */}
             <div className="bg-card rounded-xl shadow-sm border border-border p-6">
-              <div className="flex justify-between items-center mb-6">
-                <div>
-                  <h2 className="text-2xl font-bold text-foreground mb-2">Learning Modules</h2>
-                  <p className="text-muted-foreground">Manage and organize your case study content</p>
-                </div>
-                <button
-                  onClick={handleAddModule}
-                  className="flex items-center space-x-2 bg-secondary text-secondary-foreground px-4 py-2 rounded-lg hover:bg-secondary/90 transition-colors"
-                >
-                  <Plus className="h-4 w-4" />
-                  <span>Add Module</span>
-                </button>
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-foreground mb-2">Learning Modules</h2>
+                <p className="text-muted-foreground">View case study modules and exercises</p>
               </div>
 
-              <div className="space-y-4">
-                {modules.map((module, index) => (
-                  <div
-                    key={module.id}
-                    className="group border border-border rounded-xl p-6 hover:shadow-md transition-all duration-300 hover:border-primary/40"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-4 mb-3">
-                          <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">Module {module.orderNumber}</div>
-                          <div className="h-2 w-2 rounded-full bg-muted-foreground/30"></div>
-                          <span className="text-sm text-muted-foreground flex items-center">
-                            <Target className="h-4 w-4 mr-1" />
-                            {module.exercises?.length || 0} exercises
-                          </span>
-                        </div>
-
-                        <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">{module.title}</h3>
-                        <p className="text-muted-foreground leading-relaxed">{module.shortDescription}</p>
+              <div className="space-y-6">
+                {modules.map((module: CaseStudyModule, index: number) => (
+                  <div key={module.id} className="border border-border rounded-xl p-6 bg-gradient-to-br from-card to-muted/20">
+                    <div className="mb-4">
+                      <div className="flex items-center space-x-4 mb-3">
+                        <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">Module {module.orderNumber}</div>
+                        <div className="h-2 w-2 rounded-full bg-muted-foreground/30"></div>
+                        <span className="text-sm text-muted-foreground flex items-center">
+                          <Target className="h-4 w-4 mr-1" />
+                          {module.exercises?.length || 0} exercises
+                        </span>
                       </div>
 
-                      <div className="flex items-center space-x-3 ml-6">
-                        <div className="text-right">
-                          <div className="text-sm text-muted-foreground mb-1">Status</div>
-                          <div className="flex items-center space-x-2">
-                            <CheckCircle className="h-4 w-4 text-secondary" />
-                            <span className="text-sm text-secondary font-medium">Active</span>
-                          </div>
-                        </div>
+                      <h3 className="text-xl font-semibold text-foreground mb-2">{module.title}</h3>
+                      <p className="text-muted-foreground mb-4">{module.shortDescription}</p>
 
-                        <button
-                          onClick={() => handleEditModule(module)}
-                          className="bg-primary/10 text-primary p-2 rounded-lg hover:bg-primary/20 transition-colors"
-                        >
-                          <Edit3 className="h-4 w-4" />
-                        </button>
+                      <div className="bg-card/70 rounded-lg p-4 border border-border/50">
+                        <h4 className="text-lg font-medium text-foreground mb-2">Module Details</h4>
+                        <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(module.details) }} />
                       </div>
                     </div>
+
+                    {module.exercises && module.exercises.length > 0 && (
+                      <div>
+                        <h4 className="text-lg font-medium text-foreground mb-4">Exercises</h4>
+                        <div className="space-y-3">
+                          {module.exercises.map((exercise: any, exerciseIndex: number) => (
+                            <Accordion
+                              key={exercise.id}
+                              isOpen={expandedExercises.has(exercise.id)}
+                              label={`Exercise ${exercise.orderNumber}: ${exercise.title}`}
+                              onClick={() =>
+                                setExpandedExercises((prev) => {
+                                  const newSet = new Set(prev);
+                                  if (newSet.has(exercise.id)) {
+                                    newSet.delete(exercise.id);
+                                  } else {
+                                    newSet.add(exercise.id);
+                                  }
+                                  return newSet;
+                                })
+                              }
+                            >
+                              <div className="space-y-3">
+                                <div className="flex items-center space-x-3 mb-3">
+                                  <div className="bg-secondary/10 text-secondary px-2 py-1 rounded text-xs font-medium">Exercise {exercise.orderNumber}</div>
+                                </div>
+
+                                <p className="text-sm text-muted-foreground">{exercise.shortDescription}</p>
+                                <div className="bg-muted/20 rounded-lg p-4">
+                                  <h5 className="font-medium text-foreground mb-2">Exercise Details</h5>
+                                  <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.details) }} />
+                                </div>
+                              </div>
+                            </Accordion>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -268,11 +262,8 @@ export default function ProfessorCaseStudyManagement() {
                   <div className="bg-muted/50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                     <BookOpen className="h-8 w-8 text-muted-foreground" />
                   </div>
-                  <h3 className="text-lg font-medium text-foreground mb-2">No modules yet</h3>
-                  <p className="text-muted-foreground mb-4">Start building your case study by adding the first module.</p>
-                  <button onClick={handleAddModule} className="bg-primary text-primary-foreground px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-                    Add First Module
-                  </button>
+                  <h3 className="text-lg font-medium text-foreground mb-2">No modules available</h3>
+                  <p className="text-muted-foreground">This case study doesn’t have any modules yet.</p>
                 </div>
               )}
             </div>

@@ -5,7 +5,7 @@ import { EnrollmentWithRelations, DeleteResponse } from '@/types/api';
 
 // GET /api/enrollments/[id] - Get a specific enrollment
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<EnrollmentWithRelations> {
-  const { id }: { id: string } = await params;
+  const { id } = await params;
 
   const enrollment: EnrollmentWithRelations = await prisma.classCaseStudyEnrollment.findUniqueOrThrow({
     where: { id },
@@ -31,7 +31,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
 
 // DELETE /api/enrollments/[id] - Delete an enrollment
 async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<DeleteResponse> {
-  const { id }: { id: string } = await params;
+  const { id } = await params;
 
   // Use a transaction to ensure atomicity
   await prisma.$transaction(async (tx) => {
