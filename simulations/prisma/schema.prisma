@@ -28,7 +28,6 @@ model CaseStudy {
 
   modules      CaseStudyModule[] @relation("CaseStudyToModules")
   enrollments  ClassCaseStudyEnrollment[] @relation("CaseStudyToEnrollments")
-  submissions  FinalSubmission[] @relation("CaseStudyToSubmissions")
 
   @@map("case_studies")
 }
@@ -82,8 +81,9 @@ model EnrollmentStudent {
   updatedAt      DateTime             @updatedAt @map("updated_at")
 
   @@unique([enrollmentId, assignedStudentId], map: "uq_enrollment_student")
-
+  
   @@map("enrollment_students")
+  finalSubmission FinalSubmission?
 }
 
 model ModuleExercise {
@@ -125,8 +125,9 @@ model ExerciseAttempt {
 
 model FinalSubmission {
   id           String    @id @default(uuid()) @map("id")
-  caseStudyId  String    @map("case_study_id")
-  caseStudy    CaseStudy @relation("CaseStudyToSubmissions", fields: [caseStudyId], references: [id])
+
+  studentId     String    @unique @map("student_id")
+  student       EnrollmentStudent @relation(fields: [studentId], references: [id])
 
   createdBy    String?   @map("created_by") // created by student
   updatedBy    String?   @map("updated_by") // updated by student

@@ -43,10 +43,12 @@ async function getHandler(req: NextRequest): Promise<CaseStudy[]> {
             orderBy: {
               createdAt: 'asc',
             },
+            include: {
+              finalSubmission: true,
+            },
           },
         },
       },
-      submissions: true,
     },
     orderBy: {
       createdAt: 'desc',
@@ -76,13 +78,15 @@ async function getHandler(req: NextRequest): Promise<CaseStudy[]> {
         ...student,
         createdBy: student.createdBy || undefined,
         updatedBy: student.updatedBy || undefined,
+        finalSubmission: student.finalSubmission
+          ? {
+              ...student.finalSubmission,
+              createdBy: student.finalSubmission.createdBy || undefined,
+              updatedBy: student.finalSubmission.updatedBy || undefined,
+              finalContent: student.finalSubmission.finalContent || undefined,
+            }
+          : undefined,
       })),
-    })),
-    submissions: cs.submissions?.map((submission) => ({
-      ...submission,
-      createdBy: submission.createdBy || undefined,
-      updatedBy: submission.updatedBy || undefined,
-      finalContent: submission.finalContent || undefined,
     })),
   }));
 

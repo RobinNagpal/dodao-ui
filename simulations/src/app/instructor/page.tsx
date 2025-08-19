@@ -6,6 +6,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import InstructorManageStudentsModal from '@/components/instructor/InstructorManageStudentsModal';
 import type { CaseStudy } from '@/types';
 import { BookOpen, LogOut, Users, GraduationCap, Brain, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function InstructorDashboard() {
   const [userEmail, setUserEmail] = useState<string>('');
@@ -118,13 +119,14 @@ export default function InstructorDashboard() {
                 </p>
               </div>
             </div>
-            <button
+            <Button
               onClick={handleLogout}
-              className="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              variant="outline"
+              className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all duration-200 bg-transparent"
             >
-              <LogOut className="h-4 w-4" />
-              <span className="font-medium">Logout</span>
-            </button>
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
           </div>
         </div>
       </header>

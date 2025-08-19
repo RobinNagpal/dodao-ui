@@ -45,6 +45,14 @@ interface UpdateAttemptRequest {
   studentEmail: string;
 }
 
+interface NextExerciseResponse {
+  nextExerciseId?: string;
+  nextModuleId?: string;
+  caseStudyId?: string;
+  isComplete: boolean;
+  message: string;
+}
+
 export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyId }: StudentExerciseClientProps) {
   // const [userEmail, setUserEmail] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>(() => {
@@ -85,6 +93,13 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     `/api/student/exercises/${exerciseId}?studentEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !exerciseId || !userEmail },
     'Failed to load exercise details'
+  );
+
+  // API hook to fetch next exercise info
+  const { data: nextExerciseData, loading: loadingNextExercise } = useFetchData<NextExerciseResponse>(
+    `/api/student/exercises/${exerciseId}/next-exercise?studentEmail=${encodeURIComponent(userEmail)}`,
+    { skipInitialFetch: !exerciseId || !userEmail },
+    'Failed to load next exercise info'
   );
 
   // API hooks for creating and updating attempts
@@ -163,9 +178,27 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
 
   const handleMoveToNext = () => {
     setHasMovedToNext(true);
-    // In a real implementation, you might want to mark this exercise as completed
-    // and navigate to the next exercise or back to the case study
-    handleBack();
+
+    if (!nextExerciseData) {
+      // Fallback to case study if no navigation data
+      handleBack();
+      return;
+    }
+
+    if (nextExerciseData.isComplete) {
+      // Case study is complete, navigate to final submission
+      router.push(`/student/final-submission/${nextExerciseData.caseStudyId}`);
+    } else if (nextExerciseData.nextExerciseId) {
+      // Navigate to next exercise
+      router.push(
+        `/student/exercise/${nextExerciseData.nextExerciseId}?moduleId=${nextExerciseData.nextModuleId || moduleId}&caseStudyId=${
+          nextExerciseData.caseStudyId || caseStudyId
+        }`
+      );
+    } else {
+      // Fallback to case study
+      handleBack();
+    }
   };
 
   const openAttemptModal = (attempt: ExerciseAttempt) => {
@@ -245,7 +278,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
 
   const latestAttempt = attempts && attempts.length > 0 ? attempts[attempts.length - 1] : null;
 
-  if (isLoading || loadingAttempts || loadingContext || loadingExercise) {
+  if (isLoading || loadingAttempts || loadingContext || loadingExercise || loadingNextExercise) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
@@ -454,7 +487,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                           onClick={handleMoveToNext}
                           className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-3 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                         >
-                          Continue to Next Exercise
+                          {nextExerciseData?.isComplete ? 'Submit Final Analysis' : 'Continue to Next Exercise'}
                         </button>
                       </div>
                     </div>
@@ -472,7 +505,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                       onClick={handleMoveToNext}
                       className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-3 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
-                      Continue to Next Exercise
+                      {nextExerciseData?.isComplete ? 'Submit Final Analysis' : 'Continue to Next Exercise'}
                     </button>
                   )}
                 </div>

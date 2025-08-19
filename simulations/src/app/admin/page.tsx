@@ -10,6 +10,7 @@ import CreateEnrollmentModal from '@/components/admin/CreateEnrollmentModal';
 import ManageStudentsModal from '@/components/admin/ManageStudentsModal';
 import type { BusinessSubject } from '@/types';
 import type { DeleteResponse } from '@/types/api';
+import { Button } from '@/components/ui/button';
 
 interface CaseStudyListItem {
   id: string;
@@ -203,13 +204,14 @@ export default function AdminDashboard() {
                 <p className="text-emerald-600/80 font-medium">Welcome back, {userEmail}</p>
               </div>
             </div>
-            <button
+            <Button
               onClick={handleLogout}
-              className="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+              variant="outline"
+              className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all duration-200 bg-transparent"
             >
-              <LogOut className="h-4 w-4" />
-              <span className="font-medium">Logout</span>
-            </button>
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
           </div>
         </div>
       </header>
