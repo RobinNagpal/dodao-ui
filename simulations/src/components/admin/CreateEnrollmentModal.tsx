@@ -132,9 +132,25 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
             </Label>
             <Select value={selectedCaseStudyId} onValueChange={setSelectedCaseStudyId}>
               <SelectTrigger
-                className={`bg-white border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400 ${errors.caseStudy ? 'border-red-500' : ''}`}
+                className={`w-full bg-white border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400 ${errors.caseStudy ? 'border-red-500' : ''}`}
               >
-                <SelectValue placeholder="Select a case study" />
+                <SelectValue placeholder="Select a case study">
+                  {selectedCaseStudyId && caseStudies
+                    ? (() => {
+                        const selectedCaseStudy = caseStudies.find((cs) => cs.id === selectedCaseStudyId);
+                        return selectedCaseStudy ? (
+                          <div className="flex items-center justify-between w-full">
+                            <span className="text-sm font-bold text-emerald-700 bg-emerald-100 px-2 py-1 rounded-md">{selectedCaseStudy.subject}</span>
+                            <span className="text-xs text-gray-500 ml-2 truncate">
+                              {selectedCaseStudy.title.length > 40 ? `${selectedCaseStudy.title.substring(0, 40)}...` : selectedCaseStudy.title}
+                            </span>
+                          </div>
+                        ) : (
+                          'Select a case study'
+                        );
+                      })()
+                    : 'Select a case study'}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent className="bg-white border-emerald-100">
                 {loadingCaseStudies ? (
@@ -144,9 +160,13 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
                 ) : caseStudies && caseStudies.length > 0 ? (
                   caseStudies.map((caseStudy) => (
                     <SelectItem key={caseStudy.id} value={caseStudy.id} className="text-gray-900 hover:bg-emerald-50">
-                      <div className="flex items-center space-x-2">
-                        <span className="font-medium">{caseStudy.title}</span>
-                        <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">{caseStudy.subject}</span>
+                      <div className="flex flex-col space-y-1 w-full" title={caseStudy.title}>
+                        <div className="flex items-center justify-between w-full">
+                          <span className="text-sm font-bold text-emerald-700 bg-emerald-100 px-2 py-1 rounded-md flex-shrink-0">{caseStudy.subject}</span>
+                        </div>
+                        <span className="text-xs text-gray-600 truncate max-w-xs">
+                          {caseStudy.title.length > 60 ? `${caseStudy.title.substring(0, 60)}...` : caseStudy.title}
+                        </span>
                       </div>
                     </SelectItem>
                   ))

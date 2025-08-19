@@ -6,26 +6,9 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import type { ExerciseAttempt } from '@prisma/client';
-import {
-  ArrowLeft,
-  BookOpen,
-  Send,
-  RotateCcw,
-  CheckCircle,
-  AlertCircle,
-  Brain,
-  Clock,
-  MessageSquare,
-  Eye,
-  Edit3,
-  Save,
-  X,
-  Sparkles,
-  Zap,
-  Target,
-} from 'lucide-react';
+import { ArrowLeft, BookOpen, Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Target } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
-import MarkdownEditor from '@/components/markdown/MarkdownEditor';
+import AttemptDetailModal from '@/components/student/AttemptDetailModal';
 
 interface StudentExerciseClientProps {
   exerciseId: string;
@@ -74,9 +57,8 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const [prompt, setPrompt] = useState<string>('');
   const [currentAttemptNumber, setCurrentAttemptNumber] = useState<number>(1);
   const [hasMovedToNext, setHasMovedToNext] = useState(false);
-  const [expandedAttempts, setExpandedAttempts] = useState<Set<string>>(new Set());
-  const [editingAttempts, setEditingAttempts] = useState<Set<string>>(new Set());
-  const [editedResponses, setEditedResponses] = useState<Record<string, string>>({});
+  const [selectedAttempt, setSelectedAttempt] = useState<ExerciseAttempt | null>(null);
+  const [isAttemptModalOpen, setIsAttemptModalOpen] = useState(false);
 
   const router = useRouter();
 
@@ -186,68 +168,30 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     handleBack();
   };
 
-  const toggleAttemptExpansion = (attemptId: string) => {
-    setExpandedAttempts((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(attemptId)) {
-        newSet.delete(attemptId);
-      } else {
-        newSet.add(attemptId);
-      }
-      return newSet;
-    });
+  const openAttemptModal = (attempt: ExerciseAttempt) => {
+    setSelectedAttempt(attempt);
+    setIsAttemptModalOpen(true);
   };
 
-  const startEditingAttempt = (attemptId: string, currentResponse: string) => {
-    setEditingAttempts((prev) => new Set(prev).add(attemptId));
-    setEditedResponses((prev) => ({
-      ...prev,
-      [attemptId]: currentResponse,
-    }));
+  const closeAttemptModal = () => {
+    setSelectedAttempt(null);
+    setIsAttemptModalOpen(false);
   };
 
-  const cancelEditingAttempt = (attemptId: string) => {
-    setEditingAttempts((prev) => {
-      const newSet = new Set(prev);
-      newSet.delete(attemptId);
-      return newSet;
-    });
-    setEditedResponses((prev) => {
-      const newResponses = { ...prev };
-      delete newResponses[attemptId];
-      return newResponses;
-    });
-  };
-
-  const saveEditedAttempt = async (attemptId: string) => {
-    const editedResponse = editedResponses[attemptId];
-    if (!editedResponse) return;
-
+  const handleSaveAttemptEdit = async (attemptId: string, updatedResponse: string) => {
     try {
       const result = await updateAttempt(`/api/student/exercises/${exerciseId}/attempts/update`, {
         attemptId,
-        updatedResponse: editedResponse,
+        updatedResponse,
         studentEmail: userEmail,
       });
 
       if (result) {
-        // Clear editing state
-        cancelEditingAttempt(attemptId);
-
-        // Refetch attempts to get updated data
         await refetchAttempts();
       }
     } catch (error) {
       console.error('Error updating attempt:', error);
-      // Error handling is done by the usePutData hook
     }
-  };
-
-  const updateEditedResponse = (attemptId: string, newValue: string) => {
-    setEditedResponses((prev) => ({
-      ...prev,
-      [attemptId]: newValue,
-    }));
   };
 
   const getAttemptStatusIcon = (attempt: ExerciseAttempt) => {
@@ -595,11 +539,11 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                               <span className="text-xs text-gray-600 font-medium">{getAttemptStatusText(attempt)}</span>
                             </div>
                             <button
-                              onClick={() => toggleAttemptExpansion(attempt.id)}
+                              onClick={() => openAttemptModal(attempt)}
                               className="text-blue-600 hover:text-blue-800 text-xs flex items-center space-x-1 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded-lg transition-colors"
                             >
                               <Eye className="h-3 w-3" />
-                              <span>{expandedAttempts.has(attempt.id) ? 'Hide' : 'View'}</span>
+                              <span>View Details</span>
                             </button>
                           </div>
                         </div>
@@ -608,72 +552,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                         <div className="text-xs text-gray-500 mt-2">{new Date(attempt.createdAt).toLocaleString()}</div>
                         {attempt.error && <div className="text-xs text-red-600 mt-2 bg-red-50 p-2 rounded-lg">Error: {attempt.error}</div>}
                       </div>
-
-                      {expandedAttempts.has(attempt.id) && (
-                        <div className="border-t border-gray-200 p-4 bg-gray-50/50">
-                          <div className="space-y-4">
-                            <div>
-                              <h5 className="font-medium text-gray-900 mb-2">Your Prompt:</h5>
-                              <div className="bg-white rounded-lg p-3 border">
-                                <p className="text-sm text-gray-700 whitespace-pre-wrap">{attempt.prompt}</p>
-                              </div>
-                            </div>
-
-                            {attempt.promptResponse && (
-                              <div>
-                                <div className="flex items-center justify-between mb-2">
-                                  <h5 className="font-medium text-gray-900">AI Response:</h5>
-                                  {attempt.status === 'completed' && !editingAttempts.has(attempt.id) && (
-                                    <button
-                                      onClick={() => startEditingAttempt(attempt.id, attempt.promptResponse || '')}
-                                      className="text-blue-600 hover:text-blue-800 text-xs flex items-center space-x-1 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded-lg transition-colors"
-                                    >
-                                      <Edit3 className="h-3 w-3" />
-                                      <span>Edit</span>
-                                    </button>
-                                  )}
-                                </div>
-
-                                {editingAttempts.has(attempt.id) ? (
-                                  <div className="space-y-3">
-                                    <MarkdownEditor
-                                      objectId={attempt.id}
-                                      modelValue={editedResponses[attempt.id] || ''}
-                                      onUpdate={(value) => updateEditedResponse(attempt.id, value)}
-                                      placeholder="Edit the AI response..."
-                                      maxHeight={300}
-                                    />
-                                    <div className="flex items-center space-x-2">
-                                      <button
-                                        onClick={() => saveEditedAttempt(attempt.id)}
-                                        disabled={updatingAttempt}
-                                        className="bg-green-600 text-white px-3 py-1 rounded-lg text-xs hover:bg-green-700 transition-colors flex items-center space-x-1 disabled:opacity-50"
-                                      >
-                                        <Save className="h-3 w-3" />
-                                        <span>{updatingAttempt ? 'Saving...' : 'Save'}</span>
-                                      </button>
-                                      <button
-                                        onClick={() => cancelEditingAttempt(attempt.id)}
-                                        className="bg-gray-600 text-white px-3 py-1 rounded-lg text-xs hover:bg-gray-700 transition-colors flex items-center space-x-1"
-                                      >
-                                        <X className="h-3 w-3" />
-                                        <span>Cancel</span>
-                                      </button>
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <div className="bg-white rounded-lg p-3 border">
-                                    <div
-                                      className="markdown-body prose prose-sm max-w-none"
-                                      dangerouslySetInnerHTML={{ __html: parseMarkdown(attempt.promptResponse) }}
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
                     </div>
                   ))}
                 </div>
@@ -757,6 +635,15 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
           </div>
         </div>
       </div>
+
+      {/* Attempt Detail Modal */}
+      <AttemptDetailModal
+        isOpen={isAttemptModalOpen}
+        onClose={closeAttemptModal}
+        attempt={selectedAttempt}
+        onSaveEdit={handleSaveAttemptEdit}
+        isUpdating={updatingAttempt}
+      />
     </div>
   );
 }
