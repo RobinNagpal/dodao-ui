@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyModule, CaseStudy, ModuleExercise } from '@/types';
-import { ArrowLeft, BookOpen, Users, BarChart3, Target } from 'lucide-react';
+import { ArrowLeft, BookOpen, Users, BarChart3, Target, Brain, Sparkles, GraduationCap, Zap } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
-import Accordion from '@dodao/web-core/utils/accordion/Accordion';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 interface CaseStudyManagementClientProps {
   caseStudyId: string;
@@ -16,7 +16,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'analytics'>('overview');
-  const [expandedExercises, setExpandedExercises] = useState<Set<string>>(new Set());
 
   const router = useRouter();
 
@@ -46,10 +45,16 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
 
   if (isLoading || loadingCaseStudy) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="flex items-center space-x-2">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          <span className="text-lg text-foreground">Loading case study...</span>
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-200 border-t-purple-600 mx-auto mb-4"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Brain className="h-6 w-6 text-purple-600 animate-pulse" />
+            </div>
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading Case Study</h3>
+          <p className="text-gray-600">Preparing management console...</p>
         </div>
       </div>
     );
@@ -57,16 +62,21 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
 
   if (!caseStudy) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="bg-muted/50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-            <BookOpen className="h-8 w-8 text-muted-foreground" />
+          <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-12 border border-white/30 shadow-xl max-w-md mx-auto">
+            <div className="bg-gradient-to-br from-red-100 to-pink-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+              <BookOpen className="h-8 w-8 text-red-600" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">Case Study Not Found</h3>
+            <p className="text-gray-600 mb-6">The case study you’re looking for doesn’t exist or has been removed.</p>
+            <button
+              onClick={handleBack}
+              className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              Back to Dashboard
+            </button>
           </div>
-          <h3 className="text-lg font-medium text-foreground mb-2">Case study not found</h3>
-          <p className="text-muted-foreground mb-4">The case study you&apos;re looking for doesn&apos;t exist or has been removed.</p>
-          <button onClick={handleBack} className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-            Back to Dashboard
-          </button>
         </div>
       </div>
     );
@@ -76,57 +86,70 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   const modules = caseStudy?.modules || [];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
+      {/* Floating Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-purple-200/30 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-indigo-200/20 rounded-full blur-xl animate-pulse delay-2000"></div>
+      </div>
+
       {/* Enhanced Header */}
-      <header className="bg-card border-b border-border shadow-sm">
+      <header className="relative bg-white/80 backdrop-blur-lg border-b border-white/20 shadow-lg">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between py-6">
             <div className="flex items-center space-x-4">
-              <button onClick={handleBack} className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors group">
+              <button
+                onClick={handleBack}
+                className="flex items-center space-x-2 text-gray-600 hover:text-purple-600 transition-all duration-300 group bg-white/50 hover:bg-white/80 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/30"
+              >
                 <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
                 <span>Back to Dashboard</span>
               </button>
-              <div className="h-6 w-px bg-border"></div>
+              <div className="h-8 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">{caseStudy.title}</h1>
-                <p className="text-muted-foreground">Instructor Management Console</p>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">{caseStudy.title}</h1>
+                <p className="text-gray-600 flex items-center space-x-1">
+                  <GraduationCap className="h-4 w-4 text-purple-500" />
+                  <span>Instructor Management Console</span>
+                </p>
               </div>
             </div>
-            <div className="text-sm text-muted-foreground">Logged in as {userEmail}</div>
+            <div className="text-sm text-gray-500 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/30">Logged in as {userEmail}</div>
           </div>
 
-          {/* Stats Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-6">
-            <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
-              <div className="flex items-center space-x-3">
-                <div className="bg-primary/10 p-2 rounded-lg">
-                  <Users className="h-5 w-5 text-primary" />
+          {/* Enhanced Stats Overview */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6">
+            <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-2xl p-6 border border-blue-200/50 backdrop-blur-sm">
+              <div className="flex items-center space-x-4">
+                <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-3 rounded-xl shadow-lg">
+                  <Users className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Enrolled Students</p>
-                  <p className="text-xl font-semibold text-foreground">{enrolledStudents}</p>
+                  <p className="text-sm text-gray-600 font-medium">Enrolled Students</p>
+                  <p className="text-3xl font-bold text-gray-900">{enrolledStudents}</p>
                 </div>
               </div>
             </div>
-            <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/20">
-              <div className="flex items-center space-x-3">
-                <div className="bg-secondary/10 p-2 rounded-lg">
-                  <BookOpen className="h-5 w-5 text-secondary" />
+            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-purple-200/50 backdrop-blur-sm">
+              <div className="flex items-center space-x-4">
+                <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-3 rounded-xl shadow-lg">
+                  <BookOpen className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Modules</p>
-                  <p className="text-xl font-semibold text-foreground">{modules.length}</p>
+                  <p className="text-sm text-gray-600 font-medium">Total Modules</p>
+                  <p className="text-3xl font-bold text-gray-900">{modules.length}</p>
                 </div>
               </div>
             </div>
-            <div className="bg-accent/5 rounded-lg p-4 border border-accent/20">
-              <div className="flex items-center space-x-3">
-                <div className="bg-accent/10 p-2 rounded-lg">
-                  <Target className="h-5 w-5 text-accent" />
+            <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-2xl p-6 border border-green-200/50 backdrop-blur-sm">
+              <div className="flex items-center space-x-4">
+                <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-3 rounded-xl shadow-lg">
+                  <Target className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Exercises</p>
-                  <p className="text-xl font-semibold text-foreground">
+                  <p className="text-sm text-gray-600 font-medium">Total Exercises</p>
+                  <p className="text-3xl font-bold text-gray-900">
                     {modules.reduce((total: number, module: CaseStudyModule) => total + (module.exercises?.length || 0), 0)}
                   </p>
                 </div>
@@ -135,14 +158,14 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
           </div>
 
           {/* Enhanced Tab Navigation */}
-          <div className="border-b border-border">
+          <div className="border-b border-white/20">
             <nav className="-mb-px flex space-x-8">
               <button
                 onClick={() => setActiveTab('overview')}
-                className={`py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 transition-colors ${
+                className={`py-4 px-2 border-b-2 font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
                   activeTab === 'overview'
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                    ? 'border-purple-500 text-purple-600 bg-purple-50/50 rounded-t-lg'
+                    : 'border-transparent text-gray-600 hover:text-purple-600 hover:border-purple-300'
                 }`}
               >
                 <BookOpen className="h-4 w-4" />
@@ -150,10 +173,10 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
               </button>
               <button
                 onClick={() => setActiveTab('students')}
-                className={`py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 transition-colors ${
+                className={`py-4 px-2 border-b-2 font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
                   activeTab === 'students'
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                    ? 'border-purple-500 text-purple-600 bg-purple-50/50 rounded-t-lg'
+                    : 'border-transparent text-gray-600 hover:text-purple-600 hover:border-purple-300'
                 }`}
               >
                 <Users className="h-4 w-4" />
@@ -161,10 +184,10 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
               </button>
               <button
                 onClick={() => setActiveTab('analytics')}
-                className={`py-3 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 transition-colors ${
+                className={`py-4 px-2 border-b-2 font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
                   activeTab === 'analytics'
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                    ? 'border-purple-500 text-purple-600 bg-purple-50/50 rounded-t-lg'
+                    : 'border-transparent text-gray-600 hover:text-purple-600 hover:border-purple-300'
                 }`}
               >
                 <BarChart3 className="h-4 w-4" />
@@ -175,82 +198,99 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
         {activeTab === 'overview' && (
           <div className="space-y-8">
             {/* Case Study Details */}
-            <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-8 border border-border">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Case Study Details</h2>
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">{caseStudy.shortDescription}</p>
-              <div className="bg-card/70 backdrop-blur-sm rounded-xl p-6 border border-border/50">
-                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy.details) }} />
+            <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-8 border border-white/30 shadow-xl">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-xl mr-3">
+                  <Brain className="h-6 w-6 text-white" />
+                </div>
+                Case Study Details
+                <Sparkles className="h-5 w-5 text-yellow-500 ml-2 animate-pulse" />
+              </h2>
+              <p className="text-lg text-gray-700 mb-8 leading-relaxed">{caseStudy.shortDescription}</p>
+              <div className="bg-gradient-to-br from-gray-50 to-purple-50 rounded-2xl p-8 border border-purple-200/50">
+                <div className="markdown-body prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy.details) }} />
               </div>
             </div>
 
             {/* Modules Management */}
-            <div className="bg-card rounded-xl shadow-sm border border-border p-6">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-foreground mb-2">Learning Modules</h2>
-                <p className="text-muted-foreground">View case study modules and exercises</p>
+            <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8">
+              <div className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-3 flex items-center">
+                  <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-xl mr-3">
+                    <BookOpen className="h-6 w-6 text-white" />
+                  </div>
+                  Learning Modules
+                </h2>
+                <p className="text-gray-600 text-lg">View case study modules and exercises</p>
               </div>
 
               <div className="space-y-6">
                 {modules.map((module: CaseStudyModule, index: number) => (
-                  <div key={module.id} className="border border-border rounded-xl p-6 bg-gradient-to-br from-card to-muted/20">
-                    <div className="mb-4">
-                      <div className="flex items-center space-x-4 mb-3">
-                        <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">Module {module.orderNumber}</div>
-                        <div className="h-2 w-2 rounded-full bg-muted-foreground/30"></div>
-                        <span className="text-sm text-muted-foreground flex items-center">
-                          <Target className="h-4 w-4 mr-1" />
+                  <div key={module.id} className="bg-gradient-to-br from-white/80 to-purple-50/50 rounded-2xl p-8 border border-purple-200/50 shadow-lg">
+                    <div className="mb-6">
+                      <div className="flex items-center space-x-4 mb-4">
+                        <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                          Module {module.orderNumber}
+                        </div>
+                        <div className="h-2 w-2 rounded-full bg-purple-300"></div>
+                        <span className="text-sm text-gray-600 flex items-center bg-purple-100 px-3 py-1 rounded-full">
+                          <Target className="h-4 w-4 mr-1 text-purple-600" />
                           {module.exercises?.length || 0} exercises
                         </span>
                       </div>
 
-                      <h3 className="text-xl font-semibold text-foreground mb-2">{module.title}</h3>
-                      <p className="text-muted-foreground mb-4">{module.shortDescription}</p>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">{module.title}</h3>
+                      <p className="text-gray-600 mb-6 text-lg leading-relaxed">{module.shortDescription}</p>
 
-                      <div className="bg-card/70 rounded-lg p-4 border border-border/50">
-                        <h4 className="text-lg font-medium text-foreground mb-2">Module Details</h4>
-                        <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(module.details) }} />
+                      <div className="bg-gradient-to-br from-gray-50 to-indigo-50 rounded-xl p-6 border border-indigo-200/50">
+                        <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                          <Zap className="h-5 w-5 text-yellow-500 mr-2" />
+                          Module Details
+                        </h4>
+                        <div className="markdown-body prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(module.details) }} />
                       </div>
                     </div>
 
                     {module.exercises && module.exercises.length > 0 && (
                       <div>
-                        <h4 className="text-lg font-medium text-foreground mb-4">Exercises</h4>
-                        <div className="space-y-3">
+                        <h4 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                          <Target className="h-5 w-5 text-green-600 mr-2" />
+                          Exercises
+                        </h4>
+                        <Accordion type="single" collapsible className="space-y-4">
                           {module.exercises.map((exercise: ModuleExercise, exerciseIndex: number) => (
-                            <Accordion
+                            <AccordionItem
                               key={exercise.id}
-                              isOpen={expandedExercises.has(exercise.id)}
-                              label={`Exercise ${exercise.orderNumber}: ${exercise.title}`}
-                              onClick={() =>
-                                setExpandedExercises((prev) => {
-                                  const newSet = new Set(prev);
-                                  if (newSet.has(exercise.id)) {
-                                    newSet.delete(exercise.id);
-                                  } else {
-                                    newSet.add(exercise.id);
-                                  }
-                                  return newSet;
-                                })
-                              }
+                              value={exercise.id}
+                              className="bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200/50 shadow-sm"
                             >
-                              <div className="space-y-3">
-                                <div className="flex items-center space-x-3 mb-3">
-                                  <div className="bg-secondary/10 text-secondary px-2 py-1 rounded text-xs font-medium">Exercise {exercise.orderNumber}</div>
+                              <AccordionTrigger className="px-6 py-4 hover:no-underline">
+                                <div className="flex items-center space-x-3 text-left">
+                                  <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                                    Exercise {exercise.orderNumber}
+                                  </div>
+                                  <span className="font-semibold text-gray-900">{exercise.title}</span>
                                 </div>
-
-                                <p className="text-sm text-muted-foreground">{exercise.shortDescription}</p>
-                                <div className="bg-muted/20 rounded-lg p-4">
-                                  <h5 className="font-medium text-foreground mb-2">Exercise Details</h5>
-                                  <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.details) }} />
+                              </AccordionTrigger>
+                              <AccordionContent className="px-6 pb-6">
+                                <div className="space-y-4">
+                                  <p className="text-gray-600 leading-relaxed">{exercise.shortDescription}</p>
+                                  <div className="bg-gradient-to-br from-gray-50 to-green-50 rounded-xl p-6 border border-green-200/50">
+                                    <h5 className="font-semibold text-gray-900 mb-3 flex items-center">
+                                      <Brain className="h-4 w-4 text-green-600 mr-2" />
+                                      Exercise Details
+                                    </h5>
+                                    <div className="markdown-body prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.details) }} />
+                                  </div>
                                 </div>
-                              </div>
-                            </Accordion>
+                              </AccordionContent>
+                            </AccordionItem>
                           ))}
-                        </div>
+                        </Accordion>
                       </div>
                     )}
                   </div>
@@ -258,12 +298,12 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
               </div>
 
               {modules.length === 0 && (
-                <div className="text-center py-12">
-                  <div className="bg-muted/50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                    <BookOpen className="h-8 w-8 text-muted-foreground" />
+                <div className="text-center py-16">
+                  <div className="bg-gradient-to-br from-gray-100 to-purple-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                    <BookOpen className="h-10 w-10 text-gray-500" />
                   </div>
-                  <h3 className="text-lg font-medium text-foreground mb-2">No modules available</h3>
-                  <p className="text-muted-foreground">This case study doesn’t have any modules yet.</p>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">No Modules Available</h3>
+                  <p className="text-gray-600">This case study doesn’t have any modules yet.</p>
                 </div>
               )}
             </div>
@@ -271,22 +311,37 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         )}
 
         {activeTab === 'students' && (
-          <div className="bg-card rounded-xl shadow-sm border border-border p-8">
-            <div className="text-center py-12">
-              <div className="bg-primary/10 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8 text-primary" />
+          <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-12">
+            <div className="text-center py-16">
+              <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                <Users className="h-10 w-10 text-blue-600" />
               </div>
-              <h2 className="text-2xl font-bold text-foreground mb-4">Student Progress Monitoring</h2>
-              <div className="text-muted-foreground max-w-md mx-auto">
-                <p className="mb-4">Advanced student monitoring features are coming soon!</p>
-                <div className="bg-muted/30 rounded-lg p-4 text-left">
-                  <p className="font-medium mb-2">This section will include:</p>
-                  <ul className="space-y-1 text-sm">
-                    <li>• Individual student progress tracking</li>
-                    <li>• Exercise completion analytics</li>
-                    <li>• AI prompt and response analysis</li>
-                    <li>• Performance insights and recommendations</li>
-                    <li>• Real-time activity monitoring</li>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Student Progress Monitoring</h2>
+              <div className="text-gray-600 max-w-lg mx-auto">
+                <p className="mb-6 text-lg">Advanced student monitoring features are coming soon!</p>
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 text-left border border-blue-200">
+                  <p className="font-semibold mb-4 text-gray-900">This section will include:</p>
+                  <ul className="space-y-3 text-gray-700">
+                    <li className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span>Individual student progress tracking</span>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span>Exercise completion analytics</span>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span>AI prompt and response analysis</span>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                      <span>Performance insights and recommendations</span>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                      <span>Real-time activity monitoring</span>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -295,22 +350,37 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         )}
 
         {activeTab === 'analytics' && (
-          <div className="bg-card rounded-xl shadow-sm border border-border p-8">
-            <div className="text-center py-12">
-              <div className="bg-secondary/10 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <BarChart3 className="h-8 w-8 text-secondary" />
+          <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-12">
+            <div className="text-center py-16">
+              <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                <BarChart3 className="h-10 w-10 text-purple-600" />
               </div>
-              <h2 className="text-2xl font-bold text-foreground mb-4">Analytics & Insights Dashboard</h2>
-              <div className="text-muted-foreground max-w-md mx-auto">
-                <p className="mb-4">Comprehensive analytics dashboard is in development!</p>
-                <div className="bg-muted/30 rounded-lg p-4 text-left">
-                  <p className="font-medium mb-2">Coming features:</p>
-                  <ul className="space-y-1 text-sm">
-                    <li>• Module completion rates and trends</li>
-                    <li>• Common student challenges identification</li>
-                    <li>• AI prompt effectiveness analysis</li>
-                    <li>• Time spent on exercises breakdown</li>
-                    <li>• Learning outcome assessments</li>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Analytics & Insights Dashboard</h2>
+              <div className="text-gray-600 max-w-lg mx-auto">
+                <p className="mb-6 text-lg">Comprehensive analytics dashboard is in development!</p>
+                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 text-left border border-purple-200">
+                  <p className="font-semibold mb-4 text-gray-900">Coming features:</p>
+                  <ul className="space-y-3 text-gray-700">
+                    <li className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span>Module completion rates and trends</span>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span>Common student challenges identification</span>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span>AI prompt effectiveness analysis</span>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                      <span>Time spent on exercises breakdown</span>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                      <span>Learning outcome assessments</span>
+                    </li>
                   </ul>
                 </div>
               </div>

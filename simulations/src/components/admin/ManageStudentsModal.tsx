@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus, X, UserCheck } from 'lucide-react';
+import { Plus, X, UserCheck, Users, Mail, Sparkles } from 'lucide-react';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -120,16 +120,21 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-hidden bg-white dark:bg-gray-800">
-        <DialogHeader>
-          <DialogTitle className="text-gray-900 dark:text-gray-100">Manage Students - {enrollmentTitle}</DialogTitle>
+      <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-hidden bg-white/95 backdrop-blur-md border border-emerald-100/50 shadow-2xl">
+        <DialogHeader className="bg-gradient-to-r from-emerald-50 to-green-50 -m-6 mb-4 p-6 rounded-t-lg border-b border-emerald-100">
+          <DialogTitle className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent flex items-center space-x-2">
+            <Users className="h-5 w-5 text-emerald-500" />
+            <span>Manage Students - {enrollmentTitle}</span>
+          </DialogTitle>
         </DialogHeader>
 
         <div className="overflow-y-auto max-h-[60vh] p-4">
-          {/* Add Student Section */}
-          <div className="mb-6">
-            <h4 className="text-md font-medium text-gray-900 dark:text-gray-100 mb-3">Add New Student</h4>
-            <div className="flex space-x-2">
+          <div className="mb-8 bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-100">
+            <h4 className="text-lg font-bold text-emerald-700 mb-4 flex items-center space-x-2">
+              <Sparkles className="h-5 w-5" />
+              <span>Add New Student</span>
+            </h4>
+            <div className="flex space-x-3">
               <div className="flex-1">
                 <Label htmlFor="studentEmail" className="sr-only">
                   Student Email
@@ -140,7 +145,7 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
                   value={newStudentEmail}
                   onChange={(e) => setNewStudentEmail(e.target.value)}
                   placeholder="Enter student email"
-                  className={`bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 ${
+                  className={`bg-white border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400 placeholder:text-gray-500 ${
                     emailError ? 'border-red-500' : ''
                   }`}
                   onKeyDown={(e) => {
@@ -154,40 +159,54 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
               <Button
                 onClick={handleAddStudent}
                 disabled={addingStudent}
-                className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-400"
+                className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:transform-none"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4 mr-2" />
                 <span>{addingStudent ? 'Adding...' : 'Add'}</span>
               </Button>
             </div>
           </div>
 
-          {/* Enrolled Students Section */}
           <div>
-            <h4 className="text-md font-medium text-gray-900 dark:text-gray-100 mb-3">Enrolled Students {enrollment && `(${enrollment.students.length})`}</h4>
+            <h4 className="text-lg font-bold text-emerald-700 mb-4 flex items-center space-x-2">
+              <UserCheck className="h-5 w-5" />
+              <span>Enrolled Students {enrollment && `(${enrollment.students.length})`}</span>
+            </h4>
 
             {loadingEnrollment ? (
-              <p className="text-gray-500 dark:text-gray-400 italic">Loading students...</p>
+              <div className="flex items-center justify-center py-8">
+                <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-xl shadow-lg border border-emerald-100">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-emerald-600"></div>
+                  <span className="text-emerald-600 font-medium">Loading students...</span>
+                </div>
+              </div>
             ) : !enrollment?.students.length ? (
-              <p className="text-gray-500 dark:text-gray-400 italic">No students enrolled yet.</p>
+              <div className="text-center py-8 bg-gray-50 rounded-xl border border-gray-200">
+                <Mail className="mx-auto h-12 w-12 text-gray-400 mb-3" />
+                <p className="text-gray-500 italic">No students enrolled yet.</p>
+              </div>
             ) : (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {enrollment.students.map((student) => (
                   <div
                     key={student.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600"
+                    className="flex items-center justify-between p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-emerald-100 shadow-sm hover:shadow-md transition-all duration-200"
                   >
-                    <div className="flex items-center space-x-2">
-                      <UserCheck className="h-4 w-4 text-green-600 dark:text-green-400" />
-                      <span className="text-gray-900 dark:text-gray-100">{student.assignedStudentId}</span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">(Added {new Date(student.createdAt).toLocaleDateString()})</span>
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-emerald-100 p-2 rounded-full">
+                        <UserCheck className="h-4 w-4 text-emerald-600" />
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-900">{student.assignedStudentId}</span>
+                        <div className="text-xs text-gray-500">Added {new Date(student.createdAt).toLocaleDateString()}</div>
+                      </div>
                     </div>
                     <Button
                       onClick={() => handleRemoveStudent(student.assignedStudentId)}
                       variant="ghost"
                       size="sm"
                       disabled={removingStudent}
-                      className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 p-1"
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors disabled:opacity-50"
                       title="Remove student"
                     >
                       <X className="h-4 w-4" />
@@ -197,12 +216,6 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
               </div>
             )}
           </div>
-        </div>
-
-        <div className="p-4 border-t border-gray-200 dark:border-gray-600">
-          <Button onClick={onClose} className="w-full bg-gray-600 hover:bg-gray-700 text-white" variant="outline">
-            Close
-          </Button>
         </div>
       </DialogContent>
     </Dialog>

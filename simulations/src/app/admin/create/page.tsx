@@ -1,5 +1,7 @@
 'use client';
 
+import type React from 'react';
+
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -7,12 +9,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Shield, Plus, Trash2, X, ArrowLeft } from 'lucide-react';
+import { Shield, Plus, Trash2, X, ArrowLeft, Sparkles, BookOpen, Target } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { BusinessSubject } from '@prisma/client';
-import { CreateCaseStudyRequest, CaseStudyWithRelations } from '@/types/api';
+import type { BusinessSubject } from '@prisma/client';
+import type { CreateCaseStudyRequest, CaseStudyWithRelations } from '@/types/api';
 
 interface ModuleFormData {
   id: string;
@@ -226,129 +228,209 @@ export default function CreateCaseStudyPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="flex items-center space-x-2">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="text-lg text-gray-900">Loading...</span>
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">
+        {/* Floating background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-400/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute top-1/2 -left-40 w-96 h-96 bg-green-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute -bottom-40 right-1/3 w-64 h-64 bg-teal-400/20 rounded-full blur-3xl animate-pulse delay-500"></div>
+        </div>
+
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="bg-white/80 backdrop-blur-xl rounded-2xl p-8 shadow-2xl border border-white/20">
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-200 border-t-emerald-600"></div>
+                <Sparkles className="absolute inset-0 m-auto h-6 w-6 text-emerald-600 animate-pulse" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">Loading Admin Portal</h2>
+                <p className="text-gray-600">Preparing your workspace...</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">
+      {/* Floating background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-400/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-1/2 -left-40 w-96 h-96 bg-green-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute -bottom-40 right-1/3 w-64 h-64 bg-teal-400/20 rounded-full blur-3xl animate-pulse delay-500"></div>
+      </div>
+
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
+      <header className="relative z-10 bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-lg">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" onClick={handleBack}>
+            <div className="flex items-center space-x-6">
+              <Button
+                variant="outline"
+                onClick={handleBack}
+                className="bg-white/50 backdrop-blur-sm border-emerald-200 hover:bg-emerald-50 hover:border-emerald-300 transition-all duration-200"
+              >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Admin
               </Button>
-              <div className="bg-red-100 p-3 rounded-xl">
-                <Shield className="h-8 w-8 text-red-600" />
+              <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-4 rounded-2xl shadow-lg">
+                <Shield className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Create New Case Study</h1>
-                <p className="text-gray-600">Welcome back, {userEmail}</p>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">
+                  Create New Case Study
+                </h1>
+                <p className="text-gray-600 flex items-center mt-1">
+                  <Sparkles className="h-4 w-4 mr-2 text-emerald-500" />
+                  Welcome back, {userEmail}
+                </p>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-          <div className="space-y-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-8">
+        <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8">
+          <div className="space-y-8">
             {/* Basic Information */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="title">Title *</Label>
-                <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter case study title" />
+            <div className="border-b border-gray-200 pb-6">
+              <h2 className="text-xl font-semibold text-gray-900 flex items-center mb-6">
+                <BookOpen className="h-5 w-5 mr-2 text-emerald-600" />
+                Basic Information
+              </h2>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="title" className="text-sm font-medium text-gray-700">
+                    Title *
+                  </Label>
+                  <Input
+                    id="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Enter case study title"
+                    className="bg-white/50 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all duration-200"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="subject" className="text-sm font-medium text-gray-700">
+                    Subject *
+                  </Label>
+                  <Select value={subject} onValueChange={(value) => setSubject(value as BusinessSubject)}>
+                    <SelectTrigger className="bg-white/50 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20">
+                      <SelectValue placeholder="Select subject" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {subjectOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-              <div>
-                <Label htmlFor="subject">Subject *</Label>
-                <Select value={subject} onValueChange={(value) => setSubject(value as BusinessSubject)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select subject" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {subjectOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+
+              <div className="mt-6 space-y-2">
+                <Label htmlFor="shortDescription" className="text-sm font-medium text-gray-700">
+                  Short Description *
+                </Label>
+                <Textarea
+                  id="shortDescription"
+                  value={shortDescription}
+                  onChange={(e) => setShortDescription(e.target.value)}
+                  placeholder="Brief description of the case study"
+                  rows={3}
+                  className="bg-white/50 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20 transition-all duration-200"
+                />
               </div>
-            </div>
 
-            <div>
-              <Label htmlFor="shortDescription">Short Description *</Label>
-              <Textarea
-                id="shortDescription"
-                value={shortDescription}
-                onChange={(e) => setShortDescription(e.target.value)}
-                placeholder="Brief description of the case study"
-                rows={3}
-              />
-            </div>
-
-            <div>
-              <MarkdownEditor
-                objectId="case-study-details"
-                label="Details *"
-                modelValue={details}
-                onUpdate={setDetails}
-                placeholder="Enter detailed description using markdown..."
-                maxHeight={300}
-              />
+              <div className="mt-6">
+                <MarkdownEditor
+                  objectId="case-study-details"
+                  label="Details *"
+                  modelValue={details}
+                  onUpdate={setDetails}
+                  placeholder="Enter detailed description using markdown..."
+                  maxHeight={300}
+                />
+              </div>
             </div>
 
             {/* Modules Section */}
             <div>
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Modules</h3>
-                <Button type="button" onClick={addModule} size="sm">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+                  <Target className="h-5 w-5 mr-2 text-emerald-600" />
+                  Modules ({modules.length})
+                </h2>
+                <Button
+                  type="button"
+                  onClick={addModule}
+                  className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                >
                   <Plus className="h-4 w-4 mr-2" />
                   Add Module
                 </Button>
               </div>
 
               {modules.map((module: ModuleFormData, moduleIndex: number) => (
-                <div key={module.id} className="border rounded-lg p-4 mb-4">
-                  <div className="flex justify-between items-center mb-3">
-                    <h4 className="font-medium">Module {moduleIndex + 1}</h4>
-                    <Button type="button" variant="destructive" size="sm" onClick={(): void => removeModule(module.id)}>
+                <div
+                  key={module.id}
+                  className="bg-gradient-to-br from-white/60 to-emerald-50/30 backdrop-blur-sm border border-emerald-200/50 rounded-2xl p-6 mb-6 shadow-lg"
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold">
+                        {moduleIndex + 1}
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900">Module {moduleIndex + 1}</h3>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => removeModule(module.id)}
+                      className="hover:scale-105 transition-transform duration-200"
+                    >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
 
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <Label>Module Title *</Label>
-                        <Input value={module.title} onChange={(e) => updateModule(module.id, 'title', e.target.value)} placeholder="Module title" />
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Module Title *</Label>
+                        <Input
+                          value={module.title}
+                          onChange={(e) => updateModule(module.id, 'title', e.target.value)}
+                          placeholder="Module title"
+                          className="bg-white/70 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+                        />
                       </div>
-                      <div>
-                        <Label>Order Number</Label>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium text-gray-700">Order Number</Label>
                         <Input
                           type="number"
                           value={module.orderNumber}
-                          onChange={(e) => updateModule(module.id, 'orderNumber', parseInt(e.target.value) || 1)}
+                          onChange={(e) => updateModule(module.id, 'orderNumber', Number.parseInt(e.target.value) || 1)}
                           min={1}
+                          className="bg-white/70 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
                         />
                       </div>
                     </div>
 
-                    <div>
-                      <Label>Short Description *</Label>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Short Description *</Label>
                       <Textarea
                         value={module.shortDescription}
                         onChange={(e) => updateModule(module.id, 'shortDescription', e.target.value)}
                         placeholder="Brief module description"
                         rows={2}
+                        className="bg-white/70 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
                       />
                     </div>
 
@@ -364,67 +446,82 @@ export default function CreateCaseStudyPage() {
                     </div>
 
                     {/* Exercises for this module */}
-                    <div>
-                      <div className="flex justify-between items-center mb-2">
-                        <h5 className="font-medium">Exercises</h5>
-                        <Button type="button" onClick={() => addExercise(module.id)} size="sm" variant="outline">
+                    <div className="bg-white/40 rounded-xl p-4 border border-emerald-100">
+                      <div className="flex justify-between items-center mb-3">
+                        <h4 className="font-medium text-gray-900 flex items-center">
+                          <Target className="h-4 w-4 mr-2 text-emerald-600" />
+                          Exercises ({module.exercises.length})
+                        </h4>
+                        <Button
+                          type="button"
+                          onClick={() => addExercise(module.id)}
+                          size="sm"
+                          variant="outline"
+                          className="bg-white/50 border-emerald-200 hover:bg-emerald-50 hover:border-emerald-300"
+                        >
                           <Plus className="h-4 w-4 mr-1" />
                           Add Exercise
                         </Button>
                       </div>
 
                       {module.exercises.map((exercise: ExerciseFormData, exerciseIndex: number) => (
-                        <div key={exercise.id} className="border border-gray-200 rounded p-3 mb-2">
-                          <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm font-medium">Exercise {exerciseIndex + 1}</span>
-                            <Button type="button" variant="ghost" size="sm" onClick={(): void => removeExercise(module.id, exercise.id)}>
+                        <div key={exercise.id} className="bg-white/60 border border-gray-200 rounded-xl p-4 mb-3 shadow-sm">
+                          <div className="flex justify-between items-center mb-3">
+                            <div className="flex items-center space-x-2">
+                              <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold">
+                                {exerciseIndex + 1}
+                              </div>
+                              <span className="text-sm font-medium text-gray-900">Exercise {exerciseIndex + 1}</span>
+                            </div>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeExercise(module.id, exercise.id)}
+                              className="hover:bg-red-50 hover:text-red-600 transition-colors duration-200"
+                            >
                               <X className="h-4 w-4" />
                             </Button>
                           </div>
 
-                          <div className="space-y-2">
-                            <div className="grid grid-cols-2 gap-2">
-                              <div>
-                                <Input
-                                  value={exercise.title}
-                                  onChange={(e: React.ChangeEvent<HTMLInputElement>): void => updateExercise(module.id, exercise.id, 'title', e.target.value)}
-                                  placeholder="Exercise title"
-                                />
-                              </div>
-                              <div>
-                                <Input
-                                  type="number"
-                                  value={exercise.orderNumber}
-                                  onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-                                    updateExercise(module.id, exercise.id, 'orderNumber', parseInt(e.target.value) || 1)
-                                  }
-                                  placeholder="Order"
-                                  min={1}
-                                />
-                              </div>
-                            </div>
-
-                            <div>
-                              <Textarea
-                                value={exercise.shortDescription}
-                                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void =>
-                                  updateExercise(module.id, exercise.id, 'shortDescription', e.target.value)
+                          <div className="space-y-3">
+                            <div className="grid grid-cols-2 gap-3">
+                              <Input
+                                value={exercise.title}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateExercise(module.id, exercise.id, 'title', e.target.value)}
+                                placeholder="Exercise title"
+                                className="bg-white/80 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+                              />
+                              <Input
+                                type="number"
+                                value={exercise.orderNumber}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                  updateExercise(module.id, exercise.id, 'orderNumber', Number.parseInt(e.target.value) || 1)
                                 }
-                                placeholder="Brief exercise description"
-                                rows={1}
+                                placeholder="Order"
+                                min={1}
+                                className="bg-white/80 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
                               />
                             </div>
 
-                            <div>
-                              <MarkdownEditor
-                                objectId={`exercise-${exercise.id}-details`}
-                                label="Exercise Details *"
-                                modelValue={exercise.details}
-                                onUpdate={(value: string): void => updateExercise(module.id, exercise.id, 'details', value)}
-                                placeholder="Enter exercise details using markdown..."
-                                maxHeight={150}
-                              />
-                            </div>
+                            <Textarea
+                              value={exercise.shortDescription}
+                              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                                updateExercise(module.id, exercise.id, 'shortDescription', e.target.value)
+                              }
+                              placeholder="Brief exercise description"
+                              rows={1}
+                              className="bg-white/80 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+                            />
+
+                            <MarkdownEditor
+                              objectId={`exercise-${exercise.id}-details`}
+                              label="Exercise Details *"
+                              modelValue={exercise.details}
+                              onUpdate={(value: string) => updateExercise(module.id, exercise.id, 'details', value)}
+                              placeholder="Enter exercise details using markdown..."
+                              maxHeight={150}
+                            />
                           </div>
                         </div>
                       ))}
@@ -435,12 +532,27 @@ export default function CreateCaseStudyPage() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end space-x-4 pt-6 border-t">
-              <Button type="button" variant="outline" onClick={handleBack}>
+            <div className="flex justify-end space-x-4 pt-8 border-t border-gray-200">
+              <Button type="button" variant="outline" onClick={handleBack} className="bg-white/50 border-gray-300 hover:bg-gray-50 transition-all duration-200">
                 Cancel
               </Button>
-              <Button type="button" onClick={handleSubmit} disabled={loading}>
-                {loading ? 'Creating...' : 'Create Case Study'}
+              <Button
+                type="button"
+                onClick={handleSubmit}
+                disabled={loading}
+                className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
+              >
+                {loading ? (
+                  <div className="flex items-center">
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
+                    Creating...
+                  </div>
+                ) : (
+                  <div className="flex items-center">
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    Create Case Study
+                  </div>
+                )}
               </Button>
             </div>
           </div>

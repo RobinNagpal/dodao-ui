@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, UserCheck, Plus } from 'lucide-react';
+import { X, UserCheck, Plus, Users, Mail, Trash2, CheckCircle, AlertCircle } from 'lucide-react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
@@ -18,7 +18,6 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [emailError, setEmailError] = useState('');
 
-  // Fetch enrolled students using the hook
   const {
     data: enrolledStudents = [],
     loading: loadingStudents,
@@ -29,7 +28,6 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
     'Failed to load enrolled students'
   );
 
-  // Hooks for add and remove operations
   const { postData: addStudent, loading: addingStudent } = usePostData({
     successMessage: 'Student added successfully!',
     errorMessage: 'Failed to add student',
@@ -40,7 +38,6 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
     errorMessage: 'Failed to remove student',
   });
 
-  // Load students when modal opens
   useEffect(() => {
     if (isOpen && caseStudyId && instructorEmail) {
       refetchStudents();
@@ -70,7 +67,6 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
 
     try {
       const result = await addStudent(`/api/instructor/enrollments/${caseStudyId}/students`, payload);
-
       if (result) {
         setNewStudentEmail('');
         setEmailError('');
@@ -90,7 +86,6 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
 
     try {
       const result = await removeStudent(`/api/instructor/enrollments/${caseStudyId}/students`, payload);
-
       if (result) {
         await refetchStudents();
       }
@@ -102,86 +97,134 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden">
-        <div className="p-6 border-b border-gray-200">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white/95 backdrop-blur-lg rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-2xl border border-white/20">
+        {/* Enhanced Header */}
+        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white">
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold text-gray-900">Manage Students - {caseStudyTitle}</h3>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <div className="flex items-center space-x-3">
+              <div className="bg-white/20 p-2 rounded-xl">
+                <Users className="h-6 w-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold">Manage Students</h3>
+                <p className="text-purple-100">{caseStudyTitle}</p>
+              </div>
+            </div>
+            <button onClick={onClose} className="text-white/80 hover:text-white hover:bg-white/20 p-2 rounded-xl transition-all duration-200">
               <X className="h-6 w-6" />
             </button>
           </div>
         </div>
 
-        <div className="p-6 overflow-y-auto max-h-[60vh]">
-          {/* Add Student Section */}
-          <div className="mb-6">
-            <h4 className="text-md font-medium text-gray-900 mb-3">Add New Student</h4>
-            <div className="flex space-x-2">
-              <div className="flex-1">
-                <input
-                  type="email"
-                  value={newStudentEmail}
-                  onChange={(e) => setNewStudentEmail(e.target.value)}
-                  placeholder="Enter student email"
-                  className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    emailError ? 'border-red-500' : ''
-                  }`}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleAddStudent();
-                    }
-                  }}
-                  disabled={addingStudent}
-                />
-                {emailError && <p className="text-sm text-red-500 mt-1">{emailError}</p>}
+        <div className="p-8 overflow-y-auto max-h-[60vh]">
+          {/* Enhanced Add Student Section */}
+          <div className="mb-8">
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+              <div className="flex space-x-3">
+                <div className="flex-1">
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <input
+                      type="email"
+                      value={newStudentEmail}
+                      onChange={(e) => setNewStudentEmail(e.target.value)}
+                      placeholder="Enter student email address"
+                      className={`w-full pl-10 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-500/20 transition-all duration-200 ${
+                        emailError ? 'border-red-500 bg-red-50' : 'border-gray-200 focus:border-green-500 bg-white'
+                      }`}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          handleAddStudent();
+                        }
+                      }}
+                      disabled={addingStudent}
+                    />
+                  </div>
+                  {emailError && (
+                    <div className="flex items-center space-x-2 mt-2 text-red-600">
+                      <AlertCircle className="h-4 w-4" />
+                      <p className="text-sm font-medium">{emailError}</p>
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={handleAddStudent}
+                  disabled={addingStudent || !newStudentEmail.trim()}
+                  className="flex items-center space-x-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                >
+                  {addingStudent ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                      <span>Adding...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="h-4 w-4" />
+                      <span>Add Student</span>
+                    </>
+                  )}
+                </button>
               </div>
-              <button
-                onClick={handleAddStudent}
-                disabled={addingStudent || !newStudentEmail.trim()}
-                className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors disabled:bg-gray-400"
-              >
-                <Plus className="h-4 w-4" />
-                <span>{addingStudent ? 'Adding...' : 'Add'}</span>
-              </button>
             </div>
           </div>
 
-          {/* Enrolled Students Section */}
+          {/* Enhanced Enrolled Students Section */}
           <div>
-            <h4 className="text-md font-medium text-gray-900 mb-3">Enrolled Students ({enrolledStudents.length})</h4>
+            <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <UserCheck className="h-5 w-5 text-blue-600 mr-2" />
+              Enrolled Students ({enrolledStudents.length})
+            </h4>
 
             {loadingStudents ? (
-              <p className="text-gray-500 italic">Loading students...</p>
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8 border border-blue-200">
+                <div className="flex items-center justify-center space-x-3">
+                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-600 border-t-transparent"></div>
+                  <span className="text-blue-700 font-medium">Loading students...</span>
+                </div>
+              </div>
             ) : !enrolledStudents.length ? (
-              <p className="text-gray-500 italic">No students enrolled yet.</p>
+              <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-8 border border-gray-200 text-center">
+                <div className="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-8 w-8 text-gray-400" />
+                </div>
+                <p className="text-gray-600 font-medium">No students enrolled yet.</p>
+                <p className="text-sm text-gray-500 mt-1">Add students using the form above.</p>
+              </div>
             ) : (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {enrolledStudents.map((studentEmail) => (
-                  <div key={studentEmail} className="flex items-center justify-between p-3 bg-gray-50 rounded-md border border-gray-200">
-                    <div className="flex items-center space-x-2">
-                      <UserCheck className="h-4 w-4 text-green-600" />
-                      <span className="text-gray-900">{studentEmail}</span>
+                  <div
+                    key={studentEmail}
+                    className="group bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all duration-200"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="bg-gradient-to-br from-green-100 to-emerald-100 p-2 rounded-xl">
+                          <UserCheck className="h-5 w-5 text-green-600" />
+                        </div>
+                        <div>
+                          <span className="text-gray-900 font-medium">{studentEmail}</span>
+                          <div className="flex items-center space-x-1 mt-1">
+                            <CheckCircle className="h-3 w-3 text-green-500" />
+                            <span className="text-xs text-green-600 font-medium">Enrolled</span>
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleRemoveStudent(studentEmail)}
+                        disabled={removingStudent}
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-xl transition-all duration-200 disabled:opacity-50 group-hover:bg-red-50"
+                        title="Remove student"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
                     </div>
-                    <button
-                      onClick={() => handleRemoveStudent(studentEmail)}
-                      disabled={removingStudent}
-                      className="text-red-600 hover:text-red-800 hover:bg-red-50 p-1 rounded transition-colors disabled:opacity-50"
-                      title="Remove student"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
                   </div>
                 ))}
               </div>
             )}
           </div>
-        </div>
-
-        <div className="p-6 border-t border-gray-200">
-          <button onClick={onClose} className="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-md transition-colors">
-            Close
-          </button>
         </div>
       </div>
     </div>

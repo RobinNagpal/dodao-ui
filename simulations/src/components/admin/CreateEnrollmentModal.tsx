@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { BookOpen, Mail, Sparkles } from 'lucide-react';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 
@@ -115,37 +116,62 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md bg-white dark:bg-gray-800">
-        <DialogHeader>
-          <DialogTitle className="text-gray-900 dark:text-gray-100">Create New Enrollment</DialogTitle>
+      <DialogContent className="sm:max-w-md bg-white/95 backdrop-blur-md border border-emerald-100/50 shadow-2xl">
+        <DialogHeader className="bg-gradient-to-r from-emerald-50 to-green-50 -m-6 mb-4 p-6 rounded-t-lg border-b border-emerald-100">
+          <DialogTitle className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent flex items-center space-x-2">
+            <Sparkles className="h-5 w-5 text-emerald-500" />
+            <span>Create New Enrollment</span>
+          </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
+        <div className="space-y-6 py-4">
           <div>
-            <Label htmlFor="caseStudy" className="text-gray-700 dark:text-gray-300">
-              Case Study *
+            <Label htmlFor="caseStudy" className="text-emerald-700 font-medium flex items-center space-x-2 mb-2">
+              <BookOpen className="h-4 w-4" />
+              <span>Case Study *</span>
             </Label>
             <Select value={selectedCaseStudyId} onValueChange={setSelectedCaseStudyId}>
               <SelectTrigger
-                className={`bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 ${
-                  errors.caseStudy ? 'border-red-500' : ''
-                }`}
+                className={`w-full bg-white border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400 ${errors.caseStudy ? 'border-red-500' : ''}`}
               >
-                <SelectValue placeholder="Select a case study" />
+                <SelectValue placeholder="Select a case study">
+                  {selectedCaseStudyId && caseStudies
+                    ? (() => {
+                        const selectedCaseStudy = caseStudies.find((cs) => cs.id === selectedCaseStudyId);
+                        return selectedCaseStudy ? (
+                          <div className="flex items-center justify-between w-full">
+                            <span className="text-sm font-bold text-emerald-700 bg-emerald-100 px-2 py-1 rounded-md">{selectedCaseStudy.subject}</span>
+                            <span className="text-xs text-gray-500 ml-2 truncate">
+                              {selectedCaseStudy.title.length > 40 ? `${selectedCaseStudy.title.substring(0, 40)}...` : selectedCaseStudy.title}
+                            </span>
+                          </div>
+                        ) : (
+                          'Select a case study'
+                        );
+                      })()
+                    : 'Select a case study'}
+                </SelectValue>
               </SelectTrigger>
-              <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+              <SelectContent className="bg-white border-emerald-100">
                 {loadingCaseStudies ? (
-                  <SelectItem value="loading" disabled className="text-gray-500 dark:text-gray-400">
+                  <SelectItem value="loading" disabled className="text-gray-500">
                     Loading case studies...
                   </SelectItem>
                 ) : caseStudies && caseStudies.length > 0 ? (
                   caseStudies.map((caseStudy) => (
-                    <SelectItem key={caseStudy.id} value={caseStudy.id} className="text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700">
-                      {caseStudy.title} ({caseStudy.subject})
+                    <SelectItem key={caseStudy.id} value={caseStudy.id} className="text-gray-900 hover:bg-emerald-50">
+                      <div className="flex flex-col space-y-1 w-full" title={caseStudy.title}>
+                        <div className="flex items-center justify-between w-full">
+                          <span className="text-sm font-bold text-emerald-700 bg-emerald-100 px-2 py-1 rounded-md flex-shrink-0">{caseStudy.subject}</span>
+                        </div>
+                        <span className="text-xs text-gray-600 truncate max-w-xs">
+                          {caseStudy.title.length > 60 ? `${caseStudy.title.substring(0, 60)}...` : caseStudy.title}
+                        </span>
+                      </div>
                     </SelectItem>
                   ))
                 ) : (
-                  <SelectItem value="no-case-studies" disabled className="text-gray-500 dark:text-gray-400">
+                  <SelectItem value="no-case-studies" disabled className="text-gray-500">
                     No case studies available
                   </SelectItem>
                 )}
@@ -155,8 +181,9 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
           </div>
 
           <div>
-            <Label htmlFor="instructor" className="text-gray-700 dark:text-gray-300">
-              Assigned Instructor Email *
+            <Label htmlFor="instructor" className="text-emerald-700 font-medium flex items-center space-x-2 mb-2">
+              <Mail className="h-4 w-4" />
+              <span>Assigned Instructor Email *</span>
             </Label>
             <Input
               id="instructor"
@@ -164,7 +191,7 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
               value={assignedInstructorId}
               onChange={(e) => setAssignedInstructorId(e.target.value)}
               placeholder="instructor@university.edu"
-              className={`bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 ${
+              className={`bg-white border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400 placeholder:text-gray-500 ${
                 errors.instructor ? 'border-red-500' : ''
               }`}
             />
@@ -172,12 +199,12 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
           </div>
         </div>
 
-        <DialogFooter className="gap-2">
+        <DialogFooter className="gap-3 pt-4 border-t border-emerald-100">
           <Button
             type="button"
             variant="outline"
             onClick={handleClose}
-            className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+            className="border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300 bg-transparent"
           >
             Cancel
           </Button>
@@ -185,7 +212,7 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
             type="button"
             onClick={handleSubmit}
             disabled={loading || loadingCaseStudies}
-            className="bg-blue-600 hover:bg-blue-700 text-white disabled:bg-gray-400"
+            className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:transform-none"
           >
             {loading ? 'Creating...' : 'Create Enrollment'}
           </Button>

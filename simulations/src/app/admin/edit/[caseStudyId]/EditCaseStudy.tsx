@@ -7,13 +7,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Shield, Plus, Trash2, X, ArrowLeft } from 'lucide-react';
+import { Shield, Plus, Trash2, X, ArrowLeft, BookOpen, Sparkles } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
-import { BusinessSubject } from '@prisma/client';
-import { UpdateCaseStudyRequest } from '@/types/api';
+import type { BusinessSubject } from '@prisma/client';
+import type { UpdateCaseStudyRequest } from '@/types/api';
 
 interface Module {
   id?: string;
@@ -66,7 +66,7 @@ const subjectOptions = [
   { value: 'OPERATIONS', label: 'Operations' },
 ];
 
-export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClientProps): JSX.Element {
+export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClientProps) {
   const router = useRouter();
   const { showNotification } = useNotificationContext();
 
@@ -257,98 +257,135 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
 
   if (isLoading || loadingCaseStudy) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="flex items-center space-x-2">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="text-lg text-gray-900">Loading case study...</span>
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-200/30 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-200/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        </div>
+        <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-sm px-8 py-6 rounded-2xl shadow-xl border border-emerald-100">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
+          <span className="text-lg font-medium bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">Loading case study...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-200/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-200/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-200/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+      </div>
+
+      <header className="bg-white/80 backdrop-blur-md border-b border-emerald-100/50 shadow-lg relative z-10">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
-              <Button variant="outline" onClick={handleBack}>
+              <Button
+                variant="outline"
+                onClick={handleBack}
+                className="border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300 bg-transparent"
+              >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Admin
               </Button>
-              <div className="bg-red-100 p-3 rounded-xl">
-                <Shield className="h-8 w-8 text-red-600" />
+              <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-3 rounded-2xl shadow-lg">
+                <Shield className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Edit Case Study</h1>
-                <p className="text-gray-600">Welcome back, {userEmail}</p>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">Edit Case Study</h1>
+                <p className="text-emerald-600/80 font-medium">Welcome back, {userEmail}</p>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-          <div className="space-y-6">
-            {/* Basic Information */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="title">Title *</Label>
-                <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter case study title" />
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 relative z-10">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-emerald-100/50 p-8">
+          <div className="space-y-8">
+            <div className="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-100">
+              <h3 className="text-lg font-bold text-emerald-700 mb-4 flex items-center space-x-2">
+                <BookOpen className="h-5 w-5" />
+                <span>Basic Information</span>
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="title" className="text-emerald-700 font-medium">
+                    Title *
+                  </Label>
+                  <Input
+                    id="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Enter case study title"
+                    className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="subject" className="text-emerald-700 font-medium">
+                    Subject *
+                  </Label>
+                  <Select value={subject} onValueChange={(value) => setSubject(value as BusinessSubject)}>
+                    <SelectTrigger className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400">
+                      <SelectValue placeholder="Select subject" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {subjectOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-              <div>
-                <Label htmlFor="subject">Subject *</Label>
-                <Select value={subject} onValueChange={(value) => setSubject(value as BusinessSubject)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select subject" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {subjectOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+
+              <div className="mt-4">
+                <Label htmlFor="shortDescription" className="text-emerald-700 font-medium">
+                  Short Description *
+                </Label>
+                <Textarea
+                  id="shortDescription"
+                  value={shortDescription}
+                  onChange={(e) => setShortDescription(e.target.value)}
+                  placeholder="Brief description of the case study"
+                  rows={3}
+                  className="border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400"
+                />
+              </div>
+
+              <div className="mt-4">
+                <MarkdownEditor
+                  objectId="case-study-details"
+                  label="Details *"
+                  modelValue={details}
+                  onUpdate={setDetails}
+                  placeholder="Enter detailed description using markdown..."
+                  maxHeight={300}
+                />
               </div>
             </div>
 
             <div>
-              <Label htmlFor="shortDescription">Short Description *</Label>
-              <Textarea
-                id="shortDescription"
-                value={shortDescription}
-                onChange={(e) => setShortDescription(e.target.value)}
-                placeholder="Brief description of the case study"
-                rows={3}
-              />
-            </div>
-
-            <div>
-              <MarkdownEditor
-                objectId="case-study-details"
-                label="Details *"
-                modelValue={details}
-                onUpdate={setDetails}
-                placeholder="Enter detailed description using markdown..."
-                maxHeight={300}
-              />
-            </div>
-
-            {/* Modules Section */}
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Modules</h3>
-                <Button type="button" onClick={addModule} size="sm">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent flex items-center space-x-2">
+                  <Sparkles className="h-6 w-6 text-emerald-500" />
+                  <span>Modules</span>
+                </h3>
+                <Button
+                  type="button"
+                  onClick={addModule}
+                  className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                >
                   <Plus className="h-4 w-4 mr-2" />
                   Add Module
                 </Button>
               </div>
 
               {modules.map((module, moduleIndex) => (
-                <div key={`module-${moduleIndex}`} className="border rounded-lg p-4 mb-4">
+                <div key={`module-${moduleIndex}`} className="bg-white/60 backdrop-blur-sm border border-emerald-100 rounded-2xl p-6 mb-6 shadow-lg">
                   <div className="flex justify-between items-center mb-3">
                     <h4 className="font-medium">Module {moduleIndex + 1}</h4>
                     <Button type="button" variant="destructive" size="sm" onClick={() => removeModule(moduleIndex)}>
@@ -367,7 +404,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
                         <Input
                           type="number"
                           value={module.orderNumber}
-                          onChange={(e) => updateModule(moduleIndex, 'orderNumber', parseInt(e.target.value) || 1)}
+                          onChange={(e) => updateModule(moduleIndex, 'orderNumber', Number.parseInt(e.target.value) || 1)}
                           min={1}
                         />
                       </div>
@@ -426,7 +463,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
                                 <Input
                                   type="number"
                                   value={exercise.orderNumber}
-                                  onChange={(e) => updateExercise(moduleIndex, exerciseIndex, 'orderNumber', parseInt(e.target.value) || 1)}
+                                  onChange={(e) => updateExercise(moduleIndex, exerciseIndex, 'orderNumber', Number.parseInt(e.target.value) || 1)}
                                   placeholder="Order"
                                   min={1}
                                 />
@@ -461,12 +498,21 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
               ))}
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex justify-end space-x-4 pt-6 border-t">
-              <Button type="button" variant="outline" onClick={handleBack}>
+            <div className="flex justify-end space-x-4 pt-6 border-t border-emerald-100">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleBack}
+                className="border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300 bg-transparent"
+              >
                 Cancel
               </Button>
-              <Button type="button" onClick={handleSubmit} disabled={updating}>
+              <Button
+                type="button"
+                onClick={handleSubmit}
+                disabled={updating}
+                className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:transform-none"
+              >
                 {updating ? 'Updating...' : 'Update Case Study'}
               </Button>
             </div>
