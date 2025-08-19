@@ -143,6 +143,17 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
       where: { caseStudyId: id },
     });
 
+    // Delete all final submissions for students in this case study
+    await tx.finalSubmission.deleteMany({
+      where: {
+        student: {
+          enrollment: {
+            caseStudyId: id,
+          },
+        },
+      },
+    });
+
     // Delete all enrollment students for enrollments of this case study
     await tx.enrollmentStudent.deleteMany({
       where: {
@@ -154,11 +165,6 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
 
     // Delete all enrollments for this case study
     await tx.classCaseStudyEnrollment.deleteMany({
-      where: { caseStudyId: id },
-    });
-
-    // Delete all final submissions for this case study
-    await tx.finalSubmission.deleteMany({
       where: { caseStudyId: id },
     });
 

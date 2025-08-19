@@ -13,7 +13,6 @@ export interface CaseStudy {
   updatedAt: Date;
   modules?: CaseStudyModule[];
   enrollments?: CaseStudyEnrollment[];
-  submissions?: FinalSubmission[];
 }
 
 export interface CaseStudyModule {
@@ -77,11 +76,12 @@ export interface EnrollmentStudent {
   updatedBy?: string;
   createdAt: Date;
   updatedAt: Date;
+  finalSubmission?: FinalSubmission;
 }
 
 export interface FinalSubmission {
   id: string;
-  caseStudyId: string;
+  studentId: string;
   createdBy?: string;
   updatedBy?: string;
   finalContent?: string;

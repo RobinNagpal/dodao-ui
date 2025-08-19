@@ -45,10 +45,12 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
             orderBy: {
               createdAt: 'asc',
             },
+            include: {
+              finalSubmission: true,
+            },
           },
         },
       },
-      submissions: true,
     },
   });
 
@@ -79,13 +81,15 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
         ...student,
         createdBy: student.createdBy || undefined,
         updatedBy: student.updatedBy || undefined,
+        finalSubmission: student.finalSubmission
+          ? {
+              ...student.finalSubmission,
+              createdBy: student.finalSubmission.createdBy || undefined,
+              updatedBy: student.finalSubmission.updatedBy || undefined,
+              finalContent: student.finalSubmission.finalContent || undefined,
+            }
+          : undefined,
       })),
-    })),
-    submissions: caseStudy.submissions?.map((submission) => ({
-      ...submission,
-      createdBy: submission.createdBy || undefined,
-      updatedBy: submission.updatedBy || undefined,
-      finalContent: submission.finalContent || undefined,
     })),
   };
 
