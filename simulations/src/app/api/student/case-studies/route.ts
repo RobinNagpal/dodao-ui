@@ -15,9 +15,11 @@ async function getHandler(req: NextRequest): Promise<CaseStudyWithRelations[]> {
   // Find all enrollments where this student is enrolled
   const enrollments = await prisma.classCaseStudyEnrollment.findMany({
     where: {
+      archive: false,
       students: {
         some: {
           assignedStudentId: studentEmail,
+          archive: false,
         },
       },
     },
@@ -25,8 +27,14 @@ async function getHandler(req: NextRequest): Promise<CaseStudyWithRelations[]> {
       caseStudy: {
         include: {
           modules: {
+            where: {
+              archive: false,
+            },
             include: {
               exercises: {
+                where: {
+                  archive: false,
+                },
                 orderBy: {
                   orderNumber: 'asc',
                 },

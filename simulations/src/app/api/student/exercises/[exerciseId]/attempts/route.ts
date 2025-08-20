@@ -29,6 +29,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ exe
   const exercise = await prisma.moduleExercise.findFirst({
     where: {
       id: exerciseId,
+      archive: false,
     },
     include: {
       module: {
@@ -36,8 +37,15 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ exe
           caseStudy: {
             include: {
               enrollments: {
+                where: {
+                  archive: false,
+                },
                 include: {
-                  students: true,
+                  students: {
+                    where: {
+                      archive: false,
+                    },
+                  },
                 },
               },
             },
@@ -47,6 +55,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ exe
       attempts: {
         where: {
           createdBy: studentEmail,
+          archive: false,
         },
         orderBy: {
           attemptNumber: 'desc',
@@ -131,6 +140,7 @@ Please provide a helpful, educational response that guides the student through t
         prompt,
         promptResponse: aiResponse,
         status: 'completed',
+        archive: false,
       },
     });
 
@@ -147,6 +157,7 @@ Please provide a helpful, educational response that guides the student through t
         prompt,
         status: 'failed',
         error: error instanceof Error ? error.message : 'Unknown error occurred',
+        archive: false,
       },
     });
 
@@ -168,6 +179,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ exer
     where: {
       exerciseId,
       createdBy: studentEmail,
+      archive: false,
     },
     orderBy: {
       attemptNumber: 'asc',

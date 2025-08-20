@@ -13,11 +13,15 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
   const { id: enrollmentId } = await params;
   const body: RemoveStudentRequest = await req.json();
 
-  // Find and delete the student by email and enrollment
-  const deletedStudent: Prisma.BatchPayload = await prisma.enrollmentStudent.deleteMany({
+  // Find and archive the student by email and enrollment
+  const deletedStudent: Prisma.BatchPayload = await prisma.enrollmentStudent.updateMany({
     where: {
       enrollmentId,
       assignedStudentId: body.studentEmail,
+      archive: false,
+    },
+    data: {
+      archive: true,
     },
   });
 

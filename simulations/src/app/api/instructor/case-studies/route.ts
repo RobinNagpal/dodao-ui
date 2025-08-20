@@ -15,19 +15,27 @@ async function getHandler(req: NextRequest): Promise<CaseStudy[]> {
   // Find case studies that have enrollments assigned to this instructor
   const caseStudies = await prisma.caseStudy.findMany({
     where: {
+      archive: false,
       enrollments: {
         some: {
           assignedInstructorId: instructorEmail,
+          archive: false,
         },
       },
     },
     include: {
       modules: {
+        where: {
+          archive: false,
+        },
         orderBy: {
           orderNumber: 'asc',
         },
         include: {
           exercises: {
+            where: {
+              archive: false,
+            },
             orderBy: {
               orderNumber: 'asc',
             },
@@ -37,9 +45,13 @@ async function getHandler(req: NextRequest): Promise<CaseStudy[]> {
       enrollments: {
         where: {
           assignedInstructorId: instructorEmail,
+          archive: false,
         },
         include: {
           students: {
+            where: {
+              archive: false,
+            },
             orderBy: {
               createdAt: 'asc',
             },

@@ -17,9 +17,11 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
   const enrollment = await prisma.classCaseStudyEnrollment.findFirst({
     where: {
       caseStudyId: id,
+      archive: false,
       students: {
         some: {
           assignedStudentId: studentEmail,
+          archive: false,
         },
       },
     },
@@ -27,12 +29,19 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
       caseStudy: {
         include: {
           modules: {
+            where: {
+              archive: false,
+            },
             include: {
               exercises: {
+                where: {
+                  archive: false,
+                },
                 include: {
                   attempts: {
                     where: {
                       createdBy: studentEmail,
+                      archive: false,
                     },
                     orderBy: {
                       createdAt: 'desc',

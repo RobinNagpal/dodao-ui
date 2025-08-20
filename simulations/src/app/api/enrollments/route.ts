@@ -11,6 +11,9 @@ interface CreateEnrollmentRequest {
 // GET /api/enrollments - Get all enrollments
 async function getHandler(): Promise<EnrollmentWithRelations[]> {
   const enrollments: EnrollmentWithRelations[] = await prisma.classCaseStudyEnrollment.findMany({
+    where: {
+      archive: false,
+    },
     include: {
       caseStudy: {
         select: {
@@ -21,6 +24,9 @@ async function getHandler(): Promise<EnrollmentWithRelations[]> {
         },
       },
       students: {
+        where: {
+          archive: false,
+        },
         orderBy: {
           createdAt: 'asc',
         },
@@ -47,6 +53,7 @@ async function postHandler(req: NextRequest): Promise<EnrollmentWithRelations> {
       assignedInstructorId: body.assignedInstructorId,
       createdBy: adminEmail,
       updatedBy: adminEmail,
+      archive: false,
     },
     include: {
       caseStudy: {

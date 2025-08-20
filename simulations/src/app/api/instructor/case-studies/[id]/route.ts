@@ -17,19 +17,27 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
   const caseStudy = await prisma.caseStudy.findFirst({
     where: {
       id,
+      archive: false,
       enrollments: {
         some: {
           assignedInstructorId: instructorEmail,
+          archive: false,
         },
       },
     },
     include: {
       modules: {
+        where: {
+          archive: false,
+        },
         orderBy: {
           orderNumber: 'asc',
         },
         include: {
           exercises: {
+            where: {
+              archive: false,
+            },
             orderBy: {
               orderNumber: 'asc',
             },
@@ -39,14 +47,22 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
       enrollments: {
         where: {
           assignedInstructorId: instructorEmail,
+          archive: false,
         },
         include: {
           students: {
+            where: {
+              archive: false,
+            },
             orderBy: {
               createdAt: 'asc',
             },
             include: {
-              finalSubmission: true,
+              finalSubmission: {
+                where: {
+                  archive: false,
+                },
+              },
             },
           },
         },

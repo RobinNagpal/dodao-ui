@@ -28,8 +28,10 @@ async function postHandler(req: NextRequest): Promise<FinalSubmissionResponse> {
   const enrollmentStudent = await prisma.enrollmentStudent.findFirst({
     where: {
       assignedStudentId: studentEmail,
+      archive: false,
       enrollment: {
         caseStudyId: caseStudyId,
+        archive: false,
       },
     },
   });
@@ -54,6 +56,7 @@ async function postHandler(req: NextRequest): Promise<FinalSubmissionResponse> {
       data: {
         finalContent,
         updatedBy: studentEmail,
+        archive: false,
       },
     });
 
@@ -66,6 +69,7 @@ async function postHandler(req: NextRequest): Promise<FinalSubmissionResponse> {
         finalContent,
         createdBy: studentEmail,
         updatedBy: studentEmail,
+        archive: false,
       },
     });
 
@@ -87,8 +91,10 @@ async function getHandler(req: NextRequest): Promise<FinalSubmissionResponse | n
   const enrollmentStudent = await prisma.enrollmentStudent.findFirst({
     where: {
       assignedStudentId: studentEmail,
+      archive: false,
       enrollment: {
         caseStudyId: caseStudyId,
+        archive: false,
       },
     },
   });
@@ -101,6 +107,7 @@ async function getHandler(req: NextRequest): Promise<FinalSubmissionResponse | n
   const submission = await prisma.finalSubmission.findFirst({
     where: {
       studentId: enrollmentStudent.id,
+      archive: false,
     },
   });
 

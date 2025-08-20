@@ -27,6 +27,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ exer
   const exercise = await prisma.moduleExercise.findFirst({
     where: {
       id: exerciseId,
+      archive: false,
     },
     include: {
       module: {
@@ -34,8 +35,15 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ exer
           caseStudy: {
             include: {
               enrollments: {
+                where: {
+                  archive: false,
+                },
                 include: {
-                  students: true,
+                  students: {
+                    where: {
+                      archive: false,
+                    },
+                  },
                 },
               },
             },

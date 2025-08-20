@@ -7,12 +7,21 @@ import { UpdateCaseStudyRequest, CaseStudyWithRelations, DeleteResponse } from '
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<CaseStudyWithRelations> {
   const { id } = await params;
 
-  const caseStudy: CaseStudyWithRelations = await prisma.caseStudy.findUniqueOrThrow({
-    where: { id },
+  const caseStudy: CaseStudyWithRelations = await prisma.caseStudy.findFirstOrThrow({
+    where: {
+      id,
+      archive: false,
+    },
     include: {
       modules: {
+        where: {
+          archive: false,
+        },
         include: {
           exercises: {
+            where: {
+              archive: false,
+            },
             orderBy: {
               orderNumber: 'asc',
             },
@@ -47,6 +56,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: 
         details: body.details,
         subject: body.subject,
         updatedBy: adminEmail,
+        archive: false,
       },
     });
 
@@ -75,6 +85,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: 
           orderNumber: caseStudyModule.orderNumber,
           createdBy: adminEmail,
           updatedBy: adminEmail,
+          archive: false,
           exercises: {
             create: caseStudyModule.exercises.map((exercise) => ({
               title: exercise.title,
@@ -83,6 +94,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: 
               orderNumber: exercise.orderNumber,
               createdBy: adminEmail,
               updatedBy: adminEmail,
+              archive: false,
             })),
           },
         },
@@ -118,59 +130,90 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
 
   // Use a transaction to ensure atomicity
   await prisma.$transaction(async (tx) => {
-    // First, delete all exercise attempts for exercises in this case study's modules
-    await tx.exerciseAttempt.deleteMany({
+    // First, archive all exercise attempts for exercises in this case study's modules
+    await tx.exerciseAttempt.updateMany({
       where: {
         exercise: {
           module: {
             caseStudyId: id,
           },
         },
+        archive: false,
+      },
+      data: {
+        archive: true,
       },
     });
 
-    // Then delete all exercises in this case study's modules
-    await tx.moduleExercise.deleteMany({
+    // Then archive all exercises in this case study's modules
+    await tx.moduleExercise.updateMany({
       where: {
         module: {
           caseStudyId: id,
         },
+        archive: false,
+      },
+      data: {
+        archive: true,
       },
     });
 
-    // Delete all modules for this case study
-    await tx.caseStudyModule.deleteMany({
-      where: { caseStudyId: id },
+    // Archive all modules for this case study
+    await tx.caseStudyModule.updateMany({
+      where: {
+        caseStudyId: id,
+        archive: false,
+      },
+      data: {
+        archive: true,
+      },
     });
 
-    // Delete all final submissions for students in this case study
-    await tx.finalSubmission.deleteMany({
+    // Archive all final submissions for students in this case study
+    await tx.finalSubmission.updateMany({
       where: {
         student: {
           enrollment: {
             caseStudyId: id,
           },
         },
+        archive: false,
+      },
+      data: {
+        archive: true,
       },
     });
 
-    // Delete all enrollment students for enrollments of this case study
-    await tx.enrollmentStudent.deleteMany({
+    // Archive all enrollment students for enrollments of this case study
+    await tx.enrollmentStudent.updateMany({
       where: {
         enrollment: {
           caseStudyId: id,
         },
+        archive: false,
+      },
+      data: {
+        archive: true,
       },
     });
 
-    // Delete all enrollments for this case study
-    await tx.classCaseStudyEnrollment.deleteMany({
-      where: { caseStudyId: id },
+    // Archive all enrollments for this case study
+    await tx.classCaseStudyEnrollment.updateMany({
+      where: {
+        caseStudyId: id,
+        archive: false,
+      },
+      data: {
+        archive: true,
+      },
     });
 
-    // Finally, delete the case study itself
-    await tx.caseStudy.delete({
+    // Finally, archive the case study itself
+    await tx.caseStudy.update({
       where: { id },
+      data: {
+        archive: true,
+      },
     });
   });
 
