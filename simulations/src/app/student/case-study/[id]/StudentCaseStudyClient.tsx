@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyWithRelations } from '@/types/api';
-import { ArrowLeft, BookOpen, Target, Play, ChevronRight, Brain, Sparkles, Clock, CheckCircle2, Lock, TrendingUp } from 'lucide-react';
+import { BookOpen, Target, Play, ChevronRight, Brain, Sparkles, Clock, CheckCircle2, Lock, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { parseMarkdown } from '@/utils/parse-markdown';
+import StudentNavbar from '@/components/navigation/StudentNavbar';
 
 interface StudentCaseStudyClientProps {
   caseStudyId: string;
@@ -127,10 +128,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     return totalExercises > 0 ? (completedExercises / totalExercises) * 100 : 0;
   };
 
-  const handleBack = () => {
-    router.push('/student');
-  };
-
   const handleStartExercise = (exerciseId: string, moduleId: string) => {
     // Check if exercise is accessible
     if (!isExerciseAccessible(moduleId, exerciseId)) {
@@ -182,8 +179,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-3">Case Study Not Found</h3>
             <p className="text-gray-600">The case study you’re looking for doesn’t exist or you don’t have access to it.</p>
-            <Button onClick={handleBack} className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
-              <ArrowLeft className="h-4 w-4 mr-2" />
+            <Button onClick={() => router.push('/student')} className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
               Back to Dashboard
             </Button>
           </CardContent>
@@ -198,105 +194,80 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
-      <header className="backdrop-blur-xl bg-white/80 border-b border-white/20 shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between py-6">
-            <div className="flex items-center space-x-4">
-              <Button
-                onClick={handleBack}
-                variant="ghost"
-                className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 hover:bg-white/50 transition-all duration-200 group"
-              >
-                <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-                <span>Dashboard</span>
-              </Button>
-              <div className="h-6 w-px bg-gray-300"></div>
-              <div className="relative">
-                <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-3 rounded-2xl shadow-lg">
-                  <span className="text-2xl">{getSubjectIcon(caseStudy.subject)}</span>
+      <StudentNavbar
+        title={caseStudy.title}
+        subtitle="Interactive Case Study"
+        userEmail={userEmail}
+        icon={<span className="text-2xl">{getSubjectIcon(caseStudy.subject)}</span>}
+        iconColor="from-blue-600 to-indigo-700"
+      />
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pb-6">
+          <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-3">
+                <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-2 rounded-lg">
+                  <Target className="h-5 w-5 text-white" />
                 </div>
-                <div className="absolute -top-1 -right-1 bg-gradient-to-r from-cyan-400 to-blue-500 p-1 rounded-full">
-                  <Sparkles className="h-4 w-4 text-white" />
+                <div>
+                  <p className="text-sm text-gray-600">Subject</p>
+                  <p className="text-lg font-semibold text-gray-900">{getSubjectDisplayName(caseStudy.subject)}</p>
                 </div>
               </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-blue-800 bg-clip-text text-transparent">{caseStudy.title}</h1>
-                <p className="text-gray-600">Interactive Case Study</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-3">
+                <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-lg">
+                  <BookOpen className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Modules</p>
+                  <p className="text-lg font-semibold text-gray-900">{modules.length}</p>
+                </div>
               </div>
-            </div>
-            <div className="text-sm text-gray-500">
-              <span className="font-medium text-blue-600">{userEmail}</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pb-6">
-            <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-3">
-                  <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-2 rounded-lg">
-                    <Target className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Subject</p>
-                    <p className="text-lg font-semibold text-gray-900">{getSubjectDisplayName(caseStudy.subject)}</p>
-                  </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-3">
+                <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg">
+                  <Target className="h-5 w-5 text-white" />
                 </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-3">
-                  <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-lg">
-                    <BookOpen className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Modules</p>
-                    <p className="text-lg font-semibold text-gray-900">{modules.length}</p>
-                  </div>
+                <div>
+                  <p className="text-sm text-gray-600">Exercises</p>
+                  <p className="text-lg font-semibold text-gray-900">{totalExercises}</p>
                 </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-3">
-                  <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg">
-                    <Target className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Exercises</p>
-                    <p className="text-lg font-semibold text-gray-900">{totalExercises}</p>
-                  </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-gradient-to-br from-cyan-50 to-blue-50 border-cyan-200">
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-3">
+                <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-2 rounded-lg">
+                  <TrendingUp className="h-5 w-5 text-white" />
                 </div>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-cyan-50 to-blue-50 border-cyan-200">
-              <CardContent className="p-4">
-                <div className="flex items-center space-x-3">
-                  <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-2 rounded-lg">
-                    <TrendingUp className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Progress</p>
-                    <p className="text-lg font-semibold text-gray-900">{Math.round(progress)}%</p>
-                  </div>
+                <div>
+                  <p className="text-sm text-gray-600">Progress</p>
+                  <p className="text-lg font-semibold text-gray-900">{Math.round(progress)}%</p>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Progress bar */}
-          <div className="pb-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">Overall Progress</span>
-              <span className="text-sm text-gray-500">{Math.round(progress)}% Complete</span>
-            </div>
-            <Progress value={progress} className="h-2" />
-          </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </header>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        <div className="space-y-8">
+        {/* Progress bar */}
+        <div className="pb-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-700">Overall Progress</span>
+            <span className="text-sm text-gray-500">{Math.round(progress)}% Complete</span>
+          </div>
+          <Progress value={progress} className="h-2" />
+        </div>
+
+        <div className="space-y-8 py-8">
           <Card className="backdrop-blur-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border-white/20 shadow-lg">
             <CardHeader className="pb-4">
               <div className="flex items-center space-x-3 mb-4">

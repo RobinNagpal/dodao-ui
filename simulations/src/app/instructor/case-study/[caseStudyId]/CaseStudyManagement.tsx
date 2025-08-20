@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyModule, CaseStudy, ModuleExercise } from '@/types';
-import { ArrowLeft, BookOpen, Users, BarChart3, Target, Brain, Sparkles, GraduationCap, Zap } from 'lucide-react';
+import { BookOpen, Users, BarChart3, Target, Brain, Sparkles, GraduationCap, Zap } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import InstructorNavbar from '@/components/navigation/InstructorNavbar';
 
 interface CaseStudyManagementClientProps {
   caseStudyId: string;
@@ -39,8 +40,10 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     setIsLoading(false);
   }, [router]);
 
-  const handleBack = () => {
-    router.push('/instructor');
+  const handleLogout = () => {
+    localStorage.removeItem('user_type');
+    localStorage.removeItem('user_email');
+    router.push('/login');
   };
 
   if (isLoading || loadingCaseStudy) {
@@ -71,7 +74,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
             <h3 className="text-xl font-semibold text-gray-900 mb-3">Case Study Not Found</h3>
             <p className="text-gray-600 mb-6">The case study you’re looking for doesn’t exist or has been removed.</p>
             <button
-              onClick={handleBack}
+              onClick={() => router.push('/instructor')}
               className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               Back to Dashboard
@@ -91,112 +94,96 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-purple-200/30 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-indigo-200/20 rounded-full blur-xl animate-pulse delay-2000"></div>
+        <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-indigo-200/20 rounded-full blur-xl animate-pulse delay-2000"> </div>
       </div>
 
-      {/* Enhanced Header */}
-      <header className="relative bg-white/80 backdrop-blur-lg border-b border-white/20 shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between py-6">
+      <InstructorNavbar
+        title={caseStudy.title}
+        subtitle="Instructor Management Console"
+        userEmail={userEmail}
+        onLogout={handleLogout}
+        icon={<GraduationCap className="h-8 w-8 text-white" />}
+      />
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
+        {/* Enhanced Stats Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6">
+          <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-2xl p-6 border border-blue-200/50 backdrop-blur-sm">
             <div className="flex items-center space-x-4">
-              <button
-                onClick={handleBack}
-                className="flex items-center space-x-2 text-gray-600 hover:text-purple-600 transition-all duration-300 group bg-white/50 hover:bg-white/80 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/30"
-              >
-                <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-                <span>Back to Dashboard</span>
-              </button>
-              <div className="h-8 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
+              <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-3 rounded-xl shadow-lg">
+                <Users className="h-6 w-6 text-white" />
+              </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">{caseStudy.title}</h1>
-                <p className="text-gray-600 flex items-center space-x-1">
-                  <GraduationCap className="h-4 w-4 text-purple-500" />
-                  <span>Instructor Management Console</span>
+                <p className="text-sm text-gray-600 font-medium">Enrolled Students</p>
+                <p className="text-3xl font-bold text-gray-900">{enrolledStudents}</p>
+              </div>
+            </div>
+          </div>
+          <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-purple-200/50 backdrop-blur-sm">
+            <div className="flex items-center space-x-4">
+              <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-3 rounded-xl shadow-lg">
+                <BookOpen className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 font-medium">Total Modules</p>
+                <p className="text-3xl font-bold text-gray-900">{modules.length}</p>
+              </div>
+            </div>
+          </div>
+          <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-2xl p-6 border border-green-200/50 backdrop-blur-sm">
+            <div className="flex items-center space-x-4">
+              <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-3 rounded-xl shadow-lg">
+                <Target className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 font-medium">Total Exercises</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  {modules.reduce((total: number, module: CaseStudyModule) => total + (module.exercises?.length || 0), 0)}
                 </p>
               </div>
             </div>
-            <div className="text-sm text-gray-500 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/30">Logged in as {userEmail}</div>
-          </div>
-
-          {/* Enhanced Stats Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6">
-            <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-2xl p-6 border border-blue-200/50 backdrop-blur-sm">
-              <div className="flex items-center space-x-4">
-                <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-3 rounded-xl shadow-lg">
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600 font-medium">Enrolled Students</p>
-                  <p className="text-3xl font-bold text-gray-900">{enrolledStudents}</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-purple-200/50 backdrop-blur-sm">
-              <div className="flex items-center space-x-4">
-                <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-3 rounded-xl shadow-lg">
-                  <BookOpen className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600 font-medium">Total Modules</p>
-                  <p className="text-3xl font-bold text-gray-900">{modules.length}</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-2xl p-6 border border-green-200/50 backdrop-blur-sm">
-              <div className="flex items-center space-x-4">
-                <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-3 rounded-xl shadow-lg">
-                  <Target className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600 font-medium">Total Exercises</p>
-                  <p className="text-3xl font-bold text-gray-900">
-                    {modules.reduce((total: number, module: CaseStudyModule) => total + (module.exercises?.length || 0), 0)}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Enhanced Tab Navigation */}
-          <div className="border-b border-white/20">
-            <nav className="-mb-px flex space-x-8">
-              <button
-                onClick={() => setActiveTab('overview')}
-                className={`py-4 px-2 border-b-2 font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
-                  activeTab === 'overview'
-                    ? 'border-purple-500 text-purple-600 bg-purple-50/50 rounded-t-lg'
-                    : 'border-transparent text-gray-600 hover:text-purple-600 hover:border-purple-300'
-                }`}
-              >
-                <BookOpen className="h-4 w-4" />
-                <span>Overview</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('students')}
-                className={`py-4 px-2 border-b-2 font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
-                  activeTab === 'students'
-                    ? 'border-purple-500 text-purple-600 bg-purple-50/50 rounded-t-lg'
-                    : 'border-transparent text-gray-600 hover:text-purple-600 hover:border-purple-300'
-                }`}
-              >
-                <Users className="h-4 w-4" />
-                <span>Students</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('analytics')}
-                className={`py-4 px-2 border-b-2 font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
-                  activeTab === 'analytics'
-                    ? 'border-purple-500 text-purple-600 bg-purple-50/50 rounded-t-lg'
-                    : 'border-transparent text-gray-600 hover:text-purple-600 hover:border-purple-300'
-                }`}
-              >
-                <BarChart3 className="h-4 w-4" />
-                <span>Analytics</span>
-              </button>
-            </nav>
           </div>
         </div>
-      </header>
+
+        {/* Enhanced Tab Navigation */}
+        <div className="border-b border-white/20">
+          <nav className="-mb-px flex space-x-8">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`py-4 px-2 border-b-2 font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
+                activeTab === 'overview'
+                  ? 'border-purple-500 text-purple-600 bg-purple-50/50 rounded-t-lg'
+                  : 'border-transparent text-gray-600 hover:text-purple-600 hover:border-purple-300'
+              }`}
+            >
+              <BookOpen className="h-4 w-4" />
+              <span>Overview</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('students')}
+              className={`py-4 px-2 border-b-2 font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
+                activeTab === 'students'
+                  ? 'border-purple-500 text-purple-600 bg-purple-50/50 rounded-t-lg'
+                  : 'border-transparent text-gray-600 hover:text-purple-600 hover:border-purple-300'
+              }`}
+            >
+              <Users className="h-4 w-4" />
+              <span>Students</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('analytics')}
+              className={`py-4 px-2 border-b-2 font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
+                activeTab === 'analytics'
+                  ? 'border-purple-500 text-purple-600 bg-purple-50/50 rounded-t-lg'
+                  : 'border-transparent text-gray-600 hover:text-purple-600 hover:border-purple-300'
+              }`}
+            >
+              <BarChart3 className="h-4 w-4" />
+              <span>Analytics</span>
+            </button>
+          </nav>
+        </div>
+      </div>
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
         {activeTab === 'overview' && (

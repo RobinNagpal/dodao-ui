@@ -41,8 +41,11 @@ async function getHandler(req: NextRequest): Promise<CaseStudyWithRelations[]> {
     },
   });
 
-  // Extract case studies from enrollments
-  const enrolledCaseStudies: CaseStudyWithRelations[] = enrollments.map((enrollment) => enrollment.caseStudy);
+  // Extract case studies from enrollments and include instructor email
+  const enrolledCaseStudies: CaseStudyWithRelations[] = enrollments.map((enrollment) => ({
+    ...enrollment.caseStudy,
+    instructorEmail: enrollment.assignedInstructorId,
+  }));
 
   return enrolledCaseStudies;
 }

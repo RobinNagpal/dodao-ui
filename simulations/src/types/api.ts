@@ -54,6 +54,7 @@ export type CaseStudyWithRelations = CaseStudy & {
       exercises: ModuleExercise[];
     }
   >;
+  instructorEmail?: string; // Added instructor email
 };
 
 export type EnrollmentWithRelations = ClassCaseStudyEnrollment & {

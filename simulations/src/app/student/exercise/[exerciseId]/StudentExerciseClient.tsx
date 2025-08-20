@@ -6,9 +6,10 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import type { ExerciseAttempt } from '@prisma/client';
-import { ArrowLeft, BookOpen, Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Target } from 'lucide-react';
+import { BookOpen, Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Target } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import AttemptDetailModal from '@/components/student/AttemptDetailModal';
+import StudentNavbar from '@/components/navigation/StudentNavbar';
 
 interface StudentExerciseClientProps {
   exerciseId: string;
@@ -26,6 +27,10 @@ interface ExerciseData {
   title: string;
   shortDescription: string;
   details: string;
+  orderNumber: number;
+  module: {
+    orderNumber: number;
+  };
 }
 
 interface CreateAttemptRequest {
@@ -144,14 +149,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     }
   }, [attempts, submittingAttempt]);
 
-  const handleBack = () => {
-    if (caseStudyId) {
-      router.push(`/student/case-study/${caseStudyId}`);
-    } else {
-      router.push('/student');
-    }
-  };
-
   const handleSubmitPrompt = async () => {
     if (!prompt.trim() || submittingAttempt || (attempts && attempts.length >= 3)) {
       return;
@@ -181,7 +178,11 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
 
     if (!nextExerciseData) {
       // Fallback to case study if no navigation data
-      handleBack();
+      if (caseStudyId) {
+        router.push(`/student/case-study/${caseStudyId}`);
+      } else {
+        router.push('/student');
+      }
       return;
     }
 
@@ -197,7 +198,11 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       );
     } else {
       // Fallback to case study
-      handleBack();
+      if (caseStudyId) {
+        router.push(`/student/case-study/${caseStudyId}`);
+      } else {
+        router.push('/student');
+      }
     }
   };
 
@@ -304,51 +309,15 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
         <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-indigo-200/20 rounded-full blur-xl animate-pulse delay-2000"></div>
       </div>
 
-      {/* Enhanced Header */}
-      <header className="relative bg-white/80 backdrop-blur-lg border-b border-white/20 shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between py-6">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={handleBack}
-                className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-all duration-300 group bg-white/50 hover:bg-white/80 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/30"
-              >
-                <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-                <span>Back to Case Study</span>
-              </button>
-              <div className="h-8 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
-              <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-2xl shadow-lg">
-                <Brain className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">AI Exercise Studio</h1>
-                <p className="text-gray-600 flex items-center space-x-1">
-                  <Sparkles className="h-4 w-4 text-yellow-500" />
-                  <span>Interactive Learning with AI</span>
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/30">
-                <div className="text-sm text-gray-600">
-                  {(() => {
-                    if (!attempts) return `Next attempt: 1/3`;
-                    const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
-                    if (submittingAttempt) {
-                      return `Generating response... (${completedAttempts.length + 1}/3)`;
-                    } else if (completedAttempts.length >= 3) {
-                      return 'All 3 attempts used';
-                    } else {
-                      return `Next attempt: ${completedAttempts.length + 1}/3`;
-                    }
-                  })()}
-                </div>
-              </div>
-              <div className="text-sm text-gray-500">Logged in as {userEmail}</div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <StudentNavbar
+        title="AI Exercise Studio"
+        subtitle="Interactive Learning with AI"
+        userEmail={userEmail}
+        moduleNumber={exerciseData?.module?.orderNumber}
+        exerciseNumber={exerciseData?.orderNumber}
+        icon={<Brain className="h-8 w-8 text-white" />}
+        iconColor="from-blue-500 to-purple-600"
+      />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

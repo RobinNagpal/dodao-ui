@@ -7,6 +7,10 @@ interface ExerciseResponse {
   title: string;
   shortDescription: string;
   details: string;
+  orderNumber: number;
+  module: {
+    orderNumber: number;
+  };
 }
 
 // GET /api/student/exercises/[exerciseId] - Get exercise details for a student
@@ -59,6 +63,10 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ exer
     title: exercise.title,
     shortDescription: exercise.shortDescription,
     details: exercise.details,
+    orderNumber: exercise.orderNumber,
+    module: {
+      orderNumber: exercise.module.orderNumber,
+    },
   };
 }
 
