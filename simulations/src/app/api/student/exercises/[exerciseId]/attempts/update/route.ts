@@ -27,6 +27,7 @@ async function putHandler(req: NextRequest): Promise<UpdateAttemptResponse> {
     where: {
       id: attemptId,
       createdBy: studentEmail,
+      archive: false,
     },
   });
 
@@ -42,6 +43,7 @@ async function putHandler(req: NextRequest): Promise<UpdateAttemptResponse> {
     data: {
       promptResponse: updatedResponse,
       updatedBy: studentEmail,
+      archive: false,
     },
   });
 

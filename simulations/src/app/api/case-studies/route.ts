@@ -6,10 +6,19 @@ import { CreateCaseStudyRequest, CaseStudyWithRelations } from '@/types/api';
 // GET /api/case-studies - Get all case studies
 async function getHandler(): Promise<CaseStudyWithRelations[]> {
   const caseStudies: CaseStudyWithRelations[] = await prisma.caseStudy.findMany({
+    where: {
+      archive: false,
+    },
     include: {
       modules: {
+        where: {
+          archive: false,
+        },
         include: {
           exercises: {
+            where: {
+              archive: false,
+            },
             orderBy: {
               orderNumber: 'asc',
             },
@@ -44,6 +53,7 @@ async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
       subject: body.subject,
       createdBy: adminEmail,
       updatedBy: adminEmail,
+      archive: false,
       modules: {
         create: body.modules.map((module) => ({
           title: module.title,
@@ -52,6 +62,7 @@ async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
           orderNumber: module.orderNumber,
           createdBy: adminEmail,
           updatedBy: adminEmail,
+          archive: false,
           exercises: {
             create: module.exercises.map((exercise) => ({
               title: exercise.title,
@@ -60,6 +71,7 @@ async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
               orderNumber: exercise.orderNumber,
               createdBy: adminEmail,
               updatedBy: adminEmail,
+              archive: false,
             })),
           },
         })),

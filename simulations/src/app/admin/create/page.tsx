@@ -9,12 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Shield, Plus, Trash2, X, ArrowLeft, Sparkles, BookOpen, Target } from 'lucide-react';
+import { Shield, Plus, Trash2, X, Sparkles, BookOpen, Target } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import type { BusinessSubject } from '@prisma/client';
 import type { CreateCaseStudyRequest, CaseStudyWithRelations } from '@/types/api';
+import AdminNavbar from '@/components/navigation/AdminNavbar';
 
 interface ModuleFormData {
   id: string;
@@ -98,8 +99,10 @@ export default function CreateCaseStudyPage() {
     setModules([]);
   };
 
-  const handleBack = (): void => {
-    router.push('/admin');
+  const handleLogout = (): void => {
+    localStorage.removeItem('user_type');
+    localStorage.removeItem('user_email');
+    router.push('/login');
   };
 
   const addModule = (): void => {
@@ -263,35 +266,7 @@ export default function CreateCaseStudyPage() {
         <div className="absolute -bottom-40 right-1/3 w-64 h-64 bg-teal-400/20 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
-      {/* Header */}
-      <header className="relative z-10 bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-6">
-              <Button
-                variant="outline"
-                onClick={handleBack}
-                className="bg-white/50 backdrop-blur-sm border-emerald-200 hover:bg-emerald-50 hover:border-emerald-300 transition-all duration-200"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Admin
-              </Button>
-              <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-4 rounded-2xl shadow-lg">
-                <Shield className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 bg-clip-text text-transparent">
-                  Create New Case Study
-                </h1>
-                <p className="text-gray-600 flex items-center mt-1">
-                  <Sparkles className="h-4 w-4 mr-2 text-emerald-500" />
-                  Welcome back, {userEmail}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AdminNavbar title="Create New Case Study" userEmail={userEmail} onLogout={handleLogout} icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-8">
         <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8">
@@ -533,7 +508,12 @@ export default function CreateCaseStudyPage() {
 
             {/* Action Buttons */}
             <div className="flex justify-end space-x-4 pt-8 border-t border-gray-200">
-              <Button type="button" variant="outline" onClick={handleBack} className="bg-white/50 border-gray-300 hover:bg-gray-50 transition-all duration-200">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.push('/admin')}
+                className="bg-white/50 border-gray-300 hover:bg-gray-50 transition-all duration-200"
+              >
                 Cancel
               </Button>
               <Button

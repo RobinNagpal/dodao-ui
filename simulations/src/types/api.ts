@@ -49,21 +49,22 @@ export interface UpdateExerciseRequest {
 }
 
 export type CaseStudyWithRelations = CaseStudy & {
-  modules: Array<
+  modules?: Array<
     CaseStudyModule & {
-      exercises: ModuleExercise[];
+      exercises?: ModuleExercise[];
     }
   >;
+  instructorEmail?: string; // Added instructor email
 };
 
 export type EnrollmentWithRelations = ClassCaseStudyEnrollment & {
-  caseStudy: {
+  caseStudy?: {
     id: string;
     title: string;
     shortDescription: string;
     subject: BusinessSubject;
   };
-  students: EnrollmentStudent[];
+  students?: EnrollmentStudent[];
 };
 
 export interface DeleteResponse {

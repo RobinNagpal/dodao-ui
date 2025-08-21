@@ -57,7 +57,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
               <ProjectActionsDropdown projectId={projectId} />
             </PrivateWrapper>
           </div>
-          <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">{initialProjectDetails.name}</p>
+          <h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">{initialProjectDetails.name}</h1>
           <p className="mt-5 whitespace-pre-line">{initialProjectDetails.processedProjectInfo?.startupSummary}</p>
           <div className="max-w-lg mx-auto">
             <RadarChart data={spiderGraph} scorePercentage={spiderGraphScorePercentage} />
@@ -76,7 +76,7 @@ export default function ProjectDetailPage({ projectId, initialProjectDetails, pr
                         </span>
                       </div>
                       <div className="flex justify-between font-semibold">
-                        <div className="ml-6 text-xl">{getReportName(reportType)}</div>
+                        <h2 className="ml-6 text-xl">{getReportName(reportType)}</h2>
                         <PrivateWrapper>
                           <ReportActionsDropdown projectId={projectId} report={{ ...report, type: reportType }} reportType={reportType} />
                         </PrivateWrapper>

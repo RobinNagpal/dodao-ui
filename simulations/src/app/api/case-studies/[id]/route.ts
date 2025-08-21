@@ -7,12 +7,21 @@ import { UpdateCaseStudyRequest, CaseStudyWithRelations, DeleteResponse } from '
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<CaseStudyWithRelations> {
   const { id } = await params;
 
-  const caseStudy: CaseStudyWithRelations = await prisma.caseStudy.findUniqueOrThrow({
-    where: { id },
+  const caseStudy: CaseStudyWithRelations = await prisma.caseStudy.findFirstOrThrow({
+    where: {
+      id,
+      archive: false,
+    },
     include: {
       modules: {
+        where: {
+          archive: false,
+        },
         include: {
           exercises: {
+            where: {
+              archive: false,
+            },
             orderBy: {
               orderNumber: 'asc',
             },
@@ -29,6 +38,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
 }
 
 // PUT /api/case-studies/[id] - Update a case study
+// This implementation preserves existing modules/exercises with IDs and archives removed ones
 async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<CaseStudyWithRelations> {
   const { id } = await params;
   const body: UpdateCaseStudyRequest = await req.json();
@@ -47,63 +57,142 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: 
         details: body.details,
         subject: body.subject,
         updatedBy: adminEmail,
+        archive: false,
       },
     });
 
-    // Delete existing exercises first, then modules (due to foreign key constraints)
-    await tx.moduleExercise.deleteMany({
-      where: {
-        module: {
-          caseStudyId: id,
+    // Get existing modules and exercises to compare
+    const existingModules = await tx.caseStudyModule.findMany({
+      where: { caseStudyId: id, archive: false },
+      include: {
+        exercises: {
+          where: { archive: false },
+          orderBy: { orderNumber: 'asc' },
         },
       },
     });
 
-    // Now delete the modules
-    await tx.caseStudyModule.deleteMany({
-      where: { caseStudyId: id },
-    });
+    // Track which modules and exercises to keep
+    const moduleIdsToKeep = new Set<string>();
+    const exerciseIdsToKeep = new Set<string>();
 
-    // Create new modules and exercises
-    for (const caseStudyModule of body.modules) {
-      await tx.caseStudyModule.create({
-        data: {
-          caseStudyId: id,
-          title: caseStudyModule.title,
-          shortDescription: caseStudyModule.shortDescription,
-          details: caseStudyModule.details,
-          orderNumber: caseStudyModule.orderNumber,
-          createdBy: adminEmail,
-          updatedBy: adminEmail,
-          exercises: {
-            create: caseStudyModule.exercises.map((exercise) => ({
-              title: exercise.title,
-              shortDescription: exercise.shortDescription,
-              details: exercise.details,
-              orderNumber: exercise.orderNumber,
+    // Process each module in the request
+    for (const moduleData of body.modules) {
+      let moduleRecord: { id: string };
+
+      if (moduleData.id && existingModules.find((m) => m.id === moduleData.id)) {
+        // Update existing module
+        moduleRecord = await tx.caseStudyModule.update({
+          where: { id: moduleData.id },
+          data: {
+            title: moduleData.title,
+            shortDescription: moduleData.shortDescription,
+            details: moduleData.details,
+            orderNumber: moduleData.orderNumber,
+            updatedBy: adminEmail,
+          },
+        });
+        moduleIdsToKeep.add(moduleData.id);
+      } else {
+        // Create new module
+        moduleRecord = await tx.caseStudyModule.create({
+          data: {
+            caseStudyId: id,
+            title: moduleData.title,
+            shortDescription: moduleData.shortDescription,
+            details: moduleData.details,
+            orderNumber: moduleData.orderNumber,
+            createdBy: adminEmail,
+            updatedBy: adminEmail,
+            archive: false,
+          },
+        });
+        moduleIdsToKeep.add(moduleRecord.id);
+      }
+
+      // Process exercises for this module
+      const existingModule = existingModules.find((m) => m.id === moduleRecord.id);
+
+      for (const exerciseData of moduleData.exercises) {
+        if (exerciseData.id && existingModule?.exercises.find((e) => e.id === exerciseData.id)) {
+          // Update existing exercise
+          await tx.moduleExercise.update({
+            where: { id: exerciseData.id },
+            data: {
+              title: exerciseData.title,
+              shortDescription: exerciseData.shortDescription,
+              details: exerciseData.details,
+              orderNumber: exerciseData.orderNumber,
+              updatedBy: adminEmail,
+            },
+          });
+          exerciseIdsToKeep.add(exerciseData.id);
+        } else {
+          // Create new exercise
+          const newExercise = await tx.moduleExercise.create({
+            data: {
+              moduleId: moduleRecord.id,
+              title: exerciseData.title,
+              shortDescription: exerciseData.shortDescription,
+              details: exerciseData.details,
+              orderNumber: exerciseData.orderNumber,
               createdBy: adminEmail,
               updatedBy: adminEmail,
-            })),
-          },
-        },
-      });
+              archive: false,
+            },
+          });
+          exerciseIdsToKeep.add(newExercise.id);
+        }
+      }
     }
+
+    // Archive exercises that are no longer in the request
+    // First archive exercise attempts for exercises that will be archived
+    await tx.exerciseAttempt.updateMany({
+      where: {
+        exercise: {
+          module: { caseStudyId: id },
+          archive: false,
+          NOT: { id: { in: Array.from(exerciseIdsToKeep) } },
+        },
+        archive: false,
+      },
+      data: { archive: true },
+    });
+
+    // Then archive the exercises themselves
+    await tx.moduleExercise.updateMany({
+      where: {
+        module: { caseStudyId: id },
+        archive: false,
+        NOT: { id: { in: Array.from(exerciseIdsToKeep) } },
+      },
+      data: { archive: true },
+    });
+
+    // Archive modules that are no longer in the request
+    await tx.caseStudyModule.updateMany({
+      where: {
+        caseStudyId: id,
+        archive: false,
+        NOT: { id: { in: Array.from(moduleIdsToKeep) } },
+      },
+      data: { archive: true },
+    });
 
     // Return the updated case study with all relations
     return await tx.caseStudy.findUniqueOrThrow({
       where: { id },
       include: {
         modules: {
+          where: { archive: false },
           include: {
             exercises: {
-              orderBy: {
-                orderNumber: 'asc',
-              },
+              where: { archive: false },
+              orderBy: { orderNumber: 'asc' },
             },
           },
-          orderBy: {
-            orderNumber: 'asc',
-          },
+          orderBy: { orderNumber: 'asc' },
         },
       },
     });
@@ -118,59 +207,90 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
 
   // Use a transaction to ensure atomicity
   await prisma.$transaction(async (tx) => {
-    // First, delete all exercise attempts for exercises in this case study's modules
-    await tx.exerciseAttempt.deleteMany({
+    // First, archive all exercise attempts for exercises in this case study's modules
+    await tx.exerciseAttempt.updateMany({
       where: {
         exercise: {
           module: {
             caseStudyId: id,
           },
         },
+        archive: false,
+      },
+      data: {
+        archive: true,
       },
     });
 
-    // Then delete all exercises in this case study's modules
-    await tx.moduleExercise.deleteMany({
+    // Then archive all exercises in this case study's modules
+    await tx.moduleExercise.updateMany({
       where: {
         module: {
           caseStudyId: id,
         },
+        archive: false,
+      },
+      data: {
+        archive: true,
       },
     });
 
-    // Delete all modules for this case study
-    await tx.caseStudyModule.deleteMany({
-      where: { caseStudyId: id },
+    // Archive all modules for this case study
+    await tx.caseStudyModule.updateMany({
+      where: {
+        caseStudyId: id,
+        archive: false,
+      },
+      data: {
+        archive: true,
+      },
     });
 
-    // Delete all final submissions for students in this case study
-    await tx.finalSubmission.deleteMany({
+    // Archive all final submissions for students in this case study
+    await tx.finalSubmission.updateMany({
       where: {
         student: {
           enrollment: {
             caseStudyId: id,
           },
         },
+        archive: false,
+      },
+      data: {
+        archive: true,
       },
     });
 
-    // Delete all enrollment students for enrollments of this case study
-    await tx.enrollmentStudent.deleteMany({
+    // Archive all enrollment students for enrollments of this case study
+    await tx.enrollmentStudent.updateMany({
       where: {
         enrollment: {
           caseStudyId: id,
         },
+        archive: false,
+      },
+      data: {
+        archive: true,
       },
     });
 
-    // Delete all enrollments for this case study
-    await tx.classCaseStudyEnrollment.deleteMany({
-      where: { caseStudyId: id },
+    // Archive all enrollments for this case study
+    await tx.classCaseStudyEnrollment.updateMany({
+      where: {
+        caseStudyId: id,
+        archive: false,
+      },
+      data: {
+        archive: true,
+      },
     });
 
-    // Finally, delete the case study itself
-    await tx.caseStudy.delete({
+    // Finally, archive the case study itself
+    await tx.caseStudy.update({
       where: { id },
+      data: {
+        archive: true,
+      },
     });
   });
 

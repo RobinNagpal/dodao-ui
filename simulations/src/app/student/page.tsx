@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyWithRelations } from '@/types/api';
 import type { BusinessSubject } from '@/types';
-import { BookOpen, LogOut, ArrowRight, Brain, Sparkles, Target, TrendingUp, Clock, CheckCircle2 } from 'lucide-react';
+import { BookOpen, LogOut, ArrowRight, Brain, Sparkles, Target, TrendingUp, CheckCircle2, User } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -250,7 +250,7 @@ export default function StudentDashboard() {
                     <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
                     <div className="flex items-center space-x-1">
                       <TrendingUp className="h-4 w-4" />
-                      <span>Progressive</span>
+                      <span>Instructor-Led</span>
                     </div>
                   </div>
                 </CardContent>
@@ -286,10 +286,14 @@ export default function StudentDashboard() {
                             <BookOpen className="h-4 w-4" />
                             <span>{caseStudy.modules?.length || 0} modules</span>
                           </div>
-                          <div className="flex items-center space-x-1 text-gray-500">
-                            <Clock className="h-4 w-4" />
-                            <span>Self-paced</span>
-                          </div>
+                          {caseStudy.instructorEmail && (
+                            <div className="flex items-center space-x-1 text-gray-500">
+                              <User className="h-4 w-4" />
+                              <span className="max-w-32" title={caseStudy.instructorEmail}>
+                                {caseStudy.instructorEmail}
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
 

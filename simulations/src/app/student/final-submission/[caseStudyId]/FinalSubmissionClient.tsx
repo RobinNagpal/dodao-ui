@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { ArrowLeft, FileText, Send, CheckCircle, Brain, Sparkles, Target, BookOpen, Save } from 'lucide-react';
+import { FileText, Send, CheckCircle, Brain, Sparkles, Target, BookOpen, Save } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { CaseStudyWithRelations } from '@/types/api';
+import StudentNavbar from '@/components/navigation/StudentNavbar';
 
 interface FinalSubmissionClientProps {
   caseStudyId: string;
@@ -81,10 +82,6 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
     }
   }, [existingSubmission]);
 
-  const handleBack = () => {
-    router.push(`/student/case-study/${caseStudyId}`);
-  };
-
   const handleSubmit = async () => {
     if (!finalContent.trim() || submittingSubmission) {
       return;
@@ -136,39 +133,13 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
         <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-indigo-200/20 rounded-full blur-xl animate-pulse delay-2000"></div>
       </div>
 
-      {/* Enhanced Header */}
-      <header className="relative bg-white/80 backdrop-blur-lg border-b border-white/20 shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between py-6">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={handleBack}
-                className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-all duration-300 group bg-white/50 hover:bg-white/80 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/30"
-              >
-                <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-                <span>Back to Case Study</span>
-              </button>
-              <div className="h-8 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
-              <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-3 rounded-2xl shadow-lg">
-                <FileText className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">Final Submission</h1>
-                <p className="text-gray-600 flex items-center space-x-1">
-                  <Sparkles className="h-4 w-4 text-yellow-500" />
-                  <span>Deliver Your Final Analysis</span>
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/30">
-                <div className="text-sm text-gray-600">{isSubmitted ? 'Submission Saved' : 'Draft Mode'}</div>
-              </div>
-              <div className="text-sm text-gray-500">Logged in as {userEmail}</div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <StudentNavbar
+        title="Final Submission"
+        subtitle="Deliver Your Final Analysis"
+        userEmail={userEmail}
+        icon={<FileText className="h-8 w-8 text-white" />}
+        iconColor="from-green-500 to-emerald-600"
+      />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

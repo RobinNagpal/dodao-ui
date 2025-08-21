@@ -25,6 +25,7 @@ model CaseStudy {
   updatedBy        String?  @map("updated_by") // updated by admin
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
+  archive          Boolean  @default(false) @map("archive")
 
   modules      CaseStudyModule[] @relation("CaseStudyToModules")
   enrollments  ClassCaseStudyEnrollment[] @relation("CaseStudyToEnrollments")
@@ -45,6 +46,7 @@ model CaseStudyModule {
   updatedBy        String?   @map("updated_by") // updated by admin
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @updatedAt @map("updated_at")
+  archive          Boolean  @default(false) @map("archive")
 
   exercises ModuleExercise[] @relation("ModuleToExercises")
 
@@ -62,6 +64,7 @@ model ClassCaseStudyEnrollment {
   updatedBy   String?   @map("updated_by") // updated by admin
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
+  archive          Boolean  @default(false) @map("archive")
 
   students     EnrollmentStudent[]
 
@@ -79,6 +82,7 @@ model EnrollmentStudent {
   updatedBy      String?              @map("updated_by") // updated by admin
   createdAt      DateTime             @default(now()) @map("created_at")
   updatedAt      DateTime             @updatedAt @map("updated_at")
+  archive          Boolean  @default(false) @map("archive")
 
   @@unique([enrollmentId, assignedStudentId], map: "uq_enrollment_student")
   
@@ -99,6 +103,7 @@ model ModuleExercise {
   updatedBy        String?          @map("updated_by") // updated by admin
   createdAt        DateTime         @default(now()) @map("created_at")
   updatedAt        DateTime         @updatedAt @map("updated_at")
+  archive          Boolean  @default(false) @map("archive")
 
   attempts ExerciseAttempt[] @relation("ExerciseToAttempts")
 
@@ -119,6 +124,8 @@ model ExerciseAttempt {
   status         String?        @map("status")
   error          String?        @map("error")
   createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at")
+  archive          Boolean  @default(false) @map("archive")
 
   @@map("exercise_attempts")
 }
@@ -134,6 +141,7 @@ model FinalSubmission {
   finalContent String?   @db.Text @map("final_content")
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
+  archive          Boolean  @default(false) @map("archive")
 
   @@map("final_submissions")
 }

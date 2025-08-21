@@ -7,13 +7,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Shield, Plus, Trash2, X, ArrowLeft, BookOpen, Sparkles } from 'lucide-react';
+import { Shield, Plus, Trash2, X, BookOpen, Sparkles } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import type { BusinessSubject } from '@prisma/client';
 import type { UpdateCaseStudyRequest } from '@/types/api';
+import AdminNavbar from '@/components/navigation/AdminNavbar';
 
 interface Module {
   id?: string;
@@ -133,8 +134,10 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
     }
   }, [caseStudy]);
 
-  const handleBack = () => {
-    router.push('/admin');
+  const handleLogout = () => {
+    localStorage.removeItem('user_type');
+    localStorage.removeItem('user_email');
+    router.push('/login');
   };
 
   const addModule = () => {
@@ -278,29 +281,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-200/10 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
-      <header className="bg-white/80 backdrop-blur-md border-b border-emerald-100/50 shadow-lg relative z-10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <Button
-                variant="outline"
-                onClick={handleBack}
-                className="border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300 bg-transparent"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Admin
-              </Button>
-              <div className="bg-gradient-to-br from-emerald-500 to-green-600 p-3 rounded-2xl shadow-lg">
-                <Shield className="h-8 w-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">Edit Case Study</h1>
-                <p className="text-emerald-600/80 font-medium">Welcome back, {userEmail}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AdminNavbar title="Edit Case Study" userEmail={userEmail} onLogout={handleLogout} icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 relative z-10">
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-emerald-100/50 p-8">
@@ -502,7 +483,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
               <Button
                 type="button"
                 variant="outline"
-                onClick={handleBack}
+                onClick={() => router.push('/admin')}
                 className="border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300 bg-transparent"
               >
                 Cancel

@@ -7,8 +7,11 @@ import { EnrollmentWithRelations, DeleteResponse } from '@/types/api';
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<EnrollmentWithRelations> {
   const { id } = await params;
 
-  const enrollment: EnrollmentWithRelations = await prisma.classCaseStudyEnrollment.findUniqueOrThrow({
-    where: { id },
+  const enrollment: EnrollmentWithRelations = await prisma.classCaseStudyEnrollment.findFirstOrThrow({
+    where: {
+      id,
+      archive: false,
+    },
     include: {
       caseStudy: {
         select: {
@@ -19,6 +22,9 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
         },
       },
       students: {
+        where: {
+          archive: false,
+        },
         orderBy: {
           createdAt: 'asc',
         },
@@ -35,14 +41,23 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
 
   // Use a transaction to ensure atomicity
   await prisma.$transaction(async (tx) => {
-    // First delete all related enrollment students
-    await tx.enrollmentStudent.deleteMany({
-      where: { enrollmentId: id },
+    // First archive all related enrollment students
+    await tx.enrollmentStudent.updateMany({
+      where: {
+        enrollmentId: id,
+        archive: false,
+      },
+      data: {
+        archive: true,
+      },
     });
 
-    // Then delete the enrollment
-    await tx.classCaseStudyEnrollment.delete({
+    // Then archive the enrollment
+    await tx.classCaseStudyEnrollment.update({
       where: { id },
+      data: {
+        archive: true,
+      },
     });
   });
 

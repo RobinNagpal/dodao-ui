@@ -17,9 +17,13 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ case
     where: {
       caseStudyId,
       assignedInstructorId: instructorEmail,
+      archive: false,
     },
     include: {
       students: {
+        where: {
+          archive: false,
+        },
         orderBy: {
           createdAt: 'asc',
         },
@@ -49,6 +53,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ cas
     where: {
       caseStudyId,
       assignedInstructorId: instructorEmail,
+      archive: false,
     },
   });
 
@@ -61,6 +66,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ cas
     where: {
       enrollmentId: enrollment.id,
       assignedStudentId: studentEmail,
+      archive: false,
     },
   });
 
@@ -81,6 +87,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ cas
   return { message: 'Student added successfully' };
 }
 
+// here we can also archive the exercise attempts and final submission also for this student
 // DELETE /api/instructor/enrollments/[caseStudyId]/students - Remove a student from enrollment
 async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ caseStudyId: string }> }): Promise<{ message: string }> {
   const { caseStudyId } = await params;
@@ -96,6 +103,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ c
     where: {
       caseStudyId,
       assignedInstructorId: instructorEmail,
+      archive: false,
     },
   });
 
@@ -103,11 +111,15 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ c
     throw new Error('Enrollment not found or you are not assigned to this case study');
   }
 
-  // Remove the student
-  const deletedStudent = await prisma.enrollmentStudent.deleteMany({
+  // Archive the student
+  const deletedStudent = await prisma.enrollmentStudent.updateMany({
     where: {
       enrollmentId: enrollment.id,
       assignedStudentId: studentEmail,
+      archive: false,
+    },
+    data: {
+      archive: true,
     },
   });
 

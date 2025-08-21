@@ -98,20 +98,20 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white/95 backdrop-blur-lg rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-2xl border border-white/20">
+      <div className="bg-white/95 backdrop-blur-lg rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-2xl border border-gray-200/50">
         {/* Enhanced Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white">
+        <div className="bg-blue-100/50 backdrop-blur-lg p-6 border-b border-gray-200/50">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              <div className="bg-white/20 p-2 rounded-xl">
-                <Users className="h-6 w-6" />
+              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 p-2 rounded-xl">
+                <Users className="h-6 w-6 text-purple-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">Manage Students</h3>
-                <p className="text-purple-100">{caseStudyTitle}</p>
+                <h3 className="text-xl font-bold text-gray-900">Manage Students</h3>
+                <p className="text-gray-600">{caseStudyTitle}</p>
               </div>
             </div>
-            <button onClick={onClose} className="text-white/80 hover:text-white hover:bg-white/20 p-2 rounded-xl transition-all duration-200">
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-xl transition-all duration-200">
               <X className="h-6 w-6" />
             </button>
           </div>
