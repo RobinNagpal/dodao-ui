@@ -77,7 +77,7 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
             <BookOpen className="h-8 w-8 text-red-600" />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-3">Case Study Not Found</h3>
-          <p className="text-gray-600 mb-6">The case study you're looking for doesn't exist or has been removed.</p>
+          <p className="text-gray-600 mb-6">The case study you’re looking for doesn’t exist or has been removed.</p>
           <Button
             onClick={handleBack}
             className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
@@ -272,7 +272,7 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
                 <BookOpen className="h-10 w-10 text-gray-500" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">No Modules Available</h3>
-              <p className="text-gray-600">This case study doesn't have any modules yet.</p>
+              <p className="text-gray-600">This case study doesn’t have any modules yet.</p>
             </div>
           )}
         </div>
