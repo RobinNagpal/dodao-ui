@@ -58,11 +58,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
               createdAt: 'asc',
             },
             include: {
-              finalSubmission: {
-                where: {
-                  archive: false,
-                },
-              },
+              finalSubmission: {},
             },
           },
         },

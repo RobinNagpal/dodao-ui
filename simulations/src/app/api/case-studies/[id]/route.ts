@@ -78,7 +78,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // Process each module in the request
     for (const moduleData of body.modules) {
-      let moduleRecord;
+      let moduleRecord: { id: string };
 
       if (moduleData.id && existingModules.find((m) => m.id === moduleData.id)) {
         // Update existing module
