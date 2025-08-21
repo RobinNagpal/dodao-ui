@@ -87,7 +87,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ cas
   return { message: 'Student added successfully' };
 }
 
-// here we can also archive the exercise attempts and final submission also for this student
 // DELETE /api/instructor/enrollments/[caseStudyId]/students - Remove a student from enrollment
 async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ caseStudyId: string }> }): Promise<{ message: string }> {
   const { caseStudyId } = await params;
@@ -111,23 +110,65 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ c
     throw new Error('Enrollment not found or you are not assigned to this case study');
   }
 
-  // Archive the student
-  const deletedStudent = await prisma.enrollmentStudent.updateMany({
-    where: {
-      enrollmentId: enrollment.id,
-      assignedStudentId: studentEmail,
-      archive: false,
-    },
-    data: {
-      archive: true,
-    },
+  // Use a transaction to ensure all related data is archived together
+  const result = await prisma.$transaction(async (tx) => {
+    // Find the student first to get their ID
+    const enrollmentStudent = await tx.enrollmentStudent.findFirst({
+      where: {
+        enrollmentId: enrollment.id,
+        assignedStudentId: studentEmail,
+        archive: false,
+      },
+    });
+
+    if (!enrollmentStudent) {
+      throw new Error('Student not found in this enrollment');
+    }
+
+    // Archive the student from enrollment
+    await tx.enrollmentStudent.updateMany({
+      where: {
+        enrollmentId: enrollment.id,
+        assignedStudentId: studentEmail,
+        archive: false,
+      },
+      data: {
+        archive: true,
+        updatedBy: instructorEmail,
+        updatedAt: new Date(),
+      },
+    });
+
+    // Archive the student's final submission (if exists)
+    await tx.finalSubmission.updateMany({
+      where: {
+        studentId: enrollmentStudent.id,
+        archive: false,
+      },
+      data: {
+        archive: true,
+        updatedBy: instructorEmail,
+        updatedAt: new Date(),
+      },
+    });
+
+    // Archive all exercise attempts created by this student
+    await tx.exerciseAttempt.updateMany({
+      where: {
+        createdBy: studentEmail,
+        archive: false,
+      },
+      data: {
+        archive: true,
+        updatedBy: instructorEmail,
+        updatedAt: new Date(),
+      },
+    });
+
+    return { success: true };
   });
 
-  if (deletedStudent.count === 0) {
-    throw new Error('Student not found in this enrollment');
-  }
-
-  return { message: 'Student removed successfully' };
+  return { message: 'Student and all related data removed successfully' };
 }
 
 export const GET = withErrorHandlingV2(getHandler);

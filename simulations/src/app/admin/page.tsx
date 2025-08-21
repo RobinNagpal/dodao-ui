@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { BookOpen, Users, Plus, Edit, Trash2, Shield, Sparkles } from 'lucide-react';
+import { BookOpen, Users, Plus, Edit, Trash2, Shield, Sparkles, Eye } from 'lucide-react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
@@ -111,6 +111,10 @@ export default function AdminDashboard() {
 
   const handleEditCaseStudy = (caseStudyId: string): void => {
     router.push(`/admin/edit/${caseStudyId}`);
+  };
+
+  const handleViewCaseStudy = (caseStudyId: string): void => {
+    router.push(`/admin/case-study/${caseStudyId}`);
   };
 
   const handleDeleteCaseStudy = (caseStudyId: string): void => {
@@ -269,6 +273,13 @@ export default function AdminDashboard() {
                       </div>
                       <div className="flex space-x-1">
                         <button
+                          onClick={() => handleViewCaseStudy(caseStudy.id)}
+                          className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                          title="View case study details"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </button>
+                        <button
                           onClick={() => handleEditCaseStudy(caseStudy.id)}
                           className="text-emerald-600 hover:text-emerald-800 p-2 rounded-lg hover:bg-emerald-50 transition-colors"
                           title="Edit case study"
@@ -300,7 +311,7 @@ export default function AdminDashboard() {
                 )) || []}
 
                 {caseStudies?.length === 0 && (
-                  <div className="col-span-full text-center py-16">
+                  <div className="col-span-full text-center">
                     <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-emerald-100/50 p-12">
                       <BookOpen className="mx-auto h-16 w-16 text-emerald-400 mb-4" />
                       <h3 className="text-xl font-bold text-gray-900 mb-2">No case studies</h3>

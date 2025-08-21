@@ -20,7 +20,7 @@ export default function AdminNavbar({ title, subtitle, userEmail, onLogout, icon
           <div className="flex items-center space-x-4">
             <div className={`bg-gradient-to-br ${iconColor} p-3 rounded-2xl shadow-lg`}>{icon || <Shield className="h-8 w-8 text-white" />}</div>
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">{title}</h1>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">{title}</h1>
               {subtitle && (
                 <p className="text-emerald-600/80 font-medium flex items-center space-x-1">
                   <Sparkles className="h-4 w-4 text-yellow-500" />
