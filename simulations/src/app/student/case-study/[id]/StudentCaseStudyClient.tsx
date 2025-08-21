@@ -4,11 +4,10 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyWithRelations } from '@/types/api';
-import { BookOpen, Target, Play, ChevronRight, Brain, Sparkles, Clock, CheckCircle2, Lock, TrendingUp, ArrowLeft } from 'lucide-react';
+import { BookOpen, Target, Play, ChevronRight, Brain, Clock, CheckCircle2, Lock, TrendingUp, ArrowLeft, Check } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
 
@@ -115,6 +114,11 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
 
     // Module is accessible if any of its exercises are accessible or if previous modules are completed
     return caseStudyModule.exercises?.some((exercise) => isExerciseAccessible(moduleId, exercise.id)) || false;
+  };
+
+  // Function to check if a module is completed (all exercises completed)
+  const isModuleCompleted = (module: any) => {
+    return module.exercises?.every((exercise: any) => isExerciseCompleted(exercise)) || false;
   };
 
   // Calculate progress
@@ -269,6 +273,141 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
             </CardContent>
           </Card>
         </div>
+
+        {modules.length > 0 && (
+          <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg mt-6">
+            <CardContent>
+              <div className="space-y-8">
+                {/* Horizontal Stepper */}
+                <div className="relative">
+                  <div className="flex items-start justify-between">
+                    {modules.map((module, index) => {
+                      const moduleCompleted = isModuleCompleted(module);
+                      const moduleAccessible = isModuleAccessible(module.id);
+
+                      return (
+                        <div key={module.id} className="flex flex-col items-center relative flex-1">
+                          {/* Connector Line */}
+                          {index < modules.length - 1 && (
+                            <div className="absolute top-6 left-1/2 w-full h-0.5 bg-gray-200 z-0">
+                              <div
+                                className={`h-full transition-all duration-500 ${moduleCompleted ? 'bg-green-500' : 'bg-gray-200'}`}
+                                style={{ width: moduleCompleted ? '100%' : '0%' }}
+                              />
+                            </div>
+                          )}
+
+                          {/* Step Circle */}
+                          <div
+                            className={`
+                              relative z-10 w-12 h-12 rounded-full border-4 flex items-center justify-center transition-all duration-300 mb-3
+                              ${
+                                moduleCompleted
+                                  ? 'bg-green-500 border-green-500 text-white shadow-lg shadow-green-500/25'
+                                  : moduleAccessible
+                                  ? 'bg-blue-500 border-blue-500 text-white shadow-lg shadow-blue-500/25'
+                                  : 'bg-gray-100 border-gray-300 text-gray-400'
+                              }
+                            `}
+                          >
+                            {moduleCompleted ? <Check className="h-6 w-6" /> : <span className="text-sm font-bold">{module.orderNumber}</span>}
+                          </div>
+
+                          {/* Step Label */}
+                          <div className="text-center max-w-40 mb-4">
+                            <p
+                              className={`text-sm font-medium mb-1 ${
+                                moduleCompleted ? 'text-green-700' : moduleAccessible ? 'text-blue-700' : 'text-gray-500'
+                              }`}
+                            >
+                              Module {module.orderNumber}
+                            </p>
+                            <p className="text-xs text-gray-600 line-clamp-2">{module.title}</p>
+                          </div>
+
+                          {/* Exercises for this module */}
+                          <div className="w-full max-w-xs space-y-2">
+                            {module.exercises && module.exercises.length > 0 && (
+                              <>
+                                <h4 className="text-xs font-medium text-gray-700 mb-2 text-center">Exercises ({module.exercises.length})</h4>
+                                <div className="space-y-2">
+                                  {module.exercises.map((exercise) => {
+                                    const exerciseCompleted = isExerciseCompleted(exercise);
+                                    const exerciseAttempted = hasAttempts(exercise);
+                                    const exerciseAccessible = isExerciseAccessible(module.id, exercise.id);
+
+                                    return (
+                                      <div
+                                        key={exercise.id}
+                                        className={`
+                                          flex items-center justify-between p-2 rounded-lg border transition-all duration-200
+                                          ${
+                                            exerciseCompleted
+                                              ? 'bg-green-50 border-green-200'
+                                              : exerciseAttempted
+                                              ? 'bg-yellow-50 border-yellow-200'
+                                              : exerciseAccessible
+                                              ? 'bg-blue-50 border-blue-200'
+                                              : 'bg-gray-50 border-gray-200'
+                                          }
+                                        `}
+                                      >
+                                        <div className="flex items-center space-x-2 flex-1 min-w-0">
+                                          {/* Exercise completion indicator */}
+                                          <div
+                                            className={`
+                                              w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0
+                                              ${
+                                                exerciseCompleted
+                                                  ? 'bg-green-500 border-green-500'
+                                                  : exerciseAttempted
+                                                  ? 'bg-yellow-500 border-yellow-500'
+                                                  : exerciseAccessible
+                                                  ? 'border-blue-500'
+                                                  : 'border-gray-300'
+                                              }
+                                            `}
+                                          >
+                                            {exerciseCompleted && <Check className="h-3 w-3 text-white" />}
+                                            {exerciseAttempted && !exerciseCompleted && <Clock className="h-2 w-2 text-white" />}
+                                          </div>
+
+                                          <div className="min-w-0 flex-1">
+                                            <p className="text-xs font-medium text-gray-900 truncate">Ex. {exercise.orderNumber}</p>
+                                            <p className="text-xs text-gray-600 truncate">{exercise.title}</p>
+                                          </div>
+                                        </div>
+
+                                        {/* Status badges */}
+                                        <div className="flex-shrink-0 ml-2">
+                                          {exerciseCompleted && <Badge className="bg-green-100 text-green-800 border-green-200 text-xs px-1 py-0">✓</Badge>}
+                                          {exerciseAttempted && !exerciseCompleted && (
+                                            <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200 text-xs px-1 py-0">
+                                              {getAttemptCount(exercise)}/3
+                                            </Badge>
+                                          )}
+                                          {!exerciseAccessible && (
+                                            <Badge className="bg-gray-100 text-gray-500 border-gray-200 text-xs px-1 py-0">
+                                              <Lock className="h-2 w-2" />
+                                            </Badge>
+                                          )}
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         <div className="space-y-8 py-6">
           <Card className="backdrop-blur-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border-white/20 shadow-lg">
