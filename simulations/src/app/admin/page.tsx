@@ -99,16 +99,9 @@ export default function AdminDashboard() {
     setIsLoading(false);
   }, [router]);
 
-  // Refetch data when page comes into focus (returning from create/edit pages)
-  useEffect(() => {
-    const handleFocus = () => {
-      refetchCaseStudies();
-      refetchEnrollments();
-    };
-
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
-  }, [refetchCaseStudies, refetchEnrollments]);
+  // Note: Removed focus-based refetching to prevent loading flicker when switching tabs
+  // Data will be refetched automatically when navigating back from create/edit pages
+  // through Next.js router navigation and component remounting
 
   const handleLogout = (): void => {
     localStorage.removeItem('user_type');
