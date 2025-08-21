@@ -311,16 +311,16 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ pa
         </div>
 
         {/* REIT Type Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 auto-rows-auto grid-flow-row-dense">
           {Object.entries(reitsByType).map(([reitType, reits]) => (
-            <div key={reitType} className="bg-block-bg-color rounded-lg shadow-sm border border-color overflow-hidden">
+            <div key={reitType} className="bg-block-bg-color rounded-lg shadow-sm border border-color overflow-hidden h-full flex flex-col">
               <div className="px-4 py-5 sm:px-6 border-b border-color flex">
                 <h3 className="text-lg font-medium heading-color">{reitType} REITs</h3>
                 <p className="mt-1 text-sm text-color ml-1">
                   ({reits.length} {reits.length === 1 ? 'company' : 'companies'})
                 </p>
               </div>
-              <ul className=" divide-color">
+              <ul className="divide-color flex-grow">
                 {reits.map((reit) => {
                   // Find the ticker in the fetched data if available
 
