@@ -5,27 +5,27 @@ export default function FeaturesSection() {
     <section className="relative py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center mb-16">
-          <h2 className="text-4xl font-bold text-indigo-400">Powerful Features for Modern Education</h2>
-          <p className="mt-4 text-lg text-gray-300">Tools that help you design, run, and evaluate immersive AI-powered learning simulations.</p>
+          <h2 className="text-4xl font-bold text-indigo-400">Features for Students & Professors</h2>
+          <p className="mt-4 text-lg text-gray-300">Specialized tools for both students and professors to enhance the learning experience.</p>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {[
             {
-              title: 'Live Progress Monitoring',
-              desc: 'Track student activity in real-time — see their prompts, responses, and areas that need guidance.',
+              title: 'For Students',
+              desc: 'Learn by applying business concepts to realistic case scenarios across finance, HR, marketing, and other domains.',
               icon: EyeIcon,
               color: 'from-blue-500 to-cyan-500',
             },
             {
-              title: 'AI-Assisted Evaluation',
-              desc: 'Speed up grading with AI-generated assessments for completeness and depth, while keeping full instructor control.',
+              title: 'Step-by-Step Learning',
+              desc: 'Work through guided exercises that build skills gradually while strengthening prompt-writing abilities.',
               icon: ShieldCheckIcon,
               color: 'from-indigo-500 to-purple-500',
             },
             {
-              title: 'Custom Case Studies',
-              desc: 'Use our ready-made library or create your own scenarios tailored to your course objectives.',
+              title: 'For Professors',
+              desc: 'Use pre-built case studies, track student work including prompts and responses, and provide quick feedback.',
               icon: WrenchIcon,
               color: 'from-purple-500 to-pink-500',
             },

@@ -13,51 +13,51 @@ export default function HowItWorksSection() {
   const steps = [
     {
       step: '01',
-      title: 'Case Context & Briefing',
-      desc: 'Students receive full context and details of the use case, including background information and relevant audience insights.',
+      title: 'Gen AI Prompt Engineering Course',
+      desc: 'Instructors can ask students to complete this course to learn the most important concepts for writing effective prompts and understanding AI Agents.',
       icon: ClipboardDocumentListIcon,
       color: 'from-blue-500 to-cyan-500',
-      detail: 'e.g., Allbirds launching eco-friendly performance running shoes for sustainability-minded runners.',
+      detail: 'Takes 1.5-2 hours to complete and provides essential foundation for the simulation platform.',
     },
     {
       step: '02',
-      title: 'Model-Based Learning Path',
-      desc: 'The simulation follows an ordered sequence of established frameworks',
+      title: 'Practical Video Lessons',
+      desc: 'Short, practical videos teach techniques like breaking down complex tasks into smaller, manageable steps.',
       icon: ChatBubbleLeftRightIcon,
       color: 'from-indigo-500 to-blue-500',
-      detail: 'e.g., 4Cs → STP → 4Ps — with multiple exercises in each.',
+      detail: 'Students learn to apply prompt engineering directly to real business topics.',
     },
     {
       step: '03',
-      title: 'Exercise Workflow',
-      desc: 'Students interact with GenAI, analyze responses against provided guidelines, and refine their prompts to improve accuracy and relevance.',
+      title: 'KoalaGains Simulation Platform',
+      desc: 'Instructors select predefined real-world scenarios for their classes, helping students use Gen AI for research and insights.',
       icon: CogIcon,
       color: 'from-purple-500 to-indigo-500',
-      detail: 'Each exercise includes: Guided Task → Prompting Support → Student Prompting → Response Editing.',
+      detail: 'Students learn key business concepts while applying Gen AI skills to solve real problems.',
     },
     {
       step: '04',
-      title: 'Linked AI Outputs',
-      desc: 'AI-generated and student-refined insights from each exercise automatically feed into the next framework step, ensuring continuity and realism.',
+      title: 'Scenario-Based Learning',
+      desc: 'Each scenario is divided into modules that progress from basic to advanced concepts, with students completing one before moving to the next.',
       icon: EyeIcon,
       color: 'from-pink-500 to-purple-500',
-      detail: 'Each step’s AI output response automatically carry forward, so work done early directly shapes later decisions and deliverables.',
+      detail: 'Students build background knowledge needed to understand concepts and solve problems.',
     },
     {
       step: '05',
-      title: 'Strategic Synthesis',
-      desc: 'At the end, students produce a cohesive deliverable.',
+      title: 'AI-Powered Exercises',
+      desc: 'Every module contains exercises that students solve using Gen AI, applying their prompt engineering skills to perform analysis.',
       icon: ChatBubbleLeftRightIcon,
       color: 'from-rose-500 to-pink-500',
-      detail: 'e.g., Go-to-Market Plan or 3 Key Launch Recommendations, integrating all prior outputs and their own analysis.',
+      detail: 'Students get three chances to refine their prompts and responses for optimal results.',
     },
     {
       step: '06',
-      title: 'Evaluation',
-      desc: 'Professors can track each stage in real time, review student edits, and assess final deliverables',
+      title: 'Professor Oversight',
+      desc: 'Professors can view both final results and the full history of prompts used by each student.',
       icon: DocumentCheckIcon,
       color: 'from-orange-500 to-rose-500',
-      detail: 'or let the AI assist with grading based on predefined rubrics.',
+      detail: 'Platform allows students to practice real case analysis in a classroom-like environment with professor guidance.',
     },
   ];
 
@@ -93,9 +93,9 @@ export default function HowItWorksSection() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl font-bold text-indigo-400">How the Simulation Works</h2>
+          <h2 className="text-4xl font-bold text-indigo-400">Our Two-Part Offering</h2>
           <p className="mt-4 text-lg text-gray-300">
-            A structured 6-step workflow that transforms traditional business education into an interactive, AI-powered learning experience
+            A complete learning experience with a Gen AI Prompt Engineering Course and the KoalaGains Simulation Platform
           </p>
         </motion.div>
 

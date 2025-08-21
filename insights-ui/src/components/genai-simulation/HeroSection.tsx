@@ -32,8 +32,8 @@ export default function HeroSection() {
           </h1>
 
           <p className="mt-6 text-lg leading-7 text-gray-300 max-w-3xl mx-auto">
-            GenAI simulations built for higher education. Students learn by doing—mastering concepts in Marketing, Finance, Operations, HR, and Business
-            Economics, then applying them to realistic, research-driven case studies. Turning theory into practice.
+            KoalaGains Simulation platform is designed to help students learn how Gen AI and AI Agents can be used in a real-world industry setup. Students
+            apply business concepts in Marketing, Finance, HR, and other domains while developing practical AI skills.
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">

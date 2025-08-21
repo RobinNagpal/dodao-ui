@@ -10,7 +10,7 @@ export default function SubjectsSection() {
     },
     {
       title: 'Finance',
-      items: ['DCF Analysis', 'Financial Statements', 'Scenario Planning'],
+      items: ['Financial Statements Analysis', 'Scenario Planning', 'Capital Budgeting'],
       icon: CurrencyDollarIcon,
       color: 'from-yellow-500 to-orange-500',
     },

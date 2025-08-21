@@ -3,43 +3,44 @@ import { AcademicCapIcon, CheckCircleIcon, ClipboardDocumentListIcon, EyeIcon, W
 export default function BenefitsSection() {
   const professorBenefits = [
     {
-      title: 'Structured Teaching Flow',
-      desc: 'Pre-built lesson plans with guided steps and expected outcomes',
+      title: 'Practical Learning',
+      desc: 'Move beyond textbooks to teach with real-world applications',
       icon: ClipboardDocumentListIcon,
     },
     {
-      title: 'Ready-to-Use Case Studies',
-      desc: 'Comprehensive scenarios across multiple business disciplines',
+      title: 'Ready-to-Use Cases',
+      desc: 'Save time with pre-defined case studies across multiple disciplines',
       icon: AcademicCapIcon,
     },
     {
-      title: 'Real-Time Monitoring',
-      desc: 'Live visibility into student progress and AI interactions',
+      title: 'Student Progress Tracking',
+      desc: 'See which students need help and which are moving quickly',
       icon: EyeIcon,
     },
     {
-      title: 'AI-Assisted Evaluation',
-      desc: 'Automated assessment with your qualitative oversight',
+      title: 'Detailed Exercise Review',
+      desc: 'Review prompts and AI responses to provide immediate feedback',
       icon: ChartBarIcon,
     },
     {
-      title: 'Customizable Content',
-      desc: 'Adapt difficulty levels and add your own case studies',
+      title: 'Custom Case Studies',
+      desc: 'Add your own business cases to match specific course goals',
       icon: WrenchIcon,
     },
     {
-      title: 'Time-Saving Prep',
-      desc: 'Focus on teaching, not content creation and setup',
+      title: 'Time-Saving Setup',
+      desc: 'Simple, straightforward product with detailed student guidelines',
       icon: ClockIcon,
     },
   ];
 
   const studentBenefits = [
-    'Understand core business concepts through hands-on application',
-    'Develop prompt engineering skills, then apply them in simulations',
-    'Learn to structure and format AI responses effectively',
-    'Gain practical GenAI experience that employers are looking for',
-    'Apply theoretical knowledge to realistic business scenarios',
+    'Learn core business concepts while using Gen AI for real-world problems',
+    'Create effective prompts and understand how small changes affect AI outputs',
+    'Get structured output from AI by refining your prompting techniques',
+    'Analyze AI responses and use that information for next steps',
+    'Work through connected exercises that build on each other like real projects',
+    'Gain industry-relevant experience before graduation',
   ];
 
   return (
