@@ -8,6 +8,7 @@ interface RemoveStudentRequest {
   studentEmail: string;
 }
 
+// we can archive all exercise attempts and final submission also if we want
 // DELETE /api/enrollments/[id]/students/remove - Remove a student from an enrollment by email
 async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<DeleteResponse> {
   const { id: enrollmentId } = await params;

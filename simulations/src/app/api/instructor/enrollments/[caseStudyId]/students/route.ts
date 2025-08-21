@@ -81,13 +81,13 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ cas
       assignedStudentId: studentEmail,
       createdBy: instructorEmail,
       updatedBy: instructorEmail,
-      archive: false,
     },
   });
 
   return { message: 'Student added successfully' };
 }
 
+// here we can also archive the exercise attempts and final submission also for this student
 // DELETE /api/instructor/enrollments/[caseStudyId]/students - Remove a student from enrollment
 async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ caseStudyId: string }> }): Promise<{ message: string }> {
   const { caseStudyId } = await params;

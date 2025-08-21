@@ -34,7 +34,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ id:
       assignedStudentId: body.studentEmail, // Student email
       createdBy: adminEmail, // Admin email
       updatedBy: adminEmail, // Admin email
-      archive: false,
     },
   });
 

@@ -53,7 +53,6 @@ async function postHandler(req: NextRequest): Promise<EnrollmentWithRelations> {
       assignedInstructorId: body.assignedInstructorId,
       createdBy: adminEmail,
       updatedBy: adminEmail,
-      archive: false,
     },
     include: {
       caseStudy: {
