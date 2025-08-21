@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyWithRelations } from '@/types/api';
-import { BookOpen, Target, Play, ChevronRight, Brain, Sparkles, Clock, CheckCircle2, Lock, TrendingUp } from 'lucide-react';
+import { BookOpen, Target, Play, ChevronRight, Brain, Sparkles, Clock, CheckCircle2, Lock, TrendingUp, ArrowLeft } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -178,7 +178,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
               <BookOpen className="h-10 w-10 text-red-600" />
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-3">Case Study Not Found</h3>
-            <p className="text-gray-600">The case study you’re looking for doesn’t exist or you don’t have access to it.</p>
+            <p className="text-gray-600 mb-2">The case study you’re looking for doesn’t exist or you don’t have access to it.</p>
             <Button onClick={() => router.push('/student')} className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
               Back to Dashboard
             </Button>
@@ -203,9 +203,21 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pb-6">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Button
+            onClick={() => router.push('/student')}
+            variant="outline"
+            className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 bg-transparent"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Dashboard
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
-            <CardContent className="p-4">
+            <CardContent className="px-4 py-2">
               <div className="flex items-center space-x-3">
                 <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-2 rounded-lg">
                   <Target className="h-5 w-5 text-white" />
@@ -218,7 +230,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-            <CardContent className="p-4">
+            <CardContent className="px-4 py-2">
               <div className="flex items-center space-x-3">
                 <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-lg">
                   <BookOpen className="h-5 w-5 text-white" />
@@ -231,7 +243,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
-            <CardContent className="p-4">
+            <CardContent className="px-4 py-2">
               <div className="flex items-center space-x-3">
                 <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg">
                   <Target className="h-5 w-5 text-white" />
@@ -244,7 +256,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-cyan-50 to-blue-50 border-cyan-200">
-            <CardContent className="p-4">
+            <CardContent className="px-4 py-2">
               <div className="flex items-center space-x-3">
                 <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-2 rounded-lg">
                   <TrendingUp className="h-5 w-5 text-white" />
@@ -258,16 +270,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
           </Card>
         </div>
 
-        {/* Progress bar */}
-        <div className="pb-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700">Overall Progress</span>
-            <span className="text-sm text-gray-500">{Math.round(progress)}% Complete</span>
-          </div>
-          <Progress value={progress} className="h-2" />
-        </div>
-
-        <div className="space-y-8 py-8">
+        <div className="space-y-8 py-6">
           <Card className="backdrop-blur-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border-white/20 shadow-lg">
             <CardHeader className="pb-4">
               <div className="flex items-center space-x-3 mb-4">

@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyModule, CaseStudy, ModuleExercise } from '@/types';
-import { BookOpen, Users, BarChart3, Target, Brain, Sparkles, GraduationCap, Zap } from 'lucide-react';
+import { BookOpen, Users, BarChart3, Target, Brain, Sparkles, GraduationCap, Zap, ArrowLeft } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
 
 interface CaseStudyManagementClientProps {
@@ -105,9 +106,21 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         icon={<GraduationCap className="h-8 w-8 text-white" />}
       />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Button
+            onClick={() => router.push('/instructor')}
+            variant="outline"
+            className="border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 bg-transparent"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Dashboard
+          </Button>
+        </div>
+
         {/* Enhanced Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-2">
           <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-2xl p-6 border border-blue-200/50 backdrop-blur-sm">
             <div className="flex items-center space-x-4">
               <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-3 rounded-xl shadow-lg">
