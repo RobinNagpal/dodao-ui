@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import type { ExerciseAttempt } from '@prisma/client';
-import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Target } from 'lucide-react';
+import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Target, ArrowRight, Check } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import AttemptDetailModal from '@/components/student/AttemptDetailModal';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
+import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 
 interface StudentExerciseClientProps {
   exerciseId: string;
@@ -58,6 +58,33 @@ interface NextExerciseResponse {
   message: string;
 }
 
+interface ExerciseProgress {
+  id: string;
+  title: string;
+  orderNumber: number;
+  isCompleted: boolean;
+  isAttempted: boolean;
+  isCurrent: boolean;
+  attemptCount: number;
+}
+
+interface ModuleProgress {
+  id: string;
+  title: string;
+  orderNumber: number;
+  isCompleted: boolean;
+  isCurrent: boolean;
+  exercises: ExerciseProgress[];
+}
+
+interface ProgressResponse {
+  caseStudyTitle: string;
+  caseStudyId: string;
+  currentModuleId: string;
+  currentExerciseId: string;
+  modules: ModuleProgress[];
+}
+
 export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyId }: StudentExerciseClientProps) {
   const [userEmail, setUserEmail] = useState<string>(() => {
     if (typeof window !== 'undefined') {
@@ -71,6 +98,8 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const [hasMovedToNext, setHasMovedToNext] = useState(false);
   const [selectedAttempt, setSelectedAttempt] = useState<ExerciseAttempt | null>(null);
   const [isAttemptModalOpen, setIsAttemptModalOpen] = useState(false);
+  const [showAiResponseModal, setShowAiResponseModal] = useState(false);
+  const [currentAiResponse, setCurrentAiResponse] = useState<string>('');
 
   const router = useRouter();
 
@@ -106,15 +135,17 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     'Failed to load next exercise info'
   );
 
+  // API hook to fetch progress data for vertical stepper
+  const { data: progressData, loading: loadingProgress } = useFetchData<ProgressResponse>(
+    `/api/student/exercises/${exerciseId}/progress?studentEmail=${encodeURIComponent(userEmail)}`,
+    { skipInitialFetch: !exerciseId || !userEmail },
+    'Failed to load progress data'
+  );
+
   // API hooks for creating and updating attempts
   const { postData: createAttempt, loading: submittingAttempt } = usePostData<CreateAttemptResponse, CreateAttemptRequest>({
     successMessage: 'Response generated successfully!',
     errorMessage: 'Failed to generate AI response. Please try again.',
-  });
-
-  const { putData: updateAttempt, loading: updatingAttempt } = usePutData<ExerciseAttempt, UpdateAttemptRequest>({
-    successMessage: 'Response updated successfully!',
-    errorMessage: 'Failed to update response. Please try again.',
   });
 
   // Then in useEffect, just handle the authentication check
@@ -165,6 +196,12 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
         // Clear the prompt and refetch attempts
         setPrompt('');
         await refetchAttempts();
+
+        // Show AI response in modal if successful
+        if (result.attempt.promptResponse) {
+          setCurrentAiResponse(result.attempt.promptResponse);
+          setShowAiResponseModal(true);
+        }
       }
     } catch (error) {
       console.error('Error submitting prompt:', error);
@@ -213,25 +250,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const closeAttemptModal = () => {
     setSelectedAttempt(null);
     setIsAttemptModalOpen(false);
-  };
-
-  const handleSaveAttemptEdit = async (attemptId: string, updatedResponse: string) => {
-    try {
-      const result = await updateAttempt(`/api/student/exercises/${exerciseId}/attempts/update`, {
-        attemptId,
-        updatedResponse,
-        studentEmail: userEmail,
-      });
-
-      if (result) {
-        // Refresh attempts data to get the updated content
-        await refetchAttempts();
-      }
-    } catch (error) {
-      console.error('Error updating attempt:', error);
-      // Re-throw the error so the modal can handle it appropriately
-      throw error;
-    }
   };
 
   const getAttemptStatusIcon = (attempt: ExerciseAttempt) => {
@@ -283,9 +301,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     return attempts && attempts.some((attempt) => attempt.status === 'completed' && attempt.promptResponse);
   };
 
-  const latestAttempt = attempts && attempts.length > 0 ? attempts[attempts.length - 1] : null;
-
-  if (isLoading || loadingAttempts || loadingContext || loadingExercise || loadingNextExercise) {
+  if (isLoading || loadingAttempts || loadingContext || loadingExercise || loadingNextExercise || loadingProgress) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
@@ -322,11 +338,9 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Exercise Area */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Exercise Context */}
-
+          <div className="lg:col-span-3 space-y-6">
             {/* Exercise Details */}
             {exerciseData && (
               <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
@@ -437,171 +451,155 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
               ) : null}
             </div>
 
-            {/* Enhanced AI Responses */}
-            {(latestAttempt && latestAttempt.promptResponse) || submittingAttempt ? (
+            {/* Attempt Rows */}
+            {attempts && attempts.length > 0 && (
               <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                  <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-2 rounded-xl mr-3">
-                    <Brain className="h-5 w-5 text-white" />
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+                    <Clock className="h-5 w-5 text-blue-600 mr-2" />
+                    Your Attempts
+                  </h2>
+                  <div className="text-sm text-gray-600">
+                    Remaining Attempts:{' '}
+                    <span className="font-bold text-blue-600">
+                      {Math.max(0, 3 - attempts.filter((a) => a.status === 'completed' || a.status === 'failed').length)}
+                    </span>
                   </div>
-                  AI Response
-                  <Sparkles className="h-5 w-5 text-yellow-500 ml-2 animate-pulse" />
-                </h2>
+                </div>
 
-                {submittingAttempt ? (
-                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-8 border border-purple-200">
-                    <div className="flex items-center justify-center space-x-4 mb-4">
-                      <div className="relative">
-                        <div className="animate-spin rounded-full h-8 w-8 border-4 border-purple-200 border-t-purple-600"></div>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Brain className="h-4 w-4 text-purple-600 animate-pulse" />
-                        </div>
-                      </div>
-                      <span className="text-purple-700 font-semibold text-lg">Generating AI response...</span>
-                    </div>
-                    <p className="text-purple-600 text-center leading-relaxed">
-                      Please wait while our AI analyzes your prompt and generates a comprehensive response.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-8 border border-purple-200">
-                    <div
-                      className="markdown-body prose prose-purple prose-lg max-w-none"
-                      dangerouslySetInnerHTML={{ __html: parseMarkdown(latestAttempt!.promptResponse!) }}
-                    />
-                  </div>
-                )}
-              </div>
-            ) : null}
-          </div>
-
-          {/* Enhanced Sidebar */}
-          <div className="space-y-6">
-            {/* Attempt History */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <Clock className="h-5 w-5 text-blue-600 mr-2" />
-                Attempt History
-              </h3>
-
-              {attempts && attempts.length > 0 ? (
                 <div className="space-y-3">
                   {attempts.map((attempt, index) => (
-                    <div key={attempt.id} className="border border-gray-200 rounded-xl bg-white/50 backdrop-blur-sm">
-                      <div className="p-4">
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-sm font-semibold text-gray-900 bg-blue-100 px-3 py-1 rounded-full">Attempt {attempt.attemptNumber}</span>
-                          <div className="flex items-center space-x-3">
-                            <div className="flex items-center space-x-1">
-                              {getAttemptStatusIcon(attempt)}
-                              <span className="text-xs text-gray-600 font-medium">{getAttemptStatusText(attempt)}</span>
-                            </div>
-                            <button
-                              onClick={() => openAttemptModal(attempt)}
-                              className="text-blue-600 hover:text-blue-800 text-xs flex items-center space-x-1 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded-lg transition-colors"
+                    <div
+                      key={attempt.id}
+                      className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200"
+                    >
+                      <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-2">
+                          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">Attempt {attempt.attemptNumber}</span>
+                          <div className="flex items-center space-x-1">
+                            {getAttemptStatusIcon(attempt)}
+                            <span
+                              className={`text-sm font-medium ${
+                                attempt.status === 'completed' ? 'text-green-600' : attempt.status === 'failed' ? 'text-red-600' : 'text-yellow-600'
+                              }`}
                             >
-                              <Eye className="h-3 w-3" />
-                              <span>View Details</span>
-                            </button>
+                              {getAttemptStatusText(attempt)}
+                            </span>
                           </div>
                         </div>
-
-                        {attempt.prompt && <p className="text-sm text-gray-600 truncate bg-gray-50 p-2 rounded-lg">{attempt.prompt}</p>}
-                        <div className="text-xs text-gray-500 mt-2">{new Date(attempt.createdAt).toLocaleString()}</div>
-                        {attempt.error && <div className="text-xs text-red-600 mt-2 bg-red-50 p-2 rounded-lg">Error: {attempt.error}</div>}
+                        <div className="text-sm text-gray-600">
+                          {new Date(attempt.createdAt).toLocaleDateString()} at {new Date(attempt.createdAt).toLocaleTimeString()}
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <button
+                          onClick={() => openAttemptModal(attempt)}
+                          className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-1"
+                        >
+                          <Eye className="h-4 w-4" />
+                          <span>View Details</span>
+                        </button>
                       </div>
                     </div>
                   ))}
                 </div>
-              ) : (
-                <div className="text-center py-8">
-                  <div className="bg-gray-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
-                    <Clock className="h-6 w-6 text-gray-400" />
-                  </div>
-                  <p className="text-sm text-gray-600">No attempts yet</p>
-                </div>
-              )}
-            </div>
-
-            {/* Enhanced Exercise Progress */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <Target className="h-5 w-5 text-green-600 mr-2" />
-                Progress
-              </h3>
-
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between text-sm text-gray-600 mb-2">
-                    <span>Attempts Used</span>
-                    <span className="font-medium">
-                      {(() => {
-                        if (!attempts) return '0/3';
-                        const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
-                        return `${completedAttempts.length}${submittingAttempt ? ' (+1)' : ''}/3`;
-                      })()}
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                    <div
-                      className="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500 ease-out"
-                      style={{
-                        width: `${(() => {
-                          if (!attempts) return 0;
-                          const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
-                          const currentProgress = submittingAttempt ? completedAttempts.length + 0.5 : completedAttempts.length;
-                          return (currentProgress / 3) * 100;
-                        })()}%`,
-                      }}
-                    ></div>
-                  </div>
-                </div>
-
-                {attempts && attempts.length > 0 && (
-                  <div className="text-sm space-y-2">
-                    <div className="flex items-center space-x-2 text-green-600">
-                      <CheckCircle className="h-4 w-4" />
-                      <span>Exercise started</span>
-                    </div>
-                    {attempts.some((a) => a.status === 'completed') && (
-                      <div className="flex items-center space-x-2 text-green-600">
-                        <CheckCircle className="h-4 w-4" />
-                        <span>AI response received</span>
-                      </div>
-                    )}
-                    {(() => {
-                      const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
-                      return (
-                        completedAttempts.length >= 3 && (
-                          <div className="flex items-center space-x-2 text-green-600">
-                            <CheckCircle className="h-4 w-4" />
-                            <span>All attempts completed</span>
-                          </div>
-                        )
-                      );
-                    })()}
-                    {submittingAttempt && (
-                      <div className="flex items-center space-x-2 text-blue-600">
-                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-200 border-t-blue-600"></div>
-                        <span>Generating response...</span>
-                      </div>
-                    )}
-                  </div>
-                )}
               </div>
-            </div>
+            )}
+          </div>
+
+          {/* Vertical Progress Stepper */}
+          <div className="lg:col-span-1">
+            {progressData && (
+              <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-6 sticky top-8">
+                <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                  <Target className="h-5 w-5 text-blue-600 mr-2" />
+                  Learning Path
+                </h3>
+
+                <div className="space-y-6">
+                  {progressData.modules.map((module, moduleIndex) => (
+                    <div key={module.id} className="relative">
+                      {/* Module Header */}
+                      <div className="flex items-center space-x-3 mb-4">
+                        <div
+                          className={`
+                            w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-sm transition-all duration-300
+                            ${
+                              module.isCompleted
+                                ? 'bg-green-500 border-green-500 text-white'
+                                : module.isCurrent
+                                ? 'bg-blue-500 border-blue-500 text-white'
+                                : 'bg-gray-100 border-gray-300 text-gray-500'
+                            }
+                          `}
+                        >
+                          {module.isCompleted ? <Check className="h-5 w-5" /> : module.orderNumber}
+                        </div>
+                        <div className="flex-1">
+                          <p className={`text-sm font-medium ${module.isCompleted ? 'text-green-700' : module.isCurrent ? 'text-blue-700' : 'text-gray-600'}`}>
+                            Module {module.orderNumber}
+                          </p>
+                          <p className="text-xs text-gray-500 line-clamp-2">{module.title}</p>
+                        </div>
+                      </div>
+
+                      {/* Exercises List */}
+                      <div className="ml-4 space-y-2 relative">
+                        {module.exercises.map((exercise, exerciseIndex) => (
+                          <div key={exercise.id} className="flex items-center space-x-3 py-1 relative z-10">
+                            <div
+                              className={`
+                                w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-300
+                                ${
+                                  exercise.isCurrent
+                                    ? 'bg-blue-500 border-blue-500 ring-2 ring-blue-200'
+                                    : exercise.isCompleted
+                                    ? 'bg-green-500 border-green-500'
+                                    : exercise.isAttempted
+                                    ? 'bg-yellow-500 border-yellow-500'
+                                    : 'border-gray-300 bg-white'
+                                }
+                              `}
+                            >
+                              {exercise.isCompleted && <Check className="h-3 w-3 text-white" />}
+                              {exercise.isAttempted && !exercise.isCompleted && <Clock className="h-2 w-2 text-white" />}
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                              <p
+                                className={`text-xs font-medium truncate ${
+                                  exercise.isCurrent
+                                    ? 'text-blue-600'
+                                    : exercise.isCompleted
+                                    ? 'text-green-600'
+                                    : exercise.isAttempted
+                                    ? 'text-yellow-600'
+                                    : 'text-gray-500'
+                                }`}
+                              >
+                                {exercise.orderNumber}. {exercise.title}
+                              </p>
+                              {exercise.attemptCount > 0 && <p className="text-xs text-gray-400">{exercise.attemptCount}/3 attempts</p>}
+                            </div>
+
+                            {exercise.isCurrent && <ArrowRight className="h-4 w-4 text-blue-600 animate-pulse" />}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
       {/* Attempt Detail Modal */}
-      <AttemptDetailModal
-        isOpen={isAttemptModalOpen}
-        onClose={closeAttemptModal}
-        attempt={selectedAttempt}
-        onSaveEdit={handleSaveAttemptEdit}
-        isUpdating={updatingAttempt}
-      />
+      <AttemptDetailModal isOpen={isAttemptModalOpen} onClose={closeAttemptModal} attempt={selectedAttempt} />
+
+      {/* AI Response Modal */}
+      <ViewAiResponseModal open={showAiResponseModal} onClose={() => setShowAiResponseModal(false)} aiResponse={currentAiResponse} />
     </div>
   );
 }
