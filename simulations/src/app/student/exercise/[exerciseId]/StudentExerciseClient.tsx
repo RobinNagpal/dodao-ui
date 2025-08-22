@@ -59,7 +59,6 @@ interface NextExerciseResponse {
 }
 
 export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyId }: StudentExerciseClientProps) {
-  // const [userEmail, setUserEmail] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('user_email') || '';

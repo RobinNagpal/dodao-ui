@@ -3,17 +3,24 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { CaseStudyWithRelations } from '@/types/api';
-import { BookOpen, Target, Brain, Clock, Lock, ArrowLeft, Check } from 'lucide-react';
+import { BookOpen, Target, Brain, Clock, Lock, ArrowLeft, Check, Lightbulb, FileText } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
-import CaseStudyInstructionsModal, { CaseStudyInstructionsButton } from '@/components/student/CaseStudyInstructionsModal';
-import ModuleDetailsModal from '@/components/student/ModuleDetailsModal';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import { parseMarkdown } from '@/utils/parse-markdown';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 
 interface StudentCaseStudyClientProps {
   caseStudyId: string;
+}
+
+interface UpdateInstructionStatusRequest {
+  studentEmail: string;
+  type: 'case_study' | 'module';
+  moduleId?: string;
 }
 
 export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudyClientProps) {
@@ -22,13 +29,28 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
   const [selectedModule, setSelectedModule] = useState<any>(null);
+  const [showInstructionRequiredModal, setShowInstructionRequiredModal] = useState(false);
+  const [instructionModalData, setInstructionModalData] = useState<{
+    type: 'case_study' | 'module';
+    message: string;
+    moduleId?: string;
+  } | null>(null);
   const router = useRouter();
 
-  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelations>(
+  const {
+    data: caseStudy,
+    loading: loadingCaseStudy,
+    reFetchData: refetchCaseStudy,
+  } = useFetchData<CaseStudyWithRelations>(
     `/api/student/case-studies/${caseStudyId}?studentEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
     'Failed to load case study'
   );
+
+  const { putData: updateInstructionStatus, loading: updatingStatus } = usePutData<{ success: boolean; message: string }, UpdateInstructionStatusRequest>({
+    successMessage: 'Instructions marked as read!',
+    errorMessage: 'Failed to update instruction status. Please try again.',
+  });
 
   const getSubjectDisplayName = (subject: string) => {
     const displayNames: Record<string, string> = {
@@ -102,19 +124,114 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     return module.exercises?.every((exercise: any) => isExerciseCompleted(exercise)) || false;
   };
 
-  const handleModuleClick = (module: any) => {
-    if (isModuleAccessible(module.id)) {
-      setSelectedModule(module);
-      setShowModuleModal(true);
+  const hasCaseStudyInstructionsRead = () => {
+    return caseStudy?.instructionReadStatus?.readCaseInstructions || false;
+  };
+
+  const hasModuleInstructionsRead = (moduleId: string) => {
+    if (!caseStudy?.instructionReadStatus?.moduleInstructions) return false;
+    const moduleStatus = caseStudy.instructionReadStatus.moduleInstructions.find((m) => m.id === moduleId);
+    return moduleStatus?.readModuleInstructions || false;
+  };
+
+  const handleMarkInstructionAsRead = async (type: 'case_study' | 'module', moduleId?: string) => {
+    try {
+      if (type === 'case_study') {
+        setShowCaseStudyModal(false);
+      } else {
+        setShowModuleModal(false);
+      }
+      const result = await updateInstructionStatus(`/api/student/case-studies/${caseStudyId}`, {
+        studentEmail: userEmail,
+        type,
+        moduleId,
+      });
+
+      if (result) {
+        // Refetch case study data to get updated instruction status
+        await refetchCaseStudy();
+      }
+    } catch (error) {
+      console.error('Error updating instruction status:', error);
     }
+  };
+
+  const handleCloseCaseStudyModal = async () => {
+    // Auto-mark as read when closing modal if not already read
+    if (!hasCaseStudyInstructionsRead()) {
+      await handleMarkInstructionAsRead('case_study');
+    } else {
+      setShowCaseStudyModal(false);
+    }
+  };
+
+  const handleCloseModuleModal = async () => {
+    // Auto-mark as read when closing modal if not already read
+    if (selectedModule && !hasModuleInstructionsRead(selectedModule.id)) {
+      await handleMarkInstructionAsRead('module', selectedModule.id);
+    } else {
+      setShowModuleModal(false);
+    }
+  };
+
+  const handleModuleClick = (module: any) => {
+    // Only check if case study instructions have been read, not module-specific requirements
+    if (!hasCaseStudyInstructionsRead()) {
+      setInstructionModalData({
+        type: 'case_study',
+        message: 'Please read the case study instructions first before accessing module details.',
+      });
+      setShowInstructionRequiredModal(true);
+      return;
+    }
+
+    setSelectedModule(module);
+    setShowModuleModal(true);
   };
 
   const handleExerciseClick = (exerciseId: string, moduleId: string) => {
     if (!isExerciseAccessible(moduleId, exerciseId)) {
       return;
     }
+
+    // Check if case study instructions have been read first
+    if (!hasCaseStudyInstructionsRead()) {
+      setInstructionModalData({
+        type: 'case_study',
+        message: 'Please read the case study instructions first before starting any exercises.',
+      });
+      setShowInstructionRequiredModal(true);
+      return;
+    }
+
+    // Check if module instructions have been read
+    if (!hasModuleInstructionsRead(moduleId)) {
+      setInstructionModalData({
+        type: 'module',
+        message: 'Please read the module instructions first before starting exercises.',
+        moduleId: moduleId,
+      });
+      setShowInstructionRequiredModal(true);
+      return;
+    }
+
     const url = `/student/exercise/${exerciseId}?moduleId=${moduleId}&caseStudyId=${caseStudyId}`;
     window.open(url, '_blank');
+  };
+
+  const handleViewInstructions = () => {
+    setShowInstructionRequiredModal(false);
+
+    if (instructionModalData?.type === 'case_study') {
+      setShowCaseStudyModal(true);
+    } else if (instructionModalData?.type === 'module' && instructionModalData.moduleId) {
+      // Find the module to set as selected
+      const caseStudyModule = caseStudy?.modules?.find((m) => m.id === instructionModalData.moduleId);
+      if (caseStudyModule) {
+        setSelectedModule(caseStudyModule);
+        setShowModuleModal(true);
+      }
+    }
   };
 
   useEffect(() => {
@@ -206,9 +323,18 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
                 </Badge>
               </div>
 
-              <CaseStudyInstructionsModal isOpen={showCaseStudyModal} onOpenChange={setShowCaseStudyModal} caseStudyDetails={caseStudy.details}>
-                <CaseStudyInstructionsButton onClick={() => setShowCaseStudyModal(true)} />
-              </CaseStudyInstructionsModal>
+              <Button
+                onClick={() => setShowCaseStudyModal(true)}
+                className={`${
+                  hasCaseStudyInstructionsRead()
+                    ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700'
+                    : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
+                } text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200`}
+              >
+                {hasCaseStudyInstructionsRead() ? <Check className="h-4 w-4 mr-2" /> : <BookOpen className="h-4 w-4 mr-2" />}
+                Case Study Instructions
+                {hasCaseStudyInstructionsRead() && <span className="ml-2 text-xs bg-white/20 px-2 py-0.5 rounded-full">✓ Read</span>}
+              </Button>
             </div>
             <CardTitle className="text-2xl font-bold text-gray-900">Case Study Overview</CardTitle>
             <CardDescription className="text-base text-gray-700 leading-relaxed">{caseStudy.shortDescription}</CardDescription>
@@ -273,9 +399,42 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
                           </div>
 
                           <div className="w-full max-w-xs space-y-2">
+                            {/* Module Details Card */}
+                            <div
+                              onClick={() => handleModuleClick(module)}
+                              className={`
+                                flex items-center justify-between p-2 rounded-lg border transition-all duration-200 cursor-pointer hover:shadow-md
+                                ${
+                                  hasModuleInstructionsRead(module.id)
+                                    ? 'bg-green-50 border-green-200 hover:bg-green-100'
+                                    : 'bg-blue-50 border-blue-200 hover:bg-blue-100'
+                                }
+                              `}
+                            >
+                              <div className="flex items-center space-x-2 flex-1 min-w-0">
+                                <div
+                                  className={`
+                                    w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0
+                                    ${hasModuleInstructionsRead(module.id) ? 'bg-green-500 border-green-500' : 'border-blue-500'}
+                                  `}
+                                >
+                                  {hasModuleInstructionsRead(module.id) && <Check className="h-3 w-3 text-white" />}
+                                </div>
+
+                                <div className="min-w-0 flex-1">
+                                  <p className="text-xs text-gray-600 truncate font-medium">📖 Module Instructions</p>
+                                </div>
+                              </div>
+
+                              <div className="flex-shrink-0 ml-2">
+                                {hasModuleInstructionsRead(module.id) && (
+                                  <Badge className="bg-green-100 text-green-800 border-green-200 text-xs px-1 py-0">✓</Badge>
+                                )}
+                              </div>
+                            </div>
+
                             {module.exercises && module.exercises.length > 0 && (
                               <>
-                                <h4 className="text-xs font-medium text-gray-700 mb-2 text-center">Exercises ({module.exercises.length})</h4>
                                 <div className="space-y-2">
                                   {module.exercises.map((exercise) => {
                                     const exerciseCompleted = isExerciseCompleted(exercise);
@@ -319,8 +478,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
                                           </div>
 
                                           <div className="min-w-0 flex-1">
-                                            <p className="text-xs font-medium text-gray-900 truncate">Ex. {exercise.orderNumber}</p>
-                                            <p className="text-xs text-gray-600 truncate">{exercise.title}</p>
+                                            <p className="text-xs text-gray-600 truncate">{`${exercise.orderNumber}) ${exercise.title}`}</p>
                                           </div>
                                         </div>
 
@@ -354,7 +512,141 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
           </Card>
         )}
 
-        <ModuleDetailsModal isOpen={showModuleModal} onOpenChange={setShowModuleModal} selectedModule={selectedModule} />
+        <FullPageModal
+          open={showModuleModal}
+          onClose={handleCloseModuleModal}
+          title={
+            selectedModule && (
+              <span className="text-2xl font-bold">
+                Module {selectedModule.orderNumber}: {selectedModule.title}
+              </span>
+            )
+          }
+        >
+          {selectedModule && (
+            <div className="px-8 text-left mx-auto space-y-6 pb-4">
+              {/* Short Description Section */}
+              <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-white/30 shadow-xl">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-2 rounded-xl">
+                    <Lightbulb className="h-5 w-5 text-white" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900">Short Description</h4>
+                </div>
+                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200/50">
+                  <p className="text-blue-900 text-base leading-relaxed">{selectedModule.shortDescription}</p>
+                </div>
+              </div>
+
+              {/* Module Details Section */}
+              <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-white/30 shadow-xl">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-2 rounded-xl">
+                    <FileText className="h-5 w-5 text-white" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900">Detailed Content</h4>
+                </div>
+                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(selectedModule.details) }} />
+              </div>
+
+              {/* Read Module Instructions Button */}
+              {!hasModuleInstructionsRead(selectedModule.id) && (
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 text-center">
+                  <p className="text-blue-900 mb-4 font-medium">Please confirm that you have read and understood the module instructions.</p>
+                  <Button
+                    onClick={() => handleMarkInstructionAsRead('module', selectedModule.id)}
+                    disabled={updatingStatus}
+                    className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    {updatingStatus ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+                        Marking as Read...
+                      </>
+                    ) : (
+                      <>
+                        <Check className="h-5 w-5 mr-2" />I Have Read the Module Instructions
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
+
+              {hasModuleInstructionsRead(selectedModule.id) && (
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200 text-center">
+                  <Check className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                  <p className="text-green-800 font-medium">You have read the module instructions</p>
+                </div>
+              )}
+            </div>
+          )}
+        </FullPageModal>
+
+        <FullPageModal open={showCaseStudyModal} onClose={handleCloseCaseStudyModal} title={<span className="text-2xl font-bold">Case Study Details</span>}>
+          <div className="px-8 text-left mx-auto space-y-6 pb-4">
+            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy?.details || '') }} />
+
+            {/* Read Instructions Button */}
+            {!hasCaseStudyInstructionsRead() && (
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 text-center">
+                <p className="text-blue-900 mb-4 font-medium">Please confirm that you have read and understood the case study instructions.</p>
+                <Button
+                  onClick={() => handleMarkInstructionAsRead('case_study')}
+                  disabled={updatingStatus}
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  {updatingStatus ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+                      Marking as Read...
+                    </>
+                  ) : (
+                    <>
+                      <Check className="h-5 w-5 mr-2" />I Have Read the Instructions
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
+
+            {hasCaseStudyInstructionsRead() && (
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200 text-center">
+                <Check className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                <p className="text-green-800 font-medium">You have read the case study instructions</p>
+              </div>
+            )}
+          </div>
+        </FullPageModal>
+
+        {/* Instruction Required Modal */}
+        <FullPageModal
+          open={showInstructionRequiredModal}
+          onClose={() => setShowInstructionRequiredModal(false)}
+          title={<span className="text-xl font-bold text-orange-600">Instructions Required</span>}
+          className="w-full max-w-2xl"
+        >
+          <div className="px-8 text-center mx-auto space-y-6 pb-4">
+            <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-8 border border-orange-200">
+              <div className="bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="h-8 w-8 text-orange-600" />
+              </div>
+
+              <h3 className="text-lg font-semibold text-orange-900 mb-4">{instructionModalData?.message}</h3>
+
+              <div className="space-y-3">
+                <Button
+                  onClick={handleViewInstructions}
+                  className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto"
+                >
+                  <BookOpen className="h-5 w-5 mr-2" />
+                  View {instructionModalData?.type === 'case_study' ? 'Case Study' : 'Module'} Instructions
+                </Button>
+
+                <div className="text-sm text-orange-700">You’ll need to read the instructions before you can continue.</div>
+              </div>
+            </div>
+          </div>
+        </FullPageModal>
       </div>
     </div>
   );

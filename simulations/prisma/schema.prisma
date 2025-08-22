@@ -78,6 +78,8 @@ model EnrollmentStudent {
 
   assignedStudentId String @map("assigned_student_id") // assigned by admin but store student email
 
+  instructionReadStatus Json? @map("instruction_read_status")
+
   createdBy      String?              @map("created_by") // created by admin
   updatedBy      String?              @map("updated_by") // updated by admin
   createdAt      DateTime             @default(now()) @map("created_at")
@@ -98,6 +100,7 @@ model ModuleExercise {
   title            String           @map("title")
   shortDescription String           @map("short_description")
   details          String           @db.Text @map("details")
+  promptHint       String?          @map("prompt_hint")
   orderNumber      Int              @map("order_number")
   createdBy        String?          @map("created_by") // created by admin
   updatedBy        String?          @map("updated_by") // updated by admin
