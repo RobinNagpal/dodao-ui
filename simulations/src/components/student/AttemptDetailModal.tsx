@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { X, Edit3, Save, Eye, Brain, MessageSquare, Sparkles } from 'lucide-react';
@@ -20,6 +20,14 @@ export default function AttemptDetailModal({ isOpen, onClose, attempt, onSaveEdi
   const [isEditing, setIsEditing] = useState(false);
   const [editedResponse, setEditedResponse] = useState('');
 
+  // Reset editing state when modal opens/closes or attempt changes
+  useEffect(() => {
+    if (!isOpen || !attempt) {
+      setIsEditing(false);
+      setEditedResponse('');
+    }
+  }, [isOpen, attempt]);
+
   const handleStartEdit = () => {
     if (attempt?.promptResponse) {
       setEditedResponse(attempt.promptResponse);
@@ -34,49 +42,56 @@ export default function AttemptDetailModal({ isOpen, onClose, attempt, onSaveEdi
 
   const handleSaveEdit = async () => {
     if (attempt && editedResponse.trim()) {
-      await onSaveEdit(attempt.id, editedResponse.trim());
-      setIsEditing(false);
-      setEditedResponse('');
+      try {
+        await onSaveEdit(attempt.id, editedResponse.trim());
+        // Reset editing state and close modal after successful save
+        setIsEditing(false);
+        setEditedResponse('');
+        onClose(); // Close the modal after successful save
+      } catch (error) {
+        console.error('Error saving edit:', error);
+        // Don't close modal if there's an error, so user can retry
+      }
     }
   };
 
   const handleClose = () => {
-    handleCancelEdit();
+    // Reset editing state when closing
+    setIsEditing(false);
+    setEditedResponse('');
     onClose();
   };
 
   if (!attempt) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-3xl max-h-[90vh] bg-white/95 backdrop-blur-md border border-blue-100/50 shadow-2xl">
-        <DialogHeader className="bg-gradient-to-r from-blue-50 to-purple-50 -m-6 mb-4 p-6 rounded-t-lg border-b border-blue-100">
-          <DialogTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center space-x-2">
-            <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-xl">
-              <Eye className="h-5 w-5 text-white" />
+    <Dialog open={isOpen} onOpenChange={handleClose} modal={true}>
+      <DialogContent className="sm:max-w-3xl max-h-[90vh] bg-white/95 backdrop-blur-md border border-blue-100/50 shadow-2xl overflow-hidden">
+        <DialogHeader className="bg-gradient-to-r from-blue-50 to-purple-50 -m-6 mb-2 p-6 rounded-t-lg border-b border-blue-100">
+          <DialogTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-xl">
+                  <Eye className="h-5 w-5 text-white" />
+                </div>
+                <span>Attempt {attempt.attemptNumber} Details</span>
+                <Sparkles className="h-5 w-5 text-yellow-500 animate-pulse" />
+              </div>
+              <div className="flex items-center space-x-3 text-sm pr-4">
+                <div className="flex items-center space-x-2">
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      attempt.status === 'completed' ? 'bg-green-500' : attempt.status === 'failed' ? 'bg-red-500' : 'bg-yellow-500'
+                    }`}
+                  ></div>
+                  <span className="text-gray-600 font-medium capitalize">{attempt.status}</span>
+                </div>
+              </div>
             </div>
-            <span>Attempt {attempt.attemptNumber} Details</span>
-            <Sparkles className="h-5 w-5 text-yellow-500 animate-pulse" />
           </DialogTitle>
         </DialogHeader>
 
-        <div className="overflow-y-auto max-h-[70vh] space-y-6 py-4">
-          {/* Attempt Info */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200/50">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold text-blue-900 bg-blue-100 px-3 py-1 rounded-full">Attempt {attempt.attemptNumber}</span>
-              <div className="flex items-center space-x-2">
-                <div
-                  className={`w-2 h-2 rounded-full ${
-                    attempt.status === 'completed' ? 'bg-green-500' : attempt.status === 'failed' ? 'bg-red-500' : 'bg-yellow-500'
-                  }`}
-                ></div>
-                <span className="text-xs text-gray-600 font-medium capitalize">{attempt.status}</span>
-              </div>
-            </div>
-            <div className="text-xs text-gray-500">{new Date(attempt.createdAt).toLocaleString()}</div>
-          </div>
-
+        <div className="overflow-y-auto max-h-[70vh] space-y-6 pb-4">
           {/* Your Prompt */}
           <div className="space-y-3">
             <h3 className="font-semibold text-gray-900 flex items-center space-x-2">
