@@ -83,6 +83,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
         ...exercise,
         createdBy: exercise.createdBy || undefined,
         updatedBy: exercise.updatedBy || undefined,
+        promptHint: exercise.promptHint || undefined,
       })),
     })),
     enrollments: caseStudy.enrollments?.map((enrollment) => ({
