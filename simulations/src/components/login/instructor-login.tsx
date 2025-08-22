@@ -12,9 +12,10 @@ import { BookOpen, Users, Shield, Brain, Sparkles, TrendingUp } from 'lucide-rea
 interface InstructorLoginProps {
   onLogin: (email: string) => void;
   onSwitchToStudent: () => void;
+  errorMessage?: string;
 }
 
-export function InstructorLogin({ onLogin, onSwitchToStudent }: InstructorLoginProps) {
+export function InstructorLogin({ onLogin, onSwitchToStudent, errorMessage }: InstructorLoginProps) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -91,6 +92,7 @@ export function InstructorLogin({ onLogin, onSwitchToStudent }: InstructorLoginP
                   required
                   className="h-12 bg-white/50 border-gray-200 focus:border-purple-400 focus:ring-purple-400/20 transition-all duration-200"
                 />
+                {errorMessage && <div className="text-red-500 text-sm mt-1">{errorMessage}</div>}
               </div>
 
               <Button

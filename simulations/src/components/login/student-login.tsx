@@ -11,9 +11,10 @@ import { BookOpen, Users, GraduationCap, Sparkles, Brain, Target } from 'lucide-
 interface StudentLoginProps {
   onLogin: (email: string) => void;
   onSwitchToInstructor: () => void;
+  errorMessage?: string;
 }
 
-export function StudentLogin({ onLogin, onSwitchToInstructor }: StudentLoginProps) {
+export function StudentLogin({ onLogin, onSwitchToInstructor, errorMessage }: StudentLoginProps) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -82,6 +83,7 @@ export function StudentLogin({ onLogin, onSwitchToInstructor }: StudentLoginProp
                   required
                   className="h-12 bg-white/50 border-gray-200 focus:border-blue-400 focus:ring-blue-400/20 transition-all duration-200"
                 />
+                {errorMessage && <div className="text-red-500 text-sm mt-1">{errorMessage}</div>}
               </div>
 
               <Button
