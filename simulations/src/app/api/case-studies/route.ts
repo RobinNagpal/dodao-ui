@@ -68,6 +68,7 @@ async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
               title: exercise.title,
               shortDescription: exercise.shortDescription,
               details: exercise.details,
+              promptHint: exercise.promptHint,
               orderNumber: exercise.orderNumber,
               createdBy: adminEmail,
               updatedBy: adminEmail,

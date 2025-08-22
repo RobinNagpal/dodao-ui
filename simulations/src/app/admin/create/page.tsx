@@ -31,6 +31,7 @@ interface ExerciseFormData {
   title: string;
   shortDescription: string;
   details: string;
+  promptHint?: string;
   orderNumber: number;
 }
 
@@ -134,6 +135,7 @@ export default function CreateCaseStudyPage() {
       title: '',
       shortDescription: '',
       details: '',
+      promptHint: '',
       orderNumber: caseStudyModule.exercises.length + 1,
     };
 
@@ -214,6 +216,7 @@ export default function CreateCaseStudyPage() {
           title: exercise.title,
           shortDescription: exercise.shortDescription,
           details: exercise.details,
+          promptHint: exercise.promptHint,
           orderNumber: exercise.orderNumber,
         })),
       })),
@@ -497,6 +500,14 @@ export default function CreateCaseStudyPage() {
                               }
                               placeholder="Brief exercise description"
                               rows={1}
+                              className="bg-white/80 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+                            />
+
+                            <Textarea
+                              value={exercise.promptHint || ''}
+                              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateExercise(module.id, exercise.id, 'promptHint', e.target.value)}
+                              placeholder="Prompt hint for AI assistance (optional)"
+                              rows={2}
                               className="bg-white/80 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
                             />
 

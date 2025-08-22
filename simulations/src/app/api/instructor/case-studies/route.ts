@@ -80,6 +80,7 @@ async function getHandler(req: NextRequest): Promise<CaseStudy[]> {
         ...exercise,
         createdBy: exercise.createdBy || undefined,
         updatedBy: exercise.updatedBy || undefined,
+        promptHint: exercise.promptHint || undefined,
       })),
     })),
     enrollments: cs.enrollments?.map((enrollment) => ({

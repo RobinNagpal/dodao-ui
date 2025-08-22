@@ -35,6 +35,7 @@ export interface ModuleExercise {
   title: string;
   shortDescription: string;
   details: string;
+  promptHint?: string;
   orderNumber: number;
   createdBy?: string;
   updatedBy?: string;
