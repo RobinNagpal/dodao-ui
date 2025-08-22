@@ -6,6 +6,7 @@ import { CriterionDefinition, IndustryGroupCriteriaDefinition } from '@/types/pu
 import { FullNestedTickerReport } from '@/types/public-equity/ticker-report-types';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { headers } from 'next/headers';
 import CriterionActionsDropdown from './CriterionActionsDropdown';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { Metadata } from 'next';
@@ -16,7 +17,12 @@ import { formatKey } from '@/util/format-key';
 export async function generateMetadata({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }): Promise<Metadata> {
   const { tickerKey, criterionKey } = await params;
 
-  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?page=criteriaDetailsPage`, { cache: 'no-cache' });
+  const referer = (await headers())?.get('referer') ?? ''; // previous URL, if the browser sent it
+  const qs = new URLSearchParams({ page: 'criteriaDetailsPage' });
+  if (referer) qs.set('from', referer);
+
+  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?${qs.toString()}`, { cache: 'no-cache' });
+
   let tickerData: FullNestedTickerReport | null = null;
 
   if (tickerResponse.ok) {
@@ -69,6 +75,10 @@ export async function generateMetadata({ params }: { params: Promise<{ tickerKey
 export default async function CriterionDetailsPage({ params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }) {
   const { tickerKey, criterionKey } = await params;
 
+  const referer = (await headers())?.get('referer') ?? ''; // previous URL, if the browser sent it
+  const qs = new URLSearchParams({ page: 'criteriaDetailsPage' });
+  if (referer) qs.set('from', referer);
+
   // Decode the URL parameters and check if they contain '}' character
   const decodedTickerKey = decodeURIComponent(tickerKey);
   const decodedCriterionKey = decodeURIComponent(criterionKey);
@@ -80,7 +90,7 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
     redirect(`/public-equities/tickers/${cleanedTickerKey}/criteria/${cleanedCriterionKey}`);
   }
 
-  const response = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?page=criteriaDetailsPage`, { cache: 'no-cache' });
+  const response = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?${qs.toString()}`, { cache: 'no-cache' });
   const tickerReport = (await response.json()) as FullNestedTickerReport;
 
   const criteriaResponse = await fetch(
