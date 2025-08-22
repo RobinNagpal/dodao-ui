@@ -217,7 +217,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     }
 
     const url = `/student/exercise/${exerciseId}?moduleId=${moduleId}&caseStudyId=${caseStudyId}`;
-    window.open(url, '_blank');
+    router.push(url);
   };
 
   const handleViewInstructions = () => {

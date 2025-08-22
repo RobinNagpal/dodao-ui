@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import type { ExerciseAttempt } from '@prisma/client';
-import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Target, ArrowRight, Check } from 'lucide-react';
+import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import AttemptDetailModal from '@/components/student/AttemptDetailModal';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
+import StudentProgressStepper, { ProgressData, ModuleProgress, ExerciseProgress } from '@/components/student/StudentProgressStepper';
 
 interface StudentExerciseClientProps {
   exerciseId: string;
@@ -58,32 +60,7 @@ interface NextExerciseResponse {
   message: string;
 }
 
-interface ExerciseProgress {
-  id: string;
-  title: string;
-  orderNumber: number;
-  isCompleted: boolean;
-  isAttempted: boolean;
-  isCurrent: boolean;
-  attemptCount: number;
-}
-
-interface ModuleProgress {
-  id: string;
-  title: string;
-  orderNumber: number;
-  isCompleted: boolean;
-  isCurrent: boolean;
-  exercises: ExerciseProgress[];
-}
-
-interface ProgressResponse {
-  caseStudyTitle: string;
-  caseStudyId: string;
-  currentModuleId: string;
-  currentExerciseId: string;
-  modules: ModuleProgress[];
-}
+// Using imported types from StudentProgressStepper
 
 export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyId }: StudentExerciseClientProps) {
   const [userEmail, setUserEmail] = useState<string>(() => {
@@ -136,7 +113,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   );
 
   // API hook to fetch progress data for vertical stepper
-  const { data: progressData, loading: loadingProgress } = useFetchData<ProgressResponse>(
+  const { data: progressData, loading: loadingProgress } = useFetchData<ProgressData>(
     `/api/student/exercises/${exerciseId}/progress?studentEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !exerciseId || !userEmail },
     'Failed to load progress data'
@@ -338,6 +315,19 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
+        <div className="mb-6 flex items-center space-x-3">
+          {caseStudyId && (
+            <Button
+              onClick={() => router.push(`/student/case-study/${caseStudyId}`)}
+              variant="outline"
+              className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 bg-transparent"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Main Page
+            </Button>
+          )}
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Exercise Area */}
           <div className="lg:col-span-3 space-y-6">
@@ -508,90 +498,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
           </div>
 
           {/* Vertical Progress Stepper */}
-          <div className="lg:col-span-1">
-            {progressData && (
-              <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-6 sticky top-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-                  <Target className="h-5 w-5 text-blue-600 mr-2" />
-                  Learning Path
-                </h3>
-
-                <div className="space-y-6">
-                  {progressData.modules.map((module, moduleIndex) => (
-                    <div key={module.id} className="relative">
-                      {/* Module Header */}
-                      <div className="flex items-center space-x-3 mb-4">
-                        <div
-                          className={`
-                            w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-sm transition-all duration-300
-                            ${
-                              module.isCompleted
-                                ? 'bg-green-500 border-green-500 text-white'
-                                : module.isCurrent
-                                ? 'bg-blue-500 border-blue-500 text-white'
-                                : 'bg-gray-100 border-gray-300 text-gray-500'
-                            }
-                          `}
-                        >
-                          {module.isCompleted ? <Check className="h-5 w-5" /> : module.orderNumber}
-                        </div>
-                        <div className="flex-1">
-                          <p className={`text-sm font-medium ${module.isCompleted ? 'text-green-700' : module.isCurrent ? 'text-blue-700' : 'text-gray-600'}`}>
-                            Module {module.orderNumber}
-                          </p>
-                          <p className="text-xs text-gray-500 line-clamp-2">{module.title}</p>
-                        </div>
-                      </div>
-
-                      {/* Exercises List */}
-                      <div className="ml-4 space-y-2 relative">
-                        {module.exercises.map((exercise, exerciseIndex) => (
-                          <div key={exercise.id} className="flex items-center space-x-3 py-1 relative z-10">
-                            <div
-                              className={`
-                                w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-300
-                                ${
-                                  exercise.isCurrent
-                                    ? 'bg-blue-500 border-blue-500 ring-2 ring-blue-200'
-                                    : exercise.isCompleted
-                                    ? 'bg-green-500 border-green-500'
-                                    : exercise.isAttempted
-                                    ? 'bg-yellow-500 border-yellow-500'
-                                    : 'border-gray-300 bg-white'
-                                }
-                              `}
-                            >
-                              {exercise.isCompleted && <Check className="h-3 w-3 text-white" />}
-                              {exercise.isAttempted && !exercise.isCompleted && <Clock className="h-2 w-2 text-white" />}
-                            </div>
-
-                            <div className="flex-1 min-w-0">
-                              <p
-                                className={`text-xs font-medium truncate ${
-                                  exercise.isCurrent
-                                    ? 'text-blue-600'
-                                    : exercise.isCompleted
-                                    ? 'text-green-600'
-                                    : exercise.isAttempted
-                                    ? 'text-yellow-600'
-                                    : 'text-gray-500'
-                                }`}
-                              >
-                                {exercise.orderNumber}. {exercise.title}
-                              </p>
-                              {exercise.attemptCount > 0 && <p className="text-xs text-gray-400">{exercise.attemptCount}/3 attempts</p>}
-                            </div>
-
-                            {exercise.isCurrent && <ArrowRight className="h-4 w-4 text-blue-600 animate-pulse" />}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+          <div className="lg:col-span-1">{progressData && <StudentProgressStepper progressData={progressData} />}</div>
         </div>
       </div>
 
