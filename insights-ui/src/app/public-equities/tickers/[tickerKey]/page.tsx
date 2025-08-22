@@ -40,11 +40,17 @@ import { getGraphColor, getSpiderGraphScorePercentage } from '@/util/radar-chart
 import { safeParseJsonString } from '@/util/safe-parse-json-string';
 import TickerNewsSection from './TickerNewsSection';
 import { getDateAsDDMonthYYYYFormat, getTimeAgo } from '@/util/get-date';
+import { headers } from 'next/headers';
 
 export async function generateMetadata({ params }: { params: Promise<{ tickerKey: string }> }): Promise<Metadata> {
   const { tickerKey } = await params;
 
-  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?page=tickerDetailsPage`, { cache: 'no-cache' });
+  const referer = (await headers())?.get('referer') ?? ''; // previous URL, if the browser sent it
+  const qs = new URLSearchParams({ page: 'tickerDetailsPage' });
+  if (referer) qs.set('from', referer);
+
+  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?${qs.toString()}`, { cache: 'no-cache' });
+
   let tickerData: FullNestedTickerReport | null = null;
 
   if (tickerResponse.ok) {
@@ -90,6 +96,10 @@ export async function generateMetadata({ params }: { params: Promise<{ tickerKey
 export default async function TickerDetailsPage({ params }: { params: Promise<{ tickerKey: string }> }) {
   const { tickerKey } = await params;
 
+  const referer = (await headers())?.get('referer') ?? ''; // previous URL, if the browser sent it
+  const qs = new URLSearchParams({ page: 'tickerDetailsPage' });
+  if (referer) qs.set('from', referer);
+
   // Decode the URL and check if it contains '}' character
   const decodedTickerKey = decodeURIComponent(tickerKey);
   if (decodedTickerKey.includes('}')) {
@@ -104,7 +114,8 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   );
 
   const industryGroupCriteria: IndustryGroupCriteriaDefinition = (await criteriaResponse.json()) as IndustryGroupCriteriaDefinition;
-  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?page=tickerDetailsPage`, { cache: 'no-cache' });
+
+  const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}?${qs.toString()}`, { cache: 'no-cache' });
 
   const tickerReport = (await tickerResponse.json()) as FullNestedTickerReport;
   const breadcrumbs: BreadcrumbsOjbect[] = [
