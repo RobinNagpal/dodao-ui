@@ -6,7 +6,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import type { ExerciseAttempt } from '@prisma/client';
-import { BookOpen, Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Target } from 'lucide-react';
+import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Target } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import AttemptDetailModal from '@/components/student/AttemptDetailModal';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
@@ -59,7 +59,6 @@ interface NextExerciseResponse {
 }
 
 export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyId }: StudentExerciseClientProps) {
-  // const [userEmail, setUserEmail] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('user_email') || '';
@@ -225,10 +224,13 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       });
 
       if (result) {
+        // Refresh attempts data to get the updated content
         await refetchAttempts();
       }
     } catch (error) {
       console.error('Error updating attempt:', error);
+      // Re-throw the error so the modal can handle it appropriately
+      throw error;
     }
   };
 
@@ -324,56 +326,10 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
           {/* Main Exercise Area */}
           <div className="lg:col-span-2 space-y-6">
             {/* Exercise Context */}
-            {contextData && (
-              <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-8 border border-white/30 shadow-xl">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                  <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-2 rounded-xl mr-3">
-                    <BookOpen className="h-5 w-5 text-white" />
-                  </div>
-                  Exercise Context
-                </h2>
-
-                {(() => {
-                  const contextLines = contextData.caseStudyContext.split('\n');
-                  const caseStudyTitle = contextLines.find((line) => line.startsWith('Case Study:'))?.replace('Case Study: ', '') || '';
-                  const caseStudyDesc = contextLines.find((line) => line.startsWith('Description:'))?.replace('Description: ', '') || '';
-                  const moduleTitle = contextLines.find((line) => line.startsWith('Module:'))?.replace('Module: ', '') || '';
-                  const moduleDesc = contextLines.find((line) => line.startsWith('Module Description:'))?.replace('Module Description: ', '') || '';
-
-                  return (
-                    <div className="space-y-4">
-                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200/50">
-                        <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                          Case Study
-                        </h3>
-                        <h4 className="text-gray-800 font-medium text-lg">{caseStudyTitle}</h4>
-                        <p className="text-gray-600 mt-2 leading-relaxed">{caseStudyDesc}</p>
-                      </div>
-
-                      <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200/50">
-                        <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
-                          Current Module
-                        </h3>
-                        <h4 className="text-gray-800 font-medium text-lg">{moduleTitle}</h4>
-                        <p className="text-gray-600 mt-2 leading-relaxed">{moduleDesc}</p>
-                      </div>
-                    </div>
-                  );
-                })()}
-              </div>
-            )}
 
             {/* Exercise Details */}
             {exerciseData && (
               <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                  <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-xl mr-3">
-                    <Target className="h-5 w-5 text-white" />
-                  </div>
-                  Current Exercise
-                </h2>
                 <div className="space-y-6">
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">{exerciseData.title}</h3>

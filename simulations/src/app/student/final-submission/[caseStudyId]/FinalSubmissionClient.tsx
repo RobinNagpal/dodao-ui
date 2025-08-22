@@ -157,7 +157,7 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
 
                 <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200/50">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{caseStudyData.title}</h3>
-                  <p className="text-gray-600 text-lg leading-relaxed mb-4">{caseStudyData.shortDescription}</p>
+                  <p className="text-gray-600 text-base leading-relaxed mb-4">{caseStudyData.shortDescription}</p>
                   <div className="text-sm text-gray-500">
                     <div className="flex items-center space-x-4">
                       <span>Subject: {caseStudyData.subject}</span>
@@ -171,53 +171,6 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
               </div>
             )}
 
-            {/* Instructions */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-2 rounded-xl mr-3">
-                  <Target className="h-5 w-5 text-white" />
-                </div>
-                Final Submission Instructions
-              </h2>
-
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200/50">
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-sm font-bold">1</span>
-                    </div>
-                    <p className="text-gray-700">
-                      <strong>Synthesize Your Learning:</strong> Combine insights from all modules and AI interactions to present your comprehensive analysis.
-                    </p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-sm font-bold">2</span>
-                    </div>
-                    <p className="text-gray-700">
-                      <strong>Include Key Findings:</strong> Highlight the most important discoveries and recommendations based on your case study analysis.
-                    </p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-sm font-bold">3</span>
-                    </div>
-                    <p className="text-gray-700">
-                      <strong>Use Markdown Formatting:</strong> Structure your submission with headers, lists, and formatting for clear presentation.
-                    </p>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-white text-sm font-bold">4</span>
-                    </div>
-                    <p className="text-gray-700">
-                      <strong>Reference AI Insights:</strong> Incorporate relevant insights and recommendations from your AI exercise responses.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             {/* Markdown Editor */}
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
@@ -228,26 +181,7 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
                 <Sparkles className="h-5 w-5 text-yellow-500 ml-2 animate-pulse" />
               </h2>
 
-              <MarkdownEditor
-                objectId={`final-submission-${caseStudyId}`}
-                modelValue={finalContent}
-                onUpdate={setFinalContent}
-                placeholder="# Final Case Study Analysis
-
-## Executive Summary
-Provide a brief overview of your key findings and recommendations...
-
-## Key Insights
-Based on your analysis through the modules and AI interactions...
-
-## Recommendations
-Your strategic recommendations based on the case study...
-
-## Conclusion
-Summarize your final thoughts and next steps..."
-                maxHeight={600}
-                label=""
-              />
+              <MarkdownEditor objectId={`final-submission-${caseStudyId}`} modelValue={finalContent} onUpdate={setFinalContent} maxHeight={500} label="" />
 
               <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
                 <div className="flex items-center space-x-3 text-sm text-gray-600">
