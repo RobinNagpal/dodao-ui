@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyWithRelations } from '@/types/api';
-import { BookOpen, Target, Play, ChevronRight, Brain, Clock, CheckCircle2, Lock, TrendingUp, ArrowLeft, Check } from 'lucide-react';
+import { BookOpen, Target, Brain, Clock, Lock, ArrowLeft, Check } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { parseMarkdown } from '@/utils/parse-markdown';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
+import CaseStudyInstructionsModal, { CaseStudyInstructionsButton } from '@/components/student/CaseStudyInstructionsModal';
+import ModuleDetailsModal from '@/components/student/ModuleDetailsModal';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 
 interface StudentCaseStudyClientProps {
   caseStudyId: string;
@@ -18,9 +19,11 @@ interface StudentCaseStudyClientProps {
 export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudyClientProps) {
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
+  const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
+  const [showModuleModal, setShowModuleModal] = useState(false);
+  const [selectedModule, setSelectedModule] = useState<any>(null);
   const router = useRouter();
 
-  // API hook to fetch case study data
   const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelations>(
     `/api/student/case-studies/${caseStudyId}?studentEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
@@ -60,44 +63,25 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     return colors[subject] || 'from-gray-500 to-gray-600';
   };
 
-  // Function to check if an exercise has been attempted
   const hasAttempts = (exercise: any) => {
     return exercise.attempts && exercise.attempts.length > 0;
   };
 
-  // Function to get attempt count for an exercise
   const getAttemptCount = (exercise: any) => {
     return exercise.attempts ? exercise.attempts.length : 0;
   };
 
-  // Function to check if an exercise is completed (has at least one successful attempt)
   const isExerciseCompleted = (exercise: any) => {
     return exercise.attempts && exercise.attempts.some((attempt: any) => attempt.status === 'completed');
   };
 
-  // Function to get the next available exercise for the student
-  const getNextAvailableExercise = () => {
-    const modules = caseStudy?.modules || [];
-    for (const caseStudyModule of modules) {
-      for (const exercise of caseStudyModule.exercises || []) {
-        if (!isExerciseCompleted(exercise)) {
-          return { moduleId: caseStudyModule.id, exerciseId: exercise.id };
-        }
-      }
-    }
-    return null; // All exercises completed
-  };
-
-  // Function to check if an exercise is accessible (previous exercises completed)
   const isExerciseAccessible = (targetModuleId: string, targetExerciseId: string) => {
     const modules = caseStudy?.modules || [];
     for (const caseStudyModule of modules) {
       for (const exercise of caseStudyModule.exercises || []) {
-        // If we reach the target exercise, it's accessible
         if (caseStudyModule.id === targetModuleId && exercise.id === targetExerciseId) {
           return true;
         }
-        // If we find an incomplete exercise before the target, target is not accessible
         if (!isExerciseCompleted(exercise)) {
           return false;
         }
@@ -106,39 +90,31 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     return false;
   };
 
-  // Function to check if a module is accessible (at least one exercise is accessible)
   const isModuleAccessible = (moduleId: string) => {
     const modules = caseStudy?.modules || [];
     const caseStudyModule = modules.find((m) => m.id === moduleId);
     if (!caseStudyModule) return false;
 
-    // Module is accessible if any of its exercises are accessible or if previous modules are completed
     return caseStudyModule.exercises?.some((exercise) => isExerciseAccessible(moduleId, exercise.id)) || false;
   };
 
-  // Function to check if a module is completed (all exercises completed)
   const isModuleCompleted = (module: any) => {
     return module.exercises?.every((exercise: any) => isExerciseCompleted(exercise)) || false;
   };
 
-  // Calculate progress
-  const calculateProgress = () => {
-    const modules = caseStudy?.modules || [];
-    const totalExercises = modules.reduce((total, module) => total + (module.exercises?.length || 0), 0);
-    const completedExercises = modules.reduce(
-      (total, module) => total + (module.exercises?.filter((exercise) => isExerciseCompleted(exercise)).length || 0),
-      0
-    );
-    return totalExercises > 0 ? (completedExercises / totalExercises) * 100 : 0;
+  const handleModuleClick = (module: any) => {
+    if (isModuleAccessible(module.id)) {
+      setSelectedModule(module);
+      setShowModuleModal(true);
+    }
   };
 
-  const handleStartExercise = (exerciseId: string, moduleId: string) => {
-    // Check if exercise is accessible
+  const handleExerciseClick = (exerciseId: string, moduleId: string) => {
     if (!isExerciseAccessible(moduleId, exerciseId)) {
-      alert('Please complete the previous exercises first before accessing this one.');
       return;
     }
-    router.push(`/student/exercise/${exerciseId}?moduleId=${moduleId}&caseStudyId=${caseStudyId}`);
+    const url = `/student/exercise/${exerciseId}?moduleId=${moduleId}&caseStudyId=${caseStudyId}`;
+    window.open(url, '_blank');
   };
 
   useEffect(() => {
@@ -193,8 +169,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   }
 
   const modules = caseStudy?.modules || [];
-  const totalExercises = modules.reduce((total, module) => total + (module.exercises?.length || 0), 0);
-  const progress = calculateProgress();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
@@ -207,7 +181,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
-        {/* Back Button */}
         <div className="mb-6">
           <Button
             onClick={() => router.push('/student')}
@@ -219,66 +192,42 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
-            <CardContent className="px-4 py-2">
+        <Card className="backdrop-blur-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border-white/20 shadow-lg mb-6">
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
-                <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-2 rounded-lg">
-                  <Target className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Subject</p>
-                  <p className="text-lg font-semibold text-gray-900">{getSubjectDisplayName(caseStudy.subject)}</p>
-                </div>
+                <Badge className={`bg-gradient-to-r ${getSubjectColor(caseStudy.subject)} text-white border-0 text-sm px-3 py-1`}>
+                  <span className="mr-2">{getSubjectIcon(caseStudy.subject)}</span>
+                  {getSubjectDisplayName(caseStudy.subject)}
+                </Badge>
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
+                  <Brain className="h-3 w-3 mr-1" />
+                  AI-Powered
+                </Badge>
               </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-            <CardContent className="px-4 py-2">
-              <div className="flex items-center space-x-3">
-                <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-lg">
-                  <BookOpen className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Modules</p>
-                  <p className="text-lg font-semibold text-gray-900">{modules.length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
-            <CardContent className="px-4 py-2">
+
+              <CaseStudyInstructionsModal isOpen={showCaseStudyModal} onOpenChange={setShowCaseStudyModal} caseStudyDetails={caseStudy.details}>
+                <CaseStudyInstructionsButton onClick={() => setShowCaseStudyModal(true)} />
+              </CaseStudyInstructionsModal>
+            </div>
+            <CardTitle className="text-2xl font-bold text-gray-900">Case Study Overview</CardTitle>
+            <CardDescription className="text-base text-gray-700 leading-relaxed">{caseStudy.shortDescription}</CardDescription>
+          </CardHeader>
+        </Card>
+
+        {modules.length > 0 && (
+          <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
+            <CardHeader className="pb-6">
               <div className="flex items-center space-x-3">
                 <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg">
                   <Target className="h-5 w-5 text-white" />
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600">Exercises</p>
-                  <p className="text-lg font-semibold text-gray-900">{totalExercises}</p>
-                </div>
+                <CardTitle className="text-2xl font-bold text-gray-900">Learning Path</CardTitle>
               </div>
-            </CardContent>
-          </Card>
-          <Card className="bg-gradient-to-br from-cyan-50 to-blue-50 border-cyan-200">
-            <CardContent className="px-4 py-2">
-              <div className="flex items-center space-x-3">
-                <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-2 rounded-lg">
-                  <TrendingUp className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Progress</p>
-                  <p className="text-lg font-semibold text-gray-900">{Math.round(progress)}%</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {modules.length > 0 && (
-          <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg mt-6">
+              <CardDescription className="text-gray-600">Click on modules and exercises to view details or start learning</CardDescription>
+            </CardHeader>
             <CardContent>
               <div className="space-y-8">
-                {/* Horizontal Stepper */}
                 <div className="relative">
                   <div className="flex items-start justify-between">
                     {modules.map((module, index) => {
@@ -287,7 +236,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
 
                       return (
                         <div key={module.id} className="flex flex-col items-center relative flex-1">
-                          {/* Connector Line */}
                           {index < modules.length - 1 && (
                             <div className="absolute top-6 left-1/2 w-full h-0.5 bg-gray-200 z-0">
                               <div
@@ -297,23 +245,22 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
                             </div>
                           )}
 
-                          {/* Step Circle */}
                           <div
+                            onClick={() => handleModuleClick(module)}
                             className={`
-                              relative z-10 w-12 h-12 rounded-full border-4 flex items-center justify-center transition-all duration-300 mb-3
+                              relative z-10 w-12 h-12 rounded-full border-4 flex items-center justify-center transition-all duration-300 mb-3 cursor-pointer hover:scale-110
                               ${
                                 moduleCompleted
-                                  ? 'bg-green-500 border-green-500 text-white shadow-lg shadow-green-500/25'
+                                  ? 'bg-green-500 border-green-500 text-white shadow-lg shadow-green-500/25 hover:shadow-green-500/40'
                                   : moduleAccessible
-                                  ? 'bg-blue-500 border-blue-500 text-white shadow-lg shadow-blue-500/25'
-                                  : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  ? 'bg-blue-500 border-blue-500 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40'
+                                  : 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed hover:scale-100'
                               }
                             `}
                           >
                             {moduleCompleted ? <Check className="h-6 w-6" /> : <span className="text-sm font-bold">{module.orderNumber}</span>}
                           </div>
 
-                          {/* Step Label */}
                           <div className="text-center max-w-40 mb-4">
                             <p
                               className={`text-sm font-medium mb-1 ${
@@ -325,7 +272,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
                             <p className="text-xs text-gray-600 line-clamp-2">{module.title}</p>
                           </div>
 
-                          {/* Exercises for this module */}
                           <div className="w-full max-w-xs space-y-2">
                             {module.exercises && module.exercises.length > 0 && (
                               <>
@@ -339,21 +285,21 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
                                     return (
                                       <div
                                         key={exercise.id}
+                                        onClick={() => handleExerciseClick(exercise.id, module.id)}
                                         className={`
-                                          flex items-center justify-between p-2 rounded-lg border transition-all duration-200
+                                          flex items-center justify-between p-2 rounded-lg border transition-all duration-200 cursor-pointer hover:shadow-md
                                           ${
                                             exerciseCompleted
-                                              ? 'bg-green-50 border-green-200'
+                                              ? 'bg-green-50 border-green-200 hover:bg-green-100'
                                               : exerciseAttempted
-                                              ? 'bg-yellow-50 border-yellow-200'
+                                              ? 'bg-yellow-50 border-yellow-200 hover:bg-yellow-100'
                                               : exerciseAccessible
-                                              ? 'bg-blue-50 border-blue-200'
-                                              : 'bg-gray-50 border-gray-200'
+                                              ? 'bg-blue-50 border-blue-200 hover:bg-blue-100'
+                                              : 'bg-gray-50 border-gray-200 cursor-not-allowed'
                                           }
                                         `}
                                       >
                                         <div className="flex items-center space-x-2 flex-1 min-w-0">
-                                          {/* Exercise completion indicator */}
                                           <div
                                             className={`
                                               w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0
@@ -378,7 +324,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
                                           </div>
                                         </div>
 
-                                        {/* Status badges */}
                                         <div className="flex-shrink-0 ml-2">
                                           {exerciseCompleted && <Badge className="bg-green-100 text-green-800 border-green-200 text-xs px-1 py-0">✓</Badge>}
                                           {exerciseAttempted && !exerciseCompleted && (
@@ -409,202 +354,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
           </Card>
         )}
 
-        <div className="space-y-8 py-6">
-          <Card className="backdrop-blur-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border-white/20 shadow-lg">
-            <CardHeader className="pb-4">
-              <div className="flex items-center space-x-3 mb-4">
-                <Badge className={`bg-gradient-to-r ${getSubjectColor(caseStudy.subject)} text-white border-0 text-sm px-3 py-1`}>
-                  <span className="mr-2">{getSubjectIcon(caseStudy.subject)}</span>
-                  {getSubjectDisplayName(caseStudy.subject)}
-                </Badge>
-                <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
-                  <Brain className="h-3 w-3 mr-1" />
-                  AI-Powered
-                </Badge>
-              </div>
-              <CardTitle className="text-3xl font-bold text-gray-900 mb-2">Case Study Overview</CardTitle>
-              <CardDescription className="text-lg text-gray-700 leading-relaxed">{caseStudy.shortDescription}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 border border-blue-100">
-                <div className="markdown-body prose prose-blue max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy.details) }} />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
-            <CardHeader className="pb-6">
-              <div className="flex items-center space-x-3 mb-2">
-                <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg">
-                  <Target className="h-5 w-5 text-white" />
-                </div>
-                <CardTitle className="text-2xl font-bold text-gray-900">Learning Path</CardTitle>
-              </div>
-              <CardDescription className="text-gray-600">Complete exercises sequentially to progress through the case study</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                {modules.map((module, moduleIndex) => {
-                  const moduleAccessible = isModuleAccessible(module.id);
-                  const moduleCompleted = module.exercises?.every((exercise) => isExerciseCompleted(exercise)) || false;
-
-                  return (
-                    <Card
-                      key={module.id}
-                      className={`transition-all duration-300 ${
-                        moduleAccessible ? 'border-gray-200 bg-white shadow-md hover:shadow-lg' : 'border-gray-100 bg-gray-50/50'
-                      }`}
-                    >
-                      <CardHeader className="pb-4">
-                        <div className="flex items-center space-x-4 mb-4">
-                          <Badge
-                            className={`${
-                              moduleCompleted
-                                ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white'
-                                : moduleAccessible
-                                ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white'
-                                : 'bg-gray-100 text-gray-500'
-                            } px-3 py-1 text-sm font-medium`}
-                          >
-                            Module {module.orderNumber}
-                          </Badge>
-                          <div className="flex items-center space-x-2 text-sm text-gray-600">
-                            <Target className="h-4 w-4" />
-                            <span>{module.exercises?.length || 0} exercises</span>
-                          </div>
-                          {moduleCompleted && (
-                            <Badge className="bg-green-100 text-green-800 border-green-200">
-                              <CheckCircle2 className="h-3 w-3 mr-1" />
-                              Completed
-                            </Badge>
-                          )}
-                          {!moduleAccessible && (
-                            <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
-                              <Lock className="h-3 w-3 mr-1" />
-                              Locked
-                            </Badge>
-                          )}
-                        </div>
-
-                        <CardTitle className="text-xl font-bold text-gray-900 mb-2">{module.title}</CardTitle>
-                        <CardDescription className="text-gray-600">{module.shortDescription}</CardDescription>
-                      </CardHeader>
-
-                      <CardContent className="space-y-4">
-                        {/* Module Details */}
-                        <Card className="bg-gray-50/50 border-gray-100">
-                          <CardContent className="p-4">
-                            <h4 className="text-lg font-medium text-gray-900 mb-3">Module Details</h4>
-                            <div
-                              className="markdown-body prose prose-gray max-w-none text-sm"
-                              dangerouslySetInnerHTML={{ __html: parseMarkdown(module.details) }}
-                            />
-                          </CardContent>
-                        </Card>
-
-                        {module.exercises && module.exercises.length > 0 && (
-                          <div className="space-y-3">
-                            {module.exercises.map((exercise) => {
-                              const exerciseAccessible = isExerciseAccessible(module.id, exercise.id);
-                              const isCompleted = isExerciseCompleted(exercise);
-                              const nextAvailable = getNextAvailableExercise();
-                              const isCurrentExercise = nextAvailable?.exerciseId === exercise.id;
-
-                              return (
-                                <Card
-                                  key={exercise.id}
-                                  className={`transition-all duration-200 ${
-                                    exerciseAccessible ? 'border-gray-200 bg-white hover:shadow-md' : 'border-gray-100 bg-gray-50'
-                                  }`}
-                                >
-                                  <CardContent className="p-4">
-                                    <div className="flex items-center justify-between mb-3">
-                                      <div className="flex items-center space-x-3">
-                                        <Badge
-                                          className={`text-xs font-medium ${
-                                            isCompleted
-                                              ? 'bg-green-100 text-green-800 border-green-200'
-                                              : exerciseAccessible
-                                              ? 'bg-blue-100 text-blue-800 border-blue-200'
-                                              : 'bg-gray-100 text-gray-500 border-gray-200'
-                                          }`}
-                                        >
-                                          Exercise {exercise.orderNumber}
-                                        </Badge>
-
-                                        {isCompleted && (
-                                          <Badge className="bg-green-100 text-green-800 border-green-200 text-xs">
-                                            <CheckCircle2 className="h-3 w-3 mr-1" />
-                                            Completed
-                                          </Badge>
-                                        )}
-
-                                        {hasAttempts(exercise) && !isCompleted && (
-                                          <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200 text-xs">
-                                            <Clock className="h-3 w-3 mr-1" />
-                                            {getAttemptCount(exercise)}/3 attempts
-                                          </Badge>
-                                        )}
-
-                                        {isCurrentExercise && (
-                                          <Badge className="bg-purple-100 text-purple-800 border-purple-200 text-xs">
-                                            <Target className="h-3 w-3 mr-1" />
-                                            Current
-                                          </Badge>
-                                        )}
-
-                                        {!exerciseAccessible && (
-                                          <Badge className="bg-gray-100 text-gray-500 border-gray-200 text-xs">
-                                            <Lock className="h-3 w-3 mr-1" />
-                                            Locked
-                                          </Badge>
-                                        )}
-                                      </div>
-
-                                      <Button
-                                        onClick={() => handleStartExercise(exercise.id, module.id)}
-                                        disabled={!exerciseAccessible}
-                                        className={`transition-all duration-200 ${
-                                          exerciseAccessible
-                                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/25 transform hover:scale-[1.02]'
-                                            : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                        }`}
-                                        size="sm"
-                                      >
-                                        <Play className="h-4 w-4 mr-2" />
-                                        <span>{hasAttempts(exercise) ? 'Continue' : 'Start'}</span>
-                                        <ChevronRight className="h-4 w-4 ml-1" />
-                                      </Button>
-                                    </div>
-
-                                    <h4 className="font-medium text-gray-900 mb-2">{exercise.title}</h4>
-                                    <p className="text-sm text-gray-600">{exercise.shortDescription}</p>
-                                  </CardContent>
-                                </Card>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-
-              {modules.length === 0 && (
-                <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
-                  <CardContent className="text-center py-16">
-                    <div className="bg-gradient-to-br from-gray-100 to-gray-200 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <BookOpen className="h-10 w-10 text-gray-400" />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">No Modules Available</h3>
-                    <p className="text-gray-600">This case study doesn’t have any modules yet.</p>
-                  </CardContent>
-                </Card>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+        <ModuleDetailsModal isOpen={showModuleModal} onOpenChange={setShowModuleModal} selectedModule={selectedModule} />
       </div>
     </div>
   );
