@@ -30,6 +30,7 @@ interface Exercise {
   title: string;
   shortDescription: string;
   details: string;
+  promptHint?: string;
   orderNumber: number;
 }
 
@@ -50,6 +51,7 @@ interface CaseStudy {
       title: string;
       shortDescription: string;
       details: string;
+      promptHint?: string;
       orderNumber: number;
     }[];
   }[];
@@ -166,6 +168,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
       title: '',
       shortDescription: '',
       details: '',
+      promptHint: '',
       orderNumber: modules[moduleIndex].exercises.length + 1,
     };
 
@@ -246,6 +249,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
           title: exercise.title,
           shortDescription: exercise.shortDescription,
           details: exercise.details,
+          promptHint: exercise.promptHint,
           orderNumber: exercise.orderNumber,
         })),
       })),
@@ -468,6 +472,15 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
                                 onChange={(e) => updateExercise(moduleIndex, exerciseIndex, 'shortDescription', e.target.value)}
                                 placeholder="Brief exercise description"
                                 rows={1}
+                              />
+                            </div>
+
+                            <div>
+                              <Textarea
+                                value={exercise.promptHint || ''}
+                                onChange={(e) => updateExercise(moduleIndex, exerciseIndex, 'promptHint', e.target.value)}
+                                placeholder="Prompt hint for AI assistance (optional)"
+                                rows={2}
                               />
                             </div>
 

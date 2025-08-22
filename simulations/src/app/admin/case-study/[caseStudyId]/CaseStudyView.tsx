@@ -248,6 +248,17 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
                           <AccordionContent className="px-6 pb-6">
                             <div className="space-y-4">
                               <p className="text-gray-600 leading-relaxed">{exercise.shortDescription}</p>
+
+                              {exercise.promptHint && (
+                                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200/50">
+                                  <h5 className="font-semibold text-gray-900 mb-2 flex items-center">
+                                    <Sparkles className="h-4 w-4 text-blue-600 mr-2" />
+                                    AI Prompt Hint
+                                  </h5>
+                                  <p className="text-gray-700 text-sm leading-relaxed">{exercise.promptHint}</p>
+                                </div>
+                              )}
+
                               <div className="bg-gradient-to-br from-gray-50 to-green-50 rounded-xl p-6 border border-green-200/50">
                                 <h5 className="font-semibold text-gray-900 mb-3 flex items-center">
                                   <Brain className="h-4 w-4 text-green-600 mr-2" />

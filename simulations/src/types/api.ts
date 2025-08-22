@@ -20,6 +20,7 @@ export interface CreateExerciseRequest {
   title: string;
   shortDescription: string;
   details: string;
+  promptHint?: string;
   orderNumber: number;
 }
 
@@ -45,6 +46,7 @@ export interface UpdateExerciseRequest {
   title: string;
   shortDescription: string;
   details: string;
+  promptHint?: string;
   orderNumber: number;
 }
 
