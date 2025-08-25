@@ -37,6 +37,7 @@ interface ExerciseData {
   title: string;
   shortDescription: string;
   details: string;
+  promptHint?: string | null;
   orderNumber: number;
   module: {
     orderNumber: number;
@@ -206,8 +207,8 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     }
 
     if (nextExerciseData.isComplete) {
-      // Case study is complete, navigate to final submission
-      router.push(`/student/final-submission/${nextExerciseData.caseStudyId}`);
+      // Case study is complete, navigate to final summary
+      router.push(`/student/final-summary/${nextExerciseData.caseStudyId}`);
     } else if (nextExerciseData.nextExerciseId) {
       // Navigate to next exercise
       router.push(
@@ -398,6 +399,19 @@ Details: ${contextData.module.details}
                       <div className="markdown-body prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(exerciseData.details) }} />
                     </div>
                   </div>
+
+                  {/* Prompt Hint Section */}
+                  {exerciseData.promptHint && (
+                    <div className="border-t border-gray-200 pt-6">
+                      <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                        <Brain className="h-5 w-5 text-blue-500 mr-2" />
+                        Prompt Hint
+                      </h4>
+                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                        <div className="markdown-body prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(exerciseData.promptHint) }} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -494,7 +508,7 @@ Details: ${contextData.module.details}
                       onClick={handleMoveToNext}
                       className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-3 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
-                      {nextExerciseData?.isComplete ? 'Submit Final Analysis' : 'Next Exercise'}
+                      {nextExerciseData?.isComplete ? 'Continue to Summary' : 'Next Exercise'}
                     </button>
                     <button
                       onClick={() => setShowRetryPrompt(true)}
@@ -516,7 +530,7 @@ Details: ${contextData.module.details}
                       onClick={handleMoveToNext}
                       className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-3 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
-                      {nextExerciseData?.isComplete ? 'Submit Final Analysis' : 'Continue to Next Exercise'}
+                      {nextExerciseData?.isComplete ? 'Continue to Summary' : 'Continue to Next Exercise'}
                     </button>
                   )}
                 </div>

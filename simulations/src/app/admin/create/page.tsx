@@ -60,6 +60,7 @@ export default function CreateCaseStudyPage() {
   const [title, setTitle] = useState<string>('');
   const [shortDescription, setShortDescription] = useState<string>('');
   const [details, setDetails] = useState<string>('');
+  const [finalSummaryPromptInstructions, setFinalSummaryPromptInstructions] = useState<string>('');
   const [subject, setSubject] = useState<BusinessSubject | ''>('');
   const [modules, setModules] = useState<ModuleFormData[]>([]);
   const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
@@ -96,6 +97,7 @@ export default function CreateCaseStudyPage() {
     setTitle('');
     setShortDescription('');
     setDetails('');
+    setFinalSummaryPromptInstructions('');
     setSubject('');
     setModules([]);
   };
@@ -206,6 +208,7 @@ export default function CreateCaseStudyPage() {
       title,
       shortDescription,
       details,
+      finalSummaryPromptInstructions: finalSummaryPromptInstructions.trim() || null,
       subject: subject as BusinessSubject,
       modules: modules.map((module: ModuleFormData) => ({
         title: module.title,
@@ -345,6 +348,17 @@ export default function CreateCaseStudyPage() {
                   onUpdate={setDetails}
                   placeholder="Enter detailed description using markdown..."
                   maxHeight={300}
+                />
+              </div>
+
+              <div className="mt-6">
+                <MarkdownEditor
+                  objectId="final-summary-instructions"
+                  label="Final Summary Prompt Instructions"
+                  modelValue={finalSummaryPromptInstructions}
+                  onUpdate={setFinalSummaryPromptInstructions}
+                  placeholder="Enter instructions for final summary generation (optional)..."
+                  maxHeight={200}
                 />
               </div>
             </div>

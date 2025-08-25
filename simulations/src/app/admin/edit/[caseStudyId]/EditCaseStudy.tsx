@@ -39,6 +39,7 @@ interface CaseStudy {
   title: string;
   shortDescription: string;
   details: string;
+  finalSummaryPromptInstructions?: string | null;
   subject: BusinessSubject;
   modules: {
     id: string;
@@ -81,6 +82,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
   const [title, setTitle] = useState('');
   const [shortDescription, setShortDescription] = useState('');
   const [details, setDetails] = useState('');
+  const [finalSummaryPromptInstructions, setFinalSummaryPromptInstructions] = useState('');
   const [subject, setSubject] = useState<BusinessSubject | ''>('');
   const [modules, setModules] = useState<Module[]>([]);
   const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
@@ -126,6 +128,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
       setTitle(caseStudy.title);
       setShortDescription(caseStudy.shortDescription);
       setDetails(caseStudy.details);
+      setFinalSummaryPromptInstructions(caseStudy.finalSummaryPromptInstructions || '');
       setSubject(caseStudy.subject);
       setModules(
         caseStudy.modules.map((module) => ({
@@ -237,6 +240,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
       title,
       shortDescription,
       details,
+      finalSummaryPromptInstructions: finalSummaryPromptInstructions.trim() || null,
       subject: subject as BusinessSubject,
       modules: modules.map((module) => ({
         id: module.id,
@@ -360,6 +364,17 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
                   onUpdate={setDetails}
                   placeholder="Enter detailed description using markdown..."
                   maxHeight={300}
+                />
+              </div>
+
+              <div className="mt-4">
+                <MarkdownEditor
+                  objectId="final-summary-instructions"
+                  label="Final Summary Prompt Instructions"
+                  modelValue={finalSummaryPromptInstructions}
+                  onUpdate={setFinalSummaryPromptInstructions}
+                  placeholder="Enter instructions for final summary generation (optional)..."
+                  maxHeight={200}
                 />
               </div>
             </div>

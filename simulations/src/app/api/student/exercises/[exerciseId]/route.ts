@@ -7,6 +7,7 @@ interface ExerciseResponse {
   title: string;
   shortDescription: string;
   details: string;
+  promptHint?: string | null;
   orderNumber: number;
   module: {
     orderNumber: number;
@@ -71,6 +72,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ exer
     title: exercise.title,
     shortDescription: exercise.shortDescription,
     details: exercise.details,
+    promptHint: exercise.promptHint,
     orderNumber: exercise.orderNumber,
     module: {
       orderNumber: exercise.module.orderNumber,
