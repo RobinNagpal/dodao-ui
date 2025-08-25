@@ -206,8 +206,8 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     }
 
     if (nextExerciseData.isComplete) {
-      // Case study is complete, navigate to final submission
-      router.push(`/student/final-submission/${nextExerciseData.caseStudyId}`);
+      // Case study is complete, navigate to final summary
+      router.push(`/student/final-summary/${nextExerciseData.caseStudyId}`);
     } else if (nextExerciseData.nextExerciseId) {
       // Navigate to next exercise
       router.push(
@@ -494,7 +494,7 @@ Details: ${contextData.module.details}
                       onClick={handleMoveToNext}
                       className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-3 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
-                      {nextExerciseData?.isComplete ? 'Submit Final Analysis' : 'Next Exercise'}
+                      {nextExerciseData?.isComplete ? 'Continue to Summary' : 'Next Exercise'}
                     </button>
                     <button
                       onClick={() => setShowRetryPrompt(true)}
@@ -516,7 +516,7 @@ Details: ${contextData.module.details}
                       onClick={handleMoveToNext}
                       className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-3 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
-                      {nextExerciseData?.isComplete ? 'Submit Final Analysis' : 'Continue to Next Exercise'}
+                      {nextExerciseData?.isComplete ? 'Continue to Summary' : 'Continue to Next Exercise'}
                     </button>
                   )}
                 </div>
