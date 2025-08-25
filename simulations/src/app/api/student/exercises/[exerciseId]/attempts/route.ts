@@ -7,8 +7,6 @@ import { GoogleGenAI } from '@google/genai';
 interface CreateAttemptRequest {
   prompt: string;
   studentEmail: string;
-  caseStudyContext: string;
-  previousAttempts: string[];
 }
 
 interface CreateAttemptResponse {
@@ -19,7 +17,7 @@ interface CreateAttemptResponse {
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ exerciseId: string }> }): Promise<CreateAttemptResponse> {
   const { exerciseId } = await params;
   const body: CreateAttemptRequest = await req.json();
-  const { prompt, studentEmail, caseStudyContext, previousAttempts } = body;
+  const { prompt, studentEmail } = body;
 
   if (!prompt || !studentEmail) {
     throw new Error('Prompt and student email are required');
@@ -91,30 +89,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ exe
     const groundingTool = { googleSearch: {} };
     const config = { tools: [groundingTool] };
 
-    // Build context for AI
-    let aiContext = `You are an AI assistant helping business students with case study exercises.
-
-Case Study Context:
-${caseStudyContext}
-
-Current Exercise:
-Title: ${exercise.title}
-Description: ${exercise.shortDescription}
-Details: ${exercise.details}
-
-`;
-
-    // Add previous attempts context if any
-    if (previousAttempts && previousAttempts.length > 0) {
-      aiContext += `\nPrevious AI responses in this module:\n`;
-      previousAttempts.forEach((response, index) => {
-        aiContext += `${index + 1}. ${response}\n\n`;
-      });
-    }
-
-    aiContext += `\nStudent's current prompt: ${prompt}
-
-Please provide a helpful, educational response that guides the student through the business analysis. Focus on practical insights and encourage critical thinking.`;
+    // Build AI prompt
+    const aiContext = `${prompt}`;
 
     console.log('Whole Prompt', aiContext);
 
