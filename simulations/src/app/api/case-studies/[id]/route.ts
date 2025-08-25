@@ -3,13 +3,212 @@ import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { UpdateCaseStudyRequest, CaseStudyWithRelations, DeleteResponse } from '@/types/api';
 
-// GET /api/case-studies/[id] - Get a specific case study
+// GET /api/case-studies/[id] - Get a specific case study for any user type
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<CaseStudyWithRelations> {
   const { id } = await params;
+  const url = new URL(req.url);
+  const userType = url.searchParams.get('userType');
+  const userEmail = url.searchParams.get('userEmail');
 
-  const caseStudy: CaseStudyWithRelations = await prisma.caseStudy.findFirstOrThrow({
+  if (!userType || !userEmail) {
+    throw new Error('User type and email are required');
+  }
+
+  // Handle different user types
+  if (userType === 'student') {
+    return await getStudentCaseStudy(id, userEmail);
+  } else if (userType === 'instructor') {
+    return await getInstructorCaseStudy(id, userEmail);
+  } else if (userType === 'admin') {
+    return await getAdminCaseStudy(id);
+  } else {
+    throw new Error('Invalid user type');
+  }
+}
+
+// Get case study for student with attempts and instruction status
+async function getStudentCaseStudy(caseStudyId: string, studentEmail: string): Promise<CaseStudyWithRelations> {
+  // Check if student is enrolled in this case study and get their enrollment record
+  const enrollment = await prisma.classCaseStudyEnrollment.findFirst({
     where: {
-      id,
+      caseStudyId,
+      archive: false,
+      students: {
+        some: {
+          assignedStudentId: studentEmail,
+          archive: false,
+        },
+      },
+    },
+    include: {
+      students: {
+        where: {
+          assignedStudentId: studentEmail,
+          archive: false,
+        },
+      },
+      caseStudy: {
+        include: {
+          modules: {
+            where: {
+              archive: false,
+            },
+            include: {
+              exercises: {
+                where: {
+                  archive: false,
+                },
+                include: {
+                  attempts: {
+                    where: {
+                      createdBy: studentEmail,
+                      archive: false,
+                    },
+                    orderBy: {
+                      createdAt: 'desc',
+                    },
+                  },
+                },
+                orderBy: {
+                  orderNumber: 'asc',
+                },
+              },
+            },
+            orderBy: {
+              orderNumber: 'asc',
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!enrollment || !enrollment.students || enrollment.students.length === 0) {
+    throw new Error('Student is not enrolled in this case study or case study does not exist');
+  }
+
+  // Get the student's instruction read status
+  const studentRecord = enrollment.students[0];
+  const instructionReadStatus = studentRecord.instructionReadStatus as {
+    readCaseInstructions: boolean;
+    moduleInstructions: Array<{
+      id: string;
+      readModuleInstructions: boolean;
+    }>;
+  } | null;
+
+  // Add instruction read status to the response
+  const caseStudyWithStatus: CaseStudyWithRelations = {
+    ...enrollment.caseStudy,
+    instructionReadStatus: instructionReadStatus || undefined,
+  };
+
+  return caseStudyWithStatus;
+}
+
+// Get case study for instructor with enrollment data
+async function getInstructorCaseStudy(caseStudyId: string, instructorEmail: string): Promise<CaseStudyWithRelations> {
+  // Find the case study and verify instructor has access
+  const caseStudy = await prisma.caseStudy.findFirst({
+    where: {
+      id: caseStudyId,
+      archive: false,
+      enrollments: {
+        some: {
+          assignedInstructorId: instructorEmail,
+          archive: false,
+        },
+      },
+    },
+    include: {
+      modules: {
+        where: {
+          archive: false,
+        },
+        orderBy: {
+          orderNumber: 'asc',
+        },
+        include: {
+          exercises: {
+            where: {
+              archive: false,
+            },
+            orderBy: {
+              orderNumber: 'asc',
+            },
+          },
+        },
+      },
+      enrollments: {
+        where: {
+          assignedInstructorId: instructorEmail,
+          archive: false,
+        },
+        include: {
+          students: {
+            where: {
+              archive: false,
+            },
+            orderBy: {
+              createdAt: 'asc',
+            },
+            include: {
+              finalSubmission: {},
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!caseStudy) {
+    throw new Error('Case study not found or you do not have access to it');
+  }
+
+  // Convert Prisma types to our frontend types
+  const formattedCaseStudy = {
+    ...caseStudy,
+    createdBy: caseStudy.createdBy || undefined,
+    updatedBy: caseStudy.updatedBy || undefined,
+    modules: caseStudy.modules?.map((module) => ({
+      ...module,
+      createdBy: module.createdBy || undefined,
+      updatedBy: module.updatedBy || undefined,
+      exercises: module.exercises?.map((exercise) => ({
+        ...exercise,
+        createdBy: exercise.createdBy || undefined,
+        updatedBy: exercise.updatedBy || undefined,
+        promptHint: exercise.promptHint || undefined,
+      })),
+    })),
+    enrollments: caseStudy.enrollments?.map((enrollment) => ({
+      ...enrollment,
+      createdBy: enrollment.createdBy || undefined,
+      updatedBy: enrollment.updatedBy || undefined,
+      students: enrollment.students?.map((student) => ({
+        ...student,
+        createdBy: student.createdBy || undefined,
+        updatedBy: student.updatedBy || undefined,
+        finalSubmission: student.finalSubmission
+          ? {
+              ...student.finalSubmission,
+              createdBy: student.finalSubmission.createdBy || undefined,
+              updatedBy: student.finalSubmission.updatedBy || undefined,
+              finalContent: student.finalSubmission.finalContent || undefined,
+            }
+          : undefined,
+      })),
+    })),
+  } as CaseStudyWithRelations;
+
+  return formattedCaseStudy;
+}
+
+// Get case study for admin (full access)
+async function getAdminCaseStudy(caseStudyId: string): Promise<CaseStudyWithRelations> {
+  const caseStudy = await prisma.caseStudy.findFirstOrThrow({
+    where: {
+      id: caseStudyId,
       archive: false,
     },
     include: {
@@ -34,15 +233,140 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
     },
   });
 
-  return caseStudy;
+  // Convert to frontend type
+  const formattedCaseStudy = {
+    ...caseStudy,
+    createdBy: caseStudy.createdBy || undefined,
+    updatedBy: caseStudy.updatedBy || undefined,
+    modules: caseStudy.modules?.map((module) => ({
+      ...module,
+      createdBy: module.createdBy || undefined,
+      updatedBy: module.updatedBy || undefined,
+      exercises: module.exercises?.map((exercise) => ({
+        ...exercise,
+        createdBy: exercise.createdBy || undefined,
+        updatedBy: exercise.updatedBy || undefined,
+        promptHint: exercise.promptHint || undefined,
+      })),
+    })),
+  } as CaseStudyWithRelations;
+
+  return formattedCaseStudy;
 }
 
-// PUT /api/case-studies/[id] - Update a case study
-// This implementation preserves existing modules/exercises with IDs and archives removed ones
-async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<CaseStudyWithRelations> {
-  const { id } = await params;
-  const body: UpdateCaseStudyRequest = await req.json();
+interface UpdateInstructionStatusRequest {
+  studentEmail: string;
+  type: 'case_study' | 'module';
+  moduleId?: string;
+}
 
+// PUT /api/case-studies/[id] - Update a case study OR update instruction status
+async function putHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<CaseStudyWithRelations | { success: boolean; message: string }> {
+  const { id } = await params;
+  const body = await req.json();
+
+  // Check if this is an instruction status update (for students)
+  if ('studentEmail' in body && 'type' in body) {
+    return await updateInstructionStatus(id, body as UpdateInstructionStatusRequest);
+  }
+
+  // Otherwise, it's a case study update (for admins)
+  return await updateCaseStudy(id, body as UpdateCaseStudyRequest, req);
+}
+
+// Update instruction read status for students
+async function updateInstructionStatus(caseStudyId: string, body: UpdateInstructionStatusRequest): Promise<{ success: boolean; message: string }> {
+  const { studentEmail, type, moduleId } = body;
+
+  if (!studentEmail) {
+    throw new Error('Student email is required');
+  }
+
+  if (!type || (type !== 'case_study' && type !== 'module')) {
+    throw new Error('Type must be either "case_study" or "module"');
+  }
+
+  if (type === 'module' && !moduleId) {
+    throw new Error('Module ID is required when type is "module"');
+  }
+
+  // Find the student's enrollment record
+  const enrollment = await prisma.classCaseStudyEnrollment.findFirst({
+    where: {
+      caseStudyId,
+      archive: false,
+      students: {
+        some: {
+          assignedStudentId: studentEmail,
+          archive: false,
+        },
+      },
+    },
+    include: {
+      students: {
+        where: {
+          assignedStudentId: studentEmail,
+          archive: false,
+        },
+      },
+    },
+  });
+
+  if (!enrollment || !enrollment.students || enrollment.students.length === 0) {
+    throw new Error('Student is not enrolled in this case study or case study does not exist');
+  }
+
+  const studentRecord = enrollment.students[0];
+
+  // Get current instruction read status or create new one
+  let currentStatus = (studentRecord.instructionReadStatus as {
+    readCaseInstructions: boolean;
+    moduleInstructions: Array<{
+      id: string;
+      readModuleInstructions: boolean;
+    }>;
+  } | null) || {
+    readCaseInstructions: false,
+    moduleInstructions: [],
+  };
+
+  if (type === 'case_study') {
+    currentStatus.readCaseInstructions = true;
+  } else if (type === 'module' && moduleId) {
+    // Find existing module instruction status or create new one
+    const existingModuleIndex = currentStatus.moduleInstructions.findIndex((module) => module.id === moduleId);
+
+    if (existingModuleIndex >= 0) {
+      currentStatus.moduleInstructions[existingModuleIndex].readModuleInstructions = true;
+    } else {
+      currentStatus.moduleInstructions.push({
+        id: moduleId,
+        readModuleInstructions: true,
+      });
+    }
+  }
+
+  // Update the student record with new status
+  await prisma.enrollmentStudent.update({
+    where: {
+      id: studentRecord.id,
+    },
+    data: {
+      instructionReadStatus: currentStatus,
+    },
+  });
+
+  return {
+    success: true,
+    message: type === 'case_study' ? 'Case study instructions marked as read' : 'Module instructions marked as read',
+  };
+}
+
+// Update case study (for admins)
+async function updateCaseStudy(id: string, body: UpdateCaseStudyRequest, req: NextRequest): Promise<CaseStudyWithRelations> {
   // Get admin email from request headers
   const adminEmail: string = req.headers.get('admin-email') || 'admin@example.com';
 
@@ -301,5 +625,5 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
 }
 
 export const GET = withErrorHandlingV2<CaseStudyWithRelations>(getHandler);
-export const PUT = withErrorHandlingV2<CaseStudyWithRelations>(putHandler);
+export const PUT = withErrorHandlingV2<CaseStudyWithRelations | { success: boolean; message: string }>(putHandler);
 export const DELETE = withErrorHandlingV2<DeleteResponse>(deleteHandler);

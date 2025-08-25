@@ -6,7 +6,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import type { CaseStudyModule, CaseStudy, ModuleExercise } from '@/types';
-import type { DeleteResponse } from '@/types/api';
+import type { DeleteResponse, CaseStudyWithRelations } from '@/types/api';
 import {
   BookOpen,
   Users,
@@ -29,7 +29,13 @@ import {
 import { parseMarkdown } from '@/utils/parse-markdown';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
+import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
+import ViewModuleModal from '@/components/shared/ViewModuleModal';
+import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
 
 interface CaseStudyManagementClientProps {
   caseStudyId: string;
@@ -60,12 +66,17 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   // Modal states
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [studentToClear, setStudentToClear] = useState<{ id: string; email: string } | null>(null);
+  const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
+  const [showModuleModal, setShowModuleModal] = useState(false);
+  const [showExerciseModal, setShowExerciseModal] = useState(false);
+  const [selectedModule, setSelectedModule] = useState<CaseStudyModule | null>(null);
+  const [selectedExercise, setSelectedExercise] = useState<ModuleExercise | null>(null);
 
   const router = useRouter();
 
   // API hook to fetch case study data
-  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudy>(
-    `/api/instructor/case-studies/${caseStudyId}?instructorEmail=${encodeURIComponent(userEmail)}`,
+  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelations>(
+    `/api/case-studies/${caseStudyId}?userType=instructor&userEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
     'Failed to load case study'
   );
@@ -131,6 +142,54 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     router.push(`/instructor/case-study/${caseStudyId}/student/${studentId}`);
   };
 
+  const handleModuleClick = (module: CaseStudyModule) => {
+    setSelectedModule(module as any);
+    setShowModuleModal(true);
+  };
+
+  const handleExerciseClick = (exerciseId: string, moduleId: string) => {
+    const caseStudyModule = caseStudy?.modules?.find((m) => m.id === moduleId);
+    const exercise = caseStudyModule?.exercises?.find((e) => e.id === exerciseId);
+    if (exercise && caseStudyModule) {
+      setSelectedModule(caseStudyModule as any);
+      setSelectedExercise(exercise as any);
+      setShowExerciseModal(true);
+    }
+  };
+
+  const getSubjectDisplayName = (subject: string): string => {
+    const displayNames: Record<string, string> = {
+      HR: 'Human Resources',
+      ECONOMICS: 'Economics',
+      MARKETING: 'Marketing',
+      FINANCE: 'Finance',
+      OPERATIONS: 'Operations',
+    };
+    return displayNames[subject] || subject;
+  };
+
+  const getSubjectIcon = (subject: string) => {
+    const icons: Record<string, string> = {
+      HR: '👥',
+      ECONOMICS: '📊',
+      MARKETING: '📈',
+      FINANCE: '💰',
+      OPERATIONS: '⚙️',
+    };
+    return icons[subject] || '📚';
+  };
+
+  const getSubjectColor = (subject: string) => {
+    const colors: Record<string, string> = {
+      HR: 'from-green-500 to-emerald-600',
+      ECONOMICS: 'from-blue-500 to-cyan-600',
+      MARKETING: 'from-pink-500 to-rose-600',
+      FINANCE: 'from-yellow-500 to-orange-600',
+      OPERATIONS: 'from-purple-500 to-indigo-600',
+    };
+    return colors[subject] || 'from-gray-500 to-gray-600';
+  };
+
   if (isLoading || loadingCaseStudy || (activeTab === 'students' && loadingStudents)) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center">
@@ -170,7 +229,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     );
   }
 
-  const enrolledStudents = caseStudy?.enrollments?.reduce((total, enrollment) => total + (enrollment.students?.length || 0), 0) || 0;
+  const enrolledStudents = caseStudy?.enrollments?.reduce((total: number, enrollment: any) => total + (enrollment.students?.length || 0), 0) || 0;
   const modules = caseStudy?.modules || [];
 
   return (
@@ -201,45 +260,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
           </Button>
-        </div>
-
-        {/* Enhanced Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-2">
-          <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-2xl p-6 border border-blue-200/50 backdrop-blur-sm">
-            <div className="flex items-center space-x-4">
-              <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-3 rounded-xl shadow-lg">
-                <Users className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600 font-medium">Enrolled Students</p>
-                <p className="text-3xl font-bold text-gray-900">{enrolledStudents}</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-purple-200/50 backdrop-blur-sm">
-            <div className="flex items-center space-x-4">
-              <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-3 rounded-xl shadow-lg">
-                <BookOpen className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600 font-medium">Total Modules</p>
-                <p className="text-3xl font-bold text-gray-900">{modules.length}</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-2xl p-6 border border-green-200/50 backdrop-blur-sm">
-            <div className="flex items-center space-x-4">
-              <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-3 rounded-xl shadow-lg">
-                <Target className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600 font-medium">Total Exercises</p>
-                <p className="text-3xl font-bold text-gray-900">
-                  {modules.reduce((total: number, module: CaseStudyModule) => total + (module.exercises?.length || 0), 0)}
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Enhanced Tab Navigation */}
@@ -285,112 +305,56 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
         {activeTab === 'overview' && (
           <div className="space-y-8">
-            {/* Case Study Details */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-8 border border-white/30 shadow-xl">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-xl mr-3">
-                  <Brain className="h-6 w-6 text-white" />
-                </div>
-                Case Study Details
-                <Sparkles className="h-5 w-5 text-yellow-500 ml-2 animate-pulse" />
-              </h2>
-              <p className="text-lg text-gray-700 mb-8 leading-relaxed">{caseStudy.shortDescription}</p>
-              <div className="bg-gradient-to-br from-gray-50 to-purple-50 rounded-2xl p-8 border border-purple-200/50">
-                <div className="markdown-body prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy.details) }} />
-              </div>
-            </div>
-
-            {/* Modules Management */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8">
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-3 flex items-center">
-                  <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-2 rounded-xl mr-3">
-                    <BookOpen className="h-6 w-6 text-white" />
+            <Card className="backdrop-blur-xl bg-gradient-to-br from-purple-50/80 to-indigo-50/80 border-white/20 shadow-lg mb-6">
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <Badge className={`bg-gradient-to-r ${getSubjectColor(caseStudy.subject)} text-white border-0 text-sm px-3 py-1`}>
+                      <span className="mr-2">{getSubjectIcon(caseStudy.subject)}</span>
+                      {getSubjectDisplayName(caseStudy.subject)}
+                    </Badge>
+                    <Badge variant="secondary" className="bg-purple-100 text-purple-800 border-purple-200">
+                      <GraduationCap className="h-3 w-3 mr-1" />
+                      Instructor View
+                    </Badge>
                   </div>
-                  Learning Modules
-                </h2>
-                <p className="text-gray-600 text-lg">View case study modules and exercises</p>
-              </div>
 
-              <div className="space-y-6">
-                {modules.map((module: CaseStudyModule, index: number) => (
-                  <div key={module.id} className="bg-gradient-to-br from-white/80 to-purple-50/50 rounded-2xl p-8 border border-purple-200/50 shadow-lg">
-                    <div className="mb-6">
-                      <div className="flex items-center space-x-4 mb-4">
-                        <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                          Module {module.orderNumber}
-                        </div>
-                        <div className="h-2 w-2 rounded-full bg-purple-300"></div>
-                        <span className="text-sm text-gray-600 flex items-center bg-purple-100 px-3 py-1 rounded-full">
-                          <Target className="h-4 w-4 mr-1 text-purple-600" />
-                          {module.exercises?.length || 0} exercises
-                        </span>
-                      </div>
+                  <Button
+                    onClick={() => setShowCaseStudyModal(true)}
+                    className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    <BookOpen className="h-4 w-4 mr-2" />
+                    View Case Study Details
+                  </Button>
+                </div>
+                <CardTitle className="text-2xl font-bold text-gray-900">Case Study Overview</CardTitle>
+                <CardDescription className="text-base text-gray-700 leading-relaxed">{caseStudy.shortDescription}</CardDescription>
+              </CardHeader>
+            </Card>
 
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3">{module.title}</h3>
-                      <p className="text-gray-600 mb-6 text-lg leading-relaxed">{module.shortDescription}</p>
-
-                      <div className="bg-gradient-to-br from-gray-50 to-indigo-50 rounded-xl p-6 border border-indigo-200/50">
-                        <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
-                          <Zap className="h-5 w-5 text-yellow-500 mr-2" />
-                          Module Details
-                        </h4>
-                        <div className="markdown-body prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(module.details) }} />
-                      </div>
+            {modules.length > 0 && (
+              <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
+                <CardHeader className="pb-6">
+                  <div className="flex items-center space-x-3">
+                    <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg">
+                      <BookOpen className="h-5 w-5 text-white" />
                     </div>
-
-                    {module.exercises && module.exercises.length > 0 && (
-                      <div>
-                        <h4 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                          <Target className="h-5 w-5 text-green-600 mr-2" />
-                          Exercises
-                        </h4>
-                        <Accordion type="single" collapsible className="space-y-4">
-                          {module.exercises.map((exercise: ModuleExercise, exerciseIndex: number) => (
-                            <AccordionItem
-                              key={exercise.id}
-                              value={exercise.id}
-                              className="bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200/50 shadow-sm"
-                            >
-                              <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                                <div className="flex items-center space-x-3 text-left">
-                                  <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                                    Exercise {exercise.orderNumber}
-                                  </div>
-                                  <span className="font-semibold text-gray-900">{exercise.title}</span>
-                                </div>
-                              </AccordionTrigger>
-                              <AccordionContent className="px-6 pb-6">
-                                <div className="space-y-4">
-                                  <p className="text-gray-600 leading-relaxed">{exercise.shortDescription}</p>
-                                  <div className="bg-gradient-to-br from-gray-50 to-green-50 rounded-xl p-6 border border-green-200/50">
-                                    <h5 className="font-semibold text-gray-900 mb-3 flex items-center">
-                                      <Brain className="h-4 w-4 text-green-600 mr-2" />
-                                      Exercise Details
-                                    </h5>
-                                    <div className="markdown-body prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.details) }} />
-                                  </div>
-                                </div>
-                              </AccordionContent>
-                            </AccordionItem>
-                          ))}
-                        </Accordion>
-                      </div>
-                    )}
+                    <CardTitle className="text-2xl font-bold text-gray-900">Learning Path</CardTitle>
                   </div>
-                ))}
-              </div>
-
-              {modules.length === 0 && (
-                <div className="text-center py-16">
-                  <div className="bg-gradient-to-br from-gray-100 to-purple-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                    <BookOpen className="h-10 w-10 text-gray-500" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">No Modules Available</h3>
-                  <p className="text-gray-600">This case study doesn’t have any modules yet.</p>
-                </div>
-              )}
-            </div>
+                  <CardDescription className="text-gray-600">Click on modules and exercises to view details</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <CaseStudyStepper
+                    modules={modules as any}
+                    userType="instructor"
+                    onModuleClick={handleModuleClick}
+                    onExerciseClick={handleExerciseClick}
+                    getSubjectIcon={getSubjectIcon}
+                    getSubjectColor={getSubjectColor}
+                  />
+                </CardContent>
+              </Card>
+            )}
           </div>
         )}
 
@@ -598,6 +562,32 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         title="Clear Student Attempts"
         confirmationText={`Are you sure you want to clear all attempts and final submission for ${studentToClear?.email}? This action cannot be undone.`}
         askForTextInput={false}
+      />
+
+      <ViewCaseStudyModal
+        open={showCaseStudyModal}
+        onClose={() => setShowCaseStudyModal(false)}
+        caseStudy={caseStudy}
+        hasCaseStudyInstructionsRead={() => true} // Instructor always has read instructions
+        handleMarkInstructionAsRead={async () => {}} // No-op for instructor
+        updatingStatus={false}
+      />
+
+      <ViewModuleModal
+        open={showModuleModal}
+        onClose={() => setShowModuleModal(false)}
+        selectedModule={selectedModule}
+        hasModuleInstructionsRead={() => true} // Instructor always has read instructions
+        handleMarkInstructionAsRead={async () => {}} // No-op for instructor
+        updatingStatus={false}
+      />
+
+      <ViewExerciseModal
+        open={showExerciseModal}
+        onClose={() => setShowExerciseModal(false)}
+        exercise={selectedExercise}
+        moduleTitle={selectedModule?.title}
+        moduleNumber={selectedModule?.orderNumber}
       />
     </div>
   );

@@ -58,6 +58,15 @@ export type CaseStudyWithRelations = CaseStudy & {
       exercises?: ModuleExercise[];
     }
   >;
+  enrollments?: Array<
+    ClassCaseStudyEnrollment & {
+      students?: Array<
+        EnrollmentStudent & {
+          finalSubmission?: any;
+        }
+      >;
+    }
+  >;
   instructorEmail?: string; // Added instructor email
   instructionReadStatus?: {
     readCaseInstructions: boolean;
