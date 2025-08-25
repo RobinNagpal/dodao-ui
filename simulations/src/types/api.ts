@@ -4,6 +4,7 @@ export interface CreateCaseStudyRequest {
   title: string;
   shortDescription: string;
   details: string;
+  finalSummaryPromptInstructions?: string | null;
   subject: BusinessSubject;
   modules: CreateModuleRequest[];
 }
@@ -28,6 +29,7 @@ export interface UpdateCaseStudyRequest {
   title: string;
   shortDescription: string;
   details: string;
+  finalSummaryPromptInstructions?: string | null;
   subject: BusinessSubject;
   modules: UpdateModuleRequest[];
 }
@@ -54,6 +56,15 @@ export type CaseStudyWithRelations = CaseStudy & {
   modules?: Array<
     CaseStudyModule & {
       exercises?: ModuleExercise[];
+    }
+  >;
+  enrollments?: Array<
+    ClassCaseStudyEnrollment & {
+      students?: Array<
+        EnrollmentStudent & {
+          finalSubmission?: any;
+        }
+      >;
     }
   >;
   instructorEmail?: string; // Added instructor email

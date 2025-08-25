@@ -16,3 +16,21 @@ export const isInstructorEmail = (email: string): boolean => {
 export const isStudentEmail = (email: string): boolean => {
   return mockStudentCredentials.includes(email.toLowerCase());
 };
+
+export const isCurrentUserAdmin = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  const userType = localStorage.getItem('user_type');
+  return userType === 'admin';
+};
+
+export const isCurrentUserInstructor = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  const userType = localStorage.getItem('user_type');
+  return userType === 'instructor';
+};
+
+export const isCurrentUserStudent = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  const userType = localStorage.getItem('user_type');
+  return userType === 'student';
+};

@@ -26,6 +26,7 @@ model CaseStudy {
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
   archive          Boolean  @default(false) @map("archive")
+  finalSummaryPromptInstructions String? @map("final_summary_prompt_instructions")
 
   modules      CaseStudyModule[] @relation("CaseStudyToModules")
   enrollments  ClassCaseStudyEnrollment[] @relation("CaseStudyToEnrollments")
@@ -90,6 +91,7 @@ model EnrollmentStudent {
   
   @@map("enrollment_students")
   finalSubmission FinalSubmission?
+  finalSummary FinalSummary?
 }
 
 model ModuleExercise {
@@ -131,6 +133,26 @@ model ExerciseAttempt {
   archive          Boolean  @default(false) @map("archive")
 
   @@map("exercise_attempts")
+}
+
+model FinalSummary {
+  id           String    @id @default(uuid()) @map("id")
+
+  studentId    String    @unique @map("student_id")
+  student      EnrollmentStudent @relation(fields: [studentId], references: [id])
+
+  model        String?   @map("model")             
+  response     String?   @db.Text @map("response") 
+  status       String?   @map("status")            
+  error        String?   @map("error")             
+
+  createdBy    String?   @map("created_by") // created by student
+  updatedBy    String?   @map("updated_by") // updated by student
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  archive      Boolean   @default(false) @map("archive")
+
+  @@map("final_summaries")
 }
 
 model FinalSubmission {

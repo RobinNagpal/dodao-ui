@@ -21,7 +21,7 @@ export default function InstructorDashboard() {
     loading: loadingCaseStudies,
     reFetchData: refetchCaseStudies,
   } = useFetchData<CaseStudy[]>(
-    `/api/instructor/case-studies?instructorEmail=${encodeURIComponent(userEmail)}`,
+    `/api/case-studies?userEmail=${encodeURIComponent(userEmail)}&userType=instructor`,
     { skipInitialFetch: !userEmail },
     'Failed to load assigned case studies'
   );

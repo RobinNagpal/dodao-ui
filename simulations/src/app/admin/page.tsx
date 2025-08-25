@@ -66,7 +66,11 @@ export default function AdminDashboard() {
     data: caseStudies,
     loading: loadingCaseStudies,
     reFetchData: refetchCaseStudies,
-  } = useFetchData<CaseStudyListItem[]>('/api/case-studies', {}, 'Failed to load case studies');
+  } = useFetchData<CaseStudyListItem[]>(
+    `/api/case-studies?userEmail=${encodeURIComponent(userEmail)}&userType=admin`,
+    { skipInitialFetch: !userEmail },
+    'Failed to load case studies'
+  );
 
   const {
     data: enrollments,

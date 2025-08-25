@@ -11,8 +11,8 @@ import StudentNavbar from '@/components/navigation/StudentNavbar';
 import InstructionRequiredModal from '@/components/student/InstructionRequiredModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
-import ViewCaseStudyModal from '@/components/student/ViewCaseStudyModal';
-import ViewModuleModal from '@/components/student/ViewModuleModal';
+import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
+import ViewModuleModal from '@/components/shared/ViewModuleModal';
 
 interface StudentCaseStudyClientProps {
   caseStudyId: string;
@@ -43,7 +43,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     loading: loadingCaseStudy,
     reFetchData: refetchCaseStudy,
   } = useFetchData<CaseStudyWithRelations>(
-    `/api/student/case-studies/${caseStudyId}?studentEmail=${encodeURIComponent(userEmail)}`,
+    `/api/case-studies/${caseStudyId}?userType=student&userEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
     'Failed to load case study'
   );
@@ -142,7 +142,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       } else {
         setShowModuleModal(false);
       }
-      const result = await updateInstructionStatus(`/api/student/case-studies/${caseStudyId}`, {
+      const result = await updateInstructionStatus(`/api/case-studies/${caseStudyId}`, {
         studentEmail: userEmail,
         type,
         moduleId,

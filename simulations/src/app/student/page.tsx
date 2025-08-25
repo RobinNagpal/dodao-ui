@@ -19,7 +19,7 @@ export default function StudentDashboard() {
 
   // API hook to fetch enrolled case studies
   const { data: enrolledCaseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudyWithRelations[]>(
-    `/api/student/case-studies?studentEmail=${encodeURIComponent(userEmail)}`,
+    `/api/case-studies?userEmail=${encodeURIComponent(userEmail)}&userType=student`,
     { skipInitialFetch: !userEmail },
     'Failed to load enrolled case studies'
   );
