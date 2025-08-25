@@ -100,8 +100,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ case
   }
 
   // Get final summary prompt instructions
-  const enrollment = caseStudy.enrollments[0];
-  const finalSummaryPromptInstructions = enrollment?.finalSummaryPromptInstructions || null;
+  const finalSummaryPromptInstructions = caseStudy.finalSummaryPromptInstructions;
 
   // Build the comprehensive context
   const modules = caseStudy.modules.map((module) => ({

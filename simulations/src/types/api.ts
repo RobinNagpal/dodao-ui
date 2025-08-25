@@ -4,6 +4,7 @@ export interface CreateCaseStudyRequest {
   title: string;
   shortDescription: string;
   details: string;
+  finalSummaryPromptInstructions?: string | null;
   subject: BusinessSubject;
   modules: CreateModuleRequest[];
 }
@@ -28,6 +29,7 @@ export interface UpdateCaseStudyRequest {
   title: string;
   shortDescription: string;
   details: string;
+  finalSummaryPromptInstructions?: string | null;
   subject: BusinessSubject;
   modules: UpdateModuleRequest[];
 }

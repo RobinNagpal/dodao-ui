@@ -26,6 +26,7 @@ model CaseStudy {
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
   archive          Boolean  @default(false) @map("archive")
+  finalSummaryPromptInstructions String? @map("final_summary_prompt_instructions")
 
   modules      CaseStudyModule[] @relation("CaseStudyToModules")
   enrollments  ClassCaseStudyEnrollment[] @relation("CaseStudyToEnrollments")
@@ -59,8 +60,6 @@ model ClassCaseStudyEnrollment {
   caseStudy   CaseStudy @relation("CaseStudyToEnrollments", fields: [caseStudyId], references: [id])
 
   assignedInstructorId String @map("assigned_instructor_id") // assigned by admin but store instructor email
-
-  finalSummaryPromptInstructions String? @map("final_summary_prompt_instructions") // professor-added instructions for final summary
 
   createdBy   String?   @map("created_by") // created by admin
   updatedBy   String?   @map("updated_by") // updated by admin

@@ -50,6 +50,7 @@ async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
       title: body.title,
       shortDescription: body.shortDescription,
       details: body.details,
+      finalSummaryPromptInstructions: body.finalSummaryPromptInstructions,
       subject: body.subject,
       createdBy: adminEmail,
       updatedBy: adminEmail,

@@ -55,6 +55,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ id: 
         title: body.title,
         shortDescription: body.shortDescription,
         details: body.details,
+        finalSummaryPromptInstructions: body.finalSummaryPromptInstructions,
         subject: body.subject,
         updatedBy: adminEmail,
         archive: false,

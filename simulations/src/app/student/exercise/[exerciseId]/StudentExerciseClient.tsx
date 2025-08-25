@@ -37,6 +37,7 @@ interface ExerciseData {
   title: string;
   shortDescription: string;
   details: string;
+  promptHint?: string | null;
   orderNumber: number;
   module: {
     orderNumber: number;
@@ -398,6 +399,19 @@ Details: ${contextData.module.details}
                       <div className="markdown-body prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(exerciseData.details) }} />
                     </div>
                   </div>
+
+                  {/* Prompt Hint Section */}
+                  {exerciseData.promptHint && (
+                    <div className="border-t border-gray-200 pt-6">
+                      <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                        <Brain className="h-5 w-5 text-blue-500 mr-2" />
+                        Prompt Hint
+                      </h4>
+                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                        <div className="markdown-body prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(exerciseData.promptHint) }} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
