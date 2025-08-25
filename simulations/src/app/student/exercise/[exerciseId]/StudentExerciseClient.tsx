@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import type { ExerciseAttempt } from '@prisma/client';
-import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, ArrowLeft } from 'lucide-react';
+import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, ArrowLeft, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import AttemptDetailModal from '@/components/student/AttemptDetailModal';
@@ -20,8 +20,16 @@ interface StudentExerciseClientProps {
 }
 
 interface ContextData {
-  caseStudyContext: string;
-  previousAttempts: string[];
+  caseStudy: {
+    title: string;
+    shortDescription: string;
+    details: string;
+  };
+  module: {
+    title: string;
+    shortDescription: string;
+    details: string;
+  };
 }
 
 interface ExerciseData {
@@ -38,8 +46,6 @@ interface ExerciseData {
 interface CreateAttemptRequest {
   prompt: string;
   studentEmail: string;
-  caseStudyContext: string;
-  previousAttempts: string[];
 }
 
 interface CreateAttemptResponse {
@@ -77,6 +83,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const [isAttemptModalOpen, setIsAttemptModalOpen] = useState(false);
   const [showAiResponseModal, setShowAiResponseModal] = useState(false);
   const [currentAiResponse, setCurrentAiResponse] = useState<string>('');
+  const [showRetryPrompt, setShowRetryPrompt] = useState(false);
 
   const router = useRouter();
 
@@ -165,13 +172,12 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       const result = await createAttempt(`/api/student/exercises/${exerciseId}/attempts`, {
         prompt: prompt.trim(),
         studentEmail: userEmail,
-        caseStudyContext: contextData?.caseStudyContext || '',
-        previousAttempts: contextData?.previousAttempts || [],
       });
 
       if (result) {
-        // Clear the prompt and refetch attempts
+        // Clear the prompt, reset retry state, and refetch attempts
         setPrompt('');
+        setShowRetryPrompt(false);
         await refetchAttempts();
 
         // Show AI response in modal if successful
@@ -259,10 +265,21 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const shouldShowPromptInput = () => {
     if (!attempts) return true;
 
-    // Show prompt input if we haven't completed 3 attempts OR if we're currently submitting
     const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
+    const hasSuccess = attempts.some((attempt) => attempt.status === 'completed' && attempt.promptResponse);
 
-    return !hasMovedToNext && (completedAttempts.length < 3 || submittingAttempt);
+    // Don't show prompt input if student has successful attempt and hasn't clicked retry
+    if (hasSuccess && completedAttempts.length < 3 && !showRetryPrompt && !submittingAttempt) {
+      return false;
+    }
+
+    // Show prompt input in these cases:
+    // 1. No attempts yet
+    // 2. No successful attempts yet (failed attempts only)
+    // 3. All attempts used
+    // 4. Currently submitting
+    // 5. User explicitly clicked retry
+    return !hasMovedToNext && (completedAttempts.length < 3 || submittingAttempt || showRetryPrompt);
   };
 
   const shouldShowAllAttemptsUsed = () => {
@@ -274,8 +291,41 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     return !hasMovedToNext && completedAttempts.length >= 3 && !submittingAttempt;
   };
 
-  const hasSuccessfulAttempt = () => {
-    return attempts && attempts.some((attempt) => attempt.status === 'completed' && attempt.promptResponse);
+  const addCaseStudyContext = () => {
+    if (!contextData?.caseStudy) return;
+
+    const context = `Case Study: ${contextData.caseStudy.title}
+Description: ${contextData.caseStudy.shortDescription}
+Details: ${contextData.caseStudy.details}
+
+`;
+
+    setPrompt((prev) => prev + context);
+  };
+
+  const addModuleContext = () => {
+    if (!contextData?.module) return;
+
+    const context = `Module: ${contextData.module.title}
+Description: ${contextData.module.shortDescription}
+Details: ${contextData.module.details}
+
+`;
+
+    setPrompt((prev) => prev + context);
+  };
+
+  const shouldShowSuccessStateWithRetry = () => {
+    if (!attempts || hasMovedToNext || submittingAttempt || showRetryPrompt) return false;
+
+    const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
+    const hasSuccess = attempts.some((attempt) => attempt.status === 'completed' && attempt.promptResponse);
+
+    // Show success state with retry option when:
+    // 1. Has at least one successful attempt
+    // 2. Haven't used all 3 attempts yet
+    // 3. Not currently submitting or in retry mode
+    return hasSuccess && completedAttempts.length < 3;
   };
 
   if (isLoading || loadingAttempts || loadingContext || loadingExercise || loadingNextExercise || loadingProgress) {
@@ -354,22 +404,47 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
 
             {/* Enhanced Prompt Input */}
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                <div className="bg-gradient-to-br from-green-500 to-teal-600 p-2 rounded-xl mr-3">
-                  <MessageSquare className="h-5 w-5 text-white" />
+              {shouldShowPromptInput() && (
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+                    <div className="bg-gradient-to-br from-green-500 to-teal-600 p-2 rounded-xl mr-3">
+                      <MessageSquare className="h-5 w-5 text-white" />
+                    </div>
+                    Your Prompt
+                    <Sparkles className="h-5 w-5 text-yellow-500 ml-2 animate-pulse" />
+                  </h2>
+
+                  {/* Context Badge Buttons */}
+                  <div className="flex items-center space-x-3">
+                    <span className="text-sm text-gray-600 font-medium">Add context:</span>
+                    <button
+                      onClick={addCaseStudyContext}
+                      disabled={!contextData?.caseStudy}
+                      className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Plus className="h-3 w-3 mr-1" />
+                      Case Study Context
+                    </button>
+                    <button
+                      onClick={addModuleContext}
+                      disabled={!contextData?.module}
+                      className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 hover:bg-green-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Plus className="h-3 w-3 mr-1" />
+                      Module Context
+                    </button>
+                  </div>
                 </div>
-                Your Prompt
-                <Sparkles className="h-5 w-5 text-yellow-500 ml-2 animate-pulse" />
-              </h2>
+              )}
 
               {shouldShowPromptInput() ? (
-                <div className="space-y-6">
+                <div className="space-y-4">
                   <div className="relative">
                     <textarea
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
                       placeholder="Write your prompt here... Ask the AI to help you analyze the case study, provide insights, or guide you through the business concepts."
-                      className="w-full h-40 p-6 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 resize-none text-lg leading-relaxed transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                      className="w-full h-40 p-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 resize-none text-base leading-relaxed transition-all duration-300 bg-white/80 backdrop-blur-sm"
                       disabled={submittingAttempt}
                     />
                     <div className="absolute bottom-4 right-4 text-sm text-gray-400">{prompt.length > 0 && `${prompt.length} characters`}</div>
@@ -406,26 +481,33 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                       )}
                     </button>
                   </div>
-
-                  {hasSuccessfulAttempt() && !hasMovedToNext && !submittingAttempt && (
-                    <div className="border-t border-gray-200 pt-6 mt-8">
-                      <div className="text-center bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
-                        <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-3" />
-                        <p className="text-gray-700 mb-4 font-medium">Great work! You can continue to the next exercise or try again.</p>
-                        <button
-                          onClick={handleMoveToNext}
-                          className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-3 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                        >
-                          {nextExerciseData?.isComplete ? 'Submit Final Analysis' : 'Continue to Next Exercise'}
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                </div>
+              ) : shouldShowSuccessStateWithRetry() ? (
+                <div className="text-center py-4">
+                  <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle className="h-8 w-8 text-green-600" />
+                  </div>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-3">Great work!</h3>
+                  <p className="text-gray-600 mb-6 text-lg">You can continue to the next exercise or try again.</p>
+                  <div className="flex items-center justify-center space-x-4">
+                    <button
+                      onClick={handleMoveToNext}
+                      className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-3 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    >
+                      {nextExerciseData?.isComplete ? 'Submit Final Analysis' : 'Next Exercise'}
+                    </button>
+                    <button
+                      onClick={() => setShowRetryPrompt(true)}
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    >
+                      Attempt Again
+                    </button>
+                  </div>
                 </div>
               ) : shouldShowAllAttemptsUsed() ? (
-                <div className="text-center py-12">
+                <div className="text-center py-4">
                   <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle className="h-10 w-10 text-green-600" />
+                    <CheckCircle className="h-8 w-8 text-green-600" />
                   </div>
                   <h3 className="text-2xl font-semibold text-gray-900 mb-3">All Attempts Completed</h3>
                   <p className="text-gray-600 mb-6 text-lg">You have used all 3 attempts for this exercise.</p>
