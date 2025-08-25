@@ -89,8 +89,8 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
 
   // Fetch case study data
   const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudy>(
-    `/api/case-studies/${caseStudyId}`,
-    { skipInitialFetch: !caseStudyId },
+    `/api/case-studies/${caseStudyId}?userType=admin&userEmail=${encodeURIComponent(userEmail)}`,
+    { skipInitialFetch: !caseStudyId || !userEmail },
     'Failed to load case study'
   );
 
@@ -106,21 +106,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
       },
     }
   );
-
-  // Check authentication on page load
-  useEffect((): void => {
-    const userType: string | null = localStorage.getItem('user_type');
-    const email: string | null = localStorage.getItem('user_email');
-
-    if (!userType || userType !== 'admin' || !email) {
-      router.push('/login');
-      return;
-    }
-
-    setUserEmail(email);
-    setAdminEmail(email);
-    setIsLoading(false);
-  }, [router]);
 
   // Initialize form when case study data is loaded
   useEffect(() => {
@@ -265,6 +250,21 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
       console.error('Error updating case study:', error);
     }
   };
+
+  // Check authentication on page load
+  useEffect(() => {
+    const userType = localStorage.getItem('user_type');
+    const email = localStorage.getItem('user_email');
+
+    if (!userType || userType !== 'admin' || !email) {
+      router.push('/login');
+      return;
+    }
+
+    setUserEmail(email);
+    setAdminEmail(email);
+    setIsLoading(false);
+  }, [router]);
 
   if (isLoading || loadingCaseStudy) {
     return (
