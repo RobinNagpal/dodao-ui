@@ -122,7 +122,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ case
 
   // Add professor instructions if available
   if (finalSummaryPromptInstructions) {
-    fullPrompt += `# Professor Instructions\n\n${finalSummaryPromptInstructions}\n\n`;
+    fullPrompt += `# Instructions for Summary Generation\n\n${finalSummaryPromptInstructions}\n\n`;
   }
 
   // Add case study context

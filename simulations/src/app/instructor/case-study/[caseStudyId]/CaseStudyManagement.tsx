@@ -5,37 +5,20 @@ import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
-import type { CaseStudyModule, CaseStudy, ModuleExercise } from '@/types';
+import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { DeleteResponse, CaseStudyWithRelations } from '@/types/api';
-import {
-  BookOpen,
-  Users,
-  BarChart3,
-  Target,
-  Brain,
-  Sparkles,
-  GraduationCap,
-  Zap,
-  ArrowLeft,
-  Eye,
-  Trash2,
-  RefreshCw,
-  TrendingUp,
-  Calendar,
-  Mail,
-  CheckCircle,
-  Clock,
-} from 'lucide-react';
-import { parseMarkdown } from '@/utils/parse-markdown';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
+import { BookOpen, Users, BarChart3, Target, Brain, GraduationCap, Eye, Trash2, TrendingUp, Calendar, Mail, CheckCircle, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import BackButton from '@/components/navigation/BackButton';
 import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
 import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
+import InstructorLoading from '@/components/instructor/InstructorLoading';
 
 interface CaseStudyManagementClientProps {
   caseStudyId: string;
@@ -63,7 +46,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'analytics'>('overview');
 
-  // Modal states
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [studentToClear, setStudentToClear] = useState<{ id: string; email: string } | null>(null);
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
@@ -81,7 +63,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     'Failed to load case study'
   );
 
-  // API hook to fetch students progress data
   const {
     data: studentsProgress,
     loading: loadingStudents,
@@ -92,7 +73,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     'Failed to load students progress'
   );
 
-  // Delete hook for clearing student attempts
   const { deleteData: clearAttempts, loading: clearingAttempts } = useDeleteData<DeleteResponse, never>({
     successMessage: 'Student attempts cleared successfully!',
     errorMessage: 'Failed to clear student attempts',
@@ -157,54 +137,8 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     }
   };
 
-  const getSubjectDisplayName = (subject: string): string => {
-    const displayNames: Record<string, string> = {
-      HR: 'Human Resources',
-      ECONOMICS: 'Economics',
-      MARKETING: 'Marketing',
-      FINANCE: 'Finance',
-      OPERATIONS: 'Operations',
-    };
-    return displayNames[subject] || subject;
-  };
-
-  const getSubjectIcon = (subject: string) => {
-    const icons: Record<string, string> = {
-      HR: '👥',
-      ECONOMICS: '📊',
-      MARKETING: '📈',
-      FINANCE: '💰',
-      OPERATIONS: '⚙️',
-    };
-    return icons[subject] || '📚';
-  };
-
-  const getSubjectColor = (subject: string) => {
-    const colors: Record<string, string> = {
-      HR: 'from-green-500 to-emerald-600',
-      ECONOMICS: 'from-blue-500 to-cyan-600',
-      MARKETING: 'from-pink-500 to-rose-600',
-      FINANCE: 'from-yellow-500 to-orange-600',
-      OPERATIONS: 'from-purple-500 to-indigo-600',
-    };
-    return colors[subject] || 'from-gray-500 to-gray-600';
-  };
-
   if (isLoading || loadingCaseStudy || (activeTab === 'students' && loadingStudents)) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-200 border-t-purple-600 mx-auto mb-4"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Brain className="h-6 w-6 text-purple-600 animate-pulse" />
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading Case Study</h3>
-          <p className="text-gray-600">Preparing management console...</p>
-        </div>
-      </div>
-    );
+    return <InstructorLoading text="Loading Case Study" subtitle="Preparing management console..." variant="enhanced" />;
   }
 
   if (!caseStudy) {
@@ -229,12 +163,10 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     );
   }
 
-  const enrolledStudents = caseStudy?.enrollments?.reduce((total: number, enrollment: any) => total + (enrollment.students?.length || 0), 0) || 0;
   const modules = caseStudy?.modules || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
-      {/* Floating Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-purple-200/30 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
@@ -250,17 +182,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
-        {/* Back Button */}
-        <div className="mb-6">
-          <Button
-            onClick={() => router.push('/instructor')}
-            variant="outline"
-            className="border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
+        <BackButton userType="instructor" text="Back to Dashboard" href="/instructor" />
 
         {/* Enhanced Tab Navigation */}
         <div className="border-b border-white/20">
@@ -344,14 +266,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
                   <CardDescription className="text-gray-600">Click on modules and exercises to view details</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <CaseStudyStepper
-                    modules={modules as any}
-                    userType="instructor"
-                    onModuleClick={handleModuleClick}
-                    onExerciseClick={handleExerciseClick}
-                    getSubjectIcon={getSubjectIcon}
-                    getSubjectColor={getSubjectColor}
-                  />
+                  <CaseStudyStepper modules={modules as any} userType="instructor" onModuleClick={handleModuleClick} onExerciseClick={handleExerciseClick} />
                 </CardContent>
               </Card>
             )}
@@ -549,7 +464,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         )}
       </div>
 
-      {/* Confirmation Modal */}
       <ConfirmationModal
         open={showDeleteConfirm}
         showSemiTransparentBg={true}
@@ -571,6 +485,10 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         hasCaseStudyInstructionsRead={() => true} // Instructor always has read instructions
         handleMarkInstructionAsRead={async () => {}} // No-op for instructor
         updatingStatus={false}
+        onCaseStudyUpdate={(updatedCaseStudy) => {
+          // Instructors don't edit, so this should not be called
+          console.log('Instructor tried to update case study - this should not happen');
+        }}
       />
 
       <ViewModuleModal
@@ -580,6 +498,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         hasModuleInstructionsRead={() => true} // Instructor always has read instructions
         handleMarkInstructionAsRead={async () => {}} // No-op for instructor
         updatingStatus={false}
+        caseStudy={caseStudy}
+        onModuleUpdate={(updatedModule) => {
+          // Instructors don't edit, so this should not be called
+          console.log('Instructor tried to update module - this should not happen');
+        }}
       />
 
       <ViewExerciseModal
@@ -588,6 +511,12 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         exercise={selectedExercise}
         moduleTitle={selectedModule?.title}
         moduleNumber={selectedModule?.orderNumber}
+        caseStudy={caseStudy}
+        moduleId={selectedModule?.id}
+        onExerciseUpdate={(updatedExercise) => {
+          // Instructors don't edit, so this should not be called
+          console.log('Instructor tried to update exercise - this should not happen');
+        }}
       />
     </div>
   );

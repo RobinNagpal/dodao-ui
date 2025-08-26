@@ -10,7 +10,9 @@ import CreateEnrollmentModal from '@/components/admin/CreateEnrollmentModal';
 import ManageStudentsModal from '@/components/admin/ManageStudentsModal';
 import type { BusinessSubject } from '@/types';
 import type { DeleteResponse } from '@/types/api';
+import { getSubjectDisplayName } from '@/utils/subject-utils';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
+import AdminLoading from '@/components/admin/AdminLoading';
 
 interface CaseStudyListItem {
   id: string;
@@ -50,18 +52,15 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'case-studies' | 'enrollments'>('case-studies');
   const router = useRouter();
 
-  // Modal states
   const [showCreateEnrollment, setShowCreateEnrollment] = useState<boolean>(false);
   const [showManageStudents, setShowManageStudents] = useState<boolean>(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
 
-  // Selected items
   const [selectedEnrollmentId, setSelectedEnrollmentId] = useState<string>('');
   const [selectedEnrollmentTitle, setSelectedEnrollmentTitle] = useState<string>('');
   const [deleteType, setDeleteType] = useState<DeleteType>('case-study');
   const [deleteId, setDeleteId] = useState<string>('');
 
-  // Fetch data
   const {
     data: caseStudies,
     loading: loadingCaseStudies,
@@ -78,7 +77,6 @@ export default function AdminDashboard() {
     reFetchData: refetchEnrollments,
   } = useFetchData<EnrollmentListItem[]>('/api/enrollments', {}, 'Failed to load enrollments');
 
-  // Delete hooks
   const { deleteData: deleteCaseStudy, loading: deletingCaseStudy } = useDeleteData<DeleteResponse, never>({
     successMessage: 'Case study deleted successfully!',
     errorMessage: 'Failed to delete case study',
@@ -89,7 +87,6 @@ export default function AdminDashboard() {
     errorMessage: 'Failed to delete enrollment',
   });
 
-  // Check authentication on page load
   useEffect((): void => {
     const userType: string | null = localStorage.getItem('user_type');
     const email: string | null = localStorage.getItem('user_email');
@@ -102,10 +99,6 @@ export default function AdminDashboard() {
     setUserEmail(email);
     setIsLoading(false);
   }, [router]);
-
-  // Note: Removed focus-based refetching to prevent loading flicker when switching tabs
-  // Data will be refetched automatically when navigating back from create/edit pages
-  // through Next.js router navigation and component remounting
 
   const handleLogout = (): void => {
     localStorage.removeItem('user_type');
@@ -155,34 +148,12 @@ export default function AdminDashboard() {
     }
   };
 
-  const getSubjectDisplayName = (subject: string): string => {
-    const displayNames: Record<string, string> = {
-      HR: 'Human Resources',
-      ECONOMICS: 'Economics',
-      MARKETING: 'Marketing',
-      FINANCE: 'Finance',
-      OPERATIONS: 'Operations',
-    };
-    return displayNames[subject] || subject;
-  };
-
   const handleEnrollmentSuccess = async (): Promise<void> => {
     await refetchEnrollments();
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-200/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-200/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        </div>
-        <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-sm px-8 py-6 rounded-2xl shadow-xl border border-emerald-100">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
-          <span className="text-lg font-medium bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">Loading admin dashboard...</span>
-        </div>
-      </div>
-    );
+    return <AdminLoading text="Loading admin dashboard..." subtitle="Preparing your workspace..." />;
   }
 
   return (

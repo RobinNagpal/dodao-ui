@@ -20,10 +20,6 @@ interface CaseStudyStepperProps {
   // Click handlers
   onModuleClick: (module: CaseStudyModule) => void;
   onExerciseClick: (exerciseId: string, moduleId: string) => void;
-
-  // Subject styling
-  getSubjectIcon: (subject: string) => string;
-  getSubjectColor: (subject: string) => string;
 }
 
 export default function CaseStudyStepper({
@@ -36,8 +32,6 @@ export default function CaseStudyStepper({
   isExerciseAccessible,
   onModuleClick,
   onExerciseClick,
-  getSubjectIcon,
-  getSubjectColor,
 }: CaseStudyStepperProps) {
   // For non-students, all modules and exercises are accessible
   const isModuleAccessible = (moduleId: string) => {

@@ -4,9 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import {
-  ArrowLeft,
   Brain,
-  BookOpen,
   User,
   Calendar,
   Target,
@@ -20,14 +18,14 @@ import {
   ChevronDown,
   ChevronRight,
   Mail,
-  Hash,
   Activity,
   Layers,
 } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import BackButton from '@/components/navigation/BackButton';
+import InstructorLoading from '@/components/instructor/InstructorLoading';
 
 interface StudentDetailsClientProps {
   caseStudyId: string;
@@ -167,20 +165,7 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
   };
 
   if (isLoading || loadingDetails) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-200 border-t-purple-600 mx-auto mb-4"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Brain className="h-6 w-6 text-purple-600 animate-pulse" />
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading Student Details</h3>
-          <p className="text-gray-600">Preparing detailed analysis...</p>
-        </div>
-      </div>
-    );
+    return <InstructorLoading text="Loading Student Details" subtitle="Preparing detailed analysis..." variant="enhanced" />;
   }
 
   if (!studentDetails) {
@@ -207,7 +192,6 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
-      {/* Floating Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-purple-200/30 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
@@ -223,19 +207,8 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
-        {/* Back Button */}
-        <div className="mb-6">
-          <Button
-            onClick={() => router.push(`/instructor/case-study/${caseStudyId}`)}
-            variant="outline"
-            className="border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Case Study
-          </Button>
-        </div>
+        <BackButton userType="instructor" text="Back to Case Study" href={`/instructor/case-study/${caseStudyId}`} />
 
-        {/* Student Overview */}
         <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8 mb-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">
@@ -281,7 +254,6 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
             </div>
           </div>
 
-          {/* Statistics Grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
               <div className="flex items-center space-x-2 mb-2">
@@ -323,7 +295,6 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
           </div>
         </div>
 
-        {/* Final Submission */}
         {studentDetails.finalSubmission && (
           <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
@@ -377,7 +348,6 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
           </div>
         )}
 
-        {/* Modules and Exercises */}
         <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center">
             <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-xl mr-3">

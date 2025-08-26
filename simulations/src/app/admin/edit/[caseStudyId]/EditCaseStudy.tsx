@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Shield, Plus, Trash2, X, BookOpen, Sparkles, ArrowLeft } from 'lucide-react';
+import { Shield, Plus, Trash2, X, BookOpen, Sparkles } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -15,6 +15,9 @@ import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import type { BusinessSubject } from '@prisma/client';
 import type { UpdateCaseStudyRequest } from '@/types/api';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
+import BackButton from '@/components/navigation/BackButton';
+import AdminLoading from '@/components/admin/AdminLoading';
+import { getSubjectDisplayName } from '@/utils/subject-utils';
 
 interface Module {
   id?: string;
@@ -62,23 +65,18 @@ interface EditCaseStudyClientProps {
   caseStudyId: string;
 }
 
-const subjectOptions = [
-  { value: 'HR', label: 'Human Resources' },
-  { value: 'ECONOMICS', label: 'Economics' },
-  { value: 'MARKETING', label: 'Marketing' },
-  { value: 'FINANCE', label: 'Finance' },
-  { value: 'OPERATIONS', label: 'Operations' },
-];
+const subjectOptions = (['HR', 'ECONOMICS', 'MARKETING', 'FINANCE', 'OPERATIONS'] as BusinessSubject[]).map((subject) => ({
+  value: subject,
+  label: getSubjectDisplayName(subject),
+}));
 
 export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClientProps) {
   const router = useRouter();
   const { showNotification } = useNotificationContext();
 
-  // Auth check
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Form state
   const [title, setTitle] = useState('');
   const [shortDescription, setShortDescription] = useState('');
   const [details, setDetails] = useState('');
@@ -107,7 +105,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
     }
   );
 
-  // Initialize form when case study data is loaded
   useEffect(() => {
     if (caseStudy) {
       setTitle(caseStudy.title);
@@ -181,7 +178,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
   };
 
   const handleSubmit = async () => {
-    // Validation
     if (!title.trim()) {
       showNotification({ type: 'error', message: 'Title is required' });
       return;
@@ -203,7 +199,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
       return;
     }
 
-    // Validate modules
     for (const caseStudyModule of modules) {
       if (!caseStudyModule.title.trim() || !caseStudyModule.shortDescription.trim() || !caseStudyModule.details.trim()) {
         showNotification({ type: 'error', message: 'All module fields are required' });
@@ -251,7 +246,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
     }
   };
 
-  // Check authentication on page load
   useEffect(() => {
     const userType = localStorage.getItem('user_type');
     const email = localStorage.getItem('user_email');
@@ -267,18 +261,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
   }, [router]);
 
   if (isLoading || loadingCaseStudy) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-200/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-200/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        </div>
-        <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-sm px-8 py-6 rounded-2xl shadow-xl border border-emerald-100">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
-          <span className="text-lg font-medium bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">Loading case study...</span>
-        </div>
-      </div>
-    );
+    return <AdminLoading text="Loading case study..." subtitle="Preparing edit form..." />;
   }
 
   return (
@@ -292,17 +275,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
       <AdminNavbar title="Edit Case Study" userEmail={userEmail} onLogout={handleLogout} icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 relative z-10">
-        {/* Back Button */}
-        <div className="mb-6">
-          <Button
-            onClick={() => router.push('/admin')}
-            variant="outline"
-            className="border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
+        <BackButton userType="admin" text="Back to Dashboard" href="/admin" />
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-emerald-100/50 p-8">
           <div className="space-y-8">
             <div className="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-100">

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import StudentLoading from '@/components/student/StudentLoading';
 import { FileText, Send, CheckCircle, Brain, Sparkles, Target, BookOpen, Save } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { CaseStudyWithRelations } from '@/types/api';
@@ -39,14 +40,12 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
 
   const router = useRouter();
 
-  // API hook to fetch case study details
   const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelations>(
     `/api/student/case-studies/${caseStudyId}?studentEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
     'Failed to load case study details'
   );
 
-  // API hook to fetch existing final submission
   const {
     data: existingSubmission,
     loading: loadingSubmission,
@@ -57,7 +56,6 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
     'Failed to load existing submission'
   );
 
-  // API hook for submitting final submission
   const { postData: submitFinalSubmission, loading: submittingSubmission } = usePostData<FinalSubmissionData, CreateFinalSubmissionRequest>({
     successMessage: 'Final submission saved successfully!',
     errorMessage: 'Failed to save final submission. Please try again.',
@@ -108,25 +106,11 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
   };
 
   if (isLoading || loadingCaseStudy || loadingSubmission) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <FileText className="h-6 w-6 text-blue-600 animate-pulse" />
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading Final Submission</h3>
-          <p className="text-gray-600">Preparing your submission workspace...</p>
-        </div>
-      </div>
-    );
+    return <StudentLoading text="Loading Final Submission" subtitle="Preparing your submission workspace..." variant="enhanced" />;
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Floating Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-blue-200/30 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-purple-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
@@ -143,9 +127,7 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Submission Area */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Case Study Context */}
             {caseStudyData && (
               <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-8 border border-white/30 shadow-xl">
                 <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
@@ -171,7 +153,6 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
               </div>
             )}
 
-            {/* Markdown Editor */}
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
                 <div className="bg-gradient-to-br from-green-500 to-teal-600 p-2 rounded-xl mr-3">
@@ -219,7 +200,6 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
               </div>
             </div>
 
-            {/* Success Message */}
             {isSubmitted && (
               <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
                 <div className="text-center bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-8 border border-green-200">
@@ -241,9 +221,7 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
             )}
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Progress Summary */}
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Target className="h-5 w-5 text-green-600 mr-2" />
@@ -273,7 +251,6 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
               </div>
             </div>
 
-            {/* Tips */}
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Brain className="h-5 w-5 text-purple-600 mr-2" />
