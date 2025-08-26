@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
+import BackButton from '@/components/navigation/BackButton';
 import InstructionRequiredModal from '@/components/student/InstructionRequiredModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
@@ -253,16 +254,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
-        <div className="mb-6">
-          <Button
-            onClick={() => router.push('/student')}
-            variant="outline"
-            className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
+        <BackButton userType="student" text="Back to Dashboard" href="/student" />
 
         <Card className="backdrop-blur-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border-white/20 shadow-lg mb-6">
           <CardHeader className="pb-4">

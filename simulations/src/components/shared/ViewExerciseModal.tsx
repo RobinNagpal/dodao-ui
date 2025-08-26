@@ -162,7 +162,12 @@ export default function ViewExerciseModal({
   };
 
   const title = (
-    <div className="flex items-center justify-between w-full">
+    <div className="flex items-center justify-center w-full relative">
+      {isAdmin && !isEditMode && (
+        <div className="absolute right-0">
+          <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />
+        </div>
+      )}
       <span className="text-lg font-bold">
         {moduleTitle && moduleNumber && <span className="text-gray-600 text-lg mr-2">Module {moduleNumber}</span>}
         Exercise {exercise.orderNumber}){' '}
@@ -177,9 +182,8 @@ export default function ViewExerciseModal({
           exercise.title
         )}
       </span>
-      {isAdmin && !isEditMode && <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />}
       {isEditMode && (
-        <div className="flex items-center space-x-2">
+        <div className="absolute right-0 flex items-center space-x-2">
           <Button onClick={handleCancel} variant="outline" size="sm" className="border-red-200 text-red-600 hover:bg-red-50">
             <X className="h-4 w-4 mr-2" />
             Cancel

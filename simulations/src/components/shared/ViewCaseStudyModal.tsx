@@ -32,6 +32,7 @@ export default function ViewCaseStudyModal({
 }: CaseStudyModalProps) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdminOrInstructor, setIsAdminOrInstructor] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     shortDescription: '',
@@ -53,9 +54,10 @@ export default function ViewCaseStudyModal({
   );
 
   useEffect(() => {
-    // Check if user is admin
+    // Check if user is admin or instructor
     const userType = localStorage.getItem('user_type');
     setIsAdmin(userType === 'admin');
+    setIsAdminOrInstructor(userType === 'admin' || userType === 'instructor');
 
     // Initialize form data when case study changes
     if (caseStudy) {
@@ -129,11 +131,15 @@ export default function ViewCaseStudyModal({
   };
 
   const title = (
-    <div className="flex items-center justify-between w-full">
+    <div className="flex items-center justify-center w-full relative">
+      {isAdmin && !isEditMode && (
+        <div className="absolute right-0">
+          <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />
+        </div>
+      )}
       <span className="text-2xl font-bold">Case Study Details</span>
-      {isAdmin && !isEditMode && <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />}
       {isEditMode && (
-        <div className="flex items-center space-x-2">
+        <div className="absolute right-0 flex items-center space-x-2">
           <Button onClick={handleCancel} variant="outline" size="sm" className="border-red-200 text-red-600 hover:bg-red-50">
             <X className="h-4 w-4 mr-2" />
             Cancel
@@ -213,6 +219,17 @@ export default function ViewCaseStudyModal({
           // View Mode
           <div className="space-y-6">
             <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy?.details || '') }} />
+
+            {/* Final Summary Prompt Instructions - Only for Admin/Instructor */}
+            {isAdminOrInstructor && caseStudy?.finalSummaryPromptInstructions && (
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">Final Summary Prompt Instructions</h3>
+                <div
+                  className="markdown-body bg-amber-50 border border-amber-200 rounded-lg p-4"
+                  dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy.finalSummaryPromptInstructions) }}
+                />
+              </div>
+            )}
 
             {/* Read Instructions Button */}
             {!hasCaseStudyInstructionsRead() && (
