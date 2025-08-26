@@ -9,7 +9,7 @@ import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/Ellipsis
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { parseMarkdown } from '@/utils/parse-markdown';
-import { Target, Lightbulb, FileText, Sparkles, Edit, Save, X } from 'lucide-react';
+import { Lightbulb, FileText, Sparkles, Save, X } from 'lucide-react';
 import type { ModuleExercise } from '@/types';
 
 interface ViewExerciseModalProps {
@@ -31,7 +31,7 @@ export default function ViewExerciseModal({
   moduleNumber,
   caseStudy,
   moduleId,
-  onExerciseUpdate
+  onExerciseUpdate,
 }: ViewExerciseModalProps) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -93,27 +93,29 @@ export default function ViewExerciseModal({
 
     try {
       // Find and update the specific exercise using the passed case study data
-      const updatedModules = caseStudy.modules?.map((module: any) => {
-        if (module.id === moduleId) {
-          const updatedExercises = module.exercises?.map((ex: any) => {
-            if (ex.id === exercise.id) {
-              return {
-                ...ex,
-                title: formData.title,
-                shortDescription: formData.shortDescription,
-                details: formData.details,
-                promptHint: formData.promptHint,
-              };
-            }
-            return ex;
-          }) || [];
-          return {
-            ...module,
-            exercises: updatedExercises,
-          };
-        }
-        return module;
-      }) || [];
+      const updatedModules =
+        caseStudy.modules?.map((module: any) => {
+          if (module.id === moduleId) {
+            const updatedExercises =
+              module.exercises?.map((ex: any) => {
+                if (ex.id === exercise.id) {
+                  return {
+                    ...ex,
+                    title: formData.title,
+                    shortDescription: formData.shortDescription,
+                    details: formData.details,
+                    promptHint: formData.promptHint,
+                  };
+                }
+                return ex;
+              }) || [];
+            return {
+              ...module,
+              exercises: updatedExercises,
+            };
+          }
+          return module;
+        }) || [];
 
       // Update the case study with the modified modules
       const updatedCaseStudy = await putData(`/api/case-studies/${caseStudy.id}`, {
@@ -138,7 +140,7 @@ export default function ViewExerciseModal({
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -163,7 +165,8 @@ export default function ViewExerciseModal({
     <div className="flex items-center justify-between w-full">
       <span className="text-lg font-bold">
         {moduleTitle && moduleNumber && <span className="text-gray-600 text-lg mr-2">Module {moduleNumber}</span>}
-        Exercise {exercise.orderNumber}) {isEditMode ? (
+        Exercise {exercise.orderNumber}){' '}
+        {isEditMode ? (
           <Input
             value={formData.title}
             onChange={(e) => handleInputChange('title', e.target.value)}
@@ -174,29 +177,14 @@ export default function ViewExerciseModal({
           exercise.title
         )}
       </span>
-      {isAdmin && !isEditMode && (
-        <EllipsisDropdown
-          items={dropdownItems}
-          onSelect={handleDropdownSelect}
-        />
-      )}
+      {isAdmin && !isEditMode && <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />}
       {isEditMode && (
         <div className="flex items-center space-x-2">
-          <Button
-            onClick={handleCancel}
-            variant="outline"
-            size="sm"
-            className="border-red-200 text-red-600 hover:bg-red-50"
-          >
+          <Button onClick={handleCancel} variant="outline" size="sm" className="border-red-200 text-red-600 hover:bg-red-50">
             <X className="h-4 w-4 mr-2" />
             Cancel
           </Button>
-          <Button
-            onClick={handleSave}
-            disabled={isSubmitting}
-            size="sm"
-            className="bg-green-600 hover:bg-green-700 text-white"
-          >
+          <Button onClick={handleSave} disabled={isSubmitting} size="sm" className="bg-green-600 hover:bg-green-700 text-white">
             {isSubmitting ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>

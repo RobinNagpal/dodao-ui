@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
-import type { CaseStudyModule, CaseStudy, ModuleExercise } from '@/types';
+import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { DeleteResponse, CaseStudyWithRelations } from '@/types/api';
 import {
   BookOpen,

@@ -4,11 +4,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { Brain, FileText, Download, Eye, ArrowLeft, Sparkles, CheckCircle } from 'lucide-react';
+import { Brain, FileText, Download, Eye, Sparkles, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
+import BackButton from '@/components/shared/BackButton';
 
 interface FinalSummaryClientProps {
   caseStudyId: string;
@@ -218,16 +219,7 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
       />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        <div className="mb-6 flex items-center space-x-3">
-          <Button
-            onClick={() => router.push(`/student/case-study/${caseStudyId}`)}
-            variant="outline"
-            className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Case Study
-          </Button>
-        </div>
+        <BackButton userType="student" text="Back to Case Study" href={`/student/case-study/${caseStudyId}`} />
 
         <div className="space-y-8">
           {/* Header Section */}

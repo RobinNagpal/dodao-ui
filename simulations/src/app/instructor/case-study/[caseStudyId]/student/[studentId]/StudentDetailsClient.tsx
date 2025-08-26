@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import {
-  ArrowLeft,
   Brain,
   BookOpen,
   User,
@@ -28,6 +27,7 @@ import { parseMarkdown } from '@/utils/parse-markdown';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import BackButton from '@/components/shared/BackButton';
 
 interface StudentDetailsClientProps {
   caseStudyId: string;
@@ -224,16 +224,7 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
         {/* Back Button */}
-        <div className="mb-6">
-          <Button
-            onClick={() => router.push(`/instructor/case-study/${caseStudyId}`)}
-            variant="outline"
-            className="border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Case Study
-          </Button>
-        </div>
+        <BackButton userType="instructor" text="Back to Case Study" href={`/instructor/case-study/${caseStudyId}`} />
 
         {/* Student Overview */}
         <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8 mb-8">

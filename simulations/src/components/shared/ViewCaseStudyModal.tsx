@@ -9,7 +9,7 @@ import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/Ellipsis
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { parseMarkdown } from '@/utils/parse-markdown';
-import { Check, Edit, Save, X, EllipsisVertical } from 'lucide-react';
+import { Check, Save, X } from 'lucide-react';
 
 interface CaseStudyModalProps {
   open: boolean;
@@ -107,7 +107,7 @@ export default function ViewCaseStudyModal({
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -131,29 +131,14 @@ export default function ViewCaseStudyModal({
   const title = (
     <div className="flex items-center justify-between w-full">
       <span className="text-2xl font-bold">Case Study Details</span>
-      {isAdmin && !isEditMode && (
-        <EllipsisDropdown
-          items={dropdownItems}
-          onSelect={handleDropdownSelect}
-        />
-      )}
+      {isAdmin && !isEditMode && <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />}
       {isEditMode && (
         <div className="flex items-center space-x-2">
-          <Button
-            onClick={handleCancel}
-            variant="outline"
-            size="sm"
-            className="border-red-200 text-red-600 hover:bg-red-50"
-          >
+          <Button onClick={handleCancel} variant="outline" size="sm" className="border-red-200 text-red-600 hover:bg-red-50">
             <X className="h-4 w-4 mr-2" />
             Cancel
           </Button>
-          <Button
-            onClick={handleSave}
-            disabled={isSubmitting}
-            size="sm"
-            className="bg-green-600 hover:bg-green-700 text-white"
-          >
+          <Button onClick={handleSave} disabled={isSubmitting} size="sm" className="bg-green-600 hover:bg-green-700 text-white">
             {isSubmitting ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>

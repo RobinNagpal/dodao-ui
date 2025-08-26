@@ -366,17 +366,15 @@ Details: ${contextData.module.details}
       />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        <div className="mb-6 flex items-center space-x-3">
-          {caseStudyId && (
-            <Button
-              onClick={() => router.push(`/student/case-study/${caseStudyId}`)}
-              variant="outline"
-              className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 bg-transparent"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Main Page
-            </Button>
-          )}
+        <div className="mb-6">
+          <Button
+            onClick={() => router.push(`/student/case-study/${caseStudyId}`)}
+            variant="outline"
+            className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 bg-transparent"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Main Page
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">

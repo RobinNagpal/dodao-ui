@@ -87,17 +87,18 @@ export default function ViewModuleModal({
 
     try {
       // Update the specific module in the modules array using the passed case study data
-      const updatedModules = caseStudy.modules?.map((module: any) => {
-        if (module.id === selectedModule.id) {
-          return {
-            ...module,
-            title: formData.title,
-            shortDescription: formData.shortDescription,
-            details: formData.details,
-          };
-        }
-        return module;
-      }) || [];
+      const updatedModules =
+        caseStudy.modules?.map((module: any) => {
+          if (module.id === selectedModule.id) {
+            return {
+              ...module,
+              title: formData.title,
+              shortDescription: formData.shortDescription,
+              details: formData.details,
+            };
+          }
+          return module;
+        }) || [];
 
       // Update the case study with the modified modules
       const updatedCaseStudy = await putData(`/api/case-studies/${caseStudy.id}`, {
@@ -121,7 +122,7 @@ export default function ViewModuleModal({
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -145,7 +146,8 @@ export default function ViewModuleModal({
   const title = selectedModule && (
     <div className="flex items-center justify-between w-full">
       <span className="text-2xl font-bold">
-        Module {selectedModule.orderNumber}: {isEditMode ? (
+        Module {selectedModule.orderNumber}:{' '}
+        {isEditMode ? (
           <Input
             value={formData.title}
             onChange={(e) => handleInputChange('title', e.target.value)}
@@ -156,29 +158,14 @@ export default function ViewModuleModal({
           selectedModule.title
         )}
       </span>
-      {isAdmin && !isEditMode && (
-        <EllipsisDropdown
-          items={dropdownItems}
-          onSelect={handleDropdownSelect}
-        />
-      )}
+      {isAdmin && !isEditMode && <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />}
       {isEditMode && (
         <div className="flex items-center space-x-2">
-          <Button
-            onClick={handleCancel}
-            variant="outline"
-            size="sm"
-            className="border-red-200 text-red-600 hover:bg-red-50"
-          >
+          <Button onClick={handleCancel} variant="outline" size="sm" className="border-red-200 text-red-600 hover:bg-red-50">
             <X className="h-4 w-4 mr-2" />
             Cancel
           </Button>
-          <Button
-            onClick={handleSave}
-            disabled={isSubmitting}
-            size="sm"
-            className="bg-green-600 hover:bg-green-700 text-white"
-          >
+          <Button onClick={handleSave} disabled={isSubmitting} size="sm" className="bg-green-600 hover:bg-green-700 text-white">
             {isSubmitting ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
