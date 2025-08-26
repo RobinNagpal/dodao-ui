@@ -44,7 +44,11 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
   }, [router]);
 
   // API hook to fetch case study data
-  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelations>(
+  const {
+    data: caseStudy,
+    loading: loadingCaseStudy,
+    reFetchData,
+  } = useFetchData<CaseStudyWithRelations>(
     `/api/case-studies/${caseStudyId}?userType=admin&userEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
     'Failed to load case study'
@@ -238,6 +242,9 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
           hasCaseStudyInstructionsRead={() => true} // Admin always has read instructions
           handleMarkInstructionAsRead={async () => {}} // No-op for admin
           updatingStatus={false}
+          onCaseStudyUpdate={async (updatedCaseStudy) => {
+            await reFetchData();
+          }}
         />
 
         <ViewModuleModal
@@ -247,6 +254,10 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
           hasModuleInstructionsRead={() => true} // Admin always has read instructions
           handleMarkInstructionAsRead={async () => {}} // No-op for admin
           updatingStatus={false}
+          caseStudy={caseStudy}
+          onModuleUpdate={async (updatedModule) => {
+            await reFetchData();
+          }}
         />
 
         <ViewExerciseModal
@@ -255,6 +266,11 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
           exercise={selectedExercise}
           moduleTitle={selectedModule?.title}
           moduleNumber={selectedModule?.orderNumber}
+          caseStudy={caseStudy}
+          moduleId={selectedModule?.id}
+          onExerciseUpdate={async (updatedExercise) => {
+            await reFetchData();
+          }}
         />
       </div>
     </div>

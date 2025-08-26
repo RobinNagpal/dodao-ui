@@ -26,8 +26,6 @@ import {
   CheckCircle,
   Clock,
 } from 'lucide-react';
-import { parseMarkdown } from '@/utils/parse-markdown';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -571,6 +569,10 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         hasCaseStudyInstructionsRead={() => true} // Instructor always has read instructions
         handleMarkInstructionAsRead={async () => {}} // No-op for instructor
         updatingStatus={false}
+        onCaseStudyUpdate={(updatedCaseStudy) => {
+          // Instructors don't edit, so this should not be called
+          console.log('Instructor tried to update case study - this should not happen');
+        }}
       />
 
       <ViewModuleModal
@@ -580,6 +582,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         hasModuleInstructionsRead={() => true} // Instructor always has read instructions
         handleMarkInstructionAsRead={async () => {}} // No-op for instructor
         updatingStatus={false}
+        caseStudy={caseStudy}
+        onModuleUpdate={(updatedModule) => {
+          // Instructors don't edit, so this should not be called
+          console.log('Instructor tried to update module - this should not happen');
+        }}
       />
 
       <ViewExerciseModal
@@ -588,6 +595,12 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         exercise={selectedExercise}
         moduleTitle={selectedModule?.title}
         moduleNumber={selectedModule?.orderNumber}
+        caseStudy={caseStudy}
+        moduleId={selectedModule?.id}
+        onExerciseUpdate={(updatedExercise) => {
+          // Instructors don't edit, so this should not be called
+          console.log('Instructor tried to update exercise - this should not happen');
+        }}
       />
     </div>
   );

@@ -520,6 +520,11 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
           hasModuleInstructionsRead={hasModuleInstructionsRead}
           handleMarkInstructionAsRead={handleMarkInstructionAsRead}
           updatingStatus={updatingStatus}
+          caseStudy={caseStudy}
+          onModuleUpdate={(updatedModule) => {
+            // Students don't edit, so this should not be called
+            console.log('Student tried to update module - this should not happen');
+          }}
         />
 
         <ViewCaseStudyModal
@@ -529,6 +534,10 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
           hasCaseStudyInstructionsRead={hasCaseStudyInstructionsRead}
           handleMarkInstructionAsRead={handleMarkInstructionAsRead}
           updatingStatus={updatingStatus}
+          onCaseStudyUpdate={(updatedCaseStudy) => {
+            // Students don't edit, so this should not be called
+            console.log('Student tried to update case study - this should not happen');
+          }}
         />
 
         <InstructionRequiredModal
