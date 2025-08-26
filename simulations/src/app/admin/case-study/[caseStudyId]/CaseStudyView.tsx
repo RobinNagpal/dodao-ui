@@ -6,8 +6,9 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { CaseStudyWithRelations } from '@/types/api';
 import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
-import { BookOpen, Brain, ArrowLeft } from 'lucide-react';
+import { BookOpen, Brain } from 'lucide-react';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
+import BackButton from '@/components/navigation/BackButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -62,10 +63,6 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
     router.push('/login');
   };
 
-  const handleBack = () => {
-    router.push('/admin');
-  };
-
   const handleModuleClick = (module: CaseStudyModule) => {
     setSelectedModule(module as any);
     setShowModuleModal(true);
@@ -99,10 +96,9 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
           <h3 className="text-xl font-semibold text-gray-900 mb-3">Case Study Not Found</h3>
           <p className="text-gray-600 mb-6">The case study you’re looking for doesn’t exist or has been removed.</p>
           <Button
-            onClick={handleBack}
+            onClick={() => router.push('/admin')}
             className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
           </Button>
         </div>
@@ -131,16 +127,7 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
         {/* Back Button */}
-        <div className="mb-6">
-          <Button
-            onClick={handleBack}
-            variant="outline"
-            className="border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
+        <BackButton userType="admin" text="Back to Dashboard" href="/admin" />
 
         <Card className="backdrop-blur-xl bg-gradient-to-br from-emerald-50/80 to-green-50/80 border-white/20 shadow-lg mb-6">
           <CardHeader className="pb-4">

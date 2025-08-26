@@ -8,11 +8,12 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { DeleteResponse, CaseStudyWithRelations } from '@/types/api';
 import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
-import { BookOpen, Users, BarChart3, Target, Brain, GraduationCap, ArrowLeft, Eye, Trash2, TrendingUp, Calendar, Mail, CheckCircle, Clock } from 'lucide-react';
+import { BookOpen, Users, BarChart3, Target, Brain, GraduationCap, Eye, Trash2, TrendingUp, Calendar, Mail, CheckCircle, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import BackButton from '@/components/navigation/BackButton';
 import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
 import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
@@ -186,16 +187,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
         {/* Back Button */}
-        <div className="mb-6">
-          <Button
-            onClick={() => router.push('/instructor')}
-            variant="outline"
-            className="border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
+        <BackButton userType="instructor" text="Back to Dashboard" href="/instructor" />
 
         {/* Enhanced Tab Navigation */}
         <div className="border-b border-white/20">

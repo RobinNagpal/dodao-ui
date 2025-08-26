@@ -6,11 +6,12 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import StudentLoading from '@/components/student/StudentLoading';
 import type { ExerciseAttempt } from '@prisma/client';
-import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, ArrowLeft, Plus } from 'lucide-react';
+import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import AttemptDetailModal from '@/components/student/AttemptDetailModal';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
+import BackButton from '@/components/navigation/BackButton';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import StudentProgressStepper, { ProgressData } from '@/components/student/StudentProgressStepper';
 
@@ -335,16 +336,7 @@ Details: ${contextData.module.details}
       />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        <div className="mb-6">
-          <Button
-            onClick={() => router.push(`/student/case-study/${caseStudyId}`)}
-            variant="outline"
-            className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Main Page
-          </Button>
-        </div>
+        <BackButton userType="student" text="Back to Main Page" href={`/student/case-study/${caseStudyId}`} />
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Exercise Area */}
