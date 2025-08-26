@@ -126,7 +126,6 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
-        {/* Back Button */}
         <BackButton userType="admin" text="Back to Dashboard" href="/admin" />
 
         <Card className="backdrop-blur-xl bg-gradient-to-br from-emerald-50/80 to-green-50/80 border-white/20 shadow-lg mb-6">

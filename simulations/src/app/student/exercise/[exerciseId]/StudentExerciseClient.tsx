@@ -63,8 +63,6 @@ interface NextExerciseResponse {
   message: string;
 }
 
-// Using imported types from StudentProgressStepper
-
 export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyId }: StudentExerciseClientProps) {
   const [userEmail, setUserEmail] = useState<string>(() => {
     if (typeof window !== 'undefined') {
@@ -84,7 +82,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
 
   const router = useRouter();
 
-  // API hook to fetch exercise attempts
   const {
     data: attempts,
     loading: loadingAttempts,
@@ -95,41 +92,35 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     'Failed to load exercise attempts'
   );
 
-  // API hook to fetch context for AI
   const { data: contextData, loading: loadingContext } = useFetchData<ContextData>(
     `/api/student/exercises/${exerciseId}/context?studentEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !exerciseId || !userEmail },
     'Failed to load exercise context'
   );
 
-  // API hook to fetch exercise details
   const { data: exerciseData, loading: loadingExercise } = useFetchData<ExerciseData>(
     `/api/student/exercises/${exerciseId}?studentEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !exerciseId || !userEmail },
     'Failed to load exercise details'
   );
 
-  // API hook to fetch next exercise info
   const { data: nextExerciseData, loading: loadingNextExercise } = useFetchData<NextExerciseResponse>(
     `/api/student/exercises/${exerciseId}/next-exercise?studentEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !exerciseId || !userEmail },
     'Failed to load next exercise info'
   );
 
-  // API hook to fetch progress data for vertical stepper
   const { data: progressData, loading: loadingProgress } = useFetchData<ProgressData>(
     `/api/student/exercises/${exerciseId}/progress?studentEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !exerciseId || !userEmail },
     'Failed to load progress data'
   );
 
-  // API hooks for creating and updating attempts
   const { postData: createAttempt, loading: submittingAttempt } = usePostData<CreateAttemptResponse, CreateAttemptRequest>({
     successMessage: 'Response generated successfully!',
     errorMessage: 'Failed to generate AI response. Please try again.',
   });
 
-  // Then in useEffect, just handle the authentication check
   useEffect(() => {
     const userType = localStorage.getItem('user_type');
     const email = localStorage.getItem('user_email');
@@ -147,10 +138,8 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
 
       if (submittingAttempt) {
-        // If we're currently submitting, show the attempt we're working on
         setCurrentAttemptNumber(completedAttempts.length + 1);
       } else {
-        // If not submitting, show next available attempt number
         const currentNumber = completedAttempts.length >= 3 ? 3 : completedAttempts.length + 1;
         setCurrentAttemptNumber(currentNumber);
       }
@@ -169,12 +158,10 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       });
 
       if (result) {
-        // Clear the prompt, reset retry state, and refetch attempts
         setPrompt('');
         setShowRetryPrompt(false);
         await refetchAttempts();
 
-        // Show AI response in modal if successful
         if (result.attempt.promptResponse) {
           setCurrentAiResponse(result.attempt.promptResponse);
           setShowAiResponseModal(true);
@@ -182,7 +169,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       }
     } catch (error) {
       console.error('Error submitting prompt:', error);
-      // Error handling is done by the usePostData hook
     }
   };
 
@@ -190,7 +176,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     setHasMovedToNext(true);
 
     if (!nextExerciseData) {
-      // Fallback to case study if no navigation data
       if (caseStudyId) {
         router.push(`/student/case-study/${caseStudyId}`);
       } else {
@@ -200,17 +185,14 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     }
 
     if (nextExerciseData.isComplete) {
-      // Case study is complete, navigate to final summary
       router.push(`/student/final-summary/${nextExerciseData.caseStudyId}`);
     } else if (nextExerciseData.nextExerciseId) {
-      // Navigate to next exercise
       router.push(
         `/student/exercise/${nextExerciseData.nextExerciseId}?moduleId=${nextExerciseData.nextModuleId || moduleId}&caseStudyId=${
           nextExerciseData.caseStudyId || caseStudyId
         }`
       );
     } else {
-      // Fallback to case study
       if (caseStudyId) {
         router.push(`/student/case-study/${caseStudyId}`);
       } else {
@@ -250,7 +232,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const canSubmitNewAttempt = () => {
     if (!attempts) return true;
 
-    // Count completed attempts (completed or failed)
     const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
 
     return !hasMovedToNext && completedAttempts.length < 3;
@@ -262,7 +243,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
     const hasSuccess = attempts.some((attempt) => attempt.status === 'completed' && attempt.promptResponse);
 
-    // Don't show prompt input if student has successful attempt and hasn't clicked retry
     if (hasSuccess && completedAttempts.length < 3 && !showRetryPrompt && !submittingAttempt) {
       return false;
     }
@@ -273,7 +253,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const shouldShowAllAttemptsUsed = () => {
     if (!attempts) return false;
 
-    // Only show "All Attempts Used" when we have completed 3 attempts AND we're not currently submitting
     const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
 
     return !hasMovedToNext && completedAttempts.length >= 3 && !submittingAttempt;
@@ -318,7 +297,6 @@ Details: ${contextData.module.details}
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Floating Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-blue-200/30 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-purple-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
@@ -339,9 +317,7 @@ Details: ${contextData.module.details}
         <BackButton userType="student" text="Back to Main Page" href={`/student/case-study/${caseStudyId}`} />
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Main Exercise Area */}
           <div className="lg:col-span-3 space-y-6">
-            {/* Exercise Details */}
             {exerciseData && (
               <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
                 <div className="space-y-6">
@@ -359,7 +335,6 @@ Details: ${contextData.module.details}
                     </div>
                   </div>
 
-                  {/* Prompt Hint Section */}
                   {exerciseData.promptHint && (
                     <div className="border-t border-gray-200 pt-6">
                       <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
@@ -375,7 +350,6 @@ Details: ${contextData.module.details}
               </div>
             )}
 
-            {/* Enhanced Prompt Input */}
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
               {shouldShowPromptInput() && (
                 <div className="flex items-center justify-between mb-6">
@@ -387,7 +361,6 @@ Details: ${contextData.module.details}
                     <Sparkles className="h-5 w-5 text-yellow-500 ml-2 animate-pulse" />
                   </h2>
 
-                  {/* Context Badge Buttons */}
                   <div className="flex items-center space-x-3">
                     <span className="text-sm text-gray-600 font-medium">Add context:</span>
                     <button
@@ -496,7 +469,6 @@ Details: ${contextData.module.details}
               ) : null}
             </div>
 
-            {/* Attempt Rows */}
             {attempts && attempts.length > 0 && (
               <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
                 <div className="flex items-center justify-between mb-6">
@@ -552,15 +524,12 @@ Details: ${contextData.module.details}
             )}
           </div>
 
-          {/* Vertical Progress Stepper */}
           <div className="lg:col-span-1">{progressData && <StudentProgressStepper progressData={progressData} />}</div>
         </div>
       </div>
 
-      {/* Attempt Detail Modal */}
       <AttemptDetailModal isOpen={isAttemptModalOpen} onClose={closeAttemptModal} attempt={selectedAttempt} />
 
-      {/* AI Response Modal */}
       <ViewAiResponseModal open={showAiResponseModal} onClose={() => setShowAiResponseModal(false)} aiResponse={currentAiResponse} />
     </div>
   );

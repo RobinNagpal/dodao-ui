@@ -19,7 +19,6 @@ export default function StudentDashboard() {
   const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyWithRelations[]>([]);
   const router = useRouter();
 
-  // API hook to fetch enrolled case studies
   const { data: enrolledCaseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudyWithRelations[]>(
     `/api/case-studies?userEmail=${encodeURIComponent(userEmail)}&userType=student`,
     { skipInitialFetch: !userEmail },
@@ -40,7 +39,6 @@ export default function StudentDashboard() {
   }, [router]);
 
   useEffect(() => {
-    // Filter enrolled case studies based on selected subject
     if (enrolledCaseStudies) {
       if (selectedSubject === 'ALL') {
         setFilteredCaseStudies(enrolledCaseStudies);
@@ -60,7 +58,6 @@ export default function StudentDashboard() {
     router.push(`/student/case-study/${caseStudy.id}`);
   };
 
-  // Get subjects with counts from enrolled case studies only
   const getEnrolledSubjectsWithCounts = () => {
     if (!enrolledCaseStudies) return [];
 
@@ -70,7 +67,7 @@ export default function StudentDashboard() {
         subject,
         count: enrolledCaseStudies.filter((cs) => cs.subject === subject).length,
       }))
-      .filter((item) => item.count > 0); // Only show subjects with enrolled case studies
+      .filter((item) => item.count > 0);
   };
 
   const enrolledSubjectsWithCounts = getEnrolledSubjectsWithCounts();
@@ -267,7 +264,6 @@ export default function StudentDashboard() {
               </div>
             )}
 
-            {/* No filtered results */}
             {enrolledCaseStudies && enrolledCaseStudies.length > 0 && filteredCaseStudies.length === 0 && selectedSubject !== 'ALL' && (
               <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
                 <CardContent className="text-center py-16">

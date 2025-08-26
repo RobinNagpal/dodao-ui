@@ -54,11 +54,9 @@ export default function CreateCaseStudyPage() {
   const router = useRouter();
   const { showNotification } = useNotificationContext();
 
-  // Auth check
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Form state
   const [title, setTitle] = useState<string>('');
   const [shortDescription, setShortDescription] = useState<string>('');
   const [details, setDetails] = useState<string>('');
@@ -252,11 +250,9 @@ export default function CreateCaseStudyPage() {
       <AdminNavbar title="Create New Case Study" userEmail={userEmail} onLogout={handleLogout} icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        {/* Back Button */}
         <BackButton userType="admin" text="Back to Dashboard" href="/admin" />
         <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8">
           <div className="space-y-8">
-            {/* Basic Information */}
             <div className="border-b border-gray-200 pb-6">
               <h2 className="text-xl font-semibold text-gray-900 flex items-center mb-6">
                 <BookOpen className="h-5 w-5 mr-2 text-emerald-600" />

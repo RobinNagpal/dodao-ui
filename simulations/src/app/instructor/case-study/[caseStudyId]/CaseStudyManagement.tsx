@@ -46,7 +46,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'analytics'>('overview');
 
-  // Modal states
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [studentToClear, setStudentToClear] = useState<{ id: string; email: string } | null>(null);
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
@@ -64,7 +63,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     'Failed to load case study'
   );
 
-  // API hook to fetch students progress data
   const {
     data: studentsProgress,
     loading: loadingStudents,
@@ -75,7 +73,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     'Failed to load students progress'
   );
 
-  // Delete hook for clearing student attempts
   const { deleteData: clearAttempts, loading: clearingAttempts } = useDeleteData<DeleteResponse, never>({
     successMessage: 'Student attempts cleared successfully!',
     errorMessage: 'Failed to clear student attempts',
@@ -170,7 +167,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
-      {/* Floating Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-purple-200/30 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
@@ -186,7 +182,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
-        {/* Back Button */}
         <BackButton userType="instructor" text="Back to Dashboard" href="/instructor" />
 
         {/* Enhanced Tab Navigation */}
@@ -469,7 +464,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         )}
       </div>
 
-      {/* Confirmation Modal */}
       <ConfirmationModal
         open={showDeleteConfirm}
         showSemiTransparentBg={true}

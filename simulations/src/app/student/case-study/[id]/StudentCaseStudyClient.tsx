@@ -119,7 +119,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       });
 
       if (result) {
-        // Refetch case study data to get updated instruction status
         await refetchCaseStudy();
       }
     } catch (error) {
@@ -128,7 +127,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   };
 
   const handleCloseCaseStudyModal = async () => {
-    // Auto-mark as read when closing modal if not already read
     if (!hasCaseStudyInstructionsRead()) {
       await handleMarkInstructionAsRead('case_study');
     } else {
@@ -137,7 +135,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   };
 
   const handleCloseModuleModal = async () => {
-    // Auto-mark as read when closing modal if not already read
     if (selectedModule && !hasModuleInstructionsRead(selectedModule.id)) {
       await handleMarkInstructionAsRead('module', selectedModule.id);
     } else {
@@ -146,7 +143,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   };
 
   const handleModuleClick = (module: any) => {
-    // Only check if case study instructions have been read, not module-specific requirements
     if (!hasCaseStudyInstructionsRead()) {
       setInstructionModalData({
         type: 'case_study',
@@ -165,7 +161,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       return;
     }
 
-    // Check if case study instructions have been read first
     if (!hasCaseStudyInstructionsRead()) {
       setInstructionModalData({
         type: 'case_study',
@@ -175,7 +170,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       return;
     }
 
-    // Check if module instructions have been read
     if (!hasModuleInstructionsRead(moduleId)) {
       setInstructionModalData({
         type: 'module',
@@ -196,7 +190,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     if (instructionModalData?.type === 'case_study') {
       setShowCaseStudyModal(true);
     } else if (instructionModalData?.type === 'module' && instructionModalData.moduleId) {
-      // Find the module to set as selected
       const caseStudyModule = caseStudy?.modules?.find((m) => m.id === instructionModalData.moduleId);
       if (caseStudyModule) {
         setSelectedModule(caseStudyModule);
@@ -346,7 +339,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
                           </div>
 
                           <div className="w-full max-w-xs space-y-2">
-                            {/* Module Details Card */}
                             <div
                               onClick={() => handleModuleClick(module)}
                               className={`

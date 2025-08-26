@@ -52,18 +52,15 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'case-studies' | 'enrollments'>('case-studies');
   const router = useRouter();
 
-  // Modal states
   const [showCreateEnrollment, setShowCreateEnrollment] = useState<boolean>(false);
   const [showManageStudents, setShowManageStudents] = useState<boolean>(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
 
-  // Selected items
   const [selectedEnrollmentId, setSelectedEnrollmentId] = useState<string>('');
   const [selectedEnrollmentTitle, setSelectedEnrollmentTitle] = useState<string>('');
   const [deleteType, setDeleteType] = useState<DeleteType>('case-study');
   const [deleteId, setDeleteId] = useState<string>('');
 
-  // Fetch data
   const {
     data: caseStudies,
     loading: loadingCaseStudies,
@@ -80,7 +77,6 @@ export default function AdminDashboard() {
     reFetchData: refetchEnrollments,
   } = useFetchData<EnrollmentListItem[]>('/api/enrollments', {}, 'Failed to load enrollments');
 
-  // Delete hooks
   const { deleteData: deleteCaseStudy, loading: deletingCaseStudy } = useDeleteData<DeleteResponse, never>({
     successMessage: 'Case study deleted successfully!',
     errorMessage: 'Failed to delete case study',
@@ -91,7 +87,6 @@ export default function AdminDashboard() {
     errorMessage: 'Failed to delete enrollment',
   });
 
-  // Check authentication on page load
   useEffect((): void => {
     const userType: string | null = localStorage.getItem('user_type');
     const email: string | null = localStorage.getItem('user_email');

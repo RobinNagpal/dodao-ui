@@ -69,7 +69,6 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
 
   const router = useRouter();
 
-  // API hook to fetch existing summary
   const {
     data: summaryData,
     loading: loadingSummary,
@@ -80,20 +79,17 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
     'Failed to load final summary'
   );
 
-  // API hook to fetch summary context (for showing the prompt)
   const { data: contextData, loading: loadingContext } = useFetchData<SummaryContextData>(
     `/api/student/final-summary/${caseStudyId}/context?studentEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
     'Failed to load summary context'
   );
 
-  // API hook for generating summary
   const { postData: generateSummary, loading: generatingSummary } = usePostData<GenerateSummaryResponse, GenerateSummaryRequest>({
     successMessage: 'Final summary generated successfully!',
     errorMessage: 'Failed to generate final summary. Please try again.',
   });
 
-  // Authentication check
   useEffect(() => {
     const userType = localStorage.getItem('user_type');
     const email = localStorage.getItem('user_email');
@@ -121,7 +117,6 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
       if (result) {
         await refetchSummary();
 
-        // Show AI response in modal if successful
         if (result.summary.response) {
           setCurrentAiResponse(result.summary.response);
           setShowAiResponseModal(true);
@@ -141,7 +136,6 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
 
   const handleDownloadPdf = () => {
     if (summaryData?.response) {
-      // Create a new window with the summary content for printing
       const printWindow = window.open('', '_blank');
       if (printWindow) {
         printWindow.document.write(`
@@ -190,7 +184,6 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Floating Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-blue-200/30 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-purple-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
@@ -209,7 +202,6 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
         <BackButton userType="student" text="Back to Case Study" href={`/student/case-study/${caseStudyId}`} />
 
         <div className="space-y-8">
-          {/* Header Section */}
           <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8 text-center">
             <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
               <FileText className="h-8 w-8 text-purple-600" />
@@ -218,7 +210,6 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
             <p className="text-gray-600 text-base">Generate a comprehensive conclusion and analysis of your entire case study journey</p>
           </div>
 
-          {/* Context Preview Section */}
           {contextData && (
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
@@ -234,7 +225,6 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
             </div>
           )}
 
-          {/* Summary Generation/Display Section */}
           <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
             {!summaryData || summaryData.status === 'failed' ? (
               <div className="text-center">
@@ -303,7 +293,6 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
         </div>
       </div>
 
-      {/* AI Response Modal */}
       <ViewAiResponseModal open={showAiResponseModal} onClose={() => setShowAiResponseModal(false)} aiResponse={currentAiResponse} />
     </div>
   );

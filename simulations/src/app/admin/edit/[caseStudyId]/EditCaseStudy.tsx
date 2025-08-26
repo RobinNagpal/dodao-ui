@@ -17,6 +17,7 @@ import type { UpdateCaseStudyRequest } from '@/types/api';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
 import BackButton from '@/components/navigation/BackButton';
 import AdminLoading from '@/components/admin/AdminLoading';
+import { getSubjectDisplayName } from '@/utils/subject-utils';
 
 interface Module {
   id?: string;
@@ -64,23 +65,18 @@ interface EditCaseStudyClientProps {
   caseStudyId: string;
 }
 
-const subjectOptions = [
-  { value: 'HR', label: 'Human Resources' },
-  { value: 'ECONOMICS', label: 'Economics' },
-  { value: 'MARKETING', label: 'Marketing' },
-  { value: 'FINANCE', label: 'Finance' },
-  { value: 'OPERATIONS', label: 'Operations' },
-];
+const subjectOptions = (['HR', 'ECONOMICS', 'MARKETING', 'FINANCE', 'OPERATIONS'] as BusinessSubject[]).map((subject) => ({
+  value: subject,
+  label: getSubjectDisplayName(subject),
+}));
 
 export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClientProps) {
   const router = useRouter();
   const { showNotification } = useNotificationContext();
 
-  // Auth check
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Form state
   const [title, setTitle] = useState('');
   const [shortDescription, setShortDescription] = useState('');
   const [details, setDetails] = useState('');
@@ -109,7 +105,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
     }
   );
 
-  // Initialize form when case study data is loaded
   useEffect(() => {
     if (caseStudy) {
       setTitle(caseStudy.title);
@@ -183,7 +178,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
   };
 
   const handleSubmit = async () => {
-    // Validation
     if (!title.trim()) {
       showNotification({ type: 'error', message: 'Title is required' });
       return;
@@ -205,7 +199,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
       return;
     }
 
-    // Validate modules
     for (const caseStudyModule of modules) {
       if (!caseStudyModule.title.trim() || !caseStudyModule.shortDescription.trim() || !caseStudyModule.details.trim()) {
         showNotification({ type: 'error', message: 'All module fields are required' });
@@ -253,7 +246,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
     }
   };
 
-  // Check authentication on page load
   useEffect(() => {
     const userType = localStorage.getItem('user_type');
     const email = localStorage.getItem('user_email');
@@ -283,7 +275,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
       <AdminNavbar title="Edit Case Study" userEmail={userEmail} onLogout={handleLogout} icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 relative z-10">
-        {/* Back Button */}
         <BackButton userType="admin" text="Back to Dashboard" href="/admin" />
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-emerald-100/50 p-8">
           <div className="space-y-8">

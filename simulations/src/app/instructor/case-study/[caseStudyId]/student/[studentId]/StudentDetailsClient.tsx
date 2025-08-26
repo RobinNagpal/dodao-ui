@@ -192,7 +192,6 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
-      {/* Floating Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-purple-200/30 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
@@ -208,10 +207,8 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
-        {/* Back Button */}
         <BackButton userType="instructor" text="Back to Case Study" href={`/instructor/case-study/${caseStudyId}`} />
 
-        {/* Student Overview */}
         <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8 mb-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">
@@ -257,7 +254,6 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
             </div>
           </div>
 
-          {/* Statistics Grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
               <div className="flex items-center space-x-2 mb-2">
@@ -299,7 +295,6 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
           </div>
         </div>
 
-        {/* Final Submission */}
         {studentDetails.finalSubmission && (
           <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
@@ -353,7 +348,6 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
           </div>
         )}
 
-        {/* Modules and Exercises */}
         <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center">
             <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-xl mr-3">
