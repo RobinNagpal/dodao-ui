@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import StudentLoading from '@/components/student/StudentLoading';
 import { FileText, Send, CheckCircle, Brain, Sparkles, Target, BookOpen, Save } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { CaseStudyWithRelations } from '@/types/api';
@@ -108,20 +109,7 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
   };
 
   if (isLoading || loadingCaseStudy || loadingSubmission) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <FileText className="h-6 w-6 text-blue-600 animate-pulse" />
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading Final Submission</h3>
-          <p className="text-gray-600">Preparing your submission workspace...</p>
-        </div>
-      </div>
-    );
+    return <StudentLoading text="Loading Final Submission" subtitle="Preparing your submission workspace..." variant="enhanced" />;
   }
 
   return (

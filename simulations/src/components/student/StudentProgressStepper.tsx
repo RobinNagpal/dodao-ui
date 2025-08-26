@@ -1,6 +1,5 @@
-import { Check, Clock, Target, ArrowRight } from 'lucide-react';
+import { Check, Clock, Target } from 'lucide-react';
 
-// Define explicit types for the component props
 export interface ExerciseProgress {
   id: string;
   title: string;
@@ -43,7 +42,6 @@ export default function StudentProgressStepper({ progressData }: StudentProgress
       <div className="space-y-6">
         {progressData.modules.map((module) => (
           <div key={module.id} className="relative">
-            {/* Module Header */}
             <div className="flex items-center space-x-3 mb-4">
               <div
                 className={`

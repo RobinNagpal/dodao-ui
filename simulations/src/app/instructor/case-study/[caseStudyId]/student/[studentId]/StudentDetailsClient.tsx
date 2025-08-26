@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import {
   Brain,
-  BookOpen,
   User,
   Calendar,
   Target,
@@ -19,15 +18,14 @@ import {
   ChevronDown,
   ChevronRight,
   Mail,
-  Hash,
   Activity,
   Layers,
 } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
-import BackButton from '@/components/shared/BackButton';
+import BackButton from '@/components/navigation/BackButton';
+import InstructorLoading from '@/components/instructor/InstructorLoading';
 
 interface StudentDetailsClientProps {
   caseStudyId: string;
@@ -167,20 +165,7 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
   };
 
   if (isLoading || loadingDetails) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-200 border-t-purple-600 mx-auto mb-4"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Brain className="h-6 w-6 text-purple-600 animate-pulse" />
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading Student Details</h3>
-          <p className="text-gray-600">Preparing detailed analysis...</p>
-        </div>
-      </div>
-    );
+    return <InstructorLoading text="Loading Student Details" subtitle="Preparing detailed analysis..." variant="enhanced" />;
   }
 
   if (!studentDetails) {

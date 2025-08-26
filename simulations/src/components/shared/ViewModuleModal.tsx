@@ -18,7 +18,7 @@ interface ModuleModalProps {
   hasModuleInstructionsRead: (moduleId: string) => boolean;
   handleMarkInstructionAsRead: (type: 'case_study' | 'module', moduleId?: string) => Promise<void>;
   updatingStatus: boolean;
-  caseStudy?: any; // Pass the full case study instead of just ID
+  caseStudy?: any;
   onModuleUpdate?: (updatedModule: any) => void;
 }
 
@@ -112,7 +112,9 @@ export default function ViewModuleModal({
 
       if (updatedCaseStudy) {
         const updatedModule = (updatedCaseStudy as any).modules?.find((m: any) => m.id === selectedModule.id);
-        onModuleUpdate?.(updatedModule);
+        if (updatedModule) {
+          onModuleUpdate?.(updatedModule);
+        }
         setIsEditMode(false);
         onClose(); // Close modal after successful save
       }

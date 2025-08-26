@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import StudentLoading from '@/components/student/StudentLoading';
 import type { ExerciseAttempt } from '@prisma/client';
 import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, ArrowLeft, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,7 +12,7 @@ import { parseMarkdown } from '@/utils/parse-markdown';
 import AttemptDetailModal from '@/components/student/AttemptDetailModal';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
-import StudentProgressStepper, { ProgressData, ModuleProgress, ExerciseProgress } from '@/components/student/StudentProgressStepper';
+import StudentProgressStepper, { ProgressData } from '@/components/student/StudentProgressStepper';
 
 interface StudentExerciseClientProps {
   exerciseId: string;
@@ -51,12 +52,6 @@ interface CreateAttemptRequest {
 
 interface CreateAttemptResponse {
   attempt: ExerciseAttempt;
-}
-
-interface UpdateAttemptRequest {
-  attemptId: string;
-  updatedResponse: string;
-  studentEmail: string;
 }
 
 interface NextExerciseResponse {
@@ -148,9 +143,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
 
   useEffect(() => {
     if (attempts) {
-      // Show current attempt number based on completed attempts
-      // When submitting a new attempt, don't count it until it's actually completed
-      // This prevents showing "All attempts used" while waiting for AI response
       const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
 
       if (submittingAttempt) {
@@ -274,12 +266,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       return false;
     }
 
-    // Show prompt input in these cases:
-    // 1. No attempts yet
-    // 2. No successful attempts yet (failed attempts only)
-    // 3. All attempts used
-    // 4. Currently submitting
-    // 5. User explicitly clicked retry
     return !hasMovedToNext && (completedAttempts.length < 3 || submittingAttempt || showRetryPrompt);
   };
 
@@ -322,28 +308,11 @@ Details: ${contextData.module.details}
     const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
     const hasSuccess = attempts.some((attempt) => attempt.status === 'completed' && attempt.promptResponse);
 
-    // Show success state with retry option when:
-    // 1. Has at least one successful attempt
-    // 2. Haven't used all 3 attempts yet
-    // 3. Not currently submitting or in retry mode
     return hasSuccess && completedAttempts.length < 3;
   };
 
   if (isLoading || loadingAttempts || loadingContext || loadingExercise || loadingNextExercise || loadingProgress) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Brain className="h-6 w-6 text-blue-600 animate-pulse" />
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading AI Exercise</h3>
-          <p className="text-gray-600">Preparing your interactive learning experience...</p>
-        </div>
-      </div>
-    );
+    return <StudentLoading text="Loading AI Exercise" subtitle="Preparing your interactive learning experience..." variant="enhanced" />;
   }
 
   return (

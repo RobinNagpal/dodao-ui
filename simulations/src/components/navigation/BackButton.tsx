@@ -30,7 +30,7 @@ export default function BackButton({ userType, text, href, className = '' }: Bac
   };
 
   return (
-    <div className={`mb-6 ${className}`}>
+    <div className={`mb-4 ${className}`}>
       <Button onClick={handleClick} variant="outline" className={`${colorSchemes[userType]} bg-transparent`}>
         <ArrowLeft className="h-4 w-4 mr-2" />
         {text}

@@ -7,25 +7,8 @@ import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { DeleteResponse, CaseStudyWithRelations } from '@/types/api';
-import {
-  BookOpen,
-  Users,
-  BarChart3,
-  Target,
-  Brain,
-  Sparkles,
-  GraduationCap,
-  Zap,
-  ArrowLeft,
-  Eye,
-  Trash2,
-  RefreshCw,
-  TrendingUp,
-  Calendar,
-  Mail,
-  CheckCircle,
-  Clock,
-} from 'lucide-react';
+import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
+import { BookOpen, Users, BarChart3, Target, Brain, GraduationCap, ArrowLeft, Eye, Trash2, TrendingUp, Calendar, Mail, CheckCircle, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -34,6 +17,7 @@ import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
 import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
+import InstructorLoading from '@/components/instructor/InstructorLoading';
 
 interface CaseStudyManagementClientProps {
   caseStudyId: string;
@@ -155,54 +139,8 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     }
   };
 
-  const getSubjectDisplayName = (subject: string): string => {
-    const displayNames: Record<string, string> = {
-      HR: 'Human Resources',
-      ECONOMICS: 'Economics',
-      MARKETING: 'Marketing',
-      FINANCE: 'Finance',
-      OPERATIONS: 'Operations',
-    };
-    return displayNames[subject] || subject;
-  };
-
-  const getSubjectIcon = (subject: string) => {
-    const icons: Record<string, string> = {
-      HR: '👥',
-      ECONOMICS: '📊',
-      MARKETING: '📈',
-      FINANCE: '💰',
-      OPERATIONS: '⚙️',
-    };
-    return icons[subject] || '📚';
-  };
-
-  const getSubjectColor = (subject: string) => {
-    const colors: Record<string, string> = {
-      HR: 'from-green-500 to-emerald-600',
-      ECONOMICS: 'from-blue-500 to-cyan-600',
-      MARKETING: 'from-pink-500 to-rose-600',
-      FINANCE: 'from-yellow-500 to-orange-600',
-      OPERATIONS: 'from-purple-500 to-indigo-600',
-    };
-    return colors[subject] || 'from-gray-500 to-gray-600';
-  };
-
   if (isLoading || loadingCaseStudy || (activeTab === 'students' && loadingStudents)) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-200 border-t-purple-600 mx-auto mb-4"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Brain className="h-6 w-6 text-purple-600 animate-pulse" />
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading Case Study</h3>
-          <p className="text-gray-600">Preparing management console...</p>
-        </div>
-      </div>
-    );
+    return <InstructorLoading text="Loading Case Study" subtitle="Preparing management console..." variant="enhanced" />;
   }
 
   if (!caseStudy) {
@@ -227,7 +165,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     );
   }
 
-  const enrolledStudents = caseStudy?.enrollments?.reduce((total: number, enrollment: any) => total + (enrollment.students?.length || 0), 0) || 0;
   const modules = caseStudy?.modules || [];
 
   return (
@@ -342,14 +279,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
                   <CardDescription className="text-gray-600">Click on modules and exercises to view details</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <CaseStudyStepper
-                    modules={modules as any}
-                    userType="instructor"
-                    onModuleClick={handleModuleClick}
-                    onExerciseClick={handleExerciseClick}
-                    getSubjectIcon={getSubjectIcon}
-                    getSubjectColor={getSubjectColor}
-                  />
+                  <CaseStudyStepper modules={modules as any} userType="instructor" onModuleClick={handleModuleClick} onExerciseClick={handleExerciseClick} />
                 </CardContent>
               </Card>
             )}

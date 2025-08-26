@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { CaseStudyWithRelations } from '@/types/api';
+import StudentLoading from '@/components/student/StudentLoading';
+import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
 import { BookOpen, Target, Brain, Clock, Lock, ArrowLeft, Check } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -52,39 +54,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     successMessage: 'Instructions marked as read!',
     errorMessage: 'Failed to update instruction status. Please try again.',
   });
-
-  const getSubjectDisplayName = (subject: string) => {
-    const displayNames: Record<string, string> = {
-      HR: 'Human Resources',
-      ECONOMICS: 'Economics',
-      MARKETING: 'Marketing',
-      FINANCE: 'Finance',
-      OPERATIONS: 'Operations',
-    };
-    return displayNames[subject] || subject;
-  };
-
-  const getSubjectIcon = (subject: string) => {
-    const icons: Record<string, string> = {
-      HR: '👥',
-      ECONOMICS: '📊',
-      MARKETING: '📈',
-      FINANCE: '💰',
-      OPERATIONS: '⚙️',
-    };
-    return icons[subject] || '📚';
-  };
-
-  const getSubjectColor = (subject: string) => {
-    const colors: Record<string, string> = {
-      HR: 'from-green-500 to-emerald-600',
-      ECONOMICS: 'from-blue-500 to-cyan-600',
-      MARKETING: 'from-pink-500 to-rose-600',
-      FINANCE: 'from-yellow-500 to-orange-600',
-      OPERATIONS: 'from-purple-500 to-indigo-600',
-    };
-    return colors[subject] || 'from-gray-500 to-gray-600';
-  };
 
   const hasAttempts = (exercise: any) => {
     return exercise.attempts && exercise.attempts.length > 0;
@@ -249,22 +218,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   }, [router]);
 
   if (isLoading || loadingCaseStudy) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 flex items-center justify-center">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Brain className="h-6 w-6 text-blue-600" />
-            </div>
-          </div>
-          <div className="text-center">
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">Loading case study...</h3>
-            <p className="text-gray-600">Preparing your learning experience</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <StudentLoading text="Loading case study..." subtitle="Preparing your learning experience" variant="enhanced" />;
   }
 
   if (!caseStudy) {

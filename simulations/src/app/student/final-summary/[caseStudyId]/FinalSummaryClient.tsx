@@ -5,11 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Brain, FileText, Download, Eye, Sparkles, CheckCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
-import BackButton from '@/components/shared/BackButton';
+import BackButton from '@/components/navigation/BackButton';
+import StudentLoading from '@/components/student/StudentLoading';
 
 interface FinalSummaryClientProps {
   caseStudyId: string;
@@ -185,20 +185,7 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
   };
 
   if (isLoading || loadingSummary || loadingContext) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Brain className="h-6 w-6 text-blue-600 animate-pulse" />
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading Final Summary</h3>
-          <p className="text-gray-600">Preparing your case study summary...</p>
-        </div>
-      </div>
-    );
+    return <StudentLoading text="Loading Final Summary" subtitle="Preparing your case study summary..." variant="enhanced" />;
   }
 
   return (

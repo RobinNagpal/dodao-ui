@@ -15,7 +15,8 @@ import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import type { BusinessSubject } from '@prisma/client';
 import type { UpdateCaseStudyRequest } from '@/types/api';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
-import BackButton from '@/components/shared/BackButton';
+import BackButton from '@/components/navigation/BackButton';
+import AdminLoading from '@/components/admin/AdminLoading';
 
 interface Module {
   id?: string;
@@ -268,18 +269,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
   }, [router]);
 
   if (isLoading || loadingCaseStudy) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-200/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-200/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        </div>
-        <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-sm px-8 py-6 rounded-2xl shadow-xl border border-emerald-100">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
-          <span className="text-lg font-medium bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">Loading case study...</span>
-        </div>
-      </div>
-    );
+    return <AdminLoading text="Loading case study..." subtitle="Preparing edit form..." />;
   }
 
   return (

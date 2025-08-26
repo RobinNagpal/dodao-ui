@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import InstructorManageStudentsModal from '@/components/instructor/InstructorManageStudentsModal';
 import type { CaseStudy } from '@/types';
+import { getSubjectDisplayName } from '@/utils/subject-utils';
 import { BookOpen, Users, GraduationCap, Brain } from 'lucide-react';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import InstructorLoading from '@/components/instructor/InstructorLoading';
 
 export default function InstructorDashboard() {
   const [userEmail, setUserEmail] = useState<string>('');
@@ -62,36 +64,12 @@ export default function InstructorDashboard() {
     await refetchCaseStudies();
   };
 
-  const getSubjectDisplayName = (subject: string) => {
-    const displayNames: Record<string, string> = {
-      HR: 'Human Resources',
-      ECONOMICS: 'Economics',
-      MARKETING: 'Marketing',
-      FINANCE: 'Finance',
-      OPERATIONS: 'Operations',
-    };
-    return displayNames[subject] || subject;
-  };
-
   const getEnrollmentCount = (caseStudy: CaseStudy) => {
     return caseStudy.enrollments?.reduce((total, enrollment) => total + (enrollment.students?.length || 0), 0) || 0;
   };
 
   if (isLoading || loadingCaseStudies) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-200 border-t-purple-600 mx-auto mb-4"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <GraduationCap className="h-6 w-6 text-purple-600 animate-pulse" />
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading Dashboard</h3>
-          <p className="text-gray-600">Preparing your instructor console...</p>
-        </div>
-      </div>
-    );
+    return <InstructorLoading text="Loading Dashboard" subtitle="Preparing your instructor console..." variant="enhanced" />;
   }
 
   return (
