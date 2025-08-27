@@ -38,7 +38,7 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
 
   // Fetch case studies
   const { data: caseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudy[]>(
-    '/api/case-studies',
+    `/api/case-studies?userEmail=${encodeURIComponent(adminEmail)}&userType=admin`,
     { skipInitialFetch: !isOpen },
     'Failed to load case studies'
   );

@@ -7,8 +7,9 @@ import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { DeleteResponse, CaseStudyWithRelations } from '@/types/api';
+import type { StudentTableData, ModuleTableData } from '@/types';
 import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
-import { BookOpen, Users, BarChart3, Target, Brain, GraduationCap, Eye, Trash2, TrendingUp, Calendar, Mail, CheckCircle, Clock } from 'lucide-react';
+import { BookOpen, Users, BarChart3, GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -19,26 +20,10 @@ import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
 import InstructorLoading from '@/components/instructor/InstructorLoading';
+import StudentTable from '@/components/instructor/StudentTable';
 
 interface CaseStudyManagementClientProps {
   caseStudyId: string;
-}
-
-interface StudentProgress {
-  id: string;
-  assignedStudentId: string; // student email
-  enrollmentId: string;
-  totalExercises: number;
-  attemptedExercises: number;
-  currentModule?: {
-    moduleNumber: number;
-    moduleTitle: string;
-    exerciseNumber: number;
-    exerciseTitle: string;
-  };
-  completionPercentage: number;
-  hasFinalSubmission: boolean;
-  createdAt: string;
 }
 
 export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyManagementClientProps) {
@@ -56,21 +41,24 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
 
   const router = useRouter();
 
-  // API hook to fetch case study data
   const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelations>(
     `/api/case-studies/${caseStudyId}?userType=instructor&userEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
     'Failed to load case study'
   );
 
+  // Fetch detailed student data for the table view
   const {
-    data: studentsProgress,
-    loading: loadingStudents,
-    reFetchData: refetchStudents,
-  } = useFetchData<StudentProgress[]>(
-    `/api/instructor/case-studies/${caseStudyId}/students?instructorEmail=${encodeURIComponent(userEmail)}`,
+    data: studentsTableData,
+    loading: loadingStudentsTable,
+    reFetchData: refetchStudentsTable,
+  } = useFetchData<{
+    students: StudentTableData[];
+    modules: ModuleTableData[];
+  }>(
+    `/api/instructor/case-studies/${caseStudyId}/students-table?instructorEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
-    'Failed to load students progress'
+    'Failed to load students table data'
   );
 
   const { deleteData: clearAttempts, loading: clearingAttempts } = useDeleteData<DeleteResponse, never>({
@@ -110,7 +98,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       await clearAttempts(url);
 
       // Refresh students data
-      await refetchStudents();
+      await refetchStudentsTable();
       setShowDeleteConfirm(false);
       setStudentToClear(null);
     } catch (error: unknown) {
@@ -137,7 +125,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     }
   };
 
-  if (isLoading || loadingCaseStudy || (activeTab === 'students' && loadingStudents)) {
+  if (isLoading || loadingCaseStudy || (activeTab === 'students' && loadingStudentsTable)) {
     return <InstructorLoading text="Loading Case Study" subtitle="Preparing management console..." variant="enhanced" />;
   }
 
@@ -275,151 +263,14 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
 
         {activeTab === 'students' && (
           <div className="space-y-8">
-            {/* Students List */}
-            {studentsProgress && studentsProgress.length > 0 ? (
-              <div className="space-y-6">
-                {studentsProgress.map((student) => (
-                  <div key={student.id} className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8">
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center space-x-4">
-                        <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full w-12 h-12 flex items-center justify-center">
-                          <span className="text-white font-bold text-lg">{student.assignedStudentId.charAt(0).toUpperCase()}</span>
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-bold text-gray-900 flex items-center">
-                            <Mail className="h-4 w-4 text-gray-500 mr-2" />
-                            {student.assignedStudentId}
-                          </h3>
-                          <p className="text-sm text-gray-600 flex items-center">
-                            <Calendar className="h-4 w-4 mr-1" />
-                            Enrolled: {new Date(student.createdAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center space-x-4">
-                        {/* Progress Circle */}
-                        <div className="relative w-16 h-16">
-                          <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
-                            <path
-                              className="text-gray-200"
-                              stroke="currentColor"
-                              strokeWidth="3"
-                              fill="transparent"
-                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                            />
-                            <path
-                              className="text-purple-600"
-                              stroke="currentColor"
-                              strokeWidth="3"
-                              fill="transparent"
-                              strokeLinecap="round"
-                              strokeDasharray={`${student.completionPercentage}, 100`}
-                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                            />
-                          </svg>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-sm font-bold text-gray-900">{student.completionPercentage}%</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Progress Stats */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                      <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <CheckCircle className="h-4 w-4 text-green-600" />
-                          <span className="text-sm font-medium text-green-800">Completed</span>
-                        </div>
-                        <p className="text-2xl font-bold text-green-900">{student.attemptedExercises}</p>
-                        <p className="text-xs text-green-600">out of {student.totalExercises} exercises</p>
-                      </div>
-
-                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <TrendingUp className="h-4 w-4 text-blue-600" />
-                          <span className="text-sm font-medium text-blue-800">Progress</span>
-                        </div>
-                        <p className="text-2xl font-bold text-blue-900">{student.completionPercentage}%</p>
-                        <p className="text-xs text-blue-600">completion rate</p>
-                      </div>
-
-                      <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <Clock className="h-4 w-4 text-purple-600" />
-                          <span className="text-sm font-medium text-purple-800">Current Position</span>
-                        </div>
-                        {student.currentModule ? (
-                          <>
-                            <p className="text-sm font-bold text-purple-900">Module {student.currentModule.moduleNumber}</p>
-                            <p className="text-xs text-purple-600">Exercise {student.currentModule.exerciseNumber}</p>
-                          </>
-                        ) : (
-                          <p className="text-sm text-purple-600">All exercises completed</p>
-                        )}
-                      </div>
-
-                      <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-4 border border-yellow-200">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <Target className="h-4 w-4 text-yellow-600" />
-                          <span className="text-sm font-medium text-yellow-800">Final Submission</span>
-                        </div>
-                        <p className="text-lg font-bold text-yellow-900">{student.hasFinalSubmission ? 'Submitted' : 'Pending'}</p>
-                        <p className="text-xs text-yellow-600">{student.hasFinalSubmission ? 'Review available' : 'Not submitted yet'}</p>
-                      </div>
-                    </div>
-
-                    {/* Current Exercise Info */}
-                    {student.currentModule && (
-                      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-4 border border-indigo-200 mb-6">
-                        <h4 className="font-semibold text-indigo-900 mb-2 flex items-center">
-                          <Brain className="h-4 w-4 text-indigo-600 mr-2" />
-                          Currently Working On
-                        </h4>
-                        <p className="text-sm text-indigo-700">
-                          <strong>Module {student.currentModule.moduleNumber}:</strong> {student.currentModule.moduleTitle}
-                        </p>
-                        <p className="text-sm text-indigo-600">
-                          <strong>Exercise {student.currentModule.exerciseNumber}:</strong> {student.currentModule.exerciseTitle}
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Action Buttons */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex space-x-3">
-                        <Button
-                          onClick={() => viewStudentDetails(student.id)}
-                          className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
-                        >
-                          <Eye className="h-4 w-4 mr-2" />
-                          View Details
-                        </Button>
-                        <Button
-                          onClick={() => handleClearStudentAttempts(student.id, student.assignedStudentId)}
-                          disabled={clearingAttempts}
-                          variant="outline"
-                          className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 bg-transparent"
-                        >
-                          {<Trash2 className="h-4 w-4 mr-2" />}
-                          {'Clear Attempts'}
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-12">
-                <div className="text-center py-16">
-                  <div className="bg-gradient-to-br from-gray-100 to-purple-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                    <Users className="h-10 w-10 text-gray-500" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">No Students Enrolled</h3>
-                  <p className="text-gray-600">This case study doesn’t have any enrolled students yet.</p>
-                </div>
-              </div>
+            {studentsTableData && (
+              <StudentTable
+                students={studentsTableData.students}
+                modules={studentsTableData.modules}
+                onViewStudentDetails={viewStudentDetails}
+                onClearStudentAttempts={handleClearStudentAttempts}
+                clearingAttempts={clearingAttempts}
+              />
             )}
           </div>
         )}

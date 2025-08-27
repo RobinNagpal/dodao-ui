@@ -69,6 +69,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ case
                 where: {
                   createdBy: studentEmail,
                   status: 'completed',
+                  selectedForSummary: true,
                   archive: false,
                 },
                 orderBy: {
@@ -102,20 +103,24 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ case
   // Get final summary prompt instructions
   const finalSummaryPromptInstructions = caseStudy.finalSummaryPromptInstructions;
 
-  // Build the comprehensive context
-  const modules = caseStudy.modules.map((module) => ({
-    title: module.title,
-    shortDescription: module.shortDescription,
-    details: module.details,
-    exercises: module.exercises.map((exercise) => ({
-      title: exercise.title,
-      shortDescription: exercise.shortDescription,
-      details: exercise.details,
-      attempts: exercise.attempts.map((attempt) => ({
-        promptResponse: attempt.promptResponse,
-      })),
-    })),
-  }));
+  // Build the comprehensive context - only include exercises with selected attempts
+  const modules = caseStudy.modules
+    .map((module) => ({
+      title: module.title,
+      shortDescription: module.shortDescription,
+      details: module.details,
+      exercises: module.exercises
+        .filter((exercise) => exercise.attempts.length > 0) // Only include exercises with selected attempts
+        .map((exercise) => ({
+          title: exercise.title,
+          shortDescription: exercise.shortDescription,
+          details: exercise.details,
+          attempts: exercise.attempts.map((attempt) => ({
+            promptResponse: attempt.promptResponse,
+          })),
+        })),
+    }))
+    .filter((module) => module.exercises.length > 0); // Only include modules with exercises that have selected attempts
 
   // Build the full prompt that will be sent to AI
   let fullPrompt = '';
