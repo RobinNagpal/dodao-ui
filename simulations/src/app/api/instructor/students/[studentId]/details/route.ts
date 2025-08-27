@@ -45,12 +45,6 @@ interface StudentDetailResponse {
     shortDescription: string;
   };
   modules: ModuleDetail[];
-  finalSubmission: {
-    id: string;
-    finalContent: string | null;
-    createdAt: string;
-    updatedAt: string;
-  } | null;
   statistics: {
     totalExercises: number;
     attemptedExercises: number;
@@ -104,7 +98,6 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ stud
           },
         },
       },
-      finalSubmission: true,
     },
   });
 
@@ -183,14 +176,6 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ stud
       shortDescription: student.enrollment.caseStudy.shortDescription,
     },
     modules,
-    finalSubmission: student.finalSubmission
-      ? {
-          id: student.finalSubmission.id,
-          finalContent: student.finalSubmission.finalContent,
-          createdAt: student.finalSubmission.createdAt.toISOString(),
-          updatedAt: student.finalSubmission.updatedAt.toISOString(),
-        }
-      : null,
     statistics: {
       totalExercises,
       attemptedExercises,
