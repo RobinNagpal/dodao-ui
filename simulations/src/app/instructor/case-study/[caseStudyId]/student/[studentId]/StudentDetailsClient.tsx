@@ -4,30 +4,26 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import {
-  ArrowLeft,
   Brain,
-  BookOpen,
   User,
   Calendar,
-  Target,
   TrendingUp,
   CheckCircle,
   Clock,
   MessageSquare,
-  FileText,
   AlertCircle,
-  Sparkles,
   ChevronDown,
   ChevronRight,
   Mail,
-  Hash,
   Activity,
   Layers,
 } from 'lucide-react';
-import { parseMarkdown } from '@/utils/parse-markdown';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
+
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import BackButton from '@/components/navigation/BackButton';
+import InstructorLoading from '@/components/instructor/InstructorLoading';
+import AttemptDetailModal from '@/components/student/AttemptDetailModal';
+import type { ExerciseAttempt } from '@prisma/client';
 
 interface StudentDetailsClientProps {
   caseStudyId: string;
@@ -77,12 +73,6 @@ interface StudentDetailResponse {
     shortDescription: string;
   };
   modules: ModuleDetail[];
-  finalSubmission: {
-    id: string;
-    finalContent: string | null;
-    createdAt: string;
-    updatedAt: string;
-  } | null;
   statistics: {
     totalExercises: number;
     attemptedExercises: number;
@@ -95,6 +85,8 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set());
+  const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
+  const [showAttemptModal, setShowAttemptModal] = useState(false);
 
   const router = useRouter();
 
@@ -103,6 +95,13 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
     `/api/instructor/students/${studentId}/details?instructorEmail=${encodeURIComponent(userEmail)}&caseStudyId=${caseStudyId}`,
     { skipInitialFetch: !studentId || !userEmail || !caseStudyId },
     'Failed to load student details'
+  );
+
+  // API hook to fetch attempt details
+  const { data: attemptDetails, loading: loadingAttemptDetails } = useFetchData<ExerciseAttempt>(
+    selectedAttemptId ? `/api/student/attempts/${selectedAttemptId}` : '',
+    { skipInitialFetch: !selectedAttemptId },
+    'Failed to load attempt details'
   );
 
   useEffect(() => {
@@ -133,6 +132,17 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
     }
     setExpandedModules(newExpanded);
   };
+
+  const handleAttemptClick = (attemptId: string) => {
+    setSelectedAttemptId(attemptId);
+  };
+
+  // Effect to show modal when attempt details are loaded
+  useEffect(() => {
+    if (attemptDetails && selectedAttemptId) {
+      setShowAttemptModal(true);
+    }
+  }, [attemptDetails, selectedAttemptId]);
 
   const getStatusIcon = (status: string | null) => {
     switch (status?.toLowerCase()) {
@@ -167,21 +177,11 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
   };
 
   if (isLoading || loadingDetails) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-200 border-t-purple-600 mx-auto mb-4"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Brain className="h-6 w-6 text-purple-600 animate-pulse" />
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading Student Details</h3>
-          <p className="text-gray-600">Preparing detailed analysis...</p>
-        </div>
-      </div>
-    );
+    return <InstructorLoading text="Loading Student Details" subtitle="Preparing detailed analysis..." variant="enhanced" />;
   }
+
+  // Show loading overlay when fetching attempt details
+  const showAttemptLoading = showAttemptModal && loadingAttemptDetails;
 
   if (!studentDetails) {
     return (
@@ -207,7 +207,6 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
-      {/* Floating Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-purple-200/30 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
@@ -223,19 +222,8 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
-        {/* Back Button */}
-        <div className="mb-6">
-          <Button
-            onClick={() => router.push(`/instructor/case-study/${caseStudyId}`)}
-            variant="outline"
-            className="border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Case Study
-          </Button>
-        </div>
+        <BackButton userType="instructor" text="Back to Case Study" href={`/instructor/case-study/${caseStudyId}`} />
 
-        {/* Student Overview */}
         <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8 mb-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">
@@ -281,7 +269,6 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
             </div>
           </div>
 
-          {/* Statistics Grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
               <div className="flex items-center space-x-2 mb-2">
@@ -303,81 +290,15 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
 
             <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
               <div className="flex items-center space-x-2 mb-2">
-                <Target className="h-4 w-4 text-purple-600" />
+                <TrendingUp className="h-4 w-4 text-purple-600" />
                 <span className="text-sm font-semibold text-purple-800">Progress Rate</span>
               </div>
               <p className="text-2xl font-bold text-purple-900 mb-1">{studentDetails.statistics.completionPercentage}%</p>
               <p className="text-xs text-purple-600">completion</p>
             </div>
-
-            <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-4 border border-yellow-200">
-              <div className="flex items-center space-x-2 mb-2">
-                <FileText className="h-4 w-4 text-yellow-600" />
-                <span className="text-sm font-semibold text-yellow-800">Final Submission</span>
-              </div>
-              <p className="text-lg font-bold text-yellow-900 mb-1">{studentDetails.finalSubmission ? 'Submitted' : 'Pending'}</p>
-              <p className="text-xs text-yellow-600">
-                {studentDetails.finalSubmission ? new Date(studentDetails.finalSubmission.createdAt).toLocaleDateString() : 'Not submitted yet'}
-              </p>
-            </div>
           </div>
         </div>
 
-        {/* Final Submission */}
-        {studentDetails.finalSubmission && (
-          <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-              <div className="bg-gradient-to-br from-yellow-500 to-orange-600 p-2 rounded-xl mr-3">
-                <FileText className="h-6 w-6 text-white" />
-              </div>
-              Final Submission
-              <Sparkles className="h-5 w-5 text-yellow-500 ml-2 animate-pulse" />
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="bg-gradient-to-br from-gray-50 to-indigo-50 rounded-xl p-4 border border-indigo-200">
-                <p className="text-sm font-medium text-gray-700 mb-1">Submitted Date</p>
-                <p className="text-lg font-semibold text-gray-900">
-                  {new Date(studentDetails.finalSubmission.createdAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-gray-50 to-purple-50 rounded-xl p-4 border border-purple-200">
-                <p className="text-sm font-medium text-gray-700 mb-1">Last Updated</p>
-                <p className="text-lg font-semibold text-gray-900">
-                  {new Date(studentDetails.finalSubmission.updatedAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </p>
-              </div>
-            </div>
-
-            {studentDetails.finalSubmission.finalContent ? (
-              <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-6 border border-blue-200">
-                <h3 className="font-semibold text-gray-900 mb-4">Submission Content</h3>
-                <div
-                  className="markdown-body prose prose-lg max-w-none"
-                  dangerouslySetInnerHTML={{ __html: parseMarkdown(studentDetails.finalSubmission.finalContent) }}
-                />
-              </div>
-            ) : (
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200 text-center">
-                <p className="text-gray-600">No content provided in the final submission.</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Modules and Exercises */}
         <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center">
             <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-xl mr-3">
@@ -439,94 +360,38 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
                           </div>
 
                           {exercise.attempts.length > 0 ? (
-                            <Accordion type="single" collapsible className="space-y-3">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                               {exercise.attempts.map((attempt) => (
-                                <AccordionItem key={attempt.id} value={attempt.id} className="bg-white rounded-lg border border-gray-200 shadow-sm">
-                                  <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                                    <div className="flex items-center justify-between w-full">
-                                      <div className="flex items-center space-x-3">
-                                        {getStatusIcon(attempt.status)}
-                                        <span className="font-medium">Attempt #{attempt.attemptNumber}</span>
-                                        {attempt.status && (
-                                          <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(attempt.status)}`}>
-                                            {attempt.status}
-                                          </span>
-                                        )}
-                                      </div>
+                                <button
+                                  key={attempt.id}
+                                  onClick={() => handleAttemptClick(attempt.id)}
+                                  disabled={loadingAttemptDetails && selectedAttemptId === attempt.id}
+                                  className={`p-3 rounded-lg border transition-all duration-200 hover:shadow-md transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed ${
+                                    attempt.status === 'completed'
+                                      ? 'bg-green-50 border-green-200 hover:bg-green-100'
+                                      : attempt.status === 'failed'
+                                      ? 'bg-red-50 border-red-200 hover:bg-red-100'
+                                      : 'bg-yellow-50 border-yellow-200 hover:bg-yellow-100'
+                                  }`}
+                                >
+                                  <div className="flex items-center justify-center space-x-2">
+                                    {getStatusIcon(attempt.status)}
+                                    <span className="font-medium text-sm">Attempt {attempt.attemptNumber}</span>
+                                  </div>
+                                  {attempt.status && (
+                                    <div className="mt-1">
+                                      <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(attempt.status)}`}>
+                                        {attempt.status}
+                                      </span>
                                     </div>
-                                  </AccordionTrigger>
-                                  <AccordionContent className="px-4 pb-4">
-                                    <div className="space-y-4">
-                                      {attempt.model && (
-                                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
-                                          <h6 className="font-semibold text-blue-900 mb-2 flex items-center">
-                                            <Brain className="h-4 w-4 text-blue-600 mr-2" />
-                                            AI Model Used
-                                          </h6>
-                                          <p className="text-blue-800">{attempt.model}</p>
-                                        </div>
-                                      )}
-
-                                      {attempt.prompt && (
-                                        <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
-                                          <h6 className="font-semibold text-purple-900 mb-2 flex items-center">
-                                            <MessageSquare className="h-4 w-4 text-purple-600 mr-2" />
-                                            Student Prompt
-                                          </h6>
-                                          <div className="bg-white rounded-lg p-3 border border-purple-200">
-                                            <pre className="whitespace-pre-wrap text-sm text-gray-800 font-mono">{attempt.prompt}</pre>
-                                          </div>
-                                        </div>
-                                      )}
-
-                                      {attempt.promptResponse && (
-                                        <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4 border border-green-200">
-                                          <h6 className="font-semibold text-green-900 mb-2 flex items-center">
-                                            <Brain className="h-4 w-4 text-green-600 mr-2" />
-                                            AI Response
-                                          </h6>
-                                          <div className="bg-white rounded-lg p-3 border border-green-200">
-                                            <div
-                                              className="markdown-body prose max-w-none"
-                                              dangerouslySetInnerHTML={{ __html: parseMarkdown(attempt.promptResponse) }}
-                                            />
-                                          </div>
-                                        </div>
-                                      )}
-
-                                      {attempt.error && (
-                                        <div className="bg-gradient-to-br from-red-50 to-pink-50 rounded-lg p-4 border border-red-200">
-                                          <h6 className="font-semibold text-red-900 mb-2 flex items-center">
-                                            <AlertCircle className="h-4 w-4 text-red-600 mr-2" />
-                                            Error Details
-                                          </h6>
-                                          <div className="bg-white rounded-lg p-3 border border-red-200">
-                                            <pre className="whitespace-pre-wrap text-sm text-red-800 font-mono">{attempt.error}</pre>
-                                          </div>
-                                        </div>
-                                      )}
-
-                                      <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-lg p-4 border border-gray-200">
-                                        <h6 className="font-semibold text-gray-900 mb-2 flex items-center">
-                                          <Clock className="h-4 w-4 text-gray-600 mr-2" />
-                                          Attempt Timeline
-                                        </h6>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                          <div>
-                                            <p className="text-gray-600">Created:</p>
-                                            <p className="font-medium text-gray-900">{new Date(attempt.createdAt).toLocaleString()}</p>
-                                          </div>
-                                          <div>
-                                            <p className="text-gray-600">Last Updated:</p>
-                                            <p className="font-medium text-gray-900">{new Date(attempt.updatedAt).toLocaleString()}</p>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </AccordionContent>
-                                </AccordionItem>
+                                  )}
+                                  <div className="mt-2 text-xs text-gray-600 text-center">
+                                    <div>{new Date(attempt.createdAt).toLocaleDateString()}</div>
+                                    <div>{new Date(attempt.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                                  </div>
+                                </button>
                               ))}
-                            </Accordion>
+                            </div>
                           ) : (
                             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 border border-gray-200 text-center">
                               <div className="text-gray-500 mb-2">
@@ -546,6 +411,16 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
           </div>
         </div>
       </div>
+
+      {/* Attempt Detail Modal */}
+      <AttemptDetailModal
+        isOpen={showAttemptModal}
+        onClose={() => {
+          setShowAttemptModal(false);
+          setSelectedAttemptId(null);
+        }}
+        attempt={attemptDetails || null}
+      />
     </div>
   );
 }

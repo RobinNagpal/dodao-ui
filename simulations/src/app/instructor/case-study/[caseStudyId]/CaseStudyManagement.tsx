@@ -5,57 +5,25 @@ import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
-import type { CaseStudyModule, CaseStudy, ModuleExercise } from '@/types';
+import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { DeleteResponse, CaseStudyWithRelations } from '@/types/api';
-import {
-  BookOpen,
-  Users,
-  BarChart3,
-  Target,
-  Brain,
-  Sparkles,
-  GraduationCap,
-  Zap,
-  ArrowLeft,
-  Eye,
-  Trash2,
-  RefreshCw,
-  TrendingUp,
-  Calendar,
-  Mail,
-  CheckCircle,
-  Clock,
-} from 'lucide-react';
-import { parseMarkdown } from '@/utils/parse-markdown';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import type { StudentTableData, ModuleTableData } from '@/types';
+import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
+import { BookOpen, Users, BarChart3, GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import BackButton from '@/components/navigation/BackButton';
 import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
 import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
+import InstructorLoading from '@/components/instructor/InstructorLoading';
+import StudentTable from '@/components/instructor/StudentTable';
 
 interface CaseStudyManagementClientProps {
   caseStudyId: string;
-}
-
-interface StudentProgress {
-  id: string;
-  assignedStudentId: string; // student email
-  enrollmentId: string;
-  totalExercises: number;
-  attemptedExercises: number;
-  currentModule?: {
-    moduleNumber: number;
-    moduleTitle: string;
-    exerciseNumber: number;
-    exerciseTitle: string;
-  };
-  completionPercentage: number;
-  hasFinalSubmission: boolean;
-  createdAt: string;
 }
 
 export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyManagementClientProps) {
@@ -63,7 +31,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'analytics'>('overview');
 
-  // Modal states
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [studentToClear, setStudentToClear] = useState<{ id: string; email: string } | null>(null);
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
@@ -74,25 +41,26 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
 
   const router = useRouter();
 
-  // API hook to fetch case study data
   const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelations>(
     `/api/case-studies/${caseStudyId}?userType=instructor&userEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
     'Failed to load case study'
   );
 
-  // API hook to fetch students progress data
+  // Fetch detailed student data for the table view
   const {
-    data: studentsProgress,
-    loading: loadingStudents,
-    reFetchData: refetchStudents,
-  } = useFetchData<StudentProgress[]>(
-    `/api/instructor/case-studies/${caseStudyId}/students?instructorEmail=${encodeURIComponent(userEmail)}`,
+    data: studentsTableData,
+    loading: loadingStudentsTable,
+    reFetchData: refetchStudentsTable,
+  } = useFetchData<{
+    students: StudentTableData[];
+    modules: ModuleTableData[];
+  }>(
+    `/api/instructor/case-studies/${caseStudyId}/students-table?instructorEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
-    'Failed to load students progress'
+    'Failed to load students table data'
   );
 
-  // Delete hook for clearing student attempts
   const { deleteData: clearAttempts, loading: clearingAttempts } = useDeleteData<DeleteResponse, never>({
     successMessage: 'Student attempts cleared successfully!',
     errorMessage: 'Failed to clear student attempts',
@@ -130,7 +98,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       await clearAttempts(url);
 
       // Refresh students data
-      await refetchStudents();
+      await refetchStudentsTable();
       setShowDeleteConfirm(false);
       setStudentToClear(null);
     } catch (error: unknown) {
@@ -157,54 +125,8 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     }
   };
 
-  const getSubjectDisplayName = (subject: string): string => {
-    const displayNames: Record<string, string> = {
-      HR: 'Human Resources',
-      ECONOMICS: 'Economics',
-      MARKETING: 'Marketing',
-      FINANCE: 'Finance',
-      OPERATIONS: 'Operations',
-    };
-    return displayNames[subject] || subject;
-  };
-
-  const getSubjectIcon = (subject: string) => {
-    const icons: Record<string, string> = {
-      HR: '👥',
-      ECONOMICS: '📊',
-      MARKETING: '📈',
-      FINANCE: '💰',
-      OPERATIONS: '⚙️',
-    };
-    return icons[subject] || '📚';
-  };
-
-  const getSubjectColor = (subject: string) => {
-    const colors: Record<string, string> = {
-      HR: 'from-green-500 to-emerald-600',
-      ECONOMICS: 'from-blue-500 to-cyan-600',
-      MARKETING: 'from-pink-500 to-rose-600',
-      FINANCE: 'from-yellow-500 to-orange-600',
-      OPERATIONS: 'from-purple-500 to-indigo-600',
-    };
-    return colors[subject] || 'from-gray-500 to-gray-600';
-  };
-
-  if (isLoading || loadingCaseStudy || (activeTab === 'students' && loadingStudents)) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-200 border-t-purple-600 mx-auto mb-4"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Brain className="h-6 w-6 text-purple-600 animate-pulse" />
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading Case Study</h3>
-          <p className="text-gray-600">Preparing management console...</p>
-        </div>
-      </div>
-    );
+  if (isLoading || loadingCaseStudy || (activeTab === 'students' && loadingStudentsTable)) {
+    return <InstructorLoading text="Loading Case Study" subtitle="Preparing management console..." variant="enhanced" />;
   }
 
   if (!caseStudy) {
@@ -229,12 +151,10 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     );
   }
 
-  const enrolledStudents = caseStudy?.enrollments?.reduce((total: number, enrollment: any) => total + (enrollment.students?.length || 0), 0) || 0;
   const modules = caseStudy?.modules || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
-      {/* Floating Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-purple-200/30 rounded-full blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-20 w-24 h-24 bg-blue-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
@@ -250,17 +170,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
-        {/* Back Button */}
-        <div className="mb-6">
-          <Button
-            onClick={() => router.push('/instructor')}
-            variant="outline"
-            className="border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
+        <BackButton userType="instructor" text="Back to Dashboard" href="/instructor" />
 
         {/* Enhanced Tab Navigation */}
         <div className="border-b border-white/20">
@@ -344,14 +254,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
                   <CardDescription className="text-gray-600">Click on modules and exercises to view details</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <CaseStudyStepper
-                    modules={modules as any}
-                    userType="instructor"
-                    onModuleClick={handleModuleClick}
-                    onExerciseClick={handleExerciseClick}
-                    getSubjectIcon={getSubjectIcon}
-                    getSubjectColor={getSubjectColor}
-                  />
+                  <CaseStudyStepper modules={modules as any} userType="instructor" onModuleClick={handleModuleClick} onExerciseClick={handleExerciseClick} />
                 </CardContent>
               </Card>
             )}
@@ -360,151 +263,14 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
 
         {activeTab === 'students' && (
           <div className="space-y-8">
-            {/* Students List */}
-            {studentsProgress && studentsProgress.length > 0 ? (
-              <div className="space-y-6">
-                {studentsProgress.map((student) => (
-                  <div key={student.id} className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8">
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center space-x-4">
-                        <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full w-12 h-12 flex items-center justify-center">
-                          <span className="text-white font-bold text-lg">{student.assignedStudentId.charAt(0).toUpperCase()}</span>
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-bold text-gray-900 flex items-center">
-                            <Mail className="h-4 w-4 text-gray-500 mr-2" />
-                            {student.assignedStudentId}
-                          </h3>
-                          <p className="text-sm text-gray-600 flex items-center">
-                            <Calendar className="h-4 w-4 mr-1" />
-                            Enrolled: {new Date(student.createdAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center space-x-4">
-                        {/* Progress Circle */}
-                        <div className="relative w-16 h-16">
-                          <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
-                            <path
-                              className="text-gray-200"
-                              stroke="currentColor"
-                              strokeWidth="3"
-                              fill="transparent"
-                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                            />
-                            <path
-                              className="text-purple-600"
-                              stroke="currentColor"
-                              strokeWidth="3"
-                              fill="transparent"
-                              strokeLinecap="round"
-                              strokeDasharray={`${student.completionPercentage}, 100`}
-                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                            />
-                          </svg>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-sm font-bold text-gray-900">{student.completionPercentage}%</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Progress Stats */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                      <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <CheckCircle className="h-4 w-4 text-green-600" />
-                          <span className="text-sm font-medium text-green-800">Completed</span>
-                        </div>
-                        <p className="text-2xl font-bold text-green-900">{student.attemptedExercises}</p>
-                        <p className="text-xs text-green-600">out of {student.totalExercises} exercises</p>
-                      </div>
-
-                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <TrendingUp className="h-4 w-4 text-blue-600" />
-                          <span className="text-sm font-medium text-blue-800">Progress</span>
-                        </div>
-                        <p className="text-2xl font-bold text-blue-900">{student.completionPercentage}%</p>
-                        <p className="text-xs text-blue-600">completion rate</p>
-                      </div>
-
-                      <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <Clock className="h-4 w-4 text-purple-600" />
-                          <span className="text-sm font-medium text-purple-800">Current Position</span>
-                        </div>
-                        {student.currentModule ? (
-                          <>
-                            <p className="text-sm font-bold text-purple-900">Module {student.currentModule.moduleNumber}</p>
-                            <p className="text-xs text-purple-600">Exercise {student.currentModule.exerciseNumber}</p>
-                          </>
-                        ) : (
-                          <p className="text-sm text-purple-600">All exercises completed</p>
-                        )}
-                      </div>
-
-                      <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-4 border border-yellow-200">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <Target className="h-4 w-4 text-yellow-600" />
-                          <span className="text-sm font-medium text-yellow-800">Final Submission</span>
-                        </div>
-                        <p className="text-lg font-bold text-yellow-900">{student.hasFinalSubmission ? 'Submitted' : 'Pending'}</p>
-                        <p className="text-xs text-yellow-600">{student.hasFinalSubmission ? 'Review available' : 'Not submitted yet'}</p>
-                      </div>
-                    </div>
-
-                    {/* Current Exercise Info */}
-                    {student.currentModule && (
-                      <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-4 border border-indigo-200 mb-6">
-                        <h4 className="font-semibold text-indigo-900 mb-2 flex items-center">
-                          <Brain className="h-4 w-4 text-indigo-600 mr-2" />
-                          Currently Working On
-                        </h4>
-                        <p className="text-sm text-indigo-700">
-                          <strong>Module {student.currentModule.moduleNumber}:</strong> {student.currentModule.moduleTitle}
-                        </p>
-                        <p className="text-sm text-indigo-600">
-                          <strong>Exercise {student.currentModule.exerciseNumber}:</strong> {student.currentModule.exerciseTitle}
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Action Buttons */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex space-x-3">
-                        <Button
-                          onClick={() => viewStudentDetails(student.id)}
-                          className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
-                        >
-                          <Eye className="h-4 w-4 mr-2" />
-                          View Details
-                        </Button>
-                        <Button
-                          onClick={() => handleClearStudentAttempts(student.id, student.assignedStudentId)}
-                          disabled={clearingAttempts}
-                          variant="outline"
-                          className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 bg-transparent"
-                        >
-                          {<Trash2 className="h-4 w-4 mr-2" />}
-                          {'Clear Attempts'}
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-12">
-                <div className="text-center py-16">
-                  <div className="bg-gradient-to-br from-gray-100 to-purple-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                    <Users className="h-10 w-10 text-gray-500" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">No Students Enrolled</h3>
-                  <p className="text-gray-600">This case study doesn’t have any enrolled students yet.</p>
-                </div>
-              </div>
+            {studentsTableData && (
+              <StudentTable
+                students={studentsTableData.students}
+                modules={studentsTableData.modules}
+                onViewStudentDetails={viewStudentDetails}
+                onClearStudentAttempts={handleClearStudentAttempts}
+                clearingAttempts={clearingAttempts}
+              />
             )}
           </div>
         )}
@@ -549,7 +315,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         )}
       </div>
 
-      {/* Confirmation Modal */}
       <ConfirmationModal
         open={showDeleteConfirm}
         showSemiTransparentBg={true}
@@ -571,6 +336,10 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         hasCaseStudyInstructionsRead={() => true} // Instructor always has read instructions
         handleMarkInstructionAsRead={async () => {}} // No-op for instructor
         updatingStatus={false}
+        onCaseStudyUpdate={(updatedCaseStudy) => {
+          // Instructors don't edit, so this should not be called
+          console.log('Instructor tried to update case study - this should not happen');
+        }}
       />
 
       <ViewModuleModal
@@ -580,6 +349,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         hasModuleInstructionsRead={() => true} // Instructor always has read instructions
         handleMarkInstructionAsRead={async () => {}} // No-op for instructor
         updatingStatus={false}
+        caseStudy={caseStudy}
+        onModuleUpdate={(updatedModule) => {
+          // Instructors don't edit, so this should not be called
+          console.log('Instructor tried to update module - this should not happen');
+        }}
       />
 
       <ViewExerciseModal
@@ -588,6 +362,12 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         exercise={selectedExercise}
         moduleTitle={selectedModule?.title}
         moduleNumber={selectedModule?.orderNumber}
+        caseStudy={caseStudy}
+        moduleId={selectedModule?.id}
+        onExerciseUpdate={(updatedExercise) => {
+          // Instructors don't edit, so this should not be called
+          console.log('Instructor tried to update exercise - this should not happen');
+        }}
       />
     </div>
   );

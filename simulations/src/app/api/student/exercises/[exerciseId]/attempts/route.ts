@@ -117,6 +117,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ exe
         promptResponse: aiResponse,
         status: 'completed',
         archive: false,
+        // Auto-select first successful attempt
+        selectedForSummary: nextAttemptNumber === 1,
       },
     });
 

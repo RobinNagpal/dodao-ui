@@ -3,11 +3,14 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { CaseStudyWithRelations } from '@/types/api';
+import StudentLoading from '@/components/student/StudentLoading';
+import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
 import { BookOpen, Target, Brain, Clock, Lock, ArrowLeft, Check } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
+import BackButton from '@/components/navigation/BackButton';
 import InstructionRequiredModal from '@/components/student/InstructionRequiredModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
@@ -52,39 +55,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     successMessage: 'Instructions marked as read!',
     errorMessage: 'Failed to update instruction status. Please try again.',
   });
-
-  const getSubjectDisplayName = (subject: string) => {
-    const displayNames: Record<string, string> = {
-      HR: 'Human Resources',
-      ECONOMICS: 'Economics',
-      MARKETING: 'Marketing',
-      FINANCE: 'Finance',
-      OPERATIONS: 'Operations',
-    };
-    return displayNames[subject] || subject;
-  };
-
-  const getSubjectIcon = (subject: string) => {
-    const icons: Record<string, string> = {
-      HR: '👥',
-      ECONOMICS: '📊',
-      MARKETING: '📈',
-      FINANCE: '💰',
-      OPERATIONS: '⚙️',
-    };
-    return icons[subject] || '📚';
-  };
-
-  const getSubjectColor = (subject: string) => {
-    const colors: Record<string, string> = {
-      HR: 'from-green-500 to-emerald-600',
-      ECONOMICS: 'from-blue-500 to-cyan-600',
-      MARKETING: 'from-pink-500 to-rose-600',
-      FINANCE: 'from-yellow-500 to-orange-600',
-      OPERATIONS: 'from-purple-500 to-indigo-600',
-    };
-    return colors[subject] || 'from-gray-500 to-gray-600';
-  };
 
   const hasAttempts = (exercise: any) => {
     return exercise.attempts && exercise.attempts.length > 0;
@@ -149,7 +119,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       });
 
       if (result) {
-        // Refetch case study data to get updated instruction status
         await refetchCaseStudy();
       }
     } catch (error) {
@@ -158,7 +127,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   };
 
   const handleCloseCaseStudyModal = async () => {
-    // Auto-mark as read when closing modal if not already read
     if (!hasCaseStudyInstructionsRead()) {
       await handleMarkInstructionAsRead('case_study');
     } else {
@@ -167,7 +135,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   };
 
   const handleCloseModuleModal = async () => {
-    // Auto-mark as read when closing modal if not already read
     if (selectedModule && !hasModuleInstructionsRead(selectedModule.id)) {
       await handleMarkInstructionAsRead('module', selectedModule.id);
     } else {
@@ -176,7 +143,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   };
 
   const handleModuleClick = (module: any) => {
-    // Only check if case study instructions have been read, not module-specific requirements
     if (!hasCaseStudyInstructionsRead()) {
       setInstructionModalData({
         type: 'case_study',
@@ -195,7 +161,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       return;
     }
 
-    // Check if case study instructions have been read first
     if (!hasCaseStudyInstructionsRead()) {
       setInstructionModalData({
         type: 'case_study',
@@ -205,7 +170,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       return;
     }
 
-    // Check if module instructions have been read
     if (!hasModuleInstructionsRead(moduleId)) {
       setInstructionModalData({
         type: 'module',
@@ -226,7 +190,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     if (instructionModalData?.type === 'case_study') {
       setShowCaseStudyModal(true);
     } else if (instructionModalData?.type === 'module' && instructionModalData.moduleId) {
-      // Find the module to set as selected
       const caseStudyModule = caseStudy?.modules?.find((m) => m.id === instructionModalData.moduleId);
       if (caseStudyModule) {
         setSelectedModule(caseStudyModule);
@@ -249,22 +212,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   }, [router]);
 
   if (isLoading || loadingCaseStudy) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 flex items-center justify-center">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Brain className="h-6 w-6 text-blue-600" />
-            </div>
-          </div>
-          <div className="text-center">
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">Loading case study...</h3>
-            <p className="text-gray-600">Preparing your learning experience</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <StudentLoading text="Loading case study..." subtitle="Preparing your learning experience" variant="enhanced" />;
   }
 
   if (!caseStudy) {
@@ -299,16 +247,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
-        <div className="mb-6">
-          <Button
-            onClick={() => router.push('/student')}
-            variant="outline"
-            className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
+        <BackButton userType="student" text="Back to Dashboard" href="/student" />
 
         <Card className="backdrop-blur-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border-white/20 shadow-lg mb-6">
           <CardHeader className="pb-4">
@@ -400,7 +339,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
                           </div>
 
                           <div className="w-full max-w-xs space-y-2">
-                            {/* Module Details Card */}
                             <div
                               onClick={() => handleModuleClick(module)}
                               className={`
@@ -520,6 +458,11 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
           hasModuleInstructionsRead={hasModuleInstructionsRead}
           handleMarkInstructionAsRead={handleMarkInstructionAsRead}
           updatingStatus={updatingStatus}
+          caseStudy={caseStudy}
+          onModuleUpdate={(updatedModule) => {
+            // Students don't edit, so this should not be called
+            console.log('Student tried to update module - this should not happen');
+          }}
         />
 
         <ViewCaseStudyModal
@@ -529,6 +472,10 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
           hasCaseStudyInstructionsRead={hasCaseStudyInstructionsRead}
           handleMarkInstructionAsRead={handleMarkInstructionAsRead}
           updatingStatus={updatingStatus}
+          onCaseStudyUpdate={(updatedCaseStudy) => {
+            // Students don't edit, so this should not be called
+            console.log('Student tried to update case study - this should not happen');
+          }}
         />
 
         <InstructionRequiredModal

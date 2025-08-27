@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { CaseStudyWithRelations } from '@/types/api';
-import { BookOpen, Brain, ArrowLeft } from 'lucide-react';
+import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
+import { BookOpen, Brain } from 'lucide-react';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
+import BackButton from '@/components/navigation/BackButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -14,6 +16,7 @@ import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
 import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
+import AdminLoading from '@/components/admin/AdminLoading';
 
 interface CaseStudyViewClientProps {
   caseStudyId: string;
@@ -44,7 +47,11 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
   }, [router]);
 
   // API hook to fetch case study data
-  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelations>(
+  const {
+    data: caseStudy,
+    loading: loadingCaseStudy,
+    reFetchData,
+  } = useFetchData<CaseStudyWithRelations>(
     `/api/case-studies/${caseStudyId}?userType=admin&userEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
     'Failed to load case study'
@@ -54,10 +61,6 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
     localStorage.removeItem('user_type');
     localStorage.removeItem('user_email');
     router.push('/login');
-  };
-
-  const handleBack = () => {
-    router.push('/admin');
   };
 
   const handleModuleClick = (module: CaseStudyModule) => {
@@ -75,55 +78,11 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
     }
   };
 
-  const getSubjectDisplayName = (subject: string): string => {
-    const displayNames: Record<string, string> = {
-      HR: 'Human Resources',
-      ECONOMICS: 'Economics',
-      MARKETING: 'Marketing',
-      FINANCE: 'Finance',
-      OPERATIONS: 'Operations',
-    };
-    return displayNames[subject] || subject;
-  };
-
-  const getSubjectIcon = (subject: string) => {
-    const icons: Record<string, string> = {
-      HR: '👥',
-      ECONOMICS: '📊',
-      MARKETING: '📈',
-      FINANCE: '💰',
-      OPERATIONS: '⚙️',
-    };
-    return icons[subject] || '📚';
-  };
-
-  const getSubjectColor = (subject: string) => {
-    const colors: Record<string, string> = {
-      HR: 'from-green-500 to-emerald-600',
-      ECONOMICS: 'from-blue-500 to-cyan-600',
-      MARKETING: 'from-pink-500 to-rose-600',
-      FINANCE: 'from-yellow-500 to-orange-600',
-      OPERATIONS: 'from-purple-500 to-indigo-600',
-    };
-    return colors[subject] || 'from-gray-500 to-gray-600';
-  };
-
-  if (isLoading || loadingCaseStudy || !caseStudyId) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-200/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-200/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        </div>
-        <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-sm px-8 py-6 rounded-2xl shadow-xl border border-emerald-100">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
-          <span className="text-lg font-medium bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">Loading case study...</span>
-        </div>
-      </div>
-    );
+  if (isLoading || loadingCaseStudy) {
+    return <AdminLoading text="Loading case study..." subtitle="Preparing case study details..." />;
   }
 
-  if (!caseStudy) {
+  if (!caseStudy || !caseStudyId) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 flex items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
@@ -137,10 +96,9 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
           <h3 className="text-xl font-semibold text-gray-900 mb-3">Case Study Not Found</h3>
           <p className="text-gray-600 mb-6">The case study you’re looking for doesn’t exist or has been removed.</p>
           <Button
-            onClick={handleBack}
+            onClick={() => router.push('/admin')}
             className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
           </Button>
         </div>
@@ -168,17 +126,7 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
-        {/* Back Button */}
-        <div className="mb-6">
-          <Button
-            onClick={handleBack}
-            variant="outline"
-            className="border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
+        <BackButton userType="admin" text="Back to Dashboard" href="/admin" />
 
         <Card className="backdrop-blur-xl bg-gradient-to-br from-emerald-50/80 to-green-50/80 border-white/20 shadow-lg mb-6">
           <CardHeader className="pb-4">
@@ -219,14 +167,7 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
               <CardDescription className="text-gray-600">Click on modules and exercises to view details</CardDescription>
             </CardHeader>
             <CardContent>
-              <CaseStudyStepper
-                modules={modules as any}
-                userType="admin"
-                onModuleClick={handleModuleClick}
-                onExerciseClick={handleExerciseClick}
-                getSubjectIcon={getSubjectIcon}
-                getSubjectColor={getSubjectColor}
-              />
+              <CaseStudyStepper modules={modules as any} userType="admin" onModuleClick={handleModuleClick} onExerciseClick={handleExerciseClick} />
             </CardContent>
           </Card>
         )}
@@ -238,6 +179,9 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
           hasCaseStudyInstructionsRead={() => true} // Admin always has read instructions
           handleMarkInstructionAsRead={async () => {}} // No-op for admin
           updatingStatus={false}
+          onCaseStudyUpdate={async (updatedCaseStudy) => {
+            await reFetchData();
+          }}
         />
 
         <ViewModuleModal
@@ -247,6 +191,10 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
           hasModuleInstructionsRead={() => true} // Admin always has read instructions
           handleMarkInstructionAsRead={async () => {}} // No-op for admin
           updatingStatus={false}
+          caseStudy={caseStudy}
+          onModuleUpdate={async (updatedModule) => {
+            await reFetchData();
+          }}
         />
 
         <ViewExerciseModal
@@ -255,6 +203,11 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
           exercise={selectedExercise}
           moduleTitle={selectedModule?.title}
           moduleNumber={selectedModule?.orderNumber}
+          caseStudy={caseStudy}
+          moduleId={selectedModule?.id}
+          onExerciseUpdate={async (updatedExercise) => {
+            await reFetchData();
+          }}
         />
       </div>
     </div>

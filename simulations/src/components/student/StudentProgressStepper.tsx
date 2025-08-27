@@ -1,6 +1,6 @@
-import { Check, Clock, Target, ArrowRight } from 'lucide-react';
+import { Check, Clock, Target } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-// Define explicit types for the component props
 export interface ExerciseProgress {
   id: string;
   title: string;
@@ -33,6 +33,14 @@ export interface StudentProgressStepperProps {
 }
 
 export default function StudentProgressStepper({ progressData }: StudentProgressStepperProps) {
+  const router = useRouter();
+
+  const handleExerciseClick = (exercise: ExerciseProgress, moduleId: string) => {
+    if (exercise.isCompleted) {
+      router.push(`/student/exercise/${exercise.id}?moduleId=${moduleId}&caseStudyId=${progressData.caseStudyId}`);
+    }
+  };
+
   return (
     <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-6 sticky top-8">
       <h3 className="text-lg font-semibold text-gray-900 mb-6 flex items-center">
@@ -43,7 +51,6 @@ export default function StudentProgressStepper({ progressData }: StudentProgress
       <div className="space-y-6">
         {progressData.modules.map((module) => (
           <div key={module.id} className="relative">
-            {/* Module Header */}
             <div className="flex items-center space-x-3 mb-4">
               <div
                 className={`
@@ -70,7 +77,13 @@ export default function StudentProgressStepper({ progressData }: StudentProgress
             {/* Exercises List */}
             <div className="ml-4 space-y-2 relative">
               {module.exercises.map((exercise) => (
-                <div key={exercise.id} className="flex items-start space-x-3 py-1 relative z-10 ">
+                <div
+                  key={exercise.id}
+                  className={`flex items-start space-x-3 py-1 relative z-10 ${
+                    exercise.isCompleted ? 'cursor-pointer hover:bg-gray-50 rounded-lg px-2 transition-colors duration-200' : ''
+                  }`}
+                  onClick={() => handleExerciseClick(exercise, module.id)}
+                >
                   <div
                     className={`
                       w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-300
@@ -95,11 +108,11 @@ export default function StudentProgressStepper({ progressData }: StudentProgress
                         exercise.isCurrent
                           ? 'text-blue-600'
                           : exercise.isCompleted
-                          ? 'text-green-600'
+                          ? 'text-green-600 hover:text-green-700'
                           : exercise.isAttempted
                           ? 'text-yellow-600'
                           : 'text-gray-500'
-                      }`}
+                      } ${exercise.isCompleted ? 'hover:underline' : ''}`}
                     >
                       {exercise.orderNumber}. {exercise.title}
                     </p>

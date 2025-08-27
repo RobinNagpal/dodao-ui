@@ -9,13 +9,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Shield, Plus, Trash2, X, Sparkles, BookOpen, Target, ArrowLeft } from 'lucide-react';
+import { Shield, Plus, Trash2, X, Sparkles, BookOpen, Target } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import type { BusinessSubject } from '@prisma/client';
 import type { CreateCaseStudyRequest, CaseStudyWithRelations } from '@/types/api';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
+import BackButton from '@/components/navigation/BackButton';
+import AdminLoading from '@/components/admin/AdminLoading';
 
 interface ModuleFormData {
   id: string;
@@ -52,11 +54,9 @@ export default function CreateCaseStudyPage() {
   const router = useRouter();
   const { showNotification } = useNotificationContext();
 
-  // Auth check
   const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Form state
   const [title, setTitle] = useState<string>('');
   const [shortDescription, setShortDescription] = useState<string>('');
   const [details, setDetails] = useState<string>('');
@@ -236,36 +236,11 @@ export default function CreateCaseStudyPage() {
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">
-        {/* Floating background elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-400/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute top-1/2 -left-40 w-96 h-96 bg-green-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute -bottom-40 right-1/3 w-64 h-64 bg-teal-400/20 rounded-full blur-3xl animate-pulse delay-500"></div>
-        </div>
-
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="bg-white/80 backdrop-blur-xl rounded-2xl p-8 shadow-2xl border border-white/20">
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-200 border-t-emerald-600"></div>
-                <Sparkles className="absolute inset-0 m-auto h-6 w-6 text-emerald-600 animate-pulse" />
-              </div>
-              <div>
-                <h2 className="text-xl font-semibold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">Loading Admin Portal</h2>
-                <p className="text-gray-600">Preparing your workspace...</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <AdminLoading text="Loading Admin Portal" subtitle="Preparing your workspace..." variant="enhanced" />;
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">
-      {/* Floating background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-400/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute top-1/2 -left-40 w-96 h-96 bg-green-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -275,20 +250,9 @@ export default function CreateCaseStudyPage() {
       <AdminNavbar title="Create New Case Study" userEmail={userEmail} onLogout={handleLogout} icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        {/* Back Button */}
-        <div className="mb-6">
-          <Button
-            onClick={() => router.push('/admin')}
-            variant="outline"
-            className="border-emerald-200 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-300 bg-transparent"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
+        <BackButton userType="admin" text="Back to Dashboard" href="/admin" />
         <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8">
           <div className="space-y-8">
-            {/* Basic Information */}
             <div className="border-b border-gray-200 pb-6">
               <h2 className="text-xl font-semibold text-gray-900 flex items-center mb-6">
                 <BookOpen className="h-5 w-5 mr-2 text-emerald-600" />

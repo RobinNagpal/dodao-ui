@@ -130,3 +130,41 @@ export type Screen =
   | 'final';
 
 export type UserType = 'student' | 'professor';
+
+// Instructor table interfaces
+export interface AttemptDetail {
+  id: string;
+  attemptNumber: number;
+  status: string | null;
+  createdAt: string;
+}
+
+export interface ExerciseProgress {
+  exerciseId: string;
+  moduleId: string;
+  moduleOrderNumber: number;
+  exerciseOrderNumber: number;
+  hasAttempts: boolean;
+  attempts: AttemptDetail[];
+}
+
+export interface StudentTableData {
+  id: string;
+  assignedStudentId: string; // student email
+  enrollmentId: string;
+  exercises: ExerciseProgress[];
+  createdAt: string;
+}
+
+export interface ModuleTableExercise {
+  id: string;
+  orderNumber: number;
+  title: string;
+}
+
+export interface ModuleTableData {
+  id: string;
+  orderNumber: number;
+  title: string;
+  exercises: ModuleTableExercise[];
+}

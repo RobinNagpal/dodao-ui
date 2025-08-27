@@ -1,4 +1,4 @@
-import { BusinessSubject, CaseStudy, CaseStudyModule, ModuleExercise, ClassCaseStudyEnrollment, EnrollmentStudent } from '@prisma/client';
+import { BusinessSubject, CaseStudy, CaseStudyModule, ModuleExercise, ClassCaseStudyEnrollment, EnrollmentStudent, FinalSubmission } from '@prisma/client';
 
 export interface CreateCaseStudyRequest {
   title: string;
@@ -62,7 +62,7 @@ export type CaseStudyWithRelations = CaseStudy & {
     ClassCaseStudyEnrollment & {
       students?: Array<
         EnrollmentStudent & {
-          finalSubmission?: any;
+          finalSubmission?: FinalSubmission;
         }
       >;
     }
