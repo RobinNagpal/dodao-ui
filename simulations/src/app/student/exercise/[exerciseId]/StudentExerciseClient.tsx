@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import StudentLoading from '@/components/student/StudentLoading';
 import type { ExerciseAttempt } from '@prisma/client';
-import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Plus, Star } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import AttemptDetailModal from '@/components/student/AttemptDetailModal';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
@@ -61,6 +60,15 @@ interface NextExerciseResponse {
   caseStudyId?: string;
   isComplete: boolean;
   message: string;
+}
+
+interface SelectAttemptRequest {
+  attemptId: string;
+  studentEmail: string;
+}
+
+interface SelectAttemptResponse {
+  attempts: ExerciseAttempt[];
 }
 
 export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyId }: StudentExerciseClientProps) {
@@ -119,6 +127,11 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const { postData: createAttempt, loading: submittingAttempt } = usePostData<CreateAttemptResponse, CreateAttemptRequest>({
     successMessage: 'Response generated successfully!',
     errorMessage: 'Failed to generate AI response. Please try again.',
+  });
+
+  const { postData: selectAttempt, loading: selectingAttempt } = usePostData<SelectAttemptResponse, SelectAttemptRequest>({
+    successMessage: 'Attempt selected for summary!',
+    errorMessage: 'Failed to select attempt. Please try again.',
   });
 
   useEffect(() => {
@@ -200,6 +213,27 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       }
     }
   };
+
+  const handleSelectAttempt = useCallback(
+    async (attemptId: string) => {
+      if (selectingAttempt) return;
+
+      try {
+        const result = await selectAttempt(`/api/student/exercises/${exerciseId}/attempts/select`, {
+          attemptId,
+          studentEmail: userEmail,
+        });
+
+        if (result) {
+          // Update the attempts list with the new selection
+          await refetchAttempts();
+        }
+      } catch (error) {
+        console.error('Error selecting attempt:', error);
+      }
+    },
+    [selectingAttempt, selectAttempt, exerciseId, userEmail, refetchAttempts]
+  );
 
   const openAttemptModal = (attempt: ExerciseAttempt) => {
     setSelectedAttempt(attempt);
@@ -509,6 +543,24 @@ Details: ${contextData.module.details}
                         </div>
                       </div>
                       <div className="flex items-center space-x-3">
+                        {attempt.status === 'completed' && attempt.promptResponse && (
+                          <button
+                            onClick={() => handleSelectAttempt(attempt.id)}
+                            disabled={selectingAttempt}
+                            className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-1 ${
+                              attempt.selectedForSummary
+                                ? 'bg-yellow-100 hover:bg-yellow-200 text-yellow-700 border-2 border-yellow-300'
+                                : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:border-gray-300'
+                            } ${selectingAttempt ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          >
+                            {selectingAttempt ? (
+                              <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
+                            ) : (
+                              <Star className={`h-4 w-4 ${attempt.selectedForSummary ? 'fill-current text-yellow-500' : ''}`} />
+                            )}
+                            <span>{attempt.selectedForSummary ? 'Selected for Summary' : 'Select for Summary'}</span>
+                          </button>
+                        )}
                         <button
                           onClick={() => openAttemptModal(attempt)}
                           className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-1"
