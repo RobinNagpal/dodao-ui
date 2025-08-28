@@ -100,6 +100,19 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     'Failed to load exercise attempts'
   );
 
+  // Local state to override fetched attempts when we have fresher data
+  const [localAttempts, setLocalAttempts] = useState<ExerciseAttempt[] | null>(null);
+
+  // Use local attempts if available, otherwise use fetched attempts
+  const currentAttempts = localAttempts || attempts;
+
+  // Reset local attempts when fetched attempts change (for initial load)
+  useEffect(() => {
+    if (attempts && !localAttempts) {
+      setLocalAttempts(attempts);
+    }
+  }, [attempts, localAttempts]);
+
   const { data: contextData, loading: loadingContext } = useFetchData<ContextData>(
     `/api/student/exercises/${exerciseId}/context?studentEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !exerciseId || !userEmail },
@@ -147,8 +160,8 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   }, [router]);
 
   useEffect(() => {
-    if (attempts) {
-      const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
+    if (currentAttempts) {
+      const completedAttempts = currentAttempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
 
       if (submittingAttempt) {
         setCurrentAttemptNumber(completedAttempts.length + 1);
@@ -157,10 +170,10 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
         setCurrentAttemptNumber(currentNumber);
       }
     }
-  }, [attempts, submittingAttempt]);
+  }, [currentAttempts, submittingAttempt]);
 
   const handleSubmitPrompt = async () => {
-    if (!prompt.trim() || submittingAttempt || (attempts && attempts.length >= 3)) {
+    if (!prompt.trim() || submittingAttempt || (currentAttempts && currentAttempts.length >= 3)) {
       return;
     }
 
@@ -173,7 +186,13 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       if (result) {
         setPrompt('');
         setShowRetryPrompt(false);
-        await refetchAttempts();
+
+        // Update local attempts with the new attempt instead of refetching
+        if (currentAttempts) {
+          setLocalAttempts([...currentAttempts, result.attempt]);
+        } else {
+          setLocalAttempts([result.attempt]);
+        }
 
         if (result.attempt.promptResponse) {
           setCurrentAiResponse(result.attempt.promptResponse);
@@ -225,14 +244,14 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
         });
 
         if (result) {
-          // Update the attempts list with the new selection
-          await refetchAttempts();
+          // Update local attempts with the result instead of refetching
+          setLocalAttempts(result.attempts);
         }
       } catch (error) {
         console.error('Error selecting attempt:', error);
       }
     },
-    [selectingAttempt, selectAttempt, exerciseId, userEmail, refetchAttempts]
+    [selectingAttempt, selectAttempt, exerciseId, userEmail]
   );
 
   const openAttemptModal = (attempt: ExerciseAttempt) => {
@@ -263,19 +282,25 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     return 'Processing';
   };
 
-  const canSubmitNewAttempt = () => {
-    if (!attempts) return true;
+  const getRemainingAttempts = () => {
+    if (!currentAttempts) return 3;
+    const completedAttempts = currentAttempts.filter((a) => a.status === 'completed' || a.status === 'failed');
+    return Math.max(0, 3 - completedAttempts.length);
+  };
 
-    const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
+  const canSubmitNewAttempt = () => {
+    if (!currentAttempts) return true;
+
+    const completedAttempts = currentAttempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
 
     return !hasMovedToNext && completedAttempts.length < 3;
   };
 
   const shouldShowPromptInput = () => {
-    if (!attempts) return true;
+    if (!currentAttempts) return true;
 
-    const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
-    const hasSuccess = attempts.some((attempt) => attempt.status === 'completed' && attempt.promptResponse);
+    const completedAttempts = currentAttempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
+    const hasSuccess = currentAttempts.some((attempt) => attempt.status === 'completed' && attempt.promptResponse);
 
     if (hasSuccess && completedAttempts.length < 3 && !showRetryPrompt && !submittingAttempt) {
       return false;
@@ -285,9 +310,9 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   };
 
   const shouldShowAllAttemptsUsed = () => {
-    if (!attempts) return false;
+    if (!currentAttempts) return false;
 
-    const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
+    const completedAttempts = currentAttempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
 
     return !hasMovedToNext && completedAttempts.length >= 3 && !submittingAttempt;
   };
@@ -317,10 +342,10 @@ Details: ${contextData.module.details}
   };
 
   const shouldShowSuccessStateWithRetry = () => {
-    if (!attempts || hasMovedToNext || submittingAttempt || showRetryPrompt) return false;
+    if (!currentAttempts || hasMovedToNext || submittingAttempt || showRetryPrompt) return false;
 
-    const completedAttempts = attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
-    const hasSuccess = attempts.some((attempt) => attempt.status === 'completed' && attempt.promptResponse);
+    const completedAttempts = currentAttempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'failed');
+    const hasSuccess = currentAttempts.some((attempt) => attempt.status === 'completed' && attempt.promptResponse);
 
     return hasSuccess && completedAttempts.length < 3;
   };
@@ -503,7 +528,7 @@ Details: ${contextData.module.details}
               ) : null}
             </div>
 
-            {attempts && attempts.length > 0 && (
+            {currentAttempts && currentAttempts.length > 0 && (
               <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-semibold text-gray-900 flex items-center">
@@ -511,15 +536,12 @@ Details: ${contextData.module.details}
                     Your Attempts
                   </h2>
                   <div className="text-sm text-gray-600">
-                    Remaining Attempts:{' '}
-                    <span className="font-bold text-blue-600">
-                      {Math.max(0, 3 - attempts.filter((a) => a.status === 'completed' || a.status === 'failed').length)}
-                    </span>
+                    Remaining Attempts: <span className="font-bold text-blue-600">{getRemainingAttempts()}</span>
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  {attempts.map((attempt, index) => (
+                  {currentAttempts.map((attempt, index) => (
                     <div
                       key={attempt.id}
                       className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl border border-gray-200 hover:shadow-md transition-all duration-200"
@@ -553,11 +575,8 @@ Details: ${contextData.module.details}
                                 : 'bg-gray-100 hover:bg-gray-200 text-gray-700 hover:border-gray-300'
                             } ${selectingAttempt ? 'opacity-50 cursor-not-allowed' : ''}`}
                           >
-                            {selectingAttempt ? (
-                              <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
-                            ) : (
-                              <Star className={`h-4 w-4 ${attempt.selectedForSummary ? 'fill-current text-yellow-500' : ''}`} />
-                            )}
+                            <Star className={`h-4 w-4 ${attempt.selectedForSummary ? 'fill-current text-yellow-500' : ''}`} />
+
                             <span>{attempt.selectedForSummary ? 'Selected for Summary' : 'Select for Summary'}</span>
                           </button>
                         )}
