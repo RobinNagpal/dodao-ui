@@ -60,6 +60,8 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <script defer src="https://cloud.umami.is/script.js" data-website-id="626f3994-7682-4573-a943-4987796f3eaf"></script>
+        <script src="https://cdn.lgrckt-in.com/LogRocket.min.js" crossOrigin="anonymous"></script>
+        <script>window.LogRocket && window.LogRocket.init('m3ahri/koalagains');</script>
         <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,500,700&display=swap" />
       </head>
@@ -73,18 +75,18 @@ export default function RootLayout({
         </NotificationProvider>
 
         <>
-          <Script src={`https://www.googletagmanager.com/gtag/js?id=G-MYQG66ESX3`} />
+          <Script src={`https://www.googletagmanager.com/gtag/js?id=G-18CB8K6SLR`} />
           <Script id="google-analytics">
             {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
  
-          gtag('config', 'G-MYQG66ESX3');
+          gtag('config', 'G-18CB8K6SLR');
         `}
-
-            <Script id="hotjar" strategy="afterInteractive">
-              {`(function(h,o,t,j,a,r){
+          </Script>
+          <Script id="hotjar" strategy="afterInteractive">
+            {`(function(h,o,t,j,a,r){
               h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
               h._hjSettings={hjid:6496201,hjsv:6};
               a=o.getElementsByTagName('head')[0];
@@ -92,7 +94,6 @@ export default function RootLayout({
               r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
               a.appendChild(r);
             })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
-            </Script>
           </Script>
         </>
       </body>
