@@ -90,13 +90,7 @@ const genaiUseCases: GenAIUseCase[] = [
     icon: UserGroupIcon,
     canvaUrl: 'https://www.canva.com/design/DAGsIZKvEWA/wEbRPjbFX9kJ6-9ycSsxMQ/view',
     canvaEmbedUrl: 'https://www.canva.com/design/DAGsIZKvEWA/wEbRPjbFX9kJ6-9ycSsxMQ/view?embed',
-    blogLinks: [
-      {
-        title: 'GenAI Customer Service Capabilities',
-        url: 'https://koalagains.com/blogs/2025-07-08-generative-ai-customer-service-capabilities',
-        description: 'How GenAI is revolutionizing customer service with intelligent automation',
-      },
-    ],
+    blogLinks: [],
     keyFeatures: [
       'AI-powered Q&A with instant accurate responses',
       'Visual issue recognition and guidance',
@@ -112,6 +106,32 @@ const genaiUseCases: GenAIUseCase[] = [
         'https://www.mckinsey.com/industries/financial-services/how-we-help-clients/banking-on-innovation-how-ing-uses-generative-ai-to-put-people-first',
     },
     gradient: 'from-green-500 to-emerald-500',
+  },
+  {
+    id: 'personalization',
+    title: 'GenAI in Personalization',
+    subtitle: 'Hyper-personalized customer experiences',
+    description:
+      'Enable true one-to-one personalization across all touchpoints, from customized product recommendations to personalized content that resonates with each individual customer.',
+    icon: SparklesIcon,
+    canvaUrl: 'https://www.canva.com/design/DAGsNPZrpRc/uWi-zDJHrRy0Zc_LT8593Q/view',
+    canvaEmbedUrl: 'https://www.canva.com/design/DAGsNPZrpRc/uWi-zDJHrRy0Zc_LT8593Q/view?embed',
+    blogLinks: [],
+    keyFeatures: [
+      'Dynamic content generation based on user behavior',
+      'Real-time personalization across all channels',
+      'Predictive preferences and recommendations',
+      'Contextual and adaptive user interfaces',
+    ],
+    realWorldExample: {
+      company: 'Duolingo',
+      challenge: 'Generic lessons didn’t adapt to individual learner skill levels',
+      solution:
+        'Launched Duolingo Max with GPT-4 roleplay, letting learners practice conversations with Duolingo characters where difficulty adapts to their skill level',
+      impact: 'Boosted user engagement and paying subscribers surged 62% year over year after GPT-4 integration',
+      caseStudyUrl: 'https://investors.duolingo.com/news-releases/news-release-details/duolingo-reports-62-dau-growth-42-revenue-growth-and-increased',
+    },
+    gradient: 'from-orange-500 to-red-500',
   },
   {
     id: 'education',
@@ -139,38 +159,7 @@ const genaiUseCases: GenAIUseCase[] = [
     },
     gradient: 'from-purple-500 to-pink-500',
   },
-  {
-    id: 'personalization',
-    title: 'GenAI in Personalization',
-    subtitle: 'Hyper-personalized customer experiences',
-    description:
-      'Enable true one-to-one personalization across all touchpoints, from customized product recommendations to personalized content that resonates with each individual customer.',
-    icon: SparklesIcon,
-    canvaUrl: 'https://www.canva.com/design/DAGsNPZrpRc/uWi-zDJHrRy0Zc_LT8593Q/view',
-    canvaEmbedUrl: 'https://www.canva.com/design/DAGsNPZrpRc/uWi-zDJHrRy0Zc_LT8593Q/view?embed',
-    blogLinks: [
-      {
-        title: 'How GenAI Will Change Personalization',
-        url: 'https://koalagains.com/blogs/2025-07-07-how-generative-ai-will-change-personalization',
-        description: 'The future of hyper-personalized customer experiences powered by AI',
-      },
-    ],
-    keyFeatures: [
-      'Dynamic content generation based on user behavior',
-      'Real-time personalization across all channels',
-      'Predictive preferences and recommendations',
-      'Contextual and adaptive user interfaces',
-    ],
-    realWorldExample: {
-      company: 'Duolingo',
-      challenge: 'Generic lessons didn’t adapt to individual learner skill levels',
-      solution:
-        'Launched Duolingo Max with GPT-4 roleplay, letting learners practice conversations with Duolingo characters where difficulty adapts to their skill level',
-      impact: 'Boosted user engagement and paying subscribers surged 62% year over year after GPT-4 integration',
-      caseStudyUrl: 'https://investors.duolingo.com/news-releases/news-release-details/duolingo-reports-62-dau-growth-42-revenue-growth-and-increased',
-    },
-    gradient: 'from-orange-500 to-red-500',
-  },
+
   {
     id: 'presentations',
     title: 'GenAI in Presentations',
@@ -313,147 +302,151 @@ export default function GenAIBusinessCases() {
       </section>
 
       {/* Use Cases Grid */}
-      <section className="relative py-20">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 lg:gap-12">
+      <section className="relative py-12">
+        <div className="mx-auto max-w-6xl px-6 lg:px-8">
+          <div className="space-y-8">
             {genaiUseCases.map((useCase, index) => (
               <div
                 key={useCase.id}
-                className={`relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 ${
-                  index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
-                } flex flex-col lg:flex`}
+                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300"
               >
-                {/* Content Side */}
-                <div className="flex-1 p-8 lg:p-12">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className={`p-3 rounded-2xl bg-gradient-to-r ${useCase.gradient}`}>
-                      <useCase.icon className="h-8 w-8 text-white" />
+                <div className="p-8 lg:p-10">
+                  {/* Header Section */}
+                  <div className="flex items-start justify-between gap-6 mb-6">
+                    <div className="flex items-center gap-4 flex-1">
+                      <div className={`p-3 rounded-xl bg-gradient-to-r ${useCase.gradient} shadow-lg`}>
+                        <useCase.icon className="h-7 w-7 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h2 className="text-xl font-bold text-white mb-1">{useCase.title}</h2>
+                        <p className="text-base text-gray-300">{useCase.subtitle}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-white">{useCase.title}</h2>
-                      <p className="text-lg text-gray-300">{useCase.subtitle}</p>
+                    {/* Action Buttons - moved to header */}
+                    <div className="flex gap-2 flex-shrink-0">
+                      <button
+                        onClick={() => handleViewFlyer(useCase)}
+                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r ${useCase.gradient} text-white font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105`}
+                      >
+                        <EyeIcon className="h-4 w-4" />
+                        View Flyer
+                      </button>
+                      <Link
+                        href={useCase.canvaUrl}
+                        target="_blank"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 bg-gray-800/50 text-gray-300 font-medium hover:bg-gray-700/50 hover:border-gray-500 transition-all duration-300"
+                      >
+                        <ArrowTopRightOnSquareIcon className="h-4 w-4" />
+                        Canva
+                      </Link>
                     </div>
                   </div>
 
-                  <p className="text-gray-300 mb-6 leading-relaxed">{useCase.description}</p>
+                  <p className="text-gray-300 mb-8 leading-relaxed text-base">{useCase.description}</p>
 
-                  {/* Key Features */}
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-white mb-3">Key Capabilities</h3>
-                    <ul className="space-y-2">
-                      {useCase.keyFeatures.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-gray-300">
-                          <SparklesIcon className="h-5 w-5 text-indigo-400 mt-0.5 flex-shrink-0" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  {/* Main Content Grid */}
+                  <div className="grid lg:grid-cols-5 gap-8">
+                    {/* Left Column - Key Capabilities (40% width) */}
+                    <div className="lg:col-span-2 space-y-6">
+                      {/* Key Features */}
+                      <div>
+                        <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                          <SparklesIcon className="h-5 w-5 text-indigo-400" />
+                          Key Capabilities
+                        </h3>
+                        <ul className="space-y-3">
+                          {useCase.keyFeatures.map((feature, idx) => (
+                            <li key={idx} className="flex items-start gap-3 text-gray-300">
+                              <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${useCase.gradient} mt-2 flex-shrink-0`} />
+                              <span className="leading-relaxed">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
 
-                  {/* Real World Example */}
-                  {useCase.realWorldExample && (
-                    <div className="mb-6">
-                      <h4 className="font-semibold text-white mb-3">Real-World Success: {useCase.realWorldExample.company}</h4>
-                      {useCase.realWorldExample.caseStudyUrl ? (
-                        <Link
-                          href={useCase.realWorldExample.caseStudyUrl}
-                          target="_blank"
-                          className="block p-4 rounded-xl bg-gray-800/50 border border-gray-600/50 hover:border-indigo-500/50 transition-all duration-200 group"
-                        >
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex-1 space-y-2 text-sm text-gray-300">
-                              <p>
-                                <span className="font-medium text-red-400">Challenge:</span> {useCase.realWorldExample.challenge}
-                              </p>
-                              <p>
-                                <span className="font-medium text-blue-400">Solution:</span> {useCase.realWorldExample.solution}
-                              </p>
-                              <p>
-                                <span className="font-medium text-green-400">Impact:</span> {useCase.realWorldExample.impact}
-                              </p>
+                    {/* Right Column - Success Story (60% width) */}
+                    <div className="lg:col-span-3 space-y-6">
+                      {useCase.realWorldExample && (
+                        <div>
+                          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                            <ChartBarIcon className="h-5 w-5 text-green-400" />
+                            Success Story: {useCase.realWorldExample.company}
+                          </h3>
+                          {useCase.realWorldExample.caseStudyUrl ? (
+                            <Link
+                              href={useCase.realWorldExample.caseStudyUrl}
+                              target="_blank"
+                              className="block p-5 rounded-xl bg-gray-800/60 border border-gray-600/50 hover:border-indigo-500/50 transition-all duration-200 group"
+                            >
+                              <div className="space-y-3 text-sm text-gray-300">
+                                <div className="flex items-start gap-2">
+                                  <span className="font-semibold text-red-400 min-w-[80px]">Challenge:</span>
+                                  <span className="leading-relaxed">{useCase.realWorldExample.challenge}</span>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                  <span className="font-semibold text-blue-400 min-w-[80px]">Solution:</span>
+                                  <span className="leading-relaxed">{useCase.realWorldExample.solution}</span>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                  <span className="font-semibold text-green-400 min-w-[80px]">Impact:</span>
+                                  <span className="leading-relaxed">{useCase.realWorldExample.impact}</span>
+                                </div>
+                                <div className="flex items-center justify-end mt-3">
+                                  <ArrowTopRightOnSquareIcon className="h-4 w-4 text-gray-400 group-hover:text-indigo-400 transition-colors" />
+                                </div>
+                              </div>
+                            </Link>
+                          ) : (
+                            <div className="p-5 rounded-xl bg-gray-800/60 border border-gray-600/50">
+                              <div className="space-y-3 text-sm text-gray-300">
+                                <div className="flex items-start gap-2">
+                                  <span className="font-semibold text-red-400 min-w-[80px]">Challenge:</span>
+                                  <span className="leading-relaxed">{useCase.realWorldExample.challenge}</span>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                  <span className="font-semibold text-blue-400 min-w-[80px]">Solution:</span>
+                                  <span className="leading-relaxed">{useCase.realWorldExample.solution}</span>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                  <span className="font-semibold text-green-400 min-w-[80px]">Impact:</span>
+                                  <span className="leading-relaxed">{useCase.realWorldExample.impact}</span>
+                                </div>
+                              </div>
                             </div>
-                            <ArrowTopRightOnSquareIcon className="h-4 w-4 text-gray-400 group-hover:text-indigo-400 transition-colors flex-shrink-0 mt-1" />
-                          </div>
-                        </Link>
-                      ) : (
-                        <div className="p-4 rounded-xl bg-gray-800/50 border border-gray-600/50">
-                          <div className="space-y-2 text-sm text-gray-300">
-                            <p>
-                              <span className="font-medium text-red-400">Challenge:</span> {useCase.realWorldExample.challenge}
-                            </p>
-                            <p>
-                              <span className="font-medium text-blue-400">Solution:</span> {useCase.realWorldExample.solution}
-                            </p>
-                            <p>
-                              <span className="font-medium text-green-400">Impact:</span> {useCase.realWorldExample.impact}
-                            </p>
-                          </div>
+                          )}
                         </div>
                       )}
                     </div>
-                  )}
+                  </div>
 
-                  {/* Blog Links */}
+                  {/* Blog Links - Full Width at Bottom */}
                   {useCase.blogLinks.length > 0 && (
-                    <div className="mb-6">
-                      <h4 className="font-semibold text-white mb-3">Related Articles</h4>
-                      <div className="space-y-2">
+                    <div className="mt-8 pt-6 border-t border-gray-700/50">
+                      <h4 className="font-semibold text-white mb-4 flex items-center gap-2">
+                        <AcademicCapIcon className="h-5 w-5 text-purple-400" />
+                        Related Articles
+                      </h4>
+                      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         {useCase.blogLinks.map((blog, idx) => (
                           <Link
                             key={idx}
                             href={blog.url}
                             target="_blank"
-                            className="block p-3 rounded-lg bg-gray-800/30 border border-gray-600/30 hover:border-indigo-500/50 transition-all duration-200 group"
+                            className="block p-4 rounded-lg bg-gray-800/40 border border-gray-600/40 hover:border-indigo-500/50 transition-all duration-200 group"
                           >
                             <div className="flex items-start justify-between gap-2">
                               <div className="flex-1">
-                                <h5 className="font-medium text-white group-hover:text-indigo-400 transition-colors">{blog.title}</h5>
-                                <p className="text-sm text-gray-400 mt-1">{blog.description}</p>
+                                <h5 className="font-medium text-white group-hover:text-indigo-400 transition-colors text-sm leading-tight">{blog.title}</h5>
+                                <p className="text-xs text-gray-400 mt-2 leading-relaxed">{blog.description}</p>
                               </div>
-                              <ArrowTopRightOnSquareIcon className="h-4 w-4 text-gray-400 group-hover:text-indigo-400 transition-colors flex-shrink-0 mt-1" />
+                              <ArrowTopRightOnSquareIcon className="h-3 w-3 text-gray-400 group-hover:text-indigo-400 transition-colors flex-shrink-0 mt-1" />
                             </div>
                           </Link>
                         ))}
                       </div>
                     </div>
                   )}
-
-                  {/* Action Buttons */}
-                  <div className="flex flex-wrap gap-3">
-                    <button
-                      onClick={() => handleViewFlyer(useCase)}
-                      className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r ${useCase.gradient} text-white font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105`}
-                    >
-                      <EyeIcon className="h-5 w-5" />
-                      View Detailed Flyer
-                    </button>
-                    <Link
-                      href={useCase.canvaUrl}
-                      target="_blank"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-gray-600 bg-gray-800/50 text-gray-300 font-semibold hover:bg-gray-700/50 hover:border-gray-500 transition-all duration-300"
-                    >
-                      <ArrowTopRightOnSquareIcon className="h-5 w-5" />
-                      Open in Canva
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Visual Preview Side */}
-                <div className="lg:w-96 p-8 lg:p-12 flex items-center justify-center">
-                  <div className="relative group cursor-pointer" onClick={() => handleViewFlyer(useCase)}>
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-r ${useCase.gradient} rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-300`}
-                    />
-                    <div className="relative bg-gray-800 rounded-2xl p-6 border border-gray-600/50 group-hover:border-gray-500/50 transition-all duration-300">
-                      <div className="aspect-[4/3] bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl flex items-center justify-center">
-                        <div className="text-center">
-                          <useCase.icon className={`h-16 w-16 mx-auto mb-4 text-transparent bg-gradient-to-r ${useCase.gradient} bg-clip-text`} />
-                          <p className="text-gray-300 font-medium">{useCase.title}</p>
-                          <p className="text-sm text-gray-400 mt-1">Click to view flyer</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             ))}
