@@ -15,9 +15,13 @@ const reportsDropdown = [
   { name: 'All Reports', href: '/reports', description: 'Browse all available reports' },
 ];
 
+const genaiDropdown = [
+  { name: 'GenAI Business Simulations', href: '/genai-simulation', description: 'Interactive AI business simulations' },
+  { name: 'GenAI in Business - Real Cases', href: '/genai-business', description: 'Real-world AI implementation cases' },
+];
+
 const navigation = [
   { name: 'Blogs', href: '/blogs', newTab: true },
-  { name: 'GenAI Simulations', href: '/genai-simulation', newTab: true },
   { name: 'Platform Docs', href: 'https://docs.koalagains.com', newTab: true },
 ];
 
@@ -26,10 +30,13 @@ export default function TopNav() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [reportsDropdownOpen, setReportsDropdownOpen] = useState(false);
+  const [genaiDropdownOpen, setGenaiDropdownOpen] = useState(false);
   const [mobileReportsOpen, setMobileReportsOpen] = useState(false);
+  const [mobileGenaiOpen, setMobileGenaiOpen] = useState(false);
   const [isLoggedin, setIsLoggedin] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const reportsDropdownRef = useRef<HTMLDivElement | null>(null);
+  const genaiDropdownRef = useRef<HTMLDivElement | null>(null);
 
   const checkLoginStatus = () => {
     setIsLoggedin(!!getAuthKey());
@@ -62,6 +69,9 @@ export default function TopNav() {
       }
       if (reportsDropdownRef.current && !reportsDropdownRef.current.contains(event.target as Node)) {
         setReportsDropdownOpen(false);
+      }
+      if (genaiDropdownRef.current && !genaiDropdownRef.current.contains(event.target as Node)) {
+        setGenaiDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -103,9 +113,40 @@ export default function TopNav() {
             {reportsDropdownOpen && (
               <div
                 onMouseLeave={() => setReportsDropdownOpen(false)}
-                className="absolute left-0 z-20 mt-2 w-80 origin-top-left rounded-md bg-gray-700 shadow-xl ring-1 ring-gray-600 focus:outline-none overflow-hidden"
+                className="absolute left-0 z-20 mt-2 w-64 origin-top-left rounded-md bg-gray-700 shadow-xl ring-1 ring-gray-600 focus:outline-none overflow-hidden"
               >
                 {reportsDropdown.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-600 hover:text-white transition-colors duration-150"
+                  >
+                    <div className="font-semibold">{item.name}</div>
+                    <div className="text-xs text-gray-400 mt-1">{item.description}</div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* GenAI Adoption Dropdown */}
+          <div className="relative" ref={genaiDropdownRef}>
+            <button
+              type="button"
+              onClick={() => setGenaiDropdownOpen(!genaiDropdownOpen)}
+              onMouseEnter={() => setGenaiDropdownOpen(true)}
+              className="flex items-center text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
+              aria-expanded={genaiDropdownOpen}
+            >
+              GenAI Adoption
+              <ChevronDownIcon aria-hidden="true" className={`ml-1 h-4 w-4 transition-transform duration-200 ${genaiDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {genaiDropdownOpen && (
+              <div
+                onMouseLeave={() => setGenaiDropdownOpen(false)}
+                className="absolute left-0 z-20 mt-2 w-72 origin-top-left rounded-md bg-gray-700 shadow-xl ring-1 ring-gray-600 focus:outline-none overflow-hidden"
+              >
+                {genaiDropdown.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
@@ -212,6 +253,31 @@ export default function TopNav() {
                   {mobileReportsOpen && (
                     <div className="ml-4 mt-2 space-y-2">
                       {reportsDropdown.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="block -mx-3 rounded-lg px-3 py-2 text-sm text-gray-400 hover:bg-gray-700 hover:text-gray-300"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Mobile GenAI Adoption */}
+                <div>
+                  <button
+                    onClick={() => setMobileGenaiOpen(!mobileGenaiOpen)}
+                    className="flex w-full items-center justify-between -mx-3 rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-gray-700"
+                  >
+                    GenAI Adoption
+                    <ChevronDownIcon aria-hidden="true" className={`h-5 w-5 transition-transform duration-200 ${mobileGenaiOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  {mobileGenaiOpen && (
+                    <div className="ml-4 mt-2 space-y-2">
+                      {genaiDropdown.map((item) => (
                         <Link
                           key={item.name}
                           href={item.href}
