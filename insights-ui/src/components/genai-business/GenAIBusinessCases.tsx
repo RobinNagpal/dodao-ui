@@ -14,6 +14,7 @@ import {
   EyeIcon,
 } from '@heroicons/react/24/outline';
 import CanvaViewModal from '@/components/ui/CanvaViewModal';
+import AnimatedFlyerCarousel from './AnimatedFlyerCarousel';
 
 interface GenAIUseCase {
   id: string;
@@ -300,6 +301,8 @@ export default function GenAIBusinessCases() {
           </div>
         </div>
       </section>
+
+      <AnimatedFlyerCarousel />
 
       {/* Use Cases Grid */}
       <section className="relative py-12">
