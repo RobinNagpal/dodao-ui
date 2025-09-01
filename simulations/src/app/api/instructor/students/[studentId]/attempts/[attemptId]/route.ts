@@ -3,9 +3,9 @@ import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DeleteResponse } from '@/types/api';
 
-// DELETE /api/instructor/students/[studentId]/clear-attempts?instructorEmail=xxx&caseStudyId=xxx - Clear all attempts, final submission, and final summary for a student
-async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ studentId: string }> }): Promise<DeleteResponse> {
-  const { studentId } = await params;
+// DELETE /api/instructor/students/[studentId]/attempts/[attemptId]?instructorEmail=xxx&caseStudyId=xxx - Delete specific exercise attempt
+async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ studentId: string; attemptId: string }> }): Promise<DeleteResponse> {
+  const { studentId, attemptId } = await params;
   const { searchParams } = new URL(req.url);
   const instructorEmail = searchParams.get('instructorEmail');
   const caseStudyId = searchParams.get('caseStudyId');
@@ -46,8 +46,6 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ s
           },
         },
       },
-      finalSubmission: true,
-      finalSummary: true,
     },
   });
 
@@ -55,40 +53,31 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ s
     throw new Error('Student not found or you do not have access to this student');
   }
 
-  // Get all exercise IDs for this case study
+  // Get all exercise IDs for this case study to verify the attempt belongs to this case study
   const allExerciseIds = student.enrollment.caseStudy.modules.flatMap((module) => module.exercises.map((exercise) => exercise.id));
 
-  // Delete all exercise attempts for this student in this case study
-  const deleteAttemptsResult = await prisma.exerciseAttempt.deleteMany({
+  // Verify the attempt exists and belongs to this student and case study
+  const attempt = await prisma.exerciseAttempt.findFirst({
     where: {
+      id: attemptId,
       exerciseId: { in: allExerciseIds },
       createdBy: student.assignedStudentId,
+      archive: false,
     },
   });
 
-  // Delete final submission if exists
-  let deletedFinalSubmission = false;
-  if (student.finalSubmission) {
-    await prisma.finalSubmission.delete({
-      where: {
-        id: student.finalSubmission.id,
-      },
-    });
-    deletedFinalSubmission = true;
+  if (!attempt) {
+    throw new Error('Exercise attempt not found or you do not have access to this attempt');
   }
 
-  // Delete final summary if exists
-  let deletedFinalSummary = false;
-  if (student.finalSummary) {
-    await prisma.finalSummary.delete({
-      where: {
-        id: student.finalSummary.id,
-      },
-    });
-    deletedFinalSummary = true;
-  }
+  // Delete the specific attempt
+  await prisma.exerciseAttempt.delete({
+    where: {
+      id: attemptId,
+    },
+  });
 
-  return { message: 'Student attempts, final submission, and final summary cleared successfully' };
+  return { message: 'Exercise attempt deleted successfully' };
 }
 
 export const DELETE = withErrorHandlingV2<DeleteResponse>(deleteHandler);

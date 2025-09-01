@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Eye, Trash2, Check, Minus } from 'lucide-react';
+import { Eye, Trash2, Check, Minus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import AttemptDetailModal from '@/components/student/AttemptDetailModal';
@@ -13,10 +13,20 @@ interface StudentTableProps {
   modules: ModuleTableData[];
   onViewStudentDetails: (studentId: string) => void;
   onClearStudentAttempts: (studentId: string, studentEmail: string) => void;
+  onDeleteAttempt: (attemptId: string, studentId: string, studentEmail: string, exerciseTitle: string) => void;
   clearingAttempts: boolean;
+  deletingAttempt: boolean;
 }
 
-export default function StudentTable({ students, modules, onViewStudentDetails, onClearStudentAttempts, clearingAttempts }: StudentTableProps) {
+export default function StudentTable({
+  students,
+  modules,
+  onViewStudentDetails,
+  onClearStudentAttempts,
+  onDeleteAttempt,
+  clearingAttempts,
+  deletingAttempt,
+}: StudentTableProps) {
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
   const [showAttemptModal, setShowAttemptModal] = useState(false);
 
@@ -128,33 +138,51 @@ export default function StudentTable({ students, modules, onViewStudentDetails, 
                     const exerciseProgress = student.exercises.find((ex) => ex.exerciseId === exercise.id);
 
                     return (
-                      <td key={exercise.id} className="px-1 py-4 text-center border-l border-gray-100">
+                      <td key={exercise.id} className="px-1 py-2 text-center border-l border-gray-100">
                         <div className="flex flex-col items-center space-y-1">
                           {/* Completion Status Icon */}
                           <div className="mb-1">
                             {exerciseProgress?.hasAttempts ? <Check className="h-4 w-4 text-green-600" /> : <Minus className="h-4 w-4 text-gray-400" />}
                           </div>
 
-                          {/* Attempt Numbers */}
+                          {/* Attempt Numbers and Delete Icons */}
                           {exerciseProgress?.attempts && exerciseProgress.attempts.length > 0 && (
-                            <div className="flex flex-wrap gap-1 justify-center">
-                              {exerciseProgress.attempts.map((attempt) => (
-                                <button
-                                  key={attempt.id}
-                                  onClick={() => handleAttemptClick(attempt.id)}
-                                  disabled={loadingAttemptDetails && selectedAttemptId === attempt.id}
-                                  className={`w-6 h-6 rounded-full text-xs font-bold transition-all duration-200 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed ${
-                                    attempt.status === 'completed'
-                                      ? 'bg-green-100 text-green-800 hover:bg-green-200'
-                                      : attempt.status === 'failed'
-                                      ? 'bg-red-100 text-red-800 hover:bg-red-200'
-                                      : 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-                                  }`}
-                                  title={`Attempt ${attempt.attemptNumber} - ${attempt.status || 'pending'}`}
-                                >
-                                  {attempt.attemptNumber}
-                                </button>
-                              ))}
+                            <div className="flex flex-col items-center space-y-1">
+                              {/* Attempt Numbers */}
+                              <div className="flex flex-wrap gap-1 justify-center">
+                                {exerciseProgress.attempts.map((attempt) => (
+                                  <button
+                                    key={attempt.id}
+                                    onClick={() => handleAttemptClick(attempt.id)}
+                                    disabled={loadingAttemptDetails && selectedAttemptId === attempt.id}
+                                    className={`w-6 h-6 rounded-full text-xs font-bold transition-all duration-200 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed ${
+                                      attempt.status === 'completed'
+                                        ? 'bg-green-100 text-green-800 hover:bg-green-200'
+                                        : attempt.status === 'failed'
+                                        ? 'bg-red-100 text-red-800 hover:bg-red-200'
+                                        : 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
+                                    }`}
+                                    title={`Attempt ${attempt.attemptNumber} - ${attempt.status || 'pending'}`}
+                                  >
+                                    {attempt.attemptNumber}
+                                  </button>
+                                ))}
+                              </div>
+
+                              {/* Delete Icons */}
+                              <div className="flex flex-wrap gap-1 justify-center">
+                                {exerciseProgress.attempts.map((attempt) => (
+                                  <button
+                                    key={`delete-${attempt.id}`}
+                                    onClick={() => onDeleteAttempt(attempt.id, student.id, student.assignedStudentId, exercise.title)}
+                                    disabled={deletingAttempt}
+                                    className="w-6 h-6 text-red-600 hover:text-red-800 transition-all duration-200 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                                    title={`Delete attempt ${attempt.attemptNumber}`}
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                  </button>
+                                ))}
+                              </div>
                             </div>
                           )}
                         </div>
