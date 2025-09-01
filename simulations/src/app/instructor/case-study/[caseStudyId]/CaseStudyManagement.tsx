@@ -33,6 +33,13 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [studentToClear, setStudentToClear] = useState<{ id: string; email: string } | null>(null);
+  const [showDeleteAttemptConfirm, setShowDeleteAttemptConfirm] = useState<boolean>(false);
+  const [attemptToDelete, setAttemptToDelete] = useState<{
+    attemptId: string;
+    studentId: string;
+    studentEmail: string;
+    exerciseTitle: string;
+  } | null>(null);
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
   const [showExerciseModal, setShowExerciseModal] = useState(false);
@@ -66,6 +73,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     errorMessage: 'Failed to clear student attempts',
   });
 
+  const { deleteData: deleteAttempt, loading: deletingAttempt } = useDeleteData<DeleteResponse, never>({
+    successMessage: 'Exercise attempt deleted successfully!',
+    errorMessage: 'Failed to delete exercise attempt',
+  });
+
   useEffect(() => {
     const userType = localStorage.getItem('user_type');
     const email = localStorage.getItem('user_email');
@@ -90,6 +102,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     setShowDeleteConfirm(true);
   };
 
+  const handleDeleteAttempt = (attemptId: string, studentId: string, studentEmail: string, exerciseTitle: string) => {
+    setAttemptToDelete({ attemptId, studentId, studentEmail, exerciseTitle });
+    setShowDeleteAttemptConfirm(true);
+  };
+
   const handleConfirmClearAttempts = async (): Promise<void> => {
     if (!studentToClear) return;
 
@@ -103,6 +120,24 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       setStudentToClear(null);
     } catch (error: unknown) {
       console.error('Error clearing student attempts:', error);
+    }
+  };
+
+  const handleConfirmDeleteAttempt = async (): Promise<void> => {
+    if (!attemptToDelete) return;
+
+    try {
+      const url = `/api/instructor/students/${attemptToDelete.studentId}/attempts/${attemptToDelete.attemptId}?instructorEmail=${encodeURIComponent(
+        userEmail
+      )}&caseStudyId=${caseStudyId}`;
+      await deleteAttempt(url);
+
+      // Refresh students data
+      await refetchStudentsTable();
+      setShowDeleteAttemptConfirm(false);
+      setAttemptToDelete(null);
+    } catch (error: unknown) {
+      console.error('Error deleting exercise attempt:', error);
     }
   };
 
@@ -269,7 +304,9 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
                 modules={studentsTableData.modules}
                 onViewStudentDetails={viewStudentDetails}
                 onClearStudentAttempts={handleClearStudentAttempts}
+                onDeleteAttempt={handleDeleteAttempt}
                 clearingAttempts={clearingAttempts}
+                deletingAttempt={deletingAttempt}
               />
             )}
           </div>
@@ -326,6 +363,20 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         confirming={clearingAttempts}
         title="Clear Student Attempts"
         confirmationText={`Are you sure you want to clear all attempts and final submission for ${studentToClear?.email}? This action cannot be undone.`}
+        askForTextInput={false}
+      />
+
+      <ConfirmationModal
+        open={showDeleteAttemptConfirm}
+        showSemiTransparentBg={true}
+        onClose={() => {
+          setShowDeleteAttemptConfirm(false);
+          setAttemptToDelete(null);
+        }}
+        onConfirm={handleConfirmDeleteAttempt}
+        confirming={deletingAttempt}
+        title="Delete Exercise Attempt"
+        confirmationText={`Are you sure you want to delete this attempt for ${attemptToDelete?.studentEmail} in exercise "${attemptToDelete?.exerciseTitle}"? This action cannot be undone.`}
         askForTextInput={false}
       />
 
