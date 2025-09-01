@@ -126,30 +126,25 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ case
   let fullPrompt = '';
 
   // Add professor instructions if available
-  if (finalSummaryPromptInstructions) {
-    fullPrompt += `# Instructions for Summary Generation\n\n${finalSummaryPromptInstructions}\n\n`;
+  fullPrompt += `# Instructions for Summary Generation\n\n${finalSummaryPromptInstructions}\n\n`;
+  if (!finalSummaryPromptInstructions) {
+    fullPrompt += `# <span style="color: red"> Note: Ask Instructor to add the final report instructions to the case study </span>\n\n`;
   }
 
   // Add case study context
   fullPrompt += `# Case Study: ${caseStudy.title}\n\n`;
-  fullPrompt += `**Description:** ${caseStudy.shortDescription}\n\n`;
-  fullPrompt += `**Details:**\n${caseStudy.details}\n\n`;
 
   // Add modules and exercises
   modules.forEach((module, moduleIndex) => {
     fullPrompt += `## Module ${moduleIndex + 1}: ${module.title}\n\n`;
-    fullPrompt += `**Description:** ${module.shortDescription}\n\n`;
-    fullPrompt += `**Details:**\n${module.details}\n\n`;
 
     module.exercises.forEach((exercise, exerciseIndex) => {
       fullPrompt += `### Exercise ${exerciseIndex + 1}: ${exercise.title}\n\n`;
-      fullPrompt += `**Description:** ${exercise.shortDescription}\n\n`;
-      fullPrompt += `**Details:**\n${exercise.details}\n\n`;
 
       if (exercise.attempts.length > 0) {
         exercise.attempts.forEach((attempt, attemptIndex) => {
           if (attempt.promptResponse) {
-            fullPrompt += `*Exercise Solution ${attemptIndex + 1}:*\n${attempt.promptResponse}\n\n`;
+            fullPrompt += `#### **Exercise Solution ${attemptIndex + 1}:**\n${attempt.promptResponse}\n\n`;
           }
         });
       }
