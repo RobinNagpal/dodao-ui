@@ -42,7 +42,6 @@ model Ticker {
   criteriaMatchesOfLatest10Q     CriteriaMatchesOfLatest10Q?
   latest10QInfo                  Latest10QInfo?
   // latest10QInformation           Latest10QInformation?            @relation(fields: [latest10QInformationId], references: [id])
-
   @@unique([spaceId, tickerKey])
   @@map("tickers")
 }
@@ -401,70 +400,171 @@ model Latest10QInfo {
 //   @@map("latest_10_attachments")
 // }
 
+// --------------------------
+// Enums (normalized to match existing style)
+// --------------------------
+
+enum EvaluationResult {
+  Pass
+  Fail
+}
+
+enum TickerAnalysisCategory {
+  BusinessAndMoat
+  FinancialStatementAnalysis
+  PastPerformance
+  FutureGrowth
+  VsCompetition
+  FairValue
+}
+
+// --------------------------
+// New Tables (convention-aligned)
+// --------------------------
+
 model TickerV1 {
-  id          Int      @id @default(autoincrement())
-  name        String
-  symbol      String
-  exchange    String
-  industryKey String
-  subIndustryKey   String
-  websiteUrl String?
-  summary     String?
-  
-  // Ensure uniqueness of symbol+exchange pair
-  @@unique([symbol, exchange])
+  id             String   @id @default(uuid())
+  name           String   @map("name")
+  symbol         String   @map("symbol")
+  exchange       String   @map("exchange")
+  industryKey    String   @map("industry_key")
+  subIndustryKey String   @map("sub_industry_key")
+  websiteUrl     String?  @map("website_url")
+  summary        String?  @map("summary")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  createdBy      String?  @map("created_by")
+  updatedBy      String?  @map("updated_by")
+  spaceId        String   @default("koala_gains") @map("space_id")
 
   // Relations
-  factorAnalyses   TickerFactorAnalysis[]
-  strategyAnalyses TickerStrategyAnalysis[]
+  categoryAnalysisResults TickerV1CategoryAnalysisResult[]
+  factorResults           TickerV1AnalysisCategoryFactorResult[]
+  investorAnalysisResults TickerV1InvestorAnalysisResult[]
+  futureRisks             TickerV1FutureRisk[]
+  vsCompetition           TickerV1VsCompetition[]
+
+  // Ensure uniqueness of symbol+exchange per space
+  @@unique([spaceId, symbol, exchange])
+  @@map("tickers_v1")
 }
 
-model AnalysisFactor {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  industryKey String
-  subIndustryKey   String
-  categoryKey String    // main category key (e.g. "financial_analysis")
+model AnalysisCategoryFactor {
+  id                        String                 @id @default(uuid())
+  name                      String                 @map("name")
+  description               String?                @map("description")
+  industryKey               String                 @map("industry_key")
+  subIndustryKey            String                 @map("sub_industry_key")
+  categoryKey               TickerAnalysisCategory @map("category_key")
+  factorAnalysisKey         String                 @map("factor_analysis_key")
+  factorAnalysisTitle       String                 @map("factor_analysis_title")
+  factorAnalysisDescription String                 @map("factor_analysis_description")
+  createdAt                 DateTime               @default(now()) @map("created_at")
+  updatedAt                 DateTime               @updatedAt @map("updated_at")
+  createdBy                 String?                @map("created_by")
+  updatedBy                 String?                @map("updated_by")
+  spaceId                   String                 @default("koala_gains") @map("space_id")
 
-  // Relations
-  factorAnalyses TickerFactorAnalysis[]
+  // Backrefs
+  factorResults TickerV1AnalysisCategoryFactorResult[]
+
+  @@unique([spaceId, industryKey, subIndustryKey, categoryKey, factorAnalysisKey])
+  @@map("analysis_category_factors")
 }
 
-model TickerV1FactorAnalysis {
-  id               Int     @id @default(autoincrement())
-  summary          String
-  detailedAnalysis String
-  result           EvaluationResult   // PASS / FAIL
+model TickerV1CategoryAnalysisResult {
+  id                     String                 @id @default(uuid())
+  categoryKey            TickerAnalysisCategory @map("category_key")
+  summary                String                 @map("summary")
+  introductionToAnalysis String                 @map("introduction_to_analysis")
+  tickerId               String                 @map("ticker_id")
+  spaceId                String                 @default("koala_gains") @map("space_id")
+  createdAt              DateTime               @default(now()) @map("created_at")
+  updatedAt              DateTime               @updatedAt @map("updated_at")
+  createdBy              String?                @map("created_by")
+  updatedBy              String?                @map("updated_by")
 
-  tickerId         Int
-  ticker           TickerV1 @relation(fields: [tickerId], references: [id])
+  ticker TickerV1 @relation(fields: [tickerId], references: [id])
 
-  factorId         Int
-  factor           AnalysisFactor @relation(fields: [factorId], references: [id])
+  @@unique([spaceId, tickerId, categoryKey])
+  @@index([tickerId])
+  @@map("ticker_v1_category_analysis_results")
 }
 
-model TickerV1StrategyAnalysis {
-  id               Int     @id @default(autoincrement())
-  strategyKey      String  // e.g. "WARREN_BUFFETT", "CHARLIE_MUNGER", "BILL_ACKMAN"
-  summary          String
-  detailedAnalysis String
+model TickerV1AnalysisCategoryFactorResult {
+  id                       String                 @id @default(uuid())
+  categoryKey              TickerAnalysisCategory @map("category_key")
+  analysisCategoryFactorId String                 @map("analysis_category_factor_id")
+  analysisExplanation      String                 @map("analysis_explanation")
+  result                   EvaluationResult       @map("result")
+  tickerId                 String                 @map("ticker_id")
+  spaceId                  String                 @default("koala_gains") @map("space_id")
+  createdAt                DateTime               @default(now()) @map("created_at")
+  updatedAt                DateTime               @updatedAt @map("updated_at")
+  createdBy                String?                @map("created_by")
+  updatedBy                String?                @map("updated_by")
 
-  tickerId         Int
-  ticker           TickerV1 @relation(fields: [tickerId], references: [id])
+  ticker                 TickerV1               @relation(fields: [tickerId], references: [id])
+  analysisCategoryFactor AnalysisCategoryFactor @relation(fields: [analysisCategoryFactorId], references: [id])
+
+  @@unique([spaceId, tickerId, analysisCategoryFactorId])
+  @@index([tickerId])
+  @@index([analysisCategoryFactorId])
+  @@map("ticker_v1_analysis_category_factor_results")
+}
+
+model TickerV1InvestorAnalysisResult {
+  id               String   @id @default(uuid())
+  investorKey      String   @map("investor_key") // e.g. "WARREN_BUFFETT"
+  summary          String   @map("summary")
+  detailedAnalysis String   @map("detailed_analysis")
+  tickerId         String   @map("ticker_id")
+  spaceId          String   @default("koala_gains") @map("space_id")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  createdBy        String?  @map("created_by")
+  updatedBy        String?  @map("updated_by")
+
+  ticker TickerV1 @relation(fields: [tickerId], references: [id])
+
+  @@unique([spaceId, tickerId, investorKey])
+  @@index([tickerId])
+  @@map("ticker_v1_investor_analysis_results")
 }
 
 model TickerV1FutureRisk {
-  id               Int     @id @default(autoincrement())
-  summary          String
-  detailedAnalysis String
+  id               String   @id @default(uuid())
+  summary          String   @map("summary")
+  detailedAnalysis String   @map("detailed_analysis")
+  tickerId         String   @map("ticker_id")
+  spaceId          String   @default("koala_gains") @map("space_id")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  createdBy        String?  @map("created_by")
+  updatedBy        String?  @map("updated_by")
 
-  tickerId         Int
-  ticker           TickerV1 @relation(fields: [tickerId], references: [id])
+  ticker TickerV1 @relation(fields: [tickerId], references: [id])
+
+  @@index([tickerId])
+  @@map("ticker_v1_future_risks")
 }
 
-enum EvaluationResult {
-  PASS
-  FAIL
-}
+model TickerV1VsCompetition {
+  id                     String   @id @default(uuid())
+  summary                String   @map("summary")
+  introductionToAnalysis String   @map("introduction_to_analysis")
+  // Store as a JSON value (can itself be a JSON array of objects)
+  competitionAnalysis    Json     @map("competition_analysis")
+  tickerId               String   @map("ticker_id")
+  spaceId                String   @default("koala_gains") @map("space_id")
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+  createdBy              String?  @map("created_by")
+  updatedBy              String?  @map("updated_by")
 
+  ticker TickerV1 @relation(fields: [tickerId], references: [id])
+
+  @@unique([spaceId, tickerId])
+  @@index([tickerId])
+  @@map("ticker_v1_vs_competition")
+}
