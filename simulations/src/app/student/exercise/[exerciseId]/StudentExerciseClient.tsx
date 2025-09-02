@@ -508,7 +508,11 @@ Details: ${contextData.module.details}
                     <div className="flex items-center space-x-3">
                       {prompt.trim() && (
                         <button
-                          onClick={() => setPrompt('')}
+                          onClick={() => {
+                            setPrompt('');
+                            // Reset textarea height to default after clearing
+                            setTimeout(() => autoExpandTextarea(), 0);
+                          }}
                           className="text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-xl"
                         >
                           <RotateCcw className="h-4 w-4" />
