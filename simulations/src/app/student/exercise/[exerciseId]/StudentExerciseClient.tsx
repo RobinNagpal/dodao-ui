@@ -90,14 +90,14 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Simple auto-expand function - just resize
+  // Simple auto-expand function - just resize with max height
   const autoExpandTextarea = () => {
     if (textareaRef.current) {
       const textarea = textareaRef.current;
 
-      // Simple approach: reset height and set to scrollHeight
+      // Simple approach: reset height and set to scrollHeight with max height of 800px
       textarea.style.height = 'auto';
-      textarea.style.height = `${Math.max(textarea.scrollHeight, 160)}px`;
+      textarea.style.height = `${Math.min(Math.max(textarea.scrollHeight, 160), 800)}px`;
     }
   };
 
@@ -497,7 +497,7 @@ Details: ${contextData.module.details}
                         autoExpandTextarea();
                       }}
                       placeholder="Write your prompt here... Ask the AI to help you analyze the case study, provide insights, or guide you through the business concepts."
-                      className="w-full min-h-[160px] p-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 resize-none text-base leading-relaxed transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                      className="w-full min-h-[160px] max-h-[800px] p-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 resize-none text-base leading-relaxed transition-all duration-300 bg-white/80 backdrop-blur-sm overflow-y-auto"
                       disabled={submittingAttempt}
                       style={{ height: '160px' }} // Initial height
                     />

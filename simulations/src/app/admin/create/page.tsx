@@ -481,12 +481,13 @@ export default function CreateCaseStudyPage() {
                               className="bg-white/80 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
                             />
 
-                            <Textarea
-                              value={exercise.promptHint || ''}
-                              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateExercise(module.id, exercise.id, 'promptHint', e.target.value)}
-                              placeholder="Prompt hint for AI assistance (optional)"
-                              rows={2}
-                              className="bg-white/80 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+                            <MarkdownEditor
+                              objectId={`exercise-${exercise.id}-prompt-hint`}
+                              label="Prompt Hint for AI Assistance (Optional)"
+                              modelValue={exercise.promptHint || ''}
+                              onUpdate={(value: string) => updateExercise(module.id, exercise.id, 'promptHint', value)}
+                              placeholder="Enter prompt hint using markdown..."
+                              maxHeight={120}
                             />
 
                             <MarkdownEditor
