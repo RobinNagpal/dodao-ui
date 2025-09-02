@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -87,6 +87,19 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const [showAiResponseModal, setShowAiResponseModal] = useState(false);
   const [currentAiResponse, setCurrentAiResponse] = useState<string>('');
   const [showRetryPrompt, setShowRetryPrompt] = useState(false);
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Simple auto-expand function - just resize
+  const autoExpandTextarea = () => {
+    if (textareaRef.current) {
+      const textarea = textareaRef.current;
+
+      // Simple approach: reset height and set to scrollHeight
+      textarea.style.height = 'auto';
+      textarea.style.height = `${Math.max(textarea.scrollHeight, 160)}px`;
+    }
+  };
 
   const router = useRouter();
 
@@ -326,7 +339,21 @@ Details: ${contextData.caseStudy.details}
 
 `;
 
-    setPrompt((prev) => prev + context);
+    setPrompt((prev) => {
+      const newPrompt = prev + context;
+
+      // Simple: just expand and focus
+      setTimeout(() => {
+        if (textareaRef.current) {
+          autoExpandTextarea();
+          textareaRef.current.focus();
+          // Move cursor to end
+          textareaRef.current.setSelectionRange(newPrompt.length, newPrompt.length);
+        }
+      }, 0);
+
+      return newPrompt;
+    });
   };
 
   const addModuleContext = () => {
@@ -338,7 +365,21 @@ Details: ${contextData.module.details}
 
 `;
 
-    setPrompt((prev) => prev + context);
+    setPrompt((prev) => {
+      const newPrompt = prev + context;
+
+      // Simple: just expand and focus
+      setTimeout(() => {
+        if (textareaRef.current) {
+          autoExpandTextarea();
+          textareaRef.current.focus();
+          // Move cursor to end
+          textareaRef.current.setSelectionRange(newPrompt.length, newPrompt.length);
+        }
+      }, 0);
+
+      return newPrompt;
+    });
   };
 
   const shouldShowSuccessStateWithRetry = () => {
@@ -446,11 +487,19 @@ Details: ${contextData.module.details}
                 <div className="space-y-4">
                   <div className="relative">
                     <textarea
+                      ref={textareaRef}
                       value={prompt}
-                      onChange={(e) => setPrompt(e.target.value)}
+                      onChange={(e) => {
+                        setPrompt(e.target.value);
+                      }}
+                      onInput={() => {
+                        // Simple auto-expand on input
+                        autoExpandTextarea();
+                      }}
                       placeholder="Write your prompt here... Ask the AI to help you analyze the case study, provide insights, or guide you through the business concepts."
-                      className="w-full h-40 p-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 resize-none text-base leading-relaxed transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                      className="w-full min-h-[160px] p-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 resize-none text-base leading-relaxed transition-all duration-300 bg-white/80 backdrop-blur-sm"
                       disabled={submittingAttempt}
+                      style={{ height: '160px' }} // Initial height
                     />
                     <div className="absolute bottom-4 right-4 text-sm text-gray-400">{prompt.length > 0 && `${prompt.length} characters`}</div>
                   </div>
@@ -459,7 +508,11 @@ Details: ${contextData.module.details}
                     <div className="flex items-center space-x-3">
                       {prompt.trim() && (
                         <button
-                          onClick={() => setPrompt('')}
+                          onClick={() => {
+                            setPrompt('');
+                            // Reset textarea height to default after clearing
+                            setTimeout(() => autoExpandTextarea(), 0);
+                          }}
                           className="text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-xl"
                         >
                           <RotateCcw className="h-4 w-4" />
