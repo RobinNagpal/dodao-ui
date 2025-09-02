@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AnalysisFactors",
+  "type": "object",
+  "properties": {
+    "industryKey": {
+      "type": "string",
+      "title": "Industry Key",
+      "minLength": 3,
+      "maxLength": 50
+    },
+    "subIndustryKey": {
+      "type": "string",
+      "title": "Sub-Industry Key",
+      "minLength": 3,
+      "maxLength": 50
+    },
+    "categories": {
+      "type": "array",
+      "title": "Analysis Categories",
+      "items": {
+        "$ref": "#/definitions/CategoryAnalysisFactors"
+      }
+    }
+  },
+  "required": ["industryKey", "subIndustryKey", "categories"],
+  "definitions": {
+    "CategoryAnalysisFactors": {
+      "type": "object",
+      "properties": {
+        "categoryKey": {
+          "type": "string",
+          "title": "Category Key",
+          "enum": ["BusinessAndMoat", "FinancialStatementAnalysis", "PastPerformance", "FutureGrowth", "VsCompetition", "FairValue"]
+        },
+        "factors": {
+          "type": "array",
+          "title": "Analysis Factors",
+          "items": {
+            "$ref": "#/definitions/AnalysisFactorDefinition"
+          }
+        }
+      },
+      "required": ["categoryKey", "factors"]
+    },
+    "AnalysisFactorDefinition": {
+      "type": "object",
+      "properties": {
+        "factorAnalysisKey": {
+          "type": "string",
+          "title": "Factor Analysis Key",
+          "minLength": 3,
+          "maxLength": 50
+        },
+        "factorAnalysisTitle": {
+          "type": "string",
+          "title": "Factor Analysis Title",
+          "minLength": 3,
+          "maxLength": 100
+        },
+        "factorAnalysisDescription": {
+          "type": "string",
+          "title": "Factor Analysis Description",
+          "minLength": 10,
+          "maxLength": 1000
+        }
+      },
+      "required": ["factorAnalysisKey", "factorAnalysisTitle", "factorAnalysisDescription"]
+    }
+  }
+}
