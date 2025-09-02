@@ -400,3 +400,71 @@ model Latest10QInfo {
 //   @@unique([spaceId, tickerKey, sequenceNumber])
 //   @@map("latest_10_attachments")
 // }
+
+model TickerV1 {
+  id          Int      @id @default(autoincrement())
+  name        String
+  symbol      String
+  exchange    String
+  industryKey String
+  subIndustryKey   String
+  websiteUrl String?
+  summary     String?
+  
+  // Ensure uniqueness of symbol+exchange pair
+  @@unique([symbol, exchange])
+
+  // Relations
+  factorAnalyses   TickerFactorAnalysis[]
+  strategyAnalyses TickerStrategyAnalysis[]
+}
+
+model AnalysisFactor {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  industryKey String
+  subIndustryKey   String
+  categoryKey String    // main category key (e.g. "financial_analysis")
+
+  // Relations
+  factorAnalyses TickerFactorAnalysis[]
+}
+
+model TickerV1FactorAnalysis {
+  id               Int     @id @default(autoincrement())
+  summary          String
+  detailedAnalysis String
+  result           EvaluationResult   // PASS / FAIL
+
+  tickerId         Int
+  ticker           TickerV1 @relation(fields: [tickerId], references: [id])
+
+  factorId         Int
+  factor           AnalysisFactor @relation(fields: [factorId], references: [id])
+}
+
+model TickerV1StrategyAnalysis {
+  id               Int     @id @default(autoincrement())
+  strategyKey      String  // e.g. "WARREN_BUFFETT", "CHARLIE_MUNGER", "BILL_ACKMAN"
+  summary          String
+  detailedAnalysis String
+
+  tickerId         Int
+  ticker           TickerV1 @relation(fields: [tickerId], references: [id])
+}
+
+model TickerV1FutureRisk {
+  id               Int     @id @default(autoincrement())
+  summary          String
+  detailedAnalysis String
+
+  tickerId         Int
+  ticker           TickerV1 @relation(fields: [tickerId], references: [id])
+}
+
+enum EvaluationResult {
+  PASS
+  FAIL
+}
+
