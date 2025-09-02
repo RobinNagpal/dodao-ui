@@ -464,11 +464,13 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
                             </div>
 
                             <div>
-                              <Textarea
-                                value={exercise.promptHint || ''}
-                                onChange={(e) => updateExercise(moduleIndex, exerciseIndex, 'promptHint', e.target.value)}
-                                placeholder="Prompt hint for AI assistance (optional)"
-                                rows={2}
+                              <MarkdownEditor
+                                objectId={`exercise-${moduleIndex}-${exerciseIndex}-prompt-hint`}
+                                label="Prompt Hint for AI Assistance (Optional)"
+                                modelValue={exercise.promptHint || ''}
+                                onUpdate={(value: string) => updateExercise(moduleIndex, exerciseIndex, 'promptHint', value)}
+                                placeholder="Enter prompt hint using markdown..."
+                                maxHeight={120}
                               />
                             </div>
 

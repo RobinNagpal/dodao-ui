@@ -240,12 +240,12 @@ export default function ViewExerciseModal({
                 <h4 className="text-lg font-semibold text-gray-900">AI Prompt Hint</h4>
               </div>
               <div className="space-y-2">
-                <Textarea
-                  value={formData.promptHint}
-                  onChange={(e) => handleInputChange('promptHint', e.target.value)}
-                  placeholder="Enter AI prompt hint"
-                  rows={3}
-                  className="w-full"
+                <MarkdownEditor
+                  objectId={`exercise-prompt-hint-${exercise.id}`}
+                  modelValue={formData.promptHint}
+                  onUpdate={(value) => handleInputChange('promptHint', value)}
+                  placeholder="Enter AI prompt hint using markdown..."
+                  maxHeight={200}
                 />
               </div>
             </div>
@@ -295,7 +295,7 @@ export default function ViewExerciseModal({
                   <h4 className="text-lg font-semibold text-gray-900">AI Prompt Hint</h4>
                 </div>
                 <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-200/50">
-                  <p className="text-yellow-900 text-sm leading-relaxed font-medium">{exercise.promptHint}</p>
+                  <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.promptHint) }} />
                 </div>
               </div>
             )}

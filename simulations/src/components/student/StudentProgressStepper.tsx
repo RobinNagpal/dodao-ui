@@ -308,7 +308,8 @@ export default function StudentProgressStepper({ progressData }: StudentProgress
               alt={video.title}
               width={320}
               height={180}
-              className="w-full h-24 rounded-lg object-cover shadow-sm group-hover:shadow-md transition-shadow duration-200"
+              className="w-full h-[120px]
+ rounded-lg object-cover shadow-sm group-hover:shadow-md transition-shadow duration-200"
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               <PlayCircle className="h-8 w-8 text-white" />
