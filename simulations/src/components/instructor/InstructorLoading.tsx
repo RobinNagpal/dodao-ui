@@ -1,4 +1,4 @@
-import { GraduationCap, Brain } from 'lucide-react';
+import { GraduationCap } from 'lucide-react';
 
 interface InstructorLoadingProps {
   text?: string;
@@ -40,7 +40,7 @@ export default function InstructorLoading({
             <div className="relative">
               <div className="animate-spin rounded-full h-8 w-8 border-4 border-purple-200 border-t-purple-600"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <Brain className="h-4 w-4 text-purple-600 animate-pulse" />
+                <GraduationCap className="h-4 w-4 text-purple-600 animate-pulse" />
               </div>
             </div>
             <div>

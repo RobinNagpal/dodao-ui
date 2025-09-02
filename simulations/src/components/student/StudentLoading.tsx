@@ -1,4 +1,4 @@
-import { Brain, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 
 interface StudentLoadingProps {
   text?: string;
@@ -29,7 +29,7 @@ export default function StudentLoading({
             <div className="relative">
               <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <Brain className="h-6 w-6 text-blue-600" />
+                <BookOpen className="h-6 w-6 text-blue-600" />
               </div>
             </div>
             <div className="text-center">
