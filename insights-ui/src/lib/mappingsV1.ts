@@ -30,9 +30,9 @@ export const CATEGORY_MAPPINGS = {
   [TickerAnalysisCategory.BusinessAndMoat]: 'Business & Moat Analysis',
   [TickerAnalysisCategory.FinancialStatementAnalysis]: 'Financial Statement Analysis',
   [TickerAnalysisCategory.PastPerformance]: 'Past Performance',
-  [TickerAnalysisCategory.FutureGrowth]: 'Future Growth Prospects',
+  [TickerAnalysisCategory.FutureGrowth]: 'Future Growth',
   [TickerAnalysisCategory.VsCompetition]: 'Competitive Analysis',
-  [TickerAnalysisCategory.FairValue]: 'Fair Value Assessment',
+  [TickerAnalysisCategory.FairValue]: 'Fair Value',
 } as const;
 
 // Helper functions to get display names

@@ -27,7 +27,7 @@ const AnalysisFactorsPage = () => {
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="space-y-6">
-        <div className="text-4xl text-center">Analysis Factors Management</div>
+        <div className="text-4xl text-center">Analysis Factors For TickersV1</div>
 
         {/* Industry and Sub-Industry Selection */}
         <div className="p-6 rounded-lg">

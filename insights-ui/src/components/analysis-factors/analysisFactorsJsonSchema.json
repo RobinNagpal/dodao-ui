@@ -50,13 +50,13 @@
           "type": "string",
           "title": "Factor Analysis Key",
           "minLength": 3,
-          "maxLength": 50
+          "maxLength": 100
         },
         "factorAnalysisTitle": {
           "type": "string",
           "title": "Factor Analysis Title",
           "minLength": 3,
-          "maxLength": 100
+          "maxLength": 200
         },
         "factorAnalysisDescription": {
           "type": "string",

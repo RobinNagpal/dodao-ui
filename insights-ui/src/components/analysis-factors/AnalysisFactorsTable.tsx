@@ -33,7 +33,7 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
     reFetchData: reloadAnalysisFactors,
     error: loadingError,
   } = useFetchData<GetAnalysisFactorsResponse>(
-    `${getBaseUrl()}/api/analysis-factors?industryKey=${industryKey}&subIndustryKey=${subIndustryKey}`,
+    `${getBaseUrl()}/api/analysis-factors/${industryKey}/${subIndustryKey}`,
     {
       cache: 'no-cache',
     },
@@ -99,7 +99,7 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
 
   const handleSaveAnalysisFactors = async (analysisFactors: GetAnalysisFactorsResponse) => {
     try {
-      await saveAnalysisFactors(`${getBaseUrl()}/api/analysis-factors`, analysisFactors);
+      await saveAnalysisFactors(`${getBaseUrl()}/api/analysis-factors/${industryKey}/${subIndustryKey}`, analysisFactors);
       await reloadAnalysisFactors();
     } catch (error) {
       console.error('Failed to save analysis factors:', error);
@@ -113,7 +113,7 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
 
   const handleConfirmDelete = async () => {
     try {
-      await deleteAnalysisFactors(`${getBaseUrl()}/api/analysis-factors?industryKey=${industryKey}&subIndustryKey=${subIndustryKey}`);
+      await deleteAnalysisFactors(`${getBaseUrl()}/api/analysis-factors/${industryKey}/${subIndustryKey}`);
       setShowConfirmModal(false);
       await reloadAnalysisFactors();
     } catch (error) {

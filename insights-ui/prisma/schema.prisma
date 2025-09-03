@@ -451,8 +451,6 @@ model TickerV1 {
 
 model AnalysisCategoryFactor {
   id                        String                 @id @default(uuid())
-  name                      String                 @map("name")
-  description               String?                @map("description")
   industryKey               String                 @map("industry_key")
   subIndustryKey            String                 @map("sub_industry_key")
   categoryKey               TickerAnalysisCategory @map("category_key")

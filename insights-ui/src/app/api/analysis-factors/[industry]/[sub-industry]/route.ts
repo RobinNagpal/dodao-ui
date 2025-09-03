@@ -2,17 +2,14 @@ import { prisma } from '@/prisma';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { AnalysisFactorDefinition, CategoryAnalysisFactors, GetAnalysisFactorsResponse } from '@/types/public-equity/analysis-factors-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 // GET: Fetch analysis factors for a specific industry and sub-industry
-async function getHandler(request: NextRequest): Promise<GetAnalysisFactorsResponse> {
-  const { searchParams } = new URL(request.url);
-  const industryKey = searchParams.get('industryKey');
-  const subIndustryKey = searchParams.get('subIndustryKey');
-
-  if (!industryKey || !subIndustryKey) {
-    throw new Error('industryKey and subIndustryKey are required');
-  }
+async function getHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ industry: string; 'sub-industry': string }> }
+): Promise<GetAnalysisFactorsResponse> {
+  const { industry: industryKey, 'sub-industry': subIndustryKey } = await params;
 
   // Fetch all analysis category factors for this industry and sub-industry
   const factors = await prisma.analysisCategoryFactor.findMany({
@@ -52,13 +49,14 @@ async function getHandler(request: NextRequest): Promise<GetAnalysisFactorsRespo
   };
 }
 
-// POST: Upsert analysis factors (bulk operation)
-async function postHandler(request: NextRequest): Promise<{ success: boolean }> {
+// POST: Upsert analysis factors
+async function postHandler(request: NextRequest, { params }: { params: Promise<{ industry: string; 'sub-industry': string }> }): Promise<{ success: boolean }> {
+  const { industry: industryKey, 'sub-industry': subIndustryKey } = await params;
   const body: GetAnalysisFactorsResponse = await request.json();
-  const { industryKey, subIndustryKey, categories } = body;
+  const { categories } = body;
 
-  if (!industryKey || !subIndustryKey || !categories) {
-    throw new Error('industryKey, subIndustryKey, and categories are required');
+  if (!categories) {
+    throw new Error('categories are required');
   }
 
   // Use a transaction to ensure all operations succeed or fail together
@@ -75,8 +73,6 @@ async function postHandler(request: NextRequest): Promise<{ success: boolean }> 
     // Then, create all new factors
     const factorsToCreate = categories.flatMap((category) =>
       category.factors.map((factor) => ({
-        name: factor.factorAnalysisTitle,
-        description: factor.factorAnalysisDescription,
         industryKey,
         subIndustryKey,
         categoryKey: category.categoryKey,
@@ -98,14 +94,8 @@ async function postHandler(request: NextRequest): Promise<{ success: boolean }> 
 }
 
 // DELETE: Delete all analysis factors for an industry/sub-industry combination
-async function deleteHandler(request: NextRequest): Promise<{ success: boolean }> {
-  const { searchParams } = new URL(request.url);
-  const industryKey = searchParams.get('industryKey');
-  const subIndustryKey = searchParams.get('subIndustryKey');
-
-  if (!industryKey || !subIndustryKey) {
-    throw new Error('industryKey and subIndustryKey are required');
-  }
+async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ industry: string; 'sub-industry': string }> }): Promise<{ success: boolean }> {
+  const { industry: industryKey, 'sub-industry': subIndustryKey } = await params;
 
   await prisma.analysisCategoryFactor.deleteMany({
     where: {
