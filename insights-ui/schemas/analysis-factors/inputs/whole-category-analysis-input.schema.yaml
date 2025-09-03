@@ -26,7 +26,7 @@ properties:
           description: 'Readable title of the factor.'
         factorAnalysisDescription:
           type: string
-          description: 'Short explanation of what the factor means.'
+          description: 'Short, 1–2 sentence plain-English explanation of what this factor represents and why it matters to investors.'
       required:
         - factorAnalysisKey
         - factorAnalysisTitle

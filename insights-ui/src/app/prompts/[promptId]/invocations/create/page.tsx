@@ -28,7 +28,7 @@ import { parseMarkdown } from '@/util/parse-markdown';
 interface CreateInvocationForm {
   promptVersionId?: string;
   inputJsonString: string;
-  llmProvider: string;
+  llmProvider: 'openai' | 'gemini';
   model: string;
   bodyToAppend?: string;
   commitMessage?: string;
@@ -87,16 +87,6 @@ export default function CreateInvocationPage(): JSX.Element {
     }
   }, [formData.inputJsonString, formData.promptVersionId]);
 
-  useEffect(() => {
-    setFormData({
-      bodyToAppend: prompt?.sampleBodyToAppend || '',
-      inputJsonString: prompt?.sampleJson || '{}',
-      llmProvider: formData.llmProvider,
-      model: formData.model,
-      promptVersionId: prompt?.activePromptVersion?.id,
-    });
-  }, [prompt]);
-
   // Use the post hook to send the invocation request.
   const { postData, loading, error } = usePostData<PromptInvocationResponse, PromptInvocationRequest>({
     successMessage: 'Prompt invocation started successfully!',
@@ -124,10 +114,22 @@ export default function CreateInvocationPage(): JSX.Element {
 
   const sampleBodyToAppend = formData.bodyToAppend && parseMarkdown(formData.bodyToAppend);
 
-  const modelItems: StyledSelectItem[] = ['o3-mini', 'o4-mini', 'gpt-4o', 'gpt-4o-mini', 'gpt-4o-search-preview', 'gpt-4o-mini-search-preview'].map((m) => ({
-    id: m,
-    label: m,
-  }));
+  const llmProviderItems: StyledSelectItem[] = [
+    { id: 'openai', label: 'OpenAI' },
+    { id: 'gemini', label: 'Gemini' },
+  ];
+
+  const getModelItems = (provider: string): StyledSelectItem[] => {
+    if (provider === 'gemini') {
+      return [{ id: 'models/gemini-2.5-pro', label: 'Gemini 2.5 Pro' }];
+    }
+    return ['o3-mini', 'o4-mini', 'gpt-4o', 'gpt-4o-mini', 'gpt-4o-search-preview', 'gpt-4o-mini-search-preview'].map((m) => ({
+      id: m,
+      label: m,
+    }));
+  };
+
+  const modelItems = getModelItems(formData.llmProvider);
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
@@ -173,12 +175,22 @@ export default function CreateInvocationPage(): JSX.Element {
 
             {/* LLM Provider Field */}
             <div className="mb-4">
-              <label className="block mb-2">LLM Provider</label>
-              <input
-                type="text"
-                value={formData.llmProvider}
-                onChange={(e) => setFormData((prev) => ({ ...prev, llmProvider: e.target.value }))}
-                className="border border-color p-2 w-full text-color block-bg-color"
+              <StyledSelect
+                label="LLM Provider"
+                selectedItemId={formData.llmProvider}
+                items={llmProviderItems}
+                setSelectedItemId={(provider) => {
+                  const newProvider = (provider as 'openai' | 'gemini') || 'openai';
+                  const defaultModel = newProvider === 'gemini' ? 'models/gemini-2.5-pro' : 'gpt-4o-mini';
+                  setFormData((prev) => {
+                    const newFormData: CreateInvocationForm = {
+                      ...prev,
+                      llmProvider: newProvider,
+                      model: defaultModel,
+                    };
+                    return newFormData;
+                  });
+                }}
               />
             </div>
 
@@ -186,8 +198,10 @@ export default function CreateInvocationPage(): JSX.Element {
               <StyledSelect
                 label={'Model'}
                 items={modelItems}
-                setSelectedItemId={(model) => setFormData({ ...formData, model: model || 'gpt-4o-mini' })}
-                selectedItemId={formData.model || 'gpt-4o-mini'}
+                setSelectedItemId={(model) =>
+                  setFormData({ ...formData, model: model || (formData.llmProvider === 'gemini' ? 'models/gemini-2.5-pro' : 'gpt-4o-mini') })
+                }
+                selectedItemId={formData.model || (formData.llmProvider === 'gemini' ? 'models/gemini-2.5-pro' : 'gpt-4o-mini')}
               />
             </div>
 

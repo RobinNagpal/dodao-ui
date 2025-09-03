@@ -11,6 +11,9 @@ import jsonpatch from 'jsonpatch';
 import path from 'path';
 import { PromptInvocationStatus } from '.prisma/client';
 
+// @ts-ignore
+const OpenAIChat = ChatOpenAI;
+
 interface GetLLMResponseOpts {
   invocationId: string;
   llmProvider: 'openai' | 'gemini';
@@ -33,14 +36,17 @@ export async function getLLMResponse({ invocationId, llmProvider, modelName, pro
       }
       let llm: BaseChatModel;
       if (llmProvider === 'openai') {
-        llm = new ChatOpenAI({ model: modelName });
+        llm = new OpenAIChat({
+          model: modelName,
+        }) as BaseChatModel;
       } else {
         llm = new ChatGoogleGenerativeAI({
-          model: 'models/gemini-2.5-pro',
+          model: modelName,
           apiKey: process.env.GOOGLE_API_KEY,
           temperature: 1,
         });
       }
+
       const structured = llm.withStructuredOutput(outputSchema);
 
       const result = await structured.invoke(prompt);
@@ -163,14 +169,6 @@ export async function getLLMResponseForPromptViaInvocation(params: GetLLMRespons
         updatedAt: new Date(),
       },
     });
-
-    // Choose LLM based on llmProvider. Currently, only "openai" is supported.
-    let llm: ChatOpenAI | undefined;
-    if (llmProvider.toLowerCase() === 'openai') {
-      llm = new ChatOpenAI({ model: model });
-    } else {
-      throw new Error(`Unsupported llmProvider: ${llmProvider}`);
-    }
 
     const outputSchemaPath = path.join(process.cwd(), 'schemas', prompt.outputSchema);
     if (!fs.existsSync(outputSchemaPath)) {
