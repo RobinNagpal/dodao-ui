@@ -1,15 +1,19 @@
 'use client';
 
-import AnalysisFactorsTable from '@/components/analysis-factors/AnalysisFactorsTable';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { INDUSTRY_OPTIONS, SUB_INDUSTRY_OPTIONS, CATEGORY_OPTIONS, IndustryKey, SubIndustryKey, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { INDUSTRY_OPTIONS, SUB_INDUSTRY_OPTIONS, IndustryKey, SubIndustryKey } from '@/lib/mappingsV1';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
 
 const AnalysisFactorsPage = () => {
   const [selectedIndustry, setSelectedIndustry] = useState<IndustryKey | ''>('');
   const [selectedSubIndustry, setSelectedSubIndustry] = useState<SubIndustryKey | ''>('');
+
+  const AnalysisFactorsTable = dynamic(() => import('@/components/analysis-factors/AnalysisFactorsTable'), {
+    ssr: false,
+  });
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {

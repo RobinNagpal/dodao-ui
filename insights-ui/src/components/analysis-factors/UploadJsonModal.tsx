@@ -5,7 +5,7 @@ import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal'
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Ajv, { ErrorObject } from 'ajv';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState } from 'react';
 
 export interface UploadJsonModalProps {
   open: boolean;
@@ -17,61 +17,45 @@ export interface UploadJsonModalProps {
 }
 
 export default function UploadJsonModal({ open, onClose, title, industryKey, subIndustryKey, onSave }: UploadJsonModalProps) {
-  const validate = useMemo(() => {
-    const ajv = new Ajv({ allErrors: true });
-    return ajv.compile(schema);
-  }, []);
-
   const [rawJson, setRawJson] = useState<string>('');
-  const [isValid, setIsValid] = useState<boolean>(false);
   const [validationMessages, setValidationMessages] = useState<string[]>([]);
 
-  // Validate JSON whenever rawJson changes
-  useEffect(() => {
+  const handleSave = () => {
     if (rawJson.trim() === '') {
-      setIsValid(false);
       setValidationMessages(['JSON cannot be empty']);
       return;
     }
 
     try {
-      const parsedJson = JSON.parse(rawJson);
+      const parsedJson = JSON.parse(rawJson) as GetAnalysisFactorsResponse;
 
       // Validate against schema
+      const ajv = new Ajv({ allErrors: true });
+      const validate = ajv.compile(schema);
       const valid = validate(parsedJson);
+
       if (!valid) {
         const errors: ErrorObject[] = validate.errors || [];
         const messages = errors.map((err) => `${err.instancePath || 'root'} ${err.message}`);
         setValidationMessages(messages);
-        setIsValid(false);
-      } else {
-        // Additional validation: check if industryKey and subIndustryKey match
-        if (parsedJson.industryKey !== industryKey) {
-          setValidationMessages([`Industry key mismatch: expected ${industryKey}, got ${parsedJson.industryKey}`]);
-          setIsValid(false);
-        } else if (parsedJson.subIndustryKey !== subIndustryKey) {
-          setValidationMessages([`Sub-industry key mismatch: expected ${subIndustryKey}, got ${parsedJson.subIndustryKey}`]);
-          setIsValid(false);
-        } else {
-          setValidationMessages([]);
-          setIsValid(true);
-        }
+        return;
       }
-    } catch (error) {
-      setIsValid(false);
-      setValidationMessages([error instanceof Error ? error.message : 'Invalid JSON format']);
-    }
-  }, [rawJson, industryKey, subIndustryKey, validate]);
 
-  const handleSave = () => {
-    if (!isValid) return;
+      // Additional validation: check if industryKey and subIndustryKey match
+      if (parsedJson.industryKey !== industryKey) {
+        setValidationMessages([`Industry key mismatch: expected ${industryKey}, got ${parsedJson.industryKey}`]);
+        return;
+      } else if (parsedJson.subIndustryKey !== subIndustryKey) {
+        setValidationMessages([`Sub-industry key mismatch: expected ${subIndustryKey}, got ${parsedJson.subIndustryKey}`]);
+        return;
+      }
 
-    try {
-      const parsedJson = JSON.parse(rawJson) as GetAnalysisFactorsResponse;
+      // If validation passes, clear messages and save
+      setValidationMessages([]);
       onSave(parsedJson);
       onClose();
     } catch (error) {
-      console.error('Invalid JSON:', error);
+      setValidationMessages([error instanceof Error ? error.message : 'Invalid JSON format']);
     }
   };
 
@@ -120,7 +104,7 @@ export default function UploadJsonModal({ open, onClose, title, industryKey, sub
 
         {/* Action Buttons */}
         <div className="flex justify-between mt-4 pt-4 border-t border-gray-200">
-          <Button onClick={handleSave} primary variant="contained" disabled={!isValid}>
+          <Button onClick={handleSave} primary variant="contained">
             Save
           </Button>
         </div>
