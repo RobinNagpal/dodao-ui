@@ -1,0 +1,38 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  overallSummary:
+    type: string
+    description: '3–5 sentence final summary of how the stock performs in this category. Must highlight the most important strengths and weaknesses, and conclude with a clear investor takeaway (positive, negative, or mixed). Keep language simple and concise for retail investors.'
+  introductionToAnalysis:
+    type: string
+    description: '3–5 sentence introduction that explains what this analysis category means and why it matters to an investor.'
+  factors:
+    type: array
+    description: 'Array of factor-level analyses.'
+    items:
+      type: object
+      properties:
+        factorAnalysisKey:
+          type: string
+          description: 'Must match the key from the input factorAnalysisArray.'
+        oneLineExplanation:
+          type: string
+          description: '1–2 sentence quick takeaway that gives the key insight from this factor'
+        detailedExplanation:
+          type: string
+          description: '1–2 paragraphs of investor-focused analysis for this factor. Directly analyze the company’s performance based on this factor using available data and reasoning. The explanation must clearly justify the Pass/Fail result, be critical in tone, and highlight risks or weaknesses along with strengths.'
+        result:
+          type: string
+          enum: ['Pass', 'Fail']
+          description: 'The final judgment for this factor. Be conservative — only companies with strong fundamentals should get "Pass". A "Fail" should come with clear reasoning in the detailedExplanation.'
+      required:
+        - factorAnalysisKey
+        - oneLineExplanation
+        - detailedExplanation
+        - result
+required:
+  - overallSummary
+  - introductionToAnalysis
+  - factors

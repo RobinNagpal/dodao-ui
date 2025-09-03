@@ -1,0 +1,46 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: 'The full name of the company or REIT being analyzed (e.g., AvalonBay Communities Inc.).'
+  symbol:
+    type: string
+    description: 'The stock ticker symbol of the company or REIT (e.g., AVB).'
+  industryKey:
+    type: string
+    description: 'The broad industry the stock belongs to (e.g., REITS).'
+  subIndustryKey:
+    type: string
+    description: 'The specific sub-industry of the stock (e.g., RESIDENTIAL_REITS).'
+  categoryKey:
+    type: string
+    enum: ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue']
+    description: 'The category being analyzed.'
+  factorAnalysisArray:
+    type: array
+    description: 'Array of factor definitions under this category.'
+    items:
+      type: object
+      properties:
+        factorAnalysisKey:
+          type: string
+          description: 'Unique identifier for the factor in SCREAMING_SNAKE_CASE.'
+        factorAnalysisTitle:
+          type: string
+          description: 'Readable title of the factor.'
+        factorAnalysisDescription:
+          type: string
+          description: 'Short, 1–2 sentence plain-English explanation of what this factor represents and why it matters to investors.'
+      required:
+        - factorAnalysisKey
+        - factorAnalysisTitle
+        - factorAnalysisDescription
+required:
+  - name
+  - symbol
+  - industryKey
+  - subIndustryKey
+  - categoryKey
+  - factorAnalysisArray
