@@ -73,13 +73,6 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
   }
 
   console.log('[errorLogger] Preparing request data for Discord');
-  let jsonBody = '';
-  try {
-    jsonBody = JSON.stringify(req.json());
-    console.log('[errorLogger] Successfully parsed request body');
-  } catch (parseError) {
-    console.log('[errorLogger] Failed to parse request body:', parseError);
-  }
 
   const embeds = [
     {
@@ -94,11 +87,6 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
           name: 'Method',
           value: req.method || '----',
           inline: true,
-        },
-        {
-          name: 'JSON',
-          value: jsonBody.substring(0, 1000) || '(empty or unparseable body)',
-          inline: false,
         },
       ],
     },

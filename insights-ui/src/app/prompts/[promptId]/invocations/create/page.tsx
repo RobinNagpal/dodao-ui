@@ -117,7 +117,7 @@ export default function CreateInvocationPage(): JSX.Element {
       requestFrom: 'ui',
     };
     const data = await postData(`${getBaseUrl()}/api/actions/prompt-invocation/full-req-resp`, request);
-    if (!error) {
+    if (!error && data?.invocationId) {
       router.push(`/prompts/${promptId}/invocations/${data?.invocationId}`);
     }
   };

@@ -2,10 +2,6 @@ $schema: 'http://json-schema.org/draft-07/schema#'
 type: object
 additionalProperties: false
 properties:
-  categoryKey:
-    type: string
-    enum: ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue']
-    description: 'Must match the input category key.'
   overallSummary:
     type: string
     description: '3–5 sentence final summary of how the stock performs in this category. Must highlight the most important strengths and weaknesses, and conclude with a clear investor takeaway (positive, negative, or mixed). Keep language simple and concise for retail investors.'
@@ -37,7 +33,6 @@ properties:
         - detailedExplanation
         - result
 required:
-  - categoryKey
   - overallSummary
   - introductionToAnalysis
   - factors

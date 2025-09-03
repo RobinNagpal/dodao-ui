@@ -11,9 +11,6 @@ import jsonpatch from 'jsonpatch';
 import path from 'path';
 import { PromptInvocationStatus } from '.prisma/client';
 
-// @ts-ignore
-const OpenAIChat = ChatOpenAI;
-
 interface GetLLMResponseOpts {
   invocationId: string;
   llmProvider: 'openai' | 'gemini';
@@ -21,9 +18,21 @@ interface GetLLMResponseOpts {
   prompt: string;
   outputSchema: object;
   maxRetries?: number;
+  isTestInvocation?: boolean;
 }
 
-export async function getLLMResponse({ invocationId, llmProvider, modelName, prompt, outputSchema, maxRetries = 1 }: GetLLMResponseOpts): Promise<unknown> {
+export async function getLLMResponse({
+  invocationId,
+  llmProvider,
+  modelName,
+  prompt,
+  outputSchema,
+  maxRetries = 1,
+  isTestInvocation,
+}: GetLLMResponseOpts): Promise<unknown> {
+  console.log(
+    `Test Invocation ${isTestInvocation} - Getting LLM Response for invocation ${invocationId} with model ${modelName} - with prompt: \n\n${prompt}\n\n`
+  );
   const ajv = new Ajv();
   const validate = ajv.compile(outputSchema);
 
@@ -32,11 +41,12 @@ export async function getLLMResponse({ invocationId, llmProvider, modelName, pro
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       if (llmProvider.toLowerCase() !== 'openai' && llmProvider.toLowerCase() !== 'gemini') {
+        console.error('Unsupported llmProvider:', llmProvider);
         throw new Error(`Unsupported llmProvider: ${llmProvider}`);
       }
       let llm: BaseChatModel;
       if (llmProvider === 'openai') {
-        llm = new OpenAIChat({
+        llm = new ChatOpenAI({
           model: modelName,
         }) as BaseChatModel;
       } else {
@@ -50,41 +60,66 @@ export async function getLLMResponse({ invocationId, llmProvider, modelName, pro
       const structured = llm.withStructuredOutput(outputSchema);
 
       const result = await structured.invoke(prompt);
+      console.log('Response from llm:', result);
       lastResult = result;
 
-      await prisma.promptInvocation.update({
-        where: { id: invocationId },
-        data: {
-          outputJson: JSON.stringify(result),
-          status: PromptInvocationStatus.Completed,
-          updatedAt: new Date(),
-        },
-      });
+      if (isTestInvocation) {
+        await prisma.testPromptInvocation.update({
+          where: { id: invocationId },
+          data: {
+            outputJson: JSON.stringify(result),
+            status: PromptInvocationStatus.Completed,
+            updatedAt: new Date(),
+          },
+        });
+        return result;
+      } else {
+        await prisma.promptInvocation.update({
+          where: { id: invocationId },
+          data: {
+            outputJson: JSON.stringify(result),
+            status: PromptInvocationStatus.Completed,
+            updatedAt: new Date(),
+          },
+        });
+      }
 
       const valid = validate(result);
       if (!valid) {
         console.error('Schema validation errors:', validate.errors);
-        // throw new Error(`Validation failed: ${JSON.stringify(validate.errors)}`);
+        throw new Error(`Validation failed: ${JSON.stringify(validate.errors)}`);
       }
 
       return result;
     } catch (err: any) {
       const isLast = attempt === maxRetries;
       if (!isLast) {
-        console.warn(`Attempt ${attempt + 1} failed, retrying…`, err);
+        console.error(`Attempt ${attempt + 1} failed, retrying…`, err);
         continue;
       }
 
       if (lastResult !== null) {
-        await prisma.promptInvocation.update({
-          where: { id: invocationId },
-          data: {
-            outputJson: JSON.stringify(lastResult),
-            status: PromptInvocationStatus.Failed,
-            updatedAt: new Date(),
-          },
-        });
+        if (isTestInvocation) {
+          await prisma.testPromptInvocation.update({
+            where: { id: invocationId },
+            data: {
+              outputJson: JSON.stringify(lastResult),
+              status: PromptInvocationStatus.Failed,
+              updatedAt: new Date(),
+            },
+          });
+        } else {
+          await prisma.promptInvocation.update({
+            where: { id: invocationId },
+            data: {
+              outputJson: JSON.stringify(lastResult),
+              status: PromptInvocationStatus.Failed,
+              updatedAt: new Date(),
+            },
+          });
+        }
       } else {
+        console.error('Last attempt failed, no result to save.');
         throw new Error(`Unexpected failure in getLLMResponse: ${err instanceof Error ? err.message : String(err)}`);
       }
       throw err;
@@ -148,13 +183,13 @@ export async function getLLMResponseForPromptViaInvocation(params: GetLLMRespons
       const inputSchemaPath = path.join(process.cwd(), 'schemas', prompt.inputSchema);
       if (!fs.existsSync(inputSchemaPath)) {
         console.error(`Input schema file ${prompt.inputSchema} not found. Path ${inputSchemaPath}`);
-        // throw new Error(`Input schema file ${prompt.inputSchema} not found. Path ${inputSchemaPath}`);
+        throw new Error(`Input schema file ${prompt.inputSchema} not found. Path ${inputSchemaPath}`);
       }
       const inputSchema = await $RefParser.dereference(inputSchemaPath);
       const { valid, errors } = validateData(inputSchema, inputJson);
       if (!valid) {
         console.error(`Input validation failed: ${JSON.stringify(errors)}`);
-        // throw new Error(`Input validation failed: ${JSON.stringify(errors)}`);
+        throw new Error(`Input validation failed: ${JSON.stringify(errors)}`);
       }
     }
 
@@ -175,7 +210,7 @@ export async function getLLMResponseForPromptViaInvocation(params: GetLLMRespons
     const outputSchemaPath = path.join(process.cwd(), 'schemas', prompt.outputSchema);
     if (!fs.existsSync(outputSchemaPath)) {
       console.error(`Output schema file ${prompt.outputSchema} not found. Path ${outputSchemaPath}`);
-      // throw new Error(`Output schema file ${prompt.outputSchema} not found`);
+      throw new Error(`Output schema file ${prompt.outputSchema} not found`);
     }
 
     const outputSchema = await $RefParser.dereference(outputSchemaPath);
@@ -199,6 +234,7 @@ export async function getLLMResponseForPromptViaInvocation(params: GetLLMRespons
     };
 
     if (prompt.transformationPatch) {
+      console.log('Applying transformation patch...');
       const patchedObject = jsonpatch.apply_patch(originalObject, prompt.transformationPatch as any[]);
 
       await prisma.promptInvocation.update({
@@ -221,6 +257,8 @@ export async function getLLMResponseForPromptViaInvocation(params: GetLLMRespons
         return patchedObject;
       }
     }
+
+    return originalObject;
   } catch (e) {
     console.error('Error during prompt invocation:', e);
     await prisma.promptInvocation.update({
@@ -232,6 +270,145 @@ export async function getLLMResponseForPromptViaInvocation(params: GetLLMRespons
       },
     });
     // throw e;
+  }
+}
+
+export interface GetLLMResponseViaTestInvocationRequest {
+  spaceId?: string;
+  promptId: string;
+  promptTemplate: string;
+  llmProvider: 'openai' | 'gemini';
+  model: string;
+  bodyToAppend?: string;
+  inputJsonString?: string;
+}
+
+export interface TestPromptInvocationResponse {
+  response: Record<string, unknown>;
+}
+
+export async function getLLMResponseForPromptViaTestInvocation(params: GetLLMResponseViaTestInvocationRequest): Promise<TestPromptInvocationResponse> {
+  console.log('getLLMResponseForPromptViaTestInvocation', JSON.stringify(params, null, 2));
+  const { promptId, promptTemplate, llmProvider, model, spaceId, bodyToAppend, inputJsonString } = params;
+
+  // Ensure required fields are present.
+  if (!promptId || !promptTemplate || !llmProvider || !model) {
+    throw new Error(`Missing required fields: input, templateId, llmProvider, or model`);
+  }
+
+  // Set inputJson to an empty object if not provided.
+  const inputData = inputJsonString ? JSON.parse(inputJsonString) : {};
+
+  const dbPrompt = await prisma.prompt.findFirstOrThrow({
+    where: {
+      spaceId: spaceId || KoalaGainsSpaceId,
+      id: promptId,
+    },
+  });
+
+  const invocation = await prisma.testPromptInvocation.create({
+    data: {
+      spaceId: spaceId || KoalaGainsSpaceId,
+      promptId: promptId,
+      promptTemplate: promptTemplate,
+      inputJson: JSON.stringify(inputData),
+      status: PromptInvocationStatus.InProgress,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      createdBy: 'unknown',
+      updatedBy: 'unknown',
+      llmProvider: llmProvider,
+      model: model,
+      bodyToAppend: bodyToAppend,
+    },
+  });
+
+  try {
+    // If an input schema is defined, validate the input JSON.
+    if (dbPrompt.inputSchema && dbPrompt.inputSchema.trim() !== '') {
+      const inputSchemaPath = path.join(process.cwd(), 'schemas', dbPrompt.inputSchema);
+      if (!fs.existsSync(inputSchemaPath)) {
+        console.error(`Input schema file ${dbPrompt.inputSchema} not found. Path: ${inputSchemaPath}`);
+        throw new Error(`Input schema file ${dbPrompt.inputSchema} not found. Path: ${inputSchemaPath}`);
+      }
+      const inputSchema = await $RefParser.dereference(inputSchemaPath);
+      const { valid, errors } = validateData(inputSchema, inputData);
+      if (!valid) {
+        console.error(`Input validation failed: ${JSON.stringify(errors)}`);
+        throw new Error(`Input validation failed: ${JSON.stringify(errors)}`);
+      }
+    }
+
+    // Compile the user-edited prompt using Handlebars.
+    const compiledTemplate = Handlebars.compile(promptTemplate);
+    const finalPrompt = bodyToAppend ? `${compiledTemplate(inputData)}\n\n\n${bodyToAppend}` : compiledTemplate(inputData);
+
+    // Build the output schema.
+    const outputSchemaPath = path.join(process.cwd(), 'schemas', dbPrompt.outputSchema);
+    if (!fs.existsSync(outputSchemaPath)) {
+      console.error(`Output schema file ${dbPrompt.outputSchema} not found. Path: ${outputSchemaPath}`);
+      throw new Error(`Output schema file ${dbPrompt.outputSchema} not found. Path: ${outputSchemaPath}`);
+    }
+    const outputSchema = await $RefParser.dereference(outputSchemaPath);
+
+    const result = await getLLMResponse({
+      invocationId: invocation.id,
+      llmProvider,
+      modelName: model,
+      prompt: finalPrompt,
+      outputSchema,
+      maxRetries: 2,
+      isTestInvocation: true,
+    });
+
+    // Update the test invocation record with the output.
+    await prisma.testPromptInvocation.update({
+      where: { id: invocation.id },
+      data: {
+        outputJson: JSON.stringify(result),
+        updatedAt: new Date(),
+        status: PromptInvocationStatus.Completed,
+      },
+    });
+
+    // Validate the output against the output schema.
+    const { valid: validOutput, errors: outputErrors } = validateData(outputSchema, result);
+    if (!validOutput) {
+      throw new Error(`Output validation failed: ${JSON.stringify(outputErrors)}`);
+    }
+
+    const originalResponse: TestPromptInvocationResponse = {
+      response: result as Record<string, unknown>,
+    };
+
+    // If the prompt record contains a transformation patch, apply it.
+    if (dbPrompt.transformationPatch) {
+      const patchedResponse = jsonpatch.apply_patch(originalResponse, dbPrompt.transformationPatch as any[]);
+      await prisma.testPromptInvocation.update({
+        where: { id: invocation.id },
+        data: {
+          transformedJson: JSON.stringify(patchedResponse),
+          updatedAt: new Date(),
+          status: PromptInvocationStatus.Completed,
+        },
+      });
+      return {
+        ...patchedResponse,
+      };
+    }
+
+    return originalResponse;
+  } catch (e) {
+    console.error('Error during prompt invocation:', e);
+    await prisma.testPromptInvocation.update({
+      where: { id: invocation.id },
+      data: {
+        status: PromptInvocationStatus.Failed,
+        error: (e as Error)?.message,
+        updatedAt: new Date(),
+      },
+    });
+    throw e;
   }
 }
 
