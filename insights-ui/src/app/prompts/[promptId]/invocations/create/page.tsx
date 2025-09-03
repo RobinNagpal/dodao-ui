@@ -87,6 +87,16 @@ export default function CreateInvocationPage(): JSX.Element {
     }
   }, [formData.inputJsonString, formData.promptVersionId]);
 
+  useEffect(() => {
+    setFormData({
+      bodyToAppend: prompt?.sampleBodyToAppend || '',
+      inputJsonString: prompt?.sampleJson || '{}',
+      llmProvider: formData.llmProvider,
+      model: formData.model,
+      promptVersionId: prompt?.activePromptVersion?.id,
+    });
+  }, [prompt]);
+
   // Use the post hook to send the invocation request.
   const { postData, loading, error } = usePostData<PromptInvocationResponse, PromptInvocationRequest>({
     successMessage: 'Prompt invocation started successfully!',

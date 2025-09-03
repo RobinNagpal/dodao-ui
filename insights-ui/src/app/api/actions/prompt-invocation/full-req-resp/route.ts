@@ -29,6 +29,7 @@ async function postHandler(req: NextRequest): Promise<any> {
   if (!req.body) {
     throw new Error(`Request body is missing`);
   }
+
   return await getLLMResponseForPromptViaInvocation({
     inputJson,
     promptKey,

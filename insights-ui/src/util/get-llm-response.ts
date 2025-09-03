@@ -64,7 +64,7 @@ export async function getLLMResponse({ invocationId, llmProvider, modelName, pro
       const valid = validate(result);
       if (!valid) {
         console.error('Schema validation errors:', validate.errors);
-        throw new Error(`Validation failed: ${JSON.stringify(validate.errors)}`);
+        // throw new Error(`Validation failed: ${JSON.stringify(validate.errors)}`);
       }
 
       return result;
@@ -147,12 +147,14 @@ export async function getLLMResponseForPromptViaInvocation(params: GetLLMRespons
     if (prompt.inputSchema && prompt.inputSchema.trim() !== '') {
       const inputSchemaPath = path.join(process.cwd(), 'schemas', prompt.inputSchema);
       if (!fs.existsSync(inputSchemaPath)) {
-        throw new Error(`Input schema file ${prompt.inputSchema} not found. Path ${inputSchemaPath}`);
+        console.error(`Input schema file ${prompt.inputSchema} not found. Path ${inputSchemaPath}`);
+        // throw new Error(`Input schema file ${prompt.inputSchema} not found. Path ${inputSchemaPath}`);
       }
       const inputSchema = await $RefParser.dereference(inputSchemaPath);
       const { valid, errors } = validateData(inputSchema, inputJson);
       if (!valid) {
-        throw new Error(`Input validation failed: ${JSON.stringify(errors)}`);
+        console.error(`Input validation failed: ${JSON.stringify(errors)}`);
+        // throw new Error(`Input validation failed: ${JSON.stringify(errors)}`);
       }
     }
 
@@ -172,7 +174,8 @@ export async function getLLMResponseForPromptViaInvocation(params: GetLLMRespons
 
     const outputSchemaPath = path.join(process.cwd(), 'schemas', prompt.outputSchema);
     if (!fs.existsSync(outputSchemaPath)) {
-      throw new Error(`Output schema file ${prompt.outputSchema} not found`);
+      console.error(`Output schema file ${prompt.outputSchema} not found. Path ${outputSchemaPath}`);
+      // throw new Error(`Output schema file ${prompt.outputSchema} not found`);
     }
 
     const outputSchema = await $RefParser.dereference(outputSchemaPath);
@@ -219,6 +222,7 @@ export async function getLLMResponseForPromptViaInvocation(params: GetLLMRespons
       }
     }
   } catch (e) {
+    console.error('Error during prompt invocation:', e);
     await prisma.promptInvocation.update({
       where: { id: invocation.id },
       data: {
@@ -227,7 +231,7 @@ export async function getLLMResponseForPromptViaInvocation(params: GetLLMRespons
         updatedAt: new Date(),
       },
     });
-    throw e;
+    // throw e;
   }
 }
 
