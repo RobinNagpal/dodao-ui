@@ -79,7 +79,7 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
 
       const userMessage = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
       console.log('[withErrorHandlingV2] Returning user-friendly error message with status 500:', userMessage);
-      return NextResponse.json({ error: userMessage?.toString() }, { status: 500 });
+      return NextResponse.json({ error: userMessage }, { status: 500 });
     }
   };
 }
