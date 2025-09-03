@@ -1,0 +1,43 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  categoryKey:
+    type: string
+    enum: ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue']
+    description: 'Must match the input category key.'
+  overallSummary:
+    type: string
+    description: 'Final summary of how the stock performs in this category.'
+  introductionToAnalysis:
+    type: string
+    description: 'Introductory explanation suitable for new investors.'
+  factors:
+    type: array
+    description: 'Array of factor-level analyses.'
+    items:
+      type: object
+      properties:
+        factorAnalysisKey:
+          type: string
+          description: 'Must match the key from the input factorAnalysisArray.'
+        oneLineExplanation:
+          type: string
+          description: '1–2 sentence plain-English takeaway for this factor.'
+        detailedExplanation:
+          type: string
+          description: '4–6 sentence investor-focused explanation with insights.'
+        result:
+          type: string
+          enum: ['Pass', 'Fail']
+          description: 'Critical judgment on whether the company passes or fails this factor.'
+      required:
+        - factorAnalysisKey
+        - oneLineExplanation
+        - detailedExplanation
+        - result
+required:
+  - categoryKey
+  - overallSummary
+  - introductionToAnalysis
+  - factors

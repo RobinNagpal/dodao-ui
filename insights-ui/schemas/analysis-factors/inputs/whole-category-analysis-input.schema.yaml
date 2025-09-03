@@ -1,0 +1,38 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  industryKey:
+    type: string
+    description: 'The broad industry the stock belongs to (e.g., REITS).'
+  subIndustryKey:
+    type: string
+    description: 'The specific sub-industry of the stock (e.g., RESIDENTIAL_REITS).'
+  categoryKey:
+    type: string
+    enum: ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue']
+    description: 'The category being analyzed.'
+  factorAnalysisArray:
+    type: array
+    description: 'Array of factor definitions under this category.'
+    items:
+      type: object
+      properties:
+        factorAnalysisKey:
+          type: string
+          description: 'Unique identifier for the factor in SCREAMING_SNAKE_CASE.'
+        factorAnalysisTitle:
+          type: string
+          description: 'Readable title of the factor.'
+        factorAnalysisDescription:
+          type: string
+          description: 'Short explanation of what the factor means.'
+      required:
+        - factorAnalysisKey
+        - factorAnalysisTitle
+        - factorAnalysisDescription
+required:
+  - industryKey
+  - subIndustryKey
+  - categoryKey
+  - factorAnalysisArray
