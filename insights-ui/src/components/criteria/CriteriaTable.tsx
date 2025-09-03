@@ -213,4 +213,4 @@ export default function CriteriaTable({ sectorSlug, industryGroupSlug }: Criteri
 }
 
 const tableRowStyle = { padding: '10px', borderTop: '1px solid #ddd', borderBottom: '1px solid #ddd' };
-const tableCellStyle = { padding: '0px 10px', borderLeft: '1px solid #ddd', borderRadight: '1px solid #ddd' };
+const tableCellStyle = { padding: '0px 10px', borderLeft: '1px solid #ddd', borderRight: '1px solid #ddd' };
