@@ -1,10 +1,35 @@
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
+import {
+  TickerV1CategoryAnalysisResult,
+  TickerV1InvestorAnalysisResult,
+  TickerV1FutureRisk,
+  TickerV1VsCompetition,
+  TickerV1AnalysisCategoryFactorResult,
+} from '.prisma/client';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
 
-interface TickerReportResponse {
+export type FullTickerV1CategoryAnalysisResult = TickerV1CategoryAnalysisResult & {
+  factorResults: (TickerV1AnalysisCategoryFactorResult & {
+    analysisCategoryFactor: {
+      factorAnalysisKey: string;
+      factorAnalysisTitle: string;
+      factorAnalysisDescription: string;
+    };
+  })[];
+};
+
+type FullReport = TickerV1 & {
+  investorAnalysisResults: TickerV1InvestorAnalysisResult[];
+  futureRisks: TickerV1FutureRisk[];
+  vsCompetition?: TickerV1VsCompetition;
+  categoryAnalysisResults: FullTickerV1CategoryAnalysisResult[];
+};
+
+export interface TickerV1ReportResponse extends FullReport {
   ticker: TickerV1;
   analysisStatus: {
     businessAndMoat: boolean;
@@ -22,20 +47,24 @@ interface TickerReportResponse {
   };
 }
 
-async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerReportResponse> {
+async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerV1ReportResponse> {
   const { spaceId, ticker } = await context.params;
 
+  console.log('ticker', ticker);
   // Get ticker from DB with all related data
   const tickerRecord = await prisma.tickerV1.findFirst({
     where: {
-      spaceId,
+      spaceId: spaceId || KoalaGainsSpaceId,
       symbol: ticker.toUpperCase(),
     },
     include: {
-      categoryAnalysisResults: true,
-      factorResults: {
+      categoryAnalysisResults: {
         include: {
-          analysisCategoryFactor: true,
+          factorResults: {
+            include: {
+              analysisCategoryFactor: true,
+            },
+          },
         },
       },
       investorAnalysisResults: true,
@@ -55,7 +84,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     pastPerformance: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.PastPerformance),
     futureGrowth: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FutureGrowth),
     fairValue: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FairValue),
-    competition: tickerRecord.vsCompetition.length > 0,
+    competition: !!tickerRecord.vsCompetition,
     investorAnalysis: {
       WARREN_BUFFETT: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'WARREN_BUFFETT'),
       CHARLIE_MUNGER: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'CHARLIE_MUNGER'),
@@ -75,8 +104,12 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       websiteUrl: tickerRecord.websiteUrl || undefined,
       summary: tickerRecord.summary || undefined,
     },
+    ...tickerRecord,
+    websiteUrl: tickerRecord.websiteUrl || undefined,
+    summary: tickerRecord.summary || undefined,
+    vsCompetition: tickerRecord.vsCompetition || undefined,
     analysisStatus,
   };
 }
 
-export const GET = withErrorHandlingV2<TickerReportResponse>(getHandler);
+export const GET = withErrorHandlingV2<TickerV1ReportResponse>(getHandler);

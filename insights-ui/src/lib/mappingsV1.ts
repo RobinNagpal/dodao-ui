@@ -4,7 +4,6 @@ export enum TickerAnalysisCategory {
   FinancialStatementAnalysis = 'FinancialStatementAnalysis',
   PastPerformance = 'PastPerformance',
   FutureGrowth = 'FutureGrowth',
-  VsCompetition = 'VsCompetition',
   FairValue = 'FairValue',
 }
 
@@ -31,7 +30,6 @@ export const CATEGORY_MAPPINGS = {
   [TickerAnalysisCategory.FinancialStatementAnalysis]: 'Financial Statement Analysis',
   [TickerAnalysisCategory.PastPerformance]: 'Past Performance',
   [TickerAnalysisCategory.FutureGrowth]: 'Future Growth',
-  [TickerAnalysisCategory.VsCompetition]: 'Competitive Analysis',
   [TickerAnalysisCategory.FairValue]: 'Fair Value',
 } as const;
 
@@ -49,10 +47,6 @@ export const getIndustryDisplayName = (industryKey: string): string => {
 
 export const getSubIndustryDisplayName = (subIndustryKey: string): string => {
   return SUB_INDUSTRY_MAPPINGS[subIndustryKey as keyof typeof SUB_INDUSTRY_MAPPINGS] || subIndustryKey;
-};
-
-export const getCategoryDisplayName = (categoryKey: TickerAnalysisCategory): string => {
-  return CATEGORY_MAPPINGS[categoryKey] || categoryKey;
 };
 
 // New investor display name function

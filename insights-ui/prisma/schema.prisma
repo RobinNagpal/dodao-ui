@@ -447,7 +447,7 @@ model TickerV1 {
   factorResults           TickerV1AnalysisCategoryFactorResult[]
   investorAnalysisResults TickerV1InvestorAnalysisResult[]
   futureRisks             TickerV1FutureRisk[]
-  vsCompetition           TickerV1VsCompetition[]
+  vsCompetition           TickerV1VsCompetition?
 
   // Ensure uniqueness of symbol+exchange per space
   @@unique([spaceId, symbol, exchange])
@@ -489,6 +489,9 @@ model TickerV1CategoryAnalysisResult {
 
   ticker TickerV1 @relation(fields: [tickerId], references: [id])
 
+  // 👇 back-reference so you can `include` factor results
+  factorResults TickerV1AnalysisCategoryFactorResult[]
+
   @@unique([spaceId, tickerId, categoryKey])
   @@index([tickerId])
   @@map("ticker_v1_category_analysis_results")
@@ -510,6 +513,9 @@ model TickerV1AnalysisCategoryFactorResult {
 
   ticker                 TickerV1               @relation(fields: [tickerId], references: [id])
   analysisCategoryFactor AnalysisCategoryFactor @relation(fields: [analysisCategoryFactorId], references: [id])
+
+  // 👇 new relation tying child to parent via the parent's composite unique
+  categoryAnalysisResult TickerV1CategoryAnalysisResult @relation(fields: [spaceId, tickerId, categoryKey], references: [spaceId, tickerId, categoryKey], onDelete: Cascade)
 
   @@unique([spaceId, tickerId, analysisCategoryFactorId])
   @@index([tickerId])
@@ -561,7 +567,7 @@ model TickerV1VsCompetition {
   // Store as a JSON value (can itself be a JSON array of objects)
   /// [CompetetionAnalysisArray]
   competitionAnalysisArray Json[]   @map("competition_analysis")
-  tickerId                 String   @map("ticker_id")
+  tickerId                 String   @unique @map("ticker_id")
   spaceId                  String   @default("koala_gains") @map("space_id")
   createdAt                DateTime @default(now()) @map("created_at")
   updatedAt                DateTime @updatedAt @map("updated_at")
