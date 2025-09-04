@@ -26,3 +26,39 @@ export interface CompetitionAnalysis {
 }
 
 export type CompetitionAnalysisArray = CompetitionAnalysis[];
+
+export interface TickerAnalysisResponse {
+  success: boolean;
+  invocationId: string;
+}
+
+export interface AnalysisRequest {
+  investorKey?: string;
+}
+
+export interface LLMFactorAnalysisResponse {
+  overallSummary: string;
+  introductionToAnalysis: string;
+  factors: Array<{
+    factorAnalysisKey: string;
+    oneLineExplanation: string;
+    detailedExplanation: string;
+    result: 'Pass' | 'Fail';
+  }>;
+}
+
+export interface LLMInvestorAnalysisFutureRiskResponse {
+  summary: string;
+  detailedAnalysis: string;
+}
+
+export interface TickerV1 {
+  id: string;
+  name: string;
+  symbol: string;
+  exchange: string;
+  industryKey: string;
+  subIndustryKey: string;
+  websiteUrl?: string;
+  summary?: string;
+}
