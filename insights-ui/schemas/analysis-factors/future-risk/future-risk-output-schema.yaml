@@ -1,0 +1,13 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  summary:
+    type: string
+    description: '3–4 sentences highlighting the most important future risks investors should be aware of. Keep it concise and retail-investor friendly.'
+  detailedAnalysis:
+    type: string
+    description: '3–4 paragraphs explaining the potential risks the company may face in the future. Cover industry-specific risks, macroeconomic challenges, competitive pressures, regulatory risks, balance sheet vulnerabilities, and structural changes. Be critical, balanced, and forward-looking.'
+required:
+  - summary
+  - detailedAnalysis
