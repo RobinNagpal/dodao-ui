@@ -2,7 +2,7 @@ import { FullTickerV1CategoryAnalysisResult, TickerV1ReportResponse } from '@/ap
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import RadarChart from '@/components/visualizations/RadarChart';
-import { CATEGORY_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
 import { PerformanceChecklistItem, SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
@@ -133,21 +133,20 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           </div>
         )}
 
-        {/* Investor Analysis Section */}
+        {/* Detailed Investor Reports Section */}
         {tickerData.investorAnalysisResults.length > 0 && (
           <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Investor Analysis</h2>
+            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Investor Reports Summaries</h2>
             <div className="space-y-4">
               {tickerData.investorAnalysisResults.map((result) => (
                 <div key={result.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
-                  <h3 className="font-semibold mb-2">{result.investorKey}</h3>
+                  <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
                   <p>{result.summary}</p>
                 </div>
               ))}
             </div>
           </div>
         )}
-
         {/* Detailed Category Analysis Sections */}
         <h2 className="text-2xl font-bold mb-6 mt-10">Detailed Analysis</h2>
 
@@ -189,6 +188,21 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
             </div>
           );
         })}
+
+        {/* Detailed Investor Reports Section */}
+        {tickerData.investorAnalysisResults.length > 0 && (
+          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Detailed Investor Reports</h2>
+            <div className="space-y-4">
+              {tickerData.investorAnalysisResults.map((result) => (
+                <div key={result.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                  <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
+                  <p>{result.detailedAnalysis}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </PageWrapper>
   );
