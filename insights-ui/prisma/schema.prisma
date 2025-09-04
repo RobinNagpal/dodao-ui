@@ -5,6 +5,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator json {
+  provider  = "prisma-json-types-generator"
+  namespace = "PrismaJson"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -549,17 +554,18 @@ model TickerV1FutureRisk {
 }
 
 model TickerV1VsCompetition {
-  id                     String   @id @default(uuid())
-  summary                String   @map("summary")
-  introductionToAnalysis String   @map("introduction_to_analysis")
+  id                       String   @id @default(uuid())
+  summary                  String   @map("summary")
+  introductionToAnalysis   String   @map("introduction_to_analysis")
   // Store as a JSON value (can itself be a JSON array of objects)
-  competitionAnalysis    Json     @map("competition_analysis")
-  tickerId               String   @map("ticker_id")
-  spaceId                String   @default("koala_gains") @map("space_id")
-  createdAt              DateTime @default(now()) @map("created_at")
-  updatedAt              DateTime @updatedAt @map("updated_at")
-  createdBy              String?  @map("created_by")
-  updatedBy              String?  @map("updated_by")
+  /// [CompetetionAnalysisArray]
+  competitionAnalysisArray Json[]   @map("competition_analysis")
+  tickerId                 String   @map("ticker_id")
+  spaceId                  String   @default("koala_gains") @map("space_id")
+  createdAt                DateTime @default(now()) @map("created_at")
+  updatedAt                DateTime @updatedAt @map("updated_at")
+  createdBy                String?  @map("created_by")
+  updatedBy                String?  @map("updated_by")
 
   ticker TickerV1 @relation(fields: [tickerId], references: [id])
 

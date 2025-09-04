@@ -16,3 +16,12 @@ export interface GetAnalysisFactorsResponse {
   subIndustryKey: string;
   categories: CategoryAnalysisFactors[];
 }
+
+export interface CompetitionAnalysis {
+  companyName: string;
+  companySymbol?: string;
+  exchangeSymbol?: string;
+  exchangeName?: string;
+  detailedComparison?: string;
+}
+export type CompetitionAnalysisArray = CompetitionAnalysis[];
