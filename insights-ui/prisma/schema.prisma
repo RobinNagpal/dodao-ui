@@ -549,6 +549,7 @@ model TickerV1FutureRisk {
 
   ticker TickerV1 @relation(fields: [tickerId], references: [id])
 
+  @@unique([spaceId, tickerId])
   @@index([tickerId])
   @@map("ticker_v1_future_risks")
 }

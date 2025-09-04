@@ -1,0 +1,86 @@
+import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { NextRequest } from 'next/server';
+import { prisma } from '@/prisma';
+import { AnalysisRequest, LLMInvestorAnalysisFutureRiskResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
+  const { spaceId, ticker } = await params;
+  const body = await req.json();
+  const { investorKey } = body as AnalysisRequest;
+
+  // Hardcode LLM provider and model
+  const llmProvider = 'gemini';
+  const model = 'models/gemini-2.5-pro';
+
+  if (!investorKey) {
+    throw new Error('investorKey is required');
+  }
+
+  // Get ticker from DB
+  const tickerRecord = await prisma.tickerV1.findFirst({
+    where: {
+      spaceId,
+      symbol: ticker.toUpperCase(),
+    },
+  });
+
+  if (!tickerRecord) {
+    throw new Error(`Ticker ${ticker} not found`);
+  }
+
+  // Prepare input for the prompt (uses investor-analysis-input.schema.yaml)
+  const inputJson = {
+    name: tickerRecord.name,
+    symbol: tickerRecord.symbol,
+    industryKey: tickerRecord.industryKey,
+    subIndustryKey: tickerRecord.subIndustryKey,
+    investorKey: investorKey,
+  };
+
+  // Call the LLM
+  const result = await getLLMResponseForPromptViaInvocation({
+    spaceId,
+    inputJson,
+    promptKey: 'US/public-equities-v1/investor-analysis',
+    llmProvider,
+    model,
+    requestFrom: 'ui',
+  });
+
+  if (!result) {
+    throw new Error('Failed to get response from LLM');
+  }
+
+  const response = result.response as LLMInvestorAnalysisFutureRiskResponse;
+
+  // Store investor analysis result (upsert)
+  const investorAnalysisResult = await prisma.tickerV1InvestorAnalysisResult.upsert({
+    where: {
+      spaceId_tickerId_investorKey: {
+        spaceId,
+        tickerId: tickerRecord.id,
+        investorKey,
+      },
+    },
+    update: {
+      summary: response.summary,
+      detailedAnalysis: response.detailedAnalysis,
+      updatedAt: new Date(),
+    },
+    create: {
+      spaceId,
+      tickerId: tickerRecord.id,
+      investorKey,
+      summary: response.summary,
+      detailedAnalysis: response.detailedAnalysis,
+    },
+  });
+
+  return {
+    success: true,
+    invocationId: result.invocationId,
+  };
+}
+
+export const POST = withErrorHandlingV2<TickerAnalysisResponse>(postHandler);
