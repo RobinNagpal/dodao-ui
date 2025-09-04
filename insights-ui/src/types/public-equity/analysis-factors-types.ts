@@ -24,4 +24,5 @@ export interface CompetitionAnalysis {
   exchangeName?: string;
   detailedComparison?: string;
 }
+
 export type CompetitionAnalysisArray = CompetitionAnalysis[];

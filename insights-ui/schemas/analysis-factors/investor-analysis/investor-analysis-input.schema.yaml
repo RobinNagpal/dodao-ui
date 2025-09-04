@@ -1,0 +1,25 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: 'The full name of the company or REIT being analyzed (e.g., AvalonBay Communities Inc.).'
+  symbol:
+    type: string
+    description: 'The stock ticker symbol of the company or REIT (e.g., AVB).'
+  industryKey:
+    type: string
+    description: 'The broad industry the stock belongs to (e.g., REITS).'
+  subIndustryKey:
+    type: string
+    description: 'The specific sub-industry of the stock (e.g., OFFICE_REITS).'
+  investorKey:
+    type: string
+    description: 'The legendary investor whose style is being applied (e.g., WARREN_BUFFETT, CHARLIE_MUNGER, BILL_ACKMAN).'
+required:
+  - name
+  - symbol
+  - industryKey
+  - subIndustryKey
+  - investorKey

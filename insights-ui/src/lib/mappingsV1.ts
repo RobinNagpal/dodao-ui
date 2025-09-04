@@ -35,6 +35,13 @@ export const CATEGORY_MAPPINGS = {
   [TickerAnalysisCategory.FairValue]: 'Fair Value',
 } as const;
 
+// Investor mappings
+export const INVESTOR_MAPPINGS = {
+  WARREN_BUFFETT: 'Warren Buffett',
+  CHARLIE_MUNGER: 'Charlie Munger',
+  BILL_ACKMAN: 'Bill Ackman',
+} as const;
+
 // Helper functions to get display names
 export const getIndustryDisplayName = (industryKey: string): string => {
   return INDUSTRY_MAPPINGS[industryKey as keyof typeof INDUSTRY_MAPPINGS] || industryKey;
@@ -48,10 +55,16 @@ export const getCategoryDisplayName = (categoryKey: TickerAnalysisCategory): str
   return CATEGORY_MAPPINGS[categoryKey] || categoryKey;
 };
 
+// New investor display name function
+export const getInvestorDisplayName = (investorKey: string): string => {
+  return INVESTOR_MAPPINGS[investorKey as keyof typeof INVESTOR_MAPPINGS] || investorKey;
+};
+
 // Type definitions for better type safety
 export type IndustryKey = keyof typeof INDUSTRY_MAPPINGS;
 export type SubIndustryKey = keyof typeof SUB_INDUSTRY_MAPPINGS;
 export type CategoryKey = TickerAnalysisCategory;
+export type InvestorKey = keyof typeof INVESTOR_MAPPINGS;
 
 // Arrays for dropdowns/selects
 export const INDUSTRY_OPTIONS = Object.entries(INDUSTRY_MAPPINGS).map(([key, name]) => ({
@@ -66,5 +79,10 @@ export const SUB_INDUSTRY_OPTIONS = Object.entries(SUB_INDUSTRY_MAPPINGS).map(([
 
 export const CATEGORY_OPTIONS = Object.entries(CATEGORY_MAPPINGS).map(([key, name]) => ({
   key: key as TickerAnalysisCategory,
+  name,
+}));
+
+export const INVESTOR_OPTIONS = Object.entries(INVESTOR_MAPPINGS).map(([key, name]) => ({
+  key,
   name,
 }));

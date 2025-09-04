@@ -1,0 +1,13 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  summary:
+    type: string
+    description: '3–4 sentences summarizing how this investor would likely view the stock in 2025. Must be written in plain English, ending with a clear takeaway for retail investors.'
+  detailedAnalysis:
+    type: string
+    description: '3–4 paragraphs of deeper analysis applying the investor’s philosophy. Must explain the reasoning clearly, referencing 2025 market context and the company’s profile. Highlight both positives and negatives. Tone should reflect the investor’s style.'
+required:
+  - summary
+  - detailedAnalysis

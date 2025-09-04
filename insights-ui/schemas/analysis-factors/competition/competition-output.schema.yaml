@@ -1,0 +1,38 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  summary:
+    type: string
+    description: '3–5 sentence conclusion on how the stock compares to its peers. Must highlight its relative strengths, weaknesses, and competitive positioning within its industry.'
+  introductionToAnalysis:
+    type: string
+    description: '3–4 sentence introduction that explains why comparing this company to peers is important for investors. Keep language simple for retail investors.'
+  competitionAnalysisArray:
+    type: array
+    description: 'Array of competitor comparisons.'
+    items:
+      type: object
+      properties:
+        companyName:
+          type: string
+          description: 'Full name of the competitor company.'
+        companySymbol:
+          type: string
+          description: 'Ticker symbol of the competitor company.'
+        exchangeSymbol:
+          type: string
+          description: 'Exchange symbol (e.g., NASDAQ, NYSE) of the competitor.'
+        exchangeName:
+          type: string
+          description: 'Readable exchange name (e.g., NASDAQ Global Select, NYSE Main Market).'
+        detailedComparison:
+          type: string
+          description: '2–3 paragraphs analyzing how this competitor compares with the target stock. Cover relative market cap, growth, profitability, risk, and positioning.'
+      required:
+        - companyName
+        - detailedComparison
+required:
+  - summary
+  - introductionToAnalysis
+  - competitionAnalysisArray
