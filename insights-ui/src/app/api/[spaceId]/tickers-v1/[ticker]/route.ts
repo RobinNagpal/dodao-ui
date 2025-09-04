@@ -13,7 +13,11 @@ interface TickerReportResponse {
     futureGrowth: boolean;
     fairValue: boolean;
     competition: boolean;
-    investorAnalysis: boolean;
+    investorAnalysis: {
+      WARREN_BUFFETT: boolean;
+      CHARLIE_MUNGER: boolean;
+      BILL_ACKMAN: boolean;
+    };
     futureRisk: boolean;
   };
 }
@@ -52,7 +56,11 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     futureGrowth: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FutureGrowth),
     fairValue: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FairValue),
     competition: tickerRecord.vsCompetition.length > 0,
-    investorAnalysis: tickerRecord.investorAnalysisResults.length > 0,
+    investorAnalysis: {
+      WARREN_BUFFETT: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'WARREN_BUFFETT'),
+      CHARLIE_MUNGER: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'CHARLIE_MUNGER'),
+      BILL_ACKMAN: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'BILL_ACKMAN'),
+    },
     futureRisk: tickerRecord.futureRisks.length > 0,
   };
 

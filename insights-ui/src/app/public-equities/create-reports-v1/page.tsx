@@ -25,7 +25,11 @@ interface AnalysisStatus {
   futureGrowth: boolean;
   fairValue: boolean;
   competition: boolean;
-  investorAnalysis: boolean;
+  investorAnalysis: {
+    WARREN_BUFFETT: boolean;
+    CHARLIE_MUNGER: boolean;
+    BILL_ACKMAN: boolean;
+  };
   futureRisk: boolean;
 }
 
@@ -111,8 +115,13 @@ export default function CreateReportsV1Page(): JSX.Element {
     { key: 'past-performance', label: 'Past Performance', statusKey: 'pastPerformance' as keyof AnalysisStatus },
     { key: 'future-growth', label: 'Future Growth', statusKey: 'futureGrowth' as keyof AnalysisStatus },
     { key: 'fair-value', label: 'Fair Value', statusKey: 'fairValue' as keyof AnalysisStatus },
-    { key: 'investor-analysis', label: 'Investor Analysis', statusKey: 'investorAnalysis' as keyof AnalysisStatus },
     { key: 'future-risk', label: 'Future Risk', statusKey: 'futureRisk' as keyof AnalysisStatus },
+  ];
+
+  const investorAnalysisTypes = [
+    { key: 'WARREN_BUFFETT', label: 'Warren Buffett Analysis' },
+    { key: 'CHARLIE_MUNGER', label: 'Charlie Munger Analysis' },
+    { key: 'BILL_ACKMAN', label: 'Bill Ackman Analysis' },
   ];
 
   const handleAddTicker = async (e: React.FormEvent) => {
@@ -158,6 +167,27 @@ export default function CreateReportsV1Page(): JSX.Element {
     }
   };
 
+  const handleGenerateInvestorAnalysis = async (investorKey: string, ticker: string) => {
+    if (!ticker) return;
+
+    setLoadingStates((prev) => ({ ...prev, [`${ticker}-investor-${investorKey}`]: true }));
+
+    try {
+      const payload: AnalysisRequest = {
+        investorKey: investorKey,
+      };
+
+      const result = await postAnalysis(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/investor-analysis`, payload);
+
+      if (result) {
+        // Refresh the ticker report to show updated analysis status
+        await refetchTickerReport();
+      }
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, [`${ticker}-investor-${investorKey}`]: false }));
+    }
+  };
+
   const handleGenerateAll = async (ticker: string) => {
     if (!ticker) return;
 
@@ -170,11 +200,18 @@ export default function CreateReportsV1Page(): JSX.Element {
       'competition', // Must come before past-performance and future-growth
       'past-performance',
       'future-growth',
-      'investor-analysis',
     ];
 
     for (const analysisType of sequence) {
       await handleGenerateAnalysis(analysisType, ticker);
+      // Add a small delay between calls
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+
+    // Generate investor analysis for all investors
+    const allInvestors = ['WARREN_BUFFETT', 'CHARLIE_MUNGER', 'BILL_ACKMAN'];
+    for (const investorKey of allInvestors) {
+      await handleGenerateInvestorAnalysis(investorKey, ticker);
       // Add a small delay between calls
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
@@ -304,6 +341,40 @@ export default function CreateReportsV1Page(): JSX.Element {
                           </div>
                         );
                       })}
+                    </div>
+
+                    {/* Investor Analysis Status */}
+                    <div className="mt-6">
+                      <h3 className="text-lg font-semibold mb-4">Investor Analysis</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {investorAnalysisTypes.map((investor) => {
+                          const isCompleted =
+                            tickerReport.analysisStatus.investorAnalysis[investor.key as keyof typeof tickerReport.analysisStatus.investorAnalysis];
+                          const isLoading = loadingStates[`${selectedTicker}-investor-${investor.key}`];
+
+                          return (
+                            <div key={investor.key} className="border rounded-lg p-4 space-y-3">
+                              <div className="flex items-center justify-between">
+                                <h4 className="font-medium">{investor.label}</h4>
+                                <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : 'bg-gray-300'}`} />
+                              </div>
+
+                              <div className="text-sm text-gray-600">Status: {isCompleted ? 'Completed' : 'Not Generated'}</div>
+
+                              <Button
+                                variant="outlined"
+                                size="sm"
+                                onClick={() => handleGenerateInvestorAnalysis(investor.key, selectedTicker)}
+                                disabled={isLoading}
+                                loading={isLoading}
+                                className="w-full"
+                              >
+                                {isLoading ? 'Generating...' : isCompleted ? 'Regenerate' : 'Generate'}
+                              </Button>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 )}
