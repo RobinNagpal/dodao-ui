@@ -87,13 +87,18 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-2xl font-bold mb-6 heading-color">Evaluate Industry Areas for {definition.name}</h1>
+    <div className="mx-auto max-w-7xl py-2">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-4 heading-color">Evaluate Industry Areas for {definition.name}</h1>
+        <p className="text-lg text-gray-600 dark:text-gray-300">
+          Explore the impact of tariff changes across different areas of the {definition.name} industry.
+        </p>
+      </div>
 
       {/* SEO Warning Banner for Admins */}
       {isSeoMissing && (
         <PrivateWrapper>
-          <div className="my-8 p-3 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
+          <div className="mb-8 p-4 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex items-center">
                 <span className="font-medium">SEO metadata is missing for this page</span>
@@ -103,47 +108,58 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
         </PrivateWrapper>
       )}
 
-      {industryAreas.areas.map((heading, index) => (
-        <div key={`heading-${index}`} className="mb-6">
-          <h2 className="text-xl font-semibold mb-3 heading-color">{heading.title}</h2>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {heading.subAreas.map((subHeading, subIndex) => {
-              const indexInArray = index * getNumberOfSubHeadings(industryId) + subIndex;
-              const evaluated = report?.evaluateIndustryAreas?.[indexInArray];
+      <div className="space-y-12">
+        {industryAreas.areas.map((heading, index) => (
+          <div key={`heading-${index}`} className="bg-white dark:bg-gray-900 rounded-lg shadow-sm py-6">
+            <h2 className="text-2xl font-semibold mb-6 pb-3 border-b border-gray-200 dark:border-gray-700 heading-color px-6">{heading.title}</h2>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6">
+              {heading.subAreas.map((subHeading, subIndex) => {
+                const indexInArray = index * getNumberOfSubHeadings(industryId) + subIndex;
+                const evaluated = report?.evaluateIndustryAreas?.[indexInArray];
 
-              if (!evaluated) {
+                if (!evaluated) {
+                  return (
+                    <li key={`subheading-${index}-${subIndex}`} className="list-none bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                      <div className="text-gray-500 italic">Data not available</div>
+                    </li>
+                  );
+                }
+
                 return (
                   <li key={`subheading-${index}-${subIndex}`} className="list-none">
-                    Data not available
+                    <Link
+                      href={`/industry-tariff-report/${industryId}/evaluate-industry-areas/${index}-${subIndex}`}
+                      className="block h-full bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-200 dark:border-gray-700"
+                    >
+                      <div className="p-6 flex flex-col h-full">
+                        <h3 className="text-xl font-medium mb-3 heading-color">{evaluated.title}</h3>
+
+                        {evaluated.aboutParagraphs?.length > 0 && (
+                          <p className="text-gray-600 dark:text-gray-300 flex-grow">
+                            {evaluated.aboutParagraphs.substring(0, 180)}
+                            {evaluated.aboutParagraphs.length > 180 && '...'}
+                          </p>
+                        )}
+
+                        <div className="mt-4 text-sm link-color font-medium flex items-center">
+                          Read analysis
+                          <svg className="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                              fillRule="evenodd"
+                              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </Link>
                   </li>
                 );
-              }
-
-              return (
-                <li key={`subheading-${index}-${subIndex}`} className="list-none">
-                  <Link
-                    href={`/industry-tariff-report/${industryId}/evaluate-industry-areas/${index}-${subIndex}`}
-                    className="block h-full border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
-                  >
-                    <div className="p-5 flex flex-col h-full">
-                      <h3 className="text-lg font-medium mb-3 heading-color">{evaluated.title}</h3>
-
-                      {evaluated.aboutParagraphs?.length > 0 && (
-                        <p className="text-sm opacity-80 flex-grow">
-                          {evaluated.aboutParagraphs.substring(0, 180)}
-                          {evaluated.aboutParagraphs.length > 180 && '...'}
-                        </p>
-                      )}
-
-                      <div className="mt-3 text-sm link-color font-medium">Read analysis →</div>
-                    </div>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ))}
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

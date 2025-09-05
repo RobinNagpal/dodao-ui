@@ -87,19 +87,35 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
   const seoDetails = report.reportSeoDetails?.tariffUpdatesSeoDetails;
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
 
+  // Function to render section with header and actions
+  const renderSection = (title: string, content: JSX.Element, actions?: JSX.Element) => (
+    <div className="mb-12">
+      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-2 mb-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-semibold heading-color">{title}</h2>
+          {actions}
+        </div>
+      </div>
+      {content}
+    </div>
+  );
+
   return (
-    <div>
-      <div className="flex justify-between mb-4">
-        <h1 className="text-3xl font-bold">Tariff Updates for {definition.name}</h1>
-        <PrivateWrapper>
-          <TariffUpdatesActions industryId={industryId} />
-        </PrivateWrapper>
+    <div className="mx-auto max-w-7xl py-2">
+      {/* Title and Actions */}
+      <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold heading-color">Tariff Updates for {definition.name}</h1>
+          <PrivateWrapper>
+            <TariffUpdatesActions industryId={industryId} />
+          </PrivateWrapper>
+        </div>
       </div>
 
       {/* SEO Warning Banner for Admins */}
       {report.tariffUpdates && isSeoMissing && (
         <PrivateWrapper>
-          <div className="my-8 p-3 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
+          <div className="mb-8 p-4 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex items-center">
                 <span className="font-medium">SEO metadata is missing for this page</span>
@@ -109,31 +125,32 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
         </PrivateWrapper>
       )}
 
-      {report.tariffUpdates ? (
-        report.tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
-          const markdownContent = getMarkdownContentForCountryTariffs(countryTariff);
-          return (
-            <div key={countryTariff.countryName} className="mb-8">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold">{countryTariff.countryName}</h2>
-                <PrivateWrapper>
-                  <TariffUpdatesActions industryId={industryId} tariffIndex={index} countryName={countryTariff.countryName} />
-                </PrivateWrapper>
-              </div>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: markdownContent && parseMarkdown(markdownContent),
-                }}
-                className="markdown-body"
-              />
-            </div>
-          );
-        })
-      ) : (
-        <div>
-          <h2 className="text-2xl font-bold">No tariff updates available</h2>
-        </div>
-      )}
+      <div className="space-y-12">
+        {report.tariffUpdates ? (
+          report.tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
+            const markdownContent = getMarkdownContentForCountryTariffs(countryTariff);
+            return renderSection(
+              countryTariff.countryName,
+              <div className="bg-white dark:bg-gray-900 rounded-lg py-2 shadow-sm">
+                <div className="markdown-body prose max-w-none px-2">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: markdownContent && parseMarkdown(markdownContent),
+                    }}
+                  />
+                </div>
+              </div>,
+              <PrivateWrapper>
+                <TariffUpdatesActions industryId={industryId} tariffIndex={index} countryName={countryTariff.countryName} />
+              </PrivateWrapper>
+            );
+          })
+        ) : (
+          <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm">
+            <h2 className="text-xl font-semibold">No tariff updates available</h2>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

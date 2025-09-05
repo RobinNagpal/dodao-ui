@@ -101,19 +101,34 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
       newChangesFirstSentence: tariff.newChanges,
     })) || [];
 
+  // Function to render section with header and actions
+  const renderSection = (title: string, content: JSX.Element) => (
+    <div className="mb-12">
+      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-2 mb-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-semibold heading-color">{title}</h2>
+        </div>
+      </div>
+      {content}
+    </div>
+  );
+
   return (
-    <div>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold">{report?.reportCover?.title || 'Tariff report for ' + industryId}</h1>
-        <PrivateWrapper>
-          <ReportCoverActions industryId={industryId} />
-        </PrivateWrapper>
+    <div className="mx-auto max-w-7xl py-2">
+      {/* Title and Actions */}
+      <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold heading-color">{report?.reportCover?.title || 'Tariff report for ' + industryId}</h1>
+          <PrivateWrapper>
+            <ReportCoverActions industryId={industryId} />
+          </PrivateWrapper>
+        </div>
       </div>
 
       {/* SEO Warning Banner for Admins */}
       {isSeoMissing && (
         <PrivateWrapper>
-          <div className="my-6 sm:my-8 p-3 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
+          <div className="mb-8 p-4 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex items-center">
                 <span className="font-medium">SEO metadata is missing for this page</span>
@@ -123,90 +138,106 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
         </PrivateWrapper>
       )}
 
-      {/* Report Cover Content */}
-      <div
-        dangerouslySetInnerHTML={{
-          __html: (markdownContent && parseMarkdown(markdownContent)) || 'No content available',
-        }}
-        className="markdown-body"
-      />
+      <div className="space-y-12">
+        {/* Report Cover Content */}
+        {renderSection(
+          'Overview',
+          <div className="bg-white dark:bg-gray-900 rounded-lg py-2 shadow-sm">
+            <div className="markdown-body prose max-w-none px-2">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: (markdownContent && parseMarkdown(markdownContent)) || 'No content available',
+                }}
+              />
+            </div>
+          </div>
+        )}
 
-      {/* Latest Tariff Actions Summary */}
-      {tariffUpdatesSummary.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Latest {definition.name} Tariff Actions</h2>
-          <div className="space-y-4 mb-4">
-            {tariffUpdatesSummary.map((tariff, index) => (
-              <div key={index}>
-                <h3 className="font-bold text-lg">{tariff.countryName}</h3>
+        {/* Latest Tariff Actions Summary */}
+        {tariffUpdatesSummary.length > 0 &&
+          renderSection(
+            `Latest ${definition.name} Tariff Actions`,
+            <div className="bg-white dark:bg-gray-900 rounded-lg py-2 shadow-sm">
+              <div className="space-y-4 mb-4 px-2">
+                {tariffUpdatesSummary.map((tariff, index) => (
+                  <div key={index} className="mb-6">
+                    <h3 className="font-bold text-lg mb-2">{tariff.countryName}</h3>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: parseMarkdown(tariff.newChangesFirstSentence),
+                      }}
+                      className="markdown-body"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 px-2">
+                <a href={`/industry-tariff-report/${industryId}/tariff-updates`} className="link-color underline font-medium">
+                  See full country breakdown
+                </a>
+              </div>
+            </div>
+          )}
+
+        {/* Executive Summary Content for SEO */}
+        {executiveSummaryContent &&
+          renderSection(
+            'Executive Summary',
+            <div className="bg-white dark:bg-gray-900 rounded-lg py-2 shadow-sm">
+              <div className="markdown-body prose max-w-none px-2">
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: parseMarkdown(tariff.newChangesFirstSentence),
+                    __html: executiveSummaryContent,
                   }}
-                  className="markdown-body"
                 />
               </div>
-            ))}
-          </div>
-          <a href={`/industry-tariff-report/${industryId}/tariff-updates`} className="link-color underline font-medium">
-            See full country breakdown
-          </a>
-        </div>
-      )}
+            </div>
+          )}
 
-      {/* Executive Summary Content for SEO */}
-      {executiveSummaryContent && (
-        <div className="mt-8">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: executiveSummaryContent,
-            }}
-            className="markdown-body"
-          />
-        </div>
-      )}
+        {/* Related Industries Section */}
+        {definition.relatedIndustryIds &&
+          definition.relatedIndustryIds.length > 0 &&
+          renderSection(
+            'Related Industry Reports',
+            <div>
+              <p className="text-muted-foreground mb-6">
+                Explore tariff impacts on related industries that may affect your supply chain, sourcing decisions, or market opportunities.
+              </p>
+              <div className="space-y-6">
+                {definition.relatedIndustryIds.map((relatedIndustryId) => {
+                  const relatedDefinition = getTariffIndustryDefinitionById(relatedIndustryId);
+                  return (
+                    <div
+                      key={relatedIndustryId}
+                      className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden border border-color hover:shadow-xl transition-all duration-300"
+                    >
+                      <div className="background-color p-2">
+                        <div className="flex items-center text-xs font-medium mb-3">
+                          <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+                            Related Report
+                          </span>
+                        </div>
 
-      {/* Related Industries Section */}
-      {definition.relatedIndustryIds && definition.relatedIndustryIds.length > 0 && (
-        <div className="mt-12 pt-8 border-t">
-          <h3 className="text-xl font-bold mb-4 text-color">Related Industry Reports</h3>
-          <p className="text-muted-foreground mb-6">
-            Explore tariff impacts on related industries that may affect your supply chain, sourcing decisions, or market opportunities.
-          </p>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {definition.relatedIndustryIds.map((relatedIndustryId) => {
-              const relatedDefinition = getTariffIndustryDefinitionById(relatedIndustryId);
-              return (
-                <div
-                  key={relatedIndustryId}
-                  className="flex flex-col overflow-hidden rounded-lg shadow-lg border border-color hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="flex-1 background-color p-6">
-                    <div className="flex items-center text-xs font-medium mb-3">
-                      <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
-                        Related Report
-                      </span>
+                        <Link href={`/industry-tariff-report/${relatedIndustryId}`} className="block mt-2 group">
+                          <h4 className="text-lg font-semibold group-hover:text-primary-color transition-colors text-color">{relatedDefinition.name}</h4>
+                        </Link>
+
+                        <p className="mt-3 text-muted-foreground line-clamp-3">{relatedDefinition.reportOneLiner}</p>
+
+                        <div className="mt-4">
+                          <Link href={`/industry-tariff-report/${relatedIndustryId}`} className="group flex items-center text-sm font-medium primary-color">
+                            View report
+                            <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                          </Link>
+                        </div>
+                      </div>
                     </div>
-
-                    <Link href={`/industry-tariff-report/${relatedIndustryId}`} className="block mt-2 group">
-                      <h4 className="text-lg font-semibold group-hover:text-primary-color transition-colors text-color">{relatedDefinition.name}</h4>
-                    </Link>
-
-                    <p className="mt-3 text-muted-foreground line-clamp-3">{relatedDefinition.reportOneLiner}</p>
-                  </div>
-
-                  <div className="block-bg-color border-t border-color p-4">
-                    <Link href={`/industry-tariff-report/${relatedIndustryId}`} className="group flex items-center text-sm font-medium primary-color">
-                      View report
-                      <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+                  );
+                })}
+              </div>
+            </div>
+          )}
+      </div>
     </div>
   );
 }

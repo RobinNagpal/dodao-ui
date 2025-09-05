@@ -145,11 +145,11 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
   const renderPlaceholder = () => <div className="text-gray-500 italic">No Content Available</div>;
 
   return (
-    <div>
+    <div className="mx-auto max-w-7xl py-2">
       {/* SEO Warning Banner for Admins */}
       {isSeoMissing && (
         <PrivateWrapper>
-          <div className="my-8 p-3 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
+          <div className="mb-8 p-4 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex items-center">
                 <span className="font-medium">SEO metadata is missing for this page</span>
@@ -160,187 +160,227 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
       )}
 
       {/* Title and Overall Actions */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold heading-color">{evaluateIndustryArea?.title || subArea?.title || 'Industry Area Evaluation'}</h1>
-        <PrivateWrapper>
-          <EvaluateIndustryAreasActions
-            industryId={industryId}
-            sectionName={evaluateIndustryArea?.title || 'Industry Area Evaluation'}
-            headingIndex={headingIndex}
-            subHeadingIndex={subHeadingIndex}
-            sectionType={EvaluateIndustryContent.ALL}
-          />
-        </PrivateWrapper>
+      <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold heading-color">{evaluateIndustryArea?.title || subArea?.title || 'Industry Area Evaluation'}</h1>
+          <PrivateWrapper>
+            <EvaluateIndustryAreasActions
+              industryId={industryId}
+              sectionName={evaluateIndustryArea?.title || 'Industry Area Evaluation'}
+              headingIndex={headingIndex}
+              subHeadingIndex={subHeadingIndex}
+              sectionType={EvaluateIndustryContent.ALL}
+            />
+          </PrivateWrapper>
+        </div>
       </div>
 
-      {/* About section */}
-      {renderSection(
-        'About',
-        <div className="markdown-body">
-          {evaluateIndustryArea?.aboutParagraphs ? (
-            <div dangerouslySetInnerHTML={{ __html: parseMarkdown(evaluateIndustryArea.aboutParagraphs) }} />
-          ) : (
-            renderPlaceholder()
-          )}
-        </div>,
-        EvaluateIndustryContent.ALL
-      )}
+      <div className="space-y-12">
+        {/* About section */}
+        {renderSection(
+          'About',
+          <div className="bg-white dark:bg-gray-900 rounded-lg py-2 shadow-sm">
+            <div className="markdown-body prose max-w-none px-2">
+              {evaluateIndustryArea?.aboutParagraphs ? (
+                <div dangerouslySetInnerHTML={{ __html: parseMarkdown(evaluateIndustryArea.aboutParagraphs) }} />
+              ) : (
+                renderPlaceholder()
+              )}
+            </div>
+          </div>,
+          EvaluateIndustryContent.ALL
+        )}
 
-      {/* Established Players section */}
-      {renderSection(
-        'Established Players',
-        <div>
-          {evaluateIndustryArea?.establishedPlayerDetails && evaluateIndustryArea.establishedPlayerDetails.length > 0
-            ? evaluateIndustryArea.establishedPlayerDetails.map((player, idx) => {
+        {/* Established Players section */}
+        {renderSection(
+          'Established Players',
+          <div className="space-y-6">
+            {evaluateIndustryArea?.establishedPlayerDetails && evaluateIndustryArea.establishedPlayerDetails.length > 0 ? (
+              evaluateIndustryArea.establishedPlayerDetails.map((player, idx) => {
                 const markdown = establishedPlayerToMarkdown(player);
                 const renderedMarkdown = markdown && parseMarkdown(markdown);
                 return (
-                  <div key={idx} className="mb-6 p-4 border rounded">
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-medium">{player.companyName}</h3>
-                      <PrivateWrapper>
-                        <EvaluateIndustryAreasActions
-                          industryId={industryId}
-                          sectionName={`Established Player: ${player.companyName}`}
-                          headingIndex={headingIndex}
-                          subHeadingIndex={subHeadingIndex}
-                          sectionType={EvaluateIndustryContent.ESTABLISHED_PLAYER}
-                          establishedPlayerTicker={player.companyTicker}
-                        />
-                      </PrivateWrapper>
+                  <div key={idx} className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+                    <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+                      <div className="flex justify-between items-center">
+                        <h3 className="text-lg font-medium">{player.companyName}</h3>
+                        <PrivateWrapper>
+                          <EvaluateIndustryAreasActions
+                            industryId={industryId}
+                            sectionName={`Established Player: ${player.companyName}`}
+                            headingIndex={headingIndex}
+                            subHeadingIndex={subHeadingIndex}
+                            sectionType={EvaluateIndustryContent.ESTABLISHED_PLAYER}
+                            establishedPlayerTicker={player.companyTicker}
+                          />
+                        </PrivateWrapper>
+                      </div>
                     </div>
-                    <div className="markdown-body" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
+                    <div className="py-6 px-6">
+                      <div className="markdown-body prose max-w-none" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
+                    </div>
                   </div>
                 );
               })
-            : renderPlaceholder()}
-        </div>,
-        EvaluateIndustryContent.ESTABLISHED_PLAYERS
-      )}
+            ) : (
+              <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm">{renderPlaceholder()}</div>
+            )}
+          </div>,
+          EvaluateIndustryContent.ESTABLISHED_PLAYERS
+        )}
 
-      {/* New Challengers section */}
-      {renderSection(
-        'New Challengers',
-        <div>
-          {evaluateIndustryArea?.newChallengersDetails && evaluateIndustryArea.newChallengersDetails.length > 0
-            ? evaluateIndustryArea.newChallengersDetails.map((challenger, idx) => {
+        {/* New Challengers section */}
+        {renderSection(
+          'New Challengers',
+          <div className="space-y-6">
+            {evaluateIndustryArea?.newChallengersDetails && evaluateIndustryArea.newChallengersDetails.length > 0 ? (
+              evaluateIndustryArea.newChallengersDetails.map((challenger, idx) => {
                 const markdown = establishedPlayerToMarkdown(challenger);
                 const renderedMarkdown = markdown && parseMarkdown(markdown);
                 return (
-                  <div key={idx} className="mb-6 p-4 border rounded">
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-medium">{challenger.companyName}</h3>
-                      <PrivateWrapper>
-                        <EvaluateIndustryAreasActions
-                          industryId={industryId}
-                          sectionName={`New Challenger: ${challenger.companyName}`}
-                          headingIndex={headingIndex}
-                          subHeadingIndex={subHeadingIndex}
-                          sectionType={EvaluateIndustryContent.NEW_CHALLENGER}
-                          challengerTicker={challenger.companyTicker}
-                        />
-                      </PrivateWrapper>
+                  <div key={idx} className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+                    <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+                      <div className="flex justify-between items-center">
+                        <h3 className="text-lg font-medium">{challenger.companyName}</h3>
+                        <PrivateWrapper>
+                          <EvaluateIndustryAreasActions
+                            industryId={industryId}
+                            sectionName={`New Challenger: ${challenger.companyName}`}
+                            headingIndex={headingIndex}
+                            subHeadingIndex={subHeadingIndex}
+                            sectionType={EvaluateIndustryContent.NEW_CHALLENGER}
+                            challengerTicker={challenger.companyTicker}
+                          />
+                        </PrivateWrapper>
+                      </div>
                     </div>
-                    <div className="markdown-body" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
+                    <div className="py-6 px-6">
+                      <div className="markdown-body prose max-w-none" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
+                    </div>
                   </div>
                 );
               })
-            : renderPlaceholder()}
-        </div>,
-        EvaluateIndustryContent.NEW_CHALLENGERS
-      )}
-
-      {/* Headwinds & Tailwinds section */}
-      {renderSection(
-        'Headwinds & Tailwinds',
-        <div>
-          <div className="mb-4">
-            <h3 className="text-lg font-medium mb-2">Headwinds</h3>
-            {evaluateIndustryArea?.headwindsAndTailwinds?.headwinds && evaluateIndustryArea.headwindsAndTailwinds.headwinds.length > 0 ? (
-              <ul className="list-disc pl-5 markdown-body">
-                {evaluateIndustryArea.headwindsAndTailwinds.headwinds.map((item, idx) => (
-                  <li key={idx} className="mb-2" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
-                ))}
-              </ul>
             ) : (
-              renderPlaceholder()
+              <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm">{renderPlaceholder()}</div>
             )}
-          </div>
-          <div>
-            <h3 className="text-lg font-medium mb-2">Tailwinds</h3>
-            {evaluateIndustryArea?.headwindsAndTailwinds?.tailwinds && evaluateIndustryArea.headwindsAndTailwinds.tailwinds.length > 0 ? (
-              <ul className="list-disc pl-5 markdown-body">
-                {evaluateIndustryArea.headwindsAndTailwinds.tailwinds.map((item, idx) => (
-                  <li key={idx} className="mb-2" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
-                ))}
-              </ul>
-            ) : (
-              renderPlaceholder()
-            )}
-          </div>
-        </div>,
-        EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS
-      )}
+          </div>,
+          EvaluateIndustryContent.NEW_CHALLENGERS
+        )}
 
-      {/* Tariff Impact by Company Type section */}
-      {renderSection(
-        'Tariff Impact by Company Type',
-        <div>
-          <div className="mb-4">
-            <h3 className="text-lg font-medium mb-2">Positive Impact</h3>
-            {evaluateIndustryArea?.positiveTariffImpactOnCompanyType && evaluateIndustryArea.positiveTariffImpactOnCompanyType.length > 0
-              ? evaluateIndustryArea.positiveTariffImpactOnCompanyType.map((impact, idx) => (
-                  <div key={idx} className="mb-3 p-3 border rounded">
-                    <h4 className="font-medium">{impact.companyType}</h4>
-                    <div className="markdown-body">
-                      <p>
-                        <strong>Impact:</strong> <span dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
-                      </p>
-                      <p>
-                        <strong>Reasoning:</strong> <span dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
-                      </p>
-                    </div>
-                  </div>
-                ))
-              : renderPlaceholder()}
-          </div>
-          <div>
-            <h3 className="text-lg font-medium mb-2">Negative Impact</h3>
-            {evaluateIndustryArea?.negativeTariffImpactOnCompanyType && evaluateIndustryArea.negativeTariffImpactOnCompanyType.length > 0
-              ? evaluateIndustryArea.negativeTariffImpactOnCompanyType.map((impact, idx) => (
-                  <div key={idx} className="mb-3 p-3 border rounded">
-                    <h4 className="font-medium">{impact.companyType}</h4>
-                    <div className="markdown-body">
-                      <p>
-                        <strong>Impact:</strong> <span dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
-                      </p>
-                      <p>
-                        <strong>Reasoning:</strong> <span dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
-                      </p>
-                    </div>
-                  </div>
-                ))
-              : renderPlaceholder()}
-          </div>
-        </div>,
-        EvaluateIndustryContent.TARIFF_IMPACT_BY_COMPANY_TYPE
-      )}
+        {/* Headwinds & Tailwinds section */}
+        {renderSection(
+          'Headwinds & Tailwinds',
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm py-6">
+              <h3 className="text-xl font-medium mb-4 pb-2 border-b border-gray-200 dark:border-gray-700 px-6">Headwinds</h3>
+              <div className="px-6">
+                {evaluateIndustryArea?.headwindsAndTailwinds?.headwinds && evaluateIndustryArea.headwindsAndTailwinds.headwinds.length > 0 ? (
+                  <ul className="list-disc pl-5 markdown-body space-y-3">
+                    {evaluateIndustryArea.headwindsAndTailwinds.headwinds.map((item, idx) => (
+                      <li key={idx} className="text-gray-700 dark:text-gray-300" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
+                    ))}
+                  </ul>
+                ) : (
+                  renderPlaceholder()
+                )}
+              </div>
+            </div>
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm py-6">
+              <h3 className="text-xl font-medium mb-4 pb-2 border-b border-gray-200 dark:border-gray-700 px-6">Tailwinds</h3>
+              <div className="px-6">
+                {evaluateIndustryArea?.headwindsAndTailwinds?.tailwinds && evaluateIndustryArea.headwindsAndTailwinds.tailwinds.length > 0 ? (
+                  <ul className="list-disc pl-5 markdown-body space-y-3">
+                    {evaluateIndustryArea.headwindsAndTailwinds.tailwinds.map((item, idx) => (
+                      <li key={idx} className="text-gray-700 dark:text-gray-300" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
+                    ))}
+                  </ul>
+                ) : (
+                  renderPlaceholder()
+                )}
+              </div>
+            </div>
+          </div>,
+          EvaluateIndustryContent.HEADWINDS_AND_TAILWINDS
+        )}
 
-      {/* Tariff Impact Summary section */}
-      {renderSection(
-        'Tariff Impact Summary',
-        <div className="prose max-w-none markdown-body">
-          {evaluateIndustryArea?.tariffImpactSummary ? (
-            <div dangerouslySetInnerHTML={{ __html: parseMarkdown(evaluateIndustryArea.tariffImpactSummary) }} />
-          ) : (
-            renderPlaceholder()
-          )}
-        </div>,
-        EvaluateIndustryContent.TARIFF_IMPACT_SUMMARY
-      )}
+        {/* Tariff Impact by Company Type section */}
+        {renderSection(
+          'Tariff Impact by Company Type',
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm py-6">
+              <h3 className="text-xl font-medium mb-4 pb-2 border-b border-gray-200 dark:border-gray-700 px-6">Positive Impact</h3>
+              <div className="px-6">
+                {evaluateIndustryArea?.positiveTariffImpactOnCompanyType && evaluateIndustryArea.positiveTariffImpactOnCompanyType.length > 0 ? (
+                  <div className="space-y-4">
+                    {evaluateIndustryArea.positiveTariffImpactOnCompanyType.map((impact, idx) => (
+                      <div key={idx} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                        <h4 className="font-medium text-lg mb-2">{impact.companyType}</h4>
+                        <div className="markdown-body space-y-3">
+                          <div>
+                            <strong className="text-gray-700 dark:text-gray-300">Impact:</strong>
+                            <div className="mt-1" dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
+                          </div>
+                          <div>
+                            <strong className="text-gray-700 dark:text-gray-300">Reasoning:</strong>
+                            <div className="mt-1" dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  renderPlaceholder()
+                )}
+              </div>
+            </div>
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm py-6">
+              <h3 className="text-xl font-medium mb-4 pb-2 border-b border-gray-200 dark:border-gray-700 px-6">Negative Impact</h3>
+              <div className="px-6">
+                {evaluateIndustryArea?.negativeTariffImpactOnCompanyType && evaluateIndustryArea.negativeTariffImpactOnCompanyType.length > 0 ? (
+                  <div className="space-y-4">
+                    {evaluateIndustryArea.negativeTariffImpactOnCompanyType.map((impact, idx) => (
+                      <div key={idx} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                        <h4 className="font-medium text-lg mb-2">{impact.companyType}</h4>
+                        <div className="markdown-body space-y-3">
+                          <div>
+                            <strong className="text-gray-700 dark:text-gray-300">Impact:</strong>
+                            <div className="mt-1" dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
+                          </div>
+                          <div>
+                            <strong className="text-gray-700 dark:text-gray-300">Reasoning:</strong>
+                            <div className="mt-1" dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  renderPlaceholder()
+                )}
+              </div>
+            </div>
+          </div>,
+          EvaluateIndustryContent.TARIFF_IMPACT_BY_COMPANY_TYPE
+        )}
+
+        {/* Tariff Impact Summary section */}
+        {renderSection(
+          'Tariff Impact Summary',
+          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm py-6">
+            <div className="prose max-w-none markdown-body px-6">
+              {evaluateIndustryArea?.tariffImpactSummary ? (
+                <div dangerouslySetInnerHTML={{ __html: parseMarkdown(evaluateIndustryArea.tariffImpactSummary) }} />
+              ) : (
+                renderPlaceholder()
+              )}
+            </div>
+          </div>,
+          EvaluateIndustryContent.TARIFF_IMPACT_SUMMARY
+        )}
+      </div>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between items-center mt-12 pt-8 border-t">
+      <div className="flex justify-between items-center mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
         {(() => {
           const navigation = getPreviousNextIndices(industryId, headingIndex, subHeadingIndex);
 
