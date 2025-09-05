@@ -213,102 +213,66 @@ export default function ViewExerciseModal({
           // Edit Mode
           <div className="space-y-6">
             {/* Short Description Section */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-white/30 shadow-xl">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-2 rounded-xl">
-                  <Lightbulb className="h-5 w-5 text-white" />
-                </div>
-                <h4 className="text-lg font-semibold text-gray-900">Exercise Overview</h4>
-              </div>
-              <div className="space-y-2">
-                <Textarea
-                  value={formData.shortDescription}
-                  onChange={(e) => handleInputChange('shortDescription', e.target.value)}
-                  placeholder="Enter exercise overview"
-                  rows={4}
-                  className="w-full"
-                />
-              </div>
-            </div>
-
-            {/* AI Prompt Hint Section */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-white/30 shadow-xl">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="bg-gradient-to-br from-yellow-500 to-orange-600 p-2 rounded-xl">
-                  <Sparkles className="h-5 w-5 text-white" />
-                </div>
-                <h4 className="text-lg font-semibold text-gray-900">AI Prompt Hint</h4>
-              </div>
-              <div className="space-y-2">
-                <MarkdownEditor
-                  objectId={`exercise-prompt-hint-${exercise.id}`}
-                  modelValue={formData.promptHint}
-                  onUpdate={(value) => handleInputChange('promptHint', value)}
-                  placeholder="Enter AI prompt hint using markdown..."
-                  maxHeight={200}
-                />
-              </div>
+            <div className="space-y-2">
+              <label className="block text-md font-semibold text-gray-900">Short Description</label>
+              <Textarea
+                value={formData.shortDescription}
+                onChange={(e) => handleInputChange('shortDescription', e.target.value)}
+                placeholder="Enter exercise overview"
+                rows={4}
+                className="w-full"
+              />
             </div>
 
             {/* Exercise Details Section */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-white/30 shadow-xl">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-2 rounded-xl">
-                  <FileText className="h-5 w-5 text-white" />
-                </div>
-                <h4 className="text-lg font-semibold text-gray-900">Detailed Instructions</h4>
-              </div>
-              <div className="space-y-2">
-                <MarkdownEditor
-                  objectId={`exercise-details-${exercise.id}`}
-                  modelValue={formData.details}
-                  onUpdate={(value) => handleInputChange('details', value)}
-                  placeholder="Enter detailed exercise instructions in markdown"
-                  maxHeight={400}
-                />
-              </div>
+            <div className="space-y-2">
+              <label className="block text-md font-semibold text-gray-900">Details</label>
+              <MarkdownEditor
+                objectId={`exercise-details-${exercise.id}`}
+                modelValue={formData.details}
+                onUpdate={(value) => handleInputChange('details', value)}
+                placeholder="Enter detailed exercise instructions in markdown"
+                maxHeight={400}
+              />
+            </div>
+
+            {/* AI Prompt Hint Section */}
+            <div className="space-y-2">
+              <label className="block text-md font-semibold text-gray-900">AI Prompt Hint</label>
+              <MarkdownEditor
+                objectId={`exercise-prompt-hint-${exercise.id}`}
+                modelValue={formData.promptHint}
+                onUpdate={(value) => handleInputChange('promptHint', value)}
+                placeholder="Enter AI prompt hint using markdown..."
+                maxHeight={200}
+              />
             </div>
           </div>
         ) : (
           // View Mode
           <div className="space-y-6">
             {/* Short Description Section */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-white/30 shadow-xl">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-2 rounded-xl">
-                  <Lightbulb className="h-5 w-5 text-white" />
+            <div className="bg-white rounded-lg pt-2">
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">Short Description:</h4>
+                  <p className="text-gray-700 text-base leading-relaxed">{exercise.shortDescription}</p>
                 </div>
-                <h4 className="text-lg font-semibold text-gray-900">Exercise Overview</h4>
-              </div>
-              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200/50">
-                <p className="text-blue-900 text-base leading-relaxed">{exercise.shortDescription}</p>
-              </div>
-            </div>
 
-            {/* AI Prompt Hint Section (if exists) */}
-            {exercise.promptHint && (
-              <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-white/30 shadow-xl">
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="bg-gradient-to-br from-yellow-500 to-orange-600 p-2 rounded-xl">
-                    <Sparkles className="h-5 w-5 text-white" />
+                {/* Exercise Details Section */}
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">Details:</h4>
+                  <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.details) }} />
+                </div>
+
+                {/* AI Prompt Hint Section (if exists) */}
+                {exercise.promptHint && (
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">AI Prompt Hint:</h4>
+                    <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.promptHint) }} />
                   </div>
-                  <h4 className="text-lg font-semibold text-gray-900">AI Prompt Hint</h4>
-                </div>
-                <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-200/50">
-                  <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.promptHint) }} />
-                </div>
+                )}
               </div>
-            )}
-
-            {/* Exercise Details Section */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-white/30 shadow-xl">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-2 rounded-xl">
-                  <FileText className="h-5 w-5 text-white" />
-                </div>
-                <h4 className="text-lg font-semibold text-gray-900">Detailed Instructions</h4>
-              </div>
-              <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.details) }} />
             </div>
           </div>
         )}

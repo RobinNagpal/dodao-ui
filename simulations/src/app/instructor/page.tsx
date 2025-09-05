@@ -5,21 +5,26 @@ import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import InstructorManageStudentsModal from '@/components/instructor/InstructorManageStudentsModal';
 import type { CaseStudy } from '@/types';
-import { getSubjectDisplayName } from '@/utils/subject-utils';
+import type { BusinessSubject } from '@/types';
+import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
 import { BookOpen, Users, GraduationCap, Brain } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
 import InstructorLoading from '@/components/instructor/InstructorLoading';
 
 export default function InstructorDashboard() {
   const [userEmail, setUserEmail] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
   const [showStudentManagement, setShowStudentManagement] = useState(false);
+  const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
+  const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudy[]>([]);
   const router = useRouter();
 
   // API hook to fetch case studies
   const {
-    data: assignedCaseStudies = [],
+    data: assignedCaseStudies,
     loading: loadingCaseStudies,
     reFetchData: refetchCaseStudies,
   } = useFetchData<CaseStudy[]>(
@@ -39,8 +44,18 @@ export default function InstructorDashboard() {
     }
 
     setUserEmail(email);
-    setIsLoading(false);
   }, [router]);
+
+  // Filter case studies based on selected subject
+  useEffect(() => {
+    if (assignedCaseStudies) {
+      if (selectedSubject === 'ALL') {
+        setFilteredCaseStudies(assignedCaseStudies);
+      } else {
+        setFilteredCaseStudies(assignedCaseStudies.filter((cs) => cs.subject === selectedSubject));
+      }
+    }
+  }, [selectedSubject, assignedCaseStudies]);
 
   const handleLogout = () => {
     localStorage.removeItem('user_type');
@@ -68,7 +83,21 @@ export default function InstructorDashboard() {
     return caseStudy.enrollments?.reduce((total, enrollment) => total + (enrollment.students?.length || 0), 0) || 0;
   };
 
-  if (isLoading || loadingCaseStudies) {
+  const getAssignedSubjectsWithCounts = () => {
+    if (!assignedCaseStudies) return [];
+
+    const subjects: BusinessSubject[] = ['MARKETING', 'FINANCE', 'HR', 'OPERATIONS', 'ECONOMICS'];
+    return subjects
+      .map((subject) => ({
+        subject,
+        count: assignedCaseStudies.filter((cs) => cs.subject === subject).length,
+      }))
+      .filter((item) => item.count > 0);
+  };
+
+  const assignedSubjectsWithCounts = getAssignedSubjectsWithCounts();
+
+  if (loadingCaseStudies || assignedCaseStudies === undefined) {
     return <InstructorLoading text="Loading Dashboard" subtitle="Preparing your instructor console..." variant="enhanced" />;
   }
 
@@ -89,84 +118,179 @@ export default function InstructorDashboard() {
       />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-3 flex items-center">
-            <Brain className="h-6 w-6 text-purple-600 mr-2" />
-            Your Assigned Case Studies
-          </h2>
-          <p className="text-gray-600 text-lg leading-relaxed">
-            {assignedCaseStudies.length === 0
-              ? "You don't have any case studies assigned yet. Contact admin to get case studies assigned to you."
-              : 'Manage and view the case studies assigned to you. You can also manage student enrollments and track progress.'}
-          </p>
-        </div>
-
-        {assignedCaseStudies.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-12 border border-white/30 shadow-xl max-w-md mx-auto">
-              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                <BookOpen className="h-10 w-10 text-purple-600" />
-              </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">No Case Studies Assigned</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">You don’t have any case studies assigned to you yet.</p>
-              <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-4 border border-purple-200">
-                <p className="text-sm text-purple-700 font-medium">Contact the admin to get case studies assigned to your instructor account.</p>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {assignedCaseStudies.map((caseStudy) => (
-              <div
-                key={caseStudy.id}
-                className="group bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-3">
-                      <span className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                        {getSubjectDisplayName(caseStudy.subject)}
-                      </span>
-                      <span className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full">Assigned</span>
+        <div className="flex gap-8">
+          {assignedCaseStudies && assignedCaseStudies.length > 0 && (
+            <div className="w-80 flex-shrink-0">
+              <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <BookOpen className="h-4 w-4 text-purple-600" />
+                    <span>Subject Areas</span>
+                  </CardTitle>
+                  <CardDescription>Filter by Subject</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button
+                    onClick={() => setSelectedSubject('ALL')}
+                    variant={selectedSubject === 'ALL' ? 'default' : 'ghost'}
+                    className={`w-full justify-between h-12 ${
+                      selectedSubject === 'ALL' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg' : 'hover:bg-purple-50'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-current rounded-full"></div>
+                      <span>All Subjects</span>
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">{caseStudy.title}</h3>
-                  </div>
-                </div>
+                    <Badge variant="secondary" className="bg-white/20 text-current">
+                      {assignedCaseStudies?.length || 0}
+                    </Badge>
+                  </Button>
 
-                <p className="text-gray-600 mb-6 leading-relaxed">{caseStudy.shortDescription}</p>
+                  {assignedSubjectsWithCounts.map(({ subject, count }) => (
+                    <Button
+                      key={subject}
+                      onClick={() => setSelectedSubject(subject)}
+                      variant={selectedSubject === subject ? 'default' : 'ghost'}
+                      className={`w-full justify-between h-12 ${
+                        selectedSubject === subject ? `bg-gradient-to-r ${getSubjectColor(subject)} text-white shadow-lg` : 'hover:bg-gray-50'
+                      }`}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span className="text-lg">{getSubjectIcon(subject)}</span>
+                        <span className="font-medium">{getSubjectDisplayName(subject)}</span>
+                      </div>
+                      <Badge variant="secondary" className="bg-white/20 text-current">
+                        {count}
+                      </Badge>
+                    </Button>
+                  ))}
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
-                <div className="flex items-center justify-between text-sm mb-6 bg-gradient-to-r from-gray-50 to-purple-50 rounded-xl p-3">
-                  <div className="flex items-center space-x-1 text-gray-600">
-                    <BookOpen className="h-4 w-4 text-purple-500" />
-                    <span className="font-medium">{caseStudy.modules?.length || 0} modules</span>
-                  </div>
-                  <div className="flex items-center space-x-1 text-gray-600">
-                    <Users className="h-4 w-4 text-blue-500" />
-                    <span className="font-medium">{getEnrollmentCount(caseStudy)} students</span>
-                  </div>
-                </div>
+          <div className="flex-1">
+            <div className="mb-8">
+              <h2 className="text-[28px] font-bold text-gray-900 mb-2">
+                {selectedSubject === 'ALL' ? 'Assigned Case Studies' : `${getSubjectDisplayName(selectedSubject as BusinessSubject)} Studies`}
+              </h2>
+              <p className="text-gray-600 text-[17px]">
+                {assignedCaseStudies.length === 0
+                  ? "You don't have any case studies assigned yet. Contact admin to get case studies assigned to you."
+                  : 'View your assigned case studies, track student progress, and manage enrollments.'}
+              </p>
+            </div>
 
-                <div className="space-y-3">
-                  <button
-                    onClick={() => handleViewCaseStudy(caseStudy)}
-                    className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-4 rounded-xl hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center space-x-2 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            {assignedCaseStudies.length === 0 ? (
+              <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
+                <CardContent className="text-center py-16">
+                  <div className="relative mb-6">
+                    <div className="bg-gradient-to-br from-purple-100 to-indigo-100 w-24 h-24 rounded-full flex items-center justify-center mx-auto">
+                      <BookOpen className="h-12 w-12 text-purple-600" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 bg-gradient-to-r from-cyan-400 to-purple-500 p-2 rounded-full">
+                      <GraduationCap className="h-4 w-4 text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">No Case Studies Assigned</h3>
+                  <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                    You don’t have any case studies assigned to you yet. Contact the admin to get case studies assigned to your instructor account.
+                  </p>
+                  <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
+                    <div className="flex items-center space-x-1">
+                      <Brain className="h-4 w-4" />
+                      <span>AI-Powered</span>
+                    </div>
+                    <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                    <div className="flex items-center space-x-1">
+                      <Users className="h-4 w-4" />
+                      <span>Student Management</span>
+                    </div>
+                    <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                    <div className="flex items-center space-x-1">
+                      <GraduationCap className="h-4 w-4" />
+                      <span>Instructor-Led</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {filteredCaseStudies.map((caseStudy) => (
+                  <Card
+                    key={caseStudy.id}
+                    className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] group"
                   >
-                    <BookOpen className="h-4 w-4" />
-                    <span>View Case Study</span>
-                  </button>
+                    <CardHeader className="pb-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center space-x-2">
+                          <Badge className={`bg-gradient-to-r ${getSubjectColor(caseStudy.subject)} text-white border-0`}>
+                            <span className="mr-1">{getSubjectIcon(caseStudy.subject)}</span>
+                            {getSubjectDisplayName(caseStudy.subject)}
+                          </Badge>
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-800 border-purple-200">
+                            <GraduationCap className="h-3 w-3 mr-1" />
+                            Assigned
+                          </Badge>
+                        </div>
+                      </div>
+                      <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors">{caseStudy.title}</CardTitle>
+                      <CardDescription className="text-gray-600 line-clamp-2">{caseStudy.shortDescription}</CardDescription>
+                    </CardHeader>
 
-                  <button
-                    onClick={() => handleManageStudents(caseStudy)}
-                    className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-4 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 flex items-center justify-center space-x-2 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                  >
-                    <Users className="h-4 w-4" />
-                    <span>Manage Students</span>
-                  </button>
-                </div>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between text-sm bg-gradient-to-r from-gray-50 to-purple-50 rounded-xl p-3">
+                        <div className="flex items-center space-x-1 text-gray-600">
+                          <BookOpen className="h-4 w-4 text-purple-500" />
+                          <span className="font-medium">{caseStudy.modules?.length || 0} modules</span>
+                        </div>
+                        <div className="flex items-center space-x-1 text-gray-600">
+                          <Users className="h-4 w-4 text-blue-500" />
+                          <span className="font-medium">{getEnrollmentCount(caseStudy)} students</span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <Button
+                          onClick={() => handleViewCaseStudy(caseStudy)}
+                          className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-lg shadow-purple-500/25 transition-all duration-200 transform hover:scale-[1.02]"
+                        >
+                          <div className="flex items-center justify-center space-x-2">
+                            <BookOpen className="h-4 w-4" />
+                            <span>View Case Study</span>
+                          </div>
+                        </Button>
+
+                        <Button
+                          onClick={() => handleManageStudents(caseStudy)}
+                          variant="outline"
+                          className="w-full border-green-200 text-green-700 hover:bg-green-50 hover:border-green-300 transition-all duration-200"
+                        >
+                          <div className="flex items-center justify-center space-x-2">
+                            <Users className="h-4 w-4" />
+                            <span>Manage Students</span>
+                          </div>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
-            ))}
+            )}
+
+            {assignedCaseStudies && assignedCaseStudies.length > 0 && filteredCaseStudies.length === 0 && selectedSubject !== 'ALL' && (
+              <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
+                <CardContent className="text-center py-16">
+                  <div className="bg-gradient-to-br from-gray-100 to-gray-200 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span className="text-3xl">{getSubjectIcon(selectedSubject as BusinessSubject)}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">No {getSubjectDisplayName(selectedSubject as BusinessSubject)} Studies</h3>
+                  <p className="text-gray-600">You are not assigned any {getSubjectDisplayName(selectedSubject as BusinessSubject)} case studies yet.</p>
+                </CardContent>
+              </Card>
+            )}
           </div>
-        )}
+        </div>
       </div>
 
       {/* Student Management Modal */}

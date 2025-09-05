@@ -19,7 +19,7 @@ export default function ViewAiResponseModal({ open, onClose, aiResponse }: AiRes
         <div className="text-center">
           <span className="text-2xl font-bold flex items-center justify-center">
             <Brain className="h-6 w-6 mr-2 text-purple-600" />
-            AI Response
+            AI Analysis
           </span>
         </div>
       }

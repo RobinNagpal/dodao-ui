@@ -180,31 +180,6 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
     return <InstructorLoading text="Loading Student Details" subtitle="Preparing detailed analysis..." variant="enhanced" />;
   }
 
-  // Show loading overlay when fetching attempt details
-  const showAttemptLoading = showAttemptModal && loadingAttemptDetails;
-
-  if (!studentDetails) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-12 border border-white/30 shadow-xl max-w-md mx-auto">
-            <div className="bg-gradient-to-br from-red-100 to-pink-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
-              <User className="h-8 w-8 text-red-600" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">Student Details Not Found</h3>
-            <p className="text-gray-600 mb-6">The student details you’re looking for don’t exist or you don’t have access.</p>
-            <button
-              onClick={() => router.push(`/instructor/case-study/${caseStudyId}`)}
-              className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              Back to Case Study
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -214,8 +189,8 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
       </div>
 
       <InstructorNavbar
-        title={`${studentDetails.student.assignedStudentId} - Student Details`}
-        subtitle={studentDetails.caseStudy.title}
+        title={studentDetails ? `${studentDetails.student.assignedStudentId} - Student Details` : 'Student Not Found'}
+        subtitle={studentDetails?.caseStudy.title}
         userEmail={userEmail}
         onLogout={handleLogout}
         icon={<User className="h-8 w-8 text-white" />}
@@ -228,16 +203,16 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">
               <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full w-12 h-12 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">{studentDetails.student.assignedStudentId.charAt(0).toUpperCase()}</span>
+                <span className="text-white font-bold text-lg">{studentDetails?.student.assignedStudentId.charAt(0).toUpperCase()}</span>
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900 flex items-center">
                   <Mail className="h-4 w-4 text-purple-600 mr-2" />
-                  {studentDetails.student.assignedStudentId}
+                  {studentDetails?.student.assignedStudentId}
                 </h1>
                 <p className="flex items-center">
                   <Calendar className="h-4 w-4 mr-1" />
-                  Enrolled: {new Date(studentDetails.student.createdAt).toLocaleDateString()}
+                  Enrolled: {new Date(studentDetails?.student.createdAt ?? '').toLocaleDateString()}
                 </p>
               </div>
             </div>
@@ -258,12 +233,12 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
                     strokeWidth="3"
                     fill="transparent"
                     strokeLinecap="round"
-                    strokeDasharray={`${studentDetails.statistics.completionPercentage}, 100`}
+                    strokeDasharray={`${studentDetails?.statistics.completionPercentage}, 100`}
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-sm font-bold text-gray-900">{studentDetails.statistics.completionPercentage}%</span>
+                  <span className="text-sm font-bold text-gray-900">{studentDetails?.statistics.completionPercentage}%</span>
                 </div>
               </div>
             </div>
@@ -275,8 +250,8 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
                 <CheckCircle className="h-4 w-4 text-green-600" />
                 <span className="text-sm font-semibold text-green-800">Completed Exercises</span>
               </div>
-              <p className="text-2xl font-bold text-green-900 mb-1">{studentDetails.statistics.attemptedExercises}</p>
-              <p className="text-xs text-green-600">out of {studentDetails.statistics.totalExercises} total</p>
+              <p className="text-2xl font-bold text-green-900 mb-1">{studentDetails?.statistics.attemptedExercises}</p>
+              <p className="text-xs text-green-600">out of {studentDetails?.statistics.totalExercises} total</p>
             </div>
 
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
@@ -284,7 +259,7 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
                 <TrendingUp className="h-4 w-4 text-blue-600" />
                 <span className="text-sm font-semibold text-blue-800">Total Attempts</span>
               </div>
-              <p className="text-2xl font-bold text-blue-900 mb-1">{studentDetails.statistics.totalAttempts}</p>
+              <p className="text-2xl font-bold text-blue-900 mb-1">{studentDetails?.statistics.totalAttempts}</p>
               <p className="text-xs text-blue-600">across all exercises</p>
             </div>
 
@@ -293,7 +268,7 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
                 <TrendingUp className="h-4 w-4 text-purple-600" />
                 <span className="text-sm font-semibold text-purple-800">Progress Rate</span>
               </div>
-              <p className="text-2xl font-bold text-purple-900 mb-1">{studentDetails.statistics.completionPercentage}%</p>
+              <p className="text-2xl font-bold text-purple-900 mb-1">{studentDetails?.statistics.completionPercentage}%</p>
               <p className="text-xs text-purple-600">completion</p>
             </div>
           </div>
@@ -308,7 +283,7 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
           </h2>
 
           <div className="space-y-6">
-            {studentDetails.modules.map((module) => (
+            {studentDetails?.modules.map((module) => (
               <div key={module.id} className="border border-gray-200 rounded-2xl overflow-hidden">
                 <button
                   onClick={() => toggleModule(module.id)}

@@ -10,6 +10,7 @@ import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare,
 import { parseMarkdown } from '@/utils/parse-markdown';
 import AttemptDetailModal from '@/components/student/AttemptDetailModal';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import BackButton from '@/components/navigation/BackButton';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import StudentProgressStepper, { ProgressData } from '@/components/student/StudentProgressStepper';
@@ -87,6 +88,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const [showAiResponseModal, setShowAiResponseModal] = useState(false);
   const [currentAiResponse, setCurrentAiResponse] = useState<string>('');
   const [showRetryPrompt, setShowRetryPrompt] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -199,6 +201,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       if (result) {
         setPrompt('');
         setShowRetryPrompt(false);
+        setShowConfirmationModal(false);
 
         // Update local attempts with the new attempt instead of refetching
         if (currentAttempts) {
@@ -215,6 +218,17 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     } catch (error) {
       console.error('Error submitting prompt:', error);
     }
+  };
+
+  const handleSubmitClick = () => {
+    if (!prompt.trim() || submittingAttempt || (currentAttempts && currentAttempts.length >= 3)) {
+      return;
+    }
+    setShowConfirmationModal(true);
+  };
+
+  const handleConfirmSubmit = () => {
+    handleSubmitPrompt();
   };
 
   const handleMoveToNext = () => {
@@ -522,7 +536,7 @@ Details: ${contextData.module.details}
                     </div>
 
                     <button
-                      onClick={handleSubmitPrompt}
+                      onClick={handleSubmitClick}
                       disabled={!prompt.trim() || submittingAttempt || !canSubmitNewAttempt()}
                       className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
@@ -655,6 +669,16 @@ Details: ${contextData.module.details}
       <AttemptDetailModal isOpen={isAttemptModalOpen} onClose={closeAttemptModal} attempt={selectedAttempt} />
 
       <ViewAiResponseModal open={showAiResponseModal} onClose={() => setShowAiResponseModal(false)} aiResponse={currentAiResponse} />
+
+      <ConfirmationModal
+        open={showConfirmationModal}
+        onClose={() => setShowConfirmationModal(false)}
+        onConfirm={handleConfirmSubmit}
+        confirming={submittingAttempt}
+        title="Submit Prompt Confirmation"
+        confirmationText="Have you added all the necessary context (Case Study and Module details) to your prompt? Adding context helps the AI provide more relevant and accurate responses for this exercise."
+        askForTextInput={false}
+      />
     </div>
   );
 }

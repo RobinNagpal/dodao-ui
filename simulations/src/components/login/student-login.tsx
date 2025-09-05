@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { BookOpen, Users, GraduationCap, Sparkles, Brain, Target } from 'lucide-react';
+import { BookOpen, Users, GraduationCap, Sparkles, Brain, Target, Bot, BotIcon } from 'lucide-react';
 
 interface StudentLoginProps {
   onLogin: (email: string) => void;
@@ -46,7 +46,7 @@ export function StudentLogin({ onLogin, onSwitchToInstructor, errorMessage }: St
           <div className="flex items-center justify-center mb-6">
             <div className="relative">
               <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-4 rounded-2xl shadow-lg">
-                <Brain className="h-8 w-8 text-white" />
+                <GraduationCap className="h-8 w-8 text-white" />
               </div>
               <div className="absolute -top-1 -right-1 bg-gradient-to-r from-cyan-400 to-blue-500 p-1 rounded-full">
                 <Sparkles className="h-4 w-4 text-white" />
@@ -54,7 +54,7 @@ export function StudentLogin({ onLogin, onSwitchToInstructor, errorMessage }: St
             </div>
           </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-800 bg-clip-text text-transparent mb-3">GenAI Simulations</h1>
-          <p className="text-gray-600 text-base">Master business concepts through intelligent simulations</p>
+          <p className="text-gray-600 text-base">Learn business concepts through case studies</p>
         </div>
 
         <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-2xl shadow-blue-500/10">
@@ -62,11 +62,11 @@ export function StudentLogin({ onLogin, onSwitchToInstructor, errorMessage }: St
             <div className="flex items-center justify-center space-x-2">
               <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
               <CardTitle className="text-2xl font-bold text-center bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                Student Portal
+                Student Login
               </CardTitle>
               <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse delay-300"></div>
             </div>
-            <CardDescription className="text-center text-gray-600">Access your personalized learning journey</CardDescription>
+            <CardDescription className="text-center text-gray-600">Sign in to start your GenAI simulation journey</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -135,9 +135,9 @@ export function StudentLogin({ onLogin, onSwitchToInstructor, errorMessage }: St
           </div>
           <div className="flex flex-col items-center space-y-3 group">
             <div className="bg-gradient-to-br from-cyan-100 to-blue-100 p-3 rounded-xl group-hover:scale-110 transition-transform duration-200">
-              <Brain className="h-6 w-6 text-cyan-600" />
+              <BotIcon className="h-6 w-6 text-cyan-600" />
             </div>
-            <span className="text-sm text-gray-600 text-center font-medium">AI-Powered Learning</span>
+            <span className="text-sm text-gray-600 text-center font-medium">AI-Guided Learning</span>
           </div>
           <div className="flex flex-col items-center space-y-3 group">
             <div className="bg-gradient-to-br from-indigo-100 to-purple-100 p-3 rounded-xl group-hover:scale-110 transition-transform duration-200">
