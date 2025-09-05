@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 interface InstructorNavbarProps {
   title: string;
   subtitle?: string;
-  userEmail: string;
+  userEmail?: string;
   onLogout: () => void;
   icon?: React.ReactNode;
   iconColor?: string;
@@ -24,22 +24,19 @@ export default function InstructorNavbar({ title, subtitle, userEmail, onLogout,
               {subtitle && (
                 <p className="text-gray-600 flex items-center space-x-1">
                   <Sparkles className="h-4 w-4 text-yellow-500" />
-                  <span>{subtitle}</span>
+                  <span>{userEmail ? `${subtitle}, ${userEmail}` : subtitle}</span>
                 </p>
               )}
             </div>
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="text-sm text-gray-500">{userEmail}</div>
-            <Button
-              onClick={onLogout}
-              variant="outline"
-              className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all duration-200 bg-transparent"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
-          </div>
+          <Button
+            onClick={onLogout}
+            variant="outline"
+            className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all duration-200 bg-transparent"
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Logout
+          </Button>
         </div>
       </div>
     </header>

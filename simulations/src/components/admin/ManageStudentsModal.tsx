@@ -121,14 +121,14 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-hidden bg-white/95 backdrop-blur-md border border-emerald-100/50 shadow-2xl">
-        <DialogHeader className="bg-gradient-to-r from-emerald-50 to-green-50 -m-6 mb-4 p-6 rounded-t-lg border-b border-emerald-100">
+        <DialogHeader className="bg-gradient-to-r from-emerald-50 to-green-50 -m-6 mb-2 p-6 rounded-t-lg border-b border-emerald-100">
           <DialogTitle className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent flex items-center space-x-2">
             <Users className="h-5 w-5 text-emerald-500" />
             <span>Manage Students - {enrollmentTitle}</span>
           </DialogTitle>
         </DialogHeader>
 
-        <div className="overflow-y-auto max-h-[60vh] p-4">
+        <div className="overflow-y-auto max-h-[60vh] pb-4">
           <div className="mb-8 bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-100">
             <h4 className="text-lg font-bold text-emerald-700 mb-4 flex items-center space-x-2">
               <Sparkles className="h-5 w-5" />

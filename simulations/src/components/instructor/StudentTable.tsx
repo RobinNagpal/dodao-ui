@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { Eye, Trash2, Check, Minus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import AttemptDetailModal from '@/components/student/AttemptDetailModal';
+import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
+import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import type { ExerciseAttempt } from '@prisma/client';
 import type { StudentTableData, ModuleTableData } from '@/types';
 
@@ -14,6 +15,7 @@ interface StudentTableProps {
   onViewStudentDetails: (studentId: string) => void;
   onClearStudentAttempts: (studentId: string, studentEmail: string) => void;
   onDeleteAttempt: (attemptId: string, studentId: string, studentEmail: string, exerciseTitle: string) => void;
+  onDeleteFinalSummary?: (finalSummaryId: string, studentId: string, studentEmail: string) => void;
   clearingAttempts: boolean;
   deletingAttempt: boolean;
 }
@@ -24,11 +26,17 @@ export default function StudentTable({
   onViewStudentDetails,
   onClearStudentAttempts,
   onDeleteAttempt,
+  onDeleteFinalSummary,
   clearingAttempts,
   deletingAttempt,
 }: StudentTableProps) {
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
   const [showAttemptModal, setShowAttemptModal] = useState(false);
+  const [selectedFinalSummary, setSelectedFinalSummary] = useState<{
+    id: string;
+    response: string;
+  } | null>(null);
+  const [showFinalSummaryModal, setShowFinalSummaryModal] = useState(false);
 
   // API hook to fetch attempt details
   const { data: attemptDetails, loading: loadingAttemptDetails } = useFetchData<ExerciseAttempt>(
@@ -39,6 +47,11 @@ export default function StudentTable({
 
   const handleAttemptClick = (attemptId: string) => {
     setSelectedAttemptId(attemptId);
+  };
+
+  const handleFinalSummaryClick = (finalSummaryId: string, response: string) => {
+    setSelectedFinalSummary({ id: finalSummaryId, response });
+    setShowFinalSummaryModal(true);
   };
 
   // Effect to show modal when attempt details are loaded
@@ -67,7 +80,7 @@ export default function StudentTable({
       {/* Table Header */}
       <div className="p-6 border-b border-gray-200">
         <h3 className="text-xl font-semibold text-gray-900 mb-2">Student Progress Overview</h3>
-        <p className="text-gray-600">Click on attempt numbers to view details</p>
+        <p className="text-gray-600">Click on attempt numbers and final report to view details</p>
       </div>
 
       {/* Table Container with horizontal scroll */}
@@ -92,6 +105,11 @@ export default function StudentTable({
                 </th>
               ))}
 
+              {/* Final Summary Column */}
+              <th className="px-2 py-4 text-center text-sm font-semibold text-gray-900 border-l border-gray-200 min-w-[100px]">
+                <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-lg px-3 py-1">Report</div>
+              </th>
+
               {/* Actions Column */}
               <th className="px-4 py-4 text-center text-sm font-semibold text-gray-900 border-l border-gray-200 min-w-[200px]">Actions</th>
             </tr>
@@ -110,6 +128,13 @@ export default function StudentTable({
                 ))
               )}
 
+              {/* Final Summary Sub-header */}
+              <th className="px-1 py-2 text-center text-xs font-medium text-gray-700 border-l border-gray-100 min-w-[100px]">
+                <div className="truncate" title="Final Summary">
+                  Final Report
+                </div>
+              </th>
+
               <th className="px-4 py-2 border-l border-gray-200"></th>
             </tr>
           </thead>
@@ -121,9 +146,6 @@ export default function StudentTable({
                 {/* Student Email */}
                 <td className="px-4 py-4 text-sm font-medium text-gray-900 sticky left-0 bg-white/80 backdrop-blur-sm z-10 border-r border-gray-200">
                   <div className="flex items-center space-x-3">
-                    <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full w-8 h-8 flex items-center justify-center">
-                      <span className="text-white font-bold text-xs">{student.assignedStudentId.charAt(0).toUpperCase()}</span>
-                    </div>
                     <div>
                       <div className="font-medium text-gray-900 truncate" title={student.assignedStudentId}>
                         {student.assignedStudentId}
@@ -191,6 +213,45 @@ export default function StudentTable({
                   })
                 )}
 
+                {/* Final Summary Column */}
+                <td className="px-1 py-2 text-center border-l border-gray-100">
+                  <div className="flex flex-col items-center space-y-1">
+                    {/* Completion Status Icon */}
+                    <div className="mb-1">
+                      {student.finalSummary?.hasContent ? <Check className="h-4 w-4 text-green-600" /> : <Minus className="h-4 w-4 text-gray-400" />}
+                    </div>
+
+                    {/* Final Summary Actions */}
+                    {student.finalSummary && (
+                      <div className="flex flex-col items-center space-y-1">
+                        {/* View Final Summary Button */}
+                        {student.finalSummary.hasContent && (
+                          <div className="flex flex-col items-center space-y-1">
+                            <button
+                              onClick={() => handleFinalSummaryClick(student.finalSummary!.id, student.finalSummary!.response || '')}
+                              className="w-6 h-6 rounded-full text-xs font-bold transition-all duration-200 hover:scale-110 bg-green-100 text-green-800 hover:bg-green-200"
+                              title={`View Final Summary - ${student.finalSummary.status || 'completed'}`}
+                            >
+                              ✓
+                            </button>
+
+                            {/* Delete Icon for Final Summary */}
+                            {onDeleteFinalSummary && (
+                              <button
+                                onClick={() => onDeleteFinalSummary(student.finalSummary!.id, student.id, student.assignedStudentId)}
+                                className="w-6 h-6 text-red-600 hover:text-red-800 transition-all duration-200 hover:scale-110 flex items-center justify-center"
+                                title="Delete final summary"
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </td>
+
                 {/* Actions */}
                 <td className="px-4 py-4 text-center border-l border-gray-200">
                   <div className="flex items-center justify-center space-x-2">
@@ -229,6 +290,18 @@ export default function StudentTable({
         }}
         attempt={attemptDetails || null}
       />
+
+      {/* Final Summary Modal */}
+      {selectedFinalSummary && (
+        <ViewAiResponseModal
+          open={showFinalSummaryModal}
+          onClose={() => {
+            setShowFinalSummaryModal(false);
+            setSelectedFinalSummary(null);
+          }}
+          aiResponse={selectedFinalSummary.response || 'No summary content available.'}
+        />
+      )}
     </div>
   );
 }

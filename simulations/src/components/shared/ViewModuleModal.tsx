@@ -197,74 +197,52 @@ export default function ViewModuleModal({
             // Edit Mode
             <div className="space-y-6">
               {/* Short Description Section */}
-              <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-white/30 shadow-xl">
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-2 rounded-xl">
-                    <Lightbulb className="h-5 w-5 text-white" />
-                  </div>
-                  <h4 className="text-lg font-semibold text-gray-900">Short Description</h4>
-                </div>
-                <div className="space-y-2">
-                  <Textarea
-                    value={formData.shortDescription}
-                    onChange={(e) => handleInputChange('shortDescription', e.target.value)}
-                    placeholder="Enter short description"
-                    rows={4}
-                    className="w-full"
-                  />
-                </div>
+              <div className="space-y-2">
+                <label className="block text-md font-semibold text-gray-900">Short Description</label>
+                <Textarea
+                  value={formData.shortDescription}
+                  onChange={(e) => handleInputChange('shortDescription', e.target.value)}
+                  placeholder="Enter short description"
+                  rows={4}
+                  className="w-full"
+                />
               </div>
 
               {/* Module Details Section */}
-              <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-white/30 shadow-xl">
-                <div className="flex items-center space-x-3 mb-6">
-                  <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-2 rounded-xl">
-                    <FileText className="h-5 w-5 text-white" />
-                  </div>
-                  <h4 className="text-lg font-semibold text-gray-900">Detailed Content</h4>
-                </div>
-                <div className="space-y-2">
-                  <MarkdownEditor
-                    objectId={`module-details-${selectedModule.id}`}
-                    modelValue={formData.details}
-                    onUpdate={(value) => handleInputChange('details', value)}
-                    placeholder="Enter detailed module content in markdown"
-                    maxHeight={400}
-                  />
-                </div>
+              <div className="space-y-2">
+                <label className="block text-md font-semibold text-gray-900">Details</label>
+                <MarkdownEditor
+                  objectId={`module-details-${selectedModule.id}`}
+                  modelValue={formData.details}
+                  onUpdate={(value) => handleInputChange('details', value)}
+                  placeholder="Enter detailed module content in markdown"
+                  maxHeight={400}
+                />
               </div>
             </div>
           ) : (
             // View Mode
             <div className="space-y-6">
-              {/* Short Description Section */}
-              <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-white/30 shadow-xl">
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-2 rounded-xl">
-                    <Lightbulb className="h-5 w-5 text-white" />
+              {/* Module Content */}
+              <div className="bg-white rounded-lg pt-2">
+                <div className="space-y-6">
+                  {/* Short Description */}
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Short Description:</h4>
+                    <p className="text-gray-700 text-base leading-relaxed">{selectedModule.shortDescription}</p>
                   </div>
-                  <h4 className="text-lg font-semibold text-gray-900">Short Description</h4>
-                </div>
-                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200/50">
-                  <p className="text-blue-900 text-base leading-relaxed">{selectedModule.shortDescription}</p>
-                </div>
-              </div>
 
-              {/* Module Details Section */}
-              <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-white/30 shadow-xl">
-                <div className="flex items-center space-x-3 mb-6">
-                  <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-2 rounded-xl">
-                    <FileText className="h-5 w-5 text-white" />
+                  {/* Module Details */}
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Details:</h4>
+                    <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(selectedModule.details) }} />
                   </div>
-                  <h4 className="text-lg font-semibold text-gray-900">Detailed Content</h4>
                 </div>
-                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(selectedModule.details) }} />
               </div>
 
               {/* Read Module Instructions Button */}
               {!hasModuleInstructionsRead(selectedModule.id) && (
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 text-center">
-                  <p className="text-blue-900 mb-4 font-medium">Please confirm that you have read and understood the module instructions.</p>
+                <div className="text-center">
                   <Button
                     onClick={() => handleMarkInstructionAsRead('module', selectedModule.id)}
                     disabled={updatingStatus}
@@ -285,9 +263,8 @@ export default function ViewModuleModal({
               )}
 
               {hasModuleInstructionsRead(selectedModule.id) && (
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200 text-center">
-                  <Check className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                  <p className="text-green-800 font-medium">You have read the module instructions</p>
+                <div className="text-center">
+                  <Check className="h-8 w-8 text-green-600 mx-auto" />
                 </div>
               )}
             </div>

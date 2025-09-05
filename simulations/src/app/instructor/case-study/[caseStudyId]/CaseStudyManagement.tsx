@@ -40,6 +40,12 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     studentEmail: string;
     exerciseTitle: string;
   } | null>(null);
+  const [showDeleteFinalSummaryConfirm, setShowDeleteFinalSummaryConfirm] = useState<boolean>(false);
+  const [finalSummaryToDelete, setFinalSummaryToDelete] = useState<{
+    finalSummaryId: string;
+    studentId: string;
+    studentEmail: string;
+  } | null>(null);
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
   const [showExerciseModal, setShowExerciseModal] = useState(false);
@@ -78,6 +84,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     errorMessage: 'Failed to delete exercise attempt',
   });
 
+  const { deleteData: deleteFinalSummary, loading: deletingFinalSummary } = useDeleteData<DeleteResponse, never>({
+    successMessage: 'Final summary deleted successfully!',
+    errorMessage: 'Failed to delete final summary',
+  });
+
   useEffect(() => {
     const userType = localStorage.getItem('user_type');
     const email = localStorage.getItem('user_email');
@@ -105,6 +116,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   const handleDeleteAttempt = (attemptId: string, studentId: string, studentEmail: string, exerciseTitle: string) => {
     setAttemptToDelete({ attemptId, studentId, studentEmail, exerciseTitle });
     setShowDeleteAttemptConfirm(true);
+  };
+
+  const handleDeleteFinalSummary = (finalSummaryId: string, studentId: string, studentEmail: string) => {
+    setFinalSummaryToDelete({ finalSummaryId, studentId, studentEmail });
+    setShowDeleteFinalSummaryConfirm(true);
   };
 
   const handleConfirmClearAttempts = async (): Promise<void> => {
@@ -141,6 +157,24 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     }
   };
 
+  const handleConfirmDeleteFinalSummary = async (): Promise<void> => {
+    if (!finalSummaryToDelete) return;
+
+    try {
+      const url = `/api/instructor/students/${finalSummaryToDelete.studentId}/final-summary/${
+        finalSummaryToDelete.finalSummaryId
+      }?instructorEmail=${encodeURIComponent(userEmail)}&caseStudyId=${caseStudyId}`;
+      await deleteFinalSummary(url);
+
+      // Refresh students data
+      await refetchStudentsTable();
+      setShowDeleteFinalSummaryConfirm(false);
+      setFinalSummaryToDelete(null);
+    } catch (error: unknown) {
+      console.error('Error deleting final summary:', error);
+    }
+  };
+
   const viewStudentDetails = (studentId: string) => {
     router.push(`/instructor/case-study/${caseStudyId}/student/${studentId}`);
   };
@@ -164,28 +198,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     return <InstructorLoading text="Loading Case Study" subtitle="Preparing management console..." variant="enhanced" />;
   }
 
-  if (!caseStudy) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-12 border border-white/30 shadow-xl max-w-md mx-auto">
-            <div className="bg-gradient-to-br from-red-100 to-pink-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
-              <BookOpen className="h-8 w-8 text-red-600" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">Case Study Not Found</h3>
-            <p className="text-gray-600 mb-6">The case study you’re looking for doesn’t exist or has been removed.</p>
-            <button
-              onClick={() => router.push('/instructor')}
-              className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              Back to Dashboard
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   const modules = caseStudy?.modules || [];
 
   return (
@@ -197,9 +209,8 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       </div>
 
       <InstructorNavbar
-        title={caseStudy.title}
+        title={caseStudy?.title || 'Case Study Not Found'}
         subtitle="Instructor Management Console"
-        userEmail={userEmail}
         onLogout={handleLogout}
         icon={<GraduationCap className="h-8 w-8 text-white" />}
       />
@@ -250,36 +261,34 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
         {activeTab === 'overview' && (
           <div className="space-y-8">
-            <Card className="backdrop-blur-xl bg-gradient-to-br from-purple-50/80 to-indigo-50/80 border-white/20 shadow-lg mb-6">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <Badge className={`bg-gradient-to-r ${getSubjectColor(caseStudy.subject)} text-white border-0 text-sm px-3 py-1`}>
-                      <span className="mr-2">{getSubjectIcon(caseStudy.subject)}</span>
-                      {getSubjectDisplayName(caseStudy.subject)}
-                    </Badge>
-                    <Badge variant="secondary" className="bg-purple-100 text-purple-800 border-purple-200">
-                      <GraduationCap className="h-3 w-3 mr-1" />
-                      Instructor View
-                    </Badge>
-                  </div>
-
-                  <Button
-                    onClick={() => setShowCaseStudyModal(true)}
-                    className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
-                  >
-                    <BookOpen className="h-4 w-4 mr-2" />
-                    View Case Study Details
-                  </Button>
-                </div>
-                <CardTitle className="text-2xl font-bold text-gray-900">Case Study Overview</CardTitle>
-                <CardDescription className="text-base text-gray-700 leading-relaxed">{caseStudy.shortDescription}</CardDescription>
-              </CardHeader>
-            </Card>
-
             {modules.length > 0 && (
               <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
-                <CardHeader className="pb-6">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      <Badge className={`bg-gradient-to-r ${getSubjectColor(caseStudy?.subject || 'MARKETING')} text-white border-0 text-sm px-3 py-1`}>
+                        <span className="mr-2">{getSubjectIcon(caseStudy?.subject || 'MARKETING')}</span>
+                        {getSubjectDisplayName(caseStudy?.subject || 'MARKETING')}
+                      </Badge>
+                      <Badge variant="secondary" className="bg-purple-100 text-purple-800 border-purple-200">
+                        <GraduationCap className="h-3 w-3 mr-1" />
+                        Instructor View
+                      </Badge>
+                    </div>
+
+                    <Button
+                      onClick={() => setShowCaseStudyModal(true)}
+                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                    >
+                      <BookOpen className="h-4 w-4 mr-2" />
+                      View Case Study Details
+                    </Button>
+                  </div>
+                  <CardTitle className="text-2xl font-bold text-gray-900">Case Study Overview</CardTitle>
+                  <CardDescription className="text-base text-gray-700 leading-relaxed mb-4">
+                    {caseStudy?.shortDescription || 'No description available.'}
+                  </CardDescription>
+
                   <div className="flex items-center space-x-3">
                     <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg">
                       <BookOpen className="h-5 w-5 text-white" />
@@ -305,6 +314,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
                 onViewStudentDetails={viewStudentDetails}
                 onClearStudentAttempts={handleClearStudentAttempts}
                 onDeleteAttempt={handleDeleteAttempt}
+                onDeleteFinalSummary={handleDeleteFinalSummary}
                 clearingAttempts={clearingAttempts}
                 deletingAttempt={deletingAttempt}
               />
@@ -313,7 +323,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         )}
 
         {activeTab === 'analytics' && (
-          <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-12">
+          <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30">
             <div className="text-center py-16">
               <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
                 <BarChart3 className="h-10 w-10 text-purple-600" />
@@ -335,10 +345,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
                     <li className="flex items-center space-x-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       <span>AI prompt effectiveness analysis</span>
-                    </li>
-                    <li className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                      <span>Time spent on exercises breakdown</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <div className="w-2 h-2 bg-red-500 rounded-full"></div>
@@ -377,6 +383,20 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         confirming={deletingAttempt}
         title="Delete Exercise Attempt"
         confirmationText={`Are you sure you want to delete this attempt for ${attemptToDelete?.studentEmail} in exercise "${attemptToDelete?.exerciseTitle}"? This action cannot be undone.`}
+        askForTextInput={false}
+      />
+
+      <ConfirmationModal
+        open={showDeleteFinalSummaryConfirm}
+        showSemiTransparentBg={true}
+        onClose={() => {
+          setShowDeleteFinalSummaryConfirm(false);
+          setFinalSummaryToDelete(null);
+        }}
+        onConfirm={handleConfirmDeleteFinalSummary}
+        confirming={deletingFinalSummary}
+        title="Delete Final Summary"
+        confirmationText={`Are you sure you want to delete the final summary for ${finalSummaryToDelete?.studentEmail}? This action cannot be undone.`}
         askForTextInput={false}
       />
 
