@@ -6,7 +6,23 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import StudentLoading from '@/components/student/StudentLoading';
 import type { ExerciseAttempt } from '@prisma/client';
-import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Plus, Star } from 'lucide-react';
+import {
+  Send,
+  RotateCcw,
+  CheckCircle,
+  AlertCircle,
+  AlertTriangle,
+  Brain,
+  Clock,
+  MessageSquare,
+  Eye,
+  Sparkles,
+  Zap,
+  Plus,
+  Star,
+  FileText,
+  Bot,
+} from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
@@ -14,6 +30,9 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import BackButton from '@/components/navigation/BackButton';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import StudentProgressStepper, { ProgressData } from '@/components/student/StudentProgressStepper';
+import ViewModuleModal from '@/components/shared/ViewModuleModal';
+import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 interface StudentExerciseClientProps {
   exerciseId: string;
@@ -89,6 +108,8 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const [currentAiResponse, setCurrentAiResponse] = useState<string>('');
   const [showRetryPrompt, setShowRetryPrompt] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
+  const [showModuleModal, setShowModuleModal] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -344,6 +365,22 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     return !hasMovedToNext && completedAttempts.length >= 3 && !submittingAttempt;
   };
 
+  const handleOpenCaseStudyModal = () => {
+    setShowCaseStudyModal(true);
+  };
+
+  const handleCloseCaseStudyModal = () => {
+    setShowCaseStudyModal(false);
+  };
+
+  const handleOpenModuleModal = () => {
+    setShowModuleModal(true);
+  };
+
+  const handleCloseModuleModal = () => {
+    setShowModuleModal(false);
+  };
+
   const addCaseStudyContext = () => {
     if (!contextData?.caseStudy) return;
 
@@ -423,7 +460,7 @@ Details: ${contextData.module.details}
         userEmail={userEmail}
         moduleNumber={exerciseData?.module?.orderNumber}
         exerciseNumber={exerciseData?.orderNumber}
-        icon={<Brain className="h-8 w-8 text-white" />}
+        icon={<Bot className="h-8 w-8 text-white" />}
         iconColor="from-blue-500 to-purple-600"
       />
 
@@ -434,30 +471,59 @@ Details: ${contextData.module.details}
           <div className="lg:col-span-3 space-y-6">
             {exerciseData && (
               <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{exerciseData.title}</h3>
-                    <p className="text-gray-600 text-lg leading-relaxed">{exerciseData.shortDescription}</p>
-                  </div>
-                  <div className="border-t border-gray-200 pt-6">
-                    <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
-                      <Zap className="h-5 w-5 text-yellow-500 mr-2" />
-                      Exercise Instructions
-                    </h4>
-                    <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-6 border border-gray-200">
-                      <div className="markdown-body prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(exerciseData.details) }} />
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-1">{exerciseData.title}</h3>
+                      <p className="text-gray-600 text-lg leading-relaxed">{exerciseData.shortDescription}</p>
+                    </div>
+
+                    <div className="flex items-center space-x-3 ml-4">
+                      <button
+                        onClick={handleOpenCaseStudyModal}
+                        disabled={!contextData?.caseStudy}
+                        className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        title="View Case Study Details"
+                      >
+                        <Eye className="h-4 w-4 mr-2" />
+                        Case Study Details
+                      </button>
+                      <button
+                        onClick={handleOpenModuleModal}
+                        disabled={!contextData?.module}
+                        className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-green-100 text-green-800 hover:bg-green-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        title="View Module Details"
+                      >
+                        <Eye className="h-4 w-4 mr-2" />
+                        Module Details
+                      </button>
                     </div>
                   </div>
 
+                  <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                    <Zap className="h-5 w-5 text-yellow-500 mr-2" />
+                    Exercise Details:
+                  </h4>
+                  <div className="markdown-body prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(exerciseData.details) }} />
+
                   {exerciseData.promptHint && (
-                    <div className="border-t border-gray-200 pt-6">
-                      <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
-                        <Brain className="h-5 w-5 text-blue-500 mr-2" />
-                        Prompt Hint
-                      </h4>
-                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
-                        <div className="markdown-body prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(exerciseData.promptHint) }} />
-                      </div>
+                    <div className="pt-6">
+                      <Accordion type="single" collapsible className="w-full">
+                        <AccordionItem value="prompt-hint" className="border border-blue-200 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50">
+                          <AccordionTrigger className="px-6 py-4 hover:no-underline">
+                            <div className="flex items-center text-left">
+                              <FileText className="h-5 w-5 text-blue-500 mr-2" />
+                              <span className="font-semibold text-gray-900">Prompt Hint</span>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="px-6 pb-6">
+                            <div
+                              className="markdown-body prose prose-lg max-w-none"
+                              dangerouslySetInnerHTML={{ __html: parseMarkdown(exerciseData.promptHint) }}
+                            />
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
                     </div>
                   )}
                 </div>
@@ -538,7 +604,7 @@ Details: ${contextData.module.details}
                     <button
                       onClick={handleSubmitClick}
                       disabled={!prompt.trim() || submittingAttempt || !canSubmitNewAttempt()}
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
                       {submittingAttempt ? (
                         <>
@@ -555,40 +621,40 @@ Details: ${contextData.module.details}
                   </div>
                 </div>
               ) : shouldShowSuccessStateWithRetry() ? (
-                <div className="text-center py-4">
-                  <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle className="h-8 w-8 text-green-600" />
+                <div className="text-center">
+                  <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="h-6 w-6 text-green-600" />
                   </div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-3">Great work!</h3>
-                  <p className="text-gray-600 mb-6 text-lg">You can continue to the next exercise or try again.</p>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Great work!</h3>
+                  <p className="text-gray-600 mb-4 text-base">You can continue to the next exercise or try again.</p>
                   <div className="flex items-center justify-center space-x-4">
                     <button
                       onClick={handleMoveToNext}
-                      className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-3 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
-                      {nextExerciseData?.isComplete ? 'Continue to Summary' : 'Next Exercise'}
+                      {nextExerciseData?.isComplete ? 'Continue to Report' : 'Next Exercise'}
                     </button>
                     <button
                       onClick={() => setShowRetryPrompt(true)}
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2  rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
                       Attempt Again
                     </button>
                   </div>
                 </div>
               ) : shouldShowAllAttemptsUsed() ? (
-                <div className="text-center py-4">
-                  <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle className="h-8 w-8 text-green-600" />
+                <div className="text-center">
+                  <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="h-6 w-6 text-green-600" />
                   </div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-3">All Attempts Completed</h3>
-                  <p className="text-gray-600 mb-6 text-lg">You have used all 3 attempts for this exercise.</p>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">All Attempts Completed</h3>
+                  <p className="text-gray-600 mb-4 text-base">You have used all 3 attempts for this exercise.</p>
                   {!hasMovedToNext && !submittingAttempt && (
                     <button
                       onClick={handleMoveToNext}
-                      className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-3 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
-                      {nextExerciseData?.isComplete ? 'Continue to Summary' : 'Continue to Next Exercise'}
+                      {nextExerciseData?.isComplete ? 'Continue to Report' : 'Continue to Next Exercise'}
                     </button>
                   )}
                 </div>
@@ -644,7 +710,7 @@ Details: ${contextData.module.details}
                           >
                             <Star className={`h-4 w-4 ${attempt.selectedForSummary ? 'fill-current text-yellow-500' : ''}`} />
 
-                            <span>{attempt.selectedForSummary ? 'Selected for Summary' : 'Select for Summary'}</span>
+                            <span>{attempt.selectedForSummary ? 'Selected for Final Report' : 'Select for Final Report'}</span>
                           </button>
                         )}
                         <button
@@ -676,8 +742,78 @@ Details: ${contextData.module.details}
         onConfirm={handleConfirmSubmit}
         confirming={submittingAttempt}
         title="Submit Prompt Confirmation"
-        confirmationText="Have you added all the necessary context (Case Study and Module details) to your prompt? Adding context helps the AI provide more relevant and accurate responses for this exercise."
+        content={
+          <div className="mb-4">
+            <ul className="space-y-2">
+              <li className="flex items-start">
+                <div className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3"></div>
+                <span className="text-gray-700">Have you added all necessary context (Case Study and Module details)?</span>
+              </li>
+              <li className="flex items-start">
+                <div className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3"></div>
+                <span className="text-gray-700">Have you reviewed the prompt hint provided above for guidance?</span>
+              </li>
+            </ul>
+            <p className="text-sm text-gray-600 mt-4 italic">Adding context helps the AI provide more relevant and accurate responses for this exercise.</p>
+          </div>
+        }
         askForTextInput={false}
+        showSemiTransparentBg={true}
+      />
+
+      <ViewModuleModal
+        open={showModuleModal}
+        onClose={handleCloseModuleModal}
+        selectedModule={
+          contextData?.module
+            ? {
+                id: moduleId || 'current-module',
+                title: contextData.module.title,
+                shortDescription: contextData.module.shortDescription,
+                details: contextData.module.details,
+                orderNumber: exerciseData?.module?.orderNumber || 1,
+              }
+            : null
+        }
+        hasModuleInstructionsRead={() => true}
+        handleMarkInstructionAsRead={async () => {}}
+        updatingStatus={true}
+        caseStudy={
+          contextData?.caseStudy
+            ? {
+                id: caseStudyId || 'current-case-study',
+                title: contextData.caseStudy.title,
+                shortDescription: contextData.caseStudy.shortDescription,
+                details: contextData.caseStudy.details,
+              }
+            : undefined
+        }
+        onModuleUpdate={(updatedModule) => {
+          // Students don't edit, so this should not be called
+          console.log('Student tried to update module - this should not happen');
+        }}
+      />
+
+      <ViewCaseStudyModal
+        open={showCaseStudyModal}
+        onClose={handleCloseCaseStudyModal}
+        caseStudy={
+          contextData?.caseStudy
+            ? {
+                id: caseStudyId || 'current-case-study',
+                title: contextData.caseStudy.title,
+                shortDescription: contextData.caseStudy.shortDescription,
+                details: contextData.caseStudy.details,
+              }
+            : null
+        }
+        hasCaseStudyInstructionsRead={() => true}
+        handleMarkInstructionAsRead={async () => {}}
+        updatingStatus={true}
+        onCaseStudyUpdate={(updatedCaseStudy) => {
+          // Students don't edit, so this should not be called
+          console.log('Student tried to update case study - this should not happen');
+        }}
       />
     </div>
   );
