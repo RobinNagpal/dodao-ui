@@ -153,6 +153,13 @@ export interface StudentTableData {
   assignedStudentId: string; // student email
   enrollmentId: string;
   exercises: ExerciseProgress[];
+  finalSummary?: {
+    id: string;
+    status: string | null;
+    hasContent: boolean;
+    response: string | null;
+    createdAt: string;
+  };
   createdAt: string;
 }
 

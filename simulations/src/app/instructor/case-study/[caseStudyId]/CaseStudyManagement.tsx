@@ -40,6 +40,12 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     studentEmail: string;
     exerciseTitle: string;
   } | null>(null);
+  const [showDeleteFinalSummaryConfirm, setShowDeleteFinalSummaryConfirm] = useState<boolean>(false);
+  const [finalSummaryToDelete, setFinalSummaryToDelete] = useState<{
+    finalSummaryId: string;
+    studentId: string;
+    studentEmail: string;
+  } | null>(null);
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
   const [showExerciseModal, setShowExerciseModal] = useState(false);
@@ -78,6 +84,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     errorMessage: 'Failed to delete exercise attempt',
   });
 
+  const { deleteData: deleteFinalSummary, loading: deletingFinalSummary } = useDeleteData<DeleteResponse, never>({
+    successMessage: 'Final summary deleted successfully!',
+    errorMessage: 'Failed to delete final summary',
+  });
+
   useEffect(() => {
     const userType = localStorage.getItem('user_type');
     const email = localStorage.getItem('user_email');
@@ -105,6 +116,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   const handleDeleteAttempt = (attemptId: string, studentId: string, studentEmail: string, exerciseTitle: string) => {
     setAttemptToDelete({ attemptId, studentId, studentEmail, exerciseTitle });
     setShowDeleteAttemptConfirm(true);
+  };
+
+  const handleDeleteFinalSummary = (finalSummaryId: string, studentId: string, studentEmail: string) => {
+    setFinalSummaryToDelete({ finalSummaryId, studentId, studentEmail });
+    setShowDeleteFinalSummaryConfirm(true);
   };
 
   const handleConfirmClearAttempts = async (): Promise<void> => {
@@ -138,6 +154,24 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       setAttemptToDelete(null);
     } catch (error: unknown) {
       console.error('Error deleting exercise attempt:', error);
+    }
+  };
+
+  const handleConfirmDeleteFinalSummary = async (): Promise<void> => {
+    if (!finalSummaryToDelete) return;
+
+    try {
+      const url = `/api/instructor/students/${finalSummaryToDelete.studentId}/final-summary/${
+        finalSummaryToDelete.finalSummaryId
+      }?instructorEmail=${encodeURIComponent(userEmail)}&caseStudyId=${caseStudyId}`;
+      await deleteFinalSummary(url);
+
+      // Refresh students data
+      await refetchStudentsTable();
+      setShowDeleteFinalSummaryConfirm(false);
+      setFinalSummaryToDelete(null);
+    } catch (error: unknown) {
+      console.error('Error deleting final summary:', error);
     }
   };
 
@@ -280,6 +314,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
                 onViewStudentDetails={viewStudentDetails}
                 onClearStudentAttempts={handleClearStudentAttempts}
                 onDeleteAttempt={handleDeleteAttempt}
+                onDeleteFinalSummary={handleDeleteFinalSummary}
                 clearingAttempts={clearingAttempts}
                 deletingAttempt={deletingAttempt}
               />
@@ -288,7 +323,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         )}
 
         {activeTab === 'analytics' && (
-          <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-12">
+          <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30">
             <div className="text-center py-16">
               <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
                 <BarChart3 className="h-10 w-10 text-purple-600" />
@@ -310,10 +345,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
                     <li className="flex items-center space-x-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       <span>AI prompt effectiveness analysis</span>
-                    </li>
-                    <li className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                      <span>Time spent on exercises breakdown</span>
                     </li>
                     <li className="flex items-center space-x-2">
                       <div className="w-2 h-2 bg-red-500 rounded-full"></div>
@@ -352,6 +383,20 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         confirming={deletingAttempt}
         title="Delete Exercise Attempt"
         confirmationText={`Are you sure you want to delete this attempt for ${attemptToDelete?.studentEmail} in exercise "${attemptToDelete?.exerciseTitle}"? This action cannot be undone.`}
+        askForTextInput={false}
+      />
+
+      <ConfirmationModal
+        open={showDeleteFinalSummaryConfirm}
+        showSemiTransparentBg={true}
+        onClose={() => {
+          setShowDeleteFinalSummaryConfirm(false);
+          setFinalSummaryToDelete(null);
+        }}
+        onConfirm={handleConfirmDeleteFinalSummary}
+        confirming={deletingFinalSummary}
+        title="Delete Final Summary"
+        confirmationText={`Are you sure you want to delete the final summary for ${finalSummaryToDelete?.studentEmail}? This action cannot be undone.`}
         askForTextInput={false}
       />
 

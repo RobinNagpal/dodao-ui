@@ -120,52 +120,50 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
         <div className="p-8 overflow-y-auto max-h-[60vh]">
           {/* Enhanced Add Student Section */}
           <div className="mb-8">
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
-              <div className="flex space-x-3">
-                <div className="flex-1">
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <input
-                      type="email"
-                      value={newStudentEmail}
-                      onChange={(e) => setNewStudentEmail(e.target.value)}
-                      placeholder="Enter student email address"
-                      className={`w-full pl-10 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-500/20 transition-all duration-200 ${
-                        emailError ? 'border-red-500 bg-red-50' : 'border-gray-200 focus:border-green-500 bg-white'
-                      }`}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          handleAddStudent();
-                        }
-                      }}
-                      disabled={addingStudent}
-                    />
-                  </div>
-                  {emailError && (
-                    <div className="flex items-center space-x-2 mt-2 text-red-600">
-                      <AlertCircle className="h-4 w-4" />
-                      <p className="text-sm font-medium">{emailError}</p>
-                    </div>
-                  )}
+            <div className="flex space-x-3">
+              <div className="flex-1">
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <input
+                    type="email"
+                    value={newStudentEmail}
+                    onChange={(e) => setNewStudentEmail(e.target.value)}
+                    placeholder="Enter student email address"
+                    className={`w-full pl-10 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-500/20 transition-all duration-200 ${
+                      emailError ? 'border-red-500 bg-red-50' : 'border-gray-200 focus:border-green-500 bg-white'
+                    }`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleAddStudent();
+                      }
+                    }}
+                    disabled={addingStudent}
+                  />
                 </div>
-                <button
-                  onClick={handleAddStudent}
-                  disabled={addingStudent || !newStudentEmail.trim()}
-                  className="flex items-center space-x-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                >
-                  {addingStudent ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                      <span>Adding...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="h-4 w-4" />
-                      <span>Add Student</span>
-                    </>
-                  )}
-                </button>
+                {emailError && (
+                  <div className="flex items-center space-x-2 mt-2 text-red-600">
+                    <AlertCircle className="h-4 w-4" />
+                    <p className="text-sm font-medium">{emailError}</p>
+                  </div>
+                )}
               </div>
+              <button
+                onClick={handleAddStudent}
+                disabled={addingStudent || !newStudentEmail.trim()}
+                className="flex items-center space-x-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4 py-2 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                {addingStudent ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                    <span>Adding...</span>
+                  </>
+                ) : (
+                  <>
+                    <Plus className="h-4 w-4" />
+                    <span>Add Student</span>
+                  </>
+                )}
+              </button>
             </div>
           </div>
 

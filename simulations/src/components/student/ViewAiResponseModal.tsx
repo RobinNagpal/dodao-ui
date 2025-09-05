@@ -2,7 +2,7 @@
 
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { parseMarkdown } from '@/utils/parse-markdown';
-import { Brain } from 'lucide-react';
+import { Bot, BotIcon, Brain } from 'lucide-react';
 
 interface AiResponseModalProps {
   open: boolean;
@@ -18,7 +18,7 @@ export default function ViewAiResponseModal({ open, onClose, aiResponse }: AiRes
       title={
         <div className="text-center">
           <span className="text-2xl font-bold flex items-center justify-center">
-            <Brain className="h-6 w-6 mr-2 text-purple-600" />
+            <BotIcon className="h-6 w-6 mr-2 text-purple-600" />
             AI Analysis
           </span>
         </div>

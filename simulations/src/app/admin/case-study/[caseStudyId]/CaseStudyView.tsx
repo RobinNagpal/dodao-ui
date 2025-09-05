@@ -6,7 +6,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { CaseStudyWithRelations } from '@/types/api';
 import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
-import { BookOpen, Brain, GraduationCap } from 'lucide-react';
+import { BookOpen, Brain, GraduationCap, Shield } from 'lucide-react';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
 import BackButton from '@/components/navigation/BackButton';
 import { Button } from '@/components/ui/button';
@@ -97,7 +97,7 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
         title={caseStudy?.title || 'Case Study Not Found'}
         subtitle="Case Study Details"
         onLogout={handleLogout}
-        icon={<BookOpen className="h-8 w-8 text-white" />}
+        icon={<Shield className="h-8 w-8 text-white" />}
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">

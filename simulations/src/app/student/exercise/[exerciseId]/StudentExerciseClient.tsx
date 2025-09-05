@@ -8,7 +8,7 @@ import StudentLoading from '@/components/student/StudentLoading';
 import type { ExerciseAttempt } from '@prisma/client';
 import { Send, RotateCcw, CheckCircle, AlertCircle, Brain, Clock, MessageSquare, Eye, Sparkles, Zap, Plus, Star } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
-import AttemptDetailModal from '@/components/student/AttemptDetailModal';
+import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import BackButton from '@/components/navigation/BackButton';

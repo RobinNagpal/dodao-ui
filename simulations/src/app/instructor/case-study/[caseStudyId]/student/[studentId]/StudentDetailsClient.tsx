@@ -22,7 +22,7 @@ import {
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
 import BackButton from '@/components/navigation/BackButton';
 import InstructorLoading from '@/components/instructor/InstructorLoading';
-import AttemptDetailModal from '@/components/student/AttemptDetailModal';
+import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
 import type { ExerciseAttempt } from '@prisma/client';
 
 interface StudentDetailsClientProps {
