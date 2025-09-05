@@ -7,14 +7,28 @@ import StudentLoading from '@/components/student/StudentLoading';
 import type { CaseStudyWithRelations } from '@/types/api';
 import type { BusinessSubject } from '@/types';
 import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
-import { BookOpen, LogOut, ArrowRight, Brain, Sparkles, Target, TrendingUp, CheckCircle2, User } from 'lucide-react';
+import {
+  BookOpen,
+  LogOut,
+  ArrowRight,
+  Brain,
+  Sparkles,
+  Target,
+  TrendingUp,
+  CheckCircle2,
+  User,
+  Bot,
+  BotIcon,
+  GraduationCapIcon,
+  GraduationCap,
+} from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import StudentNavbar from '@/components/navigation/StudentNavbar';
 
 export default function StudentDashboard() {
   const [userEmail, setUserEmail] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
   const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyWithRelations[]>([]);
   const router = useRouter();
@@ -35,7 +49,6 @@ export default function StudentDashboard() {
     }
 
     setUserEmail(email);
-    setIsLoading(false);
   }, [router]);
 
   useEffect(() => {
@@ -72,54 +85,33 @@ export default function StudentDashboard() {
 
   const enrolledSubjectsWithCounts = getEnrolledSubjectsWithCounts();
 
-  if (isLoading || loadingCaseStudies) {
+  if (loadingCaseStudies || enrolledCaseStudies === undefined) {
     return <StudentLoading text="Loading your dashboard..." subtitle="Preparing your personalized learning experience" variant="enhanced" />;
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
-      <header className="backdrop-blur-xl bg-white/80 border-b border-white/20 shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-3 rounded-2xl shadow-lg">
-                  <Brain className="h-8 w-8 text-white" />
-                </div>
-                <div className="absolute -top-1 -right-1 bg-gradient-to-r from-cyan-400 to-blue-500 p-1 rounded-full">
-                  <Sparkles className="h-4 w-4 text-white" />
-                </div>
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-blue-800 bg-clip-text text-transparent">Student Dashboard</h1>
-                <p className="text-gray-600">
-                  Welcome back, <span className="font-medium text-blue-600">{userEmail}</span>
-                </p>
-              </div>
-            </div>
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all duration-200 bg-transparent"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
-          </div>
-        </div>
-      </header>
+      <StudentNavbar
+        title="Student Dashboard"
+        subtitle={`Welcome back, ${userEmail}`}
+        userEmail={userEmail}
+        onLogout={handleLogout}
+        showLogout={true}
+        icon={<GraduationCap className="h-8 w-8 text-white" />}
+        iconColor="from-blue-600 to-indigo-700"
+      />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
         <div className="flex gap-8">
           {enrolledCaseStudies && enrolledCaseStudies.length > 0 && (
             <div className="w-80 flex-shrink-0">
               <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
-                <CardHeader className="pb-4">
+                <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
-                    <Target className="h-5 w-5 text-blue-600" />
+                    <BookOpen className="h-4 w-4 text-blue-600" />
                     <span>Your Subjects</span>
                   </CardTitle>
-                  <CardDescription>Filter by subject area</CardDescription>
+                  <CardDescription>Filter by Subject</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Button
@@ -163,13 +155,13 @@ export default function StudentDashboard() {
 
           <div className="flex-1">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                {selectedSubject === 'ALL' ? 'Your Learning Journey' : `${getSubjectDisplayName(selectedSubject as BusinessSubject)} Studies`}
+              <h2 className="text-[28px] font-bold text-gray-900 mb-2">
+                {selectedSubject === 'ALL' ? 'My Learning Journey' : `${getSubjectDisplayName(selectedSubject as BusinessSubject)} Studies`}
               </h2>
-              <p className="text-gray-600 text-lg">
+              <p className="text-gray-600 text-[17px]">
                 {!enrolledCaseStudies || enrolledCaseStudies.length === 0
-                  ? 'Ready to start your AI-powered learning adventure? Contact your instructor to get enrolled.'
-                  : 'Continue mastering business concepts through intelligent simulations.'}
+                  ? 'Ready to start your case studies? Contact your instructor to get enrolled.'
+                  : 'Access your enrolled case studies and continue building real-world business skills with GenAI simulations.'}
               </p>
             </div>
 
@@ -231,21 +223,19 @@ export default function StudentDashboard() {
                     </CardHeader>
 
                     <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center space-x-4">
-                          <div className="flex items-center space-x-1 text-gray-500">
-                            <BookOpen className="h-4 w-4" />
-                            <span>{caseStudy.modules?.length || 0} modules</span>
-                          </div>
-                          {caseStudy.instructorEmail && (
-                            <div className="flex items-center space-x-1 text-gray-500">
-                              <User className="h-4 w-4" />
-                              <span className="max-w-32" title={caseStudy.instructorEmail}>
-                                {caseStudy.instructorEmail}
-                              </span>
-                            </div>
-                          )}
+                      <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-3 space-y-2">
+                        <div className="flex items-center space-x-1 text-gray-600">
+                          <BookOpen className="h-4 w-4 text-blue-500" />
+                          <span className="font-medium">{caseStudy.modules?.length || 0} Modules</span>
                         </div>
+                        {caseStudy.instructorEmail && (
+                          <div className="flex items-center space-x-1 text-gray-600">
+                            <User className="h-4 w-4 text-indigo-500" />
+                            <span className="font-medium text-sm truncate" title={caseStudy.instructorEmail}>
+                              {caseStudy.instructorEmail}
+                            </span>
+                          </div>
+                        )}
                       </div>
 
                       <Button
@@ -253,7 +243,7 @@ export default function StudentDashboard() {
                         className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/25 transition-all duration-200 transform hover:scale-[1.02]"
                       >
                         <div className="flex items-center justify-center space-x-2">
-                          <Brain className="h-4 w-4" />
+                          <BotIcon className="h-4 w-4" />
                           <span>Start Learning</span>
                           <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </div>

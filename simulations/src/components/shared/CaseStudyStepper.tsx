@@ -102,11 +102,11 @@ export default function CaseStudyStepper({
                   {moduleCompleted ? <Check className="h-6 w-6" /> : <span className="text-sm font-bold">{module.orderNumber}</span>}
                 </div>
 
-                <div className="text-center max-w-40 mb-4">
+                <div className="text-center max-w-44 mb-4">
                   <p className={`text-sm font-medium mb-1 ${moduleCompleted ? 'text-green-700' : moduleAccessible ? 'text-blue-700' : 'text-gray-500'}`}>
                     Module {module.orderNumber}
                   </p>
-                  <p className="text-xs text-gray-600 line-clamp-2">{module.title}</p>
+                  <p className="text-xs text-gray-600">{module.title}</p>
                 </div>
 
                 <div className="w-full max-w-xs space-y-2">

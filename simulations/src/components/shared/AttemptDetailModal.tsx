@@ -1,6 +1,6 @@
 'use client';
 
-import { Eye, Brain, MessageSquare, Sparkles, X } from 'lucide-react';
+import { Eye, Brain, MessageSquare, Sparkles, X, BotIcon } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import type { ExerciseAttempt } from '@prisma/client';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
@@ -54,9 +54,9 @@ export default function AttemptDetailModal({ isOpen, onClose, attempt }: Attempt
           <div className="space-y-3">
             <h3 className="font-semibold text-gray-900 flex items-center space-x-2">
               <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-2 rounded-xl">
-                <Brain className="h-4 w-4 text-white" />
+                <BotIcon className="h-4 w-4 text-white" />
               </div>
-              <span>AI Response</span>
+              <span>AI Analysis</span>
             </h3>
             <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200/50">
               <div

@@ -124,7 +124,7 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6 py-4">
+        <div className="space-y-6">
           <div>
             <Label htmlFor="caseStudy" className="text-emerald-700 font-medium flex items-center space-x-2 mb-2">
               <BookOpen className="h-4 w-4" />

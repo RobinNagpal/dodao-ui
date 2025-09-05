@@ -170,7 +170,7 @@ export default function ViewCaseStudyModal({
           <div className="space-y-6">
             {/* Title Field */}
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-900">Title</label>
+              <label className="block text-md font-semibold text-gray-900">Title</label>
               <Input
                 value={formData.title}
                 onChange={(e) => handleInputChange('title', e.target.value)}
@@ -181,7 +181,7 @@ export default function ViewCaseStudyModal({
 
             {/* Short Description Field */}
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-900">Short Description</label>
+              <label className="block text-md font-semibold text-gray-900">Short Description</label>
               <Textarea
                 value={formData.shortDescription}
                 onChange={(e) => handleInputChange('shortDescription', e.target.value)}
@@ -193,7 +193,7 @@ export default function ViewCaseStudyModal({
 
             {/* Details Field (Markdown) */}
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-900">Details</label>
+              <label className="block text-md font-semibold text-gray-900">Details</label>
               <MarkdownEditor
                 objectId={`case-study-details-${caseStudy?.id}`}
                 modelValue={formData.details}
@@ -205,7 +205,7 @@ export default function ViewCaseStudyModal({
 
             {/* Final Summary Prompt Instructions Field (Markdown) */}
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-900">Final Summary Prompt Instructions</label>
+              <label className="block text-md font-semibold text-gray-900">Final Summary Prompt Instructions</label>
               <MarkdownEditor
                 objectId={`case-study-prompt-${caseStudy?.id}`}
                 modelValue={formData.finalSummaryPromptInstructions}
@@ -217,24 +217,20 @@ export default function ViewCaseStudyModal({
           </div>
         ) : (
           // View Mode
-          <div className="space-y-6">
+          <div className="space-y-6 pt-2">
             <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy?.details || '') }} />
 
             {/* Final Summary Prompt Instructions - Only for Admin/Instructor */}
             {isAdminOrInstructor && caseStudy?.finalSummaryPromptInstructions && (
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">Final Summary Prompt Instructions</h3>
-                <div
-                  className="markdown-body bg-amber-50 border border-amber-200 rounded-lg p-4"
-                  dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy.finalSummaryPromptInstructions) }}
-                />
+                <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">Final Summary Prompt Instructions:</h3>
+                <div className="markdown-body rounded-lg" dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy.finalSummaryPromptInstructions) }} />
               </div>
             )}
 
             {/* Read Instructions Button */}
             {!hasCaseStudyInstructionsRead() && (
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 text-center">
-                <p className="text-blue-900 mb-4 font-medium">Please confirm that you have read and understood the case study instructions.</p>
+              <div className="text-center">
                 <Button
                   onClick={() => handleMarkInstructionAsRead('case_study')}
                   disabled={updatingStatus}
@@ -255,9 +251,8 @@ export default function ViewCaseStudyModal({
             )}
 
             {hasCaseStudyInstructionsRead() && (
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200 text-center">
-                <Check className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                <p className="text-green-800 font-medium">You have read the case study instructions</p>
+              <div className="text-center">
+                <Check className="h-8 w-8 text-green-600 mx-auto" />
               </div>
             )}
           </div>

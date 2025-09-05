@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import type { CaseStudyWithRelations } from '@/types/api';
 import StudentLoading from '@/components/student/StudentLoading';
 import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
-import { BookOpen, Target, Brain, Clock, Lock, ArrowLeft, Check } from 'lucide-react';
+import { BookOpen, Target, Brain, Clock, Lock, ArrowLeft, Check, BotIcon } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -211,27 +211,14 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     setIsLoading(false);
   }, [router]);
 
+  const handleLogout = () => {
+    localStorage.removeItem('user_type');
+    localStorage.removeItem('user_email');
+    router.push('/login');
+  };
+
   if (isLoading || loadingCaseStudy) {
     return <StudentLoading text="Loading case study..." subtitle="Preparing your learning experience" variant="enhanced" />;
-  }
-
-  if (!caseStudy) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 flex items-center justify-center">
-        <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg max-w-md">
-          <CardContent className="text-center py-16">
-            <div className="bg-gradient-to-br from-red-100 to-orange-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <BookOpen className="h-10 w-10 text-red-600" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Case Study Not Found</h3>
-            <p className="text-gray-600 mb-2">The case study you’re looking for doesn’t exist or you don’t have access to it.</p>
-            <Button onClick={() => router.push('/student')} className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
-              Back to Dashboard
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
   }
 
   const modules = caseStudy?.modules || [];
@@ -239,54 +226,53 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
       <StudentNavbar
-        title={caseStudy.title}
-        subtitle="Interactive Case Study"
-        userEmail={userEmail}
-        icon={<span className="text-2xl">{getSubjectIcon(caseStudy.subject)}</span>}
+        title={caseStudy?.title || 'Case Study Not Found'}
+        subtitle="Case Study Details"
+        icon={<span className="text-2xl">{getSubjectIcon(caseStudy?.subject || 'MARKETING')}</span>}
         iconColor="from-blue-600 to-indigo-700"
+        showLogout={true}
+        onLogout={handleLogout}
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
         <BackButton userType="student" text="Back to Dashboard" href="/student" />
 
-        <Card className="backdrop-blur-xl bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border-white/20 shadow-lg mb-6">
-          <CardHeader className="pb-4">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <Badge className={`bg-gradient-to-r ${getSubjectColor(caseStudy.subject)} text-white border-0 text-sm px-3 py-1`}>
-                  <span className="mr-2">{getSubjectIcon(caseStudy.subject)}</span>
-                  {getSubjectDisplayName(caseStudy.subject)}
-                </Badge>
-                <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
-                  <Brain className="h-3 w-3 mr-1" />
-                  AI-Powered
-                </Badge>
-              </div>
-
-              <Button
-                onClick={() => setShowCaseStudyModal(true)}
-                className={`${
-                  hasCaseStudyInstructionsRead()
-                    ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700'
-                    : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
-                } text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200`}
-              >
-                {hasCaseStudyInstructionsRead() ? <Check className="h-4 w-4 mr-2" /> : <BookOpen className="h-4 w-4 mr-2" />}
-                Case Study Instructions
-                {hasCaseStudyInstructionsRead() && <span className="ml-2 text-xs bg-white/20 px-2 py-0.5 rounded-full">✓ Read</span>}
-              </Button>
-            </div>
-            <CardTitle className="text-2xl font-bold text-gray-900">Case Study Overview</CardTitle>
-            <CardDescription className="text-base text-gray-700 leading-relaxed">{caseStudy.shortDescription}</CardDescription>
-          </CardHeader>
-        </Card>
-
         {modules.length > 0 && (
           <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
-            <CardHeader className="pb-6">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-3">
+                  <Badge className={`bg-gradient-to-r ${getSubjectColor(caseStudy?.subject || 'MARKETING')} text-white border-0 text-sm px-3 py-1`}>
+                    <span className="mr-2">{getSubjectIcon(caseStudy?.subject || 'MARKETING')}</span>
+                    {getSubjectDisplayName(caseStudy?.subject || 'MARKETING')}
+                  </Badge>
+                  <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
+                    <BotIcon className="h-3 w-3 mr-1" />
+                    AI-Powered
+                  </Badge>
+                </div>
+
+                <Button
+                  onClick={() => setShowCaseStudyModal(true)}
+                  className={`${
+                    hasCaseStudyInstructionsRead()
+                      ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700'
+                      : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
+                  } text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200`}
+                >
+                  {hasCaseStudyInstructionsRead() ? <Check className="h-4 w-4 mr-2" /> : <BookOpen className="h-4 w-4 mr-2" />}
+                  Case Study Instructions
+                  {hasCaseStudyInstructionsRead() && <span className="ml-2 text-xs bg-white/20 px-2 py-0.5 rounded-full">✓ Read</span>}
+                </Button>
+              </div>
+              <CardTitle className="text-2xl font-bold text-gray-900">Case Study Overview</CardTitle>
+              <CardDescription className="text-base text-gray-700 leading-relaxed mb-4">
+                {caseStudy?.shortDescription || 'No description available.'}
+              </CardDescription>
+
               <div className="flex items-center space-x-3">
-                <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg">
-                  <Target className="h-5 w-5 text-white" />
+                <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-2 rounded-lg">
+                  <BookOpen className="h-5 w-5 text-white" />
                 </div>
                 <CardTitle className="text-2xl font-bold text-gray-900">Learning Path</CardTitle>
               </div>

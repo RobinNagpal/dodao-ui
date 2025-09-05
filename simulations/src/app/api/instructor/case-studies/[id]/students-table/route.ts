@@ -82,6 +82,14 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
       },
     });
 
+    // Get final summary for this student
+    const finalSummary = await prisma.finalSummary.findFirst({
+      where: {
+        studentId: student.id,
+        archive: false,
+      },
+    });
+
     // Group attempts by exercise ID
     const attemptsByExercise = exerciseAttempts.reduce((acc, attempt) => {
       if (!acc[attempt.exerciseId]) {
@@ -113,6 +121,15 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
       assignedStudentId: student.assignedStudentId,
       enrollmentId: student.enrollmentId,
       exercises,
+      finalSummary: finalSummary
+        ? {
+            id: finalSummary.id,
+            status: finalSummary.status,
+            hasContent: !!finalSummary.response,
+            response: finalSummary.response,
+            createdAt: finalSummary.createdAt.toISOString(),
+          }
+        : undefined,
       createdAt: student.createdAt.toISOString(),
     });
   }

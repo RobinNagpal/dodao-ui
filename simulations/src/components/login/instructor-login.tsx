@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { BookOpen, Users, Shield, Brain, Sparkles, TrendingUp } from 'lucide-react';
+import { BookOpen, Users, Shield, Brain, Sparkles, TrendingUp, Bot } from 'lucide-react';
 
 interface InstructorLoginProps {
   onLogin: (email: string) => void;
@@ -129,8 +129,8 @@ export function InstructorLogin({ onLogin, onSwitchToStudent, errorMessage }: In
               onClick={onSwitchToStudent}
               className="w-full border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 bg-transparent"
             >
-              <Brain className="h-4 w-4 mr-2" />
-              Switch to Student Portal
+              <Users className="h-4 w-4 mr-2" />
+              Switch to Student Login
             </Button>
           </CardContent>
         </Card>
@@ -146,7 +146,7 @@ export function InstructorLogin({ onLogin, onSwitchToStudent, errorMessage }: In
             <div className="bg-gradient-to-br from-indigo-100 to-purple-100 p-3 rounded-xl group-hover:scale-110 transition-transform duration-200">
               <Users className="h-6 w-6 text-indigo-600" />
             </div>
-            <span className="text-sm text-gray-600 text-center font-medium">Student Monitoring</span>
+            <span className="text-sm text-gray-600 text-center font-medium">Student Progress</span>
           </div>
           <div className="flex flex-col items-center space-y-3 group">
             <div className="bg-gradient-to-br from-purple-100 to-pink-100 p-3 rounded-xl group-hover:scale-110 transition-transform duration-200">
