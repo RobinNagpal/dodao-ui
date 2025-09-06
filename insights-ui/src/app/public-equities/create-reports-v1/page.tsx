@@ -9,14 +9,10 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { AnalysisRequest, TickerAnalysisResponse, TickerV1 } from '@/types/public-equity/analysis-factors-types';
-
-interface NewTickerResponse {
-  success: boolean;
-  ticker: TickerV1;
-}
+import AddTickersForm from '@/components/public-equities/AddTickersForm';
 
 interface AnalysisStatus {
   businessAndMoat: boolean;
@@ -38,15 +34,6 @@ interface TickerReportV1 {
   analysisStatus: AnalysisStatus;
 }
 
-interface NewTickerForm {
-  name: string;
-  symbol: string;
-  exchange: string;
-  industryKey: string;
-  subIndustryKey: string;
-  websiteUrl: string;
-}
-
 interface GenerationSettings {
   investorKey: string;
 }
@@ -56,14 +43,6 @@ export default function CreateReportsV1Page(): JSX.Element {
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   const [generationSettings, setGenerationSettings] = useState<GenerationSettings>({
     investorKey: 'WARREN_BUFFETT',
-  });
-  const [newTickerForm, setNewTickerForm] = useState<NewTickerForm>({
-    name: '',
-    symbol: '',
-    exchange: 'NASDAQ',
-    industryKey: 'REITS',
-    subIndustryKey: 'RESIDENTIAL_REITS',
-    websiteUrl: '',
   });
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
   // Fetch all tickers
@@ -93,19 +72,6 @@ export default function CreateReportsV1Page(): JSX.Element {
     errorMessage: 'Failed to generate analysis.',
   });
 
-  // Post hook for adding new ticker
-  const { postData: postNewTicker, loading: addTickerLoading } = usePostData<NewTickerResponse, NewTickerForm>({
-    successMessage: 'Ticker added successfully!',
-    errorMessage: 'Failed to add ticker.',
-  });
-
-  const exchangeItems: StyledSelectItem[] = [
-    { id: 'NASDAQ', label: 'NASDAQ' },
-    { id: 'NYSE', label: 'NYSE' },
-    { id: 'AMEX', label: 'AMEX' },
-    { id: 'TSX', label: 'TSX' },
-  ];
-
   const analysisTypes = [
     { key: 'business-and-moat', label: 'Business & Moat', statusKey: 'businessAndMoat' as keyof AnalysisStatus },
     { key: 'financial-analysis', label: 'Financial Analysis', statusKey: 'financialAnalysis' as keyof AnalysisStatus },
@@ -121,24 +87,6 @@ export default function CreateReportsV1Page(): JSX.Element {
     { key: 'CHARLIE_MUNGER', label: 'Charlie Munger Analysis' },
     { key: 'BILL_ACKMAN', label: 'Bill Ackman Analysis' },
   ];
-
-  const handleAddTicker = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const result = await postNewTicker(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`, newTickerForm);
-    if (result) {
-      setShowAddTickerForm(false);
-      setNewTickerForm({
-        name: '',
-        symbol: '',
-        exchange: 'NASDAQ',
-        industryKey: 'REITS',
-        subIndustryKey: 'RESIDENTIAL_REITS',
-        websiteUrl: '',
-      });
-      // Refresh the tickers list to include the new ticker
-      await refetchTickers();
-    }
-  };
 
   const handleGenerateAnalysis = async (analysisType: string, ticker: string) => {
     if (!ticker) return;
@@ -382,76 +330,15 @@ export default function CreateReportsV1Page(): JSX.Element {
           </Block>
         )}
 
-        {/* Add Ticker Modal/Form */}
+        {/* Add Ticker Form */}
         {showAddTickerForm && (
-          <Block title="Add New Ticker" className="text-color">
-            <form onSubmit={handleAddTicker} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1 dark:text-gray-300">Company Name</label>
-                  <input
-                    type="text"
-                    value={newTickerForm.name}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewTickerForm((prev) => ({ ...prev, name: e.target.value }))}
-                    required
-                    className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1 dark:text-gray-300">Symbol</label>
-                  <input
-                    type="text"
-                    value={newTickerForm.symbol}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewTickerForm((prev) => ({ ...prev, symbol: e.target.value.toUpperCase() }))}
-                    required
-                    className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                  />
-                </div>
-
-                <StyledSelect
-                  label="Exchange"
-                  selectedItemId={newTickerForm.exchange}
-                  items={exchangeItems}
-                  setSelectedItemId={(exchange) => setNewTickerForm((prev) => ({ ...prev, exchange: exchange || 'NASDAQ' }))}
-                />
-
-                <StyledSelect
-                  label="Industry"
-                  selectedItemId={newTickerForm.industryKey}
-                  items={INDUSTRY_OPTIONS.map((opt) => ({ id: opt.key, label: opt.name }))}
-                  setSelectedItemId={(industry) => setNewTickerForm((prev) => ({ ...prev, industryKey: industry || 'REITS' }))}
-                />
-
-                <StyledSelect
-                  label="Sub-Industry"
-                  selectedItemId={newTickerForm.subIndustryKey}
-                  items={SUB_INDUSTRY_OPTIONS.map((opt) => ({ id: opt.key, label: opt.name }))}
-                  setSelectedItemId={(subIndustry) => setNewTickerForm((prev) => ({ ...prev, subIndustryKey: subIndustry || 'RESIDENTIAL_REITS' }))}
-                />
-
-                <div>
-                  <label className="block text-sm font-medium mb-1 dark:text-gray-300">Website URL</label>
-                  <input
-                    type="url"
-                    value={newTickerForm.websiteUrl}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewTickerForm((prev) => ({ ...prev, websiteUrl: e.target.value }))}
-                    className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                  />
-                </div>
-              </div>
-
-              <div className="flex space-x-4">
-                <Button type="submit" variant="contained" primary loading={addTickerLoading} disabled={addTickerLoading}>
-                  {addTickerLoading ? 'Adding...' : 'Add Ticker'}
-                </Button>
-
-                <Button type="button" variant="outlined" onClick={() => setShowAddTickerForm(false)}>
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          </Block>
+          <AddTickersForm
+            onSuccess={async () => {
+              setShowAddTickerForm(false);
+              await refetchTickers();
+            }}
+            onCancel={() => setShowAddTickerForm(false)}
+          />
         )}
       </div>
     </PageWrapper>
