@@ -158,7 +158,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         {/* Detailed Investor Reports Section */}
         {tickerData.investorAnalysisResults.length > 0 && (
           <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Investor Reports Summaries</h2>
+            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Investor Reports Summaries (Created using AI)</h2>
             <div className="space-y-4">
               {tickerData.investorAnalysisResults.map((result) => (
                 <div key={result.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
@@ -218,7 +218,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         {/* Detailed Investor Reports Section */}
         {tickerData.investorAnalysisResults.length > 0 && (
           <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Detailed Investor Reports</h2>
+            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Detailed Investor Reports (Created using AI)</h2>
             <div className="space-y-4">
               {tickerData.investorAnalysisResults.map((result) => (
                 <div key={result.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
