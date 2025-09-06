@@ -45,7 +45,6 @@ interface NewTickerForm {
   industryKey: string;
   subIndustryKey: string;
   websiteUrl: string;
-  summary: string;
 }
 
 interface GenerationSettings {
@@ -65,7 +64,6 @@ export default function CreateReportsV1Page(): JSX.Element {
     industryKey: 'REITS',
     subIndustryKey: 'RESIDENTIAL_REITS',
     websiteUrl: '',
-    summary: '',
   });
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
   // Fetch all tickers
@@ -136,7 +134,6 @@ export default function CreateReportsV1Page(): JSX.Element {
         industryKey: 'REITS',
         subIndustryKey: 'RESIDENTIAL_REITS',
         websiteUrl: '',
-        summary: '',
       });
       // Refresh the tickers list to include the new ticker
       await refetchTickers();
@@ -233,129 +230,97 @@ export default function CreateReportsV1Page(): JSX.Element {
   return (
     <PageWrapper>
       <div className="space-y-6">
-        <Block title="Ticker Reports V1 Management" className="text-color">
-          <div className="space-y-4">
-            {/* Add New Ticker Button */}
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Manage Ticker Analyses</h2>
-              <Button variant="contained" primary onClick={() => setShowAddTickerForm(true)}>
-                Add New Ticker
-              </Button>
-            </div>
-
-            {/* Ticker Selection */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <StyledSelect label="Select Ticker" selectedItemId={selectedTicker} items={getTickerItems()} setSelectedItemId={setSelectedTicker} />
-            </div>
-
-            {/* Generation Settings */}
-            <Block title="Generation Settings" className=" dark:bg-gray-800">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <StyledSelect
-                  label="Investor Style (for Investor Analysis)"
-                  selectedItemId={generationSettings.investorKey}
-                  items={INVESTOR_OPTIONS.map((opt) => ({ id: opt.key, label: opt.name }))}
-                  setSelectedItemId={(key) =>
-                    setGenerationSettings((prev) => ({
-                      ...prev,
-                      investorKey: key || 'WARREN_BUFFETT',
-                    }))
-                  }
-                />
+        {!showAddTickerForm && (
+          <Block title="Ticker Reports V1 Management" className="text-color">
+            <div className="space-y-4">
+              {/* Add New Ticker Button */}
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-semibold">Manage Ticker Analyses</h2>
+                <Button variant="contained" primary onClick={() => setShowAddTickerForm(true)}>
+                  Add New Ticker
+                </Button>
               </div>
-            </Block>
 
-            {/* Analysis Status and Actions */}
-            {selectedTicker && tickerReport && (
-              <Block title={`Analysis Status: ${tickerReport.ticker.name} (${tickerReport.ticker.symbol})`} className="text-color">
-                {reportLoading ? (
-                  <div className="text-center py-8">Loading report...</div>
-                ) : (
-                  <div className="space-y-4">
-                    {/* Ticker Info */}
-                    <div className=" dark:bg-gray-800 p-4 rounded-lg">
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                          <strong>Industry:</strong> {getIndustryDisplayName(tickerReport.ticker.industryKey)}
-                        </div>
-                        <div>
-                          <strong>Sub-Industry:</strong> {getSubIndustryDisplayName(tickerReport.ticker.subIndustryKey)}
-                        </div>
-                        <div>
-                          <strong>Exchange:</strong> {tickerReport.ticker.exchange}
-                        </div>
-                      </div>
-                      {tickerReport.ticker.websiteUrl && (
-                        <div className="mt-2">
-                          <strong>Website:</strong>{' '}
-                          <a href={tickerReport.ticker.websiteUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                            {tickerReport.ticker.websiteUrl}
-                          </a>
-                        </div>
-                      )}
-                      {tickerReport.ticker.summary && (
-                        <div className="mt-2">
-                          <strong>Summary:</strong> {tickerReport.ticker.summary}
-                        </div>
-                      )}
-                    </div>
+              {/* Ticker Selection */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <StyledSelect label="Select Ticker" selectedItemId={selectedTicker} items={getTickerItems()} setSelectedItemId={setSelectedTicker} />
+              </div>
 
-                    {/* Generate All Button */}
-                    <div className="flex justify-center">
-                      <Button
-                        variant="contained"
-                        primary
-                        onClick={() => handleGenerateAll(selectedTicker)}
-                        disabled={Object.values(loadingStates).some(Boolean)}
-                        className="px-8 py-3"
-                      >
-                        {Object.values(loadingStates).some(Boolean) ? 'Generating...' : 'Generate All Analyses'}
-                      </Button>
-                    </div>
+              {/* Generation Settings */}
+              <Block title="Generation Settings" className=" dark:bg-gray-800">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <StyledSelect
+                    label="Investor Style (for Investor Analysis)"
+                    selectedItemId={generationSettings.investorKey}
+                    items={INVESTOR_OPTIONS.map((opt) => ({ id: opt.key, label: opt.name }))}
+                    setSelectedItemId={(key) =>
+                      setGenerationSettings((prev) => ({
+                        ...prev,
+                        investorKey: key || 'WARREN_BUFFETT',
+                      }))
+                    }
+                  />
+                </div>
+              </Block>
 
-                    {/* Individual Analysis Status */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                      {analysisTypes.map((analysis) => {
-                        const isCompleted = tickerReport.analysisStatus[analysis.statusKey];
-                        const isLoading = loadingStates[`${selectedTicker}-${analysis.key}`];
-
-                        return (
-                          <div key={analysis.key} className="border rounded-lg p-4 space-y-3">
-                            <div className="flex items-center justify-between">
-                              <h4 className="font-medium">{analysis.label}</h4>
-                              <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : 'bg-gray-300'}`} />
-                            </div>
-
-                            <div className="text-sm text-gray-600">Status: {isCompleted ? 'Completed' : 'Not Generated'}</div>
-
-                            <Button
-                              variant="outlined"
-                              size="sm"
-                              onClick={() => handleGenerateAnalysis(analysis.key, selectedTicker)}
-                              disabled={isLoading}
-                              loading={isLoading}
-                              className="w-full"
-                            >
-                              {isLoading ? 'Generating...' : isCompleted ? 'Regenerate' : 'Generate'}
-                            </Button>
+              {/* Analysis Status and Actions */}
+              {selectedTicker && tickerReport && (
+                <Block title={`Analysis Status: ${tickerReport.ticker.name} (${tickerReport.ticker.symbol})`} className="text-color">
+                  {reportLoading ? (
+                    <div className="text-center py-8">Loading report...</div>
+                  ) : (
+                    <div className="space-y-4">
+                      {/* Ticker Info */}
+                      <div className=" dark:bg-gray-800 p-4 rounded-lg">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div>
+                            <strong>Industry:</strong> {getIndustryDisplayName(tickerReport.ticker.industryKey)}
                           </div>
-                        );
-                      })}
-                    </div>
+                          <div>
+                            <strong>Sub-Industry:</strong> {getSubIndustryDisplayName(tickerReport.ticker.subIndustryKey)}
+                          </div>
+                          <div>
+                            <strong>Exchange:</strong> {tickerReport.ticker.exchange}
+                          </div>
+                        </div>
+                        {tickerReport.ticker.websiteUrl && (
+                          <div className="mt-2">
+                            <strong>Website:</strong>{' '}
+                            <a href={tickerReport.ticker.websiteUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                              {tickerReport.ticker.websiteUrl}
+                            </a>
+                          </div>
+                        )}
+                        {tickerReport.ticker.summary && (
+                          <div className="mt-2">
+                            <strong>Summary:</strong> {tickerReport.ticker.summary}
+                          </div>
+                        )}
+                      </div>
 
-                    {/* Investor Analysis Status */}
-                    <div className="mt-6">
-                      <h3 className="text-lg font-semibold mb-4">Investor Analysis</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {investorAnalysisTypes.map((investor) => {
-                          const isCompleted =
-                            tickerReport.analysisStatus.investorAnalysis[investor.key as keyof typeof tickerReport.analysisStatus.investorAnalysis];
-                          const isLoading = loadingStates[`${selectedTicker}-investor-${investor.key}`];
+                      {/* Generate All Button */}
+                      <div className="flex justify-center">
+                        <Button
+                          variant="contained"
+                          primary
+                          onClick={() => handleGenerateAll(selectedTicker)}
+                          disabled={Object.values(loadingStates).some(Boolean)}
+                          className="px-8 py-3"
+                        >
+                          {Object.values(loadingStates).some(Boolean) ? 'Generating...' : 'Generate All Analyses'}
+                        </Button>
+                      </div>
+
+                      {/* Individual Analysis Status */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {analysisTypes.map((analysis) => {
+                          const isCompleted = tickerReport.analysisStatus[analysis.statusKey];
+                          const isLoading = loadingStates[`${selectedTicker}-${analysis.key}`];
 
                           return (
-                            <div key={investor.key} className="border rounded-lg p-4 space-y-3">
+                            <div key={analysis.key} className="border rounded-lg p-4 space-y-3">
                               <div className="flex items-center justify-between">
-                                <h4 className="font-medium">{investor.label}</h4>
+                                <h4 className="font-medium">{analysis.label}</h4>
                                 <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : 'bg-gray-300'}`} />
                               </div>
 
@@ -364,7 +329,7 @@ export default function CreateReportsV1Page(): JSX.Element {
                               <Button
                                 variant="outlined"
                                 size="sm"
-                                onClick={() => handleGenerateInvestorAnalysis(investor.key, selectedTicker)}
+                                onClick={() => handleGenerateAnalysis(analysis.key, selectedTicker)}
                                 disabled={isLoading}
                                 loading={isLoading}
                                 className="w-full"
@@ -375,13 +340,47 @@ export default function CreateReportsV1Page(): JSX.Element {
                           );
                         })}
                       </div>
+
+                      {/* Investor Analysis Status */}
+                      <div className="mt-6">
+                        <h3 className="text-lg font-semibold mb-4">Investor Analysis</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          {investorAnalysisTypes.map((investor) => {
+                            const isCompleted =
+                              tickerReport.analysisStatus.investorAnalysis[investor.key as keyof typeof tickerReport.analysisStatus.investorAnalysis];
+                            const isLoading = loadingStates[`${selectedTicker}-investor-${investor.key}`];
+
+                            return (
+                              <div key={investor.key} className="border rounded-lg p-4 space-y-3">
+                                <div className="flex items-center justify-between">
+                                  <h4 className="font-medium">{investor.label}</h4>
+                                  <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : 'bg-gray-300'}`} />
+                                </div>
+
+                                <div className="text-sm text-gray-600">Status: {isCompleted ? 'Completed' : 'Not Generated'}</div>
+
+                                <Button
+                                  variant="outlined"
+                                  size="sm"
+                                  onClick={() => handleGenerateInvestorAnalysis(investor.key, selectedTicker)}
+                                  disabled={isLoading}
+                                  loading={isLoading}
+                                  className="w-full"
+                                >
+                                  {isLoading ? 'Generating...' : isCompleted ? 'Regenerate' : 'Generate'}
+                                </Button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </Block>
-            )}
-          </div>
-        </Block>
+                  )}
+                </Block>
+              )}
+            </div>
+          </Block>
+        )}
 
         {/* Add Ticker Modal/Form */}
         {showAddTickerForm && (
@@ -440,17 +439,6 @@ export default function CreateReportsV1Page(): JSX.Element {
                     className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1 dark:text-gray-300">Summary</label>
-                <textarea
-                  value={newTickerForm.summary}
-                  onChange={(e) => setNewTickerForm((prev) => ({ ...prev, summary: e.target.value }))}
-                  placeholder="Brief description of the company..."
-                  rows={3}
-                  className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                />
               </div>
 
               <div className="flex space-x-4">
