@@ -1,5 +1,6 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import TariffUpdatesActions from '@/components/industry-tariff/section-actions/TariffUpdatesActions';
+import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
 
 import { getMarkdownContentForCountryTariffs } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
@@ -128,21 +129,15 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
       <div className="space-y-12">
         {report.tariffUpdates ? (
           report.tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
-            const markdownContent = getMarkdownContentForCountryTariffs(countryTariff);
-            return renderSection(
-              countryTariff.countryName,
-              <div className="bg-white dark:bg-gray-900 rounded-lg py-2 shadow-sm">
-                <div className="markdown-body prose max-w-none px-2">
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: markdownContent && parseMarkdown(markdownContent),
-                    }}
-                  />
+            return (
+              <div key={index} className="mb-12">
+                <div className="flex justify-end mb-4">
+                  <PrivateWrapper>
+                    <TariffUpdatesActions industryId={industryId} tariffIndex={index} countryName={countryTariff.countryName} />
+                  </PrivateWrapper>
                 </div>
-              </div>,
-              <PrivateWrapper>
-                <TariffUpdatesActions industryId={industryId} tariffIndex={index} countryName={countryTariff.countryName} />
-              </PrivateWrapper>
+                <CountryTariffRenderer countryTariff={countryTariff} />
+              </div>
             );
           })
         ) : (

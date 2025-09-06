@@ -1,5 +1,6 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import UnderstandIndustryActions from '@/components/industry-tariff/section-actions/UnderstandIndustryActions';
+import { UnderstandIndustryRenderer } from '@/components/industry-tariff/renderers/UnderstandIndustryRenderer';
 
 import { getMarkdownContentForUnderstandIndustry } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -87,20 +88,6 @@ export default async function UnderstandIndustryPage({ params }: { params: Promi
   const seoDetails = report.reportSeoDetails?.understandIndustrySeoDetails;
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
 
-  const content = report.understandIndustry ? parseMarkdown(getMarkdownContentForUnderstandIndustry(report.understandIndustry)) : 'No content available';
-
-  // Function to render section with header and actions
-  const renderSection = (title: string, content: JSX.Element) => (
-    <div className="mb-12">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-2 mb-4">
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold heading-color">{title}</h2>
-        </div>
-      </div>
-      {content}
-    </div>
-  );
-
   return (
     <div className="mx-auto max-w-7xl py-2">
       {/* Title and Actions */}
@@ -127,12 +114,11 @@ export default async function UnderstandIndustryPage({ params }: { params: Promi
       )}
 
       <div className="space-y-12">
-        {renderSection(
-          'Industry Overview',
-          <div className="bg-white dark:bg-gray-900 rounded-lg py-2 shadow-sm">
-            <div className="markdown-body prose max-w-none px-2">
-              <div dangerouslySetInnerHTML={{ __html: content }} />
-            </div>
+        {report.understandIndustry ? (
+          <UnderstandIndustryRenderer understandIndustry={report.understandIndustry} />
+        ) : (
+          <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm">
+            <p className="text-gray-500 italic">No content available</p>
           </div>
         )}
       </div>

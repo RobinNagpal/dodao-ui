@@ -127,14 +127,11 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
       )}
 
       <div className="space-y-12">
-        {renderSection(
-          'Industry Structure',
-          <div className="bg-white dark:bg-gray-900 rounded-lg py-2 shadow-sm">
-            <div className="markdown-body prose max-w-none px-2">
-              <div dangerouslySetInnerHTML={{ __html: content }} />
-            </div>
+        <div className="bg-white dark:bg-gray-900 rounded-lg p-2 shadow-sm">
+          <div className="markdown-body prose max-w-none px-2">
+            <div dangerouslySetInnerHTML={{ __html: content }} />
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

@@ -151,7 +151,8 @@ export function challengerToMarkdown(challenger: NewChallenger): string {
   // Tariff Impact & Competitors
   const footer = `#### Tariffs & Competitors\n\n` + `- Tariff Impact: ${challenger.impactOfTariffs}\n\n` + `- Competitors: ${challenger.competitors}\n\n`;
 
-  return header + productsSection + performanceSection + managementSection + footer;
+  const content = header + productsSection + performanceSection + managementSection + footer;
+  return recursivelyCleanOpenAiUrls(content);
 }
 
 /**

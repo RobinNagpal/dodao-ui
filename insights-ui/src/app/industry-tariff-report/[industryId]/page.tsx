@@ -1,5 +1,8 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ReportCoverActions from '@/components/industry-tariff/section-actions/ReportCoverActions';
+import { ReportCoverRenderer } from '@/components/industry-tariff/renderers/ReportCoverRenderer';
+import { ExecutiveSummaryRenderer } from '@/components/industry-tariff/renderers/ExecutiveSummaryRenderer';
+
 import { getMarkdownContentForReportCover, getMarkdownContentForExecutiveSummary } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport, ReportCover } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -88,12 +91,6 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
   const seoDetails = report.reportSeoDetails?.reportCoverSeoDetails;
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
 
-  const reportCover: ReportCover | undefined = report?.reportCover;
-  const markdownContent = reportCover && getMarkdownContentForReportCover(reportCover);
-
-  // Get executive summary content for better SEO
-  const executiveSummaryContent = report.executiveSummary ? parseMarkdown(getMarkdownContentForExecutiveSummary(report.executiveSummary)) : null;
-
   // Prepare tariff updates summary with complete newChanges
   const tariffUpdatesSummary =
     report.tariffUpdates?.countrySpecificTariffs?.map((tariff) => ({
@@ -104,12 +101,12 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
   // Function to render section with header and actions
   const renderSection = (title: string, content: JSX.Element) => (
     <div className="mb-12">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-2 mb-4">
-        <div className="flex justify-between items-center">
+      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-xl font-semibold heading-color">{title}</h2>
         </div>
+        <div className="p-4">{content}</div>
       </div>
-      {content}
     </div>
   );
 
@@ -142,23 +139,19 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
         {/* Report Cover Content */}
         {renderSection(
           'Overview',
-          <div className="bg-white dark:bg-gray-900 rounded-lg py-2 shadow-sm">
-            <div className="markdown-body prose max-w-none px-2">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: (markdownContent && parseMarkdown(markdownContent)) || 'No content available',
-                }}
-              />
-            </div>
-          </div>
+          report.reportCover ? (
+            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.reportCover.reportCoverContent) }} />
+          ) : (
+            <p className="text-gray-500 italic">No content available</p>
+          )
         )}
 
         {/* Latest Tariff Actions Summary */}
         {tariffUpdatesSummary.length > 0 &&
           renderSection(
             `Latest ${definition.name} Tariff Actions`,
-            <div className="bg-white dark:bg-gray-900 rounded-lg py-2 shadow-sm">
-              <div className="space-y-4 mb-4 px-2">
+            <div>
+              <div className="space-y-4 mb-4">
                 {tariffUpdatesSummary.map((tariff, index) => (
                   <div key={index} className="mb-6">
                     <h3 className="font-bold text-lg mb-2">{tariff.countryName}</h3>
@@ -171,7 +164,7 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
                   </div>
                 ))}
               </div>
-              <div className="mt-4 px-2">
+              <div className="mt-4">
                 <a href={`/industry-tariff-report/${industryId}/tariff-updates`} className="link-color underline font-medium">
                   See full country breakdown
                 </a>
@@ -180,18 +173,10 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
           )}
 
         {/* Executive Summary Content for SEO */}
-        {executiveSummaryContent &&
+        {report.executiveSummary &&
           renderSection(
             'Executive Summary',
-            <div className="bg-white dark:bg-gray-900 rounded-lg py-2 shadow-sm">
-              <div className="markdown-body prose max-w-none px-2">
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: executiveSummaryContent,
-                  }}
-                />
-              </div>
-            </div>
+            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.executiveSummary.executiveSummary) }} />
           )}
 
         {/* Related Industries Section */}
