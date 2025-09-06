@@ -9,7 +9,8 @@ export interface ConfirmationModalProps {
   onClose: () => void;
   onConfirm: () => void;
   confirming?: boolean;
-  confirmationText: string;
+  confirmationText?: string;
+  content?: React.ReactNode;
   askForTextInput: boolean;
   showSemiTransparentBg?: boolean;
 }
@@ -19,6 +20,7 @@ export default function ConfirmationModal({
   onClose,
   onConfirm,
   confirmationText,
+  content,
   confirming,
   title,
   askForTextInput,
@@ -27,8 +29,8 @@ export default function ConfirmationModal({
   const [confirmInputText, setConfirmInputText] = useState('');
   return (
     <SingleSectionModal open={open} onClose={onClose} title={title} showSemiTransparentBg={showSemiTransparentBg}>
-      <div className="p-4">
-        <p className="my-4">{confirmationText}</p>
+      <div className="px-4 pb-4 pt-2">
+        {content ? content : <p className="mb-4">{confirmationText}</p>}
         {askForTextInput && (
           <Input modelValue={confirmInputText} maxLength={32} onUpdate={(e) => setConfirmInputText(e?.toString() || '')} className="mb-4">
             {`Type "Confirm" *`}

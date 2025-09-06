@@ -9,9 +9,17 @@ export default {
     '../shared/web-core/src/components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   safelist: [
-    // Marketing gradient colors - ensuring pink and rose are always included
+    // Marketing gradient colors
     'from-pink-500',
     'to-rose-600',
+    'from-blue-500',
+    'to-cyan-600',
+    'from-green-500',
+    'to-emerald-600',
+    'from-yellow-500',
+    'to-orange-600',
+    'from-purple-500',
+    'to-indigo-600',
   ],
   theme: {
     extend: {
