@@ -1,18 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import AddTickersForm from '@/components/public-equities/AddTickersForm';
+import { getIndustryDisplayName, getSubIndustryDisplayName, INVESTOR_OPTIONS } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { INDUSTRY_OPTIONS, SUB_INDUSTRY_OPTIONS, INVESTOR_OPTIONS, getIndustryDisplayName, getSubIndustryDisplayName } from '@/lib/mappingsV1';
+import { AnalysisRequest, TickerAnalysisResponse, TickerV1 } from '@/types/public-equity/analysis-factors-types';
+import Block from '@dodao/web-core/components/app/Block';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import Block from '@dodao/web-core/components/app/Block';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
-import { AnalysisRequest, TickerAnalysisResponse, TickerV1 } from '@/types/public-equity/analysis-factors-types';
-import AddTickersForm from '@/components/public-equities/AddTickersForm';
+import React, { useState } from 'react';
 
 interface AnalysisStatus {
   businessAndMoat: boolean;
