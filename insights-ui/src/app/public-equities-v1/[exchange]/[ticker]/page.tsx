@@ -5,15 +5,14 @@ import RadarChart from '@/components/visualizations/RadarChart';
 import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
-import { PerformanceChecklistItem, SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
+import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
-import { getReportName } from '@/util/report-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
-import { TickerV1AnalysisCategoryFactorResult, TickerV1CategoryAnalysisResult } from '.prisma/client';
 
 export default async function TickerDetailsPage({ params }: { params: Promise<{ ticker: string; exchange: string }> }) {
   const { ticker, exchange } = await params;
@@ -67,20 +66,34 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
             </a>
           </h1>
 
-          {/* Radar Chart - centered, max 60% width on large screens, full width on small */}
-          <div className="w-full mx-auto relative lg:w-3/5 flex justify-center">
-            <div className="w-full relative">
-              <div className="absolute top-4 right-4 flex space-x-2 z-10">
-                <div className="text-2xl font-bold" style={{ color: 'var(--primary-color, blue)' }}>
-                  {spiderGraphScorePercentage.toFixed(0)}%
+          <div className="flex flex-col gap-x-5 gap-y-2 lg:flex-row">
+            {/* Ticker Info on the left */}
+            <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
+              <div
+                className="mt-6 markdown-body"
+                dangerouslySetInnerHTML={{
+                  __html: parseMarkdown(
+                    tickerData.categoryAnalysisResults?.find((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat)?.summary ?? 'Not yet populated'
+                  ),
+                }}
+              />
+            </div>
+
+            {/* Spider chart on the right */}
+            <div className="lg:flex lg:flex-auto lg:justify-center relative lg:mb-16">
+              <div className="lg:absolute lg:top-10 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
+                <div className="w-full max-w-lg mx-auto relative">
+                  <div className="absolute top-20 right-0 flex space-x-2">
+                    <div className="text-2xl font-bold -z-10" style={{ color: 'var(--primary-color, blue)' }}>
+                      {spiderGraphScorePercentage.toFixed(0)}%
+                    </div>
+                    <SpiderChartFlyoutMenu />
+                  </div>
+                  <RadarChart data={spiderGraph} scorePercentage={spiderGraphScorePercentage} />
                 </div>
-                <SpiderChartFlyoutMenu />
               </div>
-              <RadarChart data={spiderGraph} scorePercentage={spiderGraphScorePercentage} />
             </div>
           </div>
-
-          {/* Summary Analysis Section */}
         </div>
 
         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm mb-8">
@@ -90,6 +103,9 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
             {/* Iterate over all categories for summary section */}
             {Object.values(TickerAnalysisCategory).map((categoryKey) => {
               const categoryResult = tickerData.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
+              if (categoryKey === TickerAnalysisCategory.BusinessAndMoat) {
+                return null;
+              }
               return (
                 <div key={categoryKey} className="bg-white dark:bg-gray-900 p-4 rounded-md shadow-sm">
                   <h3 className="text-lg font-semibold mb-2">{CATEGORY_MAPPINGS[categoryKey]}</h3>
@@ -124,7 +140,13 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                   <li key={competition.companyName} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
                     <div className="flex flex-col gap-y-2">
                       <h3 className="font-semibold">{competition.companyName}</h3>
-                      <p>{competition.detailedComparison}</p>
+                      {competition.detailedComparison && (
+                        <div
+                          id={slugify(competition.companyName)}
+                          className="markdown markdown-body "
+                          dangerouslySetInnerHTML={{ __html: parseMarkdown(competition.detailedComparison) }}
+                        />
+                      )}
                     </div>
                   </li>
                 ))}
@@ -141,7 +163,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
               {tickerData.investorAnalysisResults.map((result) => (
                 <div key={result.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
                   <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
-                  <p>{result.summary}</p>
+                  <div className="markdown markdown-body " dangerouslySetInnerHTML={{ __html: parseMarkdown(result.summary) }} />
                 </div>
               ))}
             </div>
@@ -159,7 +181,11 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
             <div key={`detail-${categoryKey}`} className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
               <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">{CATEGORY_MAPPINGS[categoryKey]}</h2>
 
-              {categoryResult.introductionToAnalysis && <p className="mb-4">{categoryResult.introductionToAnalysis}</p>}
+              {categoryResult.introductionToAnalysis && (
+                <div className="mb-4">
+                  <div className="markdown markdown-body " dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.introductionToAnalysis) }} />
+                </div>
+              )}
 
               {categoryResult.factorResults?.length > 0 && (
                 <ul className="space-y-3">
@@ -179,7 +205,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
                           </span>
                         </div>
                         <p className="text-sm text-gray-600 dark:text-gray-400">{factor.oneLineExplanation}</p>
-                        <p>{factor.detailedExplanation}</p>
+                        <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(factor.detailedExplanation) }} />
                       </div>
                     </li>
                   ))}
@@ -197,7 +223,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
               {tickerData.investorAnalysisResults.map((result) => (
                 <div key={result.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
                   <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
-                  <p>{result.detailedAnalysis}</p>
+                  <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(result.detailedAnalysis) }} />
                 </div>
               ))}
             </div>
