@@ -1,18 +1,20 @@
 'use client';
 
 import AddTickersForm from '@/components/public-equities/AddTickersForm';
-import { getIndustryDisplayName, getSubIndustryDisplayName, INVESTOR_OPTIONS } from '@/lib/mappingsV1';
+import ReportGenerator from '@/components/public-equities/ReportGenerator';
+import { INVESTOR_OPTIONS } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { AnalysisRequest, TickerAnalysisResponse, TickerV1 } from '@/types/public-equity/analysis-factors-types';
+import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import Checkbox from '@dodao/web-core/components/app/Form/Checkbox';
+import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface AnalysisStatus {
   businessAndMoat: boolean;
@@ -39,12 +41,13 @@ interface GenerationSettings {
 }
 
 export default function CreateReportsV1Page(): JSX.Element {
-  const [showAddTickerForm, setShowAddTickerForm] = useState(false);
-  const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
+  const [showAddTickerForm, setShowAddTickerForm] = useState<boolean>(false);
+  const [selectedTickers, setSelectedTickers] = useState<string[]>([]);
+  const [tickerReports, setTickerReports] = useState<Record<string, TickerReportV1>>({});
   const [generationSettings, setGenerationSettings] = useState<GenerationSettings>({
     investorKey: 'WARREN_BUFFETT',
   });
-  const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
+
   // Fetch all tickers
   const {
     data: tickers,
@@ -52,123 +55,49 @@ export default function CreateReportsV1Page(): JSX.Element {
     reFetchData: refetchTickers,
   } = useFetchData<TickerV1[]>(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`, { cache: 'no-cache' }, 'Failed to fetch tickers');
 
-  // Fetch selected ticker report
-  const {
-    data: tickerReport,
-    loading: reportLoading,
-    reFetchData: refetchTickerReport,
-  } = useFetchData<TickerReportV1>(
-    selectedTicker ? `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${selectedTicker}` : '',
-    {
-      cache: 'no-cache',
-      skipInitialFetch: !selectedTicker, // Only fetch when ticker is selected
-    },
-    'Failed to fetch ticker report'
-  );
-
-  // Post hooks for analysis generation
-  const { postData: postAnalysis, loading: analysisLoading } = usePostData<TickerAnalysisResponse, AnalysisRequest>({
-    successMessage: 'Analysis generation started successfully!',
-    errorMessage: 'Failed to generate analysis.',
-  });
-
-  const analysisTypes = [
-    { key: 'business-and-moat', label: 'Business & Moat', statusKey: 'businessAndMoat' as keyof AnalysisStatus },
-    { key: 'financial-analysis', label: 'Financial Analysis', statusKey: 'financialAnalysis' as keyof AnalysisStatus },
-    { key: 'competition', label: 'Competition', statusKey: 'competition' as keyof AnalysisStatus },
-    { key: 'past-performance', label: 'Past Performance', statusKey: 'pastPerformance' as keyof AnalysisStatus },
-    { key: 'future-growth', label: 'Future Growth', statusKey: 'futureGrowth' as keyof AnalysisStatus },
-    { key: 'fair-value', label: 'Fair Value', statusKey: 'fairValue' as keyof AnalysisStatus },
-    { key: 'future-risk', label: 'Future Risk', statusKey: 'futureRisk' as keyof AnalysisStatus },
-  ];
-
-  const investorAnalysisTypes = [
-    { key: 'WARREN_BUFFETT', label: 'Warren Buffett Analysis' },
-    { key: 'CHARLIE_MUNGER', label: 'Charlie Munger Analysis' },
-    { key: 'BILL_ACKMAN', label: 'Bill Ackman Analysis' },
-  ];
-
-  const handleGenerateAnalysis = async (analysisType: string, ticker: string) => {
-    if (!ticker) return;
-
-    setLoadingStates((prev) => ({ ...prev, [`${ticker}-${analysisType}`]: true }));
-
+  // Function to fetch a ticker report
+  const fetchTickerReport = async (ticker: string): Promise<TickerReportV1 | null> => {
     try {
-      const payload: AnalysisRequest = {};
+      const response: Response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}`, {
+        cache: 'no-cache',
+      });
 
-      // Add investorKey for investor analysis
-      if (analysisType === 'investor-analysis') {
-        payload.investorKey = generationSettings.investorKey;
+      if (!response.ok) {
+        throw new Error(`Failed to fetch report for ${ticker}`);
       }
 
-      const result = await postAnalysis(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/${analysisType}`, payload);
+      const report: TickerReportV1 = await response.json();
+      setTickerReports((prev: Record<string, TickerReportV1>) => ({
+        ...prev,
+        [ticker]: report,
+      }));
 
-      if (result) {
-        // Refresh the ticker report to show updated analysis status
-        await refetchTickerReport();
-      }
-    } finally {
-      setLoadingStates((prev) => ({ ...prev, [`${ticker}-${analysisType}`]: false }));
+      return report;
+    } catch (error) {
+      console.error(`Error fetching report for ${ticker}:`, error);
+      return null;
     }
   };
 
-  const handleGenerateInvestorAnalysis = async (investorKey: string, ticker: string) => {
-    if (!ticker) return;
-
-    setLoadingStates((prev) => ({ ...prev, [`${ticker}-investor-${investorKey}`]: true }));
-
-    try {
-      const payload: AnalysisRequest = {
-        investorKey: investorKey,
-      };
-
-      const result = await postAnalysis(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/investor-analysis`, payload);
-
-      if (result) {
-        // Refresh the ticker report to show updated analysis status
-        await refetchTickerReport();
-      }
-    } finally {
-      setLoadingStates((prev) => ({ ...prev, [`${ticker}-investor-${investorKey}`]: false }));
+  // Fetch reports for selected tickers
+  const fetchSelectedTickerReports = async (): Promise<void> => {
+    for (const ticker of selectedTickers) {
+      await fetchTickerReport(ticker);
     }
   };
 
-  const handleGenerateAll = async (ticker: string) => {
-    if (!ticker) return;
-
-    // Generate in sequence to respect dependencies (competition first, then past-performance and future-growth)
-    const sequence = [
-      'business-and-moat',
-      'financial-analysis',
-      'fair-value',
-      'future-risk',
-      'competition', // Must come before past-performance and future-growth
-      'past-performance',
-      'future-growth',
-    ];
-
-    for (const analysisType of sequence) {
-      await handleGenerateAnalysis(analysisType, ticker);
-      // Add a small delay between calls
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+  // Effect to fetch reports when selected tickers change
+  useEffect(() => {
+    if (selectedTickers.length > 0) {
+      fetchSelectedTickerReports();
     }
+  }, [selectedTickers]);
 
-    // Generate investor analysis for all investors
-    const allInvestors = ['WARREN_BUFFETT', 'CHARLIE_MUNGER', 'BILL_ACKMAN'];
-    for (const investorKey of allInvestors) {
-      await handleGenerateInvestorAnalysis(investorKey, ticker);
-      // Add a small delay between calls
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
-  };
+  // This function is no longer needed as the Checkboxes component handles selection internally
 
-  const getTickerItems = (): StyledSelectItem[] => {
-    return (
-      tickers?.map((ticker) => ({
-        id: ticker.symbol,
-        label: `${ticker.symbol} - ${ticker.name}`,
-      })) || []
-    );
+  // Handle report generation completion
+  const handleReportGenerated = (ticker: string): void => {
+    fetchTickerReport(ticker);
   };
 
   if (tickersLoading) {
@@ -190,19 +119,46 @@ export default function CreateReportsV1Page(): JSX.Element {
               </div>
 
               {/* Ticker Selection */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <StyledSelect label="Select Ticker" selectedItemId={selectedTicker} items={getTickerItems()} setSelectedItemId={setSelectedTicker} />
-              </div>
+              <Block title="Select Tickers" className="dark:bg-gray-800">
+                {tickers && tickers.length > 0 && (
+                  <Checkboxes
+                    items={tickers.map(
+                      (ticker): CheckboxItem => ({
+                        id: ticker.symbol,
+                        name: `ticker-${ticker.symbol}`,
+                        label: (
+                          <span className="flex-grow cursor-pointer">
+                            <span className="font-medium">{ticker.symbol}</span> - {ticker.name}
+                          </span>
+                        ),
+                      })
+                    )}
+                    selectedItemIds={selectedTickers}
+                    onChange={(selectedIds: string[]) => setSelectedTickers(selectedIds)}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                  />
+                )}
+                {selectedTickers.length > 0 && (
+                  <div className="mt-4 flex justify-end">
+                    <Button variant="outlined" onClick={() => setSelectedTickers([])} className="mr-2">
+                      Clear Selection
+                    </Button>
+                    <Button variant="contained" primary onClick={fetchSelectedTickerReports}>
+                      Refresh Reports
+                    </Button>
+                  </div>
+                )}
+              </Block>
 
               {/* Generation Settings */}
-              <Block title="Generation Settings" className=" dark:bg-gray-800">
+              <Block title="Generation Settings" className="dark:bg-gray-800">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <StyledSelect
                     label="Investor Style (for Investor Analysis)"
                     selectedItemId={generationSettings.investorKey}
                     items={INVESTOR_OPTIONS.map((opt) => ({ id: opt.key, label: opt.name }))}
-                    setSelectedItemId={(key) =>
-                      setGenerationSettings((prev) => ({
+                    setSelectedItemId={(key: string | null) =>
+                      setGenerationSettings((prev: GenerationSettings) => ({
                         ...prev,
                         investorKey: key || 'WARREN_BUFFETT',
                       }))
@@ -211,120 +167,14 @@ export default function CreateReportsV1Page(): JSX.Element {
                 </div>
               </Block>
 
-              {/* Analysis Status and Actions */}
-              {selectedTicker && tickerReport && (
-                <Block title={`Analysis Status: ${tickerReport.ticker.name} (${tickerReport.ticker.symbol})`} className="text-color">
-                  {reportLoading ? (
-                    <div className="text-center py-8">Loading report...</div>
-                  ) : (
-                    <div className="space-y-4">
-                      {/* Ticker Info */}
-                      <div className=" dark:bg-gray-800 p-4 rounded-lg">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div>
-                            <strong>Industry:</strong> {getIndustryDisplayName(tickerReport.ticker.industryKey)}
-                          </div>
-                          <div>
-                            <strong>Sub-Industry:</strong> {getSubIndustryDisplayName(tickerReport.ticker.subIndustryKey)}
-                          </div>
-                          <div>
-                            <strong>Exchange:</strong> {tickerReport.ticker.exchange}
-                          </div>
-                        </div>
-                        {tickerReport.ticker.websiteUrl && (
-                          <div className="mt-2">
-                            <strong>Website:</strong>{' '}
-                            <a href={tickerReport.ticker.websiteUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                              {tickerReport.ticker.websiteUrl}
-                            </a>
-                          </div>
-                        )}
-                        {tickerReport.ticker.summary && (
-                          <div className="mt-2">
-                            <strong>Summary:</strong> {tickerReport.ticker.summary}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Generate All Button */}
-                      <div className="flex justify-center">
-                        <Button
-                          variant="contained"
-                          primary
-                          onClick={() => handleGenerateAll(selectedTicker)}
-                          disabled={Object.values(loadingStates).some(Boolean)}
-                          className="px-8 py-3"
-                        >
-                          {Object.values(loadingStates).some(Boolean) ? 'Generating...' : 'Generate All Analyses'}
-                        </Button>
-                      </div>
-
-                      {/* Individual Analysis Status */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {analysisTypes.map((analysis) => {
-                          const isCompleted = tickerReport.analysisStatus[analysis.statusKey];
-                          const isLoading = loadingStates[`${selectedTicker}-${analysis.key}`];
-
-                          return (
-                            <div key={analysis.key} className="border rounded-lg p-4 space-y-3">
-                              <div className="flex items-center justify-between">
-                                <h4 className="font-medium">{analysis.label}</h4>
-                                <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : 'bg-gray-300'}`} />
-                              </div>
-
-                              <div className="text-sm text-gray-600">Status: {isCompleted ? 'Completed' : 'Not Generated'}</div>
-
-                              <Button
-                                variant="outlined"
-                                size="sm"
-                                onClick={() => handleGenerateAnalysis(analysis.key, selectedTicker)}
-                                disabled={isLoading}
-                                loading={isLoading}
-                                className="w-full"
-                              >
-                                {isLoading ? 'Generating...' : isCompleted ? 'Regenerate' : 'Generate'}
-                              </Button>
-                            </div>
-                          );
-                        })}
-                      </div>
-
-                      {/* Investor Analysis Status */}
-                      <div className="mt-6">
-                        <h3 className="text-lg font-semibold mb-4">Investor Analysis</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          {investorAnalysisTypes.map((investor) => {
-                            const isCompleted =
-                              tickerReport.analysisStatus.investorAnalysis[investor.key as keyof typeof tickerReport.analysisStatus.investorAnalysis];
-                            const isLoading = loadingStates[`${selectedTicker}-investor-${investor.key}`];
-
-                            return (
-                              <div key={investor.key} className="border rounded-lg p-4 space-y-3">
-                                <div className="flex items-center justify-between">
-                                  <h4 className="font-medium">{investor.label}</h4>
-                                  <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : 'bg-gray-300'}`} />
-                                </div>
-
-                                <div className="text-sm text-gray-600">Status: {isCompleted ? 'Completed' : 'Not Generated'}</div>
-
-                                <Button
-                                  variant="outlined"
-                                  size="sm"
-                                  onClick={() => handleGenerateInvestorAnalysis(investor.key, selectedTicker)}
-                                  disabled={isLoading}
-                                  loading={isLoading}
-                                  className="w-full"
-                                >
-                                  {isLoading ? 'Generating...' : isCompleted ? 'Regenerate' : 'Generate'}
-                                </Button>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </Block>
+              {/* Report Generator Component */}
+              {selectedTickers.length > 0 && (
+                <ReportGenerator
+                  selectedTickers={selectedTickers}
+                  tickerReports={tickerReports}
+                  onReportGenerated={handleReportGenerated}
+                  generationSettings={generationSettings}
+                />
               )}
             </div>
           </Block>
@@ -333,11 +183,11 @@ export default function CreateReportsV1Page(): JSX.Element {
         {/* Add Ticker Form */}
         {showAddTickerForm && (
           <AddTickersForm
-            onSuccess={async () => {
+            onSuccess={async (): Promise<void> => {
               setShowAddTickerForm(false);
               await refetchTickers();
             }}
-            onCancel={() => setShowAddTickerForm(false)}
+            onCancel={(): void => setShowAddTickerForm(false)}
           />
         )}
       </div>
