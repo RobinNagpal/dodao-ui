@@ -41,6 +41,7 @@ declare module 'chart.js' {
 }
 
 const RadarChart: React.FC<RadarChartProps> = ({ data, scorePercentage }) => {
+  console.log('RadarChart data:', data);
   const itemKeys = Object.keys(data);
   const SCORE_OFFSET = 0.5; // Adds padding ONLY for zero scores
 
@@ -154,33 +155,81 @@ const RadarChart: React.FC<RadarChartProps> = ({ data, scorePercentage }) => {
         enabled: true,
         intersect: false,
         backgroundColor: 'rgba(0, 0, 0, 1)',
-        titleFont: { size: 18 },
-        bodyFont: { size: 14 },
-        footerFont: { size: 14 },
+        titleFont: { size: 18, weight: 'bold' },
+        bodyFont: { size: 14, weight: 'normal' },
+        footerFont: { size: 14, weight: 'normal' },
         padding: 10,
         position: 'myCustomPositioner',
         caretSize: 0,
         callbacks: {
-          title: (tooltipItems: TooltipItem<'radar'>[]) => getReportName(tooltipItems[0].label),
+          title: (tooltipItems: TooltipItem<'radar'>[]) => {
+            const label = tooltipItems[0].label;
+            // Try to find the data directly by the label first
+            let categoryKey = Object.keys(data).find((key) => data[key].name === label);
+            if (!categoryKey) {
+              categoryKey = getReportKey(label);
+            }
+            return data[categoryKey]?.name || label;
+          },
           label: () => '', // Skip label
           afterBody: (tooltipItems: TooltipItem<'radar'>[]) => {
-            const categoryKey = getReportKey(tooltipItems[0].label);
+            const label = tooltipItems[0].label;
+            // Try to find the data directly by the label first
+            let categoryKey = Object.keys(data).find((key) => data[key].name === label);
+            if (!categoryKey) {
+              categoryKey = getReportKey(label);
+            }
             if (!categoryKey || !data[categoryKey]) {
               return 'No data available';
             }
+
+            // Check if this is V1 data (has V1 category keys) - if so, skip showing summary
+            const isV1Data = Object.keys(data).some((key) =>
+              ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue'].includes(key)
+            );
+
+            if (isV1Data) {
+              return ''; // Don't show summary for V1 data
+            }
+
             const summary = data[categoryKey].summary;
             return summary.replace(/(.{1,50})(\s|$)/g, '$1\n');
           },
           footer: (tooltipItems: TooltipItem<'radar'>[]) => {
-            const categoryKey = getReportKey(tooltipItems[0].label);
+            const label = tooltipItems[0].label;
+            // Try to find the data directly by the label first
+            let categoryKey = Object.keys(data).find((key) => data[key].name === label);
+            if (!categoryKey) {
+              categoryKey = getReportKey(label);
+            }
             if (!categoryKey || !data[categoryKey]) {
               return 'No data available';
             }
             const categoryData = data[categoryKey].scores;
             const totalChecks = categoryData.length;
             const totalOnes = categoryData.filter((item) => item.score === 1).length;
-            const analysisChecks = categoryData.map((item) => (item.score === 1 ? '✅' : '❌')).join('');
-            return `Analysis Checks ${totalOnes}/${totalChecks}\n${analysisChecks}`;
+
+            // Check if this is V1 data (has V1 category keys)
+            const isV1Data = Object.keys(data).some((key) =>
+              ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue'].includes(key)
+            );
+
+            if (isV1Data) {
+              // For V1 data, show detailed factor breakdown in footer (normal text)
+              const factorDetails = categoryData
+                .map((item) => {
+                  const icon = item.score === 1 ? '✅' : '❌';
+                  // Extract factor name from comment (before the colon)
+                  const factorName = item.comment.split(':')[0] || 'Unknown Factor';
+                  return `${icon} ${factorName}`;
+                })
+                .join('\n');
+              return factorDetails;
+            } else {
+              // For original data, show the compact version
+              const analysisChecks = categoryData.map((item) => (item.score === 1 ? '✅' : '❌')).join('');
+              return `Analysis Checks ${totalOnes}/${totalChecks}\n${analysisChecks}`;
+            }
           },
         },
       },

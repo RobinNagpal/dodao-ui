@@ -289,10 +289,16 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ pa
         </div>
         <PrivateWrapper>
           <div className="flex flex-wrap justify-end gap-2 mb-4">
-            <Link href={'/public-equities/create-reports-v1'} className="link-color border border-color rounded-xl p-2 text-sm sm:text-base whitespace-nowrap">
+            <Link
+              href={'/public-equities-v1/create-reports-v1'}
+              className="link-color border border-color rounded-xl p-2 text-sm sm:text-base whitespace-nowrap"
+            >
               Create Ticker Reports
             </Link>
-            <Link href={'/public-equities/analysis-factors'} className="link-color border border-color rounded-xl p-2 text-sm sm:text-base whitespace-nowrap">
+            <Link
+              href={'/public-equities-v1/analysis-factors'}
+              className="link-color border border-color rounded-xl p-2 text-sm sm:text-base whitespace-nowrap"
+            >
               View Analysis Factors
             </Link>
           </div>

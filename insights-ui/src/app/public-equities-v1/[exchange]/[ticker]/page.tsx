@@ -41,11 +41,10 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         key: categoryKey,
         name: categoryTitle,
         summary: report?.summary || 'No summary available.',
-        scores:
-          report?.factorResults.map((factorResult) => ({
-            score: factorResult.result === 'Pass' ? 1 : 0,
-            comment: factorResult.oneLineExplanation,
-          })) || [],
+        scores: report?.factorResults?.map((factorResult) => ({
+          score: factorResult.result === 'Pass' ? 1 : 0,
+          comment: `${factorResult.analysisCategoryFactor?.factorAnalysisTitle}: ${factorResult.oneLineExplanation}`,
+        })) || [{ score: 0, comment: 'No analysis available' }],
       };
       return [categoryKey, pieData];
     })
@@ -56,7 +55,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2">
         {/* Header Section */}
         <div className="text-left mb-8">
           <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl mb-6">
@@ -72,18 +71,16 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
               <div
                 className="mt-6 markdown-body"
                 dangerouslySetInnerHTML={{
-                  __html: parseMarkdown(
-                    tickerData.categoryAnalysisResults?.find((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat)?.summary ?? 'Not yet populated'
-                  ),
+                  __html: parseMarkdown(tickerData.summary ?? 'Not yet populated'),
                 }}
               />
             </div>
 
             {/* Spider chart on the right */}
             <div className="lg:flex lg:flex-auto lg:justify-center relative lg:mb-16">
-              <div className="lg:absolute lg:top-10 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
+              <div className="lg:absolute lg:top-8 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
                 <div className="w-full max-w-lg mx-auto relative">
-                  <div className="absolute top-20 right-0 flex space-x-2">
+                  <div className="absolute top-16 right-0 flex space-x-2">
                     <div className="text-2xl font-bold -z-10" style={{ color: 'var(--primary-color, blue)' }}>
                       {spiderGraphScorePercentage.toFixed(0)}%
                     </div>
@@ -96,20 +93,18 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           </div>
         </div>
 
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm mb-8">
-          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Summary Analysis</h2>
+        <div className="bg-gray-800 rounded-lg shadow-sm mb-8">
+          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
 
           <div className="space-y-4">
             {/* Iterate over all categories for summary section */}
             {Object.values(TickerAnalysisCategory).map((categoryKey) => {
               const categoryResult = tickerData.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
-              if (categoryKey === TickerAnalysisCategory.BusinessAndMoat) {
-                return null;
-              }
+
               return (
-                <div key={categoryKey} className="bg-white dark:bg-gray-900 p-4 rounded-md shadow-sm">
+                <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
                   <h3 className="text-lg font-semibold mb-2">{CATEGORY_MAPPINGS[categoryKey]}</h3>
-                  <p className="text-gray-700 dark:text-gray-300">{categoryResult?.summary || 'No summary available.'}</p>
+                  <p className="text-gray-300">{categoryResult?.summary || 'No summary available.'}</p>
                 </div>
               );
             })}
@@ -117,11 +112,11 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         </div>
         {/* Future Risks Section */}
         {tickerData.futureRisks.length > 0 && (
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Future Risks</h2>
+          <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Future Risks</h2>
             <ul className="space-y-3">
               {tickerData.futureRisks.map((futureRisk) => (
-                <li key={futureRisk.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                <li key={futureRisk.id} className="bg-gray-800 p-4 rounded-md">
                   <div className="flex flex-col gap-y-2">{futureRisk.summary}</div>
                 </li>
               ))}
@@ -131,13 +126,13 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
         {/* Competition Section */}
         {tickerData.vsCompetition && (
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Competition</h2>
+          <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Competition</h2>
             <p className="mb-4">{tickerData.vsCompetition.introductionToAnalysis}</p>
             {tickerData.vsCompetition.competitionAnalysisArray?.length > 0 && (
               <ul className="space-y-3">
                 {tickerData.vsCompetition.competitionAnalysisArray.map((competition: CompetitionAnalysis) => (
-                  <li key={competition.companyName} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                  <li key={competition.companyName} className="bg-gray-800 p-4 rounded-md">
                     <div className="flex flex-col gap-y-2">
                       <h3 className="font-semibold">{competition.companyName}</h3>
                       {competition.detailedComparison && (
@@ -155,13 +150,13 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           </div>
         )}
 
-        {/* Detailed Investor Reports Section */}
+        {/* Investor Summary Section */}
         {tickerData.investorAnalysisResults.length > 0 && (
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Investor Reports Summaries (Created using AI)</h2>
+          <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Investor Reports Summaries (Created using AI)</h2>
             <div className="space-y-4">
               {tickerData.investorAnalysisResults.map((result) => (
-                <div key={result.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                <div key={result.id} className="bg-gray-800 p-4 rounded-md">
                   <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
                   <div className="markdown markdown-body " dangerouslySetInnerHTML={{ __html: parseMarkdown(result.summary) }} />
                 </div>
@@ -178,8 +173,8 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           if (!categoryResult) return null;
 
           return (
-            <div key={`detail-${categoryKey}`} className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-              <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">{CATEGORY_MAPPINGS[categoryKey]}</h2>
+            <div key={`detail-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+              <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{CATEGORY_MAPPINGS[categoryKey]}</h2>
 
               {categoryResult.introductionToAnalysis && (
                 <div className="mb-4">
@@ -190,21 +185,19 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
               {categoryResult.factorResults?.length > 0 && (
                 <ul className="space-y-3">
                   {categoryResult.factorResults.map((factor) => (
-                    <li key={factor.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                    <li key={factor.id} className="bg-gray-800 p-4 rounded-md">
                       <div className="flex flex-col gap-y-2">
                         <div className="flex items-center justify-between">
                           <h3 className="font-semibold">{factor.analysisCategoryFactor?.factorAnalysisTitle}</h3>
                           <span
                             className={`px-2 py-1 rounded-full text-sm font-medium ${
-                              factor.result === 'Pass'
-                                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                                : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                              factor.result === 'Pass' ? ' bg-green-900 text-green-200' : '  bg-red-900 text-red-200'
                             }`}
                           >
                             {factor.result}
                           </span>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{factor.oneLineExplanation}</p>
+                        <p className="text-sm text-gray-400">{factor.oneLineExplanation}</p>
                         <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(factor.detailedExplanation) }} />
                       </div>
                     </li>
@@ -217,13 +210,27 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
         {/* Detailed Investor Reports Section */}
         {tickerData.investorAnalysisResults.length > 0 && (
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Detailed Investor Reports (Created using AI)</h2>
+          <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Investor Reports (Created using AI)</h2>
             <div className="space-y-4">
               {tickerData.investorAnalysisResults.map((result) => (
-                <div key={result.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                <div key={result.id} className="bg-gray-800 p-4 rounded-md">
                   <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
                   <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(result.detailedAnalysis) }} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Detailed Investor Reports Section */}
+        {tickerData.futureRisks.length > 0 && (
+          <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Future Risks</h2>
+            <div className="space-y-3">
+              {tickerData.futureRisks.map((futureRisk) => (
+                <div key={futureRisk.id} className="bg-gray-800 p-4 rounded-md">
+                  <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(futureRisk.detailedAnalysis) }} />
                 </div>
               ))}
             </div>
