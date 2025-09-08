@@ -1,0 +1,65 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: 'The full name of the company or REIT being analyzed (e.g., AvalonBay Communities Inc.).'
+  symbol:
+    type: string
+    description: 'The stock ticker symbol of the company or REIT (e.g., AVB).'
+  exchange:
+    type: string
+    description: 'Exchange code, e.g. "NASDAQ" or "NYSE"'
+  industryKey:
+    type: string
+    description: 'The broad industry the stock belongs to (e.g., REITS).'
+  subIndustryKey:
+    type: string
+    description: 'The specific sub-industry of the stock (e.g., OFFICE_REITS).'
+  categorySummaries:
+    type: array
+    description: 'Array with one summary per analysis category. These are the short summaries produced for each category.'
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        categoryKey:
+          type: string
+          description: 'Category key (BusinessAndMoat, FinancialStatementAnalysis, PastPerformance, FutureGrowth, VsCompetition, FairValue)'
+        overallSummary:
+          type: string
+          description: '3–4 sentence summary for this category.'
+      required:
+        - categoryKey
+        - overallSummary
+  factorResults:
+    type: array
+    description: 'Array of one-line factor results. For each factor include its category, factor key, one-line explanation, and Pass/Fail result.'
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        categoryKey:
+          type: string
+        factorAnalysisKey:
+          type: string
+        oneLineExplanation:
+          type: string
+          description: '1–2 sentence quick takeaway for the factor'
+        result:
+          type: string
+          enum: ['Pass', 'Fail']
+      required:
+        - categoryKey
+        - factorAnalysisKey
+        - oneLineExplanation
+        - result
+required:
+  - name
+  - symbol
+  - exchange
+  - industryKey
+  - subIndustryKey
+  - categorySummaries
+  - factorResults

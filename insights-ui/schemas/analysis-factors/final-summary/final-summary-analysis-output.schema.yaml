@@ -1,0 +1,8 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: string
+description: >-
+  The final stock summary text. It must be 6–7 short lines, each line a clear
+  sentence. The first line should give the overall verdict (Positive, Negative,
+  or Mixed). The following lines should briefly justify the verdict using the
+  provided categorySummaries and supporting factor one-line explanations. The
+  style should be clear, concise, and suitable for retail investors.
