@@ -44,6 +44,7 @@ export interface TickerV1ReportResponse extends FullReport {
       BILL_ACKMAN: boolean;
     };
     futureRisk: boolean;
+    finalSummary: boolean;
   };
 }
 
@@ -91,6 +92,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       BILL_ACKMAN: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'BILL_ACKMAN'),
     },
     futureRisk: tickerRecord.futureRisks.length > 0,
+    finalSummary: !!tickerRecord.summary,
   };
 
   return {
