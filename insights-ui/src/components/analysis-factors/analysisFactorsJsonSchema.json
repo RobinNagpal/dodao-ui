@@ -63,6 +63,12 @@
           "title": "Factor Analysis Description",
           "minLength": 10,
           "maxLength": 1000
+        },
+        "factorAnalysisMetrics": {
+          "type": "string",
+          "title": "Factor Analysis Metrics",
+          "minLength": 3,
+          "maxLength": 1000
         }
       },
       "required": ["factorAnalysisKey", "factorAnalysisTitle", "factorAnalysisDescription"]

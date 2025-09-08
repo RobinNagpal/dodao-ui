@@ -5,6 +5,8 @@ import { ChartBar, FileText } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
+// not using this file yet, but setting up for future use
+// we were using it before, but now we have moved the ticker reports to a separate page
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Ticker Reports | KoalaGains';
   const description =

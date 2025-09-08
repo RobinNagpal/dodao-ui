@@ -13,6 +13,7 @@ import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoad
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useState } from 'react';
@@ -45,8 +46,17 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
     loading: savingAnalysisFactors,
     error: savingError,
   } = usePostData<{ success: boolean }, GetAnalysisFactorsResponse>({
-    successMessage: 'Analysis factors successfully updated',
+    successMessage: 'Analysis factors successfully created',
     errorMessage: 'Failed to save analysis factors',
+  });
+
+  const {
+    putData: updateAnalysisFactors,
+    loading: updatingAnalysisFactors,
+    error: updatingError,
+  } = usePutData<{ success: boolean }, GetAnalysisFactorsResponse>({
+    successMessage: 'Analysis factors successfully updated',
+    errorMessage: 'Failed to update analysis factors',
   });
 
   const {
@@ -89,6 +99,7 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
               factorAnalysisKey: 'SAMPLE_FACTOR',
               factorAnalysisTitle: 'Sample Analysis Factor',
               factorAnalysisDescription: 'This is a sample analysis factor. Please update with your specific requirements.',
+              factorAnalysisMetrics: 'Optional metrics for now',
             },
           ],
         },
@@ -97,9 +108,15 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
     setAnalysisFactorsToEdit(defaultAnalysisFactors);
   };
 
-  const handleSaveAnalysisFactors = async (analysisFactors: GetAnalysisFactorsResponse) => {
+  const handleSaveAnalysisFactors = async (analysisFactors: GetAnalysisFactorsResponse, isUpdate: boolean = false) => {
     try {
-      await saveAnalysisFactors(`${getBaseUrl()}/api/analysis-factors/${industryKey}/${subIndustryKey}`, analysisFactors);
+      if (isUpdate) {
+        // Use PUT for updates (when data already exists)
+        await updateAnalysisFactors(`${getBaseUrl()}/api/analysis-factors/${industryKey}/${subIndustryKey}`, analysisFactors);
+      } else {
+        // Use POST for new data
+        await saveAnalysisFactors(`${getBaseUrl()}/api/analysis-factors/${industryKey}/${subIndustryKey}`, analysisFactors);
+      }
       await reloadAnalysisFactors();
     } catch (error) {
       console.error('Failed to save analysis factors:', error);
@@ -128,8 +145,10 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
         {/* Header */}
         <div className="flex justify-between">
           <div>
-            {(loadingError || savingError || deletingError) && (
-              <div className="text-red-500 bg-red-100 border border-red-400 p-2 mb-2 rounded">{loadingError || savingError || deletingError}</div>
+            {(loadingError || savingError || updatingError || deletingError) && (
+              <div className="text-red-500 bg-red-100 border border-red-400 p-2 mb-2 rounded">
+                {loadingError || savingError || updatingError || deletingError}
+              </div>
             )}
           </div>
           <div className="text-4xl">
@@ -171,7 +190,12 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
                   <td style={tableCellStyle}>{category.factors.length} factors</td>
                   <td style={tableCellStyle} className="h-full">
                     <div className="flex justify-around h-full">
-                      <IconButton onClick={handleEditClick} iconName={IconTypes.Edit} removeBorder={true} loading={savingAnalysisFactors} />
+                      <IconButton
+                        onClick={handleEditClick}
+                        iconName={IconTypes.Edit}
+                        removeBorder={true}
+                        loading={savingAnalysisFactors || updatingAnalysisFactors}
+                      />
                       <IconButton onClick={handleViewClick} iconName={IconTypes.ArrowsPointingOutIcon} removeBorder={true} />
                       <IconButton onClick={handleDeleteAll} iconName={IconTypes.Trash} removeBorder={true} />
                     </div>
@@ -208,7 +232,7 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
             analysisFactorsData={analysisFactorsToEdit}
             onSave={async (factors) => {
               setAnalysisFactorsToEdit(null);
-              await handleSaveAnalysisFactors(factors);
+              await handleSaveAnalysisFactors(factors, hasData); // Pass hasData to indicate if this is an update
             }}
           />
         )}
@@ -244,7 +268,7 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
             title="Write Raw JSON"
             industryKey={industryKey}
             subIndustryKey={subIndustryKey}
-            onSave={handleSaveAnalysisFactors}
+            onSave={(analysisFactors) => handleSaveAnalysisFactors(analysisFactors, true)} // Always update for JSON upload
           />
         )}
       </div>

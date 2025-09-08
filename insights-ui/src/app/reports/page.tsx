@@ -45,10 +45,9 @@ const reports = [
   },
   {
     title: 'Ticker Reports',
-    description: 'Detailed financial analysis of individual companies with comprehensive metrics, evaluations, and investment insights. Coming soon!',
-    link: '/ticker-reports',
+    description: 'Detailed analysis of individual companies with comprehensive metrics, evaluations, and investment insights.',
+    link: '/public-equities-v1',
     icon: ChartBarIcon,
-    badge: 'Coming Soon',
   },
 ];
 
@@ -75,14 +74,7 @@ export default function Page() {
                       <div className="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg primary-color">
                         <Icon aria-hidden="true" className="absolute left-1 top-1 h-5 w-5 text-indigo-500" />
                       </div>
-                      <div className="flex items-center">
-                        {report.title}
-                        {report.badge && (
-                          <span className="ml-2 inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
-                            {report.badge}
-                          </span>
-                        )}
-                      </div>
+                      <div className="flex items-center">{report.title}</div>
                     </dt>
                     <dd className="mt-2 text-base/7 text-color">{report.description}</dd>
                     <Link href={report.link} className="mt-2 inline-block text-sm font-medium link-color">
