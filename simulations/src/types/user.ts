@@ -1,3 +1,4 @@
+import { DoDaoJwtTokenPayload, Session } from '@dodao/web-core/types/auth/Session';
 import { UserRole } from '@prisma/client';
 /**
  * User-related type definitions
@@ -13,4 +14,14 @@ export interface User {
   name?: string;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface SimulationJwtTokenPayload extends DoDaoJwtTokenPayload {
+  role: UserRole;
+  email: string;
+}
+
+export interface SimulationSession extends Session {
+  email: string;
+  role: UserRole;
 }

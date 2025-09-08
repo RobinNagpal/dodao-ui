@@ -8,12 +8,6 @@ export interface Session extends NextAuthSession {
   dodaoAccessToken: string;
   isAdminOfSpace?: boolean;
   isSuperAdminOfDoDAO?: boolean;
-  user: {
-    spaceId: string;
-    authProvider: string;
-    username: string;
-    role?: string;
-  };
 }
 
 export type DoDAOSession = Session;

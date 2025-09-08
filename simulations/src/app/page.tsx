@@ -30,6 +30,12 @@ export default function Home() {
     if (resp) {
       if (resp.role === 'Student') {
         router.push('/student');
+      } else if (resp.role === 'Instructor') {
+        router.push('/instructor');
+      } else if (resp.role === 'Admin') {
+        router.push('/admin');
+      } else {
+        router.push('/login');
       }
     }
   };

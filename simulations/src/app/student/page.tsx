@@ -1,51 +1,35 @@
 'use client';
 
-import { UserResponse } from '@/app/api/auth/user/route';
-import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useSession } from 'next-auth/react';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import StudentNavbar from '@/components/navigation/StudentNavbar';
 import StudentLoading from '@/components/student/StudentLoading';
-import type { CaseStudyWithRelations } from '@/types/api';
-import type { BusinessSubject } from '@/types';
-import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
-import {
-  BookOpen,
-  LogOut,
-  ArrowRight,
-  Brain,
-  Sparkles,
-  Target,
-  TrendingUp,
-  CheckCircle2,
-  User,
-  Bot,
-  BotIcon,
-  GraduationCapIcon,
-  GraduationCap,
-} from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import StudentNavbar from '@/components/navigation/StudentNavbar';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import type { BusinessSubject } from '@/types';
+import type { CaseStudyWithRelations } from '@/types/api';
+import { SimulationSession } from '@/types/user';
+import { getSubjectColor, getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { ArrowRight, BookOpen, BotIcon, Brain, CheckCircle2, GraduationCap, Sparkles, Target, TrendingUp, User } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function StudentDashboard() {
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
   const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyWithRelations[]>([]);
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: simSession } = useSession();
+  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   console.log(`session:`, session);
 
   const { data: enrolledCaseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudyWithRelations[]>(
     `${getBaseUrl()}/api/case-studies`,
-    { skipInitialFetch: true },
+    { skipInitialFetch: false },
     'Failed to load enrolled case studies'
   );
-
-  const { data: userResponse, reFetchData } = useFetchData<UserResponse>(`${getBaseUrl()}/api/auth/user`, {}, 'Failed to fetch user data');
 
   useEffect(() => {
     if (!session) {
@@ -96,8 +80,8 @@ export default function StudentDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
       <StudentNavbar
         title="Student Dashboard"
-        subtitle={`Welcome back, ${userResponse?.email}`}
-        userEmail={userResponse?.email || userResponse?.username}
+        subtitle={`Welcome back, ${session?.user?.email}`}
+        userEmail={session?.email || session?.username}
         onLogout={handleLogout}
         showLogout={true}
         icon={<GraduationCap className="h-8 w-8 text-white" />}
