@@ -1,7 +1,9 @@
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EnrollmentWithRelations } from '@/types/api';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { NextRequest } from 'next/server';
 
 interface CreateEnrollmentRequest {
   caseStudyId: string;
@@ -9,7 +11,7 @@ interface CreateEnrollmentRequest {
 }
 
 // GET /api/enrollments - Get all enrollments
-async function getHandler(): Promise<EnrollmentWithRelations[]> {
+async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<EnrollmentWithRelations[]> {
   const enrollments: EnrollmentWithRelations[] = await prisma.classCaseStudyEnrollment.findMany({
     where: {
       archive: false,
@@ -41,16 +43,34 @@ async function getHandler(): Promise<EnrollmentWithRelations[]> {
 }
 
 // POST /api/enrollments - Create a new enrollment
-async function postHandler(req: NextRequest): Promise<EnrollmentWithRelations> {
+async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<EnrollmentWithRelations> {
   const body: CreateEnrollmentRequest = await req.json();
 
   // Get admin email from request headers
   const adminEmail: string = req.headers.get('admin-email') || 'admin@example.com';
 
+  let instructor = await prisma.user.findFirst({
+    where: {
+      email: body.assignedInstructorId,
+    },
+  });
+
+  if (!instructor) {
+    instructor = await prisma.user.create({
+      data: {
+        email: body.assignedInstructorId,
+        spaceId: KoalaGainsSpaceId,
+        username: body.assignedInstructorId,
+        authProvider: 'Email',
+        role: 'Instructor',
+      },
+    });
+  }
+
   const enrollment: EnrollmentWithRelations = await prisma.classCaseStudyEnrollment.create({
     data: {
       caseStudyId: body.caseStudyId,
-      assignedInstructorId: body.assignedInstructorId,
+      assignedInstructorId: instructor.email!,
       createdBy: adminEmail,
       updatedBy: adminEmail,
       archive: false,
@@ -75,5 +95,5 @@ async function postHandler(req: NextRequest): Promise<EnrollmentWithRelations> {
   return enrollment;
 }
 
-export const GET = withErrorHandlingV2<EnrollmentWithRelations[]>(getHandler);
-export const POST = withErrorHandlingV2<EnrollmentWithRelations>(postHandler);
+export const GET = withLoggedInUser<EnrollmentWithRelations[]>(getHandler);
+export const POST = withLoggedInUser<EnrollmentWithRelations>(postHandler);
