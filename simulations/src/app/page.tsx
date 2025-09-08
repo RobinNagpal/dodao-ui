@@ -14,6 +14,8 @@ export default function Home() {
   const baseUrl = getBaseUrl();
   const router = useRouter();
 
+  console.log('session', session);
+
   const { data: userResponse, reFetchData } = useFetchData<UserResponse>(
     `${getBaseUrl()}/api/auth/user`,
     { skipInitialFetch: true },

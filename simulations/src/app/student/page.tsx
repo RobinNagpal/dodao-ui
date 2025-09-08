@@ -37,6 +37,8 @@ export default function StudentDashboard() {
   const router = useRouter();
   const { data: session } = useSession();
 
+  console.log(`session:`, session);
+
   const { data: enrolledCaseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudyWithRelations[]>(
     `${getBaseUrl()}/api/case-studies`,
     { skipInitialFetch: true },

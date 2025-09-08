@@ -327,6 +327,7 @@ export function getAuthOptions(
         return {
           userId: userInfo.id,
           ...session,
+          user: user?.email ? await p.user.findFirst({ where: { email: user.email } }) : undefined,
           ...userInfo,
           dodaoAccessToken: jwt.sign(doDaoJwtTokenPayload, process.env.DODAO_AUTH_SECRET!),
         };
