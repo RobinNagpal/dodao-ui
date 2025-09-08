@@ -33,6 +33,7 @@ async function getHandler(
       factorAnalysisKey: factor.factorAnalysisKey,
       factorAnalysisTitle: factor.factorAnalysisTitle,
       factorAnalysisDescription: factor.factorAnalysisDescription,
+      factorAnalysisMetrics: factor.factorAnalysisMetrics || undefined,
     });
   });
 
@@ -49,7 +50,7 @@ async function getHandler(
   };
 }
 
-// POST: Upsert analysis factors
+// POST: Create new analysis factors (for completely new industry/sub-industry combinations)
 async function postHandler(request: NextRequest, { params }: { params: Promise<{ industry: string; 'sub-industry': string }> }): Promise<{ success: boolean }> {
   const { industry: industryKey, 'sub-industry': subIndustryKey } = await params;
   const body: GetAnalysisFactorsResponse = await request.json();
@@ -61,16 +62,7 @@ async function postHandler(request: NextRequest, { params }: { params: Promise<{
 
   // Use a transaction to ensure all operations succeed or fail together
   await prisma.$transaction(async (tx) => {
-    // First, delete all existing factors for this industry/sub-industry combination
-    await tx.analysisCategoryFactor.deleteMany({
-      where: {
-        industryKey,
-        subIndustryKey,
-        spaceId: 'koala_gains',
-      },
-    });
-
-    // Then, create all new factors
+    // Create all new factors
     const factorsToCreate = categories.flatMap((category) =>
       category.factors.map((factor) => ({
         industryKey,
@@ -79,6 +71,7 @@ async function postHandler(request: NextRequest, { params }: { params: Promise<{
         factorAnalysisKey: factor.factorAnalysisKey,
         factorAnalysisTitle: factor.factorAnalysisTitle,
         factorAnalysisDescription: factor.factorAnalysisDescription,
+        factorAnalysisMetrics: factor.factorAnalysisMetrics || null,
         spaceId: 'koala_gains',
       }))
     );
@@ -86,6 +79,103 @@ async function postHandler(request: NextRequest, { params }: { params: Promise<{
     if (factorsToCreate.length > 0) {
       await tx.analysisCategoryFactor.createMany({
         data: factorsToCreate,
+      });
+    }
+  });
+
+  return { success: true };
+}
+
+// PUT: Update existing analysis factors (smart upsert - update existing, add new, remove deleted)
+async function putHandler(request: NextRequest, { params }: { params: Promise<{ industry: string; 'sub-industry': string }> }): Promise<{ success: boolean }> {
+  const { industry: industryKey, 'sub-industry': subIndustryKey } = await params;
+  const body: GetAnalysisFactorsResponse = await request.json();
+  const { categories } = body;
+
+  if (!categories) {
+    throw new Error('categories are required');
+  }
+
+  // Use a transaction to ensure all operations succeed or fail together
+  await prisma.$transaction(async (tx) => {
+    // Get existing factors for this industry/sub-industry
+    const existingFactors = await tx.analysisCategoryFactor.findMany({
+      where: {
+        industryKey,
+        subIndustryKey,
+        spaceId: 'koala_gains',
+      },
+    });
+
+    // Create a set of existing factor keys for quick lookup
+    const existingFactorKeys = new Set(existingFactors.map((f) => `${f.categoryKey}:${f.factorAnalysisKey}`));
+
+    // Prepare new factors from the request
+    const newFactors = categories.flatMap((category) =>
+      category.factors.map((factor) => ({
+        industryKey,
+        subIndustryKey,
+        categoryKey: category.categoryKey,
+        factorAnalysisKey: factor.factorAnalysisKey,
+        factorAnalysisTitle: factor.factorAnalysisTitle,
+        factorAnalysisDescription: factor.factorAnalysisDescription,
+        factorAnalysisMetrics: factor.factorAnalysisMetrics || null,
+        spaceId: 'koala_gains',
+        key: `${category.categoryKey}:${factor.factorAnalysisKey}`,
+      }))
+    );
+
+    const newFactorKeys = new Set(newFactors.map((f) => f.key));
+
+    // 1. Update existing factors that are still present
+    // 2. Insert new factors that don't exist yet
+    for (const newFactor of newFactors) {
+      const { key, ...factorData } = newFactor;
+
+      if (existingFactorKeys.has(key)) {
+        // Update existing factor
+        await tx.analysisCategoryFactor.updateMany({
+          where: {
+            industryKey,
+            subIndustryKey,
+            categoryKey: factorData.categoryKey,
+            factorAnalysisKey: factorData.factorAnalysisKey,
+            spaceId: 'koala_gains',
+          },
+          data: {
+            factorAnalysisTitle: factorData.factorAnalysisTitle,
+            factorAnalysisDescription: factorData.factorAnalysisDescription,
+            factorAnalysisMetrics: factorData.factorAnalysisMetrics || null,
+          },
+        });
+      } else {
+        // Insert new factor
+        await tx.analysisCategoryFactor.create({
+          data: factorData,
+        });
+      }
+    }
+
+    // 3. Delete factors that are no longer present in the new data
+    const factorsToDelete = existingFactors.filter((existing) => !newFactorKeys.has(`${existing.categoryKey}:${existing.factorAnalysisKey}`));
+
+    if (factorsToDelete.length > 0) {
+      // Delete related factor results first (if not using cascade delete)
+      for (const factorToDelete of factorsToDelete) {
+        await tx.tickerV1AnalysisCategoryFactorResult.deleteMany({
+          where: {
+            analysisCategoryFactorId: factorToDelete.id,
+          },
+        });
+      }
+
+      // Then delete the factors
+      await tx.analysisCategoryFactor.deleteMany({
+        where: {
+          id: {
+            in: factorsToDelete.map((f) => f.id),
+          },
+        },
       });
     }
   });
@@ -111,4 +201,5 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
 // Export handlers with error handling wrapper
 export const GET = withErrorHandlingV2<GetAnalysisFactorsResponse>(getHandler);
 export const POST = withErrorHandlingV2<{ success: boolean }>(postHandler);
+export const PUT = withErrorHandlingV2<{ success: boolean }>(putHandler);
 export const DELETE = withErrorHandlingV2<{ success: boolean }>(deleteHandler);

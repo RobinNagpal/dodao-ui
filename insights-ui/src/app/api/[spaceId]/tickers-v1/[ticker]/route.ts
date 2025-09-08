@@ -51,7 +51,6 @@ export interface TickerV1ReportResponse extends FullReport {
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerV1ReportResponse> {
   const { spaceId, ticker } = await context.params;
 
-  console.log('ticker', ticker);
   // Get ticker from DB with all related data
   const tickerRecord = await prisma.tickerV1.findFirst({
     where: {
