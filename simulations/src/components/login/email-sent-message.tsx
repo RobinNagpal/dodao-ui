@@ -63,7 +63,7 @@ export function EmailSentMessage({ email, onChangeEmail }: EmailSentMessageProps
                 Check Your Email
               </CardTitle>
             </div>
-            <CardDescription className="text-center text-gray-600">We've sent you a secure sign-in link</CardDescription>
+            <CardDescription className="text-center text-gray-600">We have sent you a secure sign-in link</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex flex-col items-center justify-center space-y-4">
@@ -73,8 +73,8 @@ export function EmailSentMessage({ email, onChangeEmail }: EmailSentMessageProps
 
               <div className="text-center space-y-2">
                 <p className="text-gray-600">
-                  We've sent a secure sign-in link to <span className="font-medium text-gray-800">{email}</span>. 
-                  Please check your inbox and click the link to continue your GenAI simulation journey.
+                  We have sent a secure sign-in link to <span className="font-medium text-gray-800">{email}</span>. Please check your inbox and click the link
+                  to continue your GenAI simulation journey.
                 </p>
               </div>
 
