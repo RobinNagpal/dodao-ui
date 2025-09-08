@@ -41,7 +41,6 @@ declare module 'chart.js' {
 }
 
 const RadarChart: React.FC<RadarChartProps> = ({ data, scorePercentage }) => {
-  console.log('RadarChart data:', data);
   const itemKeys = Object.keys(data);
   const SCORE_OFFSET = 0.5; // Adds padding ONLY for zero scores
 
