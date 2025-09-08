@@ -12,10 +12,10 @@ export interface TestPromptInvocationRequest {
   bodyToAppend?: string;
 }
 
-async function postHandler(req: NextRequest): Promise<TestPromptInvocationResponse> {
+async function postHandler(req: NextRequest): Promise<TestPromptInvocationResponse<any>> {
   const request = (await req.json()) as TestPromptInvocationRequest;
   const { spaceId, promptTemplate, promptId, llmProvider, model, bodyToAppend, inputJsonString } = request;
   return getLLMResponseForPromptViaTestInvocation({ spaceId, promptTemplate, promptId, llmProvider, model, bodyToAppend, inputJsonString });
 }
 
-export const POST = withErrorHandlingV2<TestPromptInvocationResponse>(postHandler);
+export const POST = withErrorHandlingV2<TestPromptInvocationResponse<any>>(postHandler);

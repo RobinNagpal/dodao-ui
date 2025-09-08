@@ -10,7 +10,7 @@ import fs from 'fs';
 import Handlebars from 'handlebars';
 import jsonpatch from 'jsonpatch';
 import path from 'path';
-import { PromptInvocationStatus, Prisma } from '.prisma/client';
+import { PromptInvocationStatus } from '.prisma/client';
 
 // Type definitions
 export type LLMProvider = 'openai' | 'gemini';
@@ -31,9 +31,9 @@ export interface LLMResponseOptions {
   isTestInvocation?: boolean;
 }
 
-export interface LLMResponseViaInvocationRequest {
+export interface LLMResponseViaInvocationRequest<Input> {
   spaceId?: string;
-  inputJson?: Record<string, unknown>;
+  inputJson?: Input;
   promptKey: string;
   llmProvider: LLMProvider;
   model: string;
@@ -51,16 +51,17 @@ export interface LLMResponseViaTestInvocationRequest {
   inputJsonString?: string;
 }
 
-export interface TestPromptInvocationResponse {
-  response: Record<string, unknown>;
+export interface TestPromptInvocationResponse<Output> {
+  invocationId: string;
+  response: Output;
 }
 
-export interface LLMResponseObject {
+export interface LLMResponseObject<Input, Output> {
   request: {
-    inputJson?: Record<string, unknown>;
+    inputJson?: Input;
   };
   prompt: string;
-  response: unknown;
+  response: Output;
   invocationId: string;
 }
 
@@ -138,12 +139,12 @@ interface BaseInvocationData {
  * Creates a regular prompt invocation record
  * @returns The created prompt invocation record
  */
-async function createPromptInvocation(
+async function createPromptInvocation<Input>(
   baseData: BaseInvocationData,
   promptData: {
     promptId: string;
     promptVersionId: string;
-    inputJson?: Record<string, unknown>;
+    inputJson?: Input;
   }
 ): Promise<PromptInvocation> {
   return prisma.promptInvocation.create({
@@ -217,7 +218,7 @@ function compileTemplate(template: string, inputData: Record<string, unknown> = 
 /**
  * Core function to get LLM response
  */
-export async function getLLMResponse({
+export async function getLLMResponse<Output>({
   invocationId,
   llmProvider,
   modelName,
@@ -225,7 +226,7 @@ export async function getLLMResponse({
   outputSchema,
   maxRetries = 1,
   isTestInvocation,
-}: LLMResponseOptions): Promise<unknown> {
+}: LLMResponseOptions): Promise<Output> {
   console.log(
     `Test Invocation ${isTestInvocation} - Getting LLM Response for invocation ${invocationId} with model ${modelName} - with prompt: \n\n${prompt}\n\n`
   );
@@ -239,7 +240,7 @@ export async function getLLMResponse({
       const structured = llm.withStructuredOutput(outputSchema);
 
       // Get response from LLM
-      const result = await structured.invoke(prompt);
+      const result = (await structured.invoke(prompt)) as Output;
       console.log('Response from llm:', result);
       lastResult = result;
 
@@ -275,15 +276,17 @@ export async function getLLMResponse({
       throw err;
     }
   }
+  console.error('Failed to get LLM response for request', prompt);
+  throw new Error('Failed to get LLM response for request' + prompt);
 }
 
 /**
  * Gets LLM response via regular invocation
  * @returns The LLM response object, possibly with transformations applied
  */
-export async function getLLMResponseForPromptViaInvocation(
-  params: LLMResponseViaInvocationRequest
-): Promise<LLMResponseObject | Record<string, unknown> | undefined> {
+export async function getLLMResponseForPromptViaInvocation<Input, Output>(
+  params: LLMResponseViaInvocationRequest<Input>
+): Promise<LLMResponseObject<Input, Output>> {
   const { promptKey, llmProvider, model, spaceId, inputJson, bodyToAppend, requestFrom } = params;
 
   // Validate required fields
@@ -348,7 +351,7 @@ export async function getLLMResponseForPromptViaInvocation(
     const outputSchema = await loadSchema(outputSchemaPath, prompt.outputSchema);
 
     // Get LLM response
-    const result = await getLLMResponse({
+    const result = await getLLMResponse<Output>({
       invocationId: invocation.id,
       llmProvider,
       modelName: model,
@@ -358,7 +361,7 @@ export async function getLLMResponseForPromptViaInvocation(
     });
 
     // Prepare response object
-    const originalObject: LLMResponseObject = {
+    const originalObject: LLMResponseObject<Input, Output> = {
       request: {
         inputJson,
       },
@@ -392,14 +395,16 @@ export async function getLLMResponseForPromptViaInvocation(
     await updateInvocationStatus(invocation.id, PromptInvocationStatus.Failed, {
       error: (e as Error)?.message,
     });
-    // throw e;
+    throw e;
   }
 }
 
 /**
  * Gets LLM response via test invocation
  */
-export async function getLLMResponseForPromptViaTestInvocation(params: LLMResponseViaTestInvocationRequest): Promise<TestPromptInvocationResponse> {
+export async function getLLMResponseForPromptViaTestInvocation<Output>(
+  params: LLMResponseViaTestInvocationRequest
+): Promise<TestPromptInvocationResponse<Output>> {
   console.log('getLLMResponseForPromptViaTestInvocation', JSON.stringify(params, null, 2));
   const { promptId, promptTemplate, llmProvider, model, spaceId, bodyToAppend, inputJsonString } = params;
 
@@ -454,7 +459,7 @@ export async function getLLMResponseForPromptViaTestInvocation(params: LLMRespon
     const outputSchema = await loadSchema(outputSchemaPath, dbPrompt.outputSchema);
 
     // Get LLM response
-    const result = await getLLMResponse({
+    const result = await getLLMResponse<Output>({
       invocationId: invocation.id,
       llmProvider,
       modelName: model,
@@ -471,8 +476,9 @@ export async function getLLMResponseForPromptViaTestInvocation(params: LLMRespon
     }
 
     // Prepare response
-    const originalResponse: TestPromptInvocationResponse = {
-      response: result as Record<string, unknown>,
+    const originalResponse: TestPromptInvocationResponse<Output> = {
+      invocationId: invocation.id,
+      response: result,
     };
 
     // Apply transformation patch if available
