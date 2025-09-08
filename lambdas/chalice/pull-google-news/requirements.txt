@@ -1,0 +1,9 @@
+setuptools<58
+pygooglenews
+chalice
+newspaper3k
+prisma
+beautifulsoup4
+feedparser
+dateparser
+requests
