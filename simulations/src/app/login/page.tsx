@@ -1,16 +1,61 @@
 'use client';
 
-import { useState } from 'react';
+import { EmailSentMessage } from '@/components/login/email-sent-message';
+import { UserLogin } from '@/components/login/user-login';
+import { isAdminEmail, isStudentEmail } from '@/dummy/mockData';
+import { UserRole } from '@/types/user';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { Contexts } from '@dodao/web-core/utils/constants/constants';
+import { CardContent } from 'defi-alerts/src/components/ui/card';
+import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { useRouter } from 'next/navigation';
-import { StudentLogin } from '@/components/login/student-login';
-import { InstructorLogin } from '@/components/login/instructor-login';
-import { isAdminEmail, isInstructorEmail, isStudentEmail } from '@/dummy/mockData';
+import { useState } from 'react';
+
+// Define types for login request and response
+interface LoginRequest {
+  email: string;
+  spaceId: string;
+  context: string;
+}
+
+interface LoginResponse {
+  userId: string;
+}
 
 export default function LoginPage() {
-  const [loginType, setLoginType] = useState<'student' | 'instructor'>('student');
+  const [loginType, setLoginType] = useState<UserRole>('student');
+  const [email, setEmail] = useState('');
   const [studentErrorMessage, setStudentErrorMessage] = useState<string | undefined>(undefined);
   const [instructorErrorMessage, setInstructorErrorMessage] = useState<string | undefined>(undefined);
+  const [step, setStep] = useState<1 | 2>(1); // 1 for email form, 2 for email sent message
   const router = useRouter();
+
+  // Initialize usePostData hook for login
+  const { postData: postLogin, loading: loginLoading } = usePostData<LoginResponse, LoginRequest>({
+    errorMessage: 'Failed to send login email. Please try again.',
+  });
+
+  const handleEmailSubmit = async (submittedEmail: string) => {
+    try {
+      const response = await postLogin(`/api/auth/custom-email/login-signup-by-email`, {
+        email: submittedEmail,
+        spaceId: KoalaGainsSpaceId,
+        context: Contexts.loginAndRedirectToHome,
+      });
+
+      if (response) {
+        localStorage.setItem('email', submittedEmail);
+        localStorage.setItem('userId', response.userId);
+        setEmail(submittedEmail);
+        setStep(2);
+        return null;
+      }
+      return 'Error sending login email. Please try again.';
+    } catch (err) {
+      console.error(err);
+      return 'Error sending login email. Please try again.';
+    }
+  };
 
   const handleStudentLogin = (email: string) => {
     // Clear any previous error message
@@ -33,48 +78,23 @@ export default function LoginPage() {
     }
 
     // If we get here, the email is not valid
-    setStudentErrorMessage('No student record exists for the email you entered.');
+    setStudentErrorMessage('No record exists for the email you entered.');
   };
 
-  const handleInstructorLogin = (email: string) => {
-    // Clear any previous error message
-    setInstructorErrorMessage(undefined);
-
-    if (isAdminEmail(email)) {
-      localStorage.setItem('user_type', 'admin');
-      localStorage.setItem('user_email', email);
-      router.push('/admin');
-      return;
-    }
-
-    if (isInstructorEmail(email)) {
-      localStorage.setItem('user_type', 'instructor');
-      localStorage.setItem('user_email', email);
-      router.push('/instructor');
-      return;
-    }
-
-    // If we get here, the email is not valid
-    setInstructorErrorMessage('No instructor record exists for the email you entered.');
-  };
-
-  const handleSwitchToStudent = () => {
-    setLoginType('student');
-    setStudentErrorMessage(undefined);
-  };
-
-  const handleSwitchToInstructor = () => {
-    setLoginType('instructor');
-    setInstructorErrorMessage(undefined);
+  const handleUseAnotherEmail = () => {
+    localStorage.removeItem('email');
+    localStorage.removeItem('userId');
+    setStep(1);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {loginType === 'student' && (
-        <StudentLogin onLogin={handleStudentLogin} onSwitchToInstructor={handleSwitchToInstructor} errorMessage={studentErrorMessage} />
-      )}
-      {loginType === 'instructor' && (
-        <InstructorLogin onLogin={handleInstructorLogin} onSwitchToStudent={handleSwitchToStudent} errorMessage={instructorErrorMessage} />
+      {step === 1 ? (
+        <UserLogin onLogin={handleEmailSubmit} errorMessage={studentErrorMessage} />
+      ) : (
+        <CardContent>
+          <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} />
+        </CardContent>
       )}
     </div>
   );

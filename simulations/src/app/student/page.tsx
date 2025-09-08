@@ -1,5 +1,9 @@
 'use client';
 
+import { UserResponse } from '@/app/api/auth/user/route';
+import { DoDAOSession } from '@dodao/web-core/types/auth/Session';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -28,28 +32,25 @@ import { Button } from '@/components/ui/button';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
 
 export default function StudentDashboard() {
-  const [userEmail, setUserEmail] = useState<string>('');
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
   const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyWithRelations[]>([]);
   const router = useRouter();
+  const { data: session } = useSession();
 
   const { data: enrolledCaseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudyWithRelations[]>(
-    `/api/case-studies?userEmail=${encodeURIComponent(userEmail)}&userType=student`,
-    { skipInitialFetch: !userEmail },
+    `${getBaseUrl()}/api/case-studies`,
+    { skipInitialFetch: true },
     'Failed to load enrolled case studies'
   );
 
-  useEffect(() => {
-    const userType = localStorage.getItem('user_type');
-    const email = localStorage.getItem('user_email');
+  const { data: userResponse, reFetchData } = useFetchData<UserResponse>(`${getBaseUrl()}/api/auth/user`, {}, 'Failed to fetch user data');
 
-    if (!userType || userType !== 'student' || !email) {
+  useEffect(() => {
+    if (!session) {
       router.push('/login');
       return;
     }
-
-    setUserEmail(email);
-  }, [router]);
+  }, []);
 
   useEffect(() => {
     if (enrolledCaseStudies) {
@@ -85,7 +86,7 @@ export default function StudentDashboard() {
 
   const enrolledSubjectsWithCounts = getEnrolledSubjectsWithCounts();
 
-  if (loadingCaseStudies || enrolledCaseStudies === undefined) {
+  if (loadingCaseStudies) {
     return <StudentLoading text="Loading your dashboard..." subtitle="Preparing your personalized learning experience" variant="enhanced" />;
   }
 
@@ -93,8 +94,8 @@ export default function StudentDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
       <StudentNavbar
         title="Student Dashboard"
-        subtitle={`Welcome back, ${userEmail}`}
-        userEmail={userEmail}
+        subtitle={`Welcome back, ${userResponse?.email}`}
+        userEmail={userResponse?.email || userResponse?.username}
         onLogout={handleLogout}
         showLogout={true}
         icon={<GraduationCap className="h-8 w-8 text-white" />}

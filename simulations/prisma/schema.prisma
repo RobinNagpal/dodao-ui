@@ -15,38 +15,115 @@ enum BusinessSubject {
   OPERATIONS
 }
 
-model CaseStudy {
-  id               String   @id @default(uuid())
-  title            String   @map("title")
-  shortDescription String   @map("short_description")
-  details          String   @db.Text @map("details")
-  subject          BusinessSubject @map("subject")
-  createdBy        String?  @map("created_by") // created by admin
-  updatedBy        String?  @map("updated_by") // updated by admin
-  createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt        DateTime @updatedAt @map("updated_at")
-  archive          Boolean  @default(false) @map("archive")
-  finalSummaryPromptInstructions String? @map("final_summary_prompt_instructions")
+enum UserRole {
+  Student
+  Admin
+  Instructor
+}
 
-  modules      CaseStudyModule[] @relation("CaseStudyToModules")
-  enrollments  ClassCaseStudyEnrollment[] @relation("CaseStudyToEnrollments")
+model CryptoLoginNonce {
+  userId  String   @unique @map("user_id")
+  nonce   String
+  expires DateTime
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("crypto_login_nonce")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  publicAddress String?   @map("public_address")
+  phoneNumber   String?   @map("phone_number")
+  walletAddress String[]  @default([]) @map("wallet_address")
+
+  spaceId          String            @map("space_id")
+  username         String            @map("username")
+  authProvider     String            @map("auth_provider")
+  role             UserRole          @default(Student) @map("role")
+  accounts         Account[]
+  sessions         Session[]
+  cryptoLoginNonce CryptoLoginNonce?
+
+  @@unique([publicAddress, spaceId])
+  @@unique([username, spaceId])
+  @@unique([email, spaceId])
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @map("refresh_token")
+  access_token      String? @map("access_token")
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model CaseStudy {
+  id                             String          @id @default(uuid())
+  title                          String          @map("title")
+  shortDescription               String          @map("short_description")
+  details                        String          @db.Text @map("details")
+  subject                        BusinessSubject @map("subject")
+  createdBy                      String?         @map("created_by") // created by admin
+  updatedBy                      String?         @map("updated_by") // updated by admin
+  createdAt                      DateTime        @default(now()) @map("created_at")
+  updatedAt                      DateTime        @updatedAt @map("updated_at")
+  archive                        Boolean         @default(false) @map("archive")
+  finalSummaryPromptInstructions String?         @map("final_summary_prompt_instructions")
+
+  modules     CaseStudyModule[]          @relation("CaseStudyToModules")
+  enrollments ClassCaseStudyEnrollment[] @relation("CaseStudyToEnrollments")
 
   @@map("case_studies")
 }
 
 model CaseStudyModule {
-  id               String    @id @default(uuid())
-  caseStudyId      String    @map("case_study_id")
-  caseStudy        CaseStudy @relation("CaseStudyToModules", fields: [caseStudyId], references: [id])
+  id          String    @id @default(uuid())
+  caseStudyId String    @map("case_study_id")
+  caseStudy   CaseStudy @relation("CaseStudyToModules", fields: [caseStudyId], references: [id])
 
-  title            String    @map("title")
-  shortDescription String    @map("short_description")
-  details          String    @db.Text @map("details")
-  orderNumber      Int       @map("order_number")
-  createdBy        String?   @map("created_by") // created by admin
-  updatedBy        String?   @map("updated_by") // updated by admin
-  createdAt        DateTime  @default(now()) @map("created_at")
-  updatedAt        DateTime  @updatedAt @map("updated_at")
+  title            String   @map("title")
+  shortDescription String   @map("short_description")
+  details          String   @db.Text @map("details")
+  orderNumber      Int      @map("order_number")
+  createdBy        String?  @map("created_by") // created by admin
+  updatedBy        String?  @map("updated_by") // updated by admin
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
   archive          Boolean  @default(false) @map("archive")
 
   exercises ModuleExercise[] @relation("ModuleToExercises")
@@ -61,53 +138,52 @@ model ClassCaseStudyEnrollment {
 
   assignedInstructorId String @map("assigned_instructor_id") // assigned by admin but store instructor email
 
-  createdBy   String?   @map("created_by") // created by admin
-  updatedBy   String?   @map("updated_by") // updated by admin
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  archive          Boolean  @default(false) @map("archive")
+  createdBy String?  @map("created_by") // created by admin
+  updatedBy String?  @map("updated_by") // updated by admin
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  archive   Boolean  @default(false) @map("archive")
 
-  students     EnrollmentStudent[]
+  students EnrollmentStudent[]
 
   @@map("case_study_enrollments")
 }
 
 model EnrollmentStudent {
-  id             String               @id @default(uuid())
-  enrollmentId   String               @map("enrollment_id")
-  enrollment     ClassCaseStudyEnrollment  @relation(fields: [enrollmentId], references: [id])
+  id           String                   @id @default(uuid())
+  enrollmentId String                   @map("enrollment_id")
+  enrollment   ClassCaseStudyEnrollment @relation(fields: [enrollmentId], references: [id])
 
   assignedStudentId String @map("assigned_student_id") // assigned by admin but store student email
 
   instructionReadStatus Json? @map("instruction_read_status")
 
-  createdBy      String?              @map("created_by") // created by admin
-  updatedBy      String?              @map("updated_by") // updated by admin
-  createdAt      DateTime             @default(now()) @map("created_at")
-  updatedAt      DateTime             @updatedAt @map("updated_at")
-  archive          Boolean  @default(false) @map("archive")
+  createdBy String?  @map("created_by") // created by admin
+  updatedBy String?  @map("updated_by") // updated by admin
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  archive   Boolean  @default(false) @map("archive")
 
   @@unique([enrollmentId, assignedStudentId], map: "uq_enrollment_student")
-  
   @@map("enrollment_students")
   finalSubmission FinalSubmission?
-  finalSummary FinalSummary?
+  finalSummary    FinalSummary?
 }
 
 model ModuleExercise {
-  id               String           @id @default(uuid()) @map("id")
-  moduleId         String           @map("module_id")
-  module           CaseStudyModule  @relation("ModuleToExercises", fields: [moduleId], references: [id])
+  id       String          @id @default(uuid()) @map("id")
+  moduleId String          @map("module_id")
+  module   CaseStudyModule @relation("ModuleToExercises", fields: [moduleId], references: [id])
 
-  title            String           @map("title")
-  shortDescription String           @map("short_description")
-  details          String           @db.Text @map("details")
-  promptHint       String?          @map("prompt_hint")
-  orderNumber      Int              @map("order_number")
-  createdBy        String?          @map("created_by") // created by admin
-  updatedBy        String?          @map("updated_by") // updated by admin
-  createdAt        DateTime         @default(now()) @map("created_at")
-  updatedAt        DateTime         @updatedAt @map("updated_at")
+  title            String   @map("title")
+  shortDescription String   @map("short_description")
+  details          String   @db.Text @map("details")
+  promptHint       String?  @map("prompt_hint")
+  orderNumber      Int      @map("order_number")
+  createdBy        String?  @map("created_by") // created by admin
+  updatedBy        String?  @map("updated_by") // updated by admin
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
   archive          Boolean  @default(false) @map("archive")
 
   attempts ExerciseAttempt[] @relation("ExerciseToAttempts")
@@ -116,58 +192,58 @@ model ModuleExercise {
 }
 
 model ExerciseAttempt {
-  id             String         @id @default(uuid()) @map("id")
-  exerciseId     String         @map("exercise_id")
-  exercise       ModuleExercise @relation("ExerciseToAttempts", fields: [exerciseId], references: [id])
+  id         String         @id @default(uuid()) @map("id")
+  exerciseId String         @map("exercise_id")
+  exercise   ModuleExercise @relation("ExerciseToAttempts", fields: [exerciseId], references: [id])
 
-  createdBy      String?        @map("created_by") // created by student
-  updatedBy      String?        @map("updated_by") // updated by student
-  attemptNumber  Int            @map("attempt_number")
-  model          String?        @map("model")
-  prompt         String?        @db.Text @map("prompt")
-  promptResponse String?        @db.Text @map("prompt_response")
-  status         String?        @map("status")
-  error          String?        @map("error")
-  selectedForSummary Boolean    @default(false) @map("selected_for_summary")
-  createdAt      DateTime       @default(now()) @map("created_at")
-  updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at")
-  archive          Boolean  @default(false) @map("archive")
+  createdBy          String?  @map("created_by") // created by student
+  updatedBy          String?  @map("updated_by") // updated by student
+  attemptNumber      Int      @map("attempt_number")
+  model              String?  @map("model")
+  prompt             String?  @db.Text @map("prompt")
+  promptResponse     String?  @db.Text @map("prompt_response")
+  status             String?  @map("status")
+  error              String?  @map("error")
+  selectedForSummary Boolean  @default(false) @map("selected_for_summary")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @default(now()) @updatedAt @map("updated_at")
+  archive            Boolean  @default(false) @map("archive")
 
   @@map("exercise_attempts")
 }
 
 model FinalSummary {
-  id           String    @id @default(uuid()) @map("id")
+  id String @id @default(uuid()) @map("id")
 
-  studentId    String    @unique @map("student_id")
-  student      EnrollmentStudent @relation(fields: [studentId], references: [id])
+  studentId String            @unique @map("student_id")
+  student   EnrollmentStudent @relation(fields: [studentId], references: [id])
 
-  model        String?   @map("model")             
-  response     String?   @db.Text @map("response") 
-  status       String?   @map("status")            
-  error        String?   @map("error")             
+  model    String? @map("model")
+  response String? @db.Text @map("response")
+  status   String? @map("status")
+  error    String? @map("error")
 
-  createdBy    String?   @map("created_by") // created by student
-  updatedBy    String?   @map("updated_by") // updated by student
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-  archive      Boolean   @default(false) @map("archive")
+  createdBy String?  @map("created_by") // created by student
+  updatedBy String?  @map("updated_by") // updated by student
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  archive   Boolean  @default(false) @map("archive")
 
   @@map("final_summaries")
 }
 
 model FinalSubmission {
-  id           String    @id @default(uuid()) @map("id")
+  id String @id @default(uuid()) @map("id")
 
-  studentId     String    @unique @map("student_id")
-  student       EnrollmentStudent @relation(fields: [studentId], references: [id])
+  studentId String            @unique @map("student_id")
+  student   EnrollmentStudent @relation(fields: [studentId], references: [id])
 
-  createdBy    String?   @map("created_by") // created by student
-  updatedBy    String?   @map("updated_by") // updated by student
-  finalContent String?   @db.Text @map("final_content")
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-  archive          Boolean  @default(false) @map("archive")
+  createdBy    String?  @map("created_by") // created by student
+  updatedBy    String?  @map("updated_by") // updated by student
+  finalContent String?  @db.Text @map("final_content")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  archive      Boolean  @default(false) @map("archive")
 
   @@map("final_submissions")
 }
