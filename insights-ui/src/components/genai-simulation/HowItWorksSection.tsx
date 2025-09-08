@@ -53,11 +53,11 @@ export default function HowItWorksSection() {
     },
     {
       step: '06',
-      title: 'Professor Oversight',
-      desc: 'Professors can view both final results and the full history of prompts used by each student.',
+      title: 'Instructor Oversight',
+      desc: 'Instructors can view both final results and the full history of prompts used by each student.',
       icon: DocumentCheckIcon,
       color: 'from-orange-500 to-rose-500',
-      detail: 'Platform allows students to practice real case analysis in a classroom-like environment with professor guidance.',
+      detail: 'Platform allows students to practice real case analysis in a classroom-like environment with instructor guidance.',
     },
   ];
 
