@@ -3,7 +3,6 @@
 import { EmailSentMessage } from '@/components/login/email-sent-message';
 import { UserLogin } from '@/components/login/user-login';
 import { isAdminEmail, isStudentEmail } from '@/dummy/mockData';
-import { UserRole } from '@/types/user';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import { CardContent } from 'defi-alerts/src/components/ui/card';
@@ -23,10 +22,9 @@ interface LoginResponse {
 }
 
 export default function LoginPage() {
-  const [loginType, setLoginType] = useState<UserRole>('student');
   const [email, setEmail] = useState('');
   const [studentErrorMessage, setStudentErrorMessage] = useState<string | undefined>(undefined);
-  const [instructorErrorMessage, setInstructorErrorMessage] = useState<string | undefined>(undefined);
+
   const [step, setStep] = useState<1 | 2>(1); // 1 for email form, 2 for email sent message
   const router = useRouter();
 
