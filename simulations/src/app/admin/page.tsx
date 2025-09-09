@@ -111,8 +111,6 @@ export default function AdminDashboard() {
   }, [selectedSubject, caseStudies]);
 
   const handleLogout = (): void => {
-    localStorage.removeItem('user_type');
-    localStorage.removeItem('user_email');
     router.push('/login');
   };
 

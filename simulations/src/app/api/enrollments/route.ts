@@ -1,3 +1,4 @@
+import { prismaAdapter } from '@/app/api/auth/[...nextauth]/authOptions';
 import { prisma } from '@/prisma';
 import { EnrollmentWithRelations } from '@/types/api';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -56,15 +57,14 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
   });
 
   if (!instructor) {
-    instructor = await prisma.user.create({
-      data: {
-        email: body.assignedInstructorId,
-        spaceId: KoalaGainsSpaceId,
-        username: body.assignedInstructorId,
-        authProvider: 'Email',
-        role: 'Instructor',
-      },
+    instructor = await prismaAdapter.createUser({
+      email: body.assignedInstructorId,
+      spaceId: KoalaGainsSpaceId,
+      username: body.assignedInstructorId,
+      authProvider: 'Email',
+      role: 'Instructor',
     });
+    if (!instructor) throw new Error(`Failed to create instructor ${body.assignedInstructorId} in Koala Gains. Please contact the Koala Gains team.`);
   }
 
   const enrollment: EnrollmentWithRelations = await prisma.classCaseStudyEnrollment.create({

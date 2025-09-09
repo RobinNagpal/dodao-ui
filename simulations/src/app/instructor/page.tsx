@@ -1,5 +1,8 @@
 'use client';
 
+import { SimulationSession } from '@/types/user';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -15,7 +18,9 @@ import InstructorNavbar from '@/components/navigation/InstructorNavbar';
 import InstructorLoading from '@/components/instructor/InstructorLoading';
 
 export default function InstructorDashboard() {
-  const [userEmail, setUserEmail] = useState<string>('');
+  const { data: simSession } = useSession();
+  const session: SimulationSession | null = simSession as SimulationSession | null;
+
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
   const [showStudentManagement, setShowStudentManagement] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
@@ -27,23 +32,14 @@ export default function InstructorDashboard() {
     data: assignedCaseStudies,
     loading: loadingCaseStudies,
     reFetchData: refetchCaseStudies,
-  } = useFetchData<CaseStudy[]>(
-    `/api/case-studies?userEmail=${encodeURIComponent(userEmail)}&userType=instructor`,
-    { skipInitialFetch: !userEmail },
-    'Failed to load assigned case studies'
-  );
+  } = useFetchData<CaseStudy[]>(`${getBaseUrl()}/api/case-studies`, {}, 'Failed to load assigned case studies');
 
   // Check authentication on page load
   useEffect(() => {
-    const userType = localStorage.getItem('user_type');
-    const email = localStorage.getItem('user_email');
-
-    if (!userType || userType !== 'instructor' || !email) {
+    if (!session || session.role !== 'Admin') {
       router.push('/login');
       return;
     }
-
-    setUserEmail(email);
   }, [router]);
 
   // Filter case studies based on selected subject
@@ -58,8 +54,6 @@ export default function InstructorDashboard() {
   }, [selectedSubject, assignedCaseStudies]);
 
   const handleLogout = () => {
-    localStorage.removeItem('user_type');
-    localStorage.removeItem('user_email');
     router.push('/login');
   };
 
@@ -112,7 +106,7 @@ export default function InstructorDashboard() {
       <InstructorNavbar
         title="Instructor Dashboard"
         subtitle="Welcome Back"
-        userEmail={userEmail}
+        userEmail={session?.email!}
         onLogout={handleLogout}
         icon={<GraduationCap className="h-8 w-8 text-white" />}
       />
@@ -299,7 +293,7 @@ export default function InstructorDashboard() {
         onClose={handleCloseModal}
         caseStudyId={selectedCaseStudy?.id || ''}
         caseStudyTitle={selectedCaseStudy?.title || ''}
-        instructorEmail={userEmail}
+        instructorEmail={session?.email!}
       />
     </div>
   );

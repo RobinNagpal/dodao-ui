@@ -10,12 +10,14 @@ import { AuthOptions } from 'next-auth';
 
 const p = new PrismaClient();
 
+export const prismaAdapter = PrismaAdapter(p);
+
 export const authOptions: AuthOptions = getAuthOptions(
   {
     user: p.user,
     verificationToken: p.verificationToken,
     adapter: {
-      ...PrismaAdapter(p),
+      ...prismaAdapter,
       getUserByEmail: async (email: string) => {
         const user = (await p.user.findFirst({ where: { email } })) as User;
         console.log('getUserByEmail', user);
