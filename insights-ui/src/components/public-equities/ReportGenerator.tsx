@@ -5,7 +5,6 @@ import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getIndustryDisplayName, getSubIndustryDisplayName } from '@/lib/mappingsV1';
 
 interface AnalysisStatus {
   businessAndMoat: boolean;
@@ -20,6 +19,7 @@ interface AnalysisStatus {
     BILL_ACKMAN: boolean;
   };
   futureRisk: boolean;
+  finalSummary: boolean;
 }
 
 interface TickerReportV1 {
@@ -27,18 +27,13 @@ interface TickerReportV1 {
   analysisStatus: AnalysisStatus;
 }
 
-interface GenerationSettings {
-  investorKey: string;
-}
-
 interface ReportGeneratorProps {
   selectedTickers: string[];
   tickerReports: Record<string, TickerReportV1>;
   onReportGenerated: (ticker: string) => void;
-  generationSettings: GenerationSettings;
 }
 
-export default function ReportGenerator({ selectedTickers, tickerReports, onReportGenerated, generationSettings }: ReportGeneratorProps): JSX.Element {
+export default function ReportGenerator({ selectedTickers, tickerReports, onReportGenerated }: ReportGeneratorProps): JSX.Element {
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
   const [isGeneratingAll, setIsGeneratingAll] = useState<boolean>(false);
 
@@ -56,6 +51,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     { key: 'future-growth', label: 'Future Growth', statusKey: 'futureGrowth' as keyof AnalysisStatus },
     { key: 'fair-value', label: 'Fair Value', statusKey: 'fairValue' as keyof AnalysisStatus },
     { key: 'future-risk', label: 'Future Risk', statusKey: 'futureRisk' as keyof AnalysisStatus },
+    { key: 'final-summary', label: 'Final Summary', statusKey: 'finalSummary' as keyof AnalysisStatus },
   ];
 
   const investorAnalysisTypes = [
@@ -71,11 +67,6 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
     try {
       const payload: AnalysisRequest = {};
-
-      // Add investorKey for investor analysis
-      if (analysisType === 'investor-analysis') {
-        payload.investorKey = generationSettings.investorKey;
-      }
 
       const result = await postAnalysis(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/${analysisType}`, payload);
 
@@ -249,7 +240,9 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                   {ticker}
                 </th>
               ))}
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Generate For All</th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                Generate For All selected tickers
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -283,7 +276,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                       loading={isAnyLoading}
                       className="ml-auto"
                     >
-                      {isAnyLoading ? 'Generating...' : 'Generate For All'}
+                      {isAnyLoading ? 'Generating...' : 'Generate For All for this specific factor'}
                     </Button>
                   </td>
                 </tr>
@@ -320,7 +313,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                       loading={isAnyLoading}
                       className="ml-auto"
                     >
-                      {isAnyLoading ? 'Generating...' : 'Generate For All'}
+                      {isAnyLoading ? 'Generating...' : 'Generate For All for this specific investor analysis'}
                     </Button>
                   </td>
                 </tr>

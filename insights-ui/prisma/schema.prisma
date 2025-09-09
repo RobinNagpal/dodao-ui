@@ -462,6 +462,7 @@ model AnalysisCategoryFactor {
   factorAnalysisKey         String                 @map("factor_analysis_key")
   factorAnalysisTitle       String                 @map("factor_analysis_title")
   factorAnalysisDescription String                 @map("factor_analysis_description")
+  factorAnalysisMetrics     String?                @map("factor_analysis_metrics")
   createdAt                 DateTime               @default(now()) @map("created_at")
   updatedAt                 DateTime               @updatedAt @map("updated_at")
   createdBy                 String?                @map("created_by")

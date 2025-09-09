@@ -70,6 +70,7 @@ export default function UploadJsonModal({ open, onClose, title, industryKey, sub
             factorAnalysisKey: 'COMPETITIVE_ADVANTAGE',
             factorAnalysisTitle: 'Competitive Advantage Assessment',
             factorAnalysisDescription: "Evaluate the company's sustainable competitive advantages and moat strength",
+            factorAnalysisMetrics: "List and describe key metrics that demonstrate the company's competitive position (optional)",
           },
         ],
       },

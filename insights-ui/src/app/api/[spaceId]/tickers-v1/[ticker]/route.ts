@@ -44,13 +44,13 @@ export interface TickerV1ReportResponse extends FullReport {
       BILL_ACKMAN: boolean;
     };
     futureRisk: boolean;
+    finalSummary: boolean;
   };
 }
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerV1ReportResponse> {
   const { spaceId, ticker } = await context.params;
 
-  console.log('ticker', ticker);
   // Get ticker from DB with all related data
   const tickerRecord = await prisma.tickerV1.findFirst({
     where: {
@@ -91,6 +91,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       BILL_ACKMAN: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'BILL_ACKMAN'),
     },
     futureRisk: tickerRecord.futureRisks.length > 0,
+    finalSummary: !!tickerRecord.summary,
   };
 
   return {

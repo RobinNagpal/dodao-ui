@@ -4,6 +4,7 @@ export interface AnalysisFactorDefinition {
   factorAnalysisKey: string;
   factorAnalysisTitle: string;
   factorAnalysisDescription: string;
+  factorAnalysisMetrics?: string;
 }
 
 export interface CategoryAnalysisFactors {
