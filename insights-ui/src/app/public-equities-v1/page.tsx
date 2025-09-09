@@ -288,46 +288,61 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ pa
           <Breadcrumbs breadcrumbs={breadcrumbs} />
         </div>
         <PrivateWrapper>
-          <div className="flex flex-wrap justify-end gap-2 mb-4">
+          <div className="flex flex-wrap justify-end gap-3 mb-6">
             <Link
               href={'/public-equities-v1/create-reports-v1'}
-              className="link-color border border-color rounded-xl p-2 text-sm sm:text-base whitespace-nowrap"
+              className="bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium rounded-lg px-4 py-2.5 text-sm sm:text-base whitespace-nowrap transition-colors duration-200 shadow-md"
             >
               Create Ticker Reports
             </Link>
             <Link
               href={'/public-equities-v1/analysis-factors'}
-              className="link-color border border-color rounded-xl p-2 text-sm sm:text-base whitespace-nowrap"
+              className="bg-[#374151] hover:bg-[#4B5563] text-white font-medium border border-[#4F46E5] rounded-lg px-4 py-2.5 text-sm sm:text-base whitespace-nowrap transition-colors duration-200 shadow-md"
             >
               View Analysis Factors
             </Link>
           </div>
         </PrivateWrapper>
 
+        <div className="w-full mb-8">
+          <h1 className="text-2xl font-bold text-white mb-4">REIT Tickers Explorer</h1>
+          <p className="text-[#E5E7EB] text-md mb-6">
+            Explore Real Estate Investment Trust (REIT) tickers by category. Select any ticker to view detailed financial reports, performance metrics, and
+            AI-driven analysis to support your investment decisions.
+          </p>
+        </div>
+
         {/* REIT Type Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 auto-rows-auto grid-flow-row-dense">
+        <h2 className="text-2xl font-bold text-white mb-6">REIT Categories</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 auto-rows-auto">
           {Object.entries(reitsByType).map(([reitType, reits]) => (
-            <div key={reitType} className="bg-block-bg-color rounded-lg shadow-sm border border-color overflow-hidden h-full flex flex-col">
-              <div className="px-4 py-5 sm:px-6 border-b border-color flex">
-                <h3 className="text-lg font-medium heading-color">{reitType} REITs</h3>
-                <p className="mt-1 text-sm text-color ml-1">
-                  ({reits.length} {reits.length === 1 ? 'company' : 'companies'})
+            <div
+              key={reitType}
+              className="bg-block-bg-color rounded-lg shadow-lg border border-color overflow-hidden h-full flex flex-col hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="px-4 py-3 sm:px-6 border-b border-color flex items-center bg-gradient-to-r from-[#374151] to-[#2D3748]">
+                <h3 className="text-lg font-semibold heading-color">{reitType} REITs</h3>
+                <p className="mt-1 text-sm text-white ml-2 bg-[#4F46E5] px-2 py-0.5 rounded-full">
+                  {reits.length} {reits.length === 1 ? 'company' : 'companies'}
                 </p>
               </div>
-              <ul className="divide-color flex-grow">
+              <ul className="divide-y divide-color flex-grow">
                 {reits.map((reit) => {
                   // Find the ticker in the fetched data if available
 
                   return (
-                    <li key={reit.ticker} className="px-4 py-1 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <li
+                      key={reit.ticker}
+                      className="px-2 py-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-[#2D3748] transition-colors duration-200"
+                    >
                       <div className="min-w-0 w-full">
                         <div className="flex items-center justify-between">
-                          <Link href={`/public-equities-v1/NASDAQ/${reit.ticker}`} className="link-color primary-text-color">
-                            <div className="flex gap-2">
-                              <p className="whitespace-nowrap rounded-md px-1.5 py-1 text-xs font-medium ring-1 ring-inset ring-border primary-text-color self-center">
+                          <Link href={`/public-equities-v1/NASDAQ/${reit.ticker}`} className="w-full">
+                            <div className="flex gap-3 items-center">
+                              <p className="whitespace-nowrap rounded-md px-2 py-.5 text-sm font-medium bg-[#4F46E5] text-white self-center shadow-sm">
                                 {reit.ticker}
                               </p>
-                              <p className="text-sm font-normal text-break break-all">{reit.name}</p>
+                              <p className="text-sm font-medium text-break break-all text-white">{reit.name}</p>
                             </div>
                           </Link>
                         </div>
