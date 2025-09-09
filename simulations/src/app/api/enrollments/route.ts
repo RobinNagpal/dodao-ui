@@ -61,7 +61,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
       email: body.assignedInstructorId,
       spaceId: KoalaGainsSpaceId,
       username: body.assignedInstructorId,
-      authProvider: 'Email',
+      authProvider: 'custom-email',
       role: 'Instructor',
     });
     if (!instructor) throw new Error(`Failed to create instructor ${body.assignedInstructorId} in Koala Gains. Please contact the Koala Gains team.`);
