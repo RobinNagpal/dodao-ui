@@ -57,6 +57,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       factorAnalysisKey: factor.factorAnalysisKey,
       factorAnalysisTitle: factor.factorAnalysisTitle,
       factorAnalysisDescription: factor.factorAnalysisDescription,
+      factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
     })),
     competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
   };

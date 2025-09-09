@@ -33,6 +33,9 @@ properties:
         factorAnalysisDescription:
           type: string
           description: 'Short, 1–2 sentence plain-English explanation of what this factor represents and why it matters to investors.'
+        factorAnalysisMetrics:
+          type: string
+          description: 'Optional comma-separated list of key metrics used for evaluating this factor.'
       required:
         - factorAnalysisKey
         - factorAnalysisTitle
