@@ -1,7 +1,7 @@
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
+import { TickerV1 } from '@prisma/client';
 
 interface NewTickerRequest {
   name: string;
@@ -11,6 +11,7 @@ interface NewTickerRequest {
   subIndustryKey: string;
   websiteUrl?: string;
   summary?: string;
+  cachedScore: number;
 }
 
 interface NewTickerResponse {
@@ -30,18 +31,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     },
   });
 
-  return tickers.map((ticker) => ({
-    id: ticker.id,
-    name: ticker.name,
-    symbol: ticker.symbol,
-    exchange: ticker.exchange,
-    industryKey: ticker.industryKey,
-    subIndustryKey: ticker.subIndustryKey,
-    websiteUrl: ticker.websiteUrl || undefined,
-    summary: ticker.summary || undefined,
-    createdAt: ticker.createdAt,
-    updatedAt: ticker.updatedAt,
-  }));
+  return tickers;
 }
 
 async function postHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<NewTickerResponse> {
@@ -85,16 +75,7 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
 
   return {
     success: true,
-    ticker: {
-      id: ticker.id,
-      name: ticker.name,
-      symbol: ticker.symbol,
-      exchange: ticker.exchange,
-      industryKey: ticker.industryKey,
-      subIndustryKey: ticker.subIndustryKey,
-      websiteUrl: ticker.websiteUrl || undefined,
-      summary: ticker.summary || undefined,
-    },
+    ticker: ticker,
   };
 }
 

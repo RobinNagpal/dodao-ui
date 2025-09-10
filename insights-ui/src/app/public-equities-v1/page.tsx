@@ -1,10 +1,13 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { TickerV1 } from '@prisma/client';
 
 export async function generateMetadata(props: { searchParams: Promise<{ page?: string }> }): Promise<Metadata> {
   const { page } = await props.searchParams;
@@ -281,6 +284,11 @@ const reitsByType: Record<string, ReitData[]> = {
 };
 
 export default async function AllTickersPage(props: { searchParams: Promise<{ page?: string }> }) {
+  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`);
+  const tickers: TickerV1[] = await response.json();
+
+  const tickersMap = Object.fromEntries(tickers.map((t) => [t.symbol, t]));
+
   return (
     <Tooltip.Provider delayDuration={300}>
       <PageWrapper className="px-4 sm:px-6">
@@ -338,11 +346,47 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ pa
                       <div className="min-w-0 w-full">
                         <div className="flex items-center justify-between">
                           <Link href={`/public-equities-v1/NASDAQ/${reit.ticker}`} className="w-full">
-                            <div className="flex gap-3 items-center">
+                            <div className="flex gap-2 items-center">
+                              {(() => {
+                                const score = tickersMap?.[reit.ticker]?.cachedScore || 0;
+                                let textColorClass = 'text-green-500'; // Default: Green for 15+
+                                let bgColorClass = 'bg-green-500'; // Default: Green for 15+
+                                let scoreLabel = 'Excellent';
+
+                                if (score < 8) {
+                                  textColorClass = 'text-red-500'; // Red for < 5
+                                  bgColorClass = 'bg-red-500'; // Red for < 5
+                                  scoreLabel = 'Poor';
+                                } else if (score < 14) {
+                                  textColorClass = 'text-orange-500'; // Orange for 5-9
+                                  bgColorClass = 'bg-orange-500'; // Orange for 5-9
+                                  scoreLabel = 'Fair';
+                                } else if (score < 20) {
+                                  textColorClass = 'text-yellow-500'; // Yellow for 10-14
+                                  bgColorClass = 'bg-yellow-500'; // Yellow for 10-14
+                                  scoreLabel = 'Good';
+                                }
+
+                                return (
+                                  <Tooltip.Root>
+                                    <Tooltip.Trigger asChild>
+                                      <p className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[50px] text-right`}>
+                                        <span className="font-mono tabular-nums text-right text-xs w-[50px]">{score}/25</span>
+                                      </p>
+                                    </Tooltip.Trigger>
+                                    <Tooltip.Portal>
+                                      <Tooltip.Content className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm shadow-lg z-50" sideOffset={5}>
+                                        {scoreLabel} Score: {score}/25
+                                        <Tooltip.Arrow className="fill-gray-900" />
+                                      </Tooltip.Content>
+                                    </Tooltip.Portal>
+                                  </Tooltip.Root>
+                                );
+                              })()}
                               <p className="whitespace-nowrap rounded-md px-2 py-.5 text-sm font-medium bg-[#4F46E5] text-white self-center shadow-sm">
                                 {reit.ticker}
                               </p>
-                              <p className="text-sm font-medium text-break break-all text-white">{reit.name}</p>
+                              <p className="text-sm font-medium text-break break-words text-white">{reit.name}</p>
                             </div>
                           </Link>
                         </div>

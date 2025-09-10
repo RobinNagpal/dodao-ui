@@ -20,6 +20,7 @@ interface AnalysisStatus {
   };
   futureRisk: boolean;
   finalSummary: boolean;
+  cachedScore: boolean;
 }
 
 interface TickerReportV1 {
@@ -52,6 +53,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     { key: 'fair-value', label: 'Fair Value', statusKey: 'fairValue' as keyof AnalysisStatus },
     { key: 'future-risk', label: 'Future Risk', statusKey: 'futureRisk' as keyof AnalysisStatus },
     { key: 'final-summary', label: 'Final Summary', statusKey: 'finalSummary' as keyof AnalysisStatus },
+    { key: 'cached-score', label: 'Cached Score', statusKey: 'cachedScore' as keyof AnalysisStatus },
   ];
 
   const investorAnalysisTypes = [
@@ -127,6 +129,11 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
       // Add a small delay between calls
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
+
+    // Generate cached score at the end of all steps
+    await handleGenerateAnalysis('cached-score', ticker);
+    // Add a small delay after the final step
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   };
 
   // Function to generate all reports for all tickers in parallel

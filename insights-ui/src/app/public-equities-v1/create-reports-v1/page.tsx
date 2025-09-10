@@ -29,6 +29,7 @@ interface AnalysisStatus {
   };
   futureRisk: boolean;
   finalSummary: boolean;
+  cachedScore: boolean;
 }
 
 interface TickerReportV1 {
