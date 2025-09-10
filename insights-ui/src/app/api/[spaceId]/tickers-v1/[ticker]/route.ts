@@ -45,6 +45,7 @@ export interface TickerV1ReportResponse extends FullReport {
     };
     futureRisk: boolean;
     finalSummary: boolean;
+    cachedScore: boolean;
   };
 }
 
@@ -92,6 +93,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     },
     futureRisk: tickerRecord.futureRisks.length > 0,
     finalSummary: !!tickerRecord.summary,
+    cachedScore: !!tickerRecord.cachedScore,
   };
 
   return {

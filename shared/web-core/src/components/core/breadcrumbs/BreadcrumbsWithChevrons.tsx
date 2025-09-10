@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import ChevronRightIcon from '@heroicons/react/20/solid/ChevronRightIcon';
 import HomeIcon from '@heroicons/react/24/solid/HomeIcon';
+import { ReactNode } from 'react';
 
 export interface BreadcrumbsOjbect {
   name: string;
@@ -8,35 +11,59 @@ export interface BreadcrumbsOjbect {
   current: boolean;
 }
 
-interface BreadcrumbsWithChevronsProps {
-  breadcrumbs: BreadcrumbsOjbect[];
+export interface BreadcrumbButton {
+  text: string;
+  icon?: ReactNode;
+  onClick: () => void;
+  className?: string;
 }
 
-export default function BreadcrumbsWithChevrons({ breadcrumbs }: BreadcrumbsWithChevronsProps) {
+interface BreadcrumbsWithChevronsProps {
+  breadcrumbs: BreadcrumbsOjbect[];
+  rightButton?: BreadcrumbButton;
+}
+
+export default function BreadcrumbsWithChevrons({ breadcrumbs, rightButton }: BreadcrumbsWithChevronsProps) {
   return breadcrumbs.length === 0 ? null : (
-    <nav className="flex" aria-label="Breadcrumb">
-      <ol role="list" className="flex items-center space-x-4">
-        <li>
-          <Link className="cursor-pointer" href={'/'}>
-            <HomeIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-            <span className="sr-only">Home</span>
-          </Link>
-        </li>
-        {breadcrumbs.map((breadcrumb) => (
-          <li key={breadcrumb.name}>
-            <div className="flex items-center">
-              <ChevronRightIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-              <Link
-                href={breadcrumb.href}
-                className={`ml-4 text-sm font-medium ${breadcrumb.current ? 'cursor-default' : 'cursor-pointer link-color'}`}
-                aria-current={breadcrumb.current ? 'page' : undefined}
-              >
-                {breadcrumb.name}
-              </Link>
-            </div>
+    <div className="flex items-center justify-between w-full">
+      <nav className="flex" aria-label="Breadcrumb">
+        <ol role="list" className="flex items-center space-x-4">
+          <li>
+            <Link className="cursor-pointer" href={'/'}>
+              <HomeIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
+              <span className="sr-only">Home</span>
+            </Link>
           </li>
-        ))}
-      </ol>
-    </nav>
+          {breadcrumbs.map((breadcrumb) => (
+            <li key={breadcrumb.name}>
+              <div className="flex items-center">
+                <ChevronRightIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
+                <Link
+                  href={breadcrumb.href}
+                  className={`ml-4 text-sm font-medium ${breadcrumb.current ? 'cursor-default' : 'cursor-pointer link-color'}`}
+                  aria-current={breadcrumb.current ? 'page' : undefined}
+                >
+                  {breadcrumb.name}
+                </Link>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </nav>
+      {rightButton && (
+        <div className="flex-shrink-0 ml-4">
+          <button
+            onClick={rightButton.onClick}
+            className={
+              rightButton.className ||
+              'inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200'
+            }
+          >
+            {rightButton.icon && <span className="mr-2">{rightButton.icon}</span>}
+            {rightButton.text}
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
