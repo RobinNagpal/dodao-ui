@@ -1,16 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { CATEGORY_MAPPINGS, TickerAnalysisCategory, INDUSTRY_OPTIONS, SUB_INDUSTRY_OPTIONS, INDUSTRY_MAPPINGS, SUB_INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerV1ReportResponse } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
-import { TickerV1 } from '@prisma/client';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import TickerComparison, { ComparisonTicker } from '@/components/ticker-reportsv1/TickerComparison';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { CATEGORY_MAPPINGS, INDUSTRY_MAPPINGS, INDUSTRY_OPTIONS, SUB_INDUSTRY_MAPPINGS, SUB_INDUSTRY_OPTIONS, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
-import { XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { TickerV1 } from '@prisma/client';
+import { useEffect, useState } from 'react';
 
 interface ComparisonData {
   ticker: string;
@@ -156,6 +156,36 @@ export default function ComparisonPage() {
     setSelectedStocks([]);
     setSelectedIndustry('');
     setSelectedSubIndustry('');
+  };
+
+  // Transform comparisonData to the format expected by TickerComparison component
+  const getComparisonTickers = (): ComparisonTicker[] => {
+    return comparisonData.map((data) => {
+      // Create a properly typed categoryResults object
+      const categoryResults: ComparisonTicker['categoryResults'] = {} as ComparisonTicker['categoryResults'];
+
+      // Populate each category with the correct structure
+      Object.values(TickerAnalysisCategory).forEach((category) => {
+        const categoryData = data.categoryResults[category];
+        categoryResults[category] = {
+          factorResults: categoryData.factorResults.map((factor) => ({
+            factorTitle: factor.factorTitle,
+            factorAnalysisKey: '', // We don't have this in ComparisonData
+            result: factor.result,
+            oneLineExplanation: factor.oneLineExplanation,
+          })),
+        };
+      });
+
+      return {
+        id: data.ticker, // Using ticker symbol as ID since we don't have the actual ID
+        name: data.name,
+        symbol: data.ticker,
+        exchange: '', // We don't have exchange info in ComparisonData
+        cachedScore: data.categoryResults[selectedCategory].passCount, // Using pass count as a score
+        categoryResults,
+      };
+    });
   };
 
   return (
@@ -377,46 +407,8 @@ export default function ComparisonPage() {
                   <div className="bg-gray-900 rounded-lg shadow-sm border border-gray-700 p-6">
                     <h3 className="text-lg font-semibold mb-6 text-gray-100">{CATEGORY_MAPPINGS[selectedCategory]} - Detailed Analysis</h3>
 
-                    <div className="space-y-8">
-                      {comparisonData.map((stock) => (
-                        <div key={stock.ticker} className="border-b border-gray-700 pb-6 last:border-b-0">
-                          <h4 className="text-md font-medium text-gray-100 mb-4">
-                            {stock.name} ({stock.ticker})
-                          </h4>
-
-                          {stock.categoryResults[selectedCategory].factorResults.length > 0 ? (
-                            <div className="grid gap-4">
-                              {stock.categoryResults[selectedCategory].factorResults.map((factor, index) => (
-                                <div key={index} className="flex items-start space-x-3 p-4 bg-gray-800 rounded-lg">
-                                  <div className="flex-shrink-0 mt-0.5">
-                                    {factor.result === 'Pass' ? (
-                                      <CheckCircleIcon className="h-5 w-5 text-green-500" />
-                                    ) : (
-                                      <XCircleIcon className="h-5 w-5 text-red-500" />
-                                    )}
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center space-x-2 mb-1">
-                                      <h5 className="text-sm font-medium text-gray-100">{factor.factorTitle}</h5>
-                                      <span
-                                        className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                                          factor.result === 'Pass' ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                                        }`}
-                                      >
-                                        {factor.result}
-                                      </span>
-                                    </div>
-                                    <p className="text-sm text-gray-400">{factor.oneLineExplanation}</p>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <p className="text-sm text-gray-400 italic">No analysis data available for this category.</p>
-                          )}
-                        </div>
-                      ))}
-                    </div>
+                    {/* Using the shared TickerComparison component */}
+                    <TickerComparison comparisonTickers={getComparisonTickers()} removeTicker={removeStock} isModal={false} />
                   </div>
                 </div>
               )
