@@ -350,7 +350,7 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ pa
                             <div className="flex gap-2 items-center">
                               {(() => {
                                 const score = tickersMap?.[reit.ticker]?.cachedScore || 0;
-                                const { textColorClass, bgColorClass, scoreLabel } = getScoreColorClasses(score);
+                                let { textColorClass, bgColorClass, scoreLabel } = getScoreColorClasses(score);
 
                                 return (
                                   <Tooltip.Root>

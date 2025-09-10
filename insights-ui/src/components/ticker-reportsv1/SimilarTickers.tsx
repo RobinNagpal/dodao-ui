@@ -22,7 +22,7 @@ export default function SimilarTickers({ similarTickers }: SimilarTickersProps) 
       <p className="text-gray-300 mb-4">Based on industry classification and performance score:</p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {similarTickers.map((similarTicker) => {
-          const { textColorClass } = getScoreColorClasses(similarTicker.cachedScore);
+          let { textColorClass } = getScoreColorClasses(similarTicker.cachedScore);
 
           return (
             <div key={similarTicker.id} className="bg-gray-800 p-4 rounded-md border border-gray-700 hover:border-gray-600 transition-colors">
