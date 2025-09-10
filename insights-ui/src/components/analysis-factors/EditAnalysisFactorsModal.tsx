@@ -1,6 +1,6 @@
 import schema from '@/components/analysis-factors/analysisFactorsJsonSchema.json';
 import { Form } from '@/components/rjsf';
-import { GetAnalysisFactorsResponse } from '@/types/public-equity/analysis-factors-types';
+import { UpsertAnalysisFactorsRequest } from '@/types/public-equity/analysis-factors-types';
 import Block from '@dodao/web-core/components/app/Block';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { RJSFSchema } from '@rjsf/utils';
@@ -12,18 +12,18 @@ export interface EditAnalysisFactorsModalProps {
   open: boolean;
   onClose: () => void;
   title: string;
-  analysisFactorsData: GetAnalysisFactorsResponse;
-  onSave: (analysisFactors: GetAnalysisFactorsResponse) => void;
+  analysisFactorsData: UpsertAnalysisFactorsRequest;
+  onSave: (analysisFactors: UpsertAnalysisFactorsRequest) => void;
 }
 
 export default function EditAnalysisFactorsModal({ open, onClose, title, analysisFactorsData, onSave }: EditAnalysisFactorsModalProps) {
   const ajv = new Ajv({ allErrors: true });
   const validate = ajv.compile(schema);
 
-  const [selectedAnalysisFactors, setSelectedAnalysisFactors] = useState<GetAnalysisFactorsResponse>(analysisFactorsData);
+  const [selectedAnalysisFactors, setSelectedAnalysisFactors] = useState<UpsertAnalysisFactorsRequest>(analysisFactorsData);
   const [validationMessages, setValidationMessages] = useState<string[]>();
 
-  const updateSelectedAnalysisFactors = (updated: GetAnalysisFactorsResponse) => {
+  const updateSelectedAnalysisFactors = (updated: UpsertAnalysisFactorsRequest) => {
     const valid = validate(updated);
     if (!valid) {
       const errors: ErrorObject[] = validate.errors || [];
@@ -66,7 +66,7 @@ export default function EditAnalysisFactorsModal({ open, onClose, title, analysi
           <Form
             schema={schema as RJSFSchema}
             formData={selectedAnalysisFactors || {}}
-            onChange={(e) => updateSelectedAnalysisFactors(e.formData as GetAnalysisFactorsResponse)}
+            onChange={(e) => updateSelectedAnalysisFactors(e.formData as UpsertAnalysisFactorsRequest)}
             onSubmit={() => onSave(selectedAnalysisFactors)}
             validator={validator}
             noHtml5Validate

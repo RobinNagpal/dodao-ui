@@ -12,7 +12,7 @@ export interface CategoryAnalysisFactors {
   factors: AnalysisFactorDefinition[];
 }
 
-export interface GetAnalysisFactorsResponse {
+export interface UpsertAnalysisFactorsRequest {
   industryKey: string;
   subIndustryKey: string;
   categories: CategoryAnalysisFactors[];

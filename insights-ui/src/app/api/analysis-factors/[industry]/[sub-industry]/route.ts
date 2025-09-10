@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
-import { AnalysisFactorDefinition, CategoryAnalysisFactors, GetAnalysisFactorsResponse } from '@/types/public-equity/analysis-factors-types';
+import { AnalysisFactorDefinition, CategoryAnalysisFactors, UpsertAnalysisFactorsRequest } from '@/types/public-equity/analysis-factors-types';
+import { SuccessStatus } from '@/types/public-equity/common-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -8,7 +9,7 @@ import { NextRequest } from 'next/server';
 async function getHandler(
   req: NextRequest,
   { params }: { params: Promise<{ industry: string; 'sub-industry': string }> }
-): Promise<GetAnalysisFactorsResponse> {
+): Promise<UpsertAnalysisFactorsRequest> {
   const { industry: industryKey, 'sub-industry': subIndustryKey } = await params;
 
   // Fetch all analysis category factors for this industry and sub-industry
@@ -53,7 +54,7 @@ async function getHandler(
 // POST: Create new analysis factors (for completely new industry/sub-industry combinations)
 async function postHandler(request: NextRequest, { params }: { params: Promise<{ industry: string; 'sub-industry': string }> }): Promise<{ success: boolean }> {
   const { industry: industryKey, 'sub-industry': subIndustryKey } = await params;
-  const body: GetAnalysisFactorsResponse = await request.json();
+  const body: UpsertAnalysisFactorsRequest = await request.json();
   const { categories } = body;
 
   if (!categories) {
@@ -89,7 +90,7 @@ async function postHandler(request: NextRequest, { params }: { params: Promise<{
 // PUT: Update existing analysis factors (smart upsert - update existing, add new, remove deleted)
 async function putHandler(request: NextRequest, { params }: { params: Promise<{ industry: string; 'sub-industry': string }> }): Promise<{ success: boolean }> {
   const { industry: industryKey, 'sub-industry': subIndustryKey } = await params;
-  const body: GetAnalysisFactorsResponse = await request.json();
+  const body: UpsertAnalysisFactorsRequest = await request.json();
   const { categories } = body;
 
   if (!categories) {
@@ -199,7 +200,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
 }
 
 // Export handlers with error handling wrapper
-export const GET = withErrorHandlingV2<GetAnalysisFactorsResponse>(getHandler);
-export const POST = withErrorHandlingV2<{ success: boolean }>(postHandler);
-export const PUT = withErrorHandlingV2<{ success: boolean }>(putHandler);
-export const DELETE = withErrorHandlingV2<{ success: boolean }>(deleteHandler);
+export const GET = withErrorHandlingV2<UpsertAnalysisFactorsRequest>(getHandler);
+export const POST = withErrorHandlingV2<SuccessStatus>(postHandler);
+export const PUT = withErrorHandlingV2<SuccessStatus>(putHandler);
+export const DELETE = withErrorHandlingV2<SuccessStatus>(deleteHandler);

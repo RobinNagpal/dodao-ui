@@ -114,6 +114,8 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
       'competition', // Must come before past-performance and future-growth
       'past-performance',
       'future-growth',
+      'final-summary',
+      'cached-score',
     ];
 
     for (const analysisType of sequence) {
