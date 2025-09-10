@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import ChevronRightIcon from '@heroicons/react/20/solid/ChevronRightIcon';
 import HomeIcon from '@heroicons/react/24/solid/HomeIcon';
@@ -11,16 +9,9 @@ export interface BreadcrumbsOjbect {
   current: boolean;
 }
 
-export interface BreadcrumbButton {
-  text: string;
-  icon?: ReactNode;
-  onClick: () => void;
-  className?: string;
-}
-
 interface BreadcrumbsWithChevronsProps {
   breadcrumbs: BreadcrumbsOjbect[];
-  rightButton?: BreadcrumbButton;
+  rightButton?: ReactNode;
 }
 
 export default function BreadcrumbsWithChevrons({ breadcrumbs, rightButton }: BreadcrumbsWithChevronsProps) {
@@ -50,20 +41,7 @@ export default function BreadcrumbsWithChevrons({ breadcrumbs, rightButton }: Br
           ))}
         </ol>
       </nav>
-      {rightButton && (
-        <div className="flex-shrink-0 ml-4">
-          <button
-            onClick={rightButton.onClick}
-            className={
-              rightButton.className ||
-              'inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200'
-            }
-          >
-            {rightButton.icon && <span className="mr-2">{rightButton.icon}</span>}
-            {rightButton.text}
-          </button>
-        </div>
-      )}
+      {rightButton && <div className="flex-shrink-0 ml-4">{rightButton}</div>}
     </div>
   );
 }

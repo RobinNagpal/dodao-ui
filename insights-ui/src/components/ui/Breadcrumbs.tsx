@@ -1,8 +1,9 @@
-import BreadcrumbsWithChevrons, { BreadcrumbsOjbect, BreadcrumbButton } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import BreadcrumbsWithChevrons, { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import { ReactNode } from 'react';
 
 interface BreadcrumbsProps {
   breadcrumbs: BreadcrumbsOjbect[];
-  rightButton?: BreadcrumbButton;
+  rightButton?: ReactNode;
 }
 
 export default function Breadcrumbs({ breadcrumbs, rightButton }: BreadcrumbsProps) {

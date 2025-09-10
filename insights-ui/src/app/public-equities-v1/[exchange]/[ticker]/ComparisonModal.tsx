@@ -5,15 +5,18 @@ import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenMo
 import { TickerV1ReportResponse } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
 import { CATEGORY_MAPPINGS, TickerAnalysisCategory, INDUSTRY_MAPPINGS, SUB_INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { getScoreColorClasses } from '@/utils/score-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 
 interface ComparisonTicker {
   id: string;
   name: string;
   symbol: string;
   exchange: string;
+  cachedScore?: number;
   categoryResults: {
     [key in TickerAnalysisCategory]: {
       factorResults: Array<{
@@ -92,6 +95,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
         name: data.ticker.name,
         symbol: data.ticker.symbol,
         exchange: data.ticker.exchange,
+        cachedScore: data.cachedScore as number,
         categoryResults,
       };
 
@@ -143,6 +147,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
         name: data.ticker.name,
         symbol: data.ticker.symbol,
         exchange: data.ticker.exchange,
+        cachedScore: data.cachedScore as number,
         categoryResults,
       };
 
@@ -225,121 +230,143 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
 
   return (
     <FullScreenModal open={isOpen} onClose={onClose} title={modalTitle} showCloseButton={true} showTitleBg={true}>
-      <div className="p-6">
-        {/* Ticker Header with Scores */}
-        <div className="mb-6">
-          {/* Add Ticker Section */}
-          {comparisonTickers.length < 5 && (
-            <div className="bg-gray-900 rounded-lg p-4">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
-                {availableTickers
-                  .filter((ticker) => !comparisonTickers.some((ct) => ct.symbol === ticker.symbol))
-                  .slice(0, 12)
-                  .map((ticker) => (
-                    <button
-                      key={ticker.symbol}
-                      onClick={() => addTicker(ticker)}
-                      disabled={loading}
-                      className="flex flex-col items-center justify-center p-3 bg-gray-800 hover:bg-gray-700 rounded-md transition-colors disabled:opacity-50 min-h-16"
-                    >
-                      <div className="text-center">
-                        <div className="font-medium text-gray-100 text-sm">
-                          {ticker.cachedScore !== undefined ? Number(ticker.cachedScore) : '-'} /25 {ticker.symbol}
+      <PageWrapper>
+        <div className="p-6">
+          {/* Ticker Header with Scores */}
+          <div className="mb-6">
+            {/* Add Ticker Section */}
+            {comparisonTickers.length < 5 && (
+              <div className="bg-gray-900 rounded-lg p-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
+                  {availableTickers
+                    .filter((ticker) => !comparisonTickers.some((ct) => ct.symbol === ticker.symbol))
+                    .slice(0, 12)
+                    .map((ticker) => (
+                      <button
+                        key={ticker.symbol}
+                        onClick={() => addTicker(ticker)}
+                        disabled={loading}
+                        className="p-2 bg-gray-800 hover:bg-gray-700 rounded-md transition-colors disabled:opacity-50 text-left font-medium text-sm w-full"
+                      >
+                        <div className="flex items-center">
+                          <PlusIcon className="h-5 w-5 text-gray-400 flex-shrink-0 mr-2" />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center">
+                              <span
+                                className={ticker.cachedScore !== undefined ? getScoreColorClasses(Number(ticker.cachedScore)).textColorClass : 'text-gray-100'}
+                              >
+                                {ticker.cachedScore !== undefined ? Number(ticker.cachedScore) : '-'}/25
+                              </span>
+                              <span className="font-medium ml-1 mr-1">{ticker.symbol}</span>
+                              <span className="text-xs text-gray-400 truncate">{ticker.name}</span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-400 truncate max-w-full">{ticker.name}</div>
+                      </button>
+                    ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Comparison Table */}
+          <div className="bg-gray-900 rounded-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <div className="min-w-full divide-y divide-gray-700">
+                {/* Header */}
+                <div className="bg-gray-800 grid" style={{ gridTemplateColumns: `minmax(25%, auto) repeat(${comparisonTickers.length}, 1fr)` }}>
+                  <div className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-800">
+                    Comparison Factors
+                  </div>
+                  {comparisonTickers.map((ticker) => (
+                    <div key={ticker.symbol} className="px-2 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      <div className="flex flex-col space-y-1">
+                        <div className="flex items-center space-x-1">
+                          {ticker.cachedScore !== undefined ? (
+                            <span className={getScoreColorClasses(ticker.cachedScore).textColorClass}>{ticker.cachedScore}/25</span>
+                          ) : (
+                            <span className="text-gray-400">-/25</span>
+                          )}
+                          <span className="ml-1">{ticker.symbol}</span>
+                          <button
+                            onClick={() => removeTicker(ticker.symbol)}
+                            className="text-gray-400 hover:text-red-400 flex-shrink-0"
+                            disabled={comparisonTickers.length === 1}
+                          >
+                            <XMarkIcon className="h-3 w-3" />
+                          </button>
+                        </div>
+                        <div className="text-xs text-gray-400 truncate">{ticker.name}</div>
                       </div>
-                      <PlusIcon className="h-4 w-4 text-gray-400 mt-1" />
-                    </button>
+                    </div>
                   ))}
+                </div>
+
+                {/* Body */}
+                <div className="bg-gray-900 divide-y divide-gray-700">
+                  {getCategoryFactorRows().map((row, rowIndex) => (
+                    <div
+                      key={`${row.category}-${row.factorIndex}`}
+                      className={`grid ${row.isCategoryHeader ? 'bg-gray-800' : 'hover:bg-gray-800'}`}
+                      style={{ gridTemplateColumns: `minmax(25%, auto) repeat(${comparisonTickers.length}, 1fr)` }}
+                    >
+                      <div className="px-4 py-3 sticky left-0 bg-gray-900 text-left">
+                        {row.isCategoryHeader ? (
+                          <div className="font-bold text-gray-100 text-base">{row.categoryName}</div>
+                        ) : (
+                          <div className="text-gray-300 text-sm leading-tight pl-4">{row.factorTitle}</div>
+                        )}
+                      </div>
+                      {comparisonTickers.map((ticker) => {
+                        if (row.isCategoryHeader) {
+                          return (
+                            <div key={`${ticker.symbol}-header`} className="px-2 py-3 text-left bg-gray-900">
+                              <span className="text-gray-400 text-sm">-</span>
+                            </div>
+                          );
+                        }
+
+                        const factorResult = getFactorResult(ticker, row.category, row.factorIndex);
+
+                        return (
+                          <div key={`${ticker.symbol}-${row.category}-${row.factorIndex}`} className="px-2 py-3 text-left">
+                            {factorResult.result ? (
+                              <div className="flex flex-col items-start space-y-2">
+                                <div className="flex items-center space-x-1">
+                                  {factorResult.result === 'Pass' ? (
+                                    <CheckCircleIcon className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                  ) : (
+                                    <XCircleIcon className="h-4 w-4 text-red-500 flex-shrink-0" />
+                                  )}
+                                  <span className={`text-xs font-medium ${factorResult.result === 'Pass' ? 'text-green-400' : 'text-red-400'}`}>
+                                    {factorResult.result}
+                                  </span>
+                                </div>
+                                <div className="text-xs text-gray-400 leading-tight max-w break-words">{factorResult.explanation}</div>
+                              </div>
+                            ) : (
+                              <span className="text-gray-500 text-sm">-</span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {loading && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-gray-800 rounded-lg p-6 flex items-center space-x-3">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                <span className="text-gray-300">Loading ticker data...</span>
               </div>
             </div>
           )}
         </div>
-
-        {/* Comparison Table */}
-        <div className="bg-gray-900 rounded-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-700">
-              <thead className="bg-gray-800">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-800 w-1/4">
-                    Comaprison Factors
-                  </th>
-                  {comparisonTickers.map((ticker) => (
-                    <th key={ticker.symbol} className="px-2 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      <div className="flex items-center justify-center space-x-1">
-                        <span>{ticker.symbol}</span>
-                        <button
-                          onClick={() => removeTicker(ticker.symbol)}
-                          className="text-gray-400 hover:text-red-400 flex-shrink-0"
-                          disabled={comparisonTickers.length === 1}
-                        >
-                          <XMarkIcon className="h-3 w-3" />
-                        </button>
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="bg-gray-900 divide-y divide-gray-700">
-                {getCategoryFactorRows().map((row, rowIndex) => (
-                  <tr key={`${row.category}-${row.factorIndex}`} className={row.isCategoryHeader ? 'bg-gray-800' : 'hover:bg-gray-800'}>
-                    <td className="px-4 py-3 sticky left-0 bg-gray-900 w-1/4">
-                      {row.isCategoryHeader ? (
-                        <div className="font-bold text-gray-100 text-base">{row.categoryName}</div>
-                      ) : (
-                        <div className="text-gray-300 text-sm leading-tight">{row.factorTitle}</div>
-                      )}
-                    </td>
-                    {comparisonTickers.map((ticker) => {
-                      if (row.isCategoryHeader) {
-                        return (
-                          <td key={`${ticker.symbol}-header`} className="px-2 py-3 text-center bg-gray-800">
-                            <span className="text-gray-400 text-sm">-</span>
-                          </td>
-                        );
-                      }
-
-                      const factorResult = getFactorResult(ticker, row.category, row.factorIndex);
-
-                      return (
-                        <td key={`${ticker.symbol}-${row.category}-${row.factorIndex}`} className="px-2 py-3 text-center">
-                          {factorResult.result ? (
-                            <div className="flex flex-col items-center space-y-2">
-                              <div className="flex items-center space-x-1">
-                                {factorResult.result === 'Pass' ? (
-                                  <CheckCircleIcon className="h-4 w-4 text-green-500 flex-shrink-0" />
-                                ) : (
-                                  <XCircleIcon className="h-4 w-4 text-red-500 flex-shrink-0" />
-                                )}
-                                <span className={`text-xs font-medium ${factorResult.result === 'Pass' ? 'text-green-400' : 'text-red-400'}`}>
-                                  {factorResult.result}
-                                </span>
-                              </div>
-                              <div className="text-xs text-gray-400 leading-tight max-w break-words">{factorResult.explanation}</div>
-                            </div>
-                          ) : (
-                            <span className="text-gray-500 text-sm">-</span>
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {loading && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 flex items-center space-x-3">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-              <span className="text-gray-300">Loading ticker data...</span>
-            </div>
-          </div>
-        )}
-      </div>
+      </PageWrapper>
     </FullScreenModal>
   );
 }
