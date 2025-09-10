@@ -43,7 +43,6 @@ export default function ExportJsonModal({ open, onClose, title, analysisFactors 
             onUpdate={() => {}} // Read-only, no updates
             className="h-full w-full font-mono text-sm resize-none pb-4"
             fillParent={true}
-            readOnly={true}
           />
         </div>
 
