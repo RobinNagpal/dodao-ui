@@ -71,9 +71,11 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         <div className="text-left mb-8">
           <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl mb-6">
             {tickerData.name} ({tickerData.symbol}){' '}
-            <a href={tickerData.websiteUrl} target="_blank" rel="noopener noreferrer">
-              <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
-            </a>
+            {tickerData.websiteUrl && (
+              <a href={tickerData.websiteUrl} target="_blank" rel="noopener noreferrer">
+                <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
+              </a>
+            )}
           </h1>
 
           <div className="flex flex-col gap-x-5 gap-y-2 lg:flex-row">
