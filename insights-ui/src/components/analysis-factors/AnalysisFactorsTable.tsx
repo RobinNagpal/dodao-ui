@@ -177,17 +177,26 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
         {hasData ? (
           <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }} className="mt-4">
             <thead>
-              <tr style={tableRowStyle} className="text-color">
-                <th style={tableCellStyle}>Category</th>
-                <th style={tableCellStyle}>Factors Count</th>
-                <th style={tableCellStyle}>Actions</th>
+              <tr style={{ fontWeight: 'bold' }} className="text-color">
+                <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Category</th>
+                <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Factors</th>
+                <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {analysisFactorsData.categories.map((category) => (
-                <tr style={tableRowStyle} key={category.categoryKey}>
+              {analysisFactorsData.categories.map((category, index) => (
+                <tr key={category.categoryKey} style={{ borderTop: '1px solid #ddd', borderBottom: '1px solid #ddd' }}>
                   <td style={tableCellStyle}>{category.categoryKey}</td>
-                  <td style={tableCellStyle}>{category.factors.length} factors</td>
+                  <td>
+                    {category.factors.map((f, i, arr) => (
+                      <div style={getRowStyle(i, i === 0, i === arr.length - 1)} className="text-sm" key={f.factorAnalysisKey}>
+                        <span className="inline-block rounded-full px-1 py-0.5 text-xs mr-1">{i + 1}</span>
+                        <b>{f.factorAnalysisTitle}</b>
+                        <div className="pl-4">{f.factorAnalysisDescription}.</div>
+                        <pre className="pl-4 break-words text-xs whitespace-pre-wrap">Metrics - {f.factorAnalysisMetrics}</pre>
+                      </div>
+                    ))}
+                  </td>
                   <td style={tableCellStyle} className="h-full">
                     <div className="flex justify-around h-full">
                       <IconButton
@@ -207,15 +216,15 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }} className="mt-4">
             <thead>
-              <tr style={tableRowStyle} className="text-color">
-                <th style={tableCellStyle}>Category</th>
-                <th style={tableCellStyle}>Factors Count</th>
-                <th style={tableCellStyle}>Actions</th>
+              <tr style={{ fontWeight: 'bold' }} className="text-color">
+                <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Category</th>
+                <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Factors</th>
+                <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td colSpan={3} style={{ textAlign: 'center', padding: '20px', fontStyle: 'italic' }}>
+              <tr className="hover:bg-gray-50">
+                <td colSpan={3} style={{ textAlign: 'center', padding: '24px', fontStyle: 'italic' }}>
                   No analysis factors configured for this industry and sub-industry combination.
                 </td>
               </tr>
@@ -276,5 +285,20 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
   );
 }
 
-const tableRowStyle = { padding: '10px', borderTop: '1px solid #ddd', borderBottom: '1px solid #ddd' };
-const tableCellStyle = { padding: '0px 10px', borderLeft: '1px solid #ddd', borderRight: '1px solid #ddd' };
+// Base styles for table elements
+const tableCellStyle = {
+  padding: '12px 16px',
+  borderLeft: '1px solid #ddd',
+  borderRight: '1px solid #ddd',
+  verticalAlign: 'top',
+};
+
+// Function to get row style based on index for alternating colors
+const getRowStyle = (index: number, isFirst: boolean = false, isLast: boolean = false) => {
+  const baseStyle = {
+    padding: '3px 3px',
+    marginBottom: isLast ? '0' : '8px',
+  };
+
+  return index % 2 === 0 ? { ...baseStyle, backgroundColor: '#272641' } : { ...baseStyle, backgroundColor: '#1e202d' };
+};
