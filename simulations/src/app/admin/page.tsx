@@ -1,5 +1,7 @@
 'use client';
 
+import { SimulationSession } from '@/types/user';
+import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { BookOpen, Users, Plus, Edit, Trash2, Shield, Sparkles, Eye } from 'lucide-react';
@@ -16,6 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
 import AdminLoading from '@/components/admin/AdminLoading';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 interface CaseStudyListItem {
   id: string;
@@ -50,7 +53,9 @@ interface EnrollmentListItem {
 type DeleteType = 'case-study' | 'enrollment';
 
 export default function AdminDashboard() {
-  const [userEmail, setUserEmail] = useState<string>('');
+  const { data: simSession } = useSession();
+  const session: SimulationSession | null = simSession as SimulationSession | null;
+
   const [activeTab, setActiveTab] = useState<'case-studies' | 'enrollments'>('case-studies');
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
   const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyListItem[]>([]);
@@ -69,11 +74,7 @@ export default function AdminDashboard() {
     data: caseStudies,
     loading: loadingCaseStudies,
     reFetchData: refetchCaseStudies,
-  } = useFetchData<CaseStudyListItem[]>(
-    `/api/case-studies?userEmail=${encodeURIComponent(userEmail)}&userType=admin`,
-    { skipInitialFetch: !userEmail },
-    'Failed to load case studies'
-  );
+  } = useFetchData<CaseStudyListItem[]>(`${getBaseUrl()}/api/case-studies`, {}, 'Failed to load case studies');
 
   const {
     data: enrollments,
@@ -92,15 +93,10 @@ export default function AdminDashboard() {
   });
 
   useEffect((): void => {
-    const userType: string | null = localStorage.getItem('user_type');
-    const email: string | null = localStorage.getItem('user_email');
-
-    if (!userType || userType !== 'admin' || !email) {
+    if (!session || session.role !== 'Admin') {
       router.push('/login');
       return;
     }
-
-    setUserEmail(email);
   }, [router]);
 
   // Filter case studies based on selected subject
@@ -115,8 +111,6 @@ export default function AdminDashboard() {
   }, [selectedSubject, caseStudies]);
 
   const handleLogout = (): void => {
-    localStorage.removeItem('user_type');
-    localStorage.removeItem('user_email');
     router.push('/login');
   };
 
@@ -195,7 +189,7 @@ export default function AdminDashboard() {
       <AdminNavbar
         title="Admin Dashboard"
         subtitle="Welcome Back"
-        userEmail={userEmail}
+        userEmail={session?.email}
         onLogout={handleLogout}
         icon={<Shield className="h-8 w-8 text-white" />}
       />

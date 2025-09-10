@@ -1,38 +1,26 @@
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { CreateCaseStudyRequest, CaseStudyWithRelations } from '@/types/api';
-import { isAdminEmail, isInstructorEmail, isStudentEmail } from '@/dummy/mockData';
 import { CaseStudy } from '@/types';
+import { CaseStudyWithRelations, CreateCaseStudyRequest } from '@/types/api';
+import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { NextRequest } from 'next/server';
 
 // GET /api/case-studies - Get case studies based on user type
-async function getHandler(req: NextRequest): Promise<CaseStudyWithRelations[] | CaseStudy[]> {
-  const { searchParams } = new URL(req.url);
-  const userEmail = searchParams.get('userEmail');
-  const userType = searchParams.get('userType');
+async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CaseStudyWithRelations[] | CaseStudy[]> {
+  const { userId } = userContext;
+  const user = await prisma.user.findFirstOrThrow({
+    where: {
+      id: userId,
+    },
+  });
 
-  if (!userEmail || !userType) {
-    throw new Error('User email and user type are required');
-  }
-
-  // Verify user type matches email pattern for security
-  if (userType === 'admin' && !isAdminEmail(userEmail)) {
-    throw new Error('Invalid admin credentials');
-  }
-  if (userType === 'instructor' && !isInstructorEmail(userEmail)) {
-    throw new Error('Invalid instructor credentials');
-  }
-  if (userType === 'student' && !isStudentEmail(userEmail)) {
-    throw new Error('Invalid student credentials');
-  }
-
-  switch (userType) {
-    case 'admin':
+  switch (user.role) {
+    case 'Admin':
       return await getAdminCaseStudies();
-    case 'instructor':
-      return await getInstructorCaseStudies(userEmail);
-    case 'student':
-      return await getStudentCaseStudies(userEmail);
+    case 'Instructor':
+      return await getInstructorCaseStudies(user.email!);
+    case 'Student':
+      return await getStudentCaseStudies(user.email!);
     default:
       throw new Error('Invalid user type');
   }
@@ -277,5 +265,5 @@ async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
   return caseStudy;
 }
 
-export const GET = withErrorHandlingV2<CaseStudyWithRelations[] | CaseStudy[]>(getHandler);
+export const GET = withLoggedInUser<CaseStudyWithRelations[] | CaseStudy[]>(getHandler);
 export const POST = withErrorHandlingV2<CaseStudyWithRelations>(postHandler);

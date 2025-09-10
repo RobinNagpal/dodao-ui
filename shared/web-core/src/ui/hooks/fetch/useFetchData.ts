@@ -67,8 +67,9 @@ export const useFetchData = <T>(
   }, [fetchData, memoizedOptions.skipInitialFetch]);
 
   const reFetchData = useCallback(async () => {
-    await fetchData();
-    return data;
+    const refetchResponse = await fetchData();
+    setData(refetchResponse);
+    return refetchResponse;
   }, [fetchData]);
   return {
     data,
