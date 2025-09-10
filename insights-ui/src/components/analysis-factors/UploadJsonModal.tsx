@@ -1,5 +1,5 @@
 import schema from '@/components/analysis-factors/analysisFactorsJsonSchema.json';
-import { GetAnalysisFactorsResponse } from '@/types/public-equity/analysis-factors-types';
+import { UpsertAnalysisFactorsRequest } from '@/types/public-equity/analysis-factors-types';
 import { IndustryKey, SubIndustryKey } from '@/lib/mappingsV1';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
@@ -13,7 +13,7 @@ export interface UploadJsonModalProps {
   title: string;
   industryKey: IndustryKey;
   subIndustryKey: SubIndustryKey;
-  onSave: (analysisFactors: GetAnalysisFactorsResponse) => void;
+  onSave: (analysisFactors: UpsertAnalysisFactorsRequest) => void;
 }
 
 export default function UploadJsonModal({ open, onClose, title, industryKey, subIndustryKey, onSave }: UploadJsonModalProps) {
@@ -27,7 +27,7 @@ export default function UploadJsonModal({ open, onClose, title, industryKey, sub
     }
 
     try {
-      const parsedJson = JSON.parse(rawJson) as GetAnalysisFactorsResponse;
+      const parsedJson = JSON.parse(rawJson) as UpsertAnalysisFactorsRequest;
 
       // Validate against schema
       const ajv = new Ajv({ allErrors: true });

@@ -1,4 +1,4 @@
-import { GetAnalysisFactorsResponse } from '@/types/public-equity/analysis-factors-types';
+import { UpsertAnalysisFactorsRequest } from '@/types/public-equity/analysis-factors-types';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import React from 'react';
 import ReactJson from 'react-json-view';
@@ -7,7 +7,7 @@ export interface ViewAnalysisFactorsModalProps {
   open: boolean;
   onClose: () => void;
   title: string;
-  analysisFactors: GetAnalysisFactorsResponse;
+  analysisFactors: UpsertAnalysisFactorsRequest;
 }
 
 export default function ViewAnalysisFactorsModal({ open, onClose, title, analysisFactors }: ViewAnalysisFactorsModalProps) {
