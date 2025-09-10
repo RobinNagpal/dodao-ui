@@ -10,7 +10,7 @@ import {
   TickerV1AnalysisCategoryFactorResult,
 } from '.prisma/client';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
-import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
+import { TickerV1 } from '@prisma/client';
 
 export type FullTickerV1CategoryAnalysisResult = TickerV1CategoryAnalysisResult & {
   factorResults: (TickerV1AnalysisCategoryFactorResult & {
@@ -45,6 +45,7 @@ export interface TickerV1ReportResponse extends FullReport {
     };
     futureRisk: boolean;
     finalSummary: boolean;
+    cachedScore: boolean;
   };
 }
 
@@ -92,22 +93,14 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     },
     futureRisk: tickerRecord.futureRisks.length > 0,
     finalSummary: !!tickerRecord.summary,
+    cachedScore: !!tickerRecord.cachedScore,
   };
 
   return {
-    ticker: {
-      id: tickerRecord.id,
-      name: tickerRecord.name,
-      symbol: tickerRecord.symbol,
-      exchange: tickerRecord.exchange,
-      industryKey: tickerRecord.industryKey,
-      subIndustryKey: tickerRecord.subIndustryKey,
-      websiteUrl: tickerRecord.websiteUrl || undefined,
-      summary: tickerRecord.summary || undefined,
-    },
+    ticker: tickerRecord,
     ...tickerRecord,
-    websiteUrl: tickerRecord.websiteUrl || undefined,
-    summary: tickerRecord.summary || undefined,
+    websiteUrl: tickerRecord.websiteUrl || null,
+    summary: tickerRecord.summary || null,
     vsCompetition: tickerRecord.vsCompetition || undefined,
     analysisStatus,
   };

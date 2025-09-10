@@ -1,5 +1,5 @@
 import MobileNavToggle from '@/components/industry-tariff/mobile-nav-toggle';
-import ReportLeftNavigation from '@/components/industry-tariff/report-left-navigation';
+import CollapsibleLayout from '@/components/industry-tariff/collapsible-layout';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -59,24 +59,28 @@ export default async function IndustryTariffReportLayout({
             <MobileNavToggle report={report} industryId={industryId} />
           </div>
 
-          {/* Book UI with Navigation and Content */}
-          <div className="flex min-h-[calc(100vh-10rem)] overflow-hidden rounded-lg border border-color background-color shadow-lg">
-            {/* Left side - Book spine/navigation - hidden on mobile */}
-            <div className="hidden lg:block">
-              <ReportLeftNavigation report={report} industryId={industryId} />
-            </div>
+          {/* Collapsible Layout for Desktop */}
+          <div className="hidden lg:block">
+            <CollapsibleLayout report={report} industryId={industryId}>
+              {children}
+            </CollapsibleLayout>
+          </div>
 
-            {/* Right side - Book content */}
-            <div className="flex-1 bg-background p-2 sm:p-3 lg:p-4">
-              <div className="mx-auto max-w-4xl">
-                <div className="relative min-h-[calc(100vh-10rem)] rounded-lg block-bg-color p-2 sm:p-2 lg:p-4 shadow-md">
-                  {/* Page corner fold effect */}
-                  <div className="absolute right-0 top-0 h-12 w-12 bg-muted/20">
-                    <div className="absolute right-0 top-0 h-0 w-0 border-l-[48px] border-b-[48px] border-l-transparent border-b-[var(--block-bg)]"></div>
+          {/* Original Layout for Mobile */}
+          <div className="block lg:hidden">
+            <div className="flex min-h-[calc(100vh-10rem)] overflow-hidden rounded-lg border border-color background-color shadow-lg">
+              {/* Right side - Book content */}
+              <div className="flex-1 bg-background p-2 sm:p-3">
+                <div className="mx-auto max-w-4xl">
+                  <div className="relative min-h-[calc(100vh-10rem)] rounded-lg block-bg-color p-2 sm:p-2 shadow-md">
+                    {/* Page corner fold effect */}
+                    <div className="absolute right-0 top-0 h-12 w-12 bg-muted/20">
+                      <div className="absolute right-0 top-0 h-0 w-0 border-l-[48px] border-b-[48px] border-l-transparent border-b-[var(--block-bg)]"></div>
+                    </div>
+
+                    {/* Content from child page */}
+                    <div className="prose max-w-none">{children}</div>
                   </div>
-
-                  {/* Content from child page */}
-                  <div className="prose max-w-none">{children}</div>
                 </div>
               </div>
             </div>

@@ -14,16 +14,16 @@ export const UnderstandIndustryRenderer: React.FC<UnderstandIndustryRendererProp
   return (
     <div className="space-y-8">
       {/* Title */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-        <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-gray-800 p-4 border-b border-gray-700">
           <h2 className="text-2xl font-bold heading-color">{understandIndustry.title}</h2>
         </div>
       </div>
 
       {/* Sections */}
       {understandIndustry.sections.map((section, index) => (
-        <div key={index} className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-          <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+        <div key={index} className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+          <div className="bg-gray-800 p-4 border-b border-gray-700">
             <h3 className="text-xl font-semibold heading-color">{section.title}</h3>
           </div>
           <div className="p-4">

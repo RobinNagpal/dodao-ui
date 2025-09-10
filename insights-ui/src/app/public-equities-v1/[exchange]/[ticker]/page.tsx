@@ -1,4 +1,5 @@
 import { FullTickerV1CategoryAnalysisResult, TickerV1ReportResponse } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
+import TickerComparisonButton from '@/app/public-equities-v1/[exchange]/[ticker]/TickerComparisonButton';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import RadarChart from '@/components/visualizations/RadarChart';
@@ -54,15 +55,27 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
   return (
     <PageWrapper>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <Breadcrumbs
+        breadcrumbs={breadcrumbs}
+        rightButton={
+          <TickerComparisonButton
+            tickerSymbol={tickerData.symbol}
+            tickerName={tickerData.name}
+            tickerIndustry={tickerData.industryKey}
+            tickerSubIndustry={tickerData.subIndustryKey}
+          />
+        }
+      />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2">
         {/* Header Section */}
         <div className="text-left mb-8">
           <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl mb-6">
             {tickerData.name} ({tickerData.symbol}){' '}
-            <a href={tickerData.websiteUrl} target="_blank" rel="noopener noreferrer">
-              <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
-            </a>
+            {tickerData.websiteUrl && (
+              <a href={tickerData.websiteUrl} target="_blank" rel="noopener noreferrer">
+                <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
+              </a>
+            )}
           </h1>
 
           <div className="flex flex-col gap-x-5 gap-y-2 lg:flex-row">

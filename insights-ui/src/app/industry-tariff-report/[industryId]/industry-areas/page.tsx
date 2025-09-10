@@ -89,22 +89,10 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
 
   const content = report.industryAreasSections ? parseMarkdown(getMarkdownContentForIndustryAreas(report.industryAreasSections)) : 'No content available';
 
-  // Function to render section with header and actions
-  const renderSection = (title: string, content: JSX.Element) => (
-    <div className="mb-12">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-2 mb-4">
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold heading-color">{title}</h2>
-        </div>
-      </div>
-      {content}
-    </div>
-  );
-
   return (
     <div className="mx-auto max-w-7xl py-2">
       {/* Title and Actions */}
-      <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="mb-8 pb-4 border-b border-gray-200">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold heading-color">Industry Areas</h1>
           <PrivateWrapper>
@@ -127,7 +115,7 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
       )}
 
       <div className="space-y-12">
-        <div className="bg-white dark:bg-gray-900 rounded-lg p-2 shadow-sm">
+        <div className="bg-gray-900 rounded-lg p-2 shadow-sm">
           <div className="markdown-body prose max-w-none px-2">
             <div dangerouslySetInnerHTML={{ __html: content }} />
           </div>

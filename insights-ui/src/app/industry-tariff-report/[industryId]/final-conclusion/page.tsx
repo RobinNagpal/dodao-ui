@@ -2,9 +2,7 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import FinalConclusionActions from '@/components/industry-tariff/section-actions/FinalConclusionActions';
 import { FinalConclusionRenderer } from '@/components/industry-tariff/renderers/FinalConclusionRenderer';
 
-import { getMarkdownContentForFinalConclusion } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 
@@ -92,7 +90,7 @@ export default async function FinalConclusionPage({ params }: { params: Promise<
   return (
     <div className="mx-auto max-w-7xl py-2">
       {/* Title and Actions */}
-      <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="mb-8 pb-4 border-b border-gray-200">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold heading-color">Final Conclusion</h1>
           <PrivateWrapper>
@@ -118,7 +116,7 @@ export default async function FinalConclusionPage({ params }: { params: Promise<
         {report.finalConclusion ? (
           <FinalConclusionRenderer finalConclusion={report.finalConclusion} />
         ) : (
-          <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm">
+          <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
             <p className="text-gray-500 italic">No content available</p>
           </div>
         )}

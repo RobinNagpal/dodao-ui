@@ -1,6 +1,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { getScoreColorClasses } from '@/utils/score-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -349,23 +350,7 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ pa
                             <div className="flex gap-2 items-center">
                               {(() => {
                                 const score = tickersMap?.[reit.ticker]?.cachedScore || 0;
-                                let textColorClass = 'text-green-500'; // Default: Green for 15+
-                                let bgColorClass = 'bg-green-500'; // Default: Green for 15+
-                                let scoreLabel = 'Excellent';
-
-                                if (score < 8) {
-                                  textColorClass = 'text-red-500'; // Red for < 5
-                                  bgColorClass = 'bg-red-500'; // Red for < 5
-                                  scoreLabel = 'Poor';
-                                } else if (score < 14) {
-                                  textColorClass = 'text-orange-500'; // Orange for 5-9
-                                  bgColorClass = 'bg-orange-500'; // Orange for 5-9
-                                  scoreLabel = 'Fair';
-                                } else if (score < 20) {
-                                  textColorClass = 'text-yellow-500'; // Yellow for 10-14
-                                  bgColorClass = 'bg-yellow-500'; // Yellow for 10-14
-                                  scoreLabel = 'Good';
-                                }
+                                const { textColorClass, bgColorClass, scoreLabel } = getScoreColorClasses(score);
 
                                 return (
                                   <Tooltip.Root>
