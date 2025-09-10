@@ -165,13 +165,13 @@ export default function ComparisonPage() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-semibold text-pretty mb-2">Stock Comparison</h1>
+          <h1 className="text-3xl font-semibold text-pretty mb-2">Tickers Comparison</h1>
           <p>Compare up to 5 stocks within the same industry and analyze their performance across different categories.</p>
         </div>
 
         {/* Stock Selection Section */}
         <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Select Stocks for Comparison</h2>
+          <h2 className="text-xl font-semibold mb-4">Select Tickers for Comparison</h2>
 
           {/* Current Selections */}
           {selectedStocks.length > 0 && (
@@ -428,12 +428,12 @@ export default function ComparisonPage() {
         {selectedStocks.length === 0 && (
           <div className="bg-gray-900 rounded-lg shadow-sm p-12 text-center">
             <div className="max-w-md mx-auto">
-              <h3 className="text-lg font-medium mb-2">Start Comparing Stocks</h3>
+              <h3 className="text-lg font-medium mb-2">Start Comparing Tickers</h3>
               <p className="text-gray-500 mb-6">
-                Select stocks from the same industry above to begin comparing their performance across different analysis categories.
+                Select tickers from the same industry above to begin comparing their performance across different analysis categories.
               </p>
               <div className="text-sm text-gray-400">
-                • Compare up to 5 stocks at once
+                • Compare up to 5 tickers at once
                 <br />
                 • All stocks must be from the same industry
                 <br />• Analyze performance across 5 key categories
