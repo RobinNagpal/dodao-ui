@@ -14,8 +14,8 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
   return (
     <div className="space-y-8">
       {/* Title and Conclusion Brief */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-        <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-gray-800 p-4 border-b border-gray-700">
           <h2 className="text-2xl font-bold heading-color">{finalConclusion.title}</h2>
         </div>
         <div className="p-4">
@@ -24,8 +24,8 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
       </div>
 
       {/* Positive Impacts */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-        <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-gray-800 p-4 border-b border-gray-700">
           <h2 className="text-xl font-semibold heading-color">{finalConclusion.positiveImpacts.title}</h2>
         </div>
         <div className="p-4">
@@ -34,8 +34,8 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
       </div>
 
       {/* Negative Impacts */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-        <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-gray-800 p-4 border-b border-gray-700">
           <h2 className="text-xl font-semibold heading-color">{finalConclusion.negativeImpacts.title}</h2>
         </div>
         <div className="p-4">
@@ -44,8 +44,8 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
       </div>
 
       {/* Final Statements */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-        <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-gray-800 p-4 border-b border-gray-700">
           <h2 className="text-xl font-semibold heading-color">Final Statements</h2>
         </div>
         <div className="p-4">

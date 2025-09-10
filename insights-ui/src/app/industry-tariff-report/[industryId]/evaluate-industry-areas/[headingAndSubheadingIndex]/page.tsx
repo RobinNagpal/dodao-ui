@@ -2,7 +2,7 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EvaluateIndustryAreasActions from '@/components/industry-tariff/section-actions/EvaluateIndustryAreasActions';
 import { establishedPlayerToMarkdown } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 
-import { getNumberOfHeadings, getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { EvaluateIndustryContent, IndustryArea, IndustrySubArea, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getPreviousNextIndices } from '@/util/getPreviousNextIndices';
@@ -160,7 +160,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
       )}
 
       {/* Title and Overall Actions */}
-      <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="mb-8 pb-4 border-b border-gray-200">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold heading-color">{evaluateIndustryArea?.title || subArea?.title || 'Industry Area Evaluation'}</h1>
           <PrivateWrapper>
@@ -179,7 +179,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
         {/* About section */}
         {renderSection(
           'About',
-          <div className="bg-white dark:bg-gray-900 rounded-lg py-2 shadow-sm">
+          <div className="bg-gray-900 rounded-lg py-2 shadow-sm">
             <div className="markdown-body prose max-w-none px-2">
               {evaluateIndustryArea?.aboutParagraphs ? (
                 <div dangerouslySetInnerHTML={{ __html: parseMarkdown(evaluateIndustryArea.aboutParagraphs) }} />
@@ -200,8 +200,8 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                 const markdown = establishedPlayerToMarkdown(player);
                 const renderedMarkdown = markdown && parseMarkdown(markdown);
                 return (
-                  <div key={idx} className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-                    <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+                  <div key={idx} className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+                    <div className="bg-gray-800 p-4 border-b border-gray-700">
                       <div className="flex justify-between items-center">
                         <h3 className="text-lg font-medium">{player.companyName}</h3>
                         <PrivateWrapper>
@@ -223,7 +223,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                 );
               })
             ) : (
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm">{renderPlaceholder()}</div>
+              <div className="bg-gray-900 rounded-lg p-6 shadow-sm">{renderPlaceholder()}</div>
             )}
           </div>,
           EvaluateIndustryContent.ESTABLISHED_PLAYERS
@@ -238,8 +238,8 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                 const markdown = establishedPlayerToMarkdown(challenger);
                 const renderedMarkdown = markdown && parseMarkdown(markdown);
                 return (
-                  <div key={idx} className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-                    <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+                  <div key={idx} className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+                    <div className="bg-gray-800 p-4 border-b border-gray-700">
                       <div className="flex justify-between items-center">
                         <h3 className="text-lg font-medium">{challenger.companyName}</h3>
                         <PrivateWrapper>
@@ -261,7 +261,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                 );
               })
             ) : (
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm">{renderPlaceholder()}</div>
+              <div className="bg-gray-900 rounded-lg p-6 shadow-sm">{renderPlaceholder()}</div>
             )}
           </div>,
           EvaluateIndustryContent.NEW_CHALLENGERS
@@ -271,13 +271,13 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
         {renderSection(
           'Headwinds & Tailwinds',
           <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm py-6">
-              <h3 className="text-xl font-medium mb-4 pb-2 border-b border-gray-200 dark:border-gray-700 px-6">Headwinds</h3>
+            <div className="bg-gray-900 rounded-lg shadow-sm py-6">
+              <h3 className="text-xl font-medium mb-4 pb-2 border-b border-gray-700 px-6">Headwinds</h3>
               <div className="px-6">
                 {evaluateIndustryArea?.headwindsAndTailwinds?.headwinds && evaluateIndustryArea.headwindsAndTailwinds.headwinds.length > 0 ? (
                   <ul className="list-disc pl-5 markdown-body space-y-3">
                     {evaluateIndustryArea.headwindsAndTailwinds.headwinds.map((item, idx) => (
-                      <li key={idx} className="text-gray-700 dark:text-gray-300" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
+                      <li key={idx} className="text-gray-300" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
                     ))}
                   </ul>
                 ) : (
@@ -285,13 +285,13 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                 )}
               </div>
             </div>
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm py-6">
-              <h3 className="text-xl font-medium mb-4 pb-2 border-b border-gray-200 dark:border-gray-700 px-6">Tailwinds</h3>
+            <div className="bg-gray-900 rounded-lg shadow-sm py-6">
+              <h3 className="text-xl font-medium mb-4 pb-2 border-b border-gray-700 px-6">Tailwinds</h3>
               <div className="px-6">
                 {evaluateIndustryArea?.headwindsAndTailwinds?.tailwinds && evaluateIndustryArea.headwindsAndTailwinds.tailwinds.length > 0 ? (
                   <ul className="list-disc pl-5 markdown-body space-y-3">
                     {evaluateIndustryArea.headwindsAndTailwinds.tailwinds.map((item, idx) => (
-                      <li key={idx} className="text-gray-700 dark:text-gray-300" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
+                      <li key={idx} className="text-gray-300" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
                     ))}
                   </ul>
                 ) : (
@@ -307,21 +307,21 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
         {renderSection(
           'Tariff Impact by Company Type',
           <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm py-6">
-              <h3 className="text-xl font-medium mb-4 pb-2 border-b border-gray-200 dark:border-gray-700 px-6">Positive Impact</h3>
+            <div className="bg-gray-900 rounded-lg shadow-sm py-6">
+              <h3 className="text-xl font-medium mb-4 pb-2 border-b border-gray-700 px-6">Positive Impact</h3>
               <div className="px-6">
                 {evaluateIndustryArea?.positiveTariffImpactOnCompanyType && evaluateIndustryArea.positiveTariffImpactOnCompanyType.length > 0 ? (
                   <div className="space-y-4">
                     {evaluateIndustryArea.positiveTariffImpactOnCompanyType.map((impact, idx) => (
-                      <div key={idx} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                      <div key={idx} className="bg-gray-800 p-4 rounded-md">
                         <h4 className="font-medium text-lg mb-2">{impact.companyType}</h4>
                         <div className="markdown-body space-y-3">
                           <div>
-                            <strong className="text-gray-700 dark:text-gray-300">Impact:</strong>
+                            <strong className="text-gray-300">Impact:</strong>
                             <div className="mt-1" dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
                           </div>
                           <div>
-                            <strong className="text-gray-700 dark:text-gray-300">Reasoning:</strong>
+                            <strong className="text-gray-300">Reasoning:</strong>
                             <div className="mt-1" dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
                           </div>
                         </div>
@@ -333,21 +333,21 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                 )}
               </div>
             </div>
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm py-6">
-              <h3 className="text-xl font-medium mb-4 pb-2 border-b border-gray-200 dark:border-gray-700 px-6">Negative Impact</h3>
+            <div className="bg-gray-900 rounded-lg shadow-sm py-6">
+              <h3 className="text-xl font-medium mb-4 pb-2 border-b border-gray-700 px-6">Negative Impact</h3>
               <div className="px-6">
                 {evaluateIndustryArea?.negativeTariffImpactOnCompanyType && evaluateIndustryArea.negativeTariffImpactOnCompanyType.length > 0 ? (
                   <div className="space-y-4">
                     {evaluateIndustryArea.negativeTariffImpactOnCompanyType.map((impact, idx) => (
-                      <div key={idx} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                      <div key={idx} className="bg-gray-800 p-4 rounded-md">
                         <h4 className="font-medium text-lg mb-2">{impact.companyType}</h4>
                         <div className="markdown-body space-y-3">
                           <div>
-                            <strong className="text-gray-700 dark:text-gray-300">Impact:</strong>
+                            <strong className="text-gray-300">Impact:</strong>
                             <div className="mt-1" dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
                           </div>
                           <div>
-                            <strong className="text-gray-700 dark:text-gray-300">Reasoning:</strong>
+                            <strong className="text-gray-300">Reasoning:</strong>
                             <div className="mt-1" dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
                           </div>
                         </div>
@@ -366,7 +366,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
         {/* Tariff Impact Summary section */}
         {renderSection(
           'Tariff Impact Summary',
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm py-6">
+          <div className="bg-gray-900 rounded-lg shadow-sm py-6">
             <div className="prose max-w-none markdown-body px-6">
               {evaluateIndustryArea?.tariffImpactSummary ? (
                 <div dangerouslySetInnerHTML={{ __html: parseMarkdown(evaluateIndustryArea.tariffImpactSummary) }} />
@@ -380,7 +380,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between items-center mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+      <div className="flex justify-between items-center mt-12 pt-8 border-t border-gray-700">
         {(() => {
           const navigation = getPreviousNextIndices(industryId, headingIndex, subHeadingIndex);
 

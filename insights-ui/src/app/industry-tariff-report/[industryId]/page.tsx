@@ -1,11 +1,8 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ReportCoverActions from '@/components/industry-tariff/section-actions/ReportCoverActions';
-import { ReportCoverRenderer } from '@/components/industry-tariff/renderers/ReportCoverRenderer';
-import { ExecutiveSummaryRenderer } from '@/components/industry-tariff/renderers/ExecutiveSummaryRenderer';
 
-import { getMarkdownContentForReportCover, getMarkdownContentForExecutiveSummary } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import type { IndustryTariffReport, ReportCover } from '@/scripts/industry-tariff-reports/tariff-types';
+import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ChevronRight } from 'lucide-react';
@@ -101,8 +98,8 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
   // Function to render section with header and actions
   const renderSection = (title: string, content: JSX.Element) => (
     <div className="mb-12">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-        <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-gray-800 p-4 border-b border-gray-700">
           <h2 className="text-xl font-semibold heading-color">{title}</h2>
         </div>
         <div className="p-4">{content}</div>
@@ -194,7 +191,7 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
                   return (
                     <div
                       key={relatedIndustryId}
-                      className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden border border-color hover:shadow-xl transition-all duration-300"
+                      className="bg-gray-900 rounded-lg shadow-sm overflow-hidden border border-color hover:shadow-xl transition-all duration-300"
                     >
                       <div className="background-color p-2">
                         <div className="flex items-center text-xs font-medium mb-3">

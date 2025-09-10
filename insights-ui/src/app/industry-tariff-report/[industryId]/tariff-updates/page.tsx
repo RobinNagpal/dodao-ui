@@ -2,10 +2,8 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import TariffUpdatesActions from '@/components/industry-tariff/section-actions/TariffUpdatesActions';
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
 
-import { getMarkdownContentForCountryTariffs } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 
@@ -88,23 +86,10 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
   const seoDetails = report.reportSeoDetails?.tariffUpdatesSeoDetails;
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
 
-  // Function to render section with header and actions
-  const renderSection = (title: string, content: JSX.Element, actions?: JSX.Element) => (
-    <div className="mb-12">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-2 mb-4">
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold heading-color">{title}</h2>
-          {actions}
-        </div>
-      </div>
-      {content}
-    </div>
-  );
-
   return (
     <div className="mx-auto max-w-7xl py-2">
       {/* Title and Actions */}
-      <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="mb-4 pb-4 border-b border-gray-200">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold heading-color">Tariff Updates for {definition.name}</h1>
           <PrivateWrapper>
@@ -141,7 +126,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
             );
           })
         ) : (
-          <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm">
+          <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
             <h2 className="text-xl font-semibold">No tariff updates available</h2>
           </div>
         )}

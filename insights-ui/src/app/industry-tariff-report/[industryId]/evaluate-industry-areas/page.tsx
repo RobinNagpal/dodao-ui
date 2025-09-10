@@ -90,9 +90,7 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
     <div className="mx-auto max-w-7xl py-2">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-4 heading-color">Evaluate Industry Areas for {definition.name}</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300">
-          Explore the impact of tariff changes across different areas of the {definition.name} industry.
-        </p>
+        <p className="text-lg text-gray-300">Explore the impact of tariff changes across different areas of the {definition.name} industry.</p>
       </div>
 
       {/* SEO Warning Banner for Admins */}
@@ -110,8 +108,8 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
 
       <div className="space-y-12">
         {industryAreas.areas.map((heading, index) => (
-          <div key={`heading-${index}`} className="bg-white dark:bg-gray-900 rounded-lg shadow-sm py-6">
-            <h2 className="text-2xl font-semibold mb-6 pb-3 border-b border-gray-200 dark:border-gray-700 heading-color px-6">{heading.title}</h2>
+          <div key={`heading-${index}`} className="bg-gray-900 rounded-lg shadow-sm py-6">
+            <h2 className="text-2xl font-semibold mb-6 pb-3 border-b border-gray-700 heading-color px-6">{heading.title}</h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6">
               {heading.subAreas.map((subHeading, subIndex) => {
                 const indexInArray = index * getNumberOfSubHeadings(industryId) + subIndex;
@@ -119,7 +117,7 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
 
                 if (!evaluated) {
                   return (
-                    <li key={`subheading-${index}-${subIndex}`} className="list-none bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                    <li key={`subheading-${index}-${subIndex}`} className="list-none bg-gray-800 p-4 rounded-md">
                       <div className="text-gray-500 italic">Data not available</div>
                     </li>
                   );
@@ -129,13 +127,13 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
                   <li key={`subheading-${index}-${subIndex}`} className="list-none">
                     <Link
                       href={`/industry-tariff-report/${industryId}/evaluate-industry-areas/${index}-${subIndex}`}
-                      className="block h-full bg-gray-50 dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-200 dark:border-gray-700"
+                      className="block h-full bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border border-gray-700"
                     >
                       <div className="p-6 flex flex-col h-full">
                         <h3 className="text-xl font-medium mb-3 heading-color">{evaluated.title}</h3>
 
                         {evaluated.aboutParagraphs?.length > 0 && (
-                          <p className="text-gray-600 dark:text-gray-300 flex-grow">
+                          <p className="text-gray-300 flex-grow">
                             {evaluated.aboutParagraphs.substring(0, 180)}
                             {evaluated.aboutParagraphs.length > 180 && '...'}
                           </p>

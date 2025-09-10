@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { ChevronDown, ChevronRight, ChevronUp, FileText, Folder, Home } from 'lucide-react';
+import { ChevronDown, ChevronRight, ChevronUp, FileText, Folder, Home, X } from 'lucide-react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -16,9 +16,11 @@ interface BookNavigationProps {
   industryId: TariffIndustryId;
   isMobile?: boolean;
   onNavItemClick?: () => void;
+  onToggle?: () => void;
+  showToggle?: boolean;
 }
 
-export default function ReportLeftNavigation({ report, industryId, isMobile = false, onNavItemClick }: BookNavigationProps) {
+export default function ReportLeftNavigation({ report, industryId, isMobile = false, onNavItemClick, onToggle, showToggle = false }: BookNavigationProps) {
   const pathname = usePathname();
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
@@ -51,15 +53,22 @@ export default function ReportLeftNavigation({ report, industryId, isMobile = fa
   };
 
   return (
-    <div className={cn('overflow-y-auto border-r border-color background-color h-full', isMobile ? 'w-full' : 'w-80')}>
+    <div className={cn('overflow-y-auto border-r border-color background-color h-full', isMobile ? 'w-full' : 'w-72')}>
       <div className="flex flex-col p-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold">Industry Tariff Report</h2>
-          {isMobile && (
-            <Link href={`/industry-tariff-report/${industryId}`} className="p-1 rounded-full hover:bg-muted" onClick={handleNavClick}>
-              <Home className="h-5 w-5" />
-            </Link>
-          )}
+          <h2 className="text-xl font-bold">Explore Report</h2>
+          <div className="flex items-center gap-2">
+            {showToggle && onToggle && (
+              <button onClick={onToggle} className="p-1 rounded-md hover:bg-muted transition-colors" title="Hide navigation">
+                <X className="h-5 w-5" />
+              </button>
+            )}
+            {isMobile && (
+              <Link href={`/industry-tariff-report/${industryId}`} className="p-1 rounded-full hover:bg-muted" onClick={handleNavClick}>
+                <Home className="h-5 w-5" />
+              </Link>
+            )}
+          </div>
         </div>
 
         {/* Navigation items based on IndustryTariffReport structure */}
