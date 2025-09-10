@@ -163,8 +163,6 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
     setComparisonTickers((prev) => prev.filter((t) => t.symbol !== symbol));
   };
 
-  console.log('Comparison Tickers:', comparisonTickers);
-
   const getCategoryFactorRows = () => {
     const rows: Array<{
       category: TickerAnalysisCategory;
