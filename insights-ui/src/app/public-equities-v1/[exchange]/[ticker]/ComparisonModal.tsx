@@ -163,6 +163,8 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
     setComparisonTickers((prev) => prev.filter((t) => t.symbol !== symbol));
   };
 
+  console.log('Comparison Tickers:', comparisonTickers);
+
   const getCategoryFactorRows = () => {
     const rows: Array<{
       category: TickerAnalysisCategory;
@@ -219,19 +221,21 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
   };
 
   const modalTitle = (
-    <div className="flex items-center w-full">
-      <p className="text-sm text-gray-400 mr-4">Selected: {comparisonTickers.length}/5</p>
-      <h2 className="text-xl font-semibold flex-1 text-center">
-        Stock Comparison - {INDUSTRY_MAPPINGS[currentTicker.industryKey as keyof typeof INDUSTRY_MAPPINGS] || currentTicker.industryKey} -{' '}
-        {SUB_INDUSTRY_MAPPINGS[currentTicker.subIndustryKey as keyof typeof SUB_INDUSTRY_MAPPINGS] || currentTicker.subIndustryKey}
-      </h2>
+    <div className="flex items-center w-full relative">
+      <div className="flex-1 text-center">
+        <h2 className="text-xl font-semibold">
+          Stock Comparison - {INDUSTRY_MAPPINGS[currentTicker.industryKey as keyof typeof INDUSTRY_MAPPINGS] || currentTicker.industryKey} -{' '}
+          {SUB_INDUSTRY_MAPPINGS[currentTicker.subIndustryKey as keyof typeof SUB_INDUSTRY_MAPPINGS] || currentTicker.subIndustryKey}
+        </h2>
+      </div>
+      <p className="absolute right-0 text-sm text-gray-400">Selected: {comparisonTickers.length}/5</p>
     </div>
   );
 
   return (
     <FullScreenModal open={isOpen} onClose={onClose} title={modalTitle} showCloseButton={true} showTitleBg={true}>
       <PageWrapper>
-        <div className="p-6">
+        <div className="px-6">
           {/* Ticker Header with Scores */}
           <div className="mb-6">
             {/* Add Ticker Section */}
@@ -274,12 +278,12 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
             <div className="overflow-x-auto">
               <div className="min-w-full divide-y divide-gray-700">
                 {/* Header */}
-                <div className="bg-gray-800 grid" style={{ gridTemplateColumns: `minmax(25%, auto) repeat(${comparisonTickers.length}, 1fr)` }}>
+                <div className="bg-gray-800 grid" style={{ gridTemplateColumns: `minmax(300px, 1fr) repeat(${comparisonTickers.length}, minmax(200px, 1fr))` }}>
                   <div className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-800">
                     Comparison Factors
                   </div>
                   {comparisonTickers.map((ticker) => (
-                    <div key={ticker.symbol} className="px-2 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                    <div key={ticker.symbol} className="px-2 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">
                       <div className="flex flex-col space-y-1">
                         <div className="flex items-center space-x-1">
                           {ticker.cachedScore !== undefined ? (
@@ -308,19 +312,19 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
                     <div
                       key={`${row.category}-${row.factorIndex}`}
                       className={`grid ${row.isCategoryHeader ? 'bg-gray-800' : 'hover:bg-gray-800'}`}
-                      style={{ gridTemplateColumns: `minmax(25%, auto) repeat(${comparisonTickers.length}, 1fr)` }}
+                      style={{ gridTemplateColumns: `minmax(300px, 1fr) repeat(${comparisonTickers.length}, minmax(200px, 1fr))` }}
                     >
-                      <div className="px-4 py-3 sticky left-0 bg-gray-900 text-left">
+                      <div className="px-4 py-3 sticky left-0 text-left min-w-0 bg-gray-900">
                         {row.isCategoryHeader ? (
                           <div className="font-bold text-gray-100 text-base">{row.categoryName}</div>
                         ) : (
-                          <div className="text-gray-300 text-sm leading-tight pl-4">{row.factorTitle}</div>
+                          <div className="text-gray-300 text-sm leading-tight pl-4 break-words overflow-wrap-anywhere">{row.factorTitle}</div>
                         )}
                       </div>
                       {comparisonTickers.map((ticker) => {
                         if (row.isCategoryHeader) {
                           return (
-                            <div key={`${ticker.symbol}-header`} className="px-2 py-3 text-left bg-gray-900">
+                            <div key={`${ticker.symbol}-header`} className="px-2 py-3 text-left" style={{ backgroundColor: 'rgb(17 24 39)' }}>
                               <span className="text-gray-400 text-sm">-</span>
                             </div>
                           );
