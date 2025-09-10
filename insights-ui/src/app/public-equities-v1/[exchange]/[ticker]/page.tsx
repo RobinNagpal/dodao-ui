@@ -2,17 +2,17 @@ import { FullTickerV1CategoryAnalysisResult, TickerV1ReportResponse } from '@/ap
 import TickerComparisonButton from '@/app/public-equities-v1/[exchange]/[ticker]/TickerComparisonButton';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import Competition from '@/components/ticker-reportsv1/Competition';
+import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import RadarChart from '@/components/visualizations/RadarChart';
 import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 
 export default async function TickerDetailsPage({ params }: { params: Promise<{ ticker: string; exchange: string }> }) {
@@ -71,9 +71,11 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         <div className="text-left mb-8">
           <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl mb-6">
             {tickerData.name} ({tickerData.symbol}){' '}
-            <a href={tickerData.websiteUrl} target="_blank" rel="noopener noreferrer">
-              <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
-            </a>
+            {tickerData.websiteUrl && (
+              <a href={tickerData.websiteUrl} target="_blank" rel="noopener noreferrer">
+                <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
+              </a>
+            )}
           </h1>
 
           <div className="flex flex-col gap-x-5 gap-y-2 lg:flex-row">
@@ -121,6 +123,10 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
             })}
           </div>
         </div>
+
+        {/* Similar Tickers Section */}
+        <SimilarTickers similarTickers={tickerData.similarTickers} />
+
         {/* Future Risks Section */}
         {tickerData.futureRisks.length > 0 && (
           <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
@@ -136,30 +142,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         )}
 
         {/* Competition Section */}
-        {tickerData.vsCompetition && (
-          <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Competition</h2>
-            <p className="mb-4">{tickerData.vsCompetition.introductionToAnalysis}</p>
-            {tickerData.vsCompetition.competitionAnalysisArray?.length > 0 && (
-              <ul className="space-y-3">
-                {tickerData.vsCompetition.competitionAnalysisArray.map((competition: CompetitionAnalysis) => (
-                  <li key={competition.companyName} className="bg-gray-800 p-4 rounded-md">
-                    <div className="flex flex-col gap-y-2">
-                      <h3 className="font-semibold">{competition.companyName}</h3>
-                      {competition.detailedComparison && (
-                        <div
-                          id={slugify(competition.companyName)}
-                          className="markdown markdown-body "
-                          dangerouslySetInnerHTML={{ __html: parseMarkdown(competition.detailedComparison) }}
-                        />
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        )}
+        <Competition vsCompetition={tickerData.vsCompetition} competitorTickers={tickerData.competitorTickers} />
 
         {/* Investor Summary Section */}
         {tickerData.investorAnalysisResults.length > 0 && (

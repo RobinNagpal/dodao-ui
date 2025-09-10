@@ -29,8 +29,33 @@ type FullReport = TickerV1 & {
   categoryAnalysisResults: FullTickerV1CategoryAnalysisResult[];
 };
 
+export interface SimilarTicker {
+  id: string;
+  name: string;
+  symbol: string;
+  exchange: string;
+  cachedScore: number;
+}
+
+export interface CompetitorTicker {
+  companyName: string;
+  companySymbol?: string;
+  exchangeSymbol?: string;
+  exchangeName?: string;
+  detailedComparison?: string;
+  existsInSystem?: boolean;
+  tickerData?: {
+    id: string;
+    name: string;
+    symbol: string;
+    exchange: string;
+  };
+}
+
 export interface TickerV1ReportResponse extends FullReport {
   ticker: TickerV1;
+  similarTickers: SimilarTicker[];
+  competitorTickers: CompetitorTicker[];
   analysisStatus: {
     businessAndMoat: boolean;
     financialAnalysis: boolean;
@@ -78,6 +103,67 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     throw new Error(`Ticker ${ticker} not found`);
   }
 
+  // Fetch top 3 similar tickers in the same industry/sub-industry (excluding current ticker)
+  const similarTickers = await prisma.tickerV1.findMany({
+    where: {
+      spaceId: spaceId || KoalaGainsSpaceId,
+      industryKey: tickerRecord.industryKey,
+      subIndustryKey: tickerRecord.subIndustryKey,
+      id: {
+        not: tickerRecord.id, // Exclude current ticker
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      symbol: true,
+      exchange: true,
+      cachedScore: true,
+    },
+    orderBy: {
+      cachedScore: 'desc',
+    },
+    take: 3,
+  });
+
+  // Process competition analysis to check which competitors exist in our system
+  const competitorTickers: CompetitorTicker[] = [];
+  if (tickerRecord.vsCompetition?.competitionAnalysisArray) {
+    for (const competition of tickerRecord.vsCompetition.competitionAnalysisArray as any[]) {
+      const competitorInfo: CompetitorTicker = {
+        companyName: competition.companyName,
+        companySymbol: competition.companySymbol,
+        exchangeSymbol: competition.exchangeSymbol,
+        exchangeName: competition.exchangeName,
+        detailedComparison: competition.detailedComparison,
+        existsInSystem: false,
+      };
+
+      // Check if this competitor exists in our system (only by symbol, ignoring exchange name due to LLM inconsistencies)
+      if (competition.companySymbol) {
+        const existingTicker = await prisma.tickerV1.findFirst({
+          where: {
+            spaceId: spaceId || KoalaGainsSpaceId,
+            symbol: competition.companySymbol.toUpperCase(),
+          },
+          select: {
+            id: true,
+            name: true,
+            symbol: true,
+            exchange: true,
+          },
+        });
+
+        if (existingTicker) {
+          competitorInfo.existsInSystem = true;
+          competitorInfo.tickerData = existingTicker;
+        }
+      }
+
+      competitorTickers.push(competitorInfo);
+    }
+  }
+
   // Check analysis status for each category/analysis type
   const analysisStatus = {
     businessAndMoat: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat),
@@ -102,6 +188,8 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     websiteUrl: tickerRecord.websiteUrl || null,
     summary: tickerRecord.summary || null,
     vsCompetition: tickerRecord.vsCompetition || undefined,
+    similarTickers,
+    competitorTickers,
     analysisStatus,
   };
 }
