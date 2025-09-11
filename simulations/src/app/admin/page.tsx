@@ -5,6 +5,7 @@ import CaseStudiesTab from '@/components/admin/CaseStudiesTab';
 import CreateEnrollmentModal from '@/components/admin/CreateEnrollmentModal';
 import EnrollmentsTab from '@/components/admin/EnrollmentsTab';
 import ManageStudentsModal from '@/components/admin/ManageStudentsModal';
+import UsersTab from '@/components/admin/UsersTab';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
 import type { BusinessSubject } from '@/types';
 import type { DeleteResponse } from '@/types/api';
@@ -13,7 +14,7 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { BookOpen, Shield, Users } from 'lucide-react';
+import { BookOpen, Shield, Users, UserCog } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -54,7 +55,7 @@ export default function AdminDashboard() {
   const { data: simSession } = useSession();
   const session: SimulationSession | null = simSession as SimulationSession | null;
 
-  const [activeTab, setActiveTab] = useState<'case-studies' | 'enrollments'>('case-studies');
+  const [activeTab, setActiveTab] = useState<'case-studies' | 'enrollments' | 'users'>('case-studies');
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
   const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyListItem[]>([]);
   const router = useRouter();
@@ -208,6 +209,19 @@ export default function AdminDashboard() {
                   <span>Enrollments ({enrollments?.length || 0})</span>
                 </div>
               </button>
+              <button
+                onClick={() => setActiveTab('users')}
+                className={`flex-1 py-3 px-6 rounded-xl font-medium text-sm transition-all duration-200 ${
+                  activeTab === 'users'
+                    ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg transform scale-105'
+                    : 'text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700'
+                }`}
+              >
+                <div className="flex items-center justify-center space-x-2">
+                  <UserCog className="h-4 w-4" />
+                  <span>Users</span>
+                </div>
+              </button>
             </nav>
           </div>
         </div>
@@ -237,6 +251,9 @@ export default function AdminDashboard() {
             onDeleteEnrollment={handleDeleteEnrollment}
           />
         )}
+
+        {/* Users Tab */}
+        {activeTab === 'users' && <UsersTab />}
 
         <CreateEnrollmentModal isOpen={showCreateEnrollment} onClose={() => setShowCreateEnrollment(false)} onSuccess={handleEnrollmentSuccess} />
 
