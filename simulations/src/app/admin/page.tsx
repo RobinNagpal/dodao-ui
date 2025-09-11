@@ -4,14 +4,10 @@ import AdminLoading from '@/components/admin/AdminLoading';
 import CaseStudiesTab from '@/components/admin/CaseStudiesTab';
 import CreateEnrollmentModal from '@/components/admin/CreateEnrollmentModal';
 import EnrollmentsTab from '@/components/admin/EnrollmentsTab';
-import ManageStudentsModal from '@/components/admin/ManageStudentsModal';
 import UsersTab from '@/components/admin/UsersTab';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
 import type { BusinessSubject } from '@/types';
-import type { DeleteResponse } from '@/types/api';
 import { SimulationSession } from '@/types/user';
-import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BookOpen, Shield, Users, UserCog } from 'lucide-react';
@@ -49,8 +45,6 @@ interface EnrollmentListItem {
   }>;
 }
 
-type DeleteType = 'case-study' | 'enrollment';
-
 export default function AdminDashboard() {
   const { data: simSession } = useSession();
   const session: SimulationSession | null = simSession as SimulationSession | null;
@@ -61,13 +55,6 @@ export default function AdminDashboard() {
   const router = useRouter();
 
   const [showCreateEnrollment, setShowCreateEnrollment] = useState<boolean>(false);
-  const [showManageStudents, setShowManageStudents] = useState<boolean>(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
-
-  const [selectedEnrollmentId, setSelectedEnrollmentId] = useState<string>('');
-  const [selectedEnrollmentTitle, setSelectedEnrollmentTitle] = useState<string>('');
-  const [deleteType, setDeleteType] = useState<DeleteType>('case-study');
-  const [deleteId, setDeleteId] = useState<string>('');
 
   const {
     data: caseStudies,
@@ -80,16 +67,6 @@ export default function AdminDashboard() {
     loading: loadingEnrollments,
     reFetchData: refetchEnrollments,
   } = useFetchData<EnrollmentListItem[]>('/api/enrollments', {}, 'Failed to load enrollments');
-
-  const { deleteData: deleteCaseStudy, loading: deletingCaseStudy } = useDeleteData<DeleteResponse, never>({
-    successMessage: 'Case study deleted successfully!',
-    errorMessage: 'Failed to delete case study',
-  });
-
-  const { deleteData: deleteEnrollment, loading: deletingEnrollment } = useDeleteData<DeleteResponse, never>({
-    successMessage: 'Enrollment deleted successfully!',
-    errorMessage: 'Failed to delete enrollment',
-  });
 
   useEffect((): void => {
     if (!session || session.role !== 'Admin') {
@@ -111,48 +88,6 @@ export default function AdminDashboard() {
 
   const handleLogout = (): void => {
     router.push('/login');
-  };
-
-  const handleEditCaseStudy = (caseStudyId: string): void => {
-    router.push(`/admin/edit/${caseStudyId}`);
-  };
-
-  const handleViewCaseStudy = (caseStudyId: string): void => {
-    router.push(`/admin/case-study/${caseStudyId}`);
-  };
-
-  const handleDeleteCaseStudy = (caseStudyId: string): void => {
-    setDeleteType('case-study');
-    setDeleteId(caseStudyId);
-    setShowDeleteConfirm(true);
-  };
-
-  const handleDeleteEnrollment = (enrollmentId: string): void => {
-    setDeleteType('enrollment');
-    setDeleteId(enrollmentId);
-    setShowDeleteConfirm(true);
-  };
-
-  const handleManageStudents = (enrollment: EnrollmentListItem): void => {
-    setSelectedEnrollmentId(enrollment.id);
-    setSelectedEnrollmentTitle(enrollment.caseStudy.title);
-    setShowManageStudents(true);
-  };
-
-  const handleConfirmDelete = async (): Promise<void> => {
-    try {
-      if (deleteType === 'case-study') {
-        await deleteCaseStudy(`/api/case-studies/${deleteId}`);
-        await refetchCaseStudies();
-      } else {
-        await deleteEnrollment(`/api/enrollments/${deleteId}`);
-        await refetchEnrollments();
-      }
-      setShowDeleteConfirm(false);
-      setDeleteId('');
-    } catch (error: unknown) {
-      console.error(`Error deleting ${deleteType}:`, error);
-    }
   };
 
   const handleEnrollmentSuccess = async (): Promise<void> => {
@@ -235,9 +170,7 @@ export default function AdminDashboard() {
             setSelectedSubject={setSelectedSubject}
             loadingCaseStudies={loadingCaseStudies}
             onCreateCaseStudy={() => router.push('/admin/create')}
-            onViewCaseStudy={handleViewCaseStudy}
-            onEditCaseStudy={handleEditCaseStudy}
-            onDeleteCaseStudy={handleDeleteCaseStudy}
+            refetchCaseStudies={refetchCaseStudies}
           />
         )}
 
@@ -247,8 +180,7 @@ export default function AdminDashboard() {
             enrollments={enrollments || []}
             loadingEnrollments={loadingEnrollments}
             onCreateEnrollment={() => setShowCreateEnrollment(true)}
-            onManageStudents={handleManageStudents}
-            onDeleteEnrollment={handleDeleteEnrollment}
+            refetchEnrollments={refetchEnrollments}
           />
         )}
 
@@ -256,29 +188,6 @@ export default function AdminDashboard() {
         {activeTab === 'users' && <UsersTab />}
 
         <CreateEnrollmentModal isOpen={showCreateEnrollment} onClose={() => setShowCreateEnrollment(false)} onSuccess={handleEnrollmentSuccess} />
-
-        {showManageStudents && selectedEnrollmentId && (
-          <ManageStudentsModal
-            isOpen={showManageStudents}
-            onClose={() => {
-              setShowManageStudents(false);
-              setSelectedEnrollmentId('');
-              setSelectedEnrollmentTitle('');
-            }}
-            enrollmentId={selectedEnrollmentId}
-            enrollmentTitle={selectedEnrollmentTitle}
-          />
-        )}
-        <ConfirmationModal
-          open={showDeleteConfirm}
-          showSemiTransparentBg={true}
-          onClose={() => setShowDeleteConfirm(false)}
-          onConfirm={handleConfirmDelete}
-          confirming={deletingCaseStudy || deletingEnrollment}
-          title={`Delete ${deleteType === 'case-study' ? 'Case Study' : 'Enrollment'}`}
-          confirmationText={`Are you sure you want to delete this ${deleteType === 'case-study' ? 'case study' : 'enrollment'}? This action cannot be undone.`}
-          askForTextInput={false}
-        />
       </div>
     </div>
   );
