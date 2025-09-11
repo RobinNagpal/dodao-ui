@@ -124,9 +124,6 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           </div>
         </div>
 
-        {/* Similar Tickers Section */}
-        <SimilarTickers similarTickers={tickerData.similarTickers} />
-
         {/* Future Risks Section */}
         {tickerData.futureRisks.length > 0 && (
           <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
@@ -158,6 +155,10 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
             </div>
           </div>
         )}
+
+        {/* Similar Tickers Section */}
+        <SimilarTickers similarTickers={tickerData.similarTickers} />
+
         {/* Detailed Category Analysis Sections */}
         <h2 className="text-2xl font-bold mb-6 mt-10">Detailed Analysis</h2>
 
