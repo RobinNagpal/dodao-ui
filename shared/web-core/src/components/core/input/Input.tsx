@@ -60,7 +60,7 @@ export default function Input({
   const inputId = uuidV4();
 
   return (
-    <div className={'my-2 ' + className}>
+    <div className={'my-2 ' + (className || '')}>
       <label htmlFor={id || inputId} className="block text-sm font-semibold leading-6">
         {label} {children}
       </label>
@@ -68,7 +68,7 @@ export default function Input({
         <input
           id={id || inputId}
           ref={inputRef}
-          className={`block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset ring-gray-400 shadow-sm focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6 ${
+          className={`block w-full rounded-md border-0 p-1.5 pr-10 ring-1 ring-inset ring-gray-400 shadow-sm focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6 ${
             styles.styledInput
           } ${error ? styles.error : ''}`}
           value={modelValue || ''}

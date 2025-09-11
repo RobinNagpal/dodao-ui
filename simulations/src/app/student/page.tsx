@@ -32,13 +32,6 @@ export default function StudentDashboard() {
   );
 
   useEffect(() => {
-    if (!session) {
-      router.push('/login');
-      return;
-    }
-  }, []);
-
-  useEffect(() => {
     if (enrolledCaseStudies) {
       if (selectedSubject === 'ALL') {
         setFilteredCaseStudies(enrolledCaseStudies);
@@ -71,6 +64,10 @@ export default function StudentDashboard() {
   };
 
   const enrolledSubjectsWithCounts = getEnrolledSubjectsWithCounts();
+
+  if (!session) {
+    return <div>You do not have access to this page.</div>;
+  }
 
   if (loadingCaseStudies) {
     return <StudentLoading text="Loading your dashboard..." subtitle="Preparing your personalized learning experience" variant="enhanced" />;

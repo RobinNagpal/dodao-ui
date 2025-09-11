@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -14,6 +15,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import type { BusinessSubject } from '@prisma/client';
 import type { UpdateCaseStudyRequest } from '@/types/api';
+import { SimulationSession } from '@/types/user';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
 import BackButton from '@/components/navigation/BackButton';
 import AdminLoading from '@/components/admin/AdminLoading';
@@ -73,9 +75,8 @@ const subjectOptions = (['HR', 'ECONOMICS', 'MARKETING', 'FINANCE', 'OPERATIONS'
 export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClientProps) {
   const router = useRouter();
   const { showNotification } = useNotificationContext();
-
-  const [userEmail, setUserEmail] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { data: simSession } = useSession();
+  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   const [title, setTitle] = useState('');
   const [shortDescription, setShortDescription] = useState('');
@@ -83,27 +84,15 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
   const [finalSummaryPromptInstructions, setFinalSummaryPromptInstructions] = useState('');
   const [subject, setSubject] = useState<BusinessSubject | ''>('');
   const [modules, setModules] = useState<Module[]>([]);
-  const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
 
   // Fetch case study data
-  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudy>(
-    `/api/case-studies/${caseStudyId}?userType=admin&userEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !caseStudyId || !userEmail },
-    'Failed to load case study'
-  );
+  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudy>(`/api/case-studies/${caseStudyId}`, {}, 'Failed to load case study');
 
-  const { putData, loading: updating } = usePutData(
-    {
-      successMessage: 'Case study updated successfully!',
-      errorMessage: 'Failed to update case study',
-      redirectPath: '/admin',
-    },
-    {
-      headers: {
-        'admin-email': adminEmail,
-      },
-    }
-  );
+  const { putData, loading: updating } = usePutData({
+    successMessage: 'Case study updated successfully!',
+    errorMessage: 'Failed to update case study',
+    redirectPath: '/admin',
+  });
 
   useEffect(() => {
     if (caseStudy) {
@@ -122,8 +111,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
   }, [caseStudy]);
 
   const handleLogout = () => {
-    localStorage.removeItem('user_type');
-    localStorage.removeItem('user_email');
     router.push('/login');
   };
 
@@ -240,27 +227,17 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
     };
 
     try {
-      const result = await putData(`/api/case-studies/${caseStudyId}`, payload);
+      await putData(`/api/case-studies/${caseStudyId}`, payload);
     } catch (error) {
       console.error('Error updating case study:', error);
     }
   };
 
-  useEffect(() => {
-    const userType = localStorage.getItem('user_type');
-    const email = localStorage.getItem('user_email');
+  if (!session || session.role !== 'Admin') {
+    return null;
+  }
 
-    if (!userType || userType !== 'admin' || !email) {
-      router.push('/login');
-      return;
-    }
-
-    setUserEmail(email);
-    setAdminEmail(email);
-    setIsLoading(false);
-  }, [router]);
-
-  if (isLoading || loadingCaseStudy) {
+  if (loadingCaseStudy) {
     return <AdminLoading text="Loading case study..." subtitle="Preparing edit form..." />;
   }
 
@@ -272,7 +249,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-200/10 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
-      <AdminNavbar title="Edit Case Study" userEmail={userEmail} onLogout={handleLogout} icon={<Shield className="h-8 w-8 text-white" />} />
+      <AdminNavbar title="Edit Case Study" onLogout={handleLogout} icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 relative z-10">
         <BackButton userType="admin" text="Back to Dashboard" href="/admin" />

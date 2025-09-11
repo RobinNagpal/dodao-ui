@@ -78,7 +78,7 @@ async function postHandler(request: NextRequest): Promise<UserCreationResponse> 
       email: userData.email,
       spaceId: KoalaGainsSpaceId,
       username: userData.email,
-      authProvider: 'Email',
+      authProvider: 'custom-email',
     },
   });
 
