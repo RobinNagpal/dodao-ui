@@ -25,8 +25,12 @@ export interface UserUpdateRequest {
   role?: UserRole;
 }
 
-async function putHandler(request: NextRequest, userContext: SimulationJwtTokenPayload, { params }: { params: { id: string } }): Promise<UserResponse> {
-  const { id } = params;
+async function putHandler(
+  request: NextRequest,
+  userContext: SimulationJwtTokenPayload,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<UserResponse> {
+  const { id } = await params;
   const body: UserUpdateRequest = await request.json();
   const { name, email, role } = body;
 
@@ -50,9 +54,9 @@ async function putHandler(request: NextRequest, userContext: SimulationJwtTokenP
 async function deleteHandler(
   request: NextRequest,
   userContext: SimulationJwtTokenPayload,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<{ success: boolean }> {
-  const { id } = params;
+  const { id } = await params;
 
   await prisma.user.delete({
     where: {

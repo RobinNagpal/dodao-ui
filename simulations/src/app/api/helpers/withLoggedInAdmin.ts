@@ -5,8 +5,8 @@ import { SimulationJwtTokenPayload } from '@/types/user';
 import { ErrorResponse, RedirectResponse } from '@dodao/web-core/types/errors/ErrorResponse';
 
 type HandlerWithAdmin<T> = (req: NextRequest, userContext: SimulationJwtTokenPayload) => Promise<T>;
-type HandlerWithAdminAndParams<T> = (req: NextRequest, userContext: SimulationJwtTokenPayload, dynamic: { params: any }) => Promise<T>;
-type Handler<T> = (req: NextRequest, dynamic: { params: any }) => Promise<NextResponse<T | ErrorResponse | RedirectResponse>>;
+type HandlerWithAdminAndParams<T> = (req: NextRequest, userContext: SimulationJwtTokenPayload, params: { params: Promise<any> }) => Promise<T>;
+type Handler<T> = (req: NextRequest, dynamic: { params: Promise<any> }) => Promise<NextResponse<T | ErrorResponse | RedirectResponse>>;
 
 /**
  * Middleware that checks if the user is logged in and has the Admin role.
@@ -16,8 +16,8 @@ type Handler<T> = (req: NextRequest, dynamic: { params: any }) => Promise<NextRe
  * @param handler The handler function to execute if the user is an Admin
  * @returns A handler function that can be exported as a Next.js API route
  */
-export function withLoggedInAdmin<T>(handler: HandlerWithAdmin<T> | HandlerWithAdminAndParams<T>): Handler<T> {
-  return withLoggedInUser<T>(async (req: NextRequest, userContext: DoDaoJwtTokenPayload, dynamic: { params: any }) => {
+export function withLoggedInAdmin<T>(handler: HandlerWithAdmin<T> | HandlerWithAdminAndParams<T>): any {
+  return withLoggedInUser<T>(async (req: NextRequest, userContext: DoDaoJwtTokenPayload, dynamic: { params: Promise<any> }) => {
     // Cast to SimulationJwtTokenPayload to access the role property
     const simulationUserContext = userContext as SimulationJwtTokenPayload;
 
@@ -27,6 +27,7 @@ export function withLoggedInAdmin<T>(handler: HandlerWithAdmin<T> | HandlerWithA
     }
 
     // If the user is an Admin, proceed with the handler function
-    return await handler(req, simulationUserContext, dynamic);
-  });
+    // Pass dynamic as params to match the HandlerWithAdminAndParams<T> type
+    return await handler(req, simulationUserContext, dynamic as any);
+  }) as any;
 }
