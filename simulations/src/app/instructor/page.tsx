@@ -34,14 +34,6 @@ export default function InstructorDashboard() {
     reFetchData: refetchCaseStudies,
   } = useFetchData<CaseStudy[]>(`${getBaseUrl()}/api/case-studies`, {}, 'Failed to load assigned case studies');
 
-  // Check authentication on page load
-  useEffect(() => {
-    if (!session || session.role !== 'Admin') {
-      router.push('/login');
-      return;
-    }
-  }, [router]);
-
   // Filter case studies based on selected subject
   useEffect(() => {
     if (assignedCaseStudies) {
@@ -90,6 +82,10 @@ export default function InstructorDashboard() {
   };
 
   const assignedSubjectsWithCounts = getAssignedSubjectsWithCounts();
+
+  if (!session || (session.role !== 'Instructor' && session.role !== 'Admin')) {
+    return <div>You are not authorized to access this page</div>;
+  }
 
   if (loadingCaseStudies || assignedCaseStudies === undefined) {
     return <InstructorLoading text="Loading Dashboard" subtitle="Preparing your instructor console..." variant="enhanced" />;
