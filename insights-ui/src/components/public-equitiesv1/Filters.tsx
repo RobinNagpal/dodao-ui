@@ -24,7 +24,7 @@ const categoryOptions: FilterOption[] = [
   { label: 'Financial Statement Analysis', value: 'FinancialStatementAnalysis', key: 'FinancialStatementAnalysis' },
   { label: 'Past Performance', value: 'PastPerformance', key: 'PastPerformance' },
   { label: 'Future Growth', value: 'FutureGrowth', key: 'FutureGrowth' },
-  { label: 'Vs Competition', value: 'VsCompetition', key: 'VsCompetition' },
+  { label: 'Fair Value', value: 'FairValue', key: 'FairValue' },
 ];
 
 const thresholdOptions = [

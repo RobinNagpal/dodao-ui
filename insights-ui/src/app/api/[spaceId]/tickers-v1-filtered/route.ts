@@ -25,7 +25,7 @@ interface FilterParams {
   financialstatementanalysisThreshold?: string;
   pastperformanceThreshold?: string;
   futuregrowthThreshold?: string;
-  vscompetitionThreshold?: string;
+  fairvalueThreshold?: string;
   totalthreshold?: string;
 }
 
@@ -39,7 +39,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     financialstatementanalysisThreshold: searchParams.get('financialstatementanalysisThreshold') || undefined,
     pastperformanceThreshold: searchParams.get('pastperformanceThreshold') || undefined,
     futuregrowthThreshold: searchParams.get('futuregrowthThreshold') || undefined,
-    vscompetitionThreshold: searchParams.get('vscompetitionThreshold') || undefined,
+    fairvalueThreshold: searchParams.get('fairvalueThreshold') || undefined,
     totalthreshold: searchParams.get('totalThreshold') || undefined,
   };
 
@@ -116,9 +116,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       }
     }
 
-    if (filters.vscompetitionThreshold) {
-      const threshold = parseInt(filters.vscompetitionThreshold);
-      if ((categoryScores[TickerAnalysisCategory.VsCompetition] || 0) < threshold) {
+    if (filters.fairvalueThreshold) {
+      const threshold = parseInt(filters.fairvalueThreshold);
+      if ((categoryScores[TickerAnalysisCategory.FairValue] || 0) < threshold) {
         passesFilters = false;
       }
     }
