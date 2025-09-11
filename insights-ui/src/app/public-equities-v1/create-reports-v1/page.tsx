@@ -1,7 +1,7 @@
 'use client';
 
-import AddTickersForm from '@/components/public-equities/AddTickersForm';
-import ReportGenerator from '@/components/public-equities/ReportGenerator';
+import AddTickersForm from '@/components/public-equitiesv1/AddTickersForm';
+import ReportGenerator from '@/components/public-equitiesv1/ReportGenerator';
 import { INDUSTRY_OPTIONS, SUB_INDUSTRY_OPTIONS, getIndustryDisplayName, getSubIndustryDisplayName } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
