@@ -68,13 +68,6 @@ export default function AdminDashboard() {
     reFetchData: refetchEnrollments,
   } = useFetchData<EnrollmentListItem[]>('/api/enrollments', {}, 'Failed to load enrollments');
 
-  useEffect((): void => {
-    if (!session || session.role !== 'Admin') {
-      router.push('/login');
-      return;
-    }
-  }, [router]);
-
   // Filter case studies based on selected subject
   useEffect(() => {
     if (caseStudies) {
@@ -94,6 +87,9 @@ export default function AdminDashboard() {
     await refetchEnrollments();
   };
 
+  if (!session || session.role !== 'Admin') {
+    return <div>You are not authorized to access this page</div>;
+  }
   if (loadingCaseStudies || loadingEnrollments || caseStudies === undefined || enrollments === undefined) {
     return <AdminLoading text="Loading admin dashboard..." subtitle="Preparing your workspace..." />;
   }

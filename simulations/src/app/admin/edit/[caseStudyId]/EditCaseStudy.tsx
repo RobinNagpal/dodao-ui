@@ -85,10 +85,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
   const [subject, setSubject] = useState<BusinessSubject | ''>('');
   const [modules, setModules] = useState<Module[]>([]);
 
-  if (!session || session.role !== 'Admin') {
-    return null;
-  }
-
   // Fetch case study data
   const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudy>(`/api/case-studies/${caseStudyId}`, {}, 'Failed to load case study');
 
@@ -236,6 +232,10 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
       console.error('Error updating case study:', error);
     }
   };
+
+  if (!session || session.role !== 'Admin') {
+    return null;
+  }
 
   if (loadingCaseStudy) {
     return <AdminLoading text="Loading case study..." subtitle="Preparing edit form..." />;

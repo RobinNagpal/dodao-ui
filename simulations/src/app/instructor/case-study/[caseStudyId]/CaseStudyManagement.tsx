@@ -8,6 +8,8 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { DeleteResponse, CaseStudyWithRelations } from '@/types/api';
 import type { StudentTableData, ModuleTableData } from '@/types';
+import { SimulationSession } from '@/types/user';
+import { useSession } from 'next-auth/react';
 import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
 import { BookOpen, Users, BarChart3, GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -27,9 +29,10 @@ interface CaseStudyManagementClientProps {
 }
 
 export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyManagementClientProps) {
-  const [userEmail, setUserEmail] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'analytics'>('overview');
+  const router = useRouter();
+  const { data: simSession } = useSession();
+  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [studentToClear, setStudentToClear] = useState<{ id: string; email: string } | null>(null);
@@ -52,13 +55,12 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   const [selectedModule, setSelectedModule] = useState<CaseStudyModule | null>(null);
   const [selectedExercise, setSelectedExercise] = useState<ModuleExercise | null>(null);
 
-  const router = useRouter();
-
-  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelations>(
-    `/api/case-studies/${caseStudyId}?userType=instructor&userEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !caseStudyId || !userEmail },
-    'Failed to load case study'
-  );
+  // API hook to fetch case study data
+  const {
+    data: caseStudy,
+    loading: loadingCaseStudy,
+    reFetchData,
+  } = useFetchData<CaseStudyWithRelations>(`/api/case-studies/${caseStudyId}`, { skipInitialFetch: !caseStudyId || !session }, 'Failed to load case study');
 
   // Fetch detailed student data for the table view
   const {
@@ -68,11 +70,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   } = useFetchData<{
     students: StudentTableData[];
     modules: ModuleTableData[];
-  }>(
-    `/api/instructor/case-studies/${caseStudyId}/students-table?instructorEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !caseStudyId || !userEmail },
-    'Failed to load students table data'
-  );
+  }>(`/api/instructor/case-studies/${caseStudyId}/students-table`, { skipInitialFetch: !caseStudyId || !session }, 'Failed to load students table data');
 
   const { deleteData: clearAttempts, loading: clearingAttempts } = useDeleteData<DeleteResponse, never>({
     successMessage: 'Student attempts cleared successfully!',
@@ -89,22 +87,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     errorMessage: 'Failed to delete final summary',
   });
 
-  useEffect(() => {
-    const userType = localStorage.getItem('user_type');
-    const email = localStorage.getItem('user_email');
-
-    if (!userType || userType !== 'instructor' || !email) {
-      router.push('/login');
-      return;
-    }
-
-    setUserEmail(email);
-    setIsLoading(false);
-  }, [router]);
-
   const handleLogout = () => {
-    localStorage.removeItem('user_type');
-    localStorage.removeItem('user_email');
     router.push('/login');
   };
 
@@ -127,7 +110,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     if (!studentToClear) return;
 
     try {
-      const url = `/api/instructor/students/${studentToClear.id}/clear-attempts?instructorEmail=${encodeURIComponent(userEmail)}&caseStudyId=${caseStudyId}`;
+      const url = `/api/instructor/students/${studentToClear.id}/clear-attempts?caseStudyId=${caseStudyId}`;
       await clearAttempts(url);
 
       // Refresh students data
@@ -143,9 +126,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     if (!attemptToDelete) return;
 
     try {
-      const url = `/api/instructor/students/${attemptToDelete.studentId}/attempts/${attemptToDelete.attemptId}?instructorEmail=${encodeURIComponent(
-        userEmail
-      )}&caseStudyId=${caseStudyId}`;
+      const url = `/api/instructor/students/${attemptToDelete.studentId}/attempts/${attemptToDelete.attemptId}?caseStudyId=${caseStudyId}`;
       await deleteAttempt(url);
 
       // Refresh students data
@@ -161,9 +142,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     if (!finalSummaryToDelete) return;
 
     try {
-      const url = `/api/instructor/students/${finalSummaryToDelete.studentId}/final-summary/${
-        finalSummaryToDelete.finalSummaryId
-      }?instructorEmail=${encodeURIComponent(userEmail)}&caseStudyId=${caseStudyId}`;
+      const url = `/api/instructor/students/${finalSummaryToDelete.studentId}/final-summary/${finalSummaryToDelete.finalSummaryId}?caseStudyId=${caseStudyId}`;
       await deleteFinalSummary(url);
 
       // Refresh students data
@@ -194,7 +173,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     }
   };
 
-  if (isLoading || loadingCaseStudy || (activeTab === 'students' && loadingStudentsTable)) {
+  if (!session || (session.role !== 'Instructor' && session.role !== 'Admin')) {
+    return null;
+  }
+
+  if (loadingCaseStudy || (activeTab === 'students' && loadingStudentsTable)) {
     return <InstructorLoading text="Loading Case Study" subtitle="Preparing management console..." variant="enhanced" />;
   }
 

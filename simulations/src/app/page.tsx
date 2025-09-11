@@ -46,7 +46,7 @@ export default function Home() {
     } else {
       showHomeScreen();
     }
-  }, [data?.user]);
+  }, [data, router, showHomeScreen]);
 
   // Show loading while checking localStorage and redirecting
   return (
