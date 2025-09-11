@@ -171,7 +171,7 @@ Return the JSON below in the sequence of category keys mentioned above.
         "categoryKey": {
           "type": "string",
           "title": "Category Key",
-          "enum": ["BusinessAndMoat", "FinancialStatementAnalysis", "PastPerformance", "FutureGrowth", "VsCompetition", "FairValue"]
+          "enum": ["BusinessAndMoat", "FinancialStatementAnalysis", "PastPerformance", "FutureGrowth", "FairValue"]
         },
         "factors": {
           "type": "array",

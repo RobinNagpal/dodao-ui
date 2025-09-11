@@ -8,6 +8,7 @@ export default {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     '../shared/web-core/src/components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: ['text-orange-500', 'bg-orange-500', 'text-yellow-500'],
   theme: {
     extend: {
       backgroundImage: {
