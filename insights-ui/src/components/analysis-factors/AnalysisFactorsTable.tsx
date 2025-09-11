@@ -51,6 +51,14 @@ Return the JSON below in the sequence of category keys mentioned above.
 - Below is the example for two categories. You need to return the factors for each category in the sequence mentioned above. Return 5 factors for all 5 categories.
 - Respect the output JSON schema.
 
+# Notes for BusinessAndMoat category
+- The business and moat factors should be such that they consider the superiority of the business and moat as compared to the competitors in the same industry and sub-industry. 
+- Only business who have a real advantage over others should be able to get pass on all the  five factors, so design the factors in such a way that it evaluates the business and moat vs the competitors in the same industry and sub-industry.
+
+# Notes for FairValue category
+- The fair value factors should be such that they consider the fair value of the company as compared to the competitors in the same industry and sub-industry.
+- Design the factors in such a way that only the undervalued companies can get pass on all the 5 or 4 factors, the fair value get 3 or 2 and over values gets 1 pass. So design the factors in such a way that it evaluates the fair value of the company vs the competitors in the same industry and sub-industry.
+
 # Example JSON
 {
   "industryKey": "REITS",
@@ -216,6 +224,7 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
+  const [isPromptAccordionOpen, setIsPromptAccordionOpen] = useState(false);
 
   const {
     data: analysisFactorsData,
@@ -368,67 +377,111 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
 
         {/* Content */}
         {hasData ? (
-          <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }} className="mt-4">
-            <thead>
-              <tr style={{ fontWeight: 'bold' }} className="text-color">
-                <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Category</th>
-                <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Factors</th>
-                <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {analysisFactorsData.categories.map((category, index) => (
-                <tr key={category.categoryKey} style={{ borderTop: '1px solid #ddd', borderBottom: '1px solid #ddd' }}>
-                  <td style={tableCellStyle}>{category.categoryKey}</td>
-                  <td>
-                    {category.factors.map((f, i, arr) => (
-                      <div style={getRowStyle(i, i === 0, i === arr.length - 1)} className="text-sm" key={f.factorAnalysisKey}>
-                        <span className="inline-block rounded-full px-1 py-0.5 text-xs mr-1">{i + 1}</span>
-                        <b>{f.factorAnalysisTitle}</b>
-                        <div className="pl-4">{f.factorAnalysisDescription}.</div>
-                        <pre className="pl-4 break-words text-xs whitespace-pre-wrap">Metrics - {f.factorAnalysisMetrics}</pre>
+          <>
+            <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }} className="mt-4">
+              <thead>
+                <tr style={{ fontWeight: 'bold' }} className="text-color">
+                  <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Category</th>
+                  <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Factors</th>
+                  <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {analysisFactorsData.categories.map((category, index) => (
+                  <tr key={category.categoryKey} style={{ borderTop: '1px solid #ddd', borderBottom: '1px solid #ddd' }}>
+                    <td style={tableCellStyle}>{category.categoryKey}</td>
+                    <td>
+                      {category.factors.map((f, i, arr) => (
+                        <div style={getRowStyle(i, i === 0, i === arr.length - 1)} className="text-sm" key={f.factorAnalysisKey}>
+                          <span className="inline-block rounded-full px-1 py-0.5 text-xs mr-1">{i + 1}</span>
+                          <b>{f.factorAnalysisTitle}</b>
+                          <div className="pl-4">{f.factorAnalysisDescription}.</div>
+                          <pre className="pl-4 break-words text-xs whitespace-pre-wrap">Metrics - {f.factorAnalysisMetrics}</pre>
+                        </div>
+                      ))}
+                    </td>
+                    <td style={tableCellStyle} className="h-full">
+                      <div className="flex justify-around h-full">
+                        <IconButton
+                          onClick={handleEditClick}
+                          iconName={IconTypes.Edit}
+                          removeBorder={true}
+                          loading={savingAnalysisFactors || updatingAnalysisFactors}
+                        />
+                        <IconButton onClick={handleViewClick} iconName={IconTypes.ArrowsPointingOutIcon} removeBorder={true} />
+                        <IconButton onClick={handleDeleteAll} iconName={IconTypes.Trash} removeBorder={true} />
                       </div>
-                    ))}
-                  </td>
-                  <td style={tableCellStyle} className="h-full">
-                    <div className="flex justify-around h-full">
-                      <IconButton
-                        onClick={handleEditClick}
-                        iconName={IconTypes.Edit}
-                        removeBorder={true}
-                        loading={savingAnalysisFactors || updatingAnalysisFactors}
-                      />
-                      <IconButton onClick={handleViewClick} iconName={IconTypes.ArrowsPointingOutIcon} removeBorder={true} />
-                      <IconButton onClick={handleDeleteAll} iconName={IconTypes.Trash} removeBorder={true} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {/* Prompt Accordion for when analysis factors exist */}
+            <div className="mt-6 border border-gray-200 rounded-lg overflow-hidden">
+              <div className="flex items-center justify-between p-4cursor-pointer" onClick={() => setIsPromptAccordionOpen(!isPromptAccordionOpen)}>
+                <div className="flex items-center p-4">
+                  <span className="font-bold text-lg">Analysis Factor Prompt</span>
+                </div>
+                <div className={`transform transition-transform duration-200 ${isPromptAccordionOpen ? 'rotate-180' : ''}`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+              {isPromptAccordionOpen && (
+                <div className="p-4 border-t border-gray-200">
+                  <p className="mb-2">Use the prompt below to generate analysis factors for this industry and sub-industry:</p>
+                  <pre className="text-xs whitespace-pre-wrap text-left overflow-auto p-4 border border-gray-300 rounded">
+                    {getAnalysisFactorPrompt(industryKey, subIndustryKey)}
+                  </pre>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }} className="mt-4">
+              <thead>
+                <tr style={{ fontWeight: 'bold' }} className="text-color">
+                  <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Category</th>
+                  <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Factors</th>
+                  <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="hover:bg-gray-50">
+                  <td colSpan={3} style={{ padding: '24px' }}>
+                    <div style={{ textAlign: 'left' }}>
+                      <p className="mb-4 font-italic">No analysis factors configured for this industry and sub-industry combination.</p>
                     </div>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }} className="mt-4">
-            <thead>
-              <tr style={{ fontWeight: 'bold' }} className="text-color">
-                <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Category</th>
-                <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Factors</th>
-                <th style={{ ...tableCellStyle, padding: '14px 16px' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="hover:bg-gray-900">
-                <td colSpan={3} style={{ padding: '24px' }}>
-                  <div style={{ textAlign: 'left' }}>
-                    <p className="mb-4 font-italic">No analysis factors configured for this industry and sub-industry combination.</p>
-                    <p className="mb-2">Please copy the prompt below to find analysis factors for this industry and sub-industry:</p>
-                    <pre className="text-xs whitespace-pre-wrap text-left overflow-auto p-4  border border-gray-300 rounded">
-                      {getAnalysisFactorPrompt(industryKey, subIndustryKey)}
-                    </pre>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+
+            {/* Prompt Accordion for when no analysis factors exist */}
+            <div className="mt-6 border border-gray-200 rounded-lg overflow-hidden">
+              <div className="flex items-center justify-between p-4 cursor-pointer" onClick={() => setIsPromptAccordionOpen(!isPromptAccordionOpen)}>
+                <div className="flex items-center">
+                  <span className="font-medium">Analysis Factor Prompt</span>
+                </div>
+                <div className={`transform transition-transform duration-200 ${isPromptAccordionOpen ? 'rotate-180' : ''}`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+              {isPromptAccordionOpen && (
+                <div className="p-4 border-t border-gray-200">
+                  <p className="mb-2">Please copy the prompt below to find analysis factors for this industry and sub-industry:</p>
+                  <pre className="text-xs whitespace-pre-wrap text-left overflow-auto p-4  border border-gray-300 rounded">
+                    {getAnalysisFactorPrompt(industryKey, subIndustryKey)}
+                  </pre>
+                </div>
+              )}
+            </div>
+          </>
         )}
 
         {/* Edit Modal */}
