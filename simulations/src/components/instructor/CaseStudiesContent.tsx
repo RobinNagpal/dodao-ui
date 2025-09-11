@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CaseStudy, BusinessSubject } from '@/types';
-import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
+import { getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -64,10 +64,10 @@ export default function CaseStudiesContent({
         <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
           <CardContent className="text-center py-16">
             <div className="relative mb-6">
-              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 w-24 h-24 rounded-full flex items-center justify-center mx-auto">
-                <BookOpen className="h-12 w-12 text-purple-600" />
+              <div className="bg-gradient-to-br from-gray-100 to-gray-200 w-24 h-24 rounded-full flex items-center justify-center mx-auto">
+                <BookOpen className="h-12 w-12 text-gray-600" />
               </div>
-              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-cyan-400 to-purple-500 p-2 rounded-full">
+              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-gray-400 to-gray-500 p-2 rounded-full">
                 <GraduationCap className="h-4 w-4 text-white" />
               </div>
             </div>
@@ -103,28 +103,28 @@ export default function CaseStudiesContent({
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center space-x-2">
-                    <Badge className={`bg-gradient-to-r ${getSubjectColor(caseStudy.subject)} text-white border-0`}>
+                    <Badge className="bg-gradient-to-r from-gray-600 to-gray-700 text-white border-0">
                       <span className="mr-1">{getSubjectIcon(caseStudy.subject)}</span>
                       {getSubjectDisplayName(caseStudy.subject)}
                     </Badge>
-                    <Badge variant="secondary" className="bg-purple-100 text-purple-800 border-purple-200">
+                    <Badge variant="secondary" className="bg-gray-100 text-gray-700 border-gray-200">
                       <GraduationCap className="h-3 w-3 mr-1" />
                       Assigned
                     </Badge>
                   </div>
                 </div>
-                <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors">{caseStudy.title}</CardTitle>
+                <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-gray-700 transition-colors">{caseStudy.title}</CardTitle>
                 <CardDescription className="text-gray-600 line-clamp-2">{caseStudy.shortDescription}</CardDescription>
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <div className="flex items-center justify-between text-sm bg-gradient-to-r from-gray-50 to-purple-50 rounded-xl p-3">
+                <div className="flex items-center justify-between text-sm bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-3">
                   <div className="flex items-center space-x-1 text-gray-600">
-                    <BookOpen className="h-4 w-4 text-purple-500" />
+                    <BookOpen className="h-4 w-4 text-gray-500" />
                     <span className="font-medium">{caseStudy.modules?.length || 0} modules</span>
                   </div>
                   <div className="flex items-center space-x-1 text-gray-600">
-                    <Users className="h-4 w-4 text-blue-500" />
+                    <Users className="h-4 w-4 text-gray-500" />
                     <span className="font-medium">{getEnrollmentCount(caseStudy)} students</span>
                   </div>
                 </div>
@@ -132,7 +132,7 @@ export default function CaseStudiesContent({
                 <div className="space-y-3">
                   <Button
                     onClick={() => handleViewCaseStudy(caseStudy)}
-                    className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-lg shadow-purple-500/25 transition-all duration-200 transform hover:scale-[1.02]"
+                    className="w-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white shadow-lg shadow-gray-500/25 transition-all duration-200 transform hover:scale-[1.02]"
                   >
                     <div className="flex items-center justify-center space-x-2">
                       <BookOpen className="h-4 w-4" />
@@ -143,7 +143,7 @@ export default function CaseStudiesContent({
                   <Button
                     onClick={() => handleManageStudents(caseStudy)}
                     variant="outline"
-                    className="w-full border-green-200 text-green-700 hover:bg-green-50 hover:border-green-300 transition-all duration-200"
+                    className="w-full border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
                   >
                     <div className="flex items-center justify-center space-x-2">
                       <Users className="h-4 w-4" />
