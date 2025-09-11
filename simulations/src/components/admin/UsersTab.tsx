@@ -1,3 +1,4 @@
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { UserRole } from '@prisma/client';
 import { Plus, Users as UsersIcon } from 'lucide-react';
 import { useState } from 'react';
@@ -31,7 +32,11 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [deleteUserId, setDeleteUserId] = useState<string>('');
 
-  const { data: usersResponse, loading: loadingUsers, reFetchData: refetchUsers } = useFetchData<UsersResponse>('/api/users', {}, 'Failed to load users');
+  const {
+    data: usersResponse,
+    loading: loadingUsers,
+    reFetchData: refetchUsers,
+  } = useFetchData<UsersResponse>(`${getBaseUrl()}/api/users`, {}, 'Failed to load users');
 
   const { deleteData: deleteUser, loading: deletingUser } = useDeleteData<{ success: boolean }, never>({
     successMessage: 'User deleted successfully!',
@@ -50,7 +55,7 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
 
   const handleConfirmDelete = async (): Promise<void> => {
     try {
-      await deleteUser(`/api/users/${deleteUserId}`);
+      await deleteUser(`${getBaseUrl()}/api/users/${deleteUserId}`);
       await refetchUsers();
       setShowDeleteConfirm(false);
       setDeleteUserId('');

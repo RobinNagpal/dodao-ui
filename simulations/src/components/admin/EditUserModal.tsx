@@ -1,12 +1,12 @@
 import { UserRole } from '@prisma/client';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useState, useEffect } from 'react';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { Loader2 } from 'lucide-react';
+import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
+import Input from '@dodao/web-core/components/core/input/Input';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 
 interface EditUserModalProps {
   isOpen: boolean;
@@ -21,13 +21,35 @@ interface EditUserModalProps {
   } | null;
 }
 
+interface UserUpdateRequest {
+  name?: string;
+  email: string;
+  role: UserRole;
+}
+
+interface UserUpdateResponse {
+  user: {
+    id: string;
+    email: string;
+    name: string | null;
+    role: UserRole;
+  };
+}
+
 export default function EditUserModal({ isOpen, onClose, onSuccess, user }: EditUserModalProps): JSX.Element {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [role, setRole] = useState<UserRole>('Student');
   const [formError, setFormError] = useState<string>('');
 
-  const { putData, loading } = usePutData<any, any>({
+  // Role options for StyledSelect
+  const roleOptions: StyledSelectItem[] = [
+    { id: 'Admin', label: 'Admin' },
+    { id: 'Instructor', label: 'Instructor' },
+    { id: 'Student', label: 'Student' },
+  ];
+
+  const { putData, loading } = usePutData<UserUpdateResponse, UserUpdateRequest>({
     successMessage: 'User updated successfully!',
     errorMessage: 'Failed to update user',
   });
@@ -63,46 +85,44 @@ export default function EditUserModal({ isOpen, onClose, onSuccess, user }: Edit
     }
   };
 
+  const resetForm = (): void => {
+    if (user) {
+      setName(user.name || '');
+      setEmail(user.email || '');
+      setRole(user.role);
+    }
+    setFormError('');
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Edit User</DialogTitle>
-          <DialogDescription>Update user information. Click save when you're done.</DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="email" className="text-right">
-                Email
-              </Label>
-              <Input id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="col-span-3" placeholder="user@example.com" />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Name
-              </Label>
-              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="col-span-3" placeholder="John Doe" />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="role" className="text-right">
-                Role
-              </Label>
-              <Select value={role} onValueChange={(value) => setRole(value as UserRole)}>
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select a role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Admin">Admin</SelectItem>
-                  <SelectItem value="Instructor">Instructor</SelectItem>
-                  <SelectItem value="Student">Student</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            {formError && <div className="text-red-500 text-sm mt-2">{formError}</div>}
-          </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
+    <SingleSectionModal
+      open={isOpen}
+      onClose={() => {
+        resetForm();
+        onClose();
+      }}
+      title="Edit User"
+    >
+      <div className="mt-4">
+        <p className="text-sm text-gray-500 mb-4 text-left">Update user information. Click save when you're done.</p>
+        <form onSubmit={handleSubmit} className="text-left space-y-4">
+          <Input label="Email" id="email" modelValue={email} onUpdate={(value) => setEmail(value as string)} placeholder="user@example.com" required={true} />
+
+          <Input label="Name" id="name" modelValue={name} onUpdate={(value) => setName(value as string)} placeholder="John Doe" required={false} />
+
+          <StyledSelect label="Role" selectedItemId={role} items={roleOptions} setSelectedItemId={(id) => setRole(id as UserRole)} />
+
+          {formError && <div className="text-red-500 text-sm mt-2">{formError}</div>}
+
+          <div className="mt-6 flex justify-end space-x-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                resetForm();
+                onClose();
+              }}
+            >
               Cancel
             </Button>
             <Button type="submit" disabled={loading}>
@@ -115,9 +135,9 @@ export default function EditUserModal({ isOpen, onClose, onSuccess, user }: Edit
                 'Save Changes'
               )}
             </Button>
-          </DialogFooter>
+          </div>
         </form>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </SingleSectionModal>
   );
 }

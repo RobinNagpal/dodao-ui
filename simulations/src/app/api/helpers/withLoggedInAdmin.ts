@@ -3,6 +3,7 @@ import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withEr
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { SimulationJwtTokenPayload } from '@/types/user';
 import { ErrorResponse, RedirectResponse } from '@dodao/web-core/types/errors/ErrorResponse';
+import { prisma } from '@/prisma';
 
 type HandlerWithAdmin<T> = (req: NextRequest, userContext: SimulationJwtTokenPayload) => Promise<T>;
 type HandlerWithAdminAndParams<T> = (req: NextRequest, userContext: SimulationJwtTokenPayload, params: { params: Promise<any> }) => Promise<T>;
@@ -21,11 +22,25 @@ export function withLoggedInAdmin<T>(handler: HandlerWithAdmin<T> | HandlerWithA
     // Cast to SimulationJwtTokenPayload to access the role property
     const simulationUserContext = userContext as SimulationJwtTokenPayload;
 
-    // Check if the user has the Admin role
-    if (simulationUserContext.role !== 'Admin') {
-      throw new Error('Unauthorized: Only admins can access this endpoint');
-    }
+    if (!simulationUserContext.role) {
+      const user = await prisma.user.findUnique({
+        where: {
+          email_spaceId: {
+            email: simulationUserContext.email || simulationUserContext.username,
+            spaceId: simulationUserContext.spaceId,
+          },
+        },
+      });
 
+      if (user?.role !== 'Admin') {
+        throw new Error('Unauthorized: Only admins can access this endpoint');
+      }
+    } else {
+      // Check if the user has the Admin role
+      if (simulationUserContext.role !== 'Admin') {
+        throw new Error('Unauthorized: Only admins can access this endpoint');
+      }
+    }
     // If the user is an Admin, proceed with the handler function
     // Pass dynamic as params to match the HandlerWithAdminAndParams<T> type
     return await handler(req, simulationUserContext, dynamic as any);
