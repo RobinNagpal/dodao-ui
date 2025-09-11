@@ -1,5 +1,6 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import Filters from '@/components/public-equitiesv1/Filters';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getScoreColorClasses } from '@/utils/score-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -10,16 +11,32 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { TickerV1 } from '@prisma/client';
 
-export async function generateMetadata(props: { searchParams: Promise<{ page?: string }> }): Promise<Metadata> {
-  const { page } = await props.searchParams;
-  const currentPage = parseInt(page || '1');
+// Import the FilteredTicker interface from the API route
+interface FilteredTicker {
+  id: string;
+  name: string;
+  symbol: string;
+  exchange: string;
+  industryKey: string;
+  subIndustryKey: string;
+  websiteUrl?: string | null;
+  summary?: string | null;
+  cachedScore: number;
+  spaceId: string;
+  categoryScores: {
+    [key: string]: number;
+  };
+  totalScore: number;
+}
+
+export async function generateMetadata(): Promise<Metadata> {
   const base = 'https://koalagains.com/public-equities/tickers';
   return {
     title: 'REIT Tickers | KoalaGains',
     description:
       'Explore all available REIT tickers. Dive into detailed AI-driven financial reports, analyze key metrics, and streamline your public equities research on KoalaGains.',
     alternates: {
-      canonical: currentPage === 1 ? base : `${base}?page=${currentPage}`,
+      canonical: base,
     },
     keywords: [
       'REIT tickers',
@@ -284,11 +301,60 @@ const reitsByType: Record<string, ReitData[]> = {
   // ],
 };
 
-export default async function AllTickersPage(props: { searchParams: Promise<{ page?: string }> }) {
-  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`);
-  const tickers: TickerV1[] = await response.json();
+export default async function AllTickersPage(props: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
+  const searchParams = await props.searchParams;
 
-  const tickersMap = Object.fromEntries(tickers.map((t) => [t.symbol, t]));
+  // Check if any filters are applied
+  const hasFilters = Object.keys(searchParams).some((key) => key.includes('Threshold'));
+
+  let tickers: FilteredTicker[] = [];
+  let tickersMap: Record<string, FilteredTicker> = {};
+
+  if (hasFilters) {
+    // Build URL with filter params for the filtered API
+    const urlParams = new URLSearchParams();
+    Object.entries(searchParams).forEach(([key, value]) => {
+      if (value && key !== 'page') urlParams.set(key, value);
+    });
+
+    const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${urlParams.toString()}`;
+    const response = await fetch(apiUrl);
+    tickers = await response.json();
+    tickersMap = Object.fromEntries(tickers.map((t) => [t.symbol, t]));
+  } else {
+    // Use regular tickers API when no filters are applied
+    const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`;
+    const response = await fetch(apiUrl);
+    const regularTickers: TickerV1[] = await response.json();
+
+    // Transform TickerV1[] to FilteredTicker[] format for consistency
+    tickers = regularTickers.map((ticker) => ({
+      id: ticker.id,
+      name: ticker.name,
+      symbol: ticker.symbol,
+      exchange: ticker.exchange,
+      industryKey: ticker.industryKey,
+      subIndustryKey: ticker.subIndustryKey,
+      websiteUrl: ticker.websiteUrl,
+      summary: ticker.summary,
+      cachedScore: ticker.cachedScore,
+      spaceId: ticker.spaceId,
+      categoryScores: {}, // Empty for unfiltered case
+      totalScore: 0, // Will be calculated if needed
+    }));
+    tickersMap = Object.fromEntries(tickers.map((t) => [t.symbol, t]));
+  }
+
+  // Filter the hardcoded REIT data to only show tickers that passed the filters
+  const filteredReitsByType: Record<string, ReitData[]> = {};
+  const tickerSymbols = new Set(tickers.map((t) => t.symbol));
+
+  Object.entries(reitsByType).forEach(([reitType, reits]) => {
+    const filteredReits = reits.filter((reit) => tickerSymbols.has(reit.ticker));
+    if (filteredReits.length > 0) {
+      filteredReitsByType[reitType] = filteredReits;
+    }
+  });
 
   return (
     <Tooltip.Provider delayDuration={300}>
@@ -296,6 +362,10 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ pa
         <div className="overflow-x-auto">
           <Breadcrumbs breadcrumbs={breadcrumbs} />
         </div>
+        <div className="mb-6">
+          <Filters />
+        </div>
+
         <PrivateWrapper>
           <div className="flex flex-wrap justify-end gap-3 mb-6">
             <Link
@@ -323,66 +393,75 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ pa
 
         {/* REIT Type Cards */}
         <h2 className="text-2xl font-bold text-white mb-6">REIT Categories</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 auto-rows-auto">
-          {Object.entries(reitsByType).map(([reitType, reits]) => (
-            <div
-              key={reitType}
-              className="bg-block-bg-color rounded-lg shadow-lg border border-color overflow-hidden h-full flex flex-col hover:shadow-xl transition-shadow duration-300"
-            >
-              <div className="px-4 py-3 sm:px-6 border-b border-color flex items-center bg-gradient-to-r from-[#374151] to-[#2D3748]">
-                <h3 className="text-lg font-semibold heading-color">{reitType} REITs</h3>
-                <p className="mt-1 text-sm text-white ml-2 bg-[#4F46E5] px-2 py-0.5 rounded-full">
-                  {reits.length} {reits.length === 1 ? 'company' : 'companies'}
-                </p>
-              </div>
-              <ul className="divide-y divide-color flex-grow">
-                {reits.map((reit) => {
-                  // Find the ticker in the fetched data if available
+        {Object.keys(filteredReitsByType).length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-[#E5E7EB] text-lg">No REITs match the current filters.</p>
+            <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 auto-rows-auto">
+            {Object.entries(filteredReitsByType).map(([reitType, reits]) => (
+              <div
+                key={reitType}
+                className="bg-block-bg-color rounded-lg shadow-lg border border-color overflow-hidden h-full flex flex-col hover:shadow-xl transition-shadow duration-300"
+              >
+                <div className="px-4 py-3 sm:px-6 border-b border-color flex items-center bg-gradient-to-r from-[#374151] to-[#2D3748]">
+                  <h3 className="text-lg font-semibold heading-color">{reitType} REITs</h3>
+                  <p className="mt-1 text-sm text-white ml-2 bg-[#4F46E5] px-2 py-0.5 rounded-full">
+                    {reits.length} {reits.length === 1 ? 'company' : 'companies'}
+                  </p>
+                </div>
+                <ul className="divide-y divide-color flex-grow">
+                  {reits.map((reit) => {
+                    // Find the ticker in the fetched data if available
 
-                  return (
-                    <li
-                      key={reit.ticker}
-                      className="px-2 py-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-[#2D3748] transition-colors duration-200"
-                    >
-                      <div className="min-w-0 w-full">
-                        <div className="flex items-center justify-between">
-                          <Link href={`/public-equities-v1/NASDAQ/${reit.ticker}`} className="w-full">
-                            <div className="flex gap-2 items-center">
-                              {(() => {
-                                const score = tickersMap?.[reit.ticker]?.cachedScore || 0;
-                                let { textColorClass, bgColorClass, scoreLabel } = getScoreColorClasses(score);
+                    return (
+                      <li
+                        key={reit.ticker}
+                        className="px-2 py-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-[#2D3748] transition-colors duration-200"
+                      >
+                        <div className="min-w-0 w-full">
+                          <div className="flex items-center justify-between">
+                            <Link href={`/public-equities-v1/NASDAQ/${reit.ticker}`} className="w-full">
+                              <div className="flex gap-2 items-center">
+                                {(() => {
+                                  const score = tickersMap?.[reit.ticker]?.cachedScore || 0;
+                                  let { textColorClass, bgColorClass, scoreLabel } = getScoreColorClasses(score);
 
-                                return (
-                                  <Tooltip.Root>
-                                    <Tooltip.Trigger asChild>
-                                      <p className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[50px] text-right`}>
-                                        <span className="font-mono tabular-nums text-right text-xs w-[50px]">{score}/25</span>
-                                      </p>
-                                    </Tooltip.Trigger>
-                                    <Tooltip.Portal>
-                                      <Tooltip.Content className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm shadow-lg z-50" sideOffset={5}>
-                                        {scoreLabel} Score: {score}/25
-                                        <Tooltip.Arrow className="fill-gray-900" />
-                                      </Tooltip.Content>
-                                    </Tooltip.Portal>
-                                  </Tooltip.Root>
-                                );
-                              })()}
-                              <p className="whitespace-nowrap rounded-md px-2 py-.5 text-sm font-medium bg-[#4F46E5] text-white self-center shadow-sm">
-                                {reit.ticker}
-                              </p>
-                              <p className="text-sm font-medium text-break break-words text-white">{reit.name}</p>
-                            </div>
-                          </Link>
+                                  return (
+                                    <Tooltip.Root>
+                                      <Tooltip.Trigger asChild>
+                                        <p
+                                          className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[50px] text-right`}
+                                        >
+                                          <span className="font-mono tabular-nums text-right text-xs w-[50px]">{score}/25</span>
+                                        </p>
+                                      </Tooltip.Trigger>
+                                      <Tooltip.Portal>
+                                        <Tooltip.Content className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm shadow-lg z-50" sideOffset={5}>
+                                          {scoreLabel} Score: {score}/25
+                                          <Tooltip.Arrow className="fill-gray-900" />
+                                        </Tooltip.Content>
+                                      </Tooltip.Portal>
+                                    </Tooltip.Root>
+                                  );
+                                })()}
+                                <p className="whitespace-nowrap rounded-md px-2 py-.5 text-sm font-medium bg-[#4F46E5] text-white self-center shadow-sm">
+                                  {reit.ticker}
+                                </p>
+                                <p className="text-sm font-medium text-break break-words text-white">{reit.name}</p>
+                              </div>
+                            </Link>
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+          </div>
+        )}
       </PageWrapper>
     </Tooltip.Provider>
   );
