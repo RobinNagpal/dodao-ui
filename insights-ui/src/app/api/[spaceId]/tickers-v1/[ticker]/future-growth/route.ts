@@ -8,7 +8,6 @@ import { CompetitionAnalysisArray, LLMFactorAnalysisResponse, TickerAnalysisResp
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
 
-  // Hardcode LLM provider and model
   const llmProvider = 'gemini';
   const model = 'models/gemini-2.5-pro';
 

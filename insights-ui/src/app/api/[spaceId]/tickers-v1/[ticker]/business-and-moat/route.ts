@@ -3,7 +3,7 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
-import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { CompetitionAnalysisArray, LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
@@ -21,6 +21,18 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   if (!tickerRecord) {
     throw new Error(`Ticker ${ticker} not found`);
+  }
+
+  // Get competition analysis (required for business and moat analysis)
+  const competitionData = await prisma.tickerV1VsCompetition.findFirst({
+    where: {
+      spaceId,
+      tickerId: tickerRecord.id,
+    },
+  });
+
+  if (!competitionData) {
+    throw new Error(`Competition analysis not found for ticker ${ticker}. Please run competition analysis first.`);
   }
 
   // Get analysis factors for BusinessAndMoat category
@@ -46,6 +58,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       factorAnalysisDescription: factor.factorAnalysisDescription,
       factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
     })),
+    competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
   };
 
   // Call the LLM
