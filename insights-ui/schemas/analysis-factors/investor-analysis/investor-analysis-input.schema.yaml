@@ -17,9 +17,29 @@ properties:
   investorKey:
     type: string
     description: 'The legendary investor whose style is being applied (e.g., WARREN_BUFFETT, CHARLIE_MUNGER, BILL_ACKMAN).'
+  competitionAnalysisArray:
+    type: array
+    description: 'Array of competitor information from VsCompetition output, used to benchmark the target company.'
+    items:
+      type: object
+      properties:
+        companyName:
+          type: string
+        companySymbol:
+          type: string
+        exchangeSymbol:
+          type: string
+        exchangeName:
+          type: string
+        detailedComparison:
+          type: string
+      required:
+        - companyName
+        - detailedComparison
 required:
   - name
   - symbol
   - industryKey
   - subIndustryKey
   - investorKey
+  - competitionAnalysisArray
