@@ -77,6 +77,14 @@ export type CaseStudyWithRelations = CaseStudy & {
   };
 };
 
+export type CaseStudyWithModulesAndExercises = CaseStudy & {
+  modules?: Array<
+    CaseStudyModule & {
+      exercises?: ModuleExercise[];
+    }
+  >;
+};
+
 export type EnrollmentWithRelations = ClassCaseStudyEnrollment & {
   caseStudy?: {
     id: string;

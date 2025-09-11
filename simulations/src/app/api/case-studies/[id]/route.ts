@@ -1,257 +1,34 @@
-import { NextRequest } from 'next/server';
+import { getAdminCaseStudy, getInstructorCaseStudy, getStudentCaseStudy } from '@/app/api/helpers/case-studies-util';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { UpdateCaseStudyRequest, CaseStudyWithRelations, DeleteResponse } from '@/types/api';
+import { CaseStudyWithRelations, DeleteResponse, UpdateCaseStudyRequest } from '@/types/api';
+import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { NextRequest } from 'next/server';
 
 // GET /api/case-studies/[id] - Get a specific case study for any user type
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<CaseStudyWithRelations> {
+async function getHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<CaseStudyWithRelations> {
   const { id } = await params;
-  const url = new URL(req.url);
-  const userType = url.searchParams.get('userType');
-  const userEmail = url.searchParams.get('userEmail');
-
-  if (!userType || !userEmail) {
-    throw new Error('User type and email are required');
-  }
+  const { userId } = userContext;
+  const user = await prisma.user.findFirstOrThrow({
+    where: {
+      id: userId,
+    },
+  });
 
   // Handle different user types
-  if (userType === 'student') {
-    return await getStudentCaseStudy(id, userEmail);
-  } else if (userType === 'instructor') {
-    return await getInstructorCaseStudy(id, userEmail);
-  } else if (userType === 'admin') {
+  if (user.role === 'Student') {
+    return await getStudentCaseStudy(id, user.email!);
+  } else if (user.role === 'Instructor') {
+    return await getInstructorCaseStudy(id, user.email!);
+  } else if (user.role === 'Admin') {
     return await getAdminCaseStudy(id);
   } else {
     throw new Error('Invalid user type');
   }
-}
-
-// Get case study for student with attempts and instruction status
-async function getStudentCaseStudy(caseStudyId: string, studentEmail: string): Promise<CaseStudyWithRelations> {
-  // Check if student is enrolled in this case study and get their enrollment record
-  const enrollment = await prisma.classCaseStudyEnrollment.findFirst({
-    where: {
-      caseStudyId,
-      archive: false,
-      students: {
-        some: {
-          assignedStudentId: studentEmail,
-          archive: false,
-        },
-      },
-    },
-    include: {
-      students: {
-        where: {
-          assignedStudentId: studentEmail,
-          archive: false,
-        },
-      },
-      caseStudy: {
-        include: {
-          modules: {
-            where: {
-              archive: false,
-            },
-            include: {
-              exercises: {
-                where: {
-                  archive: false,
-                },
-                include: {
-                  attempts: {
-                    where: {
-                      createdBy: studentEmail,
-                      archive: false,
-                    },
-                    orderBy: {
-                      createdAt: 'desc',
-                    },
-                  },
-                },
-                orderBy: {
-                  orderNumber: 'asc',
-                },
-              },
-            },
-            orderBy: {
-              orderNumber: 'asc',
-            },
-          },
-        },
-      },
-    },
-  });
-
-  if (!enrollment || !enrollment.students || enrollment.students.length === 0) {
-    throw new Error('Student is not enrolled in this case study or case study does not exist');
-  }
-
-  // Get the student's instruction read status
-  const studentRecord = enrollment.students[0];
-  const instructionReadStatus = studentRecord.instructionReadStatus as {
-    readCaseInstructions: boolean;
-    moduleInstructions: Array<{
-      id: string;
-      readModuleInstructions: boolean;
-    }>;
-  } | null;
-
-  // Add instruction read status to the response
-  const caseStudyWithStatus: CaseStudyWithRelations = {
-    ...enrollment.caseStudy,
-    instructionReadStatus: instructionReadStatus || undefined,
-  };
-
-  return caseStudyWithStatus;
-}
-
-// Get case study for instructor with enrollment data
-async function getInstructorCaseStudy(caseStudyId: string, instructorEmail: string): Promise<CaseStudyWithRelations> {
-  // Find the case study and verify instructor has access
-  const caseStudy = await prisma.caseStudy.findFirst({
-    where: {
-      id: caseStudyId,
-      archive: false,
-      enrollments: {
-        some: {
-          assignedInstructorId: instructorEmail,
-          archive: false,
-        },
-      },
-    },
-    include: {
-      modules: {
-        where: {
-          archive: false,
-        },
-        orderBy: {
-          orderNumber: 'asc',
-        },
-        include: {
-          exercises: {
-            where: {
-              archive: false,
-            },
-            orderBy: {
-              orderNumber: 'asc',
-            },
-          },
-        },
-      },
-      enrollments: {
-        where: {
-          assignedInstructorId: instructorEmail,
-          archive: false,
-        },
-        include: {
-          students: {
-            where: {
-              archive: false,
-            },
-            orderBy: {
-              createdAt: 'asc',
-            },
-            include: {
-              finalSubmission: {},
-            },
-          },
-        },
-      },
-    },
-  });
-
-  if (!caseStudy) {
-    throw new Error('Case study not found or you do not have access to it');
-  }
-
-  // Convert Prisma types to our frontend types
-  const formattedCaseStudy = {
-    ...caseStudy,
-    createdBy: caseStudy.createdBy || undefined,
-    updatedBy: caseStudy.updatedBy || undefined,
-    modules: caseStudy.modules?.map((module) => ({
-      ...module,
-      createdBy: module.createdBy || undefined,
-      updatedBy: module.updatedBy || undefined,
-      exercises: module.exercises?.map((exercise) => ({
-        ...exercise,
-        createdBy: exercise.createdBy || undefined,
-        updatedBy: exercise.updatedBy || undefined,
-        promptHint: exercise.promptHint || undefined,
-      })),
-    })),
-    enrollments: caseStudy.enrollments?.map((enrollment) => ({
-      ...enrollment,
-      createdBy: enrollment.createdBy || undefined,
-      updatedBy: enrollment.updatedBy || undefined,
-      students: enrollment.students?.map((student) => ({
-        ...student,
-        createdBy: student.createdBy || undefined,
-        updatedBy: student.updatedBy || undefined,
-        finalSubmission: student.finalSubmission
-          ? {
-              ...student.finalSubmission,
-              createdBy: student.finalSubmission.createdBy || undefined,
-              updatedBy: student.finalSubmission.updatedBy || undefined,
-              finalContent: student.finalSubmission.finalContent || undefined,
-            }
-          : undefined,
-      })),
-    })),
-  } as CaseStudyWithRelations;
-
-  return formattedCaseStudy;
-}
-
-// Get case study for admin (full access)
-async function getAdminCaseStudy(caseStudyId: string): Promise<CaseStudyWithRelations> {
-  const caseStudy = await prisma.caseStudy.findFirstOrThrow({
-    where: {
-      id: caseStudyId,
-      archive: false,
-    },
-    include: {
-      modules: {
-        where: {
-          archive: false,
-        },
-        include: {
-          exercises: {
-            where: {
-              archive: false,
-            },
-            orderBy: {
-              orderNumber: 'asc',
-            },
-          },
-        },
-        orderBy: {
-          orderNumber: 'asc',
-        },
-      },
-    },
-  });
-
-  // Convert to frontend type
-  const formattedCaseStudy = {
-    ...caseStudy,
-    createdBy: caseStudy.createdBy || undefined,
-    updatedBy: caseStudy.updatedBy || undefined,
-    modules: caseStudy.modules?.map((module) => ({
-      ...module,
-      createdBy: module.createdBy || undefined,
-      updatedBy: module.updatedBy || undefined,
-      exercises: module.exercises?.map((exercise) => ({
-        ...exercise,
-        createdBy: exercise.createdBy || undefined,
-        updatedBy: exercise.updatedBy || undefined,
-        promptHint: exercise.promptHint || undefined,
-      })),
-    })),
-  } as CaseStudyWithRelations;
-
-  return formattedCaseStudy;
 }
 
 interface UpdateInstructionStatusRequest {
@@ -624,6 +401,6 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
   return { message: 'Case study deleted successfully' };
 }
 
-export const GET = withErrorHandlingV2<CaseStudyWithRelations>(getHandler);
+export const GET = withLoggedInUser<CaseStudyWithRelations>(getHandler);
 export const PUT = withErrorHandlingV2<CaseStudyWithRelations | { success: boolean; message: string }>(putHandler);
 export const DELETE = withErrorHandlingV2<DeleteResponse>(deleteHandler);

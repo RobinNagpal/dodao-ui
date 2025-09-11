@@ -1,3 +1,4 @@
+import { getAdminCaseStudies, getInstructorCaseStudies, getStudentCaseStudies } from '@/app/api/helpers/case-studies-util';
 import { prisma } from '@/prisma';
 import { CaseStudy } from '@/types';
 import { CaseStudyWithRelations, CreateCaseStudyRequest } from '@/types/api';
@@ -26,184 +27,6 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
   }
 }
 
-// Get all case studies for admin
-async function getAdminCaseStudies(): Promise<CaseStudyWithRelations[]> {
-  const caseStudies: CaseStudyWithRelations[] = await prisma.caseStudy.findMany({
-    where: {
-      archive: false,
-    },
-    include: {
-      modules: {
-        where: {
-          archive: false,
-        },
-        include: {
-          exercises: {
-            where: {
-              archive: false,
-            },
-            orderBy: {
-              orderNumber: 'asc',
-            },
-          },
-        },
-        orderBy: {
-          orderNumber: 'asc',
-        },
-      },
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
-
-  return caseStudies;
-}
-
-// Get case studies assigned to an instructor
-async function getInstructorCaseStudies(instructorEmail: string): Promise<CaseStudy[]> {
-  // Find case studies that have enrollments assigned to this instructor
-  const caseStudies = await prisma.caseStudy.findMany({
-    where: {
-      archive: false,
-      enrollments: {
-        some: {
-          assignedInstructorId: instructorEmail,
-          archive: false,
-        },
-      },
-    },
-    include: {
-      modules: {
-        where: {
-          archive: false,
-        },
-        orderBy: {
-          orderNumber: 'asc',
-        },
-        include: {
-          exercises: {
-            where: {
-              archive: false,
-            },
-            orderBy: {
-              orderNumber: 'asc',
-            },
-          },
-        },
-      },
-      enrollments: {
-        where: {
-          assignedInstructorId: instructorEmail,
-          archive: false,
-        },
-        include: {
-          students: {
-            where: {
-              archive: false,
-            },
-            orderBy: {
-              createdAt: 'asc',
-            },
-            include: {
-              finalSubmission: true,
-            },
-          },
-        },
-      },
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
-
-  // Convert Prisma types to our frontend types
-  const formattedCaseStudies: CaseStudy[] = caseStudies.map((cs) => ({
-    ...cs,
-    createdBy: cs.createdBy || undefined,
-    updatedBy: cs.updatedBy || undefined,
-    modules: cs.modules?.map((module) => ({
-      ...module,
-      createdBy: module.createdBy || undefined,
-      updatedBy: module.updatedBy || undefined,
-      exercises: module.exercises?.map((exercise) => ({
-        ...exercise,
-        createdBy: exercise.createdBy || undefined,
-        updatedBy: exercise.updatedBy || undefined,
-        promptHint: exercise.promptHint || undefined,
-      })),
-    })),
-    enrollments: cs.enrollments?.map((enrollment) => ({
-      ...enrollment,
-      createdBy: enrollment.createdBy || undefined,
-      updatedBy: enrollment.updatedBy || undefined,
-      students: enrollment.students?.map((student) => ({
-        ...student,
-        createdBy: student.createdBy || undefined,
-        updatedBy: student.updatedBy || undefined,
-        finalSubmission: student.finalSubmission
-          ? {
-              ...student.finalSubmission,
-              createdBy: student.finalSubmission.createdBy || undefined,
-              updatedBy: student.finalSubmission.updatedBy || undefined,
-              finalContent: student.finalSubmission.finalContent || undefined,
-            }
-          : undefined,
-      })),
-    })),
-  }));
-
-  return formattedCaseStudies;
-}
-
-// Get enrolled case studies for a student
-async function getStudentCaseStudies(studentEmail: string): Promise<CaseStudyWithRelations[]> {
-  // Find all enrollments where this student is enrolled
-  const enrollments = await prisma.classCaseStudyEnrollment.findMany({
-    where: {
-      archive: false,
-      students: {
-        some: {
-          assignedStudentId: studentEmail,
-          archive: false,
-        },
-      },
-    },
-    include: {
-      caseStudy: {
-        include: {
-          modules: {
-            where: {
-              archive: false,
-            },
-            include: {
-              exercises: {
-                where: {
-                  archive: false,
-                },
-                orderBy: {
-                  orderNumber: 'asc',
-                },
-              },
-            },
-            orderBy: {
-              orderNumber: 'asc',
-            },
-          },
-        },
-      },
-    },
-  });
-
-  // Extract case studies from enrollments and include instructor email
-  const enrolledCaseStudies: CaseStudyWithRelations[] = enrollments.map((enrollment) => ({
-    ...enrollment.caseStudy,
-    instructorEmail: enrollment.assignedInstructorId,
-  }));
-
-  return enrolledCaseStudies;
-}
-
 // POST /api/case-studies - Create a new case study
 async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
   const body: CreateCaseStudyRequest = await req.json();
@@ -212,7 +35,7 @@ async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
   // For now, using a placeholder - this should be replaced with actual auth
   const adminEmail: string = req.headers.get('admin-email') || 'admin@example.com';
 
-  const caseStudy: CaseStudyWithRelations = await prisma.caseStudy.create({
+  const caseStudy = await prisma.caseStudy.create({
     data: {
       title: body.title,
       shortDescription: body.shortDescription,

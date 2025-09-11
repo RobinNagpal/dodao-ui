@@ -1,5 +1,7 @@
 'use client';
 
+import { SimulationSession } from '@/types/user';
+import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -23,8 +25,6 @@ interface CaseStudyViewClientProps {
 }
 
 export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClientProps) {
-  const [userEmail, setUserEmail] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(true);
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
   const [showExerciseModal, setShowExerciseModal] = useState(false);
@@ -32,18 +32,14 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
   const [selectedExercise, setSelectedExercise] = useState<ModuleExercise | null>(null);
 
   const router = useRouter();
+  const { data: simSession } = useSession();
+  const session: SimulationSession | null = simSession as SimulationSession | null;
 
-  useEffect(() => {
-    const userType = localStorage.getItem('user_type');
-    const email = localStorage.getItem('user_email');
-
-    if (!userType || userType !== 'admin' || !email) {
+  useEffect((): void => {
+    if (!session || session.role !== 'Admin') {
       router.push('/login');
       return;
     }
-
-    setUserEmail(email);
-    setIsLoading(false);
   }, [router]);
 
   // API hook to fetch case study data
@@ -51,15 +47,9 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
     data: caseStudy,
     loading: loadingCaseStudy,
     reFetchData,
-  } = useFetchData<CaseStudyWithRelations>(
-    `/api/case-studies/${caseStudyId}?userType=admin&userEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !caseStudyId || !userEmail },
-    'Failed to load case study'
-  );
+  } = useFetchData<CaseStudyWithRelations>(`/api/case-studies/${caseStudyId}`, {}, 'Failed to load case study');
 
   const handleLogout = () => {
-    localStorage.removeItem('user_type');
-    localStorage.removeItem('user_email');
     router.push('/login');
   };
 
@@ -78,7 +68,7 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
     }
   };
 
-  if (isLoading || loadingCaseStudy) {
+  if (loadingCaseStudy) {
     return <AdminLoading text="Loading case study..." subtitle="Preparing case study details..." />;
   }
 
