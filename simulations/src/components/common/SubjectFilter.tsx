@@ -17,6 +17,7 @@ interface SubjectFilterProps {
   subjectsWithCounts?: SubjectWithCount[];
   title?: string;
   description?: string;
+  highlightGradient?: string;
 }
 
 export default function SubjectFilter({
@@ -26,6 +27,7 @@ export default function SubjectFilter({
   subjectsWithCounts,
   title = 'Subject Areas',
   description = 'Filter by Subject',
+  highlightGradient = 'from-amber-500 to-orange-600',
 }: SubjectFilterProps) {
   const getSubjectsWithCounts = (): SubjectWithCount[] => {
     if (subjectsWithCounts) return subjectsWithCounts;
@@ -57,7 +59,7 @@ export default function SubjectFilter({
             onClick={() => setSelectedSubject('ALL')}
             variant={selectedSubject === 'ALL' ? 'default' : 'ghost'}
             className={`w-full justify-between h-12 ${
-              selectedSubject === 'ALL' ? 'bg-gradient-to-r from-gray-600 to-gray-700 text-white shadow-lg' : 'hover:bg-gray-50'
+              selectedSubject === 'ALL' ? `bg-gradient-to-r ${highlightGradient} text-white shadow-lg` : 'hover:bg-gray-50'
             }`}
           >
             <div className="flex items-center space-x-2">
@@ -75,7 +77,7 @@ export default function SubjectFilter({
               onClick={() => setSelectedSubject(subject)}
               variant={selectedSubject === subject ? 'default' : 'ghost'}
               className={`w-full justify-between h-12 ${
-                selectedSubject === subject ? 'bg-gradient-to-r from-gray-600 to-gray-700 text-white shadow-lg' : 'hover:bg-gray-50'
+                selectedSubject === subject ? `bg-gradient-to-r ${highlightGradient} text-white shadow-lg` : 'hover:bg-gray-50'
               }`}
             >
               <div className="flex items-center space-x-2">

@@ -76,7 +76,12 @@ export default function CaseStudiesTab({
   return (
     <div className="flex gap-8">
       {caseStudies && caseStudies.length > 0 && (
-        <SubjectFilter studies={caseStudies} selectedSubject={selectedSubject} setSelectedSubject={setSelectedSubject} />
+        <SubjectFilter
+          studies={caseStudies}
+          selectedSubject={selectedSubject}
+          setSelectedSubject={setSelectedSubject}
+          highlightGradient="from-emerald-500 to-green-600"
+        />
       )}
 
       <div className="flex-1">
