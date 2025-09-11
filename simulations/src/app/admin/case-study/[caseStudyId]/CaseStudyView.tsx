@@ -35,12 +35,9 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
   const { data: simSession } = useSession();
   const session: SimulationSession | null = simSession as SimulationSession | null;
 
-  useEffect((): void => {
-    if (!session || session.role !== 'Admin') {
-      router.push('/login');
-      return;
-    }
-  }, [router]);
+  if (!session || session.role !== 'Admin') {
+    return null;
+  }
 
   // API hook to fetch case study data
   const {
