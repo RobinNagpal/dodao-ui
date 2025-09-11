@@ -45,9 +45,9 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   });
 
   const analysisTypes = [
-    { key: 'business-and-moat', label: 'Business & Moat', statusKey: 'businessAndMoat' as keyof AnalysisStatus },
     { key: 'financial-analysis', label: 'Financial Analysis', statusKey: 'financialAnalysis' as keyof AnalysisStatus },
     { key: 'competition', label: 'Competition', statusKey: 'competition' as keyof AnalysisStatus },
+    { key: 'business-and-moat', label: 'Business & Moat', statusKey: 'businessAndMoat' as keyof AnalysisStatus },
     { key: 'past-performance', label: 'Past Performance', statusKey: 'pastPerformance' as keyof AnalysisStatus },
     { key: 'future-growth', label: 'Future Growth', statusKey: 'futureGrowth' as keyof AnalysisStatus },
     { key: 'fair-value', label: 'Fair Value', statusKey: 'fairValue' as keyof AnalysisStatus },
@@ -107,11 +107,11 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
     // Generate in sequence to respect dependencies (competition first, then past-performance and future-growth)
     const sequence = [
-      'business-and-moat',
       'financial-analysis',
+      'competition', // Must come before past-performance, future-growth, fair-value and business-and-moat
+      'business-and-moat',
       'fair-value',
       'future-risk',
-      'competition', // Must come before past-performance and future-growth
       'past-performance',
       'future-growth',
       'final-summary',
