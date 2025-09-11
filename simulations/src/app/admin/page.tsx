@@ -1,24 +1,22 @@
 'use client';
 
-import { SimulationSession } from '@/types/user';
-import { useSession } from 'next-auth/react';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { BookOpen, Users, Plus, Edit, Trash2, Shield, Sparkles, Eye } from 'lucide-react';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
-import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import AdminLoading from '@/components/admin/AdminLoading';
+import CaseStudiesTab from '@/components/admin/CaseStudiesTab';
 import CreateEnrollmentModal from '@/components/admin/CreateEnrollmentModal';
+import EnrollmentsTab from '@/components/admin/EnrollmentsTab';
 import ManageStudentsModal from '@/components/admin/ManageStudentsModal';
+import AdminNavbar from '@/components/navigation/AdminNavbar';
 import type { BusinessSubject } from '@/types';
 import type { DeleteResponse } from '@/types/api';
-import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import AdminNavbar from '@/components/navigation/AdminNavbar';
-import AdminLoading from '@/components/admin/AdminLoading';
+import { SimulationSession } from '@/types/user';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { BookOpen, Shield, Users } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface CaseStudyListItem {
   id: string;
@@ -160,20 +158,6 @@ export default function AdminDashboard() {
     await refetchEnrollments();
   };
 
-  const getCaseStudySubjectsWithCounts = () => {
-    if (!caseStudies) return [];
-
-    const subjects: BusinessSubject[] = ['MARKETING', 'FINANCE', 'HR', 'OPERATIONS', 'ECONOMICS'];
-    return subjects
-      .map((subject) => ({
-        subject,
-        count: caseStudies.filter((cs) => cs.subject === subject).length,
-      }))
-      .filter((item) => item.count > 0);
-  };
-
-  const caseStudySubjectsWithCounts = getCaseStudySubjectsWithCounts();
-
   if (loadingCaseStudies || loadingEnrollments || caseStudies === undefined || enrollments === undefined) {
     return <AdminLoading text="Loading admin dashboard..." subtitle="Preparing your workspace..." />;
   }
@@ -230,274 +214,28 @@ export default function AdminDashboard() {
 
         {/* Case Studies Tab */}
         {activeTab === 'case-studies' && (
-          <div className="flex gap-8">
-            {caseStudies && caseStudies.length > 0 && (
-              <div className="w-80 flex-shrink-0">
-                <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
-                  <CardHeader>
-                    <CardTitle className="flex items-center space-x-2">
-                      <BookOpen className="h-4 w-4 text-emerald-600" />
-                      <span>Subject Areas</span>
-                    </CardTitle>
-                    <CardDescription>Filter by Subject</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <Button
-                      onClick={() => setSelectedSubject('ALL')}
-                      variant={selectedSubject === 'ALL' ? 'default' : 'ghost'}
-                      className={`w-full justify-between h-12 ${
-                        selectedSubject === 'ALL' ? 'bg-gradient-to-r from-emerald-600 to-green-600 text-white shadow-lg' : 'hover:bg-emerald-50'
-                      }`}
-                    >
-                      <div className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-current rounded-full"></div>
-                        <span>All Subjects</span>
-                      </div>
-                      <Badge variant="secondary" className="bg-white/20 text-current">
-                        {caseStudies?.length || 0}
-                      </Badge>
-                    </Button>
-
-                    {caseStudySubjectsWithCounts.map(({ subject, count }) => (
-                      <Button
-                        key={subject}
-                        onClick={() => setSelectedSubject(subject)}
-                        variant={selectedSubject === subject ? 'default' : 'ghost'}
-                        className={`w-full justify-between h-12 ${
-                          selectedSubject === subject ? `bg-gradient-to-r ${getSubjectColor(subject)} text-white shadow-lg` : 'hover:bg-gray-50'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-2">
-                          <span className="text-lg">{getSubjectIcon(subject)}</span>
-                          <span className="font-medium">{getSubjectDisplayName(subject)}</span>
-                        </div>
-                        <Badge variant="secondary" className="bg-white/20 text-current">
-                          {count}
-                        </Badge>
-                      </Button>
-                    ))}
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-
-            <div className="flex-1">
-              <div className="mb-6 flex justify-between items-center">
-                <div>
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                    {selectedSubject === 'ALL' ? 'Case Studies Management' : `${getSubjectDisplayName(selectedSubject as BusinessSubject)} Studies`}
-                  </h2>
-                  <p className="text-emerald-600/70 mt-1">Manage all case studies in the system</p>
-                </div>
-                <button
-                  onClick={() => router.push('/admin/create')}
-                  className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
-                >
-                  <Plus className="h-4 w-4" />
-                  <span className="font-medium">Add Case Study</span>
-                </button>
-              </div>
-
-              {loadingCaseStudies ? (
-                <div className="flex justify-center items-center h-40">
-                  <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-xl shadow-lg">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-600"></div>
-                    <span className="text-lg font-medium text-emerald-600">Loading case studies...</span>
-                  </div>
-                </div>
-              ) : caseStudies?.length === 0 ? (
-                <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
-                  <CardContent className="text-center py-16">
-                    <div className="relative mb-6">
-                      <div className="bg-gradient-to-br from-emerald-100 to-green-100 w-24 h-24 rounded-full flex items-center justify-center mx-auto">
-                        <BookOpen className="h-12 w-12 text-emerald-600" />
-                      </div>
-                      <div className="absolute -top-2 -right-2 bg-gradient-to-r from-cyan-400 to-emerald-500 p-2 rounded-full">
-                        <Sparkles className="h-4 w-4 text-white" />
-                      </div>
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">No Case Studies</h3>
-                    <p className="text-gray-600 mb-6 max-w-md mx-auto">Get started by creating a new case study for your educational platform.</p>
-                    <button
-                      onClick={() => router.push('/admin/create')}
-                      className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105 mx-auto"
-                    >
-                      <Plus className="h-5 w-5" />
-                      <span className="font-medium">Create Case Study</span>
-                    </button>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {filteredCaseStudies?.map((caseStudy) => (
-                    <Card
-                      key={caseStudy.id}
-                      className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] group"
-                    >
-                      <CardHeader className="pb-4">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex items-center space-x-2">
-                            <Badge className={`bg-gradient-to-r ${getSubjectColor(caseStudy.subject)} text-white border-0`}>
-                              <span className="mr-1">{getSubjectIcon(caseStudy.subject)}</span>
-                              {getSubjectDisplayName(caseStudy.subject)}
-                            </Badge>
-                          </div>
-                          <div className="flex space-x-1">
-                            <button
-                              onClick={() => handleViewCaseStudy(caseStudy.id)}
-                              className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition-colors"
-                              title="View case study details"
-                            >
-                              <Eye className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => handleEditCaseStudy(caseStudy.id)}
-                              className="text-emerald-600 hover:text-emerald-800 p-2 rounded-lg hover:bg-emerald-50 transition-colors"
-                              title="Edit case study"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteCaseStudy(caseStudy.id)}
-                              className="text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 transition-colors"
-                              title="Delete case study"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
-                        </div>
-                        <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-emerald-600 transition-colors">{caseStudy.title}</CardTitle>
-                        <CardDescription className="text-gray-600 line-clamp-2">{caseStudy.shortDescription}</CardDescription>
-                      </CardHeader>
-
-                      <CardContent className="space-y-4">
-                        <div className="flex items-center justify-between text-sm bg-gradient-to-r from-gray-50 to-emerald-50 rounded-xl p-3">
-                          <div className="flex items-center space-x-1">
-                            <BookOpen className="h-4 w-4 text-emerald-500" />
-                            <span className="text-gray-600 font-medium">{caseStudy.modules?.length || 0} modules</span>
-                          </div>
-                          <span className="text-gray-500">by {caseStudy.createdBy}</span>
-                        </div>
-
-                        <div className="text-xs text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
-                          Created: {new Date(caseStudy.createdAt).toLocaleDateString()}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )) || []}
-                </div>
-              )}
-
-              {caseStudies && caseStudies.length > 0 && filteredCaseStudies.length === 0 && selectedSubject !== 'ALL' && (
-                <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
-                  <CardContent className="text-center py-16">
-                    <div className="bg-gradient-to-br from-gray-100 to-gray-200 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <span className="text-3xl">{getSubjectIcon(selectedSubject as BusinessSubject)}</span>
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">No {getSubjectDisplayName(selectedSubject as BusinessSubject)} Studies</h3>
-                    <p className="text-gray-600">
-                      There are no case studies in the {getSubjectDisplayName(selectedSubject as BusinessSubject)} subject area yet.
-                    </p>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-          </div>
+          <CaseStudiesTab
+            caseStudies={caseStudies || []}
+            filteredCaseStudies={filteredCaseStudies}
+            selectedSubject={selectedSubject}
+            setSelectedSubject={setSelectedSubject}
+            loadingCaseStudies={loadingCaseStudies}
+            onCreateCaseStudy={() => router.push('/admin/create')}
+            onViewCaseStudy={handleViewCaseStudy}
+            onEditCaseStudy={handleEditCaseStudy}
+            onDeleteCaseStudy={handleDeleteCaseStudy}
+          />
         )}
 
         {/* Enrollments Tab */}
         {activeTab === 'enrollments' && (
-          <div>
-            <div className="mb-6 flex justify-between items-center">
-              <div>
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">Enrollment Management</h2>
-                <p className="text-emerald-600/70 mt-1">Manage case study enrollments and student assignments</p>
-              </div>
-              <button
-                onClick={() => setShowCreateEnrollment(true)}
-                className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
-              >
-                <Plus className="h-4 w-4" />
-                <span className="font-medium">Create Enrollment</span>
-              </button>
-            </div>
-
-            {loadingEnrollments ? (
-              <div className="flex justify-center items-center h-40">
-                <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-xl shadow-lg">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-600"></div>
-                  <span className="text-lg font-medium text-emerald-600">Loading enrollments...</span>
-                </div>
-              </div>
-            ) : (
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-emerald-100/50 overflow-hidden">
-                {enrollments?.length === 0 ? (
-                  <div className="text-center py-16">
-                    <Users className="mx-auto h-16 w-16 text-emerald-400 mb-4" />
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">No enrollments</h3>
-                    <p className="text-gray-600 mb-6">Get started by creating a new enrollment.</p>
-                    <button
-                      onClick={() => setShowCreateEnrollment(true)}
-                      className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105 mx-auto"
-                    >
-                      <Plus className="h-5 w-5" />
-                      <span className="font-medium">Create Enrollment</span>
-                    </button>
-                  </div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-emerald-100">
-                      <thead className="bg-gradient-to-r from-emerald-50 to-green-50">
-                        <tr>
-                          <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Case Study</th>
-                          <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Assigned Instructor</th>
-                          <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Students Enrolled</th>
-                          <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Created</th>
-                          <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-emerald-50">
-                        {enrollments?.map((enrollment) => (
-                          <tr key={enrollment.id} className="hover:bg-emerald-50/50 transition-colors">
-                            <td className="px-6 py-4">
-                              <div className="text-sm font-semibold text-gray-900">{enrollment.caseStudy.title}</div>
-                              <div className="text-sm text-emerald-600 font-medium">{enrollment.caseStudy.subject}</div>
-                            </td>
-                            <td className="px-6 py-4">
-                              <div className="text-sm text-gray-900 font-medium">{enrollment.assignedInstructorId}</div>
-                            </td>
-                            <td className="px-6 py-4">
-                              <div className="flex items-center space-x-2">
-                                <div className="bg-emerald-100 p-1 rounded-full">
-                                  <Users className="h-4 w-4 text-emerald-600" />
-                                </div>
-                                <span className="text-sm font-semibold text-gray-900">{enrollment.students?.length || 0}</span>
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 text-sm text-gray-600">{new Date(enrollment.createdAt).toLocaleDateString()}</td>
-                            <td className="px-6 py-4 text-sm font-medium space-x-3">
-                              <button
-                                onClick={() => handleManageStudents(enrollment)}
-                                className="text-emerald-600 hover:text-emerald-800 font-medium hover:underline transition-colors"
-                              >
-                                Manage Students
-                              </button>
-                              <button
-                                onClick={() => handleDeleteEnrollment(enrollment.id)}
-                                className="text-red-600 hover:text-red-800 font-medium hover:underline transition-colors"
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+          <EnrollmentsTab
+            enrollments={enrollments || []}
+            loadingEnrollments={loadingEnrollments}
+            onCreateEnrollment={() => setShowCreateEnrollment(true)}
+            onManageStudents={handleManageStudents}
+            onDeleteEnrollment={handleDeleteEnrollment}
+          />
         )}
 
         <CreateEnrollmentModal isOpen={showCreateEnrollment} onClose={() => setShowCreateEnrollment(false)} onSuccess={handleEnrollmentSuccess} />
