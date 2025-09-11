@@ -35,10 +35,6 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
   const { data: simSession } = useSession();
   const session: SimulationSession | null = simSession as SimulationSession | null;
 
-  if (!session || session.role !== 'Admin') {
-    return null;
-  }
-
   // API hook to fetch case study data
   const {
     data: caseStudy,
@@ -64,6 +60,10 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
       setShowExerciseModal(true);
     }
   };
+
+  if (!session || session.role !== 'Admin') {
+    return null;
+  }
 
   if (loadingCaseStudy) {
     return <AdminLoading text="Loading case study..." subtitle="Preparing case study details..." />;
