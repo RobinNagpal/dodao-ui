@@ -130,11 +130,9 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ [k
     <Tooltip.Provider delayDuration={300}>
       <PageWrapper className="px-4 sm:px-6">
         <div className="overflow-x-auto">
-          <Breadcrumbs breadcrumbs={breadcrumbs} />
+          <Breadcrumbs breadcrumbs={breadcrumbs} rightButton={<Filters showOnlyButton={true} />} />
         </div>
-        <div className="mb-6">
-          <Filters />
-        </div>
+        <Filters showOnlyAppliedFilters={true} />
 
         <PrivateWrapper>
           <div className="flex flex-wrap justify-end gap-3 mb-6">

@@ -41,9 +41,11 @@ const totalScoreOptions = [
 
 interface FiltersProps {
   className?: string;
+  showOnlyButton?: boolean;
+  showOnlyAppliedFilters?: boolean;
 }
 
-export default function Filters({ className = '' }: FiltersProps) {
+export default function Filters({ className = '', showOnlyButton = false, showOnlyAppliedFilters = false }: FiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -121,6 +123,58 @@ export default function Filters({ className = '' }: FiltersProps) {
 
     router.push(`?${params.toString()}`);
   };
+
+  // If only showing button, return just the filter button
+  if (showOnlyButton) {
+    return (
+      <>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="inline-flex items-center gap-2 bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 shadow-md"
+        >
+          <AdjustmentsHorizontalIcon className="h-5 w-5" />
+          Filters
+          {currentFilters.length > 0 && <span className="bg-white bg-opacity-20 px-2 py-0.5 rounded-full text-xs">{currentFilters.length}</span>}
+        </button>
+
+        {/* Filter Modal */}
+        <FullPageModal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Filter Tickers" fullWidth={false} className="max-w-5xl">
+          <div className="px-6 py-2">
+            <FilterModalContent currentFilters={currentFilters} onApplyFilters={applyFilters} onClose={() => setIsModalOpen(false)} />
+          </div>
+        </FullPageModal>
+      </>
+    );
+  }
+
+  // If only showing applied filters, return just the applied filters
+  if (showOnlyAppliedFilters) {
+    // If no filters are applied, return null to avoid taking up space
+    if (currentFilters.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className={`flex flex-wrap items-center gap-3 mb-6 ${className}`}>
+        {/* Applied Filters */}
+        {currentFilters.map((filter, index) => (
+          <div key={index} className="inline-flex items-center gap-2 bg-[#374151] text-white px-3 py-1.5 rounded-full text-sm">
+            <span>{filter.label}</span>
+            <button onClick={() => removeFilter(filter)} className="hover:bg-white hover:bg-opacity-20 rounded-full p-0.5 transition-colors duration-200">
+              <XMarkIcon className="h-4 w-4" />
+            </button>
+          </div>
+        ))}
+
+        {/* Clear All Button */}
+        {currentFilters.length > 1 && (
+          <button onClick={clearAllFilters} className="text-[#E5E7EB] hover:text-white text-sm underline transition-colors duration-200">
+            Clear all
+          </button>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className={`flex flex-wrap items-center gap-3 ${className}`}>
@@ -211,7 +265,6 @@ function FilterModalContent({ currentFilters, onApplyFilters, onClose }: FilterM
     <div className="space-y-6">
       {/* Single Grid for All Filters */}
       <div>
-        <h3 className="text-lg font-semibold text-white mb-2">Filter Criteria</h3>
         <p className="text-[#E5E7EB] text-sm mb-4">Select minimum thresholds for category analysis factors and total score</p>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
