@@ -1,6 +1,7 @@
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { NextRequest } from 'next/server';
 
 interface ExerciseResponse {
   id: string;
@@ -15,13 +16,16 @@ interface ExerciseResponse {
 }
 
 // GET /api/student/exercises/[exerciseId] - Get exercise details for a student
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ exerciseId: string }> }): Promise<ExerciseResponse> {
+async function getHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ exerciseId: string }> }
+): Promise<ExerciseResponse> {
   const { exerciseId } = await params;
-  const url = new URL(req.url);
-  const studentEmail = url.searchParams.get('studentEmail');
+  const { userId } = userContext;
 
-  if (!studentEmail) {
-    throw new Error('Student email is required');
+  if (!userId) {
+    throw new Error('User ID is required');
   }
 
   // Get exercise details and verify student has access through enrollment
@@ -59,9 +63,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ exer
   }
 
   // Check if student is enrolled in the case study
-  const isEnrolled = exercise.module.caseStudy.enrollments.some((enrollment) =>
-    enrollment.students.some((student) => student.assignedStudentId === studentEmail)
-  );
+  const isEnrolled = exercise.module.caseStudy.enrollments.some((enrollment) => enrollment.students.some((student) => student.assignedStudentId === userId));
 
   if (!isEnrolled) {
     throw new Error('Student is not enrolled in this case study');
@@ -80,4 +82,4 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ exer
   };
 }
 
-export const GET = withErrorHandlingV2<ExerciseResponse>(getHandler);
+export const GET = withLoggedInUser<ExerciseResponse>(getHandler);

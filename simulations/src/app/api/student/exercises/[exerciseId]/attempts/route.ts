@@ -1,12 +1,12 @@
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { ExerciseAttempt } from '@prisma/client';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { GoogleGenAI } from '@google/genai';
+import { ExerciseAttempt } from '@prisma/client';
+import { NextRequest } from 'next/server';
 
 interface CreateAttemptRequest {
   prompt: string;
-  studentEmail: string;
 }
 
 interface CreateAttemptResponse {
@@ -14,13 +14,18 @@ interface CreateAttemptResponse {
 }
 
 // POST /api/student/exercises/[exerciseId]/attempts - Create new exercise attempt with AI response
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ exerciseId: string }> }): Promise<CreateAttemptResponse> {
+async function postHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ exerciseId: string }> }
+): Promise<CreateAttemptResponse> {
   const { exerciseId } = await params;
+  const { userId } = userContext;
   const body: CreateAttemptRequest = await req.json();
-  const { prompt, studentEmail } = body;
+  const { prompt } = body;
 
-  if (!prompt || !studentEmail) {
-    throw new Error('Prompt and student email are required');
+  if (!prompt || !userId) {
+    throw new Error('Prompt and user ID are required');
   }
 
   // Get exercise details and verify student has access
@@ -52,7 +57,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ exe
       },
       attempts: {
         where: {
-          createdBy: studentEmail,
+          createdBy: userId,
           archive: false,
         },
         orderBy: {
@@ -67,9 +72,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ exe
   }
 
   // Check if student is enrolled in the case study
-  const isEnrolled = exercise.module.caseStudy.enrollments.some((enrollment) =>
-    enrollment.students.some((student) => student.assignedStudentId === studentEmail)
-  );
+  const isEnrolled = exercise.module.caseStudy.enrollments.some((enrollment) => enrollment.students.some((student) => student.assignedStudentId === userId));
 
   if (!isEnrolled) {
     throw new Error('Student is not enrolled in this case study');
@@ -109,8 +112,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ exe
     const attempt = await prisma.exerciseAttempt.create({
       data: {
         exerciseId,
-        createdBy: studentEmail,
-        updatedBy: studentEmail,
+        createdBy: userId,
+        updatedBy: userId,
         attemptNumber: nextAttemptNumber,
         model: 'gemini-2.5-pro',
         prompt,
@@ -128,8 +131,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ exe
     const attempt = await prisma.exerciseAttempt.create({
       data: {
         exerciseId,
-        createdBy: studentEmail,
-        updatedBy: studentEmail,
+        createdBy: userId,
+        updatedBy: userId,
         attemptNumber: nextAttemptNumber,
         model: 'gemini-2.0-flash-exp',
         prompt,
@@ -144,19 +147,22 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ exe
 }
 
 // GET /api/student/exercises/[exerciseId]/attempts - Get all attempts for an exercise by a student
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ exerciseId: string }> }): Promise<ExerciseAttempt[]> {
+async function getHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ exerciseId: string }> }
+): Promise<ExerciseAttempt[]> {
   const { exerciseId } = await params;
-  const url = new URL(req.url);
-  const studentEmail = url.searchParams.get('studentEmail');
+  const { userId } = userContext;
 
-  if (!studentEmail) {
-    throw new Error('Student email is required');
+  if (!userId) {
+    throw new Error('User ID is required');
   }
 
   const attempts = await prisma.exerciseAttempt.findMany({
     where: {
       exerciseId,
-      createdBy: studentEmail,
+      createdBy: userId,
       archive: false,
     },
     orderBy: {
@@ -167,5 +173,5 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ exer
   return attempts;
 }
 
-export const POST = withErrorHandlingV2<CreateAttemptResponse>(postHandler);
-export const GET = withErrorHandlingV2<ExerciseAttempt[]>(getHandler);
+export const POST = withLoggedInUser<CreateAttemptResponse>(postHandler);
+export const GET = withLoggedInUser<ExerciseAttempt[]>(getHandler);

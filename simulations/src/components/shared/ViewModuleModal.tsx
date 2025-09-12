@@ -46,11 +46,7 @@ export default function ViewModuleModal({
       successMessage: 'Module updated successfully!',
       errorMessage: 'Failed to update module',
     },
-    {
-      headers: {
-        'admin-email': localStorage.getItem('user_email') || 'admin@example.com',
-      },
-    }
+    {}
   );
 
   useEffect(() => {
