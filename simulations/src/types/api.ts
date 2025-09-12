@@ -95,9 +95,9 @@ export type EnrollmentWithRelations = ClassCaseStudyEnrollment & {
   students?: EnrollmentStudent[];
   assignedInstructor?: {
     id: string;
-    email: string | null;
+    email?: string | null;
     username: string;
-  };
+  } | null;
 };
 
 export interface DeleteResponse {
