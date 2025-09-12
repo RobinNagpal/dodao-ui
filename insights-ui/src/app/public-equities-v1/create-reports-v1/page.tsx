@@ -224,8 +224,12 @@ export default function CreateReportsV1Page(): JSX.Element {
                 {!selectedIndustry || !selectedSubIndustry ? (
                   <div className="text-center py-3 text-amber-600 dark:text-amber-400">
                     <p>Please select both an Industry and a Sub-Industry to view available tickers.</p>
-                    {selectedIndustry && !selectedSubIndustry && <p className="mt-1 text-xs">You've selected an Industry. Now please select a Sub-Industry.</p>}
-                    {!selectedIndustry && selectedSubIndustry && <p className="mt-1 text-xs">You've selected a Sub-Industry. Now please select an Industry.</p>}
+                    {selectedIndustry && !selectedSubIndustry && (
+                      <p className="mt-1 text-xs">{"You've selected an Industry. Now please select a Sub-Industry."}</p>
+                    )}
+                    {!selectedIndustry && selectedSubIndustry && (
+                      <p className="mt-1 text-xs">{"You've selected a Sub-Industry. Now please select an Industry."}</p>
+                    )}
                   </div>
                 ) : filteredTickers && filteredTickers.length > 0 ? (
                   <Checkboxes
