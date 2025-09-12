@@ -17,6 +17,11 @@ interface EnrollmentRowProps {
       assignedStudentId: string;
       createdBy: string | null;
     }>;
+    assignedInstructor?: {
+      id: string;
+      email: string | null;
+      username: string;
+    };
   };
   onManageStudents: (enrollment: EnrollmentRowProps['enrollment']) => void;
   onDelete: (enrollmentId: string) => void;
@@ -30,7 +35,7 @@ export default function EnrollmentRow({ enrollment, onManageStudents, onDelete }
         <div className="text-sm text-emerald-600 font-medium">{enrollment.caseStudy.subject}</div>
       </td>
       <td className="px-6 py-4">
-        <div className="text-sm text-gray-900 font-medium">{enrollment.assignedInstructorId}</div>
+        <div className="text-sm text-gray-900 font-medium">{enrollment.assignedInstructor?.email || enrollment.assignedInstructorId}</div>
       </td>
       <td className="px-6 py-4">
         <div className="flex items-center space-x-2">

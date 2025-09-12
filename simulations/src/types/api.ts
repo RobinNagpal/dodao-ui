@@ -93,8 +93,18 @@ export type EnrollmentWithRelations = ClassCaseStudyEnrollment & {
     subject: BusinessSubject;
   };
   students?: EnrollmentStudent[];
+  assignedInstructor?: {
+    id: string;
+    email: string | null;
+    username: string;
+  };
 };
 
 export interface DeleteResponse {
   message: string;
+}
+
+export interface CreateEnrollmentRequest {
+  caseStudyId: string;
+  assignedInstructorEmail: string;
 }

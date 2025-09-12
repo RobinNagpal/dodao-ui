@@ -99,13 +99,19 @@ export async function getAdminCaseStudy(caseStudyId: string): Promise<CaseStudyW
  * @returns Promise<CaseStudy[]> Array of case studies assigned to the instructor
  */
 export async function getInstructorCaseStudies(instructorEmail: string): Promise<CaseStudy[]> {
+  const instructor = await prisma.user.findFirstOrThrow({
+    where: {
+      email: instructorEmail,
+    },
+  });
+
   // Find case studies that have enrollments assigned to this instructor
   const caseStudies = await prisma.caseStudy.findMany({
     where: {
       archive: false,
       enrollments: {
         some: {
-          assignedInstructorId: instructorEmail,
+          assignedInstructorId: instructor.id,
           archive: false,
         },
       },
@@ -131,7 +137,7 @@ export async function getInstructorCaseStudies(instructorEmail: string): Promise
       },
       enrollments: {
         where: {
-          assignedInstructorId: instructorEmail,
+          assignedInstructorId: instructor.id,
           archive: false,
         },
         include: {

@@ -22,31 +22,32 @@ export default function Home() {
     'Failed to fetch user data'
   );
 
-  const showHomeScreen = async () => {
-    const resp = await reFetchData();
-    console.log('userResponse', userResponse);
-    console.log('resp', resp);
-
-    if (resp) {
-      if (resp.role === 'Student') {
-        router.push('/student');
-      } else if (resp.role === 'Instructor') {
-        router.push('/instructor');
-      } else if (resp.role === 'Admin') {
-        router.push('/admin');
-      } else {
-        router.push('/login');
-      }
-    }
-  };
   useEffect(() => {
+    const showHomeScreen = async () => {
+      const resp = await reFetchData();
+      console.log('userResponse', userResponse);
+      console.log('resp', resp);
+
+      if (resp) {
+        if (resp.role === 'Student') {
+          router.push('/student');
+        } else if (resp.role === 'Instructor') {
+          router.push('/instructor');
+        } else if (resp.role === 'Admin') {
+          router.push('/admin');
+        } else {
+          router.push('/login');
+        }
+      }
+    };
+
     console.log('data', data);
     if (!data) {
       router.push('/login');
     } else {
       showHomeScreen();
     }
-  }, [data, router, showHomeScreen]);
+  }, [data, router]);
 
   // Show loading while checking localStorage and redirecting
   return (
