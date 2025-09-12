@@ -20,8 +20,12 @@ const breadcrumbs: BreadcrumbsOjbect[] = [
 
 export default async function StocksPage() {
   const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`, {});
-
-  const tickers: TickerV1[] = await response.json();
+  let tickers: TickerV1[] = [];
+  try {
+    const tickers: TickerV1[] = await response.json();
+  } catch (e) {
+    console.log('Error fetching tickers: ', e);
+  }
 
   if (!tickers) {
     return (
