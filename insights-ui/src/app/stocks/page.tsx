@@ -1,19 +1,14 @@
-'use client';
-
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { getSubIndustryDisplayName, INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getScoreColorClasses } from '@/utils/score-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import * as Tooltip from '@radix-ui/react-tooltip';
-import { Metadata } from 'next';
-import Link from 'next/link';
 import { TickerV1 } from '@prisma/client';
-import { getSubIndustryDisplayName, INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import LoadingOrError from '@/components/core/LoadingOrError';
+import * as Tooltip from '@radix-ui/react-tooltip';
+import Link from 'next/link';
 
 const breadcrumbs: BreadcrumbsOjbect[] = [
   {
@@ -23,23 +18,10 @@ const breadcrumbs: BreadcrumbsOjbect[] = [
   },
 ];
 
-export default function StocksPage() {
-  // this give build error as we are
-  // let tickers: TickerV1[] = [];
+export default async function StocksPage() {
+  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`, {});
 
-  // const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
-  // const response = await fetch(apiUrl);
-  // tickers = await response.json();
-
-  const {
-    data: tickers,
-    loading,
-    error,
-  } = useFetchData<TickerV1[]>(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`, {}, 'Failed to fetch stocks');
-
-  if (loading || error) {
-    return <LoadingOrError error={error} loading={loading} />;
-  }
+  const tickers: TickerV1[] = await response.json();
 
   if (!tickers) {
     return (
