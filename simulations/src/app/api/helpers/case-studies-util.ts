@@ -250,11 +250,32 @@ export async function getStudentCaseStudies(studentEmail: string): Promise<CaseS
     },
   });
 
-  // Extract case studies from enrollments and include instructor email
-  const enrolledCaseStudies: CaseStudyWithRelations[] = enrollments.map((enrollment) => ({
-    ...enrollment.caseStudy,
-    instructorEmail: enrollment.assignedInstructorId,
-  }));
+  // Get instructor information for each enrollment
+  const enrolledCaseStudies: CaseStudyWithRelations[] = await Promise.all(
+    enrollments.map(async (enrollment): Promise<CaseStudyWithRelations> => {
+      const instructorId: string = enrollment.assignedInstructorId;
+
+      // Fetch instructor user information
+      const instructor: { id: string; name: string | null; email: string | null } | null = await prisma.user.findFirst({
+        where: {
+          id: instructorId,
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      });
+
+      const caseStudyWithInstructor: CaseStudyWithRelations = {
+        ...enrollment.caseStudy,
+        instructorEmail: instructorId,
+        instructorName: instructor?.name || null,
+      };
+
+      return caseStudyWithInstructor;
+    })
+  );
 
   return enrolledCaseStudies;
 }
@@ -335,9 +356,24 @@ export async function getStudentCaseStudy(caseStudyId: string, studentId: string
     }>;
   } | null;
 
-  // Add instruction read status to the response
+  // Fetch instructor information
+  const instructorId: string = enrollment.assignedInstructorId;
+  const instructor: { id: string; name: string | null; email: string | null } | null = await prisma.user.findFirst({
+    where: {
+      id: instructorId,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+    },
+  });
+
+  // Add instruction read status and instructor information to the response
   const caseStudyWithStatus: CaseStudyWithRelations = {
     ...enrollment.caseStudy,
+    instructorEmail: instructorId,
+    instructorName: instructor?.name || null,
     instructionReadStatus: instructionReadStatus || undefined,
   };
 
