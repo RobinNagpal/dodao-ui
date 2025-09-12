@@ -270,7 +270,7 @@ export async function getStudentCaseStudies(studentEmail: string): Promise<CaseS
       const caseStudyWithInstructor: CaseStudyWithRelations = {
         ...enrollment.caseStudy,
         instructorEmail: instructorId,
-        instructorName: instructor?.name || null,
+        instructorName: instructor?.name,
       };
 
       return caseStudyWithInstructor;
