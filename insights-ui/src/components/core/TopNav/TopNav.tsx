@@ -10,7 +10,7 @@ import { getAuthKey } from '@/util/auth/authKey';
 
 const reportsDropdown = [
   { name: 'Crowdfunding Reports', href: '/crowd-funding', description: 'Detailed crowdfunding analysis', isNew: false },
-  { name: 'Stock Reports', href: '/public-equities-v1', description: 'Value investing insights', isNew: true },
+  { name: 'Stock Reports', href: '/stocks', description: 'Value investing insights', isNew: true },
   { name: 'Tariff Reports', href: '/tariff-reports', description: 'Trade tariff impact analysis', isNew: false },
   { name: 'All Reports', href: '/reports', description: 'Browse all available reports', isNew: false },
 ];
