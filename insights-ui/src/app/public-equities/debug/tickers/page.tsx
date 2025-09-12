@@ -17,17 +17,6 @@ interface PaginatedTickersResponse {
   totalPages: number;
 }
 
-async function getTickersResponse(): Promise<Ticker[]> {
-  try {
-    const response = await fetch(`${getBaseUrl()}/api/tickers?all=true`, { cache: 'no-cache' });
-    const { tickers } = (await response.json()) as PaginatedTickersResponse;
-    return tickers;
-  } catch (error) {
-    console.error('Error fetching tickers:', error);
-    return [];
-  }
-}
-
 const breadcrumbs: BreadcrumbsOjbect[] = [
   {
     name: 'Debug Tickers',
@@ -37,7 +26,9 @@ const breadcrumbs: BreadcrumbsOjbect[] = [
 ];
 
 export default async function AllTickersPage() {
-  const tickers: Ticker[] = await getTickersResponse();
+  const response = await fetch(`${getBaseUrl()}/api/tickers?all=true`, { cache: 'no-cache' });
+  const { tickers } = (await response.json()) as PaginatedTickersResponse;
+
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
