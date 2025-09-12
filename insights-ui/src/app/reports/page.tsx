@@ -29,12 +29,14 @@ const reports = [
       'Get structured insights on crowdfunding projects, highlighting risks, returns, and strengths. Visual spider graphs provide a clear snapshot of investment potential.',
     link: '/crowd-funding',
     icon: CurrencyDollarIcon,
+    isNew: false,
   },
   {
     title: 'Specific REIT Reports',
     description: 'Analyze REITs with key metrics like debt, market positioning, efficiency, and rental income, ensuring smarter investment decisions.',
-    link: '/public-equities/tickers',
+    link: '/stocks/industry/REITS',
     icon: HomeIcon,
+    isNew: true,
   },
   {
     title: 'Tariff Reports',
@@ -42,12 +44,14 @@ const reports = [
       'Comprehensive analyses of tariff impacts across various industries, providing insights into how trade policies affect industry dynamics and investment opportunities.',
     link: '/tariff-reports',
     icon: NewspaperIcon,
+    isNew: false,
   },
   {
     title: 'Ticker Reports',
     description: 'Detailed analysis of individual companies with comprehensive metrics, evaluations, and investment insights.',
-    link: '/public-equities-v1',
+    link: '/stocks',
     icon: ChartBarIcon,
+    isNew: true,
   },
 ];
 
@@ -74,7 +78,10 @@ export default function Page() {
                       <div className="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg primary-color">
                         <Icon aria-hidden="true" className="absolute left-1 top-1 h-5 w-5 text-indigo-500" />
                       </div>
-                      <div className="flex items-center">{report.title}</div>
+                      <div className="flex items-center">
+                        {report.title}
+                        {report.isNew && <span className="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-400 text-gray-900">NEW</span>}
+                      </div>
                     </dt>
                     <dd className="mt-2 text-base/7 text-color">{report.description}</dd>
                     <Link href={report.link} className="mt-2 inline-block text-sm font-medium link-color">

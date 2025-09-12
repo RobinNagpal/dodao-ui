@@ -9,11 +9,10 @@ import AdminLoginModal from '@/components/ui/AdminLoginModal';
 import { getAuthKey } from '@/util/auth/authKey';
 
 const reportsDropdown = [
-  { name: 'Crowdfunding Reports', href: '/crowd-funding', description: 'Detailed crowdfunding analysis' },
-  { name: 'REIT Reports', href: '/public-equities/tickers', description: 'Real Estate Investment Trust insights' },
-  { name: 'Stock Reports - New', href: '/public-equities-v1', description: 'Value investing insights' },
-  { name: 'Tariff Reports', href: '/tariff-reports', description: 'Trade tariff impact analysis' },
-  { name: 'All Reports', href: '/reports', description: 'Browse all available reports' },
+  { name: 'Crowdfunding Reports', href: '/crowd-funding', description: 'Detailed crowdfunding analysis', isNew: false },
+  { name: 'Stock Reports', href: '/public-equities-v1', description: 'Value investing insights', isNew: true },
+  { name: 'Tariff Reports', href: '/tariff-reports', description: 'Trade tariff impact analysis', isNew: false },
+  { name: 'All Reports', href: '/reports', description: 'Browse all available reports', isNew: false },
 ];
 
 const genaiDropdown = [
@@ -122,7 +121,10 @@ export default function TopNav() {
                     href={item.href}
                     className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-600 hover:text-white transition-colors duration-150"
                   >
-                    <div className="font-semibold">{item.name}</div>
+                    <div className="font-semibold flex items-center">
+                      {item.name}
+                      {item.isNew && <span className="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-400 text-gray-900">NEW</span>}
+                    </div>
                     <div className="text-xs text-gray-400 mt-1">{item.description}</div>
                   </Link>
                 ))}
@@ -260,7 +262,10 @@ export default function TopNav() {
                           className="block -mx-3 rounded-lg px-3 py-2 text-sm text-gray-400 hover:bg-gray-700 hover:text-gray-300"
                           onClick={() => setMobileMenuOpen(false)}
                         >
-                          {item.name}
+                          <div className="flex items-center">
+                            {item.name}
+                            {item.isNew && <span className="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-400 text-gray-900">NEW</span>}
+                          </div>
                         </Link>
                       ))}
                     </div>

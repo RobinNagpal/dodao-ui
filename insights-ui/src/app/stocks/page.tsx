@@ -19,7 +19,7 @@ const breadcrumbs: BreadcrumbsOjbect[] = [
 ];
 
 export default async function StocksPage() {
-  const response = await fetch(`${getBaseUrl() || 'https://koalagains.com'}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`, {});
+  const response = await fetch(`${getBaseUrl() || 'https://koalagains.com'}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`, { cache: 'no-cache' });
   let tickers: TickerV1[] = [];
   try {
     tickers = await response.json();
