@@ -4,6 +4,7 @@ import { getPostsData } from '@/util/blog-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
+import { INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
 
 interface SiteMapUrl {
   url: string;
@@ -27,6 +28,26 @@ async function getAllProjects(): Promise<string[]> {
     return data.projectIds || [];
   } catch (error) {
     console.error('Error fetching projects:', error);
+    return []; // Return an empty array to prevent breaking the sitemap
+  }
+}
+
+// Fetch all tickers
+async function getAllTickers(): Promise<Array<{ symbol: string; exchange: string; industryKey: string }>> {
+  const baseUrl = getBaseUrl();
+  try {
+    const response = await fetch(`${baseUrl}/api/koala_gains/tickers-v1`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch tickers: ${response.statusText}`);
+    }
+
+    const tickers = await response.json();
+    return tickers || [];
+  } catch (error) {
+    console.error('Error fetching tickers:', error);
     return []; // Return an empty array to prevent breaking the sitemap
   }
 }
@@ -66,61 +87,48 @@ async function generateCrowdFundingUrls(): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-async function getAllTickers(): Promise<string[]> {
-  const baseUrl = getBaseUrl();
-  try {
-    // Use the new paginated API with a large page size to get all tickers for sitemap
-    const response = await fetch(`${baseUrl}/api/tickers?all=true`, { cache: 'no-cache' });
-    if (!response.ok) {
-      throw new Error(`Failed to fetch tickers: ${response.statusText}`);
-    }
-    const data = await response.json();
-    return data.tickers.map((t: any) => t.tickerKey);
-  } catch (error) {
-    console.error('Error fetching tickers:', error);
-    return [];
-  }
-}
-
-async function getAllCriteriaKeys(): Promise<string[]> {
-  try {
-    const response = await fetch(
-      'https://dodao-ai-insights-agent.s3.us-east-1.amazonaws.com/public-equities/US/gics/real-estate/equity-real-estate-investment-trusts-reits/custom-criteria.json',
-      { cache: 'no-cache' }
-    );
-    const data = await response.json();
-    return data?.criteria?.map((c: any) => c.key) || [];
-  } catch (error) {
-    console.error('Error fetching criteria:', error);
-    return [];
-  }
-}
-
 async function generateTickerUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
-  const tickerKeys = await getAllTickers();
-  const criterionKeys = await getAllCriteriaKeys();
 
+  // Add main stocks page
   urls.push({
-    url: '/public-equities/tickers',
+    url: '/stocks',
     changefreq: 'daily',
     priority: 0.8,
   });
 
-  for (const tickerKey of tickerKeys) {
+  // Add industry pages - /stocks/industry/{industry}
+  const industryKeys = Object.keys(INDUSTRY_MAPPINGS);
+  for (const industryKey of industryKeys) {
     urls.push({
-      url: `/public-equities/tickers/${tickerKey}`,
+      url: `/stocks/industry/${industryKey}`,
       changefreq: 'weekly',
-      priority: 0.8,
+      priority: 0.7,
     });
+  }
 
-    for (const cKey of criterionKeys) {
-      urls.push({
-        url: `/public-equities/tickers/${tickerKey}/criteria/${cKey}`,
-        changefreq: 'weekly',
-        priority: 0.7,
-      });
+  // Fetch all tickers and add individual ticker pages - /stocks/{exchange}/{ticker}
+  try {
+    const tickers = await getAllTickers();
+
+    // Use a Set to avoid duplicates (in case same ticker exists on multiple exchanges)
+    const addedUrls = new Set<string>();
+
+    for (const ticker of tickers) {
+      const tickerUrl = `/stocks/${ticker.exchange}/${ticker.symbol}`;
+
+      if (!addedUrls.has(tickerUrl)) {
+        urls.push({
+          url: tickerUrl,
+          changefreq: 'weekly',
+          priority: 0.6,
+        });
+        addedUrls.add(tickerUrl);
+      }
     }
+  } catch (error) {
+    console.error('Error generating ticker URLs:', error);
+    // Continue without ticker URLs if API fails
   }
 
   return urls;
@@ -147,8 +155,6 @@ async function generateBlogUrls(): Promise<SiteMapUrl[]> {
 
   return urls;
 }
-
-// Fetch all tariff report IDs
 
 // Generate URLs for tariff reports and their sections
 async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
@@ -224,6 +230,11 @@ async function generateSitemapUrls(): Promise<SiteMapUrl[]> {
     },
     {
       url: '/genai-simulation',
+      changefreq: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: '/genai-business',
       changefreq: 'weekly',
       priority: 0.7,
     }
