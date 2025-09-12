@@ -1,7 +1,7 @@
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { TickerAnalysisCategory, EvaluationResult } from '@prisma/client';
+import { TickerAnalysisCategory, EvaluationResult, Prisma } from '@prisma/client';
 
 interface FilteredTicker {
   id: string;
@@ -47,10 +47,8 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     industry: searchParams.get('industry') || undefined,
   };
 
-  console.log('Filters applied:', filters);
-
   // Build the where clause for database query
-  const whereClause: any = {
+  const whereClause: Prisma.TickerV1WhereInput = {
     spaceId,
   };
 
@@ -78,8 +76,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       symbol: 'asc',
     },
   });
-
-  console.log(`Fetched ${tickers.length} tickers from DB`);
 
   // Calculate category scores and filter tickers
   const filteredTickers: FilteredTicker[] = [];
