@@ -182,7 +182,7 @@ export default async function IndustryStocksPage(props: {
         </div>
 
         {/* Sub-Industry Stock Cards */}
-        <h2 className="text-xl font-bold text-white mb-6">{industryName} Sub-Industries</h2>
+        <h2 className="text-xl font-bold text-white mb-6">{industryKey} Categories</h2>
         {Object.keys(tickersBySubIndustry).length === 0 ? (
           <div className="text-center py-12">
             <p className="text-[#E5E7EB] text-lg">No {industryName} stocks match the current filters.</p>
