@@ -4,6 +4,7 @@ import { prismaAdapter } from '@/app/api/auth/[...nextauth]/authOptions';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { AddStudentEnrollmentRequest } from '@/components/instructor/InstructorManageStudentsModal';
 
 // GET /api/instructor/enrollments/[caseStudyId]/students - Get students enrolled in a case study for an instructor
 async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ caseStudyId: string }> }): Promise<string[]> {
@@ -64,7 +65,7 @@ async function postHandler(
   { params }: { params: Promise<{ caseStudyId: string }> }
 ): Promise<{ message: string }> {
   const { caseStudyId } = await params;
-  const body = await req.json();
+  const body = (await req.json()) as AddStudentEnrollmentRequest;
   const { studentEmail } = body;
   const instructorId: string = userContext.userId;
 
@@ -138,7 +139,7 @@ async function deleteHandler(
   { params }: { params: Promise<{ caseStudyId: string }> }
 ): Promise<{ message: string }> {
   const { caseStudyId } = await params;
-  const body = await req.json();
+  const body = (await req.json()) as AddStudentEnrollmentRequest;
   const { studentEmail } = body;
   const instructorId: string = userContext.userId;
 

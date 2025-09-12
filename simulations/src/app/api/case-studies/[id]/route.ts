@@ -21,9 +21,9 @@ async function getHandler(
 
   // Handle different user types
   if (user.role === 'Student') {
-    return await getStudentCaseStudy(id, user.email!);
+    return await getStudentCaseStudy(id, user.id);
   } else if (user.role === 'Instructor') {
-    return await getInstructorCaseStudy(id, user.email!);
+    return await getInstructorCaseStudy(id, user.id);
   } else if (user.role === 'Admin') {
     return await getAdminCaseStudy(id);
   } else {

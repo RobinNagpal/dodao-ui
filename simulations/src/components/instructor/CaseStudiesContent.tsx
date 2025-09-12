@@ -185,7 +185,6 @@ export default function CaseStudiesContent({
         onClose={handleCloseModal}
         caseStudyId={selectedCaseStudy?.id || ''}
         caseStudyTitle={selectedCaseStudy?.title || ''}
-        instructorEmail={instructorEmail}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 'use client';
 
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -10,26 +11,24 @@ import type { DeleteResponse, CaseStudyWithRelations } from '@/types/api';
 import type { StudentTableData, ModuleTableData } from '@/types';
 import { SimulationSession } from '@/types/user';
 import { useSession } from 'next-auth/react';
-import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
 import { BookOpen, Users, BarChart3, GraduationCap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
 import BackButton from '@/components/navigation/BackButton';
-import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
 import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
 import InstructorLoading from '@/components/instructor/InstructorLoading';
-import StudentTable from '@/components/instructor/StudentTable';
+import OverviewTab from '@/components/instructor/case-study-tabs/OverviewTab';
+import StudentsTab from '@/components/instructor/case-study-tabs/StudentsTab';
+import AnalyticsTab from '@/components/instructor/case-study-tabs/AnalyticsTab';
+import TabNavigation, { TabType } from '@/components/instructor/case-study-tabs/TabNavigation';
 
 interface CaseStudyManagementClientProps {
   caseStudyId: string;
 }
 
 export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyManagementClientProps) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'analytics'>('overview');
+  const [activeTab, setActiveTab] = useState<TabType>('overview');
   const router = useRouter();
   const { data: simSession } = useSession();
   const session: SimulationSession | null = simSession as SimulationSession | null;
@@ -70,7 +69,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   } = useFetchData<{
     students: StudentTableData[];
     modules: ModuleTableData[];
-  }>(`/api/instructor/case-studies/${caseStudyId}/students-table`, { skipInitialFetch: !caseStudyId || !session }, 'Failed to load students table data');
+  }>(
+    `${getBaseUrl()}/api/instructor/case-studies/${caseStudyId}/students-table`,
+    { skipInitialFetch: !caseStudyId || !session },
+    'Failed to load students table data'
+  );
 
   const { deleteData: clearAttempts, loading: clearingAttempts } = useDeleteData<DeleteResponse, never>({
     successMessage: 'Student attempts cleared successfully!',
@@ -201,144 +204,35 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
         <BackButton userType="instructor" text="Back to Dashboard" href="/instructor" />
 
-        {/* Enhanced Tab Navigation */}
-        <div className="border-b border-white/20">
-          <nav className="-mb-px flex space-x-8">
-            <button
-              onClick={() => setActiveTab('overview')}
-              className={`py-4 px-2 pb-2 relative font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
-                activeTab === 'overview'
-                  ? 'text-purple-600 bg-purple-50/50 rounded-t-lg after:absolute after:bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-purple-500'
-                  : 'text-gray-600 hover:text-purple-600 hover:after:absolute hover:after:bottom-1 hover:after:left-0 hover:after:right-0 hover:after:h-0.5 hover:after:bg-purple-300'
-              }`}
-            >
-              <BookOpen className="h-4 w-4" />
-              <span>Overview</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('students')}
-              className={`py-4 px-2 pb-2 relative font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
-                activeTab === 'students'
-                  ? 'text-purple-600 bg-purple-50/50 rounded-t-lg after:absolute after:bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-purple-500'
-                  : 'text-gray-600 hover:text-purple-600 hover:after:absolute hover:after:bottom-1 hover:after:left-0 hover:after:right-0 hover:after:h-0.5 hover:after:bg-purple-300'
-              }`}
-            >
-              <Users className="h-4 w-4" />
-              <span>Students</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('analytics')}
-              className={`py-4 px-2 pb-2 relative font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
-                activeTab === 'analytics'
-                  ? 'text-purple-600 bg-purple-50/50 rounded-t-lg after:absolute after:bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-purple-500'
-                  : 'text-gray-600 hover:text-purple-600 hover:after:absolute hover:after:bottom-1 hover:after:left-0 hover:after:right-0 hover:after:h-0.5 hover:after:bg-purple-300'
-              }`}
-            >
-              <BarChart3 className="h-4 w-4" />
-              <span>Analytics</span>
-            </button>
-          </nav>
-        </div>
+        {/* Tab Navigation */}
+        <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
         {activeTab === 'overview' && (
-          <div className="space-y-8">
-            {modules.length > 0 && (
-              <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                      <Badge className={`bg-gradient-to-r ${getSubjectColor(caseStudy?.subject || 'MARKETING')} text-white border-0 text-sm px-3 py-1`}>
-                        <span className="mr-2">{getSubjectIcon(caseStudy?.subject || 'MARKETING')}</span>
-                        {getSubjectDisplayName(caseStudy?.subject || 'MARKETING')}
-                      </Badge>
-                      <Badge variant="secondary" className="bg-purple-100 text-purple-800 border-purple-200">
-                        <GraduationCap className="h-3 w-3 mr-1" />
-                        Instructor View
-                      </Badge>
-                    </div>
-
-                    <Button
-                      onClick={() => setShowCaseStudyModal(true)}
-                      className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
-                    >
-                      <BookOpen className="h-4 w-4 mr-2" />
-                      View Case Study Details
-                    </Button>
-                  </div>
-                  <CardTitle className="text-2xl font-bold text-gray-900">Case Study Overview</CardTitle>
-                  <CardDescription className="text-base text-gray-700 leading-relaxed mb-4">
-                    {caseStudy?.shortDescription || 'No description available.'}
-                  </CardDescription>
-
-                  <div className="flex items-center space-x-3">
-                    <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg">
-                      <BookOpen className="h-5 w-5 text-white" />
-                    </div>
-                    <CardTitle className="text-2xl font-bold text-gray-900">Learning Path</CardTitle>
-                  </div>
-                  <CardDescription className="text-gray-600">Click on modules and exercises to view details</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <CaseStudyStepper modules={modules as any} userType="instructor" onModuleClick={handleModuleClick} onExerciseClick={handleExerciseClick} />
-                </CardContent>
-              </Card>
-            )}
-          </div>
+          <OverviewTab
+            caseStudy={caseStudy}
+            modules={modules}
+            onShowCaseStudyModal={() => setShowCaseStudyModal(true)}
+            onModuleClick={handleModuleClick}
+            onExerciseClick={handleExerciseClick}
+          />
         )}
 
-        {activeTab === 'students' && (
-          <div className="space-y-8">
-            {studentsTableData && (
-              <StudentTable
-                students={studentsTableData.students}
-                modules={studentsTableData.modules}
-                onViewStudentDetails={viewStudentDetails}
-                onClearStudentAttempts={handleClearStudentAttempts}
-                onDeleteAttempt={handleDeleteAttempt}
-                onDeleteFinalSummary={handleDeleteFinalSummary}
-                clearingAttempts={clearingAttempts}
-                deletingAttempt={deletingAttempt}
-              />
-            )}
-          </div>
+        {activeTab === 'students' && studentsTableData && (
+          <StudentsTab
+            students={studentsTableData.students}
+            modules={studentsTableData.modules}
+            onViewStudentDetails={viewStudentDetails}
+            onClearStudentAttempts={handleClearStudentAttempts}
+            onDeleteAttempt={handleDeleteAttempt}
+            onDeleteFinalSummary={handleDeleteFinalSummary}
+            clearingAttempts={clearingAttempts}
+            deletingAttempt={deletingAttempt}
+          />
         )}
 
-        {activeTab === 'analytics' && (
-          <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30">
-            <div className="text-center py-16">
-              <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                <BarChart3 className="h-10 w-10 text-purple-600" />
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Analytics & Insights Dashboard</h2>
-              <div className="text-gray-600 max-w-lg mx-auto">
-                <p className="mb-6 text-lg">Comprehensive analytics dashboard is in development!</p>
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 text-left border border-purple-200">
-                  <p className="font-semibold mb-4 text-gray-900">Coming features:</p>
-                  <ul className="space-y-3 text-gray-700">
-                    <li className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                      <span>Module completion rates and trends</span>
-                    </li>
-                    <li className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span>Common student challenges identification</span>
-                    </li>
-                    <li className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span>AI prompt effectiveness analysis</span>
-                    </li>
-                    <li className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                      <span>Learning outcome assessments</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {activeTab === 'analytics' && <AnalyticsTab />}
       </div>
 
       <ConfirmationModal
