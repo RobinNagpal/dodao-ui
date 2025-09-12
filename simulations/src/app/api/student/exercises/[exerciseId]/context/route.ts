@@ -1,6 +1,7 @@
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { NextRequest } from 'next/server';
 
 interface ContextResponse {
   caseStudy: {
@@ -16,13 +17,16 @@ interface ContextResponse {
 }
 
 // GET /api/student/exercises/[exerciseId]/context - Get context for AI prompt
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ exerciseId: string }> }): Promise<ContextResponse> {
+async function getHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ exerciseId: string }> }
+): Promise<ContextResponse> {
   const { exerciseId } = await params;
-  const url = new URL(req.url);
-  const studentEmail = url.searchParams.get('studentEmail');
+  const { userId } = userContext;
 
-  if (!studentEmail) {
-    throw new Error('Student email is required');
+  if (!userId) {
+    throw new Error('User ID is required');
   }
 
   // Get exercise with case study and module context
@@ -58,4 +62,4 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ exer
   };
 }
 
-export const GET = withErrorHandlingV2<ContextResponse>(getHandler);
+export const GET = withLoggedInUser<ContextResponse>(getHandler);

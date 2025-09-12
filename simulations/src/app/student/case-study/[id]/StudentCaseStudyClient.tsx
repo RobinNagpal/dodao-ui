@@ -1,8 +1,10 @@
 'use client';
 
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { CaseStudyWithRelations } from '@/types/api';
+import { SimulationSession } from '@/types/user';
 import StudentLoading from '@/components/student/StudentLoading';
 import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
 import { BookOpen, Target, Brain, Clock, Lock, ArrowLeft, Check, BotIcon } from 'lucide-react';
@@ -16,19 +18,18 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
+import { useSession } from 'next-auth/react';
 
 interface StudentCaseStudyClientProps {
   caseStudyId: string;
 }
 
 interface UpdateInstructionStatusRequest {
-  studentEmail: string;
   type: 'case_study' | 'module';
   moduleId?: string;
 }
 
 export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudyClientProps) {
-  const [userEmail, setUserEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
@@ -40,14 +41,16 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     moduleId?: string;
   } | null>(null);
   const router = useRouter();
+  const { data: simSession } = useSession();
+  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   const {
     data: caseStudy,
     loading: loadingCaseStudy,
     reFetchData: refetchCaseStudy,
   } = useFetchData<CaseStudyWithRelations>(
-    `/api/case-studies/${caseStudyId}?userType=student&userEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !caseStudyId || !userEmail },
+    `${getBaseUrl()}/api/case-studies/${caseStudyId}`,
+    { skipInitialFetch: !caseStudyId || !session },
     'Failed to load case study'
   );
 
@@ -112,8 +115,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       } else {
         setShowModuleModal(false);
       }
-      const result = await updateInstructionStatus(`/api/case-studies/${caseStudyId}`, {
-        studentEmail: userEmail,
+      const result = await updateInstructionStatus(`${getBaseUrl()}/api/case-studies/${caseStudyId}`, {
         type,
         moduleId,
       });
@@ -180,7 +182,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       return;
     }
 
-    const url = `/student/exercise/${exerciseId}?moduleId=${moduleId}&caseStudyId=${caseStudyId}`;
+    const url = `${getBaseUrl()}/student/exercise/${exerciseId}?moduleId=${moduleId}&caseStudyId=${caseStudyId}`;
     router.push(url);
   };
 
@@ -199,21 +201,20 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   };
 
   useEffect(() => {
-    const userType = localStorage.getItem('user_type');
-    const email = localStorage.getItem('user_email');
+    if (!session) {
+      setIsLoading(true);
+      return;
+    }
 
-    if (!userType || userType !== 'student' || !email) {
+    if (session.role !== 'Student' && session.role !== 'Instructor' && session.role !== 'Admin') {
       router.push('/login');
       return;
     }
 
-    setUserEmail(email);
     setIsLoading(false);
-  }, [router]);
+  }, [session, router]);
 
   const handleLogout = () => {
-    localStorage.removeItem('user_type');
-    localStorage.removeItem('user_email');
     router.push('/login');
   };
 
@@ -232,6 +233,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
         iconColor="from-blue-600 to-indigo-700"
         showLogout={true}
         onLogout={handleLogout}
+        userEmail={session?.email || session?.username}
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">

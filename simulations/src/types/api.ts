@@ -68,6 +68,7 @@ export type CaseStudyWithRelations = CaseStudy & {
     }
   >;
   instructorEmail?: string; // Added instructor email
+  instructorName?: string | null; // Added instructor name
   instructionReadStatus?: {
     readCaseInstructions: boolean;
     moduleInstructions: Array<{

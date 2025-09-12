@@ -1,27 +1,26 @@
 'use client';
 
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
-import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
-import type { CaseStudyModule, ModuleExercise } from '@/types';
-import type { DeleteResponse, CaseStudyWithRelations } from '@/types/api';
-import type { StudentTableData, ModuleTableData } from '@/types';
-import { SimulationSession } from '@/types/user';
-import { useSession } from 'next-auth/react';
-import { BookOpen, Users, BarChart3, GraduationCap } from 'lucide-react';
-import InstructorNavbar from '@/components/navigation/InstructorNavbar';
-import BackButton from '@/components/navigation/BackButton';
-import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
-import ViewModuleModal from '@/components/shared/ViewModuleModal';
-import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
-import InstructorLoading from '@/components/instructor/InstructorLoading';
+import AnalyticsTab from '@/components/instructor/case-study-tabs/AnalyticsTab';
 import OverviewTab from '@/components/instructor/case-study-tabs/OverviewTab';
 import StudentsTab from '@/components/instructor/case-study-tabs/StudentsTab';
-import AnalyticsTab from '@/components/instructor/case-study-tabs/AnalyticsTab';
 import TabNavigation, { TabType } from '@/components/instructor/case-study-tabs/TabNavigation';
+import InstructorLoading from '@/components/instructor/InstructorLoading';
+import BackButton from '@/components/navigation/BackButton';
+import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
+import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
+import ViewModuleModal from '@/components/shared/ViewModuleModal';
+import type { CaseStudyModule, ModuleExercise, ModuleTableData, StudentTableData } from '@/types';
+import type { CaseStudyWithRelations, DeleteResponse } from '@/types/api';
+import { SimulationSession } from '@/types/user';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { GraduationCap } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface CaseStudyManagementClientProps {
   caseStudyId: string;

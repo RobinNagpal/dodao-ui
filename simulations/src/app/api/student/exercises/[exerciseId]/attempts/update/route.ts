@@ -1,12 +1,12 @@
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { ExerciseAttempt } from '@prisma/client';
+import { NextRequest } from 'next/server';
 
 interface UpdateAttemptRequest {
   attemptId: string;
   updatedResponse: string;
-  studentEmail: string;
 }
 
 interface UpdateAttemptResponse {
@@ -14,19 +14,19 @@ interface UpdateAttemptResponse {
 }
 
 // PUT /api/student/exercises/[exerciseId]/attempts/update - Update exercise attempt response
-async function putHandler(req: NextRequest): Promise<UpdateAttemptResponse> {
+async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<UpdateAttemptResponse> {
   const body: UpdateAttemptRequest = await req.json();
-  const { attemptId, updatedResponse, studentEmail } = body;
+  const { attemptId, updatedResponse } = body;
 
-  if (!attemptId || !updatedResponse || !studentEmail) {
-    throw new Error('Attempt ID, updated response, and student email are required');
+  if (!attemptId || !updatedResponse) {
+    throw new Error('Attempt ID and updated response are required');
   }
 
   // Verify the attempt belongs to the student
   const existingAttempt = await prisma.exerciseAttempt.findFirst({
     where: {
       id: attemptId,
-      createdBy: studentEmail,
+      createdBy: userContext.userId,
       archive: false,
     },
   });
@@ -42,7 +42,7 @@ async function putHandler(req: NextRequest): Promise<UpdateAttemptResponse> {
     },
     data: {
       promptResponse: updatedResponse,
-      updatedBy: studentEmail,
+      updatedBy: userContext.userId,
       archive: false,
     },
   });
@@ -50,4 +50,4 @@ async function putHandler(req: NextRequest): Promise<UpdateAttemptResponse> {
   return { attempt: updatedAttempt };
 }
 
-export const PUT = withErrorHandlingV2<UpdateAttemptResponse>(putHandler);
+export const PUT = withLoggedInUser<UpdateAttemptResponse>(putHandler);

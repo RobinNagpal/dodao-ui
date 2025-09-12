@@ -1,11 +1,11 @@
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { ExerciseAttempt } from '@prisma/client';
+import { NextRequest } from 'next/server';
 
 interface SelectAttemptRequest {
   attemptId: string;
-  studentEmail: string;
 }
 
 interface SelectAttemptResponse {
@@ -13,13 +13,18 @@ interface SelectAttemptResponse {
 }
 
 // PUT /api/student/exercises/[exerciseId]/attempts/select - Select an attempt for final summary
-async function putHandler(req: NextRequest, { params }: { params: Promise<{ exerciseId: string }> }): Promise<SelectAttemptResponse> {
+async function putHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ exerciseId: string }> }
+): Promise<SelectAttemptResponse> {
   const { exerciseId } = await params;
+  const { userId } = userContext;
   const body: SelectAttemptRequest = await req.json();
-  const { attemptId, studentEmail } = body;
+  const { attemptId } = body;
 
-  if (!attemptId || !studentEmail) {
-    throw new Error('Attempt ID and student email are required');
+  if (!attemptId || !userId) {
+    throw new Error('Attempt ID and user ID are required');
   }
 
   // Verify the attempt belongs to the student and exercise
@@ -27,7 +32,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ exer
     where: {
       id: attemptId,
       exerciseId,
-      createdBy: studentEmail,
+      createdBy: userId,
       archive: false,
     },
   });
@@ -42,12 +47,12 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ exer
     await tx.exerciseAttempt.updateMany({
       where: {
         exerciseId,
-        createdBy: studentEmail,
+        createdBy: userId,
         archive: false,
       },
       data: {
         selectedForSummary: false,
-        updatedBy: studentEmail,
+        updatedBy: userId,
       },
     });
 
@@ -58,7 +63,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ exer
       },
       data: {
         selectedForSummary: true,
-        updatedBy: studentEmail,
+        updatedBy: userId,
       },
     });
 
@@ -66,7 +71,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ exer
     const attempts = await tx.exerciseAttempt.findMany({
       where: {
         exerciseId,
-        createdBy: studentEmail,
+        createdBy: userId,
         archive: false,
       },
       orderBy: {
@@ -80,5 +85,5 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ exer
   return { attempts: result };
 }
 
-export const PUT = withErrorHandlingV2<SelectAttemptResponse>(putHandler);
-export const POST = withErrorHandlingV2<SelectAttemptResponse>(putHandler);
+export const PUT = withLoggedInUser<SelectAttemptResponse>(putHandler);
+export const POST = withLoggedInUser<SelectAttemptResponse>(putHandler);

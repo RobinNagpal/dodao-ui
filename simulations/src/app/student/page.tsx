@@ -207,16 +207,16 @@ export default function StudentDashboard() {
                     </CardHeader>
 
                     <CardContent className="space-y-4">
-                      <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-3 space-y-2">
+                      <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-3 space-y-2 flex justify-between">
                         <div className="flex items-center space-x-1 text-gray-600">
                           <BookOpen className="h-4 w-4 text-blue-500" />
                           <span className="font-medium">{caseStudy.modules?.length || 0} Modules</span>
                         </div>
-                        {caseStudy.instructorEmail && (
+                        {(caseStudy.instructorName || caseStudy.instructorEmail) && (
                           <div className="flex items-center space-x-1 text-gray-600">
                             <User className="h-4 w-4 text-indigo-500" />
                             <span className="font-medium text-sm truncate" title={caseStudy.instructorEmail}>
-                              {caseStudy.instructorEmail}
+                              {caseStudy.instructorName || caseStudy.instructorEmail}
                             </span>
                           </div>
                         )}

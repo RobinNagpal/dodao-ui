@@ -32,7 +32,6 @@ async function getHandler(
 }
 
 interface UpdateInstructionStatusRequest {
-  studentEmail: string;
   type: 'case_study' | 'module';
   moduleId?: string;
 }
@@ -40,14 +39,15 @@ interface UpdateInstructionStatusRequest {
 // PUT /api/case-studies/[id] - Update a case study OR update instruction status
 async function putHandler(
   req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<CaseStudyWithRelations | { success: boolean; message: string }> {
   const { id } = await params;
   const body = await req.json();
 
   // Check if this is an instruction status update (for students)
-  if ('studentEmail' in body && 'type' in body) {
-    return await updateInstructionStatus(id, body as UpdateInstructionStatusRequest);
+  if ('type' in body) {
+    return await updateInstructionStatus(id, body as UpdateInstructionStatusRequest, userContext);
   }
 
   // Otherwise, it's a case study update (for admins)
@@ -55,11 +55,16 @@ async function putHandler(
 }
 
 // Update instruction read status for students
-async function updateInstructionStatus(caseStudyId: string, body: UpdateInstructionStatusRequest): Promise<{ success: boolean; message: string }> {
-  const { studentEmail, type, moduleId } = body;
+async function updateInstructionStatus(
+  caseStudyId: string,
+  body: UpdateInstructionStatusRequest,
+  userContext: DoDaoJwtTokenPayload
+): Promise<{ success: boolean; message: string }> {
+  const { type, moduleId } = body;
+  const { userId } = userContext;
 
-  if (!studentEmail) {
-    throw new Error('Student email is required');
+  if (!userId) {
+    throw new Error('User ID is required');
   }
 
   if (!type || (type !== 'case_study' && type !== 'module')) {
@@ -77,7 +82,7 @@ async function updateInstructionStatus(caseStudyId: string, body: UpdateInstruct
       archive: false,
       students: {
         some: {
-          assignedStudentId: studentEmail,
+          assignedStudentId: userId,
           archive: false,
         },
       },
@@ -85,7 +90,7 @@ async function updateInstructionStatus(caseStudyId: string, body: UpdateInstruct
     include: {
       students: {
         where: {
-          assignedStudentId: studentEmail,
+          assignedStudentId: userId,
           archive: false,
         },
       },
@@ -402,5 +407,5 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
 }
 
 export const GET = withLoggedInUser<CaseStudyWithRelations>(getHandler);
-export const PUT = withErrorHandlingV2<CaseStudyWithRelations | { success: boolean; message: string }>(putHandler);
+export const PUT = withLoggedInUser<CaseStudyWithRelations | { success: boolean; message: string }>(putHandler);
 export const DELETE = withErrorHandlingV2<DeleteResponse>(deleteHandler);

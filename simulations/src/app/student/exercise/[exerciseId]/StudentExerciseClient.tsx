@@ -1,11 +1,14 @@
 'use client';
 
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import StudentLoading from '@/components/student/StudentLoading';
 import type { ExerciseAttempt } from '@prisma/client';
+import { useSession } from 'next-auth/react';
+import { SimulationSession } from '@/types/user';
 import {
   Send,
   RotateCcw,
@@ -67,7 +70,6 @@ interface ExerciseData {
 
 interface CreateAttemptRequest {
   prompt: string;
-  studentEmail: string;
 }
 
 interface CreateAttemptResponse {
@@ -84,7 +86,6 @@ interface NextExerciseResponse {
 
 interface SelectAttemptRequest {
   attemptId: string;
-  studentEmail: string;
 }
 
 interface SelectAttemptResponse {
@@ -92,13 +93,8 @@ interface SelectAttemptResponse {
 }
 
 export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyId }: StudentExerciseClientProps) {
-  const [userEmail, setUserEmail] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('user_email') || '';
-    }
-    return '';
-  });
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: simSession } = useSession();
+  const session: SimulationSession | null = simSession as SimulationSession | null;
   const [prompt, setPrompt] = useState<string>('');
   const [currentAttemptNumber, setCurrentAttemptNumber] = useState<number>(1);
   const [hasMovedToNext, setHasMovedToNext] = useState(false);
@@ -131,8 +127,8 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     loading: loadingAttempts,
     reFetchData: refetchAttempts,
   } = useFetchData<ExerciseAttempt[]>(
-    `/api/student/exercises/${exerciseId}/attempts?studentEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !exerciseId || !userEmail },
+    `${getBaseUrl()}/api/student/exercises/${exerciseId}/attempts`,
+    { skipInitialFetch: !exerciseId || !session },
     'Failed to load exercise attempts'
   );
 
@@ -150,26 +146,26 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   }, [attempts, localAttempts]);
 
   const { data: contextData, loading: loadingContext } = useFetchData<ContextData>(
-    `/api/student/exercises/${exerciseId}/context?studentEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !exerciseId || !userEmail },
+    `${getBaseUrl()}/api/student/exercises/${exerciseId}/context`,
+    { skipInitialFetch: !exerciseId || !session },
     'Failed to load exercise context'
   );
 
   const { data: exerciseData, loading: loadingExercise } = useFetchData<ExerciseData>(
-    `/api/student/exercises/${exerciseId}?studentEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !exerciseId || !userEmail },
+    `${getBaseUrl()}/api/student/exercises/${exerciseId}`,
+    { skipInitialFetch: !exerciseId || !session },
     'Failed to load exercise details'
   );
 
   const { data: nextExerciseData, loading: loadingNextExercise } = useFetchData<NextExerciseResponse>(
-    `/api/student/exercises/${exerciseId}/next-exercise?studentEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !exerciseId || !userEmail },
+    `${getBaseUrl()}/api/student/exercises/${exerciseId}/next-exercise`,
+    { skipInitialFetch: !exerciseId || !session },
     'Failed to load next exercise info'
   );
 
   const { data: progressData, loading: loadingProgress } = useFetchData<ProgressData>(
-    `/api/student/exercises/${exerciseId}/progress?studentEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !exerciseId || !userEmail },
+    `${getBaseUrl()}/api/student/exercises/${exerciseId}/progress`,
+    { skipInitialFetch: !exerciseId || !session },
     'Failed to load progress data'
   );
 
@@ -182,18 +178,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     successMessage: 'Attempt selected for summary!',
     errorMessage: 'Failed to select attempt. Please try again.',
   });
-
-  useEffect(() => {
-    const userType = localStorage.getItem('user_type');
-    const email = localStorage.getItem('user_email');
-
-    if (!userType || userType !== 'student' || !email) {
-      router.push('/login');
-      return;
-    }
-
-    setIsLoading(false);
-  }, [router]);
 
   useEffect(() => {
     if (currentAttempts) {
@@ -216,7 +200,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     try {
       const result = await createAttempt(`/api/student/exercises/${exerciseId}/attempts`, {
         prompt: prompt.trim(),
-        studentEmail: userEmail,
       });
 
       if (result) {
@@ -286,9 +269,8 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       if (selectingAttempt) return;
 
       try {
-        const result = await selectAttempt(`/api/student/exercises/${exerciseId}/attempts/select`, {
+        const result = await selectAttempt(`${getBaseUrl()}/api/student/exercises/${exerciseId}/attempts/select`, {
           attemptId,
-          studentEmail: userEmail,
         });
 
         if (result) {
@@ -299,7 +281,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
         console.error('Error selecting attempt:', error);
       }
     },
-    [selectingAttempt, selectAttempt, exerciseId, userEmail]
+    [selectingAttempt, selectAttempt, exerciseId]
   );
 
   const openAttemptModal = (attempt: ExerciseAttempt) => {
@@ -442,7 +424,14 @@ Details: ${contextData.module.details}
     return hasSuccess && completedAttempts.length < 3;
   };
 
-  if (isLoading || loadingAttempts || loadingContext || loadingExercise || loadingNextExercise || loadingProgress) {
+  if (loadingAttempts || loadingContext || loadingExercise || loadingNextExercise || loadingProgress) {
+    console.log('Loading...', {
+      loadingAttempts,
+      loadingContext,
+      loadingExercise,
+      loadingNextExercise,
+      loadingProgress,
+    });
     return <StudentLoading text="Loading AI Exercise" subtitle="Preparing your interactive learning experience..." variant="enhanced" />;
   }
 
@@ -457,7 +446,7 @@ Details: ${contextData.module.details}
       <StudentNavbar
         title="AI Exercise Studio"
         subtitle="Interactive Learning with AI"
-        userEmail={userEmail}
+        userEmail={session?.email || session?.username}
         moduleNumber={exerciseData?.module?.orderNumber}
         exerciseNumber={exerciseData?.orderNumber}
         icon={<Bot className="h-8 w-8 text-white" />}
