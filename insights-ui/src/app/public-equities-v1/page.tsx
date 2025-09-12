@@ -187,7 +187,7 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ [k
                     >
                       <div className="min-w-0 w-full">
                         <div className="flex items-center justify-between">
-                          <Link href={`/public-equities-v1/${ticker.exchange}/${ticker.symbol}`} className="w-full">
+                          <Link href={`/stocks/${ticker.exchange.toUpperCase()}/${ticker.symbol.toUpperCase()}`} className="w-full">
                             <div className="flex gap-2 items-center">
                               {(() => {
                                 const score = ticker.cachedScore || 0;

@@ -18,7 +18,7 @@ import { headers } from 'next/headers';
 import { Metadata } from 'next';
 
 export async function generateMetadata({ params }: { params: Promise<{ ticker: string; exchange: string }> }): Promise<Metadata> {
-  const { ticker } = await params;
+  const { ticker, exchange } = await params;
 
   const referer = (await headers())?.get('referer') ?? ''; // previous URL, if the browser sent it
   const qs = new URLSearchParams({ page: 'tickerDetailsPage' });
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ ticker: s
   const shortDescription =
     tickerData?.summary ||
     `Financial analysis and reports for ${companyName} (${ticker}). Explore key metrics, insights, and evaluations to make informed investment decisions.`;
-  const canonicalUrl = `https://koalagains.com/public-equities/tickers/${ticker}`;
+  const canonicalUrl = `https://koalagains.com/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
   const dynamicKeywords = [
     companyName,
     `Analysis on ${companyName}`,
@@ -91,7 +91,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
     },
     {
       name: ticker,
-      href: `/public-equities-v1/${exchange}/${ticker}`,
+      href: `/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`,
       current: true,
     },
   ];

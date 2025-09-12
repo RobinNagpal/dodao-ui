@@ -37,7 +37,7 @@ export default function SimilarTickers({ similarTickers }: SimilarTickersProps) 
                   {similarTicker.symbol} • {similarTicker.exchange.toUpperCase()}
                 </div>
                 <button
-                  onClick={() => router.push(`/public-equities-v1/${similarTicker.exchange.toLowerCase()}/${similarTicker.symbol.toLowerCase()}`)}
+                  onClick={() => router.push(`/stocks/${similarTicker.exchange.toUpperCase()}/${similarTicker.symbol.toUpperCase()}`)}
                   className="mt-2 inline-flex items-center gap-x-2 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors"
                 >
                   View Report
