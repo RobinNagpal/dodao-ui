@@ -1,7 +1,7 @@
-import { redirect } from 'next/navigation';
+import { permanentRedirect } from 'next/navigation';
 
 export default async function AllTickersPage() {
-  redirect('/stocks');
+  permanentRedirect('/stocks');
 }
 
 // Define REIT types and their tickers
