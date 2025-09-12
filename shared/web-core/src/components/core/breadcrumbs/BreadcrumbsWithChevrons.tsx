@@ -16,7 +16,7 @@ interface BreadcrumbsWithChevronsProps {
 
 export default function BreadcrumbsWithChevrons({ breadcrumbs, rightButton }: BreadcrumbsWithChevronsProps) {
   return breadcrumbs.length === 0 ? null : (
-    <div className="flex items-center justify-between w-full">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4">
       <nav className="flex" aria-label="Breadcrumb">
         <ol role="list" className="flex items-center space-x-4">
           <li>
@@ -41,7 +41,7 @@ export default function BreadcrumbsWithChevrons({ breadcrumbs, rightButton }: Br
           ))}
         </ol>
       </nav>
-      {rightButton && <div className="flex-shrink-0 ml-4">{rightButton}</div>}
+      {rightButton && <div className="flex-shrink-0 w-full sm:w-auto">{rightButton}</div>}
     </div>
   );
 }
