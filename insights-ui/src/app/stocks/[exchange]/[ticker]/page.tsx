@@ -1,5 +1,5 @@
 import { FullTickerV1CategoryAnalysisResult, TickerV1ReportResponse } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
-import TickerComparisonButton from '@/app/public-equities-v1/[exchange]/[ticker]/TickerComparisonButton';
+import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Competition from '@/components/ticker-reportsv1/Competition';
