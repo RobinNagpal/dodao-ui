@@ -14,6 +14,61 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
+import { headers } from 'next/headers';
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: Promise<{ ticker: string; exchange: string }> }): Promise<Metadata> {
+  const { ticker } = await params;
+
+  const referer = (await headers())?.get('referer') ?? ''; // previous URL, if the browser sent it
+  const qs = new URLSearchParams({ page: 'tickerDetailsPage' });
+  if (referer) qs.set('from', referer);
+
+  const tickerResponse = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}`, { cache: 'no-cache' });
+
+  let tickerData: TickerV1ReportResponse | undefined;
+
+  if (tickerResponse.ok) {
+    tickerData = (await tickerResponse.json()) as TickerV1ReportResponse;
+  }
+
+  const companyName = tickerData?.name ?? ticker;
+  const shortDescription =
+    tickerData?.summary ||
+    `Financial analysis and reports for ${companyName} (${ticker}). Explore key metrics, insights, and evaluations to make informed investment decisions.`;
+  const canonicalUrl = `https://koalagains.com/public-equities/tickers/${ticker}`;
+  const dynamicKeywords = [
+    companyName,
+    `Analysis on ${companyName}`,
+    `Financial Analysis on ${companyName}`,
+    `Reports on ${companyName}`,
+    `${companyName} analysis`,
+    'investment insights',
+    'public equities',
+    'KoalaGains',
+  ];
+
+  return {
+    title: `${companyName} (${ticker}) | KoalaGains`,
+    description: shortDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${companyName} (${ticker}) | KoalaGains`,
+      description: shortDescription,
+      url: canonicalUrl,
+      siteName: 'KoalaGains',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${companyName} (${ticker}) | KoalaGains`,
+      description: shortDescription,
+    },
+    keywords: dynamicKeywords,
+  };
+}
 
 export default async function TickerDetailsPage({ params }: { params: Promise<{ ticker: string; exchange: string }> }) {
   const { ticker, exchange } = await params;
