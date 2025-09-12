@@ -1,3 +1,5 @@
+'use client';
+
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -10,30 +12,8 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { TickerV1 } from '@prisma/client';
 import { getSubIndustryDisplayName, INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
-
-export async function generateMetadata(): Promise<Metadata> {
-  const base = 'https://koalagains.com/stocks';
-  return {
-    title: 'US Stocks by Industry | KoalaGains',
-    description:
-      'Explore US stocks by industry and sub-industry. Discover top-performing companies across NASDAQ, NYSE, and AMEX exchanges with detailed AI-driven financial analysis.',
-    alternates: {
-      canonical: base,
-    },
-    keywords: [
-      'US stocks',
-      'Stock industries',
-      'NASDAQ stocks',
-      'NYSE stocks',
-      'AMEX stocks',
-      'Industry analysis',
-      'KoalaGains',
-      'Stock performance',
-      'Financial reports',
-      'Stock analysis',
-    ],
-  };
-}
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import LoadingOrError from '@/components/core/LoadingOrError';
 
 const breadcrumbs: BreadcrumbsOjbect[] = [
   {
@@ -43,20 +23,34 @@ const breadcrumbs: BreadcrumbsOjbect[] = [
   },
 ];
 
-// Add viewport meta tag if not already in your _document.js or layout component
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-};
+export default function StocksPage() {
+  // this give build error as we are
+  // let tickers: TickerV1[] = [];
 
-export default async function StocksPage() {
-  let tickers: TickerV1[] = [];
+  // const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
+  // const response = await fetch(apiUrl);
+  // tickers = await response.json();
 
-  // Use country-based API call for US stocks
-  const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
-  const response = await fetch(apiUrl);
-  tickers = await response.json();
+  const {
+    data: tickers,
+    loading,
+    error,
+  } = useFetchData<TickerV1[]>(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`, {}, 'Failed to fetch stocks');
+
+  if (loading || error) {
+    return <LoadingOrError error={error} loading={loading} />;
+  }
+
+  if (!tickers) {
+    return (
+      <PageWrapper className="px-4 sm:px-6">
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        <div className="text-center py-12">
+          <p className="text-[#E5E7EB] text-lg">No US stocks found.</p>
+        </div>
+      </PageWrapper>
+    );
+  }
 
   // Group tickers by main industry first, then by sub-industry
   const tickersByMainIndustry: Record<string, Record<string, { tickers: TickerV1[]; total: number }>> = {};
