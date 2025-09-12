@@ -1,57 +1,8 @@
-import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import * as Tooltip from '@radix-ui/react-tooltip';
-import { Metadata } from 'next';
-import Link from 'next/link';
-import TickerActionsDropdown from './[tickerKey]/TickerActionsDropdown';
+import { redirect } from 'next/navigation';
 
-export async function generateMetadata(props: { searchParams: Promise<{ page?: string }> }): Promise<Metadata> {
-  const { page } = await props.searchParams;
-  const currentPage = parseInt(page || '1');
-  const base = 'https://koalagains.com/public-equities/tickers';
-  return {
-    title: 'REIT Tickers | KoalaGains',
-    description:
-      'Explore all available REIT tickers. Dive into detailed AI-driven financial reports, analyze key metrics, and streamline your public equities research on KoalaGains.',
-    alternates: {
-      canonical: currentPage === 1 ? base : `${base}?page=${currentPage}`,
-    },
-    keywords: [
-      'REIT tickers',
-      'Tickers List',
-      'Public Equities',
-      'REIT Financial Reports',
-      'KoalaGains',
-      'REIT Analysis',
-      'Real Estate Investment Trusts',
-      'REIT list',
-      'Public REITs',
-      'REIT performance scores',
-    ],
-  };
+export default async function AllTickersPage() {
+  redirect('/stocks');
 }
-
-const breadcrumbs: BreadcrumbsOjbect[] = [
-  {
-    name: 'Reports',
-    href: `/reports`,
-    current: false,
-  },
-  {
-    name: 'REIT Reports',
-    href: `/public-equities/tickers`,
-    current: true,
-  },
-];
-
-// Add viewport meta tag if not already in your _document.js or layout component
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-};
 
 // Define REIT types and their tickers
 interface ReitData {
@@ -145,7 +96,7 @@ const reitsByType: Record<string, ReitData[]> = {
     { ticker: 'CDP', name: 'COPT Defense Properties', type: 'REIT - Office' },
     { ticker: 'HIW', name: 'Highwoods Properties, Inc.', type: 'REIT - Office' },
     // { ticker: 'DEI', name: 'Douglas Emmett, Inc.', type: 'REIT - Office' },
-    // { ticker: 'ESBA', name: 'Empire State Realty OP, L.P.', type: 'REIT - Office' },
+    // { ticker: 'ESBA', name: 'Empire State Realty OP, L.P.', type: 'REIT - Office' }, // for now not adding it due to low volume and etf stuff
     { ticker: 'PGRE', name: 'Paramount Group, Inc.', type: 'REIT - Office' },
     { ticker: 'JBGS', name: 'JBG SMITH Properties', type: 'REIT - Office' },
     { ticker: 'DEA', name: 'Easterly Government Properties, Inc.', type: 'REIT - Office' },
@@ -184,26 +135,6 @@ const reitsByType: Record<string, ReitData[]> = {
     { ticker: 'CLPR', name: 'Clipper Realty Inc.', type: 'REIT - Residential' },
     { ticker: 'BHM', name: 'Bluerock Homes Trust, Inc.', type: 'REIT - Residential' },
   ],
-  Industrial: [
-    { ticker: 'PLD', name: 'Prologis, Inc.', type: 'REIT - Industrial' },
-    { ticker: 'PSA', name: 'Public Storage', type: 'REIT - Industrial' },
-    { ticker: 'EXR', name: 'Extra Space Storage Inc.', type: 'REIT - Industrial' },
-    { ticker: 'LINE', name: 'Lineage, Inc.', type: 'REIT - Industrial' },
-    // { ticker: 'REXR', name: 'Rexford Industrial Realty, Inc.', type: 'REIT - Industrial' },
-    { ticker: 'CUBE', name: 'CubeSmart', type: 'REIT - Industrial' },
-    { ticker: 'EGP', name: 'EastGroup Properties, Inc.', type: 'REIT - Industrial' },
-    { ticker: 'FR', name: 'First Industrial Realty Trust, Inc.', type: 'REIT - Industrial' },
-    { ticker: 'STAG', name: 'STAG Industrial, Inc.', type: 'REIT - Industrial' },
-    { ticker: 'TRNO', name: 'Terreno Realty Corporation', type: 'REIT - Industrial' },
-    { ticker: 'COLD', name: 'Americold Realty Trust, Inc.', type: 'REIT - Industrial' },
-    { ticker: 'NSA', name: 'National Storage Affiliates Trust', type: 'REIT - Industrial' },
-    { ticker: 'LXP', name: 'LXP Industrial Trust', type: 'REIT - Industrial' },
-    { ticker: 'SMA', name: 'SmartStop Self Storage REIT, Inc.', type: 'REIT - Industrial' },
-    // { ticker: 'IIPR', name: 'Innovative Industrial Properties, Inc.', type: 'REIT - Industrial' },
-    { ticker: 'PLYM', name: 'Plymouth Industrial REIT, Inc.', type: 'REIT - Industrial' },
-    { ticker: 'ILPT', name: 'Industrial Logistics Properties Trust', type: 'REIT - Industrial' },
-    { ticker: 'MDV', name: 'Modiv Industrial, Inc.', type: 'REIT - Industrial' },
-  ],
   Specialty: [
     { ticker: 'AMT', name: 'American Tower Corporation', type: 'REIT - Specialty' },
     { ticker: 'EQIX', name: 'Equinix, Inc.', type: 'REIT - Specialty' },
@@ -223,6 +154,26 @@ const reitsByType: Record<string, ReitData[]> = {
     { ticker: 'LAND', name: 'Gladstone Land Corporation', type: 'REIT - Specialty' },
     { ticker: 'SELF', name: 'Global Self Storage, Inc.', type: 'REIT - Specialty' },
     // { ticker: 'PW', name: 'Power REIT', type: 'REIT - Specialty' },
+  ],
+  Industrial: [
+    { ticker: 'PLD', name: 'Prologis, Inc.', type: 'REIT - Industrial' },
+    { ticker: 'PSA', name: 'Public Storage', type: 'REIT - Industrial' },
+    { ticker: 'EXR', name: 'Extra Space Storage Inc.', type: 'REIT - Industrial' },
+    { ticker: 'LINE', name: 'Lineage, Inc.', type: 'REIT - Industrial' },
+    // { ticker: 'REXR', name: 'Rexford Industrial Realty, Inc.', type: 'REIT - Industrial' },
+    { ticker: 'CUBE', name: 'CubeSmart', type: 'REIT - Industrial' },
+    { ticker: 'EGP', name: 'EastGroup Properties, Inc.', type: 'REIT - Industrial' },
+    { ticker: 'FR', name: 'First Industrial Realty Trust, Inc.', type: 'REIT - Industrial' },
+    { ticker: 'STAG', name: 'STAG Industrial, Inc.', type: 'REIT - Industrial' },
+    { ticker: 'TRNO', name: 'Terreno Realty Corporation', type: 'REIT - Industrial' },
+    { ticker: 'COLD', name: 'Americold Realty Trust, Inc.', type: 'REIT - Industrial' },
+    { ticker: 'NSA', name: 'National Storage Affiliates Trust', type: 'REIT - Industrial' },
+    { ticker: 'LXP', name: 'LXP Industrial Trust', type: 'REIT - Industrial' },
+    { ticker: 'SMA', name: 'SmartStop Self Storage REIT, Inc.', type: 'REIT - Industrial' },
+    // { ticker: 'IIPR', name: 'Innovative Industrial Properties, Inc.', type: 'REIT - Industrial' },
+    { ticker: 'PLYM', name: 'Plymouth Industrial REIT, Inc.', type: 'REIT - Industrial' },
+    { ticker: 'ILPT', name: 'Industrial Logistics Properties Trust', type: 'REIT - Industrial' },
+    { ticker: 'MDV', name: 'Modiv Industrial, Inc.', type: 'REIT - Industrial' },
   ],
   Healthcare: [
     { ticker: 'WELL', name: 'Welltower Inc.', type: 'REIT - Healthcare Facilities' },
@@ -280,77 +231,3 @@ const reitsByType: Record<string, ReitData[]> = {
     // { ticker: 'GIPR', name: 'Generation Income Properties, Inc.', type: 'REIT - Diversified' },
   ],
 };
-
-export default async function AllTickersPage(props: { searchParams: Promise<{ page?: string }> }) {
-  return (
-    <Tooltip.Provider delayDuration={300}>
-      <PageWrapper className="px-4 sm:px-6">
-        <div className="overflow-x-auto">
-          <Breadcrumbs breadcrumbs={breadcrumbs} />
-        </div>
-        <PrivateWrapper>
-          <div className="flex flex-wrap justify-end gap-2 mb-4">
-            <Link
-              href={'/public-equities/industry-group-criteria/real-estate/equity-real-estate-investment-trusts-reits/create'}
-              className="link-color border border-color rounded-xl p-2 text-sm sm:text-base whitespace-nowrap"
-            >
-              View Criteria
-            </Link>
-            <Link href={'/public-equities/tickers/create'} className="link-color border border-color rounded-xl p-2 text-sm sm:text-base whitespace-nowrap">
-              Create Ticker
-            </Link>
-          </div>
-        </PrivateWrapper>
-        <div className="flex justify-end mb-4">
-          <Link
-            href={'/public-equities/tickers/compare-metrics-and-checklist'}
-            className="link-color border border-color rounded-xl p-2 text-sm sm:text-base whitespace-nowrap"
-          >
-            Metrics Comparison
-          </Link>
-        </div>
-
-        {/* REIT Type Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 auto-rows-auto grid-flow-row-dense">
-          {Object.entries(reitsByType).map(([reitType, reits]) => (
-            <div key={reitType} className="bg-block-bg-color rounded-lg shadow-sm border border-color overflow-hidden h-full flex flex-col">
-              <div className="px-4 py-5 sm:px-6 border-b border-color flex">
-                <h3 className="text-lg font-medium heading-color">{reitType} REITs</h3>
-                <p className="mt-1 text-sm text-color ml-1">
-                  ({reits.length} {reits.length === 1 ? 'company' : 'companies'})
-                </p>
-              </div>
-              <ul className="divide-color flex-grow">
-                {reits.map((reit) => {
-                  // Find the ticker in the fetched data if available
-
-                  return (
-                    <li key={reit.ticker} className="px-4 py-1 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <div className="min-w-0 w-full">
-                        <div className="flex items-center justify-between">
-                          <Link href={`/public-equities/tickers/${reit.ticker}`} className="link-color primary-text-color">
-                            <div className="flex gap-2">
-                              <p className="whitespace-nowrap rounded-md px-1.5 py-1 text-xs font-medium ring-1 ring-inset ring-border primary-text-color self-center">
-                                {reit.ticker}
-                              </p>
-                              <p className="text-sm font-normal text-break break-all">{reit.name}</p>
-                            </div>
-                          </Link>
-                          <PrivateWrapper>
-                            <div className="scale-90 sm:scale-100">
-                              <TickerActionsDropdown tickerKey={reit.ticker} />
-                            </div>
-                          </PrivateWrapper>
-                        </div>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </PageWrapper>
-    </Tooltip.Provider>
-  );
-}

@@ -1,7 +1,7 @@
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { TickerAnalysisCategory, EvaluationResult } from '@prisma/client';
+import { TickerAnalysisCategory, EvaluationResult, Prisma } from '@prisma/client';
 
 interface FilteredTicker {
   id: string;
@@ -27,6 +27,8 @@ interface FilterParams {
   futuregrowthThreshold?: string;
   fairvalueThreshold?: string;
   totalthreshold?: string;
+  country?: string;
+  industry?: string;
 }
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<FilteredTicker[]> {
@@ -41,13 +43,30 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     futuregrowthThreshold: searchParams.get('futuregrowthThreshold') || undefined,
     fairvalueThreshold: searchParams.get('fairvalueThreshold') || undefined,
     totalthreshold: searchParams.get('totalThreshold') || undefined,
+    country: searchParams.get('country') || undefined,
+    industry: searchParams.get('industry') || undefined,
   };
+
+  // Build the where clause for database query
+  const whereClause: Prisma.TickerV1WhereInput = {
+    spaceId,
+  };
+
+  // Add country filter if provided (US = NASDAQ, NYSE, AMEX)
+  if (filters.country === 'US') {
+    whereClause.exchange = {
+      in: ['NASDAQ', 'NYSE', 'AMEX'],
+    };
+  }
+
+  // Add industry filter if provided
+  if (filters.industry) {
+    whereClause.subIndustryKey = filters.industry;
+  }
 
   // Fetch all tickers with their analysis data
   const tickers = await prisma.tickerV1.findMany({
-    where: {
-      spaceId,
-    },
+    where: whereClause,
     include: {
       categoryAnalysisResults: {
         include: {

@@ -10,6 +10,8 @@ export enum TickerAnalysisCategory {
 // Industry mappings
 export const INDUSTRY_MAPPINGS = {
   REITS: 'Real Estate Investment Trusts',
+  TECHNOLOGY: 'Technology',
+  HEALTHCARE: 'Healthcare',
 } as const;
 
 // Sub-industry mappings
@@ -22,6 +24,10 @@ export const SUB_INDUSTRY_MAPPINGS = {
   HEALTHCARE_REITS: 'Healthcare REITs',
   HOTEL_AND_MOTEL_REITS: 'Hotel and Motel REITs',
   DIVERSIFIED_REITS: 'Diversified REITs',
+  SOFTWARE: 'Software',
+  SEMICONDUCTORS: 'Semiconductors',
+  PHARMACEUTICALS: 'Pharmaceuticals',
+  MEDICAL_DEVICES: 'Medical Devices',
 } as const;
 
 // Category mappings
