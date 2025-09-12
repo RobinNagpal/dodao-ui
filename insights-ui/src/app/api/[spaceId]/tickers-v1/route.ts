@@ -1,7 +1,7 @@
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { TickerV1, Prisma } from '@prisma/client';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { Prisma, TickerV1 } from '@prisma/client';
+import { NextRequest } from 'next/server';
 
 interface NewTickerRequest {
   name: string;
@@ -21,14 +21,23 @@ interface NewTickerResponse {
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<TickerV1[]> {
   const { spaceId } = await context.params;
-  const { searchParams } = new URL(req.url);
-
+  const url = new URL(req.url);
+  const industryKey = url.searchParams.get('industryKey');
+  const subIndustryKey = url.searchParams.get('subIndustryKey');
   // Get country filter if provided
-  const country = searchParams.get('country') || undefined;
+  const country = url.searchParams.get('country') || undefined;
 
   const whereClause: Prisma.TickerV1WhereInput = {
     spaceId,
   };
+
+  if (industryKey) {
+    whereClause.industryKey = industryKey;
+  }
+
+  if (subIndustryKey) {
+    whereClause.subIndustryKey = subIndustryKey;
+  }
 
   // Add country filter if provided (US = NASDAQ, NYSE, AMEX)
   if (country === 'US') {
