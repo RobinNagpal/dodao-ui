@@ -12,94 +12,94 @@ import Link from 'next/link';
 import { TickerV1 } from '@prisma/client';
 import { getSubIndustryDisplayName } from '@/lib/mappingsV1';
 
-// Import the FilteredTicker interface from the API route
-interface FilteredTicker {
-  id: string;
-  name: string;
-  symbol: string;
-  exchange: string;
-  industryKey: string;
-  subIndustryKey: string;
-  websiteUrl?: string | null;
-  summary?: string | null;
-  cachedScore: number;
-  spaceId: string;
-  categoryScores: {
-    [key: string]: number;
-  };
-  totalScore: number;
+interface PageProps {
+  params: Promise<{
+    exchange: string;
+    industry: string;
+  }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  const base = 'https://koalagains.com/public-equities/tickers';
+export async function generateMetadata({ params }: { params: Promise<{ exchange: string; industry: string }> }): Promise<Metadata> {
+  const { exchange, industry } = await params;
+  const decodedIndustry = decodeURIComponent(industry);
+  const decodedExchange = decodeURIComponent(exchange);
+
+  const base = `https://koalagains.com/industries/${exchange}/${industry}`;
   return {
-    title: 'REIT Tickers | KoalaGains',
-    description:
-      'Explore all available REIT tickers. Dive into detailed AI-driven financial reports, analyze key metrics, and streamline your public equities research on KoalaGains.',
+    title: `${getSubIndustryDisplayName(decodedIndustry)} Tickers on ${decodedExchange.toUpperCase()} | KoalaGains`,
+    description: `Explore ${getSubIndustryDisplayName(
+      decodedIndustry
+    )} tickers listed on ${decodedExchange.toUpperCase()}. Dive into detailed AI-driven financial reports, analyze key metrics, and streamline your industry-specific research on KoalaGains.`,
     alternates: {
       canonical: base,
     },
     keywords: [
-      'REIT tickers',
-      'Tickers List',
-      'Public Equities',
-      'REIT Financial Reports',
+      `${decodedIndustry} tickers`,
+      `${decodedExchange.toUpperCase()} stocks`,
+      'Industry Analysis',
+      'Financial Reports',
       'KoalaGains',
-      'REIT Analysis',
-      'Real Estate Investment Trusts',
-      'REIT list',
-      'Public REITs',
-      'REIT performance scores',
+      'Stock Analysis',
+      'Investment Research',
+      `${decodedIndustry} industry`,
+      'Performance scores',
     ],
   };
 }
 
-const breadcrumbs: BreadcrumbsOjbect[] = [
-  {
-    name: 'Reports',
-    href: `/reports`,
-    current: false,
-  },
-  {
-    name: 'REIT Reports',
-    href: `/public-equities/tickers`,
-    current: true,
-  },
-];
+export default async function IndustryPage({ params, searchParams }: PageProps) {
+  const { exchange, industry } = await params;
+  const searchParamsResolved = await searchParams;
 
-// Add viewport meta tag if not already in your _document.js or layout component
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-};
+  const decodedIndustry = decodeURIComponent(industry);
+  const decodedExchange = decodeURIComponent(exchange);
 
-export default async function AllTickersPage(props: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
-  const searchParams = await props.searchParams;
+  // Create breadcrumbs
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: 'Reports',
+      href: `/reports`,
+      current: false,
+    },
+    {
+      name: 'Industries',
+      href: `/industries`,
+      current: false,
+    },
+    {
+      name: decodedExchange.toUpperCase(),
+      href: `/industries/${exchange}`,
+      current: false,
+    },
+    {
+      name: getSubIndustryDisplayName(decodedIndustry),
+      href: `/industries/${exchange}/${industry}`,
+      current: true,
+    },
+  ];
 
   // Check if any filters are applied
-  const hasFilters = Object.keys(searchParams).some((key) => key.includes('Threshold'));
+  const hasFilters = Object.keys(searchParamsResolved).some((key) => key.includes('Threshold'));
 
-  let tickers: FilteredTicker[] = [];
+  let tickers: TickerV1[] = [];
 
   if (hasFilters) {
-    // Build URL with filter params for the filtered API
+    // Build URL with filter params for the filtered API (we can extend the filtered API to also support exchange/industry)
     const urlParams = new URLSearchParams();
-    Object.entries(searchParams).forEach(([key, value]) => {
+    Object.entries(searchParamsResolved).forEach(([key, value]) => {
       if (value && key !== 'page') urlParams.set(key, value);
     });
+    // Add exchange and industry to filters
+    urlParams.set('exchange', decodedExchange);
+    urlParams.set('industry', decodedIndustry);
 
     const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${urlParams.toString()}`;
     const response = await fetch(apiUrl);
-    tickers = await response.json();
-  } else {
-    // Use regular tickers API when no filters are applied
-    const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`;
-    const response = await fetch(apiUrl);
-    const regularTickers: TickerV1[] = await response.json();
+    const filteredTickers = await response.json();
 
-    // Transform TickerV1[] to FilteredTicker[] format for consistency
-    tickers = regularTickers.map((ticker) => ({
+    // Transform FilteredTicker[] to TickerV1[] format for consistency
+    tickers = filteredTickers.map((ticker: any) => ({
       id: ticker.id,
       name: ticker.name,
       symbol: ticker.symbol,
@@ -110,13 +110,20 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ [k
       summary: ticker.summary,
       cachedScore: ticker.cachedScore,
       spaceId: ticker.spaceId,
-      categoryScores: {}, // Empty for unfiltered case
-      totalScore: 0, // Will be calculated if needed
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      createdBy: '',
+      updatedBy: '',
     }));
+  } else {
+    // No filters, fetch all tickers in the industry
+    const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industries/${decodedExchange}/${decodedIndustry}`;
+    const response = await fetch(apiUrl);
+    tickers = await response.json();
   }
 
   // Group tickers by sub-industry for display
-  const tickersByIndustry: Record<string, FilteredTicker[]> = {};
+  const tickersByIndustry: Record<string, TickerV1[]> = {};
 
   tickers.forEach((ticker) => {
     const subIndustry = ticker.subIndustryKey || 'Other';
@@ -152,18 +159,20 @@ export default async function AllTickersPage(props: { searchParams: Promise<{ [k
         </PrivateWrapper>
 
         <div className="w-full mb-8">
-          <h1 className="text-2xl font-bold text-white mb-4">REIT Tickers Explorer</h1>
+          <h1 className="text-2xl font-bold text-white mb-4">
+            {getSubIndustryDisplayName(decodedIndustry)} Tickers on {decodedExchange.toUpperCase()}
+          </h1>
           <p className="text-[#E5E7EB] text-md mb-6">
-            Explore Real Estate Investment Trust (REIT) tickers by category. Select any ticker to view detailed financial reports, performance metrics, and
-            AI-driven analysis to support your investment decisions.
+            Explore {getSubIndustryDisplayName(decodedIndustry)} tickers listed on {decodedExchange.toUpperCase()}. Select any ticker to view detailed financial
+            reports, performance metrics, and AI-driven analysis to support your investment decisions.
           </p>
         </div>
 
-        {/* REIT Type Cards */}
-        <h2 className="text-2xl font-bold text-white mb-6">REIT Categories</h2>
+        {/* Industry Categories */}
+        <h2 className="text-2xl font-bold text-white mb-6">{getSubIndustryDisplayName(decodedIndustry)} Categories</h2>
         {Object.keys(tickersByIndustry).length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-[#E5E7EB] text-lg">No REITs match the current filters.</p>
+            <p className="text-[#E5E7EB] text-lg">No companies found matching the current filters.</p>
             <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
           </div>
         ) : (

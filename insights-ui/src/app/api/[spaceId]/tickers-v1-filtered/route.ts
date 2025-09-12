@@ -27,6 +27,8 @@ interface FilterParams {
   futuregrowthThreshold?: string;
   fairvalueThreshold?: string;
   totalthreshold?: string;
+  exchange?: string;
+  industry?: string;
 }
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<FilteredTicker[]> {
@@ -41,13 +43,30 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     futuregrowthThreshold: searchParams.get('futuregrowthThreshold') || undefined,
     fairvalueThreshold: searchParams.get('fairvalueThreshold') || undefined,
     totalthreshold: searchParams.get('totalThreshold') || undefined,
+    exchange: searchParams.get('exchange') || undefined,
+    industry: searchParams.get('industry') || undefined,
   };
+
+  console.log('Filters applied:', filters);
+
+  // Build the where clause for database query
+  const whereClause: any = {
+    spaceId,
+  };
+
+  // Add exchange filter if provided
+  if (filters.exchange) {
+    whereClause.exchange = filters.exchange;
+  }
+
+  // Add industry filter if provided
+  if (filters.industry) {
+    whereClause.industryKey = filters.industry;
+  }
 
   // Fetch all tickers with their analysis data
   const tickers = await prisma.tickerV1.findMany({
-    where: {
-      spaceId,
-    },
+    where: whereClause,
     include: {
       categoryAnalysisResults: {
         include: {
@@ -59,6 +78,8 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       symbol: 'asc',
     },
   });
+
+  console.log(`Fetched ${tickers.length} tickers from DB`);
 
   // Calculate category scores and filter tickers
   const filteredTickers: FilteredTicker[] = [];
