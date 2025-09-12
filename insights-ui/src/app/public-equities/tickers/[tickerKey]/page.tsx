@@ -18,6 +18,9 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
       }
     }
   } catch (error) {
+    if (error instanceof Error && error.message.includes('NEXT_REDIRECT')) {
+      throw error;
+    }
     console.error('Error fetching ticker exchange info:', error);
     // If API call fails, continue with current page logic as fallback
   }
