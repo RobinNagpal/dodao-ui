@@ -1,6 +1,6 @@
 'use client';
 
-import ComparisonModal from '@/app/public-equities-v1/[exchange]/[ticker]/ComparisonModal';
+import ComparisonModal from '@/app/stocks/[exchange]/[ticker]/ComparisonModal';
 import { ScaleIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 

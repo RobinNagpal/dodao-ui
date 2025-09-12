@@ -1,5 +1,5 @@
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { redirect } from 'next/navigation';
+import { permanentRedirect } from 'next/navigation';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 export default async function TickerDetailsPage({ params }: { params: Promise<{ tickerKey: string }> }) {
@@ -14,7 +14,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
       const exchange = exchangeData.exchange;
 
       if (exchange) {
-        redirect(`/stocks/${exchange}/${tickerKey}`);
+        permanentRedirect(`/stocks/${exchange}/${tickerKey}`);
       }
     }
   } catch (error) {
