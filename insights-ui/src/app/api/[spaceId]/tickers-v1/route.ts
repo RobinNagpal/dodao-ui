@@ -1,7 +1,7 @@
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { TickerV1 } from '@prisma/client';
+import { Prisma, TickerV1 } from '@prisma/client';
 
 interface NewTickerRequest {
   name: string;
@@ -21,11 +21,24 @@ interface NewTickerResponse {
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<TickerV1[]> {
   const { spaceId } = await context.params;
+  const url = new URL(req.url);
+  const industryKey = url.searchParams.get('industryKey');
+  const subIndustryKey = url.searchParams.get('subIndustryKey');
+
+  const whereClause: Prisma.TickerV1WhereInput = {
+    spaceId,
+  };
+
+  if (industryKey) {
+    whereClause.industryKey = industryKey;
+  }
+
+  if (subIndustryKey) {
+    whereClause.subIndustryKey = subIndustryKey;
+  }
 
   const tickers = await prisma.tickerV1.findMany({
-    where: {
-      spaceId,
-    },
+    where: whereClause,
     orderBy: {
       symbol: 'asc',
     },

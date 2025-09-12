@@ -28,14 +28,16 @@ interface NewTickerForm {
 interface AddTickersFormProps {
   onSuccess: () => void;
   onCancel: () => void;
+  initialIndustry?: string;
+  initialSubIndustry?: string;
 }
 
-export default function AddTickersForm({ onSuccess, onCancel }: AddTickersFormProps): JSX.Element {
+export default function AddTickersForm({ onSuccess, onCancel, initialIndustry, initialSubIndustry }: AddTickersFormProps): JSX.Element {
   const [newTickerForm, setNewTickerForm] = useState<NewTickerForm>({
     tickerEntries: [{ name: '', symbol: '', websiteUrl: '' }],
     exchange: 'NASDAQ',
-    industryKey: 'REITS',
-    subIndustryKey: 'RESIDENTIAL_REITS',
+    industryKey: initialIndustry || 'REITS',
+    subIndustryKey: initialSubIndustry || 'RESIDENTIAL_REITS',
   });
 
   // Post hook for adding new ticker
@@ -79,12 +81,12 @@ export default function AddTickersForm({ onSuccess, onCancel }: AddTickersFormPr
     }
 
     if (allSuccess) {
-      // Reset form
+      // Reset form but maintain the selected industry and sub-industry
       setNewTickerForm({
         tickerEntries: [{ name: '', symbol: '', websiteUrl: '' }],
         exchange: 'NASDAQ',
-        industryKey: 'REITS',
-        subIndustryKey: 'RESIDENTIAL_REITS',
+        industryKey: newTickerForm.industryKey,
+        subIndustryKey: newTickerForm.subIndustryKey,
       });
       // Call the onSuccess callback to refresh tickers and hide form
       onSuccess();
