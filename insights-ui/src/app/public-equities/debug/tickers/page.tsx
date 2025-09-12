@@ -1,3 +1,5 @@
+'use client';
+
 import TickersTable from '@/app/public-equities/debug/tickers/TickersTable';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
