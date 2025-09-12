@@ -14,7 +14,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
       const exchange = exchangeData.exchange;
 
       if (exchange) {
-        redirect(`/public-equities-v1/${exchange}/${tickerKey}`);
+        redirect(`/stocks/${exchange}/${tickerKey}`);
       }
     }
   } catch (error) {

@@ -10,127 +10,142 @@ import * as Tooltip from '@radix-ui/react-tooltip';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { TickerV1 } from '@prisma/client';
-import { getSubIndustryDisplayName } from '@/lib/mappingsV1';
+import { getSubIndustryDisplayName, INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
 
-interface PageProps {
-  params: Promise<{
-    exchange: string;
-    industry: string;
-  }>;
-  searchParams: Promise<{ [key: string]: string | undefined }>;
+// Import the FilteredTicker interface from the API route
+interface FilteredTicker {
+  id: string;
+  name: string;
+  symbol: string;
+  exchange: string;
+  industryKey: string;
+  subIndustryKey: string;
+  websiteUrl?: string | null;
+  summary?: string | null;
+  cachedScore: number;
+  spaceId: string;
+  categoryScores: {
+    [key: string]: number;
+  };
+  totalScore: number;
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ exchange: string; industry: string }> }): Promise<Metadata> {
-  const { exchange, industry } = await params;
-  const decodedIndustry = decodeURIComponent(industry);
-  const decodedExchange = decodeURIComponent(exchange);
+export async function generateMetadata(props: { params: Promise<{ industry: string }> }): Promise<Metadata> {
+  const params = await props.params;
+  const industryKey = decodeURIComponent(params.industry);
+  const industryName = INDUSTRY_MAPPINGS[industryKey as keyof typeof INDUSTRY_MAPPINGS] || industryKey;
 
-  const base = `https://koalagains.com/industries/${exchange}/${industry}`;
+  const base = `https://koalagains.com/stocks/industry/${encodeURIComponent(industryKey)}`;
   return {
-    title: `${getSubIndustryDisplayName(decodedIndustry)} Tickers on ${decodedExchange.toUpperCase()} | KoalaGains`,
-    description: `Explore ${getSubIndustryDisplayName(
-      decodedIndustry
-    )} tickers listed on ${decodedExchange.toUpperCase()}. Dive into detailed AI-driven financial reports, analyze key metrics, and streamline your industry-specific research on KoalaGains.`,
+    title: `${industryName} Stocks | KoalaGains`,
+    description: `Explore ${industryName} companies across US exchanges (NASDAQ, NYSE, AMEX). Get detailed financial reports, performance metrics, and AI-driven analysis for investment decisions.`,
     alternates: {
       canonical: base,
     },
     keywords: [
-      `${decodedIndustry} tickers`,
-      `${decodedExchange.toUpperCase()} stocks`,
-      'Industry Analysis',
-      'Financial Reports',
+      `${industryName} stocks`,
+      `${industryName} companies`,
+      'US stocks',
+      'NASDAQ stocks',
+      'NYSE stocks',
+      'AMEX stocks',
       'KoalaGains',
-      'Stock Analysis',
-      'Investment Research',
-      `${decodedIndustry} industry`,
-      'Performance scores',
+      'Stock analysis',
+      'Financial reports',
+      'Investment research',
     ],
   };
 }
 
-export default async function IndustryPage({ params, searchParams }: PageProps) {
-  const { exchange, industry } = await params;
-  const searchParamsResolved = await searchParams;
+// Add viewport meta tag if not already in your _document.js or layout component
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
 
-  const decodedIndustry = decodeURIComponent(industry);
-  const decodedExchange = decodeURIComponent(exchange);
+export default async function IndustryStocksPage(props: {
+  params: Promise<{ industry: string }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
+  const industryKey = decodeURIComponent(params.industry);
+  const industryName = INDUSTRY_MAPPINGS[industryKey as keyof typeof INDUSTRY_MAPPINGS] || industryKey;
 
-  // Create breadcrumbs
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
-      name: 'Reports',
-      href: `/reports`,
+      name: 'US Stocks',
+      href: `/stocks`,
       current: false,
     },
     {
-      name: 'Industries',
-      href: `/industries`,
-      current: false,
-    },
-    {
-      name: decodedExchange.toUpperCase(),
-      href: `/industries/${exchange}`,
-      current: false,
-    },
-    {
-      name: getSubIndustryDisplayName(decodedIndustry),
-      href: `/industries/${exchange}/${industry}`,
+      name: industryName,
+      href: `/stocks/industry/${encodeURIComponent(industryKey)}`,
       current: true,
     },
   ];
 
   // Check if any filters are applied
-  const hasFilters = Object.keys(searchParamsResolved).some((key) => key.includes('Threshold'));
+  const hasFilters = Object.keys(searchParams).some((key) => key.includes('Threshold'));
 
-  let tickers: TickerV1[] = [];
+  let tickers: FilteredTicker[] = [];
 
   if (hasFilters) {
-    // Build URL with filter params for the filtered API (we can extend the filtered API to also support exchange/industry)
+    // Build URL with filter params for the filtered API
     const urlParams = new URLSearchParams();
-    Object.entries(searchParamsResolved).forEach(([key, value]) => {
+    Object.entries(searchParams).forEach(([key, value]) => {
       if (value && key !== 'page') urlParams.set(key, value);
     });
-    // Add exchange and industry to filters
-    urlParams.set('exchange', decodedExchange);
-    urlParams.set('industry', decodedIndustry);
+
+    // Add country and industry filters
+    urlParams.set('country', 'US');
 
     const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${urlParams.toString()}`;
     const response = await fetch(apiUrl);
-    const filteredTickers = await response.json();
+    const allTickers = await response.json();
 
-    // Transform FilteredTicker[] to TickerV1[] format for consistency
-    tickers = filteredTickers.map((ticker: any) => ({
-      id: ticker.id,
-      name: ticker.name,
-      symbol: ticker.symbol,
-      exchange: ticker.exchange,
-      industryKey: ticker.industryKey,
-      subIndustryKey: ticker.subIndustryKey,
-      websiteUrl: ticker.websiteUrl,
-      summary: ticker.summary,
-      cachedScore: ticker.cachedScore,
-      spaceId: ticker.spaceId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      createdBy: '',
-      updatedBy: '',
-    }));
+    // Filter by main industry
+    tickers = allTickers.filter((ticker: FilteredTicker) => ticker.industryKey === industryKey);
   } else {
-    // No filters, fetch all tickers in the industry
-    const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industries/${decodedExchange}/${decodedIndustry}`;
+    // Use regular tickers API when no filters are applied
+    const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
     const response = await fetch(apiUrl);
-    tickers = await response.json();
+    const regularTickers: TickerV1[] = await response.json();
+
+    // Filter by main industry and transform to FilteredTicker format
+    tickers = regularTickers
+      .filter((ticker) => ticker.industryKey === industryKey)
+      .map((ticker) => ({
+        id: ticker.id,
+        name: ticker.name,
+        symbol: ticker.symbol,
+        exchange: ticker.exchange,
+        industryKey: ticker.industryKey,
+        subIndustryKey: ticker.subIndustryKey,
+        websiteUrl: ticker.websiteUrl,
+        summary: ticker.summary,
+        cachedScore: ticker.cachedScore,
+        spaceId: ticker.spaceId,
+        categoryScores: {}, // Empty for unfiltered case
+        totalScore: 0, // Will be calculated if needed
+      }));
   }
 
   // Group tickers by sub-industry for display
-  const tickersByIndustry: Record<string, TickerV1[]> = {};
+  const tickersBySubIndustry: Record<string, FilteredTicker[]> = {};
 
   tickers.forEach((ticker) => {
     const subIndustry = ticker.subIndustryKey || 'Other';
-    if (!tickersByIndustry[subIndustry]) {
-      tickersByIndustry[subIndustry] = [];
+    if (!tickersBySubIndustry[subIndustry]) {
+      tickersBySubIndustry[subIndustry] = [];
     }
-    tickersByIndustry[subIndustry].push(ticker);
+    tickersBySubIndustry[subIndustry].push(ticker);
+  });
+
+  // Sort tickers by score within each sub-industry
+  Object.keys(tickersBySubIndustry).forEach((subIndustry) => {
+    tickersBySubIndustry[subIndustry].sort((a, b) => b.cachedScore - a.cachedScore);
   });
 
   return (
@@ -147,7 +162,7 @@ export default async function IndustryPage({ params, searchParams }: PageProps) 
               href={'/public-equities-v1/create-reports-v1'}
               className="bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium rounded-lg px-4 py-2.5 text-sm sm:text-base whitespace-nowrap transition-colors duration-200 shadow-md"
             >
-              Create Ticker Reports
+              Create Stock Reports
             </Link>
             <Link
               href={'/public-equities-v1/analysis-factors'}
@@ -159,44 +174,42 @@ export default async function IndustryPage({ params, searchParams }: PageProps) 
         </PrivateWrapper>
 
         <div className="w-full mb-8">
-          <h1 className="text-2xl font-bold text-white mb-4">
-            {getSubIndustryDisplayName(decodedIndustry)} Tickers on {decodedExchange.toUpperCase()}
-          </h1>
+          <h1 className="text-2xl font-bold text-white mb-4">{industryName} Stocks</h1>
           <p className="text-[#E5E7EB] text-md mb-6">
-            Explore {getSubIndustryDisplayName(decodedIndustry)} tickers listed on {decodedExchange.toUpperCase()}. Select any ticker to view detailed financial
-            reports, performance metrics, and AI-driven analysis to support your investment decisions.
+            Explore {industryName} companies listed on US exchanges (NASDAQ, NYSE, AMEX). Access detailed financial reports, performance metrics, and AI-driven
+            analysis to support your investment decisions.
           </p>
         </div>
 
-        {/* Industry Categories */}
-        <h2 className="text-2xl font-bold text-white mb-6">{getSubIndustryDisplayName(decodedIndustry)} Categories</h2>
-        {Object.keys(tickersByIndustry).length === 0 ? (
+        {/* Sub-Industry Stock Cards */}
+        <h2 className="text-xl font-bold text-white mb-6">{industryName} Sub-Industries</h2>
+        {Object.keys(tickersBySubIndustry).length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-[#E5E7EB] text-lg">No companies found matching the current filters.</p>
+            <p className="text-[#E5E7EB] text-lg">No {industryName} stocks match the current filters.</p>
             <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 auto-rows-auto">
-            {Object.entries(tickersByIndustry).map(([industry, industryTickers]) => (
+            {Object.entries(tickersBySubIndustry).map(([subIndustry, subIndustryTickers]) => (
               <div
-                key={industry}
+                key={subIndustry}
                 className="bg-block-bg-color rounded-lg shadow-lg border border-color overflow-hidden h-full flex flex-col hover:shadow-xl transition-shadow duration-300"
               >
                 <div className="px-4 py-3 sm:px-6 border-b border-color flex items-center bg-gradient-to-r from-[#374151] to-[#2D3748]">
-                  <h3 className="text-lg font-semibold heading-color">{getSubIndustryDisplayName(industry)}</h3>
+                  <h3 className="text-lg font-semibold heading-color">{getSubIndustryDisplayName(subIndustry)}</h3>
                   <p className="mt-1 text-sm text-white ml-2 bg-[#4F46E5] px-2 py-0.5 rounded-full">
-                    {industryTickers.length} {industryTickers.length === 1 ? 'company' : 'companies'}
+                    {subIndustryTickers.length} {subIndustryTickers.length === 1 ? 'company' : 'companies'}
                   </p>
                 </div>
                 <ul className="divide-y divide-color flex-grow">
-                  {industryTickers.map((ticker) => (
+                  {subIndustryTickers.map((ticker) => (
                     <li
                       key={ticker.symbol}
                       className="px-2 py-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-[#2D3748] transition-colors duration-200"
                     >
                       <div className="min-w-0 w-full">
                         <div className="flex items-center justify-between">
-                          <Link href={`/public-equities-v1/${ticker.exchange}/${ticker.symbol}`} className="w-full">
+                          <Link href={`/stocks/${ticker.exchange}/${ticker.symbol}`} className="w-full">
                             <div className="flex gap-2 items-center">
                               {(() => {
                                 const score = ticker.cachedScore || 0;

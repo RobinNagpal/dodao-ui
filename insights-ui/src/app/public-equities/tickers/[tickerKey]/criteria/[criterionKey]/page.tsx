@@ -14,7 +14,7 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
       const exchange = exchangeData.exchange;
 
       if (exchange) {
-        redirect(`/public-equities-v1/${exchange}/${tickerKey}/criteria/${criterionKey}`);
+        redirect(`/stocks/${exchange}/${tickerKey}`);
       }
     }
   } catch (error) {

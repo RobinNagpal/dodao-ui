@@ -27,7 +27,7 @@ interface FilterParams {
   futuregrowthThreshold?: string;
   fairvalueThreshold?: string;
   totalthreshold?: string;
-  exchange?: string;
+  country?: string;
   industry?: string;
 }
 
@@ -43,7 +43,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     futuregrowthThreshold: searchParams.get('futuregrowthThreshold') || undefined,
     fairvalueThreshold: searchParams.get('fairvalueThreshold') || undefined,
     totalthreshold: searchParams.get('totalThreshold') || undefined,
-    exchange: searchParams.get('exchange') || undefined,
+    country: searchParams.get('country') || undefined,
     industry: searchParams.get('industry') || undefined,
   };
 
@@ -52,14 +52,16 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     spaceId,
   };
 
-  // Add exchange filter if provided
-  if (filters.exchange) {
-    whereClause.exchange = filters.exchange;
+  // Add country filter if provided (US = NASDAQ, NYSE, AMEX)
+  if (filters.country === 'US') {
+    whereClause.exchange = {
+      in: ['NASDAQ', 'NYSE', 'AMEX'],
+    };
   }
 
   // Add industry filter if provided
   if (filters.industry) {
-    whereClause.industryKey = filters.industry;
+    whereClause.subIndustryKey = filters.industry;
   }
 
   // Fetch all tickers with their analysis data

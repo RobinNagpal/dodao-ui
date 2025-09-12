@@ -1,31 +1,7 @@
-import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: 'REIT Tickers | KoalaGains',
-    description:
-      'Explore all available REIT tickers. Dive into detailed AI-driven financial reports, analyze key metrics, and streamline your public equities research on KoalaGains.',
-    alternates: {
-      canonical: 'https://koalagains.com/public-equities/tickers',
-    },
-    keywords: [
-      'REIT tickers',
-      'Tickers List',
-      'Public Equities',
-      'REIT Financial Reports',
-      'KoalaGains',
-      'REIT Analysis',
-      'Real Estate Investment Trusts',
-      'REIT list',
-      'Public REITs',
-      'REIT performance scores',
-    ],
-  };
-}
-
 export default async function AllTickersPage() {
-  redirect('/public-equities-v1');
+  redirect('/stocks');
 }
 
 // Define REIT types and their tickers
