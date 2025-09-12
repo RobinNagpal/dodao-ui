@@ -22,6 +22,10 @@ export const SUB_INDUSTRY_MAPPINGS = {
   HEALTHCARE_REITS: 'Healthcare REITs',
   HOTEL_AND_MOTEL_REITS: 'Hotel and Motel REITs',
   DIVERSIFIED_REITS: 'Diversified REITs',
+  MORTGAGE_REITS: 'Mortgage REITs',
+  REAL_ESTATE_SERVICES: 'Real Estate Services',
+  REAL_ESTATE_DEVELOPMENT: 'Real Estate Development',
+  REAL_ESTATE_DIVERSIFIED: 'Real Estate Diversified',
 } as const;
 
 // Category mappings
