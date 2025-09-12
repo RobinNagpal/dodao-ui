@@ -46,11 +46,7 @@ export default function ViewCaseStudyModal({
       successMessage: 'Case study updated successfully!',
       errorMessage: 'Failed to update case study',
     },
-    {
-      headers: {
-        'admin-email': localStorage.getItem('user_email') || 'admin@example.com',
-      },
-    }
+    {}
   );
 
   useEffect(() => {

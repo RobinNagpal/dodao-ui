@@ -22,6 +22,11 @@ interface EnrollmentListItem {
     assignedStudentId: string;
     createdBy: string | null;
   }>;
+  assignedInstructor?: {
+    id: string;
+    email: string | null;
+    username: string;
+  };
 }
 
 interface EnrollmentsTabProps {

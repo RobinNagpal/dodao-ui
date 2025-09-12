@@ -43,6 +43,11 @@ interface EnrollmentListItem {
     assignedStudentId: string;
     createdBy: string | null;
   }>;
+  assignedInstructor?: {
+    id: string;
+    email: string | null;
+    username: string;
+  };
 }
 
 export default function AdminDashboard() {
@@ -66,7 +71,7 @@ export default function AdminDashboard() {
     data: enrollments,
     loading: loadingEnrollments,
     reFetchData: refetchEnrollments,
-  } = useFetchData<EnrollmentListItem[]>('/api/enrollments', {}, 'Failed to load enrollments');
+  } = useFetchData<EnrollmentListItem[]>(`${getBaseUrl()}/api/enrollments`, {}, 'Failed to load enrollments');
 
   // Filter case studies based on selected subject
   useEffect(() => {

@@ -19,9 +19,9 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
     case 'Admin':
       return await getAdminCaseStudies();
     case 'Instructor':
-      return await getInstructorCaseStudies(user.email!);
+      return await getInstructorCaseStudies(user.id);
     case 'Student':
-      return await getStudentCaseStudies(user.email!);
+      return await getStudentCaseStudies(user.id);
     default:
       throw new Error('Invalid user type');
   }

@@ -1,6 +1,7 @@
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import type { AttemptDetail, ExerciseProgress, StudentTableData, ModuleTableData } from '@/types';
 
 interface TableResponse {
@@ -9,14 +10,8 @@ interface TableResponse {
 }
 
 // GET /api/instructor/case-studies/[id]/students-table?instructorEmail=xxx - Get students data for table view
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<TableResponse> {
+async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ id: string }> }): Promise<TableResponse> {
   const { id: caseStudyId } = await params;
-  const { searchParams } = new URL(req.url);
-  const instructorEmail = searchParams.get('instructorEmail');
-
-  if (!instructorEmail) {
-    throw new Error('Instructor email is required');
-  }
 
   // First verify instructor has access to this case study
   const caseStudy = await prisma.caseStudy.findFirst({
@@ -25,7 +20,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
       archive: false,
       enrollments: {
         some: {
-          assignedInstructorId: instructorEmail,
+          assignedInstructorId: userContext.userId,
           archive: false,
         },
       },
@@ -43,7 +38,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
       },
       enrollments: {
         where: {
-          assignedInstructorId: instructorEmail,
+          assignedInstructorId: userContext.userId,
           archive: false,
         },
         include: {
@@ -152,4 +147,4 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
   };
 }
 
-export const GET = withErrorHandlingV2(getHandler);
+export const GET = withLoggedInUser<TableResponse>(getHandler);

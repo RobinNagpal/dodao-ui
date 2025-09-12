@@ -1,20 +1,24 @@
 'use client';
 
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect } from 'react';
 import { X, UserCheck, Plus, Users, Mail, Trash2, CheckCircle, AlertCircle } from 'lucide-react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 
+export interface AddStudentEnrollmentRequest {
+  studentEmail: string;
+}
+
 interface InstructorManageStudentsModalProps {
   isOpen: boolean;
   onClose: () => void;
   caseStudyId: string;
   caseStudyTitle: string;
-  instructorEmail: string;
 }
 
-export default function InstructorManageStudentsModal({ isOpen, onClose, caseStudyId, caseStudyTitle, instructorEmail }: InstructorManageStudentsModalProps) {
+export default function InstructorManageStudentsModal({ isOpen, onClose, caseStudyId, caseStudyTitle }: InstructorManageStudentsModalProps) {
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [emailError, setEmailError] = useState('');
 
@@ -23,26 +27,26 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
     loading: loadingStudents,
     reFetchData: refetchStudents,
   } = useFetchData<string[]>(
-    `/api/instructor/enrollments/${caseStudyId}/students?instructorEmail=${encodeURIComponent(instructorEmail)}`,
-    { skipInitialFetch: !caseStudyId || !instructorEmail },
+    `${getBaseUrl()}/api/instructor/enrollments/${caseStudyId}/students`,
+    { skipInitialFetch: !caseStudyId },
     'Failed to load enrolled students'
   );
 
-  const { postData: addStudent, loading: addingStudent } = usePostData({
+  const { postData: addStudent, loading: addingStudent } = usePostData<{ message: string }, AddStudentEnrollmentRequest>({
     successMessage: 'Student added successfully!',
     errorMessage: 'Failed to add student',
   });
 
-  const { deleteData: removeStudent, loading: removingStudent } = useDeleteData({
+  const { deleteData: removeStudent, loading: removingStudent } = useDeleteData<{ message: string }, AddStudentEnrollmentRequest>({
     successMessage: 'Student removed successfully!',
     errorMessage: 'Failed to remove student',
   });
 
   useEffect(() => {
-    if (isOpen && caseStudyId && instructorEmail) {
+    if (isOpen && caseStudyId) {
       refetchStudents();
     }
-  }, [isOpen, caseStudyId, instructorEmail, refetchStudents]);
+  }, [isOpen, caseStudyId, refetchStudents]);
 
   const handleAddStudent = async () => {
     // Reset error
@@ -60,13 +64,12 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
       return;
     }
 
-    const payload = {
+    const payload: AddStudentEnrollmentRequest = {
       studentEmail: newStudentEmail.trim(),
-      instructorEmail,
     };
 
     try {
-      const result = await addStudent(`/api/instructor/enrollments/${caseStudyId}/students`, payload);
+      const result = await addStudent(`${getBaseUrl()}/api/instructor/enrollments/${caseStudyId}/students`, payload);
       if (result) {
         setNewStudentEmail('');
         setEmailError('');
@@ -79,9 +82,8 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
   };
 
   const handleRemoveStudent = async (studentEmail: string) => {
-    const payload = {
+    const payload: AddStudentEnrollmentRequest = {
       studentEmail,
-      instructorEmail,
     };
 
     try {

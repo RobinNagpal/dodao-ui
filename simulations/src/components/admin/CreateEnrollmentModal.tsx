@@ -1,5 +1,6 @@
 'use client';
 
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { BookOpen, Mail, Sparkles } from 'lucide-react';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { CreateEnrollmentRequest, EnrollmentWithRelations } from '@/types/api';
 
 interface CaseStudy {
   id: string;
@@ -24,7 +26,7 @@ interface CreateEnrollmentModalProps {
 
 export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: CreateEnrollmentModalProps) {
   const [selectedCaseStudyId, setSelectedCaseStudyId] = useState('');
-  const [assignedInstructorId, setAssignedInstructorId] = useState('');
+  const [instructorEmail, setInstructorEmail] = useState('');
   const [errors, setErrors] = useState({ caseStudy: '', instructor: '' });
   const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
 
@@ -38,12 +40,12 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
 
   // Fetch case studies
   const { data: caseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudy[]>(
-    `/api/case-studies?userEmail=${encodeURIComponent(adminEmail)}&userType=admin`,
+    `${getBaseUrl()}/api/case-studies`,
     { skipInitialFetch: !isOpen },
     'Failed to load case studies'
   );
 
-  const { postData, loading } = usePostData(
+  const { postData, loading } = usePostData<EnrollmentWithRelations, CreateEnrollmentRequest>(
     {
       successMessage: 'Enrollment created successfully!',
       errorMessage: 'Failed to create enrollment',
@@ -57,7 +59,7 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
 
   const resetForm = () => {
     setSelectedCaseStudyId('');
-    setAssignedInstructorId('');
+    setInstructorEmail('');
     setErrors({ caseStudy: '', instructor: '' });
   };
 
@@ -79,13 +81,13 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
       hasErrors = true;
     }
 
-    if (!assignedInstructorId.trim()) {
+    if (!instructorEmail.trim()) {
       newErrors.instructor = 'Please enter an instructor email';
       hasErrors = true;
     } else {
       // Basic email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(assignedInstructorId)) {
+      if (!emailRegex.test(instructorEmail)) {
         newErrors.instructor = 'Please enter a valid email address';
         hasErrors = true;
       }
@@ -96,9 +98,9 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
       return;
     }
 
-    const payload = {
+    const payload: CreateEnrollmentRequest = {
       caseStudyId: selectedCaseStudyId,
-      assignedInstructorId: assignedInstructorId.trim(),
+      assignedInstructorEmail: instructorEmail.trim(), // This is actually the instructor's email
     };
 
     try {
@@ -188,8 +190,8 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
             <Input
               id="instructor"
               type="email"
-              value={assignedInstructorId}
-              onChange={(e) => setAssignedInstructorId(e.target.value)}
+              value={instructorEmail}
+              onChange={(e) => setInstructorEmail(e.target.value)}
               placeholder="instructor@university.edu"
               className={`bg-white border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400 placeholder:text-gray-500 ${
                 errors.instructor ? 'border-red-500' : ''
