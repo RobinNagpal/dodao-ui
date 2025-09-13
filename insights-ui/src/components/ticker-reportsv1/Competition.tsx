@@ -41,9 +41,7 @@ export default function Competition({ vsCompetition, competitorTickers }: Compet
                     )}
                     {competitor.existsInSystem && competitor.tickerData ? (
                       <button
-                        onClick={() =>
-                          router.push(`/public-equities-v1/${competitor.tickerData!.exchange.toLowerCase()}/${competitor.tickerData!.symbol.toLowerCase()}`)
-                        }
+                        onClick={() => router.push(`/stocks/${competitor.tickerData!.exchange.toUpperCase()}/${competitor.tickerData!.symbol.toUpperCase()}`)}
                         className="inline-flex items-center gap-x-1 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors"
                         title="View detailed report"
                       >

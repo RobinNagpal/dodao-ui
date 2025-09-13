@@ -1,8 +1,10 @@
+import StockActions from '@/app/stocks/StockActions';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { getSubIndustryDisplayName, INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
+import Filters from '@/components/public-equitiesv1/Filters';
+import SubIndustryCard from '@/components/stocks/SubIndustryCard';
+import { INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { getScoreColorClasses } from '@/utils/score-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -18,13 +20,55 @@ const breadcrumbs: BreadcrumbsOjbect[] = [
   },
 ];
 
-export default async function StocksPage() {
-  const response = await fetch(`${getBaseUrl() || 'https://koalagains.com'}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`, { cache: 'no-cache' });
-  let tickers: TickerV1[] = [];
-  try {
-    tickers = await response.json();
-  } catch (e) {
-    console.log('Error fetching tickers: ', e);
+// Define the FilteredTicker interface similar to IndustryStocksPage
+interface FilteredTicker {
+  id: string;
+  name: string;
+  symbol: string;
+  exchange: string;
+  industryKey: string;
+  subIndustryKey: string;
+  websiteUrl?: string | null;
+  summary?: string | null;
+  cachedScore: number;
+  spaceId: string;
+  categoryScores: {
+    [key: string]: number;
+  };
+  totalScore: number;
+}
+
+export default async function StocksPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
+  // Check if any filters are applied
+  const hasFilters = Object.keys(searchParams).some((key) => key.includes('Threshold'));
+
+  let tickers: TickerV1[] | FilteredTicker[] = [];
+
+  if (hasFilters) {
+    // Build URL with filter params for the filtered API
+    const urlParams = new URLSearchParams();
+    Object.entries(searchParams).forEach(([key, value]) => {
+      if (value && key !== 'page') urlParams.set(key, value);
+    });
+
+    // Add country filter
+    urlParams.set('country', 'US');
+
+    const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${urlParams.toString()}`;
+    const response = await fetch(apiUrl);
+    try {
+      tickers = await response.json();
+    } catch (e) {
+      console.log('Error fetching filtered tickers: ', e);
+    }
+  } else {
+    // Use regular tickers API when no filters are applied
+    const response = await fetch(`${getBaseUrl() || 'https://koalagains.com'}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`, { cache: 'no-cache' });
+    try {
+      tickers = await response.json();
+    } catch (e) {
+      console.log('Error fetching tickers: ', e);
+    }
   }
 
   if (!tickers) {
@@ -39,7 +83,7 @@ export default async function StocksPage() {
   }
 
   // Group tickers by main industry first, then by sub-industry
-  const tickersByMainIndustry: Record<string, Record<string, { tickers: TickerV1[]; total: number }>> = {};
+  const tickersByMainIndustry: Record<string, Record<string, { tickers: any[]; total: number }>> = {};
 
   tickers.forEach((ticker) => {
     const mainIndustry = ticker.industryKey || 'Other';
@@ -68,27 +112,19 @@ export default async function StocksPage() {
 
   return (
     <Tooltip.Provider delayDuration={300}>
-      <PageWrapper className="px-4 sm:px-6">
+      <PageWrapper>
         <div className="overflow-x-auto">
-          <Breadcrumbs breadcrumbs={breadcrumbs} />
+          <Breadcrumbs
+            breadcrumbs={breadcrumbs}
+            rightButton={
+              <div className="flex">
+                <Filters showOnlyButton={true} />
+                <StockActions />
+              </div>
+            }
+          />
         </div>
-
-        <PrivateWrapper>
-          <div className="flex flex-wrap justify-end gap-3 mb-6">
-            <Link
-              href={'/public-equities-v1/create-reports-v1'}
-              className="bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium rounded-lg px-4 py-2.5 text-sm sm:text-base whitespace-nowrap transition-colors duration-200 shadow-md"
-            >
-              Create Stock Reports
-            </Link>
-            <Link
-              href={'/public-equities-v1/analysis-factors'}
-              className="bg-[#374151] hover:bg-[#4B5563] text-white font-medium border border-[#4F46E5] rounded-lg px-4 py-2.5 text-sm sm:text-base whitespace-nowrap transition-colors duration-200 shadow-md"
-            >
-              View Analysis Factors
-            </Link>
-          </div>
-        </PrivateWrapper>
+        <Filters showOnlyAppliedFilters={true} />
 
         <div className="w-full mb-8">
           <h1 className="text-2xl font-bold text-white mb-4">US Stocks by Industry</h1>
@@ -101,8 +137,17 @@ export default async function StocksPage() {
         {/* Main Industries */}
         {Object.keys(tickersByMainIndustry).length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-[#E5E7EB] text-lg">No US stocks found.</p>
-            <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
+            {hasFilters ? (
+              <>
+                <p className="text-[#E5E7EB] text-lg">No US stocks match the current filters.</p>
+                <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
+              </>
+            ) : (
+              <>
+                <p className="text-[#E5E7EB] text-lg">No US stocks found.</p>
+                <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
+              </>
+            )}
           </div>
         ) : (
           Object.entries(tickersByMainIndustry).map(([mainIndustry, subIndustries]) => {
@@ -114,68 +159,19 @@ export default async function StocksPage() {
                 {/* Industry Header */}
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-bold text-white">{industryDisplayName}</h2>
-                  <Link href={`/stocks/industry/${encodeURIComponent(mainIndustry)}`} className="text-md text-[#4F46E5] hover:text-[#6366F1] font-medium">
-                    View All {totalCompaniesInIndustry} Companies →
+                  <Link
+                    href={`/stocks/industry/${encodeURIComponent(mainIndustry)}`}
+                    className="text-md bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-4 py-2 rounded-lg shadow-md transition-all duration-200 flex items-center"
+                  >
+                    View All {totalCompaniesInIndustry} Companies
+                    <span className="ml-1">→</span>
                   </Link>
                 </div>
 
                 {/* Sub-Industry Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                   {Object.entries(subIndustries).map(([subIndustry, { tickers: subIndustryTickers, total }]) => (
-                    <div
-                      key={subIndustry}
-                      className="bg-block-bg-color rounded-lg shadow-lg border border-color overflow-hidden h-full flex flex-col hover:shadow-xl transition-shadow duration-300"
-                    >
-                      <div className="px-4 py-3 sm:px-6 border-b border-color flex items-center bg-gradient-to-r from-[#374151] to-[#2D3748]">
-                        <h3 className="text-lg font-semibold heading-color">{getSubIndustryDisplayName(subIndustry)}</h3>
-                        <p className="mt-1 text-sm text-white ml-2 bg-[#4F46E5] px-2 py-0.5 rounded-full">
-                          {total} {total === 1 ? 'company' : 'companies'}
-                        </p>
-                      </div>
-                      <ul className="divide-y divide-color flex-grow">
-                        {subIndustryTickers.map((ticker) => (
-                          <li
-                            key={ticker.symbol}
-                            className="px-2 py-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-[#2D3748] transition-colors duration-200"
-                          >
-                            <div className="min-w-0 w-full">
-                              <div className="flex items-center justify-between">
-                                <Link href={`/stocks/${ticker.exchange}/${ticker.symbol}`} className="w-full">
-                                  <div className="flex gap-2 items-center">
-                                    {(() => {
-                                      const score = ticker.cachedScore || 0;
-                                      let { textColorClass, bgColorClass, scoreLabel } = getScoreColorClasses(score);
-
-                                      return (
-                                        <Tooltip.Root>
-                                          <Tooltip.Trigger asChild>
-                                            <p
-                                              className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[50px] text-right`}
-                                            >
-                                              <span className="font-mono tabular-nums text-right text-xs w-[50px]">{score}/25</span>
-                                            </p>
-                                          </Tooltip.Trigger>
-                                          <Tooltip.Portal>
-                                            <Tooltip.Content className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm shadow-lg z-50" sideOffset={5}>
-                                              {scoreLabel} Score: {score}/25
-                                              <Tooltip.Arrow className="fill-gray-900" />
-                                            </Tooltip.Content>
-                                          </Tooltip.Portal>
-                                        </Tooltip.Root>
-                                      );
-                                    })()}
-                                    <p className="whitespace-nowrap rounded-md px-2 py-.5 text-sm font-medium bg-[#4F46E5] text-white self-center shadow-sm">
-                                      {ticker.symbol}
-                                    </p>
-                                    <p className="text-sm font-medium text-break break-words text-white">{ticker.name}</p>
-                                  </div>
-                                </Link>
-                              </div>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    <SubIndustryCard key={subIndustry} subIndustry={subIndustry} tickers={subIndustryTickers} total={total} />
                   ))}
                 </div>
               </div>
