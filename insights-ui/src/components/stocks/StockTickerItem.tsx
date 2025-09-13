@@ -29,7 +29,7 @@ export default function StockTickerItem({ symbol, name, exchange, score }: Stock
           </Tooltip.Portal>
         </Tooltip.Root>
         <p className="whitespace-nowrap rounded-md px-2 py-0.5 text-sm font-medium bg-[#4F46E5] text-white self-center shadow-sm">{symbol}</p>
-        <p className="text-sm font-medium text-break break-words text-white truncate max-w-[180px]">{name}</p>
+        <p className="text-sm font-medium text-break break-words text-white truncate max-w-[260px]">{name}</p>
       </div>
     </Link>
   );
