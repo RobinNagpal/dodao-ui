@@ -38,7 +38,7 @@ interface FilteredTicker {
   totalScore: number;
 }
 
-export default async function StocksPage({ searchParams }: { searchParams: { [key: string]: string | undefined } }) {
+export default async function StocksPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
   // Check if any filters are applied
   const hasFilters = Object.keys(searchParams).some((key) => key.includes('Threshold'));
 
