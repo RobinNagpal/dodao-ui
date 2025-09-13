@@ -128,7 +128,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           />
         }
       />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2">
+      <div className="mx-auto max-w-7xl  py-2">
         {/* Header Section */}
         <div className="text-left mb-8">
           <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl mb-6">
@@ -188,11 +188,11 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
         {/* Future Risks Section */}
         {tickerData.futureRisks.length > 0 && (
-          <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+          <div className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
             <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Future Risks</h2>
             <ul className="space-y-3">
               {tickerData.futureRisks.map((futureRisk) => (
-                <li key={futureRisk.id} className="bg-gray-800 p-4 rounded-md">
+                <li key={futureRisk.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
                   <div className="flex flex-col gap-y-2">{futureRisk.summary}</div>
                 </li>
               ))}
@@ -205,11 +205,11 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
         {/* Investor Summary Section */}
         {tickerData.investorAnalysisResults.length > 0 && (
-          <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+          <div className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
             <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Investor Reports Summaries (Created using AI)</h2>
             <div className="space-y-4">
               {tickerData.investorAnalysisResults.map((result) => (
-                <div key={result.id} className="bg-gray-800 p-4 rounded-md">
+                <div key={result.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
                   <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
                   <div className="markdown markdown-body " dangerouslySetInnerHTML={{ __html: parseMarkdown(result.summary) }} />
                 </div>
@@ -230,7 +230,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           if (!categoryResult) return null;
 
           return (
-            <div key={`detail-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+            <div key={`detail-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
               <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{CATEGORY_MAPPINGS[categoryKey]}</h2>
 
               {categoryResult.introductionToAnalysis && (
@@ -242,7 +242,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
               {categoryResult.factorResults?.length > 0 && (
                 <ul className="space-y-3">
                   {categoryResult.factorResults.map((factor) => (
-                    <li key={factor.id} className="bg-gray-800 p-4 rounded-md">
+                    <li key={factor.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
                       <div className="flex flex-col gap-y-2">
                         <div className="flex items-center justify-between">
                           <h3 className="font-semibold">{factor.analysisCategoryFactor?.factorAnalysisTitle}</h3>
