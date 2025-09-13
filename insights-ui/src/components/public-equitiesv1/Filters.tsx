@@ -130,11 +130,12 @@ export default function Filters({ className = '', showOnlyButton = false, showOn
       <>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="inline-flex items-center gap-2 bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 shadow-md"
+          className={`inline-flex items-center gap-2 bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 shadow-md`}
         >
           <AdjustmentsHorizontalIcon className="h-5 w-5" />
           Filters
           {currentFilters.length > 0 && <span className="bg-white bg-opacity-20 px-2 py-0.5 rounded-full text-xs">{currentFilters.length}</span>}
+          {currentFilters.length > 0 && <span className="relative inline-flex size-3 rounded-full bg-amber-500 animate-pulse" />}
         </button>
 
         {/* Filter Modal */}
@@ -158,7 +159,7 @@ export default function Filters({ className = '', showOnlyButton = false, showOn
       <div className={`flex flex-wrap items-center gap-3 mb-6 ${className}`}>
         {/* Applied Filters */}
         {currentFilters.map((filter, index) => (
-          <div key={index} className="inline-flex items-center gap-2 bg-[#374151] text-white px-3 py-1.5 rounded-full text-sm">
+          <div key={index} className="inline-flex items-center gap-2 bg-amber-500 text-black px-3 py-1.5 rounded-full text-sm">
             <span>{filter.label}</span>
             <button onClick={() => removeFilter(filter)} className="hover:bg-white hover:bg-opacity-20 rounded-full p-0.5 transition-colors duration-200">
               <XMarkIcon className="h-4 w-4" />
@@ -181,7 +182,9 @@ export default function Filters({ className = '', showOnlyButton = false, showOn
       {/* Filter Button */}
       <button
         onClick={() => setIsModalOpen(true)}
-        className="inline-flex items-center gap-2 bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 shadow-md"
+        className={`inline-flex items-center gap-2 bg-[#4F46E5] hover:bg-[#4338CA] text-white font-medium rounded-lg px-4 py-2.5 text-sm transition-colors duration-200 shadow-md ${
+          currentFilters.length > 0 ? 'animate-pulse' : ''
+        }`}
       >
         <AdjustmentsHorizontalIcon className="h-5 w-5" />
         Filters
@@ -190,7 +193,7 @@ export default function Filters({ className = '', showOnlyButton = false, showOn
 
       {/* Applied Filters */}
       {currentFilters.map((filter, index) => (
-        <div key={index} className="inline-flex items-center gap-2 bg-[#374151] text-white px-3 py-1.5 rounded-full text-sm">
+        <div key={index} className="inline-flex items-center gap-2 bg-amber-500 text-black px-3 py-1.5 rounded-full text-sm">
           <span>{filter.label}</span>
           <button onClick={() => removeFilter(filter)} className="hover:bg-white hover:bg-opacity-20 rounded-full p-0.5 transition-colors duration-200">
             <XMarkIcon className="h-4 w-4" />
