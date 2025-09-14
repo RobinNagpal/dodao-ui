@@ -37,7 +37,7 @@ export function EmailSentMessage({ email, onChangeEmail }: EmailSentMessageProps
               </div>
 
               <p className="text-center text-sm text-neutral-300">
-                We've sent a sign‑in link to <span className="font-medium text-neutral-100">{email}</span>.
+                We have sent a sign‑in link to <span className="font-medium text-neutral-100">{email}</span>.
                 <br />
                 Please check your inbox (and spam) and click the link to continue.
               </p>
