@@ -24,11 +24,7 @@ interface UsersResponse {
   users: User[];
 }
 
-interface UsersTabProps {
-  onDeleteUser?: (userId: string) => void;
-}
-
-export default function UsersTab({}: UsersTabProps): JSX.Element {
+export default function Page() {
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
