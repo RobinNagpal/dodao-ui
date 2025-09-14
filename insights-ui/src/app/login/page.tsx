@@ -5,7 +5,6 @@ import { UserLogin } from '@/components/login/user-login';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { CardContent } from 'defi-alerts/src/components/ui/card';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { useState } from 'react';
 
@@ -60,14 +59,10 @@ export default function LoginPage() {
 
   return (
     <PageWrapper>
-      <div className="flex items-center py-8 justify-center px-4 sm:px-6 lg:px-8">
-        {step === 1 ? (
-          <UserLogin onLogin={handleEmailSubmit} />
-        ) : (
-          <CardContent>
-            <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} />
-          </CardContent>
-        )}
+      <div className="flex items-center justify-center min-h-[calc(100vh-200px)] py-12 px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
+        <div className="w-full max-w-md">
+          {step === 1 ? <UserLogin onLogin={handleEmailSubmit} /> : <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} />}
+        </div>
       </div>
     </PageWrapper>
   );
