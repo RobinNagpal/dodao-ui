@@ -3,7 +3,15 @@ import { permanentRedirect } from 'next/navigation';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 export default async function TickerDetailsPage({ params }: { params: Promise<{ tickerKey: string }> }) {
-  const { tickerKey } = await params;
+  let { tickerKey } = await params;
+
+  // Decode the URL parameters and check if they contain '}' character
+  const decodedTickerKey = decodeURIComponent(tickerKey);
+
+  if (decodedTickerKey.includes('}')) {
+    const cleanedTickerKey = decodedTickerKey.replace(/\}/g, '');
+    tickerKey = cleanedTickerKey;
+  }
 
   // Fetch exchange information for the ticker to redirect to new URL format
   try {
