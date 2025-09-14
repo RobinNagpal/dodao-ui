@@ -19,12 +19,12 @@ export default function StockActions() {
         items={actions}
         onSelect={async (key) => {
           if (key === 'create-reports') {
-            router.push(`/public-equities-v1/create-reports-v1`);
+            router.push(`/admin-v1/create-reports`);
             return;
           }
 
           if (key === 'manage-analysis-factors') {
-            router.push(`/public-equities-v1/analysis-factors`);
+            router.push(`/admin-v1/analysis-factors`);
           }
         }}
       />

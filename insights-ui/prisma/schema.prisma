@@ -427,6 +427,22 @@ enum TickerAnalysisCategory {
 // New Tables (convention-aligned)
 // --------------------------
 
+model TickerV1Industry {
+  industryKey String @id @map("industry_key")
+  name        String @map("name")
+  summary     String @map("summary")
+
+  subIndustries TickerV1SubIndustry[]
+}
+
+model TickerV1SubIndustry {
+  subIndustryKey String           @id @map("sub_industry_key")
+  name           String           @map("name")
+  summary        String           @map("summary")
+  industryKey    String           @map("industry_key")
+  industry       TickerV1Industry @relation(fields: [industryKey], references: [industryKey])
+}
+
 model TickerV1 {
   id             String   @id @default(uuid())
   name           String   @map("name")

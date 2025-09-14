@@ -41,13 +41,13 @@ export default function ComparisonPage() {
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
-      name: 'Public Equities',
-      href: `/public-equities-v1`,
+      name: 'All Stocks',
+      href: `/stocks`,
       current: false,
     },
     {
       name: 'Comparison',
-      href: `/public-equities-v1/comparison`,
+      href: `/stocks/comparison`,
       current: true,
     },
   ];
