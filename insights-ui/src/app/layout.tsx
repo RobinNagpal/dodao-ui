@@ -1,10 +1,13 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
+import SessionProvider from '@/app/providers/SessionProvider';
 import TopNav from '@/components/core/TopNav/TopNav';
 import { themeColors } from '@/util/theme-colors';
-import type { Metadata } from 'next';
+import { NotificationWrapper } from '@dodao/web-core/components/layout/NotificationWrapper';
 import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
-import { NotificationWrapper } from '@dodao/web-core/components/layout/NotificationWrapper';
+import type { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
 import Script from 'next/script';
 
 // insights-ui/src/app/layout.tsx
@@ -47,7 +50,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const session = await getServerSession(authOptions);
   return (
     <html lang="en">
       <head>
@@ -56,9 +60,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className="antialiased text-color" style={{ ...themeColors, backgroundColor: 'var(--bg-color)' }}>
         <NotificationProvider>
-          <NotificationWrapper />
-          <TopNav />
-          {children}
+          <SessionProvider session={session}>
+            <NotificationWrapper />
+            <TopNav />
+            {children}
+          </SessionProvider>
         </NotificationProvider>
 
         {/* --- Analytics / Monitoring (non-blocking) --- */}
