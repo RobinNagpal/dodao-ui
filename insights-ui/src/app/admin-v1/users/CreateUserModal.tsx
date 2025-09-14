@@ -73,7 +73,7 @@ export default function CreateUserModal({ isOpen, onClose, onSuccess }: CreateUs
   const resetForm = (): void => {
     setName('');
     setEmail('');
-    setRole('Student');
+    setRole('FreeUser');
     setFormError('');
   };
 
