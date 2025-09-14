@@ -19,6 +19,73 @@ datasource db {
 // Existing Models
 // --------------------------
 
+enum UserRole {
+  Student
+  Admin
+  Instructor
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  publicAddress String?   @map("public_address")
+  phoneNumber   String?   @map("phone_number")
+  walletAddress String[]  @default([]) @map("wallet_address")
+
+  spaceId      String    @map("space_id")
+  username     String    @map("username")
+  authProvider String    @map("auth_provider")
+  role         UserRole  @default(Student) @map("role")
+  accounts     Account[]
+  sessions     Session[]
+
+  @@unique([publicAddress, spaceId])
+  @@unique([username, spaceId])
+  @@unique([email, spaceId])
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @map("refresh_token")
+  access_token      String? @map("access_token")
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
 model Ticker {
   id                           String   @id @default(uuid())
   tickerKey                    String   @unique @map("ticker_key")

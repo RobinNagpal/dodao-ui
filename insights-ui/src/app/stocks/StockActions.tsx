@@ -11,6 +11,7 @@ export default function StockActions() {
   const actions: EllipsisDropdownItem[] = [
     { key: 'create-reports', label: 'Create Reports' },
     { key: 'manage-analysis-factors', label: 'Manage Analysis Factors' },
+    { key: 'manage-industries', label: 'Manage Industries' },
   ];
 
   return (
@@ -25,6 +26,10 @@ export default function StockActions() {
 
           if (key === 'manage-analysis-factors') {
             router.push(`/admin-v1/analysis-factors`);
+          }
+
+          if (key === 'manage-industries') {
+            router.push(`/admin-v1/industries`);
           }
         }}
       />

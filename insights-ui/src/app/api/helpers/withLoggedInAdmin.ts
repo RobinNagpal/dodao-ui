@@ -1,10 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { ErrorResponse, RedirectResponse } from '@dodao/web-core/types/errors/ErrorResponse';
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/prisma';
 
-type HandlerWithAdmin<T> = (req: NextRequest, userContext: DoDaoJwtTokenPayload) => Promise<T>;
-type HandlerWithAdminAndParams<T> = (req: NextRequest, userContext: DoDaoJwtTokenPayload, params: { params: Promise<any> }) => Promise<T>;
+type HandlerWithAdmin<T> = (req: NextRequest, userContext: KoalaGainsJwtTokenPayload) => Promise<T>;
+type HandlerWithAdminAndParams<T> = (req: NextRequest, userContext: KoalaGainsJwtTokenPayload, params: { params: Promise<any> }) => Promise<T>;
 type Handler<T> = (req: NextRequest, dynamic: { params: Promise<any> }) => Promise<NextResponse<T | ErrorResponse | RedirectResponse>>;
 
 /**
@@ -17,10 +19,29 @@ type Handler<T> = (req: NextRequest, dynamic: { params: Promise<any> }) => Promi
  */
 export function withLoggedInAdmin<T>(handler: HandlerWithAdmin<T> | HandlerWithAdminAndParams<T>): any {
   return withLoggedInUser<T>(async (req: NextRequest, userContext: DoDaoJwtTokenPayload, dynamic: { params: Promise<any> }) => {
-    // Cast to SimulationJwtTokenPayload to access the role property
-    const context = userContext;
+    const koalaGainsUserContext = userContext as KoalaGainsJwtTokenPayload;
 
-    console.log('Checking if user is an Admin...', context);
-    return await handler(req, context, dynamic as any);
+    if (!koalaGainsUserContext.role) {
+      const user = await prisma.user.findUnique({
+        where: {
+          email_spaceId: {
+            email: koalaGainsUserContext.email || koalaGainsUserContext.username,
+            spaceId: koalaGainsUserContext.spaceId,
+          },
+        },
+      });
+
+      if (user?.role !== 'Admin') {
+        throw new Error('Unauthorized: Only admins can access this endpoint');
+      }
+    } else {
+      // Check if the user has the Admin role
+      if (koalaGainsUserContext.role !== 'Admin') {
+        throw new Error('Unauthorized: Only admins can access this endpoint');
+      }
+    }
+    // If the user is an Admin, proceed with the handler function
+    // Pass dynamic as params to match the HandlerWithAdminAndParams<T> type
+    return await handler(req, koalaGainsUserContext, dynamic as any);
   }) as any;
 }
