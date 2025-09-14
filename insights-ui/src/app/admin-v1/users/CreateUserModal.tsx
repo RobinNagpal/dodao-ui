@@ -32,14 +32,13 @@ interface UserCreationResponse {
 export default function CreateUserModal({ isOpen, onClose, onSuccess }: CreateUserModalProps): JSX.Element {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [role, setRole] = useState<UserRole>('Student');
+  const [role, setRole] = useState<UserRole>('FreeUser');
   const [formError, setFormError] = useState<string>('');
 
   // Role options for StyledSelect
   const roleOptions: StyledSelectItem[] = [
     { id: 'Admin', label: 'Admin' },
-    { id: 'Instructor', label: 'Instructor' },
-    { id: 'Student', label: 'Student' },
+    { id: 'FreeUser', label: 'FreeUser' },
   ];
 
   const { postData, loading } = usePostData<UserCreationResponse, UserCreationRequest>({

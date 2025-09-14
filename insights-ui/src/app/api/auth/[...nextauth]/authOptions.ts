@@ -1,10 +1,10 @@
-import { SimulationJwtTokenPayload } from '@/types/user';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient, User as SimulationUser } from '@prisma/client';
+import { PrismaClient, User as KoalaGainsUser } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { AuthOptions } from 'next-auth';
 
@@ -36,7 +36,7 @@ export const authOptions: AuthOptions = getAuthOptions(
         if (token.sub) {
           console.log(`[authOptions] Session callback - Looking up user with ID: ${token.sub}`);
           try {
-            const dbUser: SimulationUser | null = await p.user.findUnique({
+            const dbUser: KoalaGainsUser | null = await p.user.findUnique({
               where: { id: token.sub },
             });
 
@@ -61,7 +61,7 @@ export const authOptions: AuthOptions = getAuthOptions(
             );
           }
         }
-        const doDaoJwtTokenPayload: SimulationJwtTokenPayload = {
+        const doDaoJwtTokenPayload: KoalaGainsJwtTokenPayload = {
           userId: userInfo.id,
           spaceId: userInfo.spaceId,
           username: userInfo.username,
@@ -86,7 +86,7 @@ export const authOptions: AuthOptions = getAuthOptions(
         if (token.sub) {
           console.log(`[authOptions] JWT callback - Looking up user with ID: ${token.sub}`);
           try {
-            const dbUser: SimulationUser | null = await p.user.findUnique({
+            const dbUser: KoalaGainsUser | null = await p.user.findUnique({
               where: { id: token.sub },
             });
 
