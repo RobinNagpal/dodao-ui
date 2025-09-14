@@ -20,8 +20,7 @@ datasource db {
 // --------------------------
 
 enum UserRole {
-  Student
-  Admin
+  FreeUser
   Instructor
 }
 
@@ -38,7 +37,7 @@ model User {
   spaceId      String    @map("space_id")
   username     String    @map("username")
   authProvider String    @map("auth_provider")
-  role         UserRole  @default(Student) @map("role")
+  role         UserRole  @default(FreeUser) @map("role")
   accounts     Account[]
   sessions     Session[]
 
