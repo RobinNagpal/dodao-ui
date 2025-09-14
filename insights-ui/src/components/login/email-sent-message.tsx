@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { Mail, LineChart } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import * as React from 'react';
 
 // Strict and explicit prop types
@@ -53,7 +53,7 @@ export function EmailSentMessage({ email, onChangeEmail }: EmailSentMessageProps
           </CardContent>
         </Card>
 
-        <p className="mt-6 text-center text-xs text-neutral-500">Didn't get it? It can take a minute to arrive.</p>
+        <p className="mt-6 text-center text-xs text-neutral-500">Did not get it? It can take a minute to arrive.</p>
       </div>
     </div>
   );
