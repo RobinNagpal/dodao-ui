@@ -15,7 +15,6 @@ interface UserProfileProps {
 
 export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps): JSX.Element {
   const { data: koalaSession } = useSession();
-  const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
@@ -45,10 +44,6 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
     }
   };
 
-  const handleLoginSuccess = (): void => {
-    setLoginModalOpen(false);
-  };
-
   // Close menu when clicking outside
   useEffect(() => {
     if (!isMobile) {
@@ -69,21 +64,25 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
       <>
         {session ? (
           <>
-            <Link
-              href="/prompts"
-              className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
-              onClick={onMenuToggle}
-            >
-              Prompts
-            </Link>
-            <Link
-              href="/invocations"
-              className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
-              onClick={onMenuToggle}
-            >
-              Invocations
-            </Link>
-            <div className="border-t border-gray-700 my-1"></div>
+            {session.role === 'Admin' && (
+              <>
+                <Link
+                  href="/prompts"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+                  onClick={onMenuToggle}
+                >
+                  Prompts
+                </Link>
+                <Link
+                  href="/invocations"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+                  onClick={onMenuToggle}
+                >
+                  Invocations
+                </Link>
+                <div className="border-t border-gray-700 my-1"></div>
+              </>
+            )}
             <button
               onClick={handleUserLogout}
               className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
@@ -92,12 +91,9 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
             </button>
           </>
         ) : (
-          <button
-            onClick={() => setLoginModalOpen(true)}
-            className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
-          >
+          <Link href="/login" className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left">
             Log in
-          </button>
+          </Link>
         )}
         <AdminLoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} onLoginSuccess={handleLoginSuccess} />
       </>
@@ -129,13 +125,17 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
               aria-orientation="vertical"
               aria-labelledby="user-menu-button"
             >
-              <Link href="/prompts" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
-                Prompts
-              </Link>
-              <Link href="/invocations" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
-                Invocations
-              </Link>
-              <div className="border-t border-gray-700 my-1"></div>
+              {session.role === 'Admin' && (
+                <>
+                  <Link href="/prompts" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
+                    Prompts
+                  </Link>
+                  <Link href="/invocations" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
+                    Invocations
+                  </Link>
+                  <div className="border-t border-gray-700 my-1"></div>
+                </>
+              )}
               <button
                 className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
                 id="user-menu-item-2"
@@ -147,14 +147,10 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
           )}
         </div>
       ) : (
-        <button
-          onClick={() => setLoginModalOpen(true)}
-          className="text-sm/6 font-semibold text-color cursor-pointer hover:text-indigo-400 transition-colors duration-200"
-        >
+        <Link href="/login" className="text-sm/6 font-semibold text-color cursor-pointer hover:text-indigo-400 transition-colors duration-200">
           Log in <span aria-hidden="true">&rarr;</span>
-        </button>
+        </Link>
       )}
-      <AdminLoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} onLoginSuccess={handleLoginSuccess} />
     </>
   );
 }

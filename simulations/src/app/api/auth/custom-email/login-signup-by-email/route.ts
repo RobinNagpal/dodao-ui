@@ -162,6 +162,7 @@ async function postHandler(req: NextRequest): Promise<LoginSignupByEmailResponse
       token,
       expires,
       url: url,
+      from: 'contact@koalagains.com',
     });
     console.log('[login-signup-by-email] Verification email sent successfully');
 
