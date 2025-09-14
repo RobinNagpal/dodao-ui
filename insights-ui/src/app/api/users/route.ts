@@ -59,7 +59,7 @@ async function postHandler(request: NextRequest, userContext: KoalaGainsJwtToken
       spaceId: KoalaGainsSpaceId,
       username: email,
       authProvider: 'custom-email',
-      role: role || 'Student',
+      role: role || UserRole.FreeUser,
     },
   });
 

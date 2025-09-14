@@ -31,6 +31,10 @@ export function withLoggedInAdmin<T>(handler: HandlerWithAdmin<T> | HandlerWithA
         },
       });
 
+      if (!user) {
+        throw new Error('Unauthorized: Only admins can access this endpoint');
+      }
+
       if (user?.role !== 'Admin') {
         throw new Error('Unauthorized: Only admins can access this endpoint');
       }
