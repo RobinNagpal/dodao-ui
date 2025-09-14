@@ -40,7 +40,7 @@ interface FilteredTicker {
 
 export default async function StocksPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
   // Check if any filters are applied
-  const hasFilters = Object.keys(searchParams).some((key) => key.includes('Threshold'));
+  const hasFilters = Object.keys(await searchParams).some((key) => key.includes('Threshold'));
 
   let tickers: TickerV1[] | FilteredTicker[] = [];
 
