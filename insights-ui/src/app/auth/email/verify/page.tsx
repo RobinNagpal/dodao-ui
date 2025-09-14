@@ -1,6 +1,7 @@
 import LoginTokenVerificationPage from '@dodao/web-core/components/auth/LoginTokenVerificationPage';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { Suspense } from 'react';
 
 export default async function VerifyTokenPage() {
   const space: WebCoreSpace = {
@@ -12,5 +13,9 @@ export default async function VerifyTokenPage() {
     adminUsernamesV1: [],
     authSettings: {},
   };
-  return <LoginTokenVerificationPage space={space} />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginTokenVerificationPage space={space} />
+    </Suspense>
+  );
 }
