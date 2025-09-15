@@ -104,10 +104,10 @@ const emailBody = (link: string) => `
 </html>
 `;
 
-export const sendVerificationRequest = async (params: { identifier: string; url: string; expires: Date; token: string }) => {
+export const sendVerificationRequest = async (params: { identifier: string; url: string; expires: Date; token: string; from?: string }) => {
   const { identifier: email, url } = params;
 
-  const from = 'support@tidbitshub.org';
+  const from = params.from || 'support@tidbitshub.org';
   console.log('Sending email to', email, 'from', from);
   console.log('Email body: ', emailBody(url));
   // Sending email via AWS SES
