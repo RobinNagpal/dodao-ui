@@ -7,66 +7,49 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 
 const AnalysisFactorsPage = () => {
   const [selectedIndustry, setSelectedIndustry] = useState<string>('');
   const [selectedSubIndustry, setSelectedSubIndustry] = useState<string>('');
-  const [industries, setIndustries] = useState<TickerV1Industry[]>([]);
-  const [subIndustries, setSubIndustries] = useState<TickerV1SubIndustry[]>([]);
-  const [loadingIndustries, setLoadingIndustries] = useState(true);
-  const [loadingSubIndustries, setLoadingSubIndustries] = useState(false);
 
   const AnalysisFactorsTable = dynamic(() => import('@/components/analysis-factors/AnalysisFactorsTable'), {
     ssr: false,
   });
 
-  // Fetch industries on component mount
-  useEffect(() => {
-    const fetchIndustries = async () => {
-      try {
-        setLoadingIndustries(true);
-        const response = await fetch(`${getBaseUrl()}/api/industries`);
-        if (!response.ok) throw new Error('Failed to fetch industries');
-        const data: TickerV1Industry[] = await response.json();
-        setIndustries(data.filter((industry) => !industry.archived)); // Only show non-archived
-      } catch (error) {
-        console.error('Error fetching industries:', error);
-      } finally {
-        setLoadingIndustries(false);
-      }
-    };
-
-    fetchIndustries();
-  }, []);
+  // Fetch industries using useFetchData hook
+  const { data: industries = [], loading: loadingIndustries } = useFetchData<TickerV1Industry[]>(
+    `${getBaseUrl()}/api/industries`,
+    {},
+    'Failed to fetch industries'
+  );
 
   // Fetch sub-industries when industry is selected
+  const {
+    data: subIndustries = [],
+    loading: loadingSubIndustries,
+    reFetchData: refetchSubIndustries,
+  } = useFetchData<TickerV1SubIndustry[]>(
+    `${getBaseUrl()}/api/sub-industries?industryKey=${selectedIndustry}`,
+    { skipInitialFetch: !selectedIndustry },
+    'Failed to fetch sub-industries'
+  );
+
+  // Refetch sub-industries when industry changes
   useEffect(() => {
-    const fetchSubIndustries = async () => {
-      if (!selectedIndustry) {
-        setSubIndustries([]);
-        return;
-      }
-
-      try {
-        setLoadingSubIndustries(true);
-        const response = await fetch(`${getBaseUrl()}/api/sub-industries?industryKey=${selectedIndustry}`);
-        if (!response.ok) throw new Error('Failed to fetch sub-industries');
-        const data: TickerV1SubIndustry[] = await response.json();
-        setSubIndustries(data.filter((subIndustry) => !subIndustry.archived)); // Only show non-archived
-      } catch (error) {
-        console.error('Error fetching sub-industries:', error);
-      } finally {
-        setLoadingSubIndustries(false);
-      }
-    };
-
-    fetchSubIndustries();
-  }, [selectedIndustry]);
+    if (selectedIndustry) {
+      refetchSubIndustries();
+    }
+  }, [selectedIndustry, refetchSubIndustries]);
 
   const handleIndustryChange = (industryKey: string) => {
     setSelectedIndustry(industryKey);
     setSelectedSubIndustry(''); // Reset sub-industry when industry changes
   };
+
+  // Filter out archived industries and sub-industries
+  const activeIndustries = industries.filter((industry) => !industry.archived);
+  const activeSubIndustries = subIndustries.filter((subIndustry) => !subIndustry.archived);
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
@@ -96,7 +79,7 @@ const AnalysisFactorsPage = () => {
                 <option value="" className="bg-gray-700 text-white">
                   {loadingIndustries ? 'Loading industries...' : 'Select Industry'}
                 </option>
-                {industries.map((industry) => (
+                {activeIndustries.map((industry) => (
                   <option key={industry.industryKey} value={industry.industryKey} className="bg-gray-700 text-white">
                     {industry.name}
                   </option>
@@ -115,7 +98,7 @@ const AnalysisFactorsPage = () => {
                 <option value="" className="bg-gray-700 text-white">
                   {loadingSubIndustries ? 'Loading sub-industries...' : 'Select Sub-Industry'}
                 </option>
-                {subIndustries.map((subIndustry) => (
+                {activeSubIndustries.map((subIndustry) => (
                   <option key={subIndustry.subIndustryKey} value={subIndustry.subIndustryKey} className="bg-gray-700 text-white">
                     {subIndustry.name}
                   </option>
