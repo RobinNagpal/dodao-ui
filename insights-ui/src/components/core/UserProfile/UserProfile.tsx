@@ -1,6 +1,5 @@
 'use client';
 
-import AdminLoginModal from '@/components/ui/AdminLoginModal';
 import { KoalaGainsSession } from '@/types/auth';
 import { UserIcon } from '@heroicons/react/24/solid';
 import { signOut, useSession } from 'next-auth/react';
@@ -95,7 +94,6 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
             Log in
           </Link>
         )}
-        <AdminLoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} onLoginSuccess={handleLoginSuccess} />
       </>
     );
   }
