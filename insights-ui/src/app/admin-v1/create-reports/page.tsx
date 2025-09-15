@@ -186,12 +186,6 @@ export default function CreateReportsV1Page(): JSX.Element {
           <Block title="Ticker Reports V1 Management" className="text-color">
             <div className="space-y-2">
               {/* Add New Ticker Button */}
-              <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold">Manage Ticker Analyses</h2>
-                <Button variant="contained" primary onClick={() => setShowAddTickerForm(true)}>
-                  Add New Ticker
-                </Button>
-              </div>
 
               {/* Industry and Sub-Industry Filters */}
               <Block title="Filter by Industry" className="dark:bg-gray-800">
@@ -255,21 +249,29 @@ export default function CreateReportsV1Page(): JSX.Element {
                     )}
                   </div>
                 ) : filteredTickers && filteredTickers.length > 0 ? (
-                  <Checkboxes
-                    items={filteredTickers.map(
-                      (ticker): CheckboxItem => ({
-                        id: ticker.symbol,
-                        name: `ticker-${ticker.symbol}`,
-                        label: (
-                          <span className="flex-grow cursor-pointer">
-                            {ticker.symbol} - {ticker.name}
-                          </span>
-                        ),
-                      })
-                    )}
-                    selectedItemIds={selectedTickers}
-                    onChange={(selectedIds: string[]) => setSelectedTickers(selectedIds)}
-                  />
+                  <div>
+                    <div className="flex justify-between items-center">
+                      <h2 className="text-lg font-semibold">Manage Ticker Analyses</h2>
+                      <Button variant="contained" primary onClick={() => setShowAddTickerForm(true)}>
+                        Add New Ticker
+                      </Button>
+                    </div>
+                    <Checkboxes
+                      items={filteredTickers.map(
+                        (ticker): CheckboxItem => ({
+                          id: ticker.symbol,
+                          name: `ticker-${ticker.symbol}`,
+                          label: (
+                            <span className="flex-grow cursor-pointer">
+                              {ticker.symbol} - {ticker.name}
+                            </span>
+                          ),
+                        })
+                      )}
+                      selectedItemIds={selectedTickers}
+                      onChange={(selectedIds: string[]) => setSelectedTickers(selectedIds)}
+                    />
+                  </div>
                 ) : (
                   <div className="text-center py-3 text-gray-500 dark:text-gray-400">No tickers found for the selected Industry and Sub-Industry.</div>
                 )}
