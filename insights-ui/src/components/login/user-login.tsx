@@ -97,11 +97,7 @@ export function UserLogin({ onLogin, errorMessage }: UserLoginProps): JSX.Elemen
                       )}
                     </div>
 
-                    <Button
-                      type="submit"
-                      className="w-full h-11 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white hover:from-indigo-500 hover:to-indigo-400 rounded-lg shadow-lg transition-all duration-200 disabled:opacity-70"
-                      disabled={isLoading}
-                    >
+                    <Button type="submit" variant="contained" className="w-full h-11 bg-gradient-to-r " disabled={isLoading} primary={true}>
                       {isLoading ? (
                         <span className="inline-flex items-center gap-2">
                           <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />

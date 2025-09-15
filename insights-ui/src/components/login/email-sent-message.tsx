@@ -51,11 +51,7 @@ export function EmailSentMessage({ email, onChangeEmail }: EmailSentMessageProps
                       Please check your inbox (and spam) and click the link to continue.
                     </p>
 
-                    <Button
-                      type="button"
-                      className="w-full h-11 border border-indigo-600 bg-transparent text-indigo-300 hover:bg-indigo-600 hover:text-white transition-all duration-200 rounded-lg shadow-lg"
-                      onClick={onChangeEmail}
-                    >
+                    <Button type="button" primary={false} variant="outlined" className="w-full h-11 text-white" onClick={onChangeEmail}>
                       Use a different email
                     </Button>
                   </div>

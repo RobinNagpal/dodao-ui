@@ -18,6 +18,7 @@ export default function StockActions() {
     <PrivateWrapper>
       <EllipsisDropdown
         items={actions}
+        className="px-2 py-2"
         onSelect={async (key) => {
           if (key === 'create-reports') {
             router.push(`/admin-v1/create-reports`);
