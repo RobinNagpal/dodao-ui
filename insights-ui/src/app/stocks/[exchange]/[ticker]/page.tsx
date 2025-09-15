@@ -76,7 +76,8 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
   const tickerData: TickerV1ReportResponse = (await tickerResponse.json()) as TickerV1ReportResponse;
   const industryKey = tickerData.industryKey;
-  const industryName = industryKey;
+  const industryName = tickerData.industryName || industryKey;
+  const subIndustryName = tickerData.subIndustryName || tickerData.subIndustryKey;
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
@@ -123,8 +124,10 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           <TickerComparisonButton
             tickerSymbol={tickerData.symbol}
             tickerName={tickerData.name}
-            tickerIndustry={tickerData.industryKey}
-            tickerSubIndustry={tickerData.subIndustryKey}
+            tickerIndustryKey={tickerData.industryKey}
+            tickerSubIndustryKey={tickerData.subIndustryKey}
+            tickerIndustryName={industryName}
+            tickerSubIndustryName={subIndustryName}
           />
         }
       />

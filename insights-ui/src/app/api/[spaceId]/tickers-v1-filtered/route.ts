@@ -2,25 +2,8 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { TickerAnalysisCategory, EvaluationResult, Prisma } from '@prisma/client';
-
-interface FilteredTicker {
-  id: string;
-  name: string;
-  symbol: string;
-  exchange: string;
-  industryKey: string;
-  subIndustryKey: string;
-  industryName: string;
-  subIndustryName: string;
-  websiteUrl?: string | null;
-  summary?: string | null;
-  cachedScore: number;
-  spaceId: string;
-  categoryScores: {
-    [key in TickerAnalysisCategory]?: number;
-  };
-  totalScore: number;
-}
+import { getIndustryMappings, getIndustryName, getSubIndustryName } from '@/lib/industryMappingUtils';
+import { FilteredTicker } from '@/types/ticker-typesv1';
 
 interface FilterParams {
   businessandmoatThreshold?: string;
@@ -84,28 +67,8 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   // Calculate category scores and filter tickers
   const filteredTickers: FilteredTicker[] = [];
 
-  // Fetch industry and sub-industry mappings (with fallback if tables don't exist yet)
-  let industryMap = new Map<string, string>();
-  let subIndustryMap = new Map<string, string>();
-
-  try {
-    const industries = await prisma.tickerV1Industry.findMany({
-      include: {
-        subIndustries: true,
-      },
-    });
-
-    // Create mappings for quick lookup
-    industryMap = new Map(industries.map((ind: any) => [ind.industryKey, ind.name]));
-    industries.forEach((industry: any) => {
-      industry.subIndustries.forEach((subInd: any) => {
-        subIndustryMap.set(subInd.subIndustryKey, subInd.name);
-      });
-    });
-  } catch (error) {
-    console.log('Industry tables not available yet, using keys as names:', error);
-    // Fallback: use keys as names if tables don't exist
-  }
+  // Get industry and sub-industry mappings
+  const mappings = await getIndustryMappings();
 
   for (const ticker of tickers) {
     const categoryScores: { [key in TickerAnalysisCategory]?: number } = {};
@@ -183,8 +146,8 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
         exchange: ticker.exchange,
         industryKey: ticker.industryKey,
         subIndustryKey: ticker.subIndustryKey,
-        industryName: industryMap.get(ticker.industryKey) || ticker.industryKey,
-        subIndustryName: subIndustryMap.get(ticker.subIndustryKey) || ticker.subIndustryKey,
+        industryName: getIndustryName(ticker.industryKey, mappings),
+        subIndustryName: getSubIndustryName(ticker.subIndustryKey, mappings),
         websiteUrl: ticker.websiteUrl,
         summary: ticker.summary,
         cachedScore: ticker.cachedScore,

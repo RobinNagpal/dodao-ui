@@ -3,6 +3,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Filters from '@/components/public-equitiesv1/Filters';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { TickerWithIndustryNames, FilteredTicker } from '@/types/ticker-typesv1';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -16,46 +17,6 @@ const breadcrumbs: BreadcrumbsOjbect[] = [
     current: true,
   },
 ];
-
-// Define the FilteredTicker interface similar to IndustryStocksPage
-interface FilteredTicker {
-  id: string;
-  name: string;
-  symbol: string;
-  exchange: string;
-  industryKey: string;
-  subIndustryKey: string;
-  industryName: string;
-  subIndustryName: string;
-  websiteUrl?: string | null;
-  summary?: string | null;
-  cachedScore: number;
-  spaceId: string;
-  categoryScores: {
-    [key: string]: number;
-  };
-  totalScore: number;
-}
-
-// Enhanced interface for regular tickers that now includes industry names
-interface TickerWithIndustryNames {
-  id: string;
-  name: string;
-  symbol: string;
-  exchange: string;
-  industryKey: string;
-  subIndustryKey: string;
-  industryName: string;
-  subIndustryName: string;
-  websiteUrl?: string | null;
-  summary?: string | null;
-  cachedScore: number;
-  spaceId: string;
-  createdAt: string;
-  updatedAt: string;
-  createdBy?: string | null;
-  updatedBy?: string | null;
-}
 
 export default async function StocksPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
   // Check if any filters are applied

@@ -2,6 +2,8 @@ import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { getIndustryMappings, enhanceTickerWithIndustryNames } from '@/lib/industryMappingUtils';
+import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 
 interface NewTickerRequest {
   name: string;
@@ -17,12 +19,6 @@ interface NewTickerRequest {
 interface NewTickerResponse {
   success: boolean;
   ticker: TickerV1;
-}
-
-// Enhanced interface to include industry and sub-industry names
-interface TickerWithIndustryNames extends TickerV1 {
-  industryName: string;
-  subIndustryName: string;
 }
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<TickerWithIndustryNames[]> {
@@ -59,35 +55,11 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     },
   });
 
-  // Fetch industry and sub-industry mappings (with fallback if tables don't exist yet)
-  let industryMap = new Map<string, string>();
-  let subIndustryMap = new Map<string, string>();
-
-  try {
-    const industries = await prisma.tickerV1Industry.findMany({
-      include: {
-        subIndustries: true,
-      },
-    });
-
-    // Create mappings for quick lookup
-    industryMap = new Map(industries.map((ind: any) => [ind.industryKey, ind.name]));
-    industries.forEach((industry: any) => {
-      industry.subIndustries.forEach((subInd: any) => {
-        subIndustryMap.set(subInd.subIndustryKey, subInd.name);
-      });
-    });
-  } catch (error) {
-    console.log('Industry tables not available yet, using keys as names:', error);
-    // Fallback: use keys as names if tables don't exist
-  }
+  // Get industry and sub-industry mappings
+  const mappings = await getIndustryMappings();
 
   // Enhance tickers with industry names
-  const tickersWithNames: TickerWithIndustryNames[] = tickers.map((ticker) => ({
-    ...ticker,
-    industryName: industryMap.get(ticker.industryKey) || ticker.industryKey,
-    subIndustryName: subIndustryMap.get(ticker.subIndustryKey) || ticker.subIndustryKey,
-  }));
+  const tickersWithNames: TickerWithIndustryNames[] = tickers.map((ticker) => enhanceTickerWithIndustryNames(ticker, mappings));
 
   return tickersWithNames;
 }

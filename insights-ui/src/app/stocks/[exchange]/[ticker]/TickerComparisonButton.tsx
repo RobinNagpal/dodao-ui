@@ -7,11 +7,20 @@ import { useState } from 'react';
 export interface TickerComparisonButtonProps {
   tickerName: string;
   tickerSymbol: string;
-  tickerIndustry: string;
-  tickerSubIndustry: string;
+  tickerIndustryKey: string;
+  tickerSubIndustryKey: string;
+  tickerIndustryName: string;
+  tickerSubIndustryName: string;
 }
 
-export default function TickerComparisonButton({ tickerSymbol, tickerName, tickerIndustry, tickerSubIndustry }: TickerComparisonButtonProps) {
+export default function TickerComparisonButton({
+  tickerSymbol,
+  tickerName,
+  tickerIndustryKey,
+  tickerSubIndustryKey,
+  tickerIndustryName,
+  tickerSubIndustryName,
+}: TickerComparisonButtonProps) {
   const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false);
 
   const handleCompareClick = () => {
@@ -35,8 +44,10 @@ export default function TickerComparisonButton({ tickerSymbol, tickerName, ticke
         currentTicker={{
           symbol: tickerSymbol,
           name: tickerName,
-          industryKey: tickerIndustry,
-          subIndustryKey: tickerSubIndustry,
+          industryKey: tickerIndustryKey,
+          subIndustryKey: tickerSubIndustryKey,
+          industryName: tickerIndustryName,
+          subIndustryName: tickerSubIndustryName,
         }}
       />
     </div>

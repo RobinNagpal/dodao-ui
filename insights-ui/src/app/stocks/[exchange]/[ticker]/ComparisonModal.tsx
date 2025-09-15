@@ -21,6 +21,8 @@ interface ComparisonModalProps {
     name: string;
     industryKey: string;
     subIndustryKey: string;
+    industryName: string;
+    subIndustryName: string;
   };
 }
 
@@ -153,7 +155,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
     <div className="flex items-center w-full relative">
       <div className="flex-1 text-center">
         <h2 className="text-xl font-semibold">
-          Stock Comparison - {currentTicker.industryKey} - {currentTicker.subIndustryKey} - Selected: {comparisonTickers.length}/5
+          Stock Comparison - {currentTicker.industryName} - {currentTicker.subIndustryName} - Selected: {comparisonTickers.length}/5
         </h2>
       </div>
       <p className="absolute right-0 text-sm text-gray-400"></p>

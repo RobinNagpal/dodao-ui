@@ -5,32 +5,13 @@ import TickerComparison, { ComparisonTicker } from '@/components/ticker-reportsv
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CATEGORY_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
-
-// Enhanced ticker interface that includes industry names
-interface TickerWithIndustryNames {
-  id: string;
-  name: string;
-  symbol: string;
-  exchange: string;
-  industryKey: string;
-  subIndustryKey: string;
-  industryName: string;
-  subIndustryName: string;
-  websiteUrl?: string | null;
-  summary?: string | null;
-  cachedScore: number;
-  spaceId: string;
-  createdAt: string;
-  updatedAt: string;
-  createdBy?: string | null;
-  updatedBy?: string | null;
-}
 
 interface ComparisonData {
   ticker: string;

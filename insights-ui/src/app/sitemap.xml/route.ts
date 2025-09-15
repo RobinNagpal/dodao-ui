@@ -18,62 +18,23 @@ interface SiteMapUrl {
 
 // Fetch all project IDs
 async function getAllProjects(): Promise<string[]> {
-  const baseUrl = getBaseUrl();
-  try {
-    const response = await fetch(`${baseUrl}/api/crowd-funding/projects`, {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch projects: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data.projectIds || [];
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    return []; // Return an empty array to prevent breaking the sitemap
-  }
+  const response = await fetch(`${getBaseUrl()}/api/crowd-funding/projects`);
+  const data = await response.json();
+  return data.projectIds || [];
 }
 
 // Fetch all industries
 async function getAllIndustries(): Promise<Industry[]> {
-  const baseUrl = getBaseUrl();
-  try {
-    const response = await fetch(`${baseUrl}/api/industries`, {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch industries: ${response.statusText}`);
-    }
-
-    const industries = await response.json();
-    return industries || [];
-  } catch (error) {
-    console.error('Error fetching industries:', error);
-    return []; // Return an empty array to prevent breaking the sitemap
-  }
+  const response = await fetch(`${getBaseUrl()}/api/industries`);
+  const industries = await response.json();
+  return industries || [];
 }
 
 // Fetch all tickers
 async function getAllTickers(): Promise<Array<{ symbol: string; exchange: string; industryKey: string }>> {
-  const baseUrl = getBaseUrl();
-  try {
-    const response = await fetch(`${baseUrl}/api/koala_gains/tickers-v1`, {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch tickers: ${response.statusText}`);
-    }
-
-    const tickers = await response.json();
-    return tickers || [];
-  } catch (error) {
-    console.error('Error fetching tickers:', error);
-    return []; // Return an empty array to prevent breaking the sitemap
-  }
+  const response = await fetch(`${getBaseUrl()}/api/koala_gains/tickers-v1`);
+  const tickers = await response.json();
+  return tickers || [];
 }
 
 // Generate sitemap URLs
@@ -122,42 +83,32 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
   });
 
   // Add industry pages - /stocks/industry/{industry}
-  try {
-    const industries = await getAllIndustries();
-    for (const industry of industries) {
-      urls.push({
-        url: `/stocks/industry/${industry.industryKey}`,
-        changefreq: 'weekly',
-        priority: 0.7,
-      });
-    }
-  } catch (error) {
-    console.error('Error generating industry URLs:', error);
-    // Continue without industry URLs if API fails
+  const industries = await getAllIndustries();
+  for (const industry of industries) {
+    urls.push({
+      url: `/stocks/industry/${industry.industryKey}`,
+      changefreq: 'weekly',
+      priority: 0.7,
+    });
   }
 
   // Fetch all tickers and add individual ticker pages - /stocks/{exchange}/{ticker}
-  try {
-    const tickers = await getAllTickers();
+  const tickers = await getAllTickers();
 
-    // Use a Set to avoid duplicates (in case same ticker exists on multiple exchanges)
-    const addedUrls = new Set<string>();
+  // Use a Set to avoid duplicates (in case same ticker exists on multiple exchanges)
+  const addedUrls = new Set<string>();
 
-    for (const ticker of tickers) {
-      const tickerUrl = `/stocks/${ticker.exchange}/${ticker.symbol}`;
+  for (const ticker of tickers) {
+    const tickerUrl = `/stocks/${ticker.exchange}/${ticker.symbol}`;
 
-      if (!addedUrls.has(tickerUrl)) {
-        urls.push({
-          url: tickerUrl,
-          changefreq: 'weekly',
-          priority: 0.6,
-        });
-        addedUrls.add(tickerUrl);
-      }
+    if (!addedUrls.has(tickerUrl)) {
+      urls.push({
+        url: tickerUrl,
+        changefreq: 'weekly',
+        priority: 0.6,
+      });
+      addedUrls.add(tickerUrl);
     }
-  } catch (error) {
-    console.error('Error generating ticker URLs:', error);
-    // Continue without ticker URLs if API fails
   }
 
   return urls;

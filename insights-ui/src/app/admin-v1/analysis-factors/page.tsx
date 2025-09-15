@@ -126,7 +126,9 @@ const AnalysisFactorsPage = () => {
         </div>
 
         {/* Analysis Factors Table */}
-        {selectedIndustry && selectedSubIndustry && <AnalysisFactorsTable industryKey={selectedIndustry as any} subIndustryKey={selectedSubIndustry as any} />}
+        {selectedIndustry && selectedSubIndustry && (
+          <AnalysisFactorsTable industryKey={selectedIndustry as string} subIndustryKey={selectedSubIndustry as string} />
+        )}
 
         {(!selectedIndustry || !selectedSubIndustry) && (
           <div className="text-center text-gray-400 py-12">Please select both Industry and Sub-Industry to manage analysis factors</div>
