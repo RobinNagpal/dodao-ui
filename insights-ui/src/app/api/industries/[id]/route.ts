@@ -9,6 +9,7 @@ import { TickerV1Industry } from '@prisma/client';
 export interface IndustryUpdateRequest {
   name?: string;
   summary?: string;
+  archived?: boolean;
 }
 
 async function getHandler(request: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<TickerV1Industry> {
@@ -36,6 +37,7 @@ async function putHandler(
     data: {
       ...(body.name && { name: body.name }),
       ...(body.summary && { summary: body.summary }),
+      ...(typeof body.archived === 'boolean' && { archived: body.archived }),
     },
   });
 

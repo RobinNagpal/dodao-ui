@@ -494,9 +494,10 @@ enum TickerAnalysisCategory {
 // --------------------------
 
 model TickerV1Industry {
-  industryKey String @id @map("industry_key")
-  name        String @map("name")
-  summary     String @map("summary")
+  industryKey String  @id @map("industry_key")
+  name        String  @map("name")
+  summary     String  @map("summary")
+  archived    Boolean @default(false) @map("archived")
 
   subIndustries TickerV1SubIndustry[]
 }
@@ -506,6 +507,7 @@ model TickerV1SubIndustry {
   name           String           @map("name")
   summary        String           @map("summary")
   industryKey    String           @map("industry_key")
+  archived       Boolean          @default(false) @map("archived")
   industry       TickerV1Industry @relation(fields: [industryKey], references: [industryKey])
 }
 
