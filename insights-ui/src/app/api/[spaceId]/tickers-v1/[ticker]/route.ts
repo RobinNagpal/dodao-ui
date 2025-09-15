@@ -11,6 +11,7 @@ import {
 } from '.prisma/client';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { TickerV1 } from '@prisma/client';
+import { getIndustryMappings, getIndustryName, getSubIndustryName } from '@/lib/industryMappingUtils';
 
 export type FullTickerV1CategoryAnalysisResult = TickerV1CategoryAnalysisResult & {
   factorResults: (TickerV1AnalysisCategoryFactorResult & {
@@ -54,6 +55,8 @@ export interface CompetitorTicker {
 
 export interface TickerV1ReportResponse extends FullReport {
   ticker: TickerV1;
+  industryName: string;
+  subIndustryName: string;
   similarTickers: SimilarTicker[];
   competitorTickers: CompetitorTicker[];
   analysisStatus: {
@@ -182,12 +185,19 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     cachedScore: !!tickerRecord.cachedScore,
   };
 
+  // Get industry and sub-industry mappings
+  const mappings = await getIndustryMappings();
+  const industryName = getIndustryName(tickerRecord.industryKey, mappings);
+  const subIndustryName = getSubIndustryName(tickerRecord.subIndustryKey, mappings);
+
   return {
     ticker: tickerRecord,
     ...tickerRecord,
     websiteUrl: tickerRecord.websiteUrl || null,
     summary: tickerRecord.summary || null,
     vsCompetition: tickerRecord.vsCompetition || undefined,
+    industryName,
+    subIndustryName,
     similarTickers,
     competitorTickers,
     analysisStatus,

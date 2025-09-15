@@ -2,23 +2,8 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { TickerAnalysisCategory, EvaluationResult, Prisma } from '@prisma/client';
-
-interface FilteredTicker {
-  id: string;
-  name: string;
-  symbol: string;
-  exchange: string;
-  industryKey: string;
-  subIndustryKey: string;
-  websiteUrl?: string | null;
-  summary?: string | null;
-  cachedScore: number;
-  spaceId: string;
-  categoryScores: {
-    [key in TickerAnalysisCategory]?: number;
-  };
-  totalScore: number;
-}
+import { getIndustryMappings, getIndustryName, getSubIndustryName } from '@/lib/industryMappingUtils';
+import { FilteredTicker } from '@/types/ticker-typesv1';
 
 interface FilterParams {
   businessandmoatThreshold?: string;
@@ -81,6 +66,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   // Calculate category scores and filter tickers
   const filteredTickers: FilteredTicker[] = [];
+
+  // Get industry and sub-industry mappings
+  const mappings = await getIndustryMappings();
 
   for (const ticker of tickers) {
     const categoryScores: { [key in TickerAnalysisCategory]?: number } = {};
@@ -158,6 +146,8 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
         exchange: ticker.exchange,
         industryKey: ticker.industryKey,
         subIndustryKey: ticker.subIndustryKey,
+        industryName: getIndustryName(ticker.industryKey, mappings),
+        subIndustryName: getSubIndustryName(ticker.subIndustryKey, mappings),
         websiteUrl: ticker.websiteUrl,
         summary: ticker.summary,
         cachedScore: ticker.cachedScore,

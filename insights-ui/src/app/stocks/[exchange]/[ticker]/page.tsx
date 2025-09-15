@@ -5,7 +5,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Competition from '@/components/ticker-reportsv1/Competition';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import RadarChart from '@/components/visualizations/RadarChart';
-import { CATEGORY_MAPPINGS, INDUSTRY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -16,6 +16,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import { headers } from 'next/headers';
 import { Metadata } from 'next';
+import { permanentRedirect } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: Promise<{ ticker: string; exchange: string }> }): Promise<Metadata> {
   const { ticker, exchange } = await params;
@@ -75,8 +76,14 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   const tickerResponse = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}`, { cache: 'no-cache' });
 
   const tickerData: TickerV1ReportResponse = (await tickerResponse.json()) as TickerV1ReportResponse;
+
+  if (tickerData.exchange !== exchange.toUpperCase()) {
+    permanentRedirect(`/stocks/${tickerData.exchange.toUpperCase()}/${tickerData.symbol.toUpperCase()}`);
+  }
+
   const industryKey = tickerData.industryKey;
-  const industryName = INDUSTRY_MAPPINGS[industryKey as keyof typeof INDUSTRY_MAPPINGS] || industryKey;
+  const industryName = tickerData.industryName || industryKey;
+  const subIndustryName = tickerData.subIndustryName || tickerData.subIndustryKey;
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
@@ -123,8 +130,10 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           <TickerComparisonButton
             tickerSymbol={tickerData.symbol}
             tickerName={tickerData.name}
-            tickerIndustry={tickerData.industryKey}
-            tickerSubIndustry={tickerData.subIndustryKey}
+            tickerIndustryKey={tickerData.industryKey}
+            tickerSubIndustryKey={tickerData.subIndustryKey}
+            tickerIndustryName={industryName}
+            tickerSubIndustryName={subIndustryName}
           />
         }
       />

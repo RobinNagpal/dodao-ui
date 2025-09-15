@@ -2,6 +2,8 @@ import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { getIndustryMappings, enhanceTickerWithIndustryNames } from '@/lib/industryMappingUtils';
+import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 
 interface NewTickerRequest {
   name: string;
@@ -19,7 +21,7 @@ interface NewTickerResponse {
   ticker: TickerV1;
 }
 
-async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<TickerV1[]> {
+async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<TickerWithIndustryNames[]> {
   const { spaceId } = await context.params;
   const url = new URL(req.url);
   const industryKey = url.searchParams.get('industryKey');
@@ -53,7 +55,13 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     },
   });
 
-  return tickers;
+  // Get industry and sub-industry mappings
+  const mappings = await getIndustryMappings();
+
+  // Enhance tickers with industry names
+  const tickersWithNames: TickerWithIndustryNames[] = tickers.map((ticker) => enhanceTickerWithIndustryNames(ticker, mappings));
+
+  return tickersWithNames;
 }
 
 async function postHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<NewTickerResponse> {
@@ -101,5 +109,5 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
   };
 }
 
-export const GET = withErrorHandlingV2<TickerV1[]>(getHandler);
+export const GET = withErrorHandlingV2<TickerWithIndustryNames[]>(getHandler);
 export const POST = withErrorHandlingV2<NewTickerResponse>(postHandler);

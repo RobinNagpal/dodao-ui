@@ -4,7 +4,11 @@ import { getPostsData } from '@/util/blog-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
-import { INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
+
+interface Industry {
+  industryKey: string;
+  name: string;
+}
 
 interface SiteMapUrl {
   url: string;
@@ -14,42 +18,23 @@ interface SiteMapUrl {
 
 // Fetch all project IDs
 async function getAllProjects(): Promise<string[]> {
-  const baseUrl = getBaseUrl();
-  try {
-    const response = await fetch(`${baseUrl}/api/crowd-funding/projects`, {
-      method: 'GET',
-    });
+  const response = await fetch(`${getBaseUrl()}/api/crowd-funding/projects`);
+  const data = await response.json();
+  return data.projectIds || [];
+}
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch projects: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data.projectIds || [];
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    return []; // Return an empty array to prevent breaking the sitemap
-  }
+// Fetch all industries
+async function getAllIndustries(): Promise<Industry[]> {
+  const response = await fetch(`${getBaseUrl()}/api/industries`);
+  const industries = await response.json();
+  return industries || [];
 }
 
 // Fetch all tickers
 async function getAllTickers(): Promise<Array<{ symbol: string; exchange: string; industryKey: string }>> {
-  const baseUrl = getBaseUrl();
-  try {
-    const response = await fetch(`${baseUrl}/api/koala_gains/tickers-v1`, {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch tickers: ${response.statusText}`);
-    }
-
-    const tickers = await response.json();
-    return tickers || [];
-  } catch (error) {
-    console.error('Error fetching tickers:', error);
-    return []; // Return an empty array to prevent breaking the sitemap
-  }
+  const response = await fetch(`${getBaseUrl()}/api/koala_gains/tickers-v1`);
+  const tickers = await response.json();
+  return tickers || [];
 }
 
 // Generate sitemap URLs
@@ -98,37 +83,32 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
   });
 
   // Add industry pages - /stocks/industry/{industry}
-  const industryKeys = Object.keys(INDUSTRY_MAPPINGS);
-  for (const industryKey of industryKeys) {
+  const industries = await getAllIndustries();
+  for (const industry of industries) {
     urls.push({
-      url: `/stocks/industry/${industryKey}`,
+      url: `/stocks/industry/${industry.industryKey}`,
       changefreq: 'weekly',
       priority: 0.7,
     });
   }
 
   // Fetch all tickers and add individual ticker pages - /stocks/{exchange}/{ticker}
-  try {
-    const tickers = await getAllTickers();
+  const tickers = await getAllTickers();
 
-    // Use a Set to avoid duplicates (in case same ticker exists on multiple exchanges)
-    const addedUrls = new Set<string>();
+  // Use a Set to avoid duplicates (in case same ticker exists on multiple exchanges)
+  const addedUrls = new Set<string>();
 
-    for (const ticker of tickers) {
-      const tickerUrl = `/stocks/${ticker.exchange}/${ticker.symbol}`;
+  for (const ticker of tickers) {
+    const tickerUrl = `/stocks/${ticker.exchange}/${ticker.symbol}`;
 
-      if (!addedUrls.has(tickerUrl)) {
-        urls.push({
-          url: tickerUrl,
-          changefreq: 'weekly',
-          priority: 0.6,
-        });
-        addedUrls.add(tickerUrl);
-      }
+    if (!addedUrls.has(tickerUrl)) {
+      urls.push({
+        url: tickerUrl,
+        changefreq: 'weekly',
+        priority: 0.6,
+      });
+      addedUrls.add(tickerUrl);
     }
-  } catch (error) {
-    console.error('Error generating ticker URLs:', error);
-    // Continue without ticker URLs if API fails
   }
 
   return urls;
@@ -269,7 +249,7 @@ async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
     smStream.end();
     const response: Buffer = await streamToPromise(smStream);
 
-    return new NextResponse(response, {
+    return new NextResponse(response as BodyInit, {
       status: 200,
       headers: {
         'Content-Type': 'application/xml',

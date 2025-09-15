@@ -4,7 +4,7 @@ import EditAnalysisFactorsModal from '@/components/analysis-factors/EditAnalysis
 import ViewAnalysisFactorsModal from '@/components/analysis-factors/ViewAnalysisFactorsModal';
 import UploadJsonModal from '@/components/analysis-factors/UploadJsonModal';
 import ExportJsonModal from '@/components/analysis-factors/ExportJsonModal';
-import { getIndustryDisplayName, getSubIndustryDisplayName, IndustryKey, SubIndustryKey, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { UpsertAnalysisFactorsRequest } from '@/types/public-equity/analysis-factors-types';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -21,11 +21,11 @@ import React, { useState } from 'react';
 import { SuccessStatus } from '@/types/public-equity/common-types';
 
 interface AnalysisFactorsTableProps {
-  industryKey: IndustryKey;
-  subIndustryKey: SubIndustryKey;
+  industryKey: string;
+  subIndustryKey: string;
 }
 
-function getAnalysisFactorPrompt(industryKey: IndustryKey, subIndustryKey: SubIndustryKey) {
+function getAnalysisFactorPrompt(industryKey: string, subIndustryKey: string) {
   return `
 You are an equity analyst specializing in ${industryKey}. Using the JSON schema below as a template, produce an updated version tailored to **${subIndustryKey}**.
 
@@ -351,7 +351,7 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
           <div className="text-4xl">
             Analysis Factors
             <p className="text-lg text-gray-600 mt-1">
-              {getIndustryDisplayName(industryKey)} → {getSubIndustryDisplayName(subIndustryKey)}
+              {industryKey} → {subIndustryKey}
             </p>
           </div>
           <div className="flex space-x-2">
@@ -503,7 +503,7 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
           <ViewAnalysisFactorsModal
             open={!!analysisFactorsToView}
             onClose={() => setAnalysisFactorsToView(null)}
-            title={`Analysis Factors - ${getIndustryDisplayName(industryKey)} → ${getSubIndustryDisplayName(subIndustryKey)}`}
+            title={`Analysis Factors - ${industryKey} → ${subIndustryKey}`}
             analysisFactors={analysisFactorsToView}
           />
         )}

@@ -2,37 +2,29 @@ import StockActions from '@/app/stocks/StockActions';
 import Filters from '@/components/public-equitiesv1/Filters';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { FilteredTicker, TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { TickerV1 } from '@prisma/client';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { Metadata } from 'next';
-
-// Import the FilteredTicker interface from the API route
-interface FilteredTicker {
-  id: string;
-  name: string;
-  symbol: string;
-  exchange: string;
-  industryKey: string;
-  subIndustryKey: string;
-  websiteUrl?: string | null;
-  summary?: string | null;
-  cachedScore: number;
-  spaceId: string;
-  categoryScores: {
-    [key: string]: number;
-  };
-  totalScore: number;
-}
 
 export async function generateMetadata(props: { params: Promise<{ industry: string }> }): Promise<Metadata> {
   const params = await props.params;
   const industryKey = decodeURIComponent(params.industry);
-  const industryName = INDUSTRY_MAPPINGS[industryKey as keyof typeof INDUSTRY_MAPPINGS] || industryKey;
+
+  // Fetch a sample ticker to get the industry name
+  let industryName = industryKey; // fallback to key
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US&industryKey=${encodeURIComponent(industryKey)}`);
+    const tickers: TickerWithIndustryNames[] = await response.json();
+    if (tickers.length > 0 && tickers[0].industryName) {
+      industryName = tickers[0].industryName;
+    }
+  } catch (error) {
+    console.log('Error fetching industry name for metadata:', error);
+  }
 
   const base = `https://koalagains.com/stocks/industry/${encodeURIComponent(industryKey)}`;
   return {
@@ -70,20 +62,9 @@ export default async function IndustryStocksPage(props: {
   const params = await props.params;
   const searchParams = await props.searchParams;
   const industryKey = decodeURIComponent(params.industry);
-  const industryName = INDUSTRY_MAPPINGS[industryKey as keyof typeof INDUSTRY_MAPPINGS] || industryKey;
 
-  const breadcrumbs: BreadcrumbsOjbect[] = [
-    {
-      name: 'US Stocks',
-      href: `/stocks`,
-      current: false,
-    },
-    {
-      name: industryName,
-      href: `/stocks/industry/${encodeURIComponent(industryKey)}`,
-      current: true,
-    },
-  ];
+  // We'll get the industry name from the API response
+  let industryName = industryKey; // fallback to key
 
   // Check if any filters are applied
   const hasFilters = Object.keys(searchParams).some((key) => key.includes('Threshold'));
@@ -110,9 +91,9 @@ export default async function IndustryStocksPage(props: {
     // Use regular tickers API when no filters are applied
     const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
     const response = await fetch(apiUrl);
-    const regularTickers: TickerV1[] = await response.json();
+    const regularTickers: TickerWithIndustryNames[] = await response.json(); // This now returns TickerWithIndustryNames[]
 
-    // Filter by main industry and transform to FilteredTicker format
+    // Filter by main industry (already have industry names from API)
     tickers = regularTickers
       .filter((ticker) => ticker.industryKey === industryKey)
       .map((ticker) => ({
@@ -122,6 +103,8 @@ export default async function IndustryStocksPage(props: {
         exchange: ticker.exchange,
         industryKey: ticker.industryKey,
         subIndustryKey: ticker.subIndustryKey,
+        industryName: ticker.industryName || ticker.industryKey,
+        subIndustryName: ticker.subIndustryName || ticker.subIndustryKey,
         websiteUrl: ticker.websiteUrl,
         summary: ticker.summary,
         cachedScore: ticker.cachedScore,
@@ -130,6 +113,25 @@ export default async function IndustryStocksPage(props: {
         totalScore: 0, // Will be calculated if needed
       }));
   }
+
+  // Extract industry name from the first ticker if available
+  if (tickers.length > 0 && tickers[0].industryName) {
+    industryName = tickers[0].industryName;
+  }
+
+  // Now create breadcrumbs with the correct industry name
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: 'US Stocks',
+      href: `/stocks`,
+      current: false,
+    },
+    {
+      name: industryName,
+      href: `/stocks/industry/${encodeURIComponent(industryKey)}`,
+      current: true,
+    },
+  ];
 
   // Group tickers by sub-industry for display
   const tickersBySubIndustry: Record<string, FilteredTicker[]> = {};
@@ -180,9 +182,19 @@ export default async function IndustryStocksPage(props: {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10 auto-rows-auto">
-            {Object.entries(tickersBySubIndustry).map(([subIndustry, subIndustryTickers]) => (
-              <SubIndustryCard key={subIndustry} subIndustry={subIndustry} tickers={subIndustryTickers} total={subIndustryTickers.length} />
-            ))}
+            {Object.entries(tickersBySubIndustry).map(([subIndustry, subIndustryTickers]) => {
+              // Get subIndustryName from the first ticker in this sub-industry
+              const subIndustryName = subIndustryTickers[0]?.subIndustryName || subIndustry;
+              return (
+                <SubIndustryCard
+                  key={subIndustry}
+                  subIndustry={subIndustry}
+                  subIndustryName={subIndustryName}
+                  tickers={subIndustryTickers}
+                  total={subIndustryTickers.length}
+                />
+              );
+            })}
           </div>
         )}
       </PageWrapper>
