@@ -8,7 +8,7 @@ import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import UpsertIndustryModal from '../industries/UpsertIndustryModal';
-import UpsertSubIndustryModal from '../sub-industries/UpsertSubIndustryModal';
+import UpsertSubIndustryModal from './UpsertSubIndustryModal';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
