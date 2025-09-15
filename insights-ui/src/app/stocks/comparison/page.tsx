@@ -12,6 +12,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 
 interface ComparisonData {
   ticker: string;
@@ -40,11 +41,34 @@ export default function ComparisonPage() {
   const [selectedSubIndustry, setSelectedSubIndustry] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // State for industries and sub-industries from database
-  const [industries, setIndustries] = useState<TickerV1Industry[]>([]);
-  const [subIndustries, setSubIndustries] = useState<TickerV1SubIndustry[]>([]);
-  const [loadingIndustries, setLoadingIndustries] = useState(true);
-  const [loadingSubIndustries, setLoadingSubIndustries] = useState(false);
+  // Fetch industries using useFetchData hook
+  const { data: industries = [], loading: loadingIndustries } = useFetchData<TickerV1Industry[]>(
+    `${getBaseUrl()}/api/industries`,
+    {},
+    'Failed to fetch industries'
+  );
+
+  // Fetch sub-industries when industry is selected
+  const {
+    data: subIndustries = [],
+    loading: loadingSubIndustries,
+    reFetchData: refetchSubIndustries,
+  } = useFetchData<TickerV1SubIndustry[]>(
+    `${getBaseUrl()}/api/sub-industries?industryKey=${selectedIndustry}`,
+    { skipInitialFetch: !selectedIndustry },
+    'Failed to fetch sub-industries'
+  );
+
+  // Refetch sub-industries when industry changes
+  useEffect(() => {
+    if (selectedIndustry) {
+      refetchSubIndustries();
+    }
+  }, [selectedIndustry, refetchSubIndustries]);
+
+  // Filter out archived industries and sub-industries
+  const activeIndustries = industries.filter((industry) => !industry.archived);
+  const activeSubIndustries = subIndustries.filter((subIndustry) => !subIndustry.archived);
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
@@ -58,49 +82,6 @@ export default function ComparisonPage() {
       current: true,
     },
   ];
-
-  // Fetch industries on component mount
-  useEffect(() => {
-    const fetchIndustries = async () => {
-      try {
-        setLoadingIndustries(true);
-        const response = await fetch(`${getBaseUrl()}/api/industries`);
-        if (!response.ok) throw new Error('Failed to fetch industries');
-        const data: TickerV1Industry[] = await response.json();
-        setIndustries(data.filter((industry) => !industry.archived)); // Only show non-archived
-      } catch (error) {
-        console.error('Error fetching industries:', error);
-      } finally {
-        setLoadingIndustries(false);
-      }
-    };
-
-    fetchIndustries();
-  }, []);
-
-  // Fetch sub-industries when industry is selected
-  useEffect(() => {
-    const fetchSubIndustries = async () => {
-      if (!selectedIndustry) {
-        setSubIndustries([]);
-        return;
-      }
-
-      try {
-        setLoadingSubIndustries(true);
-        const response = await fetch(`${getBaseUrl()}/api/sub-industries?industryKey=${selectedIndustry}`);
-        if (!response.ok) throw new Error('Failed to fetch sub-industries');
-        const data: TickerV1SubIndustry[] = await response.json();
-        setSubIndustries(data.filter((subIndustry) => !subIndustry.archived)); // Only show non-archived
-      } catch (error) {
-        console.error('Error fetching sub-industries:', error);
-      } finally {
-        setLoadingSubIndustries(false);
-      }
-    };
-
-    fetchSubIndustries();
-  }, [selectedIndustry]);
 
   // Fetch all available tickers
   useEffect(() => {
@@ -294,7 +275,7 @@ export default function ComparisonPage() {
                 className="w-full border border-gray-300 bg-gray-800 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">{loadingIndustries ? 'Loading industries...' : 'All Industries'}</option>
-                {industries.map((industry) => (
+                {activeIndustries.map((industry) => (
                   <option key={industry.industryKey} value={industry.industryKey}>
                     {industry.name}
                   </option>
@@ -311,7 +292,7 @@ export default function ComparisonPage() {
                 className="w-full border bg-gray-800 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-800"
               >
                 <option value="">{loadingSubIndustries ? 'Loading sub-industries...' : 'All Sub-Industries'}</option>
-                {subIndustries.map((subIndustry) => (
+                {activeSubIndustries.map((subIndustry) => (
                   <option key={subIndustry.subIndustryKey} value={subIndustry.subIndustryKey}>
                     {subIndustry.name}
                   </option>
@@ -337,7 +318,7 @@ export default function ComparisonPage() {
           {/* Available Stocks */}
           <div>
             <h3 className="text-sm font-medium mb-3">
-              Available Stocks {selectedIndustry && industries.find((ind) => ind.industryKey === selectedIndustry)?.name}
+              Available Stocks {selectedIndustry && activeIndustries.find((ind) => ind.industryKey === selectedIndustry)?.name}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-48 overflow-y-auto bg-gray-900">
               {filteredTickers
