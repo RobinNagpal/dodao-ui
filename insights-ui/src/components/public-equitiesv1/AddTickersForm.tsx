@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -6,6 +6,7 @@ import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import Papa from 'papaparse';
 
 interface NewTickerResponse {
   success: boolean;
@@ -49,6 +50,9 @@ export default function AddTickersForm({
     subIndustryKey: initialSubIndustry || '',
   });
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [csvError, setCsvError] = useState<string>('');
+
   // Filter sub-industries based on selected industry
   const filteredSubIndustries = subIndustries.filter((sub) => sub.industryKey === newTickerForm.industryKey);
 
@@ -64,6 +68,80 @@ export default function AddTickersForm({
     { id: 'AMEX', label: 'AMEX' },
     { id: 'TSX', label: 'TSX' },
   ];
+
+  // CSV handling functions
+  const handleCsvUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setCsvError('');
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (results: Papa.ParseResult<Record<string, string>>) => {
+        try {
+          const data = results.data as Array<Record<string, string>>;
+
+          // Validate CSV format
+          if (data.length === 0) {
+            setCsvError('CSV file is empty');
+            return;
+          }
+
+          // Check required headers
+          const requiredHeaders = ['name', 'symbol'];
+          const headers = Object.keys(data[0] || {});
+          const missingHeaders = requiredHeaders.filter((header) => !headers.includes(header));
+
+          if (missingHeaders.length > 0) {
+            setCsvError(`Missing required headers: ${missingHeaders.join(', ')}`);
+            return;
+          }
+
+          // Convert CSV data to ticker entries
+          const tickerEntries: TickerEntry[] = data
+            .filter((row) => row.name && row.symbol) // Only include rows with required fields
+            .map((row) => ({
+              name: row.name.trim(),
+              symbol: row.symbol.trim().toUpperCase(),
+              websiteUrl: row.websiteUrl?.trim() || '',
+            }));
+
+          if (tickerEntries.length === 0) {
+            setCsvError('No valid ticker entries found in CSV');
+            return;
+          }
+
+          // Update form with CSV data
+          setNewTickerForm((prev) => ({
+            ...prev,
+            tickerEntries: tickerEntries,
+          }));
+
+          // Clear file input
+          if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+          }
+        } catch (error) {
+          setCsvError('Error parsing CSV file');
+          console.error('CSV parsing error:', error);
+        }
+      },
+      error: (error: Error) => {
+        setCsvError('Error reading CSV file');
+        console.error('CSV reading error:', error);
+      },
+    });
+  };
+
+  const clearTickerEntries = () => {
+    setNewTickerForm((prev) => ({
+      ...prev,
+      tickerEntries: [{ name: '', symbol: '', websiteUrl: '' }],
+    }));
+    setCsvError('');
+  };
 
   const handleAddTicker = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,8 +221,45 @@ export default function AddTickersForm({
   };
 
   return (
-    <Block title="Add New Tickers" className="text-color">
+    <Block className="text-color">
       <form onSubmit={handleAddTicker} className="space-y-6">
+        {/* CSV Upload in Header */}
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h2 className="text-xl font-semibold">Add New Tickers</h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">CSV format: name, symbol, websiteUrl (optional)</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <input ref={fileInputRef} type="file" accept=".csv" onChange={handleCsvUpload} className="hidden" id="csv-upload" />
+            <label
+              htmlFor="csv-upload"
+              className="cursor-pointer inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800 dark:hover:bg-blue-900/30"
+            >
+              Upload CSV
+            </label>
+            {newTickerForm.tickerEntries.length > 1 && (
+              <Button type="button" variant="outlined" onClick={clearTickerEntries} className="text-sm text-red-600 hover:text-red-800">
+                Clear All
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {/* CSV Error/Success Messages */}
+        {csvError && (
+          <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+            <p className="text-sm text-red-600 dark:text-red-400">{csvError}</p>
+          </div>
+        )}
+
+        {newTickerForm.tickerEntries.length > 1 && (
+          <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
+            <p className="text-sm text-green-600 dark:text-green-400">
+              ✓ Loaded {newTickerForm.tickerEntries.length} ticker{newTickerForm.tickerEntries.length !== 1 ? 's' : ''} from CSV
+            </p>
+          </div>
+        )}
+
         {/* Ticker Entries */}
         <div className="space-y-6">
           <h3 className="text-lg font-semibold">Ticker Information</h3>

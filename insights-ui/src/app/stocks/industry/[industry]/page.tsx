@@ -3,7 +3,7 @@ import Filters from '@/components/public-equitiesv1/Filters';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { FilteredTicker } from '@/types/ticker-typesv1';
+import { FilteredTicker, TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -18,7 +18,7 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
   let industryName = industryKey; // fallback to key
   try {
     const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US&industryKey=${encodeURIComponent(industryKey)}`);
-    const tickers: any[] = await response.json();
+    const tickers: TickerWithIndustryNames[] = await response.json();
     if (tickers.length > 0 && tickers[0].industryName) {
       industryName = tickers[0].industryName;
     }
@@ -91,7 +91,7 @@ export default async function IndustryStocksPage(props: {
     // Use regular tickers API when no filters are applied
     const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
     const response = await fetch(apiUrl);
-    const regularTickers: any[] = await response.json(); // This now returns TickerWithIndustryNames[]
+    const regularTickers: TickerWithIndustryNames[] = await response.json(); // This now returns TickerWithIndustryNames[]
 
     // Filter by main industry (already have industry names from API)
     tickers = regularTickers
