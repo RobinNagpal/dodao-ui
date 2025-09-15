@@ -10,16 +10,24 @@ export interface CreateSubIndustryRequest {
   industryKey: string;
   name: string;
   summary: string;
+  archived?: boolean;
 }
 
-async function getHandler(_req: NextRequest): Promise<TickerV1SubIndustry[]> {
-  const subIndustries = await prisma.tickerV1SubIndustry.findMany();
+async function getHandler(req: NextRequest): Promise<TickerV1SubIndustry[]> {
+  const { searchParams } = new URL(req.url);
+  const industryKey = searchParams.get('industryKey');
+
+  const subIndustries = await prisma.tickerV1SubIndustry.findMany({
+    where: {
+      ...(industryKey ? { industryKey } : {}),
+    },
+  });
   return subIndustries;
 }
 
 async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayload): Promise<TickerV1SubIndustry> {
   const body: CreateSubIndustryRequest = await request.json();
-  const { industryKey, name, summary, subIndustryKey } = body;
+  const { industryKey, name, summary, subIndustryKey, archived } = body;
 
   if (!industryKey || !name || !summary) {
     throw new Error('industryKey, name, and summary are required');
@@ -31,6 +39,7 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
       industryKey,
       name,
       summary,
+      ...(typeof archived === 'boolean' && { archived }),
     },
   });
 

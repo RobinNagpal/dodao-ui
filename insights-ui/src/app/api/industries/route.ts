@@ -10,10 +10,20 @@ export interface CreateIndustryRequest {
   industryKey: string;
   name: string;
   summary: string;
+  archived?: boolean;
 }
 
-async function getHandler(_req: NextRequest): Promise<TickerV1Industry[]> {
+async function getHandler(req: NextRequest): Promise<TickerV1Industry[]> {
+  const { searchParams } = new URL(req.url);
+  const archivedParam = searchParams.get('archived');
+
+  // Convert string parameter to boolean if it exists
+  const archived = archivedParam ? archivedParam === 'true' : undefined;
+
   const industries = await prisma.tickerV1Industry.findMany({
+    where: {
+      ...(typeof archived === 'boolean' ? { archived } : {}),
+    },
     include: {
       subIndustries: true,
     },
@@ -23,7 +33,7 @@ async function getHandler(_req: NextRequest): Promise<TickerV1Industry[]> {
 
 async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayload): Promise<TickerV1Industry> {
   const body: CreateIndustryRequest = await request.json();
-  const { industryKey, name, summary } = body;
+  const { industryKey, name, summary, archived } = body;
 
   if (!industryKey || !name || !summary) {
     throw new Error('industryKey, name, and summary are required');
@@ -34,6 +44,7 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
       industryKey,
       name,
       summary,
+      ...(typeof archived === 'boolean' && { archived }),
     },
   });
 
