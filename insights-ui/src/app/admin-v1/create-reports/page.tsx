@@ -248,7 +248,7 @@ export default function CreateReportsV1Page(): JSX.Element {
                       <p className="mt-1 text-xs">{"You've selected a Sub-Industry. Now please select an Industry."}</p>
                     )}
                   </div>
-                ) : filteredTickers && filteredTickers.length > 0 ? (
+                ) : (
                   <div>
                     <div className="flex justify-between items-center">
                       <h2 className="text-lg font-semibold">Manage Ticker Analyses</h2>
@@ -256,24 +256,26 @@ export default function CreateReportsV1Page(): JSX.Element {
                         Add New Ticker
                       </Button>
                     </div>
-                    <Checkboxes
-                      items={filteredTickers.map(
-                        (ticker): CheckboxItem => ({
-                          id: ticker.symbol,
-                          name: `ticker-${ticker.symbol}`,
-                          label: (
-                            <span className="flex-grow cursor-pointer">
-                              {ticker.symbol} - {ticker.name}
-                            </span>
-                          ),
-                        })
-                      )}
-                      selectedItemIds={selectedTickers}
-                      onChange={(selectedIds: string[]) => setSelectedTickers(selectedIds)}
-                    />
+                    {filteredTickers && filteredTickers.length > 0 ? (
+                      <Checkboxes
+                        items={filteredTickers.map(
+                          (ticker): CheckboxItem => ({
+                            id: ticker.symbol,
+                            name: `ticker-${ticker.symbol}`,
+                            label: (
+                              <span className="flex-grow cursor-pointer">
+                                {ticker.symbol} - {ticker.name}
+                              </span>
+                            ),
+                          })
+                        )}
+                        selectedItemIds={selectedTickers}
+                        onChange={(selectedIds: string[]) => setSelectedTickers(selectedIds)}
+                      />
+                    ) : (
+                      <div className="text-center py-3 text-gray-500 dark:text-gray-400">No tickers found for the selected Industry and Sub-Industry.</div>
+                    )}
                   </div>
-                ) : (
-                  <div className="text-center py-3 text-gray-500 dark:text-gray-400">No tickers found for the selected Industry and Sub-Industry.</div>
                 )}
                 {selectedTickers.length > 0 && (
                   <div className="mt-2 flex justify-end">
