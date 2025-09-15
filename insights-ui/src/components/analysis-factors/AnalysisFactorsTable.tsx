@@ -22,12 +22,20 @@ import { SuccessStatus } from '@/types/public-equity/common-types';
 
 interface AnalysisFactorsTableProps {
   industryKey: string;
+  industrySummary: string;
   subIndustryKey: string;
+  subIndustrySummary: string;
 }
 
-function getAnalysisFactorPrompt(industryKey: string, subIndustryKey: string) {
+function getAnalysisFactorPrompt(props: AnalysisFactorsTableProps) {
+  const { industryKey, industrySummary, subIndustryKey, subIndustrySummary } = props;
+
   return `
 You are an equity analyst specializing in ${industryKey}. Using the JSON schema below as a template, produce an updated version tailored to **${subIndustryKey}**.
+
+## About the industry and sub-industry
+- ${industryKey}: ${industrySummary}
+- ${subIndustryKey}: ${subIndustrySummary}
 
 ## Output rules
 - Keep the top-level \`industryKey: "${industryKey}"\` and replace \`subIndustryKey\` with \`"${subIndustryKey}"\`.
@@ -48,7 +56,7 @@ Return the JSON below in the sequence of category keys mentioned above.
 - Each factor should be specific to that category only under which you return the factors.
 - There should be no duplicate factors in two different categories.
 - Make sure the factors are the most important and relevant to the industry and sub-industry, and the category.
-- Below is the example for two categories. You need to return the factors for each category in the sequence mentioned above. Return 5 factors for all 5 categories.
+- You need to return the factors for each category in the sequence mentioned above. Return 5 factors for all 5 categories.
 - Respect the output JSON schema.
 
 # Notes for BusinessAndMoat category
@@ -59,83 +67,6 @@ Return the JSON below in the sequence of category keys mentioned above.
 - The fair value factors should be such that they consider the fair value of the company as compared to the competitors in the same industry and sub-industry.
 - Design the factors in such a way that only the undervalued companies can get pass on all the 5 or 4 factors, the fair value get 3 or 2 and over values gets 1 pass. So design the factors in such a way that it evaluates the fair value of the company vs the competitors in the same industry and sub-industry.
 
-# Example JSON
-{
-  "industryKey": "REITS",
-  "subIndustryKey": "OFFICE_REITS",
-  "categories": [
-    {
-      "categoryKey": "BusinessAndMoat",
-      "factors": [
-        {
-          "factorAnalysisKey": "DEVELOPMENT_REDEVELOPMENT_EDGE",
-          "factorAnalysisTitle": "Development/redevelopment edge",
-          "factorAnalysisDescription": "In-house capabilities, entitlement track record, cost control, and historical yield-on-cost.\\nSuperior execution creates internal growth independent of external acquisitions.",
-          "factorAnalysisMetrics": "Historical yield-on-cost %, Development pipeline % of total assets, Average development spread vs market cap rates, % of projects delivered on time/budget"
-        },
-        {
-          "factorAnalysisKey": "LEASE_STRUCTURE_DURABILITY",
-          "factorAnalysisTitle": "Lease structure & durability",
-          "factorAnalysisDescription": "WALT, rent escalators (fixed/CPI), net vs gross, renewal options, and break clauses.\\nLonger terms with escalators hardwire growth and cushion cyclical leasing pressure.",
-          "factorAnalysisMetrics": "Weighted Average Lease Term (WALT) years, % of leases with rent escalators, Average annual rent escalator %, Renewal rate %"
-        },
-        {
-          "factorAnalysisKey": "MANAGEMENT_QUALITY_ALIGNMENT",
-          "factorAnalysisTitle": "Management quality & alignment",
-          "factorAnalysisDescription": "Governance, internal vs external management, capital allocation discipline, and insider ownership.\\nAligned, proven teams protect NAV and compound AFFO across cycles.",
-          "factorAnalysisMetrics": "Insider ownership %, 3/5/10-year AFFO growth CAGR %, Dividend payout ratio %, % of debt fixed-rate vs variable"
-        },
-        {
-          "factorAnalysisKey": "PORTFOLIO_QUALITY_LOCATION_MIX",
-          "factorAnalysisTitle": "Portfolio quality & location mix",
-          "factorAnalysisDescription": "Composition by asset class (A/B/C), CBD vs suburban, gateway vs Sun Belt, and transit access.\\nDrives achievable rents, tenant demand, resilience, and obsolescence/capex risk.",
-          "factorAnalysisMetrics": "% of portfolio in Class A assets, Top 5 markets % of NOI, Occupancy rate %, Average rent per sq ft vs market average"
-        },
-        {
-          "factorAnalysisKey": "TENANT_CREDIT_CONCENTRATION",
-          "factorAnalysisTitle": "Tenant credit & concentration",
-          "factorAnalysisDescription": "Distribution of tenant exposures, top-10 concentration, industries, credit ratings, and guarantees.\\nHigher-quality, diversified tenants reduce cash-flow volatility and default/rollover risk.",
-          "factorAnalysisMetrics": "Top 10 tenants % of rent, % investment-grade tenants, Largest tenant % of rent, Tenant retention rate %"
-        }
-      ]
-    },
-    {
-      "categoryKey": "FinancialStatementAnalysis",
-      "factors": [
-        {
-          "factorAnalysisKey": "CAPEX_LEASING_COSTS_INTENSITY",
-          "factorAnalysisTitle": "Capex & leasing costs intensity",
-          "factorAnalysisDescription": "Recurring capex, tenant improvements, and leasing commissions relative to NOI.\\nHigh TI/LC burdens suppress true free cash flow if not offset by spreads.",
-          "factorAnalysisMetrics": "Tenant Improvement (TI) per square foot (psf), Leasing Commissions (LC) per square foot (psf), Recurring Capex / NOI (%), Free Cash Flow after TI/LC (per share), Spread on new vs expiring leases (%)"
-        },
-        {
-          "factorAnalysisKey": "DIVIDEND_SAFETY_PAYOUT",
-          "factorAnalysisTitle": "Dividend safety & payout",
-          "factorAnalysisDescription": "Dividend as % of AFFO, policy consistency, and coverage buffers.\\nSustainable payouts lower cut risk and stabilize total returns.",
-          "factorAnalysisMetrics": "Dividend Payout Ratio (% of AFFO), AFFO Dividend Coverage (x), Historical Dividend Growth (CAGR, 3–5 years), Dividend Yield (%) vs REIT sector average, Retained AFFO (% reinvested)"
-        },
-        {
-          "factorAnalysisKey": "FFO_AFFO_QUALITY_TRAJECTORY",
-          "factorAnalysisTitle": "FFO/AFFO quality & trajectory",
-          "factorAnalysisDescription": "Definition, adjustments, recurring add-backs, and growth trend from GAAP to cash metrics.\\nClean, growing AFFO underpins dividend capacity and reinvestment firepower.",
-          "factorAnalysisMetrics": "FFO per share (trend YoY), AFFO per share (trend YoY), AFFO Growth Rate (3–5 years), % of FFO adjustments from recurring items (quality check), GAAP Net Income to AFFO reconciliation transparency (score/flag)"
-        },
-        {
-          "factorAnalysisKey": "INTEREST_RATE_MATURITY_PROFILE",
-          "factorAnalysisTitle": "Interest-rate & maturity profile",
-          "factorAnalysisDescription": "Fixed/floating mix, WA interest rate/maturity, hedges, and near-term maturity wall.\\nMitigates earnings shocks and refinancing risk when rates move.",
-          "factorAnalysisMetrics": "Weighted Average Interest Rate (%), Fixed vs Floating Debt Mix (%), Weighted Average Maturity (years), % of Debt Maturing in <2 years, Hedging Coverage Ratio (% of floating debt hedged)"
-        },
-        {
-          "factorAnalysisKey": "LEVERAGE_ASSET_ENCUMBRANCE",
-          "factorAnalysisTitle": "Leverage & asset encumbrance",
-          "factorAnalysisDescription": "Net Debt/EBITDA, LTV, secured vs unsecured mix, and unencumbered pool size.\\nPrudent leverage and flexibility support credit quality and strategic optionality.",
-          "factorAnalysisMetrics": "Net Debt / EBITDA (x), Loan-to-Value (LTV, %), % of Secured Debt vs Unsecured Debt, % of Unencumbered NOI / Assets, Interest Coverage Ratio (EBITDA / Interest Expense)"
-        }
-      ]
-    }]
-  }
-}
 
 # Schema
 {
@@ -218,7 +149,8 @@ Return the JSON below in the sequence of category keys mentioned above.
 
   `;
 }
-export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: AnalysisFactorsTableProps) {
+export default function AnalysisFactorsTable(props: AnalysisFactorsTableProps) {
+  const { industryKey, subIndustryKey } = props;
   const [analysisFactorsToEdit, setAnalysisFactorsToEdit] = useState<UpsertAnalysisFactorsRequest | null>(null);
   const [analysisFactorsToView, setAnalysisFactorsToView] = useState<UpsertAnalysisFactorsRequest | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -432,9 +364,7 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
               {isPromptAccordionOpen && (
                 <div className="p-4 border-t border-gray-200">
                   <p className="mb-2">Use the prompt below to generate analysis factors for this industry and sub-industry:</p>
-                  <pre className="text-xs whitespace-pre-wrap text-left overflow-auto p-4 border border-gray-300 rounded">
-                    {getAnalysisFactorPrompt(industryKey, subIndustryKey)}
-                  </pre>
+                  <pre className="text-xs whitespace-pre-wrap text-left overflow-auto p-4 border border-gray-300 rounded">{getAnalysisFactorPrompt(props)}</pre>
                 </div>
               )}
             </div>
@@ -476,7 +406,7 @@ export default function AnalysisFactorsTable({ industryKey, subIndustryKey }: An
                 <div className="p-4 border-t border-gray-200">
                   <p className="mb-2">Please copy the prompt below to find analysis factors for this industry and sub-industry:</p>
                   <pre className="text-xs whitespace-pre-wrap text-left overflow-auto p-4  border border-gray-300 rounded">
-                    {getAnalysisFactorPrompt(industryKey, subIndustryKey)}
+                    {getAnalysisFactorPrompt(props)}
                   </pre>
                 </div>
               )}

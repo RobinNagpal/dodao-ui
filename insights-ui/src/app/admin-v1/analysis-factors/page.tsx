@@ -110,7 +110,12 @@ const AnalysisFactorsPage = () => {
 
         {/* Analysis Factors Table */}
         {selectedIndustry && selectedSubIndustry && (
-          <AnalysisFactorsTable industryKey={selectedIndustry as string} subIndustryKey={selectedSubIndustry as string} />
+          <AnalysisFactorsTable
+            industryKey={selectedIndustry as string}
+            industrySummary={industries.find((i) => i.industryKey === selectedIndustry)!.summary as string}
+            subIndustryKey={selectedSubIndustry as string}
+            subIndustrySummary={subIndustries.find((i) => i.subIndustryKey === selectedSubIndustry)!.summary as string}
+          />
         )}
 
         {(!selectedIndustry || !selectedSubIndustry) && (
