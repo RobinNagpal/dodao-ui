@@ -5,7 +5,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Competition from '@/components/ticker-reportsv1/Competition';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import RadarChart from '@/components/visualizations/RadarChart';
-import { CATEGORY_MAPPINGS, INDUSTRY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -76,7 +76,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
   const tickerData: TickerV1ReportResponse = (await tickerResponse.json()) as TickerV1ReportResponse;
   const industryKey = tickerData.industryKey;
-  const industryName = INDUSTRY_MAPPINGS[industryKey as keyof typeof INDUSTRY_MAPPINGS] || industryKey;
+  const industryName = industryKey;
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {

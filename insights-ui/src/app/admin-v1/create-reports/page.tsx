@@ -2,7 +2,6 @@
 
 import AddTickersForm from '@/components/public-equitiesv1/AddTickersForm';
 import ReportGenerator from '@/components/public-equitiesv1/ReportGenerator';
-import { INDUSTRY_OPTIONS, SUB_INDUSTRY_OPTIONS, getIndustryDisplayName, getSubIndustryDisplayName } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
 import Block from '@dodao/web-core/components/app/Block';
@@ -14,6 +13,7 @@ import { useFetchData, UseFetchDataResponse } from '@dodao/web-core/ui/hooks/fet
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useState, useEffect, useMemo } from 'react';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
+import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 
 interface AnalysisStatus {
   businessAndMoat: boolean;
@@ -43,6 +43,55 @@ export default function CreateReportsV1Page(): JSX.Element {
   const [tickerReports, setTickerReports] = useState<Record<string, TickerReportV1>>({});
   const [selectedIndustry, setSelectedIndustry] = useState<string>('');
   const [selectedSubIndustry, setSelectedSubIndustry] = useState<string>('');
+
+  // State for industries and sub-industries from database
+  const [industries, setIndustries] = useState<TickerV1Industry[]>([]);
+  const [subIndustries, setSubIndustries] = useState<TickerV1SubIndustry[]>([]);
+  const [loadingIndustries, setLoadingIndustries] = useState(true);
+  const [loadingSubIndustries, setLoadingSubIndustries] = useState(false);
+
+  // Fetch industries on component mount
+  useEffect(() => {
+    const fetchIndustries = async () => {
+      try {
+        setLoadingIndustries(true);
+        const response = await fetch(`${getBaseUrl()}/api/industries`);
+        if (!response.ok) throw new Error('Failed to fetch industries');
+        const data: TickerV1Industry[] = await response.json();
+        setIndustries(data.filter((industry) => !industry.archived)); // Only show non-archived
+      } catch (error) {
+        console.error('Error fetching industries:', error);
+      } finally {
+        setLoadingIndustries(false);
+      }
+    };
+
+    fetchIndustries();
+  }, []);
+
+  // Fetch sub-industries when industry is selected
+  useEffect(() => {
+    const fetchSubIndustries = async () => {
+      if (!selectedIndustry) {
+        setSubIndustries([]);
+        return;
+      }
+
+      try {
+        setLoadingSubIndustries(true);
+        const response = await fetch(`${getBaseUrl()}/api/sub-industries?industryKey=${selectedIndustry}`);
+        if (!response.ok) throw new Error('Failed to fetch sub-industries');
+        const data: TickerV1SubIndustry[] = await response.json();
+        setSubIndustries(data.filter((subIndustry) => !subIndustry.archived)); // Only show non-archived
+      } catch (error) {
+        console.error('Error fetching sub-industries:', error);
+      } finally {
+        setLoadingSubIndustries(false);
+      }
+    };
+
+    fetchSubIndustries();
+  }, [selectedIndustry]);
 
   // Fetch tickers based on selected industry and sub-industry
   // Only create a URL if both industry and sub-industry are selected
@@ -81,22 +130,16 @@ export default function CreateReportsV1Page(): JSX.Element {
     return tickers || [];
   }, [tickers]);
 
-  // Get available sub-industries based on selected industry
-  // Based on the mappingsV1.ts file, all sub-industries are types of REITs
-  const availableSubIndustries = useMemo(() => {
-    if (!selectedIndustry) return SUB_INDUSTRY_OPTIONS;
+  // Helper functions to get display names
+  const getIndustryDisplayName = (industryKey: string): string => {
+    const industry = industries.find((ind) => ind.industryKey === industryKey);
+    return industry?.name || industryKey;
+  };
 
-    // Currently there's only one industry (REITS) and all sub-industries are types of REITs
-    // If more industries are added in the future, this logic will need to be updated
-    // to properly associate sub-industries with their parent industries
-    if (selectedIndustry === 'REITS') {
-      return SUB_INDUSTRY_OPTIONS;
-    }
-
-    // For any other industry, return an empty array
-    // This should be updated if more industries are added
-    return [];
-  }, [selectedIndustry]);
+  const getSubIndustryDisplayName = (subIndustryKey: string): string => {
+    const subIndustry = subIndustries.find((sub) => sub.subIndustryKey === subIndustryKey);
+    return subIndustry?.name || subIndustryKey;
+  };
 
   // Reset sub-industry selection when industry changes
   useEffect(() => {
@@ -178,9 +221,9 @@ export default function CreateReportsV1Page(): JSX.Element {
                     label="Industry"
                     selectedItemId={selectedIndustry || 'all'}
                     items={[
-                      { id: 'all', label: 'All Industries' },
-                      ...INDUSTRY_OPTIONS.map((industry) => ({
-                        id: industry.key,
+                      { id: 'all', label: loadingIndustries ? 'Loading industries...' : 'All Industries' },
+                      ...industries.map((industry) => ({
+                        id: industry.industryKey,
                         label: industry.name,
                       })),
                     ]}
@@ -193,9 +236,9 @@ export default function CreateReportsV1Page(): JSX.Element {
                     label="Sub-Industry"
                     selectedItemId={selectedSubIndustry || 'all'}
                     items={[
-                      { id: 'all', label: selectedIndustry ? 'All Sub-Industries' : 'All Sub-Industries' },
-                      ...availableSubIndustries.map((subIndustry) => ({
-                        id: subIndustry.key,
+                      { id: 'all', label: loadingSubIndustries ? 'Loading sub-industries...' : 'All Sub-Industries' },
+                      ...subIndustries.map((subIndustry) => ({
+                        id: subIndustry.subIndustryKey,
                         label: subIndustry.name,
                       })),
                     ]}
@@ -280,6 +323,8 @@ export default function CreateReportsV1Page(): JSX.Element {
             onCancel={(): void => setShowAddTickerForm(false)}
             initialIndustry={selectedIndustry}
             initialSubIndustry={selectedSubIndustry}
+            industries={industries}
+            subIndustries={subIndustries}
           />
         )}
       </div>

@@ -4,7 +4,11 @@ import { getPostsData } from '@/util/blog-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
-import { INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
+
+interface Industry {
+  industryKey: string;
+  name: string;
+}
 
 interface SiteMapUrl {
   url: string;
@@ -28,6 +32,26 @@ async function getAllProjects(): Promise<string[]> {
     return data.projectIds || [];
   } catch (error) {
     console.error('Error fetching projects:', error);
+    return []; // Return an empty array to prevent breaking the sitemap
+  }
+}
+
+// Fetch all industries
+async function getAllIndustries(): Promise<Industry[]> {
+  const baseUrl = getBaseUrl();
+  try {
+    const response = await fetch(`${baseUrl}/api/industries`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch industries: ${response.statusText}`);
+    }
+
+    const industries = await response.json();
+    return industries || [];
+  } catch (error) {
+    console.error('Error fetching industries:', error);
     return []; // Return an empty array to prevent breaking the sitemap
   }
 }
@@ -98,13 +122,18 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
   });
 
   // Add industry pages - /stocks/industry/{industry}
-  const industryKeys = Object.keys(INDUSTRY_MAPPINGS);
-  for (const industryKey of industryKeys) {
-    urls.push({
-      url: `/stocks/industry/${industryKey}`,
-      changefreq: 'weekly',
-      priority: 0.7,
-    });
+  try {
+    const industries = await getAllIndustries();
+    for (const industry of industries) {
+      urls.push({
+        url: `/stocks/industry/${industry.industryKey}`,
+        changefreq: 'weekly',
+        priority: 0.7,
+      });
+    }
+  } catch (error) {
+    console.error('Error generating industry URLs:', error);
+    // Continue without industry URLs if API fails
   }
 
   // Fetch all tickers and add individual ticker pages - /stocks/{exchange}/{ticker}
@@ -269,7 +298,7 @@ async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
     smStream.end();
     const response: Buffer = await streamToPromise(smStream);
 
-    return new NextResponse(response, {
+    return new NextResponse(response as BodyInit, {
       status: 200,
       headers: {
         'Content-Type': 'application/xml',

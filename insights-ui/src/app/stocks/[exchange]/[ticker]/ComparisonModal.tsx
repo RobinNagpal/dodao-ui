@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { TickerV1ReportResponse } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
-import { INDUSTRY_MAPPINGS, SUB_INDUSTRY_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getScoreColorClasses } from '@/utils/score-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -153,9 +153,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
     <div className="flex items-center w-full relative">
       <div className="flex-1 text-center">
         <h2 className="text-xl font-semibold">
-          Stock Comparison - {INDUSTRY_MAPPINGS[currentTicker.industryKey as keyof typeof INDUSTRY_MAPPINGS] || currentTicker.industryKey} -{' '}
-          {SUB_INDUSTRY_MAPPINGS[currentTicker.subIndustryKey as keyof typeof SUB_INDUSTRY_MAPPINGS] || currentTicker.subIndustryKey} - Selected:{' '}
-          {comparisonTickers.length}/5
+          Stock Comparison - {currentTicker.industryKey} - {currentTicker.subIndustryKey} - Selected: {comparisonTickers.length}/5
         </h2>
       </div>
       <p className="absolute right-0 text-sm text-gray-400"></p>

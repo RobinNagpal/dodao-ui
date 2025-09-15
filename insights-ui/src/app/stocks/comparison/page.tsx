@@ -3,14 +3,34 @@
 import { TickerV1ReportResponse } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
 import TickerComparison, { ComparisonTicker } from '@/components/ticker-reportsv1/TickerComparison';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { CATEGORY_MAPPINGS, INDUSTRY_MAPPINGS, INDUSTRY_OPTIONS, SUB_INDUSTRY_MAPPINGS, SUB_INDUSTRY_OPTIONS, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { TickerV1 } from '@prisma/client';
 import { useEffect, useState } from 'react';
+import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+
+// Enhanced ticker interface that includes industry names
+interface TickerWithIndustryNames {
+  id: string;
+  name: string;
+  symbol: string;
+  exchange: string;
+  industryKey: string;
+  subIndustryKey: string;
+  industryName: string;
+  subIndustryName: string;
+  websiteUrl?: string | null;
+  summary?: string | null;
+  cachedScore: number;
+  spaceId: string;
+  createdAt: string;
+  updatedAt: string;
+  createdBy?: string | null;
+  updatedBy?: string | null;
+}
 
 interface ComparisonData {
   ticker: string;
@@ -32,12 +52,18 @@ interface ComparisonData {
 export default function ComparisonPage() {
   const [selectedStocks, setSelectedStocks] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<TickerAnalysisCategory>(TickerAnalysisCategory.BusinessAndMoat);
-  const [allTickers, setAllTickers] = useState<TickerV1[]>([]);
+  const [allTickers, setAllTickers] = useState<TickerWithIndustryNames[]>([]);
   const [comparisonData, setComparisonData] = useState<ComparisonData[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedIndustry, setSelectedIndustry] = useState<string>('');
   const [selectedSubIndustry, setSelectedSubIndustry] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // State for industries and sub-industries from database
+  const [industries, setIndustries] = useState<TickerV1Industry[]>([]);
+  const [subIndustries, setSubIndustries] = useState<TickerV1SubIndustry[]>([]);
+  const [loadingIndustries, setLoadingIndustries] = useState(true);
+  const [loadingSubIndustries, setLoadingSubIndustries] = useState(false);
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
@@ -51,6 +77,49 @@ export default function ComparisonPage() {
       current: true,
     },
   ];
+
+  // Fetch industries on component mount
+  useEffect(() => {
+    const fetchIndustries = async () => {
+      try {
+        setLoadingIndustries(true);
+        const response = await fetch(`${getBaseUrl()}/api/industries`);
+        if (!response.ok) throw new Error('Failed to fetch industries');
+        const data: TickerV1Industry[] = await response.json();
+        setIndustries(data.filter((industry) => !industry.archived)); // Only show non-archived
+      } catch (error) {
+        console.error('Error fetching industries:', error);
+      } finally {
+        setLoadingIndustries(false);
+      }
+    };
+
+    fetchIndustries();
+  }, []);
+
+  // Fetch sub-industries when industry is selected
+  useEffect(() => {
+    const fetchSubIndustries = async () => {
+      if (!selectedIndustry) {
+        setSubIndustries([]);
+        return;
+      }
+
+      try {
+        setLoadingSubIndustries(true);
+        const response = await fetch(`${getBaseUrl()}/api/sub-industries?industryKey=${selectedIndustry}`);
+        if (!response.ok) throw new Error('Failed to fetch sub-industries');
+        const data: TickerV1SubIndustry[] = await response.json();
+        setSubIndustries(data.filter((subIndustry) => !subIndustry.archived)); // Only show non-archived
+      } catch (error) {
+        console.error('Error fetching sub-industries:', error);
+      } finally {
+        setLoadingSubIndustries(false);
+      }
+    };
+
+    fetchSubIndustries();
+  }, [selectedIndustry]);
 
   // Fetch all available tickers
   useEffect(() => {
@@ -128,7 +197,7 @@ export default function ComparisonPage() {
     loadComparisonData();
   }, [selectedStocks]);
 
-  const addStock = (ticker: TickerV1) => {
+  const addStock = (ticker: TickerWithIndustryNames) => {
     if (selectedStocks.length >= 5) return;
 
     // If this is the first stock, set the industry/sub-industry filter
@@ -243,10 +312,10 @@ export default function ComparisonPage() {
                 }}
                 className="w-full border border-gray-300 bg-gray-800 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">All Industries</option>
-                {INDUSTRY_OPTIONS.map((option) => (
-                  <option key={option.key} value={option.key}>
-                    {option.name}
+                <option value="">{loadingIndustries ? 'Loading industries...' : 'All Industries'}</option>
+                {industries.map((industry) => (
+                  <option key={industry.industryKey} value={industry.industryKey}>
+                    {industry.name}
                   </option>
                 ))}
               </select>
@@ -257,15 +326,13 @@ export default function ComparisonPage() {
               <select
                 value={selectedSubIndustry}
                 onChange={(e) => setSelectedSubIndustry(e.target.value)}
-                disabled={!selectedIndustry}
+                disabled={!selectedIndustry || loadingSubIndustries}
                 className="w-full border bg-gray-800 border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-800"
               >
-                <option value="">All Sub-Industries</option>
-                {SUB_INDUSTRY_OPTIONS.filter(
-                  (option) => !selectedIndustry || allTickers.some((t) => t.industryKey === selectedIndustry && t.subIndustryKey === option.key)
-                ).map((option) => (
-                  <option key={option.key} value={option.key}>
-                    {option.name}
+                <option value="">{loadingSubIndustries ? 'Loading sub-industries...' : 'All Sub-Industries'}</option>
+                {subIndustries.map((subIndustry) => (
+                  <option key={subIndustry.subIndustryKey} value={subIndustry.subIndustryKey}>
+                    {subIndustry.name}
                   </option>
                 ))}
               </select>
@@ -289,9 +356,9 @@ export default function ComparisonPage() {
           {/* Available Stocks */}
           <div>
             <h3 className="text-sm font-medium mb-3">
-              Available Stocks {selectedIndustry && `(${INDUSTRY_MAPPINGS[selectedIndustry as keyof typeof INDUSTRY_MAPPINGS] || selectedIndustry})`}
+              Available Stocks {selectedIndustry && industries.find((ind) => ind.industryKey === selectedIndustry)?.name}
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-48 overflow-y-auto bg-gray-800">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-48 overflow-y-auto bg-gray-900">
               {filteredTickers
                 .filter((ticker) => !selectedStocks.includes(ticker.symbol))
                 .slice(0, 20)
@@ -300,13 +367,11 @@ export default function ComparisonPage() {
                     key={ticker.symbol}
                     onClick={() => addStock(ticker)}
                     disabled={selectedStocks.length >= 5}
-                    className="text-left p-3 border border-gray-200 rounded-md text-gray-300 hover:bg-gray-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="text-left p-3 border bg-gray-800 border-gray-200 rounded-md text-gray-300 hover:bg-gray-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <div className="font-medium">{ticker.name}</div>
                     <div className="text-sm">{ticker.symbol}</div>
-                    <div className="text-xs mt-1">
-                      {SUB_INDUSTRY_MAPPINGS[ticker.subIndustryKey as keyof typeof SUB_INDUSTRY_MAPPINGS] || ticker.subIndustryKey}
-                    </div>
+                    <div className="text-xs mt-1">{ticker.subIndustryName || ticker.subIndustryKey}</div>
                   </button>
                 ))}
             </div>

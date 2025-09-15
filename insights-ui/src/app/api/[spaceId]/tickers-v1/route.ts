@@ -19,7 +19,13 @@ interface NewTickerResponse {
   ticker: TickerV1;
 }
 
-async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<TickerV1[]> {
+// Enhanced interface to include industry and sub-industry names
+interface TickerWithIndustryNames extends TickerV1 {
+  industryName: string;
+  subIndustryName: string;
+}
+
+async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<TickerWithIndustryNames[]> {
   const { spaceId } = await context.params;
   const url = new URL(req.url);
   const industryKey = url.searchParams.get('industryKey');
@@ -53,7 +59,37 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     },
   });
 
-  return tickers;
+  // Fetch industry and sub-industry mappings (with fallback if tables don't exist yet)
+  let industryMap = new Map<string, string>();
+  let subIndustryMap = new Map<string, string>();
+
+  try {
+    const industries = await prisma.tickerV1Industry.findMany({
+      include: {
+        subIndustries: true,
+      },
+    });
+
+    // Create mappings for quick lookup
+    industryMap = new Map(industries.map((ind: any) => [ind.industryKey, ind.name]));
+    industries.forEach((industry: any) => {
+      industry.subIndustries.forEach((subInd: any) => {
+        subIndustryMap.set(subInd.subIndustryKey, subInd.name);
+      });
+    });
+  } catch (error) {
+    console.log('Industry tables not available yet, using keys as names:', error);
+    // Fallback: use keys as names if tables don't exist
+  }
+
+  // Enhance tickers with industry names
+  const tickersWithNames: TickerWithIndustryNames[] = tickers.map((ticker) => ({
+    ...ticker,
+    industryName: industryMap.get(ticker.industryKey) || ticker.industryKey,
+    subIndustryName: subIndustryMap.get(ticker.subIndustryKey) || ticker.subIndustryKey,
+  }));
+
+  return tickersWithNames;
 }
 
 async function postHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<NewTickerResponse> {
@@ -101,5 +137,5 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
   };
 }
 
-export const GET = withErrorHandlingV2<TickerV1[]>(getHandler);
+export const GET = withErrorHandlingV2<TickerWithIndustryNames[]>(getHandler);
 export const POST = withErrorHandlingV2<NewTickerResponse>(postHandler);

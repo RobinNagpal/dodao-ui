@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { INDUSTRY_OPTIONS, SUB_INDUSTRY_OPTIONS } from '@/lib/mappingsV1';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
+import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 
 interface NewTickerResponse {
   success: boolean;
@@ -30,15 +30,27 @@ interface AddTickersFormProps {
   onCancel: () => void;
   initialIndustry?: string;
   initialSubIndustry?: string;
+  industries: TickerV1Industry[];
+  subIndustries: TickerV1SubIndustry[];
 }
 
-export default function AddTickersForm({ onSuccess, onCancel, initialIndustry, initialSubIndustry }: AddTickersFormProps): JSX.Element {
+export default function AddTickersForm({
+  onSuccess,
+  onCancel,
+  initialIndustry,
+  initialSubIndustry,
+  industries,
+  subIndustries,
+}: AddTickersFormProps): JSX.Element {
   const [newTickerForm, setNewTickerForm] = useState<NewTickerForm>({
     tickerEntries: [{ name: '', symbol: '', websiteUrl: '' }],
     exchange: 'NASDAQ',
-    industryKey: initialIndustry || 'REITS',
-    subIndustryKey: initialSubIndustry || 'RESIDENTIAL_REITS',
+    industryKey: initialIndustry || '',
+    subIndustryKey: initialSubIndustry || '',
   });
+
+  // Filter sub-industries based on selected industry
+  const filteredSubIndustries = subIndustries.filter((sub) => sub.industryKey === newTickerForm.industryKey);
 
   // Post hook for adding new ticker
   const { postData: postNewTicker, loading: addTickerLoading } = usePostData<NewTickerResponse, any>({
@@ -55,6 +67,12 @@ export default function AddTickersForm({ onSuccess, onCancel, initialIndustry, i
 
   const handleAddTicker = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate that industry and sub-industry are selected
+    if (!newTickerForm.industryKey || !newTickerForm.subIndustryKey) {
+      alert('Please select both Industry and Sub-Industry');
+      return;
+    }
 
     // Submit each ticker entry sequentially
     let allSuccess = true;
@@ -216,15 +234,32 @@ export default function AddTickersForm({ onSuccess, onCancel, initialIndustry, i
           <StyledSelect
             label="Industry"
             selectedItemId={newTickerForm.industryKey}
-            items={INDUSTRY_OPTIONS.map((opt) => ({ id: opt.key, label: opt.name }))}
-            setSelectedItemId={(industry) => setNewTickerForm((prev) => ({ ...prev, industryKey: industry || 'REITS' }))}
+            items={industries.map((industry) => ({
+              id: industry.industryKey,
+              label: industry.name,
+            }))}
+            setSelectedItemId={(industry) => {
+              setNewTickerForm((prev) => ({
+                ...prev,
+                industryKey: industry || '',
+                subIndustryKey: '', // Reset sub-industry when industry changes
+              }));
+            }}
           />
 
           <StyledSelect
             label="Sub-Industry"
             selectedItemId={newTickerForm.subIndustryKey}
-            items={SUB_INDUSTRY_OPTIONS.map((opt) => ({ id: opt.key, label: opt.name }))}
-            setSelectedItemId={(subIndustry) => setNewTickerForm((prev) => ({ ...prev, subIndustryKey: subIndustry || 'RESIDENTIAL_REITS' }))}
+            items={filteredSubIndustries.map((subIndustry) => ({
+              id: subIndustry.subIndustryKey,
+              label: subIndustry.name,
+            }))}
+            setSelectedItemId={(subIndustry) =>
+              setNewTickerForm((prev) => ({
+                ...prev,
+                subIndustryKey: subIndustry || '',
+              }))
+            }
           />
         </div>
 

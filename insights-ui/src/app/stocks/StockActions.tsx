@@ -29,7 +29,7 @@ export default function StockActions() {
           }
 
           if (key === 'manage-industries') {
-            router.push(`/admin-v1/industries`);
+            router.push(`/admin-v1/industry-management`);
           }
         }}
       />

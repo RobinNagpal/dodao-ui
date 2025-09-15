@@ -7,27 +7,6 @@ export enum TickerAnalysisCategory {
   FairValue = 'FairValue',
 }
 
-// Industry mappings
-export const INDUSTRY_MAPPINGS = {
-  REITS: 'Real Estate Investment Trusts',
-} as const;
-
-// Sub-industry mappings
-export const SUB_INDUSTRY_MAPPINGS = {
-  RETAIL_REITS: 'Retail REITs',
-  OFFICE_REITS: 'Office REITs',
-  RESIDENTIAL_REITS: 'Residential REITs',
-  INDUSTRIAL_REITS: 'Industrial REITs',
-  SPECIALTY_REITS: 'Specialty REITs',
-  HEALTHCARE_REITS: 'Healthcare REITs',
-  HOTEL_AND_MOTEL_REITS: 'Hotel and Motel REITs',
-  DIVERSIFIED_REITS: 'Diversified REITs',
-  MORTGAGE_REITS: 'Mortgage REITs',
-  REAL_ESTATE_SERVICES: 'Real Estate Services',
-  REAL_ESTATE_DEVELOPMENT: 'Real Estate Development',
-  REAL_ESTATE_DIVERSIFIED: 'Real Estate Diversified',
-} as const;
-
 // Category mappings
 export const CATEGORY_MAPPINGS = {
   [TickerAnalysisCategory.BusinessAndMoat]: 'Business & Moat Analysis',
@@ -45,36 +24,15 @@ export const INVESTOR_MAPPINGS = {
 } as const;
 
 // Helper functions to get display names
-export const getIndustryDisplayName = (industryKey: string): string => {
-  return INDUSTRY_MAPPINGS[industryKey as keyof typeof INDUSTRY_MAPPINGS] || industryKey;
-};
-
-export const getSubIndustryDisplayName = (subIndustryKey: string): string => {
-  return SUB_INDUSTRY_MAPPINGS[subIndustryKey as keyof typeof SUB_INDUSTRY_MAPPINGS] || subIndustryKey;
-};
-
-// New investor display name function
 export const getInvestorDisplayName = (investorKey: string): string => {
   return INVESTOR_MAPPINGS[investorKey as keyof typeof INVESTOR_MAPPINGS] || investorKey;
 };
 
 // Type definitions for better type safety
-export type IndustryKey = keyof typeof INDUSTRY_MAPPINGS;
-export type SubIndustryKey = keyof typeof SUB_INDUSTRY_MAPPINGS;
 export type CategoryKey = TickerAnalysisCategory;
 export type InvestorKey = keyof typeof INVESTOR_MAPPINGS;
 
 // Arrays for dropdowns/selects
-export const INDUSTRY_OPTIONS = Object.entries(INDUSTRY_MAPPINGS).map(([key, name]) => ({
-  key,
-  name,
-}));
-
-export const SUB_INDUSTRY_OPTIONS = Object.entries(SUB_INDUSTRY_MAPPINGS).map(([key, name]) => ({
-  key,
-  name,
-}));
-
 export const CATEGORY_OPTIONS = Object.entries(CATEGORY_MAPPINGS).map(([key, name]) => ({
   key: key as TickerAnalysisCategory,
   name,

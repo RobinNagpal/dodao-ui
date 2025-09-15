@@ -1,6 +1,5 @@
 import schema from '@/components/analysis-factors/analysisFactorsJsonSchema.json';
 import { UpsertAnalysisFactorsRequest } from '@/types/public-equity/analysis-factors-types';
-import { IndustryKey, SubIndustryKey } from '@/lib/mappingsV1';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -11,8 +10,8 @@ export interface UploadJsonModalProps {
   open: boolean;
   onClose: () => void;
   title: string;
-  industryKey: IndustryKey;
-  subIndustryKey: SubIndustryKey;
+  industryKey: string;
+  subIndustryKey: string;
   onSave: (analysisFactors: UpsertAnalysisFactorsRequest) => void;
 }
 

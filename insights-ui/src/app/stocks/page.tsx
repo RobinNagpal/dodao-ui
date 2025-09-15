@@ -1,14 +1,11 @@
 import StockActions from '@/app/stocks/StockActions';
-import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Filters from '@/components/public-equitiesv1/Filters';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
-import { INDUSTRY_MAPPINGS } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { TickerV1 } from '@prisma/client';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import Link from 'next/link';
 
@@ -28,6 +25,8 @@ interface FilteredTicker {
   exchange: string;
   industryKey: string;
   subIndustryKey: string;
+  industryName: string;
+  subIndustryName: string;
   websiteUrl?: string | null;
   summary?: string | null;
   cachedScore: number;
@@ -38,11 +37,31 @@ interface FilteredTicker {
   totalScore: number;
 }
 
+// Enhanced interface for regular tickers that now includes industry names
+interface TickerWithIndustryNames {
+  id: string;
+  name: string;
+  symbol: string;
+  exchange: string;
+  industryKey: string;
+  subIndustryKey: string;
+  industryName: string;
+  subIndustryName: string;
+  websiteUrl?: string | null;
+  summary?: string | null;
+  cachedScore: number;
+  spaceId: string;
+  createdAt: string;
+  updatedAt: string;
+  createdBy?: string | null;
+  updatedBy?: string | null;
+}
+
 export default async function StocksPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
   // Check if any filters are applied
   const hasFilters = Object.keys(await searchParams).some((key) => key.includes('Threshold'));
 
-  let tickers: TickerV1[] | FilteredTicker[] = [];
+  let tickers: TickerWithIndustryNames[] | FilteredTicker[] = [];
 
   if (hasFilters) {
     // Build URL with filter params for the filtered API
@@ -152,7 +171,9 @@ export default async function StocksPage({ searchParams }: { searchParams: Promi
         ) : (
           Object.entries(tickersByMainIndustry).map(([mainIndustry, subIndustries]) => {
             const totalCompaniesInIndustry = Object.values(subIndustries).reduce((sum, sub) => sum + sub.total, 0);
-            const industryDisplayName = INDUSTRY_MAPPINGS[mainIndustry as keyof typeof INDUSTRY_MAPPINGS] || mainIndustry;
+            // Use the industryName from the first ticker in this industry, fallback to industryKey
+            const sampleTicker = Object.values(subIndustries)[0]?.tickers[0];
+            const industryDisplayName = sampleTicker?.industryName || sampleTicker?.industryKey || mainIndustry;
 
             return (
               <div key={mainIndustry} className="mb-12">
@@ -170,9 +191,19 @@ export default async function StocksPage({ searchParams }: { searchParams: Promi
 
                 {/* Sub-Industry Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-                  {Object.entries(subIndustries).map(([subIndustry, { tickers: subIndustryTickers, total }]) => (
-                    <SubIndustryCard key={subIndustry} subIndustry={subIndustry} tickers={subIndustryTickers} total={total} />
-                  ))}
+                  {Object.entries(subIndustries).map(([subIndustry, { tickers: subIndustryTickers, total }]) => {
+                    // Get subIndustryName from the first ticker in this sub-industry
+                    const subIndustryName = subIndustryTickers[0]?.subIndustryName || subIndustry;
+                    return (
+                      <SubIndustryCard
+                        key={subIndustry}
+                        subIndustry={subIndustry}
+                        subIndustryName={subIndustryName}
+                        tickers={subIndustryTickers}
+                        total={total}
+                      />
+                    );
+                  })}
                 </div>
               </div>
             );
