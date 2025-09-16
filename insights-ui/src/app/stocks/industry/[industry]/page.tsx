@@ -55,6 +55,43 @@ export const viewport = {
   maximumScale: 1,
 };
 
+type CardSpec = {
+  key: string;
+  subIndustry: string;
+  subIndustryName: string;
+  tickers: any[];
+  total: number;
+  estH: number; // estimated height in px
+};
+
+// tune these to your actual CSS
+const CARD_HEADER_PX = 41; // header, padding, badge, etc.
+const ROW_PX = 36; // per <li> row (StockTickerItem + paddings)
+
+function estimateCardHeight(rowCount: number) {
+  return CARD_HEADER_PX + rowCount * ROW_PX;
+}
+
+/** First row: seed one per column (preserve order).
+ *  Then always place the next card into the column with the minimum height. */
+function packIntoColumns<T extends { estH: number }>(items: T[], cols: number): T[][] {
+  const buckets: { items: T[]; h: number }[] = Array.from({ length: cols }, () => ({ items: [], h: 0 }));
+
+  items.forEach((item, i) => {
+    if (i < cols) {
+      buckets[i].items.push(item);
+      buckets[i].h += item.estH;
+    } else {
+      let min = 0;
+      for (let c = 1; c < cols; c++) if (buckets[c].h < buckets[min].h) min = c;
+      buckets[min].items.push(item);
+      buckets[min].h += item.estH;
+    }
+  });
+
+  return buckets.map((b) => b.items);
+}
+
 export default async function IndustryStocksPage(props: {
   params: Promise<{ industry: string }>;
   searchParams: Promise<{ [key: string]: string | undefined }>;
@@ -164,7 +201,6 @@ export default async function IndustryStocksPage(props: {
           />
         </div>
         <Filters showOnlyAppliedFilters={true} />
-
         <div className="w-full mb-8">
           <h1 className="text-2xl font-bold text-white mb-4">{industryName} Stocks</h1>
           <p className="text-[#E5E7EB] text-md mb-6">
@@ -172,30 +208,65 @@ export default async function IndustryStocksPage(props: {
             analysis to support your investment decisions.
           </p>
         </div>
-
         {/* Sub-Industry Stock Cards */}
         <h2 className="text-xl font-bold text-white mb-5">{industryKey} Categories</h2>
+        // ---- inside your IndustryStocksPage component, replace the current grid ----
         {Object.keys(tickersBySubIndustry).length === 0 ? (
           <div className="text-center py-12">
             <p className="text-[#E5E7EB] text-lg">No {industryName} stocks match the current filters.</p>
             <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10 auto-rows-auto">
-            {Object.entries(tickersBySubIndustry).map(([subIndustry, subIndustryTickers]) => {
-              // Get subIndustryName from the first ticker in this sub-industry
+          (() => {
+            // Build card specs with estimated heights
+            const cards: CardSpec[] = Object.entries(tickersBySubIndustry).map(([subIndustry, subIndustryTickers]) => {
               const subIndustryName = subIndustryTickers[0]?.subIndustryName || subIndustry;
-              return (
-                <SubIndustryCard
-                  key={subIndustry}
-                  subIndustry={subIndustry}
-                  subIndustryName={subIndustryName}
-                  tickers={subIndustryTickers}
-                  total={subIndustryTickers.length}
-                />
-              );
-            })}
-          </div>
+              const total = subIndustryTickers.length;
+              return {
+                key: subIndustry,
+                subIndustry,
+                subIndustryName,
+                tickers: subIndustryTickers,
+                total,
+                estH: estimateCardHeight(total),
+              };
+            });
+
+            const cols1 = [cards];
+            const cols2 = packIntoColumns(cards, 2);
+            const cols3 = packIntoColumns(cards, 3);
+
+            const renderCard = (c: CardSpec) => (
+              <SubIndustryCard key={c.key} subIndustry={c.subIndustry} subIndustryName={c.subIndustryName} tickers={c.tickers} total={c.total} />
+            );
+
+            return (
+              <>
+                {/* Mobile: 1 column */}
+                <div className="grid grid-cols-1 gap-6 mb-10 md:hidden">
+                  <div className="flex flex-col gap-6">{cols1[0].map(renderCard)}</div>
+                </div>
+
+                {/* Tablet: 2 columns */}
+                <div className="hidden md:grid lg:hidden grid-cols-2 gap-6 mb-10">
+                  {cols2.map((col, i) => (
+                    <div key={`md-col-${i}`} className="flex flex-col gap-6">
+                      {col.map(renderCard)}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop: 3 columns */}
+                <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                  {cols3.map((col, i) => (
+                    <div key={`lg-col-${i}`} className="flex flex-col gap-6">
+                      {col.map(renderCard)}
+                    </div>
+                  ))}
+                </div>
+              </>
+            );
+          })()
         )}
       </PageWrapper>
     </Tooltip.Provider>
