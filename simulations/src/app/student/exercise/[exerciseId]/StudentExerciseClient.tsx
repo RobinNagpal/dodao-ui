@@ -1,5 +1,6 @@
 'use client';
 
+import { CaseStudyWithRelationsForStudents } from '@/types/api';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -34,7 +35,7 @@ import BackButton from '@/components/navigation/BackButton';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import StudentProgressStepper, { ProgressData } from '@/components/student/StudentProgressStepper';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
-import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
+import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 interface StudentExerciseClientProps {
@@ -128,6 +129,12 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     reFetchData: refetchAttempts,
   } = useFetchData<ExerciseAttempt[]>(
     `${getBaseUrl()}/api/student/exercises/${exerciseId}/attempts`,
+    { skipInitialFetch: !exerciseId || !session },
+    'Failed to load exercise attempts'
+  );
+
+  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForStudents>(
+    `${getBaseUrl()}/api/case-studies/${caseStudyId}`,
     { skipInitialFetch: !exerciseId || !session },
     'Failed to load exercise attempts'
   );
@@ -783,27 +790,20 @@ Details: ${contextData.module.details}
         }}
       />
 
-      <ViewCaseStudyModal
-        open={showCaseStudyModal}
-        onClose={handleCloseCaseStudyModal}
-        caseStudy={
-          contextData?.caseStudy
-            ? {
-                id: caseStudyId || 'current-case-study',
-                title: contextData.caseStudy.title,
-                shortDescription: contextData.caseStudy.shortDescription,
-                details: contextData.caseStudy.details,
-              }
-            : null
-        }
-        hasCaseStudyInstructionsRead={() => true}
-        handleMarkInstructionAsRead={async () => {}}
-        updatingStatus={true}
-        onCaseStudyUpdate={(updatedCaseStudy) => {
-          // Students don't edit, so this should not be called
-          console.log('Student tried to update case study - this should not happen');
-        }}
-      />
+      {caseStudy && (
+        <ViewCaseStudyInstructionsModal
+          open={showCaseStudyModal}
+          onClose={handleCloseCaseStudyModal}
+          caseStudy={caseStudy}
+          hasCaseStudyInstructionsRead={() => true}
+          handleMarkInstructionAsRead={async () => {}}
+          updatingStatus={true}
+          onCaseStudyUpdate={(updatedCaseStudy) => {
+            // Students don't edit, so this should not be called
+            console.log('Student tried to update case study - this should not happen');
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
-import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
+import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
 import AdminLoading from '@/components/admin/AdminLoading';
@@ -203,17 +203,20 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
           </Card>
         )}
 
-        <ViewCaseStudyModal
-          open={showCaseStudyModal}
-          onClose={() => setShowCaseStudyModal(false)}
-          caseStudy={caseStudy}
-          hasCaseStudyInstructionsRead={() => true} // Admin always has read instructions
-          handleMarkInstructionAsRead={async () => {}} // No-op for admin
-          updatingStatus={false}
-          onCaseStudyUpdate={async (updatedCaseStudy) => {
-            await reFetchData();
-          }}
-        />
+        {caseStudy && (
+          <ViewCaseStudyInstructionsModal
+            open={showCaseStudyModal}
+            onClose={() => setShowCaseStudyModal(false)}
+            caseStudy={caseStudy}
+            hasCaseStudyInstructionsRead={() => true} // Admin always has read instructions
+            handleMarkInstructionAsRead={async () => {}} // No-op for admin
+            updatingStatus={false}
+            onCaseStudyUpdate={async (updatedCaseStudy) => {
+              await reFetchData();
+            }}
+            allowEdit={true}
+          />
+        )}
 
         <ViewModuleModal
           open={showModuleModal}

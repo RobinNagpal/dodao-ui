@@ -1,27 +1,29 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import MarkdownEditor from '@/components/markdown/MarkdownEditor';
-import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
+import { CaseStudyWithRelationsForStudents } from '@/types/api';
 import { parseMarkdown } from '@/utils/parse-markdown';
+import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { Check, Save, X } from 'lucide-react';
+import { useState } from 'react';
 
 interface CaseStudyModalProps {
   open: boolean;
   onClose: () => void;
-  caseStudy: any;
+  caseStudy: CaseStudyWithRelationsForStudents;
   hasCaseStudyInstructionsRead: () => boolean;
   handleMarkInstructionAsRead: (type: 'case_study' | 'module', moduleId?: string) => Promise<void>;
   updatingStatus: boolean;
   onCaseStudyUpdate?: (updatedCaseStudy: any) => void;
+  allowEdit?: boolean;
 }
 
-export default function ViewCaseStudyModal({
+export default function ViewCaseStudyInstructionsModal({
   open,
   onClose,
   caseStudy,
@@ -29,15 +31,15 @@ export default function ViewCaseStudyModal({
   handleMarkInstructionAsRead,
   updatingStatus,
   onCaseStudyUpdate,
+  allowEdit,
 }: CaseStudyModalProps) {
   const [isEditMode, setIsEditMode] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isAdminOrInstructor, setIsAdminOrInstructor] = useState(false);
+
   const [formData, setFormData] = useState({
-    title: '',
-    shortDescription: '',
-    details: '',
-    finalSummaryPromptInstructions: '',
+    title: caseStudy.title || '',
+    shortDescription: caseStudy.shortDescription || '',
+    details: caseStudy.details || '',
+    finalSummaryPromptInstructions: caseStudy.finalSummaryPromptInstructions || '',
   });
 
   // Use the usePutData hook
@@ -48,23 +50,6 @@ export default function ViewCaseStudyModal({
     },
     {}
   );
-
-  useEffect(() => {
-    // Check if user is admin or instructor
-    const userType = localStorage.getItem('user_type');
-    setIsAdmin(userType === 'admin');
-    setIsAdminOrInstructor(userType === 'admin' || userType === 'instructor');
-
-    // Initialize form data when case study changes
-    if (caseStudy) {
-      setFormData({
-        title: caseStudy.title || '',
-        shortDescription: caseStudy.shortDescription || '',
-        details: caseStudy.details || '',
-        finalSummaryPromptInstructions: caseStudy.finalSummaryPromptInstructions || '',
-      });
-    }
-  }, [caseStudy]);
 
   const handleEdit = () => {
     setIsEditMode(true);
@@ -128,7 +113,7 @@ export default function ViewCaseStudyModal({
 
   const title = (
     <div className="flex items-center justify-center w-full relative">
-      {isAdmin && !isEditMode && (
+      {allowEdit && !isEditMode && (
         <div className="absolute right-0">
           <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />
         </div>
@@ -217,7 +202,7 @@ export default function ViewCaseStudyModal({
             <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy?.details || '') }} />
 
             {/* Final Summary Prompt Instructions - Only for Admin/Instructor */}
-            {isAdminOrInstructor && caseStudy?.finalSummaryPromptInstructions && (
+            {allowEdit && caseStudy?.finalSummaryPromptInstructions && (
               <div className="space-y-2">
                 <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">Final Summary Prompt Instructions:</h3>
                 <div className="markdown-body rounded-lg" dangerouslySetInnerHTML={{ __html: parseMarkdown(caseStudy.finalSummaryPromptInstructions) }} />
