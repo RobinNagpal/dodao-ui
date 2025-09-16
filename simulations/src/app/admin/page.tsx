@@ -171,7 +171,6 @@ export default function AdminDashboard() {
             setSelectedSubject={setSelectedSubject}
             loadingCaseStudies={loadingCaseStudies}
             onCreateCaseStudy={() => router.push('/admin/create')}
-            refetchCaseStudies={refetchCaseStudies}
           />
         )}
 

@@ -48,11 +48,7 @@ export default function ViewExerciseModal({
       successMessage: 'Exercise updated successfully!',
       errorMessage: 'Failed to update exercise',
     },
-    {
-      headers: {
-        'admin-email': localStorage.getItem('user_email') || 'admin@example.com',
-      },
-    }
+    {}
   );
 
   useEffect(() => {
