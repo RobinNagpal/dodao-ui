@@ -7,6 +7,7 @@ import { FilteredTicker, TickerWithIndustryNames } from '@/types/ticker-typesv1'
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { TickerV1Industry } from '@prisma/client';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { Metadata } from 'next';
 
@@ -100,8 +101,11 @@ export default async function IndustryStocksPage(props: {
   const searchParams = await props.searchParams;
   const industryKey = decodeURIComponent(params.industry);
 
+  const industry = await fetch(`${getBaseUrl()}/api/industries/${industryKey}`);
+  const industryData: TickerV1Industry = await industry.json();
+
   // We'll get the industry name from the API response
-  let industryName = industryKey; // fallback to key
+  const industryName = industryData.name; // fallback to key
 
   // Check if any filters are applied
   const hasFilters = Object.keys(searchParams).some((key) => key.includes('Threshold'));
@@ -149,11 +153,6 @@ export default async function IndustryStocksPage(props: {
         categoryScores: {}, // Empty for unfiltered case
         totalScore: 0, // Will be calculated if needed
       }));
-  }
-
-  // Extract industry name from the first ticker if available
-  if (tickers.length > 0 && tickers[0].industryName) {
-    industryName = tickers[0].industryName;
   }
 
   // Now create breadcrumbs with the correct industry name
@@ -204,13 +203,9 @@ export default async function IndustryStocksPage(props: {
         <div className="w-full mb-8">
           <h1 className="text-2xl font-bold text-white mb-4">{industryName} Stocks</h1>
           <p className="text-[#E5E7EB] text-md mb-6">
-            Explore {industryName} companies listed on US exchanges (NASDAQ, NYSE, AMEX). Access detailed financial reports, performance metrics, and AI-driven
-            analysis to support your investment decisions.
+            Explore {industryName} companies listed on US exchanges (NASDAQ, NYSE, AMEX). {industryData.summary}
           </p>
         </div>
-        {/* Sub-Industry Stock Cards */}
-        <h2 className="text-xl font-bold text-white mb-5">{industryKey} Categories</h2>
-        // ---- inside your IndustryStocksPage component, replace the current grid ----
         {Object.keys(tickersBySubIndustry).length === 0 ? (
           <div className="text-center py-12">
             <p className="text-[#E5E7EB] text-lg">No {industryName} stocks match the current filters.</p>
