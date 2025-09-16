@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
-import type { CaseStudyWithRelations, DeleteResponse } from '@/types/api';
+import type { CaseStudyWithRelationsForStudents, DeleteResponse } from '@/types/api';
 import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
 import { BookOpen, Brain, GraduationCap, Shield } from 'lucide-react';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
@@ -47,14 +47,14 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
     data: caseStudy,
     loading: loadingCaseStudy,
     reFetchData,
-  } = useFetchData<CaseStudyWithRelations>(`${getBaseUrl()}/api/case-studies/${caseStudyId}`, {}, 'Failed to load case study');
+  } = useFetchData<CaseStudyWithRelationsForStudents>(`${getBaseUrl()}/api/case-studies/${caseStudyId}`, {}, 'Failed to load case study');
 
   const {
     data,
     loading,
     postData: duplicateCaseStudy,
     error,
-  } = usePostData<CaseStudyWithRelations, never>({
+  } = usePostData<CaseStudyWithRelationsForStudents, never>({
     successMessage: 'Case study duplicated successfully!',
     errorMessage: 'Failed to duplicated case study',
   });

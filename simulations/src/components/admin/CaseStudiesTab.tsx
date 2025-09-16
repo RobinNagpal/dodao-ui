@@ -1,30 +1,14 @@
-import { BusinessSubject } from '@/types';
-import { getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
-import { Card, CardContent } from '@/components/ui/card';
-import { BookOpen, Plus, Sparkles } from 'lucide-react';
 import SubjectFilter from '@/components/common/SubjectFilter';
-import CaseStudyCard from './CaseStudyCard';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
-import type { DeleteResponse } from '@/types/api';
-
-interface CaseStudyListItem {
-  id: string;
-  title: string;
-  shortDescription: string;
-  subject: BusinessSubject;
-  createdBy: string | null;
-  createdAt: string;
-  modules: Array<{
-    id: string;
-  }>;
-}
+import { Card, CardContent } from '@/components/ui/card';
+import { BusinessSubject } from '@/types';
+import { CaseStudyWithRelationsForAdmin } from '@/types/api';
+import { getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
+import { BookOpen, Plus, Sparkles } from 'lucide-react';
+import CaseStudyCardForAdmin from './CaseStudyCardForAdmin';
 
 interface CaseStudiesTabProps {
-  caseStudies: CaseStudyListItem[];
-  filteredCaseStudies: CaseStudyListItem[];
+  caseStudies: CaseStudyWithRelationsForAdmin[];
+  filteredCaseStudies: CaseStudyWithRelationsForAdmin[];
   selectedSubject: BusinessSubject | 'ALL';
   setSelectedSubject: (subject: BusinessSubject | 'ALL') => void;
   loadingCaseStudies: boolean;
@@ -98,7 +82,7 @@ export default function CaseStudiesTab({
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredCaseStudies?.map((caseStudy) => <CaseStudyCard key={caseStudy.id} caseStudy={caseStudy} />) || []}
+            {filteredCaseStudies?.map((caseStudy) => <CaseStudyCardForAdmin key={caseStudy.id} caseStudy={caseStudy} />) || []}
           </div>
         )}
 

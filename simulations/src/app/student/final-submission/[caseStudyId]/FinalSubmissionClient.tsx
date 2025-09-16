@@ -7,7 +7,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import StudentLoading from '@/components/student/StudentLoading';
 import { FileText, Send, CheckCircle, Brain, Sparkles, Target, BookOpen, Save } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
-import { CaseStudyWithRelations } from '@/types/api';
+import { CaseStudyWithRelationsForStudents } from '@/types/api';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
 
 interface FinalSubmissionClientProps {
@@ -40,7 +40,7 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
 
   const router = useRouter();
 
-  const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelations>(
+  const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForStudents>(
     `/api/student/case-studies/${caseStudyId}?studentEmail=${encodeURIComponent(userEmail)}`,
     { skipInitialFetch: !caseStudyId || !userEmail },
     'Failed to load case study details'

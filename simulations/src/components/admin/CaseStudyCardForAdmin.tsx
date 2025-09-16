@@ -1,26 +1,15 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BusinessSubject } from '@/types';
+import { CaseStudyWithRelationsForAdmin } from '@/types/api';
 import { getSubjectColor, getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
-import { User } from '@prisma/client';
 import { BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
 interface CaseStudyCardProps {
-  caseStudy: {
-    id: string;
-    title: string;
-    shortDescription: string;
-    subject: BusinessSubject;
-    createdBy: User;
-    createdAt: string;
-    modules: Array<{
-      id: string;
-    }>;
-  };
+  caseStudy: CaseStudyWithRelationsForAdmin;
 }
 
-export default function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
+export default function CaseStudyCardForAdmin({ caseStudy }: CaseStudyCardProps) {
   return (
     <Link href={`/admin/case-study/${caseStudy.id}`} passHref>
       <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] group">

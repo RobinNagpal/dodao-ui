@@ -1,13 +1,13 @@
 import { prisma } from '@/prisma';
 import { CaseStudy } from '@/types';
-import { CaseStudyWithRelations } from '@/types/api';
+import { CaseStudyWithRelationsForAdmin, CaseStudyWithRelationsForStudents } from '@/types/api';
 
 /**
  * Get all case studies for admin
  * @returns Promise<CaseStudyWithRelations[]> Array of case studies with their relations
  */
-export async function getAdminCaseStudies(): Promise<CaseStudyWithRelations[]> {
-  const caseStudies: CaseStudyWithRelations[] = await prisma.caseStudy.findMany({
+export async function getAdminCaseStudies(): Promise<CaseStudyWithRelationsForAdmin[]> {
+  const caseStudies: CaseStudyWithRelationsForAdmin[] = await prisma.caseStudy.findMany({
     where: {
       archive: false,
     },
@@ -46,7 +46,7 @@ export async function getAdminCaseStudies(): Promise<CaseStudyWithRelations[]> {
  * @param caseStudyId The ID of the case study to retrieve
  * @returns Promise<CaseStudyWithRelations> The case study with its relations
  */
-export async function getAdminCaseStudy(caseStudyId: string): Promise<CaseStudyWithRelations> {
+export async function getAdminCaseStudy(caseStudyId: string): Promise<CaseStudyWithRelationsForStudents> {
   const caseStudy = await prisma.caseStudy.findFirstOrThrow({
     where: {
       id: caseStudyId,
@@ -141,7 +141,7 @@ export async function getInstructorCaseStudies(instructorId: string): Promise<Ca
   });
 
   // Convert Prisma types to our frontend types
-  return caseStudies as CaseStudyWithRelations[];
+  return caseStudies as CaseStudyWithRelationsForStudents[];
 }
 
 /**
@@ -150,7 +150,7 @@ export async function getInstructorCaseStudies(instructorId: string): Promise<Ca
  * @param instructorId The email of the instructor
  * @returns Promise<CaseStudyWithRelations> The case study with its relations
  */
-export async function getInstructorCaseStudy(caseStudyId: string, instructorId: string): Promise<CaseStudyWithRelations> {
+export async function getInstructorCaseStudy(caseStudyId: string, instructorId: string): Promise<CaseStudyWithRelationsForStudents> {
   // Find the case study and verify instructor has access
   const caseStudy = await prisma.caseStudy.findFirst({
     where: {
@@ -208,7 +208,7 @@ export async function getInstructorCaseStudy(caseStudyId: string, instructorId: 
     throw new Error('Case study not found or you do not have access to it');
   }
 
-  return caseStudy as CaseStudyWithRelations;
+  return caseStudy as CaseStudyWithRelationsForStudents;
 }
 
 /**
@@ -216,7 +216,7 @@ export async function getInstructorCaseStudy(caseStudyId: string, instructorId: 
  * @param studentEmail The email of the student
  * @returns Promise<CaseStudyWithRelations[]> Array of case studies the student is enrolled in
  */
-export async function getStudentCaseStudies(studentEmail: string): Promise<CaseStudyWithRelations[]> {
+export async function getStudentCaseStudies(studentEmail: string): Promise<CaseStudyWithRelationsForStudents[]> {
   // Find all enrollments where this student is enrolled
   const enrollments = await prisma.classCaseStudyEnrollment.findMany({
     where: {
@@ -257,8 +257,8 @@ export async function getStudentCaseStudies(studentEmail: string): Promise<CaseS
   });
 
   // Get instructor information for each enrollment
-  const enrolledCaseStudies: CaseStudyWithRelations[] = await Promise.all(
-    enrollments.map(async (enrollment): Promise<CaseStudyWithRelations> => {
+  const enrolledCaseStudies: CaseStudyWithRelationsForStudents[] = await Promise.all(
+    enrollments.map(async (enrollment): Promise<CaseStudyWithRelationsForStudents> => {
       const instructorId: string = enrollment.assignedInstructorId;
 
       // Fetch instructor user information
@@ -273,7 +273,7 @@ export async function getStudentCaseStudies(studentEmail: string): Promise<CaseS
         },
       });
 
-      const caseStudyWithInstructor: CaseStudyWithRelations = {
+      const caseStudyWithInstructor: CaseStudyWithRelationsForStudents = {
         ...enrollment.caseStudy,
         instructorEmail: instructorId,
         instructorName: instructor?.name,
@@ -292,7 +292,7 @@ export async function getStudentCaseStudies(studentEmail: string): Promise<CaseS
  * @param studentId The email of the student
  * @returns Promise<CaseStudyWithRelations> The case study with its relations
  */
-export async function getStudentCaseStudy(caseStudyId: string, studentId: string): Promise<CaseStudyWithRelations> {
+export async function getStudentCaseStudy(caseStudyId: string, studentId: string): Promise<CaseStudyWithRelationsForStudents> {
   // Check if student is enrolled in this case study and get their enrollment record
   const enrollment = await prisma.classCaseStudyEnrollment.findFirst({
     where: {
@@ -378,7 +378,7 @@ export async function getStudentCaseStudy(caseStudyId: string, studentId: string
   });
 
   // Add instruction read status and instructor information to the response
-  const caseStudyWithStatus: CaseStudyWithRelations = {
+  const caseStudyWithStatus: CaseStudyWithRelationsForStudents = {
     ...enrollment.caseStudy,
     instructorEmail: instructorId,
     instructorName: instructor?.name || null,

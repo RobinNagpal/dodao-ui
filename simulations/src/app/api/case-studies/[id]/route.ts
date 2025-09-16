@@ -1,6 +1,12 @@
 import { getAdminCaseStudy, getInstructorCaseStudy, getStudentCaseStudy } from '@/app/api/helpers/case-studies-util';
 import { prisma } from '@/prisma';
-import { CaseStudyWithRelations, DeleteResponse, UpdateCaseStudyRequest } from '@/types/api';
+import {
+  CaseStudyWithRelationsForAdmin,
+  CaseStudyWithRelationsForInstructor,
+  CaseStudyWithRelationsForStudents,
+  DeleteResponse,
+  UpdateCaseStudyRequest,
+} from '@/types/api';
 import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
@@ -10,7 +16,7 @@ async function getHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
   { params }: { params: Promise<{ id: string }> }
-): Promise<CaseStudyWithRelations> {
+): Promise<CaseStudyWithRelationsForStudents | CaseStudyWithRelationsForInstructor | CaseStudyWithRelationsForAdmin> {
   const { id } = await params;
   const { userId } = userContext;
   const user = await prisma.user.findFirstOrThrow({
@@ -41,7 +47,7 @@ async function putHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
   { params }: { params: Promise<{ id: string }> }
-): Promise<CaseStudyWithRelations | { success: boolean; message: string }> {
+): Promise<CaseStudyWithRelationsForStudents | CaseStudyWithRelationsForInstructor | CaseStudyWithRelationsForAdmin | { success: boolean; message: string }> {
   const { id } = await params;
   const body = await req.json();
 
@@ -148,12 +154,17 @@ async function updateInstructionStatus(
 }
 
 // Update case study (for admins)
-async function updateCaseStudy(id: string, body: UpdateCaseStudyRequest, req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CaseStudyWithRelations> {
+async function updateCaseStudy(
+  id: string,
+  body: UpdateCaseStudyRequest,
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload
+): Promise<CaseStudyWithRelationsForStudents | CaseStudyWithRelationsForInstructor | CaseStudyWithRelationsForAdmin> {
   // Get admin email from request headers
   const adminEmail: string = req.headers.get('admin-email') || 'admin@example.com';
 
   // Update case study with modules and exercises using transaction
-  const caseStudy: CaseStudyWithRelations = await prisma.$transaction(async (tx) => {
+  const caseStudy: CaseStudyWithRelationsForStudents = await prisma.$transaction(async (tx) => {
     // Update the case study basic info
     await tx.caseStudy.update({
       where: { id },
@@ -408,6 +419,8 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
   return { message: 'Case study deleted successfully' };
 }
 
-export const GET = withLoggedInUser<CaseStudyWithRelations>(getHandler);
-export const PUT = withLoggedInUser<CaseStudyWithRelations | { success: boolean; message: string }>(putHandler);
+export const GET = withLoggedInUser<CaseStudyWithRelationsForStudents | CaseStudyWithRelationsForInstructor | CaseStudyWithRelationsForAdmin>(getHandler);
+export const PUT = withLoggedInUser<
+  CaseStudyWithRelationsForStudents | CaseStudyWithRelationsForInstructor | CaseStudyWithRelationsForAdmin | { success: boolean; message: string }
+>(putHandler);
 export const DELETE = withErrorHandlingV2<DeleteResponse>(deleteHandler);

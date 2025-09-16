@@ -1,6 +1,6 @@
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { prisma } from '@/prisma';
-import type { CaseStudyWithRelations } from '@/types/api';
+import type { CaseStudyWithRelationsForStudents } from '@/types/api';
 import type { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import type { BusinessSubject, Prisma, UserRole } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -72,7 +72,7 @@ async function postHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
   { params }: { params: Promise<{ id: string }> }
-): Promise<CaseStudyWithRelations> {
+): Promise<CaseStudyWithRelationsForStudents> {
   const { id: sourceId } = await params;
 
   // Load the user & enforce Admin role
@@ -195,10 +195,10 @@ async function postHandler(
     });
 
     // Typing: ensure we return the expected API type (structure only; no enrollments/responses)
-    return duplicated as unknown as CaseStudyWithRelations;
+    return duplicated as unknown as CaseStudyWithRelationsForStudents;
   });
 
   return created;
 }
 
-export const POST = withLoggedInAdmin<CaseStudyWithRelations>(postHandler);
+export const POST = withLoggedInAdmin<CaseStudyWithRelationsForStudents>(postHandler);
