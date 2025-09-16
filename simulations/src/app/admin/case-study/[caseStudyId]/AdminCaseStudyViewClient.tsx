@@ -1,29 +1,29 @@
 'use client';
 
+import AdminLoading from '@/components/admin/AdminLoading';
+import AdminNavbar from '@/components/navigation/AdminNavbar';
+import BackButton from '@/components/navigation/BackButton';
+import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
+import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
+import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
+import ViewModuleModal from '@/components/shared/ViewModuleModal';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import type { CaseStudyModule, ModuleExercise } from '@/types';
+import type { CaseStudyWithRelationsForStudents, DeleteResponse } from '@/types/api';
 import { SimulationSession } from '@/types/user';
+import { getSubjectColor, getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useSession } from 'next-auth/react';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import type { CaseStudyModule, ModuleExercise } from '@/types';
-import type { CaseStudyWithRelationsForStudents, DeleteResponse } from '@/types/api';
-import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
-import { BookOpen, Brain, GraduationCap, Shield } from 'lucide-react';
-import AdminNavbar from '@/components/navigation/AdminNavbar';
-import BackButton from '@/components/navigation/BackButton';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
-import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
-import ViewModuleModal from '@/components/shared/ViewModuleModal';
-import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
-import AdminLoading from '@/components/admin/AdminLoading';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { BookOpen, GraduationCap, Shield } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface CaseStudyViewClientProps {
   caseStudyId: string;
@@ -234,18 +234,20 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
           />
         )}
 
-        <ViewExerciseModal
-          open={showExerciseModal}
-          onClose={() => setShowExerciseModal(false)}
-          exercise={selectedExercise}
-          moduleTitle={selectedModule?.title}
-          moduleNumber={selectedModule?.orderNumber}
-          caseStudy={caseStudy}
-          moduleId={selectedModule?.id}
-          onExerciseUpdate={async (updatedExercise) => {
-            await reFetchData();
-          }}
-        />
+        {selectedExercise && (
+          <ViewExerciseModal
+            open={showExerciseModal}
+            onClose={() => setShowExerciseModal(false)}
+            exercise={selectedExercise}
+            moduleTitle={selectedModule?.title}
+            moduleNumber={selectedModule?.orderNumber}
+            caseStudy={caseStudy}
+            moduleId={selectedModule?.id}
+            onExerciseUpdate={async (updatedExercise) => {
+              await reFetchData();
+            }}
+          />
+        )}
 
         <ConfirmationModal
           open={showDeleteConfirm}

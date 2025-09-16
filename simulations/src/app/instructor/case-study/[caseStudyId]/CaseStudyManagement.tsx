@@ -311,19 +311,21 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         />
       )}
 
-      <ViewExerciseModal
-        open={showExerciseModal}
-        onClose={() => setShowExerciseModal(false)}
-        exercise={selectedExercise}
-        moduleTitle={selectedModule?.title}
-        moduleNumber={selectedModule?.orderNumber}
-        caseStudy={caseStudy}
-        moduleId={selectedModule?.id}
-        onExerciseUpdate={(updatedExercise) => {
-          // Instructors don't edit, so this should not be called
-          console.log('Instructor tried to update exercise - this should not happen');
-        }}
-      />
+      {selectedExercise && (
+        <ViewExerciseModal
+          open={showExerciseModal}
+          onClose={() => setShowExerciseModal(false)}
+          exercise={selectedExercise}
+          moduleTitle={selectedModule?.title}
+          moduleNumber={selectedModule?.orderNumber}
+          caseStudy={caseStudy}
+          moduleId={selectedModule?.id}
+          onExerciseUpdate={(updatedExercise) => {
+            // Instructors don't edit, so this should not be called
+            console.log('Instructor tried to update exercise - this should not happen');
+          }}
+        />
+      )}
     </div>
   );
 }

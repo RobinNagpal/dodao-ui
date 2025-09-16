@@ -1,26 +1,30 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import MarkdownEditor from '@/components/markdown/MarkdownEditor';
-import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
-import { parseMarkdown } from '@/utils/parse-markdown';
-import { Lightbulb, FileText, Sparkles, Save, X } from 'lucide-react';
 import type { ModuleExercise } from '@/types';
+import { CaseStudyWithRelationsForInstructor, CaseStudyWithRelationsForStudents } from '@/types/api';
+import { parseMarkdown } from '@/utils/parse-markdown';
+import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { Save, X } from 'lucide-react';
+import { useState } from 'react';
 
 interface ViewExerciseModalProps {
   open: boolean;
   onClose: () => void;
-  exercise: ModuleExercise | null;
+  exercise: ModuleExercise;
   moduleTitle?: string;
   moduleNumber?: number;
-  caseStudy?: any; // Pass the full case study instead of just ID
+  caseStudy?: CaseStudyWithRelationsForStudents | CaseStudyWithRelationsForInstructor;
   moduleId?: string;
   onExerciseUpdate?: (updatedExercise: any) => void;
+  allowEdit?: boolean;
+  isInstructor?: boolean;
 }
 
 export default function ViewExerciseModal({
@@ -32,14 +36,16 @@ export default function ViewExerciseModal({
   caseStudy,
   moduleId,
   onExerciseUpdate,
+  allowEdit,
+  isInstructor,
 }: ViewExerciseModalProps) {
   const [isEditMode, setIsEditMode] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [formData, setFormData] = useState({
-    title: '',
-    shortDescription: '',
-    details: '',
-    promptHint: '',
+    title: exercise.title || '',
+    shortDescription: exercise.shortDescription || '',
+    details: exercise.details || '',
+    promptHint: exercise.promptHint || '',
+    instructorInstructions: exercise.instructorInstructions || '',
   });
 
   // Use the usePutData hook
@@ -50,24 +56,6 @@ export default function ViewExerciseModal({
     },
     {}
   );
-
-  useEffect(() => {
-    // Check if user is admin
-    const userType = localStorage.getItem('user_type');
-    setIsAdmin(userType === 'admin');
-
-    // Initialize form data when exercise changes
-    if (exercise) {
-      setFormData({
-        title: exercise.title || '',
-        shortDescription: exercise.shortDescription || '',
-        details: exercise.details || '',
-        promptHint: exercise.promptHint || '',
-      });
-    }
-  }, [exercise]);
-
-  if (!exercise) return null;
 
   const handleEdit = () => {
     setIsEditMode(true);
@@ -80,6 +68,7 @@ export default function ViewExerciseModal({
       shortDescription: exercise?.shortDescription || '',
       details: exercise?.details || '',
       promptHint: exercise?.promptHint || '',
+      instructorInstructions: exercise?.instructorInstructions || '',
     });
     setIsEditMode(false);
   };
@@ -114,7 +103,7 @@ export default function ViewExerciseModal({
         }) || [];
 
       // Update the case study with the modified modules
-      const updatedCaseStudy = await putData(`/api/case-studies/${caseStudy.id}`, {
+      const updatedCaseStudy = await putData(`${getBaseUrl()}/api/case-studies/${caseStudy.id}`, {
         title: caseStudy.title,
         shortDescription: caseStudy.shortDescription,
         details: caseStudy.details,
@@ -159,7 +148,7 @@ export default function ViewExerciseModal({
 
   const title = (
     <div className="flex items-center justify-center w-full relative">
-      {isAdmin && !isEditMode && (
+      {allowEdit && !isEditMode && (
         <div className="absolute right-0">
           <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />
         </div>
@@ -243,6 +232,18 @@ export default function ViewExerciseModal({
                 maxHeight={200}
               />
             </div>
+
+            {/* AI Prompt Hint Section */}
+            <div className="space-y-2">
+              <label className="block text-md font-semibold text-gray-900">Instructor Instructions</label>
+              <MarkdownEditor
+                objectId={`exercise-prompt-hint-${exercise.id}`}
+                modelValue={formData.instructorInstructions}
+                onUpdate={(value) => handleInputChange('instructorInstructions', value)}
+                placeholder="Enter instructions for the instructor using markdown..."
+                maxHeight={200}
+              />
+            </div>
           </div>
         ) : (
           // View Mode
@@ -266,6 +267,14 @@ export default function ViewExerciseModal({
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 mb-2">AI Prompt Hint:</h4>
                     <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.promptHint) }} />
+                  </div>
+                )}
+
+                {/* AI Prompt Hint Section (if exists) */}
+                {isInstructor && exercise.instructorInstructions && (
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Instructor Instructions:</h4>
+                    <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.instructorInstructions) }} />
                   </div>
                 )}
               </div>

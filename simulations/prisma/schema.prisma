@@ -184,17 +184,17 @@ model ModuleExercise {
   moduleId String          @map("module_id")
   module   CaseStudyModule @relation("ModuleToExercises", fields: [moduleId], references: [id])
 
-  title                 String   @map("title")
-  shortDescription      String   @map("short_description")
-  details               String   @map("details") @db.Text
-  promptHint            String?  @map("prompt_hint")
-  intructorInstructions String?  @map("instructor_instructions")
-  orderNumber           Int      @map("order_number")
-  createdBy             String?  @map("created_by") // created by admin
-  updatedBy             String?  @map("updated_by") // updated by admin
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
-  archive               Boolean  @default(false) @map("archive")
+  title                  String   @map("title")
+  shortDescription       String   @map("short_description")
+  details                String   @map("details") @db.Text
+  promptHint             String?  @map("prompt_hint")
+  instructorInstructions String?  @map("instructor_instructions")
+  orderNumber            Int      @map("order_number")
+  createdBy              String?  @map("created_by") // created by admin
+  updatedBy              String?  @map("updated_by") // updated by admin
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+  archive                Boolean  @default(false) @map("archive")
 
   attempts ExerciseAttempt[] @relation("ExerciseToAttempts")
 
