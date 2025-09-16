@@ -1,4 +1,13 @@
-import { BusinessSubject, CaseStudy, CaseStudyModule, ModuleExercise, ClassCaseStudyEnrollment, EnrollmentStudent, FinalSubmission } from '@prisma/client';
+import {
+  BusinessSubject,
+  CaseStudy,
+  CaseStudyModule,
+  ModuleExercise,
+  ClassCaseStudyEnrollment,
+  EnrollmentStudent,
+  FinalSubmission,
+  User,
+} from '@prisma/client';
 
 export interface CreateCaseStudyRequest {
   title: string;
@@ -52,19 +61,10 @@ export interface UpdateExerciseRequest {
   orderNumber: number;
 }
 
-export type CaseStudyWithRelations = CaseStudy & {
+export type CaseStudyWithRelationsForStudents = CaseStudy & {
   modules?: Array<
     CaseStudyModule & {
       exercises?: ModuleExercise[];
-    }
-  >;
-  enrollments?: Array<
-    ClassCaseStudyEnrollment & {
-      students?: Array<
-        EnrollmentStudent & {
-          finalSubmission?: FinalSubmission;
-        }
-      >;
     }
   >;
   instructorEmail?: string; // Added instructor email
@@ -76,6 +76,38 @@ export type CaseStudyWithRelations = CaseStudy & {
       readModuleInstructions: boolean;
     }>;
   };
+};
+
+export type CaseStudyWithRelationsForInstructor = CaseStudy & {
+  modules?: Array<
+    CaseStudyModule & {
+      exercises?: ModuleExercise[];
+    }
+  >;
+
+  instructorEmail?: string; // Added instructor email
+  instructorName?: string | null; // Added instructor name
+  instructionReadStatus?: {
+    readCaseInstructions: boolean;
+    moduleInstructions: Array<{
+      id: string;
+      readModuleInstructions: boolean;
+    }>;
+  };
+};
+
+export type CaseStudyWithRelationsForAdmin = CaseStudyWithRelationsForStudents & {
+  enrollments?: Array<
+    ClassCaseStudyEnrollment & {
+      students?: Array<
+        EnrollmentStudent & {
+          finalSubmission?: FinalSubmission;
+        }
+      >;
+    }
+  >;
+  createdBy: User;
+  updatedBy: User;
 };
 
 export type CaseStudyWithModulesAndExercises = CaseStudy & {

@@ -6,10 +6,10 @@ import { Badge } from '@/components/ui/badge';
 import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
 import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
-import type { CaseStudyWithRelations } from '@/types/api';
+import type { CaseStudyWithRelationsForStudents } from '@/types/api';
 
 interface OverviewTabProps {
-  caseStudy?: CaseStudyWithRelations | null;
+  caseStudy?: CaseStudyWithRelationsForStudents | null;
   modules: CaseStudyModule[];
   onShowCaseStudyModal: () => void;
   onModuleClick: (module: CaseStudyModule) => void;

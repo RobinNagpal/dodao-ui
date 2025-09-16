@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BusinessSubject } from '@/types';
-import type { CaseStudyWithRelations } from '@/types/api';
+import type { CaseStudyWithRelationsForStudents } from '@/types/api';
 import { SimulationSession } from '@/types/user';
 import { getSubjectColor, getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -18,14 +18,14 @@ import { useEffect, useState } from 'react';
 
 export default function StudentDashboard() {
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
-  const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyWithRelations[]>([]);
+  const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyWithRelationsForStudents[]>([]);
   const router = useRouter();
   const { data: simSession } = useSession();
   const session: SimulationSession | null = simSession as SimulationSession | null;
 
   console.log(`session:`, session);
 
-  const { data: enrolledCaseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudyWithRelations[]>(
+  const { data: enrolledCaseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudyWithRelationsForStudents[]>(
     `${getBaseUrl()}/api/case-studies`,
     { skipInitialFetch: false },
     'Failed to load enrolled case studies'
@@ -47,7 +47,7 @@ export default function StudentDashboard() {
     router.push('/login');
   };
 
-  const handleStartCaseStudy = (caseStudy: CaseStudyWithRelations) => {
+  const handleStartCaseStudy = (caseStudy: CaseStudyWithRelationsForStudents) => {
     router.push(`/student/case-study/${caseStudy.id}`);
   };
 

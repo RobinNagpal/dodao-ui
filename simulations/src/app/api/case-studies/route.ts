@@ -1,13 +1,13 @@
 import { getAdminCaseStudies, getInstructorCaseStudies, getStudentCaseStudies } from '@/app/api/helpers/case-studies-util';
 import { prisma } from '@/prisma';
 import { CaseStudy } from '@/types';
-import { CaseStudyWithRelations, CreateCaseStudyRequest } from '@/types/api';
+import { CaseStudyWithRelationsForStudents, CreateCaseStudyRequest } from '@/types/api';
 import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 
 // GET /api/case-studies - Get case studies based on user type
-async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CaseStudyWithRelations[] | CaseStudy[]> {
+async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CaseStudyWithRelationsForStudents[] | CaseStudy[]> {
   const { userId } = userContext;
   const user = await prisma.user.findFirstOrThrow({
     where: {
@@ -28,7 +28,7 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
 }
 
 // POST /api/case-studies - Create a new case study
-async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
+async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CaseStudyWithRelationsForStudents> {
   const body: CreateCaseStudyRequest = await req.json();
 
   // Get admin email from request headers or we could implement auth middleware
@@ -42,8 +42,8 @@ async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
       details: body.details,
       finalSummaryPromptInstructions: body.finalSummaryPromptInstructions,
       subject: body.subject,
-      createdBy: adminEmail,
-      updatedBy: adminEmail,
+      createdById: userContext.userId,
+      updatedById: userContext.userId,
       archive: false,
       modules: {
         create: body.modules.map((module) => ({
@@ -88,5 +88,5 @@ async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
   return caseStudy;
 }
 
-export const GET = withLoggedInUser<CaseStudyWithRelations[] | CaseStudy[]>(getHandler);
-export const POST = withErrorHandlingV2<CaseStudyWithRelations>(postHandler);
+export const GET = withLoggedInUser<CaseStudyWithRelationsForStudents[] | CaseStudy[]>(getHandler);
+export const POST = withLoggedInUser<CaseStudyWithRelationsForStudents>(postHandler);

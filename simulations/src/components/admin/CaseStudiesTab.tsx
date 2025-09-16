@@ -1,35 +1,18 @@
-import { BusinessSubject } from '@/types';
-import { getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
-import { Card, CardContent } from '@/components/ui/card';
-import { BookOpen, Plus, Sparkles } from 'lucide-react';
 import SubjectFilter from '@/components/common/SubjectFilter';
-import CaseStudyCard from './CaseStudyCard';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
-import type { DeleteResponse } from '@/types/api';
-
-interface CaseStudyListItem {
-  id: string;
-  title: string;
-  shortDescription: string;
-  subject: BusinessSubject;
-  createdBy: string | null;
-  createdAt: string;
-  modules: Array<{
-    id: string;
-  }>;
-}
+import { Card, CardContent } from '@/components/ui/card';
+import { BusinessSubject } from '@/types';
+import { CaseStudyWithRelationsForAdmin } from '@/types/api';
+import { getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
+import { BookOpen, Plus, Sparkles } from 'lucide-react';
+import CaseStudyCardForAdmin from './CaseStudyCardForAdmin';
 
 interface CaseStudiesTabProps {
-  caseStudies: CaseStudyListItem[];
-  filteredCaseStudies: CaseStudyListItem[];
+  caseStudies: CaseStudyWithRelationsForAdmin[];
+  filteredCaseStudies: CaseStudyWithRelationsForAdmin[];
   selectedSubject: BusinessSubject | 'ALL';
   setSelectedSubject: (subject: BusinessSubject | 'ALL') => void;
   loadingCaseStudies: boolean;
   onCreateCaseStudy: () => void;
-  refetchCaseStudies: () => Promise<any>;
 }
 
 export default function CaseStudiesTab({
@@ -39,40 +22,7 @@ export default function CaseStudiesTab({
   setSelectedSubject,
   loadingCaseStudies,
   onCreateCaseStudy,
-  refetchCaseStudies,
 }: CaseStudiesTabProps) {
-  const router = useRouter();
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
-  const [deleteId, setDeleteId] = useState<string>('');
-
-  const { deleteData: deleteCaseStudy, loading: deletingCaseStudy } = useDeleteData<DeleteResponse, never>({
-    successMessage: 'Case study deleted successfully!',
-    errorMessage: 'Failed to delete case study',
-  });
-
-  const handleViewCaseStudy = (caseStudyId: string): void => {
-    router.push(`/admin/case-study/${caseStudyId}`);
-  };
-
-  const handleEditCaseStudy = (caseStudyId: string): void => {
-    router.push(`/admin/edit/${caseStudyId}`);
-  };
-
-  const handleDeleteCaseStudy = (caseStudyId: string): void => {
-    setDeleteId(caseStudyId);
-    setShowDeleteConfirm(true);
-  };
-
-  const handleConfirmDelete = async (): Promise<void> => {
-    try {
-      await deleteCaseStudy(`/api/case-studies/${deleteId}`);
-      await refetchCaseStudies();
-      setShowDeleteConfirm(false);
-      setDeleteId('');
-    } catch (error: unknown) {
-      console.error('Error deleting case study:', error);
-    }
-  };
   return (
     <div className="flex gap-8">
       {caseStudies && caseStudies.length > 0 && (
@@ -132,15 +82,7 @@ export default function CaseStudiesTab({
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredCaseStudies?.map((caseStudy) => (
-              <CaseStudyCard
-                key={caseStudy.id}
-                caseStudy={caseStudy}
-                onView={handleViewCaseStudy}
-                onEdit={handleEditCaseStudy}
-                onDelete={handleDeleteCaseStudy}
-              />
-            )) || []}
+            {filteredCaseStudies?.map((caseStudy) => <CaseStudyCardForAdmin key={caseStudy.id} caseStudy={caseStudy} />) || []}
           </div>
         )}
 
@@ -156,17 +98,6 @@ export default function CaseStudiesTab({
           </Card>
         )}
       </div>
-
-      <ConfirmationModal
-        open={showDeleteConfirm}
-        showSemiTransparentBg={true}
-        onClose={() => setShowDeleteConfirm(false)}
-        onConfirm={handleConfirmDelete}
-        confirming={deletingCaseStudy}
-        title="Delete Case Study"
-        confirmationText="Are you sure you want to delete this case study? This action cannot be undone."
-        askForTextInput={false}
-      />
     </div>
   );
 }

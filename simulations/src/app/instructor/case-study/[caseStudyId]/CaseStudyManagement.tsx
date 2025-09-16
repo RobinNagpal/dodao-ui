@@ -11,7 +11,7 @@ import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import type { CaseStudyModule, ModuleExercise, ModuleTableData, StudentTableData } from '@/types';
-import type { CaseStudyWithRelations, DeleteResponse } from '@/types/api';
+import type { CaseStudyWithRelationsForStudents, DeleteResponse } from '@/types/api';
 import { SimulationSession } from '@/types/user';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
@@ -58,7 +58,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     data: caseStudy,
     loading: loadingCaseStudy,
     reFetchData,
-  } = useFetchData<CaseStudyWithRelations>(`/api/case-studies/${caseStudyId}`, { skipInitialFetch: !caseStudyId || !session }, 'Failed to load case study');
+  } = useFetchData<CaseStudyWithRelationsForStudents>(
+    `/api/case-studies/${caseStudyId}`,
+    { skipInitialFetch: !caseStudyId || !session },
+    'Failed to load case study'
+  );
 
   // Fetch detailed student data for the table view
   const {

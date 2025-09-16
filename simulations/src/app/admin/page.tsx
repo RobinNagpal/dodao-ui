@@ -7,6 +7,7 @@ import EnrollmentsTab from '@/components/admin/EnrollmentsTab';
 import UsersTab from '@/components/admin/UsersTab';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
 import type { BusinessSubject } from '@/types';
+import { CaseStudyWithRelationsForAdmin } from '@/types/api';
 import { SimulationSession } from '@/types/user';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -14,18 +15,6 @@ import { BookOpen, Shield, Users, UserCog } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-interface CaseStudyListItem {
-  id: string;
-  title: string;
-  shortDescription: string;
-  subject: BusinessSubject;
-  createdBy: string | null;
-  createdAt: string;
-  modules: Array<{
-    id: string;
-  }>;
-}
 
 interface EnrollmentListItem {
   id: string;
@@ -56,7 +45,7 @@ export default function AdminDashboard() {
 
   const [activeTab, setActiveTab] = useState<'case-studies' | 'enrollments' | 'users'>('case-studies');
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
-  const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyListItem[]>([]);
+  const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyWithRelationsForAdmin[]>([]);
   const router = useRouter();
 
   const [showCreateEnrollment, setShowCreateEnrollment] = useState<boolean>(false);
@@ -65,7 +54,7 @@ export default function AdminDashboard() {
     data: caseStudies,
     loading: loadingCaseStudies,
     reFetchData: refetchCaseStudies,
-  } = useFetchData<CaseStudyListItem[]>(`${getBaseUrl()}/api/case-studies`, {}, 'Failed to load case studies');
+  } = useFetchData<CaseStudyWithRelationsForAdmin[]>(`${getBaseUrl()}/api/case-studies`, {}, 'Failed to load case studies');
 
   const {
     data: enrollments,
@@ -171,7 +160,6 @@ export default function AdminDashboard() {
             setSelectedSubject={setSelectedSubject}
             loadingCaseStudies={loadingCaseStudies}
             onCreateCaseStudy={() => router.push('/admin/create')}
-            refetchCaseStudies={refetchCaseStudies}
           />
         )}
 

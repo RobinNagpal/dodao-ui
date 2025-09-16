@@ -3,7 +3,7 @@
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import type { CaseStudyWithRelations } from '@/types/api';
+import type { CaseStudyWithRelationsForStudents } from '@/types/api';
 import { SimulationSession } from '@/types/user';
 import StudentLoading from '@/components/student/StudentLoading';
 import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
@@ -48,7 +48,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     data: caseStudy,
     loading: loadingCaseStudy,
     reFetchData: refetchCaseStudy,
-  } = useFetchData<CaseStudyWithRelations>(
+  } = useFetchData<CaseStudyWithRelationsForStudents>(
     `${getBaseUrl()}/api/case-studies/${caseStudyId}`,
     { skipInitialFetch: !caseStudyId || !session },
     'Failed to load case study'

@@ -14,7 +14,7 @@ import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import type { BusinessSubject } from '@prisma/client';
-import type { CreateCaseStudyRequest, CaseStudyWithRelations } from '@/types/api';
+import type { CreateCaseStudyRequest, CaseStudyWithRelationsForStudents } from '@/types/api';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
 import BackButton from '@/components/navigation/BackButton';
 import AdminLoading from '@/components/admin/AdminLoading';
@@ -65,7 +65,7 @@ export default function CreateCaseStudyPage() {
   const [modules, setModules] = useState<ModuleFormData[]>([]);
   const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
 
-  const { postData, loading } = usePostData<CaseStudyWithRelations, CreateCaseStudyRequest>(
+  const { postData, loading } = usePostData<CaseStudyWithRelationsForStudents, CreateCaseStudyRequest>(
     {
       successMessage: 'Case study created successfully!',
       errorMessage: 'Failed to create case study',
@@ -226,7 +226,7 @@ export default function CreateCaseStudyPage() {
     };
 
     try {
-      const result: CaseStudyWithRelations | undefined = await postData('/api/case-studies', payload);
+      const result: CaseStudyWithRelationsForStudents | undefined = await postData('/api/case-studies', payload);
       if (result) {
         resetForm();
       }

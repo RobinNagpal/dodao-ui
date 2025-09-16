@@ -1,12 +1,16 @@
 'use client';
 
 import { SimulationSession } from '@/types/user';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
-import type { CaseStudyWithRelations } from '@/types/api';
+import type { CaseStudyWithRelationsForStudents, DeleteResponse } from '@/types/api';
 import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
 import { BookOpen, Brain, GraduationCap, Shield } from 'lucide-react';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
@@ -19,17 +23,20 @@ import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
 import AdminLoading from '@/components/admin/AdminLoading';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 
 interface CaseStudyViewClientProps {
   caseStudyId: string;
 }
 
-export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClientProps) {
+export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewClientProps) {
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
   const [showExerciseModal, setShowExerciseModal] = useState(false);
   const [selectedModule, setSelectedModule] = useState<CaseStudyModule | null>(null);
   const [selectedExercise, setSelectedExercise] = useState<ModuleExercise | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<string>('');
 
   const router = useRouter();
   const { data: simSession } = useSession();
@@ -40,7 +47,17 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
     data: caseStudy,
     loading: loadingCaseStudy,
     reFetchData,
-  } = useFetchData<CaseStudyWithRelations>(`/api/case-studies/${caseStudyId}`, {}, 'Failed to load case study');
+  } = useFetchData<CaseStudyWithRelationsForStudents>(`${getBaseUrl()}/api/case-studies/${caseStudyId}`, {}, 'Failed to load case study');
+
+  const {
+    data,
+    loading,
+    postData: duplicateCaseStudy,
+    error,
+  } = usePostData<CaseStudyWithRelationsForStudents, never>({
+    successMessage: 'Case study duplicated successfully!',
+    errorMessage: 'Failed to duplicated case study',
+  });
 
   const handleLogout = () => {
     router.push('/login');
@@ -61,6 +78,46 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
     }
   };
 
+  const modules = caseStudy?.modules || [];
+
+  const actions = [
+    { key: 'edit', label: 'Edit' },
+    { key: 'delete', label: 'Delete' },
+    { key: 'duplicate', label: 'Duplicate' },
+  ];
+
+  const { deleteData: deleteCaseStudy, loading: deletingCaseStudy } = useDeleteData<DeleteResponse, never>({
+    successMessage: 'Case study deleted successfully!',
+    errorMessage: 'Failed to delete case study',
+  });
+
+  const handleEditCaseStudy = (caseStudyId: string): void => {
+    router.push(`/admin/edit/${caseStudyId}`);
+  };
+
+  const handleDeleteCaseStudy = (caseStudyId: string): void => {
+    setDeleteId(caseStudyId);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDuplicateCaseStudy = async (caseStudyId: string): Promise<void> => {
+    const response = await duplicateCaseStudy(`/api/case-studies/${caseStudyId}/duplicate`);
+    if (response) {
+      router.push(`/admin/case-study/${response.id}`);
+    }
+  };
+  const handleConfirmDelete = async (): Promise<void> => {
+    try {
+      await deleteCaseStudy(`/api/case-studies/${deleteId}`);
+      setShowDeleteConfirm(false);
+      setDeleteId('');
+
+      router.push('/admin');
+    } catch (error: unknown) {
+      console.error('Error deleting case study:', error);
+    }
+  };
+
   if (!session || session.role !== 'Admin') {
     return null;
   }
@@ -68,8 +125,6 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
   if (loadingCaseStudy) {
     return <AdminLoading text="Loading case study..." subtitle="Preparing case study details..." />;
   }
-
-  const modules = caseStudy?.modules || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50">
@@ -88,8 +143,24 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
-        <BackButton userType="admin" text="Back to Dashboard" href="/admin" />
-
+        <div className="flex items-center justify-between mb-4">
+          <BackButton userType="admin" text="Back to Dashboard" href="/admin" />
+          <EllipsisDropdown
+            items={actions}
+            className="flex items-center space-x-2"
+            onSelect={async (key) => {
+              if (key === 'edit') {
+                handleEditCaseStudy(caseStudyId);
+              } else if (key === 'delete') {
+                handleDeleteCaseStudy(caseStudyId);
+              } else if (key === 'duplicate') {
+                handleDuplicateCaseStudy(caseStudyId);
+              } else {
+                console.error(`Unknown action key: ${key}`);
+              }
+            }}
+          />
+        </div>
         {modules.length > 0 && (
           <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
             <CardHeader className="pb-4">
@@ -168,6 +239,17 @@ export default function CaseStudyViewClient({ caseStudyId }: CaseStudyViewClient
           onExerciseUpdate={async (updatedExercise) => {
             await reFetchData();
           }}
+        />
+
+        <ConfirmationModal
+          open={showDeleteConfirm}
+          showSemiTransparentBg={true}
+          onClose={() => setShowDeleteConfirm(false)}
+          onConfirm={handleConfirmDelete}
+          confirming={deletingCaseStudy}
+          title="Delete Case Study"
+          confirmationText="Are you sure you want to delete this case study? This action cannot be undone."
+          askForTextInput={false}
         />
       </div>
     </div>
