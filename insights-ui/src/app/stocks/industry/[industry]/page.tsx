@@ -15,23 +15,23 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
   const params = await props.params;
   const industryKey = decodeURIComponent(params.industry);
 
-  // Fetch a sample ticker to get the industry name
+  // Fetch industry data to get name and summary
   let industryName = industryKey; // fallback to key
+  let industrySummary = `Browse ${industryKey} stocks and sub-industries across US exchanges. View reports, metrics, and AI-driven insights to guide your investments.`; // fallback description
+
   try {
-    const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US&industryKey=${industryKey}`);
-    const tickers: TickerWithIndustryNames[] = await response.json();
-    if (tickers.length > 0 && tickers[0].industryName) {
-      industryName = tickers[0].industryName;
-    }
+    const response = await fetch(`${getBaseUrl()}/api/industries/${industryKey}`);
+    const industryData: TickerV1Industry = await response.json();
+    industryName = industryData.name;
+    industrySummary = industryData.summary;
   } catch (error) {
-    console.log('Error fetching industry name for metadata:', error);
+    console.log('Error fetching industry data for metadata:', error);
   }
 
   const base = `https://koalagains.com/stocks/industry/${industryKey}`;
-  const description = `Browse ${industryName} stocks and sub-industries across US exchanges. View reports, metrics, and AI-driven insights to guide your investments.`;
   return {
     title: `${industryName} Stocks | KoalaGains`,
-    description,
+    description: industrySummary,
     alternates: {
       canonical: base,
     },
@@ -50,7 +50,7 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
     ],
     openGraph: {
       title: `${industryName} Stocks | KoalaGains`,
-      description,
+      description: industrySummary,
       url: base,
       siteName: 'KoalaGains',
       type: 'website',
@@ -58,7 +58,7 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
     twitter: {
       card: 'summary_large_image',
       title: `${industryName} Stocks | KoalaGains`,
-      description,
+      description: industrySummary,
     },
   };
 }
