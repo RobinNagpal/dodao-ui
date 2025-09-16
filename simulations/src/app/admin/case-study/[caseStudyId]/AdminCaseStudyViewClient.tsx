@@ -218,18 +218,21 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
           />
         )}
 
-        <ViewModuleModal
-          open={showModuleModal}
-          onClose={() => setShowModuleModal(false)}
-          selectedModule={selectedModule}
-          hasModuleInstructionsRead={() => true} // Admin always has read instructions
-          handleMarkInstructionAsRead={async () => {}} // No-op for admin
-          updatingStatus={false}
-          caseStudy={caseStudy}
-          onModuleUpdate={async (updatedModule) => {
-            await reFetchData();
-          }}
-        />
+        {selectedModule && (
+          <ViewModuleModal
+            open={showModuleModal}
+            onClose={() => setShowModuleModal(false)}
+            selectedModule={selectedModule}
+            hasModuleInstructionsRead={() => true} // Admin always has read instructions
+            handleMarkInstructionAsRead={async () => {}} // No-op for admin
+            updatingStatus={false}
+            caseStudy={caseStudy}
+            onModuleUpdate={async (updatedModule) => {
+              await reFetchData();
+            }}
+            allowEdit={true}
+          />
+        )}
 
         <ViewExerciseModal
           open={showExerciseModal}

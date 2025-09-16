@@ -1,27 +1,14 @@
 import { prisma } from '@/prisma';
+import { ExerciseWithModuleAndCaseStudy } from '@/types/api';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 
-interface ContextResponse {
-  caseStudy: {
-    title: string;
-    shortDescription: string;
-    details: string;
-  };
-  module: {
-    title: string;
-    shortDescription: string;
-    details: string;
-  };
-}
-
-// GET /api/student/exercises/[exerciseId]/context - Get context for AI prompt
 async function getHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
   { params }: { params: Promise<{ exerciseId: string }> }
-): Promise<ContextResponse> {
+): Promise<ExerciseWithModuleAndCaseStudy> {
   const { exerciseId } = await params;
   const { userId } = userContext;
 
@@ -30,7 +17,7 @@ async function getHandler(
   }
 
   // Get exercise with case study and module context
-  const exercise = await prisma.moduleExercise.findFirst({
+  const exercise: ExerciseWithModuleAndCaseStudy = await prisma.moduleExercise.findFirstOrThrow({
     where: {
       id: exerciseId,
       archive: false,
@@ -38,7 +25,7 @@ async function getHandler(
     include: {
       module: {
         include: {
-          caseStudy: {},
+          caseStudy: true,
         },
       },
     },
@@ -48,18 +35,7 @@ async function getHandler(
     throw new Error('Exercise not found');
   }
 
-  return {
-    caseStudy: {
-      title: exercise.module.caseStudy.title,
-      shortDescription: exercise.module.caseStudy.shortDescription,
-      details: exercise.module.caseStudy.details,
-    },
-    module: {
-      title: exercise.module.title,
-      shortDescription: exercise.module.shortDescription,
-      details: exercise.module.details,
-    },
-  };
+  return exercise;
 }
 
-export const GET = withLoggedInUser<ContextResponse>(getHandler);
+export const GET = withLoggedInUser<ExerciseWithModuleAndCaseStudy>(getHandler);

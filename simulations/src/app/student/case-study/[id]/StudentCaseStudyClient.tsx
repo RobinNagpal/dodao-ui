@@ -439,19 +439,21 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
           </Card>
         )}
 
-        <ViewModuleModal
-          open={showModuleModal}
-          onClose={handleCloseModuleModal}
-          selectedModule={selectedModule}
-          hasModuleInstructionsRead={hasModuleInstructionsRead}
-          handleMarkInstructionAsRead={handleMarkInstructionAsRead}
-          updatingStatus={updatingStatus}
-          caseStudy={caseStudy}
-          onModuleUpdate={(updatedModule) => {
-            // Students don't edit, so this should not be called
-            console.log('Student tried to update module - this should not happen');
-          }}
-        />
+        {selectedModule && (
+          <ViewModuleModal
+            open={showModuleModal}
+            onClose={handleCloseModuleModal}
+            selectedModule={selectedModule}
+            hasModuleInstructionsRead={hasModuleInstructionsRead}
+            handleMarkInstructionAsRead={handleMarkInstructionAsRead}
+            updatingStatus={updatingStatus}
+            caseStudy={caseStudy}
+            onModuleUpdate={(updatedModule) => {
+              // Students don't edit, so this should not be called
+              console.log('Student tried to update module - this should not happen');
+            }}
+          />
+        )}
 
         {caseStudy && (
           <ViewCaseStudyInstructionsModal

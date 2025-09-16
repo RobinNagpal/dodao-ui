@@ -295,19 +295,21 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         />
       )}
 
-      <ViewModuleModal
-        open={showModuleModal}
-        onClose={() => setShowModuleModal(false)}
-        selectedModule={selectedModule}
-        hasModuleInstructionsRead={() => true} // Instructor always has read instructions
-        handleMarkInstructionAsRead={async () => {}} // No-op for instructor
-        updatingStatus={false}
-        caseStudy={caseStudy}
-        onModuleUpdate={(updatedModule) => {
-          // Instructors don't edit, so this should not be called
-          console.log('Instructor tried to update module - this should not happen');
-        }}
-      />
+      {selectedModule && (
+        <ViewModuleModal
+          open={showModuleModal}
+          onClose={() => setShowModuleModal(false)}
+          selectedModule={selectedModule}
+          hasModuleInstructionsRead={() => true} // Instructor always has read instructions
+          handleMarkInstructionAsRead={async () => {}} // No-op for instructor
+          updatingStatus={false}
+          caseStudy={caseStudy}
+          onModuleUpdate={(updatedModule) => {
+            // Instructors don't edit, so this should not be called
+            console.log('Instructor tried to update module - this should not happen');
+          }}
+        />
+      )}
 
       <ViewExerciseModal
         open={showExerciseModal}
