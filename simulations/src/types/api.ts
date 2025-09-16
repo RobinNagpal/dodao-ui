@@ -1,4 +1,13 @@
-import { BusinessSubject, CaseStudy, CaseStudyModule, ModuleExercise, ClassCaseStudyEnrollment, EnrollmentStudent, FinalSubmission } from '@prisma/client';
+import {
+  BusinessSubject,
+  CaseStudy,
+  CaseStudyModule,
+  ModuleExercise,
+  ClassCaseStudyEnrollment,
+  EnrollmentStudent,
+  FinalSubmission,
+  User,
+} from '@prisma/client';
 
 export interface CreateCaseStudyRequest {
   title: string;
@@ -76,6 +85,8 @@ export type CaseStudyWithRelations = CaseStudy & {
       readModuleInstructions: boolean;
     }>;
   };
+  createdBy: User;
+  updatedBy: User;
 };
 
 export type CaseStudyWithModulesAndExercises = CaseStudy & {

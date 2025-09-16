@@ -51,7 +51,7 @@ async function putHandler(
   }
 
   // Otherwise, it's a case study update (for admins)
-  return await updateCaseStudy(id, body as UpdateCaseStudyRequest, req);
+  return await updateCaseStudy(id, body as UpdateCaseStudyRequest, req, userContext);
 }
 
 // Update instruction read status for students
@@ -148,7 +148,7 @@ async function updateInstructionStatus(
 }
 
 // Update case study (for admins)
-async function updateCaseStudy(id: string, body: UpdateCaseStudyRequest, req: NextRequest): Promise<CaseStudyWithRelations> {
+async function updateCaseStudy(id: string, body: UpdateCaseStudyRequest, req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CaseStudyWithRelations> {
   // Get admin email from request headers
   const adminEmail: string = req.headers.get('admin-email') || 'admin@example.com';
 
@@ -163,7 +163,7 @@ async function updateCaseStudy(id: string, body: UpdateCaseStudyRequest, req: Ne
         details: body.details,
         finalSummaryPromptInstructions: body.finalSummaryPromptInstructions,
         subject: body.subject,
-        updatedBy: adminEmail,
+        updatedById: userContext.userId,
         archive: false,
       },
     });
@@ -293,6 +293,8 @@ async function updateCaseStudy(id: string, body: UpdateCaseStudyRequest, req: Ne
     return await tx.caseStudy.findUniqueOrThrow({
       where: { id },
       include: {
+        updatedBy: true,
+        createdBy: true,
         modules: {
           where: { archive: false },
           include: {

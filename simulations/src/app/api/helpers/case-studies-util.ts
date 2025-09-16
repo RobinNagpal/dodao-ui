@@ -30,6 +30,8 @@ export async function getAdminCaseStudies(): Promise<CaseStudyWithRelations[]> {
           orderNumber: 'asc',
         },
       },
+      createdBy: true,
+      updatedBy: true,
     },
     orderBy: {
       createdAt: 'desc',
@@ -51,6 +53,8 @@ export async function getAdminCaseStudy(caseStudyId: string): Promise<CaseStudyW
       archive: false,
     },
     include: {
+      createdBy: true,
+      updatedBy: true,
       modules: {
         where: {
           archive: false,
@@ -227,6 +231,8 @@ export async function getStudentCaseStudies(studentEmail: string): Promise<CaseS
     include: {
       caseStudy: {
         include: {
+          createdBy: true,
+          updatedBy: true,
           modules: {
             where: {
               archive: false,
@@ -308,6 +314,8 @@ export async function getStudentCaseStudy(caseStudyId: string, studentId: string
       },
       caseStudy: {
         include: {
+          createdBy: true,
+          updatedBy: true,
           modules: {
             where: {
               archive: false,

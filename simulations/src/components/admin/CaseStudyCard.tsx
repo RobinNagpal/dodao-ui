@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BusinessSubject } from '@/types';
 import { getSubjectColor, getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
+import { User } from '@prisma/client';
 import { BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
@@ -11,7 +12,7 @@ interface CaseStudyCardProps {
     title: string;
     shortDescription: string;
     subject: BusinessSubject;
-    createdBy: string | null;
+    createdBy: User;
     createdAt: string;
     modules: Array<{
       id: string;
@@ -42,7 +43,7 @@ export default function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
               <BookOpen className="h-4 w-4 text-emerald-500" />
               <span className="text-gray-600 font-medium">{caseStudy.modules?.length || 0} modules</span>
             </div>
-            <span className="text-gray-500">by {caseStudy.createdBy}</span>
+            <span className="text-gray-500">by {caseStudy.createdBy.name || caseStudy.createdBy.email}</span>
           </div>
 
           <div className="text-xs text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">Created: {new Date(caseStudy.createdAt).toLocaleDateString()}</div>

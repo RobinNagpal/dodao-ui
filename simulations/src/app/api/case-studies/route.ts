@@ -28,7 +28,7 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
 }
 
 // POST /api/case-studies - Create a new case study
-async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
+async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CaseStudyWithRelations> {
   const body: CreateCaseStudyRequest = await req.json();
 
   // Get admin email from request headers or we could implement auth middleware
@@ -42,8 +42,8 @@ async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
       details: body.details,
       finalSummaryPromptInstructions: body.finalSummaryPromptInstructions,
       subject: body.subject,
-      createdBy: adminEmail,
-      updatedBy: adminEmail,
+      createdById: userContext.userId,
+      updatedById: userContext.userId,
       archive: false,
       modules: {
         create: body.modules.map((module) => ({
@@ -89,4 +89,4 @@ async function postHandler(req: NextRequest): Promise<CaseStudyWithRelations> {
 }
 
 export const GET = withLoggedInUser<CaseStudyWithRelations[] | CaseStudy[]>(getHandler);
-export const POST = withErrorHandlingV2<CaseStudyWithRelations>(postHandler);
+export const POST = withLoggedInUser<CaseStudyWithRelations>(postHandler);
