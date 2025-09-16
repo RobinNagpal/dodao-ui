@@ -7,10 +7,9 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import Papa from 'papaparse';
+import { ExchangeId, exchangeItems, isExchangeId, toExchangeId } from '@/utils/exchangeUtils';
 
 /** ---------- Types (strict & explicit) ---------- */
-
-type ExchangeId = 'NASDAQ' | 'NYSE' | 'AMEX' | 'TSX';
 
 interface NewTickerResponse {
   success: boolean;
@@ -56,19 +55,6 @@ type NewTickerSubmission = {
 };
 
 /** ---------- Constants & Helpers ---------- */
-
-const EXCHANGES: ReadonlyArray<ExchangeId> = ['NASDAQ', 'NYSE', 'AMEX', 'TSX'] as const;
-
-const isExchangeId = (val: string): val is ExchangeId => {
-  return (EXCHANGES as readonly string[]).includes(val);
-};
-
-const toExchangeId = (val?: string | null): ExchangeId => {
-  const normalized = (val ?? '').trim().toUpperCase();
-  return isExchangeId(normalized) ? normalized : 'NASDAQ';
-};
-
-const exchangeItems: StyledSelectItem[] = EXCHANGES.map((e) => ({ id: e, label: e }));
 
 // Exchange first in the example & help text
 const CSV_EXAMPLE: string = `exchange,name,symbol,websiteUrl

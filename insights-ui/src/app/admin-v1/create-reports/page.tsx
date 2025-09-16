@@ -1,6 +1,7 @@
 'use client';
 
 import AddTickersForm from '@/components/public-equitiesv1/AddTickersForm';
+import EditTickersForm from '@/components/public-equitiesv1/EditTickersForm';
 import ReportGenerator from '@/components/public-equitiesv1/ReportGenerator';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
@@ -39,6 +40,7 @@ interface TickerReportV1 {
 
 export default function CreateReportsV1Page(): JSX.Element {
   const [showAddTickerForm, setShowAddTickerForm] = useState<boolean>(false);
+  const [showEditTickerForm, setShowEditTickerForm] = useState<boolean>(false);
   const [selectedTickers, setSelectedTickers] = useState<string[]>([]);
   const [tickerReports, setTickerReports] = useState<Record<string, TickerReportV1>>({});
   const [selectedIndustry, setSelectedIndustry] = useState<string>('');
@@ -182,7 +184,7 @@ export default function CreateReportsV1Page(): JSX.Element {
   return (
     <PageWrapper>
       <div className="space-y-2">
-        {!showAddTickerForm && (
+        {!showAddTickerForm && !showEditTickerForm && (
           <Block title="Ticker Reports V1 Management" className="text-color">
             <div className="space-y-2">
               {/* Add New Ticker Button */}
@@ -252,9 +254,14 @@ export default function CreateReportsV1Page(): JSX.Element {
                   <div>
                     <div className="flex justify-between items-center">
                       <h2 className="text-lg font-semibold">Manage Ticker Analyses</h2>
-                      <Button variant="contained" primary onClick={() => setShowAddTickerForm(true)}>
-                        Add New Ticker
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button variant="outlined" onClick={() => setShowEditTickerForm(true)}>
+                          Edit Tickers
+                        </Button>
+                        <Button variant="contained" primary onClick={() => setShowAddTickerForm(true)}>
+                          Add New Ticker
+                        </Button>
+                      </div>
                     </div>
                     {filteredTickers && filteredTickers.length > 0 ? (
                       <Checkboxes
@@ -307,6 +314,22 @@ export default function CreateReportsV1Page(): JSX.Element {
             onCancel={(): void => setShowAddTickerForm(false)}
             initialIndustry={selectedIndustry}
             initialSubIndustry={selectedSubIndustry}
+            industries={activeIndustries}
+            subIndustries={activeSubIndustries}
+          />
+        )}
+
+        {/* Edit Tickers Form */}
+        {showEditTickerForm && (
+          <EditTickersForm
+            onSuccess={async (): Promise<void> => {
+              setShowEditTickerForm(false);
+              await refetchTickers();
+            }}
+            onCancel={(): void => setShowEditTickerForm(false)}
+            tickers={filteredTickers || []}
+            selectedIndustry={selectedIndustry}
+            selectedSubIndustry={selectedSubIndustry}
             industries={activeIndustries}
             subIndustries={activeSubIndustries}
           />
