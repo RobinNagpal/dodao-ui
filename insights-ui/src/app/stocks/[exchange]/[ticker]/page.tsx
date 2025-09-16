@@ -18,6 +18,11 @@ import { headers } from 'next/headers';
 import { Metadata } from 'next';
 import { permanentRedirect } from 'next/navigation';
 
+function truncateForMeta(text: string, maxLength = 155): string {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…'; // avoid cutting mid-word
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ ticker: string; exchange: string }> }): Promise<Metadata> {
   const { ticker, exchange } = await params;
 
@@ -34,9 +39,12 @@ export async function generateMetadata({ params }: { params: Promise<{ ticker: s
   }
 
   const companyName = tickerData?.name ?? ticker;
-  const shortDescription =
+  const rawDescription =
     tickerData?.summary ||
     `Financial analysis and reports for ${companyName} (${ticker}). Explore key metrics, insights, and evaluations to make informed investment decisions.`;
+
+  const shortDescription = truncateForMeta(rawDescription);
+
   const canonicalUrl = `https://koalagains.com/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
   const dynamicKeywords = [
     companyName,

@@ -18,7 +18,7 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
   // Fetch a sample ticker to get the industry name
   let industryName = industryKey; // fallback to key
   try {
-    const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US&industryKey=${encodeURIComponent(industryKey)}`);
+    const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=US&industryKey=${industryKey}`);
     const tickers: TickerWithIndustryNames[] = await response.json();
     if (tickers.length > 0 && tickers[0].industryName) {
       industryName = tickers[0].industryName;
@@ -27,16 +27,18 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
     console.log('Error fetching industry name for metadata:', error);
   }
 
-  const base = `https://koalagains.com/stocks/industry/${encodeURIComponent(industryKey)}`;
+  const base = `https://koalagains.com/stocks/industry/${industryKey}`;
+  const description = `Browse ${industryName} stocks and sub-industries across US exchanges. View reports, metrics, and AI-driven insights to guide your investments.`;
   return {
     title: `${industryName} Stocks | KoalaGains`,
-    description: `Explore ${industryName} companies across US exchanges (NASDAQ, NYSE, AMEX). Get detailed financial reports, performance metrics, and AI-driven analysis for investment decisions.`,
+    description,
     alternates: {
       canonical: base,
     },
     keywords: [
       `${industryName} stocks`,
       `${industryName} companies`,
+      `${industryName} sub-industries`,
       'US stocks',
       'NASDAQ stocks',
       'NYSE stocks',
@@ -46,6 +48,18 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
       'Financial reports',
       'Investment research',
     ],
+    openGraph: {
+      title: `${industryName} Stocks | KoalaGains`,
+      description,
+      url: base,
+      siteName: 'KoalaGains',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${industryName} Stocks | KoalaGains`,
+      description,
+    },
   };
 }
 
