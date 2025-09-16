@@ -78,10 +78,6 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
     }
   };
 
-  if (!session || session.role !== 'Admin') {
-    return null;
-  }
-
   const modules = caseStudy?.modules || [];
 
   const actions = [
@@ -121,6 +117,10 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
       console.error('Error deleting case study:', error);
     }
   };
+
+  if (!session || session.role !== 'Admin') {
+    return null;
+  }
 
   if (loadingCaseStudy) {
     return <AdminLoading text="Loading case study..." subtitle="Preparing case study details..." />;
