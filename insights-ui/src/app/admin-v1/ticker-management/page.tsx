@@ -17,7 +17,7 @@ import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import React, { useState } from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 
-export default function CreateReportsV1Page(): JSX.Element {
+export default function TickerManagementPage() {
   const [showAddTickerForm, setShowAddTickerForm] = useState<boolean>(false);
   const [showEditTickerForm, setShowEditTickerForm] = useState<boolean>(false);
 

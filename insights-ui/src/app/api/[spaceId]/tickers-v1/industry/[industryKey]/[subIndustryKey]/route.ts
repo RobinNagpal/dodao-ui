@@ -1,7 +1,8 @@
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { IndustryTickersResponse } from '@/types/ticker-typesv1';
+import { getTickerWithAllDetails, TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { NextRequest } from 'next/server';
 
 async function getHandler(
   req: NextRequest,
@@ -15,30 +16,31 @@ async function getHandler(
       industryKey,
       subIndustryKey,
     },
-    select: {
-      id: true,
-      name: true,
-      symbol: true,
-      exchange: true,
-      industryKey: true,
-      subIndustryKey: true,
-      cachedScore: true,
+    include: {
+      categoryAnalysisResults: {
+        include: {
+          factorResults: {
+            include: {
+              analysisCategoryFactor: true,
+            },
+          },
+        },
+      },
+      investorAnalysisResults: true,
+      futureRisks: true,
+      vsCompetition: true,
     },
     orderBy: {
       name: 'asc',
     },
   });
 
+  const detailedTickers: TickerV1ReportResponse[] = [];
+  for (const ticker of tickers) {
+    detailedTickers.push(await getTickerWithAllDetails(ticker));
+  }
   return {
-    tickers: tickers.map((ticker) => ({
-      id: ticker.id,
-      name: ticker.name,
-      symbol: ticker.symbol,
-      exchange: ticker.exchange,
-      industryKey: ticker.industryKey,
-      subIndustryKey: ticker.subIndustryKey,
-      cachedScore: ticker.cachedScore,
-    })),
+    tickers: detailedTickers,
     count: tickers.length,
   };
 }
