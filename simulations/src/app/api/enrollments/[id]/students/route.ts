@@ -1,25 +1,41 @@
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { EnrollmentStudent } from '@prisma/client';
+import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { NextRequest } from 'next/server';
 
 interface AddStudentRequest {
   studentEmail: string;
 }
 
 // POST /api/enrollments/[id]/students - Add a student to an enrollment
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<EnrollmentStudent> {
+async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ id: string }> }): Promise<EnrollmentStudent> {
   const { id: enrollmentId } = await params;
   const body: AddStudentRequest = await req.json();
+  const studentEmail = body.studentEmail;
+  let currentStudent = await prisma.user.findFirst({
+    where: {
+      email: studentEmail,
+    },
+  });
 
-  // Get admin email from request headers
-  const adminEmail: string = req.headers.get('admin-email') || 'admin@example.com';
+  if (!currentStudent) {
+    currentStudent = await prisma.user.create({
+      data: {
+        email: studentEmail,
+        spaceId: KoalaGainsSpaceId,
+        username: studentEmail,
+        authProvider: 'custom-email',
+      },
+    });
+  }
 
   // Check if student is already enrolled
   const existingStudent: EnrollmentStudent | null = await prisma.enrollmentStudent.findFirst({
     where: {
       enrollmentId,
-      assignedStudentId: body.studentEmail,
+      assignedStudentId: currentStudent.id,
       archive: false,
     },
   });
@@ -31,9 +47,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ id:
   const student: EnrollmentStudent = await prisma.enrollmentStudent.create({
     data: {
       enrollmentId,
-      assignedStudentId: body.studentEmail, // Student email
-      createdBy: adminEmail, // Admin email
-      updatedBy: adminEmail, // Admin email
+      assignedStudentId: studentEmail, // Student email
+      createdBy: userContext.userId,
+      updatedBy: userContext.userId,
       archive: false,
     },
   });
@@ -41,4 +57,4 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ id:
   return student;
 }
 
-export const POST = withErrorHandlingV2<EnrollmentStudent>(postHandler);
+export const POST = withLoggedInUser<EnrollmentStudent>(postHandler);
