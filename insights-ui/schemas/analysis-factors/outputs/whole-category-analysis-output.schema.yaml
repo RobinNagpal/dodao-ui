@@ -34,5 +34,5 @@ properties:
         - result
 required:
   - overallSummary
-  - introductionToAnalysis
+  - overallAnalysisDetails
   - factors
