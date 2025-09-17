@@ -78,8 +78,6 @@ export default function CreateReportsV1Page(): JSX.Element {
     setSelectedTickers(tickers);
   };
 
-  if (loadingIndustries) return <FullPageLoader />;
-
   return (
     <PageWrapper>
       <AdminNav />
