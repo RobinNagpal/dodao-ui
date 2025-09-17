@@ -565,7 +565,7 @@ model TickerV1CategoryAnalysisResult {
   id                     String                 @id @default(uuid())
   categoryKey            TickerAnalysisCategory @map("category_key")
   summary                String                 @map("summary")
-  introductionToAnalysis String                 @map("introduction_to_analysis")
+  overallAnalysisDetails String                 @map("introduction_to_analysis")
   tickerId               String                 @map("ticker_id")
   spaceId                String                 @default("koala_gains") @map("space_id")
   createdAt              DateTime               @default(now()) @map("created_at")
@@ -649,7 +649,7 @@ model TickerV1FutureRisk {
 model TickerV1VsCompetition {
   id                       String   @id @default(uuid())
   summary                  String   @map("summary")
-  introductionToAnalysis   String   @map("introduction_to_analysis")
+  overallAnalysisDetails   String   @map("introduction_to_analysis")
   // Store as a JSON value (can itself be a JSON array of objects)
   /// [CompetetionAnalysisArray]
   competitionAnalysisArray Json[]   @map("competition_analysis")

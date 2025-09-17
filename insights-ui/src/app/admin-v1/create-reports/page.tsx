@@ -5,16 +5,15 @@ import SelectIndustryAndSubIndustry from '@/app/admin-v1/SelectIndustryAndSubInd
 import ReportGenerator, { TickerReportV1 } from '@/components/public-equitiesv1/ReportGenerator';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
+import { IndustryTickersResponse } from '@/types/ticker-typesv1';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData, UseFetchDataResponse } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import React, { useEffect, useState } from 'react';
-import { IndustryTickersResponse } from '@/types/ticker-typesv1';
 
 // Refactored per TickerManagementPage: strict types, no extra Blocks/useEffect, no ticker add/edit management
 export default function CreateReportsV1Page(): JSX.Element {
@@ -25,9 +24,6 @@ export default function CreateReportsV1Page(): JSX.Element {
   // Ticker/report state
   const [selectedTickers, setSelectedTickers] = useState<string[]>([]);
   const [tickerReports, setTickerReports] = useState<Record<string, TickerReportV1>>({});
-
-  // Industries
-  const { data: industries, loading: loadingIndustries } = useFetchData<TickerV1Industry[]>(`${getBaseUrl()}/api/industries`, {}, 'Failed to fetch industries');
 
   // Tickers for the selected sub-industry
   const { data: tickerInfos, reFetchData: reFetchTickersForSubIndustry }: UseFetchDataResponse<IndustryTickersResponse> = useFetchData<IndustryTickersResponse>(
@@ -81,8 +77,6 @@ export default function CreateReportsV1Page(): JSX.Element {
     }
     setSelectedTickers(tickers);
   };
-
-  if (loadingIndustries) return <FullPageLoader />;
 
   return (
     <PageWrapper>
