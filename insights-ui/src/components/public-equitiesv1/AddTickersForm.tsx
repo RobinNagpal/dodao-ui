@@ -1,13 +1,12 @@
-import React, { useState, useRef } from 'react';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { ExchangeId, exchangeItems, isExchangeId, toExchangeId } from '@/utils/exchangeUtils';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
-import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Papa from 'papaparse';
-import { ExchangeId, exchangeItems, isExchangeId, toExchangeId } from '@/utils/exchangeUtils';
+import React, { useRef, useState } from 'react';
 
 /** ---------- Types (strict & explicit) ---------- */
 
@@ -32,10 +31,8 @@ interface NewTickerForm {
 interface AddTickersFormProps {
   onSuccess: () => void;
   onCancel: () => void;
-  initialIndustry?: string;
-  initialSubIndustry?: string;
-  industries: TickerV1Industry[];
-  subIndustries: TickerV1SubIndustry[];
+  selectedIndustryKey: string;
+  selectedSubIndustryKey: string;
 }
 
 type TickerCsvRow = {
@@ -64,26 +61,16 @@ TSX,Shopify Inc.,SHOP,https://www.shopify.com`;
 
 /** ---------- Component ---------- */
 
-export default function AddTickersForm({
-  onSuccess,
-  onCancel,
-  initialIndustry,
-  initialSubIndustry,
-  industries,
-  subIndustries,
-}: AddTickersFormProps): JSX.Element {
+export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKey, selectedSubIndustryKey }: AddTickersFormProps): JSX.Element {
   const [newTickerForm, setNewTickerForm] = useState<NewTickerForm>({
     tickerEntries: [{ name: '', symbol: '', websiteUrl: '', exchange: 'NASDAQ' }],
-    industryKey: initialIndustry || '',
-    subIndustryKey: initialSubIndustry || '',
+    industryKey: selectedIndustryKey,
+    subIndustryKey: selectedSubIndustryKey,
   });
 
   const [csvText, setCsvText] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [csvError, setCsvError] = useState<string>('');
-
-  // Filter sub-industries based on selected industry
-  const filteredSubIndustries: TickerV1SubIndustry[] = subIndustries.filter((sub) => sub.industryKey === newTickerForm.industryKey);
 
   // Post hook for adding new ticker
   const { postData: postNewTicker, loading: addTickerLoading } = usePostData<NewTickerResponse, NewTickerSubmission>({
@@ -341,16 +328,6 @@ export default function AddTickersForm({
 
   return (
     <Block className="text-color">
-      <h3 className="text-lg font-semibold mt-6">Common Information</h3>
-      <div className="my-4 flex flex-col gap-2">
-        <div>
-          Industry: {newTickerForm.industryKey} - {industries.find((i) => i.industryKey === newTickerForm.industryKey)?.name}
-        </div>
-        <div>
-          Sub-Industry: {newTickerForm.subIndustryKey} - {subIndustries.find((i) => i.subIndustryKey === newTickerForm.subIndustryKey)?.name}
-        </div>
-      </div>
-
       {/* Header with CSV controls */}
       <div className="flex justify-between items-start mb-4">
         <div>
