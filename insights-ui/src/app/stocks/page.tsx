@@ -9,6 +9,43 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'US Stocks by Industry | KoalaGains',
+  description:
+    'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and NYSEAMERICAN. See top tickers with detailed reports and AI insights.',
+  keywords: [
+    'US stocks',
+    'stocks by industry',
+    'NASDAQ',
+    'NYSE',
+    'AMEX',
+    'NYSEAMERICAN',
+    'stock analysis',
+    'AI stock insights',
+    'investment research',
+    'top performing stocks',
+    'KoalaGains',
+  ],
+  openGraph: {
+    title: 'US Stocks by Industry | KoalaGains',
+    description:
+      'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and AMEX. See top tickers with detailed reports and AI insights.',
+    url: 'https://koalagains.com/stocks',
+    siteName: 'KoalaGains',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'US Stocks by Industry | KoalaGains',
+    description:
+      'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and AMEX. See top tickers with detailed reports and AI insights.',
+  },
+  alternates: {
+    canonical: 'https://koalagains.com/stocks',
+  },
+};
 
 const breadcrumbs: BreadcrumbsOjbect[] = [
   {

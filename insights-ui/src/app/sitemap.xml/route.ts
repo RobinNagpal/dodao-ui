@@ -76,11 +76,14 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
 
   // Add main stocks page
-  urls.push({
-    url: '/stocks',
-    changefreq: 'daily',
-    priority: 0.8,
-  });
+  urls.push(
+    {
+      url: '/stocks',
+      changefreq: 'daily',
+      priority: 0.8,
+    },
+    { url: '/stocks/comparison', changefreq: 'weekly', priority: 0.7 }
+  );
 
   // Add industry pages - /stocks/industry/{industry}
   const industries = await getAllIndustries();
