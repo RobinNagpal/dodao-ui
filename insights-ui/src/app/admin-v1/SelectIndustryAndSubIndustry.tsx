@@ -72,7 +72,13 @@ export default function SelectIndustryAndSubIndustry({
   setSelectedSubIndustry,
 }: SelectIndustryAndSubIndustryProps) {
   // Fetch industries using useFetchData hook
-  const { data: industries, loading: loadingIndustries } = useFetchData<TickerV1Industry[]>(`${getBaseUrl()}/api/industries`, {}, 'Failed to fetch industries');
+  const { data: industries, loading: loadingIndustries } = useFetchData<TickerV1Industry[]>(
+    `${getBaseUrl()}/api/industries`,
+    {
+      cache: 'no-cache',
+    },
+    'Failed to fetch industries'
+  );
 
   // Fetch sub-industries when industry is selected
   const {
@@ -81,7 +87,7 @@ export default function SelectIndustryAndSubIndustry({
     reFetchData: refetchSubIndustries,
   } = useFetchData<TickerV1SubIndustry[]>(
     `${getBaseUrl()}/api/sub-industries?industryKey=${selectedIndustry?.industryKey}`,
-    { skipInitialFetch: !selectedIndustry?.industryKey },
+    { skipInitialFetch: !selectedIndustry?.industryKey, cache: 'no-cache' },
     'Failed to fetch sub-industries'
   );
 
