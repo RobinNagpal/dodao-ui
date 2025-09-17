@@ -23,3 +23,16 @@ export interface FilteredTicker {
   };
   totalScore: number;
 }
+
+export interface IndustryTickersResponse {
+  tickers: Array<{
+    id: string;
+    name: string;
+    symbol: string;
+    exchange: string;
+    industryKey: string;
+    subIndustryKey: string;
+    cachedScore: Number;
+  }>;
+  count: number;
+}

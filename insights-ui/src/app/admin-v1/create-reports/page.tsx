@@ -1,5 +1,6 @@
 'use client';
 
+import AdminNav from '@/app/admin-v1/AdminNav';
 import AddTickersForm from '@/components/public-equitiesv1/AddTickersForm';
 import EditTickersForm from '@/components/public-equitiesv1/EditTickersForm';
 import ReportGenerator from '@/components/public-equitiesv1/ReportGenerator';
@@ -183,6 +184,7 @@ export default function CreateReportsV1Page(): JSX.Element {
 
   return (
     <PageWrapper>
+      <AdminNav />
       <div className="space-y-2">
         {!showAddTickerForm && !showEditTickerForm && (
           <Block title="Ticker Reports V1 Management" className="text-color">

@@ -1,19 +1,7 @@
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-
-interface IndustryTickersResponse {
-  tickers: Array<{
-    id: string;
-    name: string;
-    symbol: string;
-    exchange: string;
-    industryKey: string;
-    subIndustryKey: string;
-    cachedScore: Number;
-  }>;
-  count: number;
-}
+import { IndustryTickersResponse } from '@/types/ticker-typesv1';
 
 async function getHandler(
   req: NextRequest,

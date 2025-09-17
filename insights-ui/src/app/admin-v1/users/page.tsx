@@ -1,5 +1,6 @@
 'use client';
 
+import AdminNav from '@/app/admin-v1/AdminNav';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { UserRole } from '@prisma/client';
@@ -71,6 +72,7 @@ export default function Page() {
 
   return (
     <PageWrapper>
+      <AdminNav />
       <div className="mb-6 flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">User Management</h2>
