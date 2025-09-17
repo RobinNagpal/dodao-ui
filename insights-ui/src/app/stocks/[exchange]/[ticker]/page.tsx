@@ -197,7 +197,10 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
               return (
                 <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
                   <h3 className="text-lg font-semibold mb-2">{CATEGORY_MAPPINGS[categoryKey]}</h3>
-                  <p className="text-gray-300">{categoryResult?.summary || 'No summary available.'}</p>
+                  <div
+                    className="text-gray-300 markdown markdown-body "
+                    dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.summary || 'No summary available.') }}
+                  />
                 </div>
               );
             })}
