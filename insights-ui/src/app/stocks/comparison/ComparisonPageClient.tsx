@@ -1,6 +1,6 @@
 'use client';
 
-import { TickerV1ReportResponse } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
+import { TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
 import TickerComparison, { ComparisonTicker } from '@/components/ticker-reportsv1/TickerComparison';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CATEGORY_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';

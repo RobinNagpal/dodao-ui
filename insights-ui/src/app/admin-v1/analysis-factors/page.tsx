@@ -1,5 +1,6 @@
 'use client';
 
+import AdminNav from '@/app/admin-v1/AdminNav';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -51,17 +52,9 @@ const AnalysisFactorsPage = () => {
   const activeIndustries = industries.filter((industry) => !industry.archived);
   const activeSubIndustries = subIndustries.filter((subIndustry) => !subIndustry.archived);
 
-  const breadcrumbs: BreadcrumbsOjbect[] = [
-    {
-      name: `Analysis Factors`,
-      href: `/public-equities/analysis-factors`,
-      current: true,
-    },
-  ];
-
   return (
     <PageWrapper>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <AdminNav />
       <div className="space-y-6">
         <div className="text-4xl text-center">Analysis Factors For TickersV1</div>
 

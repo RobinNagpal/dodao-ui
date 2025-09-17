@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { ExchangeId, exchangeItems, isExchangeId, toExchangeId } from '@/utils/exchangeUtils';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
-import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
-import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
-import { ExchangeId, exchangeItems, isExchangeId, toExchangeId } from '@/utils/exchangeUtils';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { TickerV1, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import React, { useEffect, useState } from 'react';
 
 /** ---------- Types ---------- */
 

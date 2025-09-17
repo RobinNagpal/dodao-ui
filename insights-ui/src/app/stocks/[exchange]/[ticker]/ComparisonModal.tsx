@@ -1,8 +1,8 @@
 'use client';
 
+import { TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
 import { useState, useEffect } from 'react';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import { TickerV1ReportResponse } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getScoreColorClasses } from '@/utils/score-utils';

@@ -23,7 +23,7 @@ interface AnalysisStatus {
   cachedScore: boolean;
 }
 
-interface TickerReportV1 {
+export interface TickerReportV1 {
   ticker: TickerV1;
   analysisStatus: AnalysisStatus;
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import AdminNav from '@/app/admin-v1/AdminNav';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useState, useEffect, useMemo } from 'react';
 import { Plus, Building2, Tag, Filter, ChevronDown, ChevronUp, Edit, Trash2, PlusCircle } from 'lucide-react';
@@ -277,7 +278,7 @@ export default function IndustryManagementPage(): JSX.Element {
 
   return (
     <PageWrapper>
-      {/* Header to match Hero */}
+      <AdminNav />
       <div className="bg-gray-800 -mx-6 px-6 py-8 mb-8 border-b border-gray-700/60">
         <h1 className="text-3xl font-bold text-white">Industry Management</h1>
         <p className="text-gray-300 mt-2">Manage industries and sub-industries in one place</p>

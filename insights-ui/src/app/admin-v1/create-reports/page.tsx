@@ -1,337 +1,223 @@
 'use client';
 
-import AddTickersForm from '@/components/public-equitiesv1/AddTickersForm';
-import EditTickersForm from '@/components/public-equitiesv1/EditTickersForm';
-import ReportGenerator from '@/components/public-equitiesv1/ReportGenerator';
+import AdminNav from '@/app/admin-v1/AdminNav';
+import ReportGenerator, { TickerReportV1 } from '@/components/public-equitiesv1/ReportGenerator';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
-import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData, UseFetchDataResponse } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import React, { useState, useEffect, useMemo } from 'react';
-import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import React, { useState } from 'react';
+import { IndustryTickersResponse } from '@/types/ticker-typesv1';
 
-interface AnalysisStatus {
-  businessAndMoat: boolean;
-  financialAnalysis: boolean;
-  pastPerformance: boolean;
-  futureGrowth: boolean;
-  fairValue: boolean;
-  competition: boolean;
-  investorAnalysis: {
-    WARREN_BUFFETT: boolean;
-    CHARLIE_MUNGER: boolean;
-    BILL_ACKMAN: boolean;
-  };
-  futureRisk: boolean;
-  finalSummary: boolean;
-  cachedScore: boolean;
-}
-
-interface TickerReportV1 {
-  ticker: TickerV1;
-  analysisStatus: AnalysisStatus;
-}
-
+// Refactored per TickerManagementPage: strict types, no extra Blocks/useEffect, no ticker add/edit management
 export default function CreateReportsV1Page(): JSX.Element {
-  const [showAddTickerForm, setShowAddTickerForm] = useState<boolean>(false);
-  const [showEditTickerForm, setShowEditTickerForm] = useState<boolean>(false);
+  // Selection state
+  const [selectedIndustryKey, setSelectedIndustryKey] = useState<string>('');
+  const [selectedSubIndustryKey, setSelectedSubIndustryKey] = useState<string>('');
+
+  // Ticker/report state
   const [selectedTickers, setSelectedTickers] = useState<string[]>([]);
   const [tickerReports, setTickerReports] = useState<Record<string, TickerReportV1>>({});
-  const [selectedIndustry, setSelectedIndustry] = useState<string>('');
-  const [selectedSubIndustry, setSelectedSubIndustry] = useState<string>('');
 
-  // Fetch industries using useFetchData hook
-  const { data: industries = [], loading: loadingIndustries } = useFetchData<TickerV1Industry[]>(
-    `${getBaseUrl()}/api/industries`,
-    {},
-    'Failed to fetch industries'
-  );
+  // Industries
+  const { data: industries, loading: loadingIndustries } = useFetchData<TickerV1Industry[]>(`${getBaseUrl()}/api/industries`, {}, 'Failed to fetch industries');
 
-  // Fetch sub-industries when industry is selected
+  // Sub-Industries (refetched explicitly like in TickerManagementPage)
   const {
     data: subIndustries = [],
     loading: loadingSubIndustries,
     reFetchData: refetchSubIndustries,
   } = useFetchData<TickerV1SubIndustry[]>(
-    `${getBaseUrl()}/api/sub-industries?industryKey=${selectedIndustry}`,
-    { skipInitialFetch: !selectedIndustry },
+    `${getBaseUrl()}/api/sub-industries?industryKey=${selectedIndustryKey}`,
+    { skipInitialFetch: !selectedIndustryKey },
     'Failed to fetch sub-industries'
   );
 
-  // Refetch sub-industries when industry changes
-  useEffect(() => {
-    if (selectedIndustry) {
-      refetchSubIndustries();
-    }
-  }, [selectedIndustry, refetchSubIndustries]);
-
-  // Filter out archived industries and sub-industries
-  const activeIndustries = industries.filter((industry) => !industry.archived);
-  const activeSubIndustries = subIndustries.filter((subIndustry) => !subIndustry.archived);
-
-  // Fetch tickers based on selected industry and sub-industry
-  // Only create a URL if both industry and sub-industry are selected
-  const tickersUrl = useMemo((): string => {
-    // Only proceed if both industry and sub-industry are selected
-    if (!selectedIndustry || !selectedSubIndustry) {
-      return '';
-    }
-
-    let url = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`;
-    const params = new URLSearchParams();
-
-    params.append('industryKey', selectedIndustry);
-    params.append('subIndustryKey', selectedSubIndustry);
-
-    return `${url}?${params.toString()}`;
-  }, [selectedIndustry, selectedSubIndustry]);
-
-  // Define explicit types for the useFetchData hook
-  const {
-    data: tickers,
-    loading: tickersLoading,
-    reFetchData: refetchTickers,
-  }: UseFetchDataResponse<TickerV1[]> = useFetchData<TickerV1[]>(
-    tickersUrl,
-    {
-      cache: 'no-cache',
-      // Skip initial fetch if URL is empty (both filters not selected)
-      skipInitialFetch: !tickersUrl,
-    },
+  // Tickers for the selected sub-industry
+  const { data: tickerInfos, reFetchData: reFetchTickersForSubIndustry }: UseFetchDataResponse<IndustryTickersResponse> = useFetchData<IndustryTickersResponse>(
+    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${selectedIndustryKey}/${selectedSubIndustryKey}`,
+    { skipInitialFetch: true },
     'Failed to fetch tickers'
   );
 
-  // Use tickers directly since filtering is now done on the server
-  const filteredTickers = useMemo(() => {
-    return tickers || [];
-  }, [tickers]);
+  // Filter active entries
+  const activeIndustries: TickerV1Industry[] | undefined = industries?.filter((i: TickerV1Industry) => !i.archived);
+  const activeSubIndustries: TickerV1SubIndustry[] = subIndustries.filter((s: TickerV1SubIndustry) => !s.archived);
 
-  // Helper functions to get display names
-  const getIndustryDisplayName = (industryKey: string): string => {
-    const industry = activeIndustries.find((ind) => ind.industryKey === industryKey);
-    return industry?.name || industryKey;
-  };
-
-  const getSubIndustryDisplayName = (subIndustryKey: string): string => {
-    const subIndustry = activeSubIndustries.find((sub) => sub.subIndustryKey === subIndustryKey);
-    return subIndustry?.name || subIndustryKey;
-  };
-
-  // Reset sub-industry selection when industry changes
-  useEffect(() => {
-    setSelectedSubIndustry('');
+  // Handlers match TickerManagementPage (no useEffect)
+  const selectIndustry = async (industryKey: string): Promise<void> => {
+    setSelectedIndustryKey(industryKey);
+    setSelectedSubIndustryKey('');
     setSelectedTickers([]);
-  }, [selectedIndustry]);
-
-  // Reset ticker selection when sub-industry changes
-  useEffect(() => {
-    setSelectedTickers([]);
-  }, [selectedSubIndustry]);
-
-  // Function to fetch a ticker report
-  const fetchTickerReport = async (ticker: string): Promise<TickerReportV1 | null> => {
-    try {
-      const response: Response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}`, {
-        cache: 'no-cache',
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch report for ${ticker}`);
-      }
-
-      const report: TickerReportV1 = await response.json();
-      setTickerReports((prev: Record<string, TickerReportV1>) => ({
-        ...prev,
-        [ticker]: report,
-      }));
-
-      return report;
-    } catch (error) {
-      console.error(`Error fetching report for ${ticker}:`, error);
-      return null;
-    }
+    await refetchSubIndustries();
   };
 
-  // Fetch reports for selected tickers
+  const selectSubIndustry = async (subIndustryKey: string): Promise<void> => {
+    setSelectedSubIndustryKey(subIndustryKey);
+    setSelectedTickers([]);
+    await reFetchTickersForSubIndustry();
+  };
+
+  // Convenience derived data
+  const tickers: TickerV1[] = (tickerInfos?.tickers as TickerV1[]) || [];
+  const selectedIndustryName: string | undefined = activeIndustries?.find((i) => i.industryKey === selectedIndustryKey)?.name;
+  const selectedSubIndustryName: string | undefined = activeSubIndustries.find((s) => s.subIndustryKey === selectedSubIndustryKey)?.name;
+
+  // Report fetching helpers (on-demand only; no effects)
+  const fetchTickerReport = async (ticker: string): Promise<void> => {
+    const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}`;
+    const resp: Response = await fetch(url, { cache: 'no-cache' });
+    if (!resp.ok) throw new Error(`Failed to fetch report for ${ticker}`);
+    const report = (await resp.json()) as TickerReportV1;
+    setTickerReports((prev) => ({ ...prev, [ticker]: report }));
+  };
+
   const fetchSelectedTickerReports = async (): Promise<void> => {
-    for (const ticker of selectedTickers) {
-      await fetchTickerReport(ticker);
+    for (const t of selectedTickers) {
+      // Intentionally sequential for simplicity; adjust if needed
+      // eslint-disable-next-line no-await-in-loop
+      await fetchTickerReport(t);
     }
   };
 
-  // Effect to fetch reports when selected tickers change
-  useEffect(() => {
-    if (selectedTickers.length > 0) {
-      fetchSelectedTickerReports();
+  const updateSelectedTickers = async (tickers: string[]) => {
+    setSelectedTickers(tickers);
+    for (const t of tickers) {
+      if (!tickerReports[t]) {
+        await fetchTickerReport(t);
+      }
     }
-  }, [selectedTickers]);
-
-  // Handle report generation completion
-  const handleReportGenerated = (ticker: string): void => {
-    fetchTickerReport(ticker);
+    setSelectedTickers(tickers);
   };
 
-  if (tickersLoading) {
-    return <FullPageLoader />;
-  }
+  if (loadingIndustries) return <FullPageLoader />;
 
   return (
     <PageWrapper>
-      <div className="space-y-2">
-        {!showAddTickerForm && !showEditTickerForm && (
-          <Block title="Ticker Reports V1 Management" className="text-color">
-            <div className="space-y-2">
-              {/* Add New Ticker Button */}
+      <AdminNav />
 
-              {/* Industry and Sub-Industry Filters */}
-              <Block title="Filter by Industry" className="dark:bg-gray-800">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {/* Industry Selection */}
-                  <StyledSelect
-                    label="Industry"
-                    selectedItemId={selectedIndustry || 'all'}
-                    items={[
-                      { id: 'all', label: loadingIndustries ? 'Loading industries...' : 'All Industries' },
-                      ...activeIndustries.map((industry) => ({
-                        id: industry.industryKey,
-                        label: industry.name,
-                      })),
-                    ]}
-                    setSelectedItemId={(id) => setSelectedIndustry(id === 'all' ? '' : id || '')}
-                    className="w-full"
-                  />
+      <div className="space-y-3">
+        {/* Filters (mirroring TickerManagementPage) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          {/* Industry */}
+          {loadingIndustries ? (
+            <div className="flex justify-center items-center h-full">Loading ...</div>
+          ) : (
+            <StyledSelect
+              label="Industry"
+              showPleaseSelect
+              selectedItemId={selectedIndustryKey}
+              items={activeIndustries?.map((industry) => ({ id: industry.industryKey, label: industry.name })) ?? []}
+              setSelectedItemId={(id) => id && selectIndustry(id)}
+              className="w-full"
+            />
+          )}
 
-                  {/* Sub-Industry Selection */}
-                  <StyledSelect
-                    label="Sub-Industry"
-                    selectedItemId={selectedSubIndustry || 'all'}
+          {/* Sub-Industry */}
+          {loadingSubIndustries ? (
+            <div className="flex justify-center items-center h-full">Loading ...</div>
+          ) : (
+            <StyledSelect
+              label="Sub-Industry"
+              showPleaseSelect
+              selectedItemId={selectedSubIndustryKey}
+              items={activeSubIndustries.map((sub) => ({ id: sub.subIndustryKey, label: sub.name }))}
+              setSelectedItemId={(id) => id && selectSubIndustry(id)}
+              className="w-full"
+            />
+          )}
+        </div>
+
+        {/* Filter summary */}
+        {(selectedIndustryKey || selectedSubIndustryKey) && (
+          <div className="mt-1 p-2 border border-gray-300 rounded-lg">
+            <p className="text-xs text-blue-700 dark:text-blue-300">
+              Filtering by: {selectedIndustryName || selectedIndustryKey} → {selectedSubIndustryName || selectedSubIndustryKey}
+            </p>
+            {!!tickers.length && (
+              <p className="text-xs text-blue-600 dark:text-blue-400">
+                Showing {tickers.length} ticker{tickers.length !== 1 ? 's' : ''}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Ticker selection (no add/edit management) */}
+        {!selectedIndustryKey || !selectedSubIndustryKey ? (
+          <div className="text-center py-3 text-amber-600 dark:text-amber-400">
+            <p>Please select both an Industry and a Sub-Industry to view available tickers.</p>
+            {selectedIndustryKey && !selectedSubIndustryKey && <p className="mt-1 text-xs">You have selected an Industry. Now please select a Sub-Industry.</p>}
+            {!selectedIndustryKey && selectedSubIndustryKey && <p className="mt-1 text-xs">You have selected a Sub-Industry. Now please select an Industry.</p>}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {tickers.length > 0 ? (
+              <div>
+                <div className="mb-4">
+                  <Checkboxes
                     items={[
-                      { id: 'all', label: loadingSubIndustries ? 'Loading sub-industries...' : 'All Sub-Industries' },
-                      ...activeSubIndustries.map((subIndustry) => ({
-                        id: subIndustry.subIndustryKey,
-                        label: subIndustry.name,
-                      })),
+                      {
+                        id: 'select-all',
+                        name: 'select-all',
+                        label: <span className="flex-grow cursor-pointer">Select All</span>,
+                      },
                     ]}
-                    setSelectedItemId={(id) => setSelectedSubIndustry(id === 'all' ? '' : id || '')}
-                    className="w-full"
+                    selectedItemIds={selectedTickers.length === tickers.length ? ['select-all'] : []}
+                    onChange={(ids: string[]) => {
+                      if (selectedTickers.length === tickers.length) updateSelectedTickers([]);
+                      else {
+                        updateSelectedTickers(tickers.map((t) => t.symbol));
+                      }
+                    }}
                   />
                 </div>
+                <Checkboxes
+                  items={tickers.map(
+                    (t): CheckboxItem => ({
+                      id: t.symbol,
+                      name: `ticker-${t.symbol}`,
+                      label: (
+                        <span className="flex-grow cursor-pointer">
+                          {t.symbol} - {t.name}
+                        </span>
+                      ),
+                    })
+                  )}
+                  selectedItemIds={selectedTickers}
+                  onChange={(ids: string[]) => updateSelectedTickers(ids)}
+                />
+              </div>
+            ) : (
+              <div className="text-center py-3 text-gray-500 dark:text-gray-400">No tickers found for the selected Industry and Sub-Industry.</div>
+            )}
 
-                {/* Filter Summary */}
-                {(selectedIndustry || selectedSubIndustry) && (
-                  <div className="mt-2 p-2 border border-gray-300 rounded-lg">
-                    <p className="text-xs text-blue-700 dark:text-blue-300">
-                      Filtering by: {selectedIndustry && getIndustryDisplayName(selectedIndustry)}
-                      {selectedIndustry && selectedSubIndustry && ' → '}
-                      {selectedSubIndustry && getSubIndustryDisplayName(selectedSubIndustry)}
-                    </p>
-                    <p className="text-xs text-blue-600 dark:text-blue-400">
-                      Showing {filteredTickers.length} ticker{filteredTickers.length !== 1 ? 's' : ''}
-                    </p>
-                  </div>
-                )}
-              </Block>
-
-              {/* Ticker Selection */}
-              <Block title="Select Tickers" className="dark:bg-gray-800">
-                {!selectedIndustry || !selectedSubIndustry ? (
-                  <div className="text-center py-3 text-amber-600 dark:text-amber-400">
-                    <p>Please select both an Industry and a Sub-Industry to view available tickers.</p>
-                    {selectedIndustry && !selectedSubIndustry && (
-                      <p className="mt-1 text-xs">{"You've selected an Industry. Now please select a Sub-Industry."}</p>
-                    )}
-                    {!selectedIndustry && selectedSubIndustry && (
-                      <p className="mt-1 text-xs">{"You've selected a Sub-Industry. Now please select an Industry."}</p>
-                    )}
-                  </div>
-                ) : (
-                  <div>
-                    <div className="flex justify-between items-center">
-                      <h2 className="text-lg font-semibold">Manage Ticker Analyses</h2>
-                      <div className="flex gap-2">
-                        <Button variant="outlined" onClick={() => setShowEditTickerForm(true)}>
-                          Edit Tickers
-                        </Button>
-                        <Button variant="contained" primary onClick={() => setShowAddTickerForm(true)}>
-                          Add New Ticker
-                        </Button>
-                      </div>
-                    </div>
-                    {filteredTickers && filteredTickers.length > 0 ? (
-                      <Checkboxes
-                        items={filteredTickers.map(
-                          (ticker): CheckboxItem => ({
-                            id: ticker.symbol,
-                            name: `ticker-${ticker.symbol}`,
-                            label: (
-                              <span className="flex-grow cursor-pointer">
-                                {ticker.symbol} - {ticker.name}
-                              </span>
-                            ),
-                          })
-                        )}
-                        selectedItemIds={selectedTickers}
-                        onChange={(selectedIds: string[]) => setSelectedTickers(selectedIds)}
-                      />
-                    ) : (
-                      <div className="text-center py-3 text-gray-500 dark:text-gray-400">No tickers found for the selected Industry and Sub-Industry.</div>
-                    )}
-                  </div>
-                )}
-                {selectedTickers.length > 0 && (
-                  <div className="mt-2 flex justify-end">
-                    <Button variant="outlined" onClick={() => setSelectedTickers([])} className="mr-1">
-                      Clear Selection
-                    </Button>
-                    <Button variant="contained" primary onClick={fetchSelectedTickerReports}>
-                      Refresh Reports
-                    </Button>
-                  </div>
-                )}
-              </Block>
-
-              {/* Report Generator Component */}
-              {selectedTickers.length > 0 && (
-                <ReportGenerator selectedTickers={selectedTickers} tickerReports={tickerReports} onReportGenerated={handleReportGenerated} />
-              )}
-            </div>
-          </Block>
+            {selectedTickers.length > 0 && (
+              <div className="mt-2 flex justify-end gap-2">
+                <Button variant="outlined" onClick={() => setSelectedTickers([])}>
+                  Clear Selection
+                </Button>
+                <Button variant="contained" primary onClick={fetchSelectedTickerReports}>
+                  Refresh Reports
+                </Button>
+              </div>
+            )}
+          </div>
         )}
 
-        {/* Add Ticker Form */}
-        {showAddTickerForm && (
-          <AddTickersForm
-            onSuccess={async (): Promise<void> => {
-              setShowAddTickerForm(false);
-              await refetchTickers();
+        {/* Report generator */}
+        {selectedTickers.length > 0 && (
+          <ReportGenerator
+            selectedTickers={selectedTickers}
+            tickerReports={tickerReports}
+            onReportGenerated={(ticker: string) => {
+              void fetchTickerReport(ticker);
             }}
-            onCancel={(): void => setShowAddTickerForm(false)}
-            initialIndustry={selectedIndustry}
-            initialSubIndustry={selectedSubIndustry}
-            industries={activeIndustries}
-            subIndustries={activeSubIndustries}
-          />
-        )}
-
-        {/* Edit Tickers Form */}
-        {showEditTickerForm && (
-          <EditTickersForm
-            onSuccess={async (): Promise<void> => {
-              setShowEditTickerForm(false);
-              await refetchTickers();
-            }}
-            onCancel={(): void => setShowEditTickerForm(false)}
-            tickers={filteredTickers || []}
-            selectedIndustry={selectedIndustry}
-            selectedSubIndustry={selectedSubIndustry}
-            industries={activeIndustries}
-            subIndustries={activeSubIndustries}
           />
         )}
       </div>
