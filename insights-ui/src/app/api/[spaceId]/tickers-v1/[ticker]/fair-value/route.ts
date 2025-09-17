@@ -88,7 +88,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     },
     update: {
       summary: response.overallSummary,
-      introductionToAnalysis: response.introductionToAnalysis,
+      overallAnalysisDetails: response.overallAnalysisDetails,
       updatedAt: new Date(),
     },
     create: {
@@ -96,7 +96,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       tickerId: tickerRecord.id,
       categoryKey: TickerAnalysisCategory.FairValue,
       summary: response.overallSummary,
-      introductionToAnalysis: response.introductionToAnalysis,
+      overallAnalysisDetails: response.overallAnalysisDetails,
     },
   });
 

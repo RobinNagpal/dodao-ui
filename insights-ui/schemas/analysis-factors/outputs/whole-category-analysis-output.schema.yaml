@@ -5,9 +5,9 @@ properties:
   overallSummary:
     type: string
     description: '3–5 sentence final summary of how the stock performs in this category. Must highlight the most important strengths and weaknesses, and conclude with a clear investor takeaway (positive, negative, or mixed). Keep language simple and concise for retail investors.'
-  introductionToAnalysis:
+  overallAnalysisDetails:
     type: string
-    description: '3–5 sentence introduction that explains what this analysis category means and why it matters to an investor.'
+    description: 'In 3-4 Paragraphs discuss in detail about the category being discusses. Explain the most important things that are needed to understand that particular stock for that category. More details are shared in the prompt'
   factors:
     type: array
     description: 'Array of factor-level analyses.'

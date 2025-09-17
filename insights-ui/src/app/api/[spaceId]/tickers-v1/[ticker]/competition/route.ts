@@ -6,7 +6,7 @@ import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-t
 
 interface CompetitionAnalysisResponse {
   summary: string;
-  introductionToAnalysis: string;
+  overallAnalysisDetails: string;
   competitionAnalysisArray: Array<{
     companyName: string;
     companySymbol?: string;
@@ -69,7 +69,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     },
     update: {
       summary: response.summary,
-      introductionToAnalysis: response.introductionToAnalysis,
+      overallAnalysisDetails: response.overallAnalysisDetails,
       competitionAnalysisArray: response.competitionAnalysisArray,
       updatedAt: new Date(),
     },
@@ -77,7 +77,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       spaceId,
       tickerId: tickerRecord.id,
       summary: response.summary,
-      introductionToAnalysis: response.introductionToAnalysis,
+      overallAnalysisDetails: response.overallAnalysisDetails,
       competitionAnalysisArray: response.competitionAnalysisArray,
     },
   });
