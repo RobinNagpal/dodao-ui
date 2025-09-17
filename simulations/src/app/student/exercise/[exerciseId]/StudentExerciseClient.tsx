@@ -1,59 +1,31 @@
 'use client';
 
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import BackButton from '@/components/navigation/BackButton';
+import StudentNavbar from '@/components/navigation/StudentNavbar';
+import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
+import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
+import ViewModuleModal from '@/components/shared/ViewModuleModal';
+import StudentLoading from '@/components/student/StudentLoading';
+import StudentProgressStepper, { ProgressData } from '@/components/student/StudentProgressStepper';
+import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { CaseStudyWithRelationsForStudents, ExerciseWithModuleAndCaseStudy } from '@/types/api';
+import { SimulationSession } from '@/types/user';
+import { parseMarkdown } from '@/utils/parse-markdown';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import StudentLoading from '@/components/student/StudentLoading';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { ExerciseAttempt } from '@prisma/client';
+import { AlertCircle, Bot, CheckCircle, Clock, Eye, FileText, MessageSquare, Plus, RotateCcw, Send, Sparkles, Star, Zap } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import { SimulationSession } from '@/types/user';
-import {
-  Send,
-  RotateCcw,
-  CheckCircle,
-  AlertCircle,
-  AlertTriangle,
-  Brain,
-  Clock,
-  MessageSquare,
-  Eye,
-  Sparkles,
-  Zap,
-  Plus,
-  Star,
-  FileText,
-  Bot,
-} from 'lucide-react';
-import { parseMarkdown } from '@/utils/parse-markdown';
-import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
-import StudentNavbar from '@/components/navigation/StudentNavbar';
-import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
-import BackButton from '@/components/navigation/BackButton';
-import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
-import StudentProgressStepper, { ProgressData } from '@/components/student/StudentProgressStepper';
-import ViewModuleModal from '@/components/shared/ViewModuleModal';
-import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface StudentExerciseClientProps {
   exerciseId: string;
   moduleId?: string;
   caseStudyId?: string;
-}
-
-interface ContextData {
-  caseStudy: {
-    title: string;
-    shortDescription: string;
-    details: string;
-  };
-  module: {
-    title: string;
-    shortDescription: string;
-    details: string;
-  };
 }
 
 interface ExerciseData {
@@ -132,6 +104,12 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     'Failed to load exercise attempts'
   );
 
+  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForStudents>(
+    `${getBaseUrl()}/api/case-studies/${caseStudyId}`,
+    { skipInitialFetch: !exerciseId || !session },
+    'Failed to load exercise attempts'
+  );
+
   // Local state to override fetched attempts when we have fresher data
   const [localAttempts, setLocalAttempts] = useState<ExerciseAttempt[] | null>(null);
 
@@ -145,7 +123,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     }
   }, [attempts, localAttempts]);
 
-  const { data: contextData, loading: loadingContext } = useFetchData<ContextData>(
+  const { data: contextData, loading: loadingContext } = useFetchData<ExerciseWithModuleAndCaseStudy>(
     `${getBaseUrl()}/api/student/exercises/${exerciseId}/context`,
     { skipInitialFetch: !exerciseId || !session },
     'Failed to load exercise context'
@@ -364,11 +342,11 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   };
 
   const addCaseStudyContext = () => {
-    if (!contextData?.caseStudy) return;
+    if (!contextData?.module?.caseStudy) return;
 
-    const context = `Case Study: ${contextData.caseStudy.title}
-Description: ${contextData.caseStudy.shortDescription}
-Details: ${contextData.caseStudy.details}
+    const context = `Case Study: ${contextData.module.caseStudy.title}
+Description: ${contextData.module.caseStudy.shortDescription}
+Details: ${contextData.module.caseStudy.details}
 
 `;
 
@@ -392,9 +370,9 @@ Details: ${contextData.caseStudy.details}
   const addModuleContext = () => {
     if (!contextData?.module) return;
 
-    const context = `Module: ${contextData.module.title}
-Description: ${contextData.module.shortDescription}
-Details: ${contextData.module.details}
+    const context = `Module: ${contextData?.module?.title}
+Description: ${contextData?.module?.shortDescription}
+Details: ${contextData?.module?.details}
 
 `;
 
@@ -470,7 +448,7 @@ Details: ${contextData.module.details}
                     <div className="flex items-center space-x-3 ml-4">
                       <button
                         onClick={handleOpenCaseStudyModal}
-                        disabled={!contextData?.caseStudy}
+                        disabled={!contextData?.module?.caseStudy}
                         className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         title="View Case Study Details"
                       >
@@ -534,7 +512,7 @@ Details: ${contextData.module.details}
                     <span className="text-sm text-gray-600 font-medium">Add context:</span>
                     <button
                       onClick={addCaseStudyContext}
-                      disabled={!contextData?.caseStudy}
+                      disabled={!contextData?.module?.caseStudy}
                       className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Plus className="h-3 w-3 mr-1" />
@@ -750,60 +728,36 @@ Details: ${contextData.module.details}
         showSemiTransparentBg={true}
       />
 
-      <ViewModuleModal
-        open={showModuleModal}
-        onClose={handleCloseModuleModal}
-        selectedModule={
-          contextData?.module
-            ? {
-                id: moduleId || 'current-module',
-                title: contextData.module.title,
-                shortDescription: contextData.module.shortDescription,
-                details: contextData.module.details,
-                orderNumber: exerciseData?.module?.orderNumber || 1,
-              }
-            : null
-        }
-        hasModuleInstructionsRead={() => true}
-        handleMarkInstructionAsRead={async () => {}}
-        updatingStatus={true}
-        caseStudy={
-          contextData?.caseStudy
-            ? {
-                id: caseStudyId || 'current-case-study',
-                title: contextData.caseStudy.title,
-                shortDescription: contextData.caseStudy.shortDescription,
-                details: contextData.caseStudy.details,
-              }
-            : undefined
-        }
-        onModuleUpdate={(updatedModule) => {
-          // Students don't edit, so this should not be called
-          console.log('Student tried to update module - this should not happen');
-        }}
-      />
+      {caseStudy && contextData?.module && (
+        <ViewModuleModal
+          open={showModuleModal}
+          onClose={handleCloseModuleModal}
+          selectedModule={contextData.module}
+          hasModuleInstructionsRead={() => true}
+          handleMarkInstructionAsRead={async () => {}}
+          updatingStatus={true}
+          caseStudy={caseStudy}
+          onModuleUpdate={(updatedModule) => {
+            // Students don't edit, so this should not be called
+            console.log('Student tried to update module - this should not happen');
+          }}
+        />
+      )}
 
-      <ViewCaseStudyModal
-        open={showCaseStudyModal}
-        onClose={handleCloseCaseStudyModal}
-        caseStudy={
-          contextData?.caseStudy
-            ? {
-                id: caseStudyId || 'current-case-study',
-                title: contextData.caseStudy.title,
-                shortDescription: contextData.caseStudy.shortDescription,
-                details: contextData.caseStudy.details,
-              }
-            : null
-        }
-        hasCaseStudyInstructionsRead={() => true}
-        handleMarkInstructionAsRead={async () => {}}
-        updatingStatus={true}
-        onCaseStudyUpdate={(updatedCaseStudy) => {
-          // Students don't edit, so this should not be called
-          console.log('Student tried to update case study - this should not happen');
-        }}
-      />
+      {caseStudy && (
+        <ViewCaseStudyInstructionsModal
+          open={showCaseStudyModal}
+          onClose={handleCloseCaseStudyModal}
+          caseStudy={caseStudy}
+          hasCaseStudyInstructionsRead={() => true}
+          handleMarkInstructionAsRead={async () => {}}
+          updatingStatus={true}
+          onCaseStudyUpdate={(updatedCaseStudy) => {
+            // Students don't edit, so this should not be called
+            console.log('Student tried to update case study - this should not happen');
+          }}
+        />
+      )}
     </div>
   );
 }

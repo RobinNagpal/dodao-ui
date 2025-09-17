@@ -7,7 +7,7 @@ import TabNavigation, { TabType } from '@/components/instructor/case-study-tabs/
 import InstructorLoading from '@/components/instructor/InstructorLoading';
 import BackButton from '@/components/navigation/BackButton';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
-import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
+import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import type { CaseStudyModule, ModuleExercise, ModuleTableData, StudentTableData } from '@/types';
@@ -280,46 +280,52 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         askForTextInput={false}
       />
 
-      <ViewCaseStudyModal
-        open={showCaseStudyModal}
-        onClose={() => setShowCaseStudyModal(false)}
-        caseStudy={caseStudy}
-        hasCaseStudyInstructionsRead={() => true} // Instructor always has read instructions
-        handleMarkInstructionAsRead={async () => {}} // No-op for instructor
-        updatingStatus={false}
-        onCaseStudyUpdate={(updatedCaseStudy) => {
-          // Instructors don't edit, so this should not be called
-          console.log('Instructor tried to update case study - this should not happen');
-        }}
-      />
+      {caseStudy && (
+        <ViewCaseStudyInstructionsModal
+          open={showCaseStudyModal}
+          onClose={() => setShowCaseStudyModal(false)}
+          caseStudy={caseStudy}
+          hasCaseStudyInstructionsRead={() => true} // Instructor always has read instructions
+          handleMarkInstructionAsRead={async () => {}} // No-op for instructor
+          updatingStatus={false}
+          onCaseStudyUpdate={(updatedCaseStudy) => {
+            // Instructors don't edit, so this should not be called
+            console.log('Instructor tried to update case study - this should not happen');
+          }}
+        />
+      )}
 
-      <ViewModuleModal
-        open={showModuleModal}
-        onClose={() => setShowModuleModal(false)}
-        selectedModule={selectedModule}
-        hasModuleInstructionsRead={() => true} // Instructor always has read instructions
-        handleMarkInstructionAsRead={async () => {}} // No-op for instructor
-        updatingStatus={false}
-        caseStudy={caseStudy}
-        onModuleUpdate={(updatedModule) => {
-          // Instructors don't edit, so this should not be called
-          console.log('Instructor tried to update module - this should not happen');
-        }}
-      />
+      {selectedModule && (
+        <ViewModuleModal
+          open={showModuleModal}
+          onClose={() => setShowModuleModal(false)}
+          selectedModule={selectedModule}
+          hasModuleInstructionsRead={() => true} // Instructor always has read instructions
+          handleMarkInstructionAsRead={async () => {}} // No-op for instructor
+          updatingStatus={false}
+          caseStudy={caseStudy}
+          onModuleUpdate={(updatedModule) => {
+            // Instructors don't edit, so this should not be called
+            console.log('Instructor tried to update module - this should not happen');
+          }}
+        />
+      )}
 
-      <ViewExerciseModal
-        open={showExerciseModal}
-        onClose={() => setShowExerciseModal(false)}
-        exercise={selectedExercise}
-        moduleTitle={selectedModule?.title}
-        moduleNumber={selectedModule?.orderNumber}
-        caseStudy={caseStudy}
-        moduleId={selectedModule?.id}
-        onExerciseUpdate={(updatedExercise) => {
-          // Instructors don't edit, so this should not be called
-          console.log('Instructor tried to update exercise - this should not happen');
-        }}
-      />
+      {selectedExercise && (
+        <ViewExerciseModal
+          open={showExerciseModal}
+          onClose={() => setShowExerciseModal(false)}
+          exercise={selectedExercise}
+          moduleTitle={selectedModule?.title}
+          moduleNumber={selectedModule?.orderNumber}
+          caseStudy={caseStudy}
+          moduleId={selectedModule?.id}
+          onExerciseUpdate={(updatedExercise) => {
+            // Instructors don't edit, so this should not be called
+            console.log('Instructor tried to update exercise - this should not happen');
+          }}
+        />
+      )}
     </div>
   );
 }

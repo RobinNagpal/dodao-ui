@@ -61,6 +61,16 @@ export interface UpdateExerciseRequest {
   orderNumber: number;
 }
 
+export type ExerciseWithModuleAndCaseStudy = ModuleExercise & {
+  module?: CaseStudyModule & {
+    caseStudy?: CaseStudy;
+  };
+};
+
+export type ModuleWithExercises = CaseStudyModule & {
+  exercises?: ModuleExercise[];
+};
+
 export type CaseStudyWithRelationsForStudents = CaseStudy & {
   modules?: Array<
     CaseStudyModule & {

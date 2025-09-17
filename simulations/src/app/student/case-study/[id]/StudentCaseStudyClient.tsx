@@ -16,7 +16,7 @@ import BackButton from '@/components/navigation/BackButton';
 import InstructionRequiredModal from '@/components/student/InstructionRequiredModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
-import ViewCaseStudyModal from '@/components/shared/ViewCaseStudyModal';
+import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import { useSession } from 'next-auth/react';
 
@@ -439,32 +439,36 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
           </Card>
         )}
 
-        <ViewModuleModal
-          open={showModuleModal}
-          onClose={handleCloseModuleModal}
-          selectedModule={selectedModule}
-          hasModuleInstructionsRead={hasModuleInstructionsRead}
-          handleMarkInstructionAsRead={handleMarkInstructionAsRead}
-          updatingStatus={updatingStatus}
-          caseStudy={caseStudy}
-          onModuleUpdate={(updatedModule) => {
-            // Students don't edit, so this should not be called
-            console.log('Student tried to update module - this should not happen');
-          }}
-        />
+        {selectedModule && (
+          <ViewModuleModal
+            open={showModuleModal}
+            onClose={handleCloseModuleModal}
+            selectedModule={selectedModule}
+            hasModuleInstructionsRead={hasModuleInstructionsRead}
+            handleMarkInstructionAsRead={handleMarkInstructionAsRead}
+            updatingStatus={updatingStatus}
+            caseStudy={caseStudy}
+            onModuleUpdate={(updatedModule) => {
+              // Students don't edit, so this should not be called
+              console.log('Student tried to update module - this should not happen');
+            }}
+          />
+        )}
 
-        <ViewCaseStudyModal
-          open={showCaseStudyModal}
-          onClose={handleCloseCaseStudyModal}
-          caseStudy={caseStudy}
-          hasCaseStudyInstructionsRead={hasCaseStudyInstructionsRead}
-          handleMarkInstructionAsRead={handleMarkInstructionAsRead}
-          updatingStatus={updatingStatus}
-          onCaseStudyUpdate={(updatedCaseStudy) => {
-            // Students don't edit, so this should not be called
-            console.log('Student tried to update case study - this should not happen');
-          }}
-        />
+        {caseStudy && (
+          <ViewCaseStudyInstructionsModal
+            open={showCaseStudyModal}
+            onClose={handleCloseCaseStudyModal}
+            caseStudy={caseStudy}
+            hasCaseStudyInstructionsRead={hasCaseStudyInstructionsRead}
+            handleMarkInstructionAsRead={handleMarkInstructionAsRead}
+            updatingStatus={updatingStatus}
+            onCaseStudyUpdate={(updatedCaseStudy) => {
+              // Students don't edit, so this should not be called
+              console.log('Student tried to update case study - this should not happen');
+            }}
+          />
+        )}
 
         <InstructionRequiredModal
           open={showInstructionRequiredModal}

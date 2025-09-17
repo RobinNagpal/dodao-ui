@@ -1,5 +1,7 @@
 'use client';
 
+import { CaseStudyWithRelationsForStudents, ModuleWithExercises } from '@/types/api';
+import { CaseStudyModule } from '@prisma/client';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,12 +16,13 @@ import { Check, Lightbulb, FileText, Edit, Save, X } from 'lucide-react';
 interface ModuleModalProps {
   open: boolean;
   onClose: () => void;
-  selectedModule: any;
+  selectedModule: CaseStudyModule;
   hasModuleInstructionsRead: (moduleId: string) => boolean;
   handleMarkInstructionAsRead: (type: 'case_study' | 'module', moduleId?: string) => Promise<void>;
   updatingStatus: boolean;
-  caseStudy?: any;
-  onModuleUpdate?: (updatedModule: any) => void;
+  caseStudy?: CaseStudyWithRelationsForStudents;
+  onModuleUpdate?: (updatedModule: CaseStudyModule) => void;
+  allowEdit?: boolean;
 }
 
 export default function ViewModuleModal({
@@ -31,13 +34,13 @@ export default function ViewModuleModal({
   updatingStatus,
   caseStudy,
   onModuleUpdate,
+  allowEdit,
 }: ModuleModalProps) {
   const [isEditMode, setIsEditMode] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [formData, setFormData] = useState({
-    title: '',
-    shortDescription: '',
-    details: '',
+    title: selectedModule.title || '',
+    shortDescription: selectedModule.shortDescription || '',
+    details: selectedModule.details || '',
   });
 
   // Use the usePutData hook
@@ -48,21 +51,6 @@ export default function ViewModuleModal({
     },
     {}
   );
-
-  useEffect(() => {
-    // Check if user is admin
-    const userType = localStorage.getItem('user_type');
-    setIsAdmin(userType === 'admin');
-
-    // Initialize form data when module changes
-    if (selectedModule) {
-      setFormData({
-        title: selectedModule.title || '',
-        shortDescription: selectedModule.shortDescription || '',
-        details: selectedModule.details || '',
-      });
-    }
-  }, [selectedModule]);
 
   const handleEdit = () => {
     setIsEditMode(true);
@@ -143,7 +131,7 @@ export default function ViewModuleModal({
 
   const title = selectedModule && (
     <div className="flex items-center justify-center w-full relative">
-      {isAdmin && !isEditMode && (
+      {allowEdit && !isEditMode && (
         <div className="absolute right-0">
           <EllipsisDropdown items={dropdownItems} onSelect={handleDropdownSelect} />
         </div>
