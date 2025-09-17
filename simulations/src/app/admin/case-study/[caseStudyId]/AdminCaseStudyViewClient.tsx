@@ -246,6 +246,7 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
             onExerciseUpdate={async (updatedExercise) => {
               await reFetchData();
             }}
+            allowEdit={true}
           />
         )}
 
