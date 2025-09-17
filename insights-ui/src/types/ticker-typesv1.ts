@@ -29,3 +29,8 @@ export interface IndustryTickersResponse {
   tickers: TickerV1ReportResponse[];
   count: number;
 }
+
+export interface SubIndustryTickersResponse {
+  tickers: TickerV1[];
+  count: number;
+}

@@ -1,4 +1,4 @@
-import { FullTickerV1CategoryAnalysisResult } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
+import { FullTickerV1CategoryAnalysisResult } from '@/utils/ticker-v1-model-utils';
 import { CATEGORY_MAPPINGS } from '@/lib/mappingsV1';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';

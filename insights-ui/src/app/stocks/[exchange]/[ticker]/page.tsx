@@ -1,4 +1,4 @@
-import { FullTickerV1CategoryAnalysisResult } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
+import { FullTickerV1CategoryAnalysisResult } from '@/utils/ticker-v1-model-utils';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -219,7 +219,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         )}
 
         {/* Competition Section */}
-        <Competition vsCompetition={tickerData.vsCompetition} competitorTickers={tickerData.competitorTickers} />
+        <Competition vsCompetition={tickerData.vsCompetition || undefined} competitorTickers={tickerData.competitorTickers} />
 
         {/* Investor Summary Section */}
         {tickerData.investorAnalysisResults.length > 0 && (

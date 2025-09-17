@@ -1,6 +1,6 @@
 'use client';
 
-import { CompetitorTicker } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
+import { CompetitorTicker } from '@/utils/ticker-v1-model-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
