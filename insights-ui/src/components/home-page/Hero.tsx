@@ -5,10 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ChartBarSquareIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 import SearchBar from '@/components/core/SearchBar';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 
 const koalaGainsServices = [
   {
@@ -32,16 +28,6 @@ const koalaGainsServices = [
 ];
 
 export function Hero() {
-  // Fetch ticker count
-  const { data: tickers } = useFetchData<TickerWithIndustryNames[]>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`,
-    { cache: 'no-cache' },
-    'Failed to fetch ticker count'
-  );
-
-  const tickerCount = tickers?.length || 0;
-  const displayCount = tickerCount > 0 ? `${tickerCount}+` : '500+';
-
   return (
     <header className="overflow-hidden bg-gray-800">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -58,7 +44,7 @@ export function Hero() {
               <div className="mb-12">
                 <div className="mb-6">
                   <h2 className="text-2xl font-semibold text-white mb-3">
-                    Search Our <span className="text-indigo-400">{displayCount} Stock Analysis Reports</span>
+                    Search Our <span className="text-indigo-400">5000+ Stock Analysis Reports</span>
                   </h2>
                   <p className="text-gray-300 text-lg max-w-2xl mx-auto">Get instant access to detailed investment analysis for your favorite stocks</p>
                 </div>
