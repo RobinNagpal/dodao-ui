@@ -5,6 +5,7 @@ import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import clsx from 'clsx';
 
 const sections = [
+  { id: 'analysis', title: 'Stocks Analysis' },
   { id: 'crowdfunding', title: 'Crowdfunding' },
   { id: 'reit', title: 'REIT' },
   { id: 'tariff', title: 'Tariff' },
