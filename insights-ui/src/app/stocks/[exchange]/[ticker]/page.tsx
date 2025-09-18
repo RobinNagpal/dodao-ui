@@ -166,10 +166,12 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
       subsections: Object.values(TickerAnalysisCategory)
         .map((categoryKey) => {
           const categoryResult = tickerData.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
-          return categoryResult ? {
-            id: `detailed-${categoryKey}`,
-            title: CATEGORY_MAPPINGS[categoryKey],
-          } : null;
+          return categoryResult
+            ? {
+                id: `detailed-${categoryKey}`,
+                title: CATEGORY_MAPPINGS[categoryKey],
+              }
+            : null;
         })
         .filter((item): item is NonNullable<typeof item> => item !== null),
     },
@@ -304,46 +306,46 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         <div id="detailed-analysis">
           <h2 className="text-2xl font-bold mb-6 mt-10">Detailed Analysis</h2>
 
-        {/* Iterate over all categories for detailed sections */}
-        {Object.values(TickerAnalysisCategory).map((categoryKey) => {
-          const categoryResult = tickerData.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
-          if (!categoryResult) return null;
+          {/* Iterate over all categories for detailed sections */}
+          {Object.values(TickerAnalysisCategory).map((categoryKey) => {
+            const categoryResult = tickerData.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
+            if (!categoryResult) return null;
 
-          return (
-            <div key={`detail-${categoryKey}`} id={`detailed-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
-              <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{CATEGORY_MAPPINGS[categoryKey]}</h2>
+            return (
+              <div key={`detail-${categoryKey}`} id={`detailed-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
+                <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{CATEGORY_MAPPINGS[categoryKey]}</h2>
 
-              {categoryResult.overallAnalysisDetails && (
-                <div className="mb-4">
-                  <div className="markdown markdown-body " dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.overallAnalysisDetails) }} />
-                </div>
-              )}
+                {categoryResult.overallAnalysisDetails && (
+                  <div className="mb-4">
+                    <div className="markdown markdown-body " dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.overallAnalysisDetails) }} />
+                  </div>
+                )}
 
-              {categoryResult.factorResults?.length > 0 && (
-                <ul className="space-y-3">
-                  {categoryResult.factorResults.map((factor) => (
-                    <li key={factor.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
-                      <div className="flex flex-col gap-y-2">
-                        <div className="flex items-center justify-between">
-                          <h3 className="font-semibold">{factor.analysisCategoryFactor?.factorAnalysisTitle}</h3>
-                          <span
-                            className={`px-2 py-1 rounded-full text-sm font-medium ${
-                              factor.result === 'Pass' ? ' bg-green-900 text-green-200' : '  bg-red-900 text-red-200'
-                            }`}
-                          >
-                            {factor.result}
-                          </span>
+                {categoryResult.factorResults?.length > 0 && (
+                  <ul className="space-y-3">
+                    {categoryResult.factorResults.map((factor) => (
+                      <li key={factor.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
+                        <div className="flex flex-col gap-y-2">
+                          <div className="flex items-center justify-between">
+                            <h3 className="font-semibold">{factor.analysisCategoryFactor?.factorAnalysisTitle}</h3>
+                            <span
+                              className={`px-2 py-1 rounded-full text-sm font-medium ${
+                                factor.result === 'Pass' ? ' bg-green-900 text-green-200' : '  bg-red-900 text-red-200'
+                              }`}
+                            >
+                              {factor.result}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-400">{factor.oneLineExplanation}</p>
+                          <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(factor.detailedExplanation) }} />
                         </div>
-                        <p className="text-sm text-gray-400">{factor.oneLineExplanation}</p>
-                        <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(factor.detailedExplanation) }} />
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          );
-        })}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Detailed Investor Reports Section */}

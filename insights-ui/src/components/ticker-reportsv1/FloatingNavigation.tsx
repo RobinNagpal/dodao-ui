@@ -31,7 +31,7 @@ export default function FloatingNavigation({ sections }: FloatingNavigationProps
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
     setIsOpen(false);
@@ -44,7 +44,7 @@ export default function FloatingNavigation({ sections }: FloatingNavigationProps
 
       for (const section of sections) {
         if (!section.hasContent) continue;
-        
+
         const element = document.getElementById(section.id);
         if (element) {
           const elementTop = element.offsetTop;
@@ -81,7 +81,7 @@ export default function FloatingNavigation({ sections }: FloatingNavigationProps
   }, [sections]);
 
   // Filter out sections that don't have content
-  const visibleSections = sections.filter(section => section.hasContent);
+  const visibleSections = sections.filter((section) => section.hasContent);
 
   if (visibleSections.length === 0) return null;
 
@@ -97,15 +97,11 @@ export default function FloatingNavigation({ sections }: FloatingNavigationProps
       </button>
 
       {/* Backdrop */}
-      {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:bg-transparent lg:backdrop-blur-none"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      {isOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:bg-transparent lg:backdrop-blur-none" onClick={() => setIsOpen(false)} />}
 
       {/* Navigation Panel */}
-      <div className={`
+      <div
+        className={`
         fixed z-50 bg-gray-900 text-white transition-transform duration-300 ease-in-out border-l border-gray-700
         ${isOpen ? 'translate-x-0' : 'translate-x-full'}
         
@@ -114,15 +110,12 @@ export default function FloatingNavigation({ sections }: FloatingNavigationProps
         
         /* Desktop: Right sidebar */
         lg:top-0 lg:right-0 lg:h-full lg:w-96 lg:max-w-md
-      `}>
+      `}
+      >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-700">
           <h2 className="text-lg font-semibold">Report Outline</h2>
-          <button
-            onClick={() => setIsOpen(false)}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
-            aria-label="Close navigation"
-          >
+          <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-gray-800 rounded-lg transition-colors" aria-label="Close navigation">
             <XMarkIcon className="h-5 w-5" />
           </button>
         </div>
@@ -137,10 +130,7 @@ export default function FloatingNavigation({ sections }: FloatingNavigationProps
                   className={`
                     w-full text-left px-3 py-2 rounded-lg transition-all duration-200
                     flex items-center justify-between group
-                    ${activeSection === section.id 
-                      ? 'bg-blue-600 text-white' 
-                      : 'hover:bg-gray-800 text-gray-300 hover:text-white'
-                    }
+                    ${activeSection === section.id ? 'bg-blue-600 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white'}
                   `}
                 >
                   <span className="font-medium">{section.title}</span>
@@ -157,10 +147,7 @@ export default function FloatingNavigation({ sections }: FloatingNavigationProps
                           className={`
                             w-full text-left px-3 py-1.5 rounded-md transition-all duration-200
                             text-sm flex items-center justify-between group
-                            ${activeSection === subsection.id
-                              ? 'bg-blue-500 text-white'
-                              : 'hover:bg-gray-800 text-gray-400 hover:text-gray-200'
-                            }
+                            ${activeSection === subsection.id ? 'bg-blue-500 text-white' : 'hover:bg-gray-800 text-gray-400 hover:text-gray-200'}
                           `}
                         >
                           <span>{subsection.title}</span>
@@ -177,9 +164,7 @@ export default function FloatingNavigation({ sections }: FloatingNavigationProps
 
         {/* Footer hint */}
         <div className="p-4 border-t border-gray-700">
-          <p className="text-sm text-gray-400 text-center">
-            Click any section to jump there instantly
-          </p>
+          <p className="text-sm text-gray-400 text-center">Click any section to jump there instantly</p>
         </div>
       </div>
     </>
