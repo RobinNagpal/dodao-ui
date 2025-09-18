@@ -22,14 +22,11 @@ export default function MobileNavToggle({ report, industryId }: MobileNavToggleP
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button
-          className={cn(
-            'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium',
-            'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
-          )}
+          className="bg-blue-600 hover:bg-blue-700 text-white p-3 sm:px-4 sm:py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
+          aria-label="Show navigation"
         >
           <Menu className="h-5 w-5" />
-          <span>Navigation</span>
+          <span className="hidden sm:block text-sm font-medium">Navigation</span>
         </button>
       </DialogTrigger>
       <DialogContent className="fixed inset-y-0 left-0 z-50 h-full w-[85%] sm:max-w-sm border-r p-0 shadow-lg">

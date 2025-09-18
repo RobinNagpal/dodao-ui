@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { UserProfile } from '@/components/core/UserProfile/UserProfile';
+import SearchBar from '@/components/core/SearchBar';
 
 interface ReportItem {
   name: string;
@@ -39,7 +40,7 @@ const genaiDropdown: GenAIItem[] = [
 
 const navigation: NavigationItem[] = [
   { name: 'Blogs', href: '/blogs', newTab: true },
-  { name: 'Platform Docs', href: 'https://docs.koalagains.com', newTab: true },
+  // { name: 'Platform Docs', href: 'https://docs.koalagains.com', newTab: true },
 ];
 
 export default function TopNav(): JSX.Element {
@@ -70,10 +71,18 @@ export default function TopNav(): JSX.Element {
   return (
     <header className="bg-gray-800 mt-2">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-2 lg:px-8">
-        <Link href="/" className="-m-1.5 p-1.5">
-          <span className="sr-only">KoalaGains</span>
-          <img alt="" src="/koalagain_logo.png" className="h-8 w-auto" />
-        </Link>
+        <div className="flex items-center space-x-6">
+          <Link href="/" className="-m-1.5 p-1.5">
+            <span className="sr-only">KoalaGains</span>
+            <img alt="" src="/koalagain_logo.png" className="h-8 w-auto" />
+          </Link>
+
+          {/* Search Bar - Desktop Only */}
+          <div className="hidden lg:block">
+            <SearchBar placeholder="Search stocks..." variant="navbar" />
+          </div>
+        </div>
+
         <div className="flex lg:hidden">
           <button
             type="button"
@@ -84,7 +93,7 @@ export default function TopNav(): JSX.Element {
             <Bars3Icon aria-hidden="true" className="h-6 w-6" />
           </button>
         </div>
-        <div className="hidden lg:flex lg:gap-x-12 items-center">
+        <div className="hidden lg:flex lg:items-center lg:space-x-8">
           {/* KoalaGains Insights Dropdown */}
           <div className="relative" ref={reportsDropdownRef}>
             <button
@@ -183,6 +192,11 @@ export default function TopNav(): JSX.Element {
           </div>
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
+              {/* Mobile Search Bar */}
+              <div className="py-4">
+                <SearchBar placeholder="Search stocks..." variant="navbar" />
+              </div>
+
               <div className="space-y-2 py-6">
                 {/* Mobile KoalaGains Insights */}
                 <div>

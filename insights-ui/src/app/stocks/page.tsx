@@ -56,15 +56,16 @@ const breadcrumbs: BreadcrumbsOjbect[] = [
 ];
 
 export default async function StocksPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
-  // Check if any filters are applied
-  const hasFilters = Object.keys(await searchParams).some((key) => key.includes('Threshold'));
+  const resolvedSearchParams = await searchParams;
+  // Check if any filters are applied (including search)
+  const hasFilters = Object.keys(resolvedSearchParams).some((key) => key.includes('Threshold')) || resolvedSearchParams.search;
 
   let tickers: TickerWithIndustryNames[] | FilteredTicker[] = [];
 
   if (hasFilters) {
     // Build URL with filter params for the filtered API
     const urlParams = new URLSearchParams();
-    Object.entries(searchParams).forEach(([key, value]) => {
+    Object.entries(resolvedSearchParams).forEach(([key, value]) => {
       if (value && key !== 'page') urlParams.set(key, value);
     });
 

@@ -14,6 +14,7 @@ interface FilterParams {
   totalthreshold?: string;
   country?: string;
   industry?: string;
+  search?: string;
 }
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<FilteredTicker[]> {
@@ -30,6 +31,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     totalthreshold: searchParams.get('totalThreshold') || undefined,
     country: searchParams.get('country') || undefined,
     industry: searchParams.get('industry') || undefined,
+    search: searchParams.get('search') || undefined,
   };
 
   // Build the where clause for database query
@@ -47,6 +49,48 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   // Add industry filter if provided
   if (filters.industry) {
     whereClause.subIndustryKey = filters.industry;
+  }
+
+  // Add search filter if provided (consistent with search API logic)
+  if (filters.search && filters.search.trim()) {
+    const searchTerm = filters.search.trim();
+    whereClause.OR = [
+      // Exact symbol match (highest priority)
+      {
+        symbol: {
+          equals: searchTerm.toUpperCase(),
+          mode: 'insensitive',
+        },
+      },
+      // Symbol starts with search term (high priority)
+      {
+        symbol: {
+          startsWith: searchTerm.toUpperCase(),
+          mode: 'insensitive',
+        },
+      },
+      // Company name starts with search term (medium priority)
+      {
+        name: {
+          startsWith: searchTerm,
+          mode: 'insensitive',
+        },
+      },
+      // Partial symbol match (lower priority)
+      {
+        symbol: {
+          contains: searchTerm,
+          mode: 'insensitive',
+        },
+      },
+      // Company name contains search term (lowest priority)
+      {
+        name: {
+          contains: searchTerm,
+          mode: 'insensitive',
+        },
+      },
+    ];
   }
 
   // Fetch all tickers with their analysis data
@@ -156,6 +200,48 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
         totalScore,
       });
     }
+  }
+
+  // If search is applied, sort results with search priority (consistent with search API)
+  if (filters.search && filters.search.trim()) {
+    const searchTerm = filters.search.trim();
+    filteredTickers.sort((a, b) => {
+      const searchUpper = searchTerm.toUpperCase();
+      const searchLower = searchTerm.toLowerCase();
+
+      // Priority 1: Exact symbol match
+      const aSymbolExact = a.symbol.toUpperCase() === searchUpper;
+      const bSymbolExact = b.symbol.toUpperCase() === searchUpper;
+      if (aSymbolExact && !bSymbolExact) return -1;
+      if (!aSymbolExact && bSymbolExact) return 1;
+
+      // Priority 2: Symbol starts with search term
+      const aSymbolStarts = a.symbol.toUpperCase().startsWith(searchUpper);
+      const bSymbolStarts = b.symbol.toUpperCase().startsWith(searchUpper);
+      if (aSymbolStarts && !bSymbolStarts) return -1;
+      if (!aSymbolStarts && bSymbolStarts) return 1;
+
+      // If both symbols start with search term, prefer shorter symbols
+      if (aSymbolStarts && bSymbolStarts) {
+        if (a.symbol.length !== b.symbol.length) {
+          return a.symbol.length - b.symbol.length;
+        }
+      }
+
+      // Priority 3: Company name starts with search term
+      const aNameStarts = a.name.toLowerCase().startsWith(searchLower);
+      const bNameStarts = b.name.toLowerCase().startsWith(searchLower);
+      if (aNameStarts && !bNameStarts) return -1;
+      if (!aNameStarts && bNameStarts) return 1;
+
+      // Priority 4: Higher total score
+      if (b.totalScore !== a.totalScore) {
+        return b.totalScore - a.totalScore;
+      }
+
+      // Priority 5: Alphabetical by symbol
+      return a.symbol.localeCompare(b.symbol);
+    });
   }
 
   return filteredTickers;

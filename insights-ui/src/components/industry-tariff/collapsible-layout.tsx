@@ -27,10 +27,11 @@ export default function CollapsibleLayout({ children, report, industryId }: Coll
       {!isSidebarOpen && (
         <button
           onClick={toggleSidebar}
-          className="fixed top-6 left-6 z-50 p-3 rounded-lg bg-background border border-color shadow-lg hover:shadow-xl hover:bg-muted transition-all duration-200 hover:scale-105"
-          title="Show navigation"
+          className="fixed bottom-6 left-6 z-50 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
+          aria-label="Show navigation"
         >
           <Menu className="h-5 w-5" />
+          <span className="text-sm font-medium">Navigation</span>
         </button>
       )}
 

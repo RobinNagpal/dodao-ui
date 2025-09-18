@@ -45,7 +45,7 @@ export default async function IndustryTariffReportLayout({
     {
       name: report.reportCover?.title || `Report ${industryId}`,
       href: `/industry-tariff-report/${industryId}`,
-      current: false,
+      current: true,
     },
   ];
 
@@ -55,7 +55,7 @@ export default async function IndustryTariffReportLayout({
       <div className="mx-auto text-color">
         <div className="mx-auto">
           {/* Mobile navigation toggle - only visible on small screens */}
-          <div className="block lg:hidden sticky top-0 z-10 bg-background p-4">
+          <div className="block lg:hidden fixed bottom-6 left-6 z-50">
             <MobileNavToggle report={report} industryId={industryId} />
           </div>
 
