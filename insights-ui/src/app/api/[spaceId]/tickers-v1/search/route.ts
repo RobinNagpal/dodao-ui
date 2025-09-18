@@ -48,28 +48,28 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
           mode: 'insensitive',
         },
       },
-      // Symbol starts with search term
+      // Symbol starts with search term (high priority)
       {
         symbol: {
           startsWith: searchTerm.toUpperCase(),
           mode: 'insensitive',
         },
       },
-      // Partial symbol match
-      {
-        symbol: {
-          contains: searchTerm,
-          mode: 'insensitive',
-        },
-      },
-      // Company name starts with search term
+      // Company name starts with search term (medium priority)
       {
         name: {
           startsWith: searchTerm,
           mode: 'insensitive',
         },
       },
-      // Company name contains search term
+      // Partial symbol match (lower priority)
+      {
+        symbol: {
+          contains: searchTerm,
+          mode: 'insensitive',
+        },
+      },
+      // Company name contains search term (lowest priority)
       {
         name: {
           contains: searchTerm,
@@ -80,6 +80,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   };
 
   // Get matching tickers with a reasonable limit
+  // For short searches, get more results to ensure proper prioritization
+  const fetchLimit = searchTerm.length <= 2 ? Math.min(limit * 4, 200) : Math.min(limit * 2, 100);
+
   const tickers = await prisma.tickerV1.findMany({
     where: whereClause,
     select: {
@@ -93,7 +96,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       summary: true,
       cachedScore: true,
     },
-    take: Math.min(limit * 2, 100), // Get more results to sort properly
+    take: fetchLimit, // Get more results to sort properly
   });
 
   // Sort results with proper priority
@@ -114,18 +117,46 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       if (aSymbolStarts && !bSymbolStarts) return -1;
       if (!aSymbolStarts && bSymbolStarts) return 1;
 
+      // If both symbols start with search term, prefer shorter symbols (more specific match)
+      if (aSymbolStarts && bSymbolStarts) {
+        if (a.symbol.length !== b.symbol.length) {
+          return a.symbol.length - b.symbol.length;
+        }
+      }
+
       // Priority 3: Company name starts with search term
       const aNameStarts = a.name.toLowerCase().startsWith(searchLower);
       const bNameStarts = b.name.toLowerCase().startsWith(searchLower);
       if (aNameStarts && !bNameStarts) return -1;
       if (!aNameStarts && bNameStarts) return 1;
 
-      // Priority 4: Higher cached score
+      // Priority 4: For symbol contains matches, prefer earlier positions
+      const aSymbolContains = a.symbol.toUpperCase().includes(searchUpper);
+      const bSymbolContains = b.symbol.toUpperCase().includes(searchUpper);
+      if (aSymbolContains && !bSymbolContains) return -1;
+      if (!aSymbolContains && bSymbolContains) return 1;
+
+      // If both contain the search term, prefer earlier position in symbol
+      if (aSymbolContains && bSymbolContains) {
+        const aSymbolIndex = a.symbol.toUpperCase().indexOf(searchUpper);
+        const bSymbolIndex = b.symbol.toUpperCase().indexOf(searchUpper);
+        if (aSymbolIndex !== bSymbolIndex) {
+          return aSymbolIndex - bSymbolIndex;
+        }
+      }
+
+      // Priority 5: Company name contains matches
+      const aNameContains = a.name.toLowerCase().includes(searchLower);
+      const bNameContains = b.name.toLowerCase().includes(searchLower);
+      if (aNameContains && !bNameContains) return -1;
+      if (!aNameContains && bNameContains) return 1;
+
+      // Priority 6: Higher cached score
       if (b.cachedScore !== a.cachedScore) {
         return b.cachedScore - a.cachedScore;
       }
 
-      // Priority 5: Alphabetical by symbol
+      // Priority 7: Alphabetical by symbol
       return a.symbol.localeCompare(b.symbol);
     })
     .slice(0, limit); // Take only the requested number of results

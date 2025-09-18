@@ -40,7 +40,7 @@ const genaiDropdown: GenAIItem[] = [
 
 const navigation: NavigationItem[] = [
   { name: 'Blogs', href: '/blogs', newTab: true },
-  { name: 'Platform Docs', href: 'https://docs.koalagains.com', newTab: true },
+  // { name: 'Platform Docs', href: 'https://docs.koalagains.com', newTab: true },
 ];
 
 export default function TopNav(): JSX.Element {

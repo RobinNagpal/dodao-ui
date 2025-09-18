@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import getBaseUrl from '../../../../../shared/web-core/src/utils/api/getBaseURL';
-import { getScoreColorClasses } from '@/utils/score-utils';
+import StockTickerItem from '@/components/stocks/StockTickerItem';
+import * as Tooltip from '@radix-ui/react-tooltip';
 
 export interface SearchResult {
   id: string;
@@ -162,7 +163,7 @@ export default function SearchBar({
   const getVariantStyles = () => {
     if (variant === 'navbar') {
       return {
-        container: 'relative w-full max-w-sm',
+        container: 'relative w-96',
         input:
           'w-full h-9 pl-9 pr-8 text-sm bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-100 placeholder-gray-400',
         dropdown: 'absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-600 rounded-md shadow-xl z-50 max-h-80 overflow-y-auto',
@@ -173,10 +174,10 @@ export default function SearchBar({
       return {
         container: 'relative w-full max-w-2xl mx-auto',
         input:
-          'w-full h-14 pl-14 pr-12 text-lg bg-gray-700/40 backdrop-blur-sm border border-gray-600/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500/50 text-white placeholder-gray-300 transition-all duration-200',
+          'w-full h-12 pl-14 pr-12 text-base bg-gray-700/40 backdrop-blur-sm border border-gray-600/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500/50 text-white placeholder-gray-300 transition-all duration-200',
         dropdown:
           'absolute top-full left-0 right-0 mt-2 bg-gray-800/95 backdrop-blur-sm border border-gray-600/40 rounded-xl shadow-2xl z-50 max-h-96 overflow-y-auto',
-        searchIcon: 'absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-300 z-10',
+        searchIcon: 'absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-300 z-10',
         clearIcon:
           'absolute right-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-300 hover:text-white cursor-pointer transition-colors duration-200 z-10',
       };
@@ -217,89 +218,35 @@ export default function SearchBar({
               <span className="text-gray-400 text-sm mt-2 block">Searching...</span>
             </div>
           ) : results.length > 0 ? (
-            <div>
-              {results.map((result, index) => {
-                const { textColorClass, scoreLabel } = getScoreColorClasses(result.cachedScore);
-
-                if (variant === 'hero') {
-                  // Compact single-line layout for hero
-                  return (
-                    <div
-                      key={result.id}
-                      className={`cursor-pointer transition-colors duration-150 border-b border-gray-700 last:border-b-0 ${
-                        index === highlightedIndex ? 'bg-indigo-600/20 text-white' : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
-                      }`}
-                      onClick={() => handleResultClick(result)}
-                      onMouseEnter={() => setHighlightedIndex(index)}
-                    >
-                      <div className="px-4 py-3">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-3 flex-1 min-w-0">
-                            <div className="font-semibold text-base">{result.symbol}</div>
-                            <div className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300">{result.exchange}</div>
-                            <div className="text-sm opacity-90 truncate">{result.name}</div>
-                          </div>
-                          {result.cachedScore > 0 && (
-                            <div className="ml-4 flex-shrink-0 flex items-center space-x-2">
-                              <div className={`w-2 h-2 rounded-full ${textColorClass.replace('text-', 'bg-')}`}></div>
-                              <div className="text-sm">
-                                <span className={`font-semibold ${textColorClass}`}>{result.cachedScore}</span>
-                                <span className="text-xs text-gray-400 ml-1">({scoreLabel})</span>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                } else {
-                  // Multi-line layout for navbar
-                  return (
-                    <div
-                      key={result.id}
-                      className={`cursor-pointer transition-colors duration-150 border-b border-gray-700 last:border-b-0 ${
-                        index === highlightedIndex ? 'bg-indigo-600/20 text-white' : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
-                      }`}
-                      onClick={() => handleResultClick(result)}
-                      onMouseEnter={() => setHighlightedIndex(index)}
-                    >
-                      <div className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center space-x-3">
-                              <div className="font-semibold text-base">{result.symbol}</div>
-                              <div className="text-xs px-2 py-1 rounded bg-gray-600 text-gray-300">{result.exchange}</div>
-                            </div>
-                            <div className="text-sm opacity-90 mt-1">{result.name}</div>
-                            {result.summary && <div className="text-xs opacity-70 mt-1 line-clamp-1">{result.summary}</div>}
-                          </div>
-                          {result.cachedScore > 0 && (
-                            <div className="ml-4 flex-shrink-0">
-                              <div className="text-right text-xs">
-                                <div className={`font-semibold ${textColorClass}`}>{result.cachedScore}/25</div>
-                                <div className="text-xs text-gray-400">{scoreLabel}</div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
-              })}
-
-              {results.length >= 8 && (
-                <div className="p-3 text-center border-t border-gray-700">
-                  <Link
-                    href={`/stocks?search=${encodeURIComponent(query)}`}
-                    className="text-indigo-400 hover:text-indigo-300 text-sm transition-colors duration-200"
-                    onClick={() => setIsOpen(false)}
+            <Tooltip.Provider>
+              <div>
+                {results.map((result, index) => (
+                  <div
+                    key={result.id}
+                    className={`transition-colors duration-150 border-b border-gray-700/50 last:border-b-0 ${
+                      index === highlightedIndex ? 'bg-indigo-600/20' : 'hover:bg-gray-700/50'
+                    }`}
+                    onMouseEnter={() => setHighlightedIndex(index)}
                   >
-                    View all results for &ldquo;{query}&rdquo;
-                  </Link>
-                </div>
-              )}
-            </div>
+                    <div className="px-3 py-2">
+                      <StockTickerItem symbol={result.symbol} name={result.name} exchange={result.exchange} score={result.cachedScore} />
+                    </div>
+                  </div>
+                ))}
+
+                {results.length >= 8 && (
+                  <div className="p-3 text-center border-t border-gray-700/50">
+                    <Link
+                      href={`/stocks?search=${encodeURIComponent(query)}`}
+                      className="text-indigo-400 hover:text-indigo-300 text-sm transition-colors duration-200"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      View all results for &ldquo;{query}&rdquo;
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </Tooltip.Provider>
           ) : query.trim() && !isLoading ? (
             <div className="p-4 text-center text-gray-400">
               <div className="text-sm">No stocks found for &ldquo;{query}&rdquo;</div>
