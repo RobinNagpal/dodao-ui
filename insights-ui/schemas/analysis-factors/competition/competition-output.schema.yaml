@@ -5,9 +5,9 @@ properties:
   summary:
     type: string
     description: '3–5 sentence conclusion on how the stock compares to its peers. Must highlight its relative strengths, weaknesses, and competitive positioning within its industry.'
-  introductionToAnalysis:
+  overallAnalysisDetails:
     type: string
-    description: '3–4 sentence introduction that explains why comparing this company to peers is important for investors. Keep language simple for retail investors.'
+    description: 'Write 3-4 paragraphs explaining why it’s how overall this particular company compares to the comperetion.'
   competitionAnalysisArray:
     type: array
     description: 'Array of competitor comparisons.'
@@ -34,5 +34,5 @@ properties:
         - detailedComparison
 required:
   - summary
-  - introductionToAnalysis
+  - overallAnalysisDetails
   - competitionAnalysisArray

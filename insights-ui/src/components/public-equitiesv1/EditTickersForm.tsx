@@ -5,7 +5,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { TickerV1, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import { TickerV1 } from '@prisma/client';
 import React, { useEffect, useState } from 'react';
 
 /** ---------- Types ---------- */
@@ -42,23 +42,13 @@ interface EditTickersFormProps {
   onSuccess: () => void;
   onCancel: () => void;
   tickers: TickerV1[];
-  selectedIndustry: string;
-  selectedSubIndustry: string;
-  industries: TickerV1Industry[];
-  subIndustries: TickerV1SubIndustry[];
+  selectedIndustryKey: string;
+  selectedSubIndustryKey: string;
 }
 
 /** ---------- Component ---------- */
 
-export default function EditTickersForm({
-  onSuccess,
-  onCancel,
-  tickers,
-  selectedIndustry,
-  selectedSubIndustry,
-  industries,
-  subIndustries,
-}: EditTickersFormProps): JSX.Element {
+export default function EditTickersForm({ onSuccess, onCancel, tickers, selectedIndustryKey, selectedSubIndustryKey }: EditTickersFormProps): JSX.Element {
   const [tickerEntries, setTickerEntries] = useState<EditableTickerEntry[]>([]);
 
   // Put hook for updating tickers
@@ -78,17 +68,6 @@ export default function EditTickersForm({
     }));
     setTickerEntries(editableEntries);
   }, [tickers]);
-
-  // Helper functions to get display names
-  const getIndustryDisplayName = (industryKey: string): string => {
-    const industry = industries.find((ind) => ind.industryKey === industryKey);
-    return industry?.name || industryKey;
-  };
-
-  const getSubIndustryDisplayName = (subIndustryKey: string): string => {
-    const subIndustry = subIndustries.find((sub) => sub.subIndustryKey === subIndustryKey);
-    return subIndustry?.name || subIndustryKey;
-  };
 
   /** ---------- Submit ---------- */
 
@@ -119,8 +98,8 @@ export default function EditTickersForm({
           name: entry.name,
           symbol: entry.symbol.toUpperCase(),
           exchange: entry.exchange,
-          industryKey: selectedIndustry,
-          subIndustryKey: selectedSubIndustry,
+          industryKey: selectedIndustryKey,
+          subIndustryKey: selectedSubIndustryKey,
           websiteUrl: entry.websiteUrl,
         })
       ),
@@ -158,16 +137,6 @@ export default function EditTickersForm({
 
   return (
     <Block className="text-color">
-      <h3 className="text-lg font-semibold mt-6">Industry Information</h3>
-      <div className="my-4 flex flex-col gap-2">
-        <div>
-          Industry: {selectedIndustry} - {getIndustryDisplayName(selectedIndustry)}
-        </div>
-        <div>
-          Sub-Industry: {selectedSubIndustry} - {getSubIndustryDisplayName(selectedSubIndustry)}
-        </div>
-      </div>
-
       {/* Header */}
       <div className="flex justify-between items-start mb-4">
         <div>

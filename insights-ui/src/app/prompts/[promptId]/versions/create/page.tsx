@@ -1,5 +1,6 @@
 'use client';
 
+import { FullPromptResponse } from '@/app/api/[spaceId]/prompts/[promptId]/route';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
@@ -28,7 +29,6 @@ export default function CreatePromptVersionPage(): JSX.Element {
   const [sampleData, setSampleData] = useState<any>({});
   const [previewHtml, setPreviewHtml] = useState<string>('');
   const [templateError, setTemplateError] = useState<string>('');
-  const [sampleBodyToAppend, setSampleBodyToAppend] = useState<string>('');
 
   const [formData, setFormData] = useState<CreatePromptVersionForm>({
     promptTemplate: '',
@@ -40,7 +40,7 @@ export default function CreatePromptVersionPage(): JSX.Element {
     data: parentPrompt,
     error: parentPromptError,
     loading: parentPromptLoading,
-  } = useFetchData<any>(`${getBaseUrl()}/api/koala_gains/prompts/${promptId}`, { cache: 'no-cache' }, 'Failed to fetch prompt data');
+  } = useFetchData<FullPromptResponse>(`${getBaseUrl()}/api/koala_gains/prompts/${promptId}`, { cache: 'no-cache' }, 'Failed to fetch prompt data');
 
   const { postData, loading } = usePostData<any, CreatePromptVersionForm>({
     successMessage: 'Prompt version created successfully!',
@@ -123,7 +123,7 @@ export default function CreatePromptVersionPage(): JSX.Element {
             <Editor
               height="300px"
               defaultLanguage="handlebars"
-              value={formData.promptTemplate}
+              value={formData.promptTemplate || parentPrompt?.activePromptVersion?.promptTemplate || ''}
               theme="vs-dark"
               onChange={(value) => setFormData((prev) => ({ ...prev, promptTemplate: value || '' }))}
             />

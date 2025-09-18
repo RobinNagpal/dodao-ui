@@ -5,134 +5,67 @@ import AddTickersForm from '@/components/public-equitiesv1/AddTickersForm';
 import EditTickersForm from '@/components/public-equitiesv1/EditTickersForm';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { IndustryTickersResponse, SubIndustryTickersResponse } from '@/types/ticker-typesv1';
+import { SubIndustryTickersResponse } from '@/types/ticker-typesv1';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
-import React, { useState } from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
+import React, { useEffect, useState } from 'react';
+import SelectIndustryAndSubIndustry from '../SelectIndustryAndSubIndustry';
 
 export default function TickerManagementPage() {
   const [showAddTickerForm, setShowAddTickerForm] = useState<boolean>(false);
   const [showEditTickerForm, setShowEditTickerForm] = useState<boolean>(false);
 
-  const [selectedIndustryKey, setSelectedIndustryKey] = useState<string>('');
-  const [selectedSubIndustryKey, setSelectedSubIndustryKey] = useState<string>('');
+  const [selectedIndustry, setSelectedIndustry] = useState<TickerV1Industry | null>(null);
+  const [selectedSubIndustry, setSelectedSubIndustry] = useState<TickerV1SubIndustry | null>(null);
 
-  // Fetch industries using useFetchData hook
-  const { data: industries, loading: loadingIndustries } = useFetchData<TickerV1Industry[]>(`${getBaseUrl()}/api/industries`, {}, 'Failed to fetch industries');
-
-  const { data: tickerInfos, reFetchData: reFetchTickersForSubIndustry } = useFetchData<SubIndustryTickersResponse>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${selectedIndustryKey}/${selectedSubIndustryKey}`,
-    { skipInitialFetch: true },
+  const {
+    data: tickerInfos,
+    reFetchData: reFetchTickersForSubIndustry,
+    loading: loadingTickers,
+  } = useFetchData<SubIndustryTickersResponse>(
+    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${selectedIndustry?.industryKey}/${selectedSubIndustry?.subIndustryKey}`,
+    { skipInitialFetch: true, cache: 'no-cache' },
     `Failed to fetch tickers`
   );
 
-  // Fetch sub-industries when industry is selected
-  const {
-    data: subIndustries = [],
-    loading: loadingSubIndustries,
-    reFetchData: refetchSubIndustries,
-  } = useFetchData<TickerV1SubIndustry[]>(
-    `${getBaseUrl()}/api/sub-industries?industryKey=${selectedIndustryKey}`,
-    { skipInitialFetch: !selectedIndustryKey },
-    'Failed to fetch sub-industries'
-  );
-
-  // Filter out archived industries and sub-industries
-  const activeIndustries = industries?.filter((industry) => !industry.archived);
-
-  const activeSubIndustries = subIndustries.filter((subIndustry) => !subIndustry.archived);
-
-  const selectIndustry = async (industryKey: string) => {
-    setSelectedIndustryKey(industryKey);
-    setSelectedSubIndustryKey('');
-    await refetchSubIndustries();
+  const selectIndustry = async (industry: TickerV1Industry | null) => {
+    setSelectedIndustry(industry);
+    setSelectedSubIndustry(null);
   };
 
-  const selectSubIndustry = async (subIndustryKey: string) => {
-    console.log('selectSubIndustry', subIndustryKey);
-    setSelectedSubIndustryKey(subIndustryKey);
-
-    await reFetchTickersForSubIndustry();
+  const selectSubIndustry = async (subIndustry: TickerV1SubIndustry | null) => {
+    console.log('selectSubIndustry', subIndustry);
+    setSelectedSubIndustry(subIndustry);
   };
 
-  if (loadingIndustries) {
-    return <FullPageLoader />;
-  }
-
-  const selectedIndustryName = activeIndustries?.find((industry) => industry.industryKey === selectedIndustryKey)?.name;
-  const selectedSubIndustryName = activeSubIndustries?.find((subIndustry) => subIndustry.subIndustryKey === selectedSubIndustryKey)?.name;
+  useEffect(() => {
+    if (selectedIndustry?.industryKey && selectedSubIndustry?.subIndustryKey) {
+      reFetchTickersForSubIndustry();
+    }
+  }, [selectedIndustry?.industryKey, selectedSubIndustry?.subIndustryKey]);
 
   return (
     <PageWrapper>
       <AdminNav />
+      <SelectIndustryAndSubIndustry
+        selectedIndustry={selectedIndustry}
+        selectedSubIndustry={selectedSubIndustry}
+        setSelectedIndustry={selectIndustry}
+        setSelectedSubIndustry={selectSubIndustry}
+      />
+
       <div className="space-y-2">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          {/* Industry Selection */}
-          {loadingIndustries ? (
-            <div className="flex justify-center items-center h-full">Loading ...</div>
-          ) : (
-            <StyledSelect
-              label="Industry"
-              showPleaseSelect={true}
-              selectedItemId={selectedIndustryKey}
-              items={
-                activeIndustries?.map((industry) => ({
-                  id: industry.industryKey,
-                  label: industry.name,
-                })) || []
-              }
-              setSelectedItemId={(id) => id && selectIndustry(id)}
-              className="w-full"
-            />
-          )}
-
-          {/* Sub-Industry Selection */}
-          {loadingSubIndustries ? (
-            <div className="flex justify-center items-center h-full">Loading ...</div>
-          ) : (
-            <StyledSelect
-              showPleaseSelect={true}
-              label="Sub-Industry"
-              selectedItemId={selectedSubIndustryKey}
-              items={
-                activeSubIndustries.map((subIndustry) => ({
-                  id: subIndustry.subIndustryKey,
-                  label: subIndustry.name,
-                })) || []
-              }
-              setSelectedItemId={(id) => id && selectSubIndustry(id)}
-              className="w-full"
-            />
-          )}
-        </div>
-
-        {/* Filter Summary */}
-        {(selectedIndustryKey || selectedSubIndustryKey) && (
-          <div className="mt-2 p-2 border border-gray-300 rounded-lg">
-            <p className="text-xs text-blue-700 dark:text-blue-300">
-              Filtering by: {selectedIndustryName || selectedIndustryKey}
-              {' → '}
-              {selectedSubIndustryName || selectedSubIndustryKey}
-            </p>
-          </div>
-        )}
-
-        {!selectedIndustryKey || !selectedSubIndustryKey ? (
+        {!selectedIndustry || !selectedSubIndustry ? (
           <div className="text-center py-3 text-amber-600 dark:text-amber-400">
             <p>Please select both an Industry and a Sub-Industry to view available tickers.</p>
-            {selectedIndustryKey && !selectedSubIndustryKey && (
-              <p className="mt-1 text-xs">{"You've selected an Industry. Now please select a Sub-Industry."}</p>
-            )}
-            {!selectedIndustryKey && selectedSubIndustryKey && (
-              <p className="mt-1 text-xs">{"You've selected a Sub-Industry. Now please select an Industry."}</p>
-            )}
+            {selectedIndustry && !selectedSubIndustry && <p className="mt-1 text-xs">{"You've selected an Industry. Now please select a Sub-Industry."}</p>}
+            {!selectedIndustry && selectedSubIndustry && <p className="mt-1 text-xs">{"You've selected a Sub-Industry. Now please select an Industry."}</p>}
           </div>
         ) : (
           <div className="pt-4 flex justify-between items-center">
@@ -148,22 +81,20 @@ export default function TickerManagementPage() {
           </div>
         )}
 
-        {showAddTickerForm && (
+        {showAddTickerForm && selectedIndustry?.industryKey && selectedSubIndustry?.subIndustryKey && (
           <AddTickersForm
             onSuccess={async (): Promise<void> => {
               setShowAddTickerForm(false);
               await reFetchTickersForSubIndustry();
             }}
             onCancel={(): void => setShowAddTickerForm(false)}
-            initialIndustry={selectedIndustryKey}
-            initialSubIndustry={selectedSubIndustryKey}
-            industries={activeIndustries || []}
-            subIndustries={activeSubIndustries}
+            selectedIndustryKey={selectedIndustry.industryKey}
+            selectedSubIndustryKey={selectedSubIndustry.subIndustryKey}
           />
         )}
 
         {/* Edit Tickers Form */}
-        {selectedIndustryKey && selectedSubIndustryKey && showEditTickerForm && (
+        {selectedIndustry && selectedSubIndustry && showEditTickerForm && (
           <EditTickersForm
             onSuccess={async (): Promise<void> => {
               setShowEditTickerForm(false);
@@ -171,23 +102,23 @@ export default function TickerManagementPage() {
             }}
             onCancel={(): void => setShowEditTickerForm(false)}
             tickers={tickerInfos?.tickers || []}
-            selectedIndustry={selectedIndustryKey}
-            selectedSubIndustry={selectedSubIndustryKey}
-            industries={activeIndustries || []}
-            subIndustries={activeSubIndustries}
+            selectedIndustryKey={selectedIndustry.industryKey}
+            selectedSubIndustryKey={selectedSubIndustry.subIndustryKey}
           />
         )}
-        <Block title="Selected Tickers" className="dark:bg-gray-800">
-          <Tooltip.Provider delayDuration={300}>
-            <SubIndustryCard
-              key={selectedSubIndustryKey}
-              subIndustry={selectedIndustryKey}
-              subIndustryName={subIndustries.find((subIndustry) => subIndustry.subIndustryKey === selectedSubIndustryKey)?.name}
-              tickers={tickerInfos?.tickers || []}
-              total={tickerInfos?.tickers?.length || 0}
-            />
-          </Tooltip.Provider>
-        </Block>
+        {loadingTickers && <FullPageLoader />}
+        {selectedIndustry && selectedSubIndustry && !loadingTickers && (
+          <Block title="Selected Tickers" className="dark:bg-gray-800">
+            <Tooltip.Provider delayDuration={300}>
+              <SubIndustryCard
+                subIndustry={selectedSubIndustry.subIndustryKey}
+                subIndustryName={selectedSubIndustry?.name}
+                tickers={tickerInfos?.tickers || []}
+                total={tickerInfos?.tickers?.length || 0}
+              />
+            </Tooltip.Provider>
+          </Block>
+        )}
       </div>
     </PageWrapper>
   );

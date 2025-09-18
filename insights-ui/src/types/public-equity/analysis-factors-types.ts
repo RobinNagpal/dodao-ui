@@ -39,7 +39,7 @@ export interface AnalysisRequest {
 
 export interface LLMFactorAnalysisResponse {
   overallSummary: string;
-  introductionToAnalysis: string;
+  overallAnalysisDetails: string;
   factors: Array<{
     factorAnalysisKey: string;
     oneLineExplanation: string;

@@ -251,7 +251,10 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
               return (
                 <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
                   <h3 className="text-lg font-semibold mb-2">{CATEGORY_MAPPINGS[categoryKey]}</h3>
-                  <p className="text-gray-300">{categoryResult?.summary || 'No summary available.'}</p>
+                  <div
+                    className="text-gray-300 markdown markdown-body "
+                    dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.summary || 'No summary available.') }}
+                  />
                 </div>
               );
             })}
@@ -310,9 +313,9 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
             <div key={`detail-${categoryKey}`} id={`detailed-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
               <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{CATEGORY_MAPPINGS[categoryKey]}</h2>
 
-              {categoryResult.introductionToAnalysis && (
+              {categoryResult.overallAnalysisDetails && (
                 <div className="mb-4">
-                  <div className="markdown markdown-body " dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.introductionToAnalysis) }} />
+                  <div className="markdown markdown-body " dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.overallAnalysisDetails) }} />
                 </div>
               )}
 
