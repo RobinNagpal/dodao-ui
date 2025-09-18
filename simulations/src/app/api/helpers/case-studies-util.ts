@@ -213,17 +213,17 @@ export async function getInstructorCaseStudy(caseStudyId: string, instructorId: 
 
 /**
  * Get enrolled case studies for a student
- * @param studentEmail The email of the student
+ * @param userId The id of the student
  * @returns Promise<CaseStudyWithRelations[]> Array of case studies the student is enrolled in
  */
-export async function getStudentCaseStudies(studentEmail: string): Promise<CaseStudyWithRelationsForStudents[]> {
+export async function getStudentCaseStudies(userId: string): Promise<CaseStudyWithRelationsForStudents[]> {
   // Find all enrollments where this student is enrolled
   const enrollments = await prisma.classCaseStudyEnrollment.findMany({
     where: {
       archive: false,
       students: {
         some: {
-          assignedStudentId: studentEmail,
+          assignedStudentId: userId,
           archive: false,
         },
       },
@@ -328,7 +328,7 @@ export async function getStudentCaseStudy(caseStudyId: string, studentId: string
                 include: {
                   attempts: {
                     where: {
-                      createdBy: studentId,
+                      createdById: studentId,
                       archive: false,
                     },
                     orderBy: {

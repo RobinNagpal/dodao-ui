@@ -26,7 +26,7 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
   const existingAttempt = await prisma.exerciseAttempt.findFirst({
     where: {
       id: attemptId,
-      createdBy: userContext.userId,
+      createdById: userContext.userId,
       archive: false,
     },
   });
@@ -42,7 +42,7 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
     },
     data: {
       promptResponse: updatedResponse,
-      updatedBy: userContext.userId,
+      updatedById: userContext.userId,
       archive: false,
     },
   });

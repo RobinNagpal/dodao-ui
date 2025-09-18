@@ -1,6 +1,7 @@
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { NextRequest } from 'next/server';
 
 interface CreateFinalSubmissionRequest {
   caseStudyId: string;
@@ -16,7 +17,7 @@ interface FinalSubmissionResponse {
 }
 
 // POST /api/student/final-submission - Create or update final submission
-async function postHandler(req: NextRequest): Promise<FinalSubmissionResponse> {
+async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<FinalSubmissionResponse> {
   const body: CreateFinalSubmissionRequest = await req.json();
   const { caseStudyId, finalContent, studentEmail } = body;
 
@@ -55,7 +56,7 @@ async function postHandler(req: NextRequest): Promise<FinalSubmissionResponse> {
       },
       data: {
         finalContent,
-        updatedBy: studentEmail,
+        updatedById: userContext.userId,
         archive: false,
       },
     });
@@ -67,8 +68,8 @@ async function postHandler(req: NextRequest): Promise<FinalSubmissionResponse> {
       data: {
         studentId: enrollmentStudent.id,
         finalContent,
-        createdBy: studentEmail,
-        updatedBy: studentEmail,
+        createdById: userContext.userId,
+        updatedById: userContext.userId,
         archive: false,
       },
     });
@@ -114,5 +115,5 @@ async function getHandler(req: NextRequest): Promise<FinalSubmissionResponse | n
   return submission;
 }
 
-export const GET = withErrorHandlingV2<FinalSubmissionResponse | null>(getHandler);
-export const POST = withErrorHandlingV2<FinalSubmissionResponse>(postHandler);
+export const GET = withLoggedInUser<FinalSubmissionResponse | null>(getHandler);
+export const POST = withLoggedInUser<FinalSubmissionResponse>(postHandler);

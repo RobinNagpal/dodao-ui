@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 
 interface SummaryContextResponse {
   caseStudy: {
@@ -26,7 +27,11 @@ interface SummaryContextResponse {
 }
 
 // GET /api/student/final-summary/[caseStudyId]/context - Get context for final summary generation
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ caseStudyId: string }> }): Promise<SummaryContextResponse> {
+async function getHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ caseStudyId: string }> }
+): Promise<SummaryContextResponse> {
   const { caseStudyId } = await params;
   const url = new URL(req.url);
   const studentEmail = url.searchParams.get('studentEmail');
@@ -67,7 +72,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ case
             include: {
               attempts: {
                 where: {
-                  createdBy: studentEmail,
+                  createdById: userContext.userId,
                   status: 'completed',
                   selectedForSummary: true,
                   archive: false,
@@ -163,4 +168,4 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ case
   };
 }
 
-export const GET = withErrorHandlingV2<SummaryContextResponse>(getHandler);
+export const GET = withLoggedInUser<SummaryContextResponse>(getHandler);

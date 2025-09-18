@@ -119,8 +119,8 @@ async function postHandler(
         data: {
           enrollmentId: enrollment.id,
           assignedStudentId: student.id,
-          createdBy: instructorId,
-          updatedBy: instructorId,
+          createdById: instructorId,
+          updatedById: instructorId,
         },
       });
 
@@ -187,7 +187,7 @@ async function deleteHandler(
       },
       data: {
         archive: true,
-        updatedBy: instructorId,
+        updatedById: instructorId,
         updatedAt: new Date(),
       },
     });
@@ -200,7 +200,7 @@ async function deleteHandler(
       },
       data: {
         archive: true,
-        updatedBy: instructorId,
+        updatedById: instructorId,
         updatedAt: new Date(),
       },
     });
@@ -208,12 +208,12 @@ async function deleteHandler(
     // Archive all exercise attempts created by this student
     await tx.exerciseAttempt.updateMany({
       where: {
-        createdBy: studentEmail, // Keep using email here as it's likely stored this way in exercise attempts
+        createdById: student.id, // Keep using email here as it's likely stored this way in exercise attempts
         archive: false,
       },
       data: {
         archive: true,
-        updatedBy: instructorId,
+        updatedById: instructorId,
         updatedAt: new Date(),
       },
     });

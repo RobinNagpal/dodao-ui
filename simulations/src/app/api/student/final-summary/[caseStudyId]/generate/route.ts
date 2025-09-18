@@ -1,6 +1,7 @@
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { GoogleGenAI } from '@google/genai';
 
 interface GenerateSummaryRequest {
@@ -20,7 +21,11 @@ interface GenerateSummaryResponse {
 }
 
 // POST /api/student/final-summary/[caseStudyId]/generate - Generate final summary using AI
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ caseStudyId: string }> }): Promise<GenerateSummaryResponse> {
+async function postHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ caseStudyId: string }> }
+): Promise<GenerateSummaryResponse> {
   const { caseStudyId } = await params;
   const body: GenerateSummaryRequest = await req.json();
   const { studentEmail, prompt } = body;
@@ -79,8 +84,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ cas
         model: 'gemini-2.5-pro',
         response: aiResponse,
         status: 'completed',
-        createdBy: studentEmail,
-        updatedBy: studentEmail,
+        createdById: userContext.userId,
+        updatedById: userContext.userId,
         archive: false,
       },
       update: {
@@ -88,7 +93,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ cas
         response: aiResponse,
         status: 'completed',
         error: null,
-        updatedBy: studentEmail,
+        updatedById: userContext.userId,
       },
     });
 
@@ -113,8 +118,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ cas
         model: 'gemini-2.5-pro',
         status: 'failed',
         error: error instanceof Error ? error.message : 'Unknown error occurred',
-        createdBy: studentEmail,
-        updatedBy: studentEmail,
+        createdById: userContext.userId,
+        updatedById: userContext.userId,
         archive: false,
       },
       update: {
@@ -122,7 +127,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ cas
         response: null,
         status: 'failed',
         error: error instanceof Error ? error.message : 'Unknown error occurred',
-        updatedBy: studentEmail,
+        updatedById: userContext.userId,
       },
     });
 
@@ -130,4 +135,4 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ cas
   }
 }
 
-export const POST = withErrorHandlingV2<GenerateSummaryResponse>(postHandler);
+export const POST = withLoggedInUser<GenerateSummaryResponse>(postHandler);

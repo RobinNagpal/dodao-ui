@@ -57,7 +57,7 @@ async function postHandler(
       },
       attempts: {
         where: {
-          createdBy: userId,
+          createdById: userId,
           archive: false,
         },
         orderBy: {
@@ -112,8 +112,8 @@ async function postHandler(
     const attempt = await prisma.exerciseAttempt.create({
       data: {
         exerciseId,
-        createdBy: userId,
-        updatedBy: userId,
+        createdById: userId,
+        updatedById: userId,
         attemptNumber: nextAttemptNumber,
         model: 'gemini-2.5-pro',
         prompt,
@@ -131,8 +131,8 @@ async function postHandler(
     const attempt = await prisma.exerciseAttempt.create({
       data: {
         exerciseId,
-        createdBy: userId,
-        updatedBy: userId,
+        createdById: userId,
+        updatedById: userId,
         attemptNumber: nextAttemptNumber,
         model: 'gemini-2.0-flash-exp',
         prompt,
@@ -162,7 +162,7 @@ async function getHandler(
   const attempts = await prisma.exerciseAttempt.findMany({
     where: {
       exerciseId,
-      createdBy: userId,
+      createdById: userId,
       archive: false,
     },
     orderBy: {

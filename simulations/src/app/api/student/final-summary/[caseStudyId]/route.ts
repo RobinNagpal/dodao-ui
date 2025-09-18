@@ -1,6 +1,7 @@
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 interface FinalSummaryResponse {
   id: string;
@@ -12,19 +13,17 @@ interface FinalSummaryResponse {
 }
 
 // GET /api/student/final-summary/[caseStudyId] - Get existing final summary for student
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ caseStudyId: string }> }): Promise<FinalSummaryResponse | null> {
+async function getHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ caseStudyId: string }> }
+): Promise<FinalSummaryResponse | null> {
   const { caseStudyId } = await params;
-  const url = new URL(req.url);
-  const studentEmail = url.searchParams.get('studentEmail');
-
-  if (!studentEmail) {
-    throw new Error('Student email is required');
-  }
 
   // Find the enrollment student record
   const enrollmentStudent = await prisma.enrollmentStudent.findFirst({
     where: {
-      assignedStudentId: studentEmail,
+      assignedStudentId: userContext.userId,
       enrollment: {
         caseStudyId: caseStudyId,
         archive: false,
@@ -54,4 +53,4 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ case
   };
 }
 
-export const GET = withErrorHandlingV2<FinalSummaryResponse | null>(getHandler);
+export const GET = withLoggedInUser<FinalSummaryResponse | null>(getHandler);

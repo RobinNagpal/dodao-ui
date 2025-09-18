@@ -1,15 +1,15 @@
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { Prisma } from '@prisma/client';
 import { DeleteResponse } from '@/types/api';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { NextRequest } from 'next/server';
 
 interface RemoveStudentRequest {
   studentEmail: string;
 }
 
 // DELETE /api/enrollments/[id]/students/remove - Remove a student from an enrollment by email
-async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<DeleteResponse> {
+async function deleteHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ id: string }> }): Promise<DeleteResponse> {
   const { id: enrollmentId } = await params;
   const body: RemoveStudentRequest = await req.json();
 
@@ -19,7 +19,6 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
     const enrollmentStudent = await tx.enrollmentStudent.findFirst({
       where: {
         enrollmentId,
-        assignedStudentId: body.studentEmail,
         archive: false,
       },
     });
@@ -32,11 +31,11 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
     await tx.enrollmentStudent.updateMany({
       where: {
         enrollmentId,
-        assignedStudentId: body.studentEmail,
         archive: false,
       },
       data: {
         archive: true,
+        updatedById: userContext.userId,
         updatedAt: new Date(),
       },
     });
@@ -49,6 +48,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
       },
       data: {
         archive: true,
+        updatedById: userContext.userId,
         updatedAt: new Date(),
       },
     });
@@ -56,7 +56,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
     // Archive all exercise attempts created by this student
     await tx.exerciseAttempt.updateMany({
       where: {
-        createdBy: body.studentEmail,
+        createdById: userContext.userId,
         archive: false,
       },
       data: {
@@ -71,4 +71,4 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
   return { message: 'Student and all related data removed from enrollment successfully' };
 }
 
-export const DELETE = withErrorHandlingV2<DeleteResponse>(deleteHandler);
+export const DELETE = withLoggedInUser<DeleteResponse>(deleteHandler);
