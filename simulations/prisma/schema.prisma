@@ -40,16 +40,29 @@ model User {
   phoneNumber   String?   @map("phone_number")
   walletAddress String[]  @default([]) @map("wallet_address")
 
-  spaceId            String            @map("space_id")
-  username           String            @map("username")
-  authProvider       String            @map("auth_provider")
-  role               UserRole          @default(Student) @map("role")
-  accounts           Account[]
-  sessions           Session[]
-  cryptoLoginNonce   CryptoLoginNonce?
-  // Explicit back-relations with distinct names
-  createdCaseStudies CaseStudy[]       @relation("CaseStudyCreatedBy")
-  updatedCaseStudies CaseStudy[]       @relation("CaseStudyUpdatedBy")
+  spaceId      String   @map("space_id")
+  username     String   @map("username")
+  authProvider String   @map("auth_provider")
+  role         UserRole @default(Student) @map("role")
+
+  accounts         Account[]
+  sessions         Session[]
+  cryptoLoginNonce CryptoLoginNonce?
+
+  // Back-relations (existing)
+  createdCaseStudies CaseStudy[] @relation("CaseStudyCreatedBy")
+  updatedCaseStudies CaseStudy[] @relation("CaseStudyUpdatedBy")
+
+  // Back-relations (new)
+  createdModules CaseStudyModule[] @relation("CaseStudyModuleCreatedBy")
+  updatedModules CaseStudyModule[] @relation("CaseStudyModuleUpdatedBy")
+
+  createdEnrollments            ClassCaseStudyEnrollment[] @relation("EnrollmentCreatedBy")
+  updatedEnrollments            ClassCaseStudyEnrollment[] @relation("EnrollmentUpdatedBy")
+  assignedInstructorEnrollments ClassCaseStudyEnrollment[] @relation("EnrollmentAssignedInstructor")
+
+  createdExercises ModuleExercise[] @relation("ModuleExerciseCreatedBy")
+  updatedExercises ModuleExercise[] @relation("ModuleExerciseUpdatedBy")
 
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
@@ -113,7 +126,7 @@ model CaseStudy {
   createdById String @map("created_by")
   updatedById String @map("updated_by")
 
-  // Relations (make them optional to match the nullable FKs)
+  // Relations
   createdBy User @relation("CaseStudyCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
   updatedBy User @relation("CaseStudyUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
 
@@ -125,15 +138,22 @@ model CaseStudyModule {
   caseStudyId String    @map("case_study_id")
   caseStudy   CaseStudy @relation("CaseStudyToModules", fields: [caseStudyId], references: [id])
 
-  title            String   @map("title")
-  shortDescription String   @map("short_description")
-  details          String   @map("details") @db.Text
-  orderNumber      Int      @map("order_number")
-  createdBy        String?  @map("created_by") // created by admin
-  updatedBy        String?  @map("updated_by") // updated by admin
-  createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt        DateTime @updatedAt @map("updated_at")
-  archive          Boolean  @default(false) @map("archive")
+  title            String @map("title")
+  shortDescription String @map("short_description")
+  details          String @map("details") @db.Text
+  orderNumber      Int    @map("order_number")
+
+  // Mandatory FK fields to User
+  createdById String @map("created_by")
+  updatedById String @map("updated_by")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  archive   Boolean  @default(false) @map("archive")
+
+  // Relations to User (restrict delete because FKs are required)
+  createdBy User @relation("CaseStudyModuleCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedBy User @relation("CaseStudyModuleUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
 
   exercises ModuleExercise[] @relation("ModuleToExercises")
 
@@ -145,13 +165,21 @@ model ClassCaseStudyEnrollment {
   caseStudyId String    @map("case_study_id")
   caseStudy   CaseStudy @relation("CaseStudyToEnrollments", fields: [caseStudyId], references: [id])
 
-  assignedInstructorId String @map("assigned_instructor_id") // assigned by admin but store instructor email
+  // Mandatory FK to assigned instructor (User)
+  assignedInstructorId String @map("assigned_instructor_id")
+  assignedInstructor   User   @relation("EnrollmentAssignedInstructor", fields: [assignedInstructorId], references: [id], onDelete: Restrict)
 
-  createdBy String?  @map("created_by") // created by admin
-  updatedBy String?  @map("updated_by") // updated by admin
+  // Mandatory FKs to creator/updater (User)
+  createdById String @map("created_by")
+  updatedById String @map("updated_by")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   archive   Boolean  @default(false) @map("archive")
+
+  // Relations to User (restrict delete because FKs are required)
+  createdBy User @relation("EnrollmentCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedBy User @relation("EnrollmentUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
 
   students EnrollmentStudent[]
 
@@ -184,17 +212,24 @@ model ModuleExercise {
   moduleId String          @map("module_id")
   module   CaseStudyModule @relation("ModuleToExercises", fields: [moduleId], references: [id])
 
-  title                  String   @map("title")
-  shortDescription       String   @map("short_description")
-  details                String   @map("details") @db.Text
-  promptHint             String?  @map("prompt_hint")
-  instructorInstructions String?  @map("instructor_instructions")
-  orderNumber            Int      @map("order_number")
-  createdBy              String?  @map("created_by") // created by admin
-  updatedBy              String?  @map("updated_by") // updated by admin
-  createdAt              DateTime @default(now()) @map("created_at")
-  updatedAt              DateTime @updatedAt @map("updated_at")
-  archive                Boolean  @default(false) @map("archive")
+  title                  String  @map("title")
+  shortDescription       String  @map("short_description")
+  details                String  @map("details") @db.Text
+  promptHint             String? @map("prompt_hint")
+  instructorInstructions String? @map("instructor_instructions")
+  orderNumber            Int     @map("order_number")
+
+  // Mandatory FKs to creator/updater (User)
+  createdById String @map("created_by")
+  updatedById String @map("updated_by")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  archive   Boolean  @default(false) @map("archive")
+
+  // Relations to User (restrict delete because FKs are required)
+  createdBy User @relation("ModuleExerciseCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedBy User @relation("ModuleExerciseUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
 
   attempts ExerciseAttempt[] @relation("ExerciseToAttempts")
 

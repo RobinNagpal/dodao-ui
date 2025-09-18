@@ -51,8 +51,8 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
           shortDescription: module.shortDescription,
           details: module.details,
           orderNumber: module.orderNumber,
-          createdBy: adminEmail,
-          updatedBy: adminEmail,
+          createdById: userContext.userId,
+          updatedById: userContext.userId,
           archive: false,
           exercises: {
             create: module.exercises.map((exercise) => ({
@@ -61,8 +61,8 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
               details: exercise.details,
               promptHint: exercise.promptHint,
               orderNumber: exercise.orderNumber,
-              createdBy: adminEmail,
-              updatedBy: adminEmail,
+              createdById: userContext.userId,
+              updatedById: userContext.userId,
               archive: false,
             })),
           },
