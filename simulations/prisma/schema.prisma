@@ -53,16 +53,28 @@ model User {
   createdCaseStudies CaseStudy[] @relation("CaseStudyCreatedBy")
   updatedCaseStudies CaseStudy[] @relation("CaseStudyUpdatedBy")
 
-  // Back-relations (new)
-  createdModules CaseStudyModule[] @relation("CaseStudyModuleCreatedBy")
-  updatedModules CaseStudyModule[] @relation("CaseStudyModuleUpdatedBy")
-
+  // Back-relations (previous step)
+  createdModules                CaseStudyModule[]          @relation("CaseStudyModuleCreatedBy")
+  updatedModules                CaseStudyModule[]          @relation("CaseStudyModuleUpdatedBy")
   createdEnrollments            ClassCaseStudyEnrollment[] @relation("EnrollmentCreatedBy")
   updatedEnrollments            ClassCaseStudyEnrollment[] @relation("EnrollmentUpdatedBy")
   assignedInstructorEnrollments ClassCaseStudyEnrollment[] @relation("EnrollmentAssignedInstructor")
+  createdExercises              ModuleExercise[]           @relation("ModuleExerciseCreatedBy")
+  updatedExercises              ModuleExercise[]           @relation("ModuleExerciseUpdatedBy")
 
-  createdExercises ModuleExercise[] @relation("ModuleExerciseCreatedBy")
-  updatedExercises ModuleExercise[] @relation("ModuleExerciseUpdatedBy")
+  // Back-relations (new in this step)
+  createdEnrollmentStudents  EnrollmentStudent[] @relation("EnrollmentStudentCreatedBy")
+  updatedEnrollmentStudents  EnrollmentStudent[] @relation("EnrollmentStudentUpdatedBy")
+  assignedEnrollmentStudents EnrollmentStudent[] @relation("EnrollmentStudentAssignedStudent")
+
+  createdExerciseAttempts ExerciseAttempt[] @relation("ExerciseAttemptCreatedBy")
+  updatedExerciseAttempts ExerciseAttempt[] @relation("ExerciseAttemptUpdatedBy")
+
+  createdFinalSummaries FinalSummary[] @relation("FinalSummaryCreatedBy")
+  updatedFinalSummaries FinalSummary[] @relation("FinalSummaryUpdatedBy")
+
+  createdFinalSubmissions FinalSubmission[] @relation("FinalSubmissionCreatedBy")
+  updatedFinalSubmissions FinalSubmission[] @relation("FinalSubmissionUpdatedBy")
 
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
@@ -191,15 +203,24 @@ model EnrollmentStudent {
   enrollmentId String                   @map("enrollment_id")
   enrollment   ClassCaseStudyEnrollment @relation(fields: [enrollmentId], references: [id])
 
-  assignedStudentId String @map("assigned_student_id") // assigned by admin but store student email
+  // Mandatory FK to assigned student (User)
+  assignedStudentId String @map("assigned_student_id")
+  assignedStudent   User   @relation("EnrollmentStudentAssignedStudent", fields: [assignedStudentId], references: [id], onDelete: Restrict)
 
   instructionReadStatus Json? @map("instruction_read_status")
 
-  createdBy       String?          @map("created_by") // created by admin
-  updatedBy       String?          @map("updated_by") // updated by admin
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @updatedAt @map("updated_at")
-  archive         Boolean          @default(false) @map("archive")
+  // Mandatory FKs to creator/updater (User)
+  createdById String @map("created_by")
+  updatedById String @map("updated_by")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  archive   Boolean  @default(false) @map("archive")
+
+  // Relations to User (restrict delete because FKs are required)
+  createdBy User @relation("EnrollmentStudentCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedBy User @relation("EnrollmentStudentUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
+
   finalSubmission FinalSubmission?
   finalSummary    FinalSummary?
 
@@ -241,8 +262,10 @@ model ExerciseAttempt {
   exerciseId String         @map("exercise_id")
   exercise   ModuleExercise @relation("ExerciseToAttempts", fields: [exerciseId], references: [id])
 
-  createdBy          String?  @map("created_by") // created by student
-  updatedBy          String?  @map("updated_by") // updated by student
+  // Mandatory FKs to creator/updater (User)
+  createdById String @map("created_by") // created by student
+  updatedById String @map("updated_by") // updated by student
+
   attemptNumber      Int      @map("attempt_number")
   model              String?  @map("model")
   prompt             String?  @map("prompt") @db.Text
@@ -253,6 +276,10 @@ model ExerciseAttempt {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @default(now()) @updatedAt @map("updated_at")
   archive            Boolean  @default(false) @map("archive")
+
+  // Relations to User (restrict delete because FKs are required)
+  createdBy User @relation("ExerciseAttemptCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedBy User @relation("ExerciseAttemptUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
 
   @@map("exercise_attempts")
 }
@@ -268,11 +295,17 @@ model FinalSummary {
   status   String? @map("status")
   error    String? @map("error")
 
-  createdBy String?  @map("created_by") // created by student
-  updatedBy String?  @map("updated_by") // updated by student
+  // Mandatory FKs to creator/updater (User)
+  createdById String @map("created_by") // created by student
+  updatedById String @map("updated_by") // updated by student
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   archive   Boolean  @default(false) @map("archive")
+
+  // Relations to User (restrict delete because FKs are required)
+  createdBy User @relation("FinalSummaryCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedBy User @relation("FinalSummaryUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
 
   @@map("final_summaries")
 }
@@ -283,12 +316,18 @@ model FinalSubmission {
   studentId String            @unique @map("student_id")
   student   EnrollmentStudent @relation(fields: [studentId], references: [id])
 
-  createdBy    String?  @map("created_by") // created by student
-  updatedBy    String?  @map("updated_by") // updated by student
+  // Mandatory FKs to creator/updater (User)
+  createdById String @map("created_by") // created by student
+  updatedById String @map("updated_by") // updated by student
+
   finalContent String?  @map("final_content") @db.Text
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
   archive      Boolean  @default(false) @map("archive")
+
+  // Relations to User (restrict delete because FKs are required)
+  createdBy User @relation("FinalSubmissionCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedBy User @relation("FinalSubmissionUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
 
   @@map("final_submissions")
 }

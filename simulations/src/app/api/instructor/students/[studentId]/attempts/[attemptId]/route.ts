@@ -61,7 +61,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ s
     where: {
       id: attemptId,
       exerciseId: { in: allExerciseIds },
-      createdBy: student.assignedStudentId,
+      createdById: student.assignedStudentId,
       archive: false,
     },
   });

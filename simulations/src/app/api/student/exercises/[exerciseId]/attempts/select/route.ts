@@ -32,7 +32,7 @@ async function putHandler(
     where: {
       id: attemptId,
       exerciseId,
-      createdBy: userId,
+      createdById: userId,
       archive: false,
     },
   });
@@ -47,12 +47,12 @@ async function putHandler(
     await tx.exerciseAttempt.updateMany({
       where: {
         exerciseId,
-        createdBy: userId,
+        createdById: userId,
         archive: false,
       },
       data: {
         selectedForSummary: false,
-        updatedBy: userId,
+        updatedById: userId,
       },
     });
 
@@ -63,7 +63,7 @@ async function putHandler(
       },
       data: {
         selectedForSummary: true,
-        updatedBy: userId,
+        updatedById: userId,
       },
     });
 
@@ -71,7 +71,7 @@ async function putHandler(
     const attempts = await tx.exerciseAttempt.findMany({
       where: {
         exerciseId,
-        createdBy: userId,
+        createdById: userId,
         archive: false,
       },
       orderBy: {

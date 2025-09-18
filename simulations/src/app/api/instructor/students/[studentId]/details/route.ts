@@ -112,7 +112,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ stud
   const exerciseAttempts = await prisma.exerciseAttempt.findMany({
     where: {
       exerciseId: { in: allExerciseIds },
-      createdBy: student.assignedStudentId,
+      createdById: student.assignedStudentId,
       archive: false,
     },
     orderBy: {

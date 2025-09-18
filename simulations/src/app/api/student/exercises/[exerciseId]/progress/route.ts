@@ -78,7 +78,7 @@ async function getHandler(
                     include: {
                       attempts: {
                         where: {
-                          createdBy: userId,
+                          createdById: userId,
                           archive: false,
                         },
                         orderBy: {

@@ -47,9 +47,9 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, 
   const student: EnrollmentStudent = await prisma.enrollmentStudent.create({
     data: {
       enrollmentId,
-      assignedStudentId: studentEmail, // Student email
-      createdBy: userContext.userId,
-      updatedBy: userContext.userId,
+      assignedStudentId: currentStudent.id, // Student email
+      createdById: userContext.userId,
+      updatedById: userContext.userId,
       archive: false,
     },
   });
