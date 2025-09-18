@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ChartBarSquareIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 import SearchBar from '@/components/core/SearchBar';
-import { getScoreColorClasses } from '@/utils/score-utils';
 
 const koalaGainsServices = [
   {

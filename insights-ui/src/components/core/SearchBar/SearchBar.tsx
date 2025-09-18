@@ -223,9 +223,10 @@ export default function SearchBar({
                 {results.map((result, index) => (
                   <div
                     key={result.id}
-                    className={`transition-colors duration-150 border-b border-gray-700/50 last:border-b-0 ${
+                    className={`cursor-pointer transition-colors duration-150 border-b border-gray-700/50 last:border-b-0 ${
                       index === highlightedIndex ? 'bg-indigo-600/20' : 'hover:bg-gray-700/50'
                     }`}
+                    onClick={() => handleResultClick(result)}
                     onMouseEnter={() => setHighlightedIndex(index)}
                   >
                     <div className="px-3 py-2">

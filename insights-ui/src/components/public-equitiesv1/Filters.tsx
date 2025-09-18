@@ -13,9 +13,10 @@ interface FilterOption {
 }
 
 interface AppliedFilter {
-  type: 'category' | 'total';
+  type: 'category' | 'total' | 'search';
   categoryKey?: TickerAnalysisCategory;
-  threshold: number;
+  threshold?: number;
+  searchQuery?: string;
   label: string;
 }
 
@@ -77,6 +78,16 @@ export default function Filters({ className = '', showOnlyButton = false, showOn
       });
     }
 
+    // Search filter
+    const searchQuery = searchParams.get('search');
+    if (searchQuery && searchQuery.trim()) {
+      filters.push({
+        type: 'search',
+        searchQuery: searchQuery.trim(),
+        label: `Search: ${searchQuery.trim()}`,
+      });
+    }
+
     return filters;
   }, [searchParams]);
 
@@ -107,6 +118,8 @@ export default function Filters({ className = '', showOnlyButton = false, showOn
       params.delete(`${filterToRemove.categoryKey.toLowerCase()}Threshold`);
     } else if (filterToRemove.type === 'total') {
       params.delete('totalThreshold');
+    } else if (filterToRemove.type === 'search') {
+      params.delete('search');
     }
 
     router.push(`?${params.toString()}`);
@@ -120,6 +133,7 @@ export default function Filters({ className = '', showOnlyButton = false, showOn
       params.delete(`${category.key.toLowerCase()}Threshold`);
     });
     params.delete('totalThreshold');
+    params.delete('search');
 
     router.push(`?${params.toString()}`);
   };
@@ -232,9 +246,9 @@ function FilterModalContent({ currentFilters, onApplyFilters, onClose }: FilterM
     const initialFilters: { [key: string]: string } = {};
 
     currentFilters.forEach((filter) => {
-      if (filter.type === 'category' && filter.categoryKey) {
+      if (filter.type === 'category' && filter.categoryKey && filter.threshold !== undefined) {
         initialFilters[`${filter.categoryKey.toLowerCase()}Threshold`] = filter.threshold.toString();
-      } else if (filter.type === 'total') {
+      } else if (filter.type === 'total' && filter.threshold !== undefined) {
         initialFilters['totalThreshold'] = filter.threshold.toString();
       }
     });
