@@ -166,21 +166,24 @@ export default function SearchBar({
       return {
         container: 'relative w-96',
         input:
-          'w-full h-9 pl-9 pr-8 text-sm bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-100 placeholder-gray-400',
+          'w-full h-9 pl-9 pr-8 text-sm bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-gray-100 placeholder-gray-400',
         dropdown: 'absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-600 rounded-md shadow-xl z-50 max-h-80 overflow-y-auto',
-        searchIcon: 'absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400',
-        clearIcon: 'absolute right-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 hover:text-gray-200 cursor-pointer',
+        searchIcon: 'absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-amber-400',
+        clearIcon: 'absolute right-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 hover:text-amber-300 cursor-pointer',
+        searchButton: '',
       };
     } else {
       return {
         container: 'relative w-full max-w-2xl mx-auto',
         input:
-          'w-full h-12 pl-14 pr-12 text-base bg-gray-700/40 backdrop-blur-sm border border-gray-600/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500/50 text-white placeholder-gray-300 transition-all duration-200',
+          'w-full h-12 pl-14 pr-32 text-base bg-gray-700/40 backdrop-blur-sm border border-gray-600/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500/50 text-white placeholder-gray-300 transition-all duration-200',
         dropdown:
           'absolute top-full left-0 right-0 mt-2 bg-gray-800/95 backdrop-blur-sm border border-gray-600/40 rounded-xl shadow-2xl z-50 max-h-96 overflow-y-auto',
-        searchIcon: 'absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-300 z-10',
+        searchIcon: 'absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-amber-400 z-10',
         clearIcon:
-          'absolute right-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-300 hover:text-white cursor-pointer transition-colors duration-200 z-10',
+          'absolute right-24 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-300 hover:text-white cursor-pointer transition-colors duration-200 z-10',
+        searchButton:
+          'absolute right-2 top-1/2 transform -translate-y-1/2 h-8 px-4 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black rounded-lg transition-all duration-200 shadow-md hover:shadow-lg z-10',
       };
     }
   };
@@ -201,11 +204,32 @@ export default function SearchBar({
           placeholder={placeholder}
           className={styles.input}
           autoComplete="off"
+          autoFocus={variant === 'hero'}
         />
 
-        {query && (
+        {query && variant === 'navbar' && (
           <button onClick={handleClear} className="focus:outline-none" aria-label="Clear search">
             <XMarkIcon className={styles.clearIcon} />
+          </button>
+        )}
+
+        {query && variant === 'hero' && (
+          <button onClick={handleClear} className="focus:outline-none" aria-label="Clear search">
+            <XMarkIcon className={styles.clearIcon} />
+          </button>
+        )}
+
+        {variant === 'hero' && (
+          <button
+            onClick={() => {
+              if (query.trim()) {
+                searchTickers(query);
+              }
+            }}
+            className={`${styles.searchButton} focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2`}
+            aria-label="Search"
+          >
+            Search
           </button>
         )}
       </div>
