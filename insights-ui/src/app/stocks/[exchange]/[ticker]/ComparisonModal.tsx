@@ -1,6 +1,6 @@
 'use client';
 
-import { TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
+import { ComparisonTickerResponse, BasicTickersResponse } from '@/types/ticker-typesv1';
 import { useState, useEffect } from 'react';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
@@ -26,22 +26,9 @@ interface ComparisonModalProps {
   };
 }
 
-interface IndustryTickersResponse {
-  tickers: Array<{
-    id: string;
-    name: string;
-    symbol: string;
-    exchange: string;
-    industryKey: string;
-    subIndustryKey: string;
-    cachedScore?: Number;
-  }>;
-  count: number;
-}
-
 export default function ComparisonModal({ isOpen, onClose, currentTicker }: ComparisonModalProps) {
   const [comparisonTickers, setComparisonTickers] = useState<ComparisonTicker[]>([]);
-  const [availableTickers, setAvailableTickers] = useState<IndustryTickersResponse['tickers']>([]);
+  const [availableTickers, setAvailableTickers] = useState<BasicTickersResponse['tickers']>([]);
   const [loading, setLoading] = useState(false);
 
   // Initialize with current ticker
@@ -57,17 +44,17 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
   const loadCurrentTickerData = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${currentTicker.symbol}`);
-      const data: TickerV1ReportResponse = await response.json();
+      const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${currentTicker.symbol}/comparison`);
+      const data: ComparisonTickerResponse = await response.json();
 
       const categoryResults = Object.values(TickerAnalysisCategory).reduce((acc, category) => {
-        const categoryResult = data.categoryAnalysisResults?.find((r) => r.categoryKey === category);
+        const categoryResult = data.ticker.categoryAnalysisResults?.find((r) => r.categoryKey === category);
         const factorResults = categoryResult?.factorResults || [];
 
         acc[category] = {
           factorResults: factorResults.map((f) => ({
-            factorTitle: f.analysisCategoryFactor?.factorAnalysisTitle || 'Unknown Factor',
-            factorAnalysisKey: f.analysisCategoryFactor?.factorAnalysisKey || '',
+            factorTitle: f.factorAnalysisTitle,
+            factorAnalysisKey: f.factorAnalysisKey,
             result: f.result,
             oneLineExplanation: f.oneLineExplanation,
           })),
@@ -81,7 +68,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
         name: data.ticker.name,
         symbol: data.ticker.symbol,
         exchange: data.ticker.exchange,
-        cachedScore: data.cachedScore as number,
+        cachedScore: data.ticker.cachedScore as number,
         categoryResults,
       };
 
@@ -95,31 +82,33 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
 
   const loadAvailableTickers = async () => {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${currentTicker.industryKey}/${currentTicker.subIndustryKey}`);
-      const data: IndustryTickersResponse = await response.json();
+      const response = await fetch(
+        `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${currentTicker.industryKey}/${currentTicker.subIndustryKey}/basic`
+      );
+      const data: BasicTickersResponse = await response.json();
       setAvailableTickers(data.tickers.filter((t) => t.symbol !== currentTicker.symbol));
     } catch (error) {
       console.error('Error loading available tickers:', error);
     }
   };
 
-  const addTicker = async (ticker: IndustryTickersResponse['tickers'][0]) => {
+  const addTicker = async (ticker: BasicTickersResponse['tickers'][0]) => {
     if (comparisonTickers.length >= 5) return;
     if (comparisonTickers.some((t) => t.symbol === ticker.symbol)) return;
 
     setLoading(true);
     try {
-      const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.symbol}`);
-      const data: TickerV1ReportResponse = await response.json();
+      const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.symbol}/comparison`);
+      const data: ComparisonTickerResponse = await response.json();
 
       const categoryResults = Object.values(TickerAnalysisCategory).reduce((acc, category) => {
-        const categoryResult = data.categoryAnalysisResults?.find((r) => r.categoryKey === category);
+        const categoryResult = data.ticker.categoryAnalysisResults?.find((r) => r.categoryKey === category);
         const factorResults = categoryResult?.factorResults || [];
 
         acc[category] = {
           factorResults: factorResults.map((f) => ({
-            factorTitle: f.analysisCategoryFactor?.factorAnalysisTitle || 'Unknown Factor',
-            factorAnalysisKey: f.analysisCategoryFactor?.factorAnalysisKey || '',
+            factorTitle: f.factorAnalysisTitle,
+            factorAnalysisKey: f.factorAnalysisKey,
             result: f.result,
             oneLineExplanation: f.oneLineExplanation,
           })),
@@ -133,7 +122,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
         name: data.ticker.name,
         symbol: data.ticker.symbol,
         exchange: data.ticker.exchange,
-        cachedScore: data.cachedScore as number,
+        cachedScore: data.ticker.cachedScore as number,
         categoryResults,
       };
 

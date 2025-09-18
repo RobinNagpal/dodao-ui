@@ -5,7 +5,7 @@ import AddTickersForm from '@/components/public-equitiesv1/AddTickersForm';
 import EditTickersForm from '@/components/public-equitiesv1/EditTickersForm';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { SubIndustryTickersResponse } from '@/types/ticker-typesv1';
+import { BasicTickersResponse } from '@/types/ticker-typesv1';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
@@ -28,8 +28,8 @@ export default function TickerManagementPage() {
     data: tickerInfos,
     reFetchData: reFetchTickersForSubIndustry,
     loading: loadingTickers,
-  } = useFetchData<SubIndustryTickersResponse>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${selectedIndustry?.industryKey}/${selectedSubIndustry?.subIndustryKey}`,
+  } = useFetchData<BasicTickersResponse>(
+    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${selectedIndustry?.industryKey}/${selectedSubIndustry?.subIndustryKey}/basic`,
     { skipInitialFetch: true, cache: 'no-cache' },
     `Failed to fetch tickers`
   );

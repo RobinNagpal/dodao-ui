@@ -34,3 +34,95 @@ export interface SubIndustryTickersResponse {
   tickers: TickerV1[];
   count: number;
 }
+
+// Basic ticker info for ticker management
+export interface BasicTickerInfo {
+  id: string;
+  name: string;
+  symbol: string;
+  exchange: string;
+  cachedScore: number | null;
+  websiteUrl: string | null;
+}
+
+export interface BasicTickersResponse {
+  tickers: BasicTickerInfo[];
+  count: number;
+}
+
+// Analysis status for create reports
+export interface AnalysisStatus {
+  businessAndMoat: boolean;
+  financialAnalysis: boolean;
+  pastPerformance: boolean;
+  futureGrowth: boolean;
+  fairValue: boolean;
+  competition: boolean;
+  investorAnalysis: {
+    WARREN_BUFFETT: boolean;
+    CHARLIE_MUNGER: boolean;
+    BILL_ACKMAN: boolean;
+  };
+  futureRisk: boolean;
+  finalSummary: boolean;
+  cachedScore: boolean;
+}
+
+export interface ReportTickerInfo {
+  id: string;
+  name: string;
+  symbol: string;
+  exchange: string;
+  cachedScore: number | null;
+  updatedAt: Date;
+  analysisStatus: AnalysisStatus;
+  isMissing: boolean; // All analysis sections are empty
+  isPartial: boolean; // Some analysis sections are complete
+  // Additional fields needed for compatibility with ReportGenerator
+  spaceId: string;
+  industryKey: string;
+  subIndustryKey: string;
+  createdAt: Date;
+  websiteUrl: string | null;
+  summary: string | null;
+}
+
+export interface ReportTickersResponse {
+  tickers: ReportTickerInfo[];
+  count: number;
+  missingCount: number;
+  partialCount: number;
+  completeCount: number;
+}
+
+// Helper interface to make ReportTickerInfo compatible with TickerReportV1
+export interface ReportTickerAsTickerReport {
+  ticker: ReportTickerInfo;
+  analysisStatus: AnalysisStatus;
+}
+
+// Optimized types for comparison modal
+export interface ComparisonFactorResult {
+  result: 'Pass' | 'Fail';
+  oneLineExplanation: string;
+  factorAnalysisTitle: string;
+  factorAnalysisKey: string;
+}
+
+export interface ComparisonCategoryResult {
+  categoryKey: string;
+  factorResults: ComparisonFactorResult[];
+}
+
+export interface ComparisonTickerInfo {
+  id: string;
+  name: string;
+  symbol: string;
+  exchange: string;
+  cachedScore: number | null;
+  categoryAnalysisResults: ComparisonCategoryResult[];
+}
+
+export interface ComparisonTickerResponse {
+  ticker: ComparisonTickerInfo;
+}
