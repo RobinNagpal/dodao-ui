@@ -29,7 +29,7 @@ export default function TickerManagementPage() {
     reFetchData: reFetchTickersForSubIndustry,
     loading: loadingTickers,
   } = useFetchData<BasicTickersResponse>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${selectedIndustry?.industryKey}/${selectedSubIndustry?.subIndustryKey}/basic`,
+    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${selectedIndustry?.industryKey}/${selectedSubIndustry?.subIndustryKey}?basicOnly=true`,
     { skipInitialFetch: true, cache: 'no-cache' },
     `Failed to fetch tickers`
   );

@@ -1,48 +1,191 @@
 import { prisma } from '@/prisma';
-import { IndustryTickersResponse } from '@/types/ticker-typesv1';
-import { getTickerWithAllDetails, TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
+import { BasicTickersResponse, ReportTickersResponse, AnalysisStatus, ReportTickerInfo } from '@/types/ticker-typesv1';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
+import { TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS } from '@/lib/mappingsV1';
 
 async function getHandler(
   req: NextRequest,
   context: { params: Promise<{ spaceId: string; industryKey: string; subIndustryKey: string }> }
-): Promise<IndustryTickersResponse> {
+): Promise<BasicTickersResponse | ReportTickersResponse> {
   const { spaceId, industryKey, subIndustryKey } = await context.params;
+  const { searchParams } = new URL(req.url);
+  const withAnalysisStatus = searchParams.get('withAnalysisStatus') === 'true';
+  const basicOnly = searchParams.get('basicOnly') === 'true';
 
-  const tickers = await prisma.tickerV1.findMany({
-    where: {
-      spaceId,
-      industryKey,
-      subIndustryKey,
-    },
-    include: {
-      categoryAnalysisResults: {
-        include: {
-          factorResults: {
-            include: {
-              analysisCategoryFactor: true,
+  // Basic ticker info only (for ticker management)
+  if (basicOnly) {
+    const tickers = await prisma.tickerV1.findMany({
+      where: {
+        spaceId,
+        industryKey,
+        subIndustryKey,
+      },
+      select: {
+        id: true,
+        name: true,
+        symbol: true,
+        exchange: true,
+        cachedScore: true,
+        websiteUrl: true,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
+
+    return {
+      tickers,
+      count: tickers.length,
+    };
+  }
+
+  // With analysis status (for create reports)
+  if (withAnalysisStatus) {
+    const tickers = await prisma.tickerV1.findMany({
+      where: {
+        spaceId,
+        industryKey,
+        subIndustryKey,
+      },
+      select: {
+        id: true,
+        name: true,
+        symbol: true,
+        exchange: true,
+        cachedScore: true,
+        updatedAt: true,
+        createdAt: true,
+        summary: true,
+        websiteUrl: true,
+        spaceId: true,
+        industryKey: true,
+        subIndustryKey: true,
+        categoryAnalysisResults: {
+          select: {
+            categoryKey: true,
+            factorResults: {
+              select: {
+                result: true,
+              },
             },
           },
         },
+        investorAnalysisResults: {
+          select: {
+            investorKey: true,
+          },
+        },
+        futureRisks: {
+          select: {
+            id: true,
+          },
+        },
+        vsCompetition: {
+          select: {
+            id: true,
+          },
+        },
       },
-      investorAnalysisResults: true,
-      futureRisks: true,
-      vsCompetition: true,
-    },
-    orderBy: {
-      name: 'asc',
-    },
-  });
+      orderBy: {
+        name: 'asc',
+      },
+    });
 
-  const detailedTickers: TickerV1ReportResponse[] = [];
-  for (const ticker of tickers) {
-    detailedTickers.push(await getTickerWithAllDetails(ticker));
+    const reportTickers: ReportTickerInfo[] = [];
+    let missingCount = 0;
+    let partialCount = 0;
+    let completeCount = 0;
+
+    for (const ticker of tickers) {
+      // Calculate the actual score based on categoryAnalysisResults
+      const actualScore = Object.entries(CATEGORY_MAPPINGS)
+        .map(([categoryKey]) => {
+          const report = ticker.categoryAnalysisResults.find((r) => r.categoryKey === categoryKey);
+          const scoresArray = report?.factorResults?.map((factorResult) => (factorResult.result === 'Pass' ? 1 : 0)) || [];
+          return scoresArray.reduce((partialSum: number, a) => partialSum + a, 0);
+        })
+        .reduce((partialSum: number, a) => partialSum + a, 0);
+
+      // Calculate analysis status
+      const analysisStatus: AnalysisStatus = {
+        businessAndMoat: ticker.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat),
+        financialAnalysis: ticker.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FinancialStatementAnalysis),
+        pastPerformance: ticker.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.PastPerformance),
+        futureGrowth: ticker.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FutureGrowth),
+        fairValue: ticker.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FairValue),
+        competition: !!ticker.vsCompetition,
+        investorAnalysis: {
+          WARREN_BUFFETT: ticker.investorAnalysisResults.some((r) => r.investorKey === 'WARREN_BUFFETT'),
+          CHARLIE_MUNGER: ticker.investorAnalysisResults.some((r) => r.investorKey === 'CHARLIE_MUNGER'),
+          BILL_ACKMAN: ticker.investorAnalysisResults.some((r) => r.investorKey === 'BILL_ACKMAN'),
+        },
+        futureRisk: ticker.futureRisks.length > 0,
+        finalSummary: !!ticker.summary,
+        cachedScore: ticker.cachedScore === actualScore, // Compare cached with calculated score
+      };
+
+      // Calculate missing/partial status
+      const allAnalysisItems = [
+        analysisStatus.businessAndMoat,
+        analysisStatus.financialAnalysis,
+        analysisStatus.pastPerformance,
+        analysisStatus.futureGrowth,
+        analysisStatus.fairValue,
+        analysisStatus.competition,
+        analysisStatus.investorAnalysis.WARREN_BUFFETT,
+        analysisStatus.investorAnalysis.CHARLIE_MUNGER,
+        analysisStatus.investorAnalysis.BILL_ACKMAN,
+        analysisStatus.futureRisk,
+        analysisStatus.finalSummary,
+        analysisStatus.cachedScore,
+      ];
+
+      const completedItems = allAnalysisItems.filter((item) => item).length;
+      const totalItems = allAnalysisItems.length;
+
+      const isMissing = completedItems === 0;
+      const isPartial = completedItems > 0 && completedItems < totalItems;
+      const isComplete = completedItems === totalItems;
+
+      if (isMissing) missingCount++;
+      else if (isPartial) partialCount++;
+      else if (isComplete) completeCount++;
+
+      reportTickers.push({
+        id: ticker.id,
+        name: ticker.name,
+        symbol: ticker.symbol,
+        exchange: ticker.exchange,
+        cachedScore: ticker.cachedScore,
+        updatedAt: ticker.updatedAt,
+        createdAt: ticker.createdAt,
+        summary: ticker.summary,
+        websiteUrl: ticker.websiteUrl,
+        spaceId: ticker.spaceId,
+        industryKey: ticker.industryKey,
+        subIndustryKey: ticker.subIndustryKey,
+        analysisStatus,
+        isMissing,
+        isPartial,
+      });
+    }
+
+    return {
+      tickers: reportTickers,
+      count: tickers.length,
+      missingCount,
+      partialCount,
+      completeCount,
+    };
   }
+
+  // Fallback: return empty response if no query parameters match
   return {
-    tickers: detailedTickers,
-    count: tickers.length,
+    tickers: [],
+    count: 0,
   };
 }
 
-export const GET = withErrorHandlingV2<IndustryTickersResponse>(getHandler);
+export const GET = withErrorHandlingV2<BasicTickersResponse | ReportTickersResponse>(getHandler);

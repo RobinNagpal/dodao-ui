@@ -83,7 +83,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
   const loadAvailableTickers = async () => {
     try {
       const response = await fetch(
-        `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${currentTicker.industryKey}/${currentTicker.subIndustryKey}/basic`
+        `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${currentTicker.industryKey}/${currentTicker.subIndustryKey}?basicOnly=true`
       );
       const data: BasicTickersResponse = await response.json();
       setAvailableTickers(data.tickers.filter((t) => t.symbol !== currentTicker.symbol));

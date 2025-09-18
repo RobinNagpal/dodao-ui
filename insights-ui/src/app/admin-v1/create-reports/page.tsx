@@ -30,7 +30,9 @@ export default function CreateReportsV1Page(): JSX.Element {
 
   // Tickers for the selected sub-industry
   const { data: tickerInfos, reFetchData: reFetchTickersForSubIndustry }: UseFetchDataResponse<ReportTickersResponse> = useFetchData<ReportTickersResponse>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${selectedIndustry?.industryKey}/${selectedSubIndustry?.subIndustryKey}/reports`,
+    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${selectedIndustry?.industryKey}/${
+      selectedSubIndustry?.subIndustryKey
+    }?withAnalysisStatus=true`,
     { skipInitialFetch: !!(selectedIndustry?.industryKey || selectedSubIndustry?.subIndustryKey), cache: 'no-cache' },
     'Failed to fetch tickers'
   );
