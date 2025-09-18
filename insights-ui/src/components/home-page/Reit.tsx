@@ -26,7 +26,7 @@ export default function REIT() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
           <div className="mb-6">
-            <SectionHeading number="2">REIT</SectionHeading>
+            <SectionHeading number="3">REIT</SectionHeading>
           </div>
           <h2 className="text-4xl font-semibold text-indigo-400">REIT Analysis</h2>
           <p className="mt-4 text-lg text-gray-300">
@@ -47,7 +47,7 @@ export default function REIT() {
         </dl>
         <div className="mt-12 text-center">
           <Link
-            href="/public-equities/tickers"
+            href="/stocks/industry/REITS"
             className="inline-flex items-center rounded-md bg-indigo-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200"
           >
             View REIT Reports

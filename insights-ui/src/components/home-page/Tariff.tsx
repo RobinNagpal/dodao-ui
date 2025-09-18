@@ -29,7 +29,7 @@ export default function Tariff() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
           <div className="mb-6">
-            <SectionHeading number="3">Tariff</SectionHeading>
+            <SectionHeading number="4">Tariff</SectionHeading>
           </div>
           <h2 className="text-4xl font-semibold text-indigo-400">Tariff Analysis</h2>
           <p className="mt-4 text-lg text-gray-300">
