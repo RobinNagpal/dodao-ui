@@ -78,22 +78,14 @@ export default function CreateReportsV1Page(): JSX.Element {
     }
   };
 
-  const updateSelectedTickers = async (tickerSymbols: string[]) => {
-    setSelectedTickers(tickerSymbols);
-
-    // Create TickerReportV1 compatible objects directly from ReportTickerInfo
-    const newTickerReports: Record<string, TickerReportV1> = {};
-    for (const symbol of tickerSymbols) {
-      const tickerInfo = allTickers.find((t) => t.symbol === symbol);
-      if (tickerInfo && !tickerReports[symbol]) {
-        newTickerReports[symbol] = {
-          ticker: tickerInfo as any, // ReportTickerInfo is now compatible with TickerV1
-          analysisStatus: tickerInfo.analysisStatus,
-        };
+  const updateSelectedTickers = async (tickers: string[]) => {
+    setSelectedTickers(tickers);
+    for (const t of tickers) {
+      if (!tickerReports[t]) {
+        await fetchTickerReport(t);
       }
     }
-
-    setTickerReports((prev) => ({ ...prev, ...newTickerReports }));
+    setSelectedTickers(tickers);
   };
 
   return (
