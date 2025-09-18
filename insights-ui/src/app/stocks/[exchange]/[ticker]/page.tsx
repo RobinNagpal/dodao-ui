@@ -4,6 +4,7 @@ import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/Spi
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Competition from '@/components/ticker-reportsv1/Competition';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
+import FloatingNavigation, { NavigationSection } from '@/components/ticker-reportsv1/FloatingNavigation';
 import RadarChart from '@/components/visualizations/RadarChart';
 import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -131,6 +132,59 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
   const spiderGraphScorePercentage = getSpiderGraphScorePercentage(spiderGraph);
 
+  // Generate navigation sections based on available content
+  const navigationSections: NavigationSection[] = [
+    {
+      id: 'summary-analysis',
+      title: 'Summary Analysis',
+      hasContent: true,
+    },
+    {
+      id: 'future-risks',
+      title: 'Future Risks',
+      hasContent: tickerData.futureRisks.length > 0,
+    },
+    {
+      id: 'competition',
+      title: 'Competition',
+      hasContent: true,
+    },
+    {
+      id: 'investor-summaries',
+      title: 'Investor Reports Summaries',
+      hasContent: tickerData.investorAnalysisResults.length > 0,
+    },
+    {
+      id: 'similar-tickers',
+      title: 'Similar Tickers',
+      hasContent: true,
+    },
+    {
+      id: 'detailed-analysis',
+      title: 'Detailed Analysis',
+      hasContent: tickerData.categoryAnalysisResults && tickerData.categoryAnalysisResults.length > 0,
+      subsections: Object.values(TickerAnalysisCategory)
+        .map((categoryKey) => {
+          const categoryResult = tickerData.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
+          return categoryResult ? {
+            id: `detailed-${categoryKey}`,
+            title: CATEGORY_MAPPINGS[categoryKey],
+          } : null;
+        })
+        .filter((item): item is NonNullable<typeof item> => item !== null),
+    },
+    {
+      id: 'detailed-investor-reports',
+      title: 'Detailed Investor Reports',
+      hasContent: tickerData.investorAnalysisResults.length > 0,
+    },
+    {
+      id: 'detailed-future-risks',
+      title: 'Detailed Future Risks',
+      hasContent: tickerData.futureRisks.length > 0,
+    },
+  ];
+
   return (
     <PageWrapper>
       <Breadcrumbs
@@ -186,7 +240,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           </div>
         </div>
 
-        <div className="bg-gray-800 rounded-lg shadow-sm mb-8">
+        <div id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8">
           <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
 
           <div className="space-y-4">
@@ -206,7 +260,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
         {/* Future Risks Section */}
         {tickerData.futureRisks.length > 0 && (
-          <div className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
+          <div id="future-risks" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
             <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Future Risks</h2>
             <ul className="space-y-3">
               {tickerData.futureRisks.map((futureRisk) => (
@@ -219,11 +273,13 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         )}
 
         {/* Competition Section */}
-        <Competition vsCompetition={tickerData.vsCompetition || undefined} competitorTickers={tickerData.competitorTickers} />
+        <div id="competition">
+          <Competition vsCompetition={tickerData.vsCompetition || undefined} competitorTickers={tickerData.competitorTickers} />
+        </div>
 
         {/* Investor Summary Section */}
         {tickerData.investorAnalysisResults.length > 0 && (
-          <div className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
+          <div id="investor-summaries" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
             <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Investor Reports Summaries (Created using AI)</h2>
             <div className="space-y-4">
               {tickerData.investorAnalysisResults.map((result) => (
@@ -237,10 +293,13 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         )}
 
         {/* Similar Tickers Section */}
-        <SimilarTickers similarTickers={tickerData.similarTickers} />
+        <div id="similar-tickers">
+          <SimilarTickers similarTickers={tickerData.similarTickers} />
+        </div>
 
         {/* Detailed Category Analysis Sections */}
-        <h2 className="text-2xl font-bold mb-6 mt-10">Detailed Analysis</h2>
+        <div id="detailed-analysis">
+          <h2 className="text-2xl font-bold mb-6 mt-10">Detailed Analysis</h2>
 
         {/* Iterate over all categories for detailed sections */}
         {Object.values(TickerAnalysisCategory).map((categoryKey) => {
@@ -248,7 +307,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           if (!categoryResult) return null;
 
           return (
-            <div key={`detail-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
+            <div key={`detail-${categoryKey}`} id={`detailed-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
               <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{CATEGORY_MAPPINGS[categoryKey]}</h2>
 
               {categoryResult.introductionToAnalysis && (
@@ -282,10 +341,11 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
             </div>
           );
         })}
+        </div>
 
         {/* Detailed Investor Reports Section */}
         {tickerData.investorAnalysisResults.length > 0 && (
-          <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+          <div id="detailed-investor-reports" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
             <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Investor Reports (Created using AI)</h2>
             <div className="space-y-4">
               {tickerData.investorAnalysisResults.map((result) => (
@@ -298,9 +358,9 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           </div>
         )}
 
-        {/* Detailed Investor Reports Section */}
+        {/* Detailed Future Risks Section */}
         {tickerData.futureRisks.length > 0 && (
-          <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+          <div id="detailed-future-risks" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
             <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Future Risks</h2>
             <div className="space-y-3">
               {tickerData.futureRisks.map((futureRisk) => (
@@ -312,6 +372,9 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           </div>
         )}
       </div>
+
+      {/* Floating Navigation */}
+      <FloatingNavigation sections={navigationSections} />
     </PageWrapper>
   );
 }
