@@ -76,7 +76,7 @@ export interface ReportTickerInfo {
   cachedScore: number | null;
   updatedAt: Date;
   analysisStatus: AnalysisStatus;
-  isMissing: boolean; // All analysis sections are empty
+  isMissingAllAnalysis: boolean; // All analysis sections are empty
   isPartial: boolean; // Some analysis sections are complete
   // Additional fields needed for compatibility with ReportGenerator
   spaceId: string;

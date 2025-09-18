@@ -58,7 +58,7 @@ export default function CreateReportsV1Page(): JSX.Element {
 
   // Apply filters
   const tickers = allTickers.filter((ticker) => {
-    if (showMissingOnly && !ticker.isMissing) return false;
+    if (showMissingOnly && !ticker.isMissingAllAnalysis) return false;
     if (showPartialOnly && !ticker.isPartial) return false;
     return true;
   });
@@ -213,9 +213,9 @@ export default function CreateReportsV1Page(): JSX.Element {
                                   minute: '2-digit',
                                 })}
                               </span>
-                              {t.isMissing && <span className="text-red-400 text-xs">MISSING</span>}
+                              {t.isMissingAllAnalysis && <span className="text-red-400 text-xs">MISSING</span>}
                               {t.isPartial && <span className="text-yellow-400 text-xs">PARTIAL</span>}
-                              {!t.isMissing && !t.isPartial && <span className="text-green-400 text-xs">COMPLETE</span>}
+                              {!t.isMissingAllAnalysis && !t.isPartial && <span className="text-green-400 text-xs">COMPLETE</span>}
                             </div>
                           </div>
                         </div>

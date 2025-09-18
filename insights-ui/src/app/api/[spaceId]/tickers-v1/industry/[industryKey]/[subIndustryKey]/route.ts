@@ -167,7 +167,7 @@ async function getHandler(
         industryKey: ticker.industryKey,
         subIndustryKey: ticker.subIndustryKey,
         analysisStatus,
-        isMissing,
+        isMissingAllAnalysis: isMissing,
         isPartial,
       });
     }
