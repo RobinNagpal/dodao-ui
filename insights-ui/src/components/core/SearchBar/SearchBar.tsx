@@ -72,7 +72,8 @@ export default function SearchBar({
       if (response.ok) {
         const data = await response.json();
         setResults(data.results || []);
-        setIsOpen(data.results?.length > 0);
+        // Keep dropdown open if we have results OR if we searched but found nothing
+        setIsOpen(true);
       } else {
         setResults([]);
         setIsOpen(false);
