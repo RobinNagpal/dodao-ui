@@ -1,23 +1,23 @@
 'use client';
 
-import type React from 'react';
-
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import MarkdownEditor from '@/components/markdown/MarkdownEditor';
+import AdminNavbar from '@/components/navigation/AdminNavbar';
+import BackButton from '@/components/navigation/BackButton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Shield, Plus, Trash2, X, Sparkles, BookOpen, Target } from 'lucide-react';
-import MarkdownEditor from '@/components/markdown/MarkdownEditor';
+import { Textarea } from '@/components/ui/textarea';
+import type { CaseStudyWithRelationsForStudents, CreateCaseStudyRequest } from '@/types/api';
+import { SimulationSession } from '@/types/user';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import type { BusinessSubject } from '@prisma/client';
-import type { CreateCaseStudyRequest, CaseStudyWithRelationsForStudents } from '@/types/api';
-import AdminNavbar from '@/components/navigation/AdminNavbar';
-import BackButton from '@/components/navigation/BackButton';
-import AdminLoading from '@/components/admin/AdminLoading';
+import { BookOpen, Plus, Shield, Sparkles, Target, Trash2, X } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import type React from 'react';
+import { useState } from 'react';
 
 interface ModuleFormData {
   id: string;
@@ -51,11 +51,10 @@ const subjectOptions: SubjectOption[] = [
 ];
 
 export default function CreateCaseStudyPage() {
+  const { data: simSession } = useSession();
+  const session: SimulationSession | null = simSession as SimulationSession | null;
   const router = useRouter();
   const { showNotification } = useNotificationContext();
-
-  const [userEmail, setUserEmail] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [title, setTitle] = useState<string>('');
   const [shortDescription, setShortDescription] = useState<string>('');
@@ -63,7 +62,6 @@ export default function CreateCaseStudyPage() {
   const [finalSummaryPromptInstructions, setFinalSummaryPromptInstructions] = useState<string>('');
   const [subject, setSubject] = useState<BusinessSubject | ''>('');
   const [modules, setModules] = useState<ModuleFormData[]>([]);
-  const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
 
   const { postData, loading } = usePostData<CaseStudyWithRelationsForStudents, CreateCaseStudyRequest>(
     {
@@ -71,27 +69,8 @@ export default function CreateCaseStudyPage() {
       errorMessage: 'Failed to create case study',
       redirectPath: '/admin',
     },
-    {
-      headers: {
-        'admin-email': adminEmail,
-      },
-    }
+    {}
   );
-
-  // Check authentication on page load
-  useEffect((): void => {
-    const userType: string | null = localStorage.getItem('user_type');
-    const email: string | null = localStorage.getItem('user_email');
-
-    if (!userType || userType !== 'admin' || !email) {
-      router.push('/login');
-      return;
-    }
-
-    setUserEmail(email);
-    setAdminEmail(email);
-    setIsLoading(false);
-  }, [router]);
 
   const resetForm = (): void => {
     setTitle('');
@@ -100,12 +79,6 @@ export default function CreateCaseStudyPage() {
     setFinalSummaryPromptInstructions('');
     setSubject('');
     setModules([]);
-  };
-
-  const handleLogout = (): void => {
-    localStorage.removeItem('user_type');
-    localStorage.removeItem('user_email');
-    router.push('/login');
   };
 
   const addModule = (): void => {
@@ -235,10 +208,6 @@ export default function CreateCaseStudyPage() {
     }
   };
 
-  if (isLoading) {
-    return <AdminLoading text="Loading Admin Portal" subtitle="Preparing your workspace..." variant="enhanced" />;
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -247,7 +216,7 @@ export default function CreateCaseStudyPage() {
         <div className="absolute -bottom-40 right-1/3 w-64 h-64 bg-teal-400/20 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
-      <AdminNavbar title="Create New Case Study" userEmail={userEmail} onLogout={handleLogout} icon={<Shield className="h-8 w-8 text-white" />} />
+      <AdminNavbar title="Create New Case Study" userEmail={session?.email || session?.username} icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-8">
         <BackButton userType="admin" text="Back to Dashboard" href="/admin" />

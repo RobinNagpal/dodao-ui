@@ -1,5 +1,6 @@
 'use client';
 
+import { logoutUser } from '@/utils/auth-utils';
 import { LogOut, Shield, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -7,12 +8,12 @@ interface AdminNavbarProps {
   title: string;
   subtitle?: string;
   userEmail?: string;
-  onLogout: () => void;
+
   icon?: React.ReactNode;
   iconColor?: string;
 }
 
-export default function AdminNavbar({ title, subtitle, userEmail, onLogout, icon, iconColor = 'from-emerald-500 to-green-600' }: AdminNavbarProps) {
+export default function AdminNavbar({ title, subtitle, userEmail, icon, iconColor = 'from-emerald-500 to-green-600' }: AdminNavbarProps) {
   return (
     <header className="bg-white/80 backdrop-blur-md border-b border-emerald-100/50 shadow-lg relative z-10">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -30,7 +31,9 @@ export default function AdminNavbar({ title, subtitle, userEmail, onLogout, icon
             </div>
           </div>
           <Button
-            onClick={onLogout}
+            onClick={() => {
+              logoutUser();
+            }}
             variant="outline"
             className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all duration-200 bg-transparent"
           >

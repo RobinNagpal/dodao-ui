@@ -59,10 +59,6 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
     errorMessage: 'Failed to duplicated case study',
   });
 
-  const handleLogout = () => {
-    router.push('/login');
-  };
-
   const handleModuleClick = (module: CaseStudyModule) => {
     setSelectedModule(module as any);
     setShowModuleModal(true);
@@ -135,12 +131,7 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
         <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-teal-200/20 rounded-full blur-xl animate-pulse delay-2000"></div>
       </div>
 
-      <AdminNavbar
-        title={caseStudy?.title || 'Case Study Not Found'}
-        subtitle="Case Study Details"
-        onLogout={handleLogout}
-        icon={<Shield className="h-8 w-8 text-white" />}
-      />
+      <AdminNavbar title={caseStudy?.title || 'Case Study Not Found'} subtitle="Case Study Details" icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
         <div className="flex items-center justify-between mb-4">
