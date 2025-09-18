@@ -100,29 +100,3 @@ export interface ReportTickerAsTickerReport {
   ticker: ReportTickerInfo;
   analysisStatus: AnalysisStatus;
 }
-
-// Optimized types for comparison modal
-export interface ComparisonFactorResult {
-  result: 'Pass' | 'Fail';
-  oneLineExplanation: string;
-  factorAnalysisTitle: string;
-  factorAnalysisKey: string;
-}
-
-export interface ComparisonCategoryResult {
-  categoryKey: string;
-  factorResults: ComparisonFactorResult[];
-}
-
-export interface ComparisonTickerInfo {
-  id: string;
-  name: string;
-  symbol: string;
-  exchange: string;
-  cachedScore: number | null;
-  categoryAnalysisResults: ComparisonCategoryResult[];
-}
-
-export interface ComparisonTickerResponse {
-  ticker: ComparisonTickerInfo;
-}

@@ -1,6 +1,6 @@
 'use client';
 
-import { ComparisonTickerResponse, BasicTickersResponse } from '@/types/ticker-typesv1';
+import { BasicTickersResponse, IndustryTickersResponse } from '@/types/ticker-typesv1';
 import { useState, useEffect } from 'react';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
@@ -99,17 +99,17 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
 
     setLoading(true);
     try {
-      const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.symbol}/comparison`);
-      const data: ComparisonTickerResponse = await response.json();
+      const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.symbol}`);
+      const data: TickerV1ReportResponse = await response.json();
 
       const categoryResults = Object.values(TickerAnalysisCategory).reduce((acc, category) => {
-        const categoryResult = data.ticker.categoryAnalysisResults?.find((r) => r.categoryKey === category);
+        const categoryResult = data.categoryAnalysisResults?.find((r) => r.categoryKey === category);
         const factorResults = categoryResult?.factorResults || [];
 
         acc[category] = {
           factorResults: factorResults.map((f) => ({
-            factorTitle: f.factorAnalysisTitle,
-            factorAnalysisKey: f.factorAnalysisKey,
+            factorTitle: f.analysisCategoryFactor?.factorAnalysisTitle || 'Unknown Factor',
+            factorAnalysisKey: f.analysisCategoryFactor?.factorAnalysisKey || '',
             result: f.result,
             oneLineExplanation: f.oneLineExplanation,
           })),
@@ -123,7 +123,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
         name: data.ticker.name,
         symbol: data.ticker.symbol,
         exchange: data.ticker.exchange,
-        cachedScore: data.ticker.cachedScore as number,
+        cachedScore: data.cachedScore as number,
         categoryResults,
       };
 
