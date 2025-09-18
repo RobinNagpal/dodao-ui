@@ -1,6 +1,6 @@
 'use client';
 
-import { TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
+import { BasicTickersResponse, IndustryTickersResponse } from '@/types/ticker-typesv1';
 import { useState, useEffect } from 'react';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
@@ -10,6 +10,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TickerComparison, { ComparisonTicker } from '@/components/ticker-reportsv1/TickerComparison';
+import { TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
 
 // Using ComparisonTicker interface imported from TickerComparison component
 
@@ -26,22 +27,9 @@ interface ComparisonModalProps {
   };
 }
 
-interface IndustryTickersResponse {
-  tickers: Array<{
-    id: string;
-    name: string;
-    symbol: string;
-    exchange: string;
-    industryKey: string;
-    subIndustryKey: string;
-    cachedScore?: Number;
-  }>;
-  count: number;
-}
-
 export default function ComparisonModal({ isOpen, onClose, currentTicker }: ComparisonModalProps) {
   const [comparisonTickers, setComparisonTickers] = useState<ComparisonTicker[]>([]);
-  const [availableTickers, setAvailableTickers] = useState<IndustryTickersResponse['tickers']>([]);
+  const [availableTickers, setAvailableTickers] = useState<BasicTickersResponse['tickers']>([]);
   const [loading, setLoading] = useState(false);
 
   // Initialize with current ticker
@@ -95,15 +83,17 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
 
   const loadAvailableTickers = async () => {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${currentTicker.industryKey}/${currentTicker.subIndustryKey}`);
-      const data: IndustryTickersResponse = await response.json();
+      const response = await fetch(
+        `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${currentTicker.industryKey}/${currentTicker.subIndustryKey}?basicOnly=true`
+      );
+      const data: BasicTickersResponse = await response.json();
       setAvailableTickers(data.tickers.filter((t) => t.symbol !== currentTicker.symbol));
     } catch (error) {
       console.error('Error loading available tickers:', error);
     }
   };
 
-  const addTicker = async (ticker: IndustryTickersResponse['tickers'][0]) => {
+  const addTicker = async (ticker: BasicTickersResponse['tickers'][0]) => {
     if (comparisonTickers.length >= 5) return;
     if (comparisonTickers.some((t) => t.symbol === ticker.symbol)) return;
 

@@ -5,7 +5,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { TickerV1 } from '@prisma/client';
+import { BasicTickerInfo } from '@/types/ticker-typesv1';
 import React, { useEffect, useState } from 'react';
 
 /** ---------- Types ---------- */
@@ -35,13 +35,13 @@ interface UpdateTickersRequest {
 interface UpdateTickersResponse {
   success: boolean;
   updatedCount: number;
-  updatedTickers: TickerV1[];
+  updatedTickers: BasicTickerInfo[];
 }
 
 interface EditTickersFormProps {
   onSuccess: () => void;
   onCancel: () => void;
-  tickers: TickerV1[];
+  tickers: BasicTickerInfo[];
   selectedIndustryKey: string;
   selectedSubIndustryKey: string;
 }

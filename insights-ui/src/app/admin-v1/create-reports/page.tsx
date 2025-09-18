@@ -4,11 +4,10 @@ import AdminNav from '@/app/admin-v1/AdminNav';
 import SelectIndustryAndSubIndustry from '@/app/admin-v1/SelectIndustryAndSubIndustry';
 import ReportGenerator, { TickerReportV1 } from '@/components/public-equitiesv1/ReportGenerator';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
-import { IndustryTickersResponse } from '@/types/ticker-typesv1';
+import { ReportTickersResponse } from '@/types/ticker-typesv1';
+import { TickerV1 } from '@prisma/client';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData, UseFetchDataResponse } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -25,9 +24,15 @@ export default function CreateReportsV1Page(): JSX.Element {
   const [selectedTickers, setSelectedTickers] = useState<string[]>([]);
   const [tickerReports, setTickerReports] = useState<Record<string, TickerReportV1>>({});
 
+  // Filter state
+  const [showMissingOnly, setShowMissingOnly] = useState<boolean>(false);
+  const [showPartialOnly, setShowPartialOnly] = useState<boolean>(false);
+
   // Tickers for the selected sub-industry
-  const { data: tickerInfos, reFetchData: reFetchTickersForSubIndustry }: UseFetchDataResponse<IndustryTickersResponse> = useFetchData<IndustryTickersResponse>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${selectedIndustry?.industryKey}/${selectedSubIndustry?.subIndustryKey}`,
+  const { data: tickerInfos, reFetchData: reFetchTickersForSubIndustry }: UseFetchDataResponse<ReportTickersResponse> = useFetchData<ReportTickersResponse>(
+    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${selectedIndustry?.industryKey}/${
+      selectedSubIndustry?.subIndustryKey
+    }?withAnalysisStatus=true`,
     { skipInitialFetch: !!(selectedIndustry?.industryKey || selectedSubIndustry?.subIndustryKey), cache: 'no-cache' },
     'Failed to fetch tickers'
   );
@@ -49,7 +54,14 @@ export default function CreateReportsV1Page(): JSX.Element {
   }, [selectedIndustry?.industryKey, selectedSubIndustry?.subIndustryKey]);
 
   // Convenience derived data
-  const tickers: TickerV1[] = (tickerInfos?.tickers as TickerV1[]) || [];
+  const allTickers = tickerInfos?.tickers || [];
+
+  // Apply filters
+  const tickers = allTickers.filter((ticker) => {
+    if (showMissingOnly && !ticker.isMissingAllAnalysis) return false;
+    if (showPartialOnly && !ticker.isPartial) return false;
+    return true;
+  });
 
   // Report fetching helpers (on-demand only; no effects)
   const fetchTickerReport = async (ticker: string): Promise<void> => {
@@ -94,6 +106,68 @@ export default function CreateReportsV1Page(): JSX.Element {
 
         {selectedIndustry?.industryKey && selectedSubIndustry?.subIndustryKey && (
           <div className="space-y-2">
+            {/* Statistics and Filter Controls */}
+            {tickerInfos && (
+              <div className="bg-gray-800 rounded-lg p-4 mb-4">
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <div className="flex gap-4 text-sm">
+                    <span className="text-gray-300">
+                      Total: <span className="font-medium text-white">{tickerInfos.count}</span>
+                    </span>
+                    <span className="text-red-400">
+                      Missing: <span className="font-medium">{tickerInfos.missingCount}</span>
+                    </span>
+                    <span className="text-yellow-400">
+                      Partial: <span className="font-medium">{tickerInfos.partialCount}</span>
+                    </span>
+                    <span className="text-green-400">
+                      Complete: <span className="font-medium">{tickerInfos.completeCount}</span>
+                    </span>
+                    <span className="text-gray-300">
+                      Showing: <span className="font-medium text-white">{tickers.length}</span>
+                    </span>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant={showMissingOnly ? 'contained' : 'outlined'}
+                      size="sm"
+                      onClick={() => {
+                        setShowMissingOnly(!showMissingOnly);
+                        setShowPartialOnly(false);
+                        setSelectedTickers([]);
+                      }}
+                    >
+                      Show Missing ({tickerInfos.missingCount})
+                    </Button>
+                    <Button
+                      variant={showPartialOnly ? 'contained' : 'outlined'}
+                      size="sm"
+                      onClick={() => {
+                        setShowPartialOnly(!showPartialOnly);
+                        setShowMissingOnly(false);
+                        setSelectedTickers([]);
+                      }}
+                    >
+                      Show Partial ({tickerInfos.partialCount})
+                    </Button>
+                    {(showMissingOnly || showPartialOnly) && (
+                      <Button
+                        variant="outlined"
+                        size="sm"
+                        onClick={() => {
+                          setShowMissingOnly(false);
+                          setShowPartialOnly(false);
+                          setSelectedTickers([]);
+                        }}
+                      >
+                        Show All
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {tickers.length > 0 ? (
               <div>
                 <div className="mb-4">
@@ -102,7 +176,7 @@ export default function CreateReportsV1Page(): JSX.Element {
                       {
                         id: 'select-all',
                         name: 'select-all',
-                        label: <span className="flex-grow cursor-pointer">Select All</span>,
+                        label: <span className="flex-grow cursor-pointer">Select All ({tickers.length})</span>,
                       },
                     ]}
                     selectedItemIds={selectedTickers.length === tickers.length ? ['select-all'] : []}
@@ -120,9 +194,31 @@ export default function CreateReportsV1Page(): JSX.Element {
                       id: t.symbol,
                       name: `ticker-${t.symbol}`,
                       label: (
-                        <span className="flex-grow cursor-pointer">
-                          {t.symbol} - {t.name}
-                        </span>
+                        <div className="flex-grow cursor-pointer">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium">{t.symbol}</span>
+                              <span className="text-gray-400">-</span>
+                              <span className="text-gray-300">{t.name}</span>
+                              {t.cachedScore && <span className="text-blue-400 text-sm">Score: {t.cachedScore}/25</span>}
+                            </div>
+                            <div className="flex items-center gap-3 text-sm text-gray-400">
+                              <span>
+                                Updated:{' '}
+                                {new Date(t.updatedAt).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                })}
+                              </span>
+                              {t.isMissingAllAnalysis && <span className="text-red-400 text-xs">MISSING</span>}
+                              {t.isPartial && <span className="text-yellow-400 text-xs">PARTIAL</span>}
+                              {!t.isMissingAllAnalysis && !t.isPartial && <span className="text-green-400 text-xs">COMPLETE</span>}
+                            </div>
+                          </div>
+                        </div>
                       ),
                     })
                   )}
