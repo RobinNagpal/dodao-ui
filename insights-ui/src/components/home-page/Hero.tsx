@@ -4,6 +4,7 @@ import coverImage from '@/images/koala.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChartBarSquareIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
+import SearchBar from '@/components/core/SearchBar';
 
 const koalaGainsServices = [
   {
@@ -37,6 +38,18 @@ export function Hero() {
                 <div className="relative w-24 h-24 sm:w-32 sm:h-32">
                   <Image src={coverImage} alt="KoalaGains AI-powered platform" fill className="object-contain rounded-xl" priority />
                 </div>
+              </div>
+
+              {/* Stock Search Section */}
+              <div className="mb-12">
+                <div className="mb-6">
+                  <h2 className="text-2xl font-semibold text-white mb-3">
+                    Search Our <span className="text-indigo-400">300+ Stock Analysis Reports</span>
+                  </h2>
+                  <p className="text-gray-300 text-lg max-w-2xl mx-auto">Get instant access to detailed investment analysis for your favorite stocks</p>
+                </div>
+
+                <SearchBar placeholder="Search by company name or stock symbol" variant="hero" />
               </div>
 
               <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
