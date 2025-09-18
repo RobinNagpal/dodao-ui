@@ -7,8 +7,7 @@ import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/navigation';
 
 interface CompetitionAnalysis {
-  introductionToAnalysis: string;
-  summary: string;
+  overallAnalysisDetails: string;
 }
 
 interface CompetitionProps {
@@ -26,7 +25,8 @@ export default function Competition({ vsCompetition, competitorTickers }: Compet
   return (
     <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
       <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Competition</h2>
-      <p className="mb-4">{vsCompetition.summary}</p>
+      <div className="markdown markdown-body mb-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(vsCompetition.overallAnalysisDetails) }} />
+
       {competitorTickers && competitorTickers.length > 0 && (
         <ul className="space-y-3">
           {competitorTickers.map((competitor, index) => (
