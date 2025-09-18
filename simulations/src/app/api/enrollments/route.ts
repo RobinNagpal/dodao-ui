@@ -91,8 +91,8 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
     data: {
       caseStudyId: body.caseStudyId,
       assignedInstructorId: instructor.id, // Use the instructor's ID, not email
-      createdBy: adminEmail,
-      updatedBy: adminEmail,
+      createdById: userContext.userId,
+      updatedById: userContext.userId,
       archive: false,
     },
     include: {

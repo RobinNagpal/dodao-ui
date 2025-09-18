@@ -207,7 +207,7 @@ async function updateCaseStudy(
             shortDescription: moduleData.shortDescription,
             details: moduleData.details,
             orderNumber: moduleData.orderNumber,
-            updatedBy: adminEmail,
+            updatedById: userContext.userId,
           },
         });
         moduleIdsToKeep.add(moduleData.id);
@@ -220,8 +220,8 @@ async function updateCaseStudy(
             shortDescription: moduleData.shortDescription,
             details: moduleData.details,
             orderNumber: moduleData.orderNumber,
-            createdBy: adminEmail,
-            updatedBy: adminEmail,
+            createdById: userContext.userId,
+            updatedById: userContext.userId,
             archive: false,
           },
         });
@@ -242,7 +242,7 @@ async function updateCaseStudy(
               details: exerciseData.details,
               promptHint: exerciseData.promptHint,
               orderNumber: exerciseData.orderNumber,
-              updatedBy: adminEmail,
+              updatedById: userContext.userId,
             },
           });
           exerciseIdsToKeep.add(exerciseData.id);
@@ -256,8 +256,8 @@ async function updateCaseStudy(
               details: exerciseData.details,
               promptHint: exerciseData.promptHint,
               orderNumber: exerciseData.orderNumber,
-              createdBy: adminEmail,
-              updatedBy: adminEmail,
+              createdById: userContext.userId,
+              updatedById: userContext.userId,
               archive: false,
             },
           });
