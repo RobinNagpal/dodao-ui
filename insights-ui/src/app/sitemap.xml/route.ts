@@ -85,11 +85,11 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
     { url: '/stocks/comparison', changefreq: 'weekly', priority: 0.7 }
   );
 
-  // Add industry pages - /stocks/industry/{industry}
+  // Add industry pages - /stocks/industries/{industry}
   const industries = await getAllIndustries();
   for (const industry of industries) {
     urls.push({
-      url: `/stocks/industry/${industry.industryKey}`,
+      url: `/stocks/industries/${industry.industryKey}`,
       changefreq: 'weekly',
       priority: 0.7,
     });

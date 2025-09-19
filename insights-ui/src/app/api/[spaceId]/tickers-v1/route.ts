@@ -4,6 +4,7 @@ import { Prisma, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { getIndustryMappings, enhanceTickerWithIndustryNames } from '@/lib/industryMappingUtils';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import { getCountryFilterClause } from '@/utils/countryUtils';
 
 interface NewTickerRequest {
   name: string;
@@ -61,12 +62,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     whereClause.subIndustryKey = subIndustryKey;
   }
 
-  // Add country filter if provided (US = NASDAQ, NYSE, NYSEAMERICAN)
-  if (country === 'US') {
-    whereClause.exchange = {
-      in: ['NASDAQ', 'NYSE', 'NYSEAMERICAN'],
-    };
-  }
+  // Add country filter using utility function
+  const countryFilter = getCountryFilterClause(country);
+  Object.assign(whereClause, countryFilter);
 
   const tickers = await prisma.tickerV1.findMany({
     where: whereClause,
