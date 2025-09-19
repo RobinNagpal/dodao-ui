@@ -11,7 +11,7 @@ import { CaseStudyWithRelationsForAdmin } from '@/types/api';
 import { SimulationSession } from '@/types/user';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { BookOpen, Shield, Users, UserCog } from 'lucide-react';
+import { BookOpen, Shield, UserCog, Users } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -73,10 +73,6 @@ export default function AdminDashboard() {
     }
   }, [selectedSubject, caseStudies]);
 
-  const handleLogout = (): void => {
-    router.push('/login');
-  };
-
   const handleEnrollmentSuccess = async (): Promise<void> => {
     await refetchEnrollments();
   };
@@ -96,13 +92,7 @@ export default function AdminDashboard() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-200/10 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
-      <AdminNavbar
-        title="Admin Dashboard"
-        subtitle="Welcome Back"
-        userEmail={session?.email}
-        onLogout={handleLogout}
-        icon={<Shield className="h-8 w-8 text-white" />}
-      />
+      <AdminNavbar title="Admin Dashboard" subtitle="Welcome Back" userEmail={session?.email} icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 relative z-10">
         <div className="mb-8">

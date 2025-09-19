@@ -2,11 +2,12 @@
 
 import { EmailSentMessage } from '@/components/login/email-sent-message';
 import { UserLogin } from '@/components/login/user-login';
+import { deleteSimulationSessionInfo } from '@/utils/auth-utils';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import { CardContent } from 'defi-alerts/src/components/ui/card';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Define types for login request and response
 interface LoginRequest {
@@ -38,8 +39,6 @@ export default function LoginPage() {
       });
 
       if (response) {
-        localStorage.setItem('email', submittedEmail);
-        localStorage.setItem('userId', response.userId);
         setEmail(submittedEmail);
         setStep(2);
         return null;
@@ -52,10 +51,11 @@ export default function LoginPage() {
   };
 
   const handleUseAnotherEmail = () => {
-    localStorage.removeItem('email');
-    localStorage.removeItem('userId');
     setStep(1);
   };
+  useEffect(() => {
+    deleteSimulationSessionInfo();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">

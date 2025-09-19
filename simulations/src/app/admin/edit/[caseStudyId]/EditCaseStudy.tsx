@@ -110,10 +110,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
     }
   }, [caseStudy]);
 
-  const handleLogout = () => {
-    router.push('/login');
-  };
-
   const addModule = () => {
     const newModule: Module = {
       title: '',
@@ -249,7 +245,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-teal-200/10 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
-      <AdminNavbar title="Edit Case Study" onLogout={handleLogout} icon={<Shield className="h-8 w-8 text-white" />} />
+      <AdminNavbar title="Edit Case Study" icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 relative z-10">
         <BackButton userType="admin" text="Back to Dashboard" href="/admin" />
