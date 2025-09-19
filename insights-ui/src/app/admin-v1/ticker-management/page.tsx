@@ -1,6 +1,7 @@
 'use client';
 
 import AdminNav from '@/app/admin-v1/AdminNav';
+import AdminCountryFilter, { CountryCode, filterTickersByCountries } from '@/app/admin-v1/AdminCountryFilter';
 import AddTickersForm from '@/components/public-equitiesv1/AddTickersForm';
 import EditTickersForm from '@/components/public-equitiesv1/EditTickersForm';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
@@ -20,6 +21,7 @@ import SelectIndustryAndSubIndustry from '../SelectIndustryAndSubIndustry';
 export default function TickerManagementPage() {
   const [showAddTickerForm, setShowAddTickerForm] = useState<boolean>(false);
   const [showEditTickerForm, setShowEditTickerForm] = useState<boolean>(false);
+  const [selectedCountries, setSelectedCountries] = useState<CountryCode[]>([]);
 
   const [selectedIndustry, setSelectedIndustry] = useState<TickerV1Industry | null>(null);
   const [selectedSubIndustry, setSelectedSubIndustry] = useState<TickerV1SubIndustry | null>(null);
@@ -50,6 +52,9 @@ export default function TickerManagementPage() {
     }
   }, [selectedIndustry?.industryKey, selectedSubIndustry?.subIndustryKey]);
 
+  // Apply country filter to tickers
+  const filteredTickers = filterTickersByCountries(tickerInfos?.tickers || [], selectedCountries);
+
   return (
     <PageWrapper>
       <AdminNav />
@@ -68,15 +73,22 @@ export default function TickerManagementPage() {
             {!selectedIndustry && selectedSubIndustry && <p className="mt-1 text-xs">{"You've selected a Sub-Industry. Now please select an Industry."}</p>}
           </div>
         ) : (
-          <div className="pt-4 flex justify-between items-center">
-            <div></div>
-            <div className="flex gap-2">
-              <Button variant="outlined" disabled={!tickerInfos?.tickers?.length} onClick={() => setShowEditTickerForm(true)}>
-                Edit Tickers
-              </Button>
-              <Button variant="contained" primary onClick={() => setShowAddTickerForm(true)}>
-                Add New Ticker
-              </Button>
+          <div>
+            {/* Country Filter */}
+            <div className="bg-gray-800 rounded-lg p-4 mb-4">
+              <AdminCountryFilter selectedCountries={selectedCountries} onCountriesChange={setSelectedCountries} disabled={!tickerInfos} />
+            </div>
+
+            <div className="pt-4 flex justify-between items-center">
+              <div></div>
+              <div className="flex gap-2">
+                <Button variant="outlined" disabled={!filteredTickers?.length} onClick={() => setShowEditTickerForm(true)}>
+                  Edit Tickers
+                </Button>
+                <Button variant="contained" primary onClick={() => setShowAddTickerForm(true)}>
+                  Add New Ticker
+                </Button>
+              </div>
             </div>
           </div>
         )}
@@ -101,7 +113,7 @@ export default function TickerManagementPage() {
               await reFetchTickersForSubIndustry();
             }}
             onCancel={(): void => setShowEditTickerForm(false)}
-            tickers={tickerInfos?.tickers || []}
+            tickers={filteredTickers || []}
             selectedIndustryKey={selectedIndustry.industryKey}
             selectedSubIndustryKey={selectedSubIndustry.subIndustryKey}
           />
@@ -113,8 +125,8 @@ export default function TickerManagementPage() {
               <SubIndustryCard
                 subIndustry={selectedSubIndustry.subIndustryKey}
                 subIndustryName={selectedSubIndustry?.name}
-                tickers={tickerInfos?.tickers || []}
-                total={tickerInfos?.tickers?.length || 0}
+                tickers={filteredTickers || []}
+                total={filteredTickers?.length || 0}
               />
             </Tooltip.Provider>
           </Block>
