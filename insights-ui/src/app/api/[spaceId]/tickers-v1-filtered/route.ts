@@ -39,10 +39,14 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     spaceId,
   };
 
-  // Add country filter if provided (US = NASDAQ, NYSE, NYSEAMERICAN)
+  // Add country filter if provided (US = NASDAQ, NYSE, NYSEAMERICAN, CA = TSX, TSXV)
   if (filters.country === 'US') {
     whereClause.exchange = {
       in: ['NASDAQ', 'NYSE', 'NYSEAMERICAN'],
+    };
+  } else if (filters.country === 'Canada') {
+    whereClause.exchange = {
+      in: ['TSX', 'TSXV'],
     };
   }
 

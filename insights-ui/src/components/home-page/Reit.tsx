@@ -47,7 +47,7 @@ export default function REIT() {
         </dl>
         <div className="mt-12 text-center">
           <Link
-            href="/stocks/industry/REITS"
+            href="/stocks/industries/REITS"
             className="inline-flex items-center rounded-md bg-indigo-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200"
           >
             View REIT Reports

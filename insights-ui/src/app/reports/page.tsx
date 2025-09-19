@@ -34,7 +34,7 @@ const reports = [
   {
     title: 'Specific REIT Reports',
     description: 'Analyze REITs with key metrics like debt, market positioning, efficiency, and rental income, ensuring smarter investment decisions.',
-    link: '/stocks/industry/REITS',
+    link: '/stocks/industries/REITS',
     icon: HomeIcon,
     isNew: true,
   },

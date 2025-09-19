@@ -11,52 +11,57 @@ import * as Tooltip from '@radix-ui/react-tooltip';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'US Stocks by Industry | KoalaGains',
-  description:
-    'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and NYSEAMERICAN. See top tickers with detailed reports and AI insights.',
-  keywords: [
-    'US stocks',
-    'stocks by industry',
-    'NASDAQ',
-    'NYSE',
-    'AMEX',
-    'NYSEAMERICAN',
-    'stock analysis',
-    'AI stock insights',
-    'investment research',
-    'top performing stocks',
-    'KoalaGains',
-  ],
-  openGraph: {
-    title: 'US Stocks by Industry | KoalaGains',
-    description:
-      'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and AMEX. See top tickers with detailed reports and AI insights.',
-    url: 'https://koalagains.com/stocks',
-    siteName: 'KoalaGains',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'US Stocks by Industry | KoalaGains',
-    description:
-      'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and AMEX. See top tickers with detailed reports and AI insights.',
-  },
-  alternates: {
-    canonical: 'https://koalagains.com/stocks',
-  },
-};
+export async function generateMetadata(props: { params: Promise<{ country: string }> }): Promise<Metadata> {
+  const params = await props.params;
+  const countryName = decodeURIComponent(params.country);
 
-const breadcrumbs: BreadcrumbsOjbect[] = [
-  {
-    name: 'US Stocks',
-    href: `/stocks`,
-    current: true,
-  },
-];
+  return {
+    title: `${countryName} Stocks by Industry | KoalaGains`,
+    description: `Discover ${countryName} stocks grouped by industry and sub-industry. See top tickers with detailed reports and AI insights.`,
+    keywords: [
+      `${countryName} stocks`,
+      'stocks by industry',
+      'stock analysis',
+      'AI stock insights',
+      'investment research',
+      'top performing stocks',
+      'KoalaGains',
+    ],
+    openGraph: {
+      title: `${countryName} Stocks by Industry | KoalaGains`,
+      description: `Discover ${countryName} stocks grouped by industry and sub-industry. See top tickers with detailed reports and AI insights.`,
+      url: `https://koalagains.com/stocks/countries/${encodeURIComponent(countryName)}`,
+      siteName: 'KoalaGains',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${countryName} Stocks by Industry | KoalaGains`,
+      description: `Discover ${countryName} stocks grouped by industry and sub-industry. See top tickers with detailed reports and AI insights.`,
+    },
+    alternates: {
+      canonical: `https://koalagains.com/stocks/countries/${encodeURIComponent(countryName)}`,
+    },
+  };
+}
 
-export default async function StocksPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
-  const resolvedSearchParams = await searchParams;
+export default async function CountryStocksPage(props: { params: Promise<{ country: string }>; searchParams: Promise<{ [key: string]: string | undefined }> }) {
+  const params = await props.params;
+  const resolvedSearchParams = await props.searchParams;
+
+  const countryName = decodeURIComponent(params.country);
+
+  console.log('Country Name in UI:', countryName);
+
+  // Create breadcrumbs with dynamic country name
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    {
+      name: `${countryName} Stocks`,
+      href: `/stocks/countries/${encodeURIComponent(countryName)}`,
+      current: true,
+    },
+  ];
+
   // Check if any filters are applied (including search)
   const hasFilters = Object.keys(resolvedSearchParams).some((key) => key.includes('Threshold')) || resolvedSearchParams.search;
 
@@ -70,7 +75,7 @@ export default async function StocksPage({ searchParams }: { searchParams: Promi
     });
 
     // Add country filter
-    urlParams.set('country', 'US');
+    urlParams.set('country', countryName);
 
     const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${urlParams.toString()}`;
     const response = await fetch(apiUrl);
@@ -81,7 +86,9 @@ export default async function StocksPage({ searchParams }: { searchParams: Promi
     }
   } else {
     // Use regular tickers API when no filters are applied
-    const response = await fetch(`${getBaseUrl() || 'https://koalagains.com'}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`, { cache: 'no-cache' });
+    const response = await fetch(`${getBaseUrl() || 'https://koalagains.com'}/api/${KoalaGainsSpaceId}/tickers-v1?country=${countryName}`, {
+      cache: 'no-cache',
+    });
     try {
       tickers = await response.json();
     } catch (e) {
@@ -94,7 +101,7 @@ export default async function StocksPage({ searchParams }: { searchParams: Promi
       <PageWrapper className="px-4 sm:px-6">
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <div className="text-center py-12">
-          <p className="text-[#E5E7EB] text-lg">No US stocks found.</p>
+          <p className="text-[#E5E7EB] text-lg">No {countryName} stocks found.</p>
         </div>
       </PageWrapper>
     );
@@ -145,10 +152,10 @@ export default async function StocksPage({ searchParams }: { searchParams: Promi
         <Filters showOnlyAppliedFilters={true} />
 
         <div className="w-full mb-8">
-          <h1 className="text-2xl font-bold text-white mb-4">US Stocks by Industry</h1>
+          <h1 className="text-2xl font-bold text-white mb-4">{countryName} Stocks by Industry</h1>
           <p className="text-[#E5E7EB] text-md mb-6">
-            Explore US stocks across NASDAQ, NYSE, and AMEX exchanges organized by industry. View top-performing companies in each sector with detailed
-            financial reports and AI-driven analysis.
+            Explore {countryName} stocks organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven
+            analysis.
           </p>
         </div>
 
@@ -157,12 +164,12 @@ export default async function StocksPage({ searchParams }: { searchParams: Promi
           <div className="text-center py-12">
             {hasFilters ? (
               <>
-                <p className="text-[#E5E7EB] text-lg">No US stocks match the current filters.</p>
+                <p className="text-[#E5E7EB] text-lg">No {countryName} stocks match the current filters.</p>
                 <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
               </>
             ) : (
               <>
-                <p className="text-[#E5E7EB] text-lg">No US stocks found.</p>
+                <p className="text-[#E5E7EB] text-lg">No {countryName} stocks found.</p>
                 <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
               </>
             )}

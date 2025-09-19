@@ -104,7 +104,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
     },
     {
       name: industryName,
-      href: `/stocks/industry/${tickerData.industryKey}`,
+      href: `/stocks/industries/${tickerData.industryKey}`,
       current: false,
     },
     {
