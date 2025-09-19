@@ -28,7 +28,7 @@ export default function Competition({ vsCompetition, competitorTickers }: Compet
       <div className="markdown markdown-body mb-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(vsCompetition.overallAnalysisDetails) }} />
 
       {competitorTickers && competitorTickers.length > 0 && (
-        <ul className="space-y-3">
+        <ul className="space-y-3 mt-2">
           {competitorTickers.map((competitor, index) => (
             <li key={`${competitor.companyName}-${index}`} className="bg-gray-800 p-4 rounded-md">
               <div className="flex flex-col gap-y-2">
@@ -43,7 +43,7 @@ export default function Competition({ vsCompetition, competitorTickers }: Compet
                     {competitor.existsInSystem && competitor.tickerData ? (
                       <button
                         onClick={() => router.push(`/stocks/${competitor.tickerData!.exchange.toUpperCase()}/${competitor.tickerData!.symbol.toUpperCase()}`)}
-                        className="inline-flex items-center gap-x-1 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors"
+                        className="inline-flex items-center gap-x-1 text-sm font-medium text-[#F59E0B] hover:text-[#F97316] transition-colors"
                         title="View detailed report"
                       >
                         <ArrowTopRightOnSquareIcon className="size-4" />

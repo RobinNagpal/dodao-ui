@@ -33,16 +33,18 @@ export default function SimilarTickers({ similarTickers }: SimilarTickersProps) 
                     {similarTicker.cachedScore !== undefined ? Number(similarTicker.cachedScore) : '-'}/25
                   </span>
                 </div>
-                <div className="text-sm text-gray-400">
-                  {similarTicker.symbol} • {similarTicker.exchange.toUpperCase()}
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-gray-400">
+                    {similarTicker.symbol} • {similarTicker.exchange.toUpperCase()}
+                  </div>
+                  <button
+                    onClick={() => router.push(`/stocks/${similarTicker.exchange.toUpperCase()}/${similarTicker.symbol.toUpperCase()}`)}
+                    className="inline-flex items-center gap-x-1 text-sm font-medium text-[#F59E0B] hover:text-[#F97316] transition-colors duration-200"
+                  >
+                    View Report
+                    <ArrowTopRightOnSquareIcon className="size-3" />
+                  </button>
                 </div>
-                <button
-                  onClick={() => router.push(`/stocks/${similarTicker.exchange.toUpperCase()}/${similarTicker.symbol.toUpperCase()}`)}
-                  className="mt-2 inline-flex items-center gap-x-2 text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  View Report
-                  <ArrowTopRightOnSquareIcon className="size-4" />
-                </button>
               </div>
             </div>
           );

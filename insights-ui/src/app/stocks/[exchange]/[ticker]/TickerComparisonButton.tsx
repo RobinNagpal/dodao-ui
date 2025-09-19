@@ -31,7 +31,7 @@ export default function TickerComparisonButton({
     <div className="flex-shrink-0 ml-4">
       <button
         onClick={handleCompareClick}
-        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-yellow-500 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+        className="inline-flex items-center px-4 py-2 text-sm font-medium text-black bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] border border-transparent rounded-lg shadow-md transition-all duration-200"
       >
         <span className="mr-2">
           <ScaleIcon className="w-4 h-4" aria-hidden="true" />
