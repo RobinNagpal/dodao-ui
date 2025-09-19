@@ -1,7 +1,8 @@
 import { prisma } from '@/prisma';
+import { getOrCreateUser } from '@/utils/user-utils';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { EnrollmentStudent } from '@prisma/client';
+import { EnrollmentStudent, UserRole } from '@prisma/client';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { NextRequest } from 'next/server';
 
@@ -14,22 +15,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, 
   const { id: enrollmentId } = await params;
   const body: AddStudentRequest = await req.json();
   const studentEmail = body.studentEmail;
-  let currentStudent = await prisma.user.findFirst({
-    where: {
-      email: studentEmail,
-    },
-  });
-
-  if (!currentStudent) {
-    currentStudent = await prisma.user.create({
-      data: {
-        email: studentEmail,
-        spaceId: KoalaGainsSpaceId,
-        username: studentEmail,
-        authProvider: 'custom-email',
-      },
-    });
-  }
+  const currentStudent = await getOrCreateUser(studentEmail, UserRole.Student);
 
   // Check if student is already enrolled
   const existingStudent: EnrollmentStudent | null = await prisma.enrollmentStudent.findFirst({

@@ -1,5 +1,6 @@
 'use client';
 
+import { LoginSignupByEmailRequestBody, LoginSignupByEmailResponse } from '@/app/api/auth/custom-email/login-signup-by-email/route';
 import { EmailSentMessage } from '@/components/login/email-sent-message';
 import { UserLogin } from '@/components/login/user-login';
 import { deleteSimulationSessionInfo } from '@/utils/auth-utils';
@@ -9,24 +10,13 @@ import { CardContent } from 'defi-alerts/src/components/ui/card';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { useEffect, useState } from 'react';
 
-// Define types for login request and response
-interface LoginRequest {
-  email: string;
-  spaceId: string;
-  context: string;
-}
-
-interface LoginResponse {
-  userId: string;
-}
-
 export default function LoginPage() {
   const [email, setEmail] = useState('');
 
   const [step, setStep] = useState<1 | 2>(1); // 1 for email form, 2 for email sent message
 
   // Initialize usePostData hook for login
-  const { postData: postLogin, loading: loginLoading } = usePostData<LoginResponse, LoginRequest>({
+  const { postData: postLogin, loading: loginLoading } = usePostData<LoginSignupByEmailResponse, LoginSignupByEmailRequestBody>({
     errorMessage: 'Failed to send login email. Please try again.',
   });
 
@@ -38,7 +28,10 @@ export default function LoginPage() {
         context: Contexts.loginAndRedirectToHome,
       });
 
-      if (response) {
+      if (response?.isTestUser && response.url) {
+        window.location.href = response.url;
+        return null;
+      } else if (response) {
         setEmail(submittedEmail);
         setStep(2);
         return null;

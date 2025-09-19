@@ -48,19 +48,11 @@ export default function AdminDashboard() {
   const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyWithRelationsForAdmin[]>([]);
   const router = useRouter();
 
-  const [showCreateEnrollment, setShowCreateEnrollment] = useState<boolean>(false);
-
   const {
     data: caseStudies,
     loading: loadingCaseStudies,
     reFetchData: refetchCaseStudies,
   } = useFetchData<CaseStudyWithRelationsForAdmin[]>(`${getBaseUrl()}/api/case-studies`, {}, 'Failed to load case studies');
-
-  const {
-    data: enrollments,
-    loading: loadingEnrollments,
-    reFetchData: refetchEnrollments,
-  } = useFetchData<EnrollmentListItem[]>(`${getBaseUrl()}/api/enrollments`, {}, 'Failed to load enrollments');
 
   // Filter case studies based on selected subject
   useEffect(() => {
@@ -73,14 +65,10 @@ export default function AdminDashboard() {
     }
   }, [selectedSubject, caseStudies]);
 
-  const handleEnrollmentSuccess = async (): Promise<void> => {
-    await refetchEnrollments();
-  };
-
   if (!session || session.role !== 'Admin') {
     return <div>You are not authorized to access this page</div>;
   }
-  if (loadingCaseStudies || loadingEnrollments || caseStudies === undefined || enrollments === undefined) {
+  if (loadingCaseStudies || caseStudies === undefined) {
     return <AdminLoading text="Loading admin dashboard..." subtitle="Preparing your workspace..." />;
   }
 
@@ -121,7 +109,7 @@ export default function AdminDashboard() {
               >
                 <div className="flex items-center justify-center space-x-2">
                   <Users className="h-4 w-4" />
-                  <span>Enrollments ({enrollments?.length || 0})</span>
+                  <span>Enrollments</span>
                 </div>
               </button>
               <button
@@ -154,19 +142,10 @@ export default function AdminDashboard() {
         )}
 
         {/* Enrollments Tab */}
-        {activeTab === 'enrollments' && (
-          <EnrollmentsTab
-            enrollments={enrollments || []}
-            loadingEnrollments={loadingEnrollments}
-            onCreateEnrollment={() => setShowCreateEnrollment(true)}
-            refetchEnrollments={refetchEnrollments}
-          />
-        )}
+        {activeTab === 'enrollments' && <EnrollmentsTab />}
 
         {/* Users Tab */}
         {activeTab === 'users' && <UsersTab />}
-
-        <CreateEnrollmentModal isOpen={showCreateEnrollment} onClose={() => setShowCreateEnrollment(false)} onSuccess={handleEnrollmentSuccess} />
       </div>
     </div>
   );

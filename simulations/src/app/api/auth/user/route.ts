@@ -79,6 +79,7 @@ async function postHandler(request: NextRequest): Promise<UserCreationResponse> 
       spaceId: KoalaGainsSpaceId,
       username: userData.email,
       authProvider: 'custom-email',
+      role: UserRole.Student,
     },
   });
 

@@ -129,7 +129,7 @@ export type CaseStudyWithModulesAndExercises = CaseStudy & {
 };
 
 export type EnrollmentWithRelations = ClassCaseStudyEnrollment & {
-  caseStudy?: {
+  caseStudy: {
     id: string;
     title: string;
     shortDescription: string;

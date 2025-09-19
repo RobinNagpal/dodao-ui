@@ -1,38 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus, X, UserCheck, Users, Mail, Sparkles } from 'lucide-react';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { EnrollmentWithRelations } from '@/types/api';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-
-interface Student {
-  id: string;
-  assignedStudentId: string;
-  createdBy: string | null; // Admin email
-  createdAt: string;
-}
-
-interface Enrollment {
-  id: string;
-  caseStudy: {
-    title: string;
-  };
-  students: Student[];
-}
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { Mail, Plus, Sparkles, UserCheck, Users, X } from 'lucide-react';
+import { useState } from 'react';
 
 interface ManageStudentsModalProps {
   isOpen: boolean;
   onClose: () => void;
   enrollmentId: string;
   enrollmentTitle: string;
+  refetchEnrollments: () => Promise<any>;
 }
 
-export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enrollmentTitle }: ManageStudentsModalProps) {
+export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enrollmentTitle, refetchEnrollments }: ManageStudentsModalProps) {
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [emailError, setEmailError] = useState('');
 
@@ -41,7 +28,11 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
     data: enrollment,
     loading: loadingEnrollment,
     reFetchData,
-  } = useFetchData<Enrollment>(`/api/enrollments/${enrollmentId}`, { skipInitialFetch: !enrollmentId || !isOpen }, 'Failed to load enrollment details');
+  } = useFetchData<EnrollmentWithRelations>(
+    `/api/enrollments/${enrollmentId}`,
+    { skipInitialFetch: !enrollmentId || !isOpen },
+    'Failed to load enrollment details'
+  );
 
   const { postData: addStudent, loading: addingStudent } = usePostData(
     {
@@ -83,6 +74,7 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
         setNewStudentEmail('');
         setEmailError('');
         await reFetchData();
+        await refetchEnrollments();
       }
     } catch (error) {
       console.error('Error adding student:', error);
@@ -99,6 +91,7 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
 
       if (result) {
         await reFetchData();
+        await refetchEnrollments();
       }
     } catch (error) {
       console.error('Error removing student:', error);
@@ -157,7 +150,7 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
           <div>
             <h4 className="text-lg font-bold text-emerald-700 mb-4 flex items-center space-x-2">
               <UserCheck className="h-5 w-5" />
-              <span>Enrolled Students {enrollment && `(${enrollment.students.length})`}</span>
+              <span>Enrolled Students {enrollment && `(${enrollment.students?.length})`}</span>
             </h4>
 
             {loadingEnrollment ? (
@@ -167,7 +160,7 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
                   <span className="text-emerald-600 font-medium">Loading students...</span>
                 </div>
               </div>
-            ) : !enrollment?.students.length ? (
+            ) : !enrollment?.students?.length ? (
               <div className="text-center py-8 bg-gray-50 rounded-xl border border-gray-200">
                 <Mail className="mx-auto h-12 w-12 text-gray-400 mb-3" />
                 <p className="text-gray-500 italic">No students enrolled yet.</p>
