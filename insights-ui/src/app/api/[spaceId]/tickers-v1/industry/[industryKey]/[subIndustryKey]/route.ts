@@ -123,7 +123,7 @@ async function getHandler(
         },
         futureRisk: ticker.futureRisks.length > 0,
         finalSummary: !!ticker.summary,
-        cachedScore: ticker.cachedScore === actualScore, // Compare cached with calculated score
+        cachedScore: actualScore > 0 && ticker.cachedScore === actualScore, // Only true if there's actual analysis AND scores match
       };
 
       // Calculate missing/partial status
