@@ -4,6 +4,7 @@ import { prisma } from '@/prisma';
 import { TickerAnalysisCategory, EvaluationResult, Prisma } from '@prisma/client';
 import { getIndustryMappings, getIndustryName, getSubIndustryName } from '@/lib/industryMappingUtils';
 import { FilteredTicker } from '@/types/ticker-typesv1';
+import { getCountryFilterClause } from '@/utils/countryUtils';
 
 interface FilterParams {
   businessandmoatThreshold?: string;
@@ -39,16 +40,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     spaceId,
   };
 
-  // Add country filter if provided (US = NASDAQ, NYSE, NYSEAMERICAN, CA = TSX, TSXV)
-  if (filters.country === 'US') {
-    whereClause.exchange = {
-      in: ['NASDAQ', 'NYSE', 'NYSEAMERICAN'],
-    };
-  } else if (filters.country === 'Canada') {
-    whereClause.exchange = {
-      in: ['TSX', 'TSXV'],
-    };
-  }
+  // Add country filter using utility function
+  const countryFilter = getCountryFilterClause(filters.country);
+  Object.assign(whereClause, countryFilter);
 
   // Add industry filter if provided
   if (filters.industry) {

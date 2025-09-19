@@ -67,6 +67,7 @@ export interface TickerV1ReportResponse extends TickerV1WithRelations {
     cachedScore: boolean;
   };
 }
+
 export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelations): Promise<TickerV1ReportResponse> {
   // Fetch top 3 similar tickers in the same industry/sub-industry (excluding current ticker)
   const similarTickers = await prisma.tickerV1.findMany({

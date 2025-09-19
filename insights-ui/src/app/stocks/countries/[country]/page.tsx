@@ -51,8 +51,6 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
 
   const countryName = decodeURIComponent(params.country);
 
-  console.log('Country Name in UI:', countryName);
-
   // Create breadcrumbs with dynamic country name
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {
@@ -187,7 +185,7 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-bold text-white">{industryDisplayName}</h2>
                   <Link
-                    href={`/stocks/industries/${encodeURIComponent(mainIndustry)}`}
+                    href={`/stocks/countries/${encodeURIComponent(countryName)}/industries/${encodeURIComponent(mainIndustry)}`}
                     className="text-md bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-4 py-2 rounded-lg shadow-md transition-all duration-200 flex items-center"
                   >
                     View All {totalCompaniesInIndustry} Companies

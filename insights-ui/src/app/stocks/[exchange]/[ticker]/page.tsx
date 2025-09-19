@@ -12,6 +12,7 @@ import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/tick
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import { TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
+import { getCountryByExchange } from '@/utils/countryUtils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -96,23 +97,64 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   const industryName = tickerData.industryName || industryKey;
   const subIndustryName = tickerData.subIndustryName || tickerData.subIndustryKey;
 
-  const breadcrumbs: BreadcrumbsOjbect[] = [
-    {
-      name: 'US Stocks',
-      href: `/stocks`,
-      current: false,
-    },
-    {
-      name: industryName,
-      href: `/stocks/industries/${tickerData.industryKey}`,
-      current: false,
-    },
-    {
-      name: ticker,
-      href: `/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`,
-      current: true,
-    },
-  ];
+  // Determine breadcrumbs based on exchange using utility function
+  const country = getCountryByExchange(tickerData.exchange);
+
+  let breadcrumbs: BreadcrumbsOjbect[] = [];
+
+  if (country === 'US') {
+    // US exchanges - use original breadcrumbs
+    breadcrumbs = [
+      {
+        name: 'US Stocks',
+        href: `/stocks`,
+        current: false,
+      },
+      {
+        name: industryName,
+        href: `/stocks/industries/${tickerData.industryKey}`,
+        current: false,
+      },
+      {
+        name: ticker,
+        href: `/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`,
+        current: true,
+      },
+    ];
+  } else if (country) {
+    // Non-US exchanges - use country-specific breadcrumbs
+    breadcrumbs = [
+      {
+        name: `${country} Stocks`,
+        href: `/stocks/countries/${country}`,
+        current: false,
+      },
+      {
+        name: industryName,
+        href: `/stocks/countries/${country}/industries/${tickerData.industryKey}`,
+        current: false,
+      },
+      {
+        name: ticker,
+        href: `/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`,
+        current: true,
+      },
+    ];
+  } else {
+    // Fallback for unknown exchanges - use basic breadcrumbs
+    breadcrumbs = [
+      {
+        name: 'Stocks',
+        href: `/stocks`,
+        current: false,
+      },
+      {
+        name: ticker,
+        href: `/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`,
+        current: true,
+      },
+    ];
+  }
 
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
     Object.entries(CATEGORY_MAPPINGS).map(([categoryKey, categoryTitle]) => {
