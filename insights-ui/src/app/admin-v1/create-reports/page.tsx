@@ -1,11 +1,11 @@
 'use client';
 
 import AdminNav from '@/app/admin-v1/AdminNav';
+import AdminCountryFilter, { CountryCode, filterTickersByCountries } from '@/app/admin-v1/AdminCountryFilter';
 import SelectIndustryAndSubIndustry from '@/app/admin-v1/SelectIndustryAndSubIndustry';
 import ReportGenerator, { TickerReportV1 } from '@/components/public-equitiesv1/ReportGenerator';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ReportTickersResponse } from '@/types/ticker-typesv1';
-import { TickerV1 } from '@prisma/client';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -27,6 +27,7 @@ export default function CreateReportsV1Page(): JSX.Element {
   // Filter state
   const [showMissingOnly, setShowMissingOnly] = useState<boolean>(false);
   const [showPartialOnly, setShowPartialOnly] = useState<boolean>(false);
+  const [selectedCountries, setSelectedCountries] = useState<CountryCode[]>([]);
 
   // Tickers for the selected sub-industry
   const { data: tickerInfos, reFetchData: reFetchTickersForSubIndustry }: UseFetchDataResponse<ReportTickersResponse> = useFetchData<ReportTickersResponse>(
@@ -57,11 +58,14 @@ export default function CreateReportsV1Page(): JSX.Element {
   const allTickers = tickerInfos?.tickers || [];
 
   // Apply filters
-  const tickers = allTickers.filter((ticker) => {
+  let tickers = allTickers.filter((ticker) => {
     if (showMissingOnly && !ticker.isMissingAllAnalysis) return false;
     if (showPartialOnly && !ticker.isPartial) return false;
     return true;
   });
+
+  // Apply country filter
+  tickers = filterTickersByCountries(tickers, selectedCountries);
 
   // Report fetching helpers (on-demand only; no effects)
   const fetchTickerReport = async (ticker: string): Promise<void> => {
@@ -106,6 +110,18 @@ export default function CreateReportsV1Page(): JSX.Element {
 
         {selectedIndustry?.industryKey && selectedSubIndustry?.subIndustryKey && (
           <div className="space-y-2">
+            {/* Country Filter - Global filter above statistics */}
+            <div className="bg-gray-800 rounded-lg p-4">
+              <AdminCountryFilter
+                selectedCountries={selectedCountries}
+                onCountriesChange={(countries) => {
+                  setSelectedCountries(countries);
+                  setSelectedTickers([]);
+                }}
+                disabled={!tickerInfos}
+              />
+            </div>
+
             {/* Statistics and Filter Controls */}
             {tickerInfos && (
               <div className="bg-gray-800 rounded-lg p-4 mb-4">
