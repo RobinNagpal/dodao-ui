@@ -1,6 +1,7 @@
 import StockActions from '@/app/stocks/StockActions';
 import Filters from '@/components/public-equitiesv1/Filters';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
+import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { FilteredTicker, TickerWithIndustryNames } from '@/types/ticker-typesv1';
@@ -215,8 +216,11 @@ export default async function IndustryStocksPage(props: {
         </div>
         <Filters showOnlyAppliedFilters={true} />
         <div className="w-full mb-8">
-          <h1 className="text-2xl font-bold text-white mb-4">{industryName} Stocks</h1>
-          <p className="text-[#E5E7EB] text-md mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
+            <h1 className="text-2xl font-bold text-white mb-2 sm:mb-0">{industryName} Stocks</h1>
+            <CountryAlternatives currentCountry="US" industryKey={industryKey} className="flex-shrink-0" />
+          </div>
+          <p className="text-[#E5E7EB] text-md mb-4">
             Explore {industryName} companies listed on US exchanges (NASDAQ, NYSE, AMEX). {industryData.summary}
           </p>
         </div>

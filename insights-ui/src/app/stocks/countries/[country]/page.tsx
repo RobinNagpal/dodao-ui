@@ -1,5 +1,6 @@
 import StockActions from '@/app/stocks/StockActions';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import Filters from '@/components/public-equitiesv1/Filters';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -150,8 +151,11 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
         <Filters showOnlyAppliedFilters={true} />
 
         <div className="w-full mb-8">
-          <h1 className="text-2xl font-bold text-white mb-4">{countryName} Stocks by Industry</h1>
-          <p className="text-[#E5E7EB] text-md mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
+            <h1 className="text-2xl font-bold text-white mb-2 sm:mb-0">{countryName} Stocks by Industry</h1>
+            <CountryAlternatives currentCountry={countryName} className="flex-shrink-0" />
+          </div>
+          <p className="text-[#E5E7EB] text-md mb-4">
             Explore {countryName} stocks organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven
             analysis.
           </p>

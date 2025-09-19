@@ -4,7 +4,7 @@ import { ExchangeId } from './exchangeUtils';
 
 export type CountryCode = 'US' | 'Canada';
 
-export const COUNTRY_TO_EXCHANGES: Record<CountryCode, ExchangeId[]> = {
+export const COUNTRY_TO_EXCHANGES: Record<CountryCode, readonly ExchangeId[]> = {
   US: ['NASDAQ', 'NYSE', 'NYSEAMERICAN'],
   Canada: ['TSX', 'TSXV'],
 } as const;
@@ -30,7 +30,7 @@ export const getCountryByExchange = (exchange: string): CountryCode | null => {
 /**
  * Get all exchanges for a given country
  */
-export const getExchangesByCountry = (country: string): ExchangeId[] => {
+export const getExchangesByCountry = (country: string): readonly ExchangeId[] => {
   const normalizedCountry = country as CountryCode;
   return COUNTRY_TO_EXCHANGES[normalizedCountry] || [];
 };
@@ -46,7 +46,7 @@ export const isExchangeInCountry = (exchange: string, country: string): boolean 
 /**
  * Get Prisma where clause for filtering by country
  */
-export const getCountryFilterClause = (country: string | null | undefined): { exchange: { in: ExchangeId[] } } | {} => {
+export const getCountryFilterClause = (country: string | null | undefined): { exchange: { in: readonly ExchangeId[] } } | {} => {
   if (!country) return {};
 
   const exchanges = getExchangesByCountry(country);
