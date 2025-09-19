@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { SimulationJwtTokenPayload } from '@/types/user';
+import { createNewUser } from '@/utils/user-utils';
 import { User, UserRole } from '@prisma/client';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { NextRequest } from 'next/server';
@@ -52,16 +53,7 @@ async function postHandler(request: NextRequest, userContext: SimulationJwtToken
     throw new Error('Email is required');
   }
 
-  const user = await prisma.user.create({
-    data: {
-      email: email,
-      name: name || null,
-      spaceId: KoalaGainsSpaceId,
-      username: email,
-      authProvider: 'custom-email',
-      role: role || 'Student',
-    },
-  });
+  const user = await createNewUser({ email, name, role });
 
   return { user: user };
 }

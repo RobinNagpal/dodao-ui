@@ -1,28 +1,8 @@
+import { EnrollmentWithRelations } from '@/types/api';
 import { Users } from 'lucide-react';
 
 interface EnrollmentRowProps {
-  enrollment: {
-    id: string;
-    caseStudyId: string;
-    assignedInstructorId: string;
-    createdAt: string;
-    caseStudy: {
-      id: string;
-      title: string;
-      shortDescription: string;
-      subject: string;
-    };
-    students: Array<{
-      id: string;
-      assignedStudentId: string;
-      createdBy: string | null;
-    }>;
-    assignedInstructor?: {
-      id: string;
-      email: string | null;
-      username: string;
-    };
-  };
+  enrollment: EnrollmentWithRelations;
   onManageStudents: (enrollment: EnrollmentRowProps['enrollment']) => void;
   onDelete: (enrollmentId: string) => void;
 }

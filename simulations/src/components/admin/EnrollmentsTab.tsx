@@ -1,54 +1,38 @@
+import CreateEnrollmentModal from '@/components/admin/CreateEnrollmentModal';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Plus, Users } from 'lucide-react';
 import EnrollmentRow from './EnrollmentRow';
 import { useState } from 'react';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
-import type { DeleteResponse } from '@/types/api';
+import { DeleteResponse, EnrollmentWithRelations } from '@/types/api';
 import ManageStudentsModal from './ManageStudentsModal';
 
-interface EnrollmentListItem {
-  id: string;
-  caseStudyId: string;
-  assignedInstructorId: string;
-  createdAt: string;
-  caseStudy: {
-    id: string;
-    title: string;
-    shortDescription: string;
-    subject: string;
-  };
-  students: Array<{
-    id: string;
-    assignedStudentId: string;
-    createdBy: string | null;
-  }>;
-  assignedInstructor?: {
-    id: string;
-    email: string | null;
-    username: string;
-  };
-}
-
-interface EnrollmentsTabProps {
-  enrollments: EnrollmentListItem[];
-  loadingEnrollments: boolean;
-  onCreateEnrollment: () => void;
-  refetchEnrollments: () => Promise<any>;
-}
-
-export default function EnrollmentsTab({ enrollments, loadingEnrollments, onCreateEnrollment, refetchEnrollments }: EnrollmentsTabProps) {
+export default function EnrollmentsTab() {
   const [showManageStudents, setShowManageStudents] = useState<boolean>(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [selectedEnrollmentId, setSelectedEnrollmentId] = useState<string>('');
   const [selectedEnrollmentTitle, setSelectedEnrollmentTitle] = useState<string>('');
   const [deleteId, setDeleteId] = useState<string>('');
+  const [showCreateEnrollment, setShowCreateEnrollment] = useState<boolean>(false);
+
+  const onCreateEnrollment = () => {
+    setShowCreateEnrollment(true);
+  };
+
+  const {
+    data: enrollments,
+    loading: loadingEnrollments,
+    reFetchData: refetchEnrollments,
+  } = useFetchData<EnrollmentWithRelations[]>(`${getBaseUrl()}/api/enrollments`, {}, 'Failed to load enrollments');
 
   const { deleteData: deleteEnrollment, loading: deletingEnrollment } = useDeleteData<DeleteResponse, never>({
     successMessage: 'Enrollment deleted successfully!',
     errorMessage: 'Failed to delete enrollment',
   });
 
-  const handleManageStudents = (enrollment: EnrollmentListItem): void => {
+  const handleManageStudents = (enrollment: EnrollmentWithRelations): void => {
     setSelectedEnrollmentId(enrollment.id);
     setSelectedEnrollmentTitle(enrollment.caseStudy.title);
     setShowManageStudents(true);
@@ -69,6 +53,11 @@ export default function EnrollmentsTab({ enrollments, loadingEnrollments, onCrea
       console.error('Error deleting enrollment:', error);
     }
   };
+
+  const handleEnrollmentSuccess = async (): Promise<void> => {
+    await refetchEnrollments();
+  };
+
   return (
     <div>
       <div className="mb-6 flex justify-between items-center">
@@ -138,6 +127,7 @@ export default function EnrollmentsTab({ enrollments, loadingEnrollments, onCrea
             setSelectedEnrollmentId('');
             setSelectedEnrollmentTitle('');
           }}
+          refetchEnrollments={refetchEnrollments}
           enrollmentId={selectedEnrollmentId}
           enrollmentTitle={selectedEnrollmentTitle}
         />
@@ -153,6 +143,8 @@ export default function EnrollmentsTab({ enrollments, loadingEnrollments, onCrea
         confirmationText="Are you sure you want to delete this enrollment? This action cannot be undone."
         askForTextInput={false}
       />
+
+      <CreateEnrollmentModal isOpen={showCreateEnrollment} onClose={() => setShowCreateEnrollment(false)} onSuccess={handleEnrollmentSuccess} />
     </div>
   );
 }

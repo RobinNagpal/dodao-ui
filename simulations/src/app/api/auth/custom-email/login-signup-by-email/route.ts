@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { isTestUserEmail } from '@/utils/user-utils';
 import { createHash } from '@dodao/web-core/api/auth/createHash';
 import { defaultNormalizer, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
@@ -16,11 +17,8 @@ export interface LoginSignupByEmailRequestBody {
 }
 
 export interface LoginSignupByEmailResponse {
-  // Empty response as the function returns an empty object
-}
-
-export interface ErrorResponse {
-  error: string;
+  isTestUser?: boolean;
+  url?: string;
 }
 
 const createUser = async (user: { email: string }, spaceId: string) => {
@@ -38,6 +36,7 @@ const createUser = async (user: { email: string }, spaceId: string) => {
         emailVerified: new Date(),
         authProvider: 'email',
         username: user.email,
+        isTestUser: false,
       },
       update: {
         emailVerified: new Date(),
@@ -125,6 +124,9 @@ async function postHandler(req: NextRequest): Promise<LoginSignupByEmailResponse
 
     if (!user) {
       console.log('[login-signup-by-email] User not found, creating new user');
+      if (isTestUserEmail(defaultUser.email)) {
+        throw new Error('Test users are not allowed to signup. They should have been created by the admin. Please contact the admin for more details.');
+      }
       await createUser(defaultUser, spaceId);
     } else {
       console.log('[login-signup-by-email] Using existing user:', {
@@ -151,29 +153,41 @@ async function postHandler(req: NextRequest): Promise<LoginSignupByEmailResponse
     const baseUrl = `${httpsProto}://${host}`;
     console.log('[login-signup-by-email] Base URL constructed:', baseUrl);
 
-    const url = `${baseUrl}/auth/email/verify?${new URLSearchParams({
-      token,
-    })}&context=${context}`;
+    const urlSearchParams = new URLSearchParams({ token });
+    const verificationUrl = `/auth/email/verify?${urlSearchParams}&context=${context}`;
+    const url = `${baseUrl}${verificationUrl}`;
     console.log('[login-signup-by-email] Verification URL constructed (token hidden):', url.replace(token, '[TOKEN_HIDDEN]'));
 
     console.log('[login-signup-by-email] Sending verification email to:', userEmail);
-    await sendVerificationRequest({
-      identifier: userEmail,
-      token,
-      expires,
-      url: url,
-      from: 'contact@koalagains.com',
-    });
-    console.log('[login-signup-by-email] Verification email sent successfully');
 
     console.log('[login-signup-by-email] Creating hashed verification token in database');
+    const verificationToken = await createHash(`${token}${process.env.EMAIL_TOKEN_SECRET!}`);
     const data = {
       identifier: userEmail,
-      token: await createHash(`${token}${process.env.EMAIL_TOKEN_SECRET!}`),
+      token: verificationToken,
       expires,
     };
     await prisma.verificationToken.create({ data });
     console.log('[login-signup-by-email] Verification token created in database successfully');
+
+    if (user?.isTestUser) {
+      return {
+        isTestUser: true,
+        url: verificationUrl,
+      };
+      console.log('is test user');
+    } else {
+      await sendVerificationRequest({
+        identifier: userEmail,
+        token,
+        expires,
+        url: url,
+        from: 'contact@koalagains.com',
+      });
+      console.log('[login-signup-by-email] Verification email sent successfully');
+    }
+
+    return {};
   } catch (error) {
     console.error('[login-signup-by-email] Error in postHandler:', error);
     await logError(
