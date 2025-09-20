@@ -1,4 +1,5 @@
 import { fetchTariffReports, TariffIndustryDefinition, getAllHeadingSubheadingCombinations } from '@/scripts/industry-tariff-reports/tariff-industries';
+import tariffIndustryLastmod from '@/scripts/industry-tariff-reports/tariff-industry-lastmod.json';
 import { ReportType } from '@/types/project/project';
 import { getPostsData } from '@/util/blog-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -14,6 +15,7 @@ interface SiteMapUrl {
   url: string;
   changefreq: string;
   priority?: number;
+  lastmod?: string;
 }
 
 // Fetch all project IDs
@@ -133,6 +135,7 @@ async function generateBlogUrls(): Promise<SiteMapUrl[]> {
       url: `/blogs/${post.id}`,
       changefreq: 'weekly',
       priority: 0.7,
+      lastmod: post.datetime && post.datetime !== 'Unknown Date' ? post.datetime : undefined,
     });
   });
 
@@ -159,11 +162,13 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
   // For each industry report
   for (const industry of tariffReports) {
     const industryId = industry.industryId;
+    const lastmod = (tariffIndustryLastmod as Record<string, string>)[industryId] || undefined;
     // Main report page
     urls.push({
       url: `/industry-tariff-report/${industryId}`,
       changefreq: 'weekly',
       priority: 0.8,
+      lastmod,
     });
 
     // Standard report sections based on navigation structure
@@ -175,6 +180,7 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
         url: `/industry-tariff-report/${industryId}/${section}`,
         changefreq: 'weekly',
         priority: 0.7,
+        lastmod,
       });
     }
 
@@ -184,12 +190,14 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
       url: `/industry-tariff-report/${industryId}/evaluate-industry-areas`,
       changefreq: 'weekly',
       priority: 0.7,
+      lastmod,
     });
     combos.forEach((c) =>
       urls.push({
         url: `/industry-tariff-report/${industry.industryId}/evaluate-industry-areas/${c.headingIndex}-${c.subHeadingIndex}`,
         changefreq: 'weekly',
         priority: 0.6,
+        lastmod,
       })
     );
   }

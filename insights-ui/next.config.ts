@@ -110,6 +110,11 @@ const nextConfig: NextConfig = {
         destination: '/industry-tariff-report/tires-and-rubber/:path*',
         permanent: true,
       },
+      {
+        source: '/industry-tariff-report/:industryId/executive-summary',
+        destination: '/industry-tariff-report/:industryId',
+        permanent: true,
+      },
     ];
   },
 };
