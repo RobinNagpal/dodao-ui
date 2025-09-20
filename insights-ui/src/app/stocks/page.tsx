@@ -145,10 +145,10 @@ export default async function StocksPage({ searchParams }: { searchParams: Promi
 
       <div className="w-full mb-8">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
-            <h1 className="text-2xl font-bold text-white mb-2 sm:mb-0">US Stocks by Industry</h1>
-            <CountryAlternatives currentCountry="US" className="flex-shrink-0" />
-          </div>
-          <p className="text-[#E5E7EB] text-md mb-4">
+          <h1 className="text-2xl font-bold text-white mb-2 sm:mb-0">US Stocks by Industry</h1>
+          <CountryAlternatives currentCountry="US" className="flex-shrink-0" />
+        </div>
+        <p className="text-[#E5E7EB] text-md mb-4">
           Explore US stocks across NASDAQ, NYSE, and AMEX exchanges organized by industry. View top-performing companies in each sector with detailed financial
           reports and AI-driven analysis.
         </p>
@@ -182,7 +182,7 @@ export default async function StocksPage({ searchParams }: { searchParams: Promi
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-white">{industryDisplayName}</h2>
                 <Link
-                    href={`/stocks/industries/${encodeURIComponent(mainIndustry)}`}
+                  href={`/stocks/industries/${encodeURIComponent(mainIndustry)}`}
                   className="text-md bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-4 py-2 rounded-lg shadow-md transition-all duration-200 flex items-center"
                 >
                   View All {totalCompaniesInIndustry} Companies
