@@ -1,5 +1,6 @@
 'use client';
 
+import { UpdateModuleExerciseRequest } from '@/app/api/case-studies/[caseStudyId]/case-study-modules/[moduleId]/exercises/[exerciseId]/route';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,7 +23,7 @@ interface ViewExerciseModalProps {
   moduleNumber?: number;
   caseStudy?: CaseStudyWithRelationsForStudents | CaseStudyWithRelationsForInstructor;
   moduleId?: string;
-  onExerciseUpdate?: (updatedExercise: any) => void;
+  onExerciseUpdate?: (updatedExercise: ModuleExercise) => void;
   allowEdit?: boolean;
   isInstructor?: boolean;
 }
@@ -40,16 +41,18 @@ export default function ViewExerciseModal({
   isInstructor,
 }: ViewExerciseModalProps) {
   const [isEditMode, setIsEditMode] = useState(false);
-  const [formData, setFormData] = useState({
-    title: exercise.title || '',
-    shortDescription: exercise.shortDescription || '',
-    details: exercise.details || '',
-    promptHint: exercise.promptHint || '',
-    instructorInstructions: exercise.instructorInstructions || '',
+  const [formData, setFormData] = useState<UpdateModuleExerciseRequest>({
+    title: exercise.title,
+    shortDescription: exercise.shortDescription,
+    details: exercise.details,
+    promptHint: exercise.promptHint,
+    instructorInstructions: exercise.instructorInstructions,
+    orderNumber: exercise.orderNumber,
+    archive: exercise.archive,
   });
 
   // Use the usePutData hook
-  const { putData, loading: isSubmitting } = usePutData(
+  const { putData, loading: isSubmitting } = usePutData<ModuleExercise, UpdateModuleExerciseRequest>(
     {
       successMessage: 'Exercise updated successfully!',
       errorMessage: 'Failed to update exercise',
@@ -64,63 +67,24 @@ export default function ViewExerciseModal({
   const handleCancel = () => {
     // Reset form data
     setFormData({
-      title: exercise?.title || '',
-      shortDescription: exercise?.shortDescription || '',
-      details: exercise?.details || '',
-      promptHint: exercise?.promptHint || '',
-      instructorInstructions: exercise?.instructorInstructions || '',
+      title: exercise.title,
+      shortDescription: exercise.shortDescription,
+      details: exercise.details,
+      promptHint: exercise.promptHint,
+      instructorInstructions: exercise.instructorInstructions,
+      orderNumber: exercise.orderNumber,
+      archive: exercise.archive,
     });
     setIsEditMode(false);
   };
 
   const handleSave = async () => {
     if (!exercise?.id || !caseStudy?.id || !moduleId) return;
-
-    try {
-      // Find and update the specific exercise using the passed case study data
-      const updatedModules =
-        caseStudy.modules?.map((module: any) => {
-          if (module.id === moduleId) {
-            const updatedExercises =
-              module.exercises?.map((ex: any) => {
-                if (ex.id === exercise.id) {
-                  return {
-                    ...ex,
-                    title: formData.title,
-                    shortDescription: formData.shortDescription,
-                    details: formData.details,
-                    promptHint: formData.promptHint,
-                  };
-                }
-                return ex;
-              }) || [];
-            return {
-              ...module,
-              exercises: updatedExercises,
-            };
-          }
-          return module;
-        }) || [];
-
-      // Update the case study with the modified modules
-      const updatedCaseStudy = await putData(`${getBaseUrl()}/api/case-studies/${caseStudy.id}`, {
-        title: caseStudy.title,
-        shortDescription: caseStudy.shortDescription,
-        details: caseStudy.details,
-        finalSummaryPromptInstructions: caseStudy.finalSummaryPromptInstructions,
-        subject: caseStudy.subject,
-        modules: updatedModules,
-      });
-
-      if (updatedCaseStudy) {
-        const updatedModule = (updatedCaseStudy as any).modules?.find((m: any) => m.id === moduleId);
-        const updatedExercise = updatedModule?.exercises?.find((ex: any) => ex.id === exercise.id);
-        onExerciseUpdate?.(updatedExercise);
-        setIsEditMode(false);
-        onClose(); // Close modal after successful save
-      }
-    } catch (error) {
-      console.error('Error updating exercise:', error);
+    const response = await putData(`${getBaseUrl()}/api/case-studies/${caseStudy.id}/case-study-modules/${moduleId}/exercises/${exercise.id}`, formData);
+    if (response) {
+      onExerciseUpdate?.(response);
+      setIsEditMode(false);
+      onClose();
     }
   };
 
@@ -226,7 +190,7 @@ export default function ViewExerciseModal({
               <label className="block text-md font-semibold text-gray-900">AI Prompt Hint</label>
               <MarkdownEditor
                 objectId={`exercise-prompt-hint-${exercise.id}`}
-                modelValue={formData.promptHint}
+                modelValue={formData.promptHint || undefined}
                 onUpdate={(value) => handleInputChange('promptHint', value)}
                 placeholder="Enter AI prompt hint using markdown..."
                 maxHeight={200}
@@ -238,7 +202,7 @@ export default function ViewExerciseModal({
               <label className="block text-md font-semibold text-gray-900">Instructor Instructions</label>
               <MarkdownEditor
                 objectId={`exercise-prompt-hint-${exercise.id}`}
-                modelValue={formData.instructorInstructions}
+                modelValue={formData.instructorInstructions || undefined}
                 onUpdate={(value) => handleInputChange('instructorInstructions', value)}
                 placeholder="Enter instructions for the instructor using markdown..."
                 maxHeight={200}

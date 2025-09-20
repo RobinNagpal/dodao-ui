@@ -209,10 +209,14 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
           />
         )}
 
-        {selectedModule && (
+        {selectedModule && showModuleModal && (
           <ViewModuleModal
             open={showModuleModal}
-            onClose={() => setShowModuleModal(false)}
+            onClose={() => {
+              setShowModuleModal(false);
+              setSelectedModule(null);
+              setSelectedExercise(null);
+            }}
             selectedModule={selectedModule}
             hasModuleInstructionsRead={() => true} // Admin always has read instructions
             handleMarkInstructionAsRead={async () => {}} // No-op for admin
@@ -225,10 +229,14 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
           />
         )}
 
-        {selectedExercise && (
+        {selectedExercise && showExerciseModal && (
           <ViewExerciseModal
             open={showExerciseModal}
-            onClose={() => setShowExerciseModal(false)}
+            onClose={() => {
+              setShowExerciseModal(false);
+              setSelectedExercise(null);
+              setSelectedModule(null);
+            }}
             exercise={selectedExercise}
             moduleTitle={selectedModule?.title}
             moduleNumber={selectedModule?.orderNumber}
