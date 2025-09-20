@@ -1,7 +1,7 @@
 import StockActions from '@/app/stocks/StockActions';
 import Filters from '@/components/public-equitiesv1/Filters';
-import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
+import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { FilteredTicker, TickerWithIndustryNames } from '@/types/ticker-typesv1';
@@ -9,7 +9,6 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry } from '@prisma/client';
-import * as Tooltip from '@radix-ui/react-tooltip';
 import { Metadata } from 'next';
 
 export async function generateMetadata(props: { params: Promise<{ industry: string }> }): Promise<Metadata> {
@@ -201,87 +200,85 @@ export default async function IndustryStocksPage(props: {
   });
 
   return (
-    <Tooltip.Provider delayDuration={300}>
-      <PageWrapper>
-        <div className="overflow-x-auto">
-          <Breadcrumbs
-            breadcrumbs={breadcrumbs}
-            rightButton={
-              <div className="flex">
-                <Filters showOnlyButton={true} />
-                <StockActions />
+    <PageWrapper>
+      <div className="overflow-x-auto">
+        <Breadcrumbs
+          breadcrumbs={breadcrumbs}
+          rightButton={
+            <div className="flex">
+              <Filters showOnlyButton={true} />
+              <StockActions />
+            </div>
+          }
+        />
+      </div>
+      <Filters showOnlyAppliedFilters={true} />
+      <div className="w-full mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
+          <h1 className="text-2xl font-bold text-white mb-2 sm:mb-0">{industryName} Stocks</h1>
+          <CountryAlternatives currentCountry="US" industryKey={industryKey} className="flex-shrink-0" />
+        </div>
+        <p className="text-[#E5E7EB] text-md mb-4">
+          Explore {industryName} companies listed on US exchanges (NASDAQ, NYSE, AMEX). {industryData.summary}
+        </p>
+      </div>
+      {Object.keys(tickersBySubIndustry).length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-[#E5E7EB] text-lg">No {industryName} stocks match the current filters.</p>
+          <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
+        </div>
+      ) : (
+        (() => {
+          // Build card specs with estimated heights
+          const cards: CardSpec[] = Object.entries(tickersBySubIndustry).map(([subIndustry, subIndustryTickers]) => {
+            const subIndustryName = subIndustryTickers[0]?.subIndustryName || subIndustry;
+            const total = subIndustryTickers.length;
+            return {
+              key: subIndustry,
+              subIndustry,
+              subIndustryName,
+              tickers: subIndustryTickers,
+              total,
+              estH: estimateCardHeight(total),
+            };
+          });
+
+          const cols1 = [cards];
+          const cols2 = packIntoColumns(cards, 2);
+          const cols3 = packIntoColumns(cards, 3);
+
+          const renderCard = (c: CardSpec) => (
+            <SubIndustryCard key={c.key} subIndustry={c.subIndustry} subIndustryName={c.subIndustryName} tickers={c.tickers} total={c.total} />
+          );
+
+          return (
+            <>
+              {/* Mobile: 1 column */}
+              <div className="grid grid-cols-1 gap-6 mb-10 md:hidden">
+                <div className="flex flex-col gap-6">{cols1[0].map(renderCard)}</div>
               </div>
-            }
-          />
-        </div>
-        <Filters showOnlyAppliedFilters={true} />
-        <div className="w-full mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
-            <h1 className="text-2xl font-bold text-white mb-2 sm:mb-0">{industryName} Stocks</h1>
-            <CountryAlternatives currentCountry="US" industryKey={industryKey} className="flex-shrink-0" />
-          </div>
-          <p className="text-[#E5E7EB] text-md mb-4">
-            Explore {industryName} companies listed on US exchanges (NASDAQ, NYSE, AMEX). {industryData.summary}
-          </p>
-        </div>
-        {Object.keys(tickersBySubIndustry).length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-[#E5E7EB] text-lg">No {industryName} stocks match the current filters.</p>
-            <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
-          </div>
-        ) : (
-          (() => {
-            // Build card specs with estimated heights
-            const cards: CardSpec[] = Object.entries(tickersBySubIndustry).map(([subIndustry, subIndustryTickers]) => {
-              const subIndustryName = subIndustryTickers[0]?.subIndustryName || subIndustry;
-              const total = subIndustryTickers.length;
-              return {
-                key: subIndustry,
-                subIndustry,
-                subIndustryName,
-                tickers: subIndustryTickers,
-                total,
-                estH: estimateCardHeight(total),
-              };
-            });
 
-            const cols1 = [cards];
-            const cols2 = packIntoColumns(cards, 2);
-            const cols3 = packIntoColumns(cards, 3);
+              {/* Tablet: 2 columns */}
+              <div className="hidden md:grid lg:hidden grid-cols-2 gap-6 mb-10">
+                {cols2.map((col, i) => (
+                  <div key={`md-col-${i}`} className="flex flex-col gap-6">
+                    {col.map(renderCard)}
+                  </div>
+                ))}
+              </div>
 
-            const renderCard = (c: CardSpec) => (
-              <SubIndustryCard key={c.key} subIndustry={c.subIndustry} subIndustryName={c.subIndustryName} tickers={c.tickers} total={c.total} />
-            );
-
-            return (
-              <>
-                {/* Mobile: 1 column */}
-                <div className="grid grid-cols-1 gap-6 mb-10 md:hidden">
-                  <div className="flex flex-col gap-6">{cols1[0].map(renderCard)}</div>
-                </div>
-
-                {/* Tablet: 2 columns */}
-                <div className="hidden md:grid lg:hidden grid-cols-2 gap-6 mb-10">
-                  {cols2.map((col, i) => (
-                    <div key={`md-col-${i}`} className="flex flex-col gap-6">
-                      {col.map(renderCard)}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Desktop: 3 columns */}
-                <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-                  {cols3.map((col, i) => (
-                    <div key={`lg-col-${i}`} className="flex flex-col gap-6">
-                      {col.map(renderCard)}
-                    </div>
-                  ))}
-                </div>
-              </>
-            );
-          })()
-        )}
-      </PageWrapper>
-    </Tooltip.Provider>
+              {/* Desktop: 3 columns */}
+              <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                {cols3.map((col, i) => (
+                  <div key={`lg-col-${i}`} className="flex flex-col gap-6">
+                    {col.map(renderCard)}
+                  </div>
+                ))}
+              </div>
+            </>
+          );
+        })()
+      )}
+    </PageWrapper>
   );
 }
