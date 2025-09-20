@@ -120,12 +120,12 @@ export type CaseStudyWithRelationsForAdmin = CaseStudyWithRelationsForStudents &
   updatedBy: User;
 };
 
-export type CaseStudyWithModulesAndExercises = CaseStudy & {
-  modules?: Array<
-    CaseStudyModule & {
-      exercises?: ModuleExercise[];
-    }
-  >;
+export type ClassCaseStudyEnrollmentWithStudents = ClassCaseStudyEnrollment & {
+  students: EnrollmentStudent[];
+};
+
+export type CaseStudyWithInstructorAndStudents = CaseStudy & {
+  enrollments: ClassCaseStudyEnrollmentWithStudents[];
 };
 
 export type EnrollmentWithRelations = ClassCaseStudyEnrollment & {

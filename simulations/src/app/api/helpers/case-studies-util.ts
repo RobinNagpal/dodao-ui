@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
-import { CaseStudy } from '@/types';
-import { CaseStudyWithRelationsForAdmin, CaseStudyWithRelationsForStudents } from '@/types/api';
+import { CaseStudyWithInstructorAndStudents, CaseStudyWithRelationsForAdmin, CaseStudyWithRelationsForStudents } from '@/types/api';
+import type { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { CaseStudy, User } from '@prisma/client';
 
 /**
  * Get all case studies for admin
@@ -386,4 +387,83 @@ export async function getStudentCaseStudy(caseStudyId: string, studentId: string
   };
 
   return caseStudyWithStatus;
+}
+
+export async function checkCanEditCaseStudy(
+  userContext: DoDaoJwtTokenPayload,
+  caseStudyId: string
+): Promise<{
+  caseStudy: CaseStudy;
+  user: User;
+}> {
+  const caseStudy: CaseStudy = await prisma.caseStudy.findUniqueOrThrow({
+    where: {
+      id: caseStudyId,
+    },
+  });
+
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userContext.userId,
+    },
+  });
+
+  if (user.role === 'Admin') {
+    return { caseStudy, user };
+  }
+
+  if (caseStudy.editors.includes(user.id)) {
+    return { caseStudy, user };
+  }
+
+  throw new Error('User does not have permission to update this case study');
+}
+
+export async function checkCanAccessCaseStudy(
+  userContext: DoDaoJwtTokenPayload,
+  caseStudyId: string
+): Promise<{
+  caseStudy: CaseStudyWithInstructorAndStudents;
+  user: User;
+}> {
+  const caseStudy: CaseStudyWithInstructorAndStudents = await prisma.caseStudy.findUniqueOrThrow({
+    where: {
+      id: caseStudyId,
+    },
+    include: {
+      enrollments: {
+        include: {
+          students: {
+            where: {
+              archive: false,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userContext.userId,
+    },
+  });
+
+  if (user.role === 'Admin') {
+    return { caseStudy, user };
+  }
+
+  if (caseStudy.editors.includes(user.id)) {
+    return { caseStudy, user };
+  }
+
+  const allowedCases = caseStudy.enrollments.some((e) => {
+    return e.assignedInstructorId === user.id || e.students.some((s) => s.assignedStudentId === user.id);
+  });
+
+  if (allowedCases) {
+    return { caseStudy, user };
+  }
+
+  throw new Error('User does not have permission to update this case study');
 }

@@ -71,9 +71,9 @@ type SourceCaseStudy = {
 async function postHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ caseStudyId: string }> }
 ): Promise<CaseStudyWithRelationsForStudents> {
-  const { id: sourceId } = await params;
+  const { caseStudyId: sourceId } = await params;
 
   // Load the user & enforce Admin role
   const { userId } = userContext;

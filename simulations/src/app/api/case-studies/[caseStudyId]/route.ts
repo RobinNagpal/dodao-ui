@@ -15,9 +15,9 @@ import { NextRequest } from 'next/server';
 async function getHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ caseStudyId: string }> }
 ): Promise<CaseStudyWithRelationsForStudents | CaseStudyWithRelationsForInstructor | CaseStudyWithRelationsForAdmin> {
-  const { id } = await params;
+  const { caseStudyId } = await params;
   const { userId } = userContext;
   const user = await prisma.user.findFirstOrThrow({
     where: {
@@ -27,11 +27,11 @@ async function getHandler(
 
   // Handle different user types
   if (user.role === 'Student') {
-    return await getStudentCaseStudy(id, user.id);
+    return await getStudentCaseStudy(caseStudyId, user.id);
   } else if (user.role === 'Instructor') {
-    return await getInstructorCaseStudy(id, user.id);
+    return await getInstructorCaseStudy(caseStudyId, user.id);
   } else if (user.role === 'Admin') {
-    return await getAdminCaseStudy(id);
+    return await getAdminCaseStudy(caseStudyId);
   } else {
     throw new Error('Invalid user type');
   }
@@ -324,8 +324,8 @@ async function updateCaseStudy(
 }
 
 // DELETE /api/case-studies/[id] - Delete a case study
-async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<DeleteResponse> {
-  const { id } = await params;
+async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ caseStudyId: string }> }): Promise<DeleteResponse> {
+  const { caseStudyId } = await params;
 
   // Use a transaction to ensure atomicity
   await prisma.$transaction(async (tx) => {
@@ -334,7 +334,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
       where: {
         exercise: {
           module: {
-            caseStudyId: id,
+            caseStudyId: caseStudyId,
           },
         },
         archive: false,
@@ -348,7 +348,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
     await tx.moduleExercise.updateMany({
       where: {
         module: {
-          caseStudyId: id,
+          caseStudyId: caseStudyId,
         },
         archive: false,
       },
@@ -360,7 +360,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
     // Archive all modules for this case study
     await tx.caseStudyModule.updateMany({
       where: {
-        caseStudyId: id,
+        caseStudyId: caseStudyId,
         archive: false,
       },
       data: {
@@ -373,7 +373,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
       where: {
         student: {
           enrollment: {
-            caseStudyId: id,
+            caseStudyId: caseStudyId,
           },
         },
         archive: false,
@@ -387,7 +387,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
     await tx.enrollmentStudent.updateMany({
       where: {
         enrollment: {
-          caseStudyId: id,
+          caseStudyId: caseStudyId,
         },
         archive: false,
       },
@@ -399,7 +399,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
     // Archive all enrollments for this case study
     await tx.classCaseStudyEnrollment.updateMany({
       where: {
-        caseStudyId: id,
+        caseStudyId: caseStudyId,
         archive: false,
       },
       data: {
@@ -409,7 +409,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
 
     // Finally, archive the case study itself
     await tx.caseStudy.update({
-      where: { id },
+      where: { id: caseStudyId },
       data: {
         archive: true,
       },
