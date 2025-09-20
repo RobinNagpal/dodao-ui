@@ -141,7 +141,7 @@ async function postHandler(
     });
 
     // 2) Recreate modules
-    for (const mod of source.modules) {
+    for (const mod of source.modules.sort((a, b) => a.orderNumber - b.orderNumber)) {
       const newMod = await tx.caseStudyModule.create({
         data: {
           caseStudyId: newCase.id,
@@ -158,9 +158,9 @@ async function postHandler(
 
       // 3) Recreate exercises under each module
       if (mod.exercises.length > 0) {
-        await tx.moduleExercise.createMany({
-          data: mod.exercises.map(
-            (ex): Prisma.ModuleExerciseCreateManyInput => ({
+        for (const ex of mod.exercises.sort((a, b) => a.orderNumber - b.orderNumber)) {
+          await tx.moduleExercise.create({
+            data: {
               moduleId: newMod.id,
               title: ex.title,
               shortDescription: ex.shortDescription,
@@ -170,10 +170,9 @@ async function postHandler(
               createdById: userContext.userId,
               updatedById: userContext.userId,
               archive: false,
-            })
-          ),
-          skipDuplicates: false,
-        });
+            },
+          });
+        }
       }
     }
 
