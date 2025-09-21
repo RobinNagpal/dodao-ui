@@ -33,7 +33,7 @@ export const dynamicParams = true;
 export const revalidate = false;
 
 /** Route params (strict) */
-type RouteParams = Readonly<{ exchange: string; ticker: string }>;
+type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>>;
 
 /** For FULL_SSG prebuilds */
 type TickerListItem = Readonly<{ symbol: string; exchange: string }>;
@@ -46,7 +46,7 @@ const tickerTag = (t: string): `${typeof TICKER_TAG_PREFIX}${string}` => `${TICK
 const TICKERS_INDEX_URL = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1` as const;
 
 /** Build nothing by default; prebuild all when FULL_SSG=1 */
-export async function generateStaticParams(): Promise<RouteParams[]> {
+export async function generateStaticParams(): Promise<{ exchange: string; ticker: string }[]> {
   if (process.env.FULL_SSG !== '1') return [];
 
   const res = await fetch(`${TICKERS_INDEX_URL}`, {
@@ -108,9 +108,10 @@ async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1ReportRes
  * - redirect to canonical route if exchange differs
  */
 async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1ReportResponse> {
+  const routeParams = await params;
   const { exchange, ticker } = {
-    exchange: params.exchange.toUpperCase(),
-    ticker: params.ticker.toUpperCase(),
+    exchange: routeParams.exchange.toUpperCase(),
+    ticker: routeParams.ticker.toUpperCase(),
   };
 
   try {
@@ -138,9 +139,10 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1ReportR
 
 /** Metadata: try exchange route; on failure, return generic (no fallback here) */
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
+  const routeParams = await params;
   const { exchange, ticker } = {
-    exchange: params.exchange.toUpperCase(),
-    ticker: params.ticker.toUpperCase(),
+    exchange: routeParams.exchange.toUpperCase(),
+    ticker: routeParams.ticker.toUpperCase(),
   };
 
   let companyName = ticker;
