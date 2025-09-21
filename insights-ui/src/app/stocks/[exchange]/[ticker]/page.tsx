@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
-import { permanentRedirect } from 'next/navigation';
+import { permanentRedirect, notFound } from 'next/navigation';
+import { unstable_noStore as noStore } from 'next/cache';
 
 import { FullTickerV1CategoryAnalysisResult, TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
@@ -23,85 +24,140 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 
 /**
  * ──────────────────────────────────────────────────────────────────────────────
- * App Router rendering & caching configuration
- * - force-static: page can be statically generated (SSG/ISR)
- * - dynamicParams: allow "fallback: blocking"-like behavior for params not returned by generateStaticParams
- * - revalidate=false: cache forever; we'll invalidate with on-demand revalidation via tags/paths
+ * Static-by-default with on-demand invalidation.
+ * Fallback branch calls noStore() to keep that request uncached.
  * ──────────────────────────────────────────────────────────────────────────────
  */
 export const dynamic = 'force-static';
 export const dynamicParams = true;
 export const revalidate = false;
 
-/** Route param types (strict) */
-type RouteParams = { exchange: string; ticker: string };
+/** Route params (strict) */
+type RouteParams = Readonly<{ exchange: string; ticker: string }>;
 
-/** List item for full-SGG (when you choose to prebuild everything) */
-type TickerListItem = Readonly<{
-  symbol: string;
-  exchange: string;
-}>;
+/** For FULL_SSG prebuilds */
+type TickerListItem = Readonly<{ symbol: string; exchange: string }>;
 
-/** Shared helpers */
+/** Cache tag helpers for per-ticker revalidation */
 const TICKER_TAG_PREFIX = 'ticker:' as const;
 const tickerTag = (t: string): `${typeof TICKER_TAG_PREFIX}${string}` => `${TICKER_TAG_PREFIX}${t.toUpperCase()}`;
 
-/** NOTE: Point this to your real "all tickers" endpoint */
+/** Optional index endpoint used when FULL_SSG=1 */
 const TICKERS_INDEX_URL = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1` as const;
 
-function truncateForMeta(text: string, maxLength = 155): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
-}
-
-/** Fetch one ticker with a stable cache tag so we can revalidate by tag */
-async function fetchTicker(ticker: string): Promise<TickerV1ReportResponse> {
-  const res = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}`, { next: { tags: [tickerTag(ticker)] } });
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch ticker: ${ticker}`);
-  }
-  return (await res.json()) as TickerV1ReportResponse;
-}
-
-/**
- * Build nothing by default; only prebuild when FULL_SSG=1.
- * This gives you fast normal deploys and a separate hook to prebuild all tickers when you want.
- */
+/** Build nothing by default; prebuild all when FULL_SSG=1 */
 export async function generateStaticParams(): Promise<RouteParams[]> {
   if (process.env.FULL_SSG !== '1') return [];
 
-  // Expecting the index to return an array like: [{ symbol: 'AAPL', exchange: 'NASDAQ' }, ...]
   const res = await fetch(`${TICKERS_INDEX_URL}/index`, {
-    // Cache the list itself for a bit; not critical since FULL_SSG=1 runs on your manual hook.
+    // not critical; this only runs on your manual full-SSG deploys
     next: { revalidate: 60 * 60, tags: ['ticker-list'] },
   });
   if (!res.ok) return [];
 
   const list = (await res.json()) as ReadonlyArray<TickerListItem>;
-
-  // Uppercase to match your canonical URLs
   return list.map((t) => ({
     exchange: t.exchange.toUpperCase(),
     ticker: t.symbol.toUpperCase(),
   }));
 }
 
-/** Generate SEO metadata without using headers() so the route stays static */
+/** Helpers */
+function truncateForMeta(text: string, maxLength = 155): string {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
+}
+
+/**
+ * Primary fetch: route WITH exchange (cacheable; tagged)
+ */
+async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1ReportResponse> {
+  const url = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
+  const res = await fetch(url, { next: { tags: [tickerTag(ticker)] } });
+  if (!res.ok) {
+    throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
+  }
+  const data = (await res.json()) as TickerV1ReportResponse | null;
+  if (!data) {
+    throw new Error('fetchTickerByExchange returned empty payload');
+  }
+  return data;
+}
+
+/**
+ * Fallback fetch: route WITHOUT exchange (uncached; runtime only)
+ * This is only called after noStore() so the render is not cached.
+ */
+async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1ReportResponse> {
+  const url = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}`;
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error(`fetchTickerAnyExchange failed (${res.status}): ${url}`);
+  }
+  const data = (await res.json()) as TickerV1ReportResponse | null;
+  if (!data) {
+    throw new Error('fetchTickerAnyExchange returned empty payload');
+  }
+  return data;
+}
+
+/**
+ * Attempt exchange-aware fetch; on failure, switch to runtime fallback:
+ * - noStore() to prevent caching this render
+ * - fetch by ticker only
+ * - redirect to canonical route if exchange differs
+ */
+async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1ReportResponse> {
+  const { exchange, ticker } = {
+    exchange: params.exchange.toUpperCase(),
+    ticker: params.ticker.toUpperCase(),
+  };
+
+  try {
+    return await fetchTickerByExchange(exchange, ticker);
+  } catch {
+    // Fallback should not be cached
+    noStore();
+
+    let any: TickerV1ReportResponse;
+    try {
+      any = await fetchTickerAnyExchange(ticker);
+    } catch {
+      // Neither endpoint worked—show 404 (also not cached because of noStore)
+      notFound();
+    }
+
+    const canonicalExchange = any.exchange.toUpperCase();
+    if (canonicalExchange !== exchange) {
+      permanentRedirect(`/stocks/${canonicalExchange}/${any.symbol.toUpperCase()}`);
+    }
+    // If it matches, allow rendering uncached for this request
+    return any;
+  }
+}
+
+/** Metadata: try exchange route; on failure, return generic (no fallback here) */
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
-  const { ticker, exchange } = params;
+  const { exchange, ticker } = {
+    exchange: params.exchange.toUpperCase(),
+    ticker: params.ticker.toUpperCase(),
+  };
 
-  const tickerData = await fetchTicker(ticker);
-  const companyName = tickerData?.name ?? ticker;
+  let companyName = ticker;
+  let summary = `Financial analysis and reports for ${ticker}. Explore key metrics, insights, and evaluations.`;
 
-  const rawDescription =
-    tickerData?.summary ??
-    `Financial analysis and reports for ${companyName} (${ticker}). Explore key metrics, insights, and evaluations to make informed investment decisions.`;
+  try {
+    const data = await fetchTickerByExchange(exchange, ticker);
+    companyName = data?.name ?? companyName;
+    summary = data?.summary ?? summary;
+  } catch {
+    // Keep generic metadata; do NOT run runtime fallback here to keep this static
+  }
 
-  const shortDescription = truncateForMeta(rawDescription);
-  const canonicalUrl = `https://koalagains.com/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
+  const shortDesc = truncateForMeta(summary);
+  const canonicalUrl = `https://koalagains.com/stocks/${exchange}/${ticker}`;
 
-  const dynamicKeywords: Array<string> = [
+  const keywords: string[] = [
     companyName,
     `Analysis on ${companyName}`,
     `Financial Analysis on ${companyName}`,
@@ -114,11 +170,11 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 
   return {
     title: `${companyName} (${ticker}) | KoalaGains`,
-    description: shortDescription,
+    description: shortDesc,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title: `${companyName} (${ticker}) | KoalaGains`,
-      description: shortDescription,
+      description: shortDesc,
       url: canonicalUrl,
       siteName: 'KoalaGains',
       type: 'article',
@@ -126,20 +182,18 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     twitter: {
       card: 'summary_large_image',
       title: `${companyName} (${ticker}) | KoalaGains`,
-      description: shortDescription,
+      description: shortDesc,
     },
-    keywords: dynamicKeywords,
+    keywords,
   };
 }
 
-/** The page itself (no headers(), no no-cache fetch) */
+/** Page */
 export default async function TickerDetailsPage({ params }: { params: RouteParams }) {
-  const { ticker, exchange } = params;
-  const tickerData = await fetchTicker(ticker);
+  const tickerData = await getTickerOrRedirect(params);
 
-  if (tickerData.exchange !== exchange.toUpperCase()) {
-    permanentRedirect(`/stocks/${tickerData.exchange.toUpperCase()}/${tickerData.symbol.toUpperCase()}`);
-  }
+  const exchange = tickerData.exchange.toUpperCase();
+  const ticker = tickerData.symbol.toUpperCase();
 
   const industryKey = tickerData.industryKey;
   const industryName = tickerData.industryName || industryKey;
@@ -151,18 +205,18 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
     breadcrumbs = [
       { name: 'US Stocks', href: `/stocks`, current: false },
       { name: industryName, href: `/stocks/industries/${tickerData.industryKey}`, current: false },
-      { name: ticker, href: `/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`, current: true },
+      { name: ticker, href: `/stocks/${exchange}/${ticker}`, current: true },
     ];
   } else if (country) {
     breadcrumbs = [
       { name: `${country} Stocks`, href: `/stocks/countries/${country}`, current: false },
       { name: industryName, href: `/stocks/countries/${country}/industries/${tickerData.industryKey}`, current: false },
-      { name: ticker, href: `/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`, current: true },
+      { name: ticker, href: `/stocks/${exchange}/${ticker}`, current: true },
     ];
   } else {
     breadcrumbs = [
       { name: 'Stocks', href: `/stocks`, current: false },
-      { name: ticker, href: `/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`, current: true },
+      { name: ticker, href: `/stocks/${exchange}/${ticker}`, current: true },
     ];
   }
 

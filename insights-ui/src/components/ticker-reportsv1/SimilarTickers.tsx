@@ -1,6 +1,6 @@
 'use client';
 
-import { SimilarTicker } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
+import { SimilarTicker } from '@/utils/ticker-v1-model-utils';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/navigation';
 import { getScoreColorClasses } from '@/utils/score-utils';
