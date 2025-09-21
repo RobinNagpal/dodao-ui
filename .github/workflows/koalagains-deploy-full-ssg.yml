@@ -63,10 +63,9 @@ jobs:
       - name: Build with FULL_SSG=1 (insights-ui)
         working-directory: insights-ui
         run: |
-          vercel build \
+          FULL_SSG=1 vercel build \
             --token "$VERCEL_TOKEN" \
-            $([ "$VERCEL_ENV" = "production" ] && echo --prod) \
-            --build-env FULL_SSG=1
+            $([ "$VERCEL_ENV" = "production" ] && echo --prod)
 
       - name: Deploy prebuilt (insights-ui)
         id: deploy
