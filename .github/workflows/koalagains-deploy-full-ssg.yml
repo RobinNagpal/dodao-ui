@@ -1,0 +1,94 @@
+name: Deploy insights-ui (Full SSG)
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Vercel environment to deploy to'
+        type: choice
+        default: production
+        options: [production] # add 'preview' if you want a non-prod run
+      warm_paths:
+        description: 'Optional comma-separated paths to warm (e.g., /,/stocks/NASDAQ/AAPL)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-full-ssg
+  cancel-in-progress: false
+
+jobs:
+  full-ssg:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ENV: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Monorepo prep (mirror what you already do in CI)
+      - name: Shared Web Core - Install deps
+        working-directory: shared/web-core
+        run: yarn --frozen-lockfile
+
+      - name: Shared Web Core - Typecheck
+        working-directory: shared/web-core
+        run: yarn tsc
+
+      - name: Insights UI - Install deps
+        working-directory: insights-ui
+        run: yarn --frozen-lockfile
+
+      # Vercel CLI-driven build & deploy (FULL_SSG=1 applies to build only)
+      - name: Install Vercel CLI
+        run: npm i -g vercel
+
+      - name: Pull Vercel env/link (insights-ui)
+        working-directory: insights-ui
+        run: vercel pull --yes --environment=$VERCEL_ENV --token "$VERCEL_TOKEN"
+
+      - name: Build with FULL_SSG=1 (insights-ui)
+        working-directory: insights-ui
+        run: |
+          vercel build \
+            --token "$VERCEL_TOKEN" \
+            $([ "$VERCEL_ENV" = "production" ] && echo --prod) \
+            --build-env FULL_SSG=1
+
+      - name: Deploy prebuilt (insights-ui)
+        id: deploy
+        working-directory: insights-ui
+        shell: bash
+        run: |
+          URL=$(vercel deploy --prebuilt $([ "$VERCEL_ENV" = "production" ] && echo --prod) --token "$VERCEL_TOKEN")
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "DEPLOY_URL=$URL" >> "$GITHUB_ENV"
+
+      # Optional: warm a few hot routes so the CDN/edge has them immediately
+      - name: Warm cache (optional)
+        if: ${{ github.event.inputs.warm_paths != '' }}
+        shell: bash
+        run: |
+          IFS=',' read -ra P <<< "${{ github.event.inputs.warm_paths }}"
+          for p in "${P[@]}"; do
+            # HEAD is enough to populate CDN for static artifacts
+            echo "Warming: $DEPLOY_URL$p"
+            curl -sI "$DEPLOY_URL$p" >/dev/null || true
+          done
+
+      - name: Output deployment URL
+        run: |
+          echo "Deployed to: $DEPLOY_URL"
