@@ -1,4 +1,8 @@
-import { FullTickerV1CategoryAnalysisResult } from '@/utils/ticker-v1-model-utils';
+import { Metadata } from 'next';
+import { permanentRedirect, notFound } from 'next/navigation';
+import { unstable_noStore as noStore } from 'next/cache';
+
+import { FullTickerV1CategoryAnalysisResult, TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -11,46 +15,151 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
-import { TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
 import { getCountryByExchange } from '@/utils/countryUtils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
-import { headers } from 'next/headers';
-import { Metadata } from 'next';
-import { permanentRedirect } from 'next/navigation';
 
-function truncateForMeta(text: string, maxLength = 155): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…'; // avoid cutting mid-word
+/**
+ * ──────────────────────────────────────────────────────────────────────────────
+ * Static-by-default with on-demand invalidation.
+ * Fallback branch calls noStore() to keep that request uncached.
+ * ──────────────────────────────────────────────────────────────────────────────
+ */
+export const dynamic = 'force-static';
+export const dynamicParams = true;
+export const revalidate = false;
+
+/** Route params (strict) */
+type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>>;
+
+/** For FULL_SSG prebuilds */
+type TickerListItem = Readonly<{ symbol: string; exchange: string }>;
+
+/** Cache tag helpers for per-ticker revalidation */
+const TICKER_TAG_PREFIX = 'ticker:' as const;
+const tickerTag = (t: string): `${typeof TICKER_TAG_PREFIX}${string}` => `${TICKER_TAG_PREFIX}${t.toUpperCase()}`;
+
+/** Optional index endpoint used when FULL_SSG=1 */
+const TICKERS_INDEX_URL = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1` as const;
+
+/** Build nothing by default; prebuild all when FULL_SSG=1 */
+export async function generateStaticParams(): Promise<{ exchange: string; ticker: string }[]> {
+  if (process.env.FULL_SSG !== '1') return [];
+
+  const res = await fetch(`${TICKERS_INDEX_URL}`, {
+    // not critical; this only runs on your manual full-SSG deploys
+    next: { revalidate: 60 * 60, tags: ['ticker-list'] },
+  });
+  if (!res.ok) return [];
+
+  const list = (await res.json()) as ReadonlyArray<TickerListItem>;
+  return list.map((t) => ({
+    exchange: t.exchange.toUpperCase(),
+    ticker: t.symbol.toUpperCase(),
+  }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ ticker: string; exchange: string }> }): Promise<Metadata> {
-  const { ticker, exchange } = await params;
+/** Helpers */
+function truncateForMeta(text: string, maxLength = 155): string {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
+}
 
-  const referer = (await headers())?.get('referer') ?? ''; // previous URL, if the browser sent it
-  const qs = new URLSearchParams({ page: 'tickerDetailsPage' });
-  if (referer) qs.set('from', referer);
+/**
+ * Primary fetch: route WITH exchange (cacheable; tagged)
+ */
+async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1ReportResponse> {
+  const url = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
+  const res = await fetch(url, { next: { tags: [tickerTag(ticker)] } });
+  if (!res.ok) {
+    throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
+  }
+  const data = (await res.json()) as TickerV1ReportResponse | null;
+  if (!data) {
+    throw new Error('fetchTickerByExchange returned empty payload');
+  }
+  return data;
+}
 
-  const tickerResponse = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}`, { cache: 'no-cache' });
+/**
+ * Fallback fetch: route WITHOUT exchange (uncached; runtime only)
+ * This is only called after noStore() so the render is not cached.
+ */
+async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1ReportResponse> {
+  const url = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}`;
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error(`fetchTickerAnyExchange failed (${res.status}): ${url}`);
+  }
+  const data = (await res.json()) as TickerV1ReportResponse | null;
+  if (!data) {
+    throw new Error('fetchTickerAnyExchange returned empty payload');
+  }
+  return data;
+}
 
-  let tickerData: TickerV1ReportResponse | undefined;
+/**
+ * Attempt exchange-aware fetch; on failure, switch to runtime fallback:
+ * - noStore() to prevent caching this render
+ * - fetch by ticker only
+ * - redirect to canonical route if exchange differs
+ */
+async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1ReportResponse> {
+  const routeParams = await params;
+  const { exchange, ticker } = {
+    exchange: routeParams.exchange.toUpperCase(),
+    ticker: routeParams.ticker.toUpperCase(),
+  };
 
-  if (tickerResponse.ok) {
-    tickerData = (await tickerResponse.json()) as TickerV1ReportResponse;
+  try {
+    return await fetchTickerByExchange(exchange, ticker);
+  } catch {
+    // Fallback should not be cached
+    noStore();
+
+    let any: TickerV1ReportResponse;
+    try {
+      any = await fetchTickerAnyExchange(ticker);
+    } catch {
+      // Neither endpoint worked—show 404 (also not cached because of noStore)
+      notFound();
+    }
+
+    const canonicalExchange = any.exchange.toUpperCase();
+    if (canonicalExchange !== exchange) {
+      permanentRedirect(`/stocks/${canonicalExchange}/${any.symbol.toUpperCase()}`);
+    }
+    // If it matches, allow rendering uncached for this request
+    return any;
+  }
+}
+
+/** Metadata: try exchange route; on failure, return generic (no fallback here) */
+export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
+  const routeParams = await params;
+  const { exchange, ticker } = {
+    exchange: routeParams.exchange.toUpperCase(),
+    ticker: routeParams.ticker.toUpperCase(),
+  };
+
+  let companyName = ticker;
+  let summary = `Financial analysis and reports for ${ticker}. Explore key metrics, insights, and evaluations.`;
+
+  try {
+    const data = await fetchTickerByExchange(exchange, ticker);
+    companyName = data?.name ?? companyName;
+    summary = data?.summary ?? summary;
+  } catch {
+    // Keep generic metadata; do NOT run runtime fallback here to keep this static
   }
 
-  const companyName = tickerData?.name ?? ticker;
-  const rawDescription =
-    tickerData?.summary ||
-    `Financial analysis and reports for ${companyName} (${ticker}). Explore key metrics, insights, and evaluations to make informed investment decisions.`;
+  const shortDesc = truncateForMeta(summary);
+  const canonicalUrl = `https://koalagains.com/stocks/${exchange}/${ticker}`;
 
-  const shortDescription = truncateForMeta(rawDescription);
-
-  const canonicalUrl = `https://koalagains.com/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
-  const dynamicKeywords = [
+  const keywords: string[] = [
     companyName,
     `Analysis on ${companyName}`,
     `Financial Analysis on ${companyName}`,
@@ -63,13 +172,11 @@ export async function generateMetadata({ params }: { params: Promise<{ ticker: s
 
   return {
     title: `${companyName} (${ticker}) | KoalaGains`,
-    description: shortDescription,
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    description: shortDesc,
+    alternates: { canonical: canonicalUrl },
     openGraph: {
       title: `${companyName} (${ticker}) | KoalaGains`,
-      description: shortDescription,
+      description: shortDesc,
       url: canonicalUrl,
       siteName: 'KoalaGains',
       type: 'article',
@@ -77,82 +184,41 @@ export async function generateMetadata({ params }: { params: Promise<{ ticker: s
     twitter: {
       card: 'summary_large_image',
       title: `${companyName} (${ticker}) | KoalaGains`,
-      description: shortDescription,
+      description: shortDesc,
     },
-    keywords: dynamicKeywords,
+    keywords,
   };
 }
 
-export default async function TickerDetailsPage({ params }: { params: Promise<{ ticker: string; exchange: string }> }) {
-  const { ticker, exchange } = await params;
-  const tickerResponse = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}`, { cache: 'no-cache' });
+/** Page */
+export default async function TickerDetailsPage({ params }: { params: RouteParams }) {
+  const tickerData = await getTickerOrRedirect(params);
 
-  const tickerData: TickerV1ReportResponse = (await tickerResponse.json()) as TickerV1ReportResponse;
-
-  if (tickerData.exchange !== exchange.toUpperCase()) {
-    permanentRedirect(`/stocks/${tickerData.exchange.toUpperCase()}/${tickerData.symbol.toUpperCase()}`);
-  }
+  const exchange = tickerData.exchange.toUpperCase();
+  const ticker = tickerData.symbol.toUpperCase();
 
   const industryKey = tickerData.industryKey;
   const industryName = tickerData.industryName || industryKey;
   const subIndustryName = tickerData.subIndustryName || tickerData.subIndustryKey;
-
-  // Determine breadcrumbs based on exchange using utility function
   const country = getCountryByExchange(tickerData.exchange);
 
   let breadcrumbs: BreadcrumbsOjbect[] = [];
-
   if (country === 'US') {
-    // US exchanges - use original breadcrumbs
     breadcrumbs = [
-      {
-        name: 'US Stocks',
-        href: `/stocks`,
-        current: false,
-      },
-      {
-        name: industryName,
-        href: `/stocks/industries/${tickerData.industryKey}`,
-        current: false,
-      },
-      {
-        name: ticker,
-        href: `/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`,
-        current: true,
-      },
+      { name: 'US Stocks', href: `/stocks`, current: false },
+      { name: industryName, href: `/stocks/industries/${tickerData.industryKey}`, current: false },
+      { name: ticker, href: `/stocks/${exchange}/${ticker}`, current: true },
     ];
   } else if (country) {
-    // Non-US exchanges - use country-specific breadcrumbs
     breadcrumbs = [
-      {
-        name: `${country} Stocks`,
-        href: `/stocks/countries/${country}`,
-        current: false,
-      },
-      {
-        name: industryName,
-        href: `/stocks/countries/${country}/industries/${tickerData.industryKey}`,
-        current: false,
-      },
-      {
-        name: ticker,
-        href: `/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`,
-        current: true,
-      },
+      { name: `${country} Stocks`, href: `/stocks/countries/${country}`, current: false },
+      { name: industryName, href: `/stocks/countries/${country}/industries/${tickerData.industryKey}`, current: false },
+      { name: ticker, href: `/stocks/${exchange}/${ticker}`, current: true },
     ];
   } else {
-    // Fallback for unknown exchanges - use basic breadcrumbs
     breadcrumbs = [
-      {
-        name: 'Stocks',
-        href: `/stocks`,
-        current: false,
-      },
-      {
-        name: ticker,
-        href: `/stocks/${exchange.toUpperCase()}/${ticker.toUpperCase()}`,
-        current: true,
-      },
+      { name: 'Stocks', href: `/stocks`, current: false },
+      { name: ticker, href: `/stocks/${exchange}/${ticker}`, current: true },
     ];
   }
 
@@ -171,7 +237,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
       };
       return [categoryKey, pieData];
     })
-  );
+  ) as SpiderGraphForTicker;
 
   const spiderGraphScorePercentage = getSpiderGraphScorePercentage(spiderGraph);
 
@@ -259,13 +325,8 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
           <div className="flex flex-col gap-x-5 gap-y-2 lg:flex-row">
             {/* Ticker Info on the left */}
-            <div className="lg:w-full lg:max-w-2xl lg:flex-auto">
-              <div
-                className="mt-6 markdown-body"
-                dangerouslySetInnerHTML={{
-                  __html: parseMarkdown(tickerData.summary ?? 'Not yet populated'),
-                }}
-              />
+            <div className="lg:w/full lg:max-w-2xl lg:flex-auto">
+              <div className="mt-6 markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(tickerData.summary ?? 'Not yet populated') }} />
             </div>
 
             {/* Spider chart on the right */}
@@ -289,7 +350,6 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
 
           <div className="space-y-4">
-            {/* Iterate over all categories for summary section */}
             {Object.values(TickerAnalysisCategory).map((categoryKey) => {
               const categoryResult = tickerData.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
 
@@ -306,7 +366,6 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           </div>
         </div>
 
-        {/* Future Risks Section */}
         {tickerData.futureRisks.length > 0 && (
           <div id="future-risks" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
             <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Future Risks</h2>
@@ -320,12 +379,10 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           </div>
         )}
 
-        {/* Competition Section */}
         <div id="competition">
           <Competition vsCompetition={tickerData.vsCompetition || undefined} competitorTickers={tickerData.competitorTickers} />
         </div>
 
-        {/* Investor Summary Section */}
         {tickerData.investorAnalysisResults.length > 0 && (
           <div id="investor-summaries" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
             <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Investor Reports Summaries (Created using AI)</h2>
@@ -340,16 +397,13 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           </div>
         )}
 
-        {/* Similar Tickers Section */}
         <div id="similar-tickers">
           <SimilarTickers similarTickers={tickerData.similarTickers} />
         </div>
 
-        {/* Detailed Category Analysis Sections */}
         <div id="detailed-analysis">
           <h2 className="text-2xl font-bold mb-6 mt-10">Detailed Analysis</h2>
 
-          {/* Iterate over all categories for detailed sections */}
           {Object.values(TickerAnalysisCategory).map((categoryKey) => {
             const categoryResult = tickerData.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
             if (!categoryResult) return null;
@@ -398,7 +452,6 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           })}
         </div>
 
-        {/* Detailed Investor Reports Section */}
         {tickerData.investorAnalysisResults.length > 0 && (
           <div id="detailed-investor-reports" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
             <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Investor Reports (Created using AI)</h2>
@@ -413,7 +466,6 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
           </div>
         )}
 
-        {/* Detailed Future Risks Section */}
         {tickerData.futureRisks.length > 0 && (
           <div id="detailed-future-risks" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
             <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Future Risks</h2>
@@ -428,7 +480,6 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
         )}
       </div>
 
-      {/* Floating Navigation */}
       <FloatingNavigation sections={navigationSections} />
     </PageWrapper>
   );

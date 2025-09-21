@@ -1,9 +1,8 @@
-import { SimilarTicker } from '@/app/api/[spaceId]/tickers-v1/[ticker]/route';
 import { getIndustryMappings, getIndustryName, getSubIndustryName } from '@/lib/industryMappingUtils';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TickerV1 } from '@prisma/client';
+import { Prisma, TickerV1 } from '@prisma/client';
 import {
   TickerV1AnalysisCategoryFactorResult,
   TickerV1CategoryAnalysisResult,
@@ -44,6 +43,14 @@ export type TickerV1WithRelations = TickerV1 & {
   vsCompetition?: TickerV1VsCompetition | null;
 };
 
+export interface SimilarTicker {
+  id: string;
+  name: string;
+  symbol: string;
+  exchange: string;
+  cachedScore: number;
+}
+
 export interface TickerV1ReportResponse extends TickerV1WithRelations {
   ticker: TickerV1;
   industryName: string;
@@ -66,6 +73,37 @@ export interface TickerV1ReportResponse extends TickerV1WithRelations {
     finalSummary: boolean;
     cachedScore: boolean;
   };
+}
+
+export async function getTickerWithAllDetailsForConditionsOpt(whereClause: Prisma.TickerV1WhereInput): Promise<TickerV1ReportResponse | null | undefined> {
+  const tickerRecord: TickerV1WithRelations | null = await prisma.tickerV1.findFirst({
+    where: whereClause,
+    include: {
+      categoryAnalysisResults: {
+        include: {
+          factorResults: {
+            include: {
+              analysisCategoryFactor: true,
+            },
+          },
+        },
+      },
+      investorAnalysisResults: true,
+      futureRisks: true,
+      vsCompetition: true,
+    },
+  });
+
+  return tickerRecord && getTickerWithAllDetails(tickerRecord);
+}
+
+export async function getTickerWithAllDetailsForConditions(whereClause: Prisma.TickerV1WhereInput): Promise<TickerV1ReportResponse> {
+  const tickerRecord = await getTickerWithAllDetailsForConditionsOpt(whereClause);
+  if (!tickerRecord) {
+    throw new Error('No ticker found for conditions' + JSON.stringify(whereClause));
+  }
+
+  return tickerRecord;
 }
 
 export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelations): Promise<TickerV1ReportResponse> {
