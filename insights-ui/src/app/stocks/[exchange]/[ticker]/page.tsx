@@ -49,7 +49,7 @@ const TICKERS_INDEX_URL = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1` 
 export async function generateStaticParams(): Promise<RouteParams[]> {
   if (process.env.FULL_SSG !== '1') return [];
 
-  const res = await fetch(`${TICKERS_INDEX_URL}/index`, {
+  const res = await fetch(`${TICKERS_INDEX_URL}`, {
     // not critical; this only runs on your manual full-SSG deploys
     next: { revalidate: 60 * 60, tags: ['ticker-list'] },
   });
