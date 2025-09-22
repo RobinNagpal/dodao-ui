@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import tariffIndustryLastmod from '@/utils/lastmod/tariff-industry-lastmod.json';
 import crowdFundingLastmod from '@/utils/lastmod/crowd-funding-lastmod.json';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 interface Industry {
   industryKey: string;
@@ -33,9 +34,9 @@ async function getAllIndustries(): Promise<Industry[]> {
   return industries || [];
 }
 
-// Fetch all tickers
-async function getAllTickers(): Promise<Array<{ symbol: string; exchange: string; industryKey: string }>> {
-  const response = await fetch(`${getBaseUrl()}/api/koala_gains/tickers-v1`);
+// Fetch all tickers with lastmod dates
+async function getAllTickersWithLastmod(): Promise<Array<{ symbol: string; exchange: string; industryKey: string; lastmod: string }>> {
+  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1-lastmod`);
   const tickers = await response.json();
   return tickers || [];
 }
@@ -101,8 +102,8 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
     });
   }
 
-  // Fetch all tickers and add individual ticker pages - /stocks/{exchange}/{ticker}
-  const tickers = await getAllTickers();
+  // Fetch all tickers with lastmod dates and add individual ticker pages - /stocks/{exchange}/{ticker}
+  const tickers = await getAllTickersWithLastmod();
 
   // Use a Set to avoid duplicates (in case same ticker exists on multiple exchanges)
   const addedUrls = new Set<string>();
@@ -115,6 +116,7 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
         url: tickerUrl,
         changefreq: 'weekly',
         priority: 0.6,
+        lastmod: ticker.lastmod,
       });
       addedUrls.add(tickerUrl);
     }
