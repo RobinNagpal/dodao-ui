@@ -75,7 +75,7 @@ model User {
 
   createdFinalSubmissions FinalSubmission[] @relation("FinalSubmissionCreatedBy")
   updatedFinalSubmissions FinalSubmission[] @relation("FinalSubmissionUpdatedBy")
-  
+
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
   @@unique([email, spaceId])
@@ -238,6 +238,7 @@ model ModuleExercise {
   details                String  @map("details") @db.Text
   promptHint             String? @map("prompt_hint")
   instructorInstructions String? @map("instructor_instructions")
+  gradingLogic           String? @map("grading_logic")
   orderNumber            Int     @map("order_number")
 
   // Mandatory FKs to creator/updater (User)
