@@ -26,8 +26,6 @@ async function postHandler(
   const body: EvaluatePromptRequest = await req.json();
   const { studentId, attemptId } = body;
 
-  console.log('Body:', body);
-
   if (!exerciseId || !studentId || !attemptId || !userId) {
     throw new Error('Exercise ID, student ID, attempt ID and user ID are required');
   }
@@ -78,10 +76,8 @@ async function postHandler(
 
   // Verify instructor has access to this case study (skip for admin)
   if (user.role !== 'Admin') {
-    const hasAccess = exercise.module.caseStudy.enrollments.some((enrollment) => 
-      enrollment.assignedInstructorId === userId
-    );
-    
+    const hasAccess = exercise.module.caseStudy.enrollments.some((enrollment) => enrollment.assignedInstructorId === userId);
+
     if (!hasAccess) {
       throw new Error('You do not have access to this case study');
     }
@@ -137,7 +133,10 @@ Description: ${exercise.details}
 Instructions: ${exercise.instructorInstructions || 'No specific instructions provided'}
 
 **Grading Logic:**
-${exercise.gradingLogic || 'Evaluate based on clarity, relevance, depth of analysis, and practical application. Consider how well the prompt addresses the exercise objectives.'}
+${
+  exercise.gradingLogic ||
+  'Evaluate based on clarity, relevance, depth of analysis, and practical application. Consider how well the prompt addresses the exercise objectives.'
+}
 
 **Student's Prompt to Evaluate:**
 ${attempt.prompt}
@@ -238,7 +237,7 @@ Only respond with the JSON object, no additional text.`;
     await prisma.enrollmentStudent.update({
       where: { id: fullEnrollmentStudent.id },
       data: {
-        finalScore: Math.round(finalScore),
+        finalScore: finalScore,
         updatedById: userId,
       },
     });
@@ -246,7 +245,7 @@ Only respond with the JSON object, no additional text.`;
     return {
       evaluatedScore: Math.round(evaluatedScore * 100) / 100,
       evaluationLogic,
-      finalScore: Math.round(finalScore),
+      finalScore: finalScore,
     };
   } catch (error) {
     console.error('Error evaluating prompt:', error);

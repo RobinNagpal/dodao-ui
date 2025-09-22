@@ -129,8 +129,8 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
 
   const handleEvaluateAttempt = async (attemptId: string, exerciseId: string, studentId: string) => {
     try {
-      setEvaluatingAttempts(prev => new Set([...prev, attemptId]));
-      
+      setEvaluatingAttempts((prev) => new Set([...prev, attemptId]));
+
       const url = `/api/instructor/exercises/${exerciseId}/evaluate`;
       await evaluateAttempt(url, { studentId, attemptId });
 
@@ -139,7 +139,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     } catch (error) {
       console.error('Error evaluating attempt:', error);
     } finally {
-      setEvaluatingAttempts(prev => {
+      setEvaluatingAttempts((prev) => {
         const newSet = new Set(prev);
         newSet.delete(attemptId);
         return newSet;
@@ -155,11 +155,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   const handleConfirmBulkEvaluation = async () => {
     if (!selectedStudentForEvaluation || !studentsTableData) return;
 
-    const student = studentsTableData.students.find(s => s.id === selectedStudentForEvaluation.id);
+    const student = studentsTableData.students.find((s) => s.id === selectedStudentForEvaluation.id);
     if (!student) return;
 
     setShowBulkEvaluateConfirm(false);
-    
+
     // Evaluate all unevaluated attempts for this student
     for (const exercise of student.exercises) {
       if (exercise.hasAttempts) {
@@ -169,7 +169,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
             try {
               await handleEvaluateAttempt(attempt.id, exercise.exerciseId, selectedStudentForEvaluation.id);
               // Add small delay to avoid overwhelming the API
-              await new Promise(resolve => setTimeout(resolve, 500));
+              await new Promise((resolve) => setTimeout(resolve, 500));
             } catch (error) {
               console.error(`Error evaluating attempt ${attempt.id}:`, error);
               // Continue with other attempts even if one fails
