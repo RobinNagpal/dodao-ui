@@ -1,10 +1,11 @@
 import { fetchTariffReports, TariffIndustryDefinition, getAllHeadingSubheadingCombinations } from '@/scripts/industry-tariff-reports/tariff-industries';
-import tariffIndustryLastmod from '@/scripts/industry-tariff-reports/tariff-industry-lastmod.json';
-import { ReportType } from '@/types/project/project';
+import { REPORT_TYPES_TO_DISPLAY } from '@/types/project/project';
 import { getPostsData } from '@/util/blog-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
+import tariffIndustryLastmod from '@/utils/lastmod/tariff-industry-lastmod.json';
+import crowdFundingLastmod from '@/utils/lastmod/crowd-funding-lastmod.json';
 
 interface Industry {
   industryKey: string;
@@ -56,17 +57,20 @@ async function generateCrowdFundingUrls(): Promise<SiteMapUrl[]> {
   }
 
   for (const projectId of projectIds) {
+    const lastmod = (crowdFundingLastmod as Record<string, string>)[projectId] || undefined;
     urls.push({
       url: `/crowd-funding/projects/${projectId}`,
       changefreq: 'weekly',
-      priority: 0.8,
+      priority: 0.7,
+      lastmod,
     });
 
-    for (const reportType of Object.values(ReportType)) {
+    for (const reportType of REPORT_TYPES_TO_DISPLAY) {
       urls.push({
         url: `/crowd-funding/projects/${projectId}/reports/${reportType}`,
         changefreq: 'weekly',
-        priority: 0.7,
+        priority: 0.6,
+        lastmod,
       });
     }
   }
