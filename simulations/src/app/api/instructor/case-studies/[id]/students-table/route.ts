@@ -45,6 +45,11 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
           students: {
             where: { archive: false },
             orderBy: { createdAt: 'asc' },
+            include: {
+              assignedStudent: {
+                select: { email: true },
+              },
+            },
           },
         },
       },
@@ -114,6 +119,7 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
     studentsTableData.push({
       id: student.id,
       assignedStudentId: student.assignedStudentId,
+      email: student.assignedStudent.email || 'Unknown',
       enrollmentId: student.enrollmentId,
       exercises,
       finalSummary: finalSummary

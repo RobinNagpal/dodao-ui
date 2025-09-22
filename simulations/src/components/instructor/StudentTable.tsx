@@ -147,8 +147,8 @@ export default function StudentTable({
                 <td className="px-4 py-4 text-sm font-medium text-gray-900 sticky left-0 bg-white/80 backdrop-blur-sm z-10 border-r border-gray-200">
                   <div className="flex items-center space-x-3">
                     <div>
-                      <div className="font-medium text-gray-900 truncate" title={student.assignedStudentId}>
-                        {student.assignedStudentId}
+                      <div className="font-medium text-gray-900 truncate" title={student.email}>
+                        {student.email}
                       </div>
                     </div>
                   </div>

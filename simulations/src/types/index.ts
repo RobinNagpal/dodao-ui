@@ -67,7 +67,8 @@ export interface ExerciseProgress {
 
 export interface StudentTableData {
   id: string;
-  assignedStudentId: string; // student email
+  assignedStudentId: string;
+  email: string;
   enrollmentId: string;
   exercises: ExerciseProgress[];
   finalSummary?: {
