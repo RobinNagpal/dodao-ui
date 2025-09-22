@@ -1,10 +1,12 @@
 import { fetchTariffReports, TariffIndustryDefinition, getAllHeadingSubheadingCombinations } from '@/scripts/industry-tariff-reports/tariff-industries';
-import tariffIndustryLastmod from '@/scripts/industry-tariff-reports/tariff-industry-lastmod.json';
-import { ReportType } from '@/types/project/project';
+import { REPORT_TYPES_TO_DISPLAY } from '@/types/project/project';
 import { getPostsData } from '@/util/blog-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
+import tariffIndustryLastmod from '@/utils/lastmod/tariff-industry-lastmod.json';
+import crowdFundingLastmod from '@/utils/lastmod/crowd-funding-lastmod.json';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 interface Industry {
   industryKey: string;
@@ -32,9 +34,16 @@ async function getAllIndustries(): Promise<Industry[]> {
   return industries || [];
 }
 
-// Fetch all tickers
-async function getAllTickers(): Promise<Array<{ symbol: string; exchange: string; industryKey: string }>> {
-  const response = await fetch(`${getBaseUrl()}/api/koala_gains/tickers-v1`);
+// Fetch all industries for a specific country
+async function getAllIndustriesByCountry(country: string): Promise<Industry[]> {
+  const response = await fetch(`${getBaseUrl()}/api/industries?country=${country}`);
+  const industries = await response.json();
+  return industries || [];
+}
+
+// Fetch all tickers with lastmod dates
+async function getAllTickersWithLastmod(): Promise<Array<{ symbol: string; exchange: string; industryKey: string; lastmod: string }>> {
+  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1-lastmod`);
   const tickers = await response.json();
   return tickers || [];
 }
@@ -56,17 +65,20 @@ async function generateCrowdFundingUrls(): Promise<SiteMapUrl[]> {
   }
 
   for (const projectId of projectIds) {
+    const lastmod = (crowdFundingLastmod as Record<string, string>)[projectId] || undefined;
     urls.push({
       url: `/crowd-funding/projects/${projectId}`,
       changefreq: 'weekly',
-      priority: 0.8,
+      priority: 0.7,
+      lastmod,
     });
 
-    for (const reportType of Object.values(ReportType)) {
+    for (const reportType of REPORT_TYPES_TO_DISPLAY) {
       urls.push({
         url: `/crowd-funding/projects/${projectId}/reports/${reportType}`,
         changefreq: 'weekly',
-        priority: 0.7,
+        priority: 0.6,
+        lastmod,
       });
     }
   }
@@ -84,7 +96,8 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
       changefreq: 'daily',
       priority: 0.8,
     },
-    { url: '/stocks/comparison', changefreq: 'weekly', priority: 0.7 }
+    { url: '/stocks/comparison', changefreq: 'weekly', priority: 0.7 },
+    { url: '/stocks/countries/Canada', changefreq: 'weekly', priority: 0.7 }
   );
 
   // Add industry pages - /stocks/industries/{industry}
@@ -97,8 +110,18 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
     });
   }
 
-  // Fetch all tickers and add individual ticker pages - /stocks/{exchange}/{ticker}
-  const tickers = await getAllTickers();
+  // Add country-specific industry pages for Canada - /stocks/countries/Canada/industries/{industry}
+  const canadaIndustries = await getAllIndustriesByCountry('Canada');
+  for (const industry of canadaIndustries) {
+    urls.push({
+      url: `/stocks/countries/Canada/industries/${industry.industryKey}`,
+      changefreq: 'weekly',
+      priority: 0.7,
+    });
+  }
+
+  // Fetch all tickers with lastmod dates and add individual ticker pages - /stocks/{exchange}/{ticker}
+  const tickers = await getAllTickersWithLastmod();
 
   // Use a Set to avoid duplicates (in case same ticker exists on multiple exchanges)
   const addedUrls = new Set<string>();
@@ -111,6 +134,7 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
         url: tickerUrl,
         changefreq: 'weekly',
         priority: 0.6,
+        lastmod: ticker.lastmod,
       });
       addedUrls.add(tickerUrl);
     }
