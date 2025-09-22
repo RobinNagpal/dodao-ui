@@ -36,6 +36,7 @@ interface Exercise {
   shortDescription: string;
   details: string;
   promptHint?: string;
+  gradingLogic?: string;
   orderNumber: number;
 }
 
@@ -58,6 +59,7 @@ interface CaseStudy {
       shortDescription: string;
       details: string;
       promptHint?: string;
+      gradingLogic?: string;
       orderNumber: number;
     }[];
   }[];
@@ -137,6 +139,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
       shortDescription: '',
       details: '',
       promptHint: '',
+      gradingLogic: '',
       orderNumber: modules[moduleIndex].exercises.length + 1,
     };
 
@@ -217,6 +220,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
           shortDescription: exercise.shortDescription,
           details: exercise.details,
           promptHint: exercise.promptHint,
+          gradingLogic: exercise.gradingLogic,
           orderNumber: exercise.orderNumber,
         })),
       })),
@@ -443,6 +447,17 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
                                 modelValue={exercise.promptHint || ''}
                                 onUpdate={(value: string) => updateExercise(moduleIndex, exerciseIndex, 'promptHint', value)}
                                 placeholder="Enter prompt hint using markdown..."
+                                maxHeight={120}
+                              />
+                            </div>
+
+                            <div>
+                              <MarkdownEditor
+                                objectId={`exercise-${moduleIndex}-${exerciseIndex}-grading-logic`}
+                                label="Grading Logic (Optional)"
+                                modelValue={exercise.gradingLogic || ''}
+                                onUpdate={(value: string) => updateExercise(moduleIndex, exerciseIndex, 'gradingLogic', value)}
+                                placeholder="Enter grading logic using markdown..."
                                 maxHeight={120}
                               />
                             </div>

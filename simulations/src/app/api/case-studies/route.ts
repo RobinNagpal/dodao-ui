@@ -60,6 +60,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
               shortDescription: exercise.shortDescription,
               details: exercise.details,
               promptHint: exercise.promptHint,
+              gradingLogic: exercise.gradingLogic,
               orderNumber: exercise.orderNumber,
               createdById: userContext.userId,
               updatedById: userContext.userId,

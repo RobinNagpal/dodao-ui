@@ -42,22 +42,22 @@ interface UpdateInstructionStatusRequest {
   moduleId?: string;
 }
 
-// PUT /api/case-studies/[id] - Update a case study OR update instruction status
+// PUT /api/case-studies/[caseStudyId] - Update a case study OR update instruction status
 async function putHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ caseStudyId: string }> }
 ): Promise<CaseStudyWithRelationsForStudents | CaseStudyWithRelationsForInstructor | CaseStudyWithRelationsForAdmin | { success: boolean; message: string }> {
-  const { id } = await params;
+  const { caseStudyId } = await params;
   const body = await req.json();
 
   // Check if this is an instruction status update (for students)
   if ('type' in body) {
-    return await updateInstructionStatus(id, body as UpdateInstructionStatusRequest, userContext);
+    return await updateInstructionStatus(caseStudyId, body as UpdateInstructionStatusRequest, userContext);
   }
 
   // Otherwise, it's a case study update (for admins)
-  return await updateCaseStudy(id, body as UpdateCaseStudyRequest, req, userContext);
+  return await updateCaseStudy(caseStudyId, body as UpdateCaseStudyRequest, req, userContext);
 }
 
 // Update instruction read status for students
@@ -241,6 +241,7 @@ async function updateCaseStudy(
               shortDescription: exerciseData.shortDescription,
               details: exerciseData.details,
               promptHint: exerciseData.promptHint,
+              gradingLogic: exerciseData.gradingLogic,
               orderNumber: exerciseData.orderNumber,
               updatedById: userContext.userId,
             },
@@ -255,6 +256,7 @@ async function updateCaseStudy(
               shortDescription: exerciseData.shortDescription,
               details: exerciseData.details,
               promptHint: exerciseData.promptHint,
+              gradingLogic: exerciseData.gradingLogic,
               orderNumber: exerciseData.orderNumber,
               createdById: userContext.userId,
               updatedById: userContext.userId,

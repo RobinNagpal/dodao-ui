@@ -31,6 +31,7 @@ export interface CreateExerciseRequest {
   shortDescription: string;
   details: string;
   promptHint?: string;
+  gradingLogic?: string;
   orderNumber: number;
 }
 
@@ -58,6 +59,7 @@ export interface UpdateExerciseRequest {
   shortDescription: string;
   details: string;
   promptHint?: string;
+  gradingLogic?: string;
   orderNumber: number;
 }
 
