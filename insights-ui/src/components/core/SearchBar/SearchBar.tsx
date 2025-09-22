@@ -173,17 +173,18 @@ export default function SearchBar({
         searchButton: '',
       };
     } else {
+      // HERO variant — taller input + amber/yellow border (4px), same color palette
       return {
-        container: 'relative w-full max-w-2xl mx-auto',
+        container: 'relative w-full max-w-3xl mx-auto mb-24 mt-12',
         input:
-          'w-full h-12 pl-14 pr-32 text-base bg-gray-700/40 backdrop-blur-sm border border-gray-600/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500/50 text-white placeholder-gray-300 transition-all duration-200',
+          'w-full h-14 pl-16 pr-36 text-base bg-gray-700/40 backdrop-blur-sm border-3 border-amber-400 rounded-2xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-white placeholder-gray-300 transition-all duration-200 shadow-sm',
         dropdown:
           'absolute top-full left-0 right-0 mt-2 bg-gray-800/95 backdrop-blur-sm border border-gray-600/40 rounded-xl shadow-2xl z-50 max-h-96 overflow-y-auto',
-        searchIcon: 'absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-amber-400 z-10',
+        searchIcon: 'absolute left-5 top-1/2 transform -translate-y-1/2 h-6 w-6 text-amber-400 z-10',
         clearIcon:
-          'absolute right-24 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-300 hover:text-white cursor-pointer transition-colors duration-200 z-10',
+          'absolute right-28 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-300 hover:text-white cursor-pointer transition-colors duration-200 z-10',
         searchButton:
-          'absolute right-2 top-1/2 transform -translate-y-1/2 h-8 px-4 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black rounded-lg transition-all duration-200 shadow-md hover:shadow-lg z-10',
+          'absolute right-2 top-1/2 transform -translate-y-1/2 h-10 px-5 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black rounded-lg transition-all duration-200 shadow-md hover:shadow-lg z-10',
       };
     }
   };
@@ -207,13 +208,7 @@ export default function SearchBar({
           autoFocus={variant === 'hero'}
         />
 
-        {query && variant === 'navbar' && (
-          <button onClick={handleClear} className="focus:outline-none" aria-label="Clear search">
-            <XMarkIcon className={styles.clearIcon} />
-          </button>
-        )}
-
-        {query && variant === 'hero' && (
+        {query && (
           <button onClick={handleClear} className="focus:outline-none" aria-label="Clear search">
             <XMarkIcon className={styles.clearIcon} />
           </button>
@@ -222,9 +217,7 @@ export default function SearchBar({
         {variant === 'hero' && (
           <button
             onClick={() => {
-              if (query.trim()) {
-                searchTickers(query);
-              }
+              if (query.trim()) searchTickers(query);
             }}
             className={`${styles.searchButton} focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2`}
             aria-label="Search"
@@ -234,7 +227,7 @@ export default function SearchBar({
         )}
       </div>
 
-      {/* Search Results Dropdown */}
+      {/* Dropdown unchanged */}
       {isOpen && (
         <div className={styles.dropdown}>
           {isLoading ? (
