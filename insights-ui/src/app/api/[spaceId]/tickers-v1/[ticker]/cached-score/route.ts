@@ -1,3 +1,4 @@
+import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { FullTickerV1CategoryAnalysisResult } from '@/utils/ticker-v1-model-utils';
 import { CATEGORY_MAPPINGS } from '@/lib/mappingsV1';
 import { prisma } from '@/prisma';
@@ -50,6 +51,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       id: tickerRecord.id,
     },
   });
+  revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
 
   return {
     success: true,

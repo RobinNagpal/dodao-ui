@@ -2,6 +2,7 @@ import { getIndustryMappings, getIndustryName, getSubIndustryName } from '@/lib/
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { Prisma, TickerV1 } from '@prisma/client';
 import {
   TickerV1AnalysisCategoryFactorResult,
@@ -204,3 +205,15 @@ export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelation
     analysisStatus,
   };
 }
+
+export const bumpUpdatedAtAndInvalidateCache = async (tickerRecord: TickerV1) => {
+  revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
+  await prisma.tickerV1.update({
+    where: {
+      id: tickerRecord.id,
+    },
+    data: {
+      updatedAt: new Date(),
+    },
+  });
+};
