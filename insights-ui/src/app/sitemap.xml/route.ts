@@ -34,6 +34,13 @@ async function getAllIndustries(): Promise<Industry[]> {
   return industries || [];
 }
 
+// Fetch all industries for a specific country
+async function getAllIndustriesByCountry(country: string): Promise<Industry[]> {
+  const response = await fetch(`${getBaseUrl()}/api/industries?country=${country}`);
+  const industries = await response.json();
+  return industries || [];
+}
+
 // Fetch all tickers with lastmod dates
 async function getAllTickersWithLastmod(): Promise<Array<{ symbol: string; exchange: string; industryKey: string; lastmod: string }>> {
   const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1-lastmod`);
@@ -89,7 +96,8 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
       changefreq: 'daily',
       priority: 0.8,
     },
-    { url: '/stocks/comparison', changefreq: 'weekly', priority: 0.7 }
+    { url: '/stocks/comparison', changefreq: 'weekly', priority: 0.7 },
+    { url: '/stocks/countries/Canada', changefreq: 'weekly', priority: 0.7 }
   );
 
   // Add industry pages - /stocks/industries/{industry}
@@ -97,6 +105,16 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
   for (const industry of industries) {
     urls.push({
       url: `/stocks/industries/${industry.industryKey}`,
+      changefreq: 'weekly',
+      priority: 0.7,
+    });
+  }
+
+  // Add country-specific industry pages for Canada - /stocks/countries/Canada/industries/{industry}
+  const canadaIndustries = await getAllIndustriesByCountry('Canada');
+  for (const industry of canadaIndustries) {
+    urls.push({
+      url: `/stocks/countries/Canada/industries/${industry.industryKey}`,
       changefreq: 'weekly',
       priority: 0.7,
     });
