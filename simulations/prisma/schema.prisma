@@ -217,6 +217,8 @@ model EnrollmentStudent {
   updatedAt DateTime @updatedAt @map("updated_at")
   archive   Boolean  @default(false) @map("archive")
 
+  finalScore Int? @map("final_score")
+
   // Relations to User (restrict delete because FKs are required)
   createdBy User @relation("EnrollmentStudentCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
   updatedBy User @relation("EnrollmentStudentUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
@@ -277,6 +279,9 @@ model ExerciseAttempt {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @default(now()) @updatedAt @map("updated_at")
   archive            Boolean  @default(false) @map("archive")
+
+  evaluatedScore  Int?     @map("evaluated_score")
+  evaluationLogic String?  @map("evaluation_logic")
 
   // Relations to User (restrict delete because FKs are required)
   createdBy User @relation("ExerciseAttemptCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
