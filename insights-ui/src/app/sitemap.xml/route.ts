@@ -41,9 +41,9 @@ async function getAllIndustriesByCountry(country: string): Promise<Industry[]> {
   return industries || [];
 }
 
-// Fetch all tickers with lastmod dates
-async function getAllTickersWithLastmod(): Promise<Array<{ symbol: string; exchange: string; industryKey: string; lastmod: string }>> {
-  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1-lastmod`);
+// Fetch all tickers
+async function getAllTickers(): Promise<Array<{ symbol: string; exchange: string; industryKey: string; updatedAt: string }>> {
+  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`);
   const tickers = await response.json();
   return tickers || [];
 }
@@ -120,8 +120,8 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
     });
   }
 
-  // Fetch all tickers with lastmod dates and add individual ticker pages - /stocks/{exchange}/{ticker}
-  const tickers = await getAllTickersWithLastmod();
+  // Fetch all tickers and add individual ticker pages - /stocks/{exchange}/{ticker}
+  const tickers = await getAllTickers();
 
   // Use a Set to avoid duplicates (in case same ticker exists on multiple exchanges)
   const addedUrls = new Set<string>();
@@ -134,7 +134,7 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
         url: tickerUrl,
         changefreq: 'weekly',
         priority: 0.6,
-        lastmod: ticker.lastmod,
+        lastmod: ticker.updatedAt ? new Date(ticker.updatedAt).toISOString().split('T')[0] : undefined,
       });
       addedUrls.add(tickerUrl);
     }

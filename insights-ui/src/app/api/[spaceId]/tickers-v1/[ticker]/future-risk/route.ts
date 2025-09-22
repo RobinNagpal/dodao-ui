@@ -68,6 +68,16 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     },
   });
 
+  // Update the main ticker's updatedAt field
+  await prisma.tickerV1.update({
+    where: {
+      id: tickerRecord.id,
+    },
+    data: {
+      updatedAt: new Date(),
+    },
+  });
+
   return {
     success: true,
     invocationId: result.invocationId,
