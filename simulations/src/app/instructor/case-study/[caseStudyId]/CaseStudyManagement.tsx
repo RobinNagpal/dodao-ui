@@ -16,6 +16,7 @@ import { SimulationSession } from '@/types/user';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { GraduationCap } from 'lucide-react';
 import { useSession } from 'next-auth/react';
@@ -52,6 +53,12 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   const [showExerciseModal, setShowExerciseModal] = useState(false);
   const [selectedModule, setSelectedModule] = useState<CaseStudyModule | null>(null);
   const [selectedExercise, setSelectedExercise] = useState<ModuleExercise | null>(null);
+  const [evaluatingAttempts, setEvaluatingAttempts] = useState<Set<string>>(new Set());
+  const [showBulkEvaluateConfirm, setShowBulkEvaluateConfirm] = useState(false);
+  const [selectedStudentForEvaluation, setSelectedStudentForEvaluation] = useState<{
+    id: string;
+    email: string;
+  } | null>(null);
 
   // API hook to fetch case study data
   const {
@@ -93,6 +100,14 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     errorMessage: 'Failed to delete final summary',
   });
 
+  const { postData: evaluateAttempt } = usePostData<
+    { evaluatedScore: number; evaluationLogic: string; finalScore: number },
+    { studentId: string; attemptId: string }
+  >({
+    successMessage: 'Exercise attempt evaluated successfully!',
+    errorMessage: 'Failed to evaluate exercise attempt',
+  });
+
   const handleLogout = () => {
     router.push('/login');
   };
@@ -110,6 +125,61 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   const handleDeleteFinalSummary = (finalSummaryId: string, studentId: string, studentEmail: string) => {
     setFinalSummaryToDelete({ finalSummaryId, studentId, studentEmail });
     setShowDeleteFinalSummaryConfirm(true);
+  };
+
+  const handleEvaluateAttempt = async (attemptId: string, exerciseId: string, studentId: string) => {
+    try {
+      setEvaluatingAttempts(prev => new Set([...prev, attemptId]));
+      
+      const url = `/api/instructor/exercises/${exerciseId}/evaluate`;
+      await evaluateAttempt(url, { studentId, attemptId });
+
+      // Refresh students data to show updated scores
+      await refetchStudentsTable();
+    } catch (error) {
+      console.error('Error evaluating attempt:', error);
+    } finally {
+      setEvaluatingAttempts(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(attemptId);
+        return newSet;
+      });
+    }
+  };
+
+  const handleStartBulkEvaluation = (studentId: string, studentEmail: string) => {
+    setSelectedStudentForEvaluation({ id: studentId, email: studentEmail });
+    setShowBulkEvaluateConfirm(true);
+  };
+
+  const handleConfirmBulkEvaluation = async () => {
+    if (!selectedStudentForEvaluation || !studentsTableData) return;
+
+    const student = studentsTableData.students.find(s => s.id === selectedStudentForEvaluation.id);
+    if (!student) return;
+
+    setShowBulkEvaluateConfirm(false);
+    
+    // Evaluate all unevaluated attempts for this student
+    for (const exercise of student.exercises) {
+      if (exercise.hasAttempts) {
+        for (const attempt of exercise.attempts) {
+          // Only evaluate if not already evaluated
+          if (attempt.evaluatedScore === null && attempt.status === 'completed') {
+            try {
+              await handleEvaluateAttempt(attempt.id, exercise.exerciseId, selectedStudentForEvaluation.id);
+              // Add small delay to avoid overwhelming the API
+              await new Promise(resolve => setTimeout(resolve, 500));
+            } catch (error) {
+              console.error(`Error evaluating attempt ${attempt.id}:`, error);
+              // Continue with other attempts even if one fails
+            }
+          }
+        }
+      }
+    }
+
+    setSelectedStudentForEvaluation(null);
   };
 
   const handleConfirmClearAttempts = async (): Promise<void> => {
@@ -230,8 +300,11 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
             onClearStudentAttempts={handleClearStudentAttempts}
             onDeleteAttempt={handleDeleteAttempt}
             onDeleteFinalSummary={handleDeleteFinalSummary}
+            onEvaluateAttempt={handleEvaluateAttempt}
+            onStartBulkEvaluation={handleStartBulkEvaluation}
             clearingAttempts={clearingAttempts}
             deletingAttempt={deletingAttempt}
+            evaluatingAttempts={evaluatingAttempts}
           />
         )}
 
@@ -277,6 +350,20 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
         confirming={deletingFinalSummary}
         title="Delete Final Summary"
         confirmationText={`Are you sure you want to delete the final summary for ${finalSummaryToDelete?.studentEmail}? This action cannot be undone.`}
+        askForTextInput={false}
+      />
+
+      <ConfirmationModal
+        open={showBulkEvaluateConfirm}
+        showSemiTransparentBg={true}
+        onClose={() => {
+          setShowBulkEvaluateConfirm(false);
+          setSelectedStudentForEvaluation(null);
+        }}
+        onConfirm={handleConfirmBulkEvaluation}
+        confirming={evaluatingAttempts.size > 0}
+        title="Start AI Evaluation"
+        confirmationText={`Are you sure you want to start AI evaluation for all completed attempts by ${selectedStudentForEvaluation?.email}? This will evaluate all unevaluated exercise attempts.`}
         askForTextInput={false}
       />
 

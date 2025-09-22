@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Eye, Trash2, Check, Minus, X } from 'lucide-react';
+import { Eye, Trash2, Check, Minus, X, Star, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
@@ -16,8 +16,11 @@ interface StudentTableProps {
   onClearStudentAttempts: (studentId: string, studentEmail: string) => void;
   onDeleteAttempt: (attemptId: string, studentId: string, studentEmail: string, exerciseTitle: string) => void;
   onDeleteFinalSummary?: (finalSummaryId: string, studentId: string, studentEmail: string) => void;
+  onEvaluateAttempt?: (attemptId: string, exerciseId: string, studentId: string) => void;
+  onStartBulkEvaluation?: (studentId: string, studentEmail: string) => void;
   clearingAttempts: boolean;
   deletingAttempt: boolean;
+  evaluatingAttempts?: Set<string>;
 }
 
 export default function StudentTable({
@@ -27,8 +30,11 @@ export default function StudentTable({
   onClearStudentAttempts,
   onDeleteAttempt,
   onDeleteFinalSummary,
+  onEvaluateAttempt,
+  onStartBulkEvaluation,
   clearingAttempts,
   deletingAttempt,
+  evaluatingAttempts,
 }: StudentTableProps) {
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
   const [showAttemptModal, setShowAttemptModal] = useState(false);
@@ -205,6 +211,34 @@ export default function StudentTable({
                                   </button>
                                 ))}
                               </div>
+
+                              {/* Evaluation Scores and Buttons */}
+                              <div className="flex flex-wrap gap-1 justify-center">
+                                {exerciseProgress.attempts.map((attempt) => (
+                                  <div key={`eval-${attempt.id}`} className="flex flex-col items-center space-y-1">
+                                    {/* Evaluation Score Display */}
+                                    {attempt.evaluatedScore !== null ? (
+                                      <div
+                                        className="w-8 h-4 rounded text-xs font-bold flex items-center justify-center bg-purple-100 text-purple-800"
+                                        title={`AI Score: ${attempt.evaluatedScore}/10`}
+                                      >
+                                        {attempt.evaluatedScore}/10
+                                      </div>
+                                    ) : attempt.status === 'completed' && onEvaluateAttempt ? (
+                                      <button
+                                        onClick={() => onEvaluateAttempt(attempt.id, exercise.id, student.id)}
+                                        disabled={evaluatingAttempts?.has(attempt.id)}
+                                        className="w-6 h-4 rounded text-xs flex items-center justify-center bg-yellow-100 text-yellow-800 hover:bg-yellow-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        title={evaluatingAttempts?.has(attempt.id) ? 'Evaluating...' : 'Click to evaluate'}
+                                      >
+                                        {evaluatingAttempts?.has(attempt.id) ? <Loader2 className="h-2 w-2 animate-spin" /> : 'AI'}
+                                      </button>
+                                    ) : (
+                                      <div className="w-6 h-4 rounded text-xs flex items-center justify-center bg-gray-100 text-gray-400">-</div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           )}
                         </div>
@@ -263,6 +297,17 @@ export default function StudentTable({
                       <Eye className="h-3 w-3 mr-1" />
                       View
                     </Button>
+                    {onStartBulkEvaluation && (
+                      <Button
+                        size="sm"
+                        onClick={() => onStartBulkEvaluation(student.id, student.assignedStudentId)}
+                        disabled={evaluatingAttempts?.size ? evaluatingAttempts.size > 0 : false}
+                        className="bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200"
+                      >
+                        <Star className="h-3 w-3 mr-1" />
+                        Evaluate
+                      </Button>
+                    )}
                     <Button
                       size="sm"
                       onClick={() => onClearStudentAttempts(student.id, student.assignedStudentId)}

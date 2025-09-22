@@ -99,6 +99,7 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
         id: attempt.id,
         attemptNumber: attempt.attemptNumber,
         status: attempt.status,
+        evaluatedScore: attempt.evaluatedScore,
         createdAt: attempt.createdAt.toISOString(),
       });
       return acc;

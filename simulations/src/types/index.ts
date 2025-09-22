@@ -53,6 +53,7 @@ export interface AttemptDetail {
   id: string;
   attemptNumber: number;
   status: string | null;
+  evaluatedScore: number | null;
   createdAt: string;
 }
 
