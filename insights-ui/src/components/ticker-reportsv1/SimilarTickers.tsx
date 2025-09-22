@@ -3,6 +3,7 @@
 import { SimilarTicker } from '@/utils/ticker-v1-model-utils';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { getScoreColorClasses } from '@/utils/score-utils';
 
 interface SimilarTickersProps {
@@ -28,7 +29,9 @@ export default function SimilarTickers({ similarTickers }: SimilarTickersProps) 
             <div key={similarTicker.id} className="bg-gray-800 p-4 rounded-md border border-gray-700 hover:border-gray-600 transition-colors">
               <div className="flex flex-col gap-y-2">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-lg">{similarTicker.name}</h3>
+                  <Link href={`/stocks/${similarTicker.exchange.toUpperCase()}/${similarTicker.symbol.toUpperCase()}`}>
+                    <h3 className="font-semibold text-lg hover:text-blue-400 cursor-pointer">{similarTicker.name}</h3>
+                  </Link>
                   <span className={`text-sm font-medium ${textColorClass}`}>
                     {similarTicker.cachedScore !== undefined ? Number(similarTicker.cachedScore) : '-'}/25
                   </span>
