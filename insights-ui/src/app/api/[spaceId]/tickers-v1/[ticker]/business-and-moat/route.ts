@@ -1,4 +1,6 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
+import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { bumpUpdatedAtAndInvalidateCache } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
@@ -134,15 +136,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     }
   }
 
-  // Update the main ticker's updatedAt field
-  await prisma.tickerV1.update({
-    where: {
-      id: tickerRecord.id,
-    },
-    data: {
-      updatedAt: new Date(),
-    },
-  });
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
 
   return {
     success: true,

@@ -1,6 +1,7 @@
 import SearchBar from '@/components/core/SearchBar';
 import coverImage from '@/images/koala.png';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function Hero() {
   return (
@@ -29,6 +30,21 @@ export function Hero() {
 
                 {/* Keep search bar colors, but make it taller and add amber border */}
                 <SearchBar placeholder="Search by company name or stock symbol" variant="hero" />
+                <div className="flex justify-center">
+                  <Link
+                    href="/stocks"
+                    aria-label="Browse all stock reports"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3
+                               text-sm sm:text-base font-semibold text-gray-900
+                               bg-gradient-to-r from-[#F59E0B] to-[#FBBF24]
+                               hover:from-[#FBBF24] hover:to-[#F59E0B]
+                               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500
+                               focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800
+                               shadow-md hover:shadow-lg transition-all"
+                  >
+                    Browse all stock reports <span aria-hidden>→</span>
+                  </Link>
+                </div>
               </div>
 
               {/* Quick Features Overview (more compact + subtle colors) */}
