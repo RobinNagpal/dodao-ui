@@ -195,8 +195,8 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
         return;
       }
       for (const exercise of caseStudyModule.exercises) {
-        if (!exercise.title.trim() || !exercise.shortDescription.trim() || !exercise.details.trim()) {
-          showNotification({ type: 'error', message: 'All exercise fields are required' });
+        if (!exercise.title.trim() || !exercise.details.trim()) {
+          showNotification({ type: 'error', message: 'Exercise title and details are required' });
           return;
         }
       }
@@ -432,10 +432,11 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
                             </div>
 
                             <div>
+                              <Label>Short Description (Optional)</Label>
                               <Textarea
                                 value={exercise.shortDescription}
                                 onChange={(e) => updateExercise(moduleIndex, exerciseIndex, 'shortDescription', e.target.value)}
-                                placeholder="Brief exercise description"
+                                placeholder="Brief exercise description (optional)"
                                 rows={1}
                               />
                             </div>
