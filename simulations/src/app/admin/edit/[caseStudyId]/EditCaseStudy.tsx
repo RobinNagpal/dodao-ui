@@ -33,7 +33,6 @@ interface Module {
 interface Exercise {
   id?: string;
   title: string;
-  shortDescription: string;
   details: string;
   promptHint?: string;
   gradingLogic?: string;
@@ -56,7 +55,6 @@ interface CaseStudy {
     exercises: {
       id: string;
       title: string;
-      shortDescription: string;
       details: string;
       promptHint?: string;
       gradingLogic?: string;
@@ -136,7 +134,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
   const addExercise = (moduleIndex: number) => {
     const newExercise: Exercise = {
       title: '',
-      shortDescription: '',
       details: '',
       promptHint: '',
       gradingLogic: '',
@@ -217,7 +214,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
         exercises: module.exercises.map((exercise) => ({
           id: exercise.id,
           title: exercise.title,
-          shortDescription: exercise.shortDescription,
           details: exercise.details,
           promptHint: exercise.promptHint,
           gradingLogic: exercise.gradingLogic,
@@ -429,16 +425,6 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
                                   min={1}
                                 />
                               </div>
-                            </div>
-
-                            <div>
-                              <Label>Short Description (Optional)</Label>
-                              <Textarea
-                                value={exercise.shortDescription}
-                                onChange={(e) => updateExercise(moduleIndex, exerciseIndex, 'shortDescription', e.target.value)}
-                                placeholder="Brief exercise description (optional)"
-                                rows={1}
-                              />
                             </div>
 
                             <div>

@@ -236,7 +236,6 @@ model ModuleExercise {
   module   CaseStudyModule @relation("ModuleToExercises", fields: [moduleId], references: [id])
 
   title                  String  @map("title")
-  shortDescription       String  @map("short_description")
   details                String  @map("details") @db.Text
   promptHint             String? @map("prompt_hint")
   instructorInstructions String? @map("instructor_instructions")

@@ -18,7 +18,6 @@ interface ExerciseAttemptDetail {
 interface ExerciseDetail {
   id: string;
   title: string;
-  shortDescription: string;
   details: string;
   orderNumber: number;
   attempts: ExerciseAttemptDetail[];
@@ -149,7 +148,6 @@ async function getHandler(
     exercises: module.exercises.map((exercise) => ({
       id: exercise.id,
       title: exercise.title,
-      shortDescription: exercise.shortDescription,
       details: exercise.details,
       orderNumber: exercise.orderNumber,
       attempts: attemptsByExercise[exercise.id] || [],
