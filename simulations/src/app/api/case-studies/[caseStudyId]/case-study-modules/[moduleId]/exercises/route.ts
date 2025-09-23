@@ -11,7 +11,6 @@ type ExerciseEntity = ModuleExercise;
 interface CreateModuleExerciseRequest {
   moduleId: string;
   title: string;
-  shortDescription: string;
   details: string;
   promptHint?: string | null;
   instructorInstructions?: string | null;
@@ -50,7 +49,6 @@ async function postHandler(
     data: {
       moduleId: body.moduleId,
       title: body.title,
-      shortDescription: body.shortDescription,
       details: body.details,
       promptHint: body.promptHint ?? null,
       instructorInstructions: body.instructorInstructions ?? null,

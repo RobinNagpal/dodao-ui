@@ -31,7 +31,6 @@ interface ModuleFormData {
 interface ExerciseFormData {
   id: string;
   title: string;
-  shortDescription: string;
   details: string;
   promptHint?: string;
   gradingLogic?: string;
@@ -109,7 +108,6 @@ export default function CreateCaseStudyPage() {
     const newExercise: ExerciseFormData = {
       id: `exercise-${Date.now()}`,
       title: '',
-      shortDescription: '',
       details: '',
       promptHint: '',
       gradingLogic: '',
@@ -172,7 +170,7 @@ export default function CreateCaseStudyPage() {
         return;
       }
       for (const exercise of caseStudyModule.exercises) {
-        if (!exercise.title.trim() || !exercise.shortDescription.trim() || !exercise.details.trim()) {
+        if (!exercise.title.trim() || !exercise.details.trim()) {
           showNotification({ type: 'error', message: 'All exercise fields are required' });
           return;
         }
@@ -192,7 +190,6 @@ export default function CreateCaseStudyPage() {
         orderNumber: module.orderNumber,
         exercises: module.exercises.map((exercise: ExerciseFormData) => ({
           title: exercise.title,
-          shortDescription: exercise.shortDescription,
           details: exercise.details,
           promptHint: exercise.promptHint,
           gradingLogic: exercise.gradingLogic,
@@ -442,16 +439,6 @@ export default function CreateCaseStudyPage() {
                                 className="bg-white/80 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
                               />
                             </div>
-
-                            <Textarea
-                              value={exercise.shortDescription}
-                              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                                updateExercise(module.id, exercise.id, 'shortDescription', e.target.value)
-                              }
-                              placeholder="Brief exercise description"
-                              rows={1}
-                              className="bg-white/80 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
-                            />
 
                             <MarkdownEditor
                               objectId={`exercise-${exercise.id}-prompt-hint`}

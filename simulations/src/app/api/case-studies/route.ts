@@ -31,10 +31,6 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
 async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CaseStudyWithRelationsForStudents> {
   const body: CreateCaseStudyRequest = await req.json();
 
-  // Get admin email from request headers or we could implement auth middleware
-  // For now, using a placeholder - this should be replaced with actual auth
-  const adminEmail: string = req.headers.get('admin-email') || 'admin@example.com';
-
   const caseStudy = await prisma.caseStudy.create({
     data: {
       title: body.title,
@@ -57,7 +53,6 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
           exercises: {
             create: module.exercises.map((exercise) => ({
               title: exercise.title,
-              shortDescription: exercise.shortDescription,
               details: exercise.details,
               promptHint: exercise.promptHint,
               gradingLogic: exercise.gradingLogic,

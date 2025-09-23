@@ -28,7 +28,6 @@ export interface CreateModuleRequest {
 
 export interface CreateExerciseRequest {
   title: string;
-  shortDescription: string;
   details: string;
   promptHint?: string;
   gradingLogic?: string;
@@ -56,7 +55,6 @@ export interface UpdateModuleRequest {
 export interface UpdateExerciseRequest {
   id?: string; // Optional for existing exercises
   title: string;
-  shortDescription: string;
   details: string;
   promptHint?: string;
   gradingLogic?: string;
