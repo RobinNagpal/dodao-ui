@@ -202,7 +202,7 @@ export default function StudentTable({
                                 {exerciseProgress.attempts.map((attempt) => (
                                   <button
                                     key={`delete-${attempt.id}`}
-                                    onClick={() => onDeleteAttempt(attempt.id, student.id, student.assignedStudentId, exercise.title)}
+                                    onClick={() => onDeleteAttempt(attempt.id, student.id, student.email, exercise.title)}
                                     disabled={deletingAttempt}
                                     className="w-6 h-6 text-red-600 hover:text-red-800 transition-all duration-200 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                                     title={`Delete attempt ${attempt.attemptNumber}`}
@@ -272,7 +272,7 @@ export default function StudentTable({
                             {/* Delete Icon for Final Summary */}
                             {onDeleteFinalSummary && (
                               <button
-                                onClick={() => onDeleteFinalSummary(student.finalSummary!.id, student.id, student.assignedStudentId)}
+                                onClick={() => onDeleteFinalSummary(student.finalSummary!.id, student.id, student.email)}
                                 className="w-6 h-6 text-red-600 hover:text-red-800 transition-all duration-200 hover:scale-110 flex items-center justify-center"
                                 title="Delete final summary"
                               >
@@ -300,7 +300,7 @@ export default function StudentTable({
                     {onStartBulkEvaluation && (
                       <Button
                         size="sm"
-                        onClick={() => onStartBulkEvaluation(student.id, student.assignedStudentId)}
+                        onClick={() => onStartBulkEvaluation(student.id, student.email)}
                         disabled={evaluatingAttempts?.size ? evaluatingAttempts.size > 0 : false}
                         className="bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200"
                       >
@@ -310,7 +310,7 @@ export default function StudentTable({
                     )}
                     <Button
                       size="sm"
-                      onClick={() => onClearStudentAttempts(student.id, student.assignedStudentId)}
+                      onClick={() => onClearStudentAttempts(student.id, student.email)}
                       disabled={clearingAttempts}
                       variant="outline"
                       className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 bg-transparent"

@@ -1,9 +1,9 @@
 import { prisma } from '@/prisma';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { GoogleGenAI } from '@google/genai';
 import { ExerciseAttempt } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { generateAIResponse } from '@/utils/llm-utils';
 
 interface CreateAttemptRequest {
   prompt: string;
@@ -86,27 +86,8 @@ async function postHandler(
   const nextAttemptNumber = exercise.attempts.length + 1;
 
   try {
-    // Configure Gemini AI
-    const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY! });
-
-    const groundingTool = { googleSearch: {} };
-    const config = { tools: [groundingTool] };
-
-    // Build AI prompt
-    const aiContext = `${prompt}`;
-
-    console.log('Whole Prompt', aiContext);
-
-    // Make AI request
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-pro',
-      contents: aiContext,
-      config,
-    });
-
-    const aiResponse = response.text;
-
-    console.log('AI Response:', aiResponse);
+    // Use the shared AI response generation utility
+    const aiResponse = await generateAIResponse(prompt);
 
     // Create the attempt record
     const attempt = await prisma.exerciseAttempt.create({

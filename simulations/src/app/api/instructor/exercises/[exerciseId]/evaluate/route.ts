@@ -1,8 +1,8 @@
 import { prisma } from '@/prisma';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { GoogleGenAI } from '@google/genai';
 import { NextRequest } from 'next/server';
+import { evaluateStudentPrompt } from '@/utils/llm-utils';
 
 interface EvaluatePromptRequest {
   studentId: string;
@@ -11,7 +11,7 @@ interface EvaluatePromptRequest {
 
 interface EvaluatePromptResponse {
   evaluatedScore: number;
-  evaluationLogic: string;
+  evaluationReasoning: string;
   finalScore: number;
 }
 
@@ -120,78 +120,23 @@ async function postHandler(
   }
 
   try {
-    // Configure Gemini AI
-    const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY! });
+    // Use the shared evaluation utility
+    const evaluationResult = await evaluateStudentPrompt(
+      attempt.prompt,
+      exercise.title,
+      exercise.details,
+      exercise.instructorInstructions || 'No specific instructions provided',
+      exercise.gradingLogic || undefined
+    );
 
-    // Build evaluation prompt
-    const evaluationPrompt = `
-You are an expert evaluator for business case study exercises. Your task is to evaluate a student's prompt based on the exercise requirements and grading criteria.
-
-**Exercise Details:**
-Title: ${exercise.title}
-Description: ${exercise.details}
-Instructions: ${exercise.instructorInstructions || 'No specific instructions provided'}
-
-**Grading Logic:**
-${
-  exercise.gradingLogic ||
-  'Evaluate based on clarity, relevance, depth of analysis, and practical application. Consider how well the prompt addresses the exercise objectives.'
-}
-
-**Student's Prompt to Evaluate:**
-${attempt.prompt}
-
-**Evaluation Requirements:**
-1. Score the prompt from 0 to 10 (10 being excellent, 0 being poor)
-2. Provide detailed evaluation logic explaining your scoring
-
-**Response Format (JSON only):**
-{
-  "evaluatedScore": [number from 0-10],
-  "evaluationLogic": "[detailed explanation of the scoring reasoning, including strengths and areas for improvement]"
-}
-
-Only respond with the JSON object, no additional text.`;
-
-    console.log('Evaluation Prompt:', evaluationPrompt);
-
-    // Make AI request
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-exp',
-      contents: evaluationPrompt,
-    });
-
-    const aiResponse = response.text?.trim() || '';
-    console.log('AI Evaluation Response:', aiResponse);
-
-    // Parse AI response
-    let evaluationResult;
-    try {
-      // Remove any potential markdown formatting
-      const cleanResponse = aiResponse.replace(/```json\n?|```\n?/g, '');
-      evaluationResult = JSON.parse(cleanResponse);
-    } catch (parseError) {
-      console.error('Failed to parse AI response:', aiResponse);
-      throw new Error('AI returned invalid response format');
-    }
-
-    const { evaluatedScore, evaluationLogic } = evaluationResult;
-
-    // Validate the response
-    if (typeof evaluatedScore !== 'number' || evaluatedScore < 0 || evaluatedScore > 10) {
-      throw new Error('Invalid evaluated score from AI');
-    }
-
-    if (!evaluationLogic || typeof evaluationLogic !== 'string') {
-      throw new Error('Invalid evaluation logic from AI');
-    }
+    const { evaluatedScore, evaluationReasoning } = evaluationResult;
 
     // Update the attempt with evaluation results
     await prisma.exerciseAttempt.update({
       where: { id: attemptId },
       data: {
         evaluatedScore: Math.round(evaluatedScore * 100) / 100, // Round to 2 decimal places
-        evaluationLogic,
+        evaluationReasoning,
         updatedById: userId,
       },
     });
@@ -244,7 +189,7 @@ Only respond with the JSON object, no additional text.`;
 
     return {
       evaluatedScore: Math.round(evaluatedScore * 100) / 100,
-      evaluationLogic,
+      evaluationReasoning,
       finalScore: finalScore,
     };
   } catch (error) {

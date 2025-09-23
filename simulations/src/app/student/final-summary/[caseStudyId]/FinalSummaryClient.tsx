@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Brain, FileText, Download, Eye, Sparkles, CheckCircle } from 'lucide-react';
@@ -10,6 +11,7 @@ import StudentNavbar from '@/components/navigation/StudentNavbar';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import BackButton from '@/components/navigation/BackButton';
 import StudentLoading from '@/components/student/StudentLoading';
+import { SimulationSession } from '@/types/user';
 
 interface FinalSummaryClientProps {
   caseStudyId: string;
@@ -57,31 +59,26 @@ interface SummaryContextData {
 }
 
 export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientProps) {
-  const [userEmail, setUserEmail] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('user_email') || '';
-    }
-    return '';
-  });
-  const [isLoading, setIsLoading] = useState(true);
   const [showAiResponseModal, setShowAiResponseModal] = useState(false);
   const [currentAiResponse, setCurrentAiResponse] = useState<string>('');
 
   const router = useRouter();
+  const { data: simSession } = useSession();
+  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   const {
     data: summaryData,
     loading: loadingSummary,
     reFetchData: refetchSummary,
   } = useFetchData<FinalSummaryData>(
-    `/api/student/final-summary/${caseStudyId}?studentEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !caseStudyId || !userEmail },
+    `/api/student/final-summary/${caseStudyId}`,
+    { skipInitialFetch: !caseStudyId || !session },
     'Failed to load final summary'
   );
 
   const { data: contextData, loading: loadingContext } = useFetchData<SummaryContextData>(
-    `/api/student/final-summary/${caseStudyId}/context?studentEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !caseStudyId || !userEmail },
+    `/api/student/final-summary/${caseStudyId}/context`,
+    { skipInitialFetch: !caseStudyId || !session },
     'Failed to load summary context'
   );
 
@@ -89,18 +86,6 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
     successMessage: 'Final summary generated successfully!',
     errorMessage: 'Failed to generate final summary. Please try again.',
   });
-
-  useEffect(() => {
-    const userType = localStorage.getItem('user_type');
-    const email = localStorage.getItem('user_email');
-
-    if (!userType || userType !== 'student' || !email) {
-      router.push('/login');
-      return;
-    }
-
-    setIsLoading(false);
-  }, [router]);
 
   const handleGenerateSummary = async () => {
     if (!contextData?.fullPrompt) {
@@ -110,7 +95,7 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
 
     try {
       const result = await generateSummary(`/api/student/final-summary/${caseStudyId}/generate`, {
-        studentEmail: userEmail,
+        studentEmail: session?.email || '',
         prompt: contextData.fullPrompt,
       });
 
@@ -178,7 +163,7 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
     }
   };
 
-  if (isLoading || loadingSummary || loadingContext) {
+  if (!session || loadingSummary || loadingContext) {
     return <StudentLoading text="Loading Final Summary" subtitle="Preparing your case study summary..." variant="enhanced" />;
   }
 
@@ -193,7 +178,7 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
       <StudentNavbar
         title="Final Summary"
         subtitle="Case Study Conclusion"
-        userEmail={userEmail}
+        userEmail={session?.email || ''}
         icon={<FileText className="h-8 w-8 text-white" />}
         iconColor="from-purple-500 to-pink-600"
       />

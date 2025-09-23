@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import {
   Brain,
@@ -24,6 +25,7 @@ import BackButton from '@/components/navigation/BackButton';
 import InstructorLoading from '@/components/instructor/InstructorLoading';
 import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
 import type { ExerciseAttempt } from '@prisma/client';
+import { SimulationSession } from '@/types/user';
 
 interface StudentDetailsClientProps {
   caseStudyId: string;
@@ -82,18 +84,18 @@ interface StudentDetailResponse {
 }
 
 export default function StudentDetailsClient({ caseStudyId, studentId }: StudentDetailsClientProps) {
-  const [userEmail, setUserEmail] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(true);
   const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set());
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
   const [showAttemptModal, setShowAttemptModal] = useState(false);
 
   const router = useRouter();
+  const { data: simSession } = useSession();
+  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   // API hook to fetch student details
   const { data: studentDetails, loading: loadingDetails } = useFetchData<StudentDetailResponse>(
-    `/api/instructor/students/${studentId}/details?instructorEmail=${encodeURIComponent(userEmail)}&caseStudyId=${caseStudyId}`,
-    { skipInitialFetch: !studentId || !userEmail || !caseStudyId },
+    `/api/instructor/students/${studentId}/details?caseStudyId=${caseStudyId}`,
+    { skipInitialFetch: !studentId || !session || !caseStudyId },
     'Failed to load student details'
   );
 
@@ -104,22 +106,7 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
     'Failed to load attempt details'
   );
 
-  useEffect(() => {
-    const userType = localStorage.getItem('user_type');
-    const email = localStorage.getItem('user_email');
-
-    if (!userType || userType !== 'instructor' || !email) {
-      router.push('/login');
-      return;
-    }
-
-    setUserEmail(email);
-    setIsLoading(false);
-  }, [router]);
-
   const handleLogout = () => {
-    localStorage.removeItem('user_type');
-    localStorage.removeItem('user_email');
     router.push('/login');
   };
 
@@ -176,7 +163,7 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
     }
   };
 
-  if (isLoading || loadingDetails) {
+  if (!session || loadingDetails) {
     return <InstructorLoading text="Loading Student Details" subtitle="Preparing detailed analysis..." variant="enhanced" />;
   }
 
@@ -191,7 +178,7 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
       <InstructorNavbar
         title={studentDetails ? `${studentDetails.student.assignedStudentId} - Student Details` : 'Student Not Found'}
         subtitle={studentDetails?.caseStudy.title}
-        userEmail={userEmail}
+        userEmail={session?.email || ''}
         onLogout={handleLogout}
         icon={<User className="h-8 w-8 text-white" />}
       />

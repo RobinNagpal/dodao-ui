@@ -1,21 +1,31 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { DeleteResponse } from '@/types/api';
 
-// DELETE /api/instructor/students/[studentId]/attempts/[attemptId]?instructorEmail=xxx&caseStudyId=xxx - Delete specific exercise attempt
-async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ studentId: string; attemptId: string }> }): Promise<DeleteResponse> {
+// DELETE /api/instructor/students/[studentId]/attempts/[attemptId]?caseStudyId=xxx - Delete specific exercise attempt
+async function deleteHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ studentId: string; attemptId: string }> }
+): Promise<DeleteResponse> {
   const { studentId, attemptId } = await params;
   const { searchParams } = new URL(req.url);
-  const instructorEmail = searchParams.get('instructorEmail');
   const caseStudyId = searchParams.get('caseStudyId');
-
-  if (!instructorEmail) {
-    throw new Error('Instructor email is required');
-  }
+  const { userId } = userContext;
 
   if (!caseStudyId) {
     throw new Error('Case study ID is required');
+  }
+
+  // Verify user has instructor role
+  const currentUser = await prisma.user.findUniqueOrThrow({
+    where: { id: userId },
+  });
+
+  if (currentUser.role !== 'Instructor') {
+    throw new Error('Only instructors can delete exercise attempts');
   }
 
   // First verify instructor has access to this student through the case study
@@ -25,7 +35,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ s
       archive: false,
       enrollment: {
         caseStudyId: caseStudyId,
-        assignedInstructorId: instructorEmail,
+        assignedInstructorId: userId,
         archive: false,
       },
     },
@@ -51,6 +61,14 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ s
 
   if (!student) {
     throw new Error('Student not found or you do not have access to this student');
+  }
+
+  // Verify instructor has access to this case study (skip for admin)
+  if (currentUser.role !== 'Instructor') {
+    const hasAccess = student.enrollment.assignedInstructorId === userId;
+    if (!hasAccess) {
+      throw new Error('You do not have access to this student');
+    }
   }
 
   // Get all exercise IDs for this case study to verify the attempt belongs to this case study
@@ -80,4 +98,4 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ s
   return { message: 'Exercise attempt deleted successfully' };
 }
 
-export const DELETE = withErrorHandlingV2<DeleteResponse>(deleteHandler);
+export const DELETE = withLoggedInUser<DeleteResponse>(deleteHandler);

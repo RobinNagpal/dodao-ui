@@ -1,10 +1,10 @@
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DeleteResponse } from '@/types/api';
 
-// DELETE /api/instructor/students/[studentId]/clear-attempts?instructorEmail=xxx&caseStudyId=xxx - Clear all attempts, final submission, and final summary for a student
+// DELETE /api/instructor/students/[studentId]/clear-attempts?caseStudyId=xxx - Clear all attempts, final submission, and final summary for a student
 async function deleteHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
@@ -12,15 +12,20 @@ async function deleteHandler(
 ): Promise<DeleteResponse> {
   const { studentId } = await params;
   const { searchParams } = new URL(req.url);
-  const instructorEmail = searchParams.get('instructorEmail');
   const caseStudyId = searchParams.get('caseStudyId');
-
-  if (!instructorEmail) {
-    throw new Error('Instructor email is required');
-  }
+  const { userId } = userContext;
 
   if (!caseStudyId) {
     throw new Error('Case study ID is required');
+  }
+
+  // Verify user has instructor role
+  const user = await prisma.user.findUniqueOrThrow({
+    where: { id: userId },
+  });
+
+  if (user.role !== 'Instructor') {
+    throw new Error('Only instructors can clear student attempts');
   }
 
   // First verify instructor has access to this student through the case study
@@ -30,7 +35,7 @@ async function deleteHandler(
       archive: false,
       enrollment: {
         caseStudyId: caseStudyId,
-        assignedInstructorId: instructorEmail,
+        assignedInstructorId: userId,
         archive: false,
       },
     },
@@ -58,6 +63,14 @@ async function deleteHandler(
 
   if (!student) {
     throw new Error('Student not found or you do not have access to this student');
+  }
+
+  // Verify instructor has access to this case study (skip for admin)
+  if (user.role !== 'Instructor') {
+    const hasAccess = student.enrollment.assignedInstructorId === userId;
+    if (!hasAccess) {
+      throw new Error('You do not have access to this student');
+    }
   }
 
   // Get all exercise IDs for this case study

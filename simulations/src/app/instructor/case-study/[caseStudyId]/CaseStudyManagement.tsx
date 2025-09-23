@@ -101,7 +101,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   });
 
   const { postData: evaluateAttempt } = usePostData<
-    { evaluatedScore: number; evaluationLogic: string; finalScore: number },
+    { evaluatedScore: number; evaluationReasoning: string; finalScore: number },
     { studentId: string; attemptId: string }
   >({
     successMessage: 'Exercise attempt evaluated successfully!',
