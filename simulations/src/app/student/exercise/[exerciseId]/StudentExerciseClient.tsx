@@ -341,58 +341,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     setShowModuleModal(false);
   };
 
-  const addCaseStudyContext = () => {
-    if (!contextData?.module?.caseStudy) return;
-
-    const context = `Case Study: ${contextData.module.caseStudy.title}
-Description: ${contextData.module.caseStudy.shortDescription}
-Details: ${contextData.module.caseStudy.details}
-
-`;
-
-    setPrompt((prev) => {
-      const newPrompt = prev + context;
-
-      // Simple: just expand and focus
-      setTimeout(() => {
-        if (textareaRef.current) {
-          autoExpandTextarea();
-          textareaRef.current.focus();
-          // Move cursor to end
-          textareaRef.current.setSelectionRange(newPrompt.length, newPrompt.length);
-        }
-      }, 0);
-
-      return newPrompt;
-    });
-  };
-
-  const addModuleContext = () => {
-    if (!contextData?.module) return;
-
-    const context = `Module: ${contextData?.module?.title}
-Description: ${contextData?.module?.shortDescription}
-Details: ${contextData?.module?.details}
-
-`;
-
-    setPrompt((prev) => {
-      const newPrompt = prev + context;
-
-      // Simple: just expand and focus
-      setTimeout(() => {
-        if (textareaRef.current) {
-          autoExpandTextarea();
-          textareaRef.current.focus();
-          // Move cursor to end
-          textareaRef.current.setSelectionRange(newPrompt.length, newPrompt.length);
-        }
-      }, 0);
-
-      return newPrompt;
-    });
-  };
-
   const shouldShowSuccessStateWithRetry = () => {
     if (!currentAttempts || hasMovedToNext || submittingAttempt || showRetryPrompt) return false;
 
@@ -507,26 +455,6 @@ Details: ${contextData?.module?.details}
                     Your Prompt
                     <Sparkles className="h-5 w-5 text-yellow-500 ml-2 animate-pulse" />
                   </h2>
-
-                  <div className="flex items-center space-x-3">
-                    <span className="text-sm text-gray-600 font-medium">Add context:</span>
-                    <button
-                      onClick={addCaseStudyContext}
-                      disabled={!contextData?.module?.caseStudy}
-                      className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <Plus className="h-3 w-3 mr-1" />
-                      Case Study Context
-                    </button>
-                    <button
-                      onClick={addModuleContext}
-                      disabled={!contextData?.module}
-                      className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 hover:bg-green-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <Plus className="h-3 w-3 mr-1" />
-                      Module Context
-                    </button>
-                  </div>
                 </div>
               )}
 
