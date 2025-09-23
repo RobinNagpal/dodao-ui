@@ -12,6 +12,7 @@ export interface UpdateModuleExerciseRequest {
   shortDescription: string;
   details: string;
   promptHint?: string | null;
+  gradingLogic?: string | null;
   instructorInstructions?: string | null;
   orderNumber: number;
   archive: boolean;
@@ -52,6 +53,7 @@ async function putHandler(
       shortDescription: body.shortDescription,
       details: body.details,
       promptHint: body.promptHint ?? undefined,
+      gradingLogic: body.gradingLogic ?? undefined,
       instructorInstructions: body.instructorInstructions ?? undefined,
       orderNumber: body.orderNumber,
       archive: body.archive,

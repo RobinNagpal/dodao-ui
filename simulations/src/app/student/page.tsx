@@ -42,8 +42,6 @@ export default function StudentDashboard() {
   }, [selectedSubject, enrolledCaseStudies]);
 
   const handleLogout = () => {
-    localStorage.removeItem('user_type');
-    localStorage.removeItem('user_email');
     router.push('/login');
   };
 

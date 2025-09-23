@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Eye, Trash2, Check, Minus, X } from 'lucide-react';
+import { Eye, Trash2, Check, Minus, X, Star, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
@@ -16,8 +16,11 @@ interface StudentTableProps {
   onClearStudentAttempts: (studentId: string, studentEmail: string) => void;
   onDeleteAttempt: (attemptId: string, studentId: string, studentEmail: string, exerciseTitle: string) => void;
   onDeleteFinalSummary?: (finalSummaryId: string, studentId: string, studentEmail: string) => void;
+  onEvaluateAttempt?: (attemptId: string, exerciseId: string, studentId: string) => void;
+  onStartBulkEvaluation?: (studentId: string, studentEmail: string) => void;
   clearingAttempts: boolean;
   deletingAttempt: boolean;
+  evaluatingAttempts?: Set<string>;
 }
 
 export default function StudentTable({
@@ -27,8 +30,11 @@ export default function StudentTable({
   onClearStudentAttempts,
   onDeleteAttempt,
   onDeleteFinalSummary,
+  onEvaluateAttempt,
+  onStartBulkEvaluation,
   clearingAttempts,
   deletingAttempt,
+  evaluatingAttempts,
 }: StudentTableProps) {
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
   const [showAttemptModal, setShowAttemptModal] = useState(false);
@@ -147,8 +153,8 @@ export default function StudentTable({
                 <td className="px-4 py-4 text-sm font-medium text-gray-900 sticky left-0 bg-white/80 backdrop-blur-sm z-10 border-r border-gray-200">
                   <div className="flex items-center space-x-3">
                     <div>
-                      <div className="font-medium text-gray-900 truncate" title={student.assignedStudentId}>
-                        {student.assignedStudentId}
+                      <div className="font-medium text-gray-900 truncate" title={student.email}>
+                        {student.email}
                       </div>
                     </div>
                   </div>
@@ -196,13 +202,41 @@ export default function StudentTable({
                                 {exerciseProgress.attempts.map((attempt) => (
                                   <button
                                     key={`delete-${attempt.id}`}
-                                    onClick={() => onDeleteAttempt(attempt.id, student.id, student.assignedStudentId, exercise.title)}
+                                    onClick={() => onDeleteAttempt(attempt.id, student.id, student.email, exercise.title)}
                                     disabled={deletingAttempt}
                                     className="w-6 h-6 text-red-600 hover:text-red-800 transition-all duration-200 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                                     title={`Delete attempt ${attempt.attemptNumber}`}
                                   >
                                     <Trash2 className="h-3 w-3" />
                                   </button>
+                                ))}
+                              </div>
+
+                              {/* Evaluation Scores and Buttons */}
+                              <div className="flex flex-wrap gap-1 justify-center">
+                                {exerciseProgress.attempts.map((attempt) => (
+                                  <div key={`eval-${attempt.id}`} className="flex flex-col items-center space-y-1">
+                                    {/* Evaluation Score Display */}
+                                    {attempt.evaluatedScore !== null ? (
+                                      <div
+                                        className="w-8 h-4 rounded text-xs font-bold flex items-center justify-center bg-purple-100 text-purple-800"
+                                        title={`AI Score: ${attempt.evaluatedScore}/10`}
+                                      >
+                                        {attempt.evaluatedScore}/10
+                                      </div>
+                                    ) : attempt.status === 'completed' && onEvaluateAttempt ? (
+                                      <button
+                                        onClick={() => onEvaluateAttempt(attempt.id, exercise.id, student.id)}
+                                        disabled={evaluatingAttempts?.has(attempt.id)}
+                                        className="w-6 h-4 rounded text-xs flex items-center justify-center bg-yellow-100 text-yellow-800 hover:bg-yellow-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        title={evaluatingAttempts?.has(attempt.id) ? 'Evaluating...' : 'Click to evaluate'}
+                                      >
+                                        {evaluatingAttempts?.has(attempt.id) ? <Loader2 className="h-2 w-2 animate-spin" /> : 'AI'}
+                                      </button>
+                                    ) : (
+                                      <div className="w-6 h-4 rounded text-xs flex items-center justify-center bg-gray-100 text-gray-400">-</div>
+                                    )}
+                                  </div>
                                 ))}
                               </div>
                             </div>
@@ -238,7 +272,7 @@ export default function StudentTable({
                             {/* Delete Icon for Final Summary */}
                             {onDeleteFinalSummary && (
                               <button
-                                onClick={() => onDeleteFinalSummary(student.finalSummary!.id, student.id, student.assignedStudentId)}
+                                onClick={() => onDeleteFinalSummary(student.finalSummary!.id, student.id, student.email)}
                                 className="w-6 h-6 text-red-600 hover:text-red-800 transition-all duration-200 hover:scale-110 flex items-center justify-center"
                                 title="Delete final summary"
                               >
@@ -263,9 +297,20 @@ export default function StudentTable({
                       <Eye className="h-3 w-3 mr-1" />
                       View
                     </Button>
+                    {onStartBulkEvaluation && (
+                      <Button
+                        size="sm"
+                        onClick={() => onStartBulkEvaluation(student.id, student.email)}
+                        disabled={evaluatingAttempts?.size ? evaluatingAttempts.size > 0 : false}
+                        className="bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200"
+                      >
+                        <Star className="h-3 w-3 mr-1" />
+                        Evaluate
+                      </Button>
+                    )}
                     <Button
                       size="sm"
-                      onClick={() => onClearStudentAttempts(student.id, student.assignedStudentId)}
+                      onClick={() => onClearStudentAttempts(student.id, student.email)}
                       disabled={clearingAttempts}
                       variant="outline"
                       className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 bg-transparent"

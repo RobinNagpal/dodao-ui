@@ -46,6 +46,7 @@ export default function ViewExerciseModal({
     shortDescription: exercise.shortDescription,
     details: exercise.details,
     promptHint: exercise.promptHint,
+    gradingLogic: exercise.gradingLogic,
     instructorInstructions: exercise.instructorInstructions,
     orderNumber: exercise.orderNumber,
     archive: exercise.archive,
@@ -71,6 +72,7 @@ export default function ViewExerciseModal({
       shortDescription: exercise.shortDescription,
       details: exercise.details,
       promptHint: exercise.promptHint,
+      gradingLogic: exercise.gradingLogic,
       instructorInstructions: exercise.instructorInstructions,
       orderNumber: exercise.orderNumber,
       archive: exercise.archive,
@@ -197,11 +199,23 @@ export default function ViewExerciseModal({
               />
             </div>
 
-            {/* AI Prompt Hint Section */}
+            {/* Grading Logic Section */}
+            <div className="space-y-2">
+              <label className="block text-md font-semibold text-gray-900">Grading Logic</label>
+              <MarkdownEditor
+                objectId={`exercise-grading-logic-${exercise.id}`}
+                modelValue={formData.gradingLogic || undefined}
+                onUpdate={(value) => handleInputChange('gradingLogic', value)}
+                placeholder="Enter grading logic using markdown..."
+                maxHeight={200}
+              />
+            </div>
+
+            {/* Instructor Instructions Section */}
             <div className="space-y-2">
               <label className="block text-md font-semibold text-gray-900">Instructor Instructions</label>
               <MarkdownEditor
-                objectId={`exercise-prompt-hint-${exercise.id}`}
+                objectId={`exercise-instructor-instructions-${exercise.id}`}
                 modelValue={formData.instructorInstructions || undefined}
                 onUpdate={(value) => handleInputChange('instructorInstructions', value)}
                 placeholder="Enter instructions for the instructor using markdown..."
@@ -234,7 +248,15 @@ export default function ViewExerciseModal({
                   </div>
                 )}
 
-                {/* AI Prompt Hint Section (if exists) */}
+                {/* Grading Logic Section (if exists) */}
+                {exercise.gradingLogic && (
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Grading Logic:</h4>
+                    <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.gradingLogic) }} />
+                  </div>
+                )}
+
+                {/* Instructor Instructions Section (if exists) */}
                 {isInstructor && exercise.instructorInstructions && (
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 mb-2">Instructor Instructions:</h4>

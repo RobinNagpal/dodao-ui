@@ -9,8 +9,11 @@ interface StudentsTabProps {
   onClearStudentAttempts: (studentId: string, studentEmail: string) => void;
   onDeleteAttempt: (attemptId: string, studentId: string, studentEmail: string, exerciseTitle: string) => void;
   onDeleteFinalSummary: (finalSummaryId: string, studentId: string, studentEmail: string) => void;
+  onEvaluateAttempt: (attemptId: string, exerciseId: string, studentId: string) => void;
+  onStartBulkEvaluation: (studentId: string, studentEmail: string) => void;
   clearingAttempts: boolean;
   deletingAttempt: boolean;
+  evaluatingAttempts: Set<string>;
 }
 
 const StudentsTab: FC<StudentsTabProps> = ({
@@ -20,8 +23,11 @@ const StudentsTab: FC<StudentsTabProps> = ({
   onClearStudentAttempts,
   onDeleteAttempt,
   onDeleteFinalSummary,
+  onEvaluateAttempt,
+  onStartBulkEvaluation,
   clearingAttempts,
   deletingAttempt,
+  evaluatingAttempts,
 }) => {
   return (
     <div className="space-y-8">
@@ -32,8 +38,11 @@ const StudentsTab: FC<StudentsTabProps> = ({
         onClearStudentAttempts={onClearStudentAttempts}
         onDeleteAttempt={onDeleteAttempt}
         onDeleteFinalSummary={onDeleteFinalSummary}
+        onEvaluateAttempt={onEvaluateAttempt}
+        onStartBulkEvaluation={onStartBulkEvaluation}
         clearingAttempts={clearingAttempts}
         deletingAttempt={deletingAttempt}
+        evaluatingAttempts={evaluatingAttempts}
       />
     </div>
   );

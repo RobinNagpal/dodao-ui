@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import StudentLoading from '@/components/student/StudentLoading';
 import { FileText, Send, CheckCircle, Brain, Sparkles, Target, BookOpen, Save } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { CaseStudyWithRelationsForStudents } from '@/types/api';
+import { SimulationSession } from '@/types/user';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
 
 interface FinalSubmissionClientProps {
@@ -28,21 +30,16 @@ interface CreateFinalSubmissionRequest {
 }
 
 export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionClientProps) {
-  const [userEmail, setUserEmail] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('user_email') || '';
-    }
-    return '';
-  });
-  const [isLoading, setIsLoading] = useState(true);
   const [finalContent, setFinalContent] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const router = useRouter();
+  const { data: simSession } = useSession();
+  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForStudents>(
-    `/api/student/case-studies/${caseStudyId}?studentEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !caseStudyId || !userEmail },
+    `/api/student/case-studies/${caseStudyId}`,
+    { skipInitialFetch: !caseStudyId || !session },
     'Failed to load case study details'
   );
 
@@ -51,8 +48,8 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
     loading: loadingSubmission,
     reFetchData: refetchSubmission,
   } = useFetchData<FinalSubmissionData>(
-    `/api/student/final-submission?caseStudyId=${caseStudyId}&studentEmail=${encodeURIComponent(userEmail)}`,
-    { skipInitialFetch: !caseStudyId || !userEmail },
+    `/api/student/final-submission?caseStudyId=${caseStudyId}`,
+    { skipInitialFetch: !caseStudyId || !session },
     'Failed to load existing submission'
   );
 
@@ -62,18 +59,6 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
   });
 
   useEffect(() => {
-    const userType = localStorage.getItem('user_type');
-    const email = localStorage.getItem('user_email');
-
-    if (!userType || userType !== 'student' || !email) {
-      router.push('/login');
-      return;
-    }
-
-    setIsLoading(false);
-  }, [router]);
-
-  useEffect(() => {
     if (existingSubmission) {
       setFinalContent(existingSubmission.finalContent);
       setIsSubmitted(true);
@@ -81,7 +66,7 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
   }, [existingSubmission]);
 
   const handleSubmit = async () => {
-    if (!finalContent.trim() || submittingSubmission) {
+    if (!finalContent.trim() || submittingSubmission || !session) {
       return;
     }
 
@@ -89,7 +74,7 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
       const result = await submitFinalSubmission('/api/student/final-submission', {
         caseStudyId,
         finalContent: finalContent.trim(),
-        studentEmail: userEmail,
+        studentEmail: session.email || '',
       });
 
       if (result) {
@@ -105,7 +90,7 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
     router.push('/student');
   };
 
-  if (isLoading || loadingCaseStudy || loadingSubmission) {
+  if (!session || loadingCaseStudy || loadingSubmission) {
     return <StudentLoading text="Loading Final Submission" subtitle="Preparing your submission workspace..." variant="enhanced" />;
   }
 
@@ -120,7 +105,7 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
       <StudentNavbar
         title="Final Submission"
         subtitle="Deliver Your Final Analysis"
-        userEmail={userEmail}
+        userEmail={session?.email || ''}
         icon={<FileText className="h-8 w-8 text-white" />}
         iconColor="from-green-500 to-emerald-600"
       />

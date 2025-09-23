@@ -276,7 +276,7 @@ export async function getStudentCaseStudies(userId: string): Promise<CaseStudyWi
 
       const caseStudyWithInstructor: CaseStudyWithRelationsForStudents = {
         ...enrollment.caseStudy,
-        instructorEmail: instructorId,
+        instructorEmail: instructor?.email || undefined,
         instructorName: instructor?.name,
       };
 

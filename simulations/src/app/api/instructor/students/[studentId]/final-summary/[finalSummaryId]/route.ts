@@ -1,24 +1,34 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 
 interface DeleteResponse {
   message: string;
 }
 
-// DELETE /api/instructor/students/[studentId]/final-summary/[finalSummaryId]?instructorEmail=xxx&caseStudyId=xxx - Delete a final summary
-async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ studentId: string; finalSummaryId: string }> }): Promise<DeleteResponse> {
+// DELETE /api/instructor/students/[studentId]/final-summary/[finalSummaryId]?caseStudyId=xxx - Delete a final summary
+async function deleteHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ studentId: string; finalSummaryId: string }> }
+): Promise<DeleteResponse> {
   const { studentId, finalSummaryId } = await params;
   const { searchParams } = new URL(req.url);
-  const instructorEmail = searchParams.get('instructorEmail');
   const caseStudyId = searchParams.get('caseStudyId');
-
-  if (!instructorEmail) {
-    throw new Error('Instructor email is required');
-  }
+  const { userId } = userContext;
 
   if (!caseStudyId) {
     throw new Error('Case study ID is required');
+  }
+
+  // Verify user has instructor role
+  const user = await prisma.user.findUniqueOrThrow({
+    where: { id: userId },
+  });
+
+  if (user.role !== 'Instructor') {
+    throw new Error('Only instructors can delete final summaries');
   }
 
   // First verify instructor has access to this case study and student
@@ -26,6 +36,11 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ s
     where: {
       id: studentId,
       archive: false,
+      enrollment: {
+        caseStudyId: caseStudyId,
+        assignedInstructorId: userId,
+        archive: false,
+      },
     },
     include: {
       enrollment: {
@@ -37,17 +52,15 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ s
   });
 
   if (!student) {
-    throw new Error('Student not found');
+    throw new Error('Student not found or you do not have access to this student');
   }
 
-  // Verify the case study matches
-  if (student.enrollment.caseStudy.id !== caseStudyId) {
-    throw new Error('Student does not belong to this case study');
-  }
-
-  // Verify instructor has access to this enrollment
-  if (student.enrollment.assignedInstructorId !== instructorEmail) {
-    throw new Error('You do not have access to this student');
+  // Verify instructor has access to this case study (skip for admin)
+  if (user.role !== 'Instructor') {
+    const hasAccess = student.enrollment.assignedInstructorId === userId;
+    if (!hasAccess) {
+      throw new Error('You do not have access to this student');
+    }
   }
 
   // Find and delete the final summary
@@ -73,4 +86,4 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ s
   };
 }
 
-export const DELETE = withErrorHandlingV2(deleteHandler);
+export const DELETE = withLoggedInUser(deleteHandler);

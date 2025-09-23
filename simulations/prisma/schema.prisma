@@ -75,7 +75,7 @@ model User {
 
   createdFinalSubmissions FinalSubmission[] @relation("FinalSubmissionCreatedBy")
   updatedFinalSubmissions FinalSubmission[] @relation("FinalSubmissionUpdatedBy")
-  
+
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
   @@unique([email, spaceId])
@@ -217,6 +217,8 @@ model EnrollmentStudent {
   updatedAt DateTime @updatedAt @map("updated_at")
   archive   Boolean  @default(false) @map("archive")
 
+  finalScore Float? @map("final_score")
+
   // Relations to User (restrict delete because FKs are required)
   createdBy User @relation("EnrollmentStudentCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
   updatedBy User @relation("EnrollmentStudentUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
@@ -238,6 +240,7 @@ model ModuleExercise {
   details                String  @map("details") @db.Text
   promptHint             String? @map("prompt_hint")
   instructorInstructions String? @map("instructor_instructions")
+  gradingLogic           String? @map("grading_logic")
   orderNumber            Int     @map("order_number")
 
   // Mandatory FKs to creator/updater (User)
@@ -276,6 +279,9 @@ model ExerciseAttempt {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @default(now()) @updatedAt @map("updated_at")
   archive            Boolean  @default(false) @map("archive")
+
+  evaluatedScore  Int?     @map("evaluated_score")
+  evaluationReasoning String?  @map("evaluation_reasoning")
 
   // Relations to User (restrict delete because FKs are required)
   createdBy User @relation("ExerciseAttemptCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
