@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 
 interface ExerciseAttemptDetail {
   id: string;
@@ -53,16 +54,15 @@ interface StudentDetailResponse {
   };
 }
 
-// GET /api/instructor/students/[studentId]/details?instructorEmail=xxx&caseStudyId=xxx - Get detailed student data
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ studentId: string }> }): Promise<StudentDetailResponse> {
+// GET /api/instructor/students/[studentId]/details?caseStudyId=xxx - Get detailed student data
+async function getHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ studentId: string }> }
+): Promise<StudentDetailResponse> {
   const { studentId } = await params;
   const { searchParams } = new URL(req.url);
-  const instructorEmail = searchParams.get('instructorEmail');
   const caseStudyId = searchParams.get('caseStudyId');
-
-  if (!instructorEmail) {
-    throw new Error('Instructor email is required');
-  }
 
   if (!caseStudyId) {
     throw new Error('Case study ID is required');
@@ -75,7 +75,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ stud
       archive: false,
       enrollment: {
         caseStudyId: caseStudyId,
-        assignedInstructorId: instructorEmail,
+        assignedInstructorId: userContext.userId,
         archive: false,
       },
     },
@@ -185,4 +185,4 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ stud
   };
 }
 
-export const GET = withErrorHandlingV2(getHandler);
+export const GET = withLoggedInUser<StudentDetailResponse>(getHandler);

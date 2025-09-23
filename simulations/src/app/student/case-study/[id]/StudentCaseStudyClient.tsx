@@ -225,7 +225,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   const modules = caseStudy?.modules || [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <StudentNavbar
         title={caseStudy?.title || 'Case Study Not Found'}
         subtitle="Case Study Details"

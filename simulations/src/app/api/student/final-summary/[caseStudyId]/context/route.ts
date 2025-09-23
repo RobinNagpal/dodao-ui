@@ -33,12 +33,6 @@ async function getHandler(
   { params }: { params: Promise<{ caseStudyId: string }> }
 ): Promise<SummaryContextResponse> {
   const { caseStudyId } = await params;
-  const url = new URL(req.url);
-  const studentEmail = url.searchParams.get('studentEmail');
-
-  if (!studentEmail) {
-    throw new Error('Student email is required');
-  }
 
   // Get comprehensive case study data
   const caseStudy = await prisma.caseStudy.findFirst({
@@ -54,7 +48,7 @@ async function getHandler(
         include: {
           students: {
             where: {
-              assignedStudentId: studentEmail,
+              assignedStudentId: userContext.userId,
               archive: false,
             },
           },
@@ -98,8 +92,8 @@ async function getHandler(
     throw new Error('Case study not found');
   }
 
-  // Check if student is enrolled
-  const isEnrolled = caseStudy.enrollments.some((enrollment) => enrollment.students.some((student) => student.assignedStudentId === studentEmail));
+  // Check if student is enrolled using user context
+  const isEnrolled = caseStudy.enrollments.some((enrollment) => enrollment.students.some((student) => student.assignedStudentId === userContext.userId));
 
   if (!isEnrolled) {
     throw new Error('Student is not enrolled in this case study');
