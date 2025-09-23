@@ -27,7 +27,6 @@ interface FinalSummaryData {
 }
 
 interface GenerateSummaryRequest {
-  studentEmail: string;
   prompt: string;
 }
 
@@ -95,7 +94,6 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
 
     try {
       const result = await generateSummary(`/api/student/final-summary/${caseStudyId}/generate`, {
-        studentEmail: session?.email || '',
         prompt: contextData.fullPrompt,
       });
 

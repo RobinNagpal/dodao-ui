@@ -5,7 +5,6 @@ import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpe
 import { GoogleGenAI } from '@google/genai';
 
 interface GenerateSummaryRequest {
-  studentEmail: string;
   prompt: string;
 }
 
@@ -28,20 +27,16 @@ async function postHandler(
 ): Promise<GenerateSummaryResponse> {
   const { caseStudyId } = await params;
   const body: GenerateSummaryRequest = await req.json();
-  const { studentEmail, prompt } = body;
-
-  if (!studentEmail) {
-    throw new Error('Student email is required');
-  }
+  const { prompt } = body;
 
   if (!prompt) {
     throw new Error('Prompt is required');
   }
 
-  // Find the enrollment student record to verify access
+  // Find the enrollment student record to verify access using user context
   const enrollmentStudent = await prisma.enrollmentStudent.findFirst({
     where: {
-      assignedStudentId: studentEmail,
+      assignedStudentId: userContext.userId,
       enrollment: {
         caseStudyId: caseStudyId,
         archive: false,
