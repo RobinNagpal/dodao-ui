@@ -1,4 +1,5 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
+import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
@@ -86,6 +87,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       updatedAt: new Date(),
     },
   });
+  revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
 
   return {
     success: true,

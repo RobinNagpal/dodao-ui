@@ -196,6 +196,7 @@ export default function IndustryManagementPage(): JSX.Element {
                       <div>
                         <h4 className="font-medium text-gray-100">{subIndustry.name}</h4>
                         <p className="text-xs text-gray-400">{subIndustry.subIndustryKey}</p>
+                        <p className="text-xs text-gray-400">{subIndustry.summary}</p>
                       </div>
                       {subIndustry.archived && (
                         <span className="px-2 py-1 text-xs font-medium rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300">Archived</span>

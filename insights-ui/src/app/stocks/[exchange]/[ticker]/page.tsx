@@ -21,6 +21,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
+import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 
 /**
  * ──────────────────────────────────────────────────────────────────────────────
@@ -37,10 +38,6 @@ type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>>;
 
 /** For FULL_SSG prebuilds */
 type TickerListItem = Readonly<{ symbol: string; exchange: string }>;
-
-/** Cache tag helpers for per-ticker revalidation */
-const TICKER_TAG_PREFIX = 'ticker:' as const;
-const tickerTag = (t: string): `${typeof TICKER_TAG_PREFIX}${string}` => `${TICKER_TAG_PREFIX}${t.toUpperCase()}`;
 
 /** Optional index endpoint used when FULL_SSG=1 */
 const TICKERS_INDEX_URL = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1` as const;
@@ -73,7 +70,7 @@ function truncateForMeta(text: string, maxLength = 155): string {
  */
 async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1ReportResponse> {
   const url = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
-  const res = await fetch(url, { next: { tags: [tickerTag(ticker)] } });
+  const res = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) {
     throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
   }
