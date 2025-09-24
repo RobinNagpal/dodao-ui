@@ -17,7 +17,7 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import type { ExerciseAttempt } from '@prisma/client';
+import type { CaseStudyModule, ExerciseAttempt } from '@prisma/client';
 import { AlertCircle, ArrowLeft, Bot, CheckCircle, Clock, Eye, FileText, MessageSquare, Plus, RotateCcw, Send, Sparkles, Star, Zap } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -691,7 +691,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
         <ViewModuleModal
           open={showModuleModal}
           onClose={handleCloseModuleModal}
-          selectedModule={currentModule as unknown as import('@prisma/client').CaseStudyModule}
+          selectedModule={currentModule as CaseStudyModule}
           hasModuleInstructionsRead={() => true}
           handleMarkInstructionAsRead={async () => {}}
           updatingStatus={true}

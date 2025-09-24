@@ -10,6 +10,11 @@ import {
   ExerciseAttempt,
 } from '@prisma/client';
 
+export type ModuleExerciseWithProgress = ModuleExercise & {
+  isExerciseCompleted?: boolean;
+  attemptCount?: number;
+};
+
 export interface CreateCaseStudyRequest {
   title: string;
   shortDescription: string;
@@ -69,12 +74,7 @@ export type ModuleWithExercises = CaseStudyModule & {
 export type CaseStudyWithRelationsForStudents = CaseStudy & {
   modules?: Array<
     CaseStudyModule & {
-      exercises?: Array<
-        ModuleExercise & {
-          isExerciseCompleted?: boolean;
-          attemptCount?: number;
-        }
-      >;
+      exercises?: Array<ModuleExerciseWithProgress>;
       isModuleCompleted?: boolean;
     }
   >;

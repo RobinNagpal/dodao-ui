@@ -2,7 +2,8 @@ import { Check, Clock, PlayCircle, ExternalLink, BookOpen, Video } from 'lucide-
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Image from 'next/image';
-import type { CaseStudyWithRelationsForStudents } from '@/types/api';
+import type { CaseStudyWithRelationsForStudents, ModuleExerciseWithProgress } from '@/types/api';
+import { ModuleExercise } from '@/types';
 
 export interface ProgressData {
   caseStudyId: string;
@@ -185,7 +186,7 @@ export default function StudentProgressStepper({ progressData }: StudentProgress
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'learning-path' | 'prompt-engineering'>('learning-path');
 
-  const handleExerciseClick = (exercise: any, moduleId: string) => {
+  const handleExerciseClick = (exercise: ModuleExerciseWithProgress, moduleId: string) => {
     if (exercise.isExerciseCompleted) {
       router.push(`/student/exercise/${exercise.id}?moduleId=${moduleId}&caseStudyId=${progressData.caseStudyId}`);
     }
