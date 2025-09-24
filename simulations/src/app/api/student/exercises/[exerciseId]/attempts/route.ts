@@ -127,32 +127,4 @@ async function postHandler(
   }
 }
 
-// GET /api/student/exercises/[exerciseId]/attempts - Get all attempts for an exercise by a student
-async function getHandler(
-  req: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ exerciseId: string }> }
-): Promise<ExerciseAttempt[]> {
-  const { exerciseId } = await params;
-  const { userId } = userContext;
-
-  if (!userId) {
-    throw new Error('User ID is required');
-  }
-
-  const attempts = await prisma.exerciseAttempt.findMany({
-    where: {
-      exerciseId,
-      createdById: userId,
-      archive: false,
-    },
-    orderBy: {
-      attemptNumber: 'asc',
-    },
-  });
-
-  return attempts;
-}
-
 export const POST = withLoggedInUser<CreateAttemptResponse>(postHandler);
-export const GET = withLoggedInUser<ExerciseAttempt[]>(getHandler);

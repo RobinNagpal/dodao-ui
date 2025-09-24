@@ -28,17 +28,6 @@ interface StudentExerciseClientProps {
   caseStudyId?: string;
 }
 
-interface ExerciseData {
-  id: string;
-  title: string;
-  details: string;
-  promptHint?: string | null;
-  orderNumber: number;
-  module: {
-    orderNumber: number;
-  };
-}
-
 interface CreateAttemptRequest {
   prompt: string;
 }
@@ -57,6 +46,85 @@ interface NextExerciseResponse {
   previousModuleId?: string;
   isFirstExercise: boolean;
   isNextExerciseInDifferentModule: boolean;
+}
+
+// Consolidated interfaces matching the API response
+interface StudentExerciseProgress {
+  id: string;
+  title: string;
+  orderNumber: number;
+  isCompleted: boolean;
+  isAttempted: boolean;
+  isCurrent: boolean;
+  attemptCount: number;
+}
+
+interface StudentModuleProgress {
+  id: string;
+  title: string;
+  orderNumber: number;
+  isCompleted: boolean;
+  isCurrent: boolean;
+  exercises: StudentExerciseProgress[];
+}
+
+interface StudentProgressData {
+  caseStudyTitle: string;
+  caseStudyId: string;
+  currentModuleId: string;
+  currentExerciseId: string;
+  modules: StudentModuleProgress[];
+}
+
+interface StudentNavigationData {
+  nextExerciseId?: string;
+  nextModuleId?: string;
+  caseStudyId?: string;
+  isComplete: boolean;
+  message: string;
+  previousExerciseId?: string;
+  previousModuleId?: string;
+  isFirstExercise: boolean;
+  isNextExerciseInDifferentModule: boolean;
+}
+
+interface StudentCaseStudyInfo {
+  id: string;
+  title: string;
+  shortDescription: string;
+  details: string;
+  subject: string;
+  finalSummaryPromptInstructions?: string | null;
+}
+
+interface StudentModuleInfo {
+  id: string;
+  title: string;
+  shortDescription: string;
+  details: string;
+  orderNumber: number;
+  caseStudy: StudentCaseStudyInfo;
+}
+
+interface ConsolidatedStudentExerciseResponse {
+  // Exercise details
+  id: string;
+  title: string;
+  details: string;
+  promptHint?: string | null;
+  orderNumber: number;
+
+  // Module and case study context
+  module: StudentModuleInfo;
+
+  // Navigation data
+  navigation: StudentNavigationData;
+
+  // Progress data
+  progress: StudentProgressData;
+
+  // Student's attempts for this exercise
+  attempts: ExerciseAttempt[];
 }
 
 interface SelectAttemptRequest {
@@ -97,58 +165,39 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
 
   const router = useRouter();
 
-  const {
-    data: attempts,
-    loading: loadingAttempts,
-    reFetchData: refetchAttempts,
-  } = useFetchData<ExerciseAttempt[]>(
-    `${getBaseUrl()}/api/student/exercises/${exerciseId}/attempts`,
-    { skipInitialFetch: !exerciseId || !session },
-    'Failed to load exercise attempts'
-  );
-
-  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForStudents>(
-    `${getBaseUrl()}/api/case-studies/${caseStudyId}`,
-    { skipInitialFetch: !exerciseId || !session },
-    'Failed to load exercise attempts'
+  // Consolidated API call for all exercise data
+  const { data: consolidatedData, loading: loadingConsolidated } = useFetchData<ConsolidatedStudentExerciseResponse>(
+    `${getBaseUrl()}/api/case-studies/${caseStudyId}/case-study-modules/${moduleId}/exercises/${exerciseId}`,
+    { skipInitialFetch: !exerciseId || !session || !caseStudyId || !moduleId },
+    'Failed to load exercise data'
   );
 
   // Local state to override fetched attempts when we have fresher data
   const [localAttempts, setLocalAttempts] = useState<ExerciseAttempt[] | null>(null);
 
-  // Use local attempts if available, otherwise use fetched attempts
-  const currentAttempts = localAttempts || attempts;
+  // Use local attempts if available, otherwise use fetched attempts from consolidated data
+  const currentAttempts = localAttempts || consolidatedData?.attempts;
 
-  // Reset local attempts when fetched attempts change (for initial load)
+  // Reset local attempts when consolidated data changes (for initial load)
   useEffect(() => {
-    if (attempts && !localAttempts) {
-      setLocalAttempts(attempts);
+    if (consolidatedData?.attempts && !localAttempts) {
+      setLocalAttempts(consolidatedData.attempts);
     }
-  }, [attempts, localAttempts]);
+  }, [consolidatedData?.attempts, localAttempts]);
 
-  const { data: contextData, loading: loadingContext } = useFetchData<ExerciseWithModuleAndCaseStudy>(
-    `${getBaseUrl()}/api/student/exercises/${exerciseId}/context`,
-    { skipInitialFetch: !exerciseId || !session },
-    'Failed to load exercise context'
-  );
-
-  const { data: exerciseData, loading: loadingExercise } = useFetchData<ExerciseData>(
-    `${getBaseUrl()}/api/student/exercises/${exerciseId}`,
-    { skipInitialFetch: !exerciseId || !session },
-    'Failed to load exercise details'
-  );
-
-  const { data: nextExerciseData, loading: loadingNextExercise } = useFetchData<NextExerciseResponse>(
-    `${getBaseUrl()}/api/student/exercises/${exerciseId}/next-exercise`,
-    { skipInitialFetch: !exerciseId || !session },
-    'Failed to load next exercise info'
-  );
-
-  const { data: progressData, loading: loadingProgress } = useFetchData<ProgressData>(
-    `${getBaseUrl()}/api/student/exercises/${exerciseId}/progress`,
-    { skipInitialFetch: !exerciseId || !session },
-    'Failed to load progress data'
-  );
+  // Extract data from consolidated response
+  const exerciseData = consolidatedData
+    ? {
+        id: consolidatedData.id,
+        title: consolidatedData.title,
+        details: consolidatedData.details,
+        promptHint: consolidatedData.promptHint,
+        orderNumber: consolidatedData.orderNumber,
+        module: {
+          orderNumber: consolidatedData.module.orderNumber,
+        },
+      }
+    : null;
 
   const { postData: createAttempt, loading: submittingAttempt } = usePostData<CreateAttemptResponse, CreateAttemptRequest>({
     successMessage: 'Response generated successfully!',
@@ -219,7 +268,8 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const handleMoveToNext = () => {
     setHasMovedToNext(true);
 
-    if (!nextExerciseData) {
+    const navData = consolidatedData?.navigation;
+    if (!navData) {
       if (caseStudyId) {
         router.push(`/student/case-study/${caseStudyId}`);
       } else {
@@ -228,14 +278,10 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       return;
     }
 
-    if (nextExerciseData.isComplete) {
-      router.push(`/student/final-summary/${nextExerciseData.caseStudyId}`);
-    } else if (nextExerciseData.nextExerciseId) {
-      router.push(
-        `/student/exercise/${nextExerciseData.nextExerciseId}?moduleId=${nextExerciseData.nextModuleId || moduleId}&caseStudyId=${
-          nextExerciseData.caseStudyId || caseStudyId
-        }`
-      );
+    if (navData.isComplete) {
+      router.push(`/student/final-summary/${navData.caseStudyId}`);
+    } else if (navData.nextExerciseId) {
+      router.push(`/student/exercise/${navData.nextExerciseId}?moduleId=${navData.nextModuleId || moduleId}&caseStudyId=${navData.caseStudyId || caseStudyId}`);
     } else {
       if (caseStudyId) {
         router.push(`/student/case-study/${caseStudyId}`);
@@ -246,14 +292,13 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   };
 
   const handleMoveToPrevious = () => {
-    if (!nextExerciseData || !nextExerciseData.previousExerciseId) {
+    const navData = consolidatedData?.navigation;
+    if (!navData || !navData.previousExerciseId) {
       return;
     }
 
     router.push(
-      `/student/exercise/${nextExerciseData.previousExerciseId}?moduleId=${nextExerciseData.previousModuleId || moduleId}&caseStudyId=${
-        nextExerciseData.caseStudyId || caseStudyId
-      }`
+      `/student/exercise/${navData.previousExerciseId}?moduleId=${navData.previousModuleId || moduleId}&caseStudyId=${navData.caseStudyId || caseStudyId}`
     );
   };
 
@@ -365,13 +410,9 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     return hasSuccess && completedAttempts.length < 3;
   };
 
-  if (loadingAttempts || loadingContext || loadingExercise || loadingNextExercise || loadingProgress) {
+  if (loadingConsolidated) {
     console.log('Loading...', {
-      loadingAttempts,
-      loadingContext,
-      loadingExercise,
-      loadingNextExercise,
-      loadingProgress,
+      loadingConsolidated,
     });
     return <StudentLoading text="Loading AI Exercise" subtitle="Preparing your interactive learning experience..." variant="enhanced" />;
   }
@@ -410,7 +451,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                     <div className="flex items-center space-x-3 ml-4">
                       <button
                         onClick={handleOpenCaseStudyModal}
-                        disabled={!contextData?.module?.caseStudy}
+                        disabled={!consolidatedData?.module?.caseStudy}
                         className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         title="View Case Study Details"
                       >
@@ -419,7 +460,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                       </button>
                       <button
                         onClick={handleOpenModuleModal}
-                        disabled={!contextData?.module}
+                        disabled={!consolidatedData?.module}
                         className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-green-100 text-green-800 hover:bg-green-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         title="View Module Details"
                       >
@@ -495,7 +536,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      {!nextExerciseData?.isFirstExercise && (
+                      {!consolidatedData?.navigation?.isFirstExercise && (
                         <button
                           onClick={handleMoveToPrevious}
                           className="text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-xl"
@@ -547,7 +588,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                   <p className="text-gray-600 mb-4 text-base">You can continue to the next exercise or try again.</p>
                   <div className="flex items-center justify-between">
                     <div className="flex-1 flex justify-start">
-                      {!nextExerciseData?.isFirstExercise && (
+                      {!consolidatedData?.navigation?.isFirstExercise && (
                         <button
                           onClick={handleMoveToPrevious}
                           className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-2 rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
@@ -562,7 +603,11 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                         onClick={handleMoveToNext}
                         className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                       >
-                        {nextExerciseData?.isComplete ? 'Continue to Report' : nextExerciseData?.isNextExerciseInDifferentModule ? 'Next Module' : 'Next Exercise'}
+                        {consolidatedData?.navigation?.isComplete
+                          ? 'Continue to Report'
+                          : consolidatedData?.navigation?.isNextExerciseInDifferentModule
+                          ? 'Next Module'
+                          : 'Next Exercise'}
                       </button>
                       <button
                         onClick={() => setShowRetryPrompt(true)}
@@ -584,7 +629,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                   {!hasMovedToNext && !submittingAttempt && (
                     <div className="flex items-center justify-between">
                       <div className="flex-1 flex justify-start">
-                        {!nextExerciseData?.isFirstExercise && (
+                        {!consolidatedData?.navigation?.isFirstExercise && (
                           <button
                             onClick={handleMoveToPrevious}
                             className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-2 rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
@@ -599,7 +644,11 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                           onClick={handleMoveToNext}
                           className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                         >
-                          {nextExerciseData?.isComplete ? 'Continue to Report' : nextExerciseData?.isNextExerciseInDifferentModule ? 'Next Module' : 'Continue to Next Exercise'}
+                          {consolidatedData?.navigation?.isComplete
+                            ? 'Continue to Report'
+                            : consolidatedData?.navigation?.isNextExerciseInDifferentModule
+                            ? 'Next Module'
+                            : 'Continue to Next Exercise'}
                         </button>
                       </div>
                       <div className="flex-1"></div>
@@ -676,7 +725,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
             )}
           </div>
 
-          <div className="lg:col-span-1">{progressData && <StudentProgressStepper progressData={progressData} />}</div>
+          <div className="lg:col-span-1">{consolidatedData?.progress && <StudentProgressStepper progressData={consolidatedData.progress} />}</div>
         </div>
       </div>
 
@@ -709,15 +758,15 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
         showSemiTransparentBg={true}
       />
 
-      {caseStudy && contextData?.module && (
+      {consolidatedData?.module?.caseStudy && consolidatedData?.module && (
         <ViewModuleModal
           open={showModuleModal}
           onClose={handleCloseModuleModal}
-          selectedModule={contextData.module}
+          selectedModule={consolidatedData.module as unknown as import('@prisma/client').CaseStudyModule}
           hasModuleInstructionsRead={() => true}
           handleMarkInstructionAsRead={async () => {}}
           updatingStatus={true}
-          caseStudy={caseStudy}
+          caseStudy={consolidatedData.module.caseStudy as unknown as CaseStudyWithRelationsForStudents}
           onModuleUpdate={(updatedModule) => {
             // Students don't edit, so this should not be called
             console.log('Student tried to update module - this should not happen');
@@ -725,11 +774,11 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
         />
       )}
 
-      {caseStudy && (
+      {consolidatedData?.module?.caseStudy && (
         <ViewCaseStudyInstructionsModal
           open={showCaseStudyModal}
           onClose={handleCloseCaseStudyModal}
-          caseStudy={caseStudy}
+          caseStudy={consolidatedData.module.caseStudy as unknown as CaseStudyWithRelationsForStudents}
           hasCaseStudyInstructionsRead={() => true}
           handleMarkInstructionAsRead={async () => {}}
           updatingStatus={true}
