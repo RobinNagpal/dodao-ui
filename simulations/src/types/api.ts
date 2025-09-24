@@ -62,12 +62,6 @@ export interface UpdateExerciseRequest {
   orderNumber: number;
 }
 
-export type ExerciseWithModuleAndCaseStudy = ModuleExercise & {
-  module?: CaseStudyModule & {
-    caseStudy?: CaseStudy;
-  };
-};
-
 export type ModuleWithExercises = CaseStudyModule & {
   exercises?: ModuleExercise[];
 };
@@ -75,7 +69,12 @@ export type ModuleWithExercises = CaseStudyModule & {
 export type CaseStudyWithRelationsForStudents = CaseStudy & {
   modules?: Array<
     CaseStudyModule & {
-      exercises?: ModuleExercise[];
+      exercises?: ModuleExercise &
+        {
+          isExerciseCompleted: boolean;
+          attemptCount: number;
+        }[];
+      isModuleCompleted: boolean;
     }
   >;
   instructorEmail?: string; // Added instructor email

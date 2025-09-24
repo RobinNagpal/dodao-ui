@@ -11,7 +11,6 @@ import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import {
   CaseStudyWithRelationsForStudents,
-  ExerciseWithModuleAndCaseStudy,
   StudentExerciseProgress,
   StudentModuleProgress,
   StudentProgressData,
@@ -656,7 +655,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
             )}
           </div>
 
-          <div className="lg:col-span-1">{consolidatedData?.progress && <StudentProgressStepper progressData={consolidatedData.progress} />}</div>
+          <div className="lg:col-span-1">{consolidatedData?.progress && <StudentProgressStepper caseStudy={} currentExercise={} />}</div>
         </div>
       </div>
 
