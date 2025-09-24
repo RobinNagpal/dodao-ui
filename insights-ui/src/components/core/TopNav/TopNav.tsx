@@ -74,20 +74,23 @@ export default function TopNav(): JSX.Element {
   }, []);
 
   return (
-    <header className="bg-gray-800 mt-2">
+    <header className="bg-gray-800 mt-2 overflow-x-clip">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-2 lg:px-8">
         {/* Left: logo + search */}
-        <div className="flex items-center space-x-3 sm:space-x-6 w-full lg:w-auto">
-          <Link href="/" className="-m-1.5 p-1.5 shrink-0">
+        <div className="flex items-center space-x-3 sm:space-x-6 w-full lg:w-auto min-w-0">
+          <Link href="/" className="-m-1.5 p-1.5 shrink-0" aria-label="KoalaGains home">
             <span className="sr-only">KoalaGains</span>
-            <img alt="KoalaGains logo" src="/koalagain_logo.png" className="h-8 w-auto" />
+
+            {/* Mobile: app icon, Desktop: full logo */}
+            <img alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto sm:hidden" />
+            <img alt="KoalaGains logo" src="/koalagain_logo.png" className="hidden sm:block h-8 w-auto" />
           </Link>
 
           {/* Search Bar
               - Always visible on desktop
-              - On mobile, only visible for /stocks routes (so users still have search when we hide menus) */}
-          <div className={`${isStocksRoute ? 'block w-full' : 'hidden'} lg:block lg:w-auto`}>
-            <div className={`${isStocksRoute ? 'max-w-full' : ''} lg:max-w-none`}>
+              - On mobile, only visible for /stocks routes */}
+          <div className={`${isStocksRoute ? 'flex-1 min-w-0' : 'hidden'} lg:block lg:w-auto lg:min-w-[24rem]`}>
+            <div className="max-w-full lg:max-w-none">
               <SearchBar placeholder="Search stocks..." variant="navbar" />
             </div>
           </div>
@@ -101,6 +104,8 @@ export default function TopNav(): JSX.Element {
               onClick={(): void => setMobileMenuOpen(true)}
               className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300 hover:text-white"
               aria-label="Open main menu"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
             >
               <Bars3Icon aria-hidden="true" className="h-6 w-6" />
             </button>
@@ -201,11 +206,15 @@ export default function TopNav(): JSX.Element {
       {!isStocksRoute && (
         <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
           <div className="fixed inset-0 z-10" />
-          <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-800 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-700/50">
+          <DialogPanel
+            id="mobile-menu"
+            className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-800 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-700/50"
+          >
             <div className="flex items-center justify-between">
-              <Link href="/" className="-m-1.5 p-1.5">
+              <Link href="/" className="-m-1.5 p-1.5" aria-label="KoalaGains home">
                 <span className="sr-only">KoalaGains</span>
-                <img alt="KoalaGains logo" src="/koalagain_logo.png" className="h-8 w-auto" />
+                {/* Mobile: app icon */}
+                <img alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto" />
               </Link>
               <button
                 type="button"
@@ -229,12 +238,14 @@ export default function TopNav(): JSX.Element {
                     <button
                       onClick={(): void => setMobileReportsOpen((prev) => !prev)}
                       className="flex w-full items-center justify-between -mx-3 rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-gray-700"
+                      aria-expanded={mobileReportsOpen}
+                      aria-controls="mobile-reports"
                     >
                       KoalaGains Insights
                       <ChevronDownIcon aria-hidden="true" className={`h-5 w-5 transition-transform duration-200 ${mobileReportsOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {mobileReportsOpen && (
-                      <div className="ml-4 mt-2 space-y-2">
+                      <div id="mobile-reports" className="ml-4 mt-2 space-y-2">
                         {reportsDropdown.map((item) => (
                           <Link
                             key={item.name}
@@ -257,12 +268,14 @@ export default function TopNav(): JSX.Element {
                     <button
                       onClick={(): void => setMobileGenaiOpen((prev) => !prev)}
                       className="flex w-full items-center justify-between -mx-3 rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-gray-700"
+                      aria-expanded={mobileGenaiOpen}
+                      aria-controls="mobile-genai"
                     >
                       GenAI Adoption
                       <ChevronDownIcon aria-hidden="true" className={`h-5 w-5 transition-transform duration-200 ${mobileGenaiOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {mobileGenaiOpen && (
-                      <div className="ml-4 mt-2 space-y-2">
+                      <div id="mobile-genai" className="ml-4 mt-2 space-y-2">
                         {genaiDropdown.map((item) => (
                           <Link
                             key={item.name}

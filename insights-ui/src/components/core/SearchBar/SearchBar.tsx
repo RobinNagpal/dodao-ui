@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
-import Link from 'next/link';
-import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import getBaseUrl from '../../../../../shared/web-core/src/utils/api/getBaseURL';
 import StockTickerItem from '@/components/stocks/StockTickerItem';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import * as Tooltip from '@radix-ui/react-tooltip';
+import Link from 'next/link';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface SearchResult {
   id: string;
@@ -27,25 +27,34 @@ export interface SearchBarProps {
   className?: string;
 }
 
+type VariantStyles = {
+  container: string;
+  input: string;
+  dropdown: string;
+  searchIcon: string;
+  clearIcon: string;
+  searchButton: string;
+};
+
 export default function SearchBar({
   placeholder = 'Search stocks by symbol or company name...',
   variant = 'hero',
   onResultClick,
   className = '',
-}: SearchBarProps) {
-  const [query, setQuery] = useState('');
+}: SearchBarProps): JSX.Element {
+  const [query, setQuery] = useState<string>('');
   const [results, setResults] = useState<SearchResult[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
-  const searchRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const debounceRef = useRef<NodeJS.Timeout>();
+  const searchRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+  useEffect((): (() => void) => {
+    const handleClickOutside = (event: MouseEvent): void => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setIsOpen(false);
         setHighlightedIndex(-1);
@@ -53,11 +62,11 @@ export default function SearchBar({
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return (): void => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   // Debounced search function
-  const searchTickers = useCallback(async (searchQuery: string) => {
+  const searchTickers = useCallback(async (searchQuery: string): Promise<void> => {
     if (!searchQuery.trim() || searchQuery.length < 1) {
       setResults([]);
       setIsOpen(false);
@@ -70,8 +79,8 @@ export default function SearchBar({
       const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/search?q=${encodeURIComponent(searchQuery)}&limit=8`);
 
       if (response.ok) {
-        const data = await response.json();
-        setResults(data.results || []);
+        const data: { results?: SearchResult[] } = await response.json();
+        setResults(Array.isArray(data.results) ? data.results : []);
         // Keep dropdown open if we have results OR if we searched but found nothing
         setIsOpen(true);
       } else {
@@ -79,6 +88,7 @@ export default function SearchBar({
         setIsOpen(false);
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Search error:', error);
       setResults([]);
       setIsOpen(false);
@@ -88,24 +98,20 @@ export default function SearchBar({
   }, []);
 
   // Handle input change with debouncing
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value;
     setQuery(value);
     setHighlightedIndex(-1);
 
-    // Clear existing debounce
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
+    if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    // Set new debounce
-    debounceRef.current = setTimeout(() => {
-      searchTickers(value);
+    debounceRef.current = setTimeout((): void => {
+      void searchTickers(value);
     }, 300);
   };
 
   // Handle keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (!isOpen || results.length === 0) {
       if (e.key === 'Escape') {
         setIsOpen(false);
@@ -138,21 +144,21 @@ export default function SearchBar({
   };
 
   // Handle result selection
-  const handleResultClick = (result: SearchResult) => {
+  const handleResultClick = (result: SearchResult): void => {
     setQuery('');
     setIsOpen(false);
     setHighlightedIndex(-1);
 
     if (onResultClick) {
       onResultClick(result);
-    } else {
+    } else if (typeof window !== 'undefined') {
       // Default navigation
       window.location.href = `/stocks/${result.exchange}/${result.symbol}`;
     }
   };
 
   // Clear search
-  const handleClear = () => {
+  const handleClear = (): void => {
     setQuery('');
     setResults([]);
     setIsOpen(false);
@@ -161,32 +167,41 @@ export default function SearchBar({
   };
 
   // Get styling based on variant
-  const getVariantStyles = () => {
+  const getVariantStyles = (): VariantStyles => {
     if (variant === 'navbar') {
+      // Responsive widths that never force horizontal scrolling
       return {
-        container: 'relative w-96',
+        container:
+          // On mobile: full width and shrinkable; grow within flex row without pushing nav off-screen
+          'relative w-full min-w-0 flex-shrink sm:w-64 md:w-80 lg:w-96',
         input:
-          'w-full h-9 pl-9 pr-8 text-sm bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-gray-100 placeholder-gray-400',
-        dropdown: 'absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-600 rounded-md shadow-xl z-50 max-h-80 overflow-y-auto',
-        searchIcon: 'absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-amber-400',
-        clearIcon: 'absolute right-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 hover:text-amber-300 cursor-pointer',
+          'w-full h-9 pl-9 pr-8 text-sm bg-gray-700 border border-gray-600 rounded-md ' +
+          'focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent ' +
+          'text-gray-100 placeholder-gray-400',
+        dropdown: 'absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-600 ' + 'rounded-md shadow-xl z-50 max-h-80 overflow-y-auto',
+        searchIcon: 'absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-amber-400',
+        clearIcon: 'absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 hover:text-amber-300 cursor-pointer',
         searchButton: '',
-      };
-    } else {
-      // HERO variant — taller input + amber/yellow border (4px), same color palette
-      return {
-        container: 'relative w-full max-w-3xl mx-auto mb-24 mt-12',
-        input:
-          'w-full h-14 pl-16 pr-36 text-base bg-gray-700/40 backdrop-blur-sm border-3 border-amber-400 rounded-2xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-white placeholder-gray-300 transition-all duration-200 shadow-sm',
-        dropdown:
-          'absolute top-full left-0 right-0 mt-2 bg-gray-800/95 backdrop-blur-sm border border-gray-600/40 rounded-xl shadow-2xl z-50 max-h-96 overflow-y-auto',
-        searchIcon: 'absolute left-5 top-1/2 transform -translate-y-1/2 h-6 w-6 text-amber-400 z-10',
-        clearIcon:
-          'absolute right-28 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-300 hover:text-white cursor-pointer transition-colors duration-200 z-10',
-        searchButton:
-          'absolute right-2 top-1/2 transform -translate-y-1/2 h-10 px-5 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black rounded-lg transition-all duration-200 shadow-md hover:shadow-lg z-10',
-      };
+      } as const;
     }
+
+    // HERO variant — taller input + amber/yellow border (4px), same color palette
+    return {
+      container: 'relative w-full max-w-3xl mx-auto mb-24 mt-12',
+      input:
+        'w-full h-14 pl-16 pr-36 text-base bg-gray-700/40 backdrop-blur-sm border-3 border-amber-400 rounded-2xl ' +
+        'focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-white placeholder-gray-300 ' +
+        'transition-all duration-200 shadow-sm',
+      dropdown:
+        'absolute top-full left-0 right-0 mt-2 bg-gray-800/95 backdrop-blur-sm border border-gray-600/40 ' +
+        'rounded-xl shadow-2xl z-50 max-h-96 overflow-y-auto',
+      searchIcon: 'absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-amber-400 z-10',
+      clearIcon: 'absolute right-28 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-300 hover:text-white cursor-pointer ' + 'transition-colors duration-200 z-10',
+      searchButton:
+        'absolute right-2 top-1/2 -translate-y-1/2 h-10 px-5 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] ' +
+        'hover:from-[#F97316] hover:to-[#F59E0B] text-black rounded-lg transition-all duration-200 ' +
+        'shadow-md hover:shadow-lg z-10',
+    } as const;
   };
 
   const styles = getVariantStyles();
@@ -194,7 +209,7 @@ export default function SearchBar({
   return (
     <div ref={searchRef} className={`${styles.container} ${className}`}>
       <div className="relative">
-        <MagnifyingGlassIcon className={styles.searchIcon} />
+        <MagnifyingGlassIcon className={styles.searchIcon} aria-hidden="true" />
 
         <input
           ref={inputRef}
@@ -206,33 +221,35 @@ export default function SearchBar({
           className={styles.input}
           autoComplete="off"
           autoFocus={variant === 'hero'}
+          aria-label="Search stocks"
         />
 
         {query && (
-          <button onClick={handleClear} className="focus:outline-none" aria-label="Clear search">
+          <button onClick={handleClear} className="focus:outline-none" aria-label="Clear search" type="button">
             <XMarkIcon className={styles.clearIcon} />
           </button>
         )}
 
         {variant === 'hero' && (
           <button
-            onClick={() => {
-              if (query.trim()) searchTickers(query);
+            onClick={(): void => {
+              if (query.trim()) void searchTickers(query);
             }}
             className={`${styles.searchButton} focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2`}
             aria-label="Search"
+            type="button"
           >
             Search
           </button>
         )}
       </div>
 
-      {/* Dropdown unchanged */}
+      {/* Dropdown */}
       {isOpen && (
-        <div className={styles.dropdown}>
+        <div className={styles.dropdown} role="listbox" aria-live="polite">
           {isLoading ? (
             <div className="p-4 text-center">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-500 mx-auto"></div>
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-500 mx-auto" />
               <span className="text-gray-400 text-sm mt-2 block">Searching...</span>
             </div>
           ) : results.length > 0 ? (
@@ -244,8 +261,10 @@ export default function SearchBar({
                     className={`cursor-pointer transition-colors duration-150 border-b border-gray-700/50 last:border-b-0 ${
                       index === highlightedIndex ? 'bg-indigo-600/20' : 'hover:bg-gray-700/50'
                     }`}
-                    onClick={() => handleResultClick(result)}
-                    onMouseEnter={() => setHighlightedIndex(index)}
+                    onClick={(): void => handleResultClick(result)}
+                    onMouseEnter={(): void => setHighlightedIndex(index)}
+                    role="option"
+                    aria-selected={index === highlightedIndex}
                   >
                     <div className="px-3 py-2">
                       <StockTickerItem symbol={result.symbol} name={result.name} exchange={result.exchange} score={result.cachedScore} />
@@ -258,7 +277,7 @@ export default function SearchBar({
                     <Link
                       href={`/stocks?search=${encodeURIComponent(query)}`}
                       className="text-indigo-400 hover:text-indigo-300 text-sm transition-colors duration-200"
-                      onClick={() => setIsOpen(false)}
+                      onClick={(): void => setIsOpen(false)}
                     >
                       View all results for &ldquo;{query}&rdquo;
                     </Link>
