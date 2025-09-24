@@ -163,7 +163,6 @@ async function postHandler(
             data: {
               moduleId: newMod.id,
               title: ex.title,
-              shortDescription: ex.shortDescription,
               details: ex.details,
               promptHint: ex.promptHint,
               orderNumber: ex.orderNumber,

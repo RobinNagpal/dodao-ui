@@ -15,7 +15,6 @@ interface SummaryContextResponse {
     details: string;
     exercises: Array<{
       title: string;
-      shortDescription: string;
       details: string;
       attempts: Array<{
         promptResponse: string | null;
@@ -112,7 +111,6 @@ async function getHandler(
         .filter((exercise) => exercise.attempts.length > 0) // Only include exercises with selected attempts
         .map((exercise) => ({
           title: exercise.title,
-          shortDescription: exercise.shortDescription,
           details: exercise.details,
           attempts: exercise.attempts.map((attempt) => ({
             promptResponse: attempt.promptResponse,

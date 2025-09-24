@@ -238,7 +238,6 @@ async function updateCaseStudy(
             where: { id: exerciseData.id },
             data: {
               title: exerciseData.title,
-              shortDescription: exerciseData.shortDescription,
               details: exerciseData.details,
               promptHint: exerciseData.promptHint,
               gradingLogic: exerciseData.gradingLogic,
@@ -253,7 +252,6 @@ async function updateCaseStudy(
             data: {
               moduleId: moduleRecord.id,
               title: exerciseData.title,
-              shortDescription: exerciseData.shortDescription,
               details: exerciseData.details,
               promptHint: exerciseData.promptHint,
               gradingLogic: exerciseData.gradingLogic,

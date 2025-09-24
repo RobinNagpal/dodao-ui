@@ -6,7 +6,6 @@ import { NextRequest } from 'next/server';
 interface ExerciseResponse {
   id: string;
   title: string;
-  shortDescription: string;
   details: string;
   promptHint?: string | null;
   orderNumber: number;
@@ -72,7 +71,6 @@ async function getHandler(
   return {
     id: exercise.id,
     title: exercise.title,
-    shortDescription: exercise.shortDescription,
     details: exercise.details,
     promptHint: exercise.promptHint,
     orderNumber: exercise.orderNumber,

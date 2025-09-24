@@ -47,7 +47,6 @@ interface ExerciseAttemptDetail {
 interface ExerciseDetail {
   id: string;
   title: string;
-  shortDescription: string;
   details: string;
   orderNumber: number;
   attempts: ExerciseAttemptDetail[];
@@ -312,7 +311,6 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
                               </div>
                               <div>
                                 <h5 className="font-bold text-gray-900">{exercise.title}</h5>
-                                <p className="text-sm text-gray-600">{exercise.shortDescription}</p>
                               </div>
                             </div>
                             <div className="text-center bg-gradient-to-br from-orange-50 to-yellow-50 px-3 py-2 rounded-lg border border-orange-200 min-w-[80px]">

@@ -9,7 +9,6 @@ type ExerciseEntity = ModuleExercise;
 
 export interface UpdateModuleExerciseRequest {
   title: string;
-  shortDescription: string;
   details: string;
   promptHint?: string | null;
   gradingLogic?: string | null;
@@ -50,7 +49,6 @@ async function putHandler(
     where: { id: exerciseId },
     data: {
       title: body.title,
-      shortDescription: body.shortDescription,
       details: body.details,
       promptHint: body.promptHint ?? undefined,
       gradingLogic: body.gradingLogic ?? undefined,

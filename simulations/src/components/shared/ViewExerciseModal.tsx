@@ -43,7 +43,6 @@ export default function ViewExerciseModal({
   const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState<UpdateModuleExerciseRequest>({
     title: exercise.title,
-    shortDescription: exercise.shortDescription,
     details: exercise.details,
     promptHint: exercise.promptHint,
     gradingLogic: exercise.gradingLogic,
@@ -69,7 +68,6 @@ export default function ViewExerciseModal({
     // Reset form data
     setFormData({
       title: exercise.title,
-      shortDescription: exercise.shortDescription,
       details: exercise.details,
       promptHint: exercise.promptHint,
       gradingLogic: exercise.gradingLogic,
@@ -163,18 +161,6 @@ export default function ViewExerciseModal({
         {isEditMode ? (
           // Edit Mode
           <div className="space-y-6">
-            {/* Short Description Section */}
-            <div className="space-y-2">
-              <label className="block text-md font-semibold text-gray-900">Short Description</label>
-              <Textarea
-                value={formData.shortDescription}
-                onChange={(e) => handleInputChange('shortDescription', e.target.value)}
-                placeholder="Enter exercise overview"
-                rows={4}
-                className="w-full"
-              />
-            </div>
-
             {/* Exercise Details Section */}
             <div className="space-y-2">
               <label className="block text-md font-semibold text-gray-900">Details</label>
@@ -226,45 +212,35 @@ export default function ViewExerciseModal({
         ) : (
           // View Mode
           <div className="space-y-6">
-            {/* Short Description Section */}
-            <div className="bg-white rounded-lg pt-2">
-              <div className="space-y-6">
-                <div>
-                  <h4 className="text-lg font-semibold text-gray-900 mb-2">Short Description:</h4>
-                  <p className="text-gray-700 text-base leading-relaxed">{exercise.shortDescription}</p>
-                </div>
-
-                {/* Exercise Details Section */}
-                <div>
-                  <h4 className="text-lg font-semibold text-gray-900 mb-2">Details:</h4>
-                  <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.details) }} />
-                </div>
-
-                {/* AI Prompt Hint Section (if exists) */}
-                {exercise.promptHint && (
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">AI Prompt Hint:</h4>
-                    <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.promptHint) }} />
-                  </div>
-                )}
-
-                {/* Grading Logic Section (if exists) */}
-                {exercise.gradingLogic && (
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Grading Logic:</h4>
-                    <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.gradingLogic) }} />
-                  </div>
-                )}
-
-                {/* Instructor Instructions Section (if exists) */}
-                {isInstructor && exercise.instructorInstructions && (
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Instructor Instructions:</h4>
-                    <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.instructorInstructions) }} />
-                  </div>
-                )}
-              </div>
+            {/* Exercise Details Section */}
+            <div>
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">Details:</h4>
+              <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.details) }} />
             </div>
+
+            {/* AI Prompt Hint Section (if exists) */}
+            {exercise.promptHint && (
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">AI Prompt Hint:</h4>
+                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.promptHint) }} />
+              </div>
+            )}
+
+            {/* Grading Logic Section (if exists) */}
+            {exercise.gradingLogic && (
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">Grading Logic:</h4>
+                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.gradingLogic) }} />
+              </div>
+            )}
+
+            {/* Instructor Instructions Section (if exists) */}
+            {isInstructor && exercise.instructorInstructions && (
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">Instructor Instructions:</h4>
+                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.instructorInstructions) }} />
+              </div>
+            )}
           </div>
         )}
       </div>

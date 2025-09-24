@@ -31,7 +31,6 @@ interface StudentExerciseClientProps {
 interface ExerciseData {
   id: string;
   title: string;
-  shortDescription: string;
   details: string;
   promptHint?: string | null;
   orderNumber: number;
@@ -390,7 +389,6 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-gray-900 mb-1">{exerciseData.title}</h3>
-                      <p className="text-gray-600 text-lg leading-relaxed">{exerciseData.shortDescription}</p>
                     </div>
 
                     <div className="flex items-center space-x-3 ml-4">
