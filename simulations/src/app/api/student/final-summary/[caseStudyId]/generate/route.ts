@@ -2,7 +2,7 @@ import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { GoogleGenAI } from '@google/genai';
+import { generateAIResponse } from '@/utils/llm-utils';
 
 interface GenerateSummaryRequest {
   prompt: string;
@@ -50,24 +50,8 @@ async function postHandler(
   }
 
   try {
-    // Configure Gemini AI
-    const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY! });
-
-    const groundingTool = { googleSearch: {} };
-    const config = { tools: [groundingTool] };
-
-    console.log('Final Summary Prompt Length:', prompt.length);
-
-    // Make AI request with the provided prompt
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-pro',
-      contents: prompt,
-      config,
-    });
-
-    const aiResponse = response.text;
-
-    console.log('AI Summary Response Length:', aiResponse?.length);
+    // Use the shared AI generation utility (includes grounding)
+    const aiResponse = await generateAIResponse(prompt);
 
     // Create or update the final summary record
     const summary = await prisma.finalSummary.upsert({
