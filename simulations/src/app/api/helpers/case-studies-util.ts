@@ -378,9 +378,34 @@ export async function getStudentCaseStudy(caseStudyId: string, studentId: string
     },
   });
 
+  // Calculate exercise completion status and attempt counts
+  const modulesWithCalculatedData = enrollment.caseStudy.modules?.map((module) => {
+    const exercisesWithCalculatedData = module.exercises?.map((exercise) => {
+      const attempts = exercise.attempts || [];
+      const isExerciseCompleted = attempts.some((attempt) => attempt.status === 'completed');
+      const attemptCount = attempts.length;
+
+      return {
+        ...exercise,
+        isExerciseCompleted,
+        attemptCount,
+      };
+    });
+
+    // Calculate module completion: all exercises must be completed
+    const isModuleCompleted = exercisesWithCalculatedData?.every((exercise) => exercise.isExerciseCompleted) || false;
+
+    return {
+      ...module,
+      exercises: exercisesWithCalculatedData,
+      isModuleCompleted,
+    };
+  });
+
   // Add instruction read status and instructor information to the response
   const caseStudyWithStatus: CaseStudyWithRelationsForStudents = {
     ...enrollment.caseStudy,
+    modules: modulesWithCalculatedData,
     instructorEmail: instructorId,
     instructorName: instructor?.name || null,
     instructionReadStatus: instructionReadStatus || undefined,

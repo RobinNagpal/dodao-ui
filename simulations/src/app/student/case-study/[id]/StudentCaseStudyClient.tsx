@@ -60,15 +60,15 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   });
 
   const hasAttempts = (exercise: any) => {
-    return exercise.attempts && exercise.attempts.length > 0;
+    return exercise.attemptCount > 0;
   };
 
   const getAttemptCount = (exercise: any) => {
-    return exercise.attempts ? exercise.attempts.length : 0;
+    return exercise.attemptCount || 0;
   };
 
   const isExerciseCompleted = (exercise: any) => {
-    return exercise.attempts && exercise.attempts.some((attempt: any) => attempt.status === 'completed');
+    return exercise.isExerciseCompleted || false;
   };
 
   const isExerciseAccessible = (targetModuleId: string, targetExerciseId: string) => {
@@ -95,7 +95,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   };
 
   const isModuleCompleted = (module: any) => {
-    return module.exercises?.every((exercise: any) => isExerciseCompleted(exercise)) || false;
+    return module.isModuleCompleted || false;
   };
 
   const hasCaseStudyInstructionsRead = () => {

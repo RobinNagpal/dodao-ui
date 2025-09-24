@@ -6,19 +6,11 @@ import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
 import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import StudentLoading from '@/components/student/StudentLoading';
-import StudentProgressStepper, { ProgressData } from '@/components/student/StudentProgressStepper';
+import StudentProgressStepper from '@/components/student/StudentProgressStepper';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import {
-  CaseStudyWithRelationsForStudents,
-  StudentExerciseProgress,
-  StudentModuleProgress,
-  StudentProgressData,
-  StudentNavigationData,
-  StudentCaseStudyInfo,
-  StudentModuleInfo,
-  ConsolidatedStudentExerciseResponse,
-} from '@/types/api';
+import { CaseStudyWithRelationsForStudents, ExerciseWithAttemptsResponse, StudentNavigationData } from '@/types/api';
+import { calculateNavigationData } from '@/lib/navigation-utils';
 import { SimulationSession } from '@/types/user';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
@@ -29,7 +21,7 @@ import type { ExerciseAttempt } from '@prisma/client';
 import { AlertCircle, ArrowLeft, Bot, CheckCircle, Clock, Eye, FileText, MessageSquare, Plus, RotateCcw, Send, Sparkles, Star, Zap } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface StudentExerciseClientProps {
   exerciseId: string;
@@ -95,39 +87,38 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
 
   const router = useRouter();
 
-  // Consolidated API call for all exercise data
-  const { data: consolidatedData, loading: loadingConsolidated } = useFetchData<ConsolidatedStudentExerciseResponse>(
+  // Fetch exercise data with attempts
+  const { data: exerciseData, loading: loadingExercise } = useFetchData<ExerciseWithAttemptsResponse>(
     `${getBaseUrl()}/api/case-studies/${caseStudyId}/case-study-modules/${moduleId}/exercises/${exerciseId}`,
     { skipInitialFetch: !exerciseId || !session || !caseStudyId || !moduleId },
     'Failed to load exercise data'
   );
 
+  // Fetch case study data for navigation and progress
+  const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForStudents>(
+    `${getBaseUrl()}/api/case-studies/${caseStudyId}`,
+    { skipInitialFetch: !caseStudyId || !session },
+    'Failed to load case study data'
+  );
+
   // Local state to override fetched attempts when we have fresher data
   const [localAttempts, setLocalAttempts] = useState<ExerciseAttempt[] | null>(null);
 
-  // Use local attempts if available, otherwise use fetched attempts from consolidated data
-  const currentAttempts = localAttempts || consolidatedData?.attempts;
+  // Use local attempts if available, otherwise use fetched attempts from exercise data
+  const currentAttempts = localAttempts || exerciseData?.attempts;
 
-  // Reset local attempts when consolidated data changes (for initial load)
+  // Reset local attempts when exercise data changes (for initial load)
   useEffect(() => {
-    if (consolidatedData?.attempts && !localAttempts) {
-      setLocalAttempts(consolidatedData.attempts);
+    if (exerciseData?.attempts && !localAttempts) {
+      setLocalAttempts(exerciseData.attempts);
     }
-  }, [consolidatedData?.attempts, localAttempts]);
+  }, [exerciseData?.attempts, localAttempts]);
 
-  // Extract data from consolidated response
-  const exerciseData = consolidatedData
-    ? {
-        id: consolidatedData.id,
-        title: consolidatedData.title,
-        details: consolidatedData.details,
-        promptHint: consolidatedData.promptHint,
-        orderNumber: consolidatedData.orderNumber,
-        module: {
-          orderNumber: consolidatedData.module.orderNumber,
-        },
-      }
-    : null;
+  // Calculate navigation data using the utility function
+  const navigationData = useMemo(() => calculateNavigationData(caseStudyData, moduleId, exerciseId), [caseStudyData, moduleId, exerciseId]);
+
+  // Get current module data for context
+  const currentModule = caseStudyData?.modules?.find((m) => m.id === moduleId);
 
   const { postData: createAttempt, loading: submittingAttempt } = usePostData<CreateAttemptResponse, CreateAttemptRequest>({
     successMessage: 'Response generated successfully!',
@@ -198,8 +189,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   const handleMoveToNext = () => {
     setHasMovedToNext(true);
 
-    const navData = consolidatedData?.navigation;
-    if (!navData) {
+    if (!navigationData) {
       if (caseStudyId) {
         router.push(`/student/case-study/${caseStudyId}`);
       } else {
@@ -208,10 +198,14 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
       return;
     }
 
-    if (navData.isComplete) {
-      router.push(`/student/final-summary/${navData.caseStudyId}`);
-    } else if (navData.nextExerciseId) {
-      router.push(`/student/exercise/${navData.nextExerciseId}?moduleId=${navData.nextModuleId || moduleId}&caseStudyId=${navData.caseStudyId || caseStudyId}`);
+    if (navigationData.isComplete) {
+      router.push(`/student/final-summary/${navigationData.caseStudyId}`);
+    } else if (navigationData.nextExerciseId) {
+      router.push(
+        `/student/exercise/${navigationData.nextExerciseId}?moduleId=${navigationData.nextModuleId || moduleId}&caseStudyId=${
+          navigationData.caseStudyId || caseStudyId
+        }`
+      );
     } else {
       if (caseStudyId) {
         router.push(`/student/case-study/${caseStudyId}`);
@@ -222,13 +216,14 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   };
 
   const handleMoveToPrevious = () => {
-    const navData = consolidatedData?.navigation;
-    if (!navData || !navData.previousExerciseId) {
+    if (!navigationData || !navigationData.previousExerciseId) {
       return;
     }
 
     router.push(
-      `/student/exercise/${navData.previousExerciseId}?moduleId=${navData.previousModuleId || moduleId}&caseStudyId=${navData.caseStudyId || caseStudyId}`
+      `/student/exercise/${navigationData.previousExerciseId}?moduleId=${navigationData.previousModuleId || moduleId}&caseStudyId=${
+        navigationData.caseStudyId || caseStudyId
+      }`
     );
   };
 
@@ -340,10 +335,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     return hasSuccess && completedAttempts.length < 3;
   };
 
-  if (loadingConsolidated) {
-    console.log('Loading...', {
-      loadingConsolidated,
-    });
+  if (loadingExercise || loadingCaseStudy) {
     return <StudentLoading text="Loading AI Exercise" subtitle="Preparing your interactive learning experience..." variant="enhanced" />;
   }
 
@@ -359,7 +351,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
         title="AI Exercise Studio"
         subtitle="Interactive Learning with AI"
         userEmail={session?.email || session?.username}
-        moduleNumber={exerciseData?.module?.orderNumber}
+        moduleNumber={currentModule?.orderNumber}
         exerciseNumber={exerciseData?.orderNumber}
         icon={<Bot className="h-8 w-8 text-white" />}
         iconColor="from-blue-500 to-purple-600"
@@ -381,7 +373,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                     <div className="flex items-center space-x-3 ml-4">
                       <button
                         onClick={handleOpenCaseStudyModal}
-                        disabled={!consolidatedData?.module?.caseStudy}
+                        disabled={!caseStudyData}
                         className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         title="View Case Study Details"
                       >
@@ -390,7 +382,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                       </button>
                       <button
                         onClick={handleOpenModuleModal}
-                        disabled={!consolidatedData?.module}
+                        disabled={!currentModule}
                         className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium bg-green-100 text-green-800 hover:bg-green-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         title="View Module Details"
                       >
@@ -466,7 +458,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      {!consolidatedData?.navigation?.isFirstExercise && (
+                      {!navigationData?.isFirstExercise && (
                         <button
                           onClick={handleMoveToPrevious}
                           className="text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-xl"
@@ -518,7 +510,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                   <p className="text-gray-600 mb-4 text-base">You can continue to the next exercise or try again.</p>
                   <div className="flex items-center justify-between">
                     <div className="flex-1 flex justify-start">
-                      {!consolidatedData?.navigation?.isFirstExercise && (
+                      {!navigationData?.isFirstExercise && (
                         <button
                           onClick={handleMoveToPrevious}
                           className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-2 rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
@@ -533,11 +525,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                         onClick={handleMoveToNext}
                         className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                       >
-                        {consolidatedData?.navigation?.isComplete
-                          ? 'Continue to Report'
-                          : consolidatedData?.navigation?.isNextExerciseInDifferentModule
-                          ? 'Next Module'
-                          : 'Next Exercise'}
+                        {navigationData?.isComplete ? 'Continue to Report' : navigationData?.isNextExerciseInDifferentModule ? 'Next Module' : 'Next Exercise'}
                       </button>
                       <button
                         onClick={() => setShowRetryPrompt(true)}
@@ -559,7 +547,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                   {!hasMovedToNext && !submittingAttempt && (
                     <div className="flex items-center justify-between">
                       <div className="flex-1 flex justify-start">
-                        {!consolidatedData?.navigation?.isFirstExercise && (
+                        {!navigationData?.isFirstExercise && (
                           <button
                             onClick={handleMoveToPrevious}
                             className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-2 rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
@@ -574,9 +562,9 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                           onClick={handleMoveToNext}
                           className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                         >
-                          {consolidatedData?.navigation?.isComplete
+                          {navigationData?.isComplete
                             ? 'Continue to Report'
-                            : consolidatedData?.navigation?.isNextExerciseInDifferentModule
+                            : navigationData?.isNextExerciseInDifferentModule
                             ? 'Next Module'
                             : 'Continue to Next Exercise'}
                         </button>
@@ -655,7 +643,18 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
             )}
           </div>
 
-          <div className="lg:col-span-1">{consolidatedData?.progress && <StudentProgressStepper caseStudy={} currentExercise={} />}</div>
+          <div className="lg:col-span-1">
+            {caseStudyData && (
+              <StudentProgressStepper
+                progressData={{
+                  caseStudyId: caseStudyData.id,
+                  currentModuleId: moduleId || '',
+                  currentExerciseId: exerciseId,
+                  modules: caseStudyData.modules || [],
+                }}
+              />
+            )}
+          </div>
         </div>
       </div>
 
@@ -688,15 +687,15 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
         showSemiTransparentBg={true}
       />
 
-      {consolidatedData?.module?.caseStudy && consolidatedData?.module && (
+      {caseStudyData && currentModule && (
         <ViewModuleModal
           open={showModuleModal}
           onClose={handleCloseModuleModal}
-          selectedModule={consolidatedData.module as unknown as import('@prisma/client').CaseStudyModule}
+          selectedModule={currentModule as unknown as import('@prisma/client').CaseStudyModule}
           hasModuleInstructionsRead={() => true}
           handleMarkInstructionAsRead={async () => {}}
           updatingStatus={true}
-          caseStudy={consolidatedData.module.caseStudy as unknown as CaseStudyWithRelationsForStudents}
+          caseStudy={caseStudyData}
           onModuleUpdate={(updatedModule) => {
             // Students don't edit, so this should not be called
             console.log('Student tried to update module - this should not happen');
@@ -704,11 +703,11 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
         />
       )}
 
-      {consolidatedData?.module?.caseStudy && (
+      {caseStudyData && (
         <ViewCaseStudyInstructionsModal
           open={showCaseStudyModal}
           onClose={handleCloseCaseStudyModal}
-          caseStudy={consolidatedData.module.caseStudy as unknown as CaseStudyWithRelationsForStudents}
+          caseStudy={caseStudyData}
           hasCaseStudyInstructionsRead={() => true}
           handleMarkInstructionAsRead={async () => {}}
           updatingStatus={true}

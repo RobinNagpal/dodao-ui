@@ -1,33 +1,14 @@
-import { Check, Clock, Target, PlayCircle, ExternalLink, BookOpen, Video } from 'lucide-react';
+import { Check, Clock, PlayCircle, ExternalLink, BookOpen, Video } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Image from 'next/image';
-
-export interface ExerciseProgress {
-  id: string;
-  title: string;
-  orderNumber: number;
-  isCompleted: boolean;
-  isAttempted: boolean;
-  isCurrent: boolean;
-  attemptCount: number;
-}
-
-export interface ModuleProgress {
-  id: string;
-  title: string;
-  orderNumber: number;
-  isCompleted: boolean;
-  isCurrent: boolean;
-  exercises: ExerciseProgress[];
-}
+import type { CaseStudyWithRelationsForStudents } from '@/types/api';
 
 export interface ProgressData {
-  caseStudyTitle: string;
   caseStudyId: string;
   currentModuleId: string;
   currentExerciseId: string;
-  modules: ModuleProgress[];
+  modules: NonNullable<CaseStudyWithRelationsForStudents['modules']>;
 }
 
 export interface StudentProgressStepperProps {
@@ -204,8 +185,8 @@ export default function StudentProgressStepper({ progressData }: StudentProgress
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'learning-path' | 'prompt-engineering'>('learning-path');
 
-  const handleExerciseClick = (exercise: ExerciseProgress, moduleId: string) => {
-    if (exercise.isCompleted) {
+  const handleExerciseClick = (exercise: any, moduleId: string) => {
+    if (exercise.isExerciseCompleted) {
       router.push(`/student/exercise/${exercise.id}?moduleId=${moduleId}&caseStudyId=${progressData.caseStudyId}`);
     }
   };
@@ -216,80 +197,87 @@ export default function StudentProgressStepper({ progressData }: StudentProgress
 
   const renderLearningPath = () => (
     <div className="space-y-6">
-      {progressData.modules.map((module) => (
-        <div key={module.id} className="relative">
-          <div className="flex items-center space-x-3 mb-4">
-            <div
-              className={`
-                w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-sm transition-all duration-300
-                ${
-                  module.isCompleted
-                    ? 'bg-green-500 border-green-500 text-white'
-                    : module.isCurrent
-                    ? 'bg-blue-500 border-blue-500 text-white'
-                    : 'bg-gray-100 border-gray-300 text-gray-500'
-                }
-              `}
-            >
-              {module.isCompleted ? <Check className="h-5 w-5" /> : module.orderNumber}
-            </div>
-            <div className="flex-1">
-              <p className={`text-sm font-medium ${module.isCompleted ? 'text-green-700' : module.isCurrent ? 'text-blue-700' : 'text-gray-600'}`}>
-                Module {module.orderNumber}
-              </p>
-              <p className="text-xs text-gray-500 line-clamp-2">{module.title}</p>
-            </div>
-          </div>
-
-          {/* Exercises List */}
-          <div className="ml-4 space-y-2 relative">
-            {module.exercises.map((exercise) => (
+      {progressData.modules.map((module) => {
+        const isCurrent = module.id === progressData.currentModuleId;
+        return (
+          <div key={module.id} className="relative">
+            <div className="flex items-center space-x-3 mb-4">
               <div
-                key={exercise.id}
-                className={`flex items-start space-x-3 py-1 relative z-10 ${
-                  exercise.isCompleted ? 'cursor-pointer hover:bg-gray-50 rounded-lg px-2 transition-colors duration-200' : ''
-                }`}
-                onClick={() => handleExerciseClick(exercise, module.id)}
+                className={`
+                  w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-sm transition-all duration-300
+                  ${
+                    module.isModuleCompleted
+                      ? 'bg-green-500 border-green-500 text-white'
+                      : isCurrent
+                      ? 'bg-blue-500 border-blue-500 text-white'
+                      : 'bg-gray-100 border-gray-300 text-gray-500'
+                  }
+                `}
               >
-                <div
-                  className={`
-                    w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-300
-                    ${
-                      exercise.isCurrent
-                        ? 'bg-blue-500 border-blue-500 ring-2 ring-blue-200'
-                        : exercise.isCompleted
-                        ? 'bg-green-500 border-green-500'
-                        : exercise.isAttempted
-                        ? 'bg-yellow-500 border-yellow-500'
-                        : 'border-gray-300 bg-white'
-                    }
-                  `}
-                >
-                  {exercise.isCompleted && <Check className="h-3 w-3 text-white" />}
-                  {exercise.isAttempted && !exercise.isCompleted && <Clock className="h-2 w-2 text-white" />}
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <p
-                    className={`text-xs font-medium ${
-                      exercise.isCurrent
-                        ? 'text-blue-600'
-                        : exercise.isCompleted
-                        ? 'text-green-600 hover:text-green-700'
-                        : exercise.isAttempted
-                        ? 'text-yellow-600'
-                        : 'text-gray-500'
-                    } ${exercise.isCompleted ? 'hover:underline' : ''}`}
-                  >
-                    {exercise.orderNumber}. {exercise.title}
-                  </p>
-                  {exercise.attemptCount > 0 && <p className="text-xs text-gray-400">{exercise.attemptCount}/3 attempts</p>}
-                </div>
+                {module.isModuleCompleted ? <Check className="h-5 w-5" /> : module.orderNumber}
               </div>
-            ))}
+              <div className="flex-1">
+                <p className={`text-sm font-medium ${module.isModuleCompleted ? 'text-green-700' : isCurrent ? 'text-blue-700' : 'text-gray-600'}`}>
+                  Module {module.orderNumber}
+                </p>
+                <p className="text-xs text-gray-500 line-clamp-2">{module.title}</p>
+              </div>
+            </div>
+
+            {/* Exercises List */}
+            <div className="ml-4 space-y-2 relative">
+              {(module.exercises || []).map((exercise) => {
+                const isCurrent = exercise.id === progressData.currentExerciseId;
+                const isAttempted = (exercise.attemptCount ?? 0) > 0;
+                return (
+                  <div
+                    key={exercise.id}
+                    className={`flex items-start space-x-3 py-1 relative z-10 ${
+                      exercise.isExerciseCompleted ? 'cursor-pointer hover:bg-gray-50 rounded-lg px-2 transition-colors duration-200' : ''
+                    }`}
+                    onClick={() => handleExerciseClick(exercise, module.id)}
+                  >
+                    <div
+                      className={`
+                        w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-300
+                        ${
+                          isCurrent
+                            ? 'bg-blue-500 border-blue-500 ring-2 ring-blue-200'
+                            : exercise.isExerciseCompleted
+                            ? 'bg-green-500 border-green-500'
+                            : isAttempted
+                            ? 'bg-yellow-500 border-yellow-500'
+                            : 'border-gray-300 bg-white'
+                        }
+                      `}
+                    >
+                      {exercise.isExerciseCompleted && <Check className="h-3 w-3 text-white" />}
+                      {isAttempted && !exercise.isExerciseCompleted && <Clock className="h-2 w-2 text-white" />}
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <p
+                        className={`text-xs font-medium ${
+                          isCurrent
+                            ? 'text-blue-600'
+                            : exercise.isExerciseCompleted
+                            ? 'text-green-600 hover:text-green-700'
+                            : isAttempted
+                            ? 'text-yellow-600'
+                            : 'text-gray-500'
+                        } ${exercise.isExerciseCompleted ? 'hover:underline' : ''}`}
+                      >
+                        {exercise.orderNumber}. {exercise.title}
+                      </p>
+                      {(exercise.attemptCount ?? 0) > 0 && <p className="text-xs text-gray-400">{exercise.attemptCount ?? 0}/3 attempts</p>}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 
