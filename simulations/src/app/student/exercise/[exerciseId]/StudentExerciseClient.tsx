@@ -9,7 +9,17 @@ import StudentLoading from '@/components/student/StudentLoading';
 import StudentProgressStepper, { ProgressData } from '@/components/student/StudentProgressStepper';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CaseStudyWithRelationsForStudents, ExerciseWithModuleAndCaseStudy } from '@/types/api';
+import {
+  CaseStudyWithRelationsForStudents,
+  ExerciseWithModuleAndCaseStudy,
+  StudentExerciseProgress,
+  StudentModuleProgress,
+  StudentProgressData,
+  StudentNavigationData,
+  StudentCaseStudyInfo,
+  StudentModuleInfo,
+  ConsolidatedStudentExerciseResponse,
+} from '@/types/api';
 import { SimulationSession } from '@/types/user';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
@@ -46,85 +56,6 @@ interface NextExerciseResponse {
   previousModuleId?: string;
   isFirstExercise: boolean;
   isNextExerciseInDifferentModule: boolean;
-}
-
-// Consolidated interfaces matching the API response
-interface StudentExerciseProgress {
-  id: string;
-  title: string;
-  orderNumber: number;
-  isCompleted: boolean;
-  isAttempted: boolean;
-  isCurrent: boolean;
-  attemptCount: number;
-}
-
-interface StudentModuleProgress {
-  id: string;
-  title: string;
-  orderNumber: number;
-  isCompleted: boolean;
-  isCurrent: boolean;
-  exercises: StudentExerciseProgress[];
-}
-
-interface StudentProgressData {
-  caseStudyTitle: string;
-  caseStudyId: string;
-  currentModuleId: string;
-  currentExerciseId: string;
-  modules: StudentModuleProgress[];
-}
-
-interface StudentNavigationData {
-  nextExerciseId?: string;
-  nextModuleId?: string;
-  caseStudyId?: string;
-  isComplete: boolean;
-  message: string;
-  previousExerciseId?: string;
-  previousModuleId?: string;
-  isFirstExercise: boolean;
-  isNextExerciseInDifferentModule: boolean;
-}
-
-interface StudentCaseStudyInfo {
-  id: string;
-  title: string;
-  shortDescription: string;
-  details: string;
-  subject: string;
-  finalSummaryPromptInstructions?: string | null;
-}
-
-interface StudentModuleInfo {
-  id: string;
-  title: string;
-  shortDescription: string;
-  details: string;
-  orderNumber: number;
-  caseStudy: StudentCaseStudyInfo;
-}
-
-interface ConsolidatedStudentExerciseResponse {
-  // Exercise details
-  id: string;
-  title: string;
-  details: string;
-  promptHint?: string | null;
-  orderNumber: number;
-
-  // Module and case study context
-  module: StudentModuleInfo;
-
-  // Navigation data
-  navigation: StudentNavigationData;
-
-  // Progress data
-  progress: StudentProgressData;
-
-  // Student's attempts for this exercise
-  attempts: ExerciseAttempt[];
 }
 
 interface SelectAttemptRequest {

@@ -4,6 +4,15 @@ import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withEr
 import type { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { prisma } from '@/prisma';
 import type { ModuleExercise, ExerciseAttempt, CaseStudyModule, CaseStudy } from '@prisma/client';
+import {
+  StudentExerciseProgress,
+  StudentModuleProgress,
+  StudentProgressData,
+  StudentNavigationData,
+  StudentCaseStudyInfo,
+  StudentModuleInfo,
+  ConsolidatedStudentExerciseResponse,
+} from '@/types/api';
 
 type ExerciseEntity = ModuleExercise;
 
@@ -33,85 +42,6 @@ interface ModuleWithCaseStudy extends CaseStudyModule {
 
 interface ExerciseWithFullContext extends ModuleExercise {
   module: ModuleWithCaseStudy;
-}
-
-// Consolidated interfaces for student exercise data
-interface StudentExerciseProgress {
-  id: string;
-  title: string;
-  orderNumber: number;
-  isCompleted: boolean;
-  isAttempted: boolean;
-  isCurrent: boolean;
-  attemptCount: number;
-}
-
-interface StudentModuleProgress {
-  id: string;
-  title: string;
-  orderNumber: number;
-  isCompleted: boolean;
-  isCurrent: boolean;
-  exercises: StudentExerciseProgress[];
-}
-
-interface StudentProgressData {
-  caseStudyTitle: string;
-  caseStudyId: string;
-  currentModuleId: string;
-  currentExerciseId: string;
-  modules: StudentModuleProgress[];
-}
-
-interface StudentNavigationData {
-  nextExerciseId?: string;
-  nextModuleId?: string;
-  caseStudyId?: string;
-  isComplete: boolean;
-  message: string;
-  previousExerciseId?: string;
-  previousModuleId?: string;
-  isFirstExercise: boolean;
-  isNextExerciseInDifferentModule: boolean;
-}
-
-interface StudentCaseStudyInfo {
-  id: string;
-  title: string;
-  shortDescription: string;
-  details: string;
-  subject: string;
-  finalSummaryPromptInstructions?: string | null;
-}
-
-interface StudentModuleInfo {
-  id: string;
-  title: string;
-  shortDescription: string;
-  details: string;
-  orderNumber: number;
-  caseStudy: StudentCaseStudyInfo;
-}
-
-interface ConsolidatedStudentExerciseResponse {
-  // Exercise details
-  id: string;
-  title: string;
-  details: string;
-  promptHint?: string | null;
-  orderNumber: number;
-
-  // Module and case study context
-  module: StudentModuleInfo;
-
-  // Navigation data
-  navigation: StudentNavigationData;
-
-  // Progress data
-  progress: StudentProgressData;
-
-  // Student's attempts for this exercise
-  attempts: ExerciseAttempt[];
 }
 
 export interface UpdateModuleExerciseRequest {
