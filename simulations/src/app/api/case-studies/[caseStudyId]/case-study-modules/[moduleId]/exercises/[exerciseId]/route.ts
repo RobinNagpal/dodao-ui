@@ -4,15 +4,7 @@ import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withEr
 import type { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { prisma } from '@/prisma';
 import type { ModuleExercise, ExerciseAttempt, CaseStudyModule, CaseStudy } from '@prisma/client';
-import {
-  StudentExerciseProgress,
-  StudentModuleProgress,
-  StudentProgressData,
-  StudentNavigationData,
-  StudentCaseStudyInfo,
-  StudentModuleInfo,
-  ConsolidatedStudentExerciseResponse,
-} from '@/types/api';
+import { StudentExerciseProgress, StudentModuleProgress, StudentProgressData, StudentNavigationData, ConsolidatedStudentExerciseResponse } from '@/types/api';
 
 type ExerciseEntity = ModuleExercise;
 
@@ -42,6 +34,7 @@ interface ModuleWithCaseStudy extends CaseStudyModule {
 
 interface ExerciseWithFullContext extends ModuleExercise {
   module: ModuleWithCaseStudy;
+  attempts: ExerciseAttempt[];
 }
 
 export interface UpdateModuleExerciseRequest {
@@ -68,6 +61,16 @@ async function getConsolidatedStudentExerciseData(
       archive: false,
     },
     include: {
+      // Include attempts for the current exercise at the root level
+      attempts: {
+        where: {
+          createdById: userId,
+          archive: false,
+        },
+        orderBy: {
+          attemptNumber: 'asc',
+        },
+      },
       module: {
         include: {
           caseStudy: {
@@ -143,8 +146,14 @@ async function getConsolidatedStudentExerciseData(
     throw new Error('Exercise not found');
   }
 
+  // Extract attempts first, then work with the rest of the data
+  const attempts = (exerciseWithFullContext as ExerciseWithFullContext).attempts || [];
+
+  // Cast to our interface for the rest of the logic (excluding attempts)
+  const typedExerciseWithFullContext = exerciseWithFullContext as ExerciseWithFullContext;
+
   // Check if student is enrolled
-  const isEnrolled = exerciseWithFullContext.module.caseStudy.enrollments.some((enrollment) =>
+  const isEnrolled = typedExerciseWithFullContext.module.caseStudy.enrollments.some((enrollment) =>
     enrollment.students.some((student) => student.assignedStudentId === userId)
   );
 
@@ -152,37 +161,21 @@ async function getConsolidatedStudentExerciseData(
     throw new Error('Student is not enrolled in this case study');
   }
 
-  const currentModule = exerciseWithFullContext.module;
+  const currentModule = typedExerciseWithFullContext.module;
   const caseStudy = currentModule.caseStudy;
 
   // Calculate navigation data (next/previous exercise logic)
-  const navigationData = calculateNavigationData(
-    exerciseWithFullContext as ExerciseWithFullContext,
-    caseStudy as CaseStudyWithModules,
-    currentModule as ModuleWithCaseStudy
-  );
+  const navigationData = calculateNavigationData(typedExerciseWithFullContext, caseStudy as CaseStudyWithModules, currentModule as ModuleWithCaseStudy);
 
   // Calculate progress data
-  const progressData = calculateProgressData(exerciseWithFullContext as ExerciseWithFullContext, caseStudy as CaseStudyWithModules, userId);
-
-  // Get student's attempts for this exercise
-  const attempts = await prisma.exerciseAttempt.findMany({
-    where: {
-      exerciseId,
-      createdById: userId,
-      archive: false,
-    },
-    orderBy: {
-      attemptNumber: 'asc',
-    },
-  });
+  const progressData = calculateProgressData(typedExerciseWithFullContext, caseStudy as CaseStudyWithModules, userId);
 
   return {
-    id: exerciseWithFullContext.id,
-    title: exerciseWithFullContext.title,
-    details: exerciseWithFullContext.details,
-    promptHint: exerciseWithFullContext.promptHint,
-    orderNumber: exerciseWithFullContext.orderNumber,
+    id: typedExerciseWithFullContext.id,
+    title: typedExerciseWithFullContext.title,
+    details: typedExerciseWithFullContext.details,
+    promptHint: typedExerciseWithFullContext.promptHint,
+    orderNumber: typedExerciseWithFullContext.orderNumber,
     module: {
       id: currentModule.id,
       title: currentModule.title,
