@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { Brain, FileText, Download, Eye, Sparkles, CheckCircle } from 'lucide-react';
+import { FileText, Download, Eye, Sparkles, CheckCircle, Bot } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
@@ -225,7 +225,7 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
                     </>
                   ) : (
                     <>
-                      <Brain className="h-6 w-6" />
+                      <Bot className="h-6 w-6" />
                       <span className="font-medium text-lg">Generate Final Summary</span>
                     </>
                   )}

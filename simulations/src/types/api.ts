@@ -7,6 +7,7 @@ import {
   EnrollmentStudent,
   FinalSubmission,
   User,
+  ExerciseAttempt,
 } from '@prisma/client';
 
 export interface CreateCaseStudyRequest {
@@ -150,4 +151,83 @@ export interface DeleteResponse {
 export interface CreateEnrollmentRequest {
   caseStudyId: string;
   assignedInstructorEmail: string;
+}
+
+// Consolidated interfaces for student exercise data
+export interface StudentExerciseProgress {
+  id: string;
+  title: string;
+  orderNumber: number;
+  isCompleted: boolean;
+  isAttempted: boolean;
+  isCurrent: boolean;
+  attemptCount: number;
+}
+
+export interface StudentModuleProgress {
+  id: string;
+  title: string;
+  orderNumber: number;
+  isCompleted: boolean;
+  isCurrent: boolean;
+  exercises: StudentExerciseProgress[];
+}
+
+export interface StudentProgressData {
+  caseStudyTitle: string;
+  caseStudyId: string;
+  currentModuleId: string;
+  currentExerciseId: string;
+  modules: StudentModuleProgress[];
+}
+
+export interface StudentNavigationData {
+  nextExerciseId?: string;
+  nextModuleId?: string;
+  caseStudyId?: string;
+  isComplete: boolean;
+  message: string;
+  previousExerciseId?: string;
+  previousModuleId?: string;
+  isFirstExercise: boolean;
+  isNextExerciseInDifferentModule: boolean;
+}
+
+export interface StudentCaseStudyInfo {
+  id: string;
+  title: string;
+  shortDescription: string;
+  details: string;
+  subject: string;
+  finalSummaryPromptInstructions?: string | null;
+}
+
+export interface StudentModuleInfo {
+  id: string;
+  title: string;
+  shortDescription: string;
+  details: string;
+  orderNumber: number;
+  caseStudy: StudentCaseStudyInfo;
+}
+
+export interface ConsolidatedStudentExerciseResponse {
+  // Exercise details
+  id: string;
+  title: string;
+  details: string;
+  promptHint?: string | null;
+  orderNumber: number;
+
+  // Module and case study context
+  module: StudentModuleInfo;
+
+  // Navigation data
+  navigation: StudentNavigationData;
+
+  // Progress data
+  progress: StudentProgressData;
+
+  // Student's attempts for this exercise
+  attempts: ExerciseAttempt[];
 }
