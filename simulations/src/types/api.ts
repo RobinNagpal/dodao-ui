@@ -10,6 +10,11 @@ import {
   ExerciseAttempt,
 } from '@prisma/client';
 
+export type ModuleExerciseWithProgress = ModuleExercise & {
+  isExerciseCompleted?: boolean;
+  attemptCount?: number;
+};
+
 export interface CreateCaseStudyRequest {
   title: string;
   shortDescription: string;
@@ -62,12 +67,6 @@ export interface UpdateExerciseRequest {
   orderNumber: number;
 }
 
-export type ExerciseWithModuleAndCaseStudy = ModuleExercise & {
-  module?: CaseStudyModule & {
-    caseStudy?: CaseStudy;
-  };
-};
-
 export type ModuleWithExercises = CaseStudyModule & {
   exercises?: ModuleExercise[];
 };
@@ -75,7 +74,8 @@ export type ModuleWithExercises = CaseStudyModule & {
 export type CaseStudyWithRelationsForStudents = CaseStudy & {
   modules?: Array<
     CaseStudyModule & {
-      exercises?: ModuleExercise[];
+      exercises?: Array<ModuleExerciseWithProgress>;
+      isModuleCompleted?: boolean;
     }
   >;
   instructorEmail?: string; // Added instructor email
@@ -153,32 +153,16 @@ export interface CreateEnrollmentRequest {
   assignedInstructorEmail: string;
 }
 
-// Consolidated interfaces for student exercise data
-export interface StudentExerciseProgress {
+export interface ExerciseWithAttemptsResponse {
+  // Exercise details
   id: string;
   title: string;
+  details: string;
+  promptHint?: string | null;
   orderNumber: number;
-  isCompleted: boolean;
-  isAttempted: boolean;
-  isCurrent: boolean;
-  attemptCount: number;
-}
 
-export interface StudentModuleProgress {
-  id: string;
-  title: string;
-  orderNumber: number;
-  isCompleted: boolean;
-  isCurrent: boolean;
-  exercises: StudentExerciseProgress[];
-}
-
-export interface StudentProgressData {
-  caseStudyTitle: string;
-  caseStudyId: string;
-  currentModuleId: string;
-  currentExerciseId: string;
-  modules: StudentModuleProgress[];
+  // Student's attempts for this exercise
+  attempts: ExerciseAttempt[];
 }
 
 export interface StudentNavigationData {
@@ -191,43 +175,4 @@ export interface StudentNavigationData {
   previousModuleId?: string;
   isFirstExercise: boolean;
   isNextExerciseInDifferentModule: boolean;
-}
-
-export interface StudentCaseStudyInfo {
-  id: string;
-  title: string;
-  shortDescription: string;
-  details: string;
-  subject: string;
-  finalSummaryPromptInstructions?: string | null;
-}
-
-export interface StudentModuleInfo {
-  id: string;
-  title: string;
-  shortDescription: string;
-  details: string;
-  orderNumber: number;
-  caseStudy: StudentCaseStudyInfo;
-}
-
-export interface ConsolidatedStudentExerciseResponse {
-  // Exercise details
-  id: string;
-  title: string;
-  details: string;
-  promptHint?: string | null;
-  orderNumber: number;
-
-  // Module and case study context
-  module: StudentModuleInfo;
-
-  // Navigation data
-  navigation: StudentNavigationData;
-
-  // Progress data
-  progress: StudentProgressData;
-
-  // Student's attempts for this exercise
-  attempts: ExerciseAttempt[];
 }
