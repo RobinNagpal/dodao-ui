@@ -35,7 +35,7 @@ export interface FloatingNavigationProps {
 
 const XL_MIN_WIDTH_PX = 1280 as const; // Tailwind 'xl'
 const DEFAULT_DOCK_WIDTH_PX = 384 as const; // Tailwind w-96
-const DEFAULT_DOCK_MIN_GAP_PX = 16 as const; // breathing room between content and dock
+const DEFAULT_DOCK_MIN_GAP_PX = 16 as const; // breathing room
 const DEFAULT_SCROLL_OFFSET_PX = 80 as const;
 const NAV_ROLE_LABEL = 'Navigation' as const;
 
@@ -90,25 +90,20 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
     scrollOffsetPx = DEFAULT_SCROLL_OFFSET_PX,
   } = props;
 
-  // Only render when there’s something to show.
-  const visibleSections: ReadonlyArray<NavigationSection> = React.useMemo(() => sections.filter((s) => s.hasContent !== false), [sections]);
-  if (visibleSections.length === 0) return null;
+  // NOTE: compute directly (not useMemo) so we can safely keep hooks order constant.
+  const visibleSections: ReadonlyArray<NavigationSection> = sections.filter((s) => s.hasContent !== false);
 
   const isXL: boolean = useIsXL();
 
-  /** Root ref (to traverse up to the container when measuring). */
+  /** Root ref used for measuring ancestry. */
   const rootRef = React.useRef<HTMLDivElement | null>(null);
 
-  /**
-   * Determine whether we can dock the panel on the right without overlapping
-   * the centered content (inside element with `max-w-7xl`).
-   */
+  /** Whether we have room to dock (without overlapping main content). */
   const [canDock, setCanDock] = React.useState<boolean>(false);
 
   const measureCanDock = React.useCallback((): void => {
     if (typeof window === 'undefined') return;
 
-    // 1) Find the nearest ancestor with .max-w-7xl (from our root), else fall back to any on the page.
     const findContainer = (): HTMLElement | null => {
       let node: HTMLElement | null = rootRef.current?.parentElement ?? null;
       while (node) {
@@ -120,34 +115,26 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
 
     const containerEl: HTMLElement | null = findContainer();
     if (!containerEl) {
-      // Be conservative: if we can't find the container, assume cannot dock (avoid surprise overlap).
       setCanDock(false);
       return;
     }
 
     const rect: DOMRect = containerEl.getBoundingClientRect();
     const viewportWidth: number = window.innerWidth;
-
-    // Available space to the right of the container.
     const availableRightPx: number = Math.max(0, viewportWidth - Math.ceil(rect.right));
-
-    // Docking is safe when there's enough right-side space for the panel plus a small gap.
     const canDockNow: boolean = availableRightPx >= dockWidthPxXL + dockMinGapPxXL;
     setCanDock(canDockNow);
   }, [dockWidthPxXL, dockMinGapPxXL]);
 
-  // Recompute on mount and whenever viewport/container size changes.
   React.useEffect(() => {
     measureCanDock();
 
-    // Listen to window resizes.
     const onResize = (): void => measureCanDock();
     window.addEventListener('resize', onResize);
 
-    // Observe the container element for layout changes (padding, width changes from breakpoints).
+    // Observe the container element for layout changes.
     let ro: ResizeObserver | null = null;
     const container: Element | null = ((): Element | null => {
-      // Use the same lookup as measureCanDock to attach observer.
       let node: HTMLElement | null = rootRef.current?.parentElement ?? null;
       while (node) {
         if (node.classList.contains('max-w-7xl')) return node;
@@ -167,17 +154,13 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
     };
   }, [measureCanDock]);
 
-  // Open state: open by default only if (isXL && canDock). Respect user toggles afterward.
-  const [isOpen, setIsOpen] = React.useState<boolean>(() => getIsXLNow() && false); // initial false; will auto-open below if allowed
+  // Open by default only if (isXL && canDock). Respect user toggles.
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const userToggledRef = React.useRef<boolean>(false);
 
   React.useEffect(() => {
-    if (isXL && canDock && !userToggledRef.current) {
-      setIsOpen(true);
-    }
-    if ((!isXL || !canDock) && !userToggledRef.current) {
-      setIsOpen(false);
-    }
+    if (isXL && canDock && !userToggledRef.current) setIsOpen(true);
+    if ((!isXL || !canDock) && !userToggledRef.current) setIsOpen(false);
   }, [isXL, canDock]);
 
   const open = React.useCallback((): void => {
@@ -234,8 +217,6 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
       if (!el) return;
       const top = el.getBoundingClientRect().top + window.pageYOffset - scrollOffsetPx;
       window.scrollTo({ top, behavior: 'smooth' });
-
-      // Close only when not in docked mode.
       if (!(isXL && canDock)) close();
     },
     [close, isXL, canDock, scrollOffsetPx]
@@ -243,9 +224,11 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
 
   /* ───────────────────────────── Render ───────────────────────────── */
 
+  // Safe to return null here—after all hooks have run.
+  if (visibleSections.length === 0) return null;
+
   const isDocked: boolean = isXL && canDock;
 
-  // XL handle (compact) shows when docked-but-closed OR undocked (overlap) and closed.
   const handleButton: JSX.Element | null =
     isXL && !isOpen ? (
       <button
@@ -259,7 +242,6 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
       </button>
     ) : null;
 
-  // FAB for smaller screens (or any non-XL viewport).
   const fabMobile: JSX.Element | null = !isXL ? (
     <button
       type="button"
@@ -272,11 +254,9 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
     </button>
   ) : null;
 
-  // Backdrop only for overlay mode (non-docked) when open.
   const backdrop: JSX.Element | null =
     !isDocked && isOpen ? <button type="button" aria-label="Close navigation backdrop" className="fixed inset-0 z-40 bg-black/50" onClick={close} /> : null;
 
-  // Panel: docked (no content push) if isDocked; otherwise overlay slide-in.
   const panelRole: 'dialog' | 'complementary' = isDocked ? 'complementary' : 'dialog';
   const panelAriaModal: boolean = !isDocked && isOpen;
 
@@ -288,12 +268,8 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
       aria-modal={panelAriaModal}
       className={cx(
         'z-50 bg-gray-900 text-white border-l border-gray-700 shadow-xl',
-        'w-96 max-w-md', // keep in sync with dockWidthPxXL
-        isDocked
-          ? // Docked right, visible only when open
-            'fixed top-24 right-0 bottom-6'
-          : // Overlay slide-in
-            'fixed inset-y-0 right-0 transform transition-transform duration-300 ease-in-out',
+        'w-96 max-w-md', // keep in sync with width prop
+        isDocked ? 'fixed top-24 right-0 bottom-6' : 'fixed inset-y-0 right-0 transform transition-transform duration-300 ease-in-out',
         isDocked ? (isOpen ? '' : 'pointer-events-none invisible') : isOpen ? 'translate-x-0' : 'translate-x-full'
       )}
       style={{ width: dockWidthPxXL }}
