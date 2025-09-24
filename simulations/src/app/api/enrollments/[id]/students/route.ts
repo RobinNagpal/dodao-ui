@@ -3,7 +3,6 @@ import { getOrCreateUser } from '@/utils/user-utils';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { EnrollmentStudent, UserRole } from '@prisma/client';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { NextRequest } from 'next/server';
 
 interface AddStudentRequest {

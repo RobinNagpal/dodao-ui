@@ -8,7 +8,7 @@ import type { CaseStudyWithRelationsForStudents, StudentNavigationData } from '@
  * @returns Navigation data including next/previous exercise information
  */
 export function calculateNavigationData(
-  caseStudyData: CaseStudyWithRelationsForStudents | null | undefined,
+  caseStudyData: CaseStudyWithRelationsForStudents | undefined,
   moduleId: string | undefined,
   exerciseId: string | undefined
 ): StudentNavigationData | null {
