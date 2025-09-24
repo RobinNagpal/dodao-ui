@@ -21,7 +21,7 @@ import type { CaseStudyModule, ExerciseAttempt } from '@prisma/client';
 import { AlertCircle, ArrowLeft, Bot, CheckCircle, Clock, Eye, FileText, MessageSquare, Plus, RotateCcw, Send, Sparkles, Star, Zap } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface StudentExerciseClientProps {
   exerciseId: string;
@@ -115,7 +115,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   }, [exerciseData?.attempts, localAttempts]);
 
   // Calculate navigation data using the utility function
-  const navigationData = useMemo(() => calculateNavigationData(caseStudyData, moduleId, exerciseId), [caseStudyData, moduleId, exerciseId]);
+  const navigationData = calculateNavigationData(caseStudyData, moduleId, exerciseId);
 
   // Get current module data for context
   const currentModule = caseStudyData?.modules?.find((m) => m.id === moduleId);
@@ -227,25 +227,22 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     );
   };
 
-  const handleSelectAttempt = useCallback(
-    async (attemptId: string) => {
-      if (selectingAttempt) return;
+  const handleSelectAttempt = async (attemptId: string) => {
+    if (selectingAttempt) return;
 
-      try {
-        const result = await selectAttempt(`${getBaseUrl()}/api/student/exercises/${exerciseId}/attempts/select`, {
-          attemptId,
-        });
+    try {
+      const result = await selectAttempt(`${getBaseUrl()}/api/student/exercises/${exerciseId}/attempts/select`, {
+        attemptId,
+      });
 
-        if (result) {
-          // Update local attempts with the result instead of refetching
-          setLocalAttempts(result.attempts);
-        }
-      } catch (error) {
-        console.error('Error selecting attempt:', error);
+      if (result) {
+        // Update local attempts with the result instead of refetching
+        setLocalAttempts(result.attempts);
       }
-    },
-    [selectingAttempt, selectAttempt, exerciseId]
-  );
+    } catch (error) {
+      console.error('Error selecting attempt:', error);
+    }
+  };
 
   const openAttemptModal = (attempt: ExerciseAttempt) => {
     setSelectedAttempt(attempt);
