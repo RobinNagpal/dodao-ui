@@ -17,7 +17,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { ExerciseAttempt } from '@prisma/client';
-import { AlertCircle, Bot, CheckCircle, Clock, Eye, FileText, MessageSquare, Plus, RotateCcw, Send, Sparkles, Star, Zap } from 'lucide-react';
+import { AlertCircle, ArrowLeft, Bot, CheckCircle, Clock, Eye, FileText, MessageSquare, Plus, RotateCcw, Send, Sparkles, Star, Zap } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -53,6 +53,10 @@ interface NextExerciseResponse {
   caseStudyId?: string;
   isComplete: boolean;
   message: string;
+  previousExerciseId?: string;
+  previousModuleId?: string;
+  isFirstExercise: boolean;
+  isNextExerciseInDifferentModule: boolean;
 }
 
 interface SelectAttemptRequest {
@@ -239,6 +243,18 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
         router.push('/student');
       }
     }
+  };
+
+  const handleMoveToPrevious = () => {
+    if (!nextExerciseData || !nextExerciseData.previousExerciseId) {
+      return;
+    }
+
+    router.push(
+      `/student/exercise/${nextExerciseData.previousExerciseId}?moduleId=${nextExerciseData.previousModuleId || moduleId}&caseStudyId=${
+        nextExerciseData.caseStudyId || caseStudyId
+      }`
+    );
   };
 
   const handleSelectAttempt = useCallback(
@@ -479,6 +495,15 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
+                      {!nextExerciseData?.isFirstExercise && (
+                        <button
+                          onClick={handleMoveToPrevious}
+                          className="text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-xl"
+                        >
+                          <ArrowLeft className="h-4 w-4" />
+                          <span>Previous Exercise</span>
+                        </button>
+                      )}
                       {prompt.trim() && (
                         <button
                           onClick={() => {
@@ -520,19 +545,33 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">Great work!</h3>
                   <p className="text-gray-600 mb-4 text-base">You can continue to the next exercise or try again.</p>
-                  <div className="flex items-center justify-center space-x-4">
-                    <button
-                      onClick={handleMoveToNext}
-                      className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                    >
-                      {nextExerciseData?.isComplete ? 'Continue to Report' : 'Next Exercise'}
-                    </button>
-                    <button
-                      onClick={() => setShowRetryPrompt(true)}
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2  rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                    >
-                      Attempt Again
-                    </button>
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1 flex justify-start">
+                      {!nextExerciseData?.isFirstExercise && (
+                        <button
+                          onClick={handleMoveToPrevious}
+                          className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-2 rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
+                        >
+                          <ArrowLeft className="h-5 w-5" />
+                          <span>Previous Exercise</span>
+                        </button>
+                      )}
+                    </div>
+                    <div className="flex items-center justify-center space-x-4">
+                      <button
+                        onClick={handleMoveToNext}
+                        className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      >
+                        {nextExerciseData?.isComplete ? 'Continue to Report' : nextExerciseData?.isNextExerciseInDifferentModule ? 'Next Module' : 'Next Exercise'}
+                      </button>
+                      <button
+                        onClick={() => setShowRetryPrompt(true)}
+                        className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2  rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      >
+                        Attempt Again
+                      </button>
+                    </div>
+                    <div className="flex-1"></div>
                   </div>
                 </div>
               ) : shouldShowAllAttemptsUsed() ? (
@@ -543,12 +582,28 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">All Attempts Completed</h3>
                   <p className="text-gray-600 mb-4 text-base">You have used all 3 attempts for this exercise.</p>
                   {!hasMovedToNext && !submittingAttempt && (
-                    <button
-                      onClick={handleMoveToNext}
-                      className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                    >
-                      {nextExerciseData?.isComplete ? 'Continue to Report' : 'Continue to Next Exercise'}
-                    </button>
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1 flex justify-start">
+                        {!nextExerciseData?.isFirstExercise && (
+                          <button
+                            onClick={handleMoveToPrevious}
+                            className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-2 rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
+                          >
+                            <ArrowLeft className="h-5 w-5" />
+                            <span>Previous Exercise</span>
+                          </button>
+                        )}
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <button
+                          onClick={handleMoveToNext}
+                          className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        >
+                          {nextExerciseData?.isComplete ? 'Continue to Report' : nextExerciseData?.isNextExerciseInDifferentModule ? 'Next Module' : 'Continue to Next Exercise'}
+                        </button>
+                      </div>
+                      <div className="flex-1"></div>
+                    </div>
                   )}
                 </div>
               ) : null}

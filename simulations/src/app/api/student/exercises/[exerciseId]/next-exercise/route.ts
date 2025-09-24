@@ -9,6 +9,10 @@ interface NextExerciseResponse {
   caseStudyId?: string;
   isComplete: boolean;
   message: string;
+  previousExerciseId?: string;
+  previousModuleId?: string;
+  isFirstExercise: boolean;
+  isNextExerciseInDifferentModule: boolean;
 }
 
 // GET /api/student/exercises/[exerciseId]/next-exercise - Get next exercise or module info
@@ -96,6 +100,41 @@ async function getHandler(
   const currentModule = currentExercise.module;
   const caseStudy = currentModule.caseStudy;
 
+  // Find previous exercise - check current module first, then previous modules
+  let previousExerciseId: string | undefined;
+  let previousModuleId: string | undefined;
+  let isFirstExercise = false;
+
+  // Check for previous exercise in current module
+  const previousExerciseInModule = currentModule.exercises
+    .filter((exercise) => exercise.orderNumber < currentExercise.orderNumber)
+    .sort((a, b) => b.orderNumber - a.orderNumber)[0]; // Get the one with highest order number less than current
+
+  if (previousExerciseInModule) {
+    previousExerciseId = previousExerciseInModule.id;
+    previousModuleId = currentModule.id;
+  } else {
+    // Check previous modules for their last exercise
+    const previousModules = caseStudy.modules
+      .filter((module) => module.orderNumber < currentModule.orderNumber)
+      .sort((a, b) => b.orderNumber - a.orderNumber); // Sort desc to get the most recent previous module first
+
+    if (previousModules.length > 0) {
+      const lastPreviousModule = previousModules[0];
+      if (lastPreviousModule.exercises.length > 0) {
+        const lastExerciseInPreviousModule = lastPreviousModule.exercises
+          .sort((a, b) => b.orderNumber - a.orderNumber)[0]; // Get last exercise in previous module
+        previousExerciseId = lastExerciseInPreviousModule.id;
+        previousModuleId = lastPreviousModule.id;
+      }
+    }
+  }
+
+  // If no previous exercise found, this is the first exercise of the case study
+  if (!previousExerciseId) {
+    isFirstExercise = true;
+  }
+
   // Find next exercise in current module
   const nextExerciseInModule = currentModule.exercises.find((exercise) => exercise.orderNumber > currentExercise.orderNumber);
 
@@ -105,6 +144,10 @@ async function getHandler(
       caseStudyId: caseStudy.id,
       isComplete: false,
       message: 'Next exercise found in current module',
+      previousExerciseId,
+      previousModuleId,
+      isFirstExercise,
+      isNextExerciseInDifferentModule: false,
     };
   }
 
@@ -119,6 +162,10 @@ async function getHandler(
       caseStudyId: caseStudy.id,
       isComplete: false,
       message: 'Next exercise found in next module',
+      previousExerciseId,
+      previousModuleId,
+      isFirstExercise,
+      isNextExerciseInDifferentModule: true,
     };
   }
 
@@ -127,6 +174,10 @@ async function getHandler(
     caseStudyId: caseStudy.id,
     isComplete: true,
     message: 'Case study completed - ready for final submission',
+    previousExerciseId,
+    previousModuleId,
+    isFirstExercise,
+    isNextExerciseInDifferentModule: false,
   };
 }
 
