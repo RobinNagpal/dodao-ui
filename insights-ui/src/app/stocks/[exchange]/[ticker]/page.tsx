@@ -103,7 +103,7 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
 /** Competition + Similar fetchers (promise-based for Suspense) */
 export type VsCompetition = Readonly<{ overallAnalysisDetails: string }>;
 
-export async function fetchCompetition(exchange: string, ticker: string): Promise<CompetitionResponse> {
+async function fetchCompetition(exchange: string, ticker: string): Promise<CompetitionResponse> {
   const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition`;
 
   const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
@@ -114,7 +114,7 @@ export async function fetchCompetition(exchange: string, ticker: string): Promis
   return json;
 }
 
-export async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTicker[]> {
+async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTicker[]> {
   const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar`;
 
   const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
