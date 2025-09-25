@@ -3,58 +3,9 @@ import { prisma } from '@/prisma';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { verifyEnrollmentAccess } from '@/app/api/helpers/enrollments-util';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { StudentDetailResponse } from '@/types/api';
 
-interface ExerciseAttemptDetail {
-  id: string;
-  attemptNumber: number;
-  model: string | null;
-  prompt: string | null;
-  promptResponse: string | null;
-  status: string | null;
-  error: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface ExerciseDetail {
-  id: string;
-  title: string;
-  details: string;
-  orderNumber: number;
-  attempts: ExerciseAttemptDetail[];
-}
-
-interface ModuleDetail {
-  id: string;
-  title: string;
-  shortDescription: string;
-  details: string;
-  orderNumber: number;
-  exercises: ExerciseDetail[];
-}
-
-interface StudentDetailResponse {
-  student: {
-    id: string;
-    assignedStudentId: string;
-    enrollmentId: string;
-    createdAt: string;
-  };
-  caseStudy: {
-    id: string;
-    title: string;
-    shortDescription: string;
-  };
-  modules: ModuleDetail[];
-  statistics: {
-    totalExercises: number;
-    attemptedExercises: number;
-    totalAttempts: number;
-    completionPercentage: number;
-  };
-}
-
-// GET /api/case-studies/[caseStudyId]/class-enrollments/[classEnrollmentId]/student-enrollments/[studentEnrollmentId] - Get detailed student data
+// GET /api/case-studies/[caseStudyId]/class-enrollments/[classEnrollmentId]/student-enrollments/[studentEnrollmentId] - Get student-specific data only
 async function getHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
@@ -69,43 +20,46 @@ async function getHandler(
     caseStudyId,
   });
 
-  // Find the enrollment student by ID
-  const enrollmentStudent = await prisma.enrollmentStudent.findFirstOrThrow({
+  // Get student data with enrollment and assigned student info
+  const studentData = await prisma.enrollmentStudent.findFirstOrThrow({
     where: {
       id: studentEnrollmentId,
       enrollmentId: enrollment.id,
       archive: false,
     },
-  });
-
-  // Get case study with modules and exercises
-  const caseStudy = await prisma.caseStudy.findFirstOrThrow({
-    where: {
-      id: caseStudyId,
-      archive: false,
-    },
     include: {
-      modules: {
-        where: { archive: false },
-        orderBy: { orderNumber: 'asc' },
-        include: {
-          exercises: {
-            where: { archive: false },
-            orderBy: { orderNumber: 'asc' },
-          },
+      enrollment: true, // Include class enrollment details (has className)
+      assignedStudent: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
         },
       },
     },
   });
 
-  // Get all exercise IDs for this case study
-  const allExerciseIds = caseStudy.modules.flatMap((module) => module.exercises.map((exercise) => exercise.id));
-
-  // Get all exercise attempts for this student
-  const exerciseAttempts = await prisma.exerciseAttempt.findMany({
+  // Get all exercise IDs for this case study (to filter attempts)
+  const caseStudyExercises = await prisma.moduleExercise.findMany({
     where: {
-      exerciseId: { in: allExerciseIds },
-      createdById: enrollmentStudent.assignedStudentId,
+      module: {
+        caseStudyId: caseStudyId,
+        archive: false,
+      },
+      archive: false,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  const exerciseIds = caseStudyExercises.map((e) => e.id);
+
+  // Get all attempts for this student in this case study
+  const attempts = await prisma.exerciseAttempt.findMany({
+    where: {
+      exerciseId: { in: exerciseIds },
+      createdById: studentData.assignedStudentId,
       archive: false,
     },
     orderBy: {
@@ -113,67 +67,10 @@ async function getHandler(
     },
   });
 
-  // Group attempts by exercise ID
-  const attemptsByExercise = exerciseAttempts.reduce((acc, attempt) => {
-    if (!acc[attempt.exerciseId]) {
-      acc[attempt.exerciseId] = [];
-    }
-    acc[attempt.exerciseId].push({
-      id: attempt.id,
-      attemptNumber: attempt.attemptNumber,
-      model: attempt.model,
-      prompt: attempt.prompt,
-      promptResponse: attempt.promptResponse,
-      status: attempt.status,
-      error: attempt.error,
-      createdAt: attempt.createdAt.toISOString(),
-      updatedAt: attempt.updatedAt.toISOString(),
-    });
-    return acc;
-  }, {} as Record<string, ExerciseAttemptDetail[]>);
-
-  // Build the modules with exercises and attempts
-  const modules: ModuleDetail[] = caseStudy.modules.map((module) => ({
-    id: module.id,
-    title: module.title,
-    shortDescription: module.shortDescription,
-    details: module.details,
-    orderNumber: module.orderNumber,
-    exercises: module.exercises.map((exercise) => ({
-      id: exercise.id,
-      title: exercise.title,
-      details: exercise.details,
-      orderNumber: exercise.orderNumber,
-      attempts: attemptsByExercise[exercise.id] || [],
-    })),
-  }));
-
-  // Calculate statistics
-  const totalExercises = allExerciseIds.length;
-  const attemptedExerciseIds = [...new Set(exerciseAttempts.map((attempt) => attempt.exerciseId))];
-  const attemptedExercises = attemptedExerciseIds.length;
-  const totalAttempts = exerciseAttempts.length;
-  const completionPercentage = totalExercises > 0 ? Math.round((attemptedExercises / totalExercises) * 100) : 0;
-
+  // Return student data with attempts
   return {
-    student: {
-      id: enrollmentStudent.id,
-      assignedStudentId: enrollmentStudent.assignedStudentId,
-      enrollmentId: enrollmentStudent.enrollmentId,
-      createdAt: enrollmentStudent.createdAt.toISOString(),
-    },
-    caseStudy: {
-      id: caseStudy.id,
-      title: caseStudy.title,
-      shortDescription: caseStudy.shortDescription,
-    },
-    modules,
-    statistics: {
-      totalExercises,
-      attemptedExercises,
-      totalAttempts,
-      completionPercentage,
-    },
+    ...studentData,
+    attempts,
   };
 }
 
@@ -203,15 +100,11 @@ async function deleteHandler(
   });
 
   // Find the user by assignedStudentId
-  const student = await prisma.user.findFirst({
+  const student = await prisma.user.findFirstOrThrow({
     where: {
       id: enrollmentStudent.assignedStudentId,
     },
   });
-
-  if (!student) {
-    throw new Error(`Student with ID ${enrollmentStudent.assignedStudentId} not found`);
-  }
 
   // Use a transaction to ensure all related data is archived together
   const result = await prisma.$transaction(async (tx) => {

@@ -15,29 +15,6 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-interface EnrollmentListItem {
-  id: string;
-  caseStudyId: string;
-  assignedInstructorId: string;
-  createdAt: string;
-  caseStudy: {
-    id: string;
-    title: string;
-    shortDescription: string;
-    subject: string;
-  };
-  students: Array<{
-    id: string;
-    assignedStudentId: string;
-    createdBy: string | null;
-  }>;
-  assignedInstructor?: {
-    id: string;
-    email: string | null;
-    username: string;
-  };
-}
-
 export default function AdminDashboard() {
   const { data: simSession } = useSession();
   const session: SimulationSession | null = simSession as SimulationSession | null;

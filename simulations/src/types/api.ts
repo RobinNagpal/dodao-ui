@@ -10,6 +10,16 @@ import {
   ExerciseAttempt,
 } from '@prisma/client';
 
+export type StudentDetailResponse = EnrollmentStudent & {
+  enrollment: ClassCaseStudyEnrollment;
+  assignedStudent: {
+    id: string;
+    name: string | null;
+    email: string | null;
+  };
+  attempts: ExerciseAttempt[];
+};
+
 export type ModuleExerciseWithProgress = ModuleExercise & {
   isExerciseCompleted?: boolean;
   attemptCount?: number;
