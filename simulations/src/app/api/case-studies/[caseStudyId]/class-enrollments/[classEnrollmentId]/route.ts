@@ -3,13 +3,16 @@ import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EnrollmentWithRelations, DeleteResponse } from '@/types/api';
 
-// GET /api/enrollments/[id] - Get a specific enrollment
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<EnrollmentWithRelations> {
-  const { id } = await params;
+// GET /api/case-studies/[caseStudyId]/class-enrollments/[classEnrollmentId] - Get a specific enrollment
+async function getHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ caseStudyId: string; classEnrollmentId: string }> }
+): Promise<EnrollmentWithRelations> {
+  const { classEnrollmentId } = await params;
 
   const enrollment: EnrollmentWithRelations = await prisma.classCaseStudyEnrollment.findFirstOrThrow({
     where: {
-      id,
+      id: classEnrollmentId,
       archive: false,
     },
     include: {
@@ -42,16 +45,16 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
   return enrollment;
 }
 
-// DELETE /api/enrollments/[id] - Delete an enrollment
-async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<DeleteResponse> {
-  const { id } = await params;
+// DELETE /api/case-studies/[caseStudyId]/class-enrollments/[classEnrollmentId] - Delete an enrollment
+async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ caseStudyId: string; classEnrollmentId: string }> }): Promise<DeleteResponse> {
+  const { classEnrollmentId } = await params;
 
   // Use a transaction to ensure atomicity
   await prisma.$transaction(async (tx) => {
     // First archive all related enrollment students
     await tx.enrollmentStudent.updateMany({
       where: {
-        enrollmentId: id,
+        enrollmentId: classEnrollmentId,
         archive: false,
       },
       data: {
@@ -61,7 +64,7 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ i
 
     // Then archive the enrollment
     await tx.classCaseStudyEnrollment.update({
-      where: { id },
+      where: { id: classEnrollmentId },
       data: {
         archive: true,
       },

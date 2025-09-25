@@ -14,23 +14,27 @@ export interface AddStudentEnrollmentRequest {
 interface InstructorManageStudentsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  enrollmentId: string;
+  enrollmentTitle: string;
   caseStudyId: string;
-  caseStudyTitle: string;
 }
 
-export default function InstructorManageStudentsModal({ isOpen, onClose, caseStudyId, caseStudyTitle }: InstructorManageStudentsModalProps) {
+export default function InstructorManageStudentsModal({ isOpen, onClose, enrollmentId, enrollmentTitle, caseStudyId }: InstructorManageStudentsModalProps) {
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [emailError, setEmailError] = useState('');
 
   const {
-    data: enrolledStudents = [],
+    data: enrolledStudentsData,
     loading: loadingStudents,
     reFetchData: refetchStudents,
-  } = useFetchData<string[]>(
-    `${getBaseUrl()}/api/instructor/enrollments/${caseStudyId}/students`,
-    { skipInitialFetch: !caseStudyId },
+  } = useFetchData<{ students: Array<{ email: string; studentEnrollmentId: string }> }>(
+    `${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}/student-enrollments`,
+    { skipInitialFetch: !enrollmentId },
     'Failed to load enrolled students'
   );
+
+  // Extract student data from the response
+  const enrolledStudents = enrolledStudentsData?.students || [];
 
   const { postData: addStudent, loading: addingStudent } = usePostData<{ message: string }, AddStudentEnrollmentRequest>({
     successMessage: 'Student added successfully!',
@@ -43,10 +47,10 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
   });
 
   useEffect(() => {
-    if (isOpen && caseStudyId) {
+    if (isOpen && enrollmentId) {
       refetchStudents();
     }
-  }, [isOpen, caseStudyId, refetchStudents]);
+  }, [isOpen, enrollmentId, refetchStudents]);
 
   const handleAddStudent = async () => {
     // Reset error
@@ -69,7 +73,7 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
     };
 
     try {
-      const result = await addStudent(`${getBaseUrl()}/api/instructor/enrollments/${caseStudyId}/students`, payload);
+      const result = await addStudent(`${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}/student-enrollments`, payload);
       if (result) {
         setNewStudentEmail('');
         setEmailError('');
@@ -81,13 +85,11 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
     }
   };
 
-  const handleRemoveStudent = async (studentEmail: string) => {
-    const payload: AddStudentEnrollmentRequest = {
-      studentEmail,
-    };
-
+  const handleRemoveStudent = async (studentEnrollmentId: string) => {
     try {
-      const result = await removeStudent(`/api/instructor/enrollments/${caseStudyId}/students`, payload);
+      const result = await removeStudent(
+        `${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}/student-enrollments/${studentEnrollmentId}`
+      );
       if (result) {
         await refetchStudents();
       }
@@ -110,7 +112,7 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Manage Students</h3>
-                <p className="text-gray-600">{caseStudyTitle}</p>
+                <p className="text-gray-600">{enrollmentTitle}</p>
               </div>
             </div>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-xl transition-all duration-200">
@@ -193,9 +195,9 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
               </div>
             ) : (
               <div className="space-y-3">
-                {enrolledStudents.map((studentEmail) => (
+                {enrolledStudents.map((student) => (
                   <div
-                    key={studentEmail}
+                    key={student.studentEnrollmentId}
                     className="group bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all duration-200"
                   >
                     <div className="flex items-center justify-between">
@@ -204,7 +206,7 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
                           <UserCheck className="h-5 w-5 text-green-600" />
                         </div>
                         <div>
-                          <span className="text-gray-900 font-medium">{studentEmail}</span>
+                          <span className="text-gray-900 font-medium">{student.email}</span>
                           <div className="flex items-center space-x-1 mt-1">
                             <CheckCircle className="h-3 w-3 text-green-500" />
                             <span className="text-xs text-green-600 font-medium">Enrolled</span>
@@ -212,7 +214,7 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
                         </div>
                       </div>
                       <button
-                        onClick={() => handleRemoveStudent(studentEmail)}
+                        onClick={() => handleRemoveStudent(student.studentEnrollmentId)}
                         disabled={removingStudent}
                         className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-xl transition-all duration-200 disabled:opacity-50 group-hover:bg-red-50"
                         title="Remove student"

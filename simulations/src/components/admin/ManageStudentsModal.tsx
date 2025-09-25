@@ -16,10 +16,11 @@ interface ManageStudentsModalProps {
   onClose: () => void;
   enrollmentId: string;
   enrollmentTitle: string;
+  caseStudyId: string;
   refetchEnrollments: () => Promise<any>;
 }
 
-export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enrollmentTitle, refetchEnrollments }: ManageStudentsModalProps) {
+export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enrollmentTitle, caseStudyId, refetchEnrollments }: ManageStudentsModalProps) {
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [emailError, setEmailError] = useState('');
 
@@ -29,12 +30,10 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
     loading: loadingEnrollment,
     reFetchData,
   } = useFetchData<EnrollmentWithRelations>(
-    `/api/enrollments/${enrollmentId}`,
-    { skipInitialFetch: !enrollmentId || !isOpen },
+    `/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}`,
+    { skipInitialFetch: !enrollmentId || !isOpen || !caseStudyId },
     'Failed to load enrollment details'
   );
-
-  console.log(enrollment);
 
   const { postData: addStudent, loading: addingStudent } = usePostData(
     {
@@ -70,7 +69,7 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
     };
 
     try {
-      const result = await addStudent(`/api/enrollments/${enrollmentId}/students`, payload);
+      const result = await addStudent(`/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}/student-enrollments`, payload);
 
       if (result) {
         setNewStudentEmail('');
@@ -83,13 +82,9 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
     }
   };
 
-  const handleRemoveStudent = async (studentEmail: string) => {
-    const payload = {
-      studentEmail,
-    };
-
+  const handleRemoveStudent = async (studentEnrollmentId: string) => {
     try {
-      const result = await removeStudent(`/api/enrollments/${enrollmentId}/students/remove`, payload);
+      const result = await removeStudent(`/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}/student-enrollments/${studentEnrollmentId}`);
 
       if (result) {
         await reFetchData();
@@ -184,7 +179,7 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
                       </div>
                     </div>
                     <Button
-                      onClick={() => handleRemoveStudent(student.assignedStudentId)}
+                      onClick={() => handleRemoveStudent(student.id)}
                       variant="ghost"
                       size="sm"
                       disabled={removingStudent}
