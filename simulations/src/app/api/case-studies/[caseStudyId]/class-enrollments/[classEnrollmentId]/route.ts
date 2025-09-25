@@ -6,65 +6,65 @@ import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { AddStudentEnrollmentRequest } from '@/components/instructor/InstructorManageStudentsModal';
 
-// GET /api/instructor/enrollments/[caseStudyId]/students - Get students enrolled in a case study for an instructor
-async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ caseStudyId: string }> }): Promise<string[]> {
-  const { caseStudyId } = await params;
+// GET /api/case-studies/[caseStudyId]/class-enrollments/[classEnrollmentId] - Get students enrolled in a specific class enrollment
+async function getHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ caseStudyId: string; classEnrollmentId: string }> }
+): Promise<string[]> {
+  const { caseStudyId, classEnrollmentId } = await params;
   const instructorId: string = userContext.userId;
 
-  // Find the enrollment for this case study assigned to this instructor
-  try {
-    const enrollment = await prisma.classCaseStudyEnrollment.findFirstOrThrow({
-      where: {
-        caseStudyId,
-        assignedInstructorId: instructorId,
-        archive: false,
-      },
-      include: {
-        students: {
-          where: {
-            archive: false,
-          },
-          orderBy: {
-            createdAt: 'asc',
-          },
+  // Verify instructor has access to this enrollment
+  const enrollment = await prisma.classCaseStudyEnrollment.findFirstOrThrow({
+    where: {
+      id: classEnrollmentId,
+      caseStudyId,
+      assignedInstructorId: instructorId,
+      archive: false,
+    },
+    include: {
+      students: {
+        where: {
+          archive: false,
+        },
+        orderBy: {
+          createdAt: 'asc',
         },
       },
-    });
+    },
+  });
 
-    // Get the student IDs
-    const studentIds = enrollment.students.map((student): string => student.assignedStudentId);
+  // Get the student IDs
+  const studentIds = enrollment.students.map((student): string => student.assignedStudentId);
 
-    if (studentIds.length === 0) {
-      return [];
-    }
-
-    // Fetch the user emails using the student IDs
-    const users = await prisma.user.findMany({
-      where: {
-        id: {
-          in: studentIds,
-        },
-      },
-      select: {
-        email: true,
-      },
-    });
-
-    // Return the emails
-    return users.map((user): string => user.email || '').filter((email) => email !== '');
-  } catch (error) {
-    // If no enrollment is found, return an empty array
+  if (studentIds.length === 0) {
     return [];
   }
+
+  // Fetch the user emails using the student IDs
+  const users = await prisma.user.findMany({
+    where: {
+      id: {
+        in: studentIds,
+      },
+    },
+    select: {
+      email: true,
+    },
+  });
+
+  // Return the emails
+  return users.map((user): string => user.email || '').filter((email) => email !== '');
 }
 
-// POST /api/instructor/enrollments/[caseStudyId]/students - Add a student to enrollment
+// POST /api/case-studies/[caseStudyId]/class-enrollments/[classEnrollmentId] - Add a student to specific class enrollment
 async function postHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ caseStudyId: string }> }
+  { params }: { params: Promise<{ caseStudyId: string; classEnrollmentId: string }> }
 ): Promise<{ message: string }> {
-  const { caseStudyId } = await params;
+  const { caseStudyId, classEnrollmentId } = await params;
   const body = (await req.json()) as AddStudentEnrollmentRequest;
   const { studentEmail } = body;
   const instructorId: string = userContext.userId;
@@ -73,9 +73,10 @@ async function postHandler(
     throw new Error('Student email is required');
   }
 
-  // Find the enrollment for this case study assigned to this instructor
+  // Verify instructor has access to this enrollment
   const enrollment = await prisma.classCaseStudyEnrollment.findFirstOrThrow({
     where: {
+      id: classEnrollmentId,
       caseStudyId,
       assignedInstructorId: instructorId,
       archive: false,
@@ -110,7 +111,7 @@ async function postHandler(
       },
     });
 
-    throw new Error('Student is already enrolled in this case study');
+    throw new Error('Student is already enrolled in this class');
   } catch (error) {
     // If the student is not found, we can proceed with enrollment
     if ((error as Error).message.includes('No')) {
@@ -132,13 +133,13 @@ async function postHandler(
   }
 }
 
-// DELETE /api/instructor/enrollments/[caseStudyId]/students - Remove a student from enrollment
+// DELETE /api/case-studies/[caseStudyId]/class-enrollments/[classEnrollmentId] - Remove a student from specific class enrollment
 async function deleteHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ caseStudyId: string }> }
+  { params }: { params: Promise<{ caseStudyId: string; classEnrollmentId: string }> }
 ): Promise<{ message: string }> {
-  const { caseStudyId } = await params;
+  const { caseStudyId, classEnrollmentId } = await params;
   const body = (await req.json()) as AddStudentEnrollmentRequest;
   const { studentEmail } = body;
   const instructorId: string = userContext.userId;
@@ -158,9 +159,10 @@ async function deleteHandler(
     throw new Error(`Student with email ${studentEmail} not found`);
   }
 
-  // Find the enrollment for this case study assigned to this instructor
+  // Verify instructor has access to this enrollment
   const enrollment = await prisma.classCaseStudyEnrollment.findFirstOrThrow({
     where: {
+      id: classEnrollmentId,
       caseStudyId,
       assignedInstructorId: instructorId,
       archive: false,
@@ -205,10 +207,23 @@ async function deleteHandler(
       },
     });
 
+    // Archive the student's final summary (if exists)
+    await tx.finalSummary.updateMany({
+      where: {
+        studentId: enrollmentStudent.id,
+        archive: false,
+      },
+      data: {
+        archive: true,
+        updatedById: instructorId,
+        updatedAt: new Date(),
+      },
+    });
+
     // Archive all exercise attempts created by this student
     await tx.exerciseAttempt.updateMany({
       where: {
-        createdById: student.id, // Keep using email here as it's likely stored this way in exercise attempts
+        createdById: student.id,
         archive: false,
       },
       data: {

@@ -14,11 +14,12 @@ export interface AddStudentEnrollmentRequest {
 interface InstructorManageStudentsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  enrollmentId: string;
+  enrollmentTitle: string;
   caseStudyId: string;
-  caseStudyTitle: string;
 }
 
-export default function InstructorManageStudentsModal({ isOpen, onClose, caseStudyId, caseStudyTitle }: InstructorManageStudentsModalProps) {
+export default function InstructorManageStudentsModal({ isOpen, onClose, enrollmentId, enrollmentTitle, caseStudyId }: InstructorManageStudentsModalProps) {
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [emailError, setEmailError] = useState('');
 
@@ -27,8 +28,8 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
     loading: loadingStudents,
     reFetchData: refetchStudents,
   } = useFetchData<string[]>(
-    `${getBaseUrl()}/api/instructor/enrollments/${caseStudyId}/students`,
-    { skipInitialFetch: !caseStudyId },
+    `${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}`,
+    { skipInitialFetch: !enrollmentId },
     'Failed to load enrolled students'
   );
 
@@ -43,10 +44,10 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
   });
 
   useEffect(() => {
-    if (isOpen && caseStudyId) {
+    if (isOpen && enrollmentId) {
       refetchStudents();
     }
-  }, [isOpen, caseStudyId, refetchStudents]);
+  }, [isOpen, enrollmentId, refetchStudents]);
 
   const handleAddStudent = async () => {
     // Reset error
@@ -69,7 +70,7 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
     };
 
     try {
-      const result = await addStudent(`${getBaseUrl()}/api/instructor/enrollments/${caseStudyId}/students`, payload);
+      const result = await addStudent(`${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}`, payload);
       if (result) {
         setNewStudentEmail('');
         setEmailError('');
@@ -87,7 +88,7 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
     };
 
     try {
-      const result = await removeStudent(`/api/instructor/enrollments/${caseStudyId}/students`, payload);
+      const result = await removeStudent(`${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}`, payload);
       if (result) {
         await refetchStudents();
       }
@@ -110,7 +111,7 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, caseStu
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Manage Students</h3>
-                <p className="text-gray-600">{caseStudyTitle}</p>
+                <p className="text-gray-600">{enrollmentTitle}</p>
               </div>
             </div>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-xl transition-all duration-200">
