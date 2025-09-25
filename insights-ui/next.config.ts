@@ -8,9 +8,6 @@ const nextConfig: NextConfig = {
     // importing them explicitly
     includePaths: ['./src'],
   },
-  experimental: {
-    ppr: 'incremental',
-  },
   images: {
     domains: ['raw.githubusercontent.com'],
     remotePatterns: [
