@@ -34,40 +34,53 @@ export default function Competition({ dataPromise }: CompetitionProps): JSX.Elem
 
       {competitorTickers && competitorTickers.length > 0 && (
         <ul className="space-y-3 mt-2">
-          {competitorTickers.map((competitor, index) => (
-            <li key={`${competitor.companyName}-${index}`} className="bg-gray-800 p-4 rounded-md">
-              <div className="flex flex-col gap-y-2">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold">{competitor.companyName}</h3>
-                  <div className="flex items-center gap-x-2">
-                    {competitor.companySymbol && (
-                      <span className="text-sm text-gray-400">
-                        {competitor.companySymbol} • {competitor.exchangeName?.toUpperCase()}
-                      </span>
-                    )}
-                    {competitor.existsInSystem && competitor.tickerData ? (
-                      <Link
-                        href={`/stocks/${competitor.tickerData.exchange.toUpperCase()}/${competitor.tickerData.symbol.toUpperCase()}`}
-                        className="inline-flex items-center gap-x-1 text-sm font-medium text-[#F59E0B] hover:text-[#F97316] transition-colors"
-                        title="View detailed report"
-                      >
-                        <ArrowTopRightOnSquareIcon className="size-4" />
+          {competitorTickers.map((competitor, index) => {
+            const tickerLink =
+              competitor.existsInSystem && competitor.tickerData
+                ? `/stocks/${competitor.tickerData.exchange.toUpperCase()}/${competitor.tickerData.symbol.toUpperCase()}`
+                : null;
+            return (
+              <li key={`${competitor.companyName}-${index}`} className="bg-gray-800 p-4 rounded-md">
+                <div className="flex flex-col gap-y-2">
+                  <div className="flex items-center justify-between">
+                    {tickerLink ? (
+                      <Link href={tickerLink} title="View detailed report" className="flex gap-x-2 items-center link-color">
+                        <h3 className="font-semibold link-color">{competitor.companyName}</h3>
+                        <ArrowTopRightOnSquareIcon className="size-4 text-primary-text" title="Report not available in our system" />
                       </Link>
                     ) : (
-                      <ArrowTopRightOnSquareIcon className="size-4 text-gray-500" title="Report not available in our system" />
+                      <h3 className="font-semibold">{competitor.companyName}</h3>
                     )}
+                    <div className="flex items-center gap-x-2">
+                      {competitor.companySymbol && (
+                        <span className="text-sm text-gray-400">
+                          {competitor.companySymbol} • {competitor.exchangeName?.toUpperCase()}
+                        </span>
+                      )}
+                      {tickerLink ? (
+                        <Link
+                          href={tickerLink}
+                          className="inline-flex items-center gap-x-1 text-sm font-medium text-[#F59E0B] hover:text-[#F97316] transition-colors"
+                          title="View detailed report"
+                        >
+                          <ArrowTopRightOnSquareIcon className="size-4" />
+                        </Link>
+                      ) : (
+                        <ArrowTopRightOnSquareIcon className="size-4 text-gray-500" title="Report not available in our system" />
+                      )}
+                    </div>
                   </div>
+                  {competitor.detailedComparison && (
+                    <div
+                      id={slugify(competitor.companyName)}
+                      className="markdown markdown-body"
+                      dangerouslySetInnerHTML={{ __html: parseMarkdown(competitor.detailedComparison) }}
+                    />
+                  )}
                 </div>
-                {competitor.detailedComparison && (
-                  <div
-                    id={slugify(competitor.companyName)}
-                    className="markdown markdown-body"
-                    dangerouslySetInnerHTML={{ __html: parseMarkdown(competitor.detailedComparison) }}
-                  />
-                )}
-              </div>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

@@ -103,26 +103,25 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
 /** Competition + Similar fetchers (promise-based for Suspense) */
 export type VsCompetition = Readonly<{ overallAnalysisDetails: string }>;
 
-function fetchCompetition(exchange: string, ticker: string): Promise<CompetitionResponse> {
+export async function fetchCompetition(exchange: string, ticker: string): Promise<CompetitionResponse> {
   const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition`;
-  return fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } }).then(async (res: Response) => {
-    if (!res.ok) throw new Error(`fetchCompetition failed (${res.status}): ${url}`);
-    const json = (await res.json()) as unknown;
-    const payload: CompetitionResponse = {
-      vsCompetition: (json as any)?.vsCompetition ?? null,
-      competitorTickers: ((json as any)?.competitorTickers ?? []) as CompetitionResponse['competitorTickers'],
-    };
-    return payload;
-  });
+
+  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  if (!res.ok) throw new Error(`fetchCompetition failed (${res.status}): ${url}`);
+
+  const json: CompetitionResponse = (await res.json()) as CompetitionResponse;
+
+  return json;
 }
 
-function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTicker[]> {
+export async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTicker[]> {
   const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar`;
-  return fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } }).then(async (res: Response) => {
-    if (!res.ok) throw new Error(`fetchSimilar failed (${res.status}): ${url}`);
-    const arr = (await res.json()) as unknown;
-    return (Array.isArray(arr) ? arr : []) as SimilarTicker[];
-  });
+
+  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  if (!res.ok) throw new Error(`fetchSimilar failed (${res.status}): ${url}`);
+
+  const arr = (await res.json()) as SimilarTicker[];
+  return arr;
 }
 
 /** Metadata */
