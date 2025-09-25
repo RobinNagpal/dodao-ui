@@ -27,16 +27,8 @@ interface CreateEnrollmentModalProps {
 export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: CreateEnrollmentModalProps) {
   const [selectedCaseStudyId, setSelectedCaseStudyId] = useState('');
   const [instructorEmail, setInstructorEmail] = useState('');
-  const [errors, setErrors] = useState({ caseStudy: '', instructor: '' });
-  const [adminEmail, setAdminEmail] = useState<string>('admin@example.com');
-
-  // Get admin email from localStorage
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const email = localStorage.getItem('user_email') || 'admin@example.com';
-      setAdminEmail(email);
-    }
-  }, []);
+  const [className, setClassName] = useState('first section');
+  const [errors, setErrors] = useState({ caseStudy: '', instructor: '', className: '' });
 
   // Fetch case studies
   const { data: caseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudy[]>(
@@ -45,22 +37,16 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
     'Failed to load case studies'
   );
 
-  const { postData, loading } = usePostData<EnrollmentWithRelations, CreateEnrollmentRequest>(
-    {
-      successMessage: 'Enrollment created successfully!',
-      errorMessage: 'Failed to create enrollment',
-    },
-    {
-      headers: {
-        'admin-email': adminEmail,
-      },
-    }
-  );
+  const { postData, loading } = usePostData<EnrollmentWithRelations, CreateEnrollmentRequest>({
+    successMessage: 'Enrollment created successfully!',
+    errorMessage: 'Failed to create enrollment',
+  });
 
   const resetForm = () => {
     setSelectedCaseStudyId('');
     setInstructorEmail('');
-    setErrors({ caseStudy: '', instructor: '' });
+    setClassName('first section');
+    setErrors({ caseStudy: '', instructor: '', className: '' });
   };
 
   const handleClose = () => {
@@ -70,11 +56,11 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
 
   const handleSubmit = async () => {
     // Reset errors
-    setErrors({ caseStudy: '', instructor: '' });
+    setErrors({ caseStudy: '', instructor: '', className: '' });
 
     // Validation
     let hasErrors = false;
-    const newErrors = { caseStudy: '', instructor: '' };
+    const newErrors = { caseStudy: '', instructor: '', className: '' };
 
     if (!selectedCaseStudyId || selectedCaseStudyId === 'loading' || selectedCaseStudyId === 'no-case-studies') {
       newErrors.caseStudy = 'Please select a case study';
@@ -93,6 +79,11 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
       }
     }
 
+    if (!className.trim()) {
+      newErrors.className = 'Please enter a class name';
+      hasErrors = true;
+    }
+
     if (hasErrors) {
       setErrors(newErrors);
       return;
@@ -101,6 +92,7 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
     const payload: CreateEnrollmentRequest = {
       caseStudyId: selectedCaseStudyId,
       assignedInstructorEmail: instructorEmail.trim(), // This is actually the instructor's email
+      className: className.trim(),
     };
 
     try {
@@ -198,6 +190,24 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
               }`}
             />
             {errors.instructor && <p className="text-sm text-red-500 mt-1">{errors.instructor}</p>}
+          </div>
+
+          <div>
+            <Label htmlFor="className" className="text-emerald-700 font-medium flex items-center space-x-2 mb-2">
+              <BookOpen className="h-4 w-4" />
+              <span>Class Name *</span>
+            </Label>
+            <Input
+              id="className"
+              type="text"
+              value={className}
+              onChange={(e) => setClassName(e.target.value)}
+              placeholder="e.g., Marketing 101 - Section A"
+              className={`bg-white border-emerald-200 focus:border-emerald-400 focus:ring-emerald-400 placeholder:text-gray-500 ${
+                errors.className ? 'border-red-500' : ''
+              }`}
+            />
+            {errors.className && <p className="text-sm text-red-500 mt-1">{errors.className}</p>}
           </div>
         </div>
 

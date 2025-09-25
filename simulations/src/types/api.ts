@@ -151,6 +151,7 @@ export interface DeleteResponse {
 export interface CreateEnrollmentRequest {
   caseStudyId: string;
   assignedInstructorEmail: string;
+  className?: string;
 }
 
 export interface ExerciseWithAttemptsResponse {
