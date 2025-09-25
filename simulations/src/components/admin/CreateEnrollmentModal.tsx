@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { BookOpen, Mail, Sparkles } from 'lucide-react';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { CreateEnrollmentRequest, EnrollmentWithRelations } from '@/types/api';
+import { CreateEnrollmentRequestForCaseStudy, EnrollmentWithRelations } from '@/types/api';
 
 interface CaseStudy {
   id: string;
@@ -37,7 +37,7 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
     'Failed to load case studies'
   );
 
-  const { postData, loading } = usePostData<EnrollmentWithRelations, CreateEnrollmentRequest>({
+  const { postData, loading } = usePostData<EnrollmentWithRelations, CreateEnrollmentRequestForCaseStudy>({
     successMessage: 'Enrollment created successfully!',
     errorMessage: 'Failed to create enrollment',
   });
@@ -89,14 +89,13 @@ export default function CreateEnrollmentModal({ isOpen, onClose, onSuccess }: Cr
       return;
     }
 
-    const payload: CreateEnrollmentRequest = {
-      caseStudyId: selectedCaseStudyId,
+    const payload: CreateEnrollmentRequestForCaseStudy = {
       assignedInstructorEmail: instructorEmail.trim(), // This is actually the instructor's email
       className: className.trim(),
     };
 
     try {
-      const result = await postData('/api/enrollments', payload);
+      const result = await postData(`/api/case-studies/${selectedCaseStudyId}/class-enrollments`, payload);
 
       if (result) {
         resetForm();

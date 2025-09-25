@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Users, GraduationCap, Brain } from 'lucide-react';
-import InstructorManageStudentsModal from './InstructorManageStudentsModal';
 
 interface CaseStudiesContentProps {
   filteredCaseStudies: CaseStudy[];
@@ -32,23 +31,9 @@ export default function CaseStudiesContent({
   shadowColor = 'shadow-amber-500/25',
 }: CaseStudiesContentProps) {
   const router = useRouter();
-  const [selectedCaseStudy, setSelectedCaseStudy] = useState<CaseStudy | null>(null);
-  const [showStudentManagement, setShowStudentManagement] = useState(false);
 
   const handleViewCaseStudy = (caseStudy: CaseStudy): void => {
     router.push(`/instructor/case-study/${caseStudy.id}`);
-  };
-
-  const handleManageStudents = (caseStudy: CaseStudy): void => {
-    setSelectedCaseStudy(caseStudy);
-    setShowStudentManagement(true);
-  };
-
-  const handleCloseModal = async (): Promise<void> => {
-    setShowStudentManagement(false);
-    setSelectedCaseStudy(null);
-    // Refresh case studies to get updated counts
-    await refetchCaseStudies();
   };
 
   const getEnrollmentCount = (caseStudy: CaseStudy): number => {
@@ -147,17 +132,6 @@ export default function CaseStudiesContent({
                       <span>View Case Study</span>
                     </div>
                   </Button>
-
-                  <Button
-                    onClick={() => handleManageStudents(caseStudy)}
-                    variant="outline"
-                    className="w-full border-gray-200 text-gray-700 hover:bg-purple-50 hover:border-purple-300 hover:text-purple-700 transition-all duration-200"
-                  >
-                    <div className="flex items-center justify-center space-x-2">
-                      <Users className="h-4 w-4" />
-                      <span>Manage Students</span>
-                    </div>
-                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -178,14 +152,6 @@ export default function CaseStudiesContent({
           </CardContent>
         </Card>
       )}
-
-      {/* Student Management Modal */}
-      <InstructorManageStudentsModal
-        isOpen={showStudentManagement}
-        onClose={handleCloseModal}
-        caseStudyId={selectedCaseStudy?.id || ''}
-        caseStudyTitle={selectedCaseStudy?.title || ''}
-      />
     </div>
   );
 }

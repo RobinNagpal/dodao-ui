@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import StudentDetailsClient from './StudentDetailsClient';
 
 interface PageProps {
-  params: Promise<{ caseStudyId: string; studentId: string }>;
+  params: Promise<{ caseStudyId: string; classEnrollmentId: string; studentEnrollmentId: string }>;
 }
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function StudentDetailsPage({ params }: PageProps) {
-  const { caseStudyId, studentId } = await params;
+  const { caseStudyId, classEnrollmentId, studentEnrollmentId } = await params;
 
-  return <StudentDetailsClient caseStudyId={caseStudyId} studentId={studentId} />;
+  return <StudentDetailsClient caseStudyId={caseStudyId} classEnrollmentId={classEnrollmentId} studentEnrollmentId={studentEnrollmentId} />;
 }

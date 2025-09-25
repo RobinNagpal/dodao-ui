@@ -2,7 +2,6 @@
 
 import AdminLoading from '@/components/admin/AdminLoading';
 import CaseStudiesTab from '@/components/admin/CaseStudiesTab';
-import CreateEnrollmentModal from '@/components/admin/CreateEnrollmentModal';
 import EnrollmentsTab from '@/components/admin/EnrollmentsTab';
 import UsersTab from '@/components/admin/UsersTab';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
@@ -15,29 +14,6 @@ import { BookOpen, Shield, UserCog, Users } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-interface EnrollmentListItem {
-  id: string;
-  caseStudyId: string;
-  assignedInstructorId: string;
-  createdAt: string;
-  caseStudy: {
-    id: string;
-    title: string;
-    shortDescription: string;
-    subject: string;
-  };
-  students: Array<{
-    id: string;
-    assignedStudentId: string;
-    createdBy: string | null;
-  }>;
-  assignedInstructor?: {
-    id: string;
-    email: string | null;
-    username: string;
-  };
-}
 
 export default function AdminDashboard() {
   const { data: simSession } = useSession();

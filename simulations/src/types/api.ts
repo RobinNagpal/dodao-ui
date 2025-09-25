@@ -10,6 +10,16 @@ import {
   ExerciseAttempt,
 } from '@prisma/client';
 
+export type StudentDetailResponse = EnrollmentStudent & {
+  enrollment: ClassCaseStudyEnrollment;
+  assignedStudent: {
+    id: string;
+    name: string | null;
+    email: string | null;
+  };
+  attempts: ExerciseAttempt[];
+};
+
 export type ModuleExerciseWithProgress = ModuleExercise & {
   isExerciseCompleted?: boolean;
   attemptCount?: number;
@@ -95,7 +105,15 @@ export type CaseStudyWithRelationsForInstructor = CaseStudy & {
       exercises?: ModuleExercise[];
     }
   >;
-
+  enrollments?: Array<
+    ClassCaseStudyEnrollment & {
+      students?: Array<
+        EnrollmentStudent & {
+          finalSubmission?: FinalSubmission;
+        }
+      >;
+    }
+  >;
   instructorEmail?: string; // Added instructor email
   instructorName?: string | null; // Added instructor name
   instructionReadStatus?: {
@@ -144,6 +162,10 @@ export type EnrollmentWithRelations = ClassCaseStudyEnrollment & {
   } | null;
 };
 
+export type EnrollmentWithStudents = ClassCaseStudyEnrollment & {
+  students?: Array<EnrollmentStudent & { finalSubmission?: FinalSubmission }>;
+};
+
 export interface DeleteResponse {
   message: string;
 }
@@ -151,7 +173,12 @@ export interface DeleteResponse {
 export interface CreateEnrollmentRequest {
   caseStudyId: string;
   assignedInstructorEmail: string;
-  className?: string;
+  className: string;
+}
+
+export interface CreateEnrollmentRequestForCaseStudy {
+  assignedInstructorEmail: string;
+  className: string;
 }
 
 export interface ExerciseWithAttemptsResponse {

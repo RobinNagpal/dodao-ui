@@ -45,7 +45,13 @@ export default function EnrollmentsTab() {
 
   const handleConfirmDelete = async (): Promise<void> => {
     try {
-      await deleteEnrollment(`/api/enrollments/${deleteId}`);
+      // Find the enrollment to get the caseStudyId
+      const enrollmentToDelete = enrollments?.find((e) => e.id === deleteId);
+      if (!enrollmentToDelete) {
+        throw new Error('Enrollment not found');
+      }
+
+      await deleteEnrollment(`/api/case-studies/${enrollmentToDelete.caseStudy.id}/class-enrollments/${deleteId}`);
       await refetchEnrollments();
       setShowDeleteConfirm(false);
       setDeleteId('');
@@ -131,6 +137,7 @@ export default function EnrollmentsTab() {
           refetchEnrollments={refetchEnrollments}
           enrollmentId={selectedEnrollmentId}
           enrollmentTitle={selectedEnrollmentTitle}
+          caseStudyId={enrollments?.find((e) => e.id === selectedEnrollmentId)?.caseStudy.id || ''}
         />
       )}
 
