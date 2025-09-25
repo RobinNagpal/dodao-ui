@@ -1,8 +1,9 @@
+import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import { Metadata } from 'next';
 import { permanentRedirect, notFound } from 'next/navigation';
 import { unstable_noStore as noStore } from 'next/cache';
 import { Suspense, use } from 'react';
-import { FullTickerV1CategoryAnalysisResult, TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
+import { FullTickerV1CategoryAnalysisResult, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -21,7 +22,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
-import { RadarChartClient, RadarSkeleton } from './RedarChart';
+import { RadarChartClient } from './RedarChart';
 
 /**
  * Static-by-default with on-demand invalidation.
@@ -58,33 +59,33 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
 }
 
 /** Data fetchers */
-async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1ReportResponse> {
+async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse> {
   const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
   const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
-  const data: TickerV1ReportResponse | null = (await res.json()) as TickerV1ReportResponse | null;
+  const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
   if (!data) throw new Error('fetchTickerByExchange returned empty payload');
   return data;
 }
 
-async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1ReportResponse> {
+async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1FastResponse> {
   const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}`;
   const res: Response = await fetch(url, { cache: 'no-store' });
   if (!res.ok) throw new Error(`fetchTickerAnyExchange failed (${res.status}): ${url}`);
-  const data: TickerV1ReportResponse | null = (await res.json()) as TickerV1ReportResponse | null;
+  const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
   if (!data) throw new Error('fetchTickerAnyExchange returned empty payload');
   return data;
 }
 
 /** Exchange-aware fetch with uncached fallback + canonical redirect */
-async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1ReportResponse> {
+async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastResponse> {
   const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
   const { exchange, ticker } = { exchange: routeParams.exchange.toUpperCase(), ticker: routeParams.ticker.toUpperCase() };
   try {
     return await fetchTickerByExchange(exchange, ticker);
   } catch {
     noStore();
-    let any: TickerV1ReportResponse;
+    let any: TickerV1FastResponse;
     try {
       any = await fetchTickerAnyExchange(ticker);
     } catch {
@@ -107,7 +108,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   let summary: string = `Financial analysis and reports for ${ticker}. Explore key metrics, insights, and evaluations.`;
 
   try {
-    const data: TickerV1ReportResponse = await fetchTickerByExchange(exchange, ticker);
+    const data: TickerV1FastResponse = await fetchTickerByExchange(exchange, ticker);
     companyName = data?.name ?? companyName;
     summary = data?.summary ?? summary;
   } catch {
@@ -148,7 +149,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 }
 
 /** Shared type each child `use()`s */
-type DataPromise = Promise<Readonly<TickerV1ReportResponse>>;
+type DataPromise = Promise<Readonly<TickerV1FastResponse>>;
 
 /** PAGE (simple streaming structure) */
 export default async function TickerDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
@@ -188,12 +189,12 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
 
 type BreadcrumbsFromDataProps = Readonly<{ dataPromise: DataPromise }>;
 function BreadcrumbsFromData({ dataPromise }: BreadcrumbsFromDataProps): JSX.Element {
-  const d: Readonly<TickerV1ReportResponse> = use(dataPromise);
+  const d: Readonly<TickerV1FastResponse> = use(dataPromise);
   const exchange: string = d.exchange.toUpperCase();
   const ticker: string = d.symbol.toUpperCase();
   const country: string | null = getCountryByExchange(d.exchange);
-  const industryName: string = d.industryName || d.industryKey;
-  const subIndustryName: string = d.subIndustryName || d.subIndustryKey;
+  const industryName: string = d.industry.name || d.industryKey;
+  const subIndustryName: string = d.industry.name || d.subIndustryKey;
 
   const breadcrumbs: BreadcrumbsOjbect[] =
     country === 'US'
@@ -232,7 +233,7 @@ function BreadcrumbsFromData({ dataPromise }: BreadcrumbsFromDataProps): JSX.Ele
 
 type HeroSectionProps = Readonly<{ dataPromise: DataPromise }>;
 function HeroSection({ dataPromise }: HeroSectionProps): JSX.Element {
-  const d: Readonly<TickerV1ReportResponse> = use(dataPromise);
+  const d: Readonly<TickerV1FastResponse> = use(dataPromise);
 
   // Build spider graph on the server
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
@@ -292,7 +293,7 @@ function HeroSection({ dataPromise }: HeroSectionProps): JSX.Element {
 
 type BodySectionsProps = Readonly<{ dataPromise: DataPromise }>;
 function BodySections({ dataPromise }: BodySectionsProps): JSX.Element {
-  const d: Readonly<TickerV1ReportResponse> = use(dataPromise);
+  const d: Readonly<TickerV1FastResponse> = use(dataPromise);
 
   return (
     <>
@@ -328,7 +329,7 @@ function BodySections({ dataPromise }: BodySectionsProps): JSX.Element {
       )}
 
       <section id="competition" className="mb-8">
-        <Competition vsCompetition={d.vsCompetition || undefined} competitorTickers={d.competitorTickers} />
+        <Competition tickerV1={d} />
       </section>
 
       {d.investorAnalysisResults.length > 0 && (
@@ -346,7 +347,7 @@ function BodySections({ dataPromise }: BodySectionsProps): JSX.Element {
       )}
 
       <section id="similar-tickers" className="mb-8">
-        <SimilarTickers similarTickers={d.similarTickers} />
+        <SimilarTickers tickerV1={d} />
       </section>
 
       <section id="detailed-analysis" className="mb-8">
@@ -431,7 +432,7 @@ function BodySections({ dataPromise }: BodySectionsProps): JSX.Element {
 
 type FloatingNavFromDataProps = Readonly<{ dataPromise: DataPromise }>;
 function FloatingNavFromData({ dataPromise }: FloatingNavFromDataProps): JSX.Element {
-  const d: Readonly<TickerV1ReportResponse> = use(dataPromise);
+  const d: Readonly<TickerV1FastResponse> = use(dataPromise);
 
   // Generate navigation sections based on available content
   const sections: NavigationSection[] = [

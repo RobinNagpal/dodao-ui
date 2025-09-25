@@ -1,4 +1,4 @@
-import { TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
+import { TickerV1FullReportResponse } from '@/utils/ticker-v1-model-utils';
 import { TickerV1, TickerAnalysisCategory } from '@prisma/client';
 
 export interface TickerWithIndustryNames extends TickerV1 {
@@ -26,7 +26,7 @@ export interface FilteredTicker {
 }
 
 export interface IndustryTickersResponse {
-  tickers: TickerV1ReportResponse[];
+  tickers: TickerV1FullReportResponse[];
   count: number;
 }
 

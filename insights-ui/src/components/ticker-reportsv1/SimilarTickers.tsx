@@ -1,17 +1,14 @@
-'use client';
-
-import { SimilarTicker } from '@/utils/ticker-v1-model-utils';
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { getScoreColorClasses } from '@/utils/score-utils';
+import { SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
+import Link from 'next/link';
 
 interface SimilarTickersProps {
-  similarTickers: SimilarTicker[];
+  tickerV1: TickerV1FastResponse;
 }
 
-export default function SimilarTickers({ similarTickers }: SimilarTickersProps) {
-  const router = useRouter();
+export default function SimilarTickers({ tickerV1 }: SimilarTickersProps) {
+  const similarTickers: SimilarTicker[] = [];
 
   if (!similarTickers || similarTickers.length === 0) {
     return null;
@@ -40,13 +37,13 @@ export default function SimilarTickers({ similarTickers }: SimilarTickersProps) 
                   <div className="text-sm text-gray-400">
                     {similarTicker.symbol} • {similarTicker.exchange.toUpperCase()}
                   </div>
-                  <button
-                    onClick={() => router.push(`/stocks/${similarTicker.exchange.toUpperCase()}/${similarTicker.symbol.toUpperCase()}`)}
+                  <Link
+                    href={`/stocks/${similarTicker.exchange.toUpperCase()}/${similarTicker.symbol.toUpperCase()}`}
                     className="inline-flex items-center gap-x-1 text-sm font-medium text-[#F59E0B] hover:text-[#F97316] transition-colors duration-200"
                   >
                     View Report
                     <ArrowTopRightOnSquareIcon className="size-3" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

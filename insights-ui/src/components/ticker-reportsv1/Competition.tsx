@@ -1,27 +1,19 @@
-'use client';
-
-import { CompetitorTicker } from '@/utils/ticker-v1-model-utils';
+import { CompetitorTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
-import { useRouter } from 'next/navigation';
-
-interface CompetitionAnalysis {
-  overallAnalysisDetails: string;
-}
+import Link from 'next/link';
 
 interface CompetitionProps {
-  vsCompetition?: CompetitionAnalysis;
-  competitorTickers?: CompetitorTicker[];
+  tickerV1: TickerV1FastResponse;
 }
 
-export default function Competition({ vsCompetition, competitorTickers }: CompetitionProps) {
-  const router = useRouter();
-
+export default function Competition({ tickerV1 }: CompetitionProps) {
+  const vsCompetition = tickerV1.vsCompetition;
   if (!vsCompetition) {
     return null;
   }
-
+  const competitorTickers: CompetitorTicker[] = [];
   return (
     <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
       <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Competition</h2>
@@ -41,13 +33,13 @@ export default function Competition({ vsCompetition, competitorTickers }: Compet
                       </span>
                     )}
                     {competitor.existsInSystem && competitor.tickerData ? (
-                      <button
-                        onClick={() => router.push(`/stocks/${competitor.tickerData!.exchange.toUpperCase()}/${competitor.tickerData!.symbol.toUpperCase()}`)}
+                      <Link
+                        href={`/stocks/${competitor.tickerData!.exchange.toUpperCase()}/${competitor.tickerData!.symbol.toUpperCase()}`}
                         className="inline-flex items-center gap-x-1 text-sm font-medium text-[#F59E0B] hover:text-[#F97316] transition-colors"
                         title="View detailed report"
                       >
                         <ArrowTopRightOnSquareIcon className="size-4" />
-                      </button>
+                      </Link>
                     ) : (
                       <ArrowTopRightOnSquareIcon className="size-4 text-gray-500" title="Report not available in our system" />
                     )}
