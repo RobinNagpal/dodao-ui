@@ -125,30 +125,11 @@ export function getTickerV1AnalysisStatus(
   };
 }
 
-export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelations): Promise<TickerV1FullReportResponse> {
-  // Fetch top 3 similar tickers in the same industry/sub-industry (excluding current ticker)
-  const similarTickers = await prisma.tickerV1.findMany({
-    where: {
-      spaceId: KoalaGainsSpaceId,
-      industryKey: tickerRecord.industryKey,
-      subIndustryKey: tickerRecord.subIndustryKey,
-      id: {
-        not: tickerRecord.id, // Exclude current ticker
-      },
-    },
-    select: {
-      id: true,
-      name: true,
-      symbol: true,
-      exchange: true,
-      cachedScore: true,
-    },
-    orderBy: {
-      cachedScore: 'desc',
-    },
-    take: 3,
-  });
-
+export async function getCompetitorTickers(
+  tickerRecord: TickerV1 & {
+    vsCompetition?: TickerV1VsCompetition | null;
+  }
+): Promise<CompetitorTicker[]> {
   // Process competition analysis to check which competitors exist in our system
   const competitorTickers: CompetitorTicker[] = [];
   if (tickerRecord.vsCompetition?.competitionAnalysisArray) {
@@ -186,6 +167,34 @@ export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelation
       competitorTickers.push(competitorInfo);
     }
   }
+  return competitorTickers;
+}
+
+export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelations): Promise<TickerV1FullReportResponse> {
+  // Fetch top 3 similar tickers in the same industry/sub-industry (excluding current ticker)
+  const similarTickers = await prisma.tickerV1.findMany({
+    where: {
+      spaceId: KoalaGainsSpaceId,
+      industryKey: tickerRecord.industryKey,
+      subIndustryKey: tickerRecord.subIndustryKey,
+      id: {
+        not: tickerRecord.id, // Exclude current ticker
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      symbol: true,
+      exchange: true,
+      cachedScore: true,
+    },
+    orderBy: {
+      cachedScore: 'desc',
+    },
+    take: 3,
+  });
+
+  const competitorTickers = await getCompetitorTickers(tickerRecord);
 
   // Check analysis status for each category/analysis type
   const analysisStatus = getTickerV1AnalysisStatus(tickerRecord);

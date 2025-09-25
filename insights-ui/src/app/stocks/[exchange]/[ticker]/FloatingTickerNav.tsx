@@ -1,11 +1,8 @@
 import FloatingNavigation, { NavigationSection } from '@/components/ticker-reportsv1/FloatingNavigation';
 import { CATEGORY_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
-import { use } from 'react';
 
-export function FloatingNavFromData({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
-  const d: Readonly<TickerV1FastResponse> = use<TickerV1FastResponse>(data);
-
+export function FloatingNavFromData({ d }: { d: TickerV1FastResponse }): JSX.Element {
   // Generate navigation sections based on available content
   const sections: NavigationSection[] = [
     {
