@@ -500,15 +500,25 @@ model TickerV1Industry {
   archived    Boolean @default(false) @map("archived")
 
   subIndustries TickerV1SubIndustry[]
+  tickers       TickerV1[]            @relation("IndustryTickers")
+
+  @@index([industryKey])
 }
 
 model TickerV1SubIndustry {
-  subIndustryKey String           @id @map("sub_industry_key")
-  name           String           @map("name")
-  summary        String           @map("summary")
-  industryKey    String           @map("industry_key")
-  archived       Boolean          @default(false) @map("archived")
-  industry       TickerV1Industry @relation(fields: [industryKey], references: [industryKey])
+  subIndustryKey String  @id @map("sub_industry_key")
+  name           String  @map("name")
+  summary        String  @map("summary")
+  industryKey    String  @map("industry_key")
+  archived       Boolean @default(false) @map("archived")
+
+  industry TickerV1Industry @relation(fields: [industryKey], references: [industryKey])
+
+  // optional backref to tickers
+  tickers TickerV1[] @relation("SubIndustryTickers")
+
+  @@index([industryKey, subIndustryKey])
+  @@index([industryKey])
 }
 
 model TickerV1 {
@@ -535,6 +545,14 @@ model TickerV1 {
   vsCompetition           TickerV1VsCompetition?
 
   // Ensure uniqueness of symbol+exchange per space
+
+  // ✅ new relations
+  industry    TickerV1Industry    @relation("IndustryTickers", fields: [industryKey], references: [industryKey])
+  subIndustry TickerV1SubIndustry @relation("SubIndustryTickers", fields: [subIndustryKey], references: [subIndustryKey])
+
+  // 🔎 simple FK indexes (good practice; Postgres doesn't auto-index FKs)
+  @@index([industryKey])
+  @@index([subIndustryKey])
   @@unique([spaceId, symbol, exchange])
   @@map("tickers_v1")
 }
@@ -606,6 +624,7 @@ model TickerV1AnalysisCategoryFactorResult {
   @@unique([spaceId, tickerId, analysisCategoryFactorId])
   @@index([tickerId])
   @@index([analysisCategoryFactorId])
+  @@index([spaceId, tickerId, categoryKey], name: "factor_results_by_parent")
   @@map("ticker_v1_analysis_category_factor_results")
 }
 
@@ -624,6 +643,7 @@ model TickerV1InvestorAnalysisResult {
   ticker TickerV1 @relation(fields: [tickerId], references: [id])
 
   @@unique([spaceId, tickerId, investorKey])
+  @@index([spaceId, tickerId])
   @@index([tickerId])
   @@map("ticker_v1_investor_analysis_results")
 }
@@ -643,6 +663,7 @@ model TickerV1FutureRisk {
 
   @@unique([spaceId, tickerId])
   @@index([tickerId])
+  @@index([spaceId, tickerId])
   @@map("ticker_v1_future_risks")
 }
 
@@ -663,6 +684,7 @@ model TickerV1VsCompetition {
   ticker TickerV1 @relation(fields: [tickerId], references: [id])
 
   @@unique([spaceId, tickerId])
+  @@index([spaceId, tickerId])
   @@index([tickerId])
   @@map("ticker_v1_vs_competition")
 }

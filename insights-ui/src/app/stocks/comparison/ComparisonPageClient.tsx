@@ -1,6 +1,6 @@
 'use client';
 
-import { TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
+import { TickerV1FullReportResponse } from '@/utils/ticker-v1-model-utils';
 import TickerComparison, { ComparisonTicker } from '@/components/ticker-reportsv1/TickerComparison';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CATEGORY_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
@@ -120,7 +120,7 @@ export default function ComparisonPageClient() {
       try {
         const promises = selectedStocks.map(async (tickerSymbol) => {
           const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${tickerSymbol}`);
-          const data: TickerV1ReportResponse = await response.json();
+          const data: TickerV1FullReportResponse = await response.json();
 
           const categoryResults = Object.values(TickerAnalysisCategory).reduce((acc, category) => {
             const categoryResult = data.categoryAnalysisResults?.find((r) => r.categoryKey === category);

@@ -5,7 +5,7 @@ import { InformationCircleIcon } from '@heroicons/react/24/outline';
 export default function SpiderChartFlyoutMenu() {
   const ranges = getLegendItems();
   return (
-    <Popup IconComponent={InformationCircleIcon} IconClasses="size-6">
+    <Popup IconComponent={InformationCircleIcon} IconClasses="size-6" IconButtonTitle={'Spider Chart Legend'}>
       <div className="font-semibold">
         Color Scheme is based on the <br></br>Overall Score Percentage:
         <ul className="mx-8 mt-2 space-y-2">

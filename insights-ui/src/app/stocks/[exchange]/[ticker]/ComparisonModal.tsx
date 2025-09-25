@@ -10,7 +10,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TickerComparison, { ComparisonTicker } from '@/components/ticker-reportsv1/TickerComparison';
-import { TickerV1ReportResponse } from '@/utils/ticker-v1-model-utils';
+import { TickerV1FullReportResponse } from '@/utils/ticker-v1-model-utils';
 
 // Using ComparisonTicker interface imported from TickerComparison component
 
@@ -46,7 +46,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
     setLoading(true);
     try {
       const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${currentTicker.symbol}`);
-      const data: TickerV1ReportResponse = await response.json();
+      const data: TickerV1FullReportResponse = await response.json();
 
       const categoryResults = Object.values(TickerAnalysisCategory).reduce((acc, category) => {
         const categoryResult = data.categoryAnalysisResults?.find((r) => r.categoryKey === category);
@@ -100,7 +100,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
     setLoading(true);
     try {
       const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.symbol}`);
-      const data: TickerV1ReportResponse = await response.json();
+      const data: TickerV1FullReportResponse = await response.json();
 
       const categoryResults = Object.values(TickerAnalysisCategory).reduce((acc, category) => {
         const categoryResult = data.categoryAnalysisResults?.find((r) => r.categoryKey === category);

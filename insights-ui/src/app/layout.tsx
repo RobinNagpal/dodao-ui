@@ -68,12 +68,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         {/* Umami */}
         <Script src="https://cloud.umami.is/script.js" strategy="afterInteractive" data-website-id="626f3994-7682-4573-a943-4987796f3eaf" />
 
-        {/* LogRocket */}
-        <Script src="https://cdn.lgrckt-in.com/LogRocket.min.js" crossOrigin="anonymous" strategy="afterInteractive" />
-        <Script id="logrocket-init" strategy="afterInteractive">
-          {`window.LogRocket && window.LogRocket.init('m3ahri/koalagains');`}
-        </Script>
-
         {/* Google Analytics */}
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-18CB8K6SLR" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -83,18 +77,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             gtag('js', new Date());
             gtag('config', 'G-18CB8K6SLR');
           `}
-        </Script>
-
-        {/* Hotjar */}
-        <Script id="hotjar" strategy="afterInteractive">
-          {`(function(h,o,t,j,a,r){
-              h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-              h._hjSettings={hjid:6496201,hjsv:6};
-              a=o.getElementsByTagName('head')[0];
-              r=o.createElement('script');r.async=1;
-              r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-              a.appendChild(r);
-            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
         </Script>
       </body>
     </html>

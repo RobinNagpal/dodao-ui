@@ -2,8 +2,9 @@ import { getIndustryMappings, getIndustryName, getSubIndustryName } from '@/lib/
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { AnalysisStatus } from '@/types/ticker-typesv1';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
-import { Prisma, TickerV1 } from '@prisma/client';
+import { Prisma, TickerV1, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import {
   TickerV1AnalysisCategoryFactorResult,
   TickerV1CategoryAnalysisResult,
@@ -52,31 +53,22 @@ export interface SimilarTicker {
   cachedScore: number;
 }
 
-export interface TickerV1ReportResponse extends TickerV1WithRelations {
+export interface TickerV1FullReportResponse extends TickerV1WithRelations {
   ticker: TickerV1;
   industryName: string;
   subIndustryName: string;
   similarTickers: SimilarTicker[];
   competitorTickers: CompetitorTicker[];
-  analysisStatus: {
-    businessAndMoat: boolean;
-    financialAnalysis: boolean;
-    pastPerformance: boolean;
-    futureGrowth: boolean;
-    fairValue: boolean;
-    competition: boolean;
-    investorAnalysis: {
-      WARREN_BUFFETT: boolean;
-      CHARLIE_MUNGER: boolean;
-      BILL_ACKMAN: boolean;
-    };
-    futureRisk: boolean;
-    finalSummary: boolean;
-    cachedScore: boolean;
-  };
+  analysisStatus: AnalysisStatus;
 }
 
-export async function getTickerWithAllDetailsForConditionsOpt(whereClause: Prisma.TickerV1WhereInput): Promise<TickerV1ReportResponse | null | undefined> {
+export interface TickerV1FastResponse extends TickerV1WithRelations {
+  industry: TickerV1Industry;
+  subIndustry: TickerV1SubIndustry;
+  analysisStatus: AnalysisStatus;
+}
+
+export async function getTickerWithAllDetailsForConditionsOpt(whereClause: Prisma.TickerV1WhereInput): Promise<TickerV1FullReportResponse | null | undefined> {
   const tickerRecord: TickerV1WithRelations | null = await prisma.tickerV1.findFirst({
     where: whereClause,
     include: {
@@ -98,7 +90,7 @@ export async function getTickerWithAllDetailsForConditionsOpt(whereClause: Prism
   return tickerRecord && getTickerWithAllDetails(tickerRecord);
 }
 
-export async function getTickerWithAllDetailsForConditions(whereClause: Prisma.TickerV1WhereInput): Promise<TickerV1ReportResponse> {
+export async function getTickerWithAllDetailsForConditions(whereClause: Prisma.TickerV1WhereInput): Promise<TickerV1FullReportResponse> {
   const tickerRecord = await getTickerWithAllDetailsForConditionsOpt(whereClause);
   if (!tickerRecord) {
     throw new Error('No ticker found for conditions' + JSON.stringify(whereClause));
@@ -107,30 +99,37 @@ export async function getTickerWithAllDetailsForConditions(whereClause: Prisma.T
   return tickerRecord;
 }
 
-export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelations): Promise<TickerV1ReportResponse> {
-  // Fetch top 3 similar tickers in the same industry/sub-industry (excluding current ticker)
-  const similarTickers = await prisma.tickerV1.findMany({
-    where: {
-      spaceId: KoalaGainsSpaceId,
-      industryKey: tickerRecord.industryKey,
-      subIndustryKey: tickerRecord.subIndustryKey,
-      id: {
-        not: tickerRecord.id, // Exclude current ticker
-      },
+export function getTickerV1AnalysisStatus(
+  tickerRecord: TickerV1 & {
+    categoryAnalysisResults: FullTickerV1CategoryAnalysisResult[];
+    investorAnalysisResults: TickerV1InvestorAnalysisResult[];
+    futureRisks: TickerV1FutureRisk[];
+    vsCompetition?: TickerV1VsCompetition | null;
+  }
+): AnalysisStatus {
+  return {
+    businessAndMoat: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat),
+    financialAnalysis: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FinancialStatementAnalysis),
+    pastPerformance: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.PastPerformance),
+    futureGrowth: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FutureGrowth),
+    fairValue: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FairValue),
+    competition: !!tickerRecord.vsCompetition,
+    investorAnalysis: {
+      WARREN_BUFFETT: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'WARREN_BUFFETT'),
+      CHARLIE_MUNGER: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'CHARLIE_MUNGER'),
+      BILL_ACKMAN: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'BILL_ACKMAN'),
     },
-    select: {
-      id: true,
-      name: true,
-      symbol: true,
-      exchange: true,
-      cachedScore: true,
-    },
-    orderBy: {
-      cachedScore: 'desc',
-    },
-    take: 3,
-  });
+    futureRisk: tickerRecord.futureRisks.length > 0,
+    finalSummary: !!tickerRecord.summary,
+    cachedScore: !!tickerRecord.cachedScore,
+  };
+}
 
+export async function getCompetitorTickers(
+  tickerRecord: TickerV1 & {
+    vsCompetition?: TickerV1VsCompetition | null;
+  }
+): Promise<CompetitorTicker[]> {
   // Process competition analysis to check which competitors exist in our system
   const competitorTickers: CompetitorTicker[] = [];
   if (tickerRecord.vsCompetition?.competitionAnalysisArray) {
@@ -168,24 +167,37 @@ export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelation
       competitorTickers.push(competitorInfo);
     }
   }
+  return competitorTickers;
+}
+
+export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelations): Promise<TickerV1FullReportResponse> {
+  // Fetch top 3 similar tickers in the same industry/sub-industry (excluding current ticker)
+  const similarTickers = await prisma.tickerV1.findMany({
+    where: {
+      spaceId: KoalaGainsSpaceId,
+      industryKey: tickerRecord.industryKey,
+      subIndustryKey: tickerRecord.subIndustryKey,
+      id: {
+        not: tickerRecord.id, // Exclude current ticker
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      symbol: true,
+      exchange: true,
+      cachedScore: true,
+    },
+    orderBy: {
+      cachedScore: 'desc',
+    },
+    take: 3,
+  });
+
+  const competitorTickers = await getCompetitorTickers(tickerRecord);
 
   // Check analysis status for each category/analysis type
-  const analysisStatus = {
-    businessAndMoat: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat),
-    financialAnalysis: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FinancialStatementAnalysis),
-    pastPerformance: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.PastPerformance),
-    futureGrowth: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FutureGrowth),
-    fairValue: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FairValue),
-    competition: !!tickerRecord.vsCompetition,
-    investorAnalysis: {
-      WARREN_BUFFETT: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'WARREN_BUFFETT'),
-      CHARLIE_MUNGER: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'CHARLIE_MUNGER'),
-      BILL_ACKMAN: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'BILL_ACKMAN'),
-    },
-    futureRisk: tickerRecord.futureRisks.length > 0,
-    finalSummary: !!tickerRecord.summary,
-    cachedScore: !!tickerRecord.cachedScore,
-  };
+  const analysisStatus = getTickerV1AnalysisStatus(tickerRecord);
 
   // Get industry and sub-industry mappings
   const mappings = await getIndustryMappings();

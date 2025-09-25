@@ -235,7 +235,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
         type="button"
         aria-label="Open navigation"
         onClick={open}
-        className="fixed top-24 right-4 z-40 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-full shadow-md transition-all duration-200 flex items-center gap-2"
+        className="fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
       >
         <Bars3Icon className="h-5 w-5" />
         <span className="text-sm font-medium">{title}</span>
@@ -249,8 +249,8 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
       onClick={open}
       className="fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
     >
-      <Bars3Icon className="h-6 w-6" />
-      <span className="font-medium">{title}</span>
+      <Bars3Icon className="h-5 w-5" />
+      <span className="text-sm font-medium">{title}</span>
     </button>
   ) : null;
 
