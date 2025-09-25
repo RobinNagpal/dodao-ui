@@ -55,7 +55,7 @@ const breadcrumbs: BreadcrumbsOjbect[] = [
 ];
 
 type PageProps = {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export default function StocksPage({ searchParams }: PageProps) {

@@ -79,7 +79,8 @@ type Grouped = Record<
 
 // --- RENDER ------------------------------------------------------------------
 
-export default async function StocksGrid({ searchParams }: { searchParams: SearchParams }) {
+export default async function StocksGrid(props: { searchParams: Promise<SearchParams> }) {
+  const searchParams = await props.searchParams;
   const filters = hasFiltersApplied(searchParams);
   const qs = toSortedQueryString(searchParams);
 
