@@ -136,7 +136,7 @@ export type EnrollmentWithRelations = ClassCaseStudyEnrollment & {
     shortDescription: string;
     subject: BusinessSubject;
   };
-  students?: EnrollmentStudent[];
+  students?: Array<EnrollmentStudent & { assignedStudent?: { email: string | null } }>;
   assignedInstructor?: {
     id: string;
     email?: string | null;
@@ -151,6 +151,7 @@ export interface DeleteResponse {
 export interface CreateEnrollmentRequest {
   caseStudyId: string;
   assignedInstructorEmail: string;
+  className?: string;
 }
 
 export interface ExerciseWithAttemptsResponse {

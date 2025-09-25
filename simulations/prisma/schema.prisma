@@ -189,6 +189,8 @@ model ClassCaseStudyEnrollment {
   updatedAt DateTime @updatedAt @map("updated_at")
   archive   Boolean  @default(false) @map("archive")
 
+  className String @default("first section") @map("class_name")
+
   // Relations to User (restrict delete because FKs are required)
   createdBy User @relation("EnrollmentCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
   updatedBy User @relation("EnrollmentUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)

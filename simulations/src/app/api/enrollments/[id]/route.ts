@@ -28,6 +28,13 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
         orderBy: {
           createdAt: 'asc',
         },
+        include: {
+          assignedStudent: {
+            select: {
+              email: true,
+            },
+          },
+        },
       },
     },
   });

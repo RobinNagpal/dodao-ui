@@ -227,19 +227,21 @@ export default function StudentProgressStepper({ progressData }: StudentProgress
 
             {/* Exercises List */}
             <div className="ml-4 space-y-2 relative">
-              {(module.exercises || []).map((exercise) => {
-                const isCurrent = exercise.id === progressData.currentExerciseId;
-                const isAttempted = (exercise.attemptCount ?? 0) > 0;
-                return (
-                  <div
-                    key={exercise.id}
-                    className={`flex items-start space-x-3 py-1 relative z-10 ${
-                      exercise.isExerciseCompleted ? 'cursor-pointer hover:bg-gray-50 rounded-lg px-2 transition-colors duration-200' : ''
-                    }`}
-                    onClick={() => handleExerciseClick(exercise, module.id)}
-                  >
+              {(module.exercises || [])
+                .sort((a, b) => (a.orderNumber || 0) - (b.orderNumber || 0))
+                .map((exercise) => {
+                  const isCurrent = exercise.id === progressData.currentExerciseId;
+                  const isAttempted = (exercise.attemptCount ?? 0) > 0;
+                  return (
                     <div
-                      className={`
+                      key={exercise.id}
+                      className={`flex items-start space-x-3 py-1 relative z-10 ${
+                        exercise.isExerciseCompleted ? 'cursor-pointer hover:bg-gray-50 rounded-lg px-2 transition-colors duration-200' : ''
+                      }`}
+                      onClick={() => handleExerciseClick(exercise, module.id)}
+                    >
+                      <div
+                        className={`
                         w-4 h-4 rounded-full border flex items-center justify-center transition-all duration-300
                         ${
                           isCurrent
@@ -251,30 +253,30 @@ export default function StudentProgressStepper({ progressData }: StudentProgress
                             : 'border-gray-300 bg-white'
                         }
                       `}
-                    >
-                      {exercise.isExerciseCompleted && <Check className="h-3 w-3 text-white" />}
-                      {isAttempted && !exercise.isExerciseCompleted && <Clock className="h-2 w-2 text-white" />}
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <p
-                        className={`text-xs font-medium ${
-                          isCurrent
-                            ? 'text-blue-600'
-                            : exercise.isExerciseCompleted
-                            ? 'text-green-600 hover:text-green-700'
-                            : isAttempted
-                            ? 'text-yellow-600'
-                            : 'text-gray-500'
-                        } ${exercise.isExerciseCompleted ? 'hover:underline' : ''}`}
                       >
-                        {exercise.orderNumber}. {exercise.title}
-                      </p>
-                      {(exercise.attemptCount ?? 0) > 0 && <p className="text-xs text-gray-400">{exercise.attemptCount ?? 0}/3 attempts</p>}
+                        {exercise.isExerciseCompleted && <Check className="h-3 w-3 text-white" />}
+                        {isAttempted && !exercise.isExerciseCompleted && <Clock className="h-2 w-2 text-white" />}
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <p
+                          className={`text-xs font-medium ${
+                            isCurrent
+                              ? 'text-blue-600'
+                              : exercise.isExerciseCompleted
+                              ? 'text-green-600 hover:text-green-700'
+                              : isAttempted
+                              ? 'text-yellow-600'
+                              : 'text-gray-500'
+                          } ${exercise.isExerciseCompleted ? 'hover:underline' : ''}`}
+                        >
+                          {exercise.orderNumber}. {exercise.title}
+                        </p>
+                        {(exercise.attemptCount ?? 0) > 0 && <p className="text-xs text-gray-400">{exercise.attemptCount ?? 0}/3 attempts</p>}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
         );

@@ -15,6 +15,9 @@ export default function EnrollmentRow({ enrollment, onManageStudents, onDelete }
         <div className="text-sm text-emerald-600 font-medium">{enrollment.caseStudy.subject}</div>
       </td>
       <td className="px-6 py-4">
+        <div className="text-sm font-medium text-gray-900">{enrollment.className || 'first section'}</div>
+      </td>
+      <td className="px-6 py-4">
         <div className="text-sm text-gray-900 font-medium">{enrollment.assignedInstructor?.email || enrollment.assignedInstructorId}</div>
       </td>
       <td className="px-6 py-4">

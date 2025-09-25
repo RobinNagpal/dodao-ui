@@ -63,9 +63,6 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
 async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<EnrollmentWithRelations> {
   const body: CreateEnrollmentRequest = await req.json();
 
-  // Get admin email from request headers
-  const adminEmail: string = req.headers.get('admin-email') || 'admin@example.com';
-
   // Find instructor by email (frontend passes email in assignedInstructorId field)
   const instructorEmail: string = body.assignedInstructorEmail;
   let instructor = await prisma.user.findFirst({
@@ -94,6 +91,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
       createdById: userContext.userId,
       updatedById: userContext.userId,
       archive: false,
+      className: body.className || 'first section', // Use provided className or default
     },
     include: {
       caseStudy: {

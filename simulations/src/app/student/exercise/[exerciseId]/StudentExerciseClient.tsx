@@ -9,7 +9,7 @@ import StudentLoading from '@/components/student/StudentLoading';
 import StudentProgressStepper from '@/components/student/StudentProgressStepper';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CaseStudyWithRelationsForStudents, ExerciseWithAttemptsResponse, StudentNavigationData } from '@/types/api';
+import { CaseStudyWithRelationsForStudents, ExerciseWithAttemptsResponse } from '@/types/api';
 import { calculateNavigationData } from '@/lib/navigation-utils';
 import { SimulationSession } from '@/types/user';
 import { parseMarkdown } from '@/utils/parse-markdown';
