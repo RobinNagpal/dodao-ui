@@ -136,7 +136,7 @@ export type EnrollmentWithRelations = ClassCaseStudyEnrollment & {
     shortDescription: string;
     subject: BusinessSubject;
   };
-  students?: EnrollmentStudent[];
+  students?: Array<EnrollmentStudent & { assignedStudent?: { email: string | null } }>;
   assignedInstructor?: {
     id: string;
     email?: string | null;
