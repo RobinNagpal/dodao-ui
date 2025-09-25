@@ -7,7 +7,7 @@ import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import Filters from '@/components/public-equitiesv1/Filters';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import type { Metadata } from 'next';
-import { SkeletonGrid } from '@/components/stocks/SubIndustryCardSkeleton';
+import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkeleton';
 import StocksGrid from '@/components/stocks/StocksGrid';
 
 export const metadata: Metadata = {
@@ -55,10 +55,21 @@ const breadcrumbs: BreadcrumbsOjbect[] = [
 ];
 
 type PageProps = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
+// Create a stable key from searchParams so Suspense shows fallback on filter changes
+function suspenseKey(sp: PageProps['searchParams']): string {
+  const entries = Object.entries(sp)
+    .map(([k, v]) => [k, Array.isArray(v) ? v.join(',') : v ?? ''] as const)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([k, v]) => `${k}=${v}`);
+  return entries.join('&');
+}
+
 export default function StocksPage({ searchParams }: PageProps) {
+  const key = suspenseKey(searchParams);
+
   return (
     <PageWrapper>
       <div className="overflow-x-auto">
@@ -86,9 +97,8 @@ export default function StocksPage({ searchParams }: PageProps) {
         </p>
       </div>
 
-      {/* Stream the grid; show 3-card skeletons while it loads */}
-      <Suspense fallback={<SkeletonGrid />}>
-        {/* Server component does the fetching & grouping with cache */}
+      {/* Important: key the Suspense so fallback appears during filter (URL) changes */}
+      <Suspense key={key} fallback={<FilterLoadingFallback />}>
         {/* @ts-expect-error Server Component */}
         <StocksGrid searchParams={searchParams} />
       </Suspense>

@@ -1,4 +1,5 @@
 // components/stocks/SubIndustryCardSkeleton.tsx
+
 export function SubIndustryCardSkeleton() {
   return (
     <div className="bg-block-bg-color rounded-lg shadow-lg border border-color overflow-hidden flex flex-col">
@@ -23,13 +24,23 @@ export function SubIndustryCardSkeleton() {
   );
 }
 
-/** Three cards, three columns — used as Suspense fallback on the stocks page */
+/** Three cards, three columns — generic skeleton grid */
 export function SkeletonGrid() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
       <SubIndustryCardSkeleton />
       <SubIndustryCardSkeleton />
       <SubIndustryCardSkeleton />
+    </div>
+  );
+}
+
+/** Used inside Suspense to indicate the grid is updating due to new filters */
+export function FilterLoadingFallback() {
+  return (
+    <div className="space-y-3">
+      <p className="text-[#E5E7EB] text-sm">Updating results…</p>
+      <SkeletonGrid />
     </div>
   );
 }
