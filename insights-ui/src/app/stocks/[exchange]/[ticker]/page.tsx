@@ -7,10 +7,12 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
+import { CompetitionResponse } from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
+import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import { getCountryByExchange } from '@/utils/countryUtils';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
-import { CompetitorTicker, FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
+import { FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -22,8 +24,6 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { Suspense, use } from 'react';
 import { FloatingNavFromData } from './FloatingTickerNav';
 import { TickerRadarChart } from './TickerRadarChart';
-import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
-import { CompetitionResponse } from '@/types/ticker-typesv1';
 
 /**
  * Static-by-default with on-demand invalidation.
@@ -189,6 +189,28 @@ function SectionCardSkeleton(): JSX.Element {
   return <div className="h-24 rounded-md bg-gray-800 animate-pulse" />;
 }
 
+function SummaryInfoSkeleton(): JSX.Element {
+  return (
+    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+      <div className="h-6 w-56 rounded bg-gray-800 animate-pulse mb-4" />
+      <SectionCardSkeleton />
+      <SectionCardSkeleton />
+      <SectionCardSkeleton />
+    </div>
+  );
+}
+
+function DetailsInfoSkeleton(): JSX.Element {
+  return (
+    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+      <div className="h-6 w-56 rounded bg-gray-800 animate-pulse mb-4" />
+      <SectionCardSkeleton />
+      <SectionCardSkeleton />
+      <SectionCardSkeleton />
+    </div>
+  );
+}
+
 function CompetitionSkeleton(): JSX.Element {
   return (
     <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
@@ -217,7 +239,8 @@ function SimilarSkeleton(): JSX.Element {
    CHILD SERVER COMPONENTS (strictly typed, minimal)
 ============================================================================= */
 
-function BreadcrumbsFromData({ d }: { d: TickerV1FastResponse }): JSX.Element {
+function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
+  const d: TickerV1FastResponse = use(data);
   const exchange: string = d.exchange.toUpperCase();
   const ticker: string = d.symbol.toUpperCase();
   const country: string | null = getCountryByExchange(d.exchange);
@@ -259,19 +282,8 @@ function BreadcrumbsFromData({ d }: { d: TickerV1FastResponse }): JSX.Element {
   );
 }
 
-/** PAGE */
-export default async function TickerDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
-  // Main ticker data (promise for selective Suspense usage)
-  const d: TickerV1FastResponse = await getTickerOrRedirect(params);
-
-  // We only need params (not data) to kick off Competition/Similar fetch promises up front
-  const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
-  const exchange: string = routeParams.exchange.toUpperCase();
-  const ticker: string = routeParams.ticker.toUpperCase();
-
-  // Promise-based fetchers (to be resolved by child components via `use()` under Suspense)
-  const competitionPromise: Promise<CompetitionResponse> = fetchCompetition(exchange, ticker);
-  const similarPromise: Promise<SimilarTicker[]> = fetchSimilar(exchange, ticker);
+function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
+  const d: TickerV1FastResponse = use(data);
 
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
     Object.entries(CATEGORY_MAPPINGS).map(([categoryKey, categoryTitle]: [string, string]) => {
@@ -290,185 +302,217 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   ) as SpiderGraphForTicker;
 
   const score: number = getSpiderGraphScorePercentage(spiderGraph);
+  return (
+    <>
+      <section className="text-left mb-8">
+        <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl mb-6">
+          {d.name} ({d.symbol}){' '}
+          {d.websiteUrl && (
+            <a href={d.websiteUrl} target="_blank" rel="noopener noreferrer" title={"website of the company's homepage"}>
+              <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
+            </a>
+          )}
+        </h1>
+
+        <div className="flex flex-col gap-x-5 gap-y-6 lg:flex-row">
+          {/* Left: summary */}
+          <div className="lg:w/full lg:max-w-2xl lg:flex-auto">
+            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary ?? 'Not yet populated') }} />
+          </div>
+
+          {/* Right: Radar (Suspense retained only here) */}
+          <div className="lg:flex lg:flex-auto lg:justify-center relative lg:mb-16">
+            <div className="lg:absolute lg:top-8 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
+              <div className="w-full max-w-lg mx-auto relative">
+                <div className="absolute top-16 right-0 flex space-x-2">
+                  <div className="text-2xl font-bold -z-10" style={{ color: 'var(--primary-color, blue)' }}>
+                    {score.toFixed(0)}%
+                  </div>
+                  <SpiderChartFlyoutMenu />
+                </div>
+                <Suspense fallback={<RadarSkeleton />}>
+                  <TickerRadarChart data={spiderGraph} scorePercentage={score} />
+                </Suspense>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6">
+        <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
+        <div className="space-y-4">
+          {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
+            const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
+            return (
+              <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
+                <h3 className="text-lg font-semibold mb-2">{CATEGORY_MAPPINGS[categoryKey]}</h3>
+                <div
+                  className="text-gray-300 markdown markdown-body"
+                  dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.summary || 'No summary available.') }}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </section>
+      {d.futureRisks.length > 0 && (
+        <section id="future-risks" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
+          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Future Risks</h2>
+          <ul className="space-y-3">
+            {d.futureRisks.map((futureRisk) => (
+              <li key={futureRisk.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
+                <div className="flex flex-col gap-y-2">{futureRisk.summary}</div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {d.investorAnalysisResults.length > 0 && (
+        <section id="investor-summaries" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
+          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Investor Reports Summaries (Created using AI)</h2>
+          <div className="space-y-4">
+            {d.investorAnalysisResults.map((result) => (
+              <div key={result.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
+                <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
+                <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(result.summary) }} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+    </>
+  );
+}
+
+function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
+  const d: TickerV1FastResponse = use(data);
+
+  return (
+    <>
+      <section id="detailed-analysis" className="mb-8">
+        <h2 className="text-2xl font-bold mb-6 mt-10">Detailed Analysis</h2>
+        {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
+          const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
+          if (!categoryResult) return null;
+
+          return (
+            <div key={`detail-${categoryKey}`} id={`detailed-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
+              <h3 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{CATEGORY_MAPPINGS[categoryKey]}</h3>
+
+              {categoryResult.overallAnalysisDetails && (
+                <div className="mb-4">
+                  <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.overallAnalysisDetails) }} />
+                </div>
+              )}
+
+              {categoryResult.factorResults?.length ? (
+                <ul className="space-y-3">
+                  {categoryResult.factorResults.map((factor) => (
+                    <li key={factor.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
+                      <div className="flex flex-col gap-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            {factor.result === 'Pass' ? (
+                              <CheckCircleIcon className="h-6 w-6 text-green-500 flex-shrink-0" />
+                            ) : (
+                              <XCircleIcon className="h-6 w-6 text-red-500 flex-shrink-0" />
+                            )}
+                            <h4 className="font-semibold">{factor.analysisCategoryFactor?.factorAnalysisTitle}</h4>
+                          </div>
+                          <span
+                            className={`px-2 py-1 rounded-full text-sm font-medium ${
+                              factor.result === 'Pass' ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
+                            }`}
+                          >
+                            {factor.result}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-400">{factor.oneLineExplanation}</p>
+                        <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(factor.detailedExplanation) }} />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
+          );
+        })}
+      </section>
+
+      {d.investorAnalysisResults.length > 0 && (
+        <section id="detailed-investor-reports" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Investor Reports (Created using AI)</h2>
+          <div className="space-y-4">
+            {d.investorAnalysisResults.map((result) => (
+              <div key={result.id} className="bg-gray-800 p-4 rounded-md">
+                <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
+                <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(result.detailedAnalysis) }} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {d.futureRisks.length > 0 && (
+        <section id="detailed-future-risks" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Future Risks</h2>
+          <div className="space-y-3">
+            {d.futureRisks.map((futureRisk) => (
+              <div key={futureRisk.id} className="bg-gray-800 p-4 rounded-md">
+                <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(futureRisk.detailedAnalysis) }} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+    </>
+  );
+}
+/** PAGE */
+export default async function TickerDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
+  // Main ticker data (promise for selective Suspense usage)
+  const tickerInfo = getTickerOrRedirect(params);
+
+  // We only need params (not data) to kick off Competition/Similar fetch promises up front
+  const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
+  const exchange: string = routeParams.exchange.toUpperCase();
+  const ticker: string = routeParams.ticker.toUpperCase();
+
+  // Promise-based fetchers (to be resolved by child components via `use()` under Suspense)
+  const competitionPromise: Promise<CompetitionResponse> = fetchCompetition(exchange, ticker);
+  const similarPromise: Promise<SimilarTicker[]> = fetchSimilar(exchange, ticker);
 
   return (
     <PageWrapper>
       {/* Breadcrumbs can stream independently */}
       <Suspense fallback={<BarSkeleton widthClass="w-64" />}>
-        <BreadcrumbsFromData d={d} />
+        <BreadcrumbsFromData data={tickerInfo} />
       </Suspense>
 
+      <Suspense fallback={<SummaryInfoSkeleton />}>
+        <TickerSummaryInfo data={tickerInfo} />
+      </Suspense>
       <div className="mx-auto max-w-7xl py-2">
-        <section className="text-left mb-8">
-          <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl mb-6">
-            {d.name} ({d.symbol}){' '}
-            {d.websiteUrl && (
-              <a href={d.websiteUrl} target="_blank" rel="noopener noreferrer" title={"website of the company's homepage"}>
-                <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
-              </a>
-            )}
-          </h1>
-
-          <div className="flex flex-col gap-x-5 gap-y-6 lg:flex-row">
-            {/* Left: summary */}
-            <div className="lg:w/full lg:max-w-2xl lg:flex-auto">
-              <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary ?? 'Not yet populated') }} />
-            </div>
-
-            {/* Right: Radar (Suspense retained only here) */}
-            <div className="lg:flex lg:flex-auto lg:justify-center relative lg:mb-16">
-              <div className="lg:absolute lg:top-8 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
-                <div className="w-full max-w-lg mx-auto relative">
-                  <div className="absolute top-16 right-0 flex space-x-2">
-                    <div className="text-2xl font-bold -z-10" style={{ color: 'var(--primary-color, blue)' }}>
-                      {score.toFixed(0)}%
-                    </div>
-                    <SpiderChartFlyoutMenu />
-                  </div>
-                  <Suspense fallback={<RadarSkeleton />}>
-                    <TickerRadarChart data={spiderGraph} scorePercentage={score} />
-                  </Suspense>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6">
-          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
-          <div className="space-y-4">
-            {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
-              const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
-              return (
-                <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
-                  <h3 className="text-lg font-semibold mb-2">{CATEGORY_MAPPINGS[categoryKey]}</h3>
-                  <div
-                    className="text-gray-300 markdown markdown-body"
-                    dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.summary || 'No summary available.') }}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </section>
-        {d.futureRisks.length > 0 && (
-          <section id="future-risks" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Future Risks</h2>
-            <ul className="space-y-3">
-              {d.futureRisks.map((futureRisk) => (
-                <li key={futureRisk.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
-                  <div className="flex flex-col gap-y-2">{futureRisk.summary}</div>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
         <section id="competition" className="mb-8">
           <Suspense fallback={<CompetitionSkeleton />}>
             <Competition dataPromise={competitionPromise} />
           </Suspense>
         </section>
 
-        {d.investorAnalysisResults.length > 0 && (
-          <section id="investor-summaries" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Investor Reports Summaries (Created using AI)</h2>
-            <div className="space-y-4">
-              {d.investorAnalysisResults.map((result) => (
-                <div key={result.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
-                  <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
-                  <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(result.summary) }} />
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
         <section id="similar-tickers" className="mb-8">
           <Suspense fallback={<SimilarSkeleton />}>
             <SimilarTickers dataPromise={similarPromise} />
           </Suspense>
         </section>
-
-        <section id="detailed-analysis" className="mb-8">
-          <h2 className="text-2xl font-bold mb-6 mt-10">Detailed Analysis</h2>
-          {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
-            const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
-            if (!categoryResult) return null;
-
-            return (
-              <div key={`detail-${categoryKey}`} id={`detailed-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
-                <h3 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{CATEGORY_MAPPINGS[categoryKey]}</h3>
-
-                {categoryResult.overallAnalysisDetails && (
-                  <div className="mb-4">
-                    <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.overallAnalysisDetails) }} />
-                  </div>
-                )}
-
-                {categoryResult.factorResults?.length ? (
-                  <ul className="space-y-3">
-                    {categoryResult.factorResults.map((factor) => (
-                      <li key={factor.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
-                        <div className="flex flex-col gap-y-2">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              {factor.result === 'Pass' ? (
-                                <CheckCircleIcon className="h-6 w-6 text-green-500 flex-shrink-0" />
-                              ) : (
-                                <XCircleIcon className="h-6 w-6 text-red-500 flex-shrink-0" />
-                              )}
-                              <h4 className="font-semibold">{factor.analysisCategoryFactor?.factorAnalysisTitle}</h4>
-                            </div>
-                            <span
-                              className={`px-2 py-1 rounded-full text-sm font-medium ${
-                                factor.result === 'Pass' ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                              }`}
-                            >
-                              {factor.result}
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-400">{factor.oneLineExplanation}</p>
-                          <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(factor.detailedExplanation) }} />
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
-            );
-          })}
-        </section>
-
-        {d.investorAnalysisResults.length > 0 && (
-          <section id="detailed-investor-reports" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Investor Reports (Created using AI)</h2>
-            <div className="space-y-4">
-              {d.investorAnalysisResults.map((result) => (
-                <div key={result.id} className="bg-gray-800 p-4 rounded-md">
-                  <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
-                  <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(result.detailedAnalysis) }} />
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {d.futureRisks.length > 0 && (
-          <section id="detailed-future-risks" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-            <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Future Risks</h2>
-            <div className="space-y-3">
-              {d.futureRisks.map((futureRisk) => (
-                <div key={futureRisk.id} className="bg-gray-800 p-4 rounded-md">
-                  <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(futureRisk.detailedAnalysis) }} />
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
       </div>
+      <Suspense fallback={<DetailsInfoSkeleton />}>
+        <TickerDetailsInfo data={tickerInfo} />
+      </Suspense>
 
       {/* Floating nav after sections are known */}
       <Suspense fallback={null}>
-        <FloatingNavFromData d={d} />
+        <FloatingNavFromData data={tickerInfo} />
       </Suspense>
     </PageWrapper>
   );
