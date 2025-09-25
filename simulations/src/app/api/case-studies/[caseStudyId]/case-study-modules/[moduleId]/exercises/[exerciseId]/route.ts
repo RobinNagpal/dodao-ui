@@ -19,14 +19,9 @@ export interface UpdateModuleExerciseRequest {
 }
 
 // Helper function to get simplified student exercise data
-async function getSimplifiedStudentExerciseData(
-  caseStudyId: string,
-  moduleId: string,
-  exerciseId: string,
-  userId: string
-): Promise<ExerciseWithAttemptsResponse> {
+async function getSimplifiedStudentExerciseData(exerciseId: string, userId: string): Promise<ExerciseWithAttemptsResponse> {
   // Get exercise with attempts
-  const exercise = await prisma.moduleExercise.findFirst({
+  const exercise = await prisma.moduleExercise.findFirstOrThrow({
     where: {
       id: exerciseId,
       archive: false,
@@ -43,10 +38,6 @@ async function getSimplifiedStudentExerciseData(
       },
     },
   });
-
-  if (!exercise) {
-    throw new Error('Exercise not found');
-  }
 
   return {
     id: exercise.id,
@@ -74,7 +65,7 @@ async function getByIdHandler(
 
   // For students, return simplified exercise data with attempts only
   if (user.role === 'Student') {
-    return await getSimplifiedStudentExerciseData(caseStudyId, moduleId, exerciseId, userId);
+    return await getSimplifiedStudentExerciseData(exerciseId, userId);
   }
 
   await checkCanAccessCaseStudy(userContext, caseStudyId);

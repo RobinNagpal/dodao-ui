@@ -102,6 +102,7 @@ export default function EnrollmentsTab() {
                 <thead className="bg-gradient-to-r from-emerald-50 to-green-50">
                   <tr>
                     <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Case Study</th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Class Name</th>
                     <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Assigned Instructor</th>
                     <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Students Enrolled</th>
                     <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Created</th>

@@ -34,6 +34,8 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
     'Failed to load enrollment details'
   );
 
+  console.log(enrollment);
+
   const { postData: addStudent, loading: addingStudent } = usePostData(
     {
       successMessage: 'Student added successfully!',
@@ -177,7 +179,7 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
                         <UserCheck className="h-4 w-4 text-emerald-600" />
                       </div>
                       <div>
-                        <span className="font-medium text-gray-900">{student.assignedStudentId}</span>
+                        <span className="font-medium text-gray-900">{student.assignedStudent?.email}</span>
                         <div className="text-xs text-gray-500">Added {new Date(student.createdAt).toLocaleDateString()}</div>
                       </div>
                     </div>

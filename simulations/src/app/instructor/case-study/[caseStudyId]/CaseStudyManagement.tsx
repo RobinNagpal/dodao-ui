@@ -79,11 +79,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   } = useFetchData<{
     students: StudentTableData[];
     modules: ModuleTableData[];
-  }>(
-    `${getBaseUrl()}/api/instructor/case-studies/${caseStudyId}/students-table`,
-    { skipInitialFetch: !caseStudyId || !session },
-    'Failed to load students table data'
-  );
+  }>(`${getBaseUrl()}/api/case-studies/${caseStudyId}/students-table`, { skipInitialFetch: !caseStudyId || !session }, 'Failed to load students table data');
 
   const { deleteData: clearAttempts, loading: clearingAttempts } = useDeleteData<DeleteResponse, never>({
     successMessage: 'Student attempts cleared successfully!',
