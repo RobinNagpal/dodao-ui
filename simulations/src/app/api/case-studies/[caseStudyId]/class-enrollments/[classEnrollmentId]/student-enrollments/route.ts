@@ -71,14 +71,14 @@ async function getHandler(
     });
 
     const students = enrollmentWithStudents.students
-      .map((enrollmentStudent: any) => {
+      .map((enrollmentStudent) => {
         const user = users.find((u) => u.id === enrollmentStudent.assignedStudentId);
         return {
           email: user?.email || '',
           studentEnrollmentId: enrollmentStudent.id,
         };
       })
-      .filter((student: any) => student.email !== '');
+      .filter((student) => student.email !== '');
 
     return { students };
   }
