@@ -39,7 +39,7 @@ type TickerListItem = Readonly<{ symbol: string; exchange: string }>;
 const TICKERS_INDEX_URL: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1` as const;
 
 /** Build nothing by default; prebuild all when FULL_SSG=1 */
-export async function generateStaticParams(): Promise<ReadonlyArray<{ exchange: string; ticker: string }>> {
+export async function generateStaticParams(): Promise<{ exchange: string; ticker: string }[]> {
   if (process.env.FULL_SSG !== '1') return [];
   const res: Response = await fetch(`${TICKERS_INDEX_URL}`, {
     next: { revalidate: 60 * 60, tags: ['ticker-list'] },
