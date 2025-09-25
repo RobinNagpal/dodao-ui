@@ -109,7 +109,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
           />
         )}
 
-        {activeTab === 'students' && <StudentsTab caseStudy={caseStudy || null} caseStudyId={caseStudyId} />}
+        {activeTab === 'classes' && <StudentsTab caseStudy={caseStudy || null} caseStudyId={caseStudyId} />}
 
         {activeTab === 'analytics' && <AnalyticsTab />}
       </div>

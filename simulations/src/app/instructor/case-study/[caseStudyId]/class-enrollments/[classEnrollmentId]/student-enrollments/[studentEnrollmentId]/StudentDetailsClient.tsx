@@ -29,7 +29,8 @@ import { SimulationSession } from '@/types/user';
 
 interface StudentDetailsClientProps {
   caseStudyId: string;
-  studentId: string;
+  classEnrollmentId: string;
+  studentEnrollmentId: string;
 }
 
 interface ExerciseAttemptDetail {
@@ -82,7 +83,7 @@ interface StudentDetailResponse {
   };
 }
 
-export default function StudentDetailsClient({ caseStudyId, studentId }: StudentDetailsClientProps) {
+export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, studentEnrollmentId }: StudentDetailsClientProps) {
   const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set());
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
   const [showAttemptModal, setShowAttemptModal] = useState(false);
@@ -93,8 +94,8 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
 
   // API hook to fetch student details
   const { data: studentDetails, loading: loadingDetails } = useFetchData<StudentDetailResponse>(
-    `/api/instructor/students/${studentId}/details?caseStudyId=${caseStudyId}`,
-    { skipInitialFetch: !studentId || !session || !caseStudyId },
+    `/api/case-studies/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${studentEnrollmentId}`,
+    { skipInitialFetch: !studentEnrollmentId || !session || !caseStudyId || !classEnrollmentId },
     'Failed to load student details'
   );
 
@@ -183,7 +184,7 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
-        <BackButton userType="instructor" text="Back to Case Study" href={`/instructor/case-study/${caseStudyId}`} />
+        <BackButton userType="instructor" text="Back to Case Study" href={`/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}`} />
 
         <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-8 mb-8">
           <div className="flex items-center justify-between mb-6">
@@ -358,7 +359,7 @@ export default function StudentDetailsClient({ caseStudyId, studentId }: Student
                                 <Clock className="h-8 w-8 mx-auto mb-2" />
                               </div>
                               <h6 className="font-semibold text-gray-700 mb-1">No Attempts Yet</h6>
-                              <p className="text-sm text-gray-600">Student hasn’t attempted this exercise</p>
+                              <p className="text-sm text-gray-600">Student hasn't attempted this exercise</p>
                             </div>
                           )}
                         </div>

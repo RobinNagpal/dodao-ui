@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { BookOpen, Users, BarChart3 } from 'lucide-react';
 
-export type TabType = 'overview' | 'students' | 'analytics';
+export type TabType = 'overview' | 'classes' | 'analytics';
 
 interface TabNavigationProps {
   activeTab: TabType;
@@ -24,15 +24,15 @@ const TabNavigation: FC<TabNavigationProps> = ({ activeTab, onTabChange }) => {
           <span>Overview</span>
         </button>
         <button
-          onClick={() => onTabChange('students')}
+          onClick={() => onTabChange('classes')}
           className={`py-4 px-2 pb-2 relative font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
-            activeTab === 'students'
+            activeTab === 'classes'
               ? 'text-purple-600 bg-purple-50/50 rounded-t-lg after:absolute after:bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-purple-500'
               : 'text-gray-600 hover:text-purple-600 hover:after:absolute hover:after:bottom-1 hover:after:left-0 hover:after:right-0 hover:after:h-0.5 hover:after:bg-purple-300'
           }`}
         >
           <Users className="h-4 w-4" />
-          <span>Students</span>
+          <span>Classes</span>
         </button>
         <button
           onClick={() => onTabChange('analytics')}

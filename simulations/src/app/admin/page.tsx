@@ -2,7 +2,6 @@
 
 import AdminLoading from '@/components/admin/AdminLoading';
 import CaseStudiesTab from '@/components/admin/CaseStudiesTab';
-import CreateEnrollmentModal from '@/components/admin/CreateEnrollmentModal';
 import EnrollmentsTab from '@/components/admin/EnrollmentsTab';
 import UsersTab from '@/components/admin/UsersTab';
 import AdminNavbar from '@/components/navigation/AdminNavbar';

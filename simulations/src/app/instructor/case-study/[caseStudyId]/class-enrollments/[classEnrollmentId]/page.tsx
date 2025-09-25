@@ -64,7 +64,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     students: StudentTableData[];
     modules: ModuleTableData[];
   }>(
-    `${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${classEnrollmentId}/students`,
+    `${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments?student-details=true`,
     { skipInitialFetch: !caseStudyId || !classEnrollmentId || !session },
     'Failed to load students table data'
   );
@@ -214,8 +214,8 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     }
   };
 
-  const viewStudentDetails = (studentId: string) => {
-    router.push(`/instructor/case-study/${caseStudyId}/student/${studentId}`);
+  const viewStudentDetails = (studentEnrollmentId: string) => {
+    router.push(`/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${studentEnrollmentId}`);
   };
 
   if (!session || (session.role !== 'Instructor' && session.role !== 'Admin')) {

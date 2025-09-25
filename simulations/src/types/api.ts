@@ -154,6 +154,11 @@ export interface CreateEnrollmentRequest {
   className: string;
 }
 
+export interface CreateEnrollmentRequestForCaseStudy {
+  assignedInstructorEmail: string;
+  className: string;
+}
+
 export interface ExerciseWithAttemptsResponse {
   // Exercise details
   id: string;
