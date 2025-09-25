@@ -2,6 +2,7 @@ import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { verifyEnrollmentAccess } from '@/app/api/helpers/enrollments-util';
 import type { AttemptDetail, ExerciseProgress, StudentTableData, ModuleTableData } from '@/types';
 import { AddStudentEnrollmentRequest } from '@/components/instructor/InstructorManageStudentsModal';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
@@ -29,14 +30,15 @@ async function getHandler(
   const url = new URL(req.url);
   const studentDetails = url.searchParams.get('student-details');
 
-  // First verify instructor has access to this enrollment
-  const enrollment = await prisma.classCaseStudyEnrollment.findFirst({
-    where: {
-      id: classEnrollmentId,
-      caseStudyId,
-      assignedInstructorId: userContext.userId,
-      archive: false,
-    },
+  // Verify user has access to this enrollment
+  const enrollment = await verifyEnrollmentAccess({
+    userContext,
+    classEnrollmentId,
+    caseStudyId,
+  });
+
+  const enrollmentWithStudents = await prisma.classCaseStudyEnrollment.findFirstOrThrow({
+    where: { id: enrollment.id },
     include: {
       students: {
         where: { archive: false },
@@ -45,13 +47,9 @@ async function getHandler(
     },
   });
 
-  if (!enrollment) {
-    throw new Error('Class enrollment not found or you do not have access to it');
-  }
-
   // If student-details is not requested, return simple email list with studentEnrollmentId
   if (studentDetails !== 'true') {
-    const studentIds = enrollment.students.map((student) => student.assignedStudentId);
+    const studentIds = enrollmentWithStudents.students.map((student) => student.assignedStudentId);
 
     if (studentIds.length === 0) {
       return { students: [] };
@@ -70,25 +68,22 @@ async function getHandler(
       },
     });
 
-    const students = enrollment.students.map((enrollmentStudent) => {
-      const user = users.find(u => u.id === enrollmentStudent.assignedStudentId);
-      return {
-        email: user?.email || '',
-        studentEnrollmentId: enrollmentStudent.id
-      };
-    }).filter((student) => student.email !== '');
+    const students = enrollmentWithStudents.students
+      .map((enrollmentStudent: any) => {
+        const user = users.find((u) => u.id === enrollmentStudent.assignedStudentId);
+        return {
+          email: user?.email || '',
+          studentEnrollmentId: enrollmentStudent.id,
+        };
+      })
+      .filter((student: any) => student.email !== '');
 
     return { students };
   }
 
   // If student-details=true, return detailed table data
   const detailedEnrollment = await prisma.classCaseStudyEnrollment.findFirst({
-    where: {
-      id: classEnrollmentId,
-      caseStudyId,
-      assignedInstructorId: userContext.userId,
-      archive: false,
-    },
+    where: { id: enrollment.id },
     include: {
       caseStudy: {
         include: {
@@ -226,18 +221,11 @@ async function postHandler(
     throw new Error('Student email is required');
   }
 
-  // Verify user has access to this enrollment (either as assigned instructor or admin)
-  const user = await prisma.user.findUniqueOrThrow({
-    where: { id: userContext.userId },
-  });
-
-  const enrollment = await prisma.classCaseStudyEnrollment.findFirstOrThrow({
-    where: {
-      id: classEnrollmentId,
-      caseStudyId,
-      archive: false,
-      ...(user.role === 'Admin' ? {} : { assignedInstructorId: userContext.userId })
-    },
+  // Verify user has access to this enrollment
+  const enrollment = await verifyEnrollmentAccess({
+    userContext,
+    classEnrollmentId,
+    caseStudyId,
   });
 
   // Check if the student user exists, create if not
@@ -292,4 +280,3 @@ async function postHandler(
 
 export const GET = withLoggedInUser<TableResponse | SimpleResponse>(getHandler);
 export const POST = withLoggedInUser<{ message: string }>(postHandler);
-

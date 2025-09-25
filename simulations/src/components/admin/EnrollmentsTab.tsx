@@ -46,7 +46,7 @@ export default function EnrollmentsTab() {
   const handleConfirmDelete = async (): Promise<void> => {
     try {
       // Find the enrollment to get the caseStudyId
-      const enrollmentToDelete = enrollments?.find(e => e.id === deleteId);
+      const enrollmentToDelete = enrollments?.find((e) => e.id === deleteId);
       if (!enrollmentToDelete) {
         throw new Error('Enrollment not found');
       }
@@ -137,7 +137,7 @@ export default function EnrollmentsTab() {
           refetchEnrollments={refetchEnrollments}
           enrollmentId={selectedEnrollmentId}
           enrollmentTitle={selectedEnrollmentTitle}
-          caseStudyId={enrollments?.find(e => e.id === selectedEnrollmentId)?.caseStudy.id || ''}
+          caseStudyId={enrollments?.find((e) => e.id === selectedEnrollmentId)?.caseStudy.id || ''}
         />
       )}
 

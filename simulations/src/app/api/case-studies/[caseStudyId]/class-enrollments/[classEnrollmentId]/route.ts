@@ -46,10 +46,7 @@ async function getHandler(
 }
 
 // DELETE /api/case-studies/[caseStudyId]/class-enrollments/[classEnrollmentId] - Delete an enrollment
-async function deleteHandler(
-  req: NextRequest,
-  { params }: { params: Promise<{ caseStudyId: string; classEnrollmentId: string }> }
-): Promise<DeleteResponse> {
+async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ caseStudyId: string; classEnrollmentId: string }> }): Promise<DeleteResponse> {
   const { classEnrollmentId } = await params;
 
   // Use a transaction to ensure atomicity

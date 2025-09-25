@@ -359,7 +359,7 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
                                 <Clock className="h-8 w-8 mx-auto mb-2" />
                               </div>
                               <h6 className="font-semibold text-gray-700 mb-1">No Attempts Yet</h6>
-                              <p className="text-sm text-gray-600">Student hasn't attempted this exercise</p>
+                              <p className="text-sm text-gray-600">Student hasn’t attempted this exercise</p>
                             </div>
                           )}
                         </div>

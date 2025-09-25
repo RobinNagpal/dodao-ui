@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { CaseStudyWithRelationsForStudents } from '@/types/api';
+import type { CaseStudyWithRelationsForInstructor, EnrollmentWithStudents } from '@/types/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,7 @@ import { Users, Eye, GraduationCap, BookOpen } from 'lucide-react';
 import InstructorManageStudentsModal from '../InstructorManageStudentsModal';
 
 interface StudentsTabProps {
-  caseStudy: CaseStudyWithRelationsForStudents | null;
+  caseStudy: CaseStudyWithRelationsForInstructor | null;
   caseStudyId: string;
 }
 
@@ -31,8 +31,8 @@ const StudentsTab: FC<StudentsTabProps> = ({ caseStudy, caseStudyId }) => {
     );
   }
 
-  // Type assertion since we know the API returns enrollments for instructors
-  const enrollments = (caseStudy as any).enrollments || [];
+  // Type assertion since we know the API returns enrollments for instructors and admins
+  const enrollments = caseStudy?.enrollments || [];
 
   const handleManageStudents = (enrollmentId: string, className: string) => {
     setSelectedEnrollment({ id: enrollmentId, title: className });
@@ -48,7 +48,7 @@ const StudentsTab: FC<StudentsTabProps> = ({ caseStudy, caseStudyId }) => {
     setSelectedEnrollment(null);
   };
 
-  const getStudentCount = (enrollment: any): number => {
+  const getStudentCount = (enrollment: EnrollmentWithStudents): number => {
     return enrollment.students?.length || 0;
   };
 
@@ -80,7 +80,7 @@ const StudentsTab: FC<StudentsTabProps> = ({ caseStudy, caseStudyId }) => {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {enrollments.map((enrollment: any) => (
+          {enrollments.map((enrollment: EnrollmentWithStudents) => (
             <Card
               key={enrollment.id}
               className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg hover:shadow-purple-500/10 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] group"

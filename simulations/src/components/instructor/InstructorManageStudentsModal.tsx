@@ -87,7 +87,9 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
 
   const handleRemoveStudent = async (studentEnrollmentId: string) => {
     try {
-      const result = await removeStudent(`${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}/student-enrollments/${studentEnrollmentId}`);
+      const result = await removeStudent(
+        `${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}/student-enrollments/${studentEnrollmentId}`
+      );
       if (result) {
         await refetchStudents();
       }

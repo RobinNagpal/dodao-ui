@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { verifyEnrollmentAccess } from '@/app/api/helpers/enrollments-util';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 
 interface ExerciseAttemptDetail {
@@ -61,18 +62,11 @@ async function getHandler(
 ): Promise<StudentDetailResponse> {
   const { caseStudyId, classEnrollmentId, studentEnrollmentId } = await params;
 
-  // Verify user has access to this enrollment (either as assigned instructor or admin)
-  const user = await prisma.user.findUniqueOrThrow({
-    where: { id: userContext.userId },
-  });
-
-  const enrollment = await prisma.classCaseStudyEnrollment.findFirstOrThrow({
-    where: {
-      id: classEnrollmentId,
-      caseStudyId,
-      archive: false,
-      ...(user.role === 'Admin' ? {} : { assignedInstructorId: userContext.userId })
-    },
+  // Verify user has access to this enrollment
+  const enrollment = await verifyEnrollmentAccess({
+    userContext,
+    classEnrollmentId,
+    caseStudyId,
   });
 
   // Find the enrollment student by ID
@@ -192,18 +186,11 @@ async function deleteHandler(
   const { caseStudyId, classEnrollmentId, studentEnrollmentId } = await params;
   const userId: string = userContext.userId;
 
-  // Verify user has access to this enrollment (either as assigned instructor or admin)
-  const user = await prisma.user.findUniqueOrThrow({
-    where: { id: userContext.userId },
-  });
-
-  const enrollment = await prisma.classCaseStudyEnrollment.findFirstOrThrow({
-    where: {
-      id: classEnrollmentId,
-      caseStudyId,
-      archive: false,
-      ...(user.role === 'Admin' ? {} : { assignedInstructorId: userContext.userId })
-    },
+  // Verify user has access to this enrollment
+  const enrollment = await verifyEnrollmentAccess({
+    userContext,
+    classEnrollmentId,
+    caseStudyId,
   });
 
   // Find the enrollment student by ID

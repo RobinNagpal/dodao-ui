@@ -11,10 +11,9 @@ import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyIns
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
-import type { CaseStudyWithRelationsForStudents } from '@/types/api';
+import type { CaseStudyWithRelationsForInstructor, CaseStudyWithRelationsForAdmin } from '@/types/api';
 import { SimulationSession } from '@/types/user';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { GraduationCap } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -37,11 +36,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   const [selectedExercise, setSelectedExercise] = useState<ModuleExercise | null>(null);
 
   // API hook to fetch case study data
-  const {
-    data: caseStudy,
-    loading: loadingCaseStudy,
-    reFetchData,
-  } = useFetchData<CaseStudyWithRelationsForStudents>(
+  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForInstructor | CaseStudyWithRelationsForAdmin>(
     `/api/case-studies/${caseStudyId}`,
     { skipInitialFetch: !caseStudyId || !session },
     'Failed to load case study'
@@ -52,7 +47,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   };
 
   const handleModuleClick = (module: CaseStudyModule) => {
-    setSelectedModule(module as any);
+    setSelectedModule(module as CaseStudyModule);
     setShowModuleModal(true);
   };
 
@@ -60,8 +55,8 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     const caseStudyModule = caseStudy?.modules?.find((m) => m.id === moduleId);
     const exercise = caseStudyModule?.exercises?.find((e) => e.id === exerciseId);
     if (exercise && caseStudyModule) {
-      setSelectedModule(caseStudyModule as any);
-      setSelectedExercise(exercise as any);
+      setSelectedModule(caseStudyModule as CaseStudyModule);
+      setSelectedExercise(exercise as ModuleExercise);
       setShowExerciseModal(true);
     }
   };

@@ -83,7 +83,6 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
   };
 
   const handleRemoveStudent = async (studentEnrollmentId: string) => {
-
     try {
       const result = await removeStudent(`/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}/student-enrollments/${studentEnrollmentId}`);
 

@@ -1,5 +1,10 @@
 import { prisma } from '@/prisma';
-import { CaseStudyWithInstructorAndStudents, CaseStudyWithRelationsForAdmin, CaseStudyWithRelationsForStudents } from '@/types/api';
+import {
+  CaseStudyWithInstructorAndStudents,
+  CaseStudyWithRelationsForAdmin,
+  CaseStudyWithRelationsForInstructor,
+  CaseStudyWithRelationsForStudents,
+} from '@/types/api';
 import type { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { CaseStudy, User } from '@prisma/client';
 
@@ -151,7 +156,7 @@ export async function getInstructorCaseStudies(instructorId: string): Promise<Ca
  * @param instructorId The email of the instructor
  * @returns Promise<CaseStudyWithRelations> The case study with its relations
  */
-export async function getInstructorCaseStudy(caseStudyId: string, instructorId: string): Promise<CaseStudyWithRelationsForStudents> {
+export async function getInstructorCaseStudy(caseStudyId: string, instructorId: string): Promise<CaseStudyWithRelationsForInstructor> {
   // Find the case study and verify instructor has access
   const caseStudy = await prisma.caseStudy.findFirst({
     where: {
@@ -209,7 +214,7 @@ export async function getInstructorCaseStudy(caseStudyId: string, instructorId: 
     throw new Error('Case study not found or you do not have access to it');
   }
 
-  return caseStudy as CaseStudyWithRelationsForStudents;
+  return caseStudy as CaseStudyWithRelationsForInstructor;
 }
 
 /**

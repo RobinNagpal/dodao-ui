@@ -95,7 +95,15 @@ export type CaseStudyWithRelationsForInstructor = CaseStudy & {
       exercises?: ModuleExercise[];
     }
   >;
-
+  enrollments?: Array<
+    ClassCaseStudyEnrollment & {
+      students?: Array<
+        EnrollmentStudent & {
+          finalSubmission?: FinalSubmission;
+        }
+      >;
+    }
+  >;
   instructorEmail?: string; // Added instructor email
   instructorName?: string | null; // Added instructor name
   instructionReadStatus?: {
@@ -142,6 +150,10 @@ export type EnrollmentWithRelations = ClassCaseStudyEnrollment & {
     email?: string | null;
     username: string;
   } | null;
+};
+
+export type EnrollmentWithStudents = ClassCaseStudyEnrollment & {
+  students?: Array<EnrollmentStudent & { finalSubmission?: FinalSubmission }>;
 };
 
 export interface DeleteResponse {

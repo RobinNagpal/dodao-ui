@@ -1,6 +1,6 @@
 import { prismaAdapter } from '@/app/api/auth/[...nextauth]/authOptions';
 import { prisma } from '@/prisma';
-import { CreateEnrollmentRequest, EnrollmentWithRelations, DeleteResponse, CreateEnrollmentRequestForCaseStudy } from '@/types/api';
+import { EnrollmentWithRelations, CreateEnrollmentRequestForCaseStudy } from '@/types/api';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
