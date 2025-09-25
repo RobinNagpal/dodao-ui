@@ -7,6 +7,8 @@ import type { AttemptDetail, ExerciseProgress, StudentTableData, ModuleTableData
 import { AddStudentEnrollmentRequest } from '@/components/instructor/InstructorManageStudentsModal';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { prismaAdapter } from '@/app/api/auth/[...nextauth]/authOptions';
+import { getOrCreateUser } from '@/utils/user-utils';
+import { UserRole } from '@prisma/client';
 
 interface TableResponse {
   students: StudentTableData[];
@@ -215,7 +217,6 @@ async function postHandler(
   const { caseStudyId, classEnrollmentId } = await params;
   const body = (await req.json()) as AddStudentEnrollmentRequest;
   const { studentEmail } = body;
-  const instructorId: string = userContext.userId;
 
   if (!studentEmail) {
     throw new Error('Student email is required');
@@ -229,53 +230,33 @@ async function postHandler(
   });
 
   // Check if the student user exists, create if not
-  let student = await prisma.user.findFirst({
+  const currentStudent = await getOrCreateUser(studentEmail, UserRole.Student);
+
+  // Check if student is already enrolled
+  const existingEnrollment = await prisma.enrollmentStudent.findFirst({
     where: {
-      email: studentEmail,
+      enrollmentId: enrollment.id,
+      assignedStudentId: currentStudent.id,
+      archive: false,
     },
   });
 
-  if (!student) {
-    student = await prismaAdapter.createUser({
-      email: studentEmail,
-      spaceId: KoalaGainsSpaceId,
-      username: studentEmail,
-      authProvider: 'custom-email',
-      role: 'Student',
-    });
-    if (!student) throw new Error(`Failed to create student ${studentEmail} in Koala Gains. Please contact the Koala Gains team.`);
-  }
-
-  // Check if student is already enrolled
-  try {
-    await prisma.enrollmentStudent.findFirstOrThrow({
-      where: {
-        enrollmentId: enrollment.id,
-        assignedStudentId: student.id,
-        archive: false,
-      },
-    });
-
+  if (existingEnrollment) {
     throw new Error('Student is already enrolled in this class');
-  } catch (error) {
-    // If the student is not found, we can proceed with enrollment
-    if ((error as Error).message.includes('No')) {
-      // Add the student
-      await prisma.enrollmentStudent.create({
-        data: {
-          enrollmentId: enrollment.id,
-          assignedStudentId: student.id,
-          createdById: instructorId,
-          updatedById: instructorId,
-        },
-      });
-
-      return { message: 'Student added successfully' };
-    }
-
-    // Re-throw any other errors
-    throw error;
   }
+
+  // Add the student
+  await prisma.enrollmentStudent.create({
+    data: {
+      enrollmentId: enrollment.id,
+      assignedStudentId: currentStudent.id,
+      createdById: userContext.userId,
+      updatedById: userContext.userId,
+      archive: false,
+    },
+  });
+
+  return { message: 'Student successfully added to the class enrollment' };
 }
 
 export const GET = withLoggedInUser<TableResponse | SimpleResponse>(getHandler);
