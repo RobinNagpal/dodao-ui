@@ -2,7 +2,7 @@
 
 export function RadarSkeleton(): JSX.Element {
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-sm mx-auto">
       <div className="aspect-square rounded-full bg-gray-800 relative overflow-hidden">
         <div className="absolute inset-0 animate-pulse" />
         {/* simple rings + spokes for a “radar-ish” look */}
