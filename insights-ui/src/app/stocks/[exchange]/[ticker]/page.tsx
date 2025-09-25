@@ -1,28 +1,28 @@
-import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
-import { Metadata } from 'next';
-import { permanentRedirect, notFound } from 'next/navigation';
-import { unstable_noStore as noStore } from 'next/cache';
-import { Suspense, use } from 'react';
-import { FullTickerV1CategoryAnalysisResult, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
-import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
+import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import Competition from '@/components/ticker-reportsv1/Competition';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
-import FloatingNavigation, { NavigationSection } from '@/components/ticker-reportsv1/FloatingNavigation';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
 import { parseMarkdown } from '@/util/parse-markdown';
-import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import { getCountryByExchange } from '@/utils/countryUtils';
+import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { FullTickerV1CategoryAnalysisResult, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
-import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
-import { RadarChartClient } from './RedarChart';
+import { Metadata } from 'next';
+import { unstable_noStore as noStore } from 'next/cache';
+import { notFound, permanentRedirect } from 'next/navigation';
+import { Suspense, use } from 'react';
+import { FloatingNavFromData } from './FloatingTickerNav';
+import { TickerRadarChart } from './TickerRadarChart';
+import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 
 /**
  * Static-by-default with on-demand invalidation.
@@ -151,35 +151,47 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 /** Shared type each child `use()`s */
 type DataPromise = Promise<Readonly<TickerV1FastResponse>>;
 
-/** PAGE (simple streaming structure) */
-export default async function TickerDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
-  // kick off fetch without awaiting to allow streaming
-  const dataPromise: DataPromise = getTickerOrRedirect(params);
+/* =============================================================================
+   SHARED SKELETONS (typed, minimal)
+============================================================================= */
 
+type BarSkeletonProps = Readonly<{ widthClass?: string }>;
+function BarSkeleton({ widthClass = 'w-full' }: BarSkeletonProps): JSX.Element {
+  return <div className={`h-6 ${widthClass} rounded bg-gray-800 animate-pulse mb-4`} />;
+}
+
+function HeroSkeleton(): JSX.Element {
   return (
-    <PageWrapper>
-      {/* Breadcrumbs with a tiny bar skeleton */}
-      <Suspense fallback={<BarSkeleton widthClass="w-64" />}>
-        <BreadcrumbsFromData dataPromise={dataPromise} />
-      </Suspense>
-
-      <div className="mx-auto max-w-7xl py-2">
-        {/* HERO: left text filler + RADAR skeleton */}
-        <Suspense fallback={<HeroSkeleton />}>
-          <HeroSection dataPromise={dataPromise} />
-        </Suspense>
-
-        {/* REST OF THE PAGE: single cards skeleton (3–4) */}
-        <Suspense fallback={<CardsSkeleton count={4} />}>
-          <BodySections dataPromise={dataPromise} />
-        </Suspense>
+    <section className="mb-8">
+      {/* Title line */}
+      <div className="h-8 w-80 rounded bg-gray-800 animate-pulse mb-6" />
+      <div className="flex flex-col gap-x-5 gap-y-6 lg:flex-row">
+        {/* Left filler (summary text) */}
+        <div className="lg:w/full lg:max-w-2xl lg:flex-auto space-y-2">
+          <div className="h-4 w-[90%] rounded bg-gray-800 animate-pulse" />
+          <div className="h-4 w-[85%] rounded bg-gray-800 animate-pulse" />
+          <div className="h-4 w-[70%] rounded bg-gray-800 animate-pulse" />
+          <div className="h-4 w-[60%] rounded bg-gray-800 animate-pulse" />
+          <div className="h-4 w-[50%] rounded bg-gray-800 animate-pulse" />
+        </div>
+        {/* Radar skeleton */}
+        <div className="lg:flex lg:flex-auto lg:justify-center">
+          <RadarSkeleton />
+        </div>
       </div>
+    </section>
+  );
+}
 
-      {/* Floating nav after sections are known */}
-      <Suspense fallback={null}>
-        <FloatingNavFromData dataPromise={dataPromise} />
-      </Suspense>
-    </PageWrapper>
+type CardsSkeletonProps = Readonly<{ count?: number }>;
+function CardsSkeleton({ count = 4 }: CardsSkeletonProps): JSX.Element {
+  const n: number = Math.max(1, Math.floor(count));
+  return (
+    <div className="space-y-4">
+      {Array.from({ length: n }).map((_, i: number) => (
+        <div key={i} className="h-24 rounded-md bg-gray-800 animate-pulse" />
+      ))}
+    </div>
   );
 }
 
@@ -282,7 +294,7 @@ function HeroSection({ dataPromise }: HeroSectionProps): JSX.Element {
                 <SpiderChartFlyoutMenu />
               </div>
               {/* Client-hydrated later; SSR shows the RadarSkeleton first */}
-              <RadarChartClient data={spiderGraph} scorePercentage={score} />
+              <TickerRadarChart data={spiderGraph} scorePercentage={score} />
             </div>
           </div>
         </div>
@@ -291,9 +303,8 @@ function HeroSection({ dataPromise }: HeroSectionProps): JSX.Element {
   );
 }
 
-type BodySectionsProps = Readonly<{ dataPromise: DataPromise }>;
-function BodySections({ dataPromise }: BodySectionsProps): JSX.Element {
-  const d: Readonly<TickerV1FastResponse> = use(dataPromise);
+function BodySections({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
+  const d: TickerV1FastResponse = use(data);
 
   return (
     <>
@@ -430,108 +441,34 @@ function BodySections({ dataPromise }: BodySectionsProps): JSX.Element {
   );
 }
 
-type FloatingNavFromDataProps = Readonly<{ dataPromise: DataPromise }>;
-function FloatingNavFromData({ dataPromise }: FloatingNavFromDataProps): JSX.Element {
-  const d: Readonly<TickerV1FastResponse> = use(dataPromise);
+/** PAGE (simple streaming structure) */
+export default async function TickerDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
+  // kick off fetch without awaiting to allow streaming
+  const dataPromise: DataPromise = getTickerOrRedirect(params);
 
-  // Generate navigation sections based on available content
-  const sections: NavigationSection[] = [
-    {
-      id: 'summary-analysis',
-      title: 'Summary Analysis',
-      hasContent: true,
-    },
-    {
-      id: 'future-risks',
-      title: 'Future Risks',
-      hasContent: d.futureRisks.length > 0,
-    },
-    {
-      id: 'competition',
-      title: 'Competition',
-      hasContent: true,
-    },
-    {
-      id: 'investor-summaries',
-      title: 'Investor Reports Summaries',
-      hasContent: d.investorAnalysisResults.length > 0,
-    },
-    {
-      id: 'similar-tickers',
-      title: 'Similar Tickers',
-      hasContent: true,
-    },
-    {
-      id: 'detailed-analysis',
-      title: 'Detailed Analysis',
-      hasContent: d.categoryAnalysisResults && d.categoryAnalysisResults.length > 0,
-      subsections: Object.values(TickerAnalysisCategory)
-        .map((categoryKey) => {
-          const categoryResult = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
-          return categoryResult
-            ? {
-                id: `detailed-${categoryKey}`,
-                title: CATEGORY_MAPPINGS[categoryKey],
-              }
-            : null;
-        })
-        .filter((item): item is NonNullable<typeof item> => item !== null),
-    },
-    {
-      id: 'detailed-investor-reports',
-      title: 'Detailed Investor Reports',
-      hasContent: d.investorAnalysisResults.length > 0,
-    },
-    {
-      id: 'detailed-future-risks',
-      title: 'Detailed Future Risks',
-      hasContent: d.futureRisks.length > 0,
-    },
-  ];
-
-  return <FloatingNavigation sections={sections} />;
-}
-
-/* =============================================================================
-   SHARED SKELETONS (typed, minimal)
-============================================================================= */
-
-type BarSkeletonProps = Readonly<{ widthClass?: string }>;
-function BarSkeleton({ widthClass = 'w-full' }: BarSkeletonProps): JSX.Element {
-  return <div className={`h-6 ${widthClass} rounded bg-gray-800 animate-pulse mb-4`} />;
-}
-
-function HeroSkeleton(): JSX.Element {
   return (
-    <section className="mb-8">
-      {/* Title line */}
-      <div className="h-8 w-80 rounded bg-gray-800 animate-pulse mb-6" />
-      <div className="flex flex-col gap-x-5 gap-y-6 lg:flex-row">
-        {/* Left filler (summary text) */}
-        <div className="lg:w/full lg:max-w-2xl lg:flex-auto space-y-2">
-          <div className="h-4 w-[90%] rounded bg-gray-800 animate-pulse" />
-          <div className="h-4 w-[85%] rounded bg-gray-800 animate-pulse" />
-          <div className="h-4 w-[70%] rounded bg-gray-800 animate-pulse" />
-          <div className="h-4 w-[60%] rounded bg-gray-800 animate-pulse" />
-          <div className="h-4 w-[50%] rounded bg-gray-800 animate-pulse" />
-        </div>
-        {/* Radar skeleton */}
-        <div className="lg:flex lg:flex-auto lg:justify-center">
-          <RadarSkeleton />
-        </div>
+    <PageWrapper>
+      {/* Breadcrumbs with a tiny bar skeleton */}
+      <Suspense fallback={<BarSkeleton widthClass="w-64" />}>
+        <BreadcrumbsFromData dataPromise={dataPromise} />
+      </Suspense>
+
+      <div className="mx-auto max-w-7xl py-2">
+        {/* HERO: left text filler + RADAR skeleton */}
+        <Suspense fallback={<HeroSkeleton />}>
+          <HeroSection dataPromise={dataPromise} />
+        </Suspense>
+
+        {/* REST OF THE PAGE: single cards skeleton (3–4) */}
+        <Suspense fallback={<CardsSkeleton count={4} />}>
+          <BodySections data={dataPromise} />
+        </Suspense>
       </div>
-    </section>
-  );
-}
 
-type CardsSkeletonProps = Readonly<{ count?: number }>;
-function CardsSkeleton({ count = 4 }: CardsSkeletonProps): JSX.Element {
-  const n: number = Math.max(1, Math.floor(count));
-  return (
-    <div className="space-y-4">
-      {Array.from({ length: n }).map((_, i: number) => (
-        <div key={i} className="h-24 rounded-md bg-gray-800 animate-pulse" />
-      ))}
-    </div>
+      {/* Floating nav after sections are known */}
+      <Suspense fallback={null}>
+        <FloatingNavFromData data={dataPromise} />
+      </Suspense>
+    </PageWrapper>
   );
 }
