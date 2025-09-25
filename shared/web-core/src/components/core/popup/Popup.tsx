@@ -4,12 +4,13 @@ export interface PopupProps {
   children: React.ReactNode;
   IconComponent: React.ComponentType<{ className?: string }>;
   IconClasses?: string;
+  IconButtonTitle?: string;
 }
 
-export default function Popup({ children, IconComponent, IconClasses }: PopupProps) {
+export default function Popup({ children, IconComponent, IconClasses, IconButtonTitle }: PopupProps) {
   return (
     <Popover className="relative inline">
-      <PopoverButton className="text-color focus:outline-none">
+      <PopoverButton className="text-color focus:outline-none" title={IconButtonTitle}>
         <IconComponent className={IconClasses ?? 'size-5 mt-1'} />
       </PopoverButton>
 
