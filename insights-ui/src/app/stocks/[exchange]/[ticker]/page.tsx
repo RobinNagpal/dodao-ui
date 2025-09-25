@@ -271,7 +271,7 @@ function HeroSection({ dataPromise }: HeroSectionProps): JSX.Element {
       <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl mb-6">
         {d.name} ({d.symbol}){' '}
         {d.websiteUrl && (
-          <a href={d.websiteUrl} target="_blank" rel="noopener noreferrer">
+          <a href={d.websiteUrl} target="_blank" rel="noopener noreferrer" title={"website of the company's homepage"}>
             <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
           </a>
         )}
@@ -308,7 +308,7 @@ function BodySections({ data }: { data: Promise<TickerV1FastResponse> }): JSX.El
 
   return (
     <>
-      <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 p-4 sm:p-6">
+      <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6">
         <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
         <div className="space-y-4">
           {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
