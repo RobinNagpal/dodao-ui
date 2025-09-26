@@ -1,6 +1,7 @@
 import StockActions from '@/app/stocks/StockActions';
-import Filters from '@/components/public-equitiesv1/Filters';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
+import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
+import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -206,13 +207,13 @@ export default async function IndustryStocksPage(props: {
           breadcrumbs={breadcrumbs}
           rightButton={
             <div className="flex">
-              <Filters showOnlyButton={true} />
+              <FiltersButton />
               <StockActions />
             </div>
           }
         />
       </div>
-      <Filters showOnlyAppliedFilters={true} />
+      <AppliedFilterChips />
       <div className="w-full mb-8">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
           <h1 className="text-2xl font-bold text-white mb-2 sm:mb-0">{industryName} Stocks</h1>

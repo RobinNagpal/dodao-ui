@@ -1,100 +1,30 @@
 // components/stocks/StocksGrid.tsx
-import Link from 'next/link';
-import { unstable_cache } from 'next/cache';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
-import type { FilteredTicker, TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import Link from 'next/link';
+import { use } from 'react';
 
-type SearchParams = { [key: string]: string | string[] | undefined };
-
-const toScalar = (v: string | string[] | undefined): string | undefined => (Array.isArray(v) ? v.join(',') : v);
-
-const toSortedQueryString = (sp: SearchParams): string => {
-  const usp = new URLSearchParams();
-  Object.keys(sp)
-    .sort()
-    .forEach((k) => {
-      if (k === 'page') return;
-      const v = toScalar(sp[k]);
-      if (v) usp.set(k, v);
-    });
-  usp.set('country', 'US');
-  return usp.toString();
-};
-
-const hasFiltersApplied = (sp: SearchParams): boolean => {
-  const keys = Object.keys(sp);
-  return keys.some((k) => k.includes('Threshold')) || Boolean(toScalar(sp['search']));
-};
-
-// --- CACHED FETCHERS ---------------------------------------------------------
-
-// Unfiltered list: cache for 1 hour, tag by country.
-const getUSTickers = unstable_cache(
-  async (): Promise<TickerWithIndustryNames[]> => {
-    const base = getBaseUrl() || 'https://koalagains.com';
-    const url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
-    const res = await fetch(url, { next: { revalidate: 3600, tags: ['tickers:US'] } });
-    if (!res.ok) return [];
-    return (await res.json()) as TickerWithIndustryNames[];
-  },
-  ['tickers:US:all'],
-  { revalidate: 3600, tags: ['tickers:US'] }
-);
-
-// Filtered list: cache for 5 minutes keyed by the query string.
-const getFilteredUSTickers = unstable_cache(
-  async (qs: string): Promise<FilteredTicker[]> => {
-    const base = getBaseUrl() || 'https://koalagains.com';
-    const url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${qs}`;
-    const res = await fetch(url, { next: { revalidate: 300, tags: ['tickers:US:filtered'] } });
-    if (!res.ok) return [];
-    return (await res.json()) as FilteredTicker[];
-  },
-  ['tickers:US:filtered'],
-  { revalidate: 300, tags: ['tickers:US:filtered'] }
-);
-
-// --- TYPES -------------------------------------------------------------------
-
-type AnyTicker = (TickerWithIndustryNames | FilteredTicker) & {
-  industryKey?: string | null;
-  subIndustryKey?: string | null;
-  industryName?: string | null;
-  subIndustryName?: string | null;
-  cachedScore: number;
-  symbol: string;
-  name: string;
-  exchange: string;
+export type StocksDataPayload = {
+  tickers: TickerWithIndustryNames[];
+  filtersApplied: boolean;
 };
 
 type Grouped = Record<
   string, // mainIndustry key
   Record<
     string, // subIndustry key
-    { tickers: AnyTicker[]; total: number }
+    { tickers: TickerWithIndustryNames[]; total: number }
   >
 >;
 
-// --- RENDER ------------------------------------------------------------------
-
-export default async function StocksGrid(props: { searchParams: Promise<SearchParams> }) {
-  const searchParams = await props.searchParams;
-  const filters = hasFiltersApplied(searchParams);
-  const qs = toSortedQueryString(searchParams);
-
-  let tickers: AnyTicker[] = [];
-  if (filters) {
-    tickers = (await getFilteredUSTickers(qs)) as AnyTicker[];
-  } else {
-    tickers = (await getUSTickers()) as AnyTicker[];
-  }
+export default function StocksGrid({ dataPromise }: { dataPromise: Promise<StocksDataPayload> }) {
+  const data = use(dataPromise);
+  const { tickers, filtersApplied } = data;
 
   if (!tickers || tickers.length === 0) {
     return (
       <div className="text-center py-12">
-        {filters ? (
+        {filtersApplied ? (
           <>
             <p className="text-[#E5E7EB] text-lg">No US stocks match the current filters.</p>
             <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>

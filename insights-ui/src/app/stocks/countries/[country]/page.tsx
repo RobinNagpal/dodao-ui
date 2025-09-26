@@ -1,7 +1,8 @@
 import StockActions from '@/app/stocks/StockActions';
+import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
+import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
-import Filters from '@/components/public-equitiesv1/Filters';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerWithIndustryNames, FilteredTicker } from '@/types/ticker-typesv1';
@@ -142,13 +143,13 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
             breadcrumbs={breadcrumbs}
             rightButton={
               <div className="flex">
-                <Filters showOnlyButton={true} />
+                <FiltersButton />
                 <StockActions />
               </div>
             }
           />
         </div>
-        <Filters showOnlyAppliedFilters={true} />
+        <AppliedFilterChips />
 
         <div className="w-full mb-8">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">

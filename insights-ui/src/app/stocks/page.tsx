@@ -1,14 +1,20 @@
 // app/stocks/page.tsx
-import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
-import { Suspense } from 'react';
 import StockActions from '@/app/stocks/StockActions';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
-import Filters from '@/components/public-equitiesv1/Filters';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import type { Metadata } from 'next';
-import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkeleton';
+import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import StocksGrid from '@/components/stocks/StocksGrid';
+import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkeleton';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import type { TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+
+// ────────────────────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
   title: 'US Stocks by Industry | KoalaGains',
@@ -41,34 +47,77 @@ export const metadata: Metadata = {
     description:
       'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and AMEX. See top tickers with detailed reports and AI insights.',
   },
-  alternates: {
-    canonical: 'https://koalagains.com/stocks',
-  },
+  alternates: { canonical: 'https://koalagains.com/stocks' },
 };
 
-const breadcrumbs: BreadcrumbsOjbect[] = [
-  {
-    name: 'US Stocks',
-    href: `/stocks`,
-    current: true,
-  },
-];
+const breadcrumbs: BreadcrumbsOjbect[] = [{ name: 'US Stocks', href: `/stocks`, current: true }];
+
+// ────────────────────────────────────────────────────────────────────────────────
+// Types shared with the grid
+
+type SearchParams = { [key: string]: string | string[] | undefined };
+
+type StocksDataPayload = {
+  tickers: TickerWithIndustryNames[];
+  filtersApplied: boolean;
+};
+
+// ────────────────────────────────────────────────────────────────────────────────
+// Helpers
+
+const toScalar = (v: string | string[] | undefined): string | undefined => (Array.isArray(v) ? v.join(',') : v);
+
+const toSortedQueryString = (sp: SearchParams): string => {
+  const usp = new URLSearchParams();
+  Object.keys(sp)
+    .sort()
+    .forEach((k) => {
+      if (k === 'page') return;
+      const v = toScalar(sp[k]);
+      if (v) usp.set(k, v);
+    });
+  usp.set('country', 'US');
+  return usp.toString();
+};
+
+const hasFiltersApplied = (sp: SearchParams): boolean => Object.keys(sp).some((k) => k.includes('Threshold')) || Boolean(toScalar(sp['search']));
+
+// ────────────────────────────────────────────────────────────────────────────────
 
 type PageProps = {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<SearchParams>;
 };
 
-// Create a stable key from searchParams so Suspense shows fallback on filter changes
-function suspenseKey(sp: PageProps['searchParams']): string {
-  const entries = Object.entries(sp)
-    .map(([k, v]) => [k, Array.isArray(v) ? v.join(',') : v ?? ''] as const)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => `${k}=${v}`);
-  return entries.join('&');
-}
-
 export default function StocksPage({ searchParams }: PageProps) {
-  const key = suspenseKey(searchParams);
+  // Build one promise that resolves to both the data and whether filters were applied.
+  const dataPromise: Promise<StocksDataPayload> = (async () => {
+    const sp = await searchParams;
+
+    const filters = hasFiltersApplied(sp);
+    const base = getBaseUrl() || 'https://koalagains.com';
+
+    let url = '';
+    let tags: string[] = [];
+
+    if (filters) {
+      const qs = toSortedQueryString(sp);
+      url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${qs}`;
+      tags = ['tickers:US:filtered'];
+    } else {
+      url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
+      tags = ['tickers:US'];
+    }
+
+    const res = await fetch(url, { next: { tags } });
+    let tickers: TickerWithIndustryNames[] = [];
+    try {
+      tickers = (await res.json()) as TickerWithIndustryNames[];
+    } catch {
+      tickers = [];
+    }
+
+    return { tickers, filtersApplied: filters };
+  })();
 
   return (
     <PageWrapper>
@@ -77,14 +126,14 @@ export default function StocksPage({ searchParams }: PageProps) {
           breadcrumbs={breadcrumbs}
           rightButton={
             <div className="flex">
-              <Filters showOnlyButton />
+              <FiltersButton />
               <StockActions />
             </div>
           }
         />
       </div>
 
-      <Filters showOnlyAppliedFilters />
+      <AppliedFilterChips />
 
       <div className="w-full mb-8">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
@@ -97,10 +146,9 @@ export default function StocksPage({ searchParams }: PageProps) {
         </p>
       </div>
 
-      {/* Important: key the Suspense so fallback appears during filter (URL) changes */}
-      <Suspense key={key} fallback={<FilterLoadingFallback />}>
-        {/* @ts-expect-error Server Component */}
-        <StocksGrid searchParams={searchParams} />
+      {/* Suspense shows skeletons while new filtered data streams in */}
+      <Suspense fallback={<FilterLoadingFallback />}>
+        <StocksGrid dataPromise={dataPromise} />
       </Suspense>
     </PageWrapper>
   );
