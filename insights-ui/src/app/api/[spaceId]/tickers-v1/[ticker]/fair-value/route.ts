@@ -136,9 +136,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   }
 
   // Calculate fair value score (number of passed factors out of 5)
-  const fairValueScore = response.factors.filter(
-    (factor) => factor.result && (factor.result.toLowerCase().includes('pass') || factor.result.toLowerCase().includes('positive'))
-  ).length;
+  const fairValueScore = response.factors.filter((factor) => factor.result && factor.result.toLowerCase().includes('pass')).length;
 
   // Update cached score using the utility function
   await updateTickerCachedScore(tickerRecord, 'fairValue', fairValueScore);

@@ -136,9 +136,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   }
 
   // Calculate past performance score (number of passed factors out of 5)
-  const pastPerformanceScore = response.factors.filter(
-    (factor) => factor.result && (factor.result.toLowerCase().includes('pass') || factor.result.toLowerCase().includes('positive'))
-  ).length;
+  const pastPerformanceScore = response.factors.filter((factor) => factor.result && factor.result.toLowerCase().includes('pass')).length;
 
   // Update cached score using the utility function
   await updateTickerCachedScore(tickerRecord, 'pastPerformance', pastPerformanceScore);

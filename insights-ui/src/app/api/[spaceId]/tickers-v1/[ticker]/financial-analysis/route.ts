@@ -124,9 +124,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   }
 
   // Calculate financial statement analysis score (number of passed factors out of 5)
-  const financialStatementAnalysisScore = response.factors.filter(
-    (factor) => factor.result && (factor.result.toLowerCase().includes('pass') || factor.result.toLowerCase().includes('positive'))
-  ).length;
+  const financialStatementAnalysisScore = response.factors.filter((factor) => factor.result && factor.result.toLowerCase().includes('pass')).length;
 
   // Update cached score using the utility function
   await updateTickerCachedScore(tickerRecord, 'financialStatementAnalysis', financialStatementAnalysisScore);
