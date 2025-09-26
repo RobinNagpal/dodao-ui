@@ -1,6 +1,5 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
-import { bumpUpdatedAtAndInvalidateCache } from '@/utils/ticker-v1-model-utils';
+import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
@@ -135,6 +134,14 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       factorResults.push(factorResult);
     }
   }
+
+  // Calculate business and moat score (number of passed factors out of 5)
+  const businessAndMoatScore = response.factors.filter(
+    (factor) => factor.result && (factor.result.toLowerCase().includes('pass') || factor.result.toLowerCase().includes('positive'))
+  ).length;
+
+  // Update cached score using the utility function
+  await updateTickerCachedScore(tickerRecord, 'businessAndMoat', businessAndMoatScore);
 
   await bumpUpdatedAtAndInvalidateCache(tickerRecord);
 
