@@ -23,17 +23,10 @@ interface FiltersButtonProps {
 }
 
 export default function FiltersButton({ className = '', pulseWhenActive = true }: FiltersButtonProps): JSX.Element {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const currentFilters: AppliedFilter[] = useMemo<AppliedFilter[]>(() => getAppliedFilters(searchParams), [searchParams]);
-
-  const handleApply = (selected: SelectedFiltersMap): void => {
-    const nextParams: URLSearchParams = applySelectedFiltersToParams(searchParams, selected);
-    router.push(`?${nextParams.toString()}`);
-    setIsModalOpen(false);
-  };
+  const currentFilters: AppliedFilter[] = getAppliedFilters(searchParams);
 
   const modalKey: string = JSON.stringify({ f: currentFilters, open: isModalOpen });
   console.log('Rendering filter button');
@@ -51,12 +44,7 @@ export default function FiltersButton({ className = '', pulseWhenActive = true }
       {isModalOpen && (
         <FullPageModal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Filter Tickers" fullWidth={false} className="max-w-5xl">
           <div className="px-6 py-2">
-            <FilterModalContent
-              key={modalKey}
-              initialSelected={buildInitialSelected(currentFilters)}
-              onApplyFilters={handleApply}
-              onClose={() => setIsModalOpen(false)}
-            />
+            <FilterModalContent key={modalKey} initialSelected={buildInitialSelected(currentFilters)} onClose={() => setIsModalOpen(false)} />
           </div>
         </FullPageModal>
       )}
@@ -68,11 +56,19 @@ export default function FiltersButton({ className = '', pulseWhenActive = true }
 
 interface FilterModalContentProps {
   initialSelected: SelectedFiltersMap;
-  onApplyFilters: (filters: SelectedFiltersMap) => void;
   onClose: () => void;
 }
 
-function FilterModalContent({ initialSelected, onApplyFilters, onClose }: FilterModalContentProps): JSX.Element {
+function FilterModalContent({ initialSelected, onClose }: FilterModalContentProps): JSX.Element {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const onApplyFilters = (selected: SelectedFiltersMap): void => {
+    const nextParams: URLSearchParams = applySelectedFiltersToParams(searchParams, selected);
+    router.push(`?${nextParams.toString()}`);
+    onClose();
+  };
+
   const [selectedFilters, setSelectedFilters] = useState<SelectedFiltersMap>(() => ({ ...initialSelected }));
 
   const handleCategoryChange = (categoryKey: string, threshold: string): void => {
