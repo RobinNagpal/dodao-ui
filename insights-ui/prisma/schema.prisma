@@ -544,6 +544,9 @@ model TickerV1 {
   futureRisks             TickerV1FutureRisk[]
   vsCompetition           TickerV1VsCompetition?
 
+  // Relation to cached score
+  cachedScoreEntry        TickerV1CachedScore?
+
   // Ensure uniqueness of symbol+exchange per space
 
   // ✅ new relations
@@ -556,6 +559,35 @@ model TickerV1 {
   @@unique([spaceId, symbol, exchange])
   @@map("tickers_v1")
 }
+
+model TickerV1CachedScore {
+  id                   String                 @id @default(uuid())
+  tickerId             String                 @map("ticker_id")
+
+  // Scores for each category
+  businessAndMoatScore             Int    @map("business_and_moat_score")
+  financialStatementAnalysisScore  Int    @map("financial_statement_analysis_score")
+  pastPerformanceScore             Int    @map("past_performance_score")
+  futureGrowthScore                Int    @map("future_growth_score")
+  fairValueScore                   Int    @map("fair_value_score")
+
+  // Final score
+  finalScore                        Int    @map("final_score")
+
+  // Relation to TickerV1
+  ticker TickerV1 @relation(fields: [tickerId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  createdBy                String?                @map("created_by")
+  updatedBy                String?                @map("updated_by")
+
+  @@unique([tickerId]) // each ticker has only one cached score entry
+  @@index([tickerId])
+  @@map("ticker_v1_cached_scores")
+}
+
 
 model AnalysisCategoryFactor {
   id                        String                 @id @default(uuid())

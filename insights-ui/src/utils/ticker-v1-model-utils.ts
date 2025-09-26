@@ -7,6 +7,7 @@ import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { Prisma, TickerV1, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import {
   TickerV1AnalysisCategoryFactorResult,
+  TickerV1CachedScore,
   TickerV1CategoryAnalysisResult,
   TickerV1FutureRisk,
   TickerV1InvestorAnalysisResult,
@@ -217,6 +218,63 @@ export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelation
     analysisStatus,
   };
 }
+
+export const updateTickerCachedScore = async (tickerRecord: TickerV1, categoryType: TickerAnalysisCategory, categoryScore: number) => {
+  // Get or create cached score record
+  const existingCachedScore = await prisma.tickerV1CachedScore.findUnique({
+    where: { tickerId: tickerRecord.id },
+  });
+
+  // Get scores from other categories if they exist
+  const businessAndMoatExisting = existingCachedScore?.businessAndMoatScore || 0;
+  const financialStatementAnalysisExisting = existingCachedScore?.financialStatementAnalysisScore || 0;
+  const pastPerformanceExisting = existingCachedScore?.pastPerformanceScore || 0;
+  const futureGrowthExisting = existingCachedScore?.futureGrowthScore || 0;
+  const fairValueExisting = existingCachedScore?.fairValueScore || 0;
+
+  // Create score mapping for upsert
+  const scoreUpdates: Partial<TickerV1CachedScore> = {
+    updatedAt: new Date(),
+  };
+
+  // Update the specific category score
+  switch (categoryType) {
+    case TickerAnalysisCategory.BusinessAndMoat:
+      scoreUpdates.businessAndMoatScore = categoryScore;
+      break;
+    case TickerAnalysisCategory.FinancialStatementAnalysis:
+      scoreUpdates.financialStatementAnalysisScore = categoryScore;
+      break;
+    case TickerAnalysisCategory.PastPerformance:
+      scoreUpdates.pastPerformanceScore = categoryScore;
+      break;
+    case TickerAnalysisCategory.FutureGrowth:
+      scoreUpdates.futureGrowthScore = categoryScore;
+      break;
+    case TickerAnalysisCategory.FairValue:
+      scoreUpdates.fairValueScore = categoryScore;
+      break;
+  }
+
+  // Calculate final score (sum of all category scores)
+  const finalScore = businessAndMoatExisting + financialStatementAnalysisExisting + pastPerformanceExisting + futureGrowthExisting + fairValueExisting;
+  scoreUpdates.finalScore = finalScore;
+
+  // Update or create cached score record
+  await prisma.tickerV1CachedScore.upsert({
+    where: { tickerId: tickerRecord.id },
+    update: scoreUpdates,
+    create: {
+      tickerId: tickerRecord.id,
+      businessAndMoatScore: categoryType === TickerAnalysisCategory.BusinessAndMoat ? categoryScore : 0,
+      financialStatementAnalysisScore: categoryType === TickerAnalysisCategory.FinancialStatementAnalysis ? categoryScore : 0,
+      pastPerformanceScore: categoryType === TickerAnalysisCategory.PastPerformance ? categoryScore : 0,
+      futureGrowthScore: categoryType === TickerAnalysisCategory.FutureGrowth ? categoryScore : 0,
+      fairValueScore: categoryType === TickerAnalysisCategory.FairValue ? categoryScore : 0,
+      finalScore,
+    },
+  });
+};
 
 export const bumpUpdatedAtAndInvalidateCache = async (tickerRecord: TickerV1) => {
   revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
