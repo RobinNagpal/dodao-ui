@@ -143,20 +143,7 @@ export default async function IndustryStocksPage({ params, searchParams }: PageP
       const isFiltered = first && typeof first === 'object' && 'categoryScores' in (first as Record<string, unknown>);
       if (isFiltered) {
         // Map FilteredTicker -> TickerWithIndustryNames
-        allTickers = (raw as FilteredTicker[]).map((t) => ({
-          id: t.id,
-          name: t.name,
-          symbol: t.symbol,
-          exchange: t.exchange,
-          industryKey: t.industryKey,
-          subIndustryKey: t.subIndustryKey,
-          industryName: (t as unknown as Partial<TickerWithIndustryNames>).industryName ?? t.industryKey,
-          subIndustryName: (t as unknown as Partial<TickerWithIndustryNames>).subIndustryName ?? t.subIndustryKey,
-          websiteUrl: t.websiteUrl,
-          summary: t.summary,
-          cachedScore: t.cachedScore,
-          spaceId: t.spaceId,
-        }));
+        allTickers = raw as FilteredTicker[];
       } else {
         allTickers = raw as TickerWithIndustryNames[];
       }

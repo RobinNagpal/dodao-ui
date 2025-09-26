@@ -7,19 +7,7 @@ export interface TickerWithIndustryNames extends TickerV1 {
   subIndustryName: string;
 }
 
-export interface FilteredTicker {
-  id: string;
-  name: string;
-  symbol: string;
-  exchange: string;
-  industryKey: string;
-  subIndustryKey: string;
-  industryName: string;
-  subIndustryName: string;
-  websiteUrl?: string | null;
-  summary?: string | null;
-  cachedScore: number;
-  spaceId: string;
+export interface FilteredTicker extends TickerWithIndustryNames {
   categoryScores: {
     [key in TickerAnalysisCategory]?: number;
   };
@@ -28,11 +16,6 @@ export interface FilteredTicker {
 
 export interface IndustryTickersResponse {
   tickers: TickerV1FullReportResponse[];
-  count: number;
-}
-
-export interface SubIndustryTickersResponse {
-  tickers: TickerV1[];
   count: number;
 }
 

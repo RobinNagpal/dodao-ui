@@ -152,19 +152,8 @@ export default async function CountryIndustryStocksPage(props: {
     // Filter by main industry (already have industry names from API)
     tickers = regularTickers
       .filter((ticker) => ticker.industryKey === industryKey)
-      .map((ticker) => ({
-        id: ticker.id,
-        name: ticker.name,
-        symbol: ticker.symbol,
-        exchange: ticker.exchange,
-        industryKey: ticker.industryKey,
-        subIndustryKey: ticker.subIndustryKey,
-        industryName: ticker.industryName || ticker.industryKey,
-        subIndustryName: ticker.subIndustryName || ticker.subIndustryKey,
-        websiteUrl: ticker.websiteUrl,
-        summary: ticker.summary,
-        cachedScore: ticker.cachedScore,
-        spaceId: ticker.spaceId,
+      .map((ticker: TickerWithIndustryNames) => ({
+        ...ticker,
         categoryScores: {}, // Empty for unfiltered case
         totalScore: 0, // Will be calculated if needed
       }));
