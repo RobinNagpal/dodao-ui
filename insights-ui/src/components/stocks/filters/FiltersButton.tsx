@@ -36,27 +36,30 @@ export default function FiltersButton({ className = '', pulseWhenActive = true }
   };
 
   const modalKey: string = JSON.stringify({ f: currentFilters, open: isModalOpen });
+  console.log('Rendering filter button');
 
   return (
     <>
       <button
         onClick={() => setIsModalOpen(true)}
-        className={`inline-flex items-center gap-2 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium rounded-lg px-4 py-2.5 text-sm transition-all duration-200 shadow-md `}
+        className={`inline-flex items-center gap-2 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium rounded-lg px-4 py-2.5 text-sm shadow-md `}
       >
         <AdjustmentsHorizontalIcon className="h-5 w-5" />
         Filters
         {currentFilters.length > 0 && <span className="bg-blue-500 px-2 py-0.5 font-bold rounded-full text-xs animate-pulse">{currentFilters.length}</span>}
       </button>
-      <FullPageModal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Filter Tickers" fullWidth={false} className="max-w-5xl">
-        <div className="px-6 py-2">
-          <FilterModalContent
-            key={modalKey}
-            initialSelected={buildInitialSelected(currentFilters)}
-            onApplyFilters={handleApply}
-            onClose={() => setIsModalOpen(false)}
-          />
-        </div>
-      </FullPageModal>
+      {isModalOpen && (
+        <FullPageModal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Filter Tickers" fullWidth={false} className="max-w-5xl">
+          <div className="px-6 py-2">
+            <FilterModalContent
+              key={modalKey}
+              initialSelected={buildInitialSelected(currentFilters)}
+              onApplyFilters={handleApply}
+              onClose={() => setIsModalOpen(false)}
+            />
+          </div>
+        </FullPageModal>
+      )}
     </>
   );
 }
@@ -150,16 +153,12 @@ function FilterModalContent({ initialSelected, onApplyFilters, onClose }: Filter
 
       {/* Actions */}
       <div className="flex justify-between items-center pt-4 border-t border-[#374151]">
-        <button onClick={handleClearAll} className="text-[#E5E7EB] hover:text-white text-sm underline transition-colors duration-200" type="button">
+        <button onClick={handleClearAll} className="text-[#E5E7EB] hover:text-white text-sm underline" type="button">
           Clear all filters
         </button>
 
         <div className="flex gap-3">
-          <button
-            onClick={onClose}
-            className="bg-[#374151] hover:bg-[#4B5563] text-white font-medium rounded-lg px-6 py-2.5 text-sm transition-colors duration-200"
-            type="button"
-          >
+          <button onClick={onClose} className="bg-[#374151] hover:bg-[#4B5563] text-white font-medium rounded-lg px-6 py-2.5 text-sm" type="button">
             Cancel
           </button>
           <button

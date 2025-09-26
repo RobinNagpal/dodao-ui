@@ -11,7 +11,7 @@ interface SubIndustryCardProps {
 export default function SubIndustryCard({ subIndustry, subIndustryName, tickers, total }: SubIndustryCardProps) {
   const displayName = subIndustryName || subIndustry;
   return (
-    <div className="bg-block-bg-color rounded-lg shadow-lg border border-color overflow-hidden flex flex-col hover:shadow-xl transition-shadow duration-300">
+    <div className="bg-block-bg-color rounded-lg shadow-lg border border-color overflow-hidden flex flex-col hover:shadow-xl transition-shadow">
       <div className="px-3 py-2 sm:px-4 border-b border-color flex items-center justify-between bg-gradient-to-r from-[#374151] to-[#2D3748]">
         <h3 className="text-base font-semibold heading-color truncate max-w-[70%]" title={displayName}>
           {displayName}
@@ -22,7 +22,7 @@ export default function SubIndustryCard({ subIndustry, subIndustryName, tickers,
       </div>
       <ul className="divide-y divide-color">
         {tickers.map((ticker) => (
-          <li key={ticker.symbol} className="px-2 py-1.5 hover:bg-[#2D3748] transition-colors duration-200">
+          <li key={ticker.symbol} className="px-2 py-1.5 hover:bg-[#2D3748] transition-colors">
             <div className="min-w-0 w-full">
               <StockTickerItem symbol={ticker.symbol} name={ticker.name} exchange={ticker.exchange} score={ticker.cachedScore} />
             </div>

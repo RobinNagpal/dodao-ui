@@ -97,10 +97,7 @@ export default async function TariffReportsPage() {
             ) : (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {sortedTariffReports.map((report) => (
-                  <div
-                    key={report.industryId}
-                    className="flex flex-col overflow-hidden rounded-lg shadow-lg border border-color hover:shadow-xl transition-all duration-300"
-                  >
+                  <div key={report.industryId} className="flex flex-col overflow-hidden rounded-lg shadow-lg border border-color hover:shadow-xl">
                     <div className="flex-1 background-color p-6">
                       <div className="flex items-center text-xs font-medium mb-3">
                         <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">

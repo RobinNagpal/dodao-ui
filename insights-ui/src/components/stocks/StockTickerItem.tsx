@@ -12,7 +12,7 @@ export default function StockTickerItem({ symbol, name, exchange, score }: Stock
   const { textColorClass, bgColorClass, scoreLabel } = getScoreColorClasses(score || 0);
 
   return (
-    <Link href={`/stocks/${exchange}/${symbol}`} className="w-full">
+    <Link href={`/stocks/${exchange}/${symbol}`} className="w-full" aria-label={`View ${name}`} title={`View ${name}`}>
       <div className="flex gap-1.5 items-center">
         <p className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[45px] text-right`}>
           <span className="font-mono tabular-nums text-right text-xs">{score}/25</span>

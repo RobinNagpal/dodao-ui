@@ -40,7 +40,7 @@ export default function AppliedFilterChips({ className = '', showClearAll = true
           <span>{filter.label}</span>
           <button
             onClick={() => handleRemove(filter)}
-            className="hover:bg-white hover:bg-opacity-20 rounded-full p-0.5 transition-colors duration-200"
+            className="hover:bg-white hover:bg-opacity-20 rounded-full p-0.5"
             aria-label={`Remove ${filter.label}`}
             type="button"
           >
@@ -50,7 +50,7 @@ export default function AppliedFilterChips({ className = '', showClearAll = true
       ))}
 
       {showClearAll && currentFilters.length > 1 && (
-        <button onClick={handleClearAll} className="text-[#E5E7EB] hover:text-white text-sm underline transition-colors duration-200" type="button">
+        <button onClick={handleClearAll} className="text-[#E5E7EB] hover:text-white text-sm underline" type="button">
           Clear all
         </button>
       )}
