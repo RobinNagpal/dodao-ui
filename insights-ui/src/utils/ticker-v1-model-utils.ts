@@ -219,11 +219,7 @@ export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelation
   };
 }
 
-export const updateTickerCachedScore = async (
-  tickerRecord: TickerV1,
-  categoryType: 'businessAndMoat' | 'financialStatementAnalysis' | 'pastPerformance' | 'futureGrowth' | 'fairValue',
-  categoryScore: number
-) => {
+export const updateTickerCachedScore = async (tickerRecord: TickerV1, categoryType: TickerAnalysisCategory, categoryScore: number) => {
   // Get or create cached score record
   const existingCachedScore = await prisma.tickerV1CachedScore.findUnique({
     where: { tickerId: tickerRecord.id },
@@ -243,19 +239,19 @@ export const updateTickerCachedScore = async (
 
   // Update the specific category score
   switch (categoryType) {
-    case 'businessAndMoat':
+    case TickerAnalysisCategory.BusinessAndMoat:
       scoreUpdates.businessAndMoatScore = categoryScore;
       break;
-    case 'financialStatementAnalysis':
+    case TickerAnalysisCategory.FinancialStatementAnalysis:
       scoreUpdates.financialStatementAnalysisScore = categoryScore;
       break;
-    case 'pastPerformance':
+    case TickerAnalysisCategory.PastPerformance:
       scoreUpdates.pastPerformanceScore = categoryScore;
       break;
-    case 'futureGrowth':
+    case TickerAnalysisCategory.FutureGrowth:
       scoreUpdates.futureGrowthScore = categoryScore;
       break;
-    case 'fairValue':
+    case TickerAnalysisCategory.FairValue:
       scoreUpdates.fairValueScore = categoryScore;
       break;
   }
@@ -270,11 +266,11 @@ export const updateTickerCachedScore = async (
     update: scoreUpdates,
     create: {
       tickerId: tickerRecord.id,
-      businessAndMoatScore: categoryType === 'businessAndMoat' ? categoryScore : 0,
-      financialStatementAnalysisScore: categoryType === 'financialStatementAnalysis' ? categoryScore : 0,
-      pastPerformanceScore: categoryType === 'pastPerformance' ? categoryScore : 0,
-      futureGrowthScore: categoryType === 'futureGrowth' ? categoryScore : 0,
-      fairValueScore: categoryType === 'fairValue' ? categoryScore : 0,
+      businessAndMoatScore: categoryType === TickerAnalysisCategory.BusinessAndMoat ? categoryScore : 0,
+      financialStatementAnalysisScore: categoryType === TickerAnalysisCategory.FinancialStatementAnalysis ? categoryScore : 0,
+      pastPerformanceScore: categoryType === TickerAnalysisCategory.PastPerformance ? categoryScore : 0,
+      futureGrowthScore: categoryType === TickerAnalysisCategory.FutureGrowth ? categoryScore : 0,
+      fairValueScore: categoryType === TickerAnalysisCategory.FairValue ? categoryScore : 0,
       finalScore,
     },
   });

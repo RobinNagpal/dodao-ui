@@ -139,7 +139,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const futureGrowthScore = response.factors.filter((factor) => factor.result && factor.result.toLowerCase().includes('pass')).length;
 
   // Update cached score using the utility function
-  await updateTickerCachedScore(tickerRecord, 'futureGrowth', futureGrowthScore);
+  await updateTickerCachedScore(tickerRecord, TickerAnalysisCategory.FutureGrowth, futureGrowthScore);
 
   await bumpUpdatedAtAndInvalidateCache(tickerRecord);
 

@@ -139,7 +139,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const fairValueScore = response.factors.filter((factor) => factor.result && factor.result.toLowerCase().includes('pass')).length;
 
   // Update cached score using the utility function
-  await updateTickerCachedScore(tickerRecord, 'fairValue', fairValueScore);
+  await updateTickerCachedScore(tickerRecord, TickerAnalysisCategory.FairValue, fairValueScore);
 
   await bumpUpdatedAtAndInvalidateCache(tickerRecord);
 

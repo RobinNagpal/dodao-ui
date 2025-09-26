@@ -127,7 +127,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const financialStatementAnalysisScore = response.factors.filter((factor) => factor.result && factor.result.toLowerCase().includes('pass')).length;
 
   // Update cached score using the utility function
-  await updateTickerCachedScore(tickerRecord, 'financialStatementAnalysis', financialStatementAnalysisScore);
+  await updateTickerCachedScore(tickerRecord, TickerAnalysisCategory.FinancialStatementAnalysis, financialStatementAnalysisScore);
 
   await bumpUpdatedAtAndInvalidateCache(tickerRecord);
 
