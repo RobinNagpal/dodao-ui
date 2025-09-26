@@ -6,6 +6,8 @@ import { ReadonlyURLSearchParams } from 'next/navigation';
 
 export type FilterType = 'category' | 'total' | 'search';
 
+type SearchParams = { [key: string]: string | string[] | undefined };
+
 export interface FilterOption<T extends string = string> {
   label: string;
   value: T;
@@ -174,3 +176,20 @@ export function applySelectedFiltersToParams(searchParams: ReadonlyURLSearchPara
   }
   return params;
 }
+
+const toScalar = (v: string | string[] | undefined): string | undefined => (Array.isArray(v) ? v.join(',') : v);
+
+export const toSortedQueryString = (sp: SearchParams): string => {
+  const usp = new URLSearchParams();
+  Object.keys(sp)
+    .sort()
+    .forEach((k) => {
+      if (k === 'page') return;
+      const v = toScalar(sp[k]);
+      if (v) usp.set(k, v);
+    });
+  usp.set('country', 'US');
+  return usp.toString();
+};
+
+export const hasFiltersApplied = (sp: SearchParams): boolean => Object.keys(sp).some((k) => k.includes('Threshold')) || Boolean(toScalar(sp['search']));

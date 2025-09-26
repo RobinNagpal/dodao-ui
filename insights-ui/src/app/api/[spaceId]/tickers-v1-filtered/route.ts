@@ -1,10 +1,9 @@
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { TickerAnalysisCategory, EvaluationResult, Prisma } from '@prisma/client';
-import { getIndustryMappings, getIndustryName, getSubIndustryName } from '@/lib/industryMappingUtils';
 import { FilteredTicker } from '@/types/ticker-typesv1';
 import { getCountryFilterClause } from '@/utils/countryUtils';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { Prisma, TickerAnalysisCategory } from '@prisma/client';
+import { NextRequest } from 'next/server';
 
 interface FilterParams {
   businessandmoatThreshold?: string;
@@ -16,6 +15,12 @@ interface FilterParams {
   country?: string;
   industry?: string;
   search?: string;
+}
+
+function toInt(v?: string) {
+  if (!v) return undefined;
+  const n = parseInt(v, 10);
+  return Number.isNaN(n) ? undefined : n;
 }
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<FilteredTicker[]> {
@@ -35,209 +40,112 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     search: searchParams.get('search') || undefined,
   };
 
-  // Build the where clause for database query
+  // Base where clause
   const whereClause: Prisma.TickerV1WhereInput = {
     spaceId,
   };
 
-  // Add country filter using utility function
-  const countryFilter = getCountryFilterClause(filters.country);
-  Object.assign(whereClause, countryFilter);
+  // Country filter
+  Object.assign(whereClause, getCountryFilterClause(filters.country));
 
-  // Add industry filter if provided
+  // Industry filter
   if (filters.industry) {
-    whereClause.subIndustryKey = filters.industry;
+    (whereClause as Prisma.TickerV1WhereInput).subIndustryKey = filters.industry;
   }
 
-  // Add search filter if provided (consistent with search API logic)
+  // Search filter
   if (filters.search && filters.search.trim()) {
     const searchTerm = filters.search.trim();
     whereClause.OR = [
-      // Exact symbol match (highest priority)
-      {
-        symbol: {
-          equals: searchTerm.toUpperCase(),
-          mode: 'insensitive',
-        },
-      },
-      // Symbol starts with search term (high priority)
-      {
-        symbol: {
-          startsWith: searchTerm.toUpperCase(),
-          mode: 'insensitive',
-        },
-      },
-      // Company name starts with search term (medium priority)
-      {
-        name: {
-          startsWith: searchTerm,
-          mode: 'insensitive',
-        },
-      },
-      // Partial symbol match (lower priority)
-      {
-        symbol: {
-          contains: searchTerm,
-          mode: 'insensitive',
-        },
-      },
-      // Company name contains search term (lowest priority)
-      {
-        name: {
-          contains: searchTerm,
-          mode: 'insensitive',
-        },
-      },
+      { symbol: { equals: searchTerm.toUpperCase(), mode: 'insensitive' } },
+      { symbol: { startsWith: searchTerm.toUpperCase(), mode: 'insensitive' } },
+      { name: { startsWith: searchTerm, mode: 'insensitive' } },
+      { symbol: { contains: searchTerm, mode: 'insensitive' } },
+      { name: { contains: searchTerm, mode: 'insensitive' } },
     ];
   }
 
-  // Fetch all tickers with their analysis data
+  // --- NEW: push score thresholds into DB using TickerV1CachedScore relation ---
+  const cacheFilter: Prisma.TickerV1CachedScoreWhereInput = {};
+  const bm = toInt(filters.businessandmoatThreshold);
+  const fsa = toInt(filters.financialstatementanalysisThreshold);
+  const pp = toInt(filters.pastperformanceThreshold);
+  const fg = toInt(filters.futuregrowthThreshold);
+  const fv = toInt(filters.fairvalueThreshold);
+  const total = toInt(filters.totalthreshold);
+
+  if (bm !== undefined) cacheFilter.businessAndMoatScore = { gte: bm };
+  if (fsa !== undefined) cacheFilter.financialStatementAnalysisScore = { gte: fsa };
+  if (pp !== undefined) cacheFilter.pastPerformanceScore = { gte: pp };
+  if (fg !== undefined) cacheFilter.futureGrowthScore = { gte: fg };
+  if (fv !== undefined) cacheFilter.fairValueScore = { gte: fv };
+  if (total !== undefined) cacheFilter.finalScore = { gte: total };
+
+  if (Object.keys(cacheFilter).length > 0) {
+    // Ensure we only return tickers whose cached scores exist and meet thresholds
+    (whereClause as Prisma.TickerV1WhereInput).cachedScoreEntry = { is: cacheFilter };
+  }
+
+  // Fetch tickers with cached score joined (no heavy factor includes)
   const tickers = await prisma.tickerV1.findMany({
     where: whereClause,
     include: {
-      categoryAnalysisResults: {
-        include: {
-          factorResults: true,
-        },
-      },
+      cachedScoreEntry: true, // <- use cached table
+      industry: true,
+      subIndustry: true,
     },
     orderBy: {
       symbol: 'asc',
     },
   });
 
-  // Calculate category scores and filter tickers
-  const filteredTickers: FilteredTicker[] = [];
+  const filteredTickers: FilteredTicker[] = tickers.map((ticker) => {
+    const cached = ticker.cachedScoreEntry;
 
-  // Get industry and sub-industry mappings
-  const mappings = await getIndustryMappings();
+    const categoryScores: { [key in TickerAnalysisCategory]?: number } = {
+      [TickerAnalysisCategory.BusinessAndMoat]: cached?.businessAndMoatScore ?? 0,
+      [TickerAnalysisCategory.FinancialStatementAnalysis]: cached?.financialStatementAnalysisScore ?? 0,
+      [TickerAnalysisCategory.PastPerformance]: cached?.pastPerformanceScore ?? 0,
+      [TickerAnalysisCategory.FutureGrowth]: cached?.futureGrowthScore ?? 0,
+      [TickerAnalysisCategory.FairValue]: cached?.fairValueScore ?? 0,
+    };
 
-  for (const ticker of tickers) {
-    const categoryScores: { [key in TickerAnalysisCategory]?: number } = {};
+    const totalScore = cached?.finalScore ?? 0;
 
-    // Calculate scores for each category
-    const categories = Object.values(TickerAnalysisCategory);
-    for (const category of categories) {
-      const categoryResult = ticker.categoryAnalysisResults.find((result) => result.categoryKey === category);
+    return {
+      ...ticker,
+      industryName: ticker.industry.name,
+      subIndustryName: ticker.subIndustry.name,
+      categoryScores,
+      totalScore,
+    };
+  });
 
-      if (categoryResult) {
-        // Count passed factors in this category
-        const passedCount = categoryResult.factorResults.filter((factor) => factor.result === EvaluationResult.Pass).length;
-
-        categoryScores[category] = passedCount;
-      } else {
-        categoryScores[category] = 0;
-      }
-    }
-
-    // Calculate total score
-    const totalScore = Object.values(categoryScores).reduce((sum, score) => sum + score, 0);
-
-    // Apply filters
-    let passesFilters = true;
-
-    // Category-specific filters
-    if (filters.businessandmoatThreshold) {
-      const threshold = parseInt(filters.businessandmoatThreshold);
-      if ((categoryScores[TickerAnalysisCategory.BusinessAndMoat] || 0) < threshold) {
-        passesFilters = false;
-      }
-    }
-
-    if (filters.financialstatementanalysisThreshold) {
-      const threshold = parseInt(filters.financialstatementanalysisThreshold);
-      if ((categoryScores[TickerAnalysisCategory.FinancialStatementAnalysis] || 0) < threshold) {
-        passesFilters = false;
-      }
-    }
-
-    if (filters.pastperformanceThreshold) {
-      const threshold = parseInt(filters.pastperformanceThreshold);
-      if ((categoryScores[TickerAnalysisCategory.PastPerformance] || 0) < threshold) {
-        passesFilters = false;
-      }
-    }
-
-    if (filters.futuregrowthThreshold) {
-      const threshold = parseInt(filters.futuregrowthThreshold);
-      if ((categoryScores[TickerAnalysisCategory.FutureGrowth] || 0) < threshold) {
-        passesFilters = false;
-      }
-    }
-
-    if (filters.fairvalueThreshold) {
-      const threshold = parseInt(filters.fairvalueThreshold);
-      if ((categoryScores[TickerAnalysisCategory.FairValue] || 0) < threshold) {
-        passesFilters = false;
-      }
-    }
-
-    // Total score filter
-    if (filters.totalthreshold) {
-      const threshold = parseInt(filters.totalthreshold);
-      if (totalScore < threshold) {
-        passesFilters = false;
-      }
-    }
-
-    if (passesFilters) {
-      filteredTickers.push({
-        id: ticker.id,
-        name: ticker.name,
-        symbol: ticker.symbol,
-        exchange: ticker.exchange,
-        industryKey: ticker.industryKey,
-        subIndustryKey: ticker.subIndustryKey,
-        industryName: getIndustryName(ticker.industryKey, mappings),
-        subIndustryName: getSubIndustryName(ticker.subIndustryKey, mappings),
-        websiteUrl: ticker.websiteUrl,
-        summary: ticker.summary,
-        cachedScore: ticker.cachedScore,
-        spaceId: ticker.spaceId,
-        categoryScores,
-        totalScore,
-      });
-    }
-  }
-
-  // If search is applied, sort results with search priority (consistent with search API)
+  // Keep the search-priority sort behavior when search is present
   if (filters.search && filters.search.trim()) {
     const searchTerm = filters.search.trim();
     filteredTickers.sort((a, b) => {
       const searchUpper = searchTerm.toUpperCase();
       const searchLower = searchTerm.toLowerCase();
 
-      // Priority 1: Exact symbol match
       const aSymbolExact = a.symbol.toUpperCase() === searchUpper;
       const bSymbolExact = b.symbol.toUpperCase() === searchUpper;
-      if (aSymbolExact && !bSymbolExact) return -1;
-      if (!aSymbolExact && bSymbolExact) return 1;
+      if (aSymbolExact !== bSymbolExact) return aSymbolExact ? -1 : 1;
 
-      // Priority 2: Symbol starts with search term
       const aSymbolStarts = a.symbol.toUpperCase().startsWith(searchUpper);
       const bSymbolStarts = b.symbol.toUpperCase().startsWith(searchUpper);
-      if (aSymbolStarts && !bSymbolStarts) return -1;
-      if (!aSymbolStarts && bSymbolStarts) return 1;
+      if (aSymbolStarts !== bSymbolStarts) return aSymbolStarts ? -1 : 1;
 
-      // If both symbols start with search term, prefer shorter symbols
-      if (aSymbolStarts && bSymbolStarts) {
-        if (a.symbol.length !== b.symbol.length) {
-          return a.symbol.length - b.symbol.length;
-        }
+      if (aSymbolStarts && bSymbolStarts && a.symbol.length !== b.symbol.length) {
+        return a.symbol.length - b.symbol.length;
       }
 
-      // Priority 3: Company name starts with search term
       const aNameStarts = a.name.toLowerCase().startsWith(searchLower);
       const bNameStarts = b.name.toLowerCase().startsWith(searchLower);
-      if (aNameStarts && !bNameStarts) return -1;
-      if (!aNameStarts && bNameStarts) return 1;
+      if (aNameStarts !== bNameStarts) return aNameStarts ? -1 : 1;
 
-      // Priority 4: Higher total score
-      if (b.totalScore !== a.totalScore) {
-        return b.totalScore - a.totalScore;
-      }
+      if (b.totalScore !== a.totalScore) return b.totalScore - a.totalScore;
 
-      // Priority 5: Alphabetical by symbol
       return a.symbol.localeCompare(b.symbol);
     });
   }

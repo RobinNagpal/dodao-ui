@@ -43,7 +43,7 @@ export default function SimilarTickers({ dataPromise }: SimilarTickersProps): JS
                   </div>
                   <Link
                     href={`/stocks/${similarTicker.exchange.toUpperCase()}/${similarTicker.symbol.toUpperCase()}`}
-                    className="inline-flex items-center gap-x-1 text-sm font-medium text-[#F59E0B] hover:text-[#F97316] transition-colors duration-200"
+                    className="inline-flex items-center gap-x-1 text-sm font-medium text-[#F59E0B] hover:text-[#F97316]"
                     title="View report"
                   >
                     View Report

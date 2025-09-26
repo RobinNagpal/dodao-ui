@@ -191,7 +191,7 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
                   <h2 className="text-xl font-bold text-white">{industryDisplayName}</h2>
                   <Link
                     href={`/stocks/countries/${encodeURIComponent(countryName)}/industries/${encodeURIComponent(mainIndustry)}`}
-                    className="text-md bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-4 py-2 rounded-lg shadow-md transition-all duration-200 flex items-center"
+                    className="text-md bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-4 py-2 rounded-lg shadow-md flex items-center"
                   >
                     View All {totalCompaniesInIndustry} Companies
                     <span className="ml-1">→</span>

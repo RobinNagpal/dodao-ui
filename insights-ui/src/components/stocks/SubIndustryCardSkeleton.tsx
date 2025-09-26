@@ -39,7 +39,6 @@ export function SkeletonGrid() {
 export function FilterLoadingFallback() {
   return (
     <div className="space-y-3">
-      <p className="text-[#E5E7EB] text-sm">Updating results…</p>
       <SkeletonGrid />
     </div>
   );
