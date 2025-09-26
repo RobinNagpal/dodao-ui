@@ -10,6 +10,8 @@ import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import Script from 'next/script';
 
+export const experimental_ppr = true;
+
 // insights-ui/src/app/layout.tsx
 export const metadata: Metadata = {
   title: 'KoalaGains',
