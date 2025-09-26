@@ -1,8 +1,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
-import { EvaluationResult, TickerV1 } from '@prisma/client';
-import { updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
+import { EvaluationResult } from '@prisma/client';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 interface PopulateCachedScoresResponse {
@@ -12,41 +11,64 @@ interface PopulateCachedScoresResponse {
   errors: string[];
 }
 
+interface TickerScoreData {
+  tickerId: string;
+  businessAndMoatScore: number;
+  financialStatementAnalysisScore: number;
+  pastPerformanceScore: number;
+  futureGrowthScore: number;
+  fairValueScore: number;
+  finalScore: number;
+}
+
 async function postHandler(req: NextRequest): Promise<PopulateCachedScoresResponse> {
   const errors: string[] = [];
   let processed = 0;
-  const BATCH_SIZE = 10; // Process in small batches to avoid memory issues
 
   try {
-    // Get total count of tickers
-    const totalTickers = await prisma.tickerV1.count();
-    console.log(`Found ${totalTickers} tickers to process`);
+    // Get all industries with their sub-industries
+    const industries = await prisma.tickerV1Industry.findMany({
+      include: {
+        subIndustries: true,
+      },
+    });
 
-    let processedInBatch = 0;
-    let skip = 0;
+    console.log(`Found ${industries.length} industries to process`);
 
-    while (skip < totalTickers) {
-      // Get tickers in batches
-      const tickers = await prisma.tickerV1.findMany({
-        select: {
-          id: true,
-          symbol: true,
-          name: true,
-          industryKey: true,
-          subIndustryKey: true,
-        },
-        skip,
-        take: BATCH_SIZE,
-      });
+    for (const industry of industries) {
+      console.log(`Processing industry: ${industry.name} (${industry.industryKey})`);
 
-      console.log(`Processing batch ${Math.floor(skip / BATCH_SIZE) + 1}/${Math.ceil(totalTickers / BATCH_SIZE)}`);
+      // Process each sub-industry within the industry
+      for (const subIndustry of industry.subIndustries) {
+        console.log(`Processing sub-industry: ${subIndustry.name} (${subIndustry.subIndustryKey})`);
 
-      for (const ticker of tickers) {
         try {
-          // Get all category analysis results for this ticker with factor results
+          // Get all tickers for this industry/sub-industry combination
+          const tickers = await prisma.tickerV1.findMany({
+            where: {
+              industryKey: industry.industryKey,
+              subIndustryKey: subIndustry.subIndustryKey,
+            },
+            select: {
+              id: true,
+              symbol: true,
+              name: true,
+            },
+          });
+
+          if (tickers.length === 0) {
+            console.log(`No tickers found for ${industry.industryKey}/${subIndustry.subIndustryKey}`);
+            continue;
+          }
+
+          console.log(`Found ${tickers.length} tickers to process`);
+
+          // Get all category analysis results for all tickers in this sub-industry in one query
           const categoryResults = await prisma.tickerV1CategoryAnalysisResult.findMany({
             where: {
-              tickerId: ticker.id,
+              tickerId: {
+                in: tickers.map((t) => t.id),
+              },
             },
             include: {
               factorResults: {
@@ -57,85 +79,116 @@ async function postHandler(req: NextRequest): Promise<PopulateCachedScoresRespon
             },
           });
 
-          // Calculate scores for each category
-          const categoryScores: Record<string, number> = {
-            businessAndMoat: 0,
-            financialStatementAnalysis: 0,
-            pastPerformance: 0,
-            futureGrowth: 0,
-            fairValue: 0,
-          };
+          // Calculate scores for all tickers in memory
+          const tickerScoresData: TickerScoreData[] = [];
 
-          for (const categoryResult of categoryResults) {
-            const passedFactors = categoryResult.factorResults.filter((factor) => factor.result === EvaluationResult.Pass).length;
+          for (const ticker of tickers) {
+            // Get category results for this specific ticker
+            const tickerCategoryResults = categoryResults.filter((cr) => cr.tickerId === ticker.id);
 
-            switch (categoryResult.categoryKey) {
-              case TickerAnalysisCategory.BusinessAndMoat:
-                categoryScores.businessAndMoat = passedFactors;
-                break;
-              case TickerAnalysisCategory.FinancialStatementAnalysis:
-                categoryScores.financialStatementAnalysis = passedFactors;
-                break;
-              case TickerAnalysisCategory.PastPerformance:
-                categoryScores.pastPerformance = passedFactors;
-                break;
-              case TickerAnalysisCategory.FutureGrowth:
-                categoryScores.futureGrowth = passedFactors;
-                break;
-              case TickerAnalysisCategory.FairValue:
-                categoryScores.fairValue = passedFactors;
-                break;
+            // Initialize scores
+            const categoryScores = {
+              businessAndMoat: 0,
+              financialStatementAnalysis: 0,
+              pastPerformance: 0,
+              futureGrowth: 0,
+              fairValue: 0,
+            };
+
+            // Calculate scores for each category
+            for (const categoryResult of tickerCategoryResults) {
+              const passedFactors = categoryResult.factorResults.filter((factor) => factor.result === EvaluationResult.Pass).length;
+
+              switch (categoryResult.categoryKey) {
+                case TickerAnalysisCategory.BusinessAndMoat:
+                  categoryScores.businessAndMoat = passedFactors;
+                  break;
+                case TickerAnalysisCategory.FinancialStatementAnalysis:
+                  categoryScores.financialStatementAnalysis = passedFactors;
+                  break;
+                case TickerAnalysisCategory.PastPerformance:
+                  categoryScores.pastPerformance = passedFactors;
+                  break;
+                case TickerAnalysisCategory.FutureGrowth:
+                  categoryScores.futureGrowth = passedFactors;
+                  break;
+                case TickerAnalysisCategory.FairValue:
+                  categoryScores.fairValue = passedFactors;
+                  break;
+              }
+            }
+
+            // Calculate final score (sum of all category scores)
+            const finalScore =
+              categoryScores.businessAndMoat +
+              categoryScores.financialStatementAnalysis +
+              categoryScores.pastPerformance +
+              categoryScores.futureGrowth +
+              categoryScores.fairValue;
+
+            // Only add to batch if ticker has some analysis results
+            if (tickerCategoryResults.length > 0) {
+              tickerScoresData.push({
+                tickerId: ticker.id,
+                businessAndMoatScore: categoryScores.businessAndMoat,
+                financialStatementAnalysisScore: categoryScores.financialStatementAnalysis,
+                pastPerformanceScore: categoryScores.pastPerformance,
+                futureGrowthScore: categoryScores.futureGrowth,
+                fairValueScore: categoryScores.fairValue,
+                finalScore,
+              });
             }
           }
 
-          // Update cached score for each category that has results
-          // Each call will preserve existing scores from other categories
-          if (categoryResults.length > 0) {
-            // Update each category that has results
-            if (categoryScores.businessAndMoat > 0) {
-              await updateTickerCachedScore(ticker as TickerV1, 'businessAndMoat', categoryScores.businessAndMoat);
-            }
-            if (categoryScores.financialStatementAnalysis > 0) {
-              await updateTickerCachedScore(ticker as TickerV1, 'financialStatementAnalysis', categoryScores.financialStatementAnalysis);
-            }
-            if (categoryScores.pastPerformance > 0) {
-              await updateTickerCachedScore(ticker as TickerV1, 'pastPerformance', categoryScores.pastPerformance);
-            }
-            if (categoryScores.futureGrowth > 0) {
-              await updateTickerCachedScore(ticker as TickerV1, 'futureGrowth', categoryScores.futureGrowth);
-            }
-            if (categoryScores.fairValue > 0) {
-              await updateTickerCachedScore(ticker as TickerV1, 'fairValue', categoryScores.fairValue);
-            }
+          // Batch upsert all cached scores for this sub-industry in one transaction
+          if (tickerScoresData.length > 0) {
+            await prisma.$transaction(async (tx) => {
+              for (const scoreData of tickerScoresData) {
+                await tx.tickerV1CachedScore.upsert({
+                  where: { tickerId: scoreData.tickerId },
+                  update: {
+                    businessAndMoatScore: scoreData.businessAndMoatScore,
+                    financialStatementAnalysisScore: scoreData.financialStatementAnalysisScore,
+                    pastPerformanceScore: scoreData.pastPerformanceScore,
+                    futureGrowthScore: scoreData.futureGrowthScore,
+                    fairValueScore: scoreData.fairValueScore,
+                    finalScore: scoreData.finalScore,
+                    updatedAt: new Date(),
+                  },
+                  create: {
+                    tickerId: scoreData.tickerId,
+                    businessAndMoatScore: scoreData.businessAndMoatScore,
+                    financialStatementAnalysisScore: scoreData.financialStatementAnalysisScore,
+                    pastPerformanceScore: scoreData.pastPerformanceScore,
+                    futureGrowthScore: scoreData.futureGrowthScore,
+                    fairValueScore: scoreData.fairValueScore,
+                    finalScore: scoreData.finalScore,
+                  },
+                });
+              }
+            });
+
+            processed += tickerScoresData.length;
+            console.log(`Successfully processed ${tickerScoresData.length} tickers for ${industry.industryKey}/${subIndustry.subIndustryKey}`);
           }
 
-          processed++;
-          processedInBatch++;
-
-          // Log progress every 50 tickers
-          if (processed % 50 === 0) {
-            console.log(`Processed ${processed}/${totalTickers} tickers`);
-          }
+          // Small delay to prevent overwhelming the database
+          await new Promise((resolve) => setTimeout(resolve, 100));
         } catch (error) {
-          const errorMsg = `Error processing ticker ${ticker.symbol}: ${error}`;
+          const errorMsg = `Error processing sub-industry ${industry.industryKey}/${subIndustry.subIndustryKey}: ${error}`;
           console.error(errorMsg);
           errors.push(errorMsg);
         }
       }
 
-      skip += BATCH_SIZE;
-
-      // Small delay to prevent overwhelming the database
-      if (skip < totalTickers) {
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      }
+      console.log(`Completed industry: ${industry.name}`);
     }
 
-    console.log(`Completed processing all ${totalTickers} tickers`);
+    console.log(`Completed processing all industries. Total tickers processed: ${processed}`);
 
     return {
       success: true,
-      message: `Successfully processed ${processed} tickers. ${errors.length} errors occurred.`,
+      message: `Successfully processed ${processed} tickers across all industries. ${errors.length} errors occurred.`,
       processed,
       errors,
     };
