@@ -18,6 +18,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       symbol: ticker.toUpperCase(),
     },
     include: {
+      industry: true,
+      subIndustry: true,
       categoryAnalysisResults: {
         include: {
           factorResults: {
@@ -56,7 +58,11 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     symbol: tickerRecord.symbol,
     exchange: tickerRecord.exchange,
     industryKey: tickerRecord.industryKey,
+    industryName: tickerRecord.industry.name,
+    industryDescription: tickerRecord.industry.summary,
     subIndustryKey: tickerRecord.subIndustryKey,
+    subIndustryName: tickerRecord.subIndustry.name,
+    subIndustryDescription: tickerRecord.subIndustry.summary,
     categorySummaries,
     factorResults,
   };

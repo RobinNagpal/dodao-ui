@@ -18,6 +18,10 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       spaceId,
       symbol: ticker.toUpperCase(),
     },
+    include: {
+      industry: true,
+      subIndustry: true,
+    },
   });
 
   if (!tickerRecord) {
@@ -51,7 +55,11 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     name: tickerRecord.name,
     symbol: tickerRecord.symbol,
     industryKey: tickerRecord.industryKey,
+    industryName: tickerRecord.industry.name,
+    industryDescription: tickerRecord.industry.summary,
     subIndustryKey: tickerRecord.subIndustryKey,
+    subIndustryName: tickerRecord.subIndustry.name,
+    subIndustryDescription: tickerRecord.subIndustry.summary,
     categoryKey: 'FutureGrowth',
     factorAnalysisArray: analysisFactors.map((factor) => ({
       factorAnalysisKey: factor.factorAnalysisKey,
