@@ -8,11 +8,13 @@ import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkelet
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import type { TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import { TICKERS_TAG } from '@/utils/ticker-v1-cache-utils';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+import { hasFiltersApplied, toSortedQueryString } from '@/components/stocks/filters/filter-utils';
 
 // ────────────────────────────────────────────────────────────────────────────────
 
@@ -65,23 +67,6 @@ type StocksDataPayload = {
 // ────────────────────────────────────────────────────────────────────────────────
 // Helpers
 
-const toScalar = (v: string | string[] | undefined): string | undefined => (Array.isArray(v) ? v.join(',') : v);
-
-const toSortedQueryString = (sp: SearchParams): string => {
-  const usp = new URLSearchParams();
-  Object.keys(sp)
-    .sort()
-    .forEach((k) => {
-      if (k === 'page') return;
-      const v = toScalar(sp[k]);
-      if (v) usp.set(k, v);
-    });
-  usp.set('country', 'US');
-  return usp.toString();
-};
-
-const hasFiltersApplied = (sp: SearchParams): boolean => Object.keys(sp).some((k) => k.includes('Threshold')) || Boolean(toScalar(sp['search']));
-
 // ────────────────────────────────────────────────────────────────────────────────
 
 type PageProps = {
@@ -102,10 +87,10 @@ export default function StocksPage({ searchParams }: PageProps) {
     if (filters) {
       const qs = toSortedQueryString(sp);
       url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${qs}`;
-      tags = ['tickers:US:filtered'];
+      tags = [TICKERS_TAG, 'tickers:US:filtered:' + qs.replace(/&/g, ',')];
     } else {
       url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
-      tags = ['tickers:US'];
+      tags = [TICKERS_TAG];
     }
 
     const res = await fetch(url, { next: { tags } });
