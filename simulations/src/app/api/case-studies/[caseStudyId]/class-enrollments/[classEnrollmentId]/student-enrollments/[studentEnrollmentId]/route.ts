@@ -90,21 +90,20 @@ async function deleteHandler(
     caseStudyId,
   });
 
-  // Find the enrollment student by ID
+  // Find the enrollment student by ID (including assigned student in same query)
   const enrollmentStudent = await prisma.enrollmentStudent.findFirstOrThrow({
     where: {
       id: studentEnrollmentId,
       enrollmentId: enrollment.id,
       archive: false,
     },
-  });
-
-  // Find the user by assignedStudentId
-  const student = await prisma.user.findFirstOrThrow({
-    where: {
-      id: enrollmentStudent.assignedStudentId,
+    include: {
+      assignedStudent: true,
     },
   });
+
+  // Get the student from the included relation
+  const student = enrollmentStudent.assignedStudent;
 
   // Use a transaction to ensure all related data is archived together
   const result = await prisma.$transaction(async (tx) => {
