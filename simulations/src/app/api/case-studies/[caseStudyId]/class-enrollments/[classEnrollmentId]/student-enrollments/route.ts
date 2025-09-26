@@ -3,17 +3,10 @@ import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { verifyEnrollmentAccess } from '@/app/api/helpers/enrollments-util';
-import type { AttemptDetail, ExerciseProgress, StudentTableData, ModuleTableData } from '@/types';
+import { ClassEnrollmentResponse } from '@/types/api';
 import { AddStudentEnrollmentRequest } from '@/components/instructor/InstructorManageStudentsModal';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
-import { prismaAdapter } from '@/app/api/auth/[...nextauth]/authOptions';
 import { getOrCreateUser } from '@/utils/user-utils';
 import { UserRole } from '@prisma/client';
-
-interface TableResponse {
-  students: StudentTableData[];
-  modules: ModuleTableData[];
-}
 
 interface SimpleResponse {
   students: Array<{
@@ -27,7 +20,7 @@ async function getHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
   { params }: { params: Promise<{ caseStudyId: string; classEnrollmentId: string }> }
-): Promise<TableResponse | SimpleResponse> {
+): Promise<ClassEnrollmentResponse | SimpleResponse> {
   const { caseStudyId, classEnrollmentId } = await params;
   const url = new URL(req.url);
   const studentDetails = url.searchParams.get('student-details');
@@ -39,7 +32,7 @@ async function getHandler(
     caseStudyId,
   });
 
-  const enrollmentWithStudents = await prisma.classCaseStudyEnrollment.findFirstOrThrow({
+  const simpleEnrollment = await prisma.classCaseStudyEnrollment.findFirstOrThrow({
     where: { id: enrollment.id },
     include: {
       students: {
@@ -51,7 +44,7 @@ async function getHandler(
 
   // If student-details is not requested, return simple email list with studentEnrollmentId
   if (studentDetails !== 'true') {
-    const studentIds = enrollmentWithStudents.students.map((student) => student.assignedStudentId);
+    const studentIds = simpleEnrollment.students.map((student) => student.assignedStudentId);
 
     if (studentIds.length === 0) {
       return { students: [] };
@@ -70,7 +63,7 @@ async function getHandler(
       },
     });
 
-    const students = enrollmentWithStudents.students
+    const students = simpleEnrollment.students
       .map((enrollmentStudent) => {
         const user = users.find((u) => u.id === enrollmentStudent.assignedStudentId);
         return {
@@ -83,30 +76,19 @@ async function getHandler(
     return { students };
   }
 
-  // If student-details=true, return detailed table data
+  // If student-details=true, return student data with attempts and final summaries (no case study structure)
   const detailedEnrollment = await prisma.classCaseStudyEnrollment.findFirst({
     where: { id: enrollment.id },
     include: {
-      caseStudy: {
-        include: {
-          modules: {
-            where: { archive: false },
-            orderBy: { orderNumber: 'asc' },
-            include: {
-              exercises: {
-                where: { archive: false },
-                orderBy: { orderNumber: 'asc' },
-              },
-            },
-          },
-        },
-      },
       students: {
         where: { archive: false },
         orderBy: { createdAt: 'asc' },
         include: {
           assignedStudent: {
-            select: { email: true },
+            select: {
+              id: true,
+              email: true,
+            },
           },
         },
       },
@@ -117,94 +99,55 @@ async function getHandler(
     throw new Error('Class enrollment not found or you do not have access to it');
   }
 
-  // Get all exercise IDs for this case study
-  const allExerciseIds = detailedEnrollment.caseStudy.modules.flatMap((module) => module.exercises.map((exercise) => exercise.id));
-
-  // For each student in this enrollment, get their exercise attempts
-  const studentsTableData: StudentTableData[] = [];
-
-  for (const student of detailedEnrollment.students) {
-    // Get all exercise attempts for this student
-    const exerciseAttempts = await prisma.exerciseAttempt.findMany({
-      where: {
-        exerciseId: { in: allExerciseIds },
-        createdById: student.assignedStudentId,
+  // Get all exercise IDs for this case study (we still need this to filter attempts)
+  const caseStudyExercises = await prisma.moduleExercise.findMany({
+    where: {
+      module: {
+        caseStudyId: caseStudyId,
         archive: false,
       },
-      orderBy: {
-        createdAt: 'asc',
-      },
-    });
+      archive: false,
+    },
+    select: {
+      id: true,
+    },
+  });
 
-    // Get final summary for this student
-    const finalSummary = await prisma.finalSummary.findFirst({
-      where: {
-        studentId: student.id,
-        archive: false,
-      },
-    });
+  const allExerciseIds = caseStudyExercises.map((e) => e.id);
 
-    // Group attempts by exercise ID
-    const attemptsByExercise = exerciseAttempts.reduce((acc, attempt) => {
-      if (!acc[attempt.exerciseId]) {
-        acc[attempt.exerciseId] = [];
-      }
-      acc[attempt.exerciseId].push({
-        id: attempt.id,
-        attemptNumber: attempt.attemptNumber,
-        status: attempt.status,
-        evaluatedScore: attempt.evaluatedScore,
-        createdAt: attempt.createdAt.toISOString(),
+  // Build student data using Prisma types
+  const studentsData = await Promise.all(
+    detailedEnrollment.students.map(async (student) => {
+      // Get all exercise attempts for this student
+      const attempts = await prisma.exerciseAttempt.findMany({
+        where: {
+          exerciseId: { in: allExerciseIds },
+          createdById: student.assignedStudentId,
+          archive: false,
+        },
+        orderBy: {
+          createdAt: 'asc',
+        },
       });
-      return acc;
-    }, {} as Record<string, AttemptDetail[]>);
 
-    // Build exercise progress data
-    const exercises: ExerciseProgress[] = detailedEnrollment.caseStudy.modules.flatMap((module) =>
-      module.exercises.map((exercise) => ({
-        exerciseId: exercise.id,
-        moduleId: module.id,
-        moduleOrderNumber: module.orderNumber,
-        exerciseOrderNumber: exercise.orderNumber,
-        hasAttempts: !!attemptsByExercise[exercise.id]?.length,
-        attempts: attemptsByExercise[exercise.id] || [],
-      }))
-    );
+      // Get final summary for this student
+      const finalSummary = await prisma.finalSummary.findFirst({
+        where: {
+          studentId: student.id,
+          archive: false,
+        },
+      });
 
-    studentsTableData.push({
-      id: student.id,
-      assignedStudentId: student.assignedStudentId,
-      email: student.assignedStudent.email || 'Unknown',
-      enrollmentId: student.enrollmentId,
-      exercises,
-      finalSummary: finalSummary
-        ? {
-            id: finalSummary.id,
-            status: finalSummary.status,
-            hasContent: !!finalSummary.response,
-            response: finalSummary.response,
-            createdAt: finalSummary.createdAt.toISOString(),
-          }
-        : undefined,
-      createdAt: student.createdAt.toISOString(),
-    });
-  }
-
-  // Prepare modules data for table headers
-  const modules = detailedEnrollment.caseStudy.modules.map((module) => ({
-    id: module.id,
-    orderNumber: module.orderNumber,
-    title: module.title,
-    exercises: module.exercises.map((exercise) => ({
-      id: exercise.id,
-      orderNumber: exercise.orderNumber,
-      title: exercise.title,
-    })),
-  }));
+      return {
+        ...student,
+        attempts,
+        finalSummary,
+      };
+    })
+  );
 
   return {
-    students: studentsTableData.sort((a, b) => a.assignedStudentId.localeCompare(b.assignedStudentId)),
-    modules,
+    students: studentsData.sort((a, b) => a.assignedStudentId.localeCompare(b.assignedStudentId)),
   };
 }
 
@@ -259,5 +202,5 @@ async function postHandler(
   return { message: 'Student successfully added to the class enrollment' };
 }
 
-export const GET = withLoggedInUser<TableResponse | SimpleResponse>(getHandler);
+export const GET = withLoggedInUser<ClassEnrollmentResponse | SimpleResponse>(getHandler);
 export const POST = withLoggedInUser<{ message: string }>(postHandler);

@@ -8,6 +8,7 @@ import {
   FinalSubmission,
   User,
   ExerciseAttempt,
+  FinalSummary,
 } from '@prisma/client';
 
 export type StudentDetailResponse = EnrollmentStudent & {
@@ -18,6 +19,20 @@ export type StudentDetailResponse = EnrollmentStudent & {
     email: string | null;
   };
   attempts: ExerciseAttempt[];
+};
+
+// Class enrollment student data - using Prisma types
+export type ClassEnrollmentStudentData = EnrollmentStudent & {
+  assignedStudent: {
+    id: string;
+    email: string | null;
+  };
+  attempts: ExerciseAttempt[];
+  finalSummary: FinalSummary | null;
+};
+
+export type ClassEnrollmentResponse = {
+  students: ClassEnrollmentStudentData[];
 };
 
 export type ModuleExerciseWithProgress = ModuleExercise & {

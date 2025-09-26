@@ -5,12 +5,12 @@ import { SimulationSession } from '@/types/user';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
+import type { ModuleTableData, StudentTableData, AttemptDetail, ExerciseProgress } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import type { ModuleTableData, StudentTableData } from '@/types';
-import type { DeleteResponse } from '@/types/api';
+import type { DeleteResponse, ClassEnrollmentResponse, CaseStudyWithRelationsForInstructor } from '@/types/api';
 import { GraduationCap } from 'lucide-react';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
 import BackButton from '@/components/navigation/BackButton';
@@ -55,18 +55,22 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     email: string;
   } | null>(null);
 
-  // Fetch student table data for this specific enrollment
+  // Fetch case study structure (modules, exercises)
+  const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForInstructor>(
+    `${getBaseUrl()}/api/case-studies/${caseStudyId}`,
+    { skipInitialFetch: !caseStudyId || !session },
+    'Failed to load case study details'
+  );
+
+  // Fetch student data (attempts, final summaries)
   const {
-    data: studentsTableData,
-    loading: loadingStudentsTable,
-    reFetchData: refetchStudentsTable,
-  } = useFetchData<{
-    students: StudentTableData[];
-    modules: ModuleTableData[];
-  }>(
+    data: studentsData,
+    loading: loadingStudentsData,
+    reFetchData: refetchStudentsData,
+  } = useFetchData<ClassEnrollmentResponse>(
     `${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments?student-details=true`,
     { skipInitialFetch: !caseStudyId || !classEnrollmentId || !session },
-    'Failed to load students table data'
+    'Failed to load students data'
   );
 
   const { deleteData: clearAttempts, loading: clearingAttempts } = useDeleteData<DeleteResponse, never>({
@@ -91,6 +95,79 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     successMessage: 'Exercise attempt evaluated successfully!',
     errorMessage: 'Failed to evaluate exercise attempt',
   });
+
+  // Transform data on UI side - combine case study structure with student data
+  const studentsTableData = (() => {
+    if (!caseStudyData || !studentsData) {
+      return null;
+    }
+
+    // Build modules data for table headers
+    const modules: ModuleTableData[] =
+      caseStudyData.modules?.map((module) => ({
+        id: module.id,
+        orderNumber: module.orderNumber,
+        title: module.title,
+        exercises: (module.exercises || []).map((exercise) => ({
+          id: exercise.id,
+          orderNumber: exercise.orderNumber,
+          title: exercise.title,
+        })),
+      })) || [];
+
+    // Transform student data to match StudentTableData interface
+    const students: StudentTableData[] = studentsData.students.map((student) => {
+      // Group attempts by exercise ID
+      const attemptsByExercise = student.attempts.reduce((acc, attempt) => {
+        if (!acc[attempt.exerciseId]) {
+          acc[attempt.exerciseId] = [];
+        }
+        acc[attempt.exerciseId].push({
+          id: attempt.id,
+          attemptNumber: attempt.attemptNumber,
+          status: attempt.status,
+          evaluatedScore: attempt.evaluatedScore,
+          createdAt: attempt.createdAt instanceof Date ? attempt.createdAt.toISOString() : attempt.createdAt,
+        });
+        return acc;
+      }, {} as Record<string, AttemptDetail[]>);
+
+      // Build exercise progress data
+      const exercises: ExerciseProgress[] = (caseStudyData.modules || []).flatMap((module) =>
+        (module.exercises || []).map((exercise) => ({
+          exerciseId: exercise.id,
+          moduleId: module.id,
+          moduleOrderNumber: module.orderNumber,
+          exerciseOrderNumber: exercise.orderNumber,
+          hasAttempts: !!attemptsByExercise[exercise.id]?.length,
+          attempts: attemptsByExercise[exercise.id] || [],
+        }))
+      );
+
+      return {
+        id: student.id,
+        assignedStudentId: student.assignedStudentId,
+        email: student.assignedStudent.email || 'Unknown',
+        enrollmentId: student.enrollmentId,
+        exercises,
+        finalSummary: student.finalSummary
+          ? {
+              id: student.finalSummary.id,
+              status: student.finalSummary.status,
+              hasContent: !!student.finalSummary.response,
+              response: student.finalSummary.response,
+              createdAt: student.finalSummary.createdAt instanceof Date ? student.finalSummary.createdAt.toISOString() : student.finalSummary.createdAt,
+            }
+          : undefined,
+        createdAt: student.createdAt instanceof Date ? student.createdAt.toISOString() : student.createdAt,
+      };
+    });
+
+    return {
+      students: students.sort((a, b) => a.assignedStudentId.localeCompare(b.assignedStudentId)),
+      modules,
+    };
+  })();
 
   const handleLogout = () => {
     router.push('/login');
@@ -119,7 +196,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
       await evaluateAttempt(url, { studentId, attemptId });
 
       // Refresh students data to show updated scores
-      await refetchStudentsTable();
+      await refetchStudentsData();
     } catch (error) {
       console.error('Error evaluating attempt:', error);
     } finally {
@@ -174,7 +251,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
       await clearAttempts(url);
 
       // Refresh students data
-      await refetchStudentsTable();
+      await refetchStudentsData();
       setShowDeleteConfirm(false);
       setStudentToClear(null);
     } catch (error: unknown) {
@@ -190,7 +267,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
       await deleteAttempt(url);
 
       // Refresh students data
-      await refetchStudentsTable();
+      await refetchStudentsData();
       setShowDeleteAttemptConfirm(false);
       setAttemptToDelete(null);
     } catch (error: unknown) {
@@ -206,7 +283,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
       await deleteFinalSummary(url);
 
       // Refresh students data
-      await refetchStudentsTable();
+      await refetchStudentsData();
       setShowDeleteFinalSummaryConfirm(false);
       setFinalSummaryToDelete(null);
     } catch (error: unknown) {
@@ -222,7 +299,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     return <div>You are not authorized to access this page</div>;
   }
 
-  if (loadingStudentsTable) {
+  if (loadingCaseStudy || loadingStudentsData) {
     return <InstructorLoading text="Loading Student Progress" subtitle="Preparing enrollment progress table..." variant="enhanced" />;
   }
 

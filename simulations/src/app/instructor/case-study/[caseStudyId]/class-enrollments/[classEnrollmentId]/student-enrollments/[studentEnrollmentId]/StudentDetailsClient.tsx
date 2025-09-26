@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -63,8 +63,8 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
   // Get attempt details from the main response (no need for separate API call)
   const attemptDetails = selectedAttemptId ? studentDetails?.attempts.find((attempt) => attempt.id === selectedAttemptId) || null : null;
 
-  // Calculate statistics on UI side using useMemo
-  const statistics = useMemo(() => {
+  // Calculate statistics on UI side
+  const statistics = (() => {
     if (!studentDetails || !caseStudyData) {
       return {
         totalExercises: 0,
@@ -105,7 +105,7 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
       averageScore,
       completedExercises,
     };
-  }, [studentDetails, caseStudyData]);
+  })();
 
   const handleLogout = () => {
     router.push('/login');

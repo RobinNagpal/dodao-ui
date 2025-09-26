@@ -32,6 +32,11 @@ export default function CaseStudiesContent({
 }: CaseStudiesContentProps) {
   const router = useRouter();
 
+  const hoverClasses = hoverGradient
+    .split(' ')
+    .map((c) => `hover:${c}`)
+    .join(' ');
+
   const handleViewCaseStudy = (caseStudy: CaseStudy): void => {
     router.push(`/instructor/case-study/${caseStudy.id}`);
   };
@@ -125,7 +130,7 @@ export default function CaseStudiesContent({
                 <div className="space-y-3">
                   <Button
                     onClick={() => handleViewCaseStudy(caseStudy)}
-                    className={`w-full bg-gradient-to-r ${highlightGradient} hover:${hoverGradient} text-white shadow-lg ${shadowColor} transition-all duration-200 transform hover:scale-[1.02]`}
+                    className={`w-full bg-gradient-to-r ${highlightGradient} hover:bg-gradient-to-r ${hoverClasses} text-white shadow-lg ${shadowColor} transition-all duration-200`}
                   >
                     <div className="flex items-center justify-center space-x-2">
                       <BookOpen className="h-4 w-4" />
