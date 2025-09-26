@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { SimulationSession } from '@/types/user';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useSession } from 'next-auth/react';
@@ -97,7 +97,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
   });
 
   // Transform data on UI side - combine case study structure with student data
-  const studentsTableData = useMemo(() => {
+  const studentsTableData = (() => {
     if (!caseStudyData || !studentsData) {
       return null;
     }
@@ -167,7 +167,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
       students: students.sort((a, b) => a.assignedStudentId.localeCompare(b.assignedStudentId)),
       modules,
     };
-  }, [caseStudyData, studentsData]);
+  })();
 
   const handleLogout = () => {
     router.push('/login');
