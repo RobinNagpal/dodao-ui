@@ -24,16 +24,16 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   }
 
   // Get ticker from DB
-  const tickerRecord = await prisma.tickerV1.findFirst({
+  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
     where: {
       spaceId,
       symbol: ticker.toUpperCase(),
     },
+    include: {
+      industry: true,
+      subIndustry: true,
+    },
   });
-
-  if (!tickerRecord) {
-    throw new Error(`Ticker ${ticker} not found`);
-  }
 
   // Get competition analysis (required for investor analysis)
   const competitionData = await prisma.tickerV1VsCompetition.findFirst({
@@ -52,7 +52,11 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     name: tickerRecord.name,
     symbol: tickerRecord.symbol,
     industryKey: tickerRecord.industryKey,
+    industryName: tickerRecord.industry.name,
+    industryDescription: tickerRecord.industry.summary,
     subIndustryKey: tickerRecord.subIndustryKey,
+    subIndustryName: tickerRecord.subIndustry.name,
+    subIndustryDescription: tickerRecord.subIndustry.summary,
     investorKey: investorKey,
     competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
   };

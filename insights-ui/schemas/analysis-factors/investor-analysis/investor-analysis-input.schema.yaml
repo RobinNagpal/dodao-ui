@@ -11,9 +11,21 @@ properties:
   industryKey:
     type: string
     description: 'The broad industry the stock belongs to (e.g., REITS).'
+  industryName:
+    type: string
+    description: 'Name of the industry'
+  industryDescription:
+    type: string
+    description: 'A few lines explaining the industry'
   subIndustryKey:
     type: string
     description: 'The specific sub-industry of the stock (e.g., OFFICE_REITS).'
+  subIndustryName:
+    type: string
+    description: 'Name of the sub-industry'
+  subIndustryDescription:
+    type: string
+    description: 'A few lines explaining the sub-industry'
   investorKey:
     type: string
     description: 'The legendary investor whose style is being applied (e.g., WARREN_BUFFETT, CHARLIE_MUNGER, BILL_ACKMAN).'
@@ -43,3 +55,7 @@ required:
   - subIndustryKey
   - investorKey
   - competitionAnalysisArray
+  - industryDescription
+  - subIndustryDescription
+  - industryName
+  - subIndustryName

@@ -13,23 +13,27 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const model = 'models/gemini-2.5-pro';
 
   // Get ticker from DB
-  const tickerRecord = await prisma.tickerV1.findFirst({
+  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
     where: {
       spaceId,
       symbol: ticker.toUpperCase(),
     },
+    include: {
+      industry: true,
+      subIndustry: true,
+    },
   });
-
-  if (!tickerRecord) {
-    throw new Error(`Ticker ${ticker} not found`);
-  }
 
   // Prepare input for the prompt (uses future-risk-input.schema.yaml)
   const inputJson = {
     name: tickerRecord.name,
     symbol: tickerRecord.symbol,
     industryKey: tickerRecord.industryKey,
+    industryName: tickerRecord.industry.name,
+    industryDescription: tickerRecord.industry.summary,
     subIndustryKey: tickerRecord.subIndustryKey,
+    subIndustryName: tickerRecord.subIndustry.name,
+    subIndustryDescription: tickerRecord.subIndustry.summary,
   };
 
   // Call the LLM

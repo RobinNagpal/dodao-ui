@@ -14,9 +14,21 @@ properties:
   industryKey:
     type: string
     description: 'The broad industry the stock belongs to (e.g., REITS).'
+  industryName:
+    type: string
+    description: 'Name of the industry'
+  industryDescription:
+    type: string
+    description: 'A few lines explaining the industry'
   subIndustryKey:
     type: string
     description: 'The specific sub-industry of the stock (e.g., OFFICE_REITS).'
+  subIndustryName:
+    type: string
+    description: 'Name of the sub-industry'
+  subIndustryDescription:
+    type: string
+    description: 'A few lines explaining the sub-industry'
   categorySummaries:
     type: array
     description: 'Array with one summary per analysis category. These are the short summaries produced for each category.'
@@ -63,3 +75,7 @@ required:
   - subIndustryKey
   - categorySummaries
   - factorResults
+  - industryDescription
+  - subIndustryDescription
+  - industryName
+  - subIndustryName

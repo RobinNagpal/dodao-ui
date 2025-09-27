@@ -11,9 +11,21 @@ properties:
   industryKey:
     type: string
     description: 'The broad industry the stock belongs to (e.g., REITS).'
+  industryName:
+    type: string
+    description: 'Name of the industry'
+  industryDescription:
+    type: string
+    description: 'A few lines explaining the industry'
   subIndustryKey:
     type: string
-    description: 'The specific sub-industry of the stock (e.g., RESIDENTIAL_REITS).'
+    description: 'The specific sub-industry of the stock (e.g., OFFICE_REITS).'
+  subIndustryName:
+    type: string
+    description: 'Name of the sub-industry'
+  subIndustryDescription:
+    type: string
+    description: 'A few lines explaining the sub-industry'
   categoryKey:
     type: string
     enum: ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue']
@@ -47,3 +59,7 @@ required:
   - subIndustryKey
   - categoryKey
   - factorAnalysisArray
+  - industryDescription
+  - subIndustryDescription
+  - industryName
+  - subIndustryName
