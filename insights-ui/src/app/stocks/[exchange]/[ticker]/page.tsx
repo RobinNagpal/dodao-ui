@@ -479,9 +479,20 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   const exchange: string = routeParams.exchange.toUpperCase();
   const ticker: string = routeParams.ticker.toUpperCase();
 
-  // Promise-based fetchers (to be resolved by child components via `use()` under Suspense)
-  const competitionPromise: Promise<CompetitionResponse> = fetchCompetition(exchange, ticker);
-  const similarPromise: Promise<SimilarTicker[]> = fetchSimilar(exchange, ticker);
+  // Helper: try with route {exchange,ticker}; on error, wait for canonical then retry
+  const retryWithCanonical: <T>(fn: (ex: string, tk: string) => Promise<T>) => Promise<T> = <T,>(fn: (ex: string, tk: string) => Promise<T>): Promise<T> =>
+    (async () => {
+      try {
+        return await fn(exchange, ticker); // optimistic, fastest when route is already canonical
+      } catch {
+        const d = await tickerInfo; // wait for canonical only if first attempt fails
+        return fn(d.exchange.toUpperCase(), d.symbol.toUpperCase());
+      }
+    })();
+
+  // Promises consumed by child components via `use()` under Suspense
+  const competitionPromise = retryWithCanonical(fetchCompetition);
+  const similarPromise = retryWithCanonical(fetchSimilar);
 
   return (
     <PageWrapper>
