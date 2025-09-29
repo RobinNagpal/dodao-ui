@@ -8,10 +8,19 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Reports | KoalaGains',
   description:
-    'Generate quick, data-driven reports on crowdfunding projects, REITs, tariffs, and specific tickers. KoalaGains helps investors make informed decisions faster.',
+    'KoalaGains gives retail investors access to institutional-level reports—understand businesses, their financials, and the competition from first principles to make the best decisions about a stock.',
   alternates: {
     canonical: 'https://koalagains.com/reports',
   },
+  keywords: [
+    'Institutional-level Reports',
+    'First Principles Analysis',
+    'Equity Research for Retail Investors',
+    'Crowdfunding Reports',
+    'REIT Analysis',
+    'Tariff Impact Analysis',
+    'Ticker Reports',
+  ],
 };
 
 const breadcrumbs: BreadcrumbsOjbect[] = [
@@ -26,14 +35,15 @@ const reports = [
   {
     title: 'Crowdfunding Reports',
     description:
-      'Get structured insights on crowdfunding projects, highlighting risks, returns, and strengths. Visual spider graphs provide a clear snapshot of investment potential.',
+      'Institutional-grade insights on crowdfunding projects with a first-principles breakdown of risks, potential returns, traction, and moat—plus spider-graph summaries.',
     link: '/crowd-funding',
     icon: CurrencyDollarIcon,
     isNew: false,
   },
   {
     title: 'Specific REIT Reports',
-    description: 'Analyze REITs with key metrics like debt, market positioning, efficiency, and rental income, ensuring smarter investment decisions.',
+    description:
+      'Institutional-level REIT research: debt structure, FFO/coverage, occupancy, rental income quality, efficiency, and market positioning to inform smarter decisions.',
     link: '/stocks/industries/REITS',
     icon: HomeIcon,
     isNew: true,
@@ -41,14 +51,15 @@ const reports = [
   {
     title: 'Tariff Reports',
     description:
-      'Comprehensive analyses of tariff impacts across various industries, providing insights into how trade policies affect industry dynamics and investment opportunities.',
+      'First-principles analyses of tariff impacts across industries—map policy changes to costs, margins, competitiveness, and long-term industry structure.',
     link: '/tariff-reports',
     icon: NewspaperIcon,
     isNew: false,
   },
   {
     title: 'Ticker Reports',
-    description: 'Detailed analysis of individual companies with comprehensive metrics, evaluations, and investment insights.',
+    description:
+      'Institutional-style company reports: financial statements, unit economics, competitive dynamics, catalysts, and risks to support confident stock decisions.',
     link: '/stocks',
     icon: ChartBarIcon,
     isNew: true,
@@ -62,10 +73,12 @@ export default function Page() {
       <div className="background-color py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <p className="mt-2 text-4xl font-semibold tracking-tight heading-color sm:text-5xl lg:text-balance">Smarter Investment Insights</p>
+            <p className="mt-2 text-4xl font-semibold tracking-tight heading-color sm:text-5xl lg:text-balance">
+              Institutional-level reports for retail investors
+            </p>
             <p className="mt-6 text-lg/8 text-color">
-              KoalaGains simplifies investment research with quick, data-driven reports across multiple investment areas, helping investors make informed
-              decisions faster.
+              KoalaGains gives retail investors access to institutional-level research. Understand a business, its financials, and the competition from first
+              principles—then make the best decision about investing in the stock. Explore reports across crowdfunding, REITs, tariffs, and tickers.
             </p>
           </div>
           <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-5xl">

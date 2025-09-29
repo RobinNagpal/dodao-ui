@@ -9,15 +9,22 @@ import './globals.scss';
 import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import Script from 'next/script';
+import LogRocketComponent from './LogRocketComponent';
 
 export const experimental_ppr = true;
 
 // insights-ui/src/app/layout.tsx
 export const metadata: Metadata = {
   title: 'KoalaGains',
-  description: 'Making investments more insightful',
+  description:
+    'KoalaGains gives retail investors access to institutional-level reports—helping you understand a business, its financials, and the competition from first principles so you can make the best decisions when investing in a stock.',
   keywords: [
     'KoalaGains',
+    'Institutional-level Reports',
+    'First Principles Analysis',
+    'Financial Statements',
+    'Competitive Analysis',
+    'Equity Research',
     'Financial Reports',
     'AI-driven investing',
     'Financial Analysis on REITs',
@@ -36,14 +43,16 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'KoalaGains',
-    description: 'Making investments more insightful',
+    description:
+      'Institutional-level reports for retail investors. Understand businesses, financials, and competition from first principles to make better stock decisions.',
     images: ['https://koalagains.com/koalagain_logo.png'],
     site: '@dodao_io',
     creator: '@dodao_io',
   },
   openGraph: {
     title: 'KoalaGains',
-    description: 'Making investments more insightful',
+    description:
+      'KoalaGains gives retail investors access to institutional-level reports—helping you understand a business, its financials, and the competition from first principles so you can make the best decisions when investing in a stock.',
     url: 'https://koalagains.com/',
     type: 'website',
     images: ['https://koalagains.com/koalagain_logo.png'],
@@ -80,6 +89,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             gtag('config', 'G-18CB8K6SLR');
           `}
         </Script>
+        <LogRocketComponent />
       </body>
     </html>
   );
