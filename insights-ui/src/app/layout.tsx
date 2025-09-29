@@ -95,12 +95,12 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           {`
     (function(w, d, x, id){
       var s = d.createElement('script');
-      s.src = 'https://koalagains-chat.my.connect.aws/connectwidget/static/amazon-connect-chat-interface-client.js';
+      s.src = 'https://koalagains.my.connect.aws/connectwidget/static/amazon-connect-chat-interface-client.js';
       s.async = 1;
       s.id = id;
       d.getElementsByTagName('head')[0].appendChild(s);
       w[x] = w[x] || function() { (w[x].ac = w[x].ac || []).push(arguments) };
-    })(window, document, 'amazon_connect', '020df598-2a65-49a9-a500-2bc23689ebc0');
+    })(window, document, 'amazon_connect', '74fa8d5d-f149-476f-8315-1c1233b3eb09');
 
     // basic styling
     amazon_connect('styles', {
@@ -131,7 +131,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       },
     });
 
-    amazon_connect('snippetId', 'QVFJREFIaGd3azZ2UUJrWFFOZGpBWHBPNndFSlRqYk4yLzRtc1ZFclBVSmZpU0hvNHdGTTRSZzIxWEN5TnRjRWZMWEpDcVJhQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNb3dJenVEbXZ1a2VDdW5iVEFnRVFnQ3VpUmUwL0lYZU1xbEhxNkhRY05jdlk3dFNRL0tDZmc1WXF5a1ZFNXRJR29NSEtNUnFNMHEwaTJTU086OmY3b1Z0dXR4UzVJSGxCemwwOVc0L3FOZzZlMVdBeWVidWNvZXhuRlVtdWxIUjcxbjhYQ0hkY3dDcENvZVhRdUhCaExoaHBiaE9BdHZtUE1WZ2MwRmdLSUh2UnE5UWExa1A3QzBPWGRYSTdoRTluWUVkbThpSTEybE55dE5yZ3ZCU0IrZEpnN2dDU01YdVl3WEN2ZElpZHArOFNBVXk1dz0=');
+    amazon_connect('snippetId', 'QVFJREFIak5tL2RUNFhneWV5b2RFSFowb2FxOTY2UTAzQ1gwTko4NUZONTVMYVpydkFIN0tMcjMrSkRjcWhYVCswaDdaZy9EQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNQWU1dnU2RS9yZGFhMm5ENEFnRVFnQ3ZOeGpKdkFyODZtcjA5NGt0YnBMMnZvL05Ubm90YUFKQjRHSmFmdlZ4T1BMaUErM1ViRjBhaXJTNU46OmNFMFZDbENUVTdZL3NaZmxUZVZiTGZpbmE0R2czMmttM2cwY1FtdHZWKzdRQVJ2R1BodFZrdUhDemVvcDdUZzF6RlA1NG9NMDZwWnIreG5VRVVDUWlTeEVsNnAwbUE0bG14UmhsbEE4eDFGRXpEc3QrSytWbmRNR0Jqci9DOXFyODd6by9rWkxSUEFFTWZnNkhhOHpka2ZWR3JCUVlBTT0=');
 
     amazon_connect('supportedMessagingContentTypes', [
       'text/plain',
