@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import LogRocket from 'logrocket';
 
 const PROJECT_ID = 'm3ahri/koalagains' as const;
 const MIN_VISITS = 4 as const; // "more than the third time"
+const PATH_PREFIX = '/stocks' as const;
 const BLOCKED = new Set<string>(['CA', 'PK']);
 
 // Storage keys (typed)
@@ -28,9 +30,11 @@ function readCookie(name: string): string | null {
     return m ? m[1] : null;
   }
 }
+
 function isISO2(v: unknown): v is string {
   return typeof v === 'string' && /^[A-Z]{2}$/.test(v);
 }
+
 function getCountryFromCookie(): string | null {
   const c = readCookie('country');
   const up = c?.toUpperCase();
@@ -46,6 +50,7 @@ function ssOnce(key: SessionKey): boolean {
     return true;
   }
 }
+
 function getVisitCount(): number {
   try {
     const raw = localStorage.getItem(LS.visits);
@@ -55,6 +60,7 @@ function getVisitCount(): number {
     return 0;
   }
 }
+
 function setVisitCount(n: number): void {
   try {
     localStorage.setItem(LS.visits, String(n));
@@ -62,6 +68,7 @@ function setVisitCount(n: number): void {
     /* noop */
   }
 }
+
 function getOrCreateAnonId(): string {
   try {
     const existing = localStorage.getItem(LS.id);
@@ -80,9 +87,14 @@ function getOrCreateAnonId(): string {
 }
 
 export default function LogRocketComponent(): JSX.Element | null {
+  const pathname = usePathname();
+
   useEffect(() => {
+    // Only run on /stocks and subpaths
+    if (typeof pathname !== 'string' || !pathname.startsWith(PATH_PREFIX)) return;
+
     try {
-      // Count a "visit" once per tab session
+      // Count a "visit" once per tab session (only when on /stocks*)
       if (ssOnce(SS.counted)) {
         setVisitCount(getVisitCount() + 1);
       }
@@ -107,16 +119,17 @@ export default function LogRocketComponent(): JSX.Element | null {
               visitCount,
               country: country ?? 'UN',
               audience: 'public',
+              pathPrefix: PATH_PREFIX,
             });
           } catch {
             /* noop */
           }
         }
       }
-    } catch (e) {
-      console.log(e);
+    } catch {
+      // Swallow errors to avoid breaking the app
     }
-  }, []);
+  }, [pathname]);
 
   return null;
 }
