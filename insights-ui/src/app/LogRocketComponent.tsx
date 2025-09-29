@@ -1,3 +1,5 @@
+'use client';
+
 import LogRocket from 'logrocket';
 
 export default function LogRocketComponent() {
