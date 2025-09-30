@@ -3,11 +3,11 @@
 import { UpdateModuleExerciseRequest } from '@/app/api/case-studies/[caseStudyId]/case-study-modules/[moduleId]/exercises/[exerciseId]/route';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import type { ModuleExercise } from '@/types';
+import { ModuleExercise } from '@/types';
 import { CaseStudyWithRelationsForInstructor, CaseStudyWithRelationsForStudents } from '@/types/api';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -35,7 +35,16 @@ interface BaseViewProps {
   exercise: ModuleExercise;
 }
 
-type EditableField = 'title' | 'details' | 'promptHint' | 'gradingLogic' | 'instructorInstructions';
+type EditableField =
+  | 'title'
+  | 'details'
+  | 'promptHint'
+  | 'gradingLogic'
+  | 'instructorInstructions'
+  | 'promptCharacterLimit'
+  | 'promptOutputInstructions'
+  | 'orderNumber'
+  | 'archive';
 
 /* =========================================================
  * Student View
@@ -78,6 +87,11 @@ export function InstructorView({ exercise }: BaseViewProps): JSX.Element {
   return (
     <div className="space-y-6">
       <StudentView exercise={exercise} />
+      <div>
+        <h4 className="text-lg font-semibold text-gray-900 mb-2">Prompt Character Limit:</h4>
+        <div>{exercise.promptCharacterLimit === -1 ? 'unlimited' : exercise.promptCharacterLimit + ' characters'}</div>
+      </div>
+
       {exercise.instructorInstructions && (
         <div>
           <h4 className="text-lg font-semibold text-gray-900 mb-2">Instructor Instructions:</h4>
@@ -85,6 +99,17 @@ export function InstructorView({ exercise }: BaseViewProps): JSX.Element {
             className="markdown-body"
             dangerouslySetInnerHTML={{
               __html: parseMarkdown(exercise.instructorInstructions),
+            }}
+          />
+        </div>
+      )}
+      {exercise.promptOutputInstructions && (
+        <div>
+          <h4 className="text-lg font-semibold text-gray-900 mb-2">Prompt Output Instructions:</h4>
+          <div
+            className="markdown-body"
+            dangerouslySetInnerHTML={{
+              __html: parseMarkdown(exercise.promptOutputInstructions),
             }}
           />
         </div>
@@ -113,6 +138,8 @@ export function EditExercise({ exercise, caseStudy, moduleId, onExerciseUpdate, 
     promptHint: exercise.promptHint,
     gradingLogic: exercise.gradingLogic,
     instructorInstructions: exercise.instructorInstructions,
+    promptOutputInstructions: exercise.promptOutputInstructions,
+    promptCharacterLimit: exercise.promptCharacterLimit,
     orderNumber: exercise.orderNumber,
     archive: exercise.archive,
   });
@@ -125,7 +152,7 @@ export function EditExercise({ exercise, caseStudy, moduleId, onExerciseUpdate, 
     {}
   );
 
-  const handleInputChange = <K extends EditableField>(field: K, value: string): void => {
+  const handleInputChange = <K extends EditableField>(field: K, value: string | number): void => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -136,6 +163,8 @@ export function EditExercise({ exercise, caseStudy, moduleId, onExerciseUpdate, 
       details: exercise.details,
       promptHint: exercise.promptHint,
       gradingLogic: exercise.gradingLogic,
+      promptOutputInstructions: exercise.promptOutputInstructions,
+      promptCharacterLimit: exercise.promptCharacterLimit,
       instructorInstructions: exercise.instructorInstructions,
       orderNumber: exercise.orderNumber,
       archive: exercise.archive,
@@ -158,7 +187,6 @@ export function EditExercise({ exercise, caseStudy, moduleId, onExerciseUpdate, 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="text-sm text-gray-600">Editing:</span>
-          <Input value={formData.title} onChange={(e) => handleInputChange('title', e.target.value)} className="w-96" placeholder="Enter exercise title" />
         </div>
 
         <div className="flex items-center space-x-2">
@@ -184,53 +212,63 @@ export function EditExercise({ exercise, caseStudy, moduleId, onExerciseUpdate, 
 
       {/* Editable Sections */}
       <div className="space-y-6">
-        {/* Details */}
-        <div className="space-y-2">
-          <label className="block text-md font-semibold text-gray-900">Details</label>
-          <MarkdownEditor
-            objectId={`exercise-details-${exercise.id}`}
-            modelValue={formData.details}
-            onUpdate={(value) => handleInputChange('details', value)}
-            placeholder="Enter detailed exercise instructions in markdown"
-            maxHeight={400}
-          />
-        </div>
+        <Input
+          label={'Exercise Name'}
+          modelValue={formData.title}
+          onUpdate={(value) => handleInputChange('title', value?.toString() || '')}
+          placeholder="Enter exercise title"
+        />
+        <MarkdownEditor
+          label={'Details'}
+          objectId={`exercise-details-${exercise.id}`}
+          modelValue={formData.details}
+          onUpdate={(value) => handleInputChange('details', value)}
+          placeholder="Enter detailed exercise instructions in markdown"
+          maxHeight={400}
+        />
 
-        {/* AI Prompt Hint */}
-        <div className="space-y-2">
-          <label className="block text-md font-semibold text-gray-900">AI Prompt Hint</label>
-          <MarkdownEditor
-            objectId={`exercise-prompt-hint-${exercise.id}`}
-            modelValue={formData.promptHint || undefined}
-            onUpdate={(value) => handleInputChange('promptHint', value)}
-            placeholder="Enter AI prompt hint using markdown..."
-            maxHeight={200}
-          />
-        </div>
+        <MarkdownEditor
+          label={'AI Prompt Hint'}
+          objectId={`exercise-prompt-hint-${exercise.id}`}
+          modelValue={formData.promptHint || undefined}
+          onUpdate={(value) => handleInputChange('promptHint', value)}
+          placeholder="Enter AI prompt hint using markdown..."
+          maxHeight={200}
+        />
 
-        {/* Grading Logic */}
-        <div className="space-y-2">
-          <label className="block text-md font-semibold text-gray-900">Grading Logic</label>
-          <MarkdownEditor
-            objectId={`exercise-grading-logic-${exercise.id}`}
-            modelValue={formData.gradingLogic || undefined}
-            onUpdate={(value) => handleInputChange('gradingLogic', value)}
-            placeholder="Enter grading logic using markdown..."
-            maxHeight={200}
-          />
-        </div>
+        <MarkdownEditor
+          label={'Grading Logic'}
+          objectId={`exercise-grading-logic-${exercise.id}`}
+          modelValue={formData.gradingLogic || undefined}
+          onUpdate={(value) => handleInputChange('gradingLogic', value)}
+          placeholder="Enter grading logic using markdown..."
+          maxHeight={200}
+        />
 
-        {/* Instructor Instructions */}
-        <div className="space-y-2">
-          <label className="block text-md font-semibold text-gray-900">Instructor Instructions</label>
-          <MarkdownEditor
-            objectId={`exercise-instructor-instructions-${exercise.id}`}
-            modelValue={formData.instructorInstructions || undefined}
-            onUpdate={(value) => handleInputChange('instructorInstructions', value)}
-            placeholder="Enter instructions for the instructor using markdown..."
-            maxHeight={200}
-          />
-        </div>
+        <Input
+          label={'Prompt Character Limit'}
+          number={true}
+          modelValue={formData.promptCharacterLimit}
+          onUpdate={(value) => handleInputChange('promptCharacterLimit', value ? parseInt(value.toString()) : '')}
+          placeholder="Enter prompt character limit"
+        />
+        <MarkdownEditor
+          label={'Prompt Output Instructions'}
+          objectId={`exercise-grading-logic-${exercise.id}`}
+          modelValue={formData.promptOutputInstructions || undefined}
+          onUpdate={(value) => handleInputChange('promptOutputInstructions', value)}
+          placeholder="Enter prompt output instructions using markdown..."
+          maxHeight={200}
+        />
+
+        <MarkdownEditor
+          label={'Notes for Instructor'}
+          objectId={`exercise-instructor-instructions-${exercise.id}`}
+          modelValue={formData.instructorInstructions || undefined}
+          onUpdate={(value) => handleInputChange('instructorInstructions', value)}
+          placeholder="Enter instructions for the instructor using markdown..."
+          maxHeight={200}
+        />
       </div>
     </div>
   );

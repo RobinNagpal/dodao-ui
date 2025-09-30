@@ -14,6 +14,8 @@ interface CreateModuleExerciseRequest {
   details: string;
   promptHint?: string | null;
   instructorInstructions?: string | null;
+  promptCharacterLimit: number;
+  promptOutputInstructions?: string | null;
   orderNumber: number;
 }
 
@@ -52,6 +54,8 @@ async function postHandler(
       details: body.details,
       promptHint: body.promptHint ?? null,
       instructorInstructions: body.instructorInstructions ?? null,
+      promptCharacterLimit: body.promptCharacterLimit,
+      promptOutputInstructions: body.promptOutputInstructions,
       orderNumber: body.orderNumber,
       createdById: userContext.userId,
       updatedById: userContext.userId,
