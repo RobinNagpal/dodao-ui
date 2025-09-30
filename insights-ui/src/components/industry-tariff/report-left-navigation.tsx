@@ -64,7 +64,7 @@ export default function ReportLeftNavigation({ report, industryId, isMobile = fa
               </button>
             )}
             {isMobile && (
-              <Link href={`/industry-tariff-report/${industryId}`} className="p-1 rounded-full hover:bg-muted" onClick={handleNavClick}>
+              <Link href={`/industry-tariff-report/${industryId}`} className="p-1 rounded-full hover:bg-muted link-color" onClick={handleNavClick}>
                 <Home className="h-5 w-5" />
               </Link>
             )}
@@ -72,6 +72,18 @@ export default function ReportLeftNavigation({ report, industryId, isMobile = fa
         </div>
 
         {/* Navigation items based on IndustryTariffReport structure */}
+        <Link
+          href={`/industry-tariff-report/${industryId}`}
+          className={cn(
+            'flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm font-medium',
+            pathname.endsWith(industryId) ? 'bg-primary-color primary-text-color' : 'hover:block-bg-color'
+          )}
+        >
+          <div className="flex items-center">
+            <FileText className="mr-2 h-4 w-4" /> Introduction
+          </div>
+        </Link>
+
         <NavSection
           title="Tariff Updates"
           section="tariff-updates"
