@@ -1,3 +1,7 @@
+import { getS3KeyForIndustryTariffs } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { getJsonFromS3, getJsonWithLastModifiedFromS3 } from '@/scripts/report-file-utils';
+
 export enum TariffIndustryId {
   plastic = 'plastic',
   automobiles = 'automobiles',
@@ -47,7 +51,6 @@ export interface TariffIndustryDefinition {
   industryId: TariffIndustryId;
   reportTitle: string;
   reportOneLiner: string;
-  updatedAt: string;
   headingsCount: number;
   subHeadingsCount: number;
   establishedPlayersCount: number;
@@ -62,7 +65,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.plastic,
     reportTitle: 'Impact of Tariffs on Plastic Industry',
     reportOneLiner: 'A comprehensive analysis of how tariffs affect the plastic industry, including supply chain disruptions and cost implications.',
-    updatedAt: 'June 24, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -75,7 +77,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.aluminium,
     reportTitle: 'Impact of Tariffs on Aluminium Industry',
     reportOneLiner: 'An in-depth analysis of how tariffs affect the aluminium industry, including market dynamics and competitive landscape.',
-    updatedAt: 'July 16, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -88,7 +89,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.automobiles,
     reportTitle: 'Impact of Tariffs on Automobile Industry',
     reportOneLiner: 'A comprehensive overview of how tariffs impact the automobile industry, focusing on supply chain changes and cost structures.',
-    updatedAt: 'May 2, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -114,7 +114,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.apparelandaccessories,
     reportTitle: 'Impact of Tariffs on Apparel & Accessories',
     reportOneLiner: 'Analysis of tariff changes affecting apparel & accessories trade.',
-    updatedAt: 'July 17, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -127,7 +126,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.ironandsteel,
     reportTitle: 'Impact of Tariffs on Iron & Steel Industry',
     reportOneLiner: 'An in-depth look at how tariffs are reshaping the iron & steel industry supply chains, costs, and competitiveness.',
-    updatedAt: 'July 19, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -140,7 +138,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.copper,
     reportTitle: 'Impact of Tariffs on Copper',
     reportOneLiner: 'An analysis of the newly announced 50% Section 232 tariffs on copper imports and their effects on supply chains and pricing.',
-    updatedAt: 'July 22, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -153,7 +150,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.electricalcomponentsandequipment,
     reportTitle: 'Impact of Tariffs on Electrical Components & Equipment',
     reportOneLiner: 'Analysis of how U.S. tariffs on imported electrical components and equipment affect supply chains, costs, and competitiveness.',
-    updatedAt: 'July 23, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -166,7 +162,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.homefurnishings,
     reportTitle: 'Impact of Tariffs on Home Furnishings',
     reportOneLiner: 'A detailed look at the effects of import duties on home furniture, bedding, and related goods in the U.S. market.',
-    updatedAt: 'July 23, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -179,7 +174,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.pharmaceuticals,
     reportTitle: 'Impact of Tariffs on Pharmaceuticals',
     reportOneLiner: 'Analysis of how U.S. tariffs on imported pharmaceutical products and APIs affect drug pricing and supply chains.',
-    updatedAt: 'July 24, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -193,7 +187,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     reportTitle: 'Impact of Tariffs on Semiconductors & Equipment',
     reportOneLiner:
       'Analysis of Section 301 duties on semiconductor imports especially Chinese-made chips and their ripple effects on global supply chains and domestic manufacturing incentives.',
-    updatedAt: 'July 24, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -206,7 +199,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.agriculturalProductsAndServices,
     reportTitle: 'Tariff Impact on Agricultural Products & Services',
     reportOneLiner: 'Includes live animals, oilseeds, cereals, and waste products affected by import duties.',
-    updatedAt: 'July 25, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -219,7 +211,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.packagedFoodsAndMeats,
     reportTitle: 'Tariff Effects on the Packaged Foods & Meats Industry',
     reportOneLiner: 'Covers dairy, meats, beverages, cereals, oils, cocoa, and processed foods.',
-    updatedAt: 'July 26, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -232,7 +223,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.forestProducts,
     reportTitle: 'Impact of U.S. Tariffs on Forestry and Plant-Based Goods',
     reportOneLiner: 'Examines duties on live plants, cut flowers, wood-based and plaited materials.',
-    updatedAt: 'July 26, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -245,7 +235,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.tobacco,
     reportTitle: 'Trade Restrictions on Tobacco and Alternatives',
     reportOneLiner: 'Analyzes tariffs impacting cigarettes, cigars, and smokeless substitutes.',
-    updatedAt: 'July 26, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -258,7 +247,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.constructionMaterials,
     reportTitle: 'U.S. Import Duties on Cement, Salt, and Lime',
     reportOneLiner: 'Impact of tariffs on mineral inputs essential for construction and infrastructure.',
-    updatedAt: 'July 26, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -271,7 +259,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.diversifiedMetalsAndMining,
     reportTitle: 'Tariff Environment for Ores, Ashes, and Raw Metal Inputs',
     reportOneLiner: 'Covers U.S. duties on raw materials critical to base metals and extractive industries.',
-    updatedAt: 'July 27, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -284,7 +271,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.oilAndGasRefiningAndMarketing,
     reportTitle: 'Tariff Overview of Oil, Fuels, and Refined Petroleum Products',
     reportOneLiner: 'Evaluates duties on crude oil, diesel, gasoline, and other refined fuel imports.',
-    updatedAt: 'July 25, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -297,7 +283,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.commodityChemicals,
     reportTitle: 'Tariffs on Inorganic and Bulk Chemical Inputs',
     reportOneLiner: 'Explores duties on foundational industrial chemicals including salts, acids, and fertilizers.',
-    updatedAt: 'July 25, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -310,7 +295,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.specialtyChemicals,
     reportTitle: 'U.S. Tariff Impact on Organic and Niche Chemical Products',
     reportOneLiner: 'Focuses on organic compounds, resins, and chemical derivatives under current tariff schedules.',
-    updatedAt: 'August 5, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -323,7 +307,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.fertilizersAndAgriculturalChemicals,
     reportTitle: 'Tariff Impact on Fertilizers and Agricultural Chemicals',
     reportOneLiner: 'Evaluates U.S. duties on fertilizer products and agricultural chemical imports.',
-    updatedAt: 'July 27, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -336,7 +319,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.industrialGases,
     reportTitle: 'Tariffs on Industrial Gases',
     reportOneLiner: 'Analysis of import duties on gases like oxygen, nitrogen, and argon.',
-    updatedAt: 'July 25, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -349,7 +331,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.diversifiedChemicals,
     reportTitle: 'Tariff Environment for Diversified Chemical Products',
     reportOneLiner: 'Covers duties on a broad range of chemical compounds beyond basic commodity chemicals.',
-    updatedAt: 'July 25, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -362,7 +343,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.metalGlassPlasticContainers,
     reportTitle: 'Tariffs on Packaging Containers',
     reportOneLiner: 'Impact of duties on containers used in food, beverage, and industrial packaging.',
-    updatedAt: 'July 31, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -375,7 +355,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.paperPlasticPackagingProductsAndMaterials,
     reportTitle: 'Tariff Effects on Paper and Plastic Packaging',
     reportOneLiner: 'Examines import duties on packaging materials for consumer and industrial goods.',
-    updatedAt: 'July 31, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -388,7 +367,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.paperProducts,
     reportTitle: 'Import Duties on Paper and Board Products',
     reportOneLiner: 'Analysis of tariffs on paper, board, and printing materials.',
-    updatedAt: 'July 31, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -401,7 +379,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.consumerElectronics,
     reportTitle: 'Tariff Impact on Consumer Electronic Goods',
     reportOneLiner: 'Evaluates duties on smartphones, TVs, and personal electronic devices.',
-    updatedAt: 'July 28, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -414,7 +391,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.householdAppliances,
     reportTitle: 'Import Duties on Household Appliances',
     reportOneLiner: 'Covers tariffs on refrigerators, washing machines, and kitchen appliances.',
-    updatedAt: 'August 6, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -427,7 +403,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.leisureProducts,
     reportTitle: 'Tariff Effects on Sports and Leisure Goods',
     reportOneLiner: 'Analysis of duties on sporting equipment, toys, and recreational products.',
-    updatedAt: 'July 25, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -440,7 +415,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.footwear,
     reportTitle: 'Import Duties on Footwear and Related Products',
     reportOneLiner: 'Evaluates tariffs on shoes, boots, and related footwear.',
-    updatedAt: 'July 28, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -453,7 +427,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.textiles,
     reportTitle: 'Tariffs on Textile Fabrics and Yarns',
     reportOneLiner: 'Covers duties on textile fibers, fabrics, and woven materials.',
-    updatedAt: 'August 1, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -466,7 +439,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.brewers,
     reportTitle: 'Tariff Impact on Brewing Industry',
     reportOneLiner: 'Examines duties on beer, malt, and brewing ingredients.',
-    updatedAt: 'July 28, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -479,7 +451,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.distillersAndVintners,
     reportTitle: 'Tariff Effects on Distilled Spirits and Wines',
     reportOneLiner: 'Analyzes import duties on spirits, wines, and related beverages.',
-    updatedAt: 'July 28, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -492,7 +463,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.softDrinksAndNonAlcoholicBeverages,
     reportTitle: 'Tariffs on Non-Alcoholic Beverages',
     reportOneLiner: 'Evaluates duties on carbonated drinks, juices, and other non-alcoholic beverages.',
-    updatedAt: 'July 25, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -505,7 +475,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.commercialPrinting,
     reportTitle: 'Tariffs on Printed Materials',
     reportOneLiner: 'Examines duties on printed books, magazines, and publication services.',
-    updatedAt: 'July 29, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -518,7 +487,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.heavyElectricalEquipment,
     reportTitle: 'Import Duties on Heavy Electrical Machinery',
     reportOneLiner: 'Covers tariffs on generators, transformers, and large electrical apparatus.',
-    updatedAt: 'July 30, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -531,7 +499,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.industrialMachineryAndSupplies,
     reportTitle: 'Tariffs on Industrial Machinery and Components',
     reportOneLiner: 'Analysis of duties on industrial equipment and machine parts.',
-    updatedAt: 'July 30, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -544,7 +511,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.aerospaceAndDefense,
     reportTitle: 'Tariff Effects on Aerospace Products',
     reportOneLiner: 'Evaluates import duties on aircraft, spacecraft, and defense equipment.',
-    updatedAt: 'August 1, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -557,7 +523,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.constructionMachineryAndHeavyTransportationEquipment,
     reportTitle: 'Tariffs on Construction and Heavy Transport Machinery',
     reportOneLiner: 'Covers duties on excavators, bulldozers, and heavy transport vehicles.',
-    updatedAt: 'August 4, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -570,7 +535,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.healthCareEquipment,
     reportTitle: 'Impact of Tariffs on Health Care Equipment',
     reportOneLiner: 'Analysis of how import duties affect medical devices and health care equipment supply chains.',
-    updatedAt: 'August 3, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -583,7 +547,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.housewaresAndSpecialties,
     reportTitle: 'Impact of Tariffs on Housewares & Specialties',
     reportOneLiner: 'A look at how U.S. tariffs on home goods and specialty housewares affect costs and market access.',
-    updatedAt: 'August 4, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -596,7 +559,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     industryId: TariffIndustryId.tiresAndRubber,
     reportTitle: 'Impact of Tariffs on Tires & Rubber',
     reportOneLiner: 'Analysis of how import duties affect tire manufacturing and rubber products supply chains.',
-    updatedAt: 'August 4, 2025',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -627,6 +589,24 @@ export function getTariffIndustryDefinitionById(industryId: TariffIndustryId): T
 
 export function fetchTariffReports(): TariffIndustryDefinition[] {
   return Object.values(TariffIndustryId).map((industryId) => getTariffIndustryDefinitionById(industryId));
+}
+
+const reportLastModifiedAtMap: Record<string, string> = {};
+export async function fetchTariffReportsWithUpdatedAt(): Promise<(TariffIndustryDefinition & { lastModified: string })[]> {
+  console.warn('fetchTariffReportsWithUpdatedAt is called which is quite expensive. Keep an eye.');
+  if (Object.values(reportLastModifiedAtMap).length === 0) {
+    const ids = Object.values(TariffIndustryId);
+    for (const industryId of ids) {
+      const key = getS3KeyForIndustryTariffs(industryId, 'tariff-updates.json');
+      const lastModified = (await getJsonWithLastModifiedFromS3<TariffUpdatesForIndustry>(key))?.lastModified || new Date().toISOString();
+      reportLastModifiedAtMap[industryId] = lastModified;
+    }
+  }
+
+  return Object.values(TariffIndustryId).map((industryId) => ({
+    ...getTariffIndustryDefinitionById(industryId),
+    lastModified: reportLastModifiedAtMap[industryId],
+  }));
 }
 
 export interface HeadingSubheadingCombination {

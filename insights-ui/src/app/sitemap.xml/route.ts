@@ -1,10 +1,14 @@
-import { fetchTariffReports, TariffIndustryDefinition, getAllHeadingSubheadingCombinations } from '@/scripts/industry-tariff-reports/tariff-industries';
+import {
+  fetchTariffReports,
+  TariffIndustryDefinition,
+  getAllHeadingSubheadingCombinations,
+  fetchTariffReportsWithUpdatedAt,
+} from '@/scripts/industry-tariff-reports/tariff-industries';
 import { REPORT_TYPES_TO_DISPLAY } from '@/types/project/project';
 import { getPostsData } from '@/util/blog-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
-import tariffIndustryLastmod from '@/utils/lastmod/tariff-industry-lastmod.json';
 import crowdFundingLastmod from '@/utils/lastmod/crowd-funding-lastmod.json';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
@@ -169,7 +173,7 @@ async function generateBlogUrls(): Promise<SiteMapUrl[]> {
 // Generate URLs for tariff reports and their sections
 async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
-  const tariffReports: TariffIndustryDefinition[] = fetchTariffReports();
+  const tariffReports: (TariffIndustryDefinition & { lastModified: string })[] = await fetchTariffReportsWithUpdatedAt();
 
   // Main reports page
   urls.push({
@@ -186,13 +190,13 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
   // For each industry report
   for (const industry of tariffReports) {
     const industryId = industry.industryId;
-    const lastmod = (tariffIndustryLastmod as Record<string, string>)[industryId] || undefined;
+
     // Main report page
     urls.push({
       url: `/industry-tariff-report/${industryId}`,
       changefreq: 'weekly',
       priority: 0.8,
-      lastmod,
+      lastmod: industry.lastModified,
     });
 
     // Standard report sections based on navigation structure
@@ -204,7 +208,7 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
         url: `/industry-tariff-report/${industryId}/${section}`,
         changefreq: 'weekly',
         priority: 0.7,
-        lastmod,
+        lastmod: industry.lastModified,
       });
     }
 
@@ -214,14 +218,14 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
       url: `/industry-tariff-report/${industryId}/evaluate-industry-areas`,
       changefreq: 'weekly',
       priority: 0.7,
-      lastmod,
+      lastmod: industry.lastModified,
     });
     combos.forEach((c) =>
       urls.push({
         url: `/industry-tariff-report/${industry.industryId}/evaluate-industry-areas/${c.headingIndex}-${c.subHeadingIndex}`,
         changefreq: 'weekly',
         priority: 0.6,
-        lastmod,
+        lastmod: industry.lastModified,
       })
     );
   }

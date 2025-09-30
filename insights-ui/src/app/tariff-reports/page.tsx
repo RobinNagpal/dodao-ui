@@ -1,5 +1,5 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { fetchTariffReports, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { fetchTariffReports, fetchTariffReportsWithUpdatedAt, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ChevronRight, FileText } from 'lucide-react';
@@ -46,15 +46,15 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function TariffReportsPage() {
   // Fetch tariff reports
-  const tariffReports: TariffIndustryDefinition[] = fetchTariffReports();
+  const tariffReports: (TariffIndustryDefinition & { lastModified: string })[] = await fetchTariffReportsWithUpdatedAt();
 
   // Sort reports by updatedAt date (most recent first)
   const sortedTariffReports = tariffReports.sort((a, b) => {
-    if (!a.updatedAt && !b.updatedAt) return 0;
-    if (!a.updatedAt) return 1;
-    if (!b.updatedAt) return -1;
+    if (!a.lastModified && !b.lastModified) return 0;
+    if (!a.lastModified) return 1;
+    if (!b.lastModified) return -1;
 
-    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    return new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime();
   });
 
   // Set up breadcrumbs
@@ -103,7 +103,7 @@ export default async function TariffReportsPage() {
                         <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
                           Tariff Report
                         </span>
-                        {report.updatedAt && <span className="ml-2 text-muted-foreground">Updated {report.updatedAt}</span>}
+                        {report.lastModified && <span className="ml-2 text-muted-foreground">Updated: {new Date(report.lastModified).toDateString()}</span>}
                       </div>
 
                       <Link href={`/industry-tariff-report/${report.industryId}/understand-industry`} className="block mt-2 group">
