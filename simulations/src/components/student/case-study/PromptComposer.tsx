@@ -15,6 +15,7 @@ export interface PromptComposerProps {
   attempts: ExerciseAttempt[] | null | undefined;
   navigationData: NavigationData | null | undefined;
   onNewAttempt: (attempt: ExerciseAttempt) => void;
+  promptCharacterLimit: number;
   onMoveToPrevious: () => void;
   onMoveToNext: () => void;
 }
@@ -50,6 +51,14 @@ const getAttemptStats = (attempts: NullableAttempts): AttemptStats => {
   const remainingAttempts: number = Math.max(0, MAX_ATTEMPTS - completedAttemptsCount);
 
   return { completedAttemptsCount, hasSuccessAttempt, remainingAttempts };
+};
+
+const clamp = (val: number, min: number, max: number): number => Math.min(Math.max(val, min), max);
+
+const getBarColorClass = (percentUsed: number): string => {
+  if (percentUsed >= 95) return 'bg-red-500';
+  if (percentUsed >= 80) return 'bg-yellow-500';
+  return 'bg-green-500';
 };
 
 /* =========================================================
@@ -106,43 +115,45 @@ const SuccessStateWithRetry = ({ navigationData, onMoveToPrevious, onMoveToNextL
   const nextCta: string = navigationData?.isComplete ? 'Continue to Report' : navigationData?.isNextExerciseInDifferentModule ? 'Next Module' : 'Next Exercise';
 
   return (
-    <div className="text-center">
-      <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-        <CheckCircle className="h-6 w-6 text-green-600" />
-      </div>
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">Great work!</h3>
-      <p className="text-gray-600 mb-4 text-base">You can continue to the next exercise or try again.</p>
+    <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
+      <div className="text-center">
+        <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+          <CheckCircle className="h-6 w-6 text-green-600" />
+        </div>
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">Great work!</h3>
+        <p className="text-gray-600 mb-4 text-base">You can continue to the next exercise or try again.</p>
 
-      <div className="flex items-center justify-between">
-        <div className="flex-1 flex justify-start">
-          {showPrev && (
+        <div className="flex items-center justify-between">
+          <div className="flex-1 flex justify-start">
+            {showPrev && (
+              <button
+                onClick={onMoveToPrevious}
+                className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-2 rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
+              >
+                <ArrowLeft className="h-5 w-5" />
+                <span>Previous Exercise</span>
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center justify-center space-x-4">
             <button
-              onClick={onMoveToPrevious}
-              className="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-6 py-2 rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
+              onClick={onMoveToNextLocal}
+              className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
-              <ArrowLeft className="h-5 w-5" />
-              <span>Previous Exercise</span>
+              {nextCta}
             </button>
-          )}
+
+            <button
+              onClick={onRetry}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              Attempt Again
+            </button>
+          </div>
+
+          <div className="flex-1" />
         </div>
-
-        <div className="flex items-center justify-center space-x-4">
-          <button
-            onClick={onMoveToNextLocal}
-            className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-          >
-            {nextCta}
-          </button>
-
-          <button
-            onClick={onRetry}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-          >
-            Attempt Again
-          </button>
-        </div>
-
-        <div className="flex-1" />
       </div>
     </div>
   );
@@ -208,6 +219,7 @@ export default function PromptComposer({
   onNewAttempt,
   onMoveToPrevious,
   onMoveToNext,
+  promptCharacterLimit,
 }: PromptComposerProps): JSX.Element {
   // Local UI state
   const [prompt, setPrompt] = useState<string>('');
@@ -216,6 +228,14 @@ export default function PromptComposer({
   const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
   const [showAiResponseModal, setShowAiResponseModal] = useState<boolean>(false);
   const [currentAiResponse, setCurrentAiResponse] = useState<string>('');
+
+  // Character limit (ensure a sensible minimum of 1)
+  const charLimit: number = Math.max(1, promptCharacterLimit);
+  const usedChars: number = prompt.length;
+  const remainingChars: number = clamp(charLimit - usedChars, 0, charLimit);
+  const percentUsed: number = (usedChars / charLimit) * 100;
+  const barColorClass: string = getBarColorClass(percentUsed);
+  const isAtLimit: boolean = usedChars >= charLimit;
 
   // API
   const { postData: createAttempt, loading: submittingAttempt } = usePostData<CreateAttemptResponse, CreateAttemptRequest>({
@@ -258,13 +278,13 @@ export default function PromptComposer({
   };
 
   const handleSubmitClick = (): void => {
-    if (!prompt.trim() || submittingAttempt || !canSubmitNewAttempt) return;
+    if (!prompt.trim() || submittingAttempt || !canSubmitNewAttempt || isAtLimit) return;
     setShowConfirmationModal(true);
   };
 
   const handleConfirmSubmit = (): void => {
     (async () => {
-      if (!prompt.trim() || submittingAttempt || !canSubmitNewAttempt) return;
+      if (!prompt.trim() || submittingAttempt || !canSubmitNewAttempt || isAtLimit) return;
       try {
         const result = await createAttempt(`/api/student/exercises/${exerciseId}/attempts`, {
           prompt: prompt.trim(),
@@ -337,13 +357,30 @@ export default function PromptComposer({
             value={prompt}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => setPrompt(e.target.value)}
             onInput={(): void => autoResize()}
+            maxLength={charLimit}
+            aria-describedby="char-limit-hint"
             placeholder="Write your prompt here... Ask the AI to help you analyze the case study, provide insights, or guide you through the business concepts."
             className="w-full min-h-[160px] max-h-[800px] p-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 resize-none text-base leading-relaxed transition-all duration-300 bg-white/80 backdrop-blur-sm overflow-y-auto"
             disabled={submittingAttempt}
             style={{ height: '160px' }}
           />
-          <div className="absolute bottom-4 right-4 text-sm text-gray-400">{prompt.length > 0 ? `${prompt.length} characters` : ''}</div>
+          {/* Removed the old bottom-right raw counter in favor of the bar below */}
         </div>
+
+        {/* Character limit bar + counts */}
+        {promptCharacterLimit > 0 && (
+          <div className="mt-1" aria-live="polite" id="char-limit-hint">
+            <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600">
+              <span>{remainingChars} characters left</span>
+              <span>
+                {usedChars} / {charLimit}
+              </span>
+            </div>
+            <div className="mt-1 h-2 w-full rounded-full bg-gray-200 overflow-hidden">
+              <div className={`h-2 rounded-full ${barColorClass} transition-all duration-200`} style={{ width: `${clamp(percentUsed, 0, 100)}%` }} />
+            </div>
+          </div>
+        )}
 
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -363,6 +400,7 @@ export default function PromptComposer({
           <button
             onClick={handleSubmitClick}
             disabled={!prompt.trim() || submittingAttempt || !canSubmitNewAttempt}
+            title={isAtLimit ? 'You have reached the character limit' : undefined}
             className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
             {submittingAttempt ? (

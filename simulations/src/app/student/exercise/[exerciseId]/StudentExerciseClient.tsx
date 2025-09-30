@@ -127,16 +127,19 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
           <div className="lg:col-span-3 space-y-6">
             {exerciseData ? <ExerciseDetailsCard exerciseData={exerciseData} caseStudyData={caseStudyData} currentModule={currentModule ?? null} /> : null}
 
-            <PromptComposer
-              exerciseId={exerciseId}
-              attempts={currentAttempts}
-              navigationData={navigationData}
-              onNewAttempt={(attempt: ExerciseAttempt) => {
-                setLocalAttempts((prev) => (prev ? [...prev, attempt] : [attempt]));
-              }}
-              onMoveToPrevious={handleMoveToPrevious}
-              onMoveToNext={handleMoveToNext}
-            />
+            {exerciseData && (
+              <PromptComposer
+                exerciseId={exerciseId}
+                attempts={currentAttempts}
+                navigationData={navigationData}
+                onNewAttempt={(attempt: ExerciseAttempt) => {
+                  setLocalAttempts((prev) => (prev ? [...prev, attempt] : [attempt]));
+                }}
+                promptCharacterLimit={exerciseData.promptCharacterLimit}
+                onMoveToPrevious={handleMoveToPrevious}
+                onMoveToNext={handleMoveToNext}
+              />
+            )}
 
             {currentAttempts && currentAttempts.length > 0 ? (
               <AttemptsList

@@ -47,6 +47,7 @@ async function getSimplifiedStudentExerciseData(exerciseId: string, userId: stri
     details: exercise.details,
     promptHint: exercise.promptHint,
     orderNumber: exercise.orderNumber,
+    promptCharacterLimit: exercise.promptCharacterLimit,
     attempts: exercise.attempts,
   };
 }
