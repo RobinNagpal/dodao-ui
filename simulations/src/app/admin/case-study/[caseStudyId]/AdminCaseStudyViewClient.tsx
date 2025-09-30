@@ -77,7 +77,6 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
   const modules = caseStudy?.modules || [];
 
   const actions = [
-    { key: 'edit', label: 'Edit' },
     { key: 'delete', label: 'Delete' },
     { key: 'duplicate', label: 'Duplicate' },
   ];
