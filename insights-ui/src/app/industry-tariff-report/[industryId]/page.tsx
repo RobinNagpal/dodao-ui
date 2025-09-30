@@ -201,13 +201,13 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
                         </div>
 
                         <Link href={`/industry-tariff-report/${relatedIndustryId}`} className="block mt-2 group">
-                          <h4 className="text-lg font-semibold group-hover:text-primary-color transition-colors text-color">{relatedDefinition.name}</h4>
+                          <h4 className="text-lg font-semibold group-hover:text-primary-color transition-colors link-color">{relatedDefinition.name}</h4>
                         </Link>
 
                         <p className="mt-3 text-muted-foreground line-clamp-3">{relatedDefinition.reportOneLiner}</p>
 
                         <div className="mt-4">
-                          <Link href={`/industry-tariff-report/${relatedIndustryId}`} className="group flex items-center text-sm font-medium primary-color">
+                          <Link href={`/industry-tariff-report/${relatedIndustryId}`} className="group flex items-center text-sm font-medium link-color">
                             View report
                             <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                           </Link>

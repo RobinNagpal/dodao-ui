@@ -107,7 +107,7 @@ export default async function TariffReportsPage() {
                         {report.lastModified && <span className="ml-2 text-muted-foreground">Updated: {new Date(report.lastModified).toDateString()}</span>}
                       </div>
 
-                      <Link href={`/industry-tariff-report/${report.industryId}/understand-industry`} className="block mt-2 group">
+                      <Link href={`/industry-tariff-report/${report.industryId}`} className="block mt-2 group">
                         <h3 className="text-xl font-semibold group-hover:text-primary-color transition-colors">{report.reportTitle}</h3>
                       </Link>
 
