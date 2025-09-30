@@ -205,6 +205,7 @@ export interface ExerciseWithAttemptsResponse {
   orderNumber: number;
 
   // Student's attempts for this exercise
+  promptCharacterLimit: number;
   attempts: ExerciseAttempt[];
 }
 
