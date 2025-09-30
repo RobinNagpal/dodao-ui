@@ -1,9 +1,5 @@
-import {
-  fetchTariffReports,
-  TariffIndustryDefinition,
-  getAllHeadingSubheadingCombinations,
-  fetchTariffReportsWithUpdatedAt,
-} from '@/scripts/industry-tariff-reports/tariff-industries';
+import { fetchTariffReportsWithUpdatedAt } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
+import { fetchTariffReports, TariffIndustryDefinition, getAllHeadingSubheadingCombinations } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { REPORT_TYPES_TO_DISPLAY } from '@/types/project/project';
 import { getPostsData } from '@/util/blog-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
