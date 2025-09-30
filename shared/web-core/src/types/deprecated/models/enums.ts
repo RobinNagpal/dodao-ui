@@ -31,7 +31,7 @@ export enum ProjectTypes {
 
 export const UserDiscordConnectType = 'UserDiscordConnect';
 
-export const DODAO_ACCESS_TOKEN_KEY = 'DODAO_ACCESS_TOKEN_V1';
+export const DODAO_ACCESS_TOKEN_KEY = `DODAO_ACCESS_TOKEN_V1${process.env.NEXT_PUBLIC_DODAO_ACCESS_TOKEN_KEY_SUFFIX ?? ''}`;
 export enum QuestionType {
   SingleChoice = 'SingleChoice',
   MultipleChoice = 'MultipleChoice',

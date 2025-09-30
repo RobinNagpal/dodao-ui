@@ -237,12 +237,14 @@ model ModuleExercise {
   moduleId String          @map("module_id")
   module   CaseStudyModule @relation("ModuleToExercises", fields: [moduleId], references: [id])
 
-  title                  String  @map("title")
-  details                String  @map("details") @db.Text
-  promptHint             String? @map("prompt_hint")
-  instructorInstructions String? @map("instructor_instructions")
-  gradingLogic           String? @map("grading_logic")
-  orderNumber            Int     @map("order_number")
+  title                    String  @map("title")
+  details                  String  @map("details") @db.Text
+  promptHint               String? @map("prompt_hint")
+  instructorInstructions   String? @map("instructor_instructions")
+  promptOutputInstructions String? @map("prompt_output_instructions")
+  promptCharacterLimit     Int     @default(-1) @map("prompt_character_limit")
+  gradingLogic             String? @map("grading_logic")
+  orderNumber              Int     @map("order_number")
 
   // Mandatory FKs to creator/updater (User)
   createdById String @map("created_by")
@@ -281,8 +283,8 @@ model ExerciseAttempt {
   updatedAt          DateTime @default(now()) @updatedAt @map("updated_at")
   archive            Boolean  @default(false) @map("archive")
 
-  evaluatedScore  Int?     @map("evaluated_score")
-  evaluationReasoning String?  @map("evaluation_reasoning")
+  evaluatedScore      Int?    @map("evaluated_score")
+  evaluationReasoning String? @map("evaluation_reasoning")
 
   // Relations to User (restrict delete because FKs are required)
   createdBy User @relation("ExerciseAttemptCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)

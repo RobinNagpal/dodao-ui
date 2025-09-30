@@ -14,6 +14,8 @@ export interface UpdateModuleExerciseRequest {
   promptHint?: string | null;
   gradingLogic?: string | null;
   instructorInstructions?: string | null;
+  promptOutputInstructions?: string | null;
+  promptCharacterLimit: number;
   orderNumber: number;
   archive: boolean;
 }
@@ -97,6 +99,8 @@ async function putHandler(
       promptHint: body.promptHint ?? undefined,
       gradingLogic: body.gradingLogic ?? undefined,
       instructorInstructions: body.instructorInstructions ?? undefined,
+      promptCharacterLimit: body.promptCharacterLimit,
+      promptOutputInstructions: body.promptOutputInstructions,
       orderNumber: body.orderNumber,
       archive: body.archive,
       updatedById: userContext.userId,
