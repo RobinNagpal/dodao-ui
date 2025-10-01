@@ -2,6 +2,8 @@ import {
   readTariffUpdatesFromFile,
   writeJsonFileForIndustryTariffs,
   writeMarkdownFileForIndustryTariffs,
+  writeLastModifiedDatesToFile,
+  readLastModifiedDatesFromFile,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { CountrySpecificTariff, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getLlmResponse, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
@@ -175,6 +177,7 @@ async function getTariffUpdatesForIndustry(
     const result = {
       countryNames: countriesToProcess,
       countrySpecificTariffs,
+      lastUpdated: new Date().toISOString(),
     };
     return result;
   }
@@ -225,6 +228,7 @@ async function getTariffUpdatesForIndustry(
     const result = {
       countryNames: existingCountryNames,
       countrySpecificTariffs: orderedTariffs,
+      lastUpdated: new Date().toISOString(),
     };
     console.log('Generated tariff updates with order:', result.countryNames);
     return result;
@@ -234,6 +238,7 @@ async function getTariffUpdatesForIndustry(
   const result = {
     countryNames: countriesToProcess,
     countrySpecificTariffs,
+    lastUpdated: new Date().toISOString(),
   };
   console.log('Generated new tariff updates:', result);
   return result;
@@ -252,4 +257,11 @@ export async function getTariffUpdatesForIndustryAndSaveToFile(industry: TariffI
 
   // Generate and upload markdown
   await writeMarkdownFileForIndustryTariffs(industry, tariffUpdates);
+
+  // Update the centralized last modified dates file
+  console.log(`Updating centralized last modified dates for ${industry}...`);
+  const existingLastModifiedDates = await readLastModifiedDatesFromFile() || {};
+  existingLastModifiedDates[industry] = tariffUpdates.lastUpdated || new Date().toISOString();
+  await writeLastModifiedDatesToFile(existingLastModifiedDates);
+  console.log(`Updated centralized last modified dates for ${industry}`);
 }

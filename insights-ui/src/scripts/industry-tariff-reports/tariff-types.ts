@@ -51,6 +51,7 @@ export interface CountrySpecificTariff {
 export interface TariffUpdatesForIndustry {
   countryNames: string[];
   countrySpecificTariffs: CountrySpecificTariff[];
+  lastUpdated?: string; // ISO date string when this data was generated
 }
 
 // 04-understand-industry.ts
