@@ -440,20 +440,6 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
         })}
       </section>
 
-      {d.investorAnalysisResults.length > 0 && (
-        <section id="detailed-investor-reports" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Investor Reports</h2>
-          <div className="space-y-4">
-            {d.investorAnalysisResults.map((result) => (
-              <div key={result.id} className="bg-gray-800 p-4 rounded-md">
-                <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
-                <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(result.detailedAnalysis) }} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
       {d.futureRisks.length > 0 && (
         <section id="detailed-future-risks" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
           <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Future Risks</h2>

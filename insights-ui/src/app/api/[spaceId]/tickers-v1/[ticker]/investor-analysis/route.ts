@@ -96,7 +96,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       tickerId: tickerRecord.id,
       investorKey,
       summary: response.summary,
-      detailedAnalysis: response.detailedAnalysis,
+      detailedAnalysis: 'detailedAnalysis',
     },
   });
 
