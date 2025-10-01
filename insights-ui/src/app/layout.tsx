@@ -89,9 +89,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             gtag('config', 'G-18CB8K6SLR');
           `}
         </Script>
-        <LogRocketComponent />
 
-        <Script id="amazon-connect-chat" strategy="afterInteractive" src="/scripts/amazon-koala-chat.js" type="text/javascript" defer />
+        <Script id="amazon-connect-chat" src="/scripts/amazon-koala-chat.js" strategy="afterInteractive" />
+
+        <LogRocketComponent />
       </body>
     </html>
   );
