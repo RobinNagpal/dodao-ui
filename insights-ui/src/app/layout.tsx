@@ -91,56 +91,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         </Script>
         <LogRocketComponent />
 
-        <Script id="amazon-connect-chat" strategy="afterInteractive">
-          {`
-    (function(w, d, x, id){
-      var s = d.createElement('script');
-      s.src = 'https://koalagains.my.connect.aws/connectwidget/static/amazon-connect-chat-interface-client.js';
-      s.async = 1;
-      s.id = id;
-      d.getElementsByTagName('head')[0].appendChild(s);
-      w[x] = w[x] || function() { (w[x].ac = w[x].ac || []).push(arguments) };
-    })(window, document, 'amazon_connect', '74fa8d5d-f149-476f-8315-1c1233b3eb09');
-
-    // basic styling
-    amazon_connect('styles', {
-      iconType: 'CHAT',
-      openChat: { color: '#ffffff', backgroundColor: '#6366f1' },
-      closeChat: { color: '#ffffff', backgroundColor: '#6366f1' }
-    });
-
-    // 🔑 customization object
-    amazon_connect('customizationObject', {
-      header: { 
-        dropdown: true,                 // shows menu in header
-      },
-      transcript: {
-        eventNames: {
-          customer: "You",
-          agent: "Koala Support"
-        },
-        displayIcons: false             // hide default icons if you want cleaner look
-      },
-      composer: {
-        alwaysHideToolbar: true,        // 👉 hides the bold/italic toolbar
-        disableEmojiPicker: true,       // optional: remove emoji button
-        disableCustomerAttachments: true // optional: no file uploads
-      },
-      footer: {
-        skipCloseChatButton: true       // optional: hide close button in footer
-      },
-    });
-
-    amazon_connect('snippetId', 'QVFJREFIak5tL2RUNFhneWV5b2RFSFowb2FxOTY2UTAzQ1gwTko4NUZONTVMYVpydkFIN0tMcjMrSkRjcWhYVCswaDdaZy9EQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNQWU1dnU2RS9yZGFhMm5ENEFnRVFnQ3ZOeGpKdkFyODZtcjA5NGt0YnBMMnZvL05Ubm90YUFKQjRHSmFmdlZ4T1BMaUErM1ViRjBhaXJTNU46OmNFMFZDbENUVTdZL3NaZmxUZVZiTGZpbmE0R2czMmttM2cwY1FtdHZWKzdRQVJ2R1BodFZrdUhDemVvcDdUZzF6RlA1NG9NMDZwWnIreG5VRVVDUWlTeEVsNnAwbUE0bG14UmhsbEE4eDFGRXpEc3QrSytWbmRNR0Jqci9DOXFyODd6by9rWkxSUEFFTWZnNkhhOHpka2ZWR3JCUVlBTT0=');
-
-    amazon_connect('supportedMessagingContentTypes', [
-      'text/plain',
-      'text/markdown',
-      'application/vnd.amazonaws.connect.message.interactive',
-      'application/vnd.amazonaws.connect.message.interactive.response'
-    ]);
-  `}
-        </Script>
+        <Script id="amazon-connect-chat" strategy="afterInteractive" src="/scripts/amazon-koala-chat.js" type="text/javascript" defer />
       </body>
     </html>
   );
