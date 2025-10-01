@@ -1,11 +1,11 @@
 import {
   readTariffUpdatesFromFile,
-  writeJsonFileForIndustryTariffs,
-  writeMarkdownFileForIndustryTariffs,
+  writeJsonFileForAllCountriesTariffUpdates,
+  writeMarkdownFileForAllCountriesTariffUpdates,
   writeLastModifiedDatesToFile,
   readLastModifiedDatesFromFile,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import { CountrySpecificTariff, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { CountrySpecificTariff, IndustryAreasWrapper, AllCountriesTariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getLlmResponse, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
 import { getDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { z } from 'zod';
@@ -57,36 +57,46 @@ const CountrySpecificTariffSchema = z.object({
     ),
 });
 
-// 1) Schema for exactly 5 country names
-const TopCountriesSchema = z.object({
-  topCountries: z.array(z.string()).describe('Array of exactly 5 country names whose trading volume with the US is highest for the given industry.'),
+// 1) Schema for exactly 20 country names (excluding top 5)
+const AllCountriesSchema = z.object({
+  allCountries: z
+    .array(z.string())
+    .describe('Array of exactly 20 country names whose trading volume with the US is significant for the given industry, excluding the top 5 countries.'),
 });
 
-// 2) Prompt builder + fetcher
-function getTopTradingCountriesPrompt(industry: TariffIndustryId, date: string) {
+// 2) Prompt builder + fetcher for top 20 countries (including tariff updates countries but excluding top 5)
+function getAllCountriesPrompt(industry: TariffIndustryId, date: string) {
   const definition = getTariffIndustryDefinitionById(industry);
   return `
-Identify the top 5 countries by trading volume with the U.S. for the ${definition.name} industry as of ${date}.
-Output a JSON object with a single key \`topCountries\`, whose value is an array of exactly five ISO-style country names (strings).
+I need to get 20 countries for the ${definition.name} industry analysis. Here's what I need:
+
+1. Get the top 5 countries from the existing tariff updates section (these are the highest trading volume countries)
+2. Get additional countries to make a total of 20, focusing on other significant trading partners
+3. The final list should include countries from the tariff updates but exclude the absolute top 5
+
+For example, if the top 5 are: China, Canada, Mexico, Germany, Japan
+Then I want 15 more countries like: Netherlands, Belgium, Italy, France, Spain, Poland, Czech Republic, Hungary, Austria, Sweden, Denmark, Finland, Ireland, Portugal, Greece
+
+Output a JSON object with a single key \`allCountries\`, whose value is an array of exactly 20 country names.
 Example:
 \`\`\`
 {
-  "topCountries": ["China", "Canada", "Mexico", "Germany", "Japan"]
+  "allCountries": ["China", "Canada", "Mexico", "Germany", "Japan", "Netherlands", "Belgium", "Italy", "France", "Spain", "Poland", "Czech Republic", "Hungary", "Austria", "Sweden", "Denmark", "Finland", "Ireland", "Portugal", "Greece"]
 }
 \`\`\`
 No extra keys or commentary.
 
-Fetch the countries in the descending order of trading volume with the US for the provided industry.
+Fetch the countries in the descending order of trading volume with the US for the provided industry, but make sure to include countries that are already in the tariff updates section while excluding only the absolute top 5.
 `;
 }
 
-async function getTopTradingCountries(industry: TariffIndustryId, date: string): Promise<string[]> {
-  const prompt = getTopTradingCountriesPrompt(industry, date);
-  const response = await getLlmResponse<{ topCountries: string[] }>(prompt, TopCountriesSchema);
-  return response.topCountries;
+async function getAllCountries(industry: TariffIndustryId, date: string): Promise<string[]> {
+  const prompt = getAllCountriesPrompt(industry, date);
+  const response = await getLlmResponse<{ allCountries: string[] }>(prompt, AllCountriesSchema);
+  return response.allCountries;
 }
 
-function getTariffUpdatesForIndustryPrompt(industry: TariffIndustryId, date: string, headings: IndustryAreasWrapper, country: string) {
+function getTariffUpdatesForAllCountriesPrompt(industry: TariffIndustryId, date: string, headings: IndustryAreasWrapper, country: string) {
   const definition = getTariffIndustryDefinitionById(industry);
   const prompt = `
   As of today (${getDateAsMonthDDYYYYFormat(date)}), I want to know about the new or recent tariffs added for the ${definition.name} industry for ${country}.
@@ -98,10 +108,10 @@ function getTariffUpdatesForIndustryPrompt(industry: TariffIndustryId, date: str
   )}.
   Dont use or refer to koalagains.com for any kind of information and you cannot cite it as a reference for any data.
   Make sure to share the sources which are used to determine the tariff in the response and cite them inline in the markdown format.
-  
-  Please give me the details of the new tariffs added for ${country}. 
 
-  The details should include: 
+  Please give me the details of the new tariffs added for ${country}.
+
+  The details should include:
   - Name of the country
   - Amount of trade that is conducted with the US for the given industry
   - Description of the new tariffs added as of the mentioned date for the given industry. Add 6-8 lines of description.
@@ -113,21 +123,21 @@ function getTariffUpdatesForIndustryPrompt(industry: TariffIndustryId, date: str
   - Include the real date when the tariffs were added.
   - We are interested in the tariffs that US has added
   - You can also include the tariff that the other country has added, but stress more on the tariffs that US has added.
- 
-  Also many or most of the products or subcategories can be exempted from the new tariffs. Calculate and mention the  
-  amount of trade that is impacted by the new tariff and the amount of trade that is exempted by the new tariff for 
+
+  Also many or most of the products or subcategories can be exempted from the new tariffs. Calculate and mention the
+  amount of trade that is impacted by the new tariff and the amount of trade that is exempted by the new tariff for
   the given industry.
-  
-  For each of the Industry Areas & Subareas below, I want to 
+
+  For each of the Industry Areas & Subareas below, I want to
   1. Know the changes to the tariffs for that area and sub-area and ${country} by the Trump Government.
-  2. I want to know the exact change. Mention the numerical figures as much as possible. 
-  
+  2. I want to know the exact change. Mention the numerical figures as much as possible.
+
   Make sure to follow the output instructions below and include all the details in the output.
 
-  
+
   # Industry Areas
   ${JSON.stringify(headings, null, 2)}
-  
+
   # Output Instructions
   ${outputInstructions}
   `;
@@ -135,34 +145,29 @@ function getTariffUpdatesForIndustryPrompt(industry: TariffIndustryId, date: str
   return prompt;
 }
 
-// 3) Use it in your tariff-fetcher
-async function getTariffUpdatesForIndustry(
+// 3) Use it in your tariff-fetcher for all countries
+async function getTariffUpdatesForAllCountries(
   industry: TariffIndustryId,
   date: string,
-  headings: IndustryAreasWrapper,
-  countryName?: string
-): Promise<TariffUpdatesForIndustry> {
-  // Get existing tariff data to maintain order
+  headings: IndustryAreasWrapper
+): Promise<AllCountriesTariffUpdatesForIndustry> {
+  // Get existing tariff data to exclude top 5 countries
   const existingTariffUpdates = await readTariffUpdatesFromFile(industry);
-  const existingCountryNames = existingTariffUpdates?.countryNames || [];
+  const top5Countries = existingTariffUpdates?.countryNames || [];
 
-  // Get the list of countries to process
-  let countriesToProcess: string[];
-  if (countryName) {
-    // If regenerating a specific country, use the existing countryNames to maintain order
-    countriesToProcess = [countryName];
-  } else {
-    // For full regeneration, get the top trading countries
-    console.log(`Fetching top 5 trading partners for ${industry}…`);
-    const topCountries = await getTopTradingCountries(industry, date);
-    countriesToProcess = topCountries;
-  }
+  // Get the list of countries to process (top 20 including tariff updates countries but excluding top 5)
+  console.log(`Fetching top 20 trading partners (including tariff updates countries but excluding top 5) for ${industry}…`);
+  const allCountries = await getAllCountries(industry, date);
+
+  // Filter to exclude top 5 countries but keep other tariff updates countries
+  const countriesToProcess = allCountries.filter((country) => !top5Countries.includes(country));
+  console.log(`Filtered to ${countriesToProcess.length} countries after excluding top 5: ${top5Countries.join(', ')}`);
 
   console.log(`Invoking LLM for tariffs for each of:`, countriesToProcess);
   const countrySpecificTariffs: CountrySpecificTariff[] = [];
 
   for (const country of countriesToProcess) {
-    const prompt = getTariffUpdatesForIndustryPrompt(industry, date, headings, country);
+    const prompt = getTariffUpdatesForAllCountriesPrompt(industry, date, headings, country);
     console.log(`Fetching tariffs for ${country}…`);
     const countryTariff = await getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, 'gpt-4o-search-preview');
 
@@ -172,91 +177,29 @@ async function getTariffUpdatesForIndustry(
     countrySpecificTariffs.push(cleanedCountryTariff);
   }
 
-  // If regenerating all countries, use the new data entirely
-  if (!countryName) {
-    const result = {
-      countryNames: countriesToProcess,
-      countrySpecificTariffs,
-      lastUpdated: new Date().toISOString(),
-    };
-    return result;
-  }
-
-  // If we have existing data and regenerating a specific country, maintain the order
-  if (existingTariffUpdates && existingTariffUpdates.countrySpecificTariffs.length > 0) {
-    // Create a map of new tariffs for quick lookup with case-insensitive keys
-    const newTariffsMap = new Map<string, CountrySpecificTariff>();
-    countrySpecificTariffs.forEach((tariff) => {
-      newTariffsMap.set(tariff.countryName.toLowerCase(), tariff);
-    });
-
-    // Create a new array maintaining the existing order
-    const orderedTariffs = existingCountryNames.map((country) => {
-      // If this is the country being regenerated, use the new data
-      if (countryName && country.toLowerCase() === countryName.toLowerCase()) {
-        // Try exact match first, then case-insensitive match
-        let newTariff = newTariffsMap.get(country) || newTariffsMap.get(country.toLowerCase());
-
-        if (!newTariff) {
-          // Try to find by any of the generated country names (case-insensitive)
-          for (const generatedTariff of countrySpecificTariffs) {
-            if (generatedTariff.countryName.toLowerCase() === country.toLowerCase()) {
-              newTariff = generatedTariff;
-              break;
-            }
-          }
-        }
-
-        if (!newTariff) {
-          console.error(`Failed to get new tariff data for ${country}`);
-          return existingTariffUpdates.countrySpecificTariffs.find((t) => t.countryName === country)!;
-        }
-
-        return newTariff;
-      }
-
-      // Otherwise, use existing data
-      const existingTariff = existingTariffUpdates.countrySpecificTariffs.find((t) => t.countryName === country);
-      if (!existingTariff) {
-        console.error(`Failed to find existing tariff data for ${country}`);
-        throw new Error(`No data available for country: ${country}`);
-      }
-
-      return existingTariff;
-    });
-
-    const result = {
-      countryNames: existingCountryNames,
-      countrySpecificTariffs: orderedTariffs,
-      lastUpdated: new Date().toISOString(),
-    };
-    console.log('Generated tariff updates with order:', result.countryNames);
-    return result;
-  }
-
-  // If no existing data, use the new data in the order it was generated
   const result = {
     countryNames: countriesToProcess,
     countrySpecificTariffs,
     lastUpdated: new Date().toISOString(),
   };
-  console.log('Generated new tariff updates:', result);
+
+  console.log('Generated all-countries tariff updates:', result);
   return result;
 }
 
-export async function getTariffUpdatesForIndustryAndSaveToFile(industry: TariffIndustryId, date: string, headings: IndustryAreasWrapper, countryName?: string) {
-  console.log(`Starting tariff update generation for ${industry} ${countryName ? ` (${countryName})` : ''}`);
-  const tariffUpdates = await getTariffUpdatesForIndustry(industry, date, headings, countryName);
+export async function getAllCountriesTariffUpdatesForIndustryAndSaveToFile(industry: TariffIndustryId, date: string, headings: IndustryAreasWrapper) {
+  console.log(`Starting all-countries tariff update generation for ${industry}`);
+  const tariffUpdates = await getTariffUpdatesForAllCountries(industry, date, headings);
 
   if (!tariffUpdates.countrySpecificTariffs || tariffUpdates.countrySpecificTariffs.length === 0) {
     throw new Error('No tariff data generated');
   }
 
   // Upload JSON to S3
-  await writeJsonFileForIndustryTariffs(industry, tariffUpdates);
+  await writeJsonFileForAllCountriesTariffUpdates(industry, tariffUpdates);
 
   // Generate and upload markdown
-  await writeMarkdownFileForIndustryTariffs(industry, tariffUpdates);
+  await writeMarkdownFileForAllCountriesTariffUpdates(industry, tariffUpdates);
 
   // Update the centralized last modified dates file
   console.log(`Updating centralized last modified dates for ${industry}...`);

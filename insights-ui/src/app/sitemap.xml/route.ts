@@ -171,9 +171,9 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
   const lastModifiedDates = await getTariffReportsLastModifiedDates();
   const { getTariffIndustryDefinitionById, TariffIndustryId } = await import('@/scripts/industry-tariff-reports/tariff-industries');
-  const tariffReports = Object.values(TariffIndustryId).map(industryId => ({
+  const tariffReports = Object.values(TariffIndustryId).map((industryId) => ({
     ...getTariffIndustryDefinitionById(industryId),
-    lastModified: lastModifiedDates[industryId] || new Date().toISOString()
+    lastModified: lastModifiedDates[industryId] || new Date().toISOString(),
   }));
 
   // Main reports page

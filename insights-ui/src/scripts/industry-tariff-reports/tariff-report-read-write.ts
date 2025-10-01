@@ -9,6 +9,7 @@ import {
   getMarkdownContentForUnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import {
+  AllCountriesTariffUpdatesForIndustry,
   EvaluateIndustryArea,
   ExecutiveSummary,
   FinalConclusion,
@@ -274,6 +275,31 @@ export async function writeJsonFileForSeoDetails(industry: string, seoDetails: T
 export async function readSeoDetailsFromFile(industry: string): Promise<TariffReportSeoDetails | undefined> {
   const key = getS3KeyForSeoDetails(industry, 'seo-details.json');
   return await getJsonFromS3<TariffReportSeoDetails>(key);
+}
+
+//--------------------------------------------------------------------------------------------------------
+// 09-AllCountriesTariffUpdates
+//--------------------------------------------------------------------------------------------------------
+
+export function getS3KeyForAllCountriesTariffs(industry: string, fileName: string): string {
+  return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/09-all-countries-tariff-updates/${fileName}`;
+}
+
+export async function writeJsonFileForAllCountriesTariffUpdates(industry: string, allCountriesTariffUpdates: AllCountriesTariffUpdatesForIndustry) {
+  const jsonKey = getS3KeyForAllCountriesTariffs(industry, 'all-countries-tariff-updates.json');
+  const jsonContent = JSON.stringify(allCountriesTariffUpdates, null, 2);
+  await uploadFileToS3(new TextEncoder().encode(jsonContent), jsonKey, 'application/json');
+}
+
+export async function readAllCountriesTariffUpdatesFromFile(industry: string): Promise<AllCountriesTariffUpdatesForIndustry | undefined> {
+  const key = getS3KeyForAllCountriesTariffs(industry, 'all-countries-tariff-updates.json');
+  return await getJsonFromS3<AllCountriesTariffUpdatesForIndustry>(key);
+}
+
+export async function writeMarkdownFileForAllCountriesTariffUpdates(industry: string, allCountriesTariffUpdates: AllCountriesTariffUpdatesForIndustry) {
+  const markdownContent = getMarkdownContentForIndustryTariffs(industry, allCountriesTariffUpdates);
+  const key = getS3KeyForAllCountriesTariffs(industry, 'all-countries-tariff-updates.md');
+  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }
 
 //--------------------------------------------------------------------------------------------------------

@@ -54,6 +54,12 @@ export interface TariffUpdatesForIndustry {
   lastUpdated?: string; // ISO date string when this data was generated
 }
 
+export interface AllCountriesTariffUpdatesForIndustry {
+  countryNames: string[];
+  countrySpecificTariffs: CountrySpecificTariff[];
+  lastUpdated?: string; // ISO date string when this data was generated
+}
+
 // 04-understand-industry.ts
 export interface UnderstandIndustry {
   title: string;
@@ -206,6 +212,7 @@ export interface TariffReportSeoDetails {
   reportCoverSeoDetails?: PageSeoDetails;
   executiveSummarySeoDetails?: PageSeoDetails;
   tariffUpdatesSeoDetails?: PageSeoDetails;
+  allCountriesTariffUpdatesSeoDetails?: PageSeoDetails;
   understandIndustrySeoDetails?: PageSeoDetails;
   industryAreasSeoDetails?: PageSeoDetails;
   evaluateIndustryAreasSeoDetails?: Record<string, PageSeoDetails>;
@@ -217,6 +224,7 @@ export interface IndustryTariffReport {
   reportCover?: ReportCover;
   executiveSummary?: ExecutiveSummary;
   tariffUpdates?: TariffUpdatesForIndustry;
+  allCountriesTariffUpdates?: AllCountriesTariffUpdatesForIndustry;
   understandIndustry?: UnderstandIndustry;
   industryAreasSections?: IndustryAreaSection;
   evaluateIndustryAreas?: EvaluateIndustryArea[];

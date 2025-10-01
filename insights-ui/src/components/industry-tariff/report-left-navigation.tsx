@@ -96,7 +96,7 @@ export default function ReportLeftNavigation({ report, industryId, isMobile = fa
           isMobile={isMobile}
         />
 
-<NavSection
+        <NavSection
           title="All Key Markets"
           section="all-countries-tariff-updates"
           isExpanded={isSectionExpanded('all-countries-tariff-updates')}

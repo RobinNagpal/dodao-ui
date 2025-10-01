@@ -9,7 +9,6 @@ interface CountryNavigationProps {
 }
 
 export const CountryNavigation: React.FC<CountryNavigationProps> = ({ countries, industryId }) => {
-
   const scrollToCountry = (countryName: string) => {
     const element = document.getElementById(`country-${countryName.toLowerCase().replace(/\s+/g, '-')}`);
     if (element) {

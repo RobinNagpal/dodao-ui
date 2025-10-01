@@ -1,5 +1,9 @@
 import { getTariffIndustryDefinitionById, TariffIndustryDefinition, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { getS3KeyForIndustryTariffs, readLastModifiedDatesFromFile, writeLastModifiedDatesToFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import {
+  getS3KeyForIndustryTariffs,
+  readLastModifiedDatesFromFile,
+  writeLastModifiedDatesToFile,
+} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getJsonWithLastModifiedFromS3 } from '@/scripts/report-file-utils';
 
