@@ -4,15 +4,16 @@ import { parseMarkdown } from '@/util/parse-markdown';
 
 interface CountryTariffRendererProps {
   countryTariff: CountrySpecificTariff;
+  sectionId?: string;
 }
 
 /**
  * Renders a CountrySpecificTariff object with styled components
  * This replaces the markdown generation logic from render-tariff-markdown.ts
  */
-export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ countryTariff }) => {
+export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ countryTariff, sectionId }) => {
   return (
-    <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+    <div id={sectionId} className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
       {/* Country Name Header */}
       <div className="bg-gray-800 p-4 border-b border-gray-700">
         <h2 className="text-xl font-bold heading-color">{countryTariff.countryName}</h2>
