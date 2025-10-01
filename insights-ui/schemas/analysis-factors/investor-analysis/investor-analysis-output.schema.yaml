@@ -4,10 +4,6 @@ additionalProperties: false
 properties:
   summary:
     type: string
-    description: '3–4 sentences summarizing how this investor would likely view the stock in 2025. Must be written in plain English, ending with a clear takeaway for retail investors.'
-  detailedAnalysis:
-    type: string
-    description: '3–4 paragraphs of deeper analysis applying the investor’s philosophy. Must explain the reasoning clearly, referencing 2025 market context and the company’s profile. Highlight both positives and negatives. Tone should reflect the investor’s style.'
+    description: '3–4 sentences summarizing factually summarizing how this investor would likely view the stock in 2025. Must be written in plain English, ending with a clear takeaway for retail investors and should be backed by data and reasons.'
 required:
   - summary
-  - detailedAnalysis

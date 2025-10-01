@@ -49,11 +49,6 @@ export function FloatingNavFromData({ data }: { data: Promise<TickerV1FastRespon
         .filter((item): item is NonNullable<typeof item> => item !== null),
     },
     {
-      id: 'detailed-investor-reports',
-      title: 'Detailed Investor Reports',
-      hasContent: d.investorAnalysisResults.length > 0,
-    },
-    {
       id: 'detailed-future-risks',
       title: 'Detailed Future Risks',
       hasContent: d.futureRisks.length > 0,
