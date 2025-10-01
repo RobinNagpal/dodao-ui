@@ -57,41 +57,44 @@ const CountrySpecificTariffSchema = z.object({
     ),
 });
 
-// 1) Schema for exactly 20 country names (excluding top 5)
+// 1) Schema for exactly 15 additional country names (excluding existing top 5)
 const AllCountriesSchema = z.object({
   allCountries: z
     .array(z.string())
-    .describe('Array of exactly 20 country names whose trading volume with the US is significant for the given industry, excluding the top 5 countries.'),
+    .describe(
+      'Array of exactly 15 additional country names whose trading volume with the US is significant for the given industry, excluding the existing top 5 countries.'
+    ),
 });
 
-// 2) Prompt builder + fetcher for top 20 countries (including tariff updates countries but excluding top 5)
-function getAllCountriesPrompt(industry: TariffIndustryId, date: string) {
+// 2) Prompt builder + fetcher for additional 15 countries (we already have top 5)
+function getAllCountriesPrompt(industry: TariffIndustryId, date: string, existingTop5Countries: string[]) {
   const definition = getTariffIndustryDefinitionById(industry);
   return `
-I need to get 20 countries for the ${definition.name} industry analysis. Here's what I need:
+I need to get 15 additional countries for the ${definition.name} industry analysis. Here's what I need:
 
-1. Get the top 5 countries from the existing tariff updates section (these are the highest trading volume countries)
-2. Get additional countries to make a total of 20, focusing on other significant trading partners
-3. The final list should include countries from the tariff updates but exclude the absolute top 5
+We already have the top 5 countries from the existing tariff updates section: ${existingTop5Countries.join(', ')}
+These are the highest trading volume countries that are already covered.
 
-For example, if the top 5 are: China, Canada, Mexico, Germany, Japan
-Then I want 15 more countries like: Netherlands, Belgium, Italy, France, Spain, Poland, Czech Republic, Hungary, Austria, Sweden, Denmark, Finland, Ireland, Portugal, Greece
+Now I need 15 more significant trading partners to make a total of 20 countries.
+Focus on other important trading partners that complement the existing top 5.
 
-Output a JSON object with a single key \`allCountries\`, whose value is an array of exactly 20 country names.
+Output a JSON object with a single key \`allCountries\`, whose value is an array of exactly 15 country names.
 Example:
 \`\`\`
 {
-  "allCountries": ["China", "Canada", "Mexico", "Germany", "Japan", "Netherlands", "Belgium", "Italy", "France", "Spain", "Poland", "Czech Republic", "Hungary", "Austria", "Sweden", "Denmark", "Finland", "Ireland", "Portugal", "Greece"]
+  "allCountries": ["Netherlands", "Belgium", "Italy", "France", "Spain", "Poland", "Czech Republic", "Hungary", "Austria", "Sweden", "Denmark", "Finland", "Ireland", "Portugal", "Greece"]
 }
 \`\`\`
 No extra keys or commentary.
 
-Fetch the countries in the descending order of trading volume with the US for the provided industry, but make sure to include countries that are already in the tariff updates section while excluding only the absolute top 5.
+Fetch 15 additional countries in descending order of trading volume with the US for the ${
+    definition.name
+  } industry, excluding the countries we already have: ${existingTop5Countries.join(', ')}.
 `;
 }
 
-async function getAllCountries(industry: TariffIndustryId, date: string): Promise<string[]> {
-  const prompt = getAllCountriesPrompt(industry, date);
+async function getAllCountries(industry: TariffIndustryId, date: string, existingTop5Countries: string[]): Promise<string[]> {
+  const prompt = getAllCountriesPrompt(industry, date, existingTop5Countries);
   const response = await getLlmResponse<{ allCountries: string[] }>(prompt, AllCountriesSchema);
   return response.allCountries;
 }
@@ -151,22 +154,22 @@ async function getTariffUpdatesForAllCountries(
   date: string,
   headings: IndustryAreasWrapper
 ): Promise<AllCountriesTariffUpdatesForIndustry> {
-  // Get existing tariff data to exclude top 5 countries
+  // Get existing tariff data to get top 5 countries
   const existingTariffUpdates = await readTariffUpdatesFromFile(industry);
   const top5Countries = existingTariffUpdates?.countryNames || [];
 
-  // Get the list of countries to process (top 20 including tariff updates countries but excluding top 5)
-  console.log(`Fetching top 20 trading partners (including tariff updates countries but excluding top 5) for ${industry}…`);
-  const allCountries = await getAllCountries(industry, date);
+  // Get 15 additional countries (LLM will exclude the top 5)
+  console.log(`Fetching 15 additional trading partners for ${industry} (excluding top 5: ${top5Countries.join(', ')})`);
+  const additionalCountries = await getAllCountries(industry, date, top5Countries);
 
-  // Filter to exclude top 5 countries but keep other tariff updates countries
-  const countriesToProcess = allCountries.filter((country) => !top5Countries.includes(country));
-  console.log(`Filtered to ${countriesToProcess.length} countries after excluding top 5: ${top5Countries.join(', ')}`);
+  // Combine top 5 + additional 15 = 20 total countries
+  const allCountries = [...top5Countries, ...additionalCountries];
+  console.log(`Total countries to process: ${allCountries.length} (${top5Countries.length} existing + ${additionalCountries.length} additional)`);
 
-  console.log(`Invoking LLM for tariffs for each of:`, countriesToProcess);
+  console.log(`Invoking LLM for tariffs for each of:`, allCountries);
   const countrySpecificTariffs: CountrySpecificTariff[] = [];
 
-  for (const country of countriesToProcess) {
+  for (const country of allCountries) {
     const prompt = getTariffUpdatesForAllCountriesPrompt(industry, date, headings, country);
     console.log(`Fetching tariffs for ${country}…`);
     const countryTariff = await getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, 'gpt-4o-search-preview');
@@ -178,7 +181,7 @@ async function getTariffUpdatesForAllCountries(
   }
 
   const result = {
-    countryNames: countriesToProcess,
+    countryNames: allCountries,
     countrySpecificTariffs,
     lastUpdated: new Date().toISOString(),
   };

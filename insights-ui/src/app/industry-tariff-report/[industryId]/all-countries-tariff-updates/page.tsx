@@ -5,6 +5,7 @@ import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/ind
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
+import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
@@ -111,12 +112,17 @@ export default async function AllCountriesTariffUpdatesPage({ params }: { params
         </PrivateWrapper>
       )}
 
-      <div className="space-y-4">
+      <div className="space-y-8">
+        {/* Country Navigation */}
+        {report.allCountriesTariffUpdates && report.allCountriesTariffUpdates.countryNames && (
+          <CountryNavigation countries={report.allCountriesTariffUpdates.countryNames} industryId={industryId} />
+        )}
+
         {report.allCountriesTariffUpdates ? (
           report.allCountriesTariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
             const sectionId = `country-${countryTariff.countryName.toLowerCase().replace(/\s+/g, '-')}`;
             return (
-              <div key={index} className="mb-6">
+              <div key={index} className="mb-4">
                 <CountryTariffRenderer countryTariff={countryTariff} sectionId={sectionId} />
               </div>
             );
