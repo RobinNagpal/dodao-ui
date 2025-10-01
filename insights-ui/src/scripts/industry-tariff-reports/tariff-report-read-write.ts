@@ -275,3 +275,22 @@ export async function readSeoDetailsFromFile(industry: string): Promise<TariffRe
   const key = getS3KeyForSeoDetails(industry, 'seo-details.json');
   return await getJsonFromS3<TariffReportSeoDetails>(key);
 }
+
+//--------------------------------------------------------------------------------------------------------
+// Centralized Last Modified Dates
+//--------------------------------------------------------------------------------------------------------
+
+export function getS3KeyForLastModifiedDates(fileName: string): string {
+  return `koalagains-reports/tariff-reports/${fileName}`;
+}
+
+export async function readLastModifiedDatesFromFile(): Promise<Record<string, string> | undefined> {
+  const key = getS3KeyForLastModifiedDates('last-modified-dates.json');
+  return await getJsonFromS3<Record<string, string>>(key);
+}
+
+export async function writeLastModifiedDatesToFile(lastModifiedDates: Record<string, string>) {
+  const jsonKey = getS3KeyForLastModifiedDates('last-modified-dates.json');
+  const jsonContent = JSON.stringify(lastModifiedDates, null, 2);
+  await uploadFileToS3(new TextEncoder().encode(jsonContent), jsonKey, 'application/json');
+}

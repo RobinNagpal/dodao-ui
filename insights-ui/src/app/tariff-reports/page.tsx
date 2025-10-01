@@ -104,7 +104,7 @@ export default async function TariffReportsPage() {
                         <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
                           Tariff Report
                         </span>
-                        {report.lastModified && <span className="ml-2 text-muted-foreground">Updated: {new Date(report.lastModified).toDateString()}</span>}
+                        {report.lastModified && <span className="ml-2 text-muted-foreground">Updated: {new Date(report.lastModified).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>}
                       </div>
 
                       <Link href={`/industry-tariff-report/${report.industryId}`} className="block mt-2 group">
