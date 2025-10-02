@@ -37,7 +37,9 @@ export default function BreadcrumbsWithChevrons({ breadcrumbs, rightButton, hide
                   <ChevronRightIcon className={`h-5 w-5 flex-shrink-0 ${hideHomeIcon && isFirstBreadcrumb ? 'hidden sm:block' : ''}`} aria-hidden="true" />
                   <Link
                     href={breadcrumb.href}
-                    className={`${hideHomeIcon && isFirstBreadcrumb ? 'sm:ml-4' : 'ml-4'} text-sm font-medium ${breadcrumb.current ? 'cursor-default' : 'cursor-pointer link-color'}`}
+                    className={`${hideHomeIcon && isFirstBreadcrumb ? 'sm:ml-4' : 'ml-4'} text-sm font-medium ${
+                      breadcrumb.current ? 'cursor-default' : 'cursor-pointer link-color'
+                    }`}
                     aria-current={breadcrumb.current ? 'page' : undefined}
                   >
                     {breadcrumb.name}
