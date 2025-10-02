@@ -12,33 +12,42 @@ export interface BreadcrumbsOjbect {
 interface BreadcrumbsWithChevronsProps {
   breadcrumbs: BreadcrumbsOjbect[];
   rightButton?: ReactNode;
+  hideHomeIcon?: boolean;
 }
 
-export default function BreadcrumbsWithChevrons({ breadcrumbs, rightButton }: BreadcrumbsWithChevronsProps) {
+export default function BreadcrumbsWithChevrons({ breadcrumbs, rightButton, hideHomeIcon = false }: BreadcrumbsWithChevronsProps) {
   return breadcrumbs.length === 0 ? null : (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4">
       <nav className="flex" aria-label="Breadcrumb">
         <ol role="list" className="flex items-center space-x-4">
-          <li>
+          {/* Home icon - hidden only on mobile */}
+          <li className={hideHomeIcon ? 'hidden sm:block' : ''}>
             <Link className="cursor-pointer" href={'/'}>
               <HomeIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
               <span className="sr-only">Home</span>
             </Link>
           </li>
-          {breadcrumbs.map((breadcrumb) => (
-            <li key={breadcrumb.name}>
-              <div className="flex items-center">
-                <ChevronRightIcon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-                <Link
-                  href={breadcrumb.href}
-                  className={`ml-4 text-sm font-medium ${breadcrumb.current ? 'cursor-default' : 'cursor-pointer link-color'}`}
-                  aria-current={breadcrumb.current ? 'page' : undefined}
-                >
-                  {breadcrumb.name}
-                </Link>
-              </div>
-            </li>
-          ))}
+          {breadcrumbs.map((breadcrumb, index) => {
+            const isFirstBreadcrumb = index === 0;
+
+            return (
+              <li key={breadcrumb.name}>
+                <div className="flex items-center">
+                  {/* Show chevron on desktop always, on mobile only if not first breadcrumb when home is hidden */}
+                  <ChevronRightIcon className={`h-5 w-5 flex-shrink-0 ${hideHomeIcon && isFirstBreadcrumb ? 'hidden sm:block' : ''}`} aria-hidden="true" />
+                  <Link
+                    href={breadcrumb.href}
+                    className={`${hideHomeIcon && isFirstBreadcrumb ? 'sm:ml-4' : 'ml-4'} text-sm font-medium ${
+                      breadcrumb.current ? 'cursor-default' : 'cursor-pointer link-color'
+                    }`}
+                    aria-current={breadcrumb.current ? 'page' : undefined}
+                  >
+                    {breadcrumb.name}
+                  </Link>
+                </div>
+              </li>
+            );
+          })}
         </ol>
       </nav>
       {rightButton && <div className="flex-shrink-0 w-full sm:w-auto">{rightButton}</div>}
