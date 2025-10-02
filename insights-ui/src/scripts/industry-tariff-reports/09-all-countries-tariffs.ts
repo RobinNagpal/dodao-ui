@@ -13,48 +13,42 @@ import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-indu
 
 const CountrySpecificTariffSchema = z.object({
   countryName: z.string().describe('Name of the country.'),
-  tariffDetails: z
+  tradeVolume: z
     .string()
     .describe(
-      'Description of the new tariffs added as of the mentioned date for the given industry. Add 4-5 lines' +
-        'Include hyperlinks/citations in the content where ever possible. ' +
-        'Every definition, and number, company name etc should have a hyperlink. '
+      'Total trade volume between this country and the US for the given industry in USD (e.g., $X.X billion annually). ' +
+        'Include hyperlinks/citations to official trade data sources.'
     ),
-  existingTradeAmountAndAgreement: z
+  tariffBeforeTrump: z
     .string()
     .describe(
-      'Description and the amount of trade that is conducted with the US for the given industry. Add 4-5 lines' +
-        'Include hyperlinks/citations in the content where ever possible. ' +
-        'Every definition, and number, company name etc should have a hyperlink. '
+      'Tariff rates that were in effect before Trump administration changes for this industry. ' +
+        'Specify percentage rates for different product categories. Include hyperlinks to pre-2017 tariff schedules.'
     ),
-  newChanges: z
+  newTariffUpdates: z
     .string()
     .describe(
-      'Description of the changes in the tariff policy as compared to the previous policy for the given industry. Add 4-5 lines' +
-        'Include hyperlinks/citations in the content where ever possible. ' +
-        'Every definition, and number, company name etc should have a hyperlink. '
+      'Description of the new tariff rates implemented by the Trump administration for this industry and country. ' +
+        'Include specific percentage increases, effective dates, and product categories affected. Add 6-8 lines of detail. ' +
+        'Include hyperlinks/citations to official government announcements and trade policy documents.'
     ),
-  tradeExemptedByNewTariff: z
+  effectiveDate: z
     .string()
     .describe(
-      'Description of the subcategories and the amount of trade exempted by the new tariff for the given industry.' +
-        'Include hyperlinks/citations in the content where ever possible. '
+      'Exact date when the new tariffs became effective (format: Month DD, YYYY). ' +
+        'Include hyperlinks to the official Federal Register notices or presidential proclamations.'
     ),
-  tradeImpactedByNewTariff: z
+  source: z
     .string()
     .describe(
-      'Description of the subcategories and the amount of trade impacted by the new tariff for the given industry.' +
-        'Include hyperlinks/citations in the content where ever possible. '
+      'Primary sources used for this information including official government websites, trade databases, and policy documents. ' +
+        'List 2-3 key sources with their URLs.'
     ),
+});
 
-  tariffChangesForIndustrySubArea: z
-    .string()
-    .array()
-    .describe(
-      'Change of tariff for the specific sub-area. Tell me one line for each sub-area/sub-heading' +
-        'Include hyperlinks/citations in the content where ever possible. ' +
-        'Every definition, and number, company name etc should have a hyperlink. '
-    ),
+// Schema for all countries tariff data in a single response
+const AllCountriesTariffDataSchema = z.object({
+  countries: z.array(CountrySpecificTariffSchema).describe('Array of tariff data for all requested countries'),
 });
 
 // 1) Schema for exactly 15 additional country names (excluding existing top 5)
@@ -72,11 +66,13 @@ function getAllCountriesPrompt(industry: TariffIndustryId, date: string, existin
   return `
 I need to get 15 additional countries for the ${definition.name} industry analysis. Here's what I need:
 
-We already have the top 5 countries from the existing tariff updates section: ${existingTop5Countries.join(', ')}
-These are the highest trading volume countries that are already covered.
+CRITICAL: We already have the top 5 countries from the existing tariff updates section: ${existingTop5Countries.join(', ')}
+These are the highest trading volume countries that are already covered and MUST BE EXCLUDED.
 
 Now I need 15 more significant trading partners to make a total of 20 countries.
 Focus on other important trading partners that complement the existing top 5.
+
+IMPORTANT: Do NOT include any of these countries in your response: ${existingTop5Countries.join(', ')}
 
 Output a JSON object with a single key \`allCountries\`, whose value is an array of exactly 15 country names.
 Example:
@@ -89,7 +85,7 @@ No extra keys or commentary.
 
 Fetch 15 additional countries in descending order of trading volume with the US for the ${
     definition.name
-  } industry, excluding the countries we already have: ${existingTop5Countries.join(', ')}.
+  } industry, ABSOLUTELY EXCLUDING these countries we already have: ${existingTop5Countries.join(', ')}.
 `;
 }
 
@@ -99,56 +95,62 @@ async function getAllCountries(industry: TariffIndustryId, date: string, existin
   return response.allCountries;
 }
 
-function getTariffUpdatesForAllCountriesPrompt(industry: TariffIndustryId, date: string, headings: IndustryAreasWrapper, country: string) {
+function getAllCountriesTariffUpdatesPrompt(industry: TariffIndustryId, date: string, headings: IndustryAreasWrapper, countries: string[]) {
   const definition = getTariffIndustryDefinitionById(industry);
   const prompt = `
-  As of today (${getDateAsMonthDDYYYYFormat(date)}), I want to know about the new or recent tariffs added for the ${definition.name} industry for ${country}.
+  As of today (${getDateAsMonthDDYYYYFormat(date)}), I want to know about the new or recent tariffs added for the ${
+    definition.name
+  } industry for multiple countries.
+
+  IMPORTANT: Provide tariff data for ALL of these countries in a single response: ${countries.join(', ')}
+
   Make sure to verify all the new tariffs added for ${definition.name} industry and as of ${getDateAsMonthDDYYYYFormat(
     date
-  )} for ${country} because they have been changing almost everyday.
-  Make sure to verify the tariff information on official governament websites or trade websites for tariff information, and also make sure that you have referred to all the information as of ${getDateAsMonthDDYYYYFormat(
+  )} for each country because they have been changing almost everyday.
+
+  Make sure to verify the tariff information on official government websites or trade websites for tariff information, and also make sure that you have referred to all the information as of ${getDateAsMonthDDYYYYFormat(
     date
   )}.
-  Dont use or refer to koalagains.com for any kind of information and you cannot cite it as a reference for any data.
+
+  Don't use or refer to koalagains.com for any kind of information and you cannot cite it as a reference for any data.
   Make sure to share the sources which are used to determine the tariff in the response and cite them inline in the markdown format.
 
-  Please give me the details of the new tariffs added for ${country}.
-
-  The details should include:
+  For EACH country, provide the following details:
   - Name of the country
-  - Amount of trade that is conducted with the US for the given industry
-  - Description of the new tariffs added as of the mentioned date for the given industry. Add 6-8 lines of description.
+  - Total trade volume between this country and the US for the given industry in USD (e.g., $X.X billion annually)
+  - Tariff rates that were in effect before Trump administration changes
+  - Description of the new tariff rates implemented by the Trump administration (6-8 lines of detail)
+  - Exact date when the new tariffs became effective (format: Month DD, YYYY)
+  - Primary sources used (2-3 key sources with URLs)
+
+  Guidelines for each country:
   - Verify if the tariffs have actually been added for the given industry and country.
-  - Many of the articles share that that the tariffs might be applied, don't consider those articles which are not 100% sure that the tariffs have been added.
-  - Description of the changes in the tariff policy as compared to the previous policy for the given industry. Add 6-8 lines for this as well.
+  - Many articles share that tariffs might be applied, don't consider those articles which are not 100% sure that the tariffs have been added.
   - For Canada and Mexico, make sure to consider only the tariffs that are added in excess of the USMCA agreement.
   - For other countries, make sure to consider only the tariffs that are added in excess of the existing agreement.
   - Include the real date when the tariffs were added.
   - We are interested in the tariffs that US has added
   - You can also include the tariff that the other country has added, but stress more on the tariffs that US has added.
+  - Many products or subcategories can be exempted from the new tariffs. Calculate and mention the amount of trade that is impacted vs exempted.
 
-  Also many or most of the products or subcategories can be exempted from the new tariffs. Calculate and mention the
-  amount of trade that is impacted by the new tariff and the amount of trade that is exempted by the new tariff for
-  the given industry.
+  For each of the Industry Areas & Subareas below, I want to know the changes to the tariffs for that area and sub-area for EACH country by the Trump Government.
 
-  For each of the Industry Areas & Subareas below, I want to
-  1. Know the changes to the tariffs for that area and sub-area and ${country} by the Trump Government.
-  2. I want to know the exact change. Mention the numerical figures as much as possible.
-
-  Make sure to follow the output instructions below and include all the details in the output.
-
+  # Countries to Cover
+  ${countries.join(', ')}
 
   # Industry Areas
   ${JSON.stringify(headings, null, 2)}
 
   # Output Instructions
   ${outputInstructions}
+
+  IMPORTANT: Return a JSON object with a single key "countries" containing an array of objects, one for each country in the same order as provided.
   `;
 
   return prompt;
 }
 
-// 3) Use it in your tariff-fetcher for all countries
+// 3) Use it in your tariff-fetcher for all countries (single LLM call approach)
 async function getTariffUpdatesForAllCountries(
   industry: TariffIndustryId,
   date: string,
@@ -166,19 +168,14 @@ async function getTariffUpdatesForAllCountries(
   const allCountries = [...top5Countries, ...additionalCountries];
   console.log(`Total countries to process: ${allCountries.length} (${top5Countries.length} existing + ${additionalCountries.length} additional)`);
 
-  console.log(`Invoking LLM for tariffs for each of:`, allCountries);
-  const countrySpecificTariffs: CountrySpecificTariff[] = [];
+  // Create a single prompt for all countries
+  const prompt = getAllCountriesTariffUpdatesPrompt(industry, date, headings, allCountries);
 
-  for (const country of allCountries) {
-    const prompt = getTariffUpdatesForAllCountriesPrompt(industry, date, headings, country);
-    console.log(`Fetching tariffs for ${country}…`);
-    const countryTariff = await getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, 'gpt-4o-search-preview');
+  console.log(`Invoking single LLM call for tariffs for all countries:`, allCountries);
+  const allCountriesTariffData = await getLlmResponse<{ countries: CountrySpecificTariff[] }>(prompt, AllCountriesTariffDataSchema, 'gpt-4o-search-preview');
 
-    // Clean the response data to remove any URL parameters that might affect country names
-    const cleanedCountryTariff = recursivelyCleanOpenAiUrls(countryTariff);
-
-    countrySpecificTariffs.push(cleanedCountryTariff);
-  }
+  // Clean the response data to remove any URL parameters that might affect country names
+  const countrySpecificTariffs = allCountriesTariffData.countries.map((countryTariff) => recursivelyCleanOpenAiUrls(countryTariff));
 
   const result = {
     countryNames: allCountries,

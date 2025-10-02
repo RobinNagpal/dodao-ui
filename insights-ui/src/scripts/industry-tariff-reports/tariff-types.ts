@@ -37,7 +37,6 @@ export interface Introduction {
 }
 
 // 03-industry-tariffs.ts
-
 export interface CountrySpecificTariff {
   countryName: string;
   tariffDetails: string;
@@ -49,12 +48,6 @@ export interface CountrySpecificTariff {
 }
 
 export interface TariffUpdatesForIndustry {
-  countryNames: string[];
-  countrySpecificTariffs: CountrySpecificTariff[];
-  lastUpdated?: string; // ISO date string when this data was generated
-}
-
-export interface AllCountriesTariffUpdatesForIndustry {
   countryNames: string[];
   countrySpecificTariffs: CountrySpecificTariff[];
   lastUpdated?: string; // ISO date string when this data was generated
@@ -195,7 +188,21 @@ export interface FinalConclusion {
   finalStatements: string;
 }
 
-// Tariff updates for a specific industry
+// 09-all-countries-tariffs.ts
+export interface AllCountriesSpecificTariff {
+  countryName: string;
+  tradeVolume: string;
+  tariffBeforeTrump: string;
+  newTariffUpdates: string;
+  effectiveDate: string;
+  source: string;
+}
+
+export interface AllCountriesTariffUpdatesForIndustry {
+  countryNames: string[];
+  countrySpecificTariffs: AllCountriesSpecificTariff[];
+  lastUpdated?: string; // ISO date string when this data was generated
+}
 
 export interface ReportCover {
   title: string;
@@ -262,6 +269,7 @@ export enum ReportType {
   HEADINGS = 'HEADINGS',
   UNDERSTAND_INDUSTRY = 'UNDERSTAND_INDUSTRY',
   TARIFF_UPDATES = 'TARIFF_UPDATES',
+  ALL_COUNTRIES_TARIFF_UPDATES = 'ALL_COUNTRIES_TARIFF_UPDATES',
   INDUSTRY_AREA_SECTION = 'INDUSTRY_AREA_SECTION',
   EVALUATE_INDUSTRY_AREA = 'EVALUATE_INDUSTRY_AREA',
   EXECUTIVE_SUMMARY = 'EXECUTIVE_SUMMARY',

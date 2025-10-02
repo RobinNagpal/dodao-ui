@@ -1,5 +1,6 @@
 import {
   generateMarkdownContent,
+  getMarkdownContentForAllCountriesIndustryTariffs,
   getMarkdownContentForEvaluateIndustryArea,
   getMarkdownContentForExecutiveSummary,
   getMarkdownContentForFinalConclusion,
@@ -297,7 +298,7 @@ export async function readAllCountriesTariffUpdatesFromFile(industry: string): P
 }
 
 export async function writeMarkdownFileForAllCountriesTariffUpdates(industry: string, allCountriesTariffUpdates: AllCountriesTariffUpdatesForIndustry) {
-  const markdownContent = getMarkdownContentForIndustryTariffs(industry, allCountriesTariffUpdates);
+  const markdownContent = getMarkdownContentForAllCountriesIndustryTariffs(industry, allCountriesTariffUpdates);
   const key = getS3KeyForAllCountriesTariffs(industry, 'all-countries-tariff-updates.md');
   await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }

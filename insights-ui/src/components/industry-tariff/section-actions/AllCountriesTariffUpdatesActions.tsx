@@ -37,9 +37,7 @@ export default function AllCountriesTariffUpdatesActions({ industryId }: AllCoun
   });
 
   const handleRegenerate = async () => {
-    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-all-countries-tariff-updates`, {
-      date: new Date().toISOString().split('T')[0],
-    });
+    await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-all-countries-tariff-updates`, {});
     router.refresh();
     setShowRegenerateModal(false);
   };

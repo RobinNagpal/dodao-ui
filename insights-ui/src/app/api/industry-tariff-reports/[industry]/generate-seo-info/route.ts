@@ -1,4 +1,5 @@
 import {
+  generateAllCountriesTariffUpdatesSeo,
   generateAndSaveAllSeoDetails,
   generateEvaluateIndustryAreasSeo,
   generateExecutiveSummarySeo,
@@ -96,6 +97,10 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
       case ReportType.TARIFF_UPDATES:
         seoDetails = await generateTariffUpdatesSeo(industry);
         if (seoDetails) existingSeoDetails.tariffUpdatesSeoDetails = seoDetails;
+        break;
+      case ReportType.ALL_COUNTRIES_TARIFF_UPDATES:
+        seoDetails = await generateAllCountriesTariffUpdatesSeo(industry);
+        if (seoDetails) existingSeoDetails.allCountriesTariffUpdatesSeoDetails = seoDetails;
         break;
       case ReportType.UNDERSTAND_INDUSTRY:
         seoDetails = await generateUnderstandIndustrySeo(industry);

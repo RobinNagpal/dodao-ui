@@ -123,7 +123,7 @@ export default async function AllCountriesTariffUpdatesPage({ params }: { params
             const sectionId = `country-${countryTariff.countryName.toLowerCase().replace(/\s+/g, '-')}`;
             return (
               <div key={index} className="mb-4">
-                <CountryTariffRenderer countryTariff={countryTariff} sectionId={sectionId} />
+                <CountryTariffRenderer countryTariff={countryTariff} sectionId={sectionId} isAllCountries={true} />
               </div>
             );
           })
