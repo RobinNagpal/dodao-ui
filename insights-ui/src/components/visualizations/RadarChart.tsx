@@ -241,9 +241,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data, scorePercentage }) => {
 
   ChartJS.register(HighlightPlugin);
 
-  return (
-      <Radar data={chartData} options={options} />
-  );
+  return <Radar data={chartData} options={options} />;
 };
 
 export default RadarChart;

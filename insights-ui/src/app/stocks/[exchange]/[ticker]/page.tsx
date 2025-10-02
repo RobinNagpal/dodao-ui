@@ -239,7 +239,7 @@ function SimilarSkeleton(): JSX.Element {
    CHILD SERVER COMPONENTS (strictly typed, minimal)
 ============================================================================= */
 
-function BreadcrumbsFromData({ data, hideHomeIcon }: { data: Promise<TickerV1FastResponse>; hideHomeIcon?: boolean }): JSX.Element {
+function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
   const d: TickerV1FastResponse = use(data);
   const exchange: string = d.exchange.toUpperCase();
   const ticker: string = d.symbol.toUpperCase();
@@ -278,7 +278,6 @@ function BreadcrumbsFromData({ data, hideHomeIcon }: { data: Promise<TickerV1Fas
           tickerSubIndustryName={subIndustryName}
         />
       }
-      hideHomeIcon={hideHomeIcon}
     />
   );
 }
@@ -392,7 +391,7 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
   return (
     <>
       <section id="detailed-analysis" className="mb-8">
-        <h2 className="text-2xl font-bold mb-6">Detailed Analysis</h2>
+        <h2 className="text-2xl font-bold mb-6 mt-10">Detailed Analysis</h2>
         {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
           const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
           if (!categoryResult) return null;
@@ -485,20 +484,20 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
     <PageWrapper>
       {/* Breadcrumbs can stream independently */}
       <Suspense fallback={<BarSkeleton widthClass="w-64" />}>
-        <BreadcrumbsFromData data={tickerInfo} hideHomeIcon={true} />
+        <BreadcrumbsFromData data={tickerInfo} />
       </Suspense>
 
       <Suspense fallback={<SummaryInfoSkeleton />}>
         <TickerSummaryInfo data={tickerInfo} />
       </Suspense>
       <div className="mx-auto max-w-7xl py-2">
-        <section className="mb-8">
+        <section id="competition" className="mb-8">
           <Suspense fallback={<CompetitionSkeleton />}>
             <Competition dataPromise={competitionPromise} />
           </Suspense>
         </section>
 
-        <section className="mb-8">
+        <section id="similar-tickers" className="mb-8">
           <Suspense fallback={<SimilarSkeleton />}>
             <SimilarTickers dataPromise={similarPromise} />
           </Suspense>
