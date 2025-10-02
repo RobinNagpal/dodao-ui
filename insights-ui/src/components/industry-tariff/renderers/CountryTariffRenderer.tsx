@@ -28,7 +28,10 @@ export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ co
             <div className="bg-gray-800 p-3 mb-3 border-b border-gray-700">
               <h3 className="text-base font-medium heading-color">Trade Volume</h3>
             </div>
-            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown((countryTariff as AllCountriesSpecificTariff).tradeVolume) }} />
+            <div
+              className="prose max-w-none markdown markdown-body"
+              dangerouslySetInnerHTML={{ __html: parseMarkdown((countryTariff as AllCountriesSpecificTariff).tradeVolume) }}
+            />
           </div>
 
           {/* Tariffs Before Trump */}
@@ -38,7 +41,7 @@ export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ co
             </div>
             <div className="p-4">
               <div
-                className="prose max-w-none"
+                className="prose max-w-none markdown markdown-body"
                 dangerouslySetInnerHTML={{ __html: parseMarkdown((countryTariff as AllCountriesSpecificTariff).tariffBeforeTrump) }}
               />
             </div>
@@ -51,7 +54,7 @@ export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ co
             </div>
             <div className="p-4">
               <div
-                className="prose max-w-none"
+                className="prose max-w-none markdown markdown-body"
                 dangerouslySetInnerHTML={{ __html: parseMarkdown((countryTariff as AllCountriesSpecificTariff).newTariffUpdates) }}
               />
             </div>
@@ -64,7 +67,7 @@ export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ co
             </div>
             <div className="p-4">
               <div
-                className="prose max-w-none"
+                className="prose max-w-none markdown markdown-body"
                 dangerouslySetInnerHTML={{ __html: parseMarkdown((countryTariff as AllCountriesSpecificTariff).effectiveDate) }}
               />
             </div>
@@ -76,7 +79,10 @@ export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ co
               <h3 className="text-base font-medium heading-color">Sources</h3>
             </div>
             <div className="p-4">
-              <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown((countryTariff as AllCountriesSpecificTariff).source) }} />
+              <div
+                className="prose max-w-none markdown markdown-body"
+                dangerouslySetInnerHTML={{ __html: parseMarkdown((countryTariff as AllCountriesSpecificTariff).source) }}
+              />
             </div>
           </div>
         </>
@@ -95,7 +101,7 @@ export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ co
             </div>
             <div className="p-4">
               <div
-                className="prose max-w-none"
+                className="prose max-w-none markdown markdown-body"
                 dangerouslySetInnerHTML={{ __html: parseMarkdown((countryTariff as CountrySpecificTariff).existingTradeAmountAndAgreement) }}
               />
             </div>
@@ -107,7 +113,10 @@ export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ co
               <h3 className="text-base font-medium heading-color">New Tariff Changes</h3>
             </div>
             <div className="p-4">
-              <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown((countryTariff as CountrySpecificTariff).newChanges) }} />
+              <div
+                className="prose max-w-none markdown markdown-body"
+                dangerouslySetInnerHTML={{ __html: parseMarkdown((countryTariff as CountrySpecificTariff).newChanges) }}
+              />
             </div>
           </div>
 
@@ -118,7 +127,7 @@ export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ co
             </div>
             <div className="p-4">
               <div
-                className="prose max-w-none"
+                className="prose max-w-none markdown markdown-body"
                 dangerouslySetInnerHTML={{ __html: parseMarkdown((countryTariff as CountrySpecificTariff).tradeImpactedByNewTariff) }}
               />
             </div>
@@ -131,7 +140,7 @@ export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ co
             </div>
             <div className="p-4">
               <div
-                className="prose max-w-none"
+                className="prose max-w-none markdown markdown-body"
                 dangerouslySetInnerHTML={{ __html: parseMarkdown((countryTariff as CountrySpecificTariff).tradeExemptedByNewTariff) }}
               />
             </div>
@@ -147,7 +156,7 @@ export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ co
                 <div className="p-4">
                   <ul className="list-disc pl-5 space-y-2">
                     {(countryTariff as CountrySpecificTariff).tariffChangesForIndustrySubArea.map((change, index) => (
-                      <li key={index} className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(change) }} />
+                      <li key={index} className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(change) }} />
                     ))}
                   </ul>
                 </div>

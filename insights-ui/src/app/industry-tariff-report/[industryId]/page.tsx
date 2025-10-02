@@ -137,7 +137,10 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
         {renderSection(
           'Overview',
           report.reportCover ? (
-            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.reportCover.reportCoverContent) }} />
+            <div
+              className="prose max-w-none markdown markdown-body"
+              dangerouslySetInnerHTML={{ __html: parseMarkdown(report.reportCover.reportCoverContent) }}
+            />
           ) : (
             <p className="text-gray-500 italic">No content available</p>
           )
@@ -156,7 +159,7 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
                       dangerouslySetInnerHTML={{
                         __html: parseMarkdown(tariff.newChangesFirstSentence),
                       }}
-                      className="markdown-body"
+                      className="markdown markdown-body"
                     />
                   </div>
                 ))}
@@ -173,7 +176,10 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
         {report.executiveSummary &&
           renderSection(
             'Executive Summary',
-            <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.executiveSummary.executiveSummary) }} />
+            <div
+              className="prose max-w-none markdown markdown-body"
+              dangerouslySetInnerHTML={{ __html: parseMarkdown(report.executiveSummary.executiveSummary) }}
+            />
           )}
 
         {/* Related Industries Section */}

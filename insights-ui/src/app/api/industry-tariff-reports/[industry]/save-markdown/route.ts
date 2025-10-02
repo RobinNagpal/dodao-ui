@@ -7,6 +7,7 @@ import {
   readUnderstandIndustryJsonFromFile,
   readIndustryHeadingsFromFile,
   readEvaluateSubIndustryAreaJsonFromFile,
+  readAllCountriesTariffUpdatesFromFile,
   writeJsonAndMarkdownFilesForExecutiveSummary,
   writeJsonAndMarkdownFilesForFinalConclusion,
   writeJsonAndMarkdownFilesForReportCover,
@@ -18,6 +19,8 @@ import {
   writeMarkdownFileForUnderstandIndustry,
   writeJsonFileForEvaluateSubIndustryArea,
   writeMarkdownFileForEvaluateSubIndustryArea,
+  writeJsonFileForAllCountriesTariffUpdates,
+  writeMarkdownFileForAllCountriesTariffUpdates,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -275,6 +278,54 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
       };
 
       await writeJsonAndMarkdownFilesForFinalConclusion(industry, updatedData);
+      break;
+    }
+
+    case 'all-countries-tariff-updates': {
+      const existingData = await readAllCountriesTariffUpdatesFromFile(industry);
+      if (!existingData) {
+        throw new Error('All countries tariff updates data not found');
+      }
+
+      // Parse markdown content back to country-specific tariffs
+      const countryBlocks = content.split(/^---$/gm).filter((block) => block.trim());
+
+      const countrySpecificTariffs = countryBlocks.map((block) => {
+        const lines = block.trim().split('\n');
+        const countryNameLine = lines.find((line) => line.startsWith('## '));
+        const countryName = countryNameLine ? countryNameLine.replace('## ', '').trim() : '';
+
+        // Extract sections
+        const extractSection = (startMarker: string, endMarker?: string) => {
+          const startIndex = lines.findIndex((line) => line.startsWith(startMarker));
+          if (startIndex === -1) return '';
+
+          const endIndex = endMarker ? lines.findIndex((line, idx) => idx > startIndex && line.startsWith(endMarker)) : lines.length;
+
+          return lines
+            .slice(startIndex + 1, endIndex === -1 ? lines.length : endIndex)
+            .filter((line) => line.trim())
+            .join('\n')
+            .trim();
+        };
+
+        return {
+          countryName,
+          tradeVolume: extractSection('### Trade Volume', '### Tariffs Before'),
+          tariffBeforeTrump: extractSection('### Tariffs Before Trump Administration', '### New Tariff'),
+          newTariffUpdates: extractSection('### New Tariff Updates', '### Effective Date'),
+          effectiveDate: extractSection('### Effective Date', '### Sources'),
+          source: extractSection('### Sources'),
+        };
+      });
+
+      const updatedData = {
+        ...existingData,
+        countrySpecificTariffs,
+      };
+
+      await writeJsonFileForAllCountriesTariffUpdates(industry, updatedData);
+      await writeMarkdownFileForAllCountriesTariffUpdates(industry, updatedData);
       break;
     }
 

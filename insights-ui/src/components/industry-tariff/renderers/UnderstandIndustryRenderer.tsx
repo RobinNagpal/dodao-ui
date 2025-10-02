@@ -29,7 +29,7 @@ export const UnderstandIndustryRenderer: React.FC<UnderstandIndustryRendererProp
           <div className="p-4">
             <div className="prose max-w-none space-y-4">
               {section.paragraphs.map((paragraph, pIndex) => (
-                <div key={pIndex} dangerouslySetInnerHTML={{ __html: parseMarkdown(paragraph) }} />
+                <div key={pIndex} className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(paragraph) }} />
               ))}
             </div>
           </div>
