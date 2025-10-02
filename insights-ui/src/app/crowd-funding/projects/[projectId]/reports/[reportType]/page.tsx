@@ -93,7 +93,7 @@ export default async function ReportDetailPage({ params }: { params: Promise<{ p
 
   return (
     <PageWrapper>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
       <div className="mx-auto text-color">
         <div className="text-center text-color my-5">
           <h1 className="font-semibold leading-6 text-2xl">Project: {projectId}</h1>

@@ -5,11 +5,12 @@ import {
   writeLastModifiedDatesToFile,
   readLastModifiedDatesFromFile,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import { CountrySpecificTariff, IndustryAreasWrapper, AllCountriesTariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-import { getLlmResponse, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
+import { IndustryAreasWrapper, AllCountriesTariffUpdatesForIndustry, AllCountriesSpecificTariff } from '@/scripts/industry-tariff-reports/tariff-types';
+// import { getLlmResponse, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
 import { getDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { z } from 'zod';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
+import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 
 const CountrySpecificTariffSchema = z.object({
   countryName: z.string().describe('Name of the country.'),
@@ -29,7 +30,7 @@ const CountrySpecificTariffSchema = z.object({
     .string()
     .describe(
       'Description of the new tariff rates implemented by the Trump administration for this industry and country. ' +
-        'Include specific percentage increases, effective dates, and product categories affected. Add 6-8 lines of detail. ' +
+        'Include specific percentage increases, effective dates, and product categories affected. Keep to 3-4 concise sentences. ' +
         'Include hyperlinks/citations to official government announcements and trade policy documents.'
     ),
   effectiveDate: z
@@ -75,10 +76,10 @@ Focus on other important trading partners that complement the existing top 5.
 IMPORTANT: Do NOT include any of these countries in your response: ${existingTop5Countries.join(', ')}
 
 Output a JSON object with a single key \`allCountries\`, whose value is an array of exactly 15 country names.
-Example:
+Example Format:
 \`\`\`
 {
-  "allCountries": ["Netherlands", "Belgium", "Italy", "France", "Spain", "Poland", "Czech Republic", "Hungary", "Austria", "Sweden", "Denmark", "Finland", "Ireland", "Portugal", "Greece"]
+  "allCountries": ["China", "Mexico", "Canada", "India"]
 }
 \`\`\`
 No extra keys or commentary.
@@ -119,7 +120,7 @@ function getAllCountriesTariffUpdatesPrompt(industry: TariffIndustryId, date: st
   - Name of the country
   - Total trade volume between this country and the US for the given industry in USD (e.g., $X.X billion annually)
   - Tariff rates that were in effect before Trump administration changes
-  - Description of the new tariff rates implemented by the Trump administration (6-8 lines of detail)
+  - Description of the new tariff rates implemented by the Trump administration (3-4 concise sentences)
   - Exact date when the new tariffs became effective (format: Month DD, YYYY)
   - Primary sources used (2-3 key sources with URLs)
 
@@ -164,22 +165,20 @@ async function getTariffUpdatesForAllCountries(
   console.log(`Fetching 15 additional trading partners for ${industry} (excluding top 5: ${top5Countries.join(', ')})`);
   const additionalCountries = await getAllCountries(industry, date, top5Countries);
 
-  // Combine top 5 + additional 15 = 20 total countries
-  const allCountries = [...top5Countries, ...additionalCountries];
-  console.log(`Total countries to process: ${allCountries.length} (${top5Countries.length} existing + ${additionalCountries.length} additional)`);
+  console.log(`Total countries to process: ${additionalCountries.length}`);
 
   // Create a single prompt for all countries
-  const prompt = getAllCountriesTariffUpdatesPrompt(industry, date, headings, allCountries);
+  const prompt = getAllCountriesTariffUpdatesPrompt(industry, date, headings, additionalCountries);
 
-  console.log(`Invoking single LLM call for tariffs for all countries:`, allCountries);
-  const allCountriesTariffData = await getLlmResponse<{ countries: CountrySpecificTariff[] }>(prompt, AllCountriesTariffDataSchema, 'gpt-4o-search-preview');
+  console.log(`Invoking single LLM call for tariffs for all countries:`, additionalCountries);
+  const allCountriesTariffData = await getLlmResponse<{ countries: AllCountriesSpecificTariff[] }>(prompt, AllCountriesTariffDataSchema);
 
   // Clean the response data to remove any URL parameters that might affect country names
-  const countrySpecificTariffs = allCountriesTariffData.countries.map((countryTariff) => recursivelyCleanOpenAiUrls(countryTariff));
+  // const countrySpecificTariffs = allCountriesTariffData.countries.map((countryTariff) => recursivelyCleanOpenAiUrls(countryTariff));
 
   const result = {
-    countryNames: allCountries,
-    countrySpecificTariffs,
+    countryNames: additionalCountries,
+    countrySpecificTariffs: allCountriesTariffData.countries,
     lastUpdated: new Date().toISOString(),
   };
 

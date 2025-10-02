@@ -50,20 +50,24 @@ function getIsXLNow(): boolean {
   return window.matchMedia(`(min-width: ${XL_MIN_WIDTH_PX}px)`).matches;
 }
 
-/** Match-media hook with immediate initial value (no flicker). */
+/** Match-media hook with hydration-safe initial value. */
 function useIsXL(): boolean {
-  const [isXL, setIsXL] = React.useState<boolean>(getIsXLNow);
+  // Start with false to avoid hydration mismatch (server doesn't know screen size)
+  const [isXL, setIsXL] = React.useState<boolean>(false);
+  const [mounted, setMounted] = React.useState<boolean>(false);
 
   React.useEffect(() => {
+    setMounted(true);
     const mql: MediaQueryList = window.matchMedia(`(min-width: ${XL_MIN_WIDTH_PX}px)`);
+    setIsXL(mql.matches);
+    
     const handler = (e: MediaQueryListEvent): void => setIsXL(e.matches);
-    if (mql.matches !== isXL) setIsXL(mql.matches);
     mql.addEventListener('change', handler);
     return () => mql.removeEventListener('change', handler);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return isXL;
+  // Return false during SSR and initial mount to avoid hydration issues
+  return mounted ? isXL : false;
 }
 
 /** Build a flat list of anchor targets from sections. */
@@ -181,16 +185,64 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
 
     const observer = new IntersectionObserver(
       (entries: ReadonlyArray<IntersectionObserverEntry>) => {
+        // Find all currently intersecting elements
         const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        
         if (visible.length > 0) {
-          const id = (visible[0].target as HTMLElement).id;
-          if (id && id !== activeId) setActiveId(id);
+          // Prioritize child elements over parent elements
+          // If multiple elements are intersecting, prefer the one that is NOT a parent of others
+          let selectedId = (visible[0].target as HTMLElement).id;
+          
+          for (const entry of visible) {
+            const currentId = (entry.target as HTMLElement).id;
+            const currentEl = entry.target as HTMLElement;
+            
+            // Check if this element is a child/descendant of another visible element
+            const isChild = visible.some((otherEntry) => {
+              if (otherEntry === entry) return false;
+              const otherEl = otherEntry.target as HTMLElement;
+              return otherEl.contains(currentEl);
+            });
+            
+            // If this is a child element (more specific), prefer it
+            if (isChild && currentId) {
+              selectedId = currentId;
+              break;
+            }
+          }
+          
+          if (selectedId && selectedId !== activeId) {
+            setActiveId(selectedId);
+          }
+        } else {
+          // If nothing is intersecting, find the closest section based on scroll position
+          const scrollPosition = window.scrollY + scrollOffsetPx;
+          let closestId = '';
+          let closestDistance = Infinity;
+          
+          for (const t of targets) {
+            const el = document.getElementById(t.id);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              const elementTop = rect.top + window.scrollY;
+              const distance = Math.abs(elementTop - scrollPosition);
+              
+              if (distance < closestDistance && elementTop <= scrollPosition + 100) {
+                closestDistance = distance;
+                closestId = t.id;
+              }
+            }
+          }
+          
+          if (closestId && closestId !== activeId) {
+            setActiveId(closestId);
+          }
         }
       },
       {
         root: null,
-        rootMargin: `-${scrollOffsetPx}px 0px -60% 0px`,
-        threshold: [0, 0.1, 0.5, 1],
+        rootMargin: `-${scrollOffsetPx}px 0px -40% 0px`,
+        threshold: [0, 0.25, 0.5, 0.75, 1],
       }
     );
 
@@ -229,25 +281,22 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
 
   const isDocked: boolean = isXL && canDock;
 
-  const handleButton: JSX.Element | null =
-    isXL && !isOpen ? (
-      <button
-        type="button"
-        aria-label="Open navigation"
-        onClick={open}
-        className="fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
-      >
-        <Bars3Icon className="h-5 w-5" />
-        <span className="text-sm font-medium">{title}</span>
-      </button>
-    ) : null;
+  // Track if component has mounted (to prevent button position flash)
+  const [hasMounted, setHasMounted] = React.useState<boolean>(false);
+  React.useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
-  const fabMobile: JSX.Element | null = !isXL ? (
+  // Floating action button - single unified component with conditional positioning
+  const fabButton: JSX.Element | null = !isOpen && hasMounted ? (
     <button
       type="button"
       aria-label="Open navigation"
       onClick={open}
-      className="fixed bottom-6 right-6 z-40 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
+      className={cx(
+        'fixed z-40 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2',
+        isXL ? 'top-4 right-4' : 'bottom-2 left-2'
+      )}
     >
       <Bars3Icon className="h-5 w-5" />
       <span className="text-sm font-medium">{title}</span>
@@ -285,43 +334,49 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
       {/* Items */}
       <nav className="h-full overflow-y-auto p-4" aria-label={`${title} sections`}>
         <ul className="space-y-2">
-          {visibleSections.map((s: NavigationSection) => (
-            <li key={s.id}>
-              <button
-                type="button"
-                onClick={(): void => scrollToId(s.id)}
-                className={cx(
-                  'w-full text-left px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-between group',
-                  activeId === s.id ? 'bg-blue-600 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white'
-                )}
-                aria-current={activeId === s.id ? 'true' : undefined}
-              >
-                <span className="font-medium">{s.title}</span>
-                <ChevronRightIcon className="h-4 w-4 opacity-60 group-hover:opacity-100" />
-              </button>
+          {visibleSections.map((s: NavigationSection) => {
+            // Check if any subsection is active
+            const hasActiveSubsection = s.subsections?.some((sub) => activeId === sub.id) ?? false;
+            const isSectionActive = activeId === s.id || hasActiveSubsection;
 
-              {Array.isArray(s.subsections) && s.subsections.length > 0 && (
-                <ul className="ml-4 mt-2 space-y-1">
-                  {s.subsections.map((sub: NavigationSubsection) => (
-                    <li key={sub.id}>
-                      <button
-                        type="button"
-                        onClick={(): void => scrollToId(sub.id)}
-                        className={cx(
-                          'w-full text-left px-3 py-1.5 rounded-md text-sm transition-colors duration-200 flex items-center justify-between group',
-                          activeId === sub.id ? 'bg-blue-500 text-white' : 'hover:bg-gray-800 text-gray-400 hover:text-gray-200'
-                        )}
-                        aria-current={activeId === sub.id ? 'true' : undefined}
-                      >
-                        <span>{sub.title}</span>
-                        <ChevronRightIcon className="h-3 w-3 opacity-60 group-hover:opacity-100" />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
+            return (
+              <li key={s.id}>
+                <button
+                  type="button"
+                  onClick={(): void => scrollToId(s.id)}
+                  className={cx(
+                    'w-full text-left px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-between group',
+                    isSectionActive ? 'bg-blue-600 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white'
+                  )}
+                  aria-current={activeId === s.id ? 'true' : undefined}
+                >
+                  <span className="font-medium">{s.title}</span>
+                  <ChevronRightIcon className="h-4 w-4 opacity-60 group-hover:opacity-100" />
+                </button>
+
+                {Array.isArray(s.subsections) && s.subsections.length > 0 && (
+                  <ul className="ml-4 mt-2 space-y-1">
+                    {s.subsections.map((sub: NavigationSubsection) => (
+                      <li key={sub.id}>
+                        <button
+                          type="button"
+                          onClick={(): void => scrollToId(sub.id)}
+                          className={cx(
+                            'w-full text-left px-3 py-1.5 rounded-md text-sm transition-colors duration-200 flex items-center justify-between group',
+                            activeId === sub.id ? 'bg-blue-500 text-white' : 'hover:bg-gray-800 text-gray-400 hover:text-gray-200'
+                          )}
+                          aria-current={activeId === sub.id ? 'true' : undefined}
+                        >
+                          <span>{sub.title}</span>
+                          <ChevronRightIcon className="h-3 w-3 opacity-60 group-hover:opacity-100" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </nav>
 
@@ -334,8 +389,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
 
   return (
     <>
-      {handleButton}
-      {fabMobile}
+      {fabButton}
       {backdrop}
       {panel}
     </>

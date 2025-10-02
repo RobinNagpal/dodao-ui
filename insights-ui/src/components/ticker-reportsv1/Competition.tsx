@@ -44,9 +44,9 @@ export default function Competition({ dataPromise }: CompetitionProps): JSX.Elem
                 <div className="flex flex-col gap-y-2">
                   <div className="flex items-center justify-between">
                     {tickerLink ? (
-                      <Link href={tickerLink} title="View detailed report" className="flex gap-x-2 items-center link-color">
-                        <h3 className="font-semibold link-color">{competitor.companyName}</h3>
-                        <ArrowTopRightOnSquareIcon className="size-4 text-primary-text" title="Report not available in our system" />
+                      <Link href={tickerLink} title="View detailed report" className="flex gap-x-2 items-center text-[#F59E0B] hover:text-[#F97316] transition-colors">
+                        <h3 className="font-semibold">{competitor.companyName}</h3>
+                        <ArrowTopRightOnSquareIcon className="size-4 text-primary-text" />
                       </Link>
                     ) : (
                       <h3 className="font-semibold">{competitor.companyName}</h3>
@@ -56,17 +56,6 @@ export default function Competition({ dataPromise }: CompetitionProps): JSX.Elem
                         <span className="text-sm text-gray-400">
                           {competitor.companySymbol} • {competitor.exchangeName?.toUpperCase()}
                         </span>
-                      )}
-                      {tickerLink ? (
-                        <Link
-                          href={tickerLink}
-                          className="inline-flex items-center gap-x-1 text-sm font-medium text-[#F59E0B] hover:text-[#F97316] transition-colors"
-                          title="View detailed report"
-                        >
-                          <ArrowTopRightOnSquareIcon className="size-4" />
-                        </Link>
-                      ) : (
-                        <ArrowTopRightOnSquareIcon className="size-4 text-gray-500" title="Report not available in our system" />
                       )}
                     </div>
                   </div>
