@@ -4,12 +4,13 @@ import { ReactNode } from 'react';
 interface BreadcrumbsProps {
   breadcrumbs: BreadcrumbsOjbect[];
   rightButton?: ReactNode;
+  hideHomeIcon?: boolean;
 }
 
-export default function Breadcrumbs({ breadcrumbs, rightButton }: BreadcrumbsProps) {
+export default function Breadcrumbs({ breadcrumbs, rightButton, hideHomeIcon }: BreadcrumbsProps) {
   return (
     <div className="my-5 text-color">
-      <BreadcrumbsWithChevrons breadcrumbs={breadcrumbs} rightButton={rightButton} />
+      <BreadcrumbsWithChevrons breadcrumbs={breadcrumbs} rightButton={rightButton} hideHomeIcon={hideHomeIcon} />
     </div>
   );
 }
