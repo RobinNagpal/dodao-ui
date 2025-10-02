@@ -33,7 +33,7 @@ export default function SimilarTickers({ dataPromise }: SimilarTickersProps): JS
               <div className="flex flex-col gap-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-x-2">
-                    <h3 className="font-semibold text-lg group-hover:text-[#F59E0B] transition-colors">{similarTicker.name}</h3>
+                    <h3 className="font-semibold text-lg  text-[#F59E0B] group-hover:text-[#F97316] transition-colors">{similarTicker.name}</h3>
                     <ArrowTopRightOnSquareIcon className="size-4 text-gray-400 group-hover:text-[#F59E0B] transition-colors" />
                   </div>
                 </div>

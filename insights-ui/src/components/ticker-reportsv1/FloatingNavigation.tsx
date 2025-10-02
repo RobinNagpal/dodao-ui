@@ -257,17 +257,17 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
     [close, isXL, canDock, scrollOffsetPx]
   );
 
-  /* ───────────────────────────── Render ───────────────────────────── */
-  // Safe to return null here—after all hooks have run.
-  if (visibleSections.length === 0) return null;
-
-  const isDocked: boolean = isXL && canDock;
-
   // Track if component has mounted (to prevent button position flash)
   const [hasMounted, setHasMounted] = React.useState<boolean>(false);
   React.useEffect(() => {
     setHasMounted(true);
   }, []);
+
+  /* ───────────────────────────── Render ───────────────────────────── */
+  // Safe to return null here—after all hooks have run.
+  if (visibleSections.length === 0) return null;
+
+  const isDocked: boolean = isXL && canDock;
 
   // Floating action button - single unified component with conditional positioning
   const fabButton: JSX.Element | null =

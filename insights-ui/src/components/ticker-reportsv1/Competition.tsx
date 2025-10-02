@@ -25,7 +25,7 @@ export default function Competition({ dataPromise }: CompetitionProps): JSX.Elem
   }
 
   return (
-    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+    <div id="competition" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
       <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Competition</h2>
 
       {vsCompetition?.overallAnalysisDetails && (
