@@ -131,16 +131,19 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 
   let companyName: string = ticker;
   let summary: string = `Financial analysis and reports for ${ticker}. Explore key metrics, insights, and evaluations.`;
+  let metaDescription: string = '';
 
   try {
     const data: TickerV1FastResponse = await fetchTickerByExchange(exchange, ticker);
     companyName = data?.name ?? companyName;
     summary = data?.summary ?? summary;
+    metaDescription = data?.metaDescription ?? '';
   } catch {
     /* keep generic */
   }
 
-  const shortDesc: string = truncateForMeta(summary);
+  // Use metaDescription if available, otherwise truncate summary
+  const shortDesc: string = metaDescription || truncateForMeta(summary);
   const canonicalUrl: string = `https://koalagains.com/stocks/${exchange}/${ticker}`;
   const keywords: string[] = [
     companyName,
@@ -172,9 +175,6 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     keywords,
   };
 }
-
-/** Shared type each child `use()`s */
-type DataPromise = Promise<Readonly<TickerV1FastResponse>>;
 
 /* =============================================================================
    SHARED SKELETONS (typed, minimal)
@@ -278,6 +278,7 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
           tickerSubIndustryName={subIndustryName}
         />
       }
+      hideHomeIcon={true}
     />
   );
 }
@@ -391,7 +392,7 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
   return (
     <>
       <section id="detailed-analysis" className="mb-8">
-        <h2 className="text-2xl font-bold mb-6 mt-10">Detailed Analysis</h2>
+        <h2 className="text-2xl font-bold mb-6">Detailed Analysis</h2>
         {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
           const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
           if (!categoryResult) return null;
@@ -491,13 +492,13 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
         <TickerSummaryInfo data={tickerInfo} />
       </Suspense>
       <div className="mx-auto max-w-7xl py-2">
-        <section id="competition" className="mb-8">
+        <section className="mb-8">
           <Suspense fallback={<CompetitionSkeleton />}>
             <Competition dataPromise={competitionPromise} />
           </Suspense>
         </section>
 
-        <section id="similar-tickers" className="mb-8">
+        <section className="mb-8">
           <Suspense fallback={<SimilarSkeleton />}>
             <SimilarTickers dataPromise={similarPromise} />
           </Suspense>

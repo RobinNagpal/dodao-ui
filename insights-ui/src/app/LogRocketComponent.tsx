@@ -5,15 +5,24 @@ import { usePathname } from 'next/navigation';
 import LogRocket from 'logrocket';
 
 const PROJECT_ID = 'm3ahri/koalagains' as const;
-const MIN_VISITS = 4 as const; // "more than the third time"
-const PATH_PREFIX = '/stocks' as const;
+const MIN_CLICKS = 2 as const; // Require at least 2 clicks in the current session
+const STOCKS_PATH_PREFIX = '/stocks' as const;
+const TARIFF_PATH_PREFIX = '/industry-tariff-report' as const;
 const BLOCKED = new Set<string>(['CA', 'PK']);
 
-// Storage keys (typed)
-const LS = { id: 'lr_anon_id', visits: 'lr_visit_count' } as const;
+// LocalStorage keys (lifetime analytics; not used for gating)
+const LS = {
+  id: 'lr_anon_id',
+  clicks: 'lr_click_count', // lifetime click counter (optional analytics)
+} as const;
 type LocalKey = (typeof LS)[keyof typeof LS];
 
-const SS = { counted: 'lr_counted', inited: 'lr_inited', identified: 'lr_identified' } as const;
+// SessionStorage keys (session-scoped gating & guards)
+const SS = {
+  inited: 'lr_inited',
+  identified: 'lr_identified',
+  clicks: 'lr_clicks_session', // NEW: session click counter for gating
+} as const;
 type SessionKey = (typeof SS)[keyof typeof SS];
 
 declare global {
@@ -21,6 +30,8 @@ declare global {
     __LR_INIT__?: boolean;
   }
 }
+
+/* ----------------- small helpers (explicit types) ----------------- */
 
 function readCookie(name: string): string | null {
   const m = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
@@ -51,24 +62,6 @@ function ssOnce(key: SessionKey): boolean {
   }
 }
 
-function getVisitCount(): number {
-  try {
-    const raw = localStorage.getItem(LS.visits);
-    const n = raw == null ? 0 : parseInt(raw, 10);
-    return Number.isFinite(n) ? n : 0;
-  } catch {
-    return 0;
-  }
-}
-
-function setVisitCount(n: number): void {
-  try {
-    localStorage.setItem(LS.visits, String(n));
-  } catch {
-    /* noop */
-  }
-}
-
 function getOrCreateAnonId(): string {
   try {
     const existing = localStorage.getItem(LS.id);
@@ -86,46 +79,135 @@ function getOrCreateAnonId(): string {
   return id;
 }
 
+/* ----------------- lifetime click counter (optional) ----------------- */
+
+function getLifetimeClickCount(): number {
+  try {
+    const raw = localStorage.getItem(LS.clicks);
+    const n = raw == null ? 0 : parseInt(raw, 10);
+    return Number.isFinite(n) ? n : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function setLifetimeClickCount(n: number): void {
+  try {
+    localStorage.setItem(LS.clicks, String(n));
+  } catch {
+    /* noop */
+  }
+}
+
+/* ----------------- session click counter (gating) ----------------- */
+
+function getSessionClickCount(): number {
+  try {
+    const raw = sessionStorage.getItem(SS.clicks);
+    const n = raw == null ? 0 : parseInt(raw, 10);
+    return Number.isFinite(n) ? n : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function setSessionClickCount(n: number): void {
+  try {
+    sessionStorage.setItem(SS.clicks, String(n));
+  } catch {
+    /* noop */
+  }
+}
+
+function incrementSessionClickCount(): { session: number; lifetime: number } {
+  const sessionNext = getSessionClickCount() + 1;
+  setSessionClickCount(sessionNext);
+
+  // keep lifetime analytics if you want the metric; not used for gating
+  const lifetimeNext = getLifetimeClickCount() + 1;
+  setLifetimeClickCount(lifetimeNext);
+
+  return { session: sessionNext, lifetime: lifetimeNext };
+}
+
+function hasMinSessionClicks(): boolean {
+  return getSessionClickCount() >= MIN_CLICKS;
+}
+
+/* ----------------- LogRocket connect/identify ----------------- */
+
+function connectAndIdentify(country: string | null): void {
+  // init once per session (StrictMode-safe)
+  if (!window.__LR_INIT__ && ssOnce(SS.inited)) {
+    LogRocket.init(PROJECT_ID);
+    window.__LR_INIT__ = true;
+  }
+
+  // identify once per session
+  if (ssOnce(SS.identified)) {
+    try {
+      const id = getOrCreateAnonId();
+      LogRocket.identify(id, {
+        country: country ?? 'UN',
+        audience: 'public',
+        sessionClickCount: getSessionClickCount(),
+        lifetimeClickCount: getLifetimeClickCount(),
+      });
+    } catch {
+      /* noop */
+    }
+  }
+}
+
+/**
+ * Connect after MIN_CLICKS **in this session**.
+ * If already satisfied, connect immediately.
+ * Returns a cleanup function.
+ */
+function gateConnectionOnSessionClicks(country: string | null): () => void {
+  if (hasMinSessionClicks()) {
+    connectAndIdentify(country);
+    return () => {};
+  }
+
+  const onClick: (e: MouseEvent) => void = (e) => {
+    // Ignore synthetic/programmatic clicks
+    if (!e.isTrusted) return;
+
+    const { session } = incrementSessionClickCount();
+    if (session >= MIN_CLICKS) {
+      connectAndIdentify(country);
+      document.removeEventListener('click', onClick, { capture: true } as AddEventListenerOptions);
+    }
+  };
+
+  // Use capture to avoid being blocked by stopPropagation in bubbling phase
+  document.addEventListener('click', onClick, { capture: true });
+
+  // Clean up on route change / unmount
+  return () => document.removeEventListener('click', onClick, { capture: true } as EventListenerOptions);
+}
+
+/* ----------------- component ----------------- */
+
 export default function LogRocketComponent(): JSX.Element | null {
   const pathname = usePathname();
 
-  useEffect(() => {
-    // Only run on /stocks and subpaths
-    if (typeof pathname !== 'string' || !pathname.startsWith(PATH_PREFIX)) return;
+  useEffect((): void | (() => void) => {
+    // Only run on the allowed paths
+    if (typeof pathname !== 'string' || !(pathname.startsWith(STOCKS_PATH_PREFIX) || pathname.startsWith(TARIFF_PATH_PREFIX))) {
+      return;
+    }
 
     try {
-      // Count a "visit" once per tab session (only when on /stocks*)
-      if (ssOnce(SS.counted)) {
-        setVisitCount(getVisitCount() + 1);
-      }
-      const visitCount = getVisitCount();
+      const country: string | null = getCountryFromCookie();
 
-      const country = getCountryFromCookie();
-      // If country known and blocked, do nothing at all (no LogRocket init = no tracking)
+      // Blocked countries: do nothing (no init, no tracking)
       if (country && BLOCKED.has(country)) return;
 
-      // Initialize LogRocket once per session (guards StrictMode double effects)
-      if (!window.__LR_INIT__ && ssOnce(SS.inited)) {
-        LogRocket.init(PROJECT_ID);
-        window.__LR_INIT__ = true;
-      }
-
-      // Only identify on 4th+ visit, and never for blocked countries
-      if (visitCount >= MIN_VISITS && !BLOCKED.has(country ?? '')) {
-        if (ssOnce(SS.identified)) {
-          try {
-            const id = getOrCreateAnonId();
-            LogRocket.identify(id, {
-              visitCount,
-              country: country ?? 'UN',
-              audience: 'public',
-              pathPrefix: PATH_PREFIX,
-            });
-          } catch {
-            /* noop */
-          }
-        }
-      }
+      // Connect only after MIN_CLICKS in the current session
+      const cleanup: () => void = gateConnectionOnSessionClicks(country);
+      return cleanup;
     } catch {
       // Swallow errors to avoid breaking the app
     }

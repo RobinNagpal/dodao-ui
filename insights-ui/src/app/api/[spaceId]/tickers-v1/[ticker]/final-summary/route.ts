@@ -4,6 +4,8 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
+import { generateMetaDescriptionPrompt, MetaDescriptionResponse, MetaDescriptionResponseType } from '@/lib/promptForMetaDescriptionV1';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
@@ -83,13 +85,20 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   const finalSummary = result.response as string;
 
-  // Update the ticker's summary field
+  const metaDescriptionPrompt = generateMetaDescriptionPrompt(finalSummary);
+
+  const metaDescriptionResult = await getLlmResponse<MetaDescriptionResponseType>(metaDescriptionPrompt, MetaDescriptionResponse, 'gemini', 3, 1000);
+
+  const metaDescription = metaDescriptionResult.metaDescription;
+
+  // Update the ticker's summary and meta description fields
   await prisma.tickerV1.update({
     where: {
       id: tickerRecord.id,
     },
     data: {
       summary: finalSummary,
+      metaDescription: metaDescription,
       updatedAt: new Date(),
     },
   });

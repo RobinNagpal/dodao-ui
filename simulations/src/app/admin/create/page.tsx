@@ -34,6 +34,7 @@ interface ExerciseFormData {
   details: string;
   promptHint?: string;
   gradingLogic?: string;
+  promptOutputInstructions?: string;
   orderNumber: number;
 }
 
@@ -111,6 +112,7 @@ export default function CreateCaseStudyPage() {
       details: '',
       promptHint: '',
       gradingLogic: '',
+      promptOutputInstructions: '',
       orderNumber: caseStudyModule.exercises.length + 1,
     };
 
@@ -193,6 +195,7 @@ export default function CreateCaseStudyPage() {
           details: exercise.details,
           promptHint: exercise.promptHint,
           gradingLogic: exercise.gradingLogic,
+          promptOutputInstructions: exercise.promptOutputInstructions,
           orderNumber: exercise.orderNumber,
         })),
       })),
@@ -451,10 +454,19 @@ export default function CreateCaseStudyPage() {
 
                             <MarkdownEditor
                               objectId={`exercise-${exercise.id}-grading-logic`}
-                              label="Grading Logic (Optional)"
+                              label="Grading Logic"
                               modelValue={exercise.gradingLogic || ''}
                               onUpdate={(value: string) => updateExercise(module.id, exercise.id, 'gradingLogic', value)}
                               placeholder="Enter grading logic using markdown..."
+                              maxHeight={120}
+                            />
+
+                            <MarkdownEditor
+                              objectId={`exercise-${exercise.id}-output-instructions`}
+                              label="Prompt Output Instructions"
+                              modelValue={exercise.promptOutputInstructions || ''}
+                              onUpdate={(value: string) => updateExercise(module.id, exercise.id, 'promptOutputInstructions', value)}
+                              placeholder="Enter output instructions for AI responses using markdown..."
                               maxHeight={120}
                             />
 
