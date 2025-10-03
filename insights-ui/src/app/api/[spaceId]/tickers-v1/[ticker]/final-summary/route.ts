@@ -4,6 +4,15 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { z } from 'zod';
+import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
+
+// Zod schema for meta description response
+const MetaDescriptionResponse = z.object({
+  metaDescription: z.string().min(1).max(160).describe('A concise meta description for the ticker analysis page'),
+});
+
+type MetaDescriptionResponseType = z.infer<typeof MetaDescriptionResponse>;
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
@@ -83,13 +92,31 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   const finalSummary = result.response as string;
 
-  // Update the ticker's summary field
+  const metaDescriptionPrompt = `
+Based on the following company summary, create a concise meta description (maximum 160 characters) for SEO purposes:
+
+Summary: ${finalSummary}
+
+Instructions:
+- Only return the meta description, no introductory text
+- Keep it under 160 characters
+- Make it compelling and informative for search engines
+- Include key information about the company and its analysis
+
+Meta Description:`;
+
+  const metaDescriptionResult = await getLlmResponse<MetaDescriptionResponseType>(metaDescriptionPrompt, MetaDescriptionResponse, 'gemini', 3, 1000);
+
+  const metaDescription = metaDescriptionResult.metaDescription;
+
+  // Update the ticker's summary and meta description fields
   await prisma.tickerV1.update({
     where: {
       id: tickerRecord.id,
     },
     data: {
       summary: finalSummary,
+      metaDescription: metaDescription,
       updatedAt: new Date(),
     },
   });
