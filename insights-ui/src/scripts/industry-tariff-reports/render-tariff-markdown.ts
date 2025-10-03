@@ -1,6 +1,5 @@
 import { img } from '@/scripts/chart-utils';
 import {
-  AllCountriesSpecificTariff,
   AllCountriesTariffUpdatesForIndustry,
   CountrySpecificTariff,
   EstablishedPlayer,
@@ -72,21 +71,6 @@ export function getMarkdownContentForCountryTariffs(tariff: CountrySpecificTarif
   return recursivelyCleanOpenAiUrls(content);
 }
 
-export function getMarkdownContentForAllCountriesTariffs(tariff: AllCountriesSpecificTariff): string {
-  const content =
-    `### Trade Volume\n\n` +
-    `${tariff.tradeVolume}\n\n` +
-    `### Tariffs Before Trump Administration\n\n` +
-    `${tariff.tariffBeforeTrump}\n\n` +
-    `### New Tariff Updates\n\n` +
-    `${tariff.newTariffUpdates}\n\n` +
-    `### Effective Date\n\n` +
-    `${tariff.effectiveDate}\n\n` +
-    `### Sources\n\n` +
-    `${tariff.source}\n\n`;
-  return recursivelyCleanOpenAiUrls(content);
-}
-
 export function getMarkdownContentForIndustryTariffs(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
   const markdownContent =
     `# Tariff Updates for ${industry}\n\n` +
@@ -98,11 +82,7 @@ export function getMarkdownContentForIndustryTariffs(industry: string, tariffUpd
 }
 
 export function getMarkdownContentForAllCountriesIndustryTariffs(industry: string, allCountriesTariffUpdates: AllCountriesTariffUpdatesForIndustry) {
-  const markdownContent =
-    `# All Countries Tariff Updates for ${industry}\n\n` +
-    `${allCountriesTariffUpdates.countrySpecificTariffs
-      .map((country) => `## ${country.countryName}\n\n${getMarkdownContentForAllCountriesTariffs(country)}`)
-      .join('\n\n---\n\n')}\n`;
+  const markdownContent = `# All Countries Tariff Updates for ${industry}\n\n` + `${allCountriesTariffUpdates.countrySpecificTariffs}`;
 
   return recursivelyCleanOpenAiUrls(markdownContent);
 }

@@ -1,11 +1,13 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import AllCountriesTariffUpdatesActions from '@/components/industry-tariff/section-actions/AllCountriesTariffUpdatesActions';
-import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
-import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { Metadata } from 'next';
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
+import AllCountriesTariffUpdatesActions from '@/components/industry-tariff/section-actions/AllCountriesTariffUpdatesActions';
+import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { KeyTradePartnersTariff, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { parseMarkdown } from '@/util/parse-markdown';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
+import { Metadata } from 'next';
+import React from 'react';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
@@ -37,12 +39,10 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}/all-countries-tariff-updates`;
 
   // Get countries affected to use in keywords
-  const countries = report.allCountriesTariffUpdates?.countrySpecificTariffs.map((tariff) => tariff.countryName) || [];
+  const countries = report.allCountriesTariffUpdates?.countryNames;
 
   // Create keywords from SEO details or fallback to generic ones
-  const keywords =
-    seoDetails?.keywords ||
-    [industryName, 'all key markets', 'global trade', 'tariff updates', 'trade agreements', ...countries.slice(0, 5), 'KoalaGains'].slice(0, 10); // Limit to 10 keywords
+  const keywords = seoDetails?.keywords || [industryName, 'all key markets', 'global trade', 'tariff updates', 'trade agreements', 'KoalaGains'].slice(0, 10); // Limit to 10 keywords
 
   return {
     title: seoTitle,
@@ -114,24 +114,25 @@ export default async function AllCountriesTariffUpdatesPage({ params }: { params
 
       <div className="space-y-8">
         {/* Country Navigation */}
-        {report.allCountriesTariffUpdates && report.allCountriesTariffUpdates.countryNames && (
-          <CountryNavigation countries={report.allCountriesTariffUpdates.countryNames} industryId={industryId} />
-        )}
+        {report.allCountriesTariffUpdates &&
+          report.allCountriesTariffUpdates?.countrySpecificTariffs &&
+          Array.isArray(report.allCountriesTariffUpdates?.countrySpecificTariffs) && (
+            <CountryNavigation countries={report.allCountriesTariffUpdates?.countrySpecificTariffs.map((c) => c.countryName)} industryId={industryId} />
+          )}
 
-        {report.allCountriesTariffUpdates ? (
-          report.allCountriesTariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
-            const sectionId = `country-${countryTariff.countryName.toLowerCase().replace(/\s+/g, '-')}`;
+        {report.allCountriesTariffUpdates?.countrySpecificTariffs &&
+          Array.isArray(report.allCountriesTariffUpdates?.countrySpecificTariffs) &&
+          report.allCountriesTariffUpdates?.countrySpecificTariffs?.map((countryTariff, index) => {
             return (
-              <div key={index} className="mb-4">
-                <CountryTariffRenderer countryTariff={countryTariff} sectionId={sectionId} isAllCountries={true} />
+              <div className="mb-6" id={`country-${slugify(countryTariff?.countryName?.toLowerCase())}`}>
+                <h2 className="text-2xl">{countryTariff?.countryName}</h2>
+                <div
+                  className="max-w-max markdown markdown-body text-sm"
+                  dangerouslySetInnerHTML={{ __html: parseMarkdown(countryTariff?.tariffInfo || '') }}
+                />
               </div>
             );
-          })
-        ) : (
-          <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
-            <h2 className="text-xl font-semibold">No all-countries tariff updates available</h2>
-          </div>
-        )}
+          })}
       </div>
     </div>
   );

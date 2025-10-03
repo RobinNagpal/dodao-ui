@@ -1,5 +1,6 @@
 'use client';
 
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import Link from 'next/link';
 
 interface CountryNavigationProps {
@@ -9,7 +10,7 @@ interface CountryNavigationProps {
 
 export const CountryNavigation: React.FC<CountryNavigationProps> = ({ countries, industryId }) => {
   const scrollToCountry = (countryName: string) => {
-    const element = document.getElementById(`country-${countryName.toLowerCase().replace(/\s+/g, '-')}`);
+    const element = document.getElementById(`country-${slugify(countryName.toLowerCase())}`);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }

@@ -189,7 +189,12 @@ export interface FinalConclusion {
 }
 
 // 09-all-countries-tariffs.ts
-export interface AllCountriesSpecificTariff {
+export interface AllCountriesTariffInfo {
+  countryName: string;
+  tariffInfo: string;
+}
+
+export interface KeyTradePartnersTariff {
   countryName: string;
   tradeVolume: string;
   tariffBeforeTrump: string;
@@ -200,7 +205,7 @@ export interface AllCountriesSpecificTariff {
 
 export interface AllCountriesTariffUpdatesForIndustry {
   countryNames: string[];
-  countrySpecificTariffs: AllCountriesSpecificTariff[];
+  countrySpecificTariffs: AllCountriesTariffInfo[];
   lastUpdated?: string; // ISO date string when this data was generated
 }
 

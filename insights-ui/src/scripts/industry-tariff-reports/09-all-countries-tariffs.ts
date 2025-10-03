@@ -5,7 +5,12 @@ import {
   writeLastModifiedDatesToFile,
   readLastModifiedDatesFromFile,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import { IndustryAreasWrapper, AllCountriesTariffUpdatesForIndustry, AllCountriesSpecificTariff } from '@/scripts/industry-tariff-reports/tariff-types';
+import {
+  IndustryAreasWrapper,
+  AllCountriesTariffUpdatesForIndustry,
+  KeyTradePartnersTariff,
+  AllCountriesTariffInfo,
+} from '@/scripts/industry-tariff-reports/tariff-types';
 // import { getLlmResponse, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
 import { getDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { z } from 'zod';
@@ -14,37 +19,7 @@ import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 
 const CountrySpecificTariffSchema = z.object({
   countryName: z.string().describe('Name of the country.'),
-  tradeVolume: z
-    .string()
-    .describe(
-      'Total trade volume between this country and the US for the given industry in USD (e.g., $X.X billion annually). ' +
-        'Include hyperlinks/citations to official trade data sources.'
-    ),
-  tariffBeforeTrump: z
-    .string()
-    .describe(
-      'Tariff rates that were in effect before Trump administration changes for this industry. ' +
-        'Specify percentage rates for different product categories. Include hyperlinks to pre-2017 tariff schedules.'
-    ),
-  newTariffUpdates: z
-    .string()
-    .describe(
-      'Description of the new tariff rates implemented by the Trump administration for this industry and country. ' +
-        'Include specific percentage increases, effective dates, and product categories affected. Keep to 3-4 concise sentences. ' +
-        'Include hyperlinks/citations to official government announcements and trade policy documents.'
-    ),
-  effectiveDate: z
-    .string()
-    .describe(
-      'Exact date when the new tariffs became effective (format: Month DD, YYYY). ' +
-        'Include hyperlinks to the official Federal Register notices or presidential proclamations.'
-    ),
-  source: z
-    .string()
-    .describe(
-      'Primary sources used for this information including official government websites, trade databases, and policy documents. ' +
-        'List 2-3 key sources with their URLs.'
-    ),
+  tariffInfo: z.string().describe('Tariff information for the given country. Include all the details in the markdown format.'),
 });
 
 // Schema for all countries tariff data in a single response
@@ -98,54 +73,55 @@ async function getAllCountries(industry: TariffIndustryId, date: string, existin
 
 function getAllCountriesTariffUpdatesPrompt(industry: TariffIndustryId, date: string, headings: IndustryAreasWrapper, countries: string[]) {
   const definition = getTariffIndustryDefinitionById(industry);
+  const currentDate = getDateAsMonthDDYYYYFormat(date);
   const prompt = `
-  As of today (${getDateAsMonthDDYYYYFormat(date)}), I want to know about the new or recent tariffs added for the ${
-    definition.name
-  } industry for multiple countries.
+  As of today (${currentDate}), I want to know about the new or recent tariffs added for the ${definition.name} industry for multiple countries.
 
   IMPORTANT: Provide tariff data for ALL of these countries in a single response: ${countries.join(', ')}
 
-  Make sure to verify all the new tariffs added for ${definition.name} industry and as of ${getDateAsMonthDDYYYYFormat(
-    date
-  )} for each country because they have been changing almost everyday.
+  Make sure to verify all the new tariffs added for ${
+    definition.name
+  } industry and as of ${currentDate} for each country because they have been changing almost everyday.
 
-  Make sure to verify the tariff information on official government websites or trade websites for tariff information, and also make sure that you have referred to all the information as of ${getDateAsMonthDDYYYYFormat(
-    date
-  )}.
+
+  Make sure to verify the tariff information on official government websites or trade websites for tariff information, and also make sure that you have referred to all the information as of ${currentDate}.
 
   Don't use or refer to koalagains.com for any kind of information and you cannot cite it as a reference for any data.
+  
   Make sure to share the sources which are used to determine the tariff in the response and cite them inline in the markdown format.
 
+# Countries to Cover
+${countries.join(', ')}
+
+# Industry Areas
+${JSON.stringify(headings, null, 2)}
+
+# Details to return for each country
   For EACH country, provide the following details:
   - Name of the country
   - Total trade volume between this country and the US for the given industry in USD (e.g., $X.X billion annually)
   - Tariff rates that were in effect before Trump administration changes
+  - New tariff rates implemented by the Trump administration, with the date when they were declared and when they became or will become effective
   - Description of the new tariff rates implemented by the Trump administration (3-4 concise sentences)
-  - Exact date when the new tariffs became effective (format: Month DD, YYYY)
   - Primary sources used (2-3 key sources with URLs)
+  - Dont include any disclaimers
+  - All the markdown headings you use use h4 or h5 i.e. #### or #####
 
-  Guidelines for each country:
+#  Guidelines for each country:
   - Verify if the tariffs have actually been added for the given industry and country.
   - Many articles share that tariffs might be applied, don't consider those articles which are not 100% sure that the tariffs have been added.
-  - For Canada and Mexico, make sure to consider only the tariffs that are added in excess of the USMCA agreement.
+  - For Canada and Mexico, make sure to consider only the tariffs that are added in excess of the USMCA agreement or other existing agreements.
   - For other countries, make sure to consider only the tariffs that are added in excess of the existing agreement.
   - Include the real date when the tariffs were added.
+  - Include the date when the tariffs were implemented.
   - We are interested in the tariffs that US has added
   - You can also include the tariff that the other country has added, but stress more on the tariffs that US has added.
   - Many products or subcategories can be exempted from the new tariffs. Calculate and mention the amount of trade that is impacted vs exempted.
-
-  For each of the Industry Areas & Subareas below, I want to know the changes to the tariffs for that area and sub-area for EACH country by the Trump Government.
-
-  # Countries to Cover
-  ${countries.join(', ')}
-
-  # Industry Areas
-  ${JSON.stringify(headings, null, 2)}
-
+ 
   # Output Instructions
   ${outputInstructions}
 
-  IMPORTANT: Return a JSON object with a single key "countries" containing an array of objects, one for each country in the same order as provided.
+  IMPORTANT: Return a JSON object with a single key "countries" containing the array of objects of type {countryName: string, tariffInfo: string} with tariffInfo formatted in the markdown format. 
   `;
 
   return prompt;
@@ -171,7 +147,7 @@ async function getTariffUpdatesForAllCountries(
   const prompt = getAllCountriesTariffUpdatesPrompt(industry, date, headings, additionalCountries);
 
   console.log(`Invoking single LLM call for tariffs for all countries:`, additionalCountries);
-  const allCountriesTariffData = await getLlmResponse<{ countries: AllCountriesSpecificTariff[] }>(prompt, AllCountriesTariffDataSchema);
+  const allCountriesTariffData = await getLlmResponse<{ countries: AllCountriesTariffInfo[] }>(prompt, AllCountriesTariffDataSchema);
 
   // Clean the response data to remove any URL parameters that might affect country names
   // const countrySpecificTariffs = allCountriesTariffData.countries.map((countryTariff) => recursivelyCleanOpenAiUrls(countryTariff));
