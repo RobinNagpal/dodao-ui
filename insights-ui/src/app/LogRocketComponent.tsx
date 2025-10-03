@@ -9,6 +9,7 @@ const MIN_CLICKS = 2 as const; // Require at least 2 clicks in the current sessi
 const STOCKS_PATH_PREFIX = '/stocks' as const;
 const TARIFF_PATH_PREFIX = '/industry-tariff-report' as const;
 const BLOCKED = new Set<string>(['CA', 'PK']);
+const PROD_HOST = 'koalagains.com' as const; // ✅ only allow this exact host
 
 // LocalStorage keys (lifetime analytics; not used for gating)
 const LS = {
@@ -77,6 +78,15 @@ function getOrCreateAnonId(): string {
     /* noop */
   }
   return id;
+}
+
+/** ✅ allow LR only on the exact production host */
+function onProdDomain(): boolean {
+  try {
+    return typeof location !== 'undefined' && location.hostname === PROD_HOST;
+  } catch {
+    return false;
+  }
 }
 
 /* ----------------- lifetime click counter (optional) ----------------- */
@@ -194,10 +204,13 @@ export default function LogRocketComponent(): JSX.Element | null {
   const pathname = usePathname();
 
   useEffect((): void | (() => void) => {
-    // Only run on the allowed paths
+    // Only run on allowed paths
     if (typeof pathname !== 'string' || !(pathname.startsWith(STOCKS_PATH_PREFIX) || pathname.startsWith(TARIFF_PATH_PREFIX))) {
       return;
     }
+
+    // ✅ Only initialize on the exact production domain
+    if (!onProdDomain()) return;
 
     try {
       const country: string | null = getCountryFromCookie();
