@@ -6,6 +6,7 @@ import { prisma } from '@/prisma';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { z } from 'zod';
 import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
+import { generateMetaDescriptionPrompt } from '@/scripts/generate-meta-descriptions';
 
 // Zod schema for meta description response
 const MetaDescriptionResponse = z.object({
@@ -92,18 +93,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   const finalSummary = result.response as string;
 
-  const metaDescriptionPrompt = `
-Based on the following company summary, create a concise meta description (maximum 160 characters) for SEO purposes:
-
-Summary: ${finalSummary}
-
-Instructions:
-- Only return the meta description, no introductory text
-- Keep it under 160 characters
-- Make it compelling and informative for search engines
-- Include key information about the company and its analysis
-
-Meta Description:`;
+  const metaDescriptionPrompt = generateMetaDescriptionPrompt(finalSummary);
 
   const metaDescriptionResult = await getLlmResponse<MetaDescriptionResponseType>(metaDescriptionPrompt, MetaDescriptionResponse, 'gemini', 3, 1000);
 
