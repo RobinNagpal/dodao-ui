@@ -6,7 +6,7 @@ import { prisma } from '@/prisma';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { z } from 'zod';
 import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
-import { generateMetaDescriptionPrompt } from '@/scripts/generate-meta-descriptions';
+import { generateMetaDescriptionPrompt } from '@/lib/promptForMetaDescriptionV1';
 
 // Zod schema for meta description response
 const MetaDescriptionResponse = z.object({
