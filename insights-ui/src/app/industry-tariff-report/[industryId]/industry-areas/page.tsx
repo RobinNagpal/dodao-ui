@@ -117,7 +117,7 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
       <div className="space-y-12">
         <div className="bg-gray-900 rounded-lg p-2 shadow-sm">
           <div className="markdown-body prose max-w-none px-2">
-            <div dangerouslySetInnerHTML={{ __html: content }} />
+            <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: content }} />
           </div>
         </div>
       </div>

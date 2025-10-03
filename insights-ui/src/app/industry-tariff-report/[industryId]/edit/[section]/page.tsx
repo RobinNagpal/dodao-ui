@@ -108,6 +108,16 @@ export default async function EditPage({ params }: EditPageProps) {
           ].join('\n');
         }
         break;
+      case 'all-countries-tariff-updates':
+        // Import the read function for all countries tariff updates
+        const { readAllCountriesTariffUpdatesFromFile } = await import('@/scripts/industry-tariff-reports/tariff-report-read-write');
+        const allCountriesData = await readAllCountriesTariffUpdatesFromFile(industryId);
+        if (allCountriesData) {
+          // Use the existing render function to convert to markdown
+          const { getMarkdownContentForAllCountriesIndustryTariffs } = await import('@/scripts/industry-tariff-reports/render-tariff-markdown');
+          content = getMarkdownContentForAllCountriesIndustryTariffs(industryId, allCountriesData);
+        }
+        break;
       default:
         error = `Unknown section: ${section}`;
     }

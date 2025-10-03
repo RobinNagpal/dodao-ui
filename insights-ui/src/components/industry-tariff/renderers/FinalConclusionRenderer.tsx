@@ -19,7 +19,7 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
           <h2 className="text-2xl font-bold heading-color">{finalConclusion.title}</h2>
         </div>
         <div className="p-4">
-          <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(finalConclusion.conclusionBrief) }} />
+          <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(finalConclusion.conclusionBrief) }} />
         </div>
       </div>
 
@@ -29,7 +29,10 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
           <h2 className="text-xl font-semibold heading-color">{finalConclusion.positiveImpacts.title}</h2>
         </div>
         <div className="p-4">
-          <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(finalConclusion.positiveImpacts.positiveImpacts) }} />
+          <div
+            className="prose max-w-none markdown markdown-body"
+            dangerouslySetInnerHTML={{ __html: parseMarkdown(finalConclusion.positiveImpacts.positiveImpacts) }}
+          />
         </div>
       </div>
 
@@ -39,7 +42,10 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
           <h2 className="text-xl font-semibold heading-color">{finalConclusion.negativeImpacts.title}</h2>
         </div>
         <div className="p-4">
-          <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(finalConclusion.negativeImpacts.negativeImpacts) }} />
+          <div
+            className="prose max-w-none markdown markdown-body"
+            dangerouslySetInnerHTML={{ __html: parseMarkdown(finalConclusion.negativeImpacts.negativeImpacts) }}
+          />
         </div>
       </div>
 
@@ -49,7 +55,7 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
           <h2 className="text-xl font-semibold heading-color">Final Statements</h2>
         </div>
         <div className="p-4">
-          <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(finalConclusion.finalStatements) }} />
+          <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(finalConclusion.finalStatements) }} />
         </div>
       </div>
     </div>

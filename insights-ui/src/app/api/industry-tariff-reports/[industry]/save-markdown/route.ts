@@ -7,6 +7,7 @@ import {
   readUnderstandIndustryJsonFromFile,
   readIndustryHeadingsFromFile,
   readEvaluateSubIndustryAreaJsonFromFile,
+  readAllCountriesTariffUpdatesFromFile,
   writeJsonAndMarkdownFilesForExecutiveSummary,
   writeJsonAndMarkdownFilesForFinalConclusion,
   writeJsonAndMarkdownFilesForReportCover,
@@ -18,6 +19,8 @@ import {
   writeMarkdownFileForUnderstandIndustry,
   writeJsonFileForEvaluateSubIndustryArea,
   writeMarkdownFileForEvaluateSubIndustryArea,
+  writeJsonFileForAllCountriesTariffUpdates,
+  writeMarkdownFileForAllCountriesTariffUpdates,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -275,6 +278,22 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
       };
 
       await writeJsonAndMarkdownFilesForFinalConclusion(industry, updatedData);
+      break;
+    }
+
+    case 'all-countries-tariff-updates': {
+      const existingData = await readAllCountriesTariffUpdatesFromFile(industry);
+      if (!existingData) {
+        throw new Error('All countries tariff updates data not found');
+      }
+
+      const updatedData = {
+        ...existingData,
+        tariffUpdates: content,
+      };
+
+      await writeJsonFileForAllCountriesTariffUpdates(industry, updatedData);
+      await writeMarkdownFileForAllCountriesTariffUpdates(industry, updatedData);
       break;
     }
 

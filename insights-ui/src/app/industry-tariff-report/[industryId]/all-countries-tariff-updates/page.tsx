@@ -1,11 +1,13 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import TariffUpdatesActions from '@/components/industry-tariff/section-actions/TariffUpdatesActions';
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
+import AllCountriesTariffUpdatesActions from '@/components/industry-tariff/section-actions/AllCountriesTariffUpdatesActions';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { KeyTradePartnersTariff, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { Metadata } from 'next';
-import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
+import React from 'react';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
@@ -20,28 +22,27 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
 
   if (!report) {
     return {
-      title: 'Top 5 Trade Partners | Industry Report',
-      description: 'Latest tariff updates and their impact on the industry',
+      title: 'All Key Markets | Industry Report',
+      description: 'Comprehensive tariff updates for all key markets in the industry',
     };
   }
 
-  // Get the SEO details specific to tariff updates
-  const seoDetails = report.reportSeoDetails?.tariffUpdatesSeoDetails;
+  // Get the SEO details specific to all countries tariff updates
+  const seoDetails = report.reportSeoDetails?.allCountriesTariffUpdatesSeoDetails;
 
   // Create a title that includes the industry name
   const industryName = report.executiveSummary?.title || 'Industry';
-  const seoTitle = seoDetails?.title || `${industryName} Top 5 Trade Partners | Trade Impact Analysis`;
+  const seoTitle = seoDetails?.title || `${industryName} All Key Markets | Global Trade Impact Analysis`;
   const seoDescription =
     seoDetails?.shortDescription ||
-    `Detailed analysis of recent tariff changes affecting the ${industryName} industry, including country-specific impacts and trade agreement changes.`;
-  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}/tariff-updates`;
+    `Complete analysis of tariff changes across all key markets for the ${industryName} industry, covering global trade impacts and market-specific updates.`;
+  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}/all-countries-tariff-updates`;
 
   // Get countries affected to use in keywords
-  const countries = report.tariffUpdates?.countrySpecificTariffs.map((tariff) => tariff.countryName) || [];
+  const countries = report.allCountriesTariffUpdates?.countryNames;
 
   // Create keywords from SEO details or fallback to generic ones
-  const keywords =
-    seoDetails?.keywords || [industryName, 'tariff updates', 'trade agreements', 'import tariffs', 'export tariffs', ...countries, 'KoalaGains'].slice(0, 10); // Limit to 10 keywords
+  const keywords = seoDetails?.keywords || [industryName, 'all key markets', 'global trade', 'tariff updates', 'trade agreements', 'KoalaGains'].slice(0, 10); // Limit to 10 keywords
 
   return {
     title: seoTitle,
@@ -65,7 +66,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   };
 }
 
-export default async function TariffUpdatesPage({ params }: { params: Promise<{ industryId: TariffIndustryId }> }) {
+export default async function AllCountriesTariffUpdatesPage({ params }: { params: Promise<{ industryId: TariffIndustryId }> }) {
   const { industryId } = await params;
 
   // Fetch the report data
@@ -83,7 +84,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
   const definition = getTariffIndustryDefinitionById(industryId);
 
   // Check if SEO data exists for this page
-  const seoDetails = report.reportSeoDetails?.tariffUpdatesSeoDetails;
+  const seoDetails = report.reportSeoDetails?.allCountriesTariffUpdatesSeoDetails;
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
 
   return (
@@ -91,15 +92,15 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
       {/* Title and Actions */}
       <div className="mb-4 pb-4 border-b border-gray-200">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold heading-color">Top 5 Trade Partners - {definition.name} Industry</h1>
+          <h1 className="text-3xl font-bold heading-color">All Key Markets - {definition.name} Industry</h1>
           <PrivateWrapper>
-            <TariffUpdatesActions industryId={industryId} />
+            <AllCountriesTariffUpdatesActions industryId={industryId} />
           </PrivateWrapper>
         </div>
       </div>
 
       {/* SEO Warning Banner for Admins */}
-      {report.tariffUpdates && isSeoMissing && (
+      {report.allCountriesTariffUpdates && isSeoMissing && (
         <PrivateWrapper>
           <div className="mb-8 p-4 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -111,31 +112,27 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
         </PrivateWrapper>
       )}
 
-      <div className="space-y-4">
+      <div className="space-y-8">
         {/* Country Navigation */}
-        {report.tariffUpdates && report.tariffUpdates.countryNames && (
-          <CountryNavigation countries={report.tariffUpdates.countryNames} industryId={industryId} />
-        )}
+        {report.allCountriesTariffUpdates &&
+          report.allCountriesTariffUpdates?.countrySpecificTariffs &&
+          Array.isArray(report.allCountriesTariffUpdates?.countrySpecificTariffs) && (
+            <CountryNavigation countries={report.allCountriesTariffUpdates?.countrySpecificTariffs.map((c) => c.countryName)} industryId={industryId} />
+          )}
 
-        {report.tariffUpdates ? (
-          report.tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
-            const sectionId = `country-${countryTariff.countryName.toLowerCase().replace(/\s+/g, '-')}`;
+        {report.allCountriesTariffUpdates?.countrySpecificTariffs &&
+          Array.isArray(report.allCountriesTariffUpdates?.countrySpecificTariffs) &&
+          report.allCountriesTariffUpdates?.countrySpecificTariffs?.map((countryTariff, index) => {
             return (
-              <div key={index} className="mb-6">
-                <div className="flex justify-end mb-4">
-                  <PrivateWrapper>
-                    <TariffUpdatesActions industryId={industryId} tariffIndex={index} countryName={countryTariff.countryName} />
-                  </PrivateWrapper>
-                </div>
-                <CountryTariffRenderer countryTariff={countryTariff} sectionId={sectionId} />
+              <div className="mb-6" id={`country-${slugify(countryTariff?.countryName?.toLowerCase())}`}>
+                <h2 className="text-2xl">{countryTariff?.countryName}</h2>
+                <div
+                  className="max-w-max markdown markdown-body text-sm"
+                  dangerouslySetInnerHTML={{ __html: parseMarkdown(countryTariff?.tariffInfo || '') }}
+                />
               </div>
             );
-          })
-        ) : (
-          <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
-            <h2 className="text-xl font-semibold">No tariff updates available</h2>
-          </div>
-        )}
+          })}
       </div>
     </div>
   );

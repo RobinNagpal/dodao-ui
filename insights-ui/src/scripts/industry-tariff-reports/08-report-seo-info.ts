@@ -1,6 +1,7 @@
 import { getNumberOfSubHeadings, getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import {
+  readAllCountriesTariffUpdatesFromFile,
   readExecutiveSummaryFromFile,
   readFinalConclusionFromFile,
   readIndustryAreaSectionFromFile,
@@ -65,6 +66,14 @@ export async function generateTariffUpdatesSeo(industry: TariffIndustryId): Prom
   if (!tariffUpdates) return undefined;
 
   return await generateSeoDetailsForSection(industry, ReportType.TARIFF_UPDATES, tariffUpdates);
+}
+
+// Generate SEO details for all countries tariff updates
+export async function generateAllCountriesTariffUpdatesSeo(industry: TariffIndustryId): Promise<PageSeoDetails | undefined> {
+  const allCountriesTariffUpdates = await readAllCountriesTariffUpdatesFromFile(industry);
+  if (!allCountriesTariffUpdates) return undefined;
+
+  return await generateSeoDetailsForSection(industry, ReportType.ALL_COUNTRIES_TARIFF_UPDATES, allCountriesTariffUpdates);
 }
 
 // Generate SEO details for understand industry
@@ -212,6 +221,13 @@ export async function generateAndSaveAllSeoDetails(industry: TariffIndustryId, t
   if (tariffReport.tariffUpdates) {
     console.log(`Generating SEO details for ${ReportType.TARIFF_UPDATES}...`);
     seoDetails.tariffUpdatesSeoDetails = await generateTariffUpdatesSeo(industry);
+    await savePartialSeoDetails(industry, seoDetails);
+  }
+
+  // Generate and save SEO details for all countries tariff updates
+  if (tariffReport.allCountriesTariffUpdates) {
+    console.log(`Generating SEO details for ${ReportType.ALL_COUNTRIES_TARIFF_UPDATES}...`);
+    seoDetails.allCountriesTariffUpdatesSeoDetails = await generateAllCountriesTariffUpdatesSeo(industry);
     await savePartialSeoDetails(industry, seoDetails);
   }
 

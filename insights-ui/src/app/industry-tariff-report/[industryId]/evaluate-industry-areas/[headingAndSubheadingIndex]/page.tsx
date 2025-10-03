@@ -182,7 +182,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
           <div className="bg-gray-900 rounded-lg py-2 shadow-sm">
             <div className="markdown-body prose max-w-none px-2">
               {evaluateIndustryArea?.aboutParagraphs ? (
-                <div dangerouslySetInnerHTML={{ __html: parseMarkdown(evaluateIndustryArea.aboutParagraphs) }} />
+                <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(evaluateIndustryArea.aboutParagraphs) }} />
               ) : (
                 renderPlaceholder()
               )}
@@ -217,7 +217,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                       </div>
                     </div>
                     <div className="py-6 px-6">
-                      <div className="markdown-body prose max-w-none" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
+                      <div className="markdown markdown-body prose max-w-none" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
                     </div>
                   </div>
                 );
@@ -255,7 +255,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                       </div>
                     </div>
                     <div className="py-6 px-6">
-                      <div className="markdown-body prose max-w-none" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
+                      <div className="markdown markdown-body prose max-w-none" dangerouslySetInnerHTML={{ __html: renderedMarkdown }} />
                     </div>
                   </div>
                 );
@@ -277,7 +277,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                 {evaluateIndustryArea?.headwindsAndTailwinds?.headwinds && evaluateIndustryArea.headwindsAndTailwinds.headwinds.length > 0 ? (
                   <ul className="list-disc pl-5 markdown-body space-y-3">
                     {evaluateIndustryArea.headwindsAndTailwinds.headwinds.map((item, idx) => (
-                      <li key={idx} className="text-gray-300" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
+                      <li key={idx} className="text-gray-300 markdown markdown-body" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
                     ))}
                   </ul>
                 ) : (
@@ -291,7 +291,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                 {evaluateIndustryArea?.headwindsAndTailwinds?.tailwinds && evaluateIndustryArea.headwindsAndTailwinds.tailwinds.length > 0 ? (
                   <ul className="list-disc pl-5 markdown-body space-y-3">
                     {evaluateIndustryArea.headwindsAndTailwinds.tailwinds.map((item, idx) => (
-                      <li key={idx} className="text-gray-300" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
+                      <li key={idx} className="text-gray-300 markdown markdown-body" dangerouslySetInnerHTML={{ __html: item ? parseMarkdown(item) : '' }} />
                     ))}
                   </ul>
                 ) : (
@@ -315,14 +315,20 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                     {evaluateIndustryArea.positiveTariffImpactOnCompanyType.map((impact, idx) => (
                       <div key={idx} className="bg-gray-800 p-4 rounded-md">
                         <h4 className="font-medium text-lg mb-2">{impact.companyType}</h4>
-                        <div className="markdown-body space-y-3">
+                        <div className="markdown markdown-body space-y-3">
                           <div>
                             <strong className="text-gray-300">Impact:</strong>
-                            <div className="mt-1" dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
+                            <div
+                              className="mt-1 markdown markdown-body"
+                              dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }}
+                            />
                           </div>
                           <div>
                             <strong className="text-gray-300">Reasoning:</strong>
-                            <div className="mt-1" dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
+                            <div
+                              className="mt-1 markdown markdown-body"
+                              dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }}
+                            />
                           </div>
                         </div>
                       </div>
@@ -341,14 +347,20 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
                     {evaluateIndustryArea.negativeTariffImpactOnCompanyType.map((impact, idx) => (
                       <div key={idx} className="bg-gray-800 p-4 rounded-md">
                         <h4 className="font-medium text-lg mb-2">{impact.companyType}</h4>
-                        <div className="markdown-body space-y-3">
+                        <div className="markdown markdown-body space-y-3">
                           <div>
                             <strong className="text-gray-300">Impact:</strong>
-                            <div className="mt-1" dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }} />
+                            <div
+                              className="mt-1 markdown markdown-body"
+                              dangerouslySetInnerHTML={{ __html: impact.impact ? parseMarkdown(impact.impact) : '' }}
+                            />
                           </div>
                           <div>
                             <strong className="text-gray-300">Reasoning:</strong>
-                            <div className="mt-1" dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }} />
+                            <div
+                              className="mt-1 markdown markdown-body"
+                              dangerouslySetInnerHTML={{ __html: impact.reasoning ? parseMarkdown(impact.reasoning) : '' }}
+                            />
                           </div>
                         </div>
                       </div>
@@ -369,7 +381,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
           <div className="bg-gray-900 rounded-lg shadow-sm py-6">
             <div className="prose max-w-none markdown-body px-6">
               {evaluateIndustryArea?.tariffImpactSummary ? (
-                <div dangerouslySetInnerHTML={{ __html: parseMarkdown(evaluateIndustryArea.tariffImpactSummary) }} />
+                <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(evaluateIndustryArea.tariffImpactSummary) }} />
               ) : (
                 renderPlaceholder()
               )}
