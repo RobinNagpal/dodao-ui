@@ -36,6 +36,7 @@ interface Exercise {
   details: string;
   promptHint?: string;
   gradingLogic?: string;
+  promptOutputInstructions?: string;
   orderNumber: number;
 }
 
@@ -137,6 +138,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
       details: '',
       promptHint: '',
       gradingLogic: '',
+      promptOutputInstructions: '',
       orderNumber: modules[moduleIndex].exercises.length + 1,
     };
 
@@ -217,6 +219,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
           details: exercise.details,
           promptHint: exercise.promptHint,
           gradingLogic: exercise.gradingLogic,
+          promptOutputInstructions: exercise.promptOutputInstructions,
           orderNumber: exercise.orderNumber,
         })),
       })),
@@ -441,10 +444,21 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
                             <div>
                               <MarkdownEditor
                                 objectId={`exercise-${moduleIndex}-${exerciseIndex}-grading-logic`}
-                                label="Grading Logic (Optional)"
+                                label="Grading Logic"
                                 modelValue={exercise.gradingLogic || ''}
                                 onUpdate={(value: string) => updateExercise(moduleIndex, exerciseIndex, 'gradingLogic', value)}
                                 placeholder="Enter grading logic using markdown..."
+                                maxHeight={120}
+                              />
+                            </div>
+
+                            <div>
+                              <MarkdownEditor
+                                objectId={`exercise-${moduleIndex}-${exerciseIndex}-output-instructions`}
+                                label="Prompt Output Instructions"
+                                modelValue={exercise.promptOutputInstructions || ''}
+                                onUpdate={(value: string) => updateExercise(moduleIndex, exerciseIndex, 'promptOutputInstructions', value)}
+                                placeholder="Enter output instructions for AI responses using markdown..."
                                 maxHeight={120}
                               />
                             </div>
