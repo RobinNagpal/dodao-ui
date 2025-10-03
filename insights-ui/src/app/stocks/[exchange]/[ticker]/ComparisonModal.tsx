@@ -10,7 +10,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TickerComparison, { ComparisonTicker } from '@/components/ticker-reportsv1/TickerComparison';
-import { TickerV1FullReportResponse } from '@/utils/ticker-v1-model-utils';
+import { TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 
 // Using ComparisonTicker interface imported from TickerComparison component
 
@@ -46,7 +46,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
     setLoading(true);
     try {
       const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${currentTicker.symbol}`);
-      const data: TickerV1FullReportResponse = await response.json();
+      const data: TickerV1FastResponse = await response.json();
 
       const categoryResults = Object.values(TickerAnalysisCategory).reduce((acc, category) => {
         const categoryResult = data.categoryAnalysisResults?.find((r) => r.categoryKey === category);
@@ -65,10 +65,10 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
       }, {} as ComparisonTicker['categoryResults']);
 
       const currentTickerData: ComparisonTicker = {
-        id: data.ticker.id,
-        name: data.ticker.name,
-        symbol: data.ticker.symbol,
-        exchange: data.ticker.exchange,
+        id: data.id,
+        name: data.name,
+        symbol: data.symbol,
+        exchange: data.exchange,
         cachedScore: data.cachedScore as number,
         categoryResults,
       };
@@ -100,7 +100,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
     setLoading(true);
     try {
       const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.symbol}`);
-      const data: TickerV1FullReportResponse = await response.json();
+      const data: TickerV1FastResponse = await response.json();
 
       const categoryResults = Object.values(TickerAnalysisCategory).reduce((acc, category) => {
         const categoryResult = data.categoryAnalysisResults?.find((r) => r.categoryKey === category);
@@ -119,10 +119,10 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
       }, {} as ComparisonTicker['categoryResults']);
 
       const newTicker: ComparisonTicker = {
-        id: data.ticker.id,
-        name: data.ticker.name,
-        symbol: data.ticker.symbol,
-        exchange: data.ticker.exchange,
+        id: data.id,
+        name: data.name,
+        symbol: data.symbol,
+        exchange: data.exchange,
         cachedScore: data.cachedScore as number,
         categoryResults,
       };
