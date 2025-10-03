@@ -85,9 +85,12 @@ async function postHandler(
 
   const nextAttemptNumber = exercise.attempts.length + 1;
 
+  const defaultPromptOutputInstructions = `Give the output in 2 paragraphs and simple language. Make sure to present as many facts and figures from the context as much as possible. Do not use any redudant language. Be crisp, concise and informative.`;
+
   try {
+    const outputInstructions = exercise.promptOutputInstructions || defaultPromptOutputInstructions;
     // Append prompt output instructions to the prompt if they exist
-    const enhancedPrompt = exercise.promptOutputInstructions ? `${prompt}\n\n${exercise.promptOutputInstructions}` : prompt;
+    const enhancedPrompt = `${prompt}\n\n # Output Instructions: \n\n ${outputInstructions}`;
 
     // Use the shared AI response generation utility
     const aiResponse = await generateAIResponse(enhancedPrompt);
