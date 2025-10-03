@@ -86,8 +86,13 @@ async function postHandler(
   const nextAttemptNumber = exercise.attempts.length + 1;
 
   try {
+    // Append prompt output instructions to the prompt if they exist
+    const enhancedPrompt = exercise.promptOutputInstructions
+      ? `${prompt}\n\n${exercise.promptOutputInstructions}`
+      : prompt;
+
     // Use the shared AI response generation utility
-    const aiResponse = await generateAIResponse(prompt);
+    const aiResponse = await generateAIResponse(enhancedPrompt);
 
     // Create the attempt record
     const attempt = await prisma.exerciseAttempt.create({
