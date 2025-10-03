@@ -87,9 +87,7 @@ async function postHandler(
 
   try {
     // Append prompt output instructions to the prompt if they exist
-    const enhancedPrompt = exercise.promptOutputInstructions
-      ? `${prompt}\n\n${exercise.promptOutputInstructions}`
-      : prompt;
+    const enhancedPrompt = exercise.promptOutputInstructions ? `${prompt}\n\n${exercise.promptOutputInstructions}` : prompt;
 
     // Use the shared AI response generation utility
     const aiResponse = await generateAIResponse(enhancedPrompt);

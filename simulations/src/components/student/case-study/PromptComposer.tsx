@@ -229,13 +229,14 @@ export default function PromptComposer({
   const [showAiResponseModal, setShowAiResponseModal] = useState<boolean>(false);
   const [currentAiResponse, setCurrentAiResponse] = useState<string>('');
 
-  // Character limit (ensure a sensible minimum of 1)
-  const charLimit: number = Math.max(1, promptCharacterLimit);
+  // Character limit logic - handle unlimited (-1) case
+  const hasCharacterLimit: boolean = promptCharacterLimit > 0;
+  const charLimit: number = hasCharacterLimit ? promptCharacterLimit : Number.MAX_SAFE_INTEGER;
   const usedChars: number = prompt.length;
-  const remainingChars: number = clamp(charLimit - usedChars, 0, charLimit);
-  const percentUsed: number = (usedChars / charLimit) * 100;
+  const remainingChars: number = hasCharacterLimit ? clamp(charLimit - usedChars, 0, charLimit) : 0;
+  const percentUsed: number = hasCharacterLimit ? (usedChars / charLimit) * 100 : 0;
   const barColorClass: string = getBarColorClass(percentUsed);
-  const isAtLimit: boolean = usedChars >= charLimit;
+  const isAtLimit: boolean = hasCharacterLimit && usedChars >= charLimit;
 
   // API
   const { postData: createAttempt, loading: submittingAttempt } = usePostData<CreateAttemptResponse, CreateAttemptRequest>({
@@ -357,7 +358,7 @@ export default function PromptComposer({
             value={prompt}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => setPrompt(e.target.value)}
             onInput={(): void => autoResize()}
-            maxLength={charLimit}
+            maxLength={hasCharacterLimit ? charLimit : undefined}
             aria-describedby="char-limit-hint"
             placeholder="Write your prompt here... Ask the AI to help you analyze the case study, provide insights, or guide you through the business concepts."
             className="w-full min-h-[160px] max-h-[800px] p-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 resize-none text-base leading-relaxed transition-all duration-300 bg-white/80 backdrop-blur-sm overflow-y-auto"
@@ -368,7 +369,7 @@ export default function PromptComposer({
         </div>
 
         {/* Character limit bar + counts */}
-        {promptCharacterLimit > 0 && (
+        {hasCharacterLimit && (
           <div className="mt-1" aria-live="polite" id="char-limit-hint">
             <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600">
               <span>{remainingChars} characters left</span>

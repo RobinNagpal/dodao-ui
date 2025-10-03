@@ -153,6 +153,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
             // Instructors don't edit, so this should not be called
             console.log('Instructor tried to update exercise - this should not happen');
           }}
+          isInstructor={true}
         />
       )}
     </div>
