@@ -4,16 +4,8 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { z } from 'zod';
 import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
-import { generateMetaDescriptionPrompt } from '@/lib/promptForMetaDescriptionV1';
-
-// Zod schema for meta description response
-const MetaDescriptionResponse = z.object({
-  metaDescription: z.string().min(1).max(160).describe('A concise meta description for the ticker analysis page'),
-});
-
-type MetaDescriptionResponseType = z.infer<typeof MetaDescriptionResponse>;
+import { generateMetaDescriptionPrompt, MetaDescriptionResponse, MetaDescriptionResponseType } from '@/lib/promptForMetaDescriptionV1';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;

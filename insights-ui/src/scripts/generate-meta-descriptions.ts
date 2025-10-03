@@ -1,15 +1,7 @@
 import 'dotenv/config';
 import { prisma } from '@/prisma';
-import { z } from 'zod';
 import { getLlmResponse } from './llm‑utils‑gemini';
-import { generateMetaDescriptionPrompt } from '@/lib/promptForMetaDescriptionV1';
-
-// Zod schema for meta description response
-const MetaDescriptionResponse = z.object({
-  metaDescription: z.string().min(1).max(160).describe('A concise meta description for the ticker analysis page'),
-});
-
-type MetaDescriptionResponseType = z.infer<typeof MetaDescriptionResponse>;
+import { generateMetaDescriptionPrompt, MetaDescriptionResponse, MetaDescriptionResponseType } from '@/lib/promptForMetaDescriptionV1';
 
 async function generateMetaDescriptionsForExistingTickers() {
   console.log('🚀 Starting meta description generation for existing tickers...');
