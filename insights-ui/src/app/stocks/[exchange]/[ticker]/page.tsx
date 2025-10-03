@@ -131,16 +131,19 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 
   let companyName: string = ticker;
   let summary: string = `Financial analysis and reports for ${ticker}. Explore key metrics, insights, and evaluations.`;
+  let metaDescription: string = '';
 
   try {
     const data: TickerV1FastResponse = await fetchTickerByExchange(exchange, ticker);
     companyName = data?.name ?? companyName;
     summary = data?.summary ?? summary;
+    metaDescription = data?.metaDescription ?? '';
   } catch {
     /* keep generic */
   }
 
-  const shortDesc: string = truncateForMeta(summary);
+  // Use metaDescription if available, otherwise truncate summary
+  const shortDesc: string = metaDescription || truncateForMeta(summary);
   const canonicalUrl: string = `https://koalagains.com/stocks/${exchange}/${ticker}`;
   const keywords: string[] = [
     companyName,
@@ -172,9 +175,6 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     keywords,
   };
 }
-
-/** Shared type each child `use()`s */
-type DataPromise = Promise<Readonly<TickerV1FastResponse>>;
 
 /* =============================================================================
    SHARED SKELETONS (typed, minimal)

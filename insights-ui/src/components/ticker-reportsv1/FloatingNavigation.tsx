@@ -277,7 +277,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
         aria-label="Open navigation"
         onClick={open}
         className={cx(
-          'fixed z-40 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2',
+          'fixed z-10 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2',
           isXL ? 'top-4 right-4' : 'bottom-2 left-2'
         )}
       >
