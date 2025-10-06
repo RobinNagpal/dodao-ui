@@ -1,33 +1,20 @@
 import json
+from flask import Flask, request, jsonify
 import yfinance as yf
 
-def lambda_handler(event, context):
-    # Default: no symbol
-    symbol = None
-    if event.get("queryStringParameters"):
-        symbol = event["queryStringParameters"].get("symbol")
+app = Flask(__name__)
 
+def core_handler(symbol: str):
     if not symbol:
-        # If no symbol provided, return all fields as None
-        return {
-            "statusCode": 400,
-            "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"error": "Missing symbol parameter"})
-        }
+        return 400, {"error": "Missing symbol parameter"}
 
     try:
         t = yf.Ticker(symbol)
         info = t.get_info()
 
-        # If Yahoo didn’t return valid info
         if not info or info.get("regularMarketPrice") is None:
-            return {
-                "statusCode": 200,
-                "headers": {"Content-Type": "application/json"},
-                "body": json.dumps({"symbol": symbol, "error": "Invalid symbol or no data", "data": None})
-            }
+            return 200, {"symbol": symbol, "error": "Invalid symbol or no data", "data": None}
 
-        # Income statement (TTM) for revenue + net income
         ttm = t.ttm_income_stmt
         total_revenue = None
         net_income = None
@@ -60,21 +47,27 @@ def lambda_handler(event, context):
             "netIncome": net_income,
             "netProfitMargin": net_profit_margin,
         }
-
-        return {
-            "statusCode": 200,
-            "headers": {"Content-Type": "application/json"},
-            "body": json.dumps(data)
-        }
+        return 200, data
 
     except Exception as e:
-        # On error, respond with nulls
-        return {
-            "statusCode": 500,
-            "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({
-                "symbol": symbol,
-                "error": str(e),
-                "data": None
-            })
-        }
+        return 500, {"symbol": symbol, "error": str(e), "data": None}
+
+# Health & root
+@app.route("/")
+def root():
+    return jsonify({"ok": True, "service": "stock-lambda", "hint": "Use /quote?symbol=AAPL"}), 200
+
+@app.route("/healthz")
+def healthz():
+    return jsonify({"ok": True}), 200
+
+# HTTP GET /quote?symbol=AAPL
+@app.route("/quote")
+def quote():
+    symbol = request.args.get("symbol")
+    status, payload = core_handler(symbol)
+    return jsonify(payload), status
+
+# Required for local testing
+if __name__ == "__main__":
+    app.run(debug=True)
