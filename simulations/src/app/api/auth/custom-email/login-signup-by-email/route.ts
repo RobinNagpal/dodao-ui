@@ -171,12 +171,33 @@ async function postHandler(req: NextRequest): Promise<LoginSignupByEmailResponse
     console.log('[login-signup-by-email] Verification token created in database successfully');
 
     if (user?.isTestUser) {
+      if (!isTestUserEmail(userEmail)) {
+        throw new Error('Seems like a user was added as a test user, but is not supposed to be. Please contact the admin for more details.');
+      }
+      console.log('logging in as a test user:', userEmail);
       return {
         isTestUser: true,
         url: verificationUrl,
       };
-      console.log('is test user');
     } else {
+      if (isTestUserEmail(userEmail)) {
+        user = await prisma.user.update({
+          data: {
+            isTestUser: true,
+          },
+          where: {
+            email_spaceId: {
+              email: reqBody?.email,
+              spaceId: reqBody?.spaceId,
+            },
+          },
+        });
+        return {
+          isTestUser: true,
+          url: verificationUrl,
+        };
+      }
+
       await sendVerificationRequest({
         identifier: userEmail,
         token,

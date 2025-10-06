@@ -9,7 +9,8 @@ export interface CreateUserInput {
 }
 
 export function isTestUserEmail(email: string) {
-  return email.includes('@koala-test.com');
+  const cleanedEmail = email.toLowerCase().trim();
+  return cleanedEmail.includes('@koala-test.com') || cleanedEmail.endsWith('koala-test.com');
 }
 
 export async function createNewUser(input: CreateUserInput): Promise<User> {
