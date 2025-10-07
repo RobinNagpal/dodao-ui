@@ -27,7 +27,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export async function getLlmResponse<T extends Record<string, any>>(
   prompt: string,
   schema: ZodObject<any>,
-  model?: 'gemini',
+  model?: 'gemini', // we can create a enum and use `gemini-2.5-pro` or `custom-gemini-2.5-pro-search-grounded`. When `custom-gemini-2.5-pro-search-grounded` is used, we can make two calls to Gemini and this function will just return the structured response.
   maxRetries = 3,
   initialDelay = 1000
 ): Promise<T> {
