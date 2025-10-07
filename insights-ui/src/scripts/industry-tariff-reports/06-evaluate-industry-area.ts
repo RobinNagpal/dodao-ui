@@ -5,7 +5,6 @@ import {
   writeJsonFileForEvaluateSubIndustryArea,
   writeMarkdownFileForEvaluateSubIndustryArea,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-// import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { uploadFileToS3 } from '@/scripts/report-file-utils';
 import { z } from 'zod';
 import {
@@ -231,7 +230,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${s
     instructions: detailInstructions,
   });
 
-  return await getLlmResponse<EstablishedPlayer>(detailPrompt, EstablishedPlayerSchema, 'gemini');
+  return await getLlmResponse<EstablishedPlayer>(detailPrompt, EstablishedPlayerSchema, 'gemini-2.5-pro');
 }
 
 function getSubAreaInfoString(subArea: IndustrySubArea, areas: IndustryAreasWrapper, tariffIndustry: TariffIndustryDefinition) {
@@ -315,7 +314,7 @@ ${JSON.stringify(areas, null, 2)}
   const { establishedPlayers: basicList } = await getLlmResponse<{ establishedPlayers: { companyName: string; companyTicker: string }[] }>(
     prompt,
     EstablishedPlayerListSchema,
-    'gemini'
+    'gemini-2.5-pro'
   );
   console.log(`[EstablishedPlayers] ${`← Received basic list only: ${JSON.stringify(basicList)}`}`);
 
@@ -368,7 +367,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${s
     },
   });
 
-  return await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, 'gemini');
+  return await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, 'gemini-2.5-pro');
 }
 
 /**
@@ -444,7 +443,7 @@ ${JSON.stringify(areas, null, 2)}
   const { newChallengers: basicList } = await getLlmResponse<{ newChallengers: { companyName: string; companyTicker: string }[] }>(
     prompt,
     NewChallengerListSchema,
-    'gemini'
+    'gemini-2.5-pro'
   );
   console.log(`[NewChallengers] ${`← Received basic list only: ${JSON.stringify(basicList)}`}`);
 
@@ -477,7 +476,7 @@ async function getHeadwindsAndTailwinds(
     instructions,
   });
 
-  return await getLlmResponse<HeadwindsAndTailwinds>(prompt, HeadwindsAndTailwindsSchema);
+  return await getLlmResponse<HeadwindsAndTailwinds>(prompt, HeadwindsAndTailwindsSchema, 'gemini-2.5-pro');
 }
 
 /**
@@ -507,7 +506,7 @@ async function getTariffImpactByCompanyType(areas: IndustryAreasWrapper, tariffU
     negativeTariffImpactOnCompanyType: NegativeTariffImpactOnCompanyType[];
   }
 
-  return await getLlmResponse<TariffImpactByCompanyType>(prompt, schema);
+  return await getLlmResponse<TariffImpactByCompanyType>(prompt, schema, 'gemini-2.5-pro');
 }
 
 /**
@@ -557,7 +556,7 @@ async function getTariffImpactSummary(
     summary: string;
   }
 
-  return (await getLlmResponse<TariffImpactSummary>(prompt, schema)).summary;
+  return (await getLlmResponse<TariffImpactSummary>(prompt, schema, 'gemini-2.5-pro')).summary;
 }
 
 export async function getAndWriteEvaluateIndustryAreaJson(

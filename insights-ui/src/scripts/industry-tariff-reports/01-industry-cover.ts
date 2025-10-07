@@ -1,6 +1,5 @@
 import { writeJsonAndMarkdownFilesForReportCover } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { ExecutiveSummary, IndustryAreasWrapper, ReportCover, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-// import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
@@ -49,7 +48,7 @@ async function getReportCover(
     # Summaries of tariff updates
     ${JSON.stringify(tariffSummaries, null, 2)}
   `;
-  const response = await getLlmResponse<ReportCover>(prompt, ReportCoverSchema);
+  const response = await getLlmResponse<ReportCover>(prompt, ReportCoverSchema, 'gemini-2.5-pro');
 
   return response;
 }

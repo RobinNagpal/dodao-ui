@@ -12,7 +12,6 @@ import {
   writeJsonFileForSeoDetails,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { EvaluateIndustryArea, IndustryTariffReport, PageSeoDetails, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
-// import { getLlmResponse } from '@/scripts/llm-utils';
 import { z } from 'zod';
 import { ReportType } from './tariff-types';
 import { getLlmResponse } from '../llm‑utils‑gemini';
@@ -41,7 +40,7 @@ async function generateSeoDetailsForSection(industry: TariffIndustryId, sectionN
     ${JSON.stringify(sectionContent, null, 2)}
   `;
 
-  return await getLlmResponse<PageSeoDetails>(prompt, PageSeoDetailsSchema, 'gemini');
+  return await getLlmResponse<PageSeoDetails>(prompt, PageSeoDetailsSchema, 'gemini-2.5-pro');
 }
 
 // Generate SEO details for report cover

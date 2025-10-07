@@ -1,6 +1,5 @@
 import { writeJsonFileForUnderstandIndustry, writeMarkdownFileForUnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryAreasWrapper, UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-// import { getLlmResponse } from '@/scripts/llm-utils';
 import { z } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
@@ -110,7 +109,7 @@ ${JSON.stringify(headings, null, 2)}
 
 export async function getUnderstandIndustry(industry: TariffIndustryId, headings: IndustryAreasWrapper) {
   console.log('Invoking LLM for understanding industry');
-  return await getLlmResponse<UnderstandIndustry>(getUnderstandIndustryPrompt(industry, headings), UnderstandIndustrySchema);
+  return await getLlmResponse<UnderstandIndustry>(getUnderstandIndustryPrompt(industry, headings), UnderstandIndustrySchema, 'gemini-2.5-pro');
 }
 
 export async function getAndWriteUnderstandIndustryJson(industry: TariffIndustryId, headings: IndustryAreasWrapper) {

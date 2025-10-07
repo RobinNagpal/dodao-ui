@@ -1,6 +1,5 @@
 import { writeJsonAndMarkdownFilesForExecutiveSummary } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { ExecutiveSummary, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-// import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
@@ -64,7 +63,7 @@ async function getExecutiveSummary(
   tariffSummaries: string[]
 ): Promise<ExecutiveSummary> {
   const prompt = getExecutiveSummaryPrompt(industry, headings, tariffUpdates, tariffSummaries);
-  const response = await getLlmResponse<ExecutiveSummary>(prompt, ExecutiveSummarySchema);
+  const response = await getLlmResponse<ExecutiveSummary>(prompt, ExecutiveSummarySchema, 'gemini-2.5-pro');
 
   return response;
 }

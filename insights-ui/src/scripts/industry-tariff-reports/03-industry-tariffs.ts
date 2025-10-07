@@ -6,10 +6,10 @@ import {
   readLastModifiedDatesFromFile,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { CountrySpecificTariff, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-import { getLlmResponse, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
 import { getDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { z } from 'zod';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
+import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 
 const CountrySpecificTariffSchema = z.object({
   countryName: z.string().describe('Name of the country.'),
@@ -82,7 +82,7 @@ Fetch the countries in the descending order of trading volume with the US for th
 
 async function getTopTradingCountries(industry: TariffIndustryId, date: string): Promise<string[]> {
   const prompt = getTopTradingCountriesPrompt(industry, date);
-  const response = await getLlmResponse<{ topCountries: string[] }>(prompt, TopCountriesSchema);
+  const response = await getLlmResponse<{ topCountries: string[] }>(prompt, TopCountriesSchema, 'gemini-2.5-pro-with-google-search');
   return response.topCountries;
 }
 
@@ -164,12 +164,9 @@ async function getTariffUpdatesForIndustry(
   for (const country of countriesToProcess) {
     const prompt = getTariffUpdatesForIndustryPrompt(industry, date, headings, country);
     console.log(`Fetching tariffs for ${country}…`);
-    const countryTariff = await getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, 'gpt-4o-search-preview');
+    const countryTariff = await getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, 'gemini-2.5-pro-with-google-search');
 
-    // Clean the response data to remove any URL parameters that might affect country names
-    const cleanedCountryTariff = recursivelyCleanOpenAiUrls(countryTariff);
-
-    countrySpecificTariffs.push(cleanedCountryTariff);
+    countrySpecificTariffs.push(countryTariff);
   }
 
   // If regenerating all countries, use the new data entirely

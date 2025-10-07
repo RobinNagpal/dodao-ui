@@ -1,6 +1,5 @@
 import { writeJsonFileForIndustryAreaSections, writeMarkdownFileForIndustryAreaSections } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryAreaSection, IndustryAreasWrapper } from '@/scripts/industry-tariff-reports/tariff-types';
-// import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
@@ -39,7 +38,7 @@ function getIndustryAreaPrompt(industry: TariffIndustryId, headings: IndustryAre
 
 async function getIndustryAreaSection(industry: TariffIndustryId, headings: IndustryAreasWrapper): Promise<IndustryAreaSection> {
   const prompt = getIndustryAreaPrompt(industry, headings);
-  const response = await getLlmResponse<IndustryAreaSection>(prompt, IndustryAreaSectionSchema);
+  const response = await getLlmResponse<IndustryAreaSection>(prompt, IndustryAreaSectionSchema, 'gemini-2.5-pro');
   return response;
 }
 

@@ -61,7 +61,7 @@ Fetch 15 additional countries in descending order of trading volume with the US 
 
 async function getAllCountries(industry: TariffIndustryId, date: string, existingTop5Countries: string[]): Promise<string[]> {
   const prompt = getAllCountriesPrompt(industry, date, existingTop5Countries);
-  const response = await getLlmResponse<{ allCountries: string[] }>(prompt, AllCountriesSchema);
+  const response = await getLlmResponse<{ allCountries: string[] }>(prompt, AllCountriesSchema, 'gemini-2.5-pro-with-google-search');
   return response.allCountries;
 }
 
@@ -165,7 +165,11 @@ async function getTariffUpdatesForAllCountries(
   const prompt = getAllCountriesTariffUpdatesPrompt(industry, date, headings, additionalCountries);
 
   console.log(`Invoking single LLM call for tariffs for all countries:`, additionalCountries);
-  const allCountriesTariffData = await getLlmResponse<{ countries: AllCountriesTariffInfo[] }>(prompt, AllCountriesTariffDataSchema);
+  const allCountriesTariffData = await getLlmResponse<{ countries: AllCountriesTariffInfo[] }>(
+    prompt,
+    AllCountriesTariffDataSchema,
+    'gemini-2.5-pro-with-google-search'
+  );
 
   // Clean the response data to remove any URL parameters that might affect country names
   // const countrySpecificTariffs = allCountriesTariffData.countries.map((countryTariff) => recursivelyCleanOpenAiUrls(countryTariff));
