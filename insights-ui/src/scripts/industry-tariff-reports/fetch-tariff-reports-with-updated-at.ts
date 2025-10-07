@@ -58,3 +58,11 @@ export async function fetchTariffReportsWithUpdatedAt(): Promise<
     lastModified: lastModifiedDates[industryId] || new Date().toISOString(),
   }));
 }
+
+/**
+ * Get last modified date for a specific industry
+ */
+export async function getLastModifiedDateForIndustry(industryId: TariffIndustryId): Promise<string> {
+  const lastModifiedDates = await getTariffReportsLastModifiedDates();
+  return lastModifiedDates[industryId] || new Date().toISOString();
+}
