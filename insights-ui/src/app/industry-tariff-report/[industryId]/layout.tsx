@@ -3,6 +3,7 @@ import CollapsibleLayout from '@/components/industry-tariff/collapsible-layout';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { getLastModifiedDateForIndustry } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -21,6 +22,14 @@ export default async function IndustryTariffReportLayout({
 
   if (reportResponse.ok) {
     report = await reportResponse.json();
+  }
+
+  // Fetch last modified date for the industry
+  let lastModified = '';
+  try {
+    lastModified = await getLastModifiedDateForIndustry(industryId);
+  } catch (error) {
+    lastModified = new Date().toISOString().split('T')[0];
   }
 
   // If no report is found, you might want to handle this case
@@ -61,7 +70,7 @@ export default async function IndustryTariffReportLayout({
 
           {/* Collapsible Layout for Desktop */}
           <div className="hidden lg:block">
-            <CollapsibleLayout report={report} industryId={industryId}>
+            <CollapsibleLayout report={report} industryId={industryId} lastModified={lastModified}>
               {children}
             </CollapsibleLayout>
           </div>

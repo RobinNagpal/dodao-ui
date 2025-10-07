@@ -18,9 +18,18 @@ interface BookNavigationProps {
   onNavItemClick?: () => void;
   onToggle?: () => void;
   showToggle?: boolean;
+  lastModified?: string;
 }
 
-export default function ReportLeftNavigation({ report, industryId, isMobile = false, onNavItemClick, onToggle, showToggle = false }: BookNavigationProps) {
+export default function ReportLeftNavigation({
+  report,
+  industryId,
+  isMobile = false,
+  onNavItemClick,
+  onToggle,
+  showToggle = false,
+  lastModified,
+}: BookNavigationProps) {
   const pathname = usePathname();
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
@@ -170,6 +179,22 @@ export default function ReportLeftNavigation({ report, industryId, isMobile = fa
           onNavItemClick={handleNavClick}
           isMobile={isMobile}
         />
+
+        {/* Last Modified Date Display */}
+        {lastModified && (
+          <div className="px-3 py-2 text-xs text-muted-foreground border-t border-color">
+            <div className="flex items-center gap-2 mt-2">
+              <span className="font-medium">Last Updated:</span>
+              <span>
+                {new Date(lastModified).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

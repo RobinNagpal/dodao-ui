@@ -12,9 +12,10 @@ interface CollapsibleLayoutProps {
   children: React.ReactNode;
   report: IndustryTariffReport;
   industryId: TariffIndustryId;
+  lastModified: string;
 }
 
-export default function CollapsibleLayout({ children, report, industryId }: CollapsibleLayoutProps) {
+export default function CollapsibleLayout({ children, report, industryId, lastModified }: CollapsibleLayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
@@ -39,7 +40,7 @@ export default function CollapsibleLayout({ children, report, industryId }: Coll
         {/* Left side - Book spine/navigation */}
         <div className={cn('transition-all duration-300 ease-in-out overflow-hidden', isSidebarOpen ? 'w-72' : 'w-0')}>
           <div className="w-72 h-full">
-            <ReportLeftNavigation report={report} industryId={industryId} onToggle={toggleSidebar} showToggle={true} />
+            <ReportLeftNavigation report={report} industryId={industryId} onToggle={toggleSidebar} showToggle={true} lastModified={lastModified} />
           </div>
         </div>
 
