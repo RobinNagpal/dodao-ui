@@ -121,9 +121,9 @@ Current U.S. tariff landscape for [Country] in the [Industry] sector as of ${cur
 [3-4 sentences describing the current tariff situation, focusing on recent developments and current status].
 
 #### Primary Sources
-*   [Current government source with URL]
-*   [Recent trade publication with URL]
-*   [Up-to-date official document with URL]
+*   [Specific government document/page with exact URL that contains the tariff rates and dates mentioned if exists]
+*   [Specific trade publication article with exact URL that contains the trade volume figures cited if exists]
+*   [Specific official announcement/document with exact URL that contains the implementation details if exists]
 
 #  Guidelines for each country:
   - Verify if the tariffs have actually been added for the given industry and country.
@@ -135,6 +135,9 @@ Current U.S. tariff landscape for [Country] in the [Industry] sector as of ${cur
   - We are interested in the tariffs that US has added
   - You can also include the tariff that the other country has added, but stress more on the tariffs that US has added.
   - Many products or subcategories can be exempted from the new tariffs. Calculate and mention the amount of trade that is impacted vs exempted.
+    - CRITICAL FOR SOURCES: Provide SPECIFIC URLs to the exact pages, documents, press releases, or reports that contain the information you're citing.
+    * Each source URL should directly lead to the specific information being referenced (tariff rates, trade volumes, implementation dates, etc.)
+  - Verify that each source URL actually contains the specific data points you're citing (tariff percentages, dollar amounts, dates)
  
   # Output Instructions
   ${outputInstructions}
