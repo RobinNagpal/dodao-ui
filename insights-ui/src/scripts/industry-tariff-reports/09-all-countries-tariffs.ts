@@ -5,13 +5,7 @@ import {
   writeLastModifiedDatesToFile,
   readLastModifiedDatesFromFile,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import {
-  IndustryAreasWrapper,
-  AllCountriesTariffUpdatesForIndustry,
-  KeyTradePartnersTariff,
-  AllCountriesTariffInfo,
-} from '@/scripts/industry-tariff-reports/tariff-types';
-// import { getLlmResponse, outputInstructions, recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
+import { IndustryAreasWrapper, AllCountriesTariffUpdatesForIndustry, AllCountriesTariffInfo } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { z } from 'zod';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
@@ -75,13 +69,11 @@ function getAllCountriesTariffUpdatesPrompt(industry: TariffIndustryId, date: st
   const definition = getTariffIndustryDefinitionById(industry);
   const currentDate = getDateAsMonthDDYYYYFormat(date);
   const prompt = `
-  As of today (${currentDate}), I want to know about the new or recent tariffs added for the ${definition.name} industry for multiple countries.
+  As of today (${currentDate}), I want to know about the CURRENT and RECENT tariffs for the ${definition.name} industry for multiple countries.
 
-  IMPORTANT: Provide tariff data for ALL of these countries in a single response: ${countries.join(', ')}
+  CRITICAL: Provide tariff data for ALL of these countries in a single response: ${countries.join(', ')}
 
-  Make sure to verify all the new tariffs added for ${
-    definition.name
-  } industry and as of ${currentDate} for each country because they have been changing almost everyday.
+  IMPORTANT: Focus on CURRENT tariffs as of ${currentDate}. DO NOT provide historical data from 2018-2019 unless it is still in effect today. We want current, up-to-date information that reflects the current trade situation.
 
 
   Make sure to verify the tariff information on official government websites or trade websites for tariff information, and also make sure that you have referred to all the information as of ${currentDate}.
@@ -100,12 +92,38 @@ ${JSON.stringify(headings, null, 2)}
   For EACH country, provide the following details:
   - Name of the country
   - Total trade volume between this country and the US for the given industry in USD (e.g., $X.X billion annually)
-  - Tariff rates that were in effect before Trump administration changes
-  - New tariff rates implemented by the Trump administration, with the date when they were declared and when they became or will become effective
-  - Description of the new tariff rates implemented by the Trump administration (3-4 concise sentences)
-  - Primary sources used (2-3 key sources with URLs)
-  - Dont include any disclaimers
-  - All the markdown headings you use use h4 or h5 i.e. #### or #####
+  - Tariff rates that were in effect before any recent changes (focus on current baseline)
+  - Current/new tariff rates that are in effect as of ${currentDate}, with the date when they were declared and when they became effective
+  - Description of the current tariff situation (3-4 concise sentences focusing on current status)
+  - Primary sources used (2-3 key sources with URLs that are current and relevant)
+  - Don't include any disclaimers
+  - All the markdown headings you use use h4 or h5 i.e. ### or ####
+
+# Example of Expected Format for One Country:
+### Overview of U.S. Tariffs
+Current U.S. tariff landscape for [Country] in the [Industry] sector as of ${currentDate}.
+
+*   **U.S. Trade Volume**: Total U.S. imports of [relevant HS codes] from [Country] were approximately $X.X billion in [recent year].
+*   **Impacted vs. Exempted Trade**: [Calculate and mention current impact vs exemptions if applicable].
+
+#### Tariff Rate Changes
+
+##### Pre-Recent Changes Rates
+[Current baseline rates, not historical Trump-era rates unless still in effect].
+
+#### Current Tariff Implementation
+*   **Action**: [Current tariff measures in effect].
+*   **Declared Date**: [Recent date].
+*   **Effective Date**: [Current effective date].
+*   **Rates**: [Current rates].
+
+#### Description of Current Tariffs
+[3-4 sentences describing the current tariff situation, focusing on recent developments and current status].
+
+#### Primary Sources
+*   [Current government source with URL]
+*   [Recent trade publication with URL]
+*   [Up-to-date official document with URL]
 
 #  Guidelines for each country:
   - Verify if the tariffs have actually been added for the given industry and country.

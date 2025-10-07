@@ -1,5 +1,6 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ReportCoverActions from '@/components/industry-tariff/section-actions/ReportCoverActions';
+import { renderSection } from '@/components/industry-tariff/renderers/SectionRenderer';
 
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -94,18 +95,6 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
       countryName: tariff.countryName,
       newChangesFirstSentence: tariff.newChanges,
     })) || [];
-
-  // Function to render section with header and actions
-  const renderSection = (title: string, content: JSX.Element) => (
-    <div className="mb-12">
-      <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-        <div className="bg-gray-800 p-4 border-b border-gray-700">
-          <h2 className="text-xl font-semibold heading-color">{title}</h2>
-        </div>
-        <div className="p-4">{content}</div>
-      </div>
-    </div>
-  );
 
   return (
     <div className="mx-auto max-w-7xl py-2">

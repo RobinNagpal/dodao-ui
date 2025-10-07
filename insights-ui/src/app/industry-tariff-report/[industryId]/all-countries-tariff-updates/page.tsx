@@ -1,11 +1,11 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
 import AllCountriesTariffUpdatesActions from '@/components/industry-tariff/section-actions/AllCountriesTariffUpdatesActions';
+import { renderSection } from '@/components/industry-tariff/renderers/SectionRenderer';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { KeyTradePartnersTariff, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { Metadata } from 'next';
 import React from 'react';
 
@@ -90,7 +90,7 @@ export default async function AllCountriesTariffUpdatesPage({ params }: { params
   return (
     <div className="mx-auto max-w-7xl py-2">
       {/* Title and Actions */}
-      <div className="mb-4 pb-4 border-b border-gray-200">
+      <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold heading-color">All Key Markets - {definition.name} Industry</h1>
           <PrivateWrapper>
@@ -117,19 +117,28 @@ export default async function AllCountriesTariffUpdatesPage({ params }: { params
         {report.allCountriesTariffUpdates &&
           report.allCountriesTariffUpdates?.countrySpecificTariffs &&
           Array.isArray(report.allCountriesTariffUpdates?.countrySpecificTariffs) && (
-            <CountryNavigation countries={report.allCountriesTariffUpdates?.countrySpecificTariffs.map((c) => c.countryName)} industryId={industryId} />
+            <CountryNavigation
+              countries={report.allCountriesTariffUpdates?.countrySpecificTariffs.map((c) => c.countryName)}
+              industryId={industryId}
+              nextPageLink={{
+                text: 'Top 5 Partners',
+                href: `/industry-tariff-report/${industryId}/tariff-updates`,
+              }}
+            />
           )}
 
+        {/* Country-specific tariff information using renderSection */}
         {report.allCountriesTariffUpdates?.countrySpecificTariffs &&
           Array.isArray(report.allCountriesTariffUpdates?.countrySpecificTariffs) &&
           report.allCountriesTariffUpdates?.countrySpecificTariffs?.map((countryTariff, index) => {
+            const sectionId = `country-${countryTariff?.countryName?.toLowerCase().replace(/\s+/g, '-') || `country-${index}`}`;
             return (
-              <div className="mb-6" id={`country-${slugify(countryTariff?.countryName?.toLowerCase())}`}>
-                <h2 className="text-2xl">{countryTariff?.countryName}</h2>
-                <div
-                  className="max-w-max markdown markdown-body text-sm"
-                  dangerouslySetInnerHTML={{ __html: parseMarkdown(countryTariff?.tariffInfo || '') }}
-                />
+              <div key={`${countryTariff?.countryName}-${index}`}>
+                {renderSection(
+                  countryTariff?.countryName || 'Unknown Country',
+                  <div className="max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(countryTariff?.tariffInfo || '') }} />,
+                  sectionId
+                )}
               </div>
             );
           })}

@@ -85,7 +85,7 @@ export default function ReportLeftNavigation({ report, industryId, isMobile = fa
         </Link>
 
         <NavSection
-          title="Top 5 Trade Partners"
+          title="Tariff Updates - Top 5 Trade Partners"
           section="tariff-updates"
           isExpanded={isSectionExpanded('tariff-updates')}
           reportId={industryId}
@@ -97,7 +97,7 @@ export default function ReportLeftNavigation({ report, industryId, isMobile = fa
         />
 
         <NavSection
-          title="All Key Markets"
+          title="Tariff Updates - All Key Markets"
           section="all-countries-tariff-updates"
           isExpanded={isSectionExpanded('all-countries-tariff-updates')}
           reportId={industryId}

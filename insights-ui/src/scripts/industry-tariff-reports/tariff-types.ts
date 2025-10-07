@@ -194,15 +194,6 @@ export interface AllCountriesTariffInfo {
   tariffInfo: string;
 }
 
-export interface KeyTradePartnersTariff {
-  countryName: string;
-  tradeVolume: string;
-  tariffBeforeTrump: string;
-  newTariffUpdates: string;
-  effectiveDate: string;
-  source: string;
-}
-
 export interface AllCountriesTariffUpdatesForIndustry {
   countryNames: string[];
   countrySpecificTariffs: AllCountriesTariffInfo[];
