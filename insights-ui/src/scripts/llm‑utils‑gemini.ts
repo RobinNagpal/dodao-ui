@@ -21,44 +21,6 @@ export const outputInstructions = `
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export function cleanOpenAIUrls(obj: any): any {
-  if (typeof obj === 'object' && obj !== null) {
-    if (Array.isArray(obj)) return obj.map(cleanOpenAIUrls);
-    const result: Record<string, any> = {};
-    for (const key in obj) result[key] = cleanOpenAIUrls(obj[key]);
-    return result;
-  } else if (typeof obj === 'string') {
-    return obj.replace(/(\?utm_source=openai|&utm_source=openai|utm_source=openai)$/, '');
-  }
-  return obj;
-}
-
-export function recursivelyCleanOpenAiUrls(data: any): any {
-  const suffix1 = '?utm_source=openai';
-  const suffix2 = '&utm_source=openai';
-  const linkRe = /(\[.*?\]\()([^)]+)(\))/g;
-
-  if (typeof data === 'string') {
-    let s = data.replace(linkRe, (_m, p, url, sfx) => {
-      if (url.endsWith(suffix1)) url = url.slice(0, -suffix1.length);
-      else if (url.endsWith(suffix2)) url = url.slice(0, -suffix2.length);
-      return `${p}${url}${sfx}`;
-    });
-    if (s.endsWith(suffix1)) s = s.slice(0, -suffix1.length);
-    else if (s.endsWith(suffix2)) s = s.slice(0, -suffix2.length);
-    return s;
-  }
-
-  if (Array.isArray(data)) return data.map(recursivelyCleanOpenAiUrls);
-  if (data !== null && typeof data === 'object') {
-    const o: Record<string, any> = {};
-    for (const k in data) o[k] = recursivelyCleanOpenAiUrls(data[k]);
-    return o;
-  }
-
-  return data;
-}
-
 /**
  * Prompt the right Gemini client (static vs. search‑grounded).
  */

@@ -1,6 +1,6 @@
 import { ChatOpenAI } from '@langchain/openai';
 import OpenAI from 'openai';
-import { zodResponseFormat, zodTextFormat } from 'openai/helpers/zod';
+import { zodResponseFormat } from 'openai/helpers/zod';
 import { ZodObject } from 'zod';
 
 const o4MiniModel = new ChatOpenAI({
@@ -12,11 +12,6 @@ const o4MiniModel = new ChatOpenAI({
 export const gpt4OSearchModel = new ChatOpenAI({
   apiKey: process.env.OPENAI_API_KEY,
   model: 'gpt-4o-search-preview',
-});
-
-export const gpt4oMiniSearchModel = new ChatOpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-  model: 'gpt-4o-mini-search-preview',
 });
 
 export const outputInstructions =
@@ -32,24 +27,6 @@ export const outputInstructions =
 `;
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-export function cleanOpenAIUrls(obj: any): any {
-  if (typeof obj === 'object' && obj !== null) {
-    if (Array.isArray(obj)) {
-      return obj.map(cleanOpenAIUrls);
-    } else {
-      const result: Record<string, any> = {};
-      for (const key in obj) {
-        result[key] = cleanOpenAIUrls(obj[key]);
-      }
-      return result;
-    }
-  } else if (typeof obj === 'string') {
-    // Remove ?utm_source=openai, &utm_source=openai, or utm_source=openai at the end of the string
-    return obj.replace(/(\?utm_source=openai|&utm_source=openai|utm_source=openai)$/, '');
-  }
-  return obj;
-}
 
 /**
  * Recursively traverses an object or array.
