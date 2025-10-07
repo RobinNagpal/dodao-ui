@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { GoogleGenAI } from '@google/genai';
 import { ZodObject } from 'zod';
 
 export const geminiModel = new ChatGoogleGenerativeAI({
@@ -7,6 +8,12 @@ export const geminiModel = new ChatGoogleGenerativeAI({
   apiKey: process.env.GOOGLE_API_KEY,
   temperature: 1,
 });
+
+export const geminiWithSearchModel = new GoogleGenAI({
+  apiKey: process.env.GOOGLE_API_KEY,
+});
+
+export type GeminiModelType = 'gemini-2.5-pro' | 'gemini-2.5-pro-with-google-search';
 
 export const outputInstructions = `
 #  For output content:
@@ -21,64 +28,55 @@ export const outputInstructions = `
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export function cleanOpenAIUrls(obj: any): any {
-  if (typeof obj === 'object' && obj !== null) {
-    if (Array.isArray(obj)) return obj.map(cleanOpenAIUrls);
-    const result: Record<string, any> = {};
-    for (const key in obj) result[key] = cleanOpenAIUrls(obj[key]);
-    return result;
-  } else if (typeof obj === 'string') {
-    return obj.replace(/(\?utm_source=openai|&utm_source=openai|utm_source=openai)$/, '');
-  }
-  return obj;
-}
-
-export function recursivelyCleanOpenAiUrls(data: any): any {
-  const suffix1 = '?utm_source=openai';
-  const suffix2 = '&utm_source=openai';
-  const linkRe = /(\[.*?\]\()([^)]+)(\))/g;
-
-  if (typeof data === 'string') {
-    let s = data.replace(linkRe, (_m, p, url, sfx) => {
-      if (url.endsWith(suffix1)) url = url.slice(0, -suffix1.length);
-      else if (url.endsWith(suffix2)) url = url.slice(0, -suffix2.length);
-      return `${p}${url}${sfx}`;
-    });
-    if (s.endsWith(suffix1)) s = s.slice(0, -suffix1.length);
-    else if (s.endsWith(suffix2)) s = s.slice(0, -suffix2.length);
-    return s;
-  }
-
-  if (Array.isArray(data)) return data.map(recursivelyCleanOpenAiUrls);
-  if (data !== null && typeof data === 'object') {
-    const o: Record<string, any> = {};
-    for (const k in data) o[k] = recursivelyCleanOpenAiUrls(data[k]);
-    return o;
-  }
-
-  return data;
-}
-
 /**
  * Prompt the right Gemini client (static vs. search‑grounded).
  */
 export async function getLlmResponse<T extends Record<string, any>>(
   prompt: string,
   schema: ZodObject<any>,
-  model?: 'gemini',
+  model: GeminiModelType = 'gemini-2.5-pro',
   maxRetries = 3,
   initialDelay = 1000
 ): Promise<T> {
-  console.log('Invoking Gemini for prompt:', prompt);
+  console.log(`Invoking Gemini (${model}) for prompt:`, prompt);
   let lastErr: Error | null = null;
 
   for (let i = 1; i <= maxRetries; i++) {
     try {
-      const client = geminiModel;
-      const llmWithSchema = client.withStructuredOutput<T>(schema);
-      const res = await llmWithSchema.invoke(prompt);
-      console.log('✅ Gemini response received');
-      return res;
+      if (model === 'gemini-2.5-pro-with-google-search') {
+        // First, get response from Gemini with Google Search grounding
+        const groundingTool = {
+          googleSearch: {},
+        };
+
+        const config = {
+          tools: [groundingTool],
+        };
+
+        const searchResponse = await geminiWithSearchModel.models.generateContent({
+          model: 'gemini-2.5-pro',
+          contents: prompt,
+          config,
+        });
+
+        const searchResult = searchResponse.text;
+        console.log('✅ Gemini with search response received');
+
+        // Now convert the search result to structured output using schema
+        const structuredPrompt = `Please convert the given information into the given schema format.\n\n${searchResult}`;
+        const client = geminiModel;
+        const llmWithSchema = client.withStructuredOutput<T>(schema);
+        const res = await llmWithSchema.invoke(structuredPrompt);
+        console.log('✅ Structured output conversion completed');
+        return res;
+      } else {
+        // Use existing LangChain approach for regular gemini-2.5-pro
+        const client = geminiModel;
+        const llmWithSchema = client.withStructuredOutput<T>(schema);
+        const res = await llmWithSchema.invoke(prompt);
+        console.log('✅ Gemini response received');
+        return res;
+      }
     } catch (e) {
       lastErr = e as Error;
       console.warn(`Attempt ${i} failed: ${lastErr.message}`);

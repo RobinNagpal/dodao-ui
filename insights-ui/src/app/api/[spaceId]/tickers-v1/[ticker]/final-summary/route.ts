@@ -87,7 +87,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   const metaDescriptionPrompt = generateMetaDescriptionPrompt(finalSummary);
 
-  const metaDescriptionResult = await getLlmResponse<MetaDescriptionResponseType>(metaDescriptionPrompt, MetaDescriptionResponse, 'gemini', 3, 1000);
+  const metaDescriptionResult = await getLlmResponse<MetaDescriptionResponseType>(metaDescriptionPrompt, MetaDescriptionResponse, 'gemini-2.5-pro', 3, 1000);
 
   const metaDescription = metaDescriptionResult.metaDescription;
 

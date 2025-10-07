@@ -33,24 +33,6 @@ export const outputInstructions =
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export function cleanOpenAIUrls(obj: any): any {
-  if (typeof obj === 'object' && obj !== null) {
-    if (Array.isArray(obj)) {
-      return obj.map(cleanOpenAIUrls);
-    } else {
-      const result: Record<string, any> = {};
-      for (const key in obj) {
-        result[key] = cleanOpenAIUrls(obj[key]);
-      }
-      return result;
-    }
-  } else if (typeof obj === 'string') {
-    // Remove ?utm_source=openai, &utm_source=openai, or utm_source=openai at the end of the string
-    return obj.replace(/(\?utm_source=openai|&utm_source=openai|utm_source=openai)$/, '');
-  }
-  return obj;
-}
-
 /**
  * Recursively traverses an object or array.
  * - Removes specific trailing query parameters (?utm_source=openai or &utm_source=openai)

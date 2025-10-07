@@ -6,7 +6,6 @@ import {
   PositiveTariffImpactOnCompanyType,
   TariffUpdatesForIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
-// import { getLlmResponse, outputInstructions } from '@/scripts/llm-utils';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
@@ -113,7 +112,7 @@ async function getFinalConclusion(
   negativeImpacts: NegativeTariffImpactOnCompanyType[]
 ): Promise<FinalConclusion> {
   const prompt = getFinalConclusionPrompt(industry, headings, tariffUpdates, tariffSummaries, positiveImpacts, negativeImpacts);
-  const response = await getLlmResponse<FinalConclusion>(prompt, FinalConclusionSchema);
+  const response = await getLlmResponse<FinalConclusion>(prompt, FinalConclusionSchema, 'gemini-2.5-pro');
   return response;
 }
 

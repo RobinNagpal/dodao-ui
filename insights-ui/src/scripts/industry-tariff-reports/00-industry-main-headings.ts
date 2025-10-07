@@ -1,7 +1,6 @@
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { writeJsonAndMarkdownFilesForIndustryAreas } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryAreasWrapper } from '@/scripts/industry-tariff-reports/tariff-types';
-// import { getLlmResponse } from '@/scripts/llm-utils';
 import { z, ZodObject } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
 
@@ -50,7 +49,7 @@ function getMainIndustryPrompt(industryId: TariffIndustryId) {
 }
 
 export async function getAndWriteIndustryHeadings(industryId: TariffIndustryId) {
-  const areas = await getLlmResponse<IndustryAreasWrapper>(getMainIndustryPrompt(industryId), IndustryAreasSchema);
+  const areas = await getLlmResponse<IndustryAreasWrapper>(getMainIndustryPrompt(industryId), IndustryAreasSchema, 'gemini-2.5-pro');
   console.log(JSON.stringify(areas, null, 2));
 
   // Upload JSON to S3
