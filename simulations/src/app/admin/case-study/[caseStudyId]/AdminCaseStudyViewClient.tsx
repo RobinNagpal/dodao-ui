@@ -245,6 +245,7 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
               await reFetchData();
             }}
             allowEdit={true}
+            isAdmin={true}
           />
         )}
 

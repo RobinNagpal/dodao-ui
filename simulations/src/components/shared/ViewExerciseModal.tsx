@@ -9,6 +9,7 @@ import { parseMarkdown } from '@/utils/parse-markdown';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Save, X } from 'lucide-react';
@@ -29,6 +30,7 @@ export interface ViewExerciseModalProps {
   onExerciseUpdate?: (updatedExercise: ModuleExercise) => void;
   allowEdit?: boolean;
   isInstructor?: boolean;
+  isAdmin?: boolean;
 }
 
 interface BaseViewProps {
@@ -47,10 +49,10 @@ type EditableField =
   | 'archive';
 
 /* =========================================================
- * Student View
+ * Admin View
  * =======================================================*/
 
-export function StudentView({ exercise }: BaseViewProps): JSX.Element {
+export function AdminView({ exercise }: BaseViewProps): JSX.Element {
   return (
     <div className="space-y-6">
       {/* Details */}
@@ -74,35 +76,14 @@ export function StudentView({ exercise }: BaseViewProps): JSX.Element {
           <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.gradingLogic) }} />
         </div>
       )}
-    </div>
-  );
-}
 
-/* =========================================================
- * Instructor View
- * (Student view + Instructor Instructions)
- * =======================================================*/
-
-export function InstructorView({ exercise }: BaseViewProps): JSX.Element {
-  return (
-    <div className="space-y-6">
-      <StudentView exercise={exercise} />
+      {/* Prompt Character Limit */}
       <div>
         <h4 className="text-lg font-semibold text-gray-900 mb-2">Prompt Character Limit:</h4>
         <div>{exercise.promptCharacterLimit === -1 ? 'unlimited' : exercise.promptCharacterLimit + ' characters'}</div>
       </div>
 
-      {exercise.instructorInstructions && (
-        <div>
-          <h4 className="text-lg font-semibold text-gray-900 mb-2">Instructor Instructions:</h4>
-          <div
-            className="markdown-body"
-            dangerouslySetInnerHTML={{
-              __html: parseMarkdown(exercise.instructorInstructions),
-            }}
-          />
-        </div>
-      )}
+      {/* Prompt Output Instructions (optional) */}
       {exercise.promptOutputInstructions && (
         <div>
           <h4 className="text-lg font-semibold text-gray-900 mb-2">Prompt Output Instructions:</h4>
@@ -114,7 +95,76 @@ export function InstructorView({ exercise }: BaseViewProps): JSX.Element {
           />
         </div>
       )}
+
+      {/* Instructor Instructions (optional) */}
+      {exercise.instructorInstructions && (
+        <div>
+          <h4 className="text-lg font-semibold text-gray-900 mb-2">Instructor Instructions:</h4>
+          <div
+            className="markdown-body"
+            dangerouslySetInnerHTML={{
+              __html: parseMarkdown(exercise.instructorInstructions),
+            }}
+          />
+        </div>
+      )}
     </div>
+  );
+}
+
+/* =========================================================
+ * Instructor View with Tabs
+ * =======================================================*/
+
+export function InstructorView({ exercise }: BaseViewProps): JSX.Element {
+  return (
+    <Tabs defaultValue="basic" className="w-full">
+      <TabsList className="grid w-full grid-cols-2 bg-purple-100 border border-purple-200">
+        <TabsTrigger
+          value="basic"
+          className="data-[state=active]:bg-white data-[state=active]:text-purple-700 data-[state=active]:shadow-purple-500/25 font-medium"
+        >
+          Basic
+        </TabsTrigger>
+        <TabsTrigger
+          value="advanced"
+          className="data-[state=active]:bg-white data-[state=active]:text-purple-700 data-[state=active]:shadow-purple-500/25 font-medium"
+        >
+          Advanced
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="basic" className="space-y-6 mt-6">
+        {/* Details only */}
+        <div>
+          <h4 className="text-lg font-semibold text-gray-900 mb-2">Details:</h4>
+          <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.details) }} />
+        </div>
+      </TabsContent>
+
+      <TabsContent value="advanced" className="space-y-6 mt-6">
+        {/* Grading Logic (optional) */}
+        {exercise.gradingLogic && (
+          <div>
+            <h4 className="text-lg font-semibold text-gray-900 mb-2">Grading Logic:</h4>
+            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.gradingLogic) }} />
+          </div>
+        )}
+
+        {/* Prompt Output Instructions (optional) */}
+        {exercise.promptOutputInstructions && (
+          <div>
+            <h4 className="text-lg font-semibold text-gray-900 mb-2">Prompt Output Instructions:</h4>
+            <div
+              className="markdown-body"
+              dangerouslySetInnerHTML={{
+                __html: parseMarkdown(exercise.promptOutputInstructions),
+              }}
+            />
+          </div>
+        )}
+      </TabsContent>
+    </Tabs>
   );
 }
 
@@ -289,6 +339,7 @@ export default function ViewExerciseModal({
   onExerciseUpdate,
   allowEdit,
   isInstructor,
+  isAdmin,
 }: ViewExerciseModalProps): JSX.Element {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
@@ -333,11 +384,11 @@ export default function ViewExerciseModal({
             onCancel={() => setIsEditMode(false)}
             onClose={onClose}
           />
+        ) : isAdmin ? (
+          <AdminView exercise={exercise} />
         ) : isInstructor ? (
           <InstructorView exercise={exercise} />
-        ) : (
-          <StudentView exercise={exercise} />
-        )}
+        ) : null}
       </div>
     </FullPageModal>
   );
