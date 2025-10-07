@@ -1,4 +1,5 @@
 import {
+  readAllCountriesTariffUpdatesFromFile,
   readEvaluateSubIndustryAreaJsonFromFile,
   readExecutiveSummaryFromFile,
   readFinalConclusionFromFile,
@@ -10,6 +11,7 @@ import {
   readUnderstandIndustryJsonFromFile,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import {
+  AllCountriesTariffUpdatesForIndustry,
   EvaluateIndustryArea,
   IndustryAreasWrapper,
   IndustryTariffReport,
@@ -25,6 +27,7 @@ export async function getIndustryTariffReport(industry: string): Promise<Industr
   const industryAreaHeadings = await readIndustryHeadingsFromFile(industry);
   const industryAreas = await readIndustryAreaSectionFromFile(industry);
   const tariffUpdates = await readTariffUpdatesFromFile(industry);
+  const allCountriesTariffUpdates = await readAllCountriesTariffUpdatesFromFile(industry);
   const reportSeoDetails = await readSeoDetailsFromFile(industry);
 
   const evaluateIndustryAreas: EvaluateIndustryArea[] = [];
@@ -48,6 +51,7 @@ export async function getIndustryTariffReport(industry: string): Promise<Industr
     industryAreas: industryAreaHeadings,
     industryAreasSections: industryAreas,
     tariffUpdates,
+    allCountriesTariffUpdates,
     understandIndustry,
     reportSeoDetails,
   };

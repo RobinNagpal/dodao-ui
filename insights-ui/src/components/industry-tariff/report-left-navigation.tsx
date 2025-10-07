@@ -85,13 +85,25 @@ export default function ReportLeftNavigation({ report, industryId, isMobile = fa
         </Link>
 
         <NavSection
-          title="Tariff Updates"
+          title="Tariff Updates - Top 5 Trade Partners"
           section="tariff-updates"
           isExpanded={isSectionExpanded('tariff-updates')}
           reportId={industryId}
           currentPath={pathname}
           isActive={isActive(`/industry-tariff-report/${industryId}/tariff-updates`)}
           onClick={() => toggleSection('tariff-updates')}
+          onNavItemClick={handleNavClick}
+          isMobile={isMobile}
+        />
+
+        <NavSection
+          title="Tariff Updates - All Key Markets"
+          section="all-countries-tariff-updates"
+          isExpanded={isSectionExpanded('all-countries-tariff-updates')}
+          reportId={industryId}
+          currentPath={pathname}
+          isActive={isActive(`/industry-tariff-report/${industryId}/all-countries-tariff-updates`)}
+          onClick={() => toggleSection('all-countries-tariff-updates')}
           onNavItemClick={handleNavClick}
           isMobile={isMobile}
         />

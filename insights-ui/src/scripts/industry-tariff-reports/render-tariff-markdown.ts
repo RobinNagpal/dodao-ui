@@ -1,5 +1,6 @@
 import { img } from '@/scripts/chart-utils';
 import {
+  AllCountriesTariffUpdatesForIndustry,
   CountrySpecificTariff,
   EstablishedPlayer,
   EvaluateIndustryArea,
@@ -76,6 +77,12 @@ export function getMarkdownContentForIndustryTariffs(industry: string, tariffUpd
     `${tariffUpdates.countrySpecificTariffs
       .map((country) => `## ${country.countryName}\n\n${getMarkdownContentForCountryTariffs(country)}`)
       .join('\n\n---\n\n')}\n`;
+
+  return recursivelyCleanOpenAiUrls(markdownContent);
+}
+
+export function getMarkdownContentForAllCountriesIndustryTariffs(industry: string, allCountriesTariffUpdates: AllCountriesTariffUpdatesForIndustry) {
+  const markdownContent = `# All Countries Tariff Updates for ${industry}\n\n` + `${allCountriesTariffUpdates.countrySpecificTariffs}`;
 
   return recursivelyCleanOpenAiUrls(markdownContent);
 }

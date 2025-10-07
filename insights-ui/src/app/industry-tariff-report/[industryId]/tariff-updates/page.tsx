@@ -1,11 +1,11 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import TariffUpdatesActions from '@/components/industry-tariff/section-actions/TariffUpdatesActions';
-import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
-
+import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
+import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
 
   if (!report) {
     return {
-      title: 'Tariff Updates | Industry Report',
+      title: 'Top 5 Trade Partners | Industry Report',
       description: 'Latest tariff updates and their impact on the industry',
     };
   }
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
 
   // Create a title that includes the industry name
   const industryName = report.executiveSummary?.title || 'Industry';
-  const seoTitle = seoDetails?.title || `${industryName} Tariff Updates | Trade Impact Analysis`;
+  const seoTitle = seoDetails?.title || `${industryName} Top 5 Trade Partners | Trade Impact Analysis`;
   const seoDescription =
     seoDetails?.shortDescription ||
     `Detailed analysis of recent tariff changes affecting the ${industryName} industry, including country-specific impacts and trade agreement changes.`;
@@ -91,7 +91,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
       {/* Title and Actions */}
       <div className="mb-4 pb-4 border-b border-gray-200">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold heading-color">Tariff Updates for {definition.name}</h1>
+          <h1 className="text-3xl font-bold heading-color">Top 5 Trade Partners - {definition.name} Industry</h1>
           <PrivateWrapper>
             <TariffUpdatesActions industryId={industryId} />
           </PrivateWrapper>
@@ -111,17 +111,23 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
         </PrivateWrapper>
       )}
 
-      <div className="space-y-12">
+      <div className="space-y-4">
+        {/* Country Navigation */}
+        {report.tariffUpdates && report.tariffUpdates.countryNames && (
+          <CountryNavigation countries={report.tariffUpdates.countryNames} industryId={industryId} />
+        )}
+
         {report.tariffUpdates ? (
           report.tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
+            const sectionId = `country-${countryTariff.countryName.toLowerCase().replace(/\s+/g, '-')}`;
             return (
-              <div key={index} className="mb-12">
+              <div key={index} className="mb-6">
                 <div className="flex justify-end mb-4">
                   <PrivateWrapper>
                     <TariffUpdatesActions industryId={industryId} tariffIndex={index} countryName={countryTariff.countryName} />
                   </PrivateWrapper>
                 </div>
-                <CountryTariffRenderer countryTariff={countryTariff} />
+                <CountryTariffRenderer countryTariff={countryTariff} sectionId={sectionId} />
               </div>
             );
           })

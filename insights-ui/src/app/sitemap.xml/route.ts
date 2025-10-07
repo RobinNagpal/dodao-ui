@@ -1,4 +1,4 @@
-import { fetchTariffReportsWithUpdatedAt } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
+import { fetchTariffReportsWithUpdatedAt, getTariffReportsLastModifiedDates } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
 import { fetchTariffReports, TariffIndustryDefinition, getAllHeadingSubheadingCombinations } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { REPORT_TYPES_TO_DISPLAY } from '@/types/project/project';
 import { getPostsData } from '@/util/blog-utils';
@@ -169,7 +169,12 @@ async function generateBlogUrls(): Promise<SiteMapUrl[]> {
 // Generate URLs for tariff reports and their sections
 async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
-  const tariffReports: (TariffIndustryDefinition & { lastModified: string })[] = await fetchTariffReportsWithUpdatedAt();
+  const lastModifiedDates = await getTariffReportsLastModifiedDates();
+  const { getTariffIndustryDefinitionById, TariffIndustryId } = await import('@/scripts/industry-tariff-reports/tariff-industries');
+  const tariffReports = Object.values(TariffIndustryId).map((industryId) => ({
+    ...getTariffIndustryDefinitionById(industryId),
+    lastModified: lastModifiedDates[industryId] || new Date().toISOString(),
+  }));
 
   // Main reports page
   urls.push({
