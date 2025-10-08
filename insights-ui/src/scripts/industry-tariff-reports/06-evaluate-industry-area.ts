@@ -3,9 +3,8 @@ import {
   getS3KeyForSubIndustryArea,
   readEvaluateSubIndustryAreaJsonFromFile,
   writeJsonFileForEvaluateSubIndustryArea,
-  writeMarkdownFileForEvaluateSubIndustryArea,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import { uploadFileToS3 } from '@/scripts/report-file-utils';
+import { uploadJsonTariffFileToS3 } from '@/scripts/report-file-utils';
 import { z } from 'zod';
 import {
   EstablishedPlayer,
@@ -637,7 +636,6 @@ export async function getAndWriteEvaluateIndustryAreaJson(
 
   // Upload JSON to S3
   await writeJsonFileForEvaluateSubIndustryArea(industry, industryArea, industryAreasWrapper, result);
-  await writeMarkdownFileForEvaluateSubIndustryArea(industry, industryArea, industryAreasWrapper, result);
 }
 
 interface EvaluateIndustryParams {
@@ -796,10 +794,7 @@ export async function regenerateEvaluateIndustryAreaJson(params: EvaluateIndustr
 
   // Upload updated JSON to S3
   const jsonKey = getS3KeyForSubIndustryArea(tariffIndustry.industryId, industryArea, industryAreasWrapper, '.json');
-  await uploadFileToS3(new TextEncoder().encode(JSON.stringify(result, null, 2)), jsonKey, 'application/json');
-
-  // Generate and upload updated markdown
-  await writeMarkdownFileForEvaluateSubIndustryArea(tariffIndustry.industryId, industryArea, industryAreasWrapper, result);
+  await uploadJsonTariffFileToS3(new TextEncoder().encode(JSON.stringify(result, null, 2)), jsonKey, tariffIndustry.industryId);
 }
 
 /** Upload binary blob to S3 & return public https URL */

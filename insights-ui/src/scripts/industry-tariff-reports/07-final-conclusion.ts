@@ -1,4 +1,4 @@
-import { writeJsonFileForFinalConclusion, writeMarkdownFileForFinalConclusion } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { writeJsonFileForFinalConclusion } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import {
   FinalConclusion,
   IndustryAreasWrapper,
@@ -128,5 +128,4 @@ export async function getFinalConclusionAndSaveToFile(
 
   // Upload JSON to S3
   await writeJsonFileForFinalConclusion(industry, finalConclusion);
-  await writeMarkdownFileForFinalConclusion(industry, finalConclusion);
 }

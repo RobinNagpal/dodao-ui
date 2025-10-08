@@ -2,7 +2,6 @@ import {
   readIndustryHeadingsFromFile,
   readEvaluateSubIndustryAreaJsonFromFile,
   writeJsonFileForEvaluateSubIndustryArea,
-  writeMarkdownFileForEvaluateSubIndustryArea,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { TariffIndustryId, getNumberOfSubHeadings } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -73,9 +72,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   // Save the updated JSON data
   await writeJsonFileForEvaluateSubIndustryArea(industry, targetSubArea, industryHeadings, existingData);
-
-  // Also regenerate the markdown file to keep them in sync
-  await writeMarkdownFileForEvaluateSubIndustryArea(industry, targetSubArea, industryHeadings, existingData);
 
   return {
     success: true,

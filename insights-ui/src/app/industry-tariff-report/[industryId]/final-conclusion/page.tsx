@@ -3,6 +3,7 @@ import FinalConclusionActions from '@/components/industry-tariff/section-actions
 import { FinalConclusionRenderer } from '@/components/industry-tariff/renderers/FinalConclusionRenderer';
 
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 
@@ -10,7 +11,9 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   const { industryId } = await params;
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`);
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
+    next: { tags: [tariffReportTag(industryId)] },
+  });
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -72,7 +75,9 @@ export default async function FinalConclusionPage({ params }: { params: Promise<
   const { industryId } = await params;
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`);
+  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
+    next: { tags: [tariffReportTag(industryId)] },
+  });
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {

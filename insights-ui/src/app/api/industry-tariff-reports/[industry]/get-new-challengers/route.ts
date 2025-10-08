@@ -1,4 +1,4 @@
-import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { readEvaluateSubIndustryAreaJsonFromFile, readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { NewChallengerRef } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
@@ -15,12 +15,13 @@ export interface GetNewChallengersResponse {
   newChallengers: NewChallengerRef[];
 }
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: TariffIndustryId }> }): Promise<GetNewChallengersResponse> {
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ industry: TariffIndustryId }> }): Promise<GetNewChallengersResponse> {
   const { industry: industryId } = await params;
-  const request = (await req.json()) as GetNewChallengersRequest;
-  const { headingIndex, subHeadingIndex } = request;
+  const searchParams = req.nextUrl.searchParams;
+  const headingIndex = parseInt(searchParams.get('headingIndex') || '0', 10);
+  const subHeadingIndex = parseInt(searchParams.get('subHeadingIndex') || '0', 10);
 
-  if (!industryId || headingIndex === undefined || subHeadingIndex === undefined) {
+  if (!industryId || isNaN(headingIndex) || isNaN(subHeadingIndex)) {
     throw new Error('Industry, headingIndex, and subHeadingIndex are required');
   }
 
@@ -41,4 +42,4 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   };
 }
 
-export const POST = withErrorHandlingV2<GetNewChallengersResponse>(postHandler);
+export const GET = withErrorHandlingV2<GetNewChallengersResponse>(getHandler);

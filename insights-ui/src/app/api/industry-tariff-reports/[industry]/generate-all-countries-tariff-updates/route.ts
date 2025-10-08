@@ -20,7 +20,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   const headings = await readIndustryHeadingsFromFile(industry);
   if (!headings) throw new Error(`Headings not found for industry: ${industry}`);
 
-  // Generate the all-countries tariff updates (no country parameter)
+  // Generate the all-countries tariff updates (cache revalidation handled automatically)
   await getAllCountriesTariffUpdatesForIndustryAndSaveToFile(industry, date, headings);
   const allCountriesTariffUpdates = await readAllCountriesTariffUpdatesFromFile(industry);
   if (!allCountriesTariffUpdates) {
