@@ -8,19 +8,14 @@ import {
   readIndustryHeadingsFromFile,
   readEvaluateSubIndustryAreaJsonFromFile,
   readAllCountriesTariffUpdatesFromFile,
-  writeJsonAndMarkdownFilesForExecutiveSummary,
-  writeJsonAndMarkdownFilesForFinalConclusion,
-  writeJsonAndMarkdownFilesForReportCover,
   writeJsonFileForIndustryAreaSections,
   writeJsonFileForIndustryTariffs,
   writeJsonFileForUnderstandIndustry,
-  writeMarkdownFileForIndustryAreaSections,
-  writeMarkdownFileForIndustryTariffs,
-  writeMarkdownFileForUnderstandIndustry,
   writeJsonFileForEvaluateSubIndustryArea,
-  writeMarkdownFileForEvaluateSubIndustryArea,
   writeJsonFileForAllCountriesTariffUpdates,
-  writeMarkdownFileForAllCountriesTariffUpdates,
+  writeJsonFileForExecutiveSummary,
+  writeJsonFileForFinalConclusion,
+  writeJsonFileForReportCover,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -55,7 +50,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
         executiveSummary: content,
       };
 
-      await writeJsonAndMarkdownFilesForExecutiveSummary(industry, updatedData);
+      await writeJsonFileForExecutiveSummary(industry, updatedData);
       break;
     }
 
@@ -70,7 +65,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
         reportCoverContent: content,
       };
 
-      await writeJsonAndMarkdownFilesForReportCover(industry, updatedData);
+      await writeJsonFileForReportCover(industry, updatedData);
       break;
     }
 
@@ -106,7 +101,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
       };
 
       await writeJsonFileForUnderstandIndustry(industry, updatedData);
-      await writeMarkdownFileForUnderstandIndustry(industry, updatedData);
       break;
     }
 
@@ -168,7 +162,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
       };
 
       await writeJsonFileForIndustryTariffs(industry, updatedData);
-      await writeMarkdownFileForIndustryTariffs(industry, updatedData);
       break;
     }
 
@@ -204,7 +197,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
       };
 
       await writeJsonFileForIndustryAreaSections(industry, updatedData);
-      await writeMarkdownFileForIndustryAreaSections(industry, updatedData);
       break;
     }
 
@@ -277,7 +269,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
         finalStatements,
       };
 
-      await writeJsonAndMarkdownFilesForFinalConclusion(industry, updatedData);
+      await writeJsonFileForFinalConclusion(industry, updatedData);
       break;
     }
 
@@ -293,7 +285,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
       };
 
       await writeJsonFileForAllCountriesTariffUpdates(industry, updatedData);
-      await writeMarkdownFileForAllCountriesTariffUpdates(industry, updatedData);
       break;
     }
 
@@ -347,7 +338,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
       }
 
       await writeJsonFileForEvaluateSubIndustryArea(industry, area, existingHeadings, updatedData);
-      await writeMarkdownFileForEvaluateSubIndustryArea(industry, area, existingHeadings, updatedData);
       break;
     }
 

@@ -1,4 +1,4 @@
-import { writeJsonFileForIndustryAreaSections, writeMarkdownFileForIndustryAreaSections } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { writeJsonFileForIndustryAreaSections } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryAreaSection, IndustryAreasWrapper } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
@@ -46,5 +46,4 @@ export async function getAndWriteIndustryAreaSectionToJsonFile(industry: TariffI
   const industryAreaSection = await getIndustryAreaSection(industry, headings);
 
   await writeJsonFileForIndustryAreaSections(industry, industryAreaSection);
-  await writeMarkdownFileForIndustryAreaSections(industry, industryAreaSection);
 }

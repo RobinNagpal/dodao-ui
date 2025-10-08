@@ -1,4 +1,4 @@
-import { writeJsonAndMarkdownFilesForReportCover } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { writeJsonFileForReportCover } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { ExecutiveSummary, IndustryAreasWrapper, ReportCover, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
@@ -61,5 +61,5 @@ export async function getReportCoverAndSaveToFile(
   tariffSummaries: string[]
 ) {
   const reportCover = await getReportCover(industryId, headings, executiveSummary, tariffUpdates, tariffSummaries);
-  await writeJsonAndMarkdownFilesForReportCover(industryId, reportCover);
+  await writeJsonFileForReportCover(industryId, reportCover);
 }

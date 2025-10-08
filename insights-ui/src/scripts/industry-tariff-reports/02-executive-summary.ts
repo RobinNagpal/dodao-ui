@@ -1,4 +1,4 @@
-import { writeJsonAndMarkdownFilesForExecutiveSummary } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { writeJsonFileForExecutiveSummary } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { ExecutiveSummary, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
@@ -75,5 +75,5 @@ export async function getExecutiveSummaryAndSaveToFile(
   tariffSummaries: string[]
 ) {
   const executiveSummary = await getExecutiveSummary(industryId, headings, tariffUpdates, tariffSummaries);
-  await writeJsonAndMarkdownFilesForExecutiveSummary(industryId, executiveSummary);
+  await writeJsonFileForExecutiveSummary(industryId, executiveSummary);
 }

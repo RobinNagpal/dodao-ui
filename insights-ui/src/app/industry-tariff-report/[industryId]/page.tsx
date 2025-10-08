@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
-    next: { tags: [tariffReportTag(industryId)] }
+    next: { tags: [tariffReportTag(industryId)] },
   });
   let report: IndustryTariffReport | null = null;
 
@@ -73,7 +73,7 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
   const definition = getTariffIndustryDefinitionById(industryId);
 
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
-    next: { tags: [tariffReportTag(industryId)] }
+    next: { tags: [tariffReportTag(industryId)] },
   });
   let report: IndustryTariffReport | null = null;
 

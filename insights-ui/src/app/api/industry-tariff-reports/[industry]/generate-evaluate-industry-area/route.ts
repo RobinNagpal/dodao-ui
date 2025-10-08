@@ -1,11 +1,6 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import {
-  readEvaluateSubIndustryAreaJsonFromFile,
-  readIndustryHeadingsFromFile,
-  readTariffUpdatesFromFile,
-  writeMarkdownFileForEvaluateSubIndustryArea,
-} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { readIndustryHeadingsFromFile, readTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { EvaluateIndustryContent, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { revalidateTariffReport } from '@/utils/tariff-report-cache-utils';
 import { NextRequest } from 'next/server';
@@ -79,11 +74,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
       date,
       content,
     });
-  }
-
-  const evaluated = await readEvaluateSubIndustryAreaJsonFromFile(industryId, industryArea, industryAreasWrapper);
-  if (evaluated) {
-    await writeMarkdownFileForEvaluateSubIndustryArea(industryId, industryArea, industryAreasWrapper, evaluated);
   }
 
   // Revalidate cache tags

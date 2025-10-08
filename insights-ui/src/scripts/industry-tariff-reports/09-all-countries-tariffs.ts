@@ -1,7 +1,6 @@
 import {
   readTariffUpdatesFromFile,
   writeJsonFileForAllCountriesTariffUpdates,
-  writeMarkdownFileForAllCountriesTariffUpdates,
   writeLastModifiedDatesToFile,
   readLastModifiedDatesFromFile,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
@@ -197,9 +196,6 @@ export async function getAllCountriesTariffUpdatesForIndustryAndSaveToFile(indus
 
   // Upload JSON to S3
   await writeJsonFileForAllCountriesTariffUpdates(industry, tariffUpdates);
-
-  // Generate and upload markdown
-  await writeMarkdownFileForAllCountriesTariffUpdates(industry, tariffUpdates);
 
   // Update the centralized last modified dates file
   console.log(`Updating centralized last modified dates for ${industry}...`);

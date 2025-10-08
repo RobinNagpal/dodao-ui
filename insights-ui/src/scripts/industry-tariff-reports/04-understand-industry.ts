@@ -1,4 +1,4 @@
-import { writeJsonFileForUnderstandIndustry, writeMarkdownFileForUnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { writeJsonFileForUnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryAreasWrapper, UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
@@ -117,5 +117,4 @@ export async function getAndWriteUnderstandIndustryJson(industry: TariffIndustry
   console.log('Understand Industry:', understandIndustry);
 
   await writeJsonFileForUnderstandIndustry(industry, understandIndustry);
-  await writeMarkdownFileForUnderstandIndustry(industry, understandIndustry);
 }

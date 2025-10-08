@@ -1,6 +1,6 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { readIndustryHeadingsFromFile, writeMarkdownFileForIndustryAreas } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { revalidateTariffReport } from '@/utils/tariff-report-cache-utils';
 import { NextRequest } from 'next/server';

@@ -1,15 +1,4 @@
 import {
-  generateMarkdownContent,
-  getMarkdownContentForAllCountriesIndustryTariffs,
-  getMarkdownContentForEvaluateIndustryArea,
-  getMarkdownContentForExecutiveSummary,
-  getMarkdownContentForFinalConclusion,
-  getMarkdownContentForIndustryAreas,
-  getMarkdownContentForIndustryTariffs,
-  getMarkdownContentForReportCover,
-  getMarkdownContentForUnderstandIndustry,
-} from '@/scripts/industry-tariff-reports/render-tariff-markdown';
-import {
   AllCountriesTariffUpdatesForIndustry,
   EvaluateIndustryArea,
   ExecutiveSummary,
@@ -37,20 +26,9 @@ export async function writeJsonFileForReportCover(industry: string, reportCover:
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(reportCover, null, 2)), jsonKey, 'application/json');
 }
 
-export async function writeJsonAndMarkdownFilesForReportCover(industry: string, reportCover: ReportCover) {
-  await writeJsonFileForReportCover(industry, reportCover);
-  await writeMarkdownFileForReportCover(industry, reportCover);
-}
-
 export async function readReportCoverFromFile(industry: string): Promise<ReportCover | undefined> {
   const key = getS3KeyForReportCover(industry, 'report-cover.json');
   return await getJsonFromS3<ReportCover>(key);
-}
-
-export async function writeMarkdownFileForReportCover(industry: string, reportCover: ReportCover) {
-  const markdownContent = getMarkdownContentForReportCover(reportCover);
-  const key = getS3KeyForReportCover(industry, 'report-cover.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -68,20 +46,13 @@ async function writeJsonFileForIndustryAreas(industry: string, headings: Industr
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(headings, null, 2)), jsonKey, 'application/json');
 }
 
-export async function writeJsonAndMarkdownFilesForIndustryAreas(industry: string, headings: IndustryAreasWrapper) {
+export async function writeJsonForIndustryAreas(industry: string, headings: IndustryAreasWrapper) {
   await writeJsonFileForIndustryAreas(industry, headings);
-  await writeMarkdownFileForIndustryAreas(industry, headings);
 }
 
 export async function readIndustryHeadingsFromFile(industry: string): Promise<IndustryAreasWrapper | undefined> {
   const key = getS3KeyForIndustryAreas(industry, industryHeadingsFileName);
   return await getJsonFromS3<IndustryAreasWrapper>(key);
-}
-
-export async function writeMarkdownFileForIndustryAreas(industry: string, headings: IndustryAreasWrapper) {
-  const markdownContent = generateMarkdownContent(industry, headings);
-  const key = getS3KeyForIndustryAreas(industry, industryHeadingsFileName.replace('.json', '.md'));
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -91,25 +62,14 @@ export function getS3KeyForExecutiveSummary(industry: string, fileName: string):
   return `koalagains-reports/tariff-reports/${industry.toLowerCase()}/01-executive-summary/${fileName}`;
 }
 
-async function writeJsonFileForExecutiveSummary(industry: string, executiveSummary: ExecutiveSummary) {
+export async function writeJsonFileForExecutiveSummary(industry: string, executiveSummary: ExecutiveSummary) {
   const jsonKey = getS3KeyForExecutiveSummary(industry, 'executive-summary.json');
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(executiveSummary, null, 2)), jsonKey, 'application/json');
-}
-
-export async function writeJsonAndMarkdownFilesForExecutiveSummary(industryId: string, executiveSummary: ExecutiveSummary) {
-  await writeJsonFileForExecutiveSummary(industryId, executiveSummary);
-  await writeMarkdownFileForExecutiveSummary(industryId, executiveSummary);
 }
 
 export async function readExecutiveSummaryFromFile(industry: string): Promise<ExecutiveSummary | undefined> {
   const key = getS3KeyForExecutiveSummary(industry, 'executive-summary.json');
   return await getJsonFromS3<ExecutiveSummary>(key);
-}
-
-export async function writeMarkdownFileForExecutiveSummary(industry: string, executiveSummary: ExecutiveSummary) {
-  const markdownContent = getMarkdownContentForExecutiveSummary(executiveSummary);
-  const key = getS3KeyForExecutiveSummary(industry, 'executive-summary.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -131,12 +91,6 @@ export async function readTariffUpdatesFromFile(industry: string): Promise<Tarif
   return await getJsonFromS3<TariffUpdatesForIndustry>(key);
 }
 
-export async function writeMarkdownFileForIndustryTariffs(industry: string, tariffUpdates: TariffUpdatesForIndustry) {
-  const markdownContent = getMarkdownContentForIndustryTariffs(industry, tariffUpdates);
-  const key = getS3KeyForIndustryTariffs(industry, 'tariff-updates.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
-}
-
 //--------------------------------------------------------------------------------------------------------
 // 04-UnderstandIndustry
 //--------------------------------------------------------------------------------------------------------
@@ -154,12 +108,6 @@ export async function readUnderstandIndustryJsonFromFile(industry: string): Prom
   return await getJsonFromS3<UnderstandIndustry>(key);
 }
 
-export async function writeMarkdownFileForUnderstandIndustry(industry: string, understandIndustry: UnderstandIndustry) {
-  const markdownContent = getMarkdownContentForUnderstandIndustry(understandIndustry);
-  const key = getS3KeyForUnderstandTariff(industry, 'understand-industry.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
-}
-
 //--------------------------------------------------------------------------------------------------------
 // 05-IndustryAreas
 //--------------------------------------------------------------------------------------------------------
@@ -175,12 +123,6 @@ export async function writeJsonFileForIndustryAreaSections(industry: string, ind
 export async function readIndustryAreaSectionFromFile(industry: string): Promise<IndustryAreaSection | undefined> {
   const key = getS3KeyForIndustryAreasSections(industry, 'industry-area.json');
   return await getJsonFromS3<IndustryAreaSection>(key);
-}
-
-export async function writeMarkdownFileForIndustryAreaSections(industry: string, industryAreaSection: IndustryAreaSection): Promise<void> {
-  const markdownContent = getMarkdownContentForIndustryAreas(industryAreaSection);
-  const key = getS3KeyForIndustryAreasSections(industry, 'industry-area.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -211,17 +153,6 @@ export async function readEvaluateSubIndustryAreaJsonFromFile(
   return await getJsonFromS3<EvaluateIndustryArea>(key);
 }
 
-export async function writeMarkdownFileForEvaluateSubIndustryArea(
-  industry: string,
-  industryArea: IndustrySubArea,
-  headings: IndustryAreasWrapper,
-  evaluateIndustryArea: EvaluateIndustryArea
-) {
-  const markdownContent = getMarkdownContentForEvaluateIndustryArea(evaluateIndustryArea);
-  const key = getS3KeyForSubIndustryArea(industry, industryArea, headings, '.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
-}
-
 export async function writeJsonFileForEvaluateSubIndustryArea(
   industry: string,
   industryArea: IndustrySubArea,
@@ -245,20 +176,9 @@ export async function writeJsonFileForFinalConclusion(industry: string, finalCon
   await uploadFileToS3(new TextEncoder().encode(JSON.stringify(finalConclusion, null, 2)), jsonKey, 'application/json');
 }
 
-export async function writeJsonAndMarkdownFilesForFinalConclusion(industry: string, finalConclusion: FinalConclusion) {
-  await writeJsonFileForFinalConclusion(industry, finalConclusion);
-  await writeMarkdownFileForFinalConclusion(industry, finalConclusion);
-}
-
 export async function readFinalConclusionFromFile(industry: string): Promise<FinalConclusion | undefined> {
   const key = getS3KeyForFinalConclusion(industry, 'final-conclusion.json');
   return await getJsonFromS3<FinalConclusion>(key);
-}
-
-export async function writeMarkdownFileForFinalConclusion(industry: string, finalConclusion: FinalConclusion) {
-  const markdownContent = getMarkdownContentForFinalConclusion(finalConclusion);
-  const key = getS3KeyForFinalConclusion(industry, 'final-conclusion.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -295,12 +215,6 @@ export async function writeJsonFileForAllCountriesTariffUpdates(industry: string
 export async function readAllCountriesTariffUpdatesFromFile(industry: string): Promise<AllCountriesTariffUpdatesForIndustry | undefined> {
   const key = getS3KeyForAllCountriesTariffs(industry, 'all-countries-tariff-updates.json');
   return await getJsonFromS3<AllCountriesTariffUpdatesForIndustry>(key);
-}
-
-export async function writeMarkdownFileForAllCountriesTariffUpdates(industry: string, allCountriesTariffUpdates: AllCountriesTariffUpdatesForIndustry) {
-  const markdownContent = getMarkdownContentForAllCountriesIndustryTariffs(industry, allCountriesTariffUpdates);
-  const key = getS3KeyForAllCountriesTariffs(industry, 'all-countries-tariff-updates.md');
-  await uploadFileToS3(new TextEncoder().encode(markdownContent), key, 'text/markdown');
 }
 
 //--------------------------------------------------------------------------------------------------------

@@ -11,7 +11,6 @@ import {
   readUnderstandIndustryJsonFromFile,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import {
-  AllCountriesTariffUpdatesForIndustry,
   EvaluateIndustryArea,
   IndustryAreasWrapper,
   IndustryTariffReport,

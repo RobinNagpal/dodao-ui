@@ -48,6 +48,19 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
     { id: 'seo-metadata', name: 'SEO Metadata', status: 'pending' },
   ]);
 
+  // Simple fetch functions for API calls
+  const fetchEstablishedPlayers = async (headingIndex: number, subHeadingIndex: number) => {
+    const url = `${getBaseUrl()}/api/industry-tariff-reports/${industryId}/get-established-players?headingIndex=${headingIndex}&subHeadingIndex=${subHeadingIndex}`;
+    const response = await fetch(url);
+    return await response.json();
+  };
+
+  const fetchNewChallengers = async (headingIndex: number, subHeadingIndex: number) => {
+    const url = `${getBaseUrl()}/api/industry-tariff-reports/${industryId}/get-new-challengers?headingIndex=${headingIndex}&subHeadingIndex=${subHeadingIndex}`;
+    const response = await fetch(url);
+    return await response.json();
+  };
+
   // Initialize comboApiCalls when the component loads
   useEffect(() => {
     if (industryId) {
@@ -230,7 +243,8 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         setCurrentStep(`Getting established players for ${sectionName}...`);
         setComboApiCallLoading(comboId, `established-players-tickers-${c.headingIndex}-${c.subHeadingIndex}`);
         updateProgress();
-        const { establishedPlayers = [] } = await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/get-established-players`, basePayload);
+        const establishedPlayersResponse = await fetchEstablishedPlayers(c.headingIndex, c.subHeadingIndex);
+        const { establishedPlayers = [] } = establishedPlayersResponse || {};
         updateComboApiCallStatus(comboId, `established-players-tickers-${c.headingIndex}-${c.subHeadingIndex}`);
         updateProgress();
 
@@ -276,7 +290,8 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         setCurrentStep(`Getting new challengers for ${sectionName}...`);
         setComboApiCallLoading(comboId, `new-challengers-tickers-${c.headingIndex}-${c.subHeadingIndex}`);
         updateProgress();
-        const { newChallengers = [] } = await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/get-new-challengers`, basePayload);
+        const newChallengersResponse = await fetchNewChallengers(c.headingIndex, c.subHeadingIndex);
+        const { newChallengers = [] } = newChallengersResponse || {};
         updateComboApiCallStatus(comboId, `new-challengers-tickers-${c.headingIndex}-${c.subHeadingIndex}`);
         updateProgress();
         bump(`Found ${newChallengers.length} new challengers for ${sectionName}`);
