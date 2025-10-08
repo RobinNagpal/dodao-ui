@@ -1,9 +1,4 @@
-import {
-  readTariffUpdatesFromFile,
-  writeJsonFileForIndustryTariffs,
-  writeLastModifiedDatesToFile,
-  readLastModifiedDatesFromFile,
-} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { readTariffUpdatesFromFile, writeJsonFileForIndustryTariffs } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { CountrySpecificTariff, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { z } from 'zod';
@@ -248,13 +243,6 @@ export async function getTariffUpdatesForIndustryAndSaveToFile(industry: TariffI
     throw new Error('No tariff data generated');
   }
 
-  // Upload JSON to S3
+  // Upload JSON to S3 (last modified dates and cache revalidation handled automatically)
   await writeJsonFileForIndustryTariffs(industry, tariffUpdates);
-
-  // Update the centralized last modified dates file
-  console.log(`Updating centralized last modified dates for ${industry}...`);
-  const existingLastModifiedDates = (await readLastModifiedDatesFromFile()) || {};
-  existingLastModifiedDates[industry] = tariffUpdates.lastUpdated || new Date().toISOString();
-  await writeLastModifiedDatesToFile(existingLastModifiedDates);
-  console.log(`Updated centralized last modified dates for ${industry}`);
 }

@@ -1,3 +1,4 @@
+import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import {
   readExecutiveSummaryFromFile,
   readFinalConclusionFromFile,
@@ -25,7 +26,7 @@ interface SaveMarkdownRequest {
   content: string;
 }
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<{ success: boolean; message: string }> {
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: TariffIndustryId }> }): Promise<{ success: boolean; message: string }> {
   const { industry } = await params;
   const body: SaveMarkdownRequest = await req.json();
   const { section, content } = body;

@@ -1,8 +1,8 @@
 import { getTariffIndustryDefinitionById, TariffIndustryDefinition, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import {
   getS3KeyForIndustryTariffs,
-  readLastModifiedDatesFromFile,
-  writeLastModifiedDatesToFile,
+  readLastModifiedDatesFromS3,
+  writeLastModifiedDatesToS3,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getJsonWithLastModifiedFromS3 } from '@/scripts/report-file-utils';
@@ -20,7 +20,7 @@ export async function getTariffReportsLastModifiedDates(): Promise<Record<string
   }
 
   // Try to read from centralized file first
-  let lastModifiedDates = await readLastModifiedDatesFromFile();
+  let lastModifiedDates = await readLastModifiedDatesFromS3();
 
   if (!lastModifiedDates || Object.keys(lastModifiedDates).length === 0) {
     console.log('Centralized last modified dates file not found or empty. Creating it from tariff-updates files...');
@@ -35,7 +35,7 @@ export async function getTariffReportsLastModifiedDates(): Promise<Record<string
     }
 
     // Create the centralized file
-    await writeLastModifiedDatesToFile(lastModifiedDates);
+    await writeLastModifiedDatesToS3(lastModifiedDates);
     console.log('Created centralized last modified dates file.');
   }
 
