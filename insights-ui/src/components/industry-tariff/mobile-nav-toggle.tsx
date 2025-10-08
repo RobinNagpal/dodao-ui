@@ -6,15 +6,15 @@ import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@radix-ui/rea
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
 import ReportLeftNavigation from './report-left-navigation';
 
 interface MobileNavToggleProps {
   report: IndustryTariffReport;
   industryId: TariffIndustryId;
+  lastModified?: string;
 }
 
-export default function MobileNavToggle({ report, industryId }: MobileNavToggleProps) {
+export default function MobileNavToggle({ report, industryId, lastModified }: MobileNavToggleProps) {
   const [open, setOpen] = useState(false);
   const reportTitle = report?.reportCover?.title || `Tariff Report ${industryId}`;
 
@@ -41,7 +41,7 @@ export default function MobileNavToggle({ report, industryId }: MobileNavToggleP
           <span className="sr-only">Close</span>
         </button>
         <div className="h-full">
-          <ReportLeftNavigation report={report} industryId={industryId} isMobile={true} onNavItemClick={() => setOpen(false)} />
+          <ReportLeftNavigation report={report} industryId={industryId} isMobile={true} onNavItemClick={() => setOpen(false)} lastModified={lastModified} />
         </div>
       </DialogContent>
     </Dialog>

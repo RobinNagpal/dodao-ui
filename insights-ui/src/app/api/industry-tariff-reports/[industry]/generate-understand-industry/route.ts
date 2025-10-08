@@ -1,6 +1,7 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import { readIndustryHeadingsFromFile, readUnderstandIndustryJsonFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { revalidateUnderstandIndustry, revalidateTariffReport } from '@/utils/tariff-report-cache-utils';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { getAndWriteUnderstandIndustryJson } from '@/scripts/industry-tariff-reports/04-understand-industry';
@@ -24,6 +25,10 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!understandIndustry) {
     throw new Error('Understand industry section not found');
   }
+
+  // Revalidate cache tags
+  revalidateUnderstandIndustry(industry);
+  revalidateTariffReport(industry);
 
   return getIndustryTariffReport(industry);
 }

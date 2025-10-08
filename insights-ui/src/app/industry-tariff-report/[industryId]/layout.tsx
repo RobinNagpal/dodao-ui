@@ -65,7 +65,7 @@ export default async function IndustryTariffReportLayout({
         <div className="mx-auto">
           {/* Mobile navigation toggle - only visible on small screens */}
           <div className="block lg:hidden fixed bottom-6 left-6 z-50">
-            <MobileNavToggle report={report} industryId={industryId} />
+            <MobileNavToggle report={report} industryId={industryId} lastModified={lastModified} />
           </div>
 
           {/* Collapsible Layout for Desktop */}
