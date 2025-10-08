@@ -3,7 +3,7 @@ import TariffUpdatesActions from '@/components/industry-tariff/section-actions/T
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { tariffReportTag, tariffReportSectionTag } from '@/utils/tariff-report-cache-utils';
+import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
-    next: { tags: [tariffReportTag(industryId), tariffReportSectionTag(industryId, 'tariff_updates')] }
+    next: { tags: [tariffReportTag(industryId)] },
   });
   let report: IndustryTariffReport | null = null;
 
@@ -73,7 +73,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
-    next: { tags: [tariffReportTag(industryId), tariffReportSectionTag(industryId, 'tariff_updates')] }
+    next: { tags: [tariffReportTag(industryId)] },
   });
   let report: IndustryTariffReport | null = null;
 

@@ -6,7 +6,7 @@ import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tar
 import { EvaluateIndustryContent, IndustryArea, IndustrySubArea, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getPreviousNextIndices } from '@/util/getPreviousNextIndices';
-import { tariffReportTag, tariffReportSectionTag } from '@/utils/tariff-report-cache-utils';
+import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -24,7 +24,7 @@ export async function generateMetadata({
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
-    next: { tags: [tariffReportTag(industryId), tariffReportSectionTag(industryId, 'evaluate_industry_areas')] }
+    next: { tags: [tariffReportTag(industryId)] },
   });
   let report: IndustryTariffReport | null = null;
 
@@ -101,7 +101,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
-    next: { tags: [tariffReportTag(industryId), tariffReportSectionTag(industryId, 'evaluate_industry_areas')] }
+    next: { tags: [tariffReportTag(industryId)] },
   });
   let report: IndustryTariffReport | null = null;
 

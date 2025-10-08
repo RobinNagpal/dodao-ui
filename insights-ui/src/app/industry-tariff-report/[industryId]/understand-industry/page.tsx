@@ -3,7 +3,7 @@ import UnderstandIndustryActions from '@/components/industry-tariff/section-acti
 import { UnderstandIndustryRenderer } from '@/components/industry-tariff/renderers/UnderstandIndustryRenderer';
 
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { tariffReportTag, tariffReportSectionTag } from '@/utils/tariff-report-cache-utils';
+import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 
@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
-    next: { tags: [tariffReportTag(industryId), tariffReportSectionTag(industryId, 'understand_industry')] }
+    next: { tags: [tariffReportTag(industryId)] },
   });
   let report: IndustryTariffReport | null = null;
 
@@ -75,7 +75,7 @@ export default async function UnderstandIndustryPage({ params }: { params: Promi
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
-    next: { tags: [tariffReportTag(industryId), tariffReportSectionTag(industryId, 'understand_industry')] }
+    next: { tags: [tariffReportTag(industryId)] },
   });
   let report: IndustryTariffReport | null = null;
 

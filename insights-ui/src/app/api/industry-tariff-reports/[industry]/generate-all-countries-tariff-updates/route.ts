@@ -1,7 +1,7 @@
 import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import { readIndustryHeadingsFromFile, readAllCountriesTariffUpdatesFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { revalidateAllCountriesTariffUpdates, revalidateTariffReport } from '@/utils/tariff-report-cache-utils';
+import { revalidateTariffReport } from '@/utils/tariff-report-cache-utils';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { getAllCountriesTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/09-all-countries-tariffs';
@@ -29,7 +29,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   }
 
   // Revalidate cache tags
-  revalidateAllCountriesTariffUpdates(industry);
   revalidateTariffReport(industry);
 
   return getIndustryTariffReport(industry);
