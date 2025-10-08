@@ -6,6 +6,7 @@ import { getAllHeadingSubheadingCombinations, TariffIndustryId } from '@/scripts
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect } from 'react';
+import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
 
 // Define types for tracking API call status
 type ApiCallStatus = 'pending' | 'loading' | 'completed';
@@ -52,13 +53,17 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
   // Simple fetch functions for API calls
   const fetchEstablishedPlayers = async (headingIndex: number, subHeadingIndex: number) => {
     const url = `${getBaseUrl()}/api/industry-tariff-reports/${industryId}/get-established-players?headingIndex=${headingIndex}&subHeadingIndex=${subHeadingIndex}`;
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      next: { tags: [tariffReportTag(industryId)] },
+    });
     return await response.json();
   };
 
   const fetchNewChallengers = async (headingIndex: number, subHeadingIndex: number) => {
     const url = `${getBaseUrl()}/api/industry-tariff-reports/${industryId}/get-new-challengers?headingIndex=${headingIndex}&subHeadingIndex=${subHeadingIndex}`;
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      next: { tags: [tariffReportTag(industryId)] },
+    });
     return await response.json();
   };
 
