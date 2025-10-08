@@ -7,7 +7,6 @@ import {
   readTariffUpdatesFromFile,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { revalidateTariffReport } from '@/utils/tariff-report-cache-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -37,9 +36,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!execSummary) {
     throw new Error('Executive summary not found');
   }
-
-  // Revalidate cache tags
-  revalidateTariffReport(industry);
 
   return getIndustryTariffReport(industry);
 }

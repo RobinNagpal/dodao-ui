@@ -36,6 +36,7 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
   const [topLevelApiCalls, setTopLevelApiCalls] = useState<ApiCall[]>([
     { id: 'understand-industry', name: 'Industry Understanding', status: 'pending' },
     { id: 'tariff-updates', name: 'Tariff Updates', status: 'pending' },
+    { id: 'all-countries-tariff-updates', name: 'All Countries Tariff Updates', status: 'pending' },
     { id: 'industry-areas', name: 'Industry Areas', status: 'pending' },
   ]);
 
@@ -213,6 +214,16 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
       updateApiCallStatus('tariff-updates', setTopLevelApiCalls);
       updateProgress();
       bump('Tariff updates complete');
+
+      setCurrentStep('Generating all countries tariff updates...');
+      setApiCallLoading('all-countries-tariff-updates', setTopLevelApiCalls);
+      updateProgress();
+      await postData(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/generate-all-countries-tariff-updates`, {
+        industry: industryId,
+      });
+      updateApiCallStatus('all-countries-tariff-updates', setTopLevelApiCalls);
+      updateProgress();
+      bump('All countries tariff updates complete');
 
       setCurrentStep('Generating industry areas...');
       setApiCallLoading('industry-areas', setTopLevelApiCalls);
