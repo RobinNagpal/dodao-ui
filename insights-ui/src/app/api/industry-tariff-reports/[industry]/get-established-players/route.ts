@@ -3,6 +3,7 @@ import { readEvaluateSubIndustryAreaJsonFromFile, readIndustryHeadingsFromFile }
 import { EstablishedPlayerRef } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { revalidateEvaluateIndustryAreas, revalidateTariffReport } from '@/utils/tariff-report-cache-utils';
 
 export const maxDuration = 300;
 
@@ -36,6 +37,10 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   if (!evaluatedArea || !evaluatedArea.establishedPlayersRefs || evaluatedArea.establishedPlayersRefs.length === 0) {
     throw new Error('No established players found. Please generate the established players list first.');
   }
+
+  // Revalidate cache tags
+  revalidateEvaluateIndustryAreas(industryId);
+  revalidateTariffReport(industryId);
 
   return {
     establishedPlayers: evaluatedArea.establishedPlayersRefs,

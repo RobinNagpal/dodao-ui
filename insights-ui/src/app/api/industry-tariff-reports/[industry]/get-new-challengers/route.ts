@@ -3,6 +3,7 @@ import { readEvaluateSubIndustryAreaJsonFromFile, readIndustryHeadingsFromFile }
 import { NewChallengerRef } from '@/scripts/industry-tariff-reports/tariff-types';
 import { NextRequest } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { revalidateEvaluateIndustryAreas, revalidateTariffReport } from '@/utils/tariff-report-cache-utils';
 
 export const maxDuration = 300;
 
@@ -35,6 +36,10 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   // If there's no data or empty, just return an empty list
   const newChallengers = evaluatedArea?.newChallengersRefs ?? [];
+
+  // Revalidate cache tags
+  revalidateEvaluateIndustryAreas(industryId);
+  revalidateTariffReport(industryId);
 
   return {
     newChallengers,

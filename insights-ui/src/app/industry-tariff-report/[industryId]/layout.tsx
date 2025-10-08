@@ -61,6 +61,23 @@ export default async function IndustryTariffReportLayout({
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
+
+      {/* Last Modified Date - Visible only on mobile screens */}
+      {lastModified && (
+        <div className="block lg:hidden mx-auto max-w-7xl px-4 sm:px-6 mb-4">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <span className="font-medium">Last Updated:</span>
+            <span>
+              {new Date(lastModified).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })}
+            </span>
+          </div>
+        </div>
+      )}
+
       <div className="mx-auto text-color">
         <div className="mx-auto">
           {/* Mobile navigation toggle - only visible on small screens */}

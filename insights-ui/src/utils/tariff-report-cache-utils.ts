@@ -3,8 +3,6 @@ import { revalidateTag } from 'next/cache';
 /** Cache tag helpers for per-tariff-report revalidation */
 const TARIFF_REPORT_TAG_PREFIX = 'tariff_report:' as const;
 
-export const TARIFF_REPORTS_TAG = 'tariff_reports' as const;
-
 export const tariffReportTag = (industryId: string): `${typeof TARIFF_REPORT_TAG_PREFIX}${string}` =>
   `${TARIFF_REPORT_TAG_PREFIX}${industryId.toUpperCase()}`;
 
@@ -16,8 +14,6 @@ export const revalidateTariffReport = (industryId: string) => revalidateTag(tari
 
 export const revalidateTariffReportSection = (industryId: string, section: string) => 
   revalidateTag(tariffReportSectionTag(industryId, section));
-
-export const revalidateAllTariffReports = () => revalidateTag(TARIFF_REPORTS_TAG);
 
 // Section-specific revalidation helpers
 export const revalidateReportCover = (industryId: string) => 
@@ -47,9 +43,3 @@ export const revalidateFinalConclusion = (industryId: string) =>
 export const revalidateHeadings = (industryId: string) => 
   revalidateTariffReportSection(industryId, 'headings');
 
-// Helper to revalidate multiple sections at once
-export const revalidateMultipleSections = (industryId: string, sections: string[]) => {
-  sections.forEach(section => revalidateTariffReportSection(industryId, section));
-  // Also revalidate the main report
-  revalidateTariffReport(industryId);
-};
