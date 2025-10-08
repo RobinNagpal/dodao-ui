@@ -1,28 +1,9 @@
 'use client';
 
+import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
 import { use } from 'react';
 
 type Num = number | null;
-
-export interface FinancialInfoResponse {
-  symbol: string;
-  currency: string | null;
-  price: Num;
-  dayHigh: Num;
-  dayLow: Num;
-  yearHigh: Num;
-  yearLow: Num;
-  marketCap: Num;
-  epsDilutedTTM: Num;
-  pe: Num;
-  avgVolume3M: Num;
-  dayVolume: Num;
-  annualDividend: Num;
-  dividendYield: Num;
-  totalRevenue: Num;
-  netIncome: Num;
-  netProfitMargin: Num;
-}
 
 interface FinancialInfoProps {
   dataPromise: Promise<FinancialInfoResponse>;
