@@ -14,6 +14,26 @@ const REGION = process.env.AWS_REGION || 'us-east-1';
 const BUCKET_NAME = 'dodao-ai-insights-agent';
 const s3Client = new S3Client({ region: REGION });
 
+export async function uploadJsonTariffFileToS3(data: Uint8Array, reportFile: TariffReportFileType, industryId: IndustryId): Promise<string> {
+  // get the key
+  // update file in s3
+  // update the date on the report in s3
+  // purge the cache.
+  // Since we pass the file type, or the report type, then we later on update specific updatedAt and also specific cache also, if we plan to use specific updated at date and cache. This help keep the code at one place.
+
+  await s3Client.send(
+    new PutObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: key,
+      Body: data,
+      ContentType: contentType,
+      ACL: 'public-read',
+    })
+  );
+  console.log(`Uploaded file to S3: ${key}`);
+  return `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${key}`;
+}
+
 export async function uploadFileToS3(data: Uint8Array, key: string, contentType = 'image/png'): Promise<string> {
   console.log(`Uploading file to S3: ${key}`);
 
