@@ -553,12 +553,45 @@ model TickerV1 {
   // ✅ new relations
   industry    TickerV1Industry    @relation("IndustryTickers", fields: [industryKey], references: [industryKey])
   subIndustry TickerV1SubIndustry @relation("SubIndustryTickers", fields: [subIndustryKey], references: [subIndustryKey])
+  financialInfo TickerV1FinancialInfo[]
 
   // 🔎 simple FK indexes (good practice; Postgres doesn't auto-index FKs)
   @@index([industryKey])
   @@index([subIndustryKey])
   @@unique([spaceId, symbol, exchange])
   @@map("tickers_v1")
+}
+
+model TickerV1FinancialInfo {
+  id               String   @id @default(uuid())
+  tickerId         String   @map("ticker_id")        // FK to TickerV1
+  currency         String?  @map("currency")
+  price            Float?   @map("price")
+  dayHigh          Float?   @map("day_high")
+  dayLow           Float?   @map("day_low")
+  yearHigh         Float?   @map("year_high")
+  yearLow          Float?   @map("year_low")
+  marketCap        Float?   @map("market_cap")
+  epsDilutedTTM    Float?   @map("eps_diluted_ttm")
+  pe               Float?   @map("pe_ratio")
+  avgVolume3M      Float?   @map("avg_volume_3m")
+  dayVolume        Float?   @map("day_volume")
+  annualDividend   Float?   @map("annual_dividend")
+  dividendYield    Float?   @map("dividend_yield")
+  totalRevenue     Float?   @map("total_revenue")
+  netIncome        Float?   @map("net_income")
+  netProfitMargin  Float?   @map("net_profit_margin")
+
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  createdBy        String?  @map("created_by")
+  updatedBy        String?  @map("updated_by")
+
+  // Relation back to TickerV1
+  ticker           TickerV1 @relation(fields: [tickerId], references: [id])
+
+  @@index([tickerId])
+  @@map("ticker_v1_financial_info")
 }
 
 model TickerV1CachedScore {

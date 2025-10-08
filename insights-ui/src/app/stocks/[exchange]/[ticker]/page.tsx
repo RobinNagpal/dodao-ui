@@ -2,6 +2,7 @@ import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/Spi
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import Competition from '@/components/ticker-reportsv1/Competition';
+import FinancialInfo, { FinancialInfoResponse } from '@/components/ticker-reportsv1/FinancialInfo';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
@@ -124,6 +125,16 @@ async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTi
   return arr;
 }
 
+async function fetchFinancialInfo(exchange: string, ticker: string): Promise<FinancialInfoResponse> {
+  const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/financial-info`;
+
+  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  if (!res.ok) throw new Error(`fetchFinancialInfo failed (${res.status}): ${url}`);
+
+  const data = (await res.json()) as FinancialInfoResponse;
+  return data;
+}
+
 /** Metadata */
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
   const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
@@ -230,6 +241,31 @@ function SimilarSkeleton(): JSX.Element {
         <SectionCardSkeleton />
         <SectionCardSkeleton />
         <SectionCardSkeleton />
+      </div>
+    </div>
+  );
+}
+
+function FinancialInfoSkeleton(): JSX.Element {
+  return (
+    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+      <div className="h-6 w-56 rounded bg-gray-800 animate-pulse mb-4" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-4">
+          <SectionCardSkeleton />
+          <SectionCardSkeleton />
+          <SectionCardSkeleton />
+        </div>
+        <div className="space-y-4">
+          <SectionCardSkeleton />
+          <SectionCardSkeleton />
+          <SectionCardSkeleton />
+        </div>
+        <div className="space-y-4">
+          <SectionCardSkeleton />
+          <SectionCardSkeleton />
+          <SectionCardSkeleton />
+        </div>
       </div>
     </div>
   );
@@ -480,6 +516,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   // Promises consumed by child components via `use()` under Suspense
   const competitionPromise = retryWithCanonical(fetchCompetition);
   const similarPromise = retryWithCanonical(fetchSimilar);
+  const financialInfoPromise = retryWithCanonical(fetchFinancialInfo);
 
   return (
     <PageWrapper>
@@ -491,6 +528,12 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
       <Suspense fallback={<SummaryInfoSkeleton />}>
         <TickerSummaryInfo data={tickerInfo} />
       </Suspense>
+
+      {/* Financial Info Section - before Summary Analysis */}
+      <Suspense fallback={<FinancialInfoSkeleton />}>
+        <FinancialInfo dataPromise={financialInfoPromise} />
+      </Suspense>
+
       <div className="mx-auto max-w-7xl py-2">
         <section className="mb-8">
           <Suspense fallback={<CompetitionSkeleton />}>
