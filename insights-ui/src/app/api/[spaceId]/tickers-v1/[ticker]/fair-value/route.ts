@@ -21,6 +21,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     include: {
       industry: true,
       subIndustry: true,
+      financialInfo: true,
     },
   });
 
@@ -50,6 +51,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     },
   });
 
+  const fi = tickerRecord.financialInfo;
+
   // Prepare input for the prompt
   const inputJson = {
     name: tickerRecord.name,
@@ -68,6 +71,20 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
     })),
     competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
+    price: fi?.price ?? null,
+    yearHigh: fi?.yearHigh ?? null,
+    yearLow: fi?.yearLow ?? null,
+    marketCap: fi?.marketCap ?? null,
+    epsDilutedTTM: fi?.epsDilutedTTM ?? null,
+    pe: fi?.pe ?? null,
+    avgVolume3M: fi?.avgVolume3M ?? null,
+    dayVolume: fi?.dayVolume ?? null,
+    annualDividend: fi?.annualDividend ?? null,
+    dividendYield: fi?.dividendYield ?? null,
+    totalRevenue: fi?.totalRevenue ?? null,
+    netIncome: fi?.netIncome ?? null,
+    netProfitMargin: fi?.netProfitMargin ?? null,
+    currency: fi?.currency ?? null,
   };
 
   // Call the LLM
