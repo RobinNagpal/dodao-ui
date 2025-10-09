@@ -247,24 +247,34 @@ function SimilarSkeleton(): JSX.Element {
   );
 }
 
+type FinancialCardSkeletonProps = Readonly<{ label: string }>;
+function FinancialCardSkeleton({ label }: FinancialCardSkeletonProps): JSX.Element {
+  return (
+    <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+      <div className="text-xs text-gray-400 mb-1">{label}</div>
+      <div className="h-4 w-16 bg-gray-700 rounded animate-pulse"></div>
+    </div>
+  );
+}
+
 function FinancialInfoSkeleton(): JSX.Element {
   return (
-    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3">
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
+    <section id="financial-info" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2">
+        <FinancialCardSkeleton label="Current Price" />
+        <FinancialCardSkeleton label="52 Week Range" />
+        <FinancialCardSkeleton label="Market Cap" />
+        <FinancialCardSkeleton label="EPS (Diluted TTM)" />
+        <FinancialCardSkeleton label="P/E Ratio" />
+        <FinancialCardSkeleton label="Net Profit Margin" />
+        <FinancialCardSkeleton label="Avg Volume (3M)" />
+        <FinancialCardSkeleton label="Day Volume" />
+        <FinancialCardSkeleton label="Total Revenue (TTM)" />
+        <FinancialCardSkeleton label="Net Income (TTM)" />
+        <FinancialCardSkeleton label="Annual Dividend" />
+        <FinancialCardSkeleton label="Dividend Yield" />
       </div>
-    </div>
+    </section>
   );
 }
 
