@@ -2,6 +2,7 @@ import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/Spi
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import Competition from '@/components/ticker-reportsv1/Competition';
+import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
@@ -24,6 +25,7 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { Suspense, use } from 'react';
 import { FloatingNavFromData } from './FloatingTickerNav';
 import { TickerRadarChart } from './TickerRadarChart';
+import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
 
 /**
  * Static-by-default with on-demand invalidation.
@@ -122,6 +124,16 @@ async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTi
 
   const arr = (await res.json()) as SimilarTicker[];
   return arr;
+}
+
+async function fetchFinancialInfo(exchange: string, ticker: string): Promise<FinancialInfoResponse> {
+  const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/financial-info`;
+
+  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  if (!res.ok) throw new Error(`fetchFinancialInfo failed (${res.status}): ${url}`);
+
+  const data = (await res.json()) as FinancialInfoResponse;
+  return data;
 }
 
 /** Metadata */
@@ -235,6 +247,27 @@ function SimilarSkeleton(): JSX.Element {
   );
 }
 
+function FinancialInfoSkeleton(): JSX.Element {
+  return (
+    <section id="financial-info" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2">
+        <FinancialCard label="Current Price" isLoading={true} />
+        <FinancialCard label="52 Week Range" isLoading={true} />
+        <FinancialCard label="Market Cap" isLoading={true} />
+        <FinancialCard label="EPS (Diluted TTM)" isLoading={true} />
+        <FinancialCard label="P/E Ratio" isLoading={true} />
+        <FinancialCard label="Net Profit Margin" isLoading={true} />
+        <FinancialCard label="Avg Volume (3M)" isLoading={true} />
+        <FinancialCard label="Day Volume" isLoading={true} />
+        <FinancialCard label="Total Revenue (TTM)" isLoading={true} />
+        <FinancialCard label="Net Income (TTM)" isLoading={true} />
+        <FinancialCard label="Annual Dividend" isLoading={true} />
+        <FinancialCard label="Dividend Yield" isLoading={true} />
+      </div>
+    </section>
+  );
+}
+
 /* =============================================================================
    CHILD SERVER COMPONENTS (strictly typed, minimal)
 ============================================================================= */
@@ -283,8 +316,15 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
   );
 }
 
-function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
+function TickerSummaryInfo({
+  data,
+  financialInfoPromise,
+}: {
+  data: Promise<TickerV1FastResponse>;
+  financialInfoPromise: Promise<FinancialInfoResponse>;
+}): JSX.Element {
   const d: TickerV1FastResponse = use(data);
+  const financialData: FinancialInfoResponse = use(financialInfoPromise);
 
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
     Object.entries(CATEGORY_MAPPINGS).map(([categoryKey, categoryTitle]: [string, string]) => {
@@ -305,7 +345,7 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
   const score: number = getSpiderGraphScorePercentage(spiderGraph);
   return (
     <>
-      <section className="text-left mb-8">
+      <section className="text-left mb-6">
         <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl mb-6">
           {d.name} ({d.symbol}){' '}
           {d.websiteUrl && (
@@ -323,9 +363,9 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
 
           {/* Right: Radar (Suspense retained only here) */}
           <div className="lg:flex lg:flex-auto lg:justify-center relative lg:mb-16">
-            <div className="lg:absolute lg:top-8 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
+            <div className="lg:absolute lg:top-4 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
               <div className="w-full max-w-lg mx-auto relative">
-                <div className="absolute top-16 right-0 flex space-x-2">
+                <div className="absolute top-20 right-0 flex space-x-2">
                   <div className="text-2xl font-bold -z-10" style={{ color: 'var(--primary-color, blue)' }}>
                     {score.toFixed(0)}%
                   </div>
@@ -338,6 +378,11 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
             </div>
           </div>
         </div>
+
+        {/* Financial Information - after radar chart */}
+        <Suspense fallback={<FinancialInfoSkeleton />}>
+          <FinancialInfo data={financialData} />
+        </Suspense>
       </section>
       <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6">
         <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
@@ -480,6 +525,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   // Promises consumed by child components via `use()` under Suspense
   const competitionPromise = retryWithCanonical(fetchCompetition);
   const similarPromise = retryWithCanonical(fetchSimilar);
+  const financialInfoPromise = retryWithCanonical(fetchFinancialInfo);
 
   return (
     <PageWrapper>
@@ -489,8 +535,9 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
       </Suspense>
 
       <Suspense fallback={<SummaryInfoSkeleton />}>
-        <TickerSummaryInfo data={tickerInfo} />
+        <TickerSummaryInfo data={tickerInfo} financialInfoPromise={financialInfoPromise} />
       </Suspense>
+
       <div className="mx-auto max-w-7xl py-2">
         <section className="mb-8">
           <Suspense fallback={<CompetitionSkeleton />}>
