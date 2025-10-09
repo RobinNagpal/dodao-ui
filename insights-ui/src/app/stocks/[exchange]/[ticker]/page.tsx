@@ -2,7 +2,7 @@ import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/Spi
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import Competition from '@/components/ticker-reportsv1/Competition';
-import FinancialInfo from '@/components/ticker-reportsv1/FinancialInfo';
+import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
@@ -247,32 +247,22 @@ function SimilarSkeleton(): JSX.Element {
   );
 }
 
-type FinancialCardSkeletonProps = Readonly<{ label: string }>;
-function FinancialCardSkeleton({ label }: FinancialCardSkeletonProps): JSX.Element {
-  return (
-    <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
-      <div className="text-xs text-gray-400 mb-1">{label}</div>
-      <div className="h-4 w-16 bg-gray-700 rounded animate-pulse">--</div>
-    </div>
-  );
-}
-
 function FinancialInfoSkeleton(): JSX.Element {
   return (
     <section id="financial-info" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
       <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2">
-        <FinancialCardSkeleton label="Current Price" />
-        <FinancialCardSkeleton label="52 Week Range" />
-        <FinancialCardSkeleton label="Market Cap" />
-        <FinancialCardSkeleton label="EPS (Diluted TTM)" />
-        <FinancialCardSkeleton label="P/E Ratio" />
-        <FinancialCardSkeleton label="Net Profit Margin" />
-        <FinancialCardSkeleton label="Avg Volume (3M)" />
-        <FinancialCardSkeleton label="Day Volume" />
-        <FinancialCardSkeleton label="Total Revenue (TTM)" />
-        <FinancialCardSkeleton label="Net Income (TTM)" />
-        <FinancialCardSkeleton label="Annual Dividend" />
-        <FinancialCardSkeleton label="Dividend Yield" />
+        <FinancialCard label="Current Price" isLoading={true} />
+        <FinancialCard label="52 Week Range" isLoading={true} />
+        <FinancialCard label="Market Cap" isLoading={true} />
+        <FinancialCard label="EPS (Diluted TTM)" isLoading={true} />
+        <FinancialCard label="P/E Ratio" isLoading={true} />
+        <FinancialCard label="Net Profit Margin" isLoading={true} />
+        <FinancialCard label="Avg Volume (3M)" isLoading={true} />
+        <FinancialCard label="Day Volume" isLoading={true} />
+        <FinancialCard label="Total Revenue (TTM)" isLoading={true} />
+        <FinancialCard label="Net Income (TTM)" isLoading={true} />
+        <FinancialCard label="Annual Dividend" isLoading={true} />
+        <FinancialCard label="Dividend Yield" isLoading={true} />
       </div>
     </section>
   );
