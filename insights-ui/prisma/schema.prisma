@@ -553,7 +553,7 @@ model TickerV1 {
   // ✅ new relations
   industry    TickerV1Industry    @relation("IndustryTickers", fields: [industryKey], references: [industryKey])
   subIndustry TickerV1SubIndustry @relation("SubIndustryTickers", fields: [subIndustryKey], references: [subIndustryKey])
-  financialInfo TickerV1FinancialInfo[]
+  financialInfo TickerV1FinancialInfo?
 
   // 🔎 simple FK indexes (good practice; Postgres doesn't auto-index FKs)
   @@index([industryKey])
@@ -564,7 +564,7 @@ model TickerV1 {
 
 model TickerV1FinancialInfo {
   id               String   @id @default(uuid())
-  tickerId         String   @map("ticker_id")        // FK to TickerV1
+  tickerId         String   @unique @map("ticker_id")
   currency         String?  @map("currency")
   price            Float?   @map("price")
   dayHigh          Float?   @map("day_high")

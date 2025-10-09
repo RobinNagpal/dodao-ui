@@ -148,60 +148,57 @@ async function getHandler(
   const now = new Date();
   const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-  const existingFinancialInfo = tickerRecord.financialInfo?.[0];
+  const existingFinancialInfo = tickerRecord.financialInfo;
   const shouldRefetch = !existingFinancialInfo || existingFinancialInfo.updatedAt < sevenDaysAgo;
 
   if (shouldRefetch) {
     // Fetch fresh data from Yahoo Finance
     const freshData = await fetchFromYahooFinance(t);
 
-    // Update or create financial info in database
-    if (existingFinancialInfo) {
-      await prisma.tickerV1FinancialInfo.update({
-        where: { id: existingFinancialInfo.id },
-        data: {
-          currency: freshData.currency,
-          price: freshData.price,
-          dayHigh: freshData.dayHigh,
-          dayLow: freshData.dayLow,
-          yearHigh: freshData.yearHigh,
-          yearLow: freshData.yearLow,
-          marketCap: freshData.marketCap,
-          epsDilutedTTM: freshData.epsDilutedTTM,
-          pe: freshData.pe,
-          avgVolume3M: freshData.avgVolume3M,
-          dayVolume: freshData.dayVolume,
-          annualDividend: freshData.annualDividend,
-          dividendYield: freshData.dividendYield,
-          totalRevenue: freshData.totalRevenue,
-          netIncome: freshData.netIncome,
-          netProfitMargin: freshData.netProfitMargin,
-          updatedAt: now,
-        },
-      });
-    } else {
-      await prisma.tickerV1FinancialInfo.create({
-        data: {
-          tickerId: tickerRecord.id,
-          currency: freshData.currency,
-          price: freshData.price,
-          dayHigh: freshData.dayHigh,
-          dayLow: freshData.dayLow,
-          yearHigh: freshData.yearHigh,
-          yearLow: freshData.yearLow,
-          marketCap: freshData.marketCap,
-          epsDilutedTTM: freshData.epsDilutedTTM,
-          pe: freshData.pe,
-          avgVolume3M: freshData.avgVolume3M,
-          dayVolume: freshData.dayVolume,
-          annualDividend: freshData.annualDividend,
-          dividendYield: freshData.dividendYield,
-          totalRevenue: freshData.totalRevenue,
-          netIncome: freshData.netIncome,
-          netProfitMargin: freshData.netProfitMargin,
-        },
-      });
-    }
+    // Upsert financial info in database (handles both create and update)
+    await prisma.tickerV1FinancialInfo.upsert({
+      where: {
+        tickerId: tickerRecord.id,
+      },
+      update: {
+        currency: freshData.currency,
+        price: freshData.price,
+        dayHigh: freshData.dayHigh,
+        dayLow: freshData.dayLow,
+        yearHigh: freshData.yearHigh,
+        yearLow: freshData.yearLow,
+        marketCap: freshData.marketCap,
+        epsDilutedTTM: freshData.epsDilutedTTM,
+        pe: freshData.pe,
+        avgVolume3M: freshData.avgVolume3M,
+        dayVolume: freshData.dayVolume,
+        annualDividend: freshData.annualDividend,
+        dividendYield: freshData.dividendYield,
+        totalRevenue: freshData.totalRevenue,
+        netIncome: freshData.netIncome,
+        netProfitMargin: freshData.netProfitMargin,
+        updatedAt: now,
+      },
+      create: {
+        tickerId: tickerRecord.id,
+        currency: freshData.currency,
+        price: freshData.price,
+        dayHigh: freshData.dayHigh,
+        dayLow: freshData.dayLow,
+        yearHigh: freshData.yearHigh,
+        yearLow: freshData.yearLow,
+        marketCap: freshData.marketCap,
+        epsDilutedTTM: freshData.epsDilutedTTM,
+        pe: freshData.pe,
+        avgVolume3M: freshData.avgVolume3M,
+        dayVolume: freshData.dayVolume,
+        annualDividend: freshData.annualDividend,
+        dividendYield: freshData.dividendYield,
+        totalRevenue: freshData.totalRevenue,
+        netIncome: freshData.netIncome,
+        netProfitMargin: freshData.netProfitMargin,
+      },
+    });
 
     return freshData;
   }

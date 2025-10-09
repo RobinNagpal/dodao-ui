@@ -1,12 +1,10 @@
-'use client';
-
 import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
 import { use } from 'react';
 
 type Num = number | null;
 
 interface FinancialInfoProps {
-  dataPromise: Promise<FinancialInfoResponse>;
+  data: FinancialInfoResponse;
 }
 
 // Helper to format numbers in millions
@@ -25,10 +23,16 @@ function formatNumber(value: Num, decimals: number = 2): string {
   });
 }
 
-// Helper to format percentage
+// Helper to format percentage (for values that are already in decimal form)
 function formatPercentage(value: Num): string {
   if (value === null) return 'N/A';
   return `${(value * 100).toFixed(2)}%`;
+}
+
+// Helper to format percentage from decimal (Yahoo Finance already gives percentage as decimal)
+function formatPercentageDecimal(value: Num): string {
+  if (value === null) return 'N/A';
+  return `${value.toFixed(2)}%`;
 }
 
 // Helper to format currency
@@ -38,104 +42,97 @@ function formatCurrency(value: Num, currency: string | null): string {
   return `${currencySymbol}${formatNumber(value)}`;
 }
 
-export default function FinancialInfo({ dataPromise }: FinancialInfoProps): JSX.Element {
-  const data = use(dataPromise);
-
+export default function FinancialInfo({ data }: FinancialInfoProps): JSX.Element {
   // Check if we should show dividend info
   const hasDividends = data.annualDividend !== null && data.annualDividend !== 0;
 
   return (
-    <section id="financial-info" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
-      <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Key Financial Metrics</h2>
+    <section id="financial-info" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2">
+        {/* Row 1: Price & Performance Metrics */}
+        {/* Current Price */}
+        <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+          <div className="text-xs text-gray-400 mb-1">Current Price</div>
+          <div className="text-xs font-semibold">{formatCurrency(data.price, data.currency)}</div>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Column 1: Price & Market Data */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-300 mb-3">Price & Market</h3>
-
-          <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-            <div className="text-sm text-gray-400 mb-1">Current Price</div>
-            <div className="text-lg font-semibold">{formatCurrency(data.price, data.currency)}</div>
+        {/* 52 Week Range */}
+        <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+          <div className="text-xs text-gray-400 mb-1">52 Week Range</div>
+          <div className="text-xs">
+            {formatCurrency(data.yearLow, data.currency)} - {formatCurrency(data.yearHigh, data.currency)}
           </div>
+        </div>
 
-          <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-            <div className="text-sm text-gray-400 mb-1">Day Range</div>
-            <div className="text-base">
-              {formatCurrency(data.dayLow, data.currency)} - {formatCurrency(data.dayHigh, data.currency)}
+        {/* Market Cap */}
+        <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+          <div className="text-xs text-gray-400 mb-1">Market Cap</div>
+          <div className="text-xs font-semibold">{formatInMillions(data.marketCap)}</div>
+        </div>
+
+        {/* EPS (Diluted TTM) */}
+        <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+          <div className="text-xs text-gray-400 mb-1">EPS (Diluted TTM)</div>
+          <div className="text-xs font-semibold">{formatCurrency(data.epsDilutedTTM, data.currency)}</div>
+        </div>
+
+        {/* P/E Ratio */}
+        <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+          <div className="text-xs text-gray-400 mb-1">P/E Ratio</div>
+          <div className="text-xs font-semibold">{formatNumber(data.pe)}</div>
+        </div>
+
+        {/* Net Profit Margin */}
+        <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+          <div className="text-xs text-gray-400 mb-1">Net Profit Margin</div>
+          <div className="text-xs font-semibold">{formatPercentage(data.netProfitMargin)}</div>
+        </div>
+
+        {/* Row 2: Volume & Income Metrics */}
+        {/* Avg Volume (3M) */}
+        <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+          <div className="text-xs text-gray-400 mb-1">Avg Volume (3M)</div>
+          <div className="text-xs font-semibold">{formatInMillions(data.avgVolume3M)}</div>
+        </div>
+
+        {/* Day Volume */}
+        <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+          <div className="text-xs text-gray-400 mb-1">Day Volume</div>
+          <div className="text-xs font-semibold">{formatInMillions(data.dayVolume)}</div>
+        </div>
+
+        {/* Total Revenue (TTM) */}
+        <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+          <div className="text-xs text-gray-400 mb-1">Total Revenue (TTM)</div>
+          <div className="text-xs font-semibold">{formatInMillions(data.totalRevenue)}</div>
+        </div>
+
+        {/* Net Income (TTM) */}
+        <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+          <div className="text-xs text-gray-400 mb-1">Net Income (TTM)</div>
+          <div className="text-xs font-semibold">{formatInMillions(data.netIncome)}</div>
+        </div>
+
+        {/* Annual Dividend (if available) */}
+        {hasDividends ? (
+          <>
+            <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+              <div className="text-xs text-gray-400 mb-1">Annual Dividend</div>
+              <div className="text-xs font-semibold">{formatCurrency(data.annualDividend, data.currency)}</div>
             </div>
-          </div>
 
-          <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-            <div className="text-sm text-gray-400 mb-1">52 Week Range</div>
-            <div className="text-base">
-              {formatCurrency(data.yearLow, data.currency)} - {formatCurrency(data.yearHigh, data.currency)}
+            <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+              <div className="text-xs text-gray-400 mb-1">Dividend Yield</div>
+              <div className="text-xs font-semibold">{formatPercentageDecimal(data.dividendYield)}</div>
             </div>
-          </div>
-
-          <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-            <div className="text-sm text-gray-400 mb-1">Market Cap</div>
-            <div className="text-lg font-semibold">{formatCurrency(data.marketCap, data.currency)}</div>
-          </div>
-        </div>
-
-        {/* Column 2: Performance Metrics */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-300 mb-3">Performance</h3>
-
-          <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-            <div className="text-sm text-gray-400 mb-1">EPS (Diluted TTM)</div>
-            <div className="text-lg font-semibold">{formatCurrency(data.epsDilutedTTM, data.currency)}</div>
-          </div>
-
-          <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-            <div className="text-sm text-gray-400 mb-1">P/E Ratio</div>
-            <div className="text-lg font-semibold">{formatNumber(data.pe)}</div>
-          </div>
-
-          <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-            <div className="text-sm text-gray-400 mb-1">Net Profit Margin</div>
-            <div className="text-lg font-semibold">{formatPercentage(data.netProfitMargin)}</div>
-          </div>
-
-          {hasDividends && (
-            <>
-              <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-                <div className="text-sm text-gray-400 mb-1">Annual Dividend</div>
-                <div className="text-lg font-semibold">{formatCurrency(data.annualDividend, data.currency)}</div>
-              </div>
-
-              <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-                <div className="text-sm text-gray-400 mb-1">Dividend Yield</div>
-                <div className="text-lg font-semibold">{formatPercentage(data.dividendYield)}</div>
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* Column 3: Volume & Revenue */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-300 mb-3">Volume & Revenue</h3>
-
-          <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-            <div className="text-sm text-gray-400 mb-1">Avg Volume (3M)</div>
-            <div className="text-lg font-semibold">{formatInMillions(data.avgVolume3M)}</div>
-          </div>
-
-          <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-            <div className="text-sm text-gray-400 mb-1">Day Volume</div>
-            <div className="text-lg font-semibold">{formatInMillions(data.dayVolume)}</div>
-          </div>
-
-          <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-            <div className="text-sm text-gray-400 mb-1">Total Revenue (TTM)</div>
-            <div className="text-lg font-semibold">{formatInMillions(data.totalRevenue)}</div>
-          </div>
-
-          <div className="bg-gray-800 px-3 py-3 sm:p-4 rounded-md">
-            <div className="text-sm text-gray-400 mb-1">Net Income (TTM)</div>
-            <div className="text-lg font-semibold">{formatInMillions(data.netIncome)}</div>
-          </div>
-        </div>
+          </>
+        ) : (
+          /* Empty slots if no dividends */
+          <>
+            <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md invisible"></div>
+            <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md invisible"></div>
+          </>
+        )}
       </div>
     </section>
   );
