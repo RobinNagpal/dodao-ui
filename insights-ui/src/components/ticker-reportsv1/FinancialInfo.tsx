@@ -1,5 +1,4 @@
 import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
-import { use } from 'react';
 
 type Num = number | null;
 
@@ -113,26 +112,17 @@ export default function FinancialInfo({ data }: FinancialInfoProps): JSX.Element
           <div className="text-xs font-semibold">{formatInMillions(data.netIncome)}</div>
         </div>
 
-        {/* Annual Dividend (if available) */}
-        {hasDividends ? (
-          <>
-            <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
-              <div className="text-xs text-gray-400 mb-1">Annual Dividend</div>
-              <div className="text-xs font-semibold">{formatCurrency(data.annualDividend, data.currency)}</div>
-            </div>
+        {/* Annual Dividend */}
+        <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+          <div className="text-xs text-gray-400 mb-1">Annual Dividend</div>
+          <div className="text-xs font-semibold">{hasDividends ? formatCurrency(data.annualDividend, data.currency) : '--'}</div>
+        </div>
 
-            <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
-              <div className="text-xs text-gray-400 mb-1">Dividend Yield</div>
-              <div className="text-xs font-semibold">{formatPercentageDecimal(data.dividendYield)}</div>
-            </div>
-          </>
-        ) : (
-          /* Empty slots if no dividends */
-          <>
-            <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md invisible"></div>
-            <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md invisible"></div>
-          </>
-        )}
+        {/* Dividend Yield */}
+        <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+          <div className="text-xs text-gray-400 mb-1">Dividend Yield</div>
+          <div className="text-xs font-semibold">{hasDividends ? formatPercentageDecimal(data.dividendYield) : '--'}</div>
+        </div>
       </div>
     </section>
   );
