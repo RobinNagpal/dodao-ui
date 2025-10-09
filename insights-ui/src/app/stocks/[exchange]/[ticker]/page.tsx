@@ -252,7 +252,7 @@ function FinancialCardSkeleton({ label }: FinancialCardSkeletonProps): JSX.Eleme
   return (
     <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
       <div className="text-xs text-gray-400 mb-1">{label}</div>
-      <div className="h-4 w-16 bg-gray-700 rounded animate-pulse"></div>
+      <div className="h-4 w-16 bg-gray-700 rounded animate-pulse">--</div>
     </div>
   );
 }
