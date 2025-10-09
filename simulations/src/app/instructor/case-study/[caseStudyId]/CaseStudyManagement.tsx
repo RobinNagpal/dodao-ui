@@ -11,7 +11,7 @@ import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyIns
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
-import type { CaseStudyWithRelationsForInstructor, CaseStudyWithRelationsForAdmin } from '@/types/api';
+import type { CaseStudyWithRelationsForAdmin, CaseStudyWithRelationsForInstructor } from '@/types/api';
 import { SimulationSession } from '@/types/user';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { GraduationCap } from 'lucide-react';
@@ -41,10 +41,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     { skipInitialFetch: !caseStudyId || !session },
     'Failed to load case study'
   );
-
-  const handleLogout = () => {
-    router.push('/login');
-  };
 
   const handleModuleClick = (module: CaseStudyModule) => {
     setSelectedModule(module as CaseStudyModule);
@@ -82,7 +78,6 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       <InstructorNavbar
         title={caseStudy?.title || 'Case Study Not Found'}
         subtitle="Instructor Management Console"
-        onLogout={handleLogout}
         icon={<GraduationCap className="h-8 w-8 text-white" />}
       />
 
