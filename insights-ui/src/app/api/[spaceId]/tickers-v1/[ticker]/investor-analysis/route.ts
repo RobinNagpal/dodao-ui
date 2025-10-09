@@ -9,6 +9,7 @@ import {
   LLMInvestorAnalysisFutureRiskResponse,
   TickerAnalysisResponse,
 } from '@/types/public-equity/analysis-factors-types';
+import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
@@ -16,8 +17,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const { investorKey } = body as AnalysisRequest;
 
   // Hardcode LLM provider and model
-  const llmProvider = 'gemini';
-  const model = 'models/gemini-2.5-pro';
+  const llmProvider = LLMProvider.GEMINI;
+  const model = GeminiModel.GEMINI_2_5_PRO;
 
   if (!investorKey) {
     throw new Error('investorKey is required');

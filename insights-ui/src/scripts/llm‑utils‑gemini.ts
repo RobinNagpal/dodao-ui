@@ -2,9 +2,10 @@ import 'dotenv/config';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { GoogleGenAI } from '@google/genai';
 import { ZodObject } from 'zod';
+import { GeminiModel, GeminiModelType, getModelName } from '@/types/llmConstants';
 
 export const geminiModel = new ChatGoogleGenerativeAI({
-  model: 'models/gemini-2.5-pro',
+  model: getModelName(GeminiModel.GEMINI_2_5_PRO),
   apiKey: process.env.GOOGLE_API_KEY,
   temperature: 1,
 });
@@ -13,7 +14,7 @@ export const geminiWithSearchModel = new GoogleGenAI({
   apiKey: process.env.GOOGLE_API_KEY,
 });
 
-export type GeminiModelType = 'gemini-2.5-pro' | 'gemini-2.5-pro-with-google-search';
+// GeminiModelType is now imported from llmConstants.ts
 
 export const outputInstructions = `
 #  For output content:
@@ -34,16 +35,16 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export async function getLlmResponse<T extends Record<string, any>>(
   prompt: string,
   schema: ZodObject<any>,
-  model: GeminiModelType = 'gemini-2.5-pro',
+  model: GeminiModelType = GeminiModelType.GEMINI_2_5_PRO,
   maxRetries = 3,
   initialDelay = 1000
 ): Promise<T> {
-  console.log(`Invoking Gemini (${model}) for prompt:`, prompt);
+  console.log(`Invoking Gemini (${getModelName(model)}) for prompt:`, prompt);
   let lastErr: Error | null = null;
 
   for (let i = 1; i <= maxRetries; i++) {
     try {
-      if (model === 'gemini-2.5-pro-with-google-search') {
+      if (model === GeminiModelType.GEMINI_2_5_PRO_WITH_GOOGLE_SEARCH) {
         // First, get response from Gemini with Google Search grounding
         const groundingTool = {
           googleSearch: {},
@@ -54,7 +55,7 @@ export async function getLlmResponse<T extends Record<string, any>>(
         };
 
         const searchResponse = await geminiWithSearchModel.models.generateContent({
-          model: 'gemini-2.5-pro',
+          model: getModelName(GeminiModel.GEMINI_2_5_PRO_GROUNDING),
           contents: prompt,
           config,
         });

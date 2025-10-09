@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { LLMProvider, ModelName, GeminiModel, getModelName, getProvider } from '@/types/llmConstants';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
@@ -14,7 +15,6 @@ import path from 'path';
 import { PromptInvocationStatus } from '.prisma/client';
 
 // Type definitions
-export type LLMProvider = 'openai' | 'gemini' | 'gemini-with-grounding';
 export type RequestSource = 'ui' | 'langflow';
 
 export interface ValidationResult {
@@ -25,7 +25,7 @@ export interface ValidationResult {
 export interface LLMResponseOptions {
   invocationId: string;
   llmProvider: LLMProvider;
-  modelName: string;
+  modelName: ModelName;
   prompt: string;
   outputSchema: object;
   maxRetries?: number;
@@ -37,7 +37,7 @@ export interface LLMResponseViaInvocationRequest<Input> {
   inputJson?: Input;
   promptKey: string;
   llmProvider: LLMProvider;
-  model: string;
+  model: ModelName;
   bodyToAppend?: string;
   requestFrom: RequestSource;
 }
@@ -47,7 +47,7 @@ export interface LLMResponseViaTestInvocationRequest {
   promptId: string;
   promptTemplate: string;
   llmProvider: LLMProvider;
-  model: string;
+  model: ModelName;
   bodyToAppend?: string;
   inputJsonString?: string;
 }
@@ -85,23 +85,23 @@ const geminiWithSearchModel = new GoogleGenAI({
 /**
  * Initializes an LLM model based on provider and model name
  */
-function initializeLLM(provider: LLMProvider, modelName: string): BaseChatModel {
-  if (provider.toLowerCase() !== 'openai' && provider.toLowerCase() !== 'gemini' && provider.toLowerCase() !== 'gemini-with-grounding') {
-    throw new Error(`Unsupported LLM provider: ${provider}`);
+function initializeLLM(provider: LLMProvider, modelName: ModelName): BaseChatModel {
+  if (provider !== LLMProvider.OPENAI && provider !== LLMProvider.GEMINI && provider !== LLMProvider.GEMINI_WITH_GROUNDING) {
+    throw new Error(`Unsupported LLM provider: ${getProvider(provider)}`);
   }
 
-  if (provider === 'openai') {
+  if (provider === LLMProvider.OPENAI) {
     return new ChatOpenAI({
-      model: modelName,
+      model: getModelName(modelName),
     }) as BaseChatModel;
-  } else if (provider === 'gemini' || provider === 'gemini-with-grounding') {
+  } else if (provider === LLMProvider.GEMINI || provider === LLMProvider.GEMINI_WITH_GROUNDING) {
     return new ChatGoogleGenerativeAI({
-      model: modelName,
+      model: getModelName(modelName),
       apiKey: process.env.GOOGLE_API_KEY,
       temperature: 1,
     });
   } else {
-    throw new Error(`Unsupported LLM provider: ${provider}`);
+    throw new Error(`Unsupported LLM provider: ${getProvider(provider)}`);
   }
 }
 
@@ -236,7 +236,7 @@ async function getGroundedResponse(prompt: string): Promise<string> {
   };
 
   const searchResponse = await geminiWithSearchModel.models.generateContent({
-    model: 'gemini-2.5-pro',
+    model: getModelName(GeminiModel.GEMINI_2_5_PRO_GROUNDING),
     contents: prompt,
     config,
   });
@@ -261,10 +261,6 @@ export async function getLLMResponse<Output>({
   maxRetries = 1,
   isTestInvocation,
 }: LLMResponseOptions): Promise<Output> {
-  console.log(
-    `Test Invocation ${isTestInvocation} - Getting LLM Response for invocation ${invocationId} with model ${modelName} - with prompt: \n\n${prompt}\n\n`
-  );
-
   let lastResult: unknown | null = null;
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
@@ -272,7 +268,7 @@ export async function getLLMResponse<Output>({
       let finalPrompt = prompt;
 
       // Handle Gemini with grounding - two-step process
-      if (llmProvider === 'gemini-with-grounding') {
+      if (llmProvider === LLMProvider.GEMINI_WITH_GROUNDING) {
         console.log('Using Gemini with grounding - performing search first...');
 
         // Step 1: Get grounded response from Gemini with Google Search
@@ -284,7 +280,7 @@ export async function getLLMResponse<Output>({
       }
 
       // Initialize LLM for structured output
-      const llm = initializeLLM(llmProvider === 'gemini-with-grounding' ? 'gemini' : llmProvider, modelName);
+      const llm = initializeLLM(llmProvider === LLMProvider.GEMINI_WITH_GROUNDING ? LLMProvider.GEMINI : llmProvider, modelName);
       const structured = llm.withStructuredOutput(outputSchema);
 
       // Get response from LLM

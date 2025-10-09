@@ -1,13 +1,14 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
+import { LLMProvider, ModelName } from '@/types/llmConstants';
 
 export interface PromptInvocationRequest {
   spaceId?: string;
   inputJson?: Record<string, unknown>;
   promptKey: string;
-  llmProvider: 'openai' | 'gemini';
-  model: string;
+  llmProvider: LLMProvider;
+  model: ModelName;
   bodyToAppend?: string;
   requestFrom: 'ui' | 'langflow';
 }

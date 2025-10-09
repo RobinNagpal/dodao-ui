@@ -25,6 +25,7 @@ import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import Popup from '@dodao/web-core/components/core/popup/Popup';
+import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
 // These types come from your API route for test prompt invocations.
 export interface TestPromptInvocationRequest {
@@ -32,7 +33,7 @@ export interface TestPromptInvocationRequest {
   promptTemplate: string;
   promptId: string;
   inputJsonString?: string;
-  llmProvider: string;
+  llmProvider: LLMProvider;
   model: string;
   bodyToAppend?: string;
 }
@@ -69,8 +70,8 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
     promptTemplate: parentPrompt?.activePromptVersion?.promptTemplate || '',
     promptId: parentPrompt?.id || '',
     inputJsonString: parentPrompt?.sampleJson || '',
-    llmProvider: 'openai',
-    model: 'gpt-4o-mini',
+    llmProvider: LLMProvider.GEMINI,
+    model: GeminiModel.GEMINI_2_5_PRO,
     bodyToAppend: '',
   });
   const [showInvocationsAccordion, setShowInvocationsAccordion] = useState(false);
@@ -82,10 +83,7 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
   const [previewHtml, setPreviewHtml] = useState<string>('');
   const [selectedInvocation, setSelectedInvocation] = useState<TestPromptInvocation>();
 
-  const modelItems: StyledSelectItem[] = ['o3-mini', 'o4-mini', 'gpt-4o', 'gpt-4o-mini', 'gpt-4o-search-preview', 'gpt-4o-mini-search-preview'].map((m) => ({
-    id: m,
-    label: m,
-  }));
+  const modelItems: StyledSelectItem[] = [{ id: GeminiModel.GEMINI_2_5_PRO, label: 'Gemini 2.5 Pro' }];
 
   // When the parent prompt data loads, update our form state.
   useEffect(() => {
@@ -95,8 +93,8 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
         promptTemplate: parentPrompt.activePromptVersion?.promptTemplate || '',
         promptId: parentPrompt.id,
         inputJsonString: parentPrompt.sampleJson || '',
-        llmProvider: 'openai',
-        model: 'o4-mini',
+        llmProvider: LLMProvider.GEMINI,
+        model: GeminiModel.GEMINI_2_5_PRO,
         bodyToAppend: '',
       });
     }
@@ -241,8 +239,9 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
             <input
               type="text"
               value={formData.llmProvider}
-              onChange={(e) => setFormData((prev) => ({ ...prev, llmProvider: e.target.value }))}
+              onChange={(e) => setFormData((prev) => ({ ...prev, llmProvider: e.target.value as LLMProvider }))}
               className="border border-color p-2 w-full text-color block-bg-color"
+              readOnly
             />
           </div>
 
@@ -250,8 +249,8 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
             <StyledSelect
               label={'Model'}
               items={modelItems}
-              setSelectedItemId={(model) => setFormData({ ...formData, model: model || 'gpt-4o-mini' })}
-              selectedItemId={formData.model || 'gpt-4o-mini'}
+              setSelectedItemId={(model) => setFormData({ ...formData, model: model || GeminiModel.GEMINI_2_5_PRO })}
+              selectedItemId={formData.model || GeminiModel.GEMINI_2_5_PRO}
             />
           </div>
 

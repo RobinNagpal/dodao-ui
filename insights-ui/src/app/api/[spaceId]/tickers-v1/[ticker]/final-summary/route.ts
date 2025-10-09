@@ -6,12 +6,13 @@ import { prisma } from '@/prisma';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
 import { generateMetaDescriptionPrompt, MetaDescriptionResponse, MetaDescriptionResponseType } from '@/lib/promptForMetaDescriptionV1';
+import { LLMProvider, GeminiModel, GeminiModelType } from '@/types/llmConstants';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
 
-  const llmProvider = 'gemini';
-  const model = 'models/gemini-2.5-pro';
+  const llmProvider = LLMProvider.GEMINI;
+  const model = GeminiModel.GEMINI_2_5_PRO;
 
   // Get ticker from DB with all related analysis data
   const tickerRecord = await prisma.tickerV1.findFirst({
@@ -87,7 +88,13 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   const metaDescriptionPrompt = generateMetaDescriptionPrompt(finalSummary);
 
-  const metaDescriptionResult = await getLlmResponse<MetaDescriptionResponseType>(metaDescriptionPrompt, MetaDescriptionResponse, 'gemini-2.5-pro', 3, 1000);
+  const metaDescriptionResult = await getLlmResponse<MetaDescriptionResponseType>(
+    metaDescriptionPrompt,
+    MetaDescriptionResponse,
+    GeminiModelType.GEMINI_2_5_PRO,
+    3,
+    1000
+  );
 
   const metaDescription = metaDescriptionResult.metaDescription;
 

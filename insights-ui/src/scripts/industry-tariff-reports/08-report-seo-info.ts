@@ -15,6 +15,7 @@ import { EvaluateIndustryArea, IndustryTariffReport, PageSeoDetails, TariffRepor
 import { z } from 'zod';
 import { ReportType } from './tariff-types';
 import { getLlmResponse } from '../llm‑utils‑gemini';
+import { GeminiModelType } from '@/types/llmConstants';
 
 const PageSeoDetailsSchema = z.object({
   title: z.string().describe('SEO title for the page (50-60 characters)'),
@@ -40,7 +41,7 @@ async function generateSeoDetailsForSection(industry: TariffIndustryId, sectionN
     ${JSON.stringify(sectionContent, null, 2)}
   `;
 
-  return await getLlmResponse<PageSeoDetails>(prompt, PageSeoDetailsSchema, 'gemini-2.5-pro');
+  return await getLlmResponse<PageSeoDetails>(prompt, PageSeoDetailsSchema, GeminiModelType.GEMINI_2_5_PRO);
 }
 
 // Generate SEO details for report cover
