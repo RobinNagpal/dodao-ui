@@ -4,6 +4,7 @@ import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { ChatOpenAI } from '@langchain/openai';
+import { GoogleGenAI } from '@google/genai';
 import { PromptInvocation, TestPromptInvocation } from '@prisma/client';
 import Ajv, { ErrorObject } from 'ajv';
 import fs from 'fs';
@@ -13,7 +14,7 @@ import path from 'path';
 import { PromptInvocationStatus } from '.prisma/client';
 
 // Type definitions
-export type LLMProvider = 'openai' | 'gemini';
+export type LLMProvider = 'openai' | 'gemini' | 'gemini-with-grounding';
 export type RequestSource = 'ui' | 'langflow';
 
 export interface ValidationResult {
@@ -76,11 +77,16 @@ function validateData(schema: object, data: unknown): ValidationResult {
   return { valid: !!valid, errors: validate.errors || [] };
 }
 
+// Initialize GoogleGenAI client for grounding
+const geminiWithSearchModel = new GoogleGenAI({
+  apiKey: process.env.GOOGLE_API_KEY,
+});
+
 /**
  * Initializes an LLM model based on provider and model name
  */
 function initializeLLM(provider: LLMProvider, modelName: string): BaseChatModel {
-  if (provider.toLowerCase() !== 'openai' && provider.toLowerCase() !== 'gemini') {
+  if (provider.toLowerCase() !== 'openai' && provider.toLowerCase() !== 'gemini' && provider.toLowerCase() !== 'gemini-with-grounding') {
     throw new Error(`Unsupported LLM provider: ${provider}`);
   }
 
@@ -88,12 +94,14 @@ function initializeLLM(provider: LLMProvider, modelName: string): BaseChatModel 
     return new ChatOpenAI({
       model: modelName,
     }) as BaseChatModel;
-  } else {
+  } else if (provider === 'gemini' || provider === 'gemini-with-grounding') {
     return new ChatGoogleGenerativeAI({
       model: modelName,
       apiKey: process.env.GOOGLE_API_KEY,
       temperature: 1,
     });
+  } else {
+    throw new Error(`Unsupported LLM provider: ${provider}`);
   }
 }
 
@@ -216,6 +224,32 @@ function compileTemplate(template: string, inputData: Record<string, unknown> = 
 }
 
 /**
+ * Gets grounded response from Gemini with Google Search
+ */
+async function getGroundedResponse(prompt: string): Promise<string> {
+  const groundingTool = {
+    googleSearch: {},
+  };
+
+  const config = {
+    tools: [groundingTool],
+  };
+
+  const searchResponse = await geminiWithSearchModel.models.generateContent({
+    model: 'gemini-2.5-pro',
+    contents: prompt,
+    config,
+  });
+
+  const searchResult = searchResponse.text;
+  if (!searchResult) {
+    throw new Error('No response received from Gemini with grounding');
+  }
+  console.log('✅ Gemini with search response received');
+  return searchResult;
+}
+
+/**
  * Core function to get LLM response
  */
 export async function getLLMResponse<Output>({
@@ -235,12 +269,26 @@ export async function getLLMResponse<Output>({
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      // Initialize LLM
-      const llm = initializeLLM(llmProvider, modelName);
+      let finalPrompt = prompt;
+      
+      // Handle Gemini with grounding - two-step process
+      if (llmProvider === 'gemini-with-grounding') {
+        console.log('Using Gemini with grounding - performing search first...');
+        
+        // Step 1: Get grounded response from Gemini with Google Search
+        const groundedResponse = await getGroundedResponse(prompt);
+        
+        // Step 2: Convert the grounded response to structured output
+        finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse}`;
+        console.log('✅ Grounded response obtained, now converting to structured output');
+      }
+
+      // Initialize LLM for structured output
+      const llm = initializeLLM(llmProvider === 'gemini-with-grounding' ? 'gemini' : llmProvider, modelName);
       const structured = llm.withStructuredOutput(outputSchema);
 
       // Get response from LLM
-      const result = (await structured.invoke(prompt)) as Output;
+      const result = (await structured.invoke(finalPrompt)) as Output;
       console.log('Response from llm:', result);
       lastResult = result;
 

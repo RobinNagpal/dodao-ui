@@ -9,7 +9,7 @@ import { CompetitionAnalysisArray, LLMFactorAnalysisResponse, TickerAnalysisResp
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
 
-  const llmProvider = 'gemini';
+  const llmProvider = 'gemini-with-grounding';
   const model = 'models/gemini-2.5-pro';
 
   // Get ticker from DB
