@@ -1,22 +1,22 @@
 'use client';
 
-import React from 'react';
-import { SimulationSession } from '@/types/user';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useSession } from 'next-auth/react';
-import { useState } from 'react';
-import type { ModuleTableData, StudentTableData, AttemptDetail, ExerciseProgress } from '@/types';
-import { useRouter } from 'next/navigation';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import type { DeleteResponse, ClassEnrollmentResponse, CaseStudyWithRelationsForInstructor } from '@/types/api';
-import { GraduationCap } from 'lucide-react';
-import InstructorNavbar from '@/components/navigation/InstructorNavbar';
-import BackButton from '@/components/navigation/BackButton';
 import InstructorLoading from '@/components/instructor/InstructorLoading';
 import StudentTable from '@/components/instructor/StudentTable';
+import BackButton from '@/components/navigation/BackButton';
+import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import type { AttemptDetail, ExerciseProgress, ModuleTableData, StudentTableData } from '@/types';
+import type { CaseStudyWithRelationsForInstructor, ClassEnrollmentResponse, DeleteResponse } from '@/types/api';
+import { SimulationSession } from '@/types/user';
+import { logoutUser } from '@/utils/auth-utils';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { GraduationCap } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 interface EnrollmentStudentProgressPageProps {
   params: Promise<{
@@ -169,10 +169,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     };
   })();
 
-  const handleLogout = () => {
-    router.push('/login');
-  };
-
   const handleClearStudentAttempts = (studentId: string, studentEmail: string) => {
     setStudentToClear({ id: studentId, email: studentEmail });
     setShowDeleteConfirm(true);
@@ -296,6 +292,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
   };
 
   if (!session || (session.role !== 'Instructor' && session.role !== 'Admin')) {
+    logoutUser();
     return <div>You are not authorized to access this page</div>;
   }
 
@@ -311,12 +308,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
         <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-indigo-200/20 rounded-full blur-xl animate-pulse delay-2000"></div>
       </div>
 
-      <InstructorNavbar
-        title="Class Enrollment Progress"
-        subtitle="Student Progress Management"
-        onLogout={handleLogout}
-        icon={<GraduationCap className="h-8 w-8 text-white" />}
-      />
+      <InstructorNavbar title="Class Enrollment Progress" subtitle="Student Progress Management" icon={<GraduationCap className="h-8 w-8 text-white" />} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
         <BackButton userType="instructor" text="Back to Case Study" href={`/instructor/case-study/${caseStudyId}`} />

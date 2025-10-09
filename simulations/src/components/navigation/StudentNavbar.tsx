@@ -1,7 +1,8 @@
 'use client';
 
-import { Brain, GraduationCap, Sparkles, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { logoutUser } from '@/utils/auth-utils';
+import { GraduationCap, LogOut, Sparkles } from 'lucide-react';
 
 interface StudentNavbarProps {
   title: string;
@@ -11,7 +12,6 @@ interface StudentNavbarProps {
   exerciseNumber?: number;
   icon?: React.ReactNode;
   iconColor?: string;
-  onLogout?: () => void;
   showLogout?: boolean;
 }
 
@@ -23,7 +23,6 @@ export default function StudentNavbar({
   exerciseNumber,
   icon,
   iconColor = 'from-blue-500 to-purple-600',
-  onLogout,
   showLogout = false,
 }: StudentNavbarProps) {
   return (
@@ -52,9 +51,9 @@ export default function StudentNavbar({
               </div>
             </div>
           </div>
-          {showLogout && onLogout && (
+          {showLogout && (
             <Button
-              onClick={onLogout}
+              onClick={logoutUser}
               variant="outline"
               className="border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all duration-200 bg-transparent"
             >

@@ -1,24 +1,24 @@
 'use client';
 
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import type { CaseStudyWithRelationsForStudents } from '@/types/api';
-import { SimulationSession } from '@/types/user';
-import StudentLoading from '@/components/student/StudentLoading';
-import { getSubjectDisplayName, getSubjectIcon, getSubjectColor } from '@/utils/subject-utils';
-import { BookOpen, Target, Brain, Clock, Lock, ArrowLeft, Check, BotIcon } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import StudentNavbar from '@/components/navigation/StudentNavbar';
 import BackButton from '@/components/navigation/BackButton';
-import InstructionRequiredModal from '@/components/student/InstructionRequiredModal';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
+import StudentNavbar from '@/components/navigation/StudentNavbar';
 import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
+import InstructionRequiredModal from '@/components/student/InstructionRequiredModal';
+import StudentLoading from '@/components/student/StudentLoading';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import type { CaseStudyWithRelationsForStudents } from '@/types/api';
+import { SimulationSession } from '@/types/user';
+import { getSubjectColor, getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { BookOpen, BotIcon, Check, Clock, Lock } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface StudentCaseStudyClientProps {
   caseStudyId: string;
@@ -200,24 +200,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     }
   };
 
-  useEffect(() => {
-    if (!session) {
-      setIsLoading(true);
-      return;
-    }
-
-    if (session.role !== 'Student' && session.role !== 'Instructor' && session.role !== 'Admin') {
-      router.push('/login');
-      return;
-    }
-
-    setIsLoading(false);
-  }, [session, router]);
-
-  const handleLogout = () => {
-    router.push('/login');
-  };
-
   if (isLoading || loadingCaseStudy) {
     return <StudentLoading text="Loading case study..." subtitle="Preparing your learning experience" variant="enhanced" />;
   }
@@ -232,7 +214,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
         icon={<span className="text-2xl">{getSubjectIcon(caseStudy?.subject || 'MARKETING')}</span>}
         iconColor="from-blue-600 to-indigo-700"
         showLogout={true}
-        onLogout={handleLogout}
         userEmail={session?.email || session?.username}
       />
 

@@ -41,10 +41,6 @@ export default function StudentDashboard() {
     }
   }, [selectedSubject, enrolledCaseStudies]);
 
-  const handleLogout = () => {
-    router.push('/login');
-  };
-
   const handleStartCaseStudy = (caseStudy: CaseStudyWithRelationsForStudents) => {
     router.push(`/student/case-study/${caseStudy.id}`);
   };
@@ -77,7 +73,6 @@ export default function StudentDashboard() {
         title="Student Dashboard"
         subtitle={`Welcome back, ${session?.email}`}
         userEmail={session?.email || session?.username}
-        onLogout={handleLogout}
         showLogout={true}
         icon={<GraduationCap className="h-8 w-8 text-white" />}
         iconColor="from-blue-600 to-indigo-700"

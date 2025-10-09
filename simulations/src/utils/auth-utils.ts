@@ -26,4 +26,6 @@ export async function logoutUser() {
   }
 
   signOut();
+
+  window.location.href = '/login';
 }

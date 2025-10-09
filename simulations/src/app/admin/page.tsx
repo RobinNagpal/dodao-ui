@@ -8,6 +8,7 @@ import AdminNavbar from '@/components/navigation/AdminNavbar';
 import type { BusinessSubject } from '@/types';
 import { CaseStudyWithRelationsForAdmin } from '@/types/api';
 import { SimulationSession } from '@/types/user';
+import { logoutUser } from '@/utils/auth-utils';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BookOpen, Shield, UserCog, Users } from 'lucide-react';
@@ -42,6 +43,7 @@ export default function AdminDashboard() {
   }, [selectedSubject, caseStudies]);
 
   if (!session || session.role !== 'Admin') {
+    logoutUser();
     return <div>You are not authorized to access this page</div>;
   }
   if (loadingCaseStudies || caseStudies === undefined) {

@@ -1,32 +1,32 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import {
-  Calendar,
-  TrendingUp,
-  CheckCircle,
-  Clock,
-  AlertCircle,
-  ChevronDown,
-  ChevronRight,
-  Mail,
-  Activity,
-  Layers,
-  Award,
-  Target,
-  BookOpen,
-  GraduationCap,
-} from 'lucide-react';
+import InstructorLoading from '@/components/instructor/InstructorLoading';
+import BackButton from '@/components/navigation/BackButton';
 
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
-import BackButton from '@/components/navigation/BackButton';
-import InstructorLoading from '@/components/instructor/InstructorLoading';
 import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
-import { SimulationSession } from '@/types/user';
 import { CaseStudyWithRelationsForInstructor, StudentDetailResponse } from '@/types/api';
+import { SimulationSession } from '@/types/user';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import {
+  Activity,
+  AlertCircle,
+  Award,
+  BookOpen,
+  Calendar,
+  CheckCircle,
+  ChevronDown,
+  ChevronRight,
+  Clock,
+  GraduationCap,
+  Layers,
+  Mail,
+  Target,
+  TrendingUp,
+} from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface StudentDetailsClientProps {
   caseStudyId: string;
@@ -107,10 +107,6 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
     };
   })();
 
-  const handleLogout = () => {
-    router.push('/login');
-  };
-
   const toggleModule = (moduleId: string) => {
     const newExpanded = new Set(expandedModules);
     if (newExpanded.has(moduleId)) {
@@ -179,7 +175,6 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
       <InstructorNavbar
         title={studentDetails ? `${studentDetails.assignedStudent.email} - ${studentDetails.enrollment.className}` : 'Student Not Found'}
         userEmail={session?.email || ''}
-        onLogout={handleLogout}
         icon={<GraduationCap className="h-8 w-8 text-white" />}
       />
 

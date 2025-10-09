@@ -1,19 +1,18 @@
 'use client';
 
-import { SimulationSession } from '@/types/user';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useSession } from 'next-auth/react';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import type { CaseStudy } from '@/types';
-import type { BusinessSubject } from '@/types';
-import { GraduationCap } from 'lucide-react';
-import InstructorNavbar from '@/components/navigation/InstructorNavbar';
-import InstructorLoading from '@/components/instructor/InstructorLoading';
 import SubjectFilter from '@/components/common/SubjectFilter';
 import CaseStudiesContent from '@/components/instructor/CaseStudiesContent';
+import InstructorLoading from '@/components/instructor/InstructorLoading';
 import { getAssignedSubjectsWithCounts } from '@/components/instructor/SubjectUtils';
+import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import type { BusinessSubject, CaseStudy } from '@/types';
+import { SimulationSession } from '@/types/user';
+import { logoutUser } from '@/utils/auth-utils';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { GraduationCap } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 export default function InstructorDashboard() {
   const { data: simSession } = useSession();
@@ -21,7 +20,6 @@ export default function InstructorDashboard() {
 
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
   const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudy[]>([]);
-  const router = useRouter();
 
   // API hook to fetch case studies
   const {
@@ -41,13 +39,10 @@ export default function InstructorDashboard() {
     }
   }, [selectedSubject, assignedCaseStudies]);
 
-  const handleLogout = (): void => {
-    router.push('/login');
-  };
-
   const assignedSubjectsWithCounts = getAssignedSubjectsWithCounts(assignedCaseStudies);
 
   if (!session || (session.role !== 'Instructor' && session.role !== 'Admin')) {
+    logoutUser();
     return <div>You are not authorized to access this page</div>;
   }
 
@@ -67,7 +62,6 @@ export default function InstructorDashboard() {
         title="Instructor Dashboard"
         subtitle="Welcome Back"
         userEmail={session?.email!}
-        onLogout={handleLogout}
         icon={<GraduationCap className="h-8 w-8 text-white" />}
       />
 
