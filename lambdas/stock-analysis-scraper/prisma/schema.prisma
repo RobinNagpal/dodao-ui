@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  // keep native for local dev, add the Lambda target
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  // optional but fine if you might switch to ARM later:
+  // binaryTargets = ["native", "rhel-openssl-3.0.x", "linux-arm64-openssl-3.0.x"]
+  // engineType = "binary" // (default in recent Prisma, leave out unless you changed it)
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --------------------------
+// News Reader Models
+// --------------------------
+
+model NewsTopicTemplate {
+  id               String   @id @default(uuid())
+  name             String   @map("name")
+  description      String   @map("description")
+  filters          String[] @map("filters")
+  availableFilters String[] @map("available_filters")
+  isDefault        Boolean  @map("is_default")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  createdBy        String?  @map("created_by")
+  updatedBy        String?  @map("updated_by")
+
+  topics NewsTopic[]
+
+  @@map("news_topic_templates")
+}
+
+model NewsTopicFolder {
+  id        String   @id @default(uuid())
+  name      String   @map("name")
+  parentId  String?  @map("parent_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String?  @map("created_by")
+  updatedBy String?  @map("updated_by")
+
+  parent   NewsTopicFolder?  @relation("FolderToSubfolder", fields: [parentId], references: [id])
+  children NewsTopicFolder[] @relation("FolderToSubfolder")
+  topics   NewsTopic[]
+
+  @@map("news_topic_folders")
+}
+
+model NewsTopic {
+  id           String   @id @default(uuid())
+  topic        String   @map("topic")
+  description  String   @map("description")
+  filters      String[] @map("filters")
+  templateUsed String   @map("template_used")
+  folderId     String?  @map("folder_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  createdBy    String?  @map("created_by")
+  updatedBy    String?  @map("updated_by")
+
+  folder              NewsTopicFolder?   @relation(fields: [folderId], references: [id])
+  articles            NewsArticle[]
+  NewsTopicTemplate   NewsTopicTemplate? @relation(fields: [newsTopicTemplateId], references: [id])
+  newsTopicTemplateId String?
+
+  @@map("news_topics")
+}
+
+model NewsArticle {
+  id          String   @id @default(uuid())
+  title       String   @map("title")
+  description String   @map("description")
+  keyword     String   @map("keyword")
+  filters     String[] @map("filters")
+  source      String   @map("source")
+  publishedAt DateTime @map("published_at")
+  url         String   @map("url")
+  fullContent String?  @map("full_content")
+  topicId     String   @map("topic_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdBy   String?  @map("created_by")
+  updatedBy   String?  @map("updated_by")
+
+  topic   NewsTopic       @relation(fields: [topicId], references: [id])
+  sources ArticleSource[]
+
+  @@map("news_articles")
+}
+
+model ArticleSource {
+  id          String   @id @default(uuid())
+  title       String   @map("title")
+  url         String   @map("url")
+  source      String   @map("source")
+  percentage  Float    @map("percentage")
+  publishedAt DateTime @map("published_at")
+  articleId   String   @map("article_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdBy   String?  @map("created_by")
+  updatedBy   String?  @map("updated_by")
+
+  article NewsArticle @relation(fields: [articleId], references: [id])
+
+  @@map("article_sources")
+}
