@@ -10,9 +10,6 @@ import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
 
-  const llmProvider = LLMProvider.GEMINI_WITH_GROUNDING;
-  const model = GeminiModel.GEMINI_2_5_PRO;
-
   // Get ticker from DB
   const tickerRecord = await prisma.tickerV1.findFirst({
     where: {
@@ -93,8 +90,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     spaceId,
     inputJson,
     promptKey: 'US/public-equities-v1/fair-value',
-    llmProvider,
-    model,
+    llmProvider: LLMProvider.GEMINI_WITH_GROUNDING,
+    model: GeminiModel.GEMINI_2_5_PRO,
     requestFrom: 'ui',
   });
 

@@ -112,7 +112,7 @@ export default function CreateInvocationPage(): JSX.Element {
       inputJson: JSON.parse(formData.inputJsonString),
       bodyToAppend: formData.bodyToAppend,
       llmProvider: formData.llmProvider,
-      model: formData.model,
+      model: formData.model as GeminiModel,
       promptKey: prompt.key,
       spaceId: KoalaGainsSpaceId,
       requestFrom: 'ui',

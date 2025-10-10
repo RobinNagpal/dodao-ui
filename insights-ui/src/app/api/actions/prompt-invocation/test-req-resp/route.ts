@@ -1,7 +1,7 @@
 import { getLLMResponseForPromptViaTestInvocation, TestPromptInvocationResponse } from '@/util/get-llm-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { LLMProvider } from '@/types/llmConstants';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 
 export interface TestPromptInvocationRequest {
   spaceId?: string;
@@ -9,7 +9,7 @@ export interface TestPromptInvocationRequest {
   promptId: string;
   inputJsonString?: string;
   llmProvider: LLMProvider;
-  model: string;
+  model: GeminiModel;
   bodyToAppend?: string;
 }
 

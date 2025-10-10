@@ -1,11 +1,10 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { LLMProvider, ModelName, GeminiModel, getModelName, getProvider } from '@/types/llmConstants';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { ChatOpenAI } from '@langchain/openai';
-import { GoogleGenAI } from '@google/genai';
 import { PromptInvocation, TestPromptInvocation } from '@prisma/client';
 import Ajv, { ErrorObject } from 'ajv';
 import fs from 'fs';
@@ -13,6 +12,7 @@ import Handlebars from 'handlebars';
 import jsonpatch from 'jsonpatch';
 import path from 'path';
 import { PromptInvocationStatus } from '.prisma/client';
+import { getGroundedResponse } from './llm-grounding-utils';
 
 // Type definitions
 export type RequestSource = 'ui' | 'langflow';
@@ -25,7 +25,7 @@ export interface ValidationResult {
 export interface LLMResponseOptions {
   invocationId: string;
   llmProvider: LLMProvider;
-  modelName: ModelName;
+  modelName: GeminiModel;
   prompt: string;
   outputSchema: object;
   maxRetries?: number;
@@ -37,7 +37,7 @@ export interface LLMResponseViaInvocationRequest<Input> {
   inputJson?: Input;
   promptKey: string;
   llmProvider: LLMProvider;
-  model: ModelName;
+  model: GeminiModel;
   bodyToAppend?: string;
   requestFrom: RequestSource;
 }
@@ -47,7 +47,7 @@ export interface LLMResponseViaTestInvocationRequest {
   promptId: string;
   promptTemplate: string;
   llmProvider: LLMProvider;
-  model: ModelName;
+  model: GeminiModel;
   bodyToAppend?: string;
   inputJsonString?: string;
 }
@@ -77,31 +77,26 @@ function validateData(schema: object, data: unknown): ValidationResult {
   return { valid: !!valid, errors: validate.errors || [] };
 }
 
-// Initialize GoogleGenAI client for grounding
-const geminiWithSearchModel = new GoogleGenAI({
-  apiKey: process.env.GOOGLE_API_KEY,
-});
-
 /**
  * Initializes an LLM model based on provider and model name
  */
-function initializeLLM(provider: LLMProvider, modelName: ModelName): BaseChatModel {
+function initializeLLM(provider: LLMProvider, modelName: GeminiModel): BaseChatModel {
   if (provider !== LLMProvider.OPENAI && provider !== LLMProvider.GEMINI && provider !== LLMProvider.GEMINI_WITH_GROUNDING) {
-    throw new Error(`Unsupported LLM provider: ${getProvider(provider)}`);
+    throw new Error(`Unsupported LLM provider: ${provider}`);
   }
 
   if (provider === LLMProvider.OPENAI) {
     return new ChatOpenAI({
-      model: getModelName(modelName),
+      model: 'gpt-4o-mini',
     }) as BaseChatModel;
   } else if (provider === LLMProvider.GEMINI || provider === LLMProvider.GEMINI_WITH_GROUNDING) {
     return new ChatGoogleGenerativeAI({
-      model: getModelName(modelName),
+      model: modelName,
       apiKey: process.env.GOOGLE_API_KEY,
       temperature: 1,
     });
   } else {
-    throw new Error(`Unsupported LLM provider: ${getProvider(provider)}`);
+    throw new Error(`Unsupported LLM provider: ${provider}`);
   }
 }
 
@@ -139,7 +134,7 @@ async function updateInvocationStatus(
 interface BaseInvocationData {
   spaceId: string;
   llmProvider: LLMProvider;
-  model: string;
+  model: GeminiModel;
   bodyToAppend?: string;
 }
 
@@ -224,32 +219,6 @@ function compileTemplate(template: string, inputData: Record<string, unknown> = 
 }
 
 /**
- * Gets grounded response from Gemini with Google Search
- */
-async function getGroundedResponse(prompt: string): Promise<string> {
-  const groundingTool = {
-    googleSearch: {},
-  };
-
-  const config = {
-    tools: [groundingTool],
-  };
-
-  const searchResponse = await geminiWithSearchModel.models.generateContent({
-    model: getModelName(GeminiModel.GEMINI_2_5_PRO_GROUNDING),
-    contents: prompt,
-    config,
-  });
-
-  const searchResult = searchResponse.text;
-  if (!searchResult) {
-    throw new Error('No response received from Gemini with grounding');
-  }
-  console.log('✅ Gemini with search response received');
-  return searchResult;
-}
-
-/**
  * Core function to get LLM response
  */
 export async function getLLMResponse<Output>({
@@ -272,7 +241,7 @@ export async function getLLMResponse<Output>({
         console.log('Using Gemini with grounding - performing search first...');
 
         // Step 1: Get grounded response from Gemini with Google Search
-        const groundedResponse = await getGroundedResponse(prompt);
+        const groundedResponse = await getGroundedResponse(prompt, modelName);
 
         // Step 2: Convert the grounded response to structured output
         finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse}`;

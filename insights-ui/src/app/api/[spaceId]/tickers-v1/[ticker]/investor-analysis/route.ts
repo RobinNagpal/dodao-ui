@@ -16,10 +16,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const body = await req.json();
   const { investorKey } = body as AnalysisRequest;
 
-  // Hardcode LLM provider and model
-  const llmProvider = LLMProvider.GEMINI;
-  const model = GeminiModel.GEMINI_2_5_PRO;
-
   if (!investorKey) {
     throw new Error('investorKey is required');
   }
@@ -67,8 +63,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     spaceId,
     inputJson,
     promptKey: 'US/public-equities-v1/investor-analysis',
-    llmProvider,
-    model,
+    llmProvider: LLMProvider.GEMINI,
+    model: GeminiModel.GEMINI_2_5_PRO,
     requestFrom: 'ui',
   });
 

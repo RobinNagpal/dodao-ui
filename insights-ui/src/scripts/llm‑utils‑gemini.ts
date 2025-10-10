@@ -1,17 +1,13 @@
 import 'dotenv/config';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
-import { GoogleGenAI } from '@google/genai';
 import { ZodObject } from 'zod';
-import { GeminiModel, GeminiModelType, getModelName } from '@/types/llmConstants';
+import { GeminiModel, GeminiModelType } from '@/types/llmConstants';
+import { getGroundedResponse } from '@/util/llm-grounding-utils';
 
 export const geminiModel = new ChatGoogleGenerativeAI({
-  model: getModelName(GeminiModel.GEMINI_2_5_PRO),
+  model: GeminiModel.GEMINI_2_5_PRO,
   apiKey: process.env.GOOGLE_API_KEY,
   temperature: 1,
-});
-
-export const geminiWithSearchModel = new GoogleGenAI({
-  apiKey: process.env.GOOGLE_API_KEY,
 });
 
 // GeminiModelType is now imported from llmConstants.ts
@@ -39,28 +35,14 @@ export async function getLlmResponse<T extends Record<string, any>>(
   maxRetries = 3,
   initialDelay = 1000
 ): Promise<T> {
-  console.log(`Invoking Gemini (${getModelName(model)}) for prompt:`, prompt);
+  console.log(`Invoking Gemini (${model}) for prompt:`, prompt);
   let lastErr: Error | null = null;
 
   for (let i = 1; i <= maxRetries; i++) {
     try {
       if (model === GeminiModelType.GEMINI_2_5_PRO_WITH_GOOGLE_SEARCH) {
         // First, get response from Gemini with Google Search grounding
-        const groundingTool = {
-          googleSearch: {},
-        };
-
-        const config = {
-          tools: [groundingTool],
-        };
-
-        const searchResponse = await geminiWithSearchModel.models.generateContent({
-          model: getModelName(GeminiModel.GEMINI_2_5_PRO_GROUNDING),
-          contents: prompt,
-          config,
-        });
-
-        const searchResult = searchResponse.text;
+        const searchResult = await getGroundedResponse(prompt, GeminiModel.GEMINI_2_5_PRO_GROUNDING);
         console.log('✅ Gemini with search response received');
 
         // Now convert the search result to structured output using schema

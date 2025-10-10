@@ -1,5 +1,4 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { bumpUpdatedAtAndInvalidateCache } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -21,10 +20,6 @@ interface CompetitionAnalysisResponse {
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
-
-  // Hardcode LLM provider and model
-  const llmProvider = LLMProvider.GEMINI;
-  const model = GeminiModel.GEMINI_2_5_PRO;
 
   // Get ticker from DB
   const tickerRecord = await prisma.tickerV1.findFirst({
@@ -59,8 +54,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     spaceId,
     inputJson,
     promptKey: 'US/public-equities-v1/competition',
-    llmProvider,
-    model,
+    llmProvider: LLMProvider.GEMINI,
+    model: GeminiModel.GEMINI_2_5_PRO,
     requestFrom: 'ui',
   });
 
