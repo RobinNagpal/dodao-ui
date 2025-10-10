@@ -30,7 +30,6 @@ interface UpdateInstructionStatusRequest {
 }
 
 export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudyClientProps) {
-  const [isLoading, setIsLoading] = useState(true);
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
   const [selectedModule, setSelectedModule] = useState<any>(null);
@@ -200,7 +199,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     }
   };
 
-  if (isLoading || loadingCaseStudy) {
+  if (loadingCaseStudy) {
     return <StudentLoading text="Loading case study..." subtitle="Preparing your learning experience" variant="enhanced" />;
   }
 
