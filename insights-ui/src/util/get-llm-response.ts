@@ -241,7 +241,7 @@ export async function getLLMResponse<Output>({
         console.log('Using Gemini with grounding - performing search first...');
 
         // Step 1: Get grounded response from Gemini with Google Search
-        const groundedResponse = await getGroundedResponse(prompt, modelName);
+        const groundedResponse = await getGroundedResponse(prompt, GeminiModel.GEMINI_2_5_PRO_GROUNDING);
 
         // Step 2: Convert the grounded response to structured output
         finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse}`;

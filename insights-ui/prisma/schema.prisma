@@ -544,6 +544,7 @@ model TickerV1 {
   investorAnalysisResults TickerV1InvestorAnalysisResult[]
   futureRisks             TickerV1FutureRisk[]
   vsCompetition           TickerV1VsCompetition?
+  generationRequests      TickerV1GenerationRequest[]
 
   // Relation to cached score
   cachedScoreEntry        TickerV1CachedScore?
@@ -753,4 +754,44 @@ model TickerV1VsCompetition {
   @@index([spaceId, tickerId])
   @@index([tickerId])
   @@map("ticker_v1_vs_competition")
+}
+
+model TickerV1GenerationRequest {
+  id        String   @id @default(uuid())
+  tickerId  String   @map("ticker_id")
+  spaceId   String   @default("koala_gains") @map("space_id")
+  
+  // Core analysis sections (true = regenerate this section)
+  regenerateCompetition              Boolean @default(false) @map("regenerate_competition")
+  regenerateFinancialAnalysis        Boolean @default(false) @map("regenerate_financial_analysis")
+  regenerateBusinessAndMoat          Boolean @default(false) @map("regenerate_business_and_moat")
+  regeneratePastPerformance          Boolean @default(false) @map("regenerate_past_performance")
+  regenerateFutureGrowth             Boolean @default(false) @map("regenerate_future_growth")
+  regenerateFairValue                Boolean @default(false) @map("regenerate_fair_value")
+  regenerateFutureRisk               Boolean @default(false) @map("regenerate_future_risk")
+  
+  // Investor analyses
+  regenerateWarrenBuffett            Boolean @default(false) @map("regenerate_warren_buffett")
+  regenerateCharlieMunger            Boolean @default(false) @map("regenerate_charlie_munger")
+  regenerateBillAckman               Boolean @default(false) @map("regenerate_bill_ackman")
+  
+  // Final steps
+  regenerateFinalSummary             Boolean @default(false) @map("regenerate_final_summary")
+  regenerateCachedScore              Boolean @default(false) @map("regenerate_cached_score")
+  
+  // Request status
+  status                             String @default("NotStarted") @map("status")
+  
+  // Timestamps for tracking
+  createdAt                          DateTime  @default(now()) @map("created_at")
+  updatedAt                          DateTime  @updatedAt @map("updated_at")
+  startedAt                          DateTime? @map("started_at")
+  completedAt                        DateTime? @map("completed_at")
+  
+  // Relation
+  ticker    TickerV1 @relation(fields: [tickerId], references: [id], onDelete: Cascade)
+  
+  @@index([tickerId])
+  @@index([status])
+  @@map("ticker_v1_generation_requests")
 }
