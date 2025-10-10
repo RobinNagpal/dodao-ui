@@ -5,12 +5,10 @@ import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { CompetitionAnalysisArray, LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
-
-  const llmProvider = 'gemini';
-  const model = 'models/gemini-2.5-pro';
 
   // Get ticker from DB
   const tickerRecord = await prisma.tickerV1.findFirst({
@@ -21,6 +19,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     include: {
       industry: true,
       subIndustry: true,
+      financialInfo: true,
     },
   });
 
@@ -50,6 +49,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     },
   });
 
+  const fi = tickerRecord.financialInfo;
+
   // Prepare input for the prompt
   const inputJson = {
     name: tickerRecord.name,
@@ -68,6 +69,20 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
     })),
     competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
+    price: fi?.price ?? null,
+    yearHigh: fi?.yearHigh ?? null,
+    yearLow: fi?.yearLow ?? null,
+    marketCap: fi?.marketCap ?? null,
+    epsDilutedTTM: fi?.epsDilutedTTM ?? null,
+    pe: fi?.pe ?? null,
+    avgVolume3M: fi?.avgVolume3M ?? null,
+    dayVolume: fi?.dayVolume ?? null,
+    annualDividend: fi?.annualDividend ?? null,
+    dividendYield: fi?.dividendYield ?? null,
+    totalRevenue: fi?.totalRevenue ?? null,
+    netIncome: fi?.netIncome ?? null,
+    netProfitMargin: fi?.netProfitMargin ?? null,
+    currency: fi?.currency ?? null,
   };
 
   // Call the LLM
@@ -75,8 +90,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     spaceId,
     inputJson,
     promptKey: 'US/public-equities-v1/fair-value',
-    llmProvider,
-    model,
+    llmProvider: LLMProvider.GEMINI_WITH_GROUNDING,
+    model: GeminiModel.GEMINI_2_5_PRO,
     requestFrom: 'ui',
   });
 

@@ -1,0 +1,128 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: 'The full name of the company or REIT being analyzed (e.g., AvalonBay Communities Inc.).'
+  symbol:
+    type: string
+    description: 'The stock ticker symbol of the company or REIT (e.g., AVB).'
+  industryKey:
+    type: string
+    description: 'The broad industry the stock belongs to (e.g., REITS).'
+  industryName:
+    type: string
+    description: 'Name of the industry'
+  industryDescription:
+    type: string
+    description: 'A few lines explaining the industry'
+  subIndustryKey:
+    type: string
+    description: 'The specific sub-industry of the stock (e.g., OFFICE_REITS).'
+  subIndustryName:
+    type: string
+    description: 'Name of the sub-industry'
+  subIndustryDescription:
+    type: string
+    description: 'A few lines explaining the sub-industry'
+  categoryKey:
+    type: string
+    enum: ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue']
+    description: 'The category being analyzed.'
+  factorAnalysisArray:
+    type: array
+    description: 'Array of factor definitions under this category.'
+    items:
+      type: object
+      properties:
+        factorAnalysisKey:
+          type: string
+          description: 'Unique identifier for the factor in SCREAMING_SNAKE_CASE.'
+        factorAnalysisTitle:
+          type: string
+          description: 'Readable title of the factor.'
+        factorAnalysisDescription:
+          type: string
+          description: 'Short, 1–2 sentence plain-English explanation of what this factor represents and why it matters to investors.'
+        factorAnalysisMetrics:
+          type: string
+          description: 'Optional comma-separated list of key metrics used for evaluating this factor.'
+      required:
+        - factorAnalysisKey
+        - factorAnalysisTitle
+        - factorAnalysisDescription
+  competitionAnalysisArray:
+    type: array
+    description: 'Array of competitor information from VsCompetition output, used to benchmark the target company.'
+    items:
+      type: object
+      properties:
+        companyName:
+          type: string
+        companySymbol:
+          type: string
+        exchangeSymbol:
+          type: string
+        exchangeName:
+          type: string
+        detailedComparison:
+          type: string
+      required:
+        - companyName
+        - detailedComparison
+
+  # ---------- New financial inputs (all optional & nullable) ----------
+  price:
+    type: [number, 'null']
+    description: 'Latest trading price in the listing currency.'
+  yearHigh:
+    type: [number, 'null']
+    description: '52-week high price.'
+  yearLow:
+    type: [number, 'null']
+    description: '52-week low price.'
+  marketCap:
+    type: [number, 'null']
+    description: 'Market capitalization in listing currency units.'
+  epsDilutedTTM:
+    type: [number, 'null']
+    description: 'Diluted EPS (TTM).'
+  pe:
+    type: [number, 'null']
+    description: 'Price-to-Earnings ratio (uses EPS TTM).'
+  avgVolume3M:
+    type: [number, 'null']
+    description: 'Average daily trading volume over the last 3 months (shares).'
+  dayVolume:
+    type: [number, 'null']
+    description: 'Most recent trading day volume (shares).'
+  annualDividend:
+    type: [number, 'null']
+    description: 'Annualized dividend per share (forward or trailing, specify source convention in your pipeline).'
+  dividendYield:
+    type: [number, 'null']
+    description: 'Dividend yield as a decimal (e.g., 0.024 for 2.4%).'
+  totalRevenue:
+    type: [number, 'null']
+    description: 'Most recent fiscal year or TTM total revenue in listing currency units.'
+  netIncome:
+    type: [number, 'null']
+    description: 'Most recent fiscal year or TTM net income in listing currency units.'
+  netProfitMargin:
+    type: [number, 'null']
+    description: 'Net profit margin as a decimal (netIncome / totalRevenue).'
+  currency:
+    type: [string, 'null']
+    description: 'Listing currency code (e.g., USD, PKR).'
+required:
+  - name
+  - symbol
+  - industryKey
+  - subIndustryKey
+  - categoryKey
+  - factorAnalysisArray
+  - industryDescription
+  - subIndustryDescription
+  - industryName
+  - subIndustryName

@@ -5,13 +5,10 @@ import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
-
-  // Hardcode LLM provider and model
-  const llmProvider = 'gemini';
-  const model = 'models/gemini-2.5-pro';
 
   // Get ticker from DB
   const tickerRecord = await prisma.tickerV1.findFirst({
@@ -63,8 +60,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     spaceId,
     inputJson,
     promptKey: 'US/public-equities-v1/financial-statements',
-    llmProvider,
-    model,
+    llmProvider: LLMProvider.GEMINI,
+    model: GeminiModel.GEMINI_2_5_PRO,
     requestFrom: 'ui',
   });
 

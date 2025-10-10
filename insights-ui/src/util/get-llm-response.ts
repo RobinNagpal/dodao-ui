@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
@@ -11,9 +12,9 @@ import Handlebars from 'handlebars';
 import jsonpatch from 'jsonpatch';
 import path from 'path';
 import { PromptInvocationStatus } from '.prisma/client';
+import { getGroundedResponse } from './llm-grounding-utils';
 
 // Type definitions
-export type LLMProvider = 'openai' | 'gemini';
 export type RequestSource = 'ui' | 'langflow';
 
 export interface ValidationResult {
@@ -24,7 +25,7 @@ export interface ValidationResult {
 export interface LLMResponseOptions {
   invocationId: string;
   llmProvider: LLMProvider;
-  modelName: string;
+  modelName: GeminiModel;
   prompt: string;
   outputSchema: object;
   maxRetries?: number;
@@ -36,7 +37,7 @@ export interface LLMResponseViaInvocationRequest<Input> {
   inputJson?: Input;
   promptKey: string;
   llmProvider: LLMProvider;
-  model: string;
+  model: GeminiModel;
   bodyToAppend?: string;
   requestFrom: RequestSource;
 }
@@ -46,7 +47,7 @@ export interface LLMResponseViaTestInvocationRequest {
   promptId: string;
   promptTemplate: string;
   llmProvider: LLMProvider;
-  model: string;
+  model: GeminiModel;
   bodyToAppend?: string;
   inputJsonString?: string;
 }
@@ -79,21 +80,23 @@ function validateData(schema: object, data: unknown): ValidationResult {
 /**
  * Initializes an LLM model based on provider and model name
  */
-function initializeLLM(provider: LLMProvider, modelName: string): BaseChatModel {
-  if (provider.toLowerCase() !== 'openai' && provider.toLowerCase() !== 'gemini') {
+function initializeLLM(provider: LLMProvider, modelName: GeminiModel): BaseChatModel {
+  if (provider !== LLMProvider.OPENAI && provider !== LLMProvider.GEMINI && provider !== LLMProvider.GEMINI_WITH_GROUNDING) {
     throw new Error(`Unsupported LLM provider: ${provider}`);
   }
 
-  if (provider === 'openai') {
+  if (provider === LLMProvider.OPENAI) {
     return new ChatOpenAI({
-      model: modelName,
+      model: 'gpt-4o-mini',
     }) as BaseChatModel;
-  } else {
+  } else if (provider === LLMProvider.GEMINI || provider === LLMProvider.GEMINI_WITH_GROUNDING) {
     return new ChatGoogleGenerativeAI({
       model: modelName,
       apiKey: process.env.GOOGLE_API_KEY,
       temperature: 1,
     });
+  } else {
+    throw new Error(`Unsupported LLM provider: ${provider}`);
   }
 }
 
@@ -131,7 +134,7 @@ async function updateInvocationStatus(
 interface BaseInvocationData {
   spaceId: string;
   llmProvider: LLMProvider;
-  model: string;
+  model: GeminiModel;
   bodyToAppend?: string;
 }
 
@@ -227,20 +230,30 @@ export async function getLLMResponse<Output>({
   maxRetries = 1,
   isTestInvocation,
 }: LLMResponseOptions): Promise<Output> {
-  console.log(
-    `Test Invocation ${isTestInvocation} - Getting LLM Response for invocation ${invocationId} with model ${modelName} - with prompt: \n\n${prompt}\n\n`
-  );
-
   let lastResult: unknown | null = null;
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      // Initialize LLM
-      const llm = initializeLLM(llmProvider, modelName);
+      let finalPrompt = prompt;
+
+      // Handle Gemini with grounding - two-step process
+      if (llmProvider === LLMProvider.GEMINI_WITH_GROUNDING) {
+        console.log('Using Gemini with grounding - performing search first...');
+
+        // Step 1: Get grounded response from Gemini with Google Search
+        const groundedResponse = await getGroundedResponse(prompt, modelName);
+
+        // Step 2: Convert the grounded response to structured output
+        finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse}`;
+        console.log('✅ Grounded response obtained, now converting to structured output');
+      }
+
+      // Initialize LLM for structured output
+      const llm = initializeLLM(llmProvider === LLMProvider.GEMINI_WITH_GROUNDING ? LLMProvider.GEMINI : llmProvider, modelName);
       const structured = llm.withStructuredOutput(outputSchema);
 
       // Get response from LLM
-      const result = (await structured.invoke(prompt)) as Output;
+      const result = (await structured.invoke(finalPrompt)) as Output;
       console.log('Response from llm:', result);
       lastResult = result;
 

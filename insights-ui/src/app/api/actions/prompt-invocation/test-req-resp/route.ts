@@ -1,14 +1,15 @@
 import { getLLMResponseForPromptViaTestInvocation, TestPromptInvocationResponse } from '@/util/get-llm-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 
 export interface TestPromptInvocationRequest {
   spaceId?: string;
   promptTemplate: string;
   promptId: string;
   inputJsonString?: string;
-  llmProvider: 'openai' | 'gemini';
-  model: string;
+  llmProvider: LLMProvider;
+  model: GeminiModel;
   bodyToAppend?: string;
 }
 

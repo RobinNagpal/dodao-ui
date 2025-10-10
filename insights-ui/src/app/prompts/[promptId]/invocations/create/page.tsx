@@ -3,6 +3,7 @@
 
 import { FullPromptResponse } from '@/app/api/[spaceId]/prompts/[promptId]/route';
 import { PromptInvocationRequest, PromptInvocationResponse } from '@/app/api/actions/prompt-invocation/full-req-resp/route';
+import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 import RawJsonJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import SampleBodyEditModal from '@/components/prompts/SampleBodyEditModal';
 import SampleJsonEditModal from '@/components/prompts/SampleJsonEditModal';
@@ -28,7 +29,7 @@ import { parseMarkdown } from '@/util/parse-markdown';
 interface CreateInvocationForm {
   promptVersionId?: string;
   inputJsonString: string;
-  llmProvider: 'openai' | 'gemini';
+  llmProvider: LLMProvider;
   model: string;
   bodyToAppend?: string;
   commitMessage?: string;
@@ -41,8 +42,8 @@ export default function CreateInvocationPage(): JSX.Element {
   // Form state with strict types
   const [formData, setFormData] = useState<CreateInvocationForm>({
     inputJsonString: '',
-    llmProvider: 'openai',
-    model: 'gpt-4o-mini',
+    llmProvider: LLMProvider.GEMINI,
+    model: GeminiModel.GEMINI_2_5_PRO,
     bodyToAppend: '',
   });
 
@@ -111,7 +112,7 @@ export default function CreateInvocationPage(): JSX.Element {
       inputJson: JSON.parse(formData.inputJsonString),
       bodyToAppend: formData.bodyToAppend,
       llmProvider: formData.llmProvider,
-      model: formData.model,
+      model: formData.model as GeminiModel,
       promptKey: prompt.key,
       spaceId: KoalaGainsSpaceId,
       requestFrom: 'ui',
@@ -124,19 +125,13 @@ export default function CreateInvocationPage(): JSX.Element {
 
   const sampleBodyToAppend = formData.bodyToAppend && parseMarkdown(formData.bodyToAppend);
 
-  const llmProviderItems: StyledSelectItem[] = [
-    { id: 'openai', label: 'OpenAI' },
-    { id: 'gemini', label: 'Gemini' },
-  ];
+  const llmProviderItems: StyledSelectItem[] = [{ id: LLMProvider.GEMINI, label: 'Gemini' }];
 
-  const getModelItems = (provider: string): StyledSelectItem[] => {
-    if (provider === 'gemini') {
-      return [{ id: 'models/gemini-2.5-pro', label: 'Gemini 2.5 Pro' }];
+  const getModelItems = (provider: LLMProvider): StyledSelectItem[] => {
+    if (provider === LLMProvider.GEMINI) {
+      return [{ id: GeminiModel.GEMINI_2_5_PRO, label: 'Gemini 2.5 Pro' }];
     }
-    return ['o3-mini', 'o4-mini', 'gpt-4o', 'gpt-4o-mini', 'gpt-4o-search-preview', 'gpt-4o-mini-search-preview'].map((m) => ({
-      id: m,
-      label: m,
-    }));
+    return [];
   };
 
   const modelItems = getModelItems(formData.llmProvider);
@@ -190,8 +185,8 @@ export default function CreateInvocationPage(): JSX.Element {
                 selectedItemId={formData.llmProvider}
                 items={llmProviderItems}
                 setSelectedItemId={(provider) => {
-                  const newProvider = (provider as 'openai' | 'gemini') || 'openai';
-                  const defaultModel = newProvider === 'gemini' ? 'models/gemini-2.5-pro' : 'gpt-4o-mini';
+                  const newProvider = (provider as LLMProvider) || LLMProvider.GEMINI;
+                  const defaultModel = GeminiModel.GEMINI_2_5_PRO;
                   setFormData((prev) => {
                     const newFormData: CreateInvocationForm = {
                       ...prev,
@@ -208,10 +203,8 @@ export default function CreateInvocationPage(): JSX.Element {
               <StyledSelect
                 label={'Model'}
                 items={modelItems}
-                setSelectedItemId={(model) =>
-                  setFormData({ ...formData, model: model || (formData.llmProvider === 'gemini' ? 'models/gemini-2.5-pro' : 'gpt-4o-mini') })
-                }
-                selectedItemId={formData.model || (formData.llmProvider === 'gemini' ? 'models/gemini-2.5-pro' : 'gpt-4o-mini')}
+                setSelectedItemId={(model) => setFormData({ ...formData, model: model || GeminiModel.GEMINI_2_5_PRO })}
+                selectedItemId={formData.model || GeminiModel.GEMINI_2_5_PRO}
               />
             </div>
 
