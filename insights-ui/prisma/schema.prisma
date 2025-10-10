@@ -756,13 +756,6 @@ model TickerV1VsCompetition {
   @@map("ticker_v1_vs_competition")
 }
 
-enum GenerationRequestStatus {
-  NotStarted
-  InProgress
-  Completed
-  Failed
-}
-
 model TickerV1GenerationRequest {
   id        String   @id @default(uuid())
   tickerId  String   @map("ticker_id")
@@ -787,7 +780,7 @@ model TickerV1GenerationRequest {
   regenerateCachedScore              Boolean @default(false) @map("regenerate_cached_score")
   
   // Request status
-  status                             GenerationRequestStatus @default(NotStarted) @map("status")
+  status                             String @default("NotStarted") @map("status")
   
   // Timestamps for tracking
   createdAt                          DateTime  @default(now()) @map("created_at")
