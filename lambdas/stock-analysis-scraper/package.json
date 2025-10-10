@@ -23,12 +23,14 @@
     },
     "devDependencies": {
         "@types/aws-lambda": "^8.10.145",
+        "@types/cheerio": "^1.0.0",
         "@types/node": "18.16.3",
         "@types/yauzl": "^2.10.3",
         "eslint": "8.39.0",
         "eslint-config-next": "13.3.4",
         "postcss": "8.4.35",
         "prettier": "^2.8.8",
+        "serverless": "^4.21.0",
         "serverless-plugin-typescript": "^2.1.5",
         "typescript": "5.0.4"
     }

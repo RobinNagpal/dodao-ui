@@ -1,4 +1,4 @@
-service: pull-news-from-google
+service: stock-info-scrapper
 
 provider:
   name: aws
@@ -35,8 +35,8 @@ build:
 #      - '@postlight/parser'
 
 functions:
-  fetchNews:
-    handler: src/handler.fetchNews
+  scrapeTickerInfo:
+    handler: src/handler.scrapeTickerInfo
     events:
       - httpApi:
           path: /fetch-news

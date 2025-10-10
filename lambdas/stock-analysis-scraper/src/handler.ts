@@ -1,5 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { scrapeStatsFromUrl } from "./cheerio/summary-parser";
+import { scrapeIncomeStatementAnnual } from "./cheerio/income-statement-annual";
+import { scrapeFundamentalsSummary } from "./cheerio/fundamentals-summary";
 
 /**
  * Type definition for the request body when fetching a specific article
@@ -13,7 +14,7 @@ type FetchArticleRequestBody = {
  * @param event - API Gateway event
  * @returns API Gateway response
  */
-export const fetchTickerInfoFromStockAnalysis = async (
+export const scrapeTickerInfo = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   console.log("Event received:", JSON.stringify(event, null, 2));
@@ -32,7 +33,9 @@ export const fetchTickerInfoFromStockAnalysis = async (
       };
     }
 
-    const body: FetchArticleRequestBody = JSON.parse(event.body);
+    const body: FetchArticleRequestBody = JSON.parse(
+      JSON.stringify(event.body)
+    );
     const { url } = body;
 
     if (!url) {
@@ -43,11 +46,14 @@ export const fetchTickerInfoFromStockAnalysis = async (
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials": true,
         },
-        body: JSON.stringify({ error: "userId is required" }),
+        body: JSON.stringify({ error: "url is required" }),
       };
     }
 
-    const { stats, errors } = await scrapeStatsFromUrl(url);
+    const { financialSummary, errors: errorsFinancialSummary } =
+      await scrapeFundamentalsSummary(url);
+    const { incomeStatementAnnual, errors: errorsIncomeStatement } =
+      await scrapeIncomeStatementAnnual(url + "financials/");
     // Fetch topics for the user from the database
 
     return {
@@ -57,7 +63,10 @@ export const fetchTickerInfoFromStockAnalysis = async (
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify({ stats, errors }),
+      body: JSON.stringify({
+        financialSummary,
+        incomeStatementAnnual,
+      }),
     };
   } catch (error: any) {
     console.error("Error fetching user topics:", error);
