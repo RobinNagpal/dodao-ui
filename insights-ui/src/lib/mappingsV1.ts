@@ -47,5 +47,5 @@ export enum GenerationRequestStatus {
   NotStarted,
   InProgress,
   Completed,
-  Failed
+  Failed,
 }
