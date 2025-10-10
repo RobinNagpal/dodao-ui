@@ -39,9 +39,9 @@ functions:
     handler: src/handler.scrapeTickerInfo
     events:
       - httpApi:
-          path: /fetch-news
+          path: /fetch-stock-info
           method: POST
       - httpApi:
-          path: /fetch-news
+          path: /fetch-stock-info
           method: OPTIONS
           handler: handler.handleOptions

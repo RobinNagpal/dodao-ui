@@ -1,0 +1,38 @@
+{
+  "version": "2.0",
+  "routeKey": "POST /fetch-stock-info",
+  "rawPath": "/fetch-stock-info",
+  "rawQueryString": "",
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "br, deflate, gzip, x-gzip",
+    "content-length": "58",
+    "content-type": "application/json",
+    "host": "433kstmpzd.execute-api.us-east-1.amazonaws.com",
+    "user-agent": "IntelliJ HTTP Client/IntelliJ IDEA 2025.1",
+    "x-amzn-trace-id": "Root=1-68e94342-1c0485462a807f49406f9659",
+    "x-forwarded-for": "99.242.113.80",
+    "x-forwarded-port": "443",
+    "x-forwarded-proto": "https"
+  },
+  "requestContext": {
+    "accountId": "729763663166",
+    "apiId": "433kstmpzd",
+    "domainName": "433kstmpzd.execute-api.us-east-1.amazonaws.com",
+    "domainPrefix": "433kstmpzd",
+    "http": {
+      "method": "POST",
+      "path": "/fetch-stock-info",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "99.242.113.80",
+      "userAgent": "IntelliJ HTTP Client/IntelliJ IDEA 2025.1"
+    },
+    "requestId": "SPdychgVoAMEVEw=",
+    "routeKey": "POST /fetch-stock-info",
+    "stage": "$default",
+    "time": "10/Oct/2025:17:32:50 +0000",
+    "timeEpoch": 1760117570424
+  },
+  "body": "{\n    \"url\": \"https://xxxxxxx.com/quote/psx/LUCK/\"\n}",
+  "isBase64Encoded": false
+}

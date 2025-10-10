@@ -1,3 +1,2 @@
 invoke-local:
-	yarn serverless invoke local --function scrapeTickerInfo --data "{ \"body\": { \"url\": \"https://xxxxx.com/quote/psx/OGDC/\" }}"
-
+	@yarn sls invoke local -f scrapeTickerInfo -p events/fetch-news.json

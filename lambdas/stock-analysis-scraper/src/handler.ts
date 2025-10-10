@@ -37,9 +37,7 @@ export const scrapeTickerInfo = async (
       };
     }
 
-    const body: FetchArticleRequestBody = JSON.parse(
-      JSON.stringify(event.body)
-    );
+    const body: FetchArticleRequestBody = JSON.parse(event.body);
     const { url } = body;
 
     if (!url) {
