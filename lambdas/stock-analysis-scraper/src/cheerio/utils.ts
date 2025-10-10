@@ -10,10 +10,7 @@ export interface ScrapeError {
 }
 
 export function makeError(where: string, err: unknown): ScrapeError {
-  return {
-    where,
-    message: err instanceof Error ? err.message : String(err),
-  };
+  return { where, message: err instanceof Error ? err.message : String(err) };
 }
 
 export async function fetchHtml(
@@ -44,20 +41,24 @@ export function parseNumberLike(raw: string): number | undefined {
   const s = raw.replace(/,/g, "").trim();
   if (!s) return undefined;
   const neg = /^\(.*\)$/.test(s);
-  const core = s.replace(/[()]/g, "");
+  const core = s.replace(/[()]/g, "").replace(/[^\d.-]/g, "");
   const n = Number(core);
   return Number.isFinite(n) ? (neg ? -n : n) : undefined;
 }
 
-/** "-13.48%" -> -13.48 ; "12%" -> 12 ; returns undefined if not a percentage */
+/** handles "12%", "-13.4%", "(8.1%)", and unicode minus */
 export function parsePercent(raw: string): number | undefined {
-  const m = raw.match(/(-?\d+(?:\.\d+)?)\s*%/);
+  const s = normalizeText(raw).replace(/\u2212/g, "-");
+  // Parentheses imply negative
+  const neg = /^\(.*\)$/.test(s);
+  const m = s.match(/(-?\d+(?:\.\d+)?)\s*%/);
   if (!m) return undefined;
   const n = Number(m[1]);
-  return Number.isFinite(n) ? n : undefined;
+  if (!Number.isFinite(n)) return undefined;
+  return neg ? -n : n;
 }
 
-/** "1.47B" -> 1.47e9; also accepts K/M/T; returns undefined if not matched */
+/** "1.47B" -> 1.47e9; also accepts K/M/T/G; returns undefined if not matched */
 export function parseAbbrevNumber(raw: string): number | undefined {
   const s = raw.replace(/,/g, "").trim();
   const m = /^(-?\d+(?:\.\d+)?)([KMGTB])?$/i.exec(s);
@@ -75,18 +76,53 @@ export function parseAbbrevNumber(raw: string): number | undefined {
   return unit ? val * (mult[unit] ?? 1) : val;
 }
 
-/** Helper: first meaningful text in a cell (anchors/spans) */
+/** First meaningful text in a cell (anchors/spans) */
 export function cellText(
   $cell: cheerio.Cheerio<any>,
   $: cheerio.CheerioAPI
 ): string {
   const raw = normalizeText(
-    $cell
-      .clone() // avoid modifying DOM
-      .find("a, span, div")
-      .addBack()
-      .first()
-      .text()
+    $cell.clone().find("a, span, div").addBack().first().text()
   );
   return raw;
+}
+
+/**
+ * Convert any label to lowerCamelCase:
+ *  - removes bracketed content: "(...)" "[...]" "{...}"
+ *  - replaces "&" with "and"
+ *  - removes diacritics safely (no \\p{Diacritic})
+ *  - strips everything except letters/digits/spaces
+ *  - collapses spaces, then camel-cases
+ *  - if first char is a digit, prefix with "_"
+ */
+export function toLowerCamelKey(raw: string): string {
+  if (!raw) return "";
+  let s = raw
+    // drop bracketed bits
+    .replace(/\s*[\(\[\{][^\)\]\}]*[\)\]\}]\s*/g, " ")
+    // normalize unicode + remove combining marks
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    // unify dashes and ampersands
+    .replace(/[–—]/g, " ")
+    .replace(/&/g, " and ")
+    // kill all non-alphanum except spaces
+    .replace(/[^a-zA-Z0-9 ]+/g, " ")
+    // squeeze spaces
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+
+  if (!s) return "";
+
+  const parts = s.split(" ");
+  const camel =
+    parts[0] +
+    parts
+      .slice(1)
+      .map((p) => (p ? p[0].toUpperCase() + p.slice(1) : ""))
+      .join("");
+
+  return /^\d/.test(camel) ? `_${camel}` : camel;
 }

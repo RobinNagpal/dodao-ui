@@ -1,5 +1,9 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { scrapeIncomeStatementAnnual } from "./cheerio/income-statement-annual";
+import {
+  scrapeIncomeStatementAnnual,
+  scrapeIncomeStatementAnnualRaw,
+  scrapeIncomeStatementAnnualStrict,
+} from "./cheerio/income-statement-annual";
 import { scrapeFundamentalsSummary } from "./cheerio/fundamentals-summary";
 
 /**
@@ -54,6 +58,17 @@ export const scrapeTickerInfo = async (
       await scrapeFundamentalsSummary(url);
     const { incomeStatementAnnual, errors: errorsIncomeStatement } =
       await scrapeIncomeStatementAnnual(url + "financials/");
+
+    const {
+      incomeStatementAnnual: incomeStatementAnnualRaw,
+      errors: errorsIncomeStatementRaw,
+    } = await scrapeIncomeStatementAnnualRaw(url + "financials/");
+
+    const {
+      incomeStatementAnnual: incomeStatementAnnualStrict,
+      errors: errorsIncomeStatementStrict,
+    } = await scrapeIncomeStatementAnnualStrict(url + "financials/");
+
     // Fetch topics for the user from the database
 
     return {
@@ -65,7 +80,19 @@ export const scrapeTickerInfo = async (
       },
       body: JSON.stringify({
         financialSummary,
-        incomeStatementAnnual,
+        incomeStatementAnnual: {
+          incomeStatementAnnual,
+          incomeStatementAnnualRaw,
+          incomeStatementAnnualStrict,
+        },
+        errors: {
+          errorsFinancialSummary,
+          incomeStatement: {
+            errorsIncomeStatement,
+            errorsIncomeStatementRaw,
+            errorsIncomeStatementStrict,
+          },
+        },
       }),
     };
   } catch (error: any) {

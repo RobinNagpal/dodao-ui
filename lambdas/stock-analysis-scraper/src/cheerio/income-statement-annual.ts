@@ -8,52 +8,59 @@ import {
   makeError,
   ScrapeError,
   Html,
+  toLowerCamelKey,
 } from "./utils";
 import * as cheerio from "cheerio";
 
 export type Unit = "ones" | "thousands" | "millions" | "billions";
+
 export interface IncomeMeta {
   currency?: string; // e.g., "PKR"
   unit?: Unit; // e.g., "millions"
   fiscalYearNote?: string; // e.g., "Fiscal year is July - June."
 }
 
-export interface IncomePeriod {
-  fiscalYear: string; // e.g., "FY 2025"
-  periodEnd?: string; // e.g., "Jun 30, 2025"
-  values: Record<string, number | null>; // label -> numeric (number or %), null if missing
+export interface IncomePeriodRaw {
+  fiscalYear: string;
+  periodEnd?: string;
+  values: Record<string, number | null>; // ORIGINAL LABEL -> numeric or null
 }
 
-export interface IncomeAnnualResult {
+export interface IncomeAnnualResult<TValues = Record<string, number | null>> {
   incomeStatementAnnual: {
     meta: IncomeMeta;
-    periods: IncomePeriod[];
+    periods: Array<{
+      fiscalYear: string;
+      periodEnd?: string;
+      values: TValues;
+    }>;
   };
   errors: ScrapeError[];
 }
 
-export async function scrapeIncomeStatementAnnual(
+/* --------------------------- RAW (unchanged keys) --------------------------- */
+
+export async function scrapeIncomeStatementAnnualRaw(
   url: string
-): Promise<IncomeAnnualResult> {
+): Promise<IncomeAnnualResult<Record<string, number | null>>> {
   const { html, error } = await fetchHtml(url);
   if (!html) {
     return {
-      incomeStatementAnnual: {
-        meta: {},
-        periods: [],
-      },
+      incomeStatementAnnual: { meta: {}, periods: [] },
       errors: [
         error ?? {
-          where: "scrapeIncomeStatementAnnual",
+          where: "scrapeIncomeStatementAnnualRaw",
           message: "Unknown fetch error",
         },
       ],
     };
   }
-  return parseIncomeStatementAnnual(html);
+  return parseIncomeStatementAnnualRaw(html);
 }
 
-export function parseIncomeStatementAnnual(html: Html): IncomeAnnualResult {
+export function parseIncomeStatementAnnualRaw(
+  html: Html
+): IncomeAnnualResult<Record<string, number | null>> {
   const $ = load(html);
   const errors: ScrapeError[] = [];
   const meta: IncomeMeta = extractMeta($);
@@ -63,30 +70,27 @@ export function parseIncomeStatementAnnual(html: Html): IncomeAnnualResult {
       incomeStatementAnnual: { meta, periods: [] },
       errors: [
         {
-          where: "parseIncomeStatementAnnual",
+          where: "parseIncomeStatementAnnualRaw",
           message: "#main-table not found",
         },
       ],
     };
   }
 
-  // 1) Identify fiscal-year columns (skip first sticky label col + trailing "Upgrade" col)
-  // We rely on the first THEAD row that contains "FY 2025", "FY 2024", etc.
   const headerRows = table.find("thead tr");
   if (headerRows.length === 0) {
     return {
       incomeStatementAnnual: { meta, periods: [] },
       errors: [
-        { where: "parseIncomeStatementAnnual", message: "thead not found" },
+        { where: "parseIncomeStatementAnnualRaw", message: "thead not found" },
       ],
     };
   }
 
-  // Fiscal-year labels come from row 1 (e.g., "FY 2025") and period-end dates from row 2 (e.g., "Jun 30, 2025")
+  // Row 0: "FY 2025" or "FY2025" or "2025"; ignore "2016 - 2020" buckets
   const fyRow = headerRows.eq(0).find("th");
   const peRow = headerRows.eq(1).find("th");
 
-  // Build column map (index in row -> fiscal-year label + period end)
   interface ColInfo {
     idx: number;
     fiscalYear: string;
@@ -95,24 +99,26 @@ export function parseIncomeStatementAnnual(html: Html): IncomeAnnualResult {
   const cols: ColInfo[] = [];
   fyRow.each((i, th) => {
     if (i === 0) return; // first column is the row label
-    const text = normalizeText($(th).text()); // "FY 2025" or "2016 - 2020" (to ignore)
-    if (!/^FY\s+\d{4}/i.test(text)) return; // ignore "2016 - 2020"
-    const periodEnd = peRow.eq(i).text()
-      ? normalizeText(peRow.eq(i).text())
-      : undefined;
-    cols.push({ idx: i, fiscalYear: text, periodEnd });
+    const text = normalizeText($(th).text());
+    if (
+      (/^FY\s*'?(\d{2}|\d{4})$/i.test(text) || /^\d{4}$/.test(text)) &&
+      !text.includes("-")
+    ) {
+      const periodEnd = peRow.eq(i).text()
+        ? normalizeText(peRow.eq(i).text())
+        : undefined;
+      cols.push({ idx: i, fiscalYear: text, periodEnd });
+    }
   });
 
   if (cols.length === 0) {
     errors.push({
-      where: "parseIncomeStatementAnnual",
+      where: "parseIncomeStatementAnnualRaw",
       message: "No fiscal-year columns detected",
     });
   }
 
-  // 2) Collect row labels and numeric/percentage values
-  // Construct periods scaffold
-  const periods: IncomePeriod[] = cols.map((c) => ({
+  const periods: IncomePeriodRaw[] = cols.map((c) => ({
     fiscalYear: c.fiscalYear,
     periodEnd: c.periodEnd,
     values: {},
@@ -124,37 +130,31 @@ export function parseIncomeStatementAnnual(html: Html): IncomeAnnualResult {
       const tds = $tr.find("td");
       if (tds.length < 2) return;
 
-      // First cell = row label (e.g., "Revenue", "Revenue Growth (YoY)", "Gross Profit", ...)
-      const $cell: cheerio.Cheerio<any> = tds.eq(0);
-      const rowLabelRaw = cellText($cell, $).trim();
+      const $labelCell: cheerio.Cheerio<any> = tds.eq(0);
+      const rowLabelRaw = cellText($labelCell, $).trim();
       const rowLabel = normalizeText(rowLabelRaw);
       if (!rowLabel) return;
 
-      // For each fiscal-year column, read & parse the cell
       cols.forEach((c, colIdx) => {
         const cell = tds.eq(c.idx);
         if (!cell || cell.length === 0) return;
 
         const text = normalizeText(cell.text());
-
-        // Skip placeholders like "Upgrade" or empty cells
         if (!text || /^upgrade$/i.test(text)) {
           periods[colIdx].values[rowLabel] = null;
           return;
         }
 
-        // Try percentage first (e.g., "12.11%"), else number (e.g., "401,178")
         let val: number | undefined = parsePercent(text);
         if (val == null) val = parseNumberLike(text);
 
-        // Non-numeric rows (rare) become null; we keep the label map stable
         periods[colIdx].values[rowLabel] = Number.isFinite(val as number)
           ? (val as number)
           : null;
       });
     });
   } catch (err) {
-    errors.push(makeError("parseIncomeStatementAnnual.rows", err));
+    errors.push(makeError("parseIncomeStatementAnnualRaw.rows", err));
   }
 
   return { incomeStatementAnnual: { meta, periods }, errors };
@@ -175,7 +175,7 @@ function extractMeta($: cheerio.CheerioAPI): IncomeMeta {
     const s = normalizeText(blurb);
     if (s) {
       const unitMatch = s.match(/\b(Millions|Thousands|Billions)\b/i);
-      const currencyMatch = s.match(/\b[A-Z]{3}\b/); // crude but effective (e.g., PKR, USD, EUR)
+      const currencyMatch = s.match(/\b[A-Z]{3}\b/);
       if (unitMatch) meta.unit = unitMatch[1].toLowerCase() as Unit;
       if (currencyMatch) meta.currency = currencyMatch[0];
       const fyNoteMatch = s.match(/Fiscal year is.*$/i);
@@ -185,4 +185,113 @@ function extractMeta($: cheerio.CheerioAPI): IncomeMeta {
     /* non-fatal */
   }
   return meta;
+}
+
+/* -------- NORMALIZED (lowerCamelCase keys via utils.toLowerCamelKey) ------- */
+
+export async function scrapeIncomeStatementAnnual(
+  url: string
+): Promise<IncomeAnnualResult<Record<string, number | null>>> {
+  const raw = await scrapeIncomeStatementAnnualRaw(url);
+  return transformPeriodsKeysToLowerCamel(raw);
+}
+
+function transformPeriodsKeysToLowerCamel(
+  raw: IncomeAnnualResult<Record<string, number | null>>
+): IncomeAnnualResult<Record<string, number | null>> {
+  const { incomeStatementAnnual, errors } = raw;
+  const outPeriods = incomeStatementAnnual.periods.map((p) => {
+    const next: Record<string, number | null> = {};
+    for (const [label, value] of Object.entries(p.values)) {
+      const key = toLowerCamelKey(label);
+      if (!key) continue;
+      if (!(key in next) || next[key] == null) next[key] = value;
+    }
+    return { fiscalYear: p.fiscalYear, periodEnd: p.periodEnd, values: next };
+  });
+
+  return {
+    incomeStatementAnnual: {
+      meta: incomeStatementAnnual.meta,
+      periods: outPeriods,
+    },
+    errors,
+  };
+}
+
+/* ---------------- STRICT (explicit lowerCamelCase keys; optional) ---------- */
+
+export interface IncomeAnnualStrictValues {
+  revenue?: number | null;
+  revenueGrowth?: number | null;
+  costOfRevenue?: number | null;
+  grossProfit?: number | null;
+  sellingGeneralAndAdmin?: number | null;
+  otherOperatingExpenses?: number | null;
+  operatingExpenses?: number | null;
+  operatingIncome?: number | null;
+  interestExpense?: number | null;
+  interestAndInvestmentIncome?: number | null;
+  earningsFromEquityInvestments?: number | null;
+  currencyExchangeGain?: number | null;
+  otherNonOperatingIncome?: number | null;
+  ebtExcludingUnusualItems?: number | null;
+  gainOnSaleOfInvestments?: number | null;
+  gainOnSaleOfAssets?: number | null;
+  otherUnusualItems?: number | null;
+  pretaxIncome?: number | null;
+  incomeTaxExpense?: number | null;
+  netIncome?: number | null;
+  netIncomeToCommon?: number | null;
+  netIncomeGrowth?: number | null;
+  sharesOutstanding?: number | null;
+  eps?: number | null;
+  epsGrowth?: number | null;
+  freeCashFlow?: number | null;
+  freeCashFlowPerShare?: number | null;
+  dividendPerShare?: number | null;
+  dividendGrowth?: number | null;
+  grossMargin?: number | null;
+  operatingMargin?: number | null;
+  profitMargin?: number | null;
+  freeCashFlowMargin?: number | null;
+  ebitda?: number | null;
+  ebitdaMargin?: number | null;
+  dAndAForEbitda?: number | null;
+  ebit?: number | null;
+  ebitMargin?: number | null;
+  effectiveTaxRate?: number | null;
+  advertisingExpenses?: number | null;
+}
+
+export async function scrapeIncomeStatementAnnualStrict(
+  url: string
+): Promise<IncomeAnnualResult<IncomeAnnualStrictValues>> {
+  const income = await scrapeIncomeStatementAnnual(url);
+  return toStrict(income);
+}
+
+function toStrict(
+  raw: IncomeAnnualResult<Record<string, number | null>>
+): IncomeAnnualResult<IncomeAnnualStrictValues> {
+  const { incomeStatementAnnual, errors } = raw;
+
+  const periods = incomeStatementAnnual.periods.map((p) => {
+    const strictVals: IncomeAnnualStrictValues = {};
+
+    for (const [originalLabel, value] of Object.entries(p.values)) {
+      strictVals[originalLabel] = value;
+    }
+
+    return {
+      fiscalYear: p.fiscalYear,
+      periodEnd: p.periodEnd,
+      values: strictVals,
+    };
+  });
+
+  return {
+    incomeStatementAnnual: { meta: incomeStatementAnnual.meta, periods },
+    errors,
+  };
 }
