@@ -485,7 +485,6 @@ enum TickerAnalysisCategory {
   FinancialStatementAnalysis
   PastPerformance
   FutureGrowth
-  VsCompetition
   FairValue
 }
 
