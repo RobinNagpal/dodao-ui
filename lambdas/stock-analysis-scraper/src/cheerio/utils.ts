@@ -126,3 +126,109 @@ export function toLowerCamelKey(raw: string): string {
 
   return /^\d/.test(camel) ? `_${camel}` : camel;
 }
+
+// === Shared unit type ===
+export type Unit = "ones" | "thousands" | "millions" | "billions";
+
+export interface FinancialsMeta {
+  currency?: string; // e.g., "PKR", "USD"
+  unit?: Unit; // normalized to ones|thousands|millions|billions
+  fiscalYearNote?: string; // free text if found
+}
+
+const UNIT_MAP: Record<string, Unit> = {
+  thousand: "thousands",
+  thousands: "thousands",
+  million: "millions",
+  millions: "millions",
+  billion: "billions",
+  billions: "billions",
+};
+
+const UNIT_MULTIPLIER: Record<Unit, number> = {
+  ones: 1,
+  thousands: 1e3,
+  millions: 1e6,
+  billions: 1e9,
+};
+
+export function unitMultiplier(unit?: Unit): number {
+  if (!unit) return 1;
+  return UNIT_MULTIPLIER[unit] ?? 1;
+}
+
+/** Heuristic: do NOT scale these (already percentages or inherently unitless/per-share) */
+export function shouldSkipUnitScaling(
+  label: string,
+  isPercent: boolean
+): boolean {
+  if (isPercent) return true;
+  const s = label.toLowerCase();
+  // ratios, margins, growth rates, EPS, per-share metrics
+  return (
+    s.includes("margin") ||
+    s.includes("growth") ||
+    s.includes("yoy") ||
+    s.includes("per share") ||
+    /\beps\b/i.test(label) ||
+    s.includes("ratio") ||
+    s.includes("rate")
+  );
+}
+
+/** Parse a cell, then apply unit scaling if appropriate (NOT for percentages/per-share/ratios). */
+export function parseValueWithUnit(
+  text: string,
+  label: string,
+  mult: number
+): number | null {
+  // % first
+  let pct = parsePercent(text);
+  if (pct != null && Number.isFinite(pct)) return pct;
+
+  // numeric (currency/totals/shares/etc.)
+  let num = parseNumberLike(text);
+  if (num == null || !Number.isFinite(num)) return null;
+
+  if (shouldSkipUnitScaling(label, false)) return num; // keep as-is
+  // Otherwise scale to "ones"
+  return num * (Number.isFinite(mult) ? mult : 1);
+}
+
+/** Robustly extract currency+unit+note from the faded blurb(s) above the table. */
+export function extractFinancialsMeta($: cheerio.CheerioAPI): FinancialsMeta {
+  const meta: FinancialsMeta = {};
+  try {
+    // Collect possibly multiple blurbs, concatenate (some pages repeat "Millions PKR...")
+    const texts: string[] = [];
+    $("main .text-faded, .text-faded").each((_, el) => {
+      const t = normalizeText($(el).text());
+      if (t) texts.push(t);
+    });
+    const blob = normalizeText(texts.join(" ")); // "Financials in millions PKR. ... Millions PKR. ..."
+
+    // Currency: prefer 3-letter ALL-CAPS tokens (USD, PKR, EUR, etc.)
+    const currencies = blob.match(/\b[A-Z]{3}\b/g);
+    if (currencies && currencies.length > 0) {
+      // choose the last occurrence (often the most specific line)
+      meta.currency = currencies[currencies.length - 1];
+    }
+
+    // Unit: look for "in millions/thousands/billions" OR trailing "Millions" lines; pick the last one
+    const unitMatches = blob.match(/\b(millions?|thousands?|billions?)\b/gi);
+    if (unitMatches && unitMatches.length > 0) {
+      const uRaw = unitMatches[unitMatches.length - 1].toLowerCase();
+      const mapped = UNIT_MAP[uRaw];
+      meta.unit = mapped ?? "ones";
+    } else {
+      meta.unit = "ones";
+    }
+
+    // Fiscal year note (best-effort)
+    const fyNote = blob.match(/fiscal year is[^.]+(?:\.)?/i);
+    if (fyNote) meta.fiscalYearNote = normalizeText(fyNote[0]);
+  } catch {
+    // ignore
+  }
+  return meta;
+}

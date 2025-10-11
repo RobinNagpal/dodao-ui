@@ -18,22 +18,24 @@ import * as cheerio from "cheerio";
 export type Unit = "ones" | "thousands" | "millions" | "billions";
 
 export interface IncomeMeta {
-  currency?: string; // e.g., "PKR"
-  unit?: Unit; // e.g., "millions"
-  fiscalYearNote?: string; // e.g., "Fiscal year is July - June."
+  currency?: string;
+  unit?: Unit;
+  fiscalYearNote?: string;
 }
 
-export interface IncomePeriodRaw {
-  fiscalYear: string;
-  periodEnd?: string;
-  values: Record<string, number | null>; // ORIGINAL LABEL -> numeric or null
+export interface IncomeQuarterPeriodRaw {
+  fiscalQuarter: string; // e.g., "Q4 2025"
+  periodEnd?: string; // e.g., "Jun 30, 2025"
+  values: Record<string, number | null>; // ORIGINAL label -> numeric or null
 }
 
-export interface IncomeAnnualResult<TValues = Record<string, number | null>> {
-  incomeStatementAnnual: {
+export interface IncomeQuarterlyResult<
+  TValues = Record<string, number | null>
+> {
+  incomeStatementQuarterly: {
     meta: IncomeMeta;
     periods: Array<{
-      fiscalYear: string;
+      fiscalQuarter: string;
       periodEnd?: string;
       values: TValues;
     }>;
@@ -41,41 +43,41 @@ export interface IncomeAnnualResult<TValues = Record<string, number | null>> {
   errors: ScrapeError[];
 }
 
-/* --------------------------- RAW (unchanged keys) --------------------------- */
+/* ───────────── RAW (unchanged keys) ───────────── */
 
-export async function scrapeIncomeStatementAnnualRaw(
+export async function scrapeIncomeStatementQuarterlyRaw(
   url: string
-): Promise<IncomeAnnualResult<Record<string, number | null>>> {
+): Promise<IncomeQuarterlyResult<Record<string, number | null>>> {
   const { html, error } = await fetchHtml(url);
   if (!html) {
     return {
-      incomeStatementAnnual: { meta: {}, periods: [] },
+      incomeStatementQuarterly: { meta: {}, periods: [] },
       errors: [
         error ?? {
-          where: "scrapeIncomeStatementAnnualRaw",
+          where: "scrapeIncomeStatementQuarterlyRaw",
           message: "Unknown fetch error",
         },
       ],
     };
   }
-  return parseIncomeStatementAnnualRaw(html);
+  return parseIncomeStatementQuarterlyRaw(html);
 }
 
-export function parseIncomeStatementAnnualRaw(
+export function parseIncomeStatementQuarterlyRaw(
   html: Html
-): IncomeAnnualResult<Record<string, number | null>> {
+): IncomeQuarterlyResult<Record<string, number | null>> {
   const $ = load(html);
   const errors: ScrapeError[] = [];
-
-  const meta = extractFinancialsMeta($); // ⬅️ new
+  const meta = extractFinancialsMeta($);
   const mult = unitMultiplier(meta.unit);
+
   const table = $("#main-table");
   if (table.length === 0) {
     return {
-      incomeStatementAnnual: { meta, periods: [] },
+      incomeStatementQuarterly: { meta, periods: [] },
       errors: [
         {
-          where: "parseIncomeStatementAnnualRaw",
+          where: "parseIncomeStatementQuarterlyRaw",
           message: "#main-table not found",
         },
       ],
@@ -83,48 +85,48 @@ export function parseIncomeStatementAnnualRaw(
   }
 
   const headerRows = table.find("thead tr");
-  if (headerRows.length === 0) {
+  if (headerRows.length < 2) {
     return {
-      incomeStatementAnnual: { meta, periods: [] },
+      incomeStatementQuarterly: { meta, periods: [] },
       errors: [
-        { where: "parseIncomeStatementAnnualRaw", message: "thead not found" },
+        {
+          where: "parseIncomeStatementQuarterlyRaw",
+          message: "thead rows not found",
+        },
       ],
     };
   }
 
-  // Row 0: "FY 2025" or "FY2025" or "2025"; ignore "2016 - 2020" buckets
-  const fyRow = headerRows.eq(0).find("th");
+  // Row 0: "Q4 2025", "Q3 2025", ... (ignore trailing "+20 Quarters" etc.)
+  const qRow = headerRows.eq(0).find("th");
   const peRow = headerRows.eq(1).find("th");
 
   interface ColInfo {
     idx: number;
-    fiscalYear: string;
+    fiscalQuarter: string;
     periodEnd?: string;
   }
   const cols: ColInfo[] = [];
-  fyRow.each((i, th) => {
+  qRow.each((i, th) => {
     if (i === 0) return; // first column is the row label
     const text = normalizeText($(th).text());
-    if (
-      (/^FY\s*'?(\d{2}|\d{4})$/i.test(text) || /^\d{4}$/.test(text)) &&
-      !text.includes("-")
-    ) {
+    if (/^Q[1-4]\s+(?:\d{4}|\d{2})$/i.test(text)) {
       const periodEnd = peRow.eq(i).text()
         ? normalizeText(peRow.eq(i).text())
         : undefined;
-      cols.push({ idx: i, fiscalYear: text, periodEnd });
+      cols.push({ idx: i, fiscalQuarter: text, periodEnd });
     }
   });
 
   if (cols.length === 0) {
     errors.push({
-      where: "parseIncomeStatementAnnualRaw",
-      message: "No fiscal-year columns detected",
+      where: "parseIncomeStatementQuarterlyRaw",
+      message: "No quarterly columns detected",
     });
   }
 
-  const periods: IncomePeriodRaw[] = cols.map((c) => ({
-    fiscalYear: c.fiscalYear,
+  const periods: IncomeQuarterPeriodRaw[] = cols.map((c) => ({
+    fiscalQuarter: c.fiscalQuarter,
     periodEnd: c.periodEnd,
     values: {},
   }));
@@ -135,7 +137,9 @@ export function parseIncomeStatementAnnualRaw(
       const tds = $tr.find("td");
       if (tds.length < 2) return;
 
-      const rowLabel = normalizeText(cellText(tds.eq(0), $).trim());
+      const $labelCell: cheerio.Cheerio<any> = tds.eq(0);
+      const rowLabelRaw = cellText($labelCell, $).trim();
+      const rowLabel = normalizeText(rowLabelRaw);
       if (!rowLabel) return;
 
       cols.forEach((c, colIdx) => {
@@ -148,17 +152,20 @@ export function parseIncomeStatementAnnualRaw(
           return;
         }
 
-        const val = parseValueWithUnit(text, rowLabel, mult); // ⬅️ scale here
-        periods[colIdx].values[rowLabel] = val;
+        const val = parseValueWithUnit(text, rowLabel, mult);
+        periods[colIdx].values[rowLabel] = Number.isFinite(val as number)
+          ? (val as number)
+          : null;
       });
     });
   } catch (err) {
-    errors.push(makeError("parseIncomeStatementAnnualRaw.rows", err));
+    errors.push(makeError("parseIncomeStatementQuarterlyRaw.rows", err));
   }
-  return { incomeStatementAnnual: { meta, periods }, errors };
+
+  return { incomeStatementQuarterly: { meta, periods }, errors };
 }
 
-/** Attempts to read "Financials in millions PKR. Fiscal year is July - June." style blurb above the table */
+/** Same blurb style as annual */
 function extractMeta($: cheerio.CheerioAPI): IncomeMeta {
   const meta: IncomeMeta = {};
   try {
@@ -185,41 +192,46 @@ function extractMeta($: cheerio.CheerioAPI): IncomeMeta {
   return meta;
 }
 
-/* -------- NORMALIZED (lowerCamelCase keys via utils.toLowerCamelKey) ------- */
+/* ─────────── NORMALIZED (lowerCamelCase keys) ─────────── */
 
-export async function scrapeIncomeStatementAnnual(
+export async function scrapeIncomeStatementQuarterly(
   url: string
-): Promise<IncomeAnnualResult<Record<string, number | null>>> {
-  const raw = await scrapeIncomeStatementAnnualRaw(url);
-  return transformPeriodsKeysToLowerCamel(raw);
+): Promise<IncomeQuarterlyResult<Record<string, number | null>>> {
+  const raw = await scrapeIncomeStatementQuarterlyRaw(url);
+  return transformQuarterlyKeysToLowerCamel(raw);
 }
 
-function transformPeriodsKeysToLowerCamel(
-  raw: IncomeAnnualResult<Record<string, number | null>>
-): IncomeAnnualResult<Record<string, number | null>> {
-  const { incomeStatementAnnual, errors } = raw;
-  const outPeriods = incomeStatementAnnual.periods.map((p) => {
+function transformQuarterlyKeysToLowerCamel(
+  raw: IncomeQuarterlyResult<Record<string, number | null>>
+): IncomeQuarterlyResult<Record<string, number | null>> {
+  const { incomeStatementQuarterly, errors } = raw;
+
+  const out = incomeStatementQuarterly.periods.map((p) => {
     const next: Record<string, number | null> = {};
     for (const [label, value] of Object.entries(p.values)) {
       const key = toLowerCamelKey(label);
       if (!key) continue;
       if (!(key in next) || next[key] == null) next[key] = value;
     }
-    return { fiscalYear: p.fiscalYear, periodEnd: p.periodEnd, values: next };
+    return {
+      fiscalQuarter: p.fiscalQuarter,
+      periodEnd: p.periodEnd,
+      values: next,
+    };
   });
 
   return {
-    incomeStatementAnnual: {
-      meta: incomeStatementAnnual.meta,
-      periods: outPeriods,
+    incomeStatementQuarterly: {
+      meta: incomeStatementQuarterly.meta,
+      periods: out,
     },
     errors,
   };
 }
 
-/* ---------------- STRICT (explicit lowerCamelCase keys; optional) ---------- */
+/* ───────── STRICT (explicit lowerCamelCase keys; optional) ───────── */
 
-export interface IncomeAnnualStrictValues {
+export interface IncomeQuarterlyStrictValues {
   revenue?: number | null;
   revenueGrowth?: number | null;
   costOfRevenue?: number | null;
@@ -262,8 +274,8 @@ export interface IncomeAnnualStrictValues {
   advertisingExpenses?: number | null;
 }
 
-// Strongly-typed allowlist of strict keys
-const INCOME_ANNUAL_KEYS = [
+// allowlist for strict quarterly keys (same as annual to keep schema aligned)
+const INCOME_QUARTERLY_KEYS = [
   "revenue",
   "revenueGrowth",
   "costOfRevenue",
@@ -306,42 +318,39 @@ const INCOME_ANNUAL_KEYS = [
   "advertisingExpenses",
 ] as const;
 
-type IncomeAnnualKey = (typeof INCOME_ANNUAL_KEYS)[number];
-
-function isIncomeAnnualStrictKey(k: string): k is IncomeAnnualKey {
-  return (INCOME_ANNUAL_KEYS as readonly string[]).includes(k);
+type IncomeQuarterlyKey = (typeof INCOME_QUARTERLY_KEYS)[number];
+function isIncomeQuarterlyStrictKey(k: string): k is IncomeQuarterlyKey {
+  return (INCOME_QUARTERLY_KEYS as readonly string[]).includes(k);
 }
 
-export async function scrapeIncomeStatementAnnualStrict(
+export async function scrapeIncomeStatementQuarterlyStrict(
   url: string
-): Promise<IncomeAnnualResult<IncomeAnnualStrictValues>> {
-  // IMPORTANT: make strict from the *normalized* output
-  const normalized = await scrapeIncomeStatementAnnual(url);
-  return toStrict(normalized);
+): Promise<IncomeQuarterlyResult<IncomeQuarterlyStrictValues>> {
+  const normalized = await scrapeIncomeStatementQuarterly(url); // build from normalized
+  return toStrictQuarterly(normalized);
 }
 
-function toStrict(
-  normalized: IncomeAnnualResult<Record<string, number | null>>
-): IncomeAnnualResult<IncomeAnnualStrictValues> {
-  const { incomeStatementAnnual, errors } = normalized;
+function toStrictQuarterly(
+  normalized: IncomeQuarterlyResult<Record<string, number | null>>
+): IncomeQuarterlyResult<IncomeQuarterlyStrictValues> {
+  const { incomeStatementQuarterly, errors } = normalized;
 
-  const periods = incomeStatementAnnual.periods.map((p) => {
-    const strictVals: IncomeAnnualStrictValues = {};
+  const periods = incomeStatementQuarterly.periods.map((p) => {
+    const strictVals: IncomeQuarterlyStrictValues = {};
     for (const [k, v] of Object.entries(p.values)) {
-      if (isIncomeAnnualStrictKey(k)) {
-        // keep only expected keys
+      if (isIncomeQuarterlyStrictKey(k)) {
         if (!(k in strictVals) || strictVals[k] == null) strictVals[k] = v;
       }
     }
     return {
-      fiscalYear: p.fiscalYear,
+      fiscalQuarter: p.fiscalQuarter,
       periodEnd: p.periodEnd,
       values: strictVals,
     };
   });
 
   return {
-    incomeStatementAnnual: { meta: incomeStatementAnnual.meta, periods },
+    incomeStatementQuarterly: { meta: incomeStatementQuarterly.meta, periods },
     errors,
   };
 }

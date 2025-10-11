@@ -4,104 +4,116 @@ import {
   scrapeIncomeStatementAnnualRaw,
   scrapeIncomeStatementAnnualStrict,
 } from "./cheerio/income-statement-annual";
+import {
+  scrapeIncomeStatementQuarterly,
+  scrapeIncomeStatementQuarterlyRaw,
+  scrapeIncomeStatementQuarterlyStrict,
+} from "./cheerio/income-statement-quarterly";
 import { scrapeFundamentalsSummary } from "./cheerio/fundamentals-summary";
 
-/**
- * Type definition for the request body when fetching a specific article
- */
-type FetchArticleRequestBody = {
-  url: string;
-};
+type FetchArticleRequestBody = { url: string };
 
-/**
- * Handler for fetching user topics
- * @param event - API Gateway event
- * @returns API Gateway response
- */
+// simple URL joiner that preserves exactly one slash between parts
+function joinUrl(base: string, path: string): string {
+  const b = base.endsWith("/") ? base.slice(0, -1) : base;
+  const p = path.startsWith("/") ? path.slice(1) : path;
+  return `${b}/${p}`;
+}
+
+const JSON_HEADERS = {
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Credentials": "true",
+} as const;
+
 export const scrapeTickerInfo = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
-  console.log("Event received:", JSON.stringify(event, null, 2));
-
   try {
-    // Parse the request body
     if (!event.body) {
       return {
         statusCode: 400,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": true,
-        },
+        headers: JSON_HEADERS,
         body: JSON.stringify({ error: "Request body is required" }),
       };
     }
 
     const body: FetchArticleRequestBody = JSON.parse(event.body);
-    const { url } = body;
-
+    const { url } = body || {};
     if (!url) {
       return {
         statusCode: 400,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": true,
-        },
+        headers: JSON_HEADERS,
         body: JSON.stringify({ error: "url is required" }),
       };
     }
 
-    const { financialSummary, errors: errorsFinancialSummary } =
-      await scrapeFundamentalsSummary(url);
-    const { incomeStatementAnnual, errors: errorsIncomeStatement } =
-      await scrapeIncomeStatementAnnual(url + "financials/");
+    // Build sub-URLs
+    const annualUrl = joinUrl(url, "financials/");
+    const quarterlyUrl = joinUrl(url, "financials/?p=quarterly");
 
-    const {
-      incomeStatementAnnual: incomeStatementAnnualRaw,
-      errors: errorsIncomeStatementRaw,
-    } = await scrapeIncomeStatementAnnualRaw(url + "financials/");
+    // Kick off everything in parallel
+    const [
+      summaryRes,
+      annualNormRes,
+      annualRawRes,
+      annualStrictRes,
+      qNormRes,
+      qRawRes,
+      qStrictRes,
+    ] = await Promise.all([
+      scrapeFundamentalsSummary(url),
+      scrapeIncomeStatementAnnual(annualUrl),
+      scrapeIncomeStatementAnnualRaw(annualUrl),
+      scrapeIncomeStatementAnnualStrict(annualUrl),
+      scrapeIncomeStatementQuarterly(quarterlyUrl),
+      scrapeIncomeStatementQuarterlyRaw(quarterlyUrl),
+      scrapeIncomeStatementQuarterlyStrict(quarterlyUrl),
+    ]);
 
-    const {
-      incomeStatementAnnual: incomeStatementAnnualStrict,
-      errors: errorsIncomeStatementStrict,
-    } = await scrapeIncomeStatementAnnualStrict(url + "financials/");
+    // Uniform response shape
+    const response = {
+      tickerUrl: url,
 
-    // Fetch topics for the user from the database
+      summary: {
+        data: summaryRes.financialSummary, // already flat
+        errors: summaryRes.errors ?? [],
+      },
+
+      incomeStatement: {
+        annual: {
+          raw: annualRawRes.incomeStatementAnnual, // { meta, periods }
+          normalized: annualNormRes.incomeStatementAnnual, // { meta, periods }
+          strict: annualStrictRes.incomeStatementAnnual, // { meta, periods }
+          errors: {
+            raw: annualRawRes.errors ?? [],
+            normalized: annualNormRes.errors ?? [],
+            strict: annualStrictRes.errors ?? [],
+          },
+        },
+        quarterly: {
+          raw: qRawRes.incomeStatementQuarterly, // { meta, periods }
+          normalized: qNormRes.incomeStatementQuarterly, // { meta, periods }
+          strict: qStrictRes.incomeStatementQuarterly, // { meta, periods }
+          errors: {
+            raw: qRawRes.errors ?? [],
+            normalized: qNormRes.errors ?? [],
+            strict: qStrictRes.errors ?? [],
+          },
+        },
+      },
+    };
 
     return {
       statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: JSON.stringify({
-        financialSummary,
-        incomeStatementAnnual: {
-          incomeStatementAnnual,
-          incomeStatementAnnualRaw,
-          incomeStatementAnnualStrict,
-        },
-        errors: {
-          errorsFinancialSummary,
-          incomeStatement: {
-            errorsIncomeStatement,
-            errorsIncomeStatementRaw,
-            errorsIncomeStatementStrict,
-          },
-        },
-      }),
+      headers: JSON_HEADERS,
+      body: JSON.stringify(response),
     };
   } catch (error: any) {
-    console.error("Error fetching user topics:", error);
+    console.error("scrapeTickerInfo error:", error);
     return {
       statusCode: 500,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true,
-      },
+      headers: JSON_HEADERS,
       body: JSON.stringify({
         error: "Internal server error",
         details: error?.message,
@@ -110,19 +122,14 @@ export const scrapeTickerInfo = async (
   }
 };
 
-/**
- * Handler for OPTIONS requests (CORS preflight)
- * @returns API Gateway response
- */
 export const handleOptions = async (): Promise<APIGatewayProxyResult> => {
   return {
     statusCode: 200,
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      ...JSON_HEADERS,
       "Access-Control-Allow-Headers":
         "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
       "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-      "Access-Control-Allow-Credentials": true,
     },
     body: "",
   };
