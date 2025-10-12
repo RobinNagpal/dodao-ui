@@ -36,7 +36,7 @@ build:
 
 functions:
   scrapeTickerInfo:
-    handler: src/handler.scrapeTickerInfo
+    handler: src/handler.scrapeTickerInfoNormal
     events:
       - httpApi:
           path: /fetch-stock-info
@@ -44,4 +44,3 @@ functions:
       - httpApi:
           path: /fetch-stock-info
           method: OPTIONS
-          handler: handler.handleOptions
