@@ -1,35 +1,11 @@
 import React, { useState } from 'react';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GenerationRequestStatus } from '@/lib/mappingsV1';
+import { GenerationRequestStatus, INVESTOR_OPTIONS } from '@/lib/mappingsV1';
+import { TickerRequestV1 } from '@/types/public-equity/analysis-factors-types';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-
-interface RequestStatus {
-  regenerateCompetition: boolean;
-  regenerateFinancialAnalysis: boolean;
-  regenerateBusinessAndMoat: boolean;
-  regeneratePastPerformance: boolean;
-  regenerateFutureGrowth: boolean;
-  regenerateFairValue: boolean;
-  regenerateFutureRisk: boolean;
-  regenerateWarrenBuffett: boolean;
-  regenerateCharlieMunger: boolean;
-  regenerateBillAckman: boolean;
-  regenerateFinalSummary: boolean;
-  regenerateCachedScore: boolean;
-  status: GenerationRequestStatus;
-  createdAt: Date;
-  updatedAt: Date;
-  startedAt?: Date;
-  completedAt?: Date;
-}
-
-export interface TickerRequestV1 {
-  ticker: string;
-  requestStatus: RequestStatus;
-}
 
 interface RequestGeneratorProps {
   selectedTickers: string[];
@@ -48,88 +24,21 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
   });
 
   const analysisTypes = [
-    { key: 'financial-analysis', label: 'Financial Analysis', statusKey: 'regenerateFinancialAnalysis' as keyof RequestStatus },
-    { key: 'competition', label: 'Competition', statusKey: 'regenerateCompetition' as keyof RequestStatus },
-    { key: 'business-and-moat', label: 'Business & Moat', statusKey: 'regenerateBusinessAndMoat' as keyof RequestStatus },
-    { key: 'past-performance', label: 'Past Performance', statusKey: 'regeneratePastPerformance' as keyof RequestStatus },
-    { key: 'future-growth', label: 'Future Growth', statusKey: 'regenerateFutureGrowth' as keyof RequestStatus },
-    { key: 'fair-value', label: 'Fair Value', statusKey: 'regenerateFairValue' as keyof RequestStatus },
-    { key: 'future-risk', label: 'Future Risk', statusKey: 'regenerateFutureRisk' as keyof RequestStatus },
-    { key: 'final-summary', label: 'Final Summary', statusKey: 'regenerateFinalSummary' as keyof RequestStatus },
-    { key: 'cached-score', label: 'Cached Score', statusKey: 'regenerateCachedScore' as keyof RequestStatus },
+    { key: 'financial-analysis', label: 'Financial Analysis', statusKey: 'regenerateFinancialAnalysis' },
+    { key: 'competition', label: 'Competition', statusKey: 'regenerateCompetition' },
+    { key: 'business-and-moat', label: 'Business & Moat', statusKey: 'regenerateBusinessAndMoat' },
+    { key: 'past-performance', label: 'Past Performance', statusKey: 'regeneratePastPerformance' },
+    { key: 'future-growth', label: 'Future Growth', statusKey: 'regenerateFutureGrowth' },
+    { key: 'fair-value', label: 'Fair Value', statusKey: 'regenerateFairValue' },
+    { key: 'future-risk', label: 'Future Risk', statusKey: 'regenerateFutureRisk' },
+    { key: 'final-summary', label: 'Final Summary', statusKey: 'regenerateFinalSummary' },
+    { key: 'cached-score', label: 'Cached Score', statusKey: 'regenerateCachedScore' },
   ];
 
-  const investorAnalysisTypes = [
-    { key: 'WARREN_BUFFETT', label: 'Warren Buffett Analysis' },
-    { key: 'CHARLIE_MUNGER', label: 'Charlie Munger Analysis' },
-    { key: 'BILL_ACKMAN', label: 'Bill Ackman Analysis' },
-  ];
-
-  const handleCreateRequest = async (analysisType: string, ticker: string) => {
-    if (!ticker) return;
-
-    setLoadingStates((prev) => ({ ...prev, [`${ticker}-${analysisType}`]: true }));
-
-    try {
-      // Create request with only the specific analysis type set to true
-      const payload = {
-        regenerateCompetition: analysisType === 'competition',
-        regenerateFinancialAnalysis: analysisType === 'financial-analysis',
-        regenerateBusinessAndMoat: analysisType === 'business-and-moat',
-        regeneratePastPerformance: analysisType === 'past-performance',
-        regenerateFutureGrowth: analysisType === 'future-growth',
-        regenerateFairValue: analysisType === 'fair-value',
-        regenerateFutureRisk: analysisType === 'future-risk',
-        regenerateWarrenBuffett: false,
-        regenerateCharlieMunger: false,
-        regenerateBillAckman: false,
-        regenerateFinalSummary: analysisType === 'final-summary',
-        regenerateCachedScore: analysisType === 'cached-score',
-      };
-
-      const result = await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-request`, payload);
-
-      if (result) {
-        // Notify parent component to refresh the ticker request
-        onRequestCreated(ticker);
-      }
-    } finally {
-      setLoadingStates((prev) => ({ ...prev, [`${ticker}-${analysisType}`]: false }));
-    }
-  };
-
-  const handleCreateInvestorRequest = async (investorKey: string, ticker: string) => {
-    if (!ticker) return;
-
-    setLoadingStates((prev) => ({ ...prev, [`${ticker}-investor-${investorKey}`]: true }));
-
-    try {
-      // Create request with only the specific investor analysis set to true
-      const payload = {
-        regenerateCompetition: false,
-        regenerateFinancialAnalysis: false,
-        regenerateBusinessAndMoat: false,
-        regeneratePastPerformance: false,
-        regenerateFutureGrowth: false,
-        regenerateFairValue: false,
-        regenerateFutureRisk: false,
-        regenerateWarrenBuffett: investorKey === 'WARREN_BUFFETT',
-        regenerateCharlieMunger: investorKey === 'CHARLIE_MUNGER',
-        regenerateBillAckman: investorKey === 'BILL_ACKMAN',
-        regenerateFinalSummary: false,
-        regenerateCachedScore: false,
-      };
-
-      const result = await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-request`, payload);
-
-      if (result) {
-        // Notify parent component to refresh the ticker request
-        onRequestCreated(ticker);
-      }
-    } finally {
-      setLoadingStates((prev) => ({ ...prev, [`${ticker}-investor-${investorKey}`]: false }));
-    }
-  };
+  const investorAnalysisTypes = INVESTOR_OPTIONS.map((investor) => ({
+    key: investor.key,
+    label: `${investor.name} Analysis`,
+  }));
 
   const handleCreateAll = async (ticker: string): Promise<void> => {
     if (!ticker) return;
@@ -304,7 +213,7 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{analysis.label}</td>
                   {selectedTickers.map((ticker) => {
                     const request = tickerRequests[ticker];
-                    const isRequested = request?.requestStatus[analysis.statusKey];
+                    const isRequested = request?.requestStatus[analysis.statusKey as keyof typeof request.requestStatus];
                     const isLoading = loadingStates[`${ticker}-${analysis.key}`];
 
                     return (
@@ -342,7 +251,7 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{investor.label}</td>
                   {selectedTickers.map((ticker) => {
                     const request = tickerRequests[ticker];
-                    const investorKey = `regenerate${investor.key}` as keyof RequestStatus;
+                    const investorKey = `regenerate${investor.key}` as keyof typeof request.requestStatus;
                     const isRequested = request?.requestStatus[investorKey];
                     const isLoading = loadingStates[`${ticker}-investor-${investor.key}`];
 

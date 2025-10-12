@@ -2,6 +2,9 @@ import { prisma } from '@/prisma';
 import { GenerationRequestStatus } from '@/lib/mappingsV1';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
+import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
+import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { TickerRequestV1, TickerV1GenerationRequestFrontend } from '@/types/public-equity/analysis-factors-types';
 
 interface GenerationRequestPayload {
   regenerateCompetition: boolean;
@@ -18,8 +21,12 @@ interface GenerationRequestPayload {
   regenerateCachedScore: boolean;
 }
 
-async function postHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<{ success: boolean }> {
-  const { spaceId, ticker } = await context.params;
+async function postHandler(
+  req: NextRequest,
+  _userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ spaceId: string; ticker: string }> }
+): Promise<{ success: boolean }> {
+  const { spaceId, ticker } = await params;
   const payload = (await req.json()) as GenerationRequestPayload;
 
   // First, find the ticker to get its ID
@@ -90,8 +97,8 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
   return { success: true };
 }
 
-async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<any> {
-  const { spaceId, ticker } = await context.params;
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerRequestV1> {
+  const { spaceId, ticker } = await params;
 
   // Find the ticker to get its ID
   const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
@@ -119,6 +126,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     return {
       ticker,
       requestStatus: {
+        id: '',
         regenerateCompetition: false,
         regenerateFinancialAnalysis: false,
         regenerateBusinessAndMoat: false,
@@ -134,13 +142,16 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
         status: GenerationRequestStatus.NotStarted,
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
+        startedAt: undefined,
+        completedAt: undefined,
+      } as TickerV1GenerationRequestFrontend,
     };
   }
 
   return {
     ticker,
     requestStatus: {
+      id: latestRequest.id,
       regenerateCompetition: latestRequest.regenerateCompetition,
       regenerateFinancialAnalysis: latestRequest.regenerateFinancialAnalysis,
       regenerateBusinessAndMoat: latestRequest.regenerateBusinessAndMoat,
@@ -156,11 +167,11 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       status: latestRequest.status,
       createdAt: latestRequest.createdAt,
       updatedAt: latestRequest.updatedAt,
-      startedAt: latestRequest.startedAt,
-      completedAt: latestRequest.completedAt,
-    },
+      startedAt: latestRequest.startedAt ?? undefined,
+      completedAt: latestRequest.completedAt ?? undefined,
+    } as TickerV1GenerationRequestFrontend,
   };
 }
 
-export const POST = withErrorHandlingV2<{ success: boolean }>(postHandler);
-export const GET = withErrorHandlingV2<any>(getHandler);
+export const POST = withLoggedInAdmin<{ success: boolean }>(postHandler);
+export const GET = withErrorHandlingV2<TickerRequestV1>(getHandler);
