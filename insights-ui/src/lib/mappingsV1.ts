@@ -44,8 +44,8 @@ export const INVESTOR_OPTIONS = Object.entries(INVESTOR_MAPPINGS).map(([key, nam
 }));
 
 export enum GenerationRequestStatus {
-  NotStarted,
-  InProgress,
-  Completed,
-  Failed,
+  NotStarted = 'NotStarted',
+  InProgress = 'InProgress',
+  Completed = 'Completed',
+  Failed = 'Failed',
 }

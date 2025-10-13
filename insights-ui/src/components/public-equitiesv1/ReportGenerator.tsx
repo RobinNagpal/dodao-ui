@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AnalysisRequest, TickerAnalysisResponse, TickerV1 } from '@/types/public-equity/analysis-factors-types';
+import { INVESTOR_OPTIONS } from '@/lib/mappingsV1';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -56,11 +57,10 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     { key: 'cached-score', label: 'Cached Score', statusKey: 'cachedScore' as keyof AnalysisStatus },
   ];
 
-  const investorAnalysisTypes = [
-    { key: 'WARREN_BUFFETT', label: 'Warren Buffett Analysis' },
-    { key: 'CHARLIE_MUNGER', label: 'Charlie Munger Analysis' },
-    { key: 'BILL_ACKMAN', label: 'Bill Ackman Analysis' },
-  ];
+  const investorAnalysisTypes = INVESTOR_OPTIONS.map((investor) => ({
+    key: investor.key,
+    label: `${investor.name} Analysis`,
+  }));
 
   const handleGenerateAnalysis = async (analysisType: string, ticker: string) => {
     if (!ticker) return;

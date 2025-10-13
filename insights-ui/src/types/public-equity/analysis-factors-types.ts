@@ -1,4 +1,5 @@
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { TickerV1GenerationRequest } from '@prisma/client';
 
 export interface AnalysisFactorDefinition {
   factorAnalysisKey: string;
@@ -62,4 +63,12 @@ export interface TickerV1 {
   subIndustryKey: string;
   websiteUrl?: string;
   summary?: string;
+}
+
+// Extend the Prisma type to add optional ticker relation for frontend use
+export interface TickerV1GenerationRequestWithTicker extends TickerV1GenerationRequest {
+  ticker?: {
+    symbol: string;
+    name?: string;
+  };
 }
