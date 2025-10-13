@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { GenerationRequestStatus, INVESTOR_OPTIONS } from '@/lib/mappingsV1';
-import { TickerRequestV1 } from '@/types/public-equity/analysis-factors-types';
+import { TickerV1GenerationRequest } from '@prisma/client';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
 
 interface RequestGeneratorProps {
   selectedTickers: string[];
-  tickerRequests: Record<string, TickerRequestV1>;
+  tickerRequests: Record<string, TickerV1GenerationRequest>;
   onRequestCreated: (ticker: string) => void;
 }
 
@@ -18,7 +19,7 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
   const [isCreatingAll, setIsCreatingAll] = useState<boolean>(false);
 
   // Post hooks for request creation
-  const { postData: postRequest, loading: requestLoading } = usePostData<{ success: boolean }, any>({
+  const { postData: postRequest, loading: requestLoading } = usePostData<TickerV1GenerationRequest, GenerationRequestPayload>({
     successMessage: 'Request creation started successfully!',
     errorMessage: 'Failed to create request.',
   });
@@ -38,6 +39,11 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
   const investorAnalysisTypes = INVESTOR_OPTIONS.map((investor) => ({
     key: investor.key,
     label: `${investor.name} Analysis`,
+    // Convert SCREAMING_SNAKE_CASE to PascalCase for Prisma field names
+    fieldName: `regenerate${investor.key.charAt(0).toUpperCase()}${investor.key
+      .slice(1)
+      .toLowerCase()
+      .replace(/_([a-z])/g, (_, letter) => letter.toUpperCase())}`,
   }));
 
   const handleCreateAll = async (ticker: string): Promise<void> => {
@@ -59,7 +65,7 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
       regenerateCachedScore: true,
     };
 
-    const result = await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-request`, payload);
+    const result = await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
 
     if (result) {
       // Notify parent component to refresh the ticker request
@@ -119,7 +125,7 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
           regenerateCachedScore: analysisType === 'cached-score',
         };
 
-        await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-request`, payload);
+        await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
         onRequestCreated(ticker);
       });
 
@@ -166,7 +172,7 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
           regenerateCachedScore: false,
         };
 
-        await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-request`, payload);
+        await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
         onRequestCreated(ticker);
       });
 
@@ -213,14 +219,14 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{analysis.label}</td>
                   {selectedTickers.map((ticker) => {
                     const request = tickerRequests[ticker];
-                    const isRequested = request?.requestStatus[analysis.statusKey as keyof typeof request.requestStatus];
+                    const isRequested = request?.[analysis.statusKey as keyof typeof request];
                     const isLoading = loadingStates[`${ticker}-${analysis.key}`];
 
                     return (
                       <td key={`${ticker}-${analysis.key}`} className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex flex-col items-center space-y-2">
                           <div className={`h-3 w-3 rounded-full ${isRequested ? 'bg-blue-500' : isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-gray-300'}`} />
-                          {request && <div className="text-xs text-gray-400">{request.requestStatus.status}</div>}
+                          {request && <div className="text-xs text-gray-400">{request.status}</div>}
                         </div>
                       </td>
                     );
@@ -251,15 +257,14 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{investor.label}</td>
                   {selectedTickers.map((ticker) => {
                     const request = tickerRequests[ticker];
-                    const investorKey = `regenerate${investor.key}` as keyof typeof request.requestStatus;
-                    const isRequested = request?.requestStatus[investorKey];
+                    const isRequested = request?.[investor.fieldName as keyof typeof request];
                     const isLoading = loadingStates[`${ticker}-investor-${investor.key}`];
 
                     return (
                       <td key={`${ticker}-${investor.key}`} className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex flex-col items-center space-y-2">
                           <div className={`h-3 w-3 rounded-full ${isRequested ? 'bg-blue-500' : isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-gray-300'}`} />
-                          {request && <div className="text-xs text-gray-400">{request.requestStatus.status}</div>}
+                          {request && <div className="text-xs text-gray-400">{request.status}</div>}
                         </div>
                       </td>
                     );

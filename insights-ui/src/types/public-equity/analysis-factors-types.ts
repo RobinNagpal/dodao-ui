@@ -72,14 +72,3 @@ export interface TickerV1GenerationRequestWithTicker extends TickerV1GenerationR
     name?: string;
   };
 }
-
-// Frontend type that handles the differences between Prisma and frontend expectations
-export interface TickerV1GenerationRequestFrontend extends Omit<TickerV1GenerationRequest, 'startedAt' | 'completedAt'> {
-  startedAt?: Date;
-  completedAt?: Date;
-}
-
-export interface TickerRequestV1 {
-  ticker: string;
-  requestStatus: TickerV1GenerationRequestFrontend;
-}

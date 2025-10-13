@@ -3,10 +3,10 @@ import { GenerationRequestStatus } from '@/lib/mappingsV1';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
-import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { TickerRequestV1, TickerV1GenerationRequestFrontend } from '@/types/public-equity/analysis-factors-types';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { TickerV1GenerationRequest } from '@prisma/client';
 
-interface GenerationRequestPayload {
+export interface GenerationRequestPayload {
   regenerateCompetition: boolean;
   regenerateFinancialAnalysis: boolean;
   regenerateBusinessAndMoat: boolean;
@@ -23,9 +23,9 @@ interface GenerationRequestPayload {
 
 async function postHandler(
   req: NextRequest,
-  _userContext: DoDaoJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload,
   { params }: { params: Promise<{ spaceId: string; ticker: string }> }
-): Promise<{ success: boolean }> {
+): Promise<TickerV1GenerationRequest> {
   const { spaceId, ticker } = await params;
   const payload = (await req.json()) as GenerationRequestPayload;
 
@@ -53,7 +53,7 @@ async function postHandler(
 
   if (existingRequest) {
     // If there's an existing NotStarted request, update it
-    await prisma.tickerV1GenerationRequest.update({
+    const updatedRequest = await prisma.tickerV1GenerationRequest.update({
       where: {
         id: existingRequest.id,
       },
@@ -73,9 +73,11 @@ async function postHandler(
         updatedAt: new Date(),
       },
     });
+
+    return updatedRequest;
   } else {
     // If no existing NotStarted request, create a new one
-    await prisma.tickerV1GenerationRequest.create({
+    const newRequest = await prisma.tickerV1GenerationRequest.create({
       data: {
         tickerId: tickerRecord.id,
         regenerateCompetition: payload.regenerateCompetition,
@@ -92,12 +94,12 @@ async function postHandler(
         regenerateCachedScore: payload.regenerateCachedScore,
       },
     });
-  }
 
-  return { success: true };
+    return newRequest;
+  }
 }
 
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerRequestV1> {
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerV1GenerationRequest> {
   const { spaceId, ticker } = await params;
 
   // Find the ticker to get its ID
@@ -124,54 +126,31 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
   if (!latestRequest) {
     // Return a default request status if none exists
     return {
-      ticker,
-      requestStatus: {
-        id: '',
-        regenerateCompetition: false,
-        regenerateFinancialAnalysis: false,
-        regenerateBusinessAndMoat: false,
-        regeneratePastPerformance: false,
-        regenerateFutureGrowth: false,
-        regenerateFairValue: false,
-        regenerateFutureRisk: false,
-        regenerateWarrenBuffett: false,
-        regenerateCharlieMunger: false,
-        regenerateBillAckman: false,
-        regenerateFinalSummary: false,
-        regenerateCachedScore: false,
-        status: GenerationRequestStatus.NotStarted,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        startedAt: undefined,
-        completedAt: undefined,
-      } as TickerV1GenerationRequestFrontend,
-    };
+      id: '',
+      tickerId: tickerRecord.id,
+      spaceId,
+      regenerateCompetition: false,
+      regenerateFinancialAnalysis: false,
+      regenerateBusinessAndMoat: false,
+      regeneratePastPerformance: false,
+      regenerateFutureGrowth: false,
+      regenerateFairValue: false,
+      regenerateFutureRisk: false,
+      regenerateWarrenBuffett: false,
+      regenerateCharlieMunger: false,
+      regenerateBillAckman: false,
+      regenerateFinalSummary: false,
+      regenerateCachedScore: false,
+      status: GenerationRequestStatus.NotStarted,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      startedAt: null,
+      completedAt: null,
+    } as TickerV1GenerationRequest;
   }
 
-  return {
-    ticker,
-    requestStatus: {
-      id: latestRequest.id,
-      regenerateCompetition: latestRequest.regenerateCompetition,
-      regenerateFinancialAnalysis: latestRequest.regenerateFinancialAnalysis,
-      regenerateBusinessAndMoat: latestRequest.regenerateBusinessAndMoat,
-      regeneratePastPerformance: latestRequest.regeneratePastPerformance,
-      regenerateFutureGrowth: latestRequest.regenerateFutureGrowth,
-      regenerateFairValue: latestRequest.regenerateFairValue,
-      regenerateFutureRisk: latestRequest.regenerateFutureRisk,
-      regenerateWarrenBuffett: latestRequest.regenerateWarrenBuffett,
-      regenerateCharlieMunger: latestRequest.regenerateCharlieMunger,
-      regenerateBillAckman: latestRequest.regenerateBillAckman,
-      regenerateFinalSummary: latestRequest.regenerateFinalSummary,
-      regenerateCachedScore: latestRequest.regenerateCachedScore,
-      status: latestRequest.status,
-      createdAt: latestRequest.createdAt,
-      updatedAt: latestRequest.updatedAt,
-      startedAt: latestRequest.startedAt ?? undefined,
-      completedAt: latestRequest.completedAt ?? undefined,
-    } as TickerV1GenerationRequestFrontend,
-  };
+  return latestRequest;
 }
 
-export const POST = withLoggedInAdmin<{ success: boolean }>(postHandler);
-export const GET = withErrorHandlingV2<TickerRequestV1>(getHandler);
+export const POST = withLoggedInAdmin<TickerV1GenerationRequest>(postHandler);
+export const GET = withErrorHandlingV2<TickerV1GenerationRequest>(getHandler);

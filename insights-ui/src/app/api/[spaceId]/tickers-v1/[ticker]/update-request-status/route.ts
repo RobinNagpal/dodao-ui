@@ -2,19 +2,14 @@ import { GenerationRequestStatus } from '@/lib/mappingsV1';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
+import { TickerV1GenerationRequest } from '@prisma/client';
 
 interface UpdateRequestStatusPayload {
   id: string;
   status: GenerationRequestStatus;
 }
 
-interface UpdateRequestStatusResponse {
-  success: boolean;
-  generationRequestId: string;
-}
-
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<UpdateRequestStatusResponse> {
-  const { spaceId } = await params;
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerV1GenerationRequest> {
   const payload = (await req.json()) as UpdateRequestStatusPayload;
 
   const { id, status } = payload;
@@ -41,10 +36,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     },
   });
 
-  return {
-    success: true,
-    generationRequestId: updatedRequest.id,
-  };
+  return updatedRequest;
 }
 
-export const POST = withErrorHandlingV2<UpdateRequestStatusResponse>(postHandler);
+export const POST = withErrorHandlingV2<TickerV1GenerationRequest>(postHandler);
