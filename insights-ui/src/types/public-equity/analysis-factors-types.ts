@@ -65,10 +65,9 @@ export interface TickerV1 {
   summary?: string;
 }
 
-// Extend the Prisma type to add optional ticker relation for frontend use
+// Extend the Prisma type to add optional ticker relation for python backend use
 export interface TickerV1GenerationRequestWithTicker extends TickerV1GenerationRequest {
   ticker?: {
     symbol: string;
-    name?: string;
   };
 }
