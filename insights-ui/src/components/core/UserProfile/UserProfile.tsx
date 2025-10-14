@@ -79,6 +79,13 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
                 >
                   Invocations
                 </Link>
+                <Link
+                  href="/tickers-v1-requests"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+                  onClick={onMenuToggle}
+                >
+                  Requests
+                </Link>
                 <div className="border-t border-gray-700 my-1"></div>
               </>
             )}
@@ -130,6 +137,12 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
                   </Link>
                   <Link href="/invocations" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
                     Invocations
+                  </Link>
+                  <Link
+                    href="/tickers-v1-requests"
+                    className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
+                  >
+                    Requests
                   </Link>
                   <div className="border-t border-gray-700 my-1"></div>
                 </>
