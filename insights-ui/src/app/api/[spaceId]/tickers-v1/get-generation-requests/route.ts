@@ -6,14 +6,31 @@ import { TickerV1GenerationRequestWithTicker } from '@/types/public-equity/analy
 
 interface GenerationRequestsResponse {
   requests: TickerV1GenerationRequestWithTicker[];
-  moreExist: boolean;
 }
 
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<GenerationRequestsResponse> {
   const { spaceId } = await params;
 
-  // Get latest 10 NotStarted requests with ticker information
-  const requests = await prisma.tickerV1GenerationRequest.findMany({
+  // First, check how many InProgress requests exist
+  const inProgressCount = await prisma.tickerV1GenerationRequest.count({
+    where: {
+      spaceId,
+      status: GenerationRequestStatus.InProgress,
+    },
+  });
+
+  // If there are more than 10 InProgress requests, return nothing
+  if (inProgressCount > 10) {
+    return {
+      requests: [],
+    };
+  }
+
+  // Calculate how many NotStarted requests we can fetch (max 20 total, min 1)
+  const maxNotStartedRequests = Math.max(1, 20 - inProgressCount);
+
+  // Get NotStarted requests with ticker information
+  const notStartedRequests = await prisma.tickerV1GenerationRequest.findMany({
     where: {
       spaceId,
       status: GenerationRequestStatus.NotStarted,
@@ -28,42 +45,11 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
     orderBy: {
       createdAt: 'desc',
     },
-    take: 11, // Get 11 to check if there are more
+    take: maxNotStartedRequests,
   });
 
-  // Check if there are more than 10 records
-  const moreExist = requests.length > 10;
-
-  // Return only first 10 records
-  const limitedRequests = requests.slice(0, 10);
-
   return {
-    requests: limitedRequests.map(
-      (request): TickerV1GenerationRequestWithTicker => ({
-        id: request.id,
-        tickerId: request.tickerId,
-        spaceId: request.spaceId,
-        status: request.status,
-        createdAt: request.createdAt,
-        updatedAt: request.updatedAt,
-        startedAt: request.startedAt,
-        completedAt: request.completedAt,
-        regenerateCompetition: request.regenerateCompetition,
-        regenerateFinancialAnalysis: request.regenerateFinancialAnalysis,
-        regenerateBusinessAndMoat: request.regenerateBusinessAndMoat,
-        regeneratePastPerformance: request.regeneratePastPerformance,
-        regenerateFutureGrowth: request.regenerateFutureGrowth,
-        regenerateFairValue: request.regenerateFairValue,
-        regenerateFutureRisk: request.regenerateFutureRisk,
-        regenerateWarrenBuffett: request.regenerateWarrenBuffett,
-        regenerateCharlieMunger: request.regenerateCharlieMunger,
-        regenerateBillAckman: request.regenerateBillAckman,
-        regenerateFinalSummary: request.regenerateFinalSummary,
-        regenerateCachedScore: request.regenerateCachedScore,
-        ticker: request.ticker ?? undefined,
-      })
-    ),
-    moreExist,
+    requests: notStartedRequests as TickerV1GenerationRequestWithTicker[],
   };
 }
 
