@@ -7,12 +7,16 @@ import { TickerV1GenerationRequest } from '@prisma/client';
 interface UpdateRequestStatusPayload {
   id: string;
   status: GenerationRequestStatus;
+  completed_steps?: string[];
+  failed_steps?: string[];
+  mark_started?: boolean;
+  mark_completed?: boolean;
 }
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerV1GenerationRequest> {
   const payload = (await req.json()) as UpdateRequestStatusPayload;
 
-  const { id, status } = payload;
+  const { id, status, completed_steps, failed_steps, mark_started, mark_completed } = payload;
 
   // Validate status is a valid enum value
   if (!Object.values(GenerationRequestStatus).includes(status)) {
@@ -27,10 +31,16 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     data: {
       status,
       updatedAt: new Date(),
-      ...(status === GenerationRequestStatus.InProgress && {
+      ...(completed_steps !== undefined && {
+        completedSteps: completed_steps,
+      }),
+      ...(failed_steps !== undefined && {
+        failedSteps: failed_steps,
+      }),
+      ...(mark_started && {
         startedAt: new Date(),
       }),
-      ...(status === GenerationRequestStatus.Completed && {
+      ...(mark_completed && {
         completedAt: new Date(),
       }),
     },
